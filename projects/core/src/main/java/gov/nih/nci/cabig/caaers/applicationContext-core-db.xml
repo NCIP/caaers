@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName">
+            <value>${datasource.driver}</value>
+        </property>
+        <property name="maxActive">
+            <value>5</value>
+        </property>
+        <property name="maxIdle">
+            <value>2</value>
+        </property>
+        <property name="maxWait">
+            <value>180000</value>
+        </property>
+        <property name="removeAbandoned">
+            <value>true</value>
+        </property>
+        <property name="removeAbandonedTimeout">
+            <value>300</value>
+        </property>
+        <property name="logAbandoned">
+            <value>true</value>
+        </property>
+        <property name="validationQuery">
+            <value>SELECT 1 FROM bering_version</value>
+        </property>
+        <property name="testWhileIdle">
+            <value>true</value>
+        </property>
+        <property name="testOnReturn">
+            <value>true</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>300000</value>
+        </property>
+        <property name="minEvictableIdleTimeMillis">
+            <value>600000</value>
+        </property>
+
+        <property name="url">
+            <value>${datasource.url}</value>
+        </property>
+        <property name="username">
+            <value>${datasource.username}</value>
+        </property>
+        <property name="password">
+            <value>${datasource.password}</value>
+        </property>
+    </bean>
+</beans>
