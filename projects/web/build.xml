@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<project name="caaers-web" default="compile" basedir=".">
+    <property name="src-dir.main"      value="src/main/java" />
+    <property name="src-dir.unit-test" value="src/test/java" />
+
+    <property name="build-dir.main"      value="build/main/classes"/>
+    <property name="build-dir.unit-test" value="build/test/classes"/>
+
+    <property name="war-name" value="${basedir}/../../caaers.war"/>
+
+    <!-- CLASSPATHS -->
+
+    <path id="cp.compiled-source">
+        <pathelement location="${build-dir.main}"/>
+    </path>
+
+    <!-- this will need to be done better if we don't switch to maven -->
+    <path id="cp.core.main">
+        <fileset dir="../core/lib/main">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="../../caaers-core.jar"/>
+    </path>
+
+    <path id="cp.core.test">
+        <fileset dir="../core/lib/test">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement location="../../caaers-core-testing.jar"/>
+    </path>
+
+    <path id="cp.main">
+        <path refid="cp.compiled-source"/>
+        <path refid="cp.core.main"/>
+        <fileset dir="tools/j2ee/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="lib/main">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="cp.unit-test">
+        <path refid="cp.main"/>
+        <path refid="cp.core.test"/>
+        <pathelement location="${build-dir.unit-test}"/>
+        <fileset dir="lib/test">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- BASE TARGETS -->
+
+    <target name="default-properties">
+        <property name="test.failfast" value="false"/>
+    </target>
+
+    <target name="init" depends="default-properties">
+        <mkdir dir="${build-dir.main}"/>
+        <mkdir dir="${build-dir.unit-test}"/>
+    </target>
+
+    <!-- BUILD TARGETS -->
+
+    <target name="clean">
+        <delete dir="${build-dir.main}"/>
+        <delete dir="${build-dir.unit-test}"/>
+        <delete file="${war-name}"/>
+    </target>
+
+    <target name="resources" description="Copy resources into classpath" depends="init">
+        <copy todir="${build-dir.main}">
+            <fileset dir="${src-dir.main}">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+                <include name="**/*.ftl"/>
+            </fileset>
+        </copy>
+        <copy todir="${build-dir.unit-test}">
+            <fileset dir="${src-dir.unit-test}">
+                <include name="**/*.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile" description="Compile all java source" depends="resources">
+        <javac destdir="${build-dir.main}" classpathref="cp.main"
+               debug="true" source="1.5">
+            <src path="${src-dir.main}"/>
+        </javac>
+        <javac destdir="${build-dir.unit-test}" classpathref="cp.unit-test"
+               debug="true" source="1.5">
+            <src path="${src-dir.unit-test}"/>
+        </javac>
+    </target>
+
+    <target name="war" description="Create WAR for caAERS" depends="compile">
+        <echo>Creating ${war-name}</echo>
+        <war destfile="${war-name}" basedir="src/main/webapp" webxml="src/main/webapp/WEB-INF/web.xml">
+            <exclude name="**/web.xml"/>
+            <!-- it would be better to do this with CP refs, but I don't see a way -->
+            <lib dir="lib/main">
+                <include name="**/*.jar"/>
+            </lib>
+            <lib dir="../core/lib/main">
+                <include name="**/*.jar"/>
+            </lib>
+            <lib dir="../.." includes="caaers-core.jar"/>
+            <classes dir="${build-dir.main}"/>
+        </war>
+    </target>
+</project>

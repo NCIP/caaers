@@ -1,0 +1,67 @@
+body {
+    font-family: Verdana, sans-serif;
+    margin: 0; padding: 0;
+}
+
+#body {
+    margin: 0.5em 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Trebuchet, sans-serif;
+}
+
+a {
+    color: #00c;
+}
+
+a:visited {
+    color: #006;
+}
+
+a:hover {
+    color: #33f;
+}
+
+a:active {
+    color: #f00;
+}
+
+.error {
+    color: #c03;
+}
+
+.odd {
+    background-color: #eee;
+}
+
+.tip {
+    font-size: 80%;
+}
+
+/****** SPECIAL TYPES */
+
+/*
+    'row' is a class for label: value type rows.  The intent is
+    that eash row would contain 2-3 subdivs:  a label (float: left), an optional extra
+    (float: right), and the value (positioned naturally).  Pages which use these styles
+    should also set the width of div.label.
+ */
+div.row {
+    font-size: 10pt;
+    padding: 3px 2px 2px 2px;
+    margin-top: 1px;
+}
+/* Automatically clear after each row
+   Based on http://www.positioniseverything.net/easyclearing.html */
+div.row:after, div.autoclear:after {
+    display: block ;
+    content: ' ';
+    clear: both ;
+    height: 0 ;
+    visibility: hidden ;
+}
+/* IE only */
+* html div.row, * html div.autoclear { height: 1% }
+div.row div.label { font-weight: bold; float: left; margin-left: 0.5em }
+div.row div.value { font-weight: normal; }
