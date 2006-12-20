@@ -21,6 +21,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Study</value>
             </list>
         </property>
     </bean>
@@ -56,4 +57,6 @@
     <tx:annotation-driven proxy-target-class="true"/>
 
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
+    
+    <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
 </beans>
