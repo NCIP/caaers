@@ -35,9 +35,9 @@ public class Study extends AbstractDomainObject implements Serializable{
 
 	private String description;
 	
-    private String sitePrincipalInvestigatorCode;
+    private String principalInvestigatorCode;
     
-    private String sitePrincipalInvestigatorName;
+    private String principalInvestigatorName;
     
     private String primarySponsorCode;
 
@@ -55,20 +55,20 @@ public class Study extends AbstractDomainObject implements Serializable{
 		this.shortTitle = shortTitle;
 	}
 	
-    public String getSitePrincipalInvestigatorCode() {
-		return sitePrincipalInvestigatorCode;
+    public String getPrincipalInvestigatorCode() {
+		return principalInvestigatorCode;
 	}
 
-	public void setSitePrincipalInvestigatorCode(String investigatorCode) {
-		this.sitePrincipalInvestigatorCode = investigatorCode;
+	public void setPrincipalInvestigatorCode(String investigatorCode) {
+		this.principalInvestigatorCode = investigatorCode;
 	}
 
-	public String getSitePrincipalInvestigatorName() {
-		return sitePrincipalInvestigatorName;
+	public String getPrincipalInvestigatorName() {
+		return principalInvestigatorName;
 	}
 
-	public void setSitePrincipalInvestigatorName(String investigatorName) {
-		this.sitePrincipalInvestigatorName = investigatorName;
+	public void setPrincipalInvestigatorName(String investigatorName) {
+		this.principalInvestigatorName = investigatorName;
 	}
 
 	public String getPrimarySponsorCode() {
