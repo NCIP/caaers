@@ -43,19 +43,19 @@
 
 				<tr>
 					<td>
-						<form:label	path="sitePrincipalInvestigatorCode">Investigator Code</form:label>
+						<form:label	path="principalInvestigatorCode">Investigator Code</form:label>
 					</td>
 					<td>
-						<form:input path="sitePrincipalInvestigatorCode" />
+						<form:input path="principalInvestigatorCode" />
 					</td>
 				</tr>
 				
 				<tr>
 					<td>
-						<form:label	path="sitePrincipalInvestigatorName">Investigator Name</form:label>
+						<form:label	path="principalInvestigatorName">Investigator Name</form:label>
 					</td>
 					<td>
-						<form:input path="sitePrincipalInvestigatorName" />
+						<form:input path="principalInvestigatorName" />
 					</td>
 				</tr>				
 
