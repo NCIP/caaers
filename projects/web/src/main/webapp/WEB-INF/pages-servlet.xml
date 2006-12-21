@@ -30,4 +30,15 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>internal-welcome</value></property>
     </bean>
+
+    <bean name="/createStudy" id="studyController" autowire="byName"
+          class="gov.nih.nci.cabig.caaers.web.StudyController">
+        <property name="formView"><value>createStudy</value></property>
+        <property name="successView"><value>createStudy</value></property>
+    </bean>
+
+    <bean name="/searchStudy" id="searchStudyController"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>searchStudy</value></property>
+    </bean>    
 </beans>
