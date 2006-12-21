@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -11,6 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 /**
+ * Domain object representing Study(Protocol)
  * @author Sujith Vellat Thayyilthodi
  */
 @Entity
@@ -29,50 +29,54 @@ public class Study extends AbstractDomainObject implements Serializable{
 
 	private boolean multiInstitutionIndicator;
 	
-	private String title;
+	private String shortTitle;
+	
+	private String longTitle;
 
-    private String investigatorCode;
+	private String description;
+	
+    private String sitePrincipalInvestigatorCode;
     
-    private String investigatorName;
+    private String sitePrincipalInvestigatorName;
     
-    private String sponsorCode;
+    private String primarySponsorCode;
 
-    private String sponsorName;
+    private String primarySponsorName;
 
 	private String phaseCode;
 
 	private Date reviewDate;
     
-	public String getTitle() {
-		return title;
+	public String getShortTitle() {
+		return shortTitle;
 	}
 
-	public void setTitle(String shortTitle) {
-		this.title = shortTitle;
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
 	}
 	
-    public String getInvestigatorCode() {
-		return investigatorCode;
+    public String getSitePrincipalInvestigatorCode() {
+		return sitePrincipalInvestigatorCode;
 	}
 
-	public void setInvestigatorCode(String investigatorCode) {
-		this.investigatorCode = investigatorCode;
+	public void setSitePrincipalInvestigatorCode(String investigatorCode) {
+		this.sitePrincipalInvestigatorCode = investigatorCode;
 	}
 
-	public String getInvestigatorName() {
-		return investigatorName;
+	public String getSitePrincipalInvestigatorName() {
+		return sitePrincipalInvestigatorName;
 	}
 
-	public void setInvestigatorName(String investigatorName) {
-		this.investigatorName = investigatorName;
+	public void setSitePrincipalInvestigatorName(String investigatorName) {
+		this.sitePrincipalInvestigatorName = investigatorName;
 	}
 
-	public String getSponsorCode() {
-		return sponsorCode;
+	public String getPrimarySponsorCode() {
+		return primarySponsorCode;
 	}
 
-	public void setSponsorCode(String sponsorCode) {
-		this.sponsorCode = sponsorCode;
+	public void setPrimarySponsorCode(String sponsorCode) {
+		this.primarySponsorCode = sponsorCode;
 	}
 
 	public String getPhaseCode() {
@@ -83,12 +87,12 @@ public class Study extends AbstractDomainObject implements Serializable{
 		this.phaseCode = phaseCode;
 	}
 
-	public String getSponsorName() {
-		return sponsorName;
+	public String getPrimarySponsorName() {
+		return primarySponsorName;
 	}
 
-	public void setSponsorName(String sponsorName) {
-		this.sponsorName = sponsorName;
+	public void setPrimarySponsorName(String sponsorName) {
+		this.primarySponsorName = sponsorName;
 	}
 
 	public boolean isMultiInstitutionIndicator() {
@@ -105,6 +109,22 @@ public class Study extends AbstractDomainObject implements Serializable{
 
 	public void setReviewDate(Date reviewDate) {
 		this.reviewDate = reviewDate;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getLongTitle() {
+		return longTitle;
+	}
+
+	public void setLongTitle(String longTitle) {
+		this.longTitle = longTitle;
 	}
     
 }
