@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,12 +23,11 @@ public final class StudyController extends CaaersAbstractFormController {
 
 	public StudyController() {
 		setCommandClass(Study.class);
+        setFormView("createStudy");
+        setSuccessView("createStudy");
 	}
 
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
-
+	@Required
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
