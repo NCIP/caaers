@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-
-<beans>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+    >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
     <!--bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
@@ -41,4 +46,12 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>searchStudy</value></property>
     </bean>    
+
+    <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
+    
+    <bean name="/login" id="loginController" autowire="byName"
+        class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
+        <property name="targetView"><value>welcome</value></property>
+    </bean>
+    
 </beans>
