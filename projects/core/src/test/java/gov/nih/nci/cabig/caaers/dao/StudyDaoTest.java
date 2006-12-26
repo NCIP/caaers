@@ -13,7 +13,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
     public void testGet() throws Exception {
         Study loaded = (Study)getDao().getById(-2);
         assertNotNull("Study not found", loaded);
-        assertEquals("title", loaded.getShortTitle());
+        assertEquals("Short Title", loaded.getShortTitle());
     }
     
     public void testGetAllStudies() throws Exception {
@@ -25,11 +25,13 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         Integer savedId;
         {
             Study newStudy = new Study();
-            newStudy.setPrincipalInvestigatorCode("investigatorCode");
-            newStudy.setPrincipalInvestigatorName("investigatorName");
+            newStudy.setShortTitle("Short Title Inserted");
+            newStudy.setLongTitle("Long Title Inserted");            
+            newStudy.setPrincipalInvestigatorCode("ICODE_101");
+            newStudy.setPrincipalInvestigatorName("Investigator Name Inserted");
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setPrimarySponsorCode("sponsorCode");
-            newStudy.setPrimarySponsorName("sponsorName");
+            newStudy.setPrimarySponsorCode("SCODE_101");
+            newStudy.setPrimarySponsorName("Sponsor Name Inserted");
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             savedId = newStudy.getId();
@@ -40,10 +42,10 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         {
             Study reloaded = (Study)getDao().getById(savedId);
             assertNotNull("Saved Study not found", reloaded);
-            assertEquals("investigatorCode", reloaded.getPrincipalInvestigatorCode());
-            assertEquals("investigatorName", reloaded.getPrincipalInvestigatorName());
-            assertEquals("sponsorCode", reloaded.getPrimarySponsorCode());
-            assertEquals("sponsorName", reloaded.getPrimarySponsorName());
+            assertEquals("ICODE_101", reloaded.getPrincipalInvestigatorCode());
+            assertEquals("Investigator Name Inserted", reloaded.getPrincipalInvestigatorName());
+            assertEquals("SCODE_101", reloaded.getPrimarySponsorCode());
+            assertEquals("Sponsor Name Inserted", reloaded.getPrimarySponsorName());
         }
     }
 }
