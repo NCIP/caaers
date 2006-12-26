@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+    This applicationContext contains security-related beans
+-->
+
+<beans>
+    <bean id="csmContextName" class="java.lang.String">
+        <constructor-arg value="caaers"/>
+    </bean>
+    <bean id="authenticationManager" class="gov.nih.nci.security.SecurityServiceProvider"
+          factory-method="getAuthenticationManager" lazy-init="true">
+        <constructor-arg><ref local="csmContextName"/></constructor-arg>
+    </bean>
+</beans>
