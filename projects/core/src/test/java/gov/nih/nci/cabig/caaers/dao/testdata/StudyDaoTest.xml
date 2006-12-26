@@ -1,4 +1,8 @@
 <dataset>
-    <STUDIES id="-2" investigatorCode="investigatorCode"
-    multiInstitutionIndicator="false"/>
+    <STUDIES id="-2" principal_investigator_code="ICODE_100"
+    principal_investigator_name="Investigator Name"
+    multi_institution_indicator="false" 
+    short_title="Short Title"
+    long_title="Long Title" description="Description" 
+    primary_sponsor_code="SCODE_100" primary_sponsor_name="Sponsor Name"/>
 </dataset>
