@@ -109,4 +109,32 @@
             <classes dir="${build-dir.main}"/>
         </war>
     </target>
+    
+    <!-- TEST TARGETS -->
+
+    <target name="test.unit.select-all">
+        <property name="unit-test.pattern" value="**/*Test.java"/>
+    </target>
+
+    <target name="test" description="Run unit tests" depends="compile, test.unit.select-all">
+        <echo>Executing unit tests: ${unit-test.pattern}</echo>
+
+        <mkdir dir="${build-dir.unit-test}/junit"/>
+        <junit printsummary="yes" haltonfailure="${test.failfast}" failureproperty="test.unit.failed" fork="true" forkmode="once" dir="${basedir}">
+            <classpath>
+                <path refid="cp.unit-test"/>
+            </classpath>
+            <jvmarg value="-Djava.awt.headless=true"/>
+            <formatter type="plain" usefile="false"/>
+            <formatter type="xml" usefile="true"/>
+            <batchtest todir="${build-dir.unit-test}/junit">
+                <fileset dir="${src-dir.unit-test}">
+                    <include name="${unit-test.pattern}"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <fail if="test.unit.failed">One or more unit tests failed.  See above or set test.failfast=true.</fail>
+    </target>    
+
 </project>
