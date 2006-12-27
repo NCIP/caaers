@@ -5,11 +5,14 @@
 	<property name="cagrid.dir" value="${env.CAGRID_HOME}"/>
 	<property name="servicemix.dir" value="${env.SERVICEMIX_HOME}"/>
 	<property name="lib.dir" value="lib"/>
+	<property name="test.lib.dir" value="test/lib"/>
 	<property name="ext.lib.dir" value="ext/lib"/>
 	<property name="src.dir" value="src"/>
 	<property name="src.java.dir" value="${src.dir}/java"/>
+	<property name="test.src.java.dir" value="test/src/java"/>
 	<property name="src.sm.dir" value="${src.dir}/servicemix"/>
 	<property name="build.dir" value="build"/>
+	<property name="test.build.classes.dir" value="test/build/classes"/>
 	<property name="build.classes.dir" value="${build.dir}/classes"/>
 	<property name="build.su.dir" value="${build.dir}/service-units"/>
 	<property name="build.sa.dir" value="${build.dir}/assembly"/>
@@ -123,6 +126,7 @@
 	<target name="init">
 		<mkdir dir="${ext.lib.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${test.build.classes.dir}"/>
 		<mkdir dir="${build.su.dir}"/>
 		<mkdir dir="${build.sa.dir}"/>
 		<antcall target="get-jars"/>
@@ -141,6 +145,16 @@
 			</classpath>
 		</javac>
 	</target>
+	
+	<target name="compile-test" depends="init">
+		<javac srcdir="${test.src.java.dir}" destdir="${test.build.classes.dir}" debug="on">
+			<classpath>
+				<fileset dir="${test.lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>	
 	
 	<target name="jar-basic-auth-trans" depends="compile">
 		<jar basedir="${build.classes.dir}" destfile="${build.dir}/basic-auth-trans.jar"
@@ -214,6 +228,24 @@
 		<target name="clean">
 			<delete dir="build"/>
 		</target>
+	
+	<target name="test" depends="compile-test">
+		<input message="Username: " addproperty="username"/>
+		<input message="Password: " addproperty="password"/>
+		
+		<java classname="test.SimpleJMSClient">
+			<arg value="${username}"/>
+			<arg value="${password}"/>
+		
+			<classpath>
+				<pathelement location="${test.build.classes.dir}"/>
+				<fileset dir="${test.lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		
+		</java>
+	</target>
 		
 		<target name="list-components">
 			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"

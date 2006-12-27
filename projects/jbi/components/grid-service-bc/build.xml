@@ -18,5 +18,13 @@
 		<jar basedir="build" destfile="build/grid-service-processor.jar"/>
 	
 	</target>
+	
+	<target name="config-maven">
+		<copy file="pom.xml.template" tofile="pom.xml" overwrite="true">
+			<filterset>
+				<filter token="LOCAL_LIB_REPO" value="${basedir}"/>
+			</filterset>
+		</copy>
+	</target>
 
 </project>

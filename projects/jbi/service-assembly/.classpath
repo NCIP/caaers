@@ -76,5 +76,6 @@
 	<classpathentry kind="lib" path="test/lib/backport-util-concurrent-2.1.jar"/>
 	<classpathentry kind="lib" path="test/lib/activemq-core-4.0.2.jar"/>
 	<classpathentry kind="lib" path="test/lib/activeio-core-3.0-beta4.jar"/>
+	<classpathentry kind="lib" path="ext/lib/commons-discovery.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

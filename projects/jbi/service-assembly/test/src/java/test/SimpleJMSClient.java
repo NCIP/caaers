@@ -40,7 +40,6 @@ public class SimpleJMSClient {
 		sb.append("</auth>");
 		sb.append("<content>");
 		File f = new File(fileName);
-		System.out.println(f.getAbsolutePath());
 
 		BufferedReader fr = new BufferedReader(new FileReader(f));
 		String line = null;
@@ -58,6 +57,8 @@ public class SimpleJMSClient {
 
 		consumer.start();
 		producer.start();
+		
+		Thread.sleep(10000);
 
 	}
 
