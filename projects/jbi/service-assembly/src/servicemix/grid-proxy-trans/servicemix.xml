@@ -1,0 +1,51 @@
+<beans xmlns:sm="http://servicemix.apache.org/config/1.0"
+	     xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0">
+	     
+	<classpath>
+		<location>lib/grid-proxy-trans.jar</location>
+	</classpath>
+	                     
+	<sm:serviceunit id="jbi">
+		<sm:activationSpecs>
+
+		  <sm:activationSpec componentName="grid-proxy-trans"
+                             service="ctms:grid-proxy-trans">
+		    <sm:component>
+		      <bean class="gov.nih.nci.ctms.demo.trans.GridProxyTrans">
+		      
+		      	<property name="gridProxyTransformer" 
+		      			  ref="gridProxyTransformer"/>
+		      			  
+		      	<property name="basicAuthenticationCredentialProperty"
+		      			  value="ctms.security.basicAuthenticationCredential"/>
+		      			  
+		      	<property name="gridProxyProperty"
+		      			  value="ctms.security.gridProxy"/>
+		     
+		      </bean>
+		      
+
+		    </sm:component>
+		  </sm:activationSpec>
+
+		</sm:activationSpecs>
+	</sm:serviceunit>
+	
+
+		      	<bean id="gridProxyTransformer" 
+					  class="gov.nih.nci.ctms.demo.trans.GridProxyTransformerImpl">
+					  
+			      	<property name="idpUrl" 
+			      	          value="https://cagrid-auth.nci.nih.gov:8443/wsrf/services/cagrid/AuthenticationService"/>
+					<property name="ifsUrl" 
+					          value="https://cagrid-dorian.nci.nih.gov:8443/wsrf/services/cagrid/Dorian"/>
+					          
+					<property name="proxyLifetimeHours" value="12"/>
+					<property name="proxyLifetimeMinutes" value="0"/>
+					<property name="proxyLifetimeSeconds" value="0"/>
+					<property name="delegationPathLength" value="0"/>
+			      	
+				</bean>
+
+	
+</beans>

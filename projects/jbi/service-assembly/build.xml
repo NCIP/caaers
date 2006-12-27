@@ -1,0 +1,280 @@
+<project name="ctms-intgrxn" default="all">
+
+	<property environment="env"/>
+	<property name="globus.dir" value="${env.GLOBUS_LOCATION}"/>
+	<property name="cagrid.dir" value="${env.CAGRID_HOME}"/>
+	<property name="servicemix.dir" value="${env.SERVICEMIX_HOME}"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="ext.lib.dir" value="ext/lib"/>
+	<property name="src.dir" value="src"/>
+	<property name="src.java.dir" value="${src.dir}/java"/>
+	<property name="src.sm.dir" value="${src.dir}/servicemix"/>
+	<property name="build.dir" value="build"/>
+	<property name="build.classes.dir" value="${build.dir}/classes"/>
+	<property name="build.su.dir" value="${build.dir}/service-units"/>
+	<property name="build.sa.dir" value="${build.dir}/assembly"/>
+	<property name="proj.name" value="ctms-intgrxn"/>
+	
+	<patternset id="globus.jars">
+		<include name="addressing-1.0.jar"/>
+		<include name="axis-url.jar"/>
+		<include name="axis.jar"/>
+		<include name="bootstrap.jar"/>
+		<include name="cog-axis.jar"/>
+		<include name="cog-jglobus.jar"/>
+		<include name="cog-tomcat.jar"/>
+		<include name="cog-url.jar"/>
+		<include name="commonj.jar"/>
+		<include name="commons-beanutils.jar"/>
+		<include name="commons-cli-2.0.jar"/>
+		<include name="commons-digester.jar"/>
+		<include name="commons-discovery.jar"/>
+		<include name="commons-pool.jar"/>
+		<include name="concurrent.jar"/>
+		<include name="cryptix-asn1.jar"/>
+		<include name="cryptix.jar"/>
+		<include name="cryptix32.jar"/>
+		<include name="globus_wsrf_mds_aggregator_stubs.jar"/>
+		<include name="globus_wsrf_mds_aggregator.jar"/>
+		<include name="globus_wsrf_servicegroup_stubs.jar"/>
+		<include name="globus_wsrf_servicegroup.jar"/>
+		<include name="jaxrpc.jar"/>
+		<include name="jce-jdk13-125.jar"/>
+		<include name="jgss.jar"/>
+		<include name="naming-java.jar"/>
+		<include name="puretls.jar"/>
+		<include name="saaj.jar"/>
+		<include name="wsdl4j.jar"/>
+		<include name="wsrf_core_stubs.jar"/>
+		<include name="wsrf_core.jar"/>
+		<include name="wss4j.jar"/>
+		<include name="xmlsec.jar"/>
+	</patternset>
+	
+	<patternset id="cagrid.jars">
+		<include name="caGrid-1.0-authentication-service-client.jar"/>
+		<include name="caGrid-1.0-authentication-service-common.jar"/>
+		<include name="caGrid-1.0-authentication-service-stubs.jar"/>
+		<include name="caGrid-1.0-core.jar"/>
+		<include name="caGrid-1.0-data-common.jar"/>
+		<include name="caGrid-1.0-data-cql.jar"/>
+		<include name="caGrid-1.0-data-extension.jar"/>
+		<include name="caGrid-1.0-data-stubs.jar"/>
+		<include name="caGrid-1.0-data-tools.jar"/>
+		<include name="caGrid-1.0-data-utils.jar"/>
+		<include name="caGrid-1.0-data-validation.jar"/>
+		<include name="caGrid-1.0-discovery.jar"/>
+		<include name="caGrid-1.0-dorian-client.jar"/>
+		<include name="caGrid-1.0-dorian-common.jar"/>
+		<include name="caGrid-1.0-dorian-stubs.jar"/>
+		<include name="caGrid-1.0-gridca.jar"/>
+		<include name="caGrid-1.0-gts-client.jar"/>
+		<include name="caGrid-1.0-gts-common.jar"/>
+		<include name="caGrid-1.0-gts-stubs.jar"/>
+		<include name="caGrid-1.0-metadata-common.jar"/>
+		<include name="caGrid-1.0-metadata-data.jar"/>
+		<include name="caGrid-1.0-metadata-security.jar"/>
+		<include name="caGrid-1.0-metadataUtils.jar"/>
+		<include name="caGrid-1.0-opensaml-1.1.jar"/>
+		<include name="caGrid-1.0-ServiceSecurityProvider-client.jar"/>
+		<include name="caGrid-1.0-ServiceSecurityProvider-common.jar"/>
+		<include name="caGrid-1.0-ServiceSecurityProvider-stubs.jar"/>
+		<include name="castor-0.9.9.jar"/>
+		<include name="commons-collections-3.2.jar"/>
+		<include name="mobius_common_client-1.1.jar"/>
+		<include name="mobius_factories-1.1.jar"/>
+		<include name="mobius_tools-1.1.jar"/>
+	</patternset>
+	
+	<patternset id="servicemix.jars">
+		<include name="components/lib/servicemix-components-3.0-incubating.jar"/>
+		<include name="lib/servicemix-core-3.0-incubating.jar"/>
+		<include name="lib/servicemix-jbi-3.0-incubating.jar"/>
+		<include name="lib/servicemix-services-3.0-incubating.jar"/>
+	</patternset>
+	
+	<target name="get-jars">
+		<copy todir="${ext.lib.dir}">
+			<fileset dir="${globus.dir}/lib">
+				<patternset refid="globus.jars"/>
+			</fileset>
+		</copy>
+		<copy todir="${ext.lib.dir}">
+			<fileset dir="${cagrid.dir}">
+				<patternset refid="cagrid.jars"/>
+			</fileset>
+		</copy>
+		<copy todir="${ext.lib.dir}" flatten="true">
+		
+			<fileset dir="${servicemix.dir}">
+				<patternset refid="servicemix.jars"/>
+			</fileset>
+		</copy>		
+	</target>
+	
+	<target name="deploy-jars">
+		<copy todir="${servicemix.dir}/lib/optional" overwrite="true">
+			<fileset dir="${ext.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="init">
+		<mkdir dir="${ext.lib.dir}"/>
+		<mkdir dir="${build.classes.dir}"/>
+		<mkdir dir="${build.su.dir}"/>
+		<mkdir dir="${build.sa.dir}"/>
+		<antcall target="get-jars"/>
+		
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac srcdir="${src.java.dir}" destdir="${build.classes.dir}" debug="on">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${ext.lib.dir}">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="jar-basic-auth-trans" depends="compile">
+		<jar basedir="${build.classes.dir}" destfile="${build.dir}/basic-auth-trans.jar"
+			includes="**/**BasicAuth**.class,**/InvalidCredentialException.class"/>
+	</target>
+	
+	<target name="jar-grid-proxy-trans" depends="compile">
+		<jar basedir="${build.classes.dir}" destfile="${build.dir}/grid-proxy-trans.jar"
+			includes="**/GridProxy**.class"/>
+	</target>
+	
+	<target name="jar-data-service-processor" depends="compile">
+		<jar basedir="${build.classes.dir}" destfile="${build.dir}/data-service-processor.jar"
+			includes="**/DataServiceProcessor.class"/>
+	</target>
+	
+	
+	<target name="build-service-units" depends="jar-basic-auth-trans, jar-grid-proxy-trans, jar-data-service-processor">
+		
+		<copy todir="${src.sm.dir}/basic-auth-trans/lib" overwrite="true">
+			<fileset dir="${build.dir}">
+				<include name="basic-auth-trans.jar"/>
+			</fileset>
+		</copy>
+		<zip destfile="${build.su.dir}/basic-auth-trans-su.zip">
+			<fileset dir="${src.sm.dir}/basic-auth-trans"/>
+	 	</zip>
+
+		<copy todir="${src.sm.dir}/grid-proxy-trans/lib" overwrite="true">
+			<fileset dir="${build.dir}">
+				<include name="grid-proxy-trans.jar"/>
+			</fileset>
+		</copy>		
+		<zip destfile="${build.su.dir}/grid-proxy-trans-su.zip">
+			<fileset dir="${src.sm.dir}/grid-proxy-trans"/>
+	 	</zip>
+		
+		<copy todir="${src.sm.dir}/grid-service-bc/lib" overwrite="true">
+			<fileset dir="${lib.dir}">
+				<include name="grid-service-processor.jar"/>
+			</fileset>
+			<fileset dir="${build.dir}">
+				<include name="data-service-processor.jar"/>
+			</fileset>
+		</copy>
+		<zip destfile="${build.su.dir}/grid-service-bc-su.zip">
+			<fileset dir="${src.sm.dir}/grid-service-bc"/>
+	 	</zip>
+		
+		<zip destfile="${build.su.dir}/jms-bc-su.zip">
+			<fileset dir="${src.sm.dir}/jms-bc"/>
+	 	</zip>
+		
+		<zip destfile="${build.su.dir}/pipeline-su.zip">
+			<fileset dir="${src.sm.dir}/pipeline"/>
+	 	</zip>		
+		
+	</target>
+		
+		<target name="build-assembly" depends="build-service-units">
+			<zip destfile="${build.sa.dir}/${proj.name}-sa.zip">
+				<fileset dir="${src.sm.dir}">
+					<include name="META-INF/jbi.xml"/>
+				</fileset>
+				<fileset dir="${build.su.dir}">
+					<include name="*.zip"/>
+				</fileset>
+			</zip>
+		</target>
+		
+		<target name="clean">
+			<delete dir="build"/>
+		</target>
+		
+		<target name="list-components">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="list-binding-components" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+			</ant>
+		</target>
+		
+		<target name="list-service-engines">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="list-service-engines" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+			</ant>
+		</target>
+		
+		<target name="list-binding-components">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="list-binding-components" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+			</ant>
+		</target>
+		
+		<target name="install-component">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="install-component" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+				<property name="sm.install.file" value="file:${basedir}/components/${name}.zip"/>
+			</ant>
+		</target>
+		
+		<target name="start-component">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="start-component" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+				<property name="sm.component.name" value="${name}"/>
+			</ant>
+		</target>
+		
+		<target name="deploy-assembly">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="deploy-service-assembly" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+				<property name="sm.deploy.file" value="file:${basedir}/build/assembly/${name}.zip"/>
+			</ant>
+		</target>
+		
+		<target name="undeploy-assembly">
+			<ant antfile="${env.SERVICEMIX_HOME}/ant/servicemix-ant-task.xml"
+			target="undeploy-service-assembly" inheritAll="false">
+				<property name="sm.username" value="smx"/>
+				<property name="sm.password" value="smx"/>
+				<property name="sm.deploy.file" value="file:${basedir}/build/assembly/${name}.zip"/>
+			</ant>
+		</target>
+	
+	<target name="all" depends="clean, build-assembly"/>
+	
+</project>

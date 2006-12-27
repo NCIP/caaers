@@ -1,0 +1,47 @@
+<beans xmlns:sm="http://servicemix.apache.org/config/1.0"
+	     xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0">
+	     
+	<classpath>
+		<location>lib/basic-auth-trans.jar</location>
+	</classpath>
+	                     
+	<sm:serviceunit id="jbi">
+		<sm:activationSpecs>
+
+		  <sm:activationSpec componentName="basic-auth-trans"
+                             service="ctms:basic-auth-trans">
+		    <sm:component>
+		      <bean class="gov.nih.nci.ctms.demo.trans.BasicAuthTrans">
+		      
+		      	<property name="basicAuthenticationTransformer" 
+		      			  ref="basicAuthenticationTransformer"/>
+		      			  
+		      	<property name="basicAuthenticationCredentialProperty" 
+		      			  value="ctms.security.basicAuthenticationCredential"/>
+		     
+		      </bean>
+		    </sm:component>
+		  </sm:activationSpec>
+
+		</sm:activationSpecs>
+	</sm:serviceunit>
+	
+	<!--
+	<bean id="basicAuthenticationTransformer" 
+		  class="gov.nih.nci.ctms.demo.trans.PropertyBasicAuthenticationTransformer">
+		  
+      	<property name="usernameProperty" value="ctms.security.username"/>
+      	<property name="passwordProperty" value="ctms.security.password"/>		
+      	
+	</bean>
+	-->
+	
+	<bean id="basicAuthenticationTransformer" 
+		  class="gov.nih.nci.ctms.demo.trans.XPathBasicAuthenticationTransformer">
+		  
+      	<property name="usernameXPath" value="/msg/auth/usr/text()"/>
+      	<property name="passwordXPath" value="/msg/auth/pwd/text()"/>
+      	
+	</bean>
+	
+</beans>

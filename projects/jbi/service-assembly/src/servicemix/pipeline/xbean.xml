@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:eip="http://servicemix.apache.org/eip/1.0"
+       xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0">
+
+
+<eip:pipeline service="ctms:pipeline" endpoint="endpoint">
+  <eip:transformer>
+    <eip:exchange-target service="ctms:routing-slip" />
+  </eip:transformer>
+  <eip:target>
+    <eip:exchange-target service="ctms:jms-out" />
+  </eip:target>
+</eip:pipeline>
+
+<eip:static-routing-slip service="ctms:routing-slip" endpoint="endpoint">
+  <eip:targets>
+  	<eip:exchange-target service="ctms:basic-auth-trans" />
+  	<eip:exchange-target service="ctms:grid-proxy-trans" />
+  	<eip:exchange-target service="ctms:grid-service-bc" />
+  </eip:targets>
+</eip:static-routing-slip>
+
+    
+
+</beans>

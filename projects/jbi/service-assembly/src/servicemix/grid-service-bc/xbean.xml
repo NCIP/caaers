@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:comp="http://gov.nih.nci.ctms.demo.comp/1.0"
+	   xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0">
+	
+	<classpath>
+		<location>lib/grid-service-processor.jar</location>
+		<location>lib/data-service-processor.jar</location>
+	</classpath>	
+	
+	<comp:endpoint 
+		service="ctms:grid-service-bc" 
+		endpoint="endpoint" 
+		gridServiceClient="#gridServiceClient"
+		gridServiceProcessor="#gridServiceProcessor"
+		gridProxyProperty="ctms.security.gridProxy"
+		/>
+	
+  	<bean id="gridServiceClient" class="gov.nih.nci.cagrid.data.client.DataServiceClient">
+
+      	<constructor-arg value="http://cagrid-portal.nci.nih.gov:8080/wsrf/services/cagrid/CaBIOSvc"/>
+		<!--
+      	<constructor-arg" value="https://localhost:8443/wsrf/services/cagrid/SDK31SecExampleSvc"/>
+      	-->
+	</bean>
+	
+	<bean id="gridServiceProcessor"
+		class="gov.nih.nci.ctms.demo.comp.DataServiceProcessor">
+		<property name="queryXPath" value="/msg/content/CQLQuery"/>
+	</bean>
+	
+</beans>

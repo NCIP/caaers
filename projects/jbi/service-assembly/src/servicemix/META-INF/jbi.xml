@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" version="1.0">
+
+  <service-assembly>
+
+    <identification>
+      <name>ctms-intgrxn-sa</name>
+      <description>authsvc-sa</description>
+    </identification>
+
+    <service-unit>
+      <identification>
+        <name>ctms-intgrxn-basic-auth-trans-su</name>
+        <description>ctms-intgrxn-basic-auth-trans-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>basic-auth-trans-su.zip</artifacts-zip>
+        <component-name>servicemix-lwcontainer</component-name>
+      </target>
+    </service-unit>        
+    
+    <service-unit>
+      <identification>
+        <name>ctms-intgrxn-grid-proxy-trans-su</name>
+        <description>ctms-intgrxn-grid-proxy-trans-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>grid-proxy-trans-su.zip</artifacts-zip>
+        <component-name>servicemix-lwcontainer</component-name>
+      </target>
+    </service-unit>
+
+    <service-unit>
+      <identification>
+        <name>ctms-intgrxn-grid-service-bc-su</name>
+        <description>ctms-intgrxn-grid-service-bc-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>grid-service-bc-su.zip</artifacts-zip>
+        <component-name>grid-service-bc</component-name>
+      </target>
+    </service-unit>
+
+    <service-unit>
+      <identification>
+        <name>ctms-intgrxn-jms-bc-su</name>
+        <description>ctms-intgrxn-jms-bc-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>jms-bc-su.zip</artifacts-zip>
+        <component-name>servicemix-jms</component-name>
+      </target>
+    </service-unit>
+
+    <service-unit>
+      <identification>
+        <name>ctms-intgrxn-pipeline-su</name>
+        <description>ctms-intgrxn-pipeline-su</description>
+      </identification>
+      <target>
+        <artifacts-zip>pipeline-su.zip</artifacts-zip>
+        <component-name>servicemix-eip</component-name>
+      </target>
+    </service-unit>
+
+  </service-assembly>
+  
+</jbi>
