@@ -1,0 +1,22 @@
+<project name="grid-service-bc" default="jar">
+
+	<property environment="env"/>
+	
+	<target name="jar">
+		
+		<mkdir dir="build"/>
+		<javac srcdir="src/main/java" destdir="build" includes="**/GridServiceProcessor.java">
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar"/>
+				</fileset>
+				<fileset dir="${env.SERVICEMIX_HOME}/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+		<jar basedir="build" destfile="build/grid-service-processor.jar"/>
+	
+	</target>
+
+</project>
