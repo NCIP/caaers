@@ -10,7 +10,7 @@ import javax.persistence.Version;
  */
 /* TODO: this class is shared with PSC.  Refactor into a shared library. */
 @MappedSuperclass
-public abstract class AbstractDomainObject implements DomainObject {
+public abstract class AbstractDomainObject implements MutableDomainObject {
     private Integer id;
     private Integer version;
 

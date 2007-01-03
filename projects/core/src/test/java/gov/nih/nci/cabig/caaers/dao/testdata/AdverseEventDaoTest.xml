@@ -1,3 +1,51 @@
 <dataset>
-    <ADVERSE_EVENTS id="-2" time="2007-04-03 21:43:56.987"/>
+    <!-- TODO: expand to allow multiple XML files so that this doesn't have to be
+        copy/pasted -->
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="1"
+        name="allergy/immunology"
+        />
+    <ctc_categories
+        id="2"
+        name="auditory/ear"
+        />
+    <ctc_categories
+        id="3"
+        name="blood/bone marrow"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="1"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="2"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="3"
+        />
+
+    <participant_assignments
+        id="-6"
+        participant_id="-4"
+        study_site_id="-4"
+        date_of_enrollment="2004-01-05"
+        />
+
+    <ADVERSE_EVENTS
+        id="-2"
+        assignment_id="-6"
+        detection_date="2007-04-03 21:43:56.987"
+        grade_code="5"
+        attribution_code="1"
+        ctc_version_id="3"
+        ctc_category_id="1"
+        term="Rhinitis"
+        hospitalization="0"
+        />
 </dataset>

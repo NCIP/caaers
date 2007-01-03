@@ -1,0 +1,66 @@
+<dataset>
+    <ctc_versions
+        id="2"
+        name="CTC v2.0"
+        />
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="1"
+        name="allergy/immunology"
+        />
+    <ctc_categories
+        id="2"
+        name="auditory/ear"
+        />
+    <ctc_categories
+        id="3"
+        name="blood/bone marrow"
+        />
+    <ctc_categories
+        id="4"
+        name="cardiac arrythmia"
+        />
+    <ctc_categories
+        id="12"
+        name="growth and development"
+        />
+    <ctc_version_categories
+        version_id="2"
+        category_id="1"
+        />
+    <ctc_version_categories
+        version_id="2"
+        category_id="2"
+        />
+    <ctc_version_categories
+        version_id="2"
+        category_id="3"
+        />
+    <ctc_version_categories
+        version_id="2"
+        category_id="4"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="1"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="2"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="3"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="4"
+        />
+    <ctc_version_categories
+        version_id="3"
+        category_id="12"
+        />
+</dataset>

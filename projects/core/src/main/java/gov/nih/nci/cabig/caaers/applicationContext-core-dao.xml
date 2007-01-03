@@ -15,6 +15,11 @@
     <!-- HIBERNATE CONFIGURATION -->
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
         <property name="namingStrategy">
             <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
         </property>
@@ -26,6 +31,8 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Site</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
             </list>
         </property>
     </bean>
@@ -65,6 +72,7 @@
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
     <bean id="siteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteDao"/>
-    
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
+
+    <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
 </beans>
