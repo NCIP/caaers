@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,26 +22,40 @@ import org.springframework.web.servlet.ModelAndView;
 public final class StudyController extends CaaersAbstractFormController {
 
 	private StudyDao studyDao;
+    private SiteDao siteDao;
 
-	public StudyController() {
+    public StudyController() {
 		setCommandClass(Study.class);
         setFormView("createStudy");
         setSuccessView("createStudy");
-	}
-
-	@Required
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
 	}
 
 	protected ModelAndView onSubmit(HttpServletRequest request,
 			HttpServletResponse response, Object oCommand, BindException errors)
 			throws Exception {
 		Study study = (Study) oCommand;
-		studyDao.save(study);
+
+        // TODO: this is a temporary fix.  It should be moved to a service.
+        StudySite defaultStudySite = new StudySite();
+        defaultStudySite.setSite(siteDao.getDefaultSite());
+        study.addStudySite(defaultStudySite);
+
+        studyDao.save(study);
 		ModelAndView modelAndView = new ModelAndView(getSuccessView());
 		modelAndView.addObject("study", study);
 		modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;
 	}
+
+    ////// CONIFGURATION
+
+    @Required
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
+
+    @Required
+    public void setSiteDao(SiteDao siteDao) {
+        this.siteDao = siteDao;
+    }
 }
