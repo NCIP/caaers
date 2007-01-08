@@ -1,0 +1,48 @@
+package gov.nih.nci.cabig.caaers.web;
+
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+
+/**
+ * @author Rhett Sutphin
+ */
+public class CreateAdverseEventCommand {
+    private AdverseEvent adverseEvent;
+
+    private Participant participant;
+    private Study study;
+
+    private StudyParticipantAssignmentDao assignmentDao;
+
+    public CreateAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao) {
+        this.assignmentDao = assignmentDao;
+        adverseEvent = new AdverseEvent();
+    }
+
+    ////// LOGIC
+
+    public StudyParticipantAssignment getAssignment() {
+        return assignmentDao.getAssignment(getParticipant(), getStudy());
+    }
+
+    ////// BOUND PROPERTIES
+
+    public Participant getParticipant() {
+        return participant;
+    }
+
+    public void setParticipant(Participant participant) {
+        this.participant = participant;
+    }
+
+    public Study getStudy() {
+        return study;
+    }
+
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+}

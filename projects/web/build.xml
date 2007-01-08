@@ -112,10 +112,10 @@
             <lib dir="../core/lib/main">
                 <include name="**/*.jar"/>
             </lib>
-            <lib dir="../.." includes="caaers-core.jar"/>
-            <lib dir="../core/tools/csm/lib">
+            <lib dir="../core/db/lib">
                 <include name="**/*.jar"/>
-            </lib>            
+            </lib>
+            <lib dir="../.." includes="caaers-core.jar"/>
             <classes dir="${build-dir.main}"/>
         </war>
     </target>

@@ -62,5 +62,8 @@
         class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
         <property name="targetView"><value>welcome</value></property>
     </bean>
-    
+
+    <bean name="/createAdverseEvent" id="createAdverseEvent" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.CreateAdverseEventController"/>
+
 </beans>

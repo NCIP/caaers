@@ -1,0 +1,14 @@
+<!DOCTYPE dwr
+    PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+    "http://www.getahead.ltd.uk/dwr/dwr20.dtd">
+<dwr>
+    <allow>
+        <create creator="spring" javascript="createAE">
+            <param name="beanName" value="createAeAjaxFacade"/>
+        </create>
+        <create creator="new" javascript="date">
+            <param name="class" value="java.util.Date"/>
+        </create>
+        <convert converter="bean" match="gov.nih.nci.cabig.caaers.domain.*"/>
+    </allow>
+</dwr>

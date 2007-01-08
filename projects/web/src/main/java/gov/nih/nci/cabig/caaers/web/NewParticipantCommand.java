@@ -29,7 +29,7 @@ public class NewParticipantCommand {
     	
 	public Participant createParticipant() {
 		Participant participant = new Participant();
-		participant.setInstituitionalPatientNumber(getInstituitionalPatientNumber());
+		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
 		participant.setInstitution(getInstitution());
 		participant.setStudyParticipantName(getStudyParticipantName());
 		participant.setFirstName(getFirstName());
@@ -43,7 +43,7 @@ public class NewParticipantCommand {
 	
 	public Participant createParticipant(List<StudySite> studySites) {
 		Participant participant = new Participant();
-		participant.setInstituitionalPatientNumber(getInstituitionalPatientNumber());
+		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
 		participant.setInstitution(getInstitution());
 		participant.setStudyParticipantName(getStudyParticipantName());
 		participant.setFirstName(getFirstName());
