@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
@@ -143,7 +144,7 @@ public class Study extends AbstractDomainObject implements Serializable {
         this.longTitle = longTitle;
     }
 
-    @OneToMany(mappedBy = "study")
+    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
     public List<StudySite> getStudySites() {
         return studySites;
     }
