@@ -1,38 +1,27 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.Date;
-
-import gov.nih.nci.cabig.caaers.domain.Site;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
+import java.util.Date;
+import java.util.List;
 
 /**
- * 
  * @author Krikor Krumlian
- * */
+ * @author Rhett Sutphin
+ */
 public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
-	private SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
-    private StudyDao studyDao = (StudyDao) getApplicationContext().getBean("studyDao");
-	/*
-    public void testGet() throws Exception {
-        Study loaded = (Participant)getDao().getById(-1);
-        assertNotNull("Study not found", loaded);
-        assertEquals("Short Title", loaded.getShortTitle());
-    }
-    */
+    private SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
 
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant not found", participant);
         assertEquals("Wrong last name", "Scott", participant.getLastName());
     }
-    
-    
+
     public void testSaveAssignment() throws Exception {
         {
             Site site = siteDao.getById(-1001);
@@ -88,5 +77,34 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
             assertEquals("Wrong lastname", "Someone", loaded.getLastName());
             assertEquals("Wrong gender", "Male", loaded.getGender());
         }
+    }
+
+    public void testGetBySubnameMatchesFirstName() throws Exception {
+        List<Participant> matches = getDao().getBySubnames(new String[] { "icha" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", -101, (int) matches.get(0).getId());
+    }
+
+    public void testGetBySubnameMatchesLastName() throws Exception {
+        List<Participant> matches = getDao().getBySubnames(new String[] { "cot" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", -100, (int) matches.get(0).getId());
+    }
+
+    public void testGetBySubnameMatchesInstitutionalId() throws Exception {
+        List<Participant> matches = getDao().getBySubnames(new String[] { "P002" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", -101, (int) matches.get(0).getId());
+    }
+
+    public void testGetBySubnameMatchesIntersectionOfMultiple() throws Exception {
+        List<Participant> matches;
+
+        matches = getDao().getBySubnames(new String[] { "Jor", "P001" });
+        assertEquals("Should be no matches", 0, matches.size());
+
+        matches = getDao().getBySubnames(new String[] { "Jor", "P002" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
 }

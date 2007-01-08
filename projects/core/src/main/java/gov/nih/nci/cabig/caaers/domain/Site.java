@@ -17,6 +17,7 @@ import javax.persistence.OrderBy;
 
 /**
  * @author Krikor Krumlian
+ * @author Rhett Sutphin
  */
 @Entity
 @Table (name = "sites")
@@ -32,13 +33,14 @@ public class Site extends AbstractDomainObject {
     private List<StudySite> studySites = new ArrayList<StudySite>();
 
     ////// LOGIC
-    /*
+
     public void addStudySite(StudySite studySite) {
         getStudySites().add(studySite);
         studySite.setSite(this);
     }
-*/
+
     ////// BEAN PROPERTIES
+
     @Column(name = "name")
     public String getName() {
         return name;

@@ -28,7 +28,7 @@ import java.util.List;
     }
 )
 public class Participant extends AbstractDomainObject {
-	private String instituitionalPatientNumber;
+	private String institutionalPatientNumber;
 	private String institution;
 	private String studyParticipantName;
     private String firstName;
@@ -80,12 +80,12 @@ public class Participant extends AbstractDomainObject {
     
     // bean methods
     @Column(name= "instituitional_patient_number")
-    public String getInstituitionalPatientNumber() {
-		return instituitionalPatientNumber;
+    public String getInstitutionalPatientNumber() {
+		return institutionalPatientNumber;
 	}
 
-	public void setInstituitionalPatientNumber(String instituitionalPatientNumber) {
-		this.instituitionalPatientNumber = instituitionalPatientNumber;
+	public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
+		this.institutionalPatientNumber = instituitionalPatientNumber;
 	}
 	
 	@Column(name= "institution")

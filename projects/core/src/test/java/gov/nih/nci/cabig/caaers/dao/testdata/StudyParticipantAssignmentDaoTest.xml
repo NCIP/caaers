@@ -1,0 +1,29 @@
+<dataset>
+    <STUDIES
+        id="-4"
+        short_title="A history of ghosts"
+        principal_investigator_code="170"
+        principal_investigator_name="Scooby"
+        primary_sponsor_code="553"
+        primary_sponsor_name="Mr. Withers"
+        />
+    <SITES
+        id="-1"
+        name="Manse"
+        />
+    <STUDY_SITES
+        id="-10"
+        study_id="-4"
+        site_id="-1"
+        />
+    <PARTICIPANTS
+        id="-5"
+        last_name="Tourmaline"
+        />
+    <PARTICIPANT_ASSIGNMENTS
+        id="-13"
+        study_site_id="-10"
+        participant_id="-5"
+        date_of_enrollment="2004-09-30"
+        />
+</dataset>

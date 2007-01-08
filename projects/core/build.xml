@@ -114,6 +114,7 @@
         <jar basedir="${build-dir.unit-test}" file="${jar-name.unit-test}">
             <!-- only the base classes -->
             <include name="gov/nih/nci/cabig/caaers/*.class"/>
+            <include name="gov/nih/nci/cabig/caaers/domain/Fixtures.class"/>
         </jar>
     </target>
 

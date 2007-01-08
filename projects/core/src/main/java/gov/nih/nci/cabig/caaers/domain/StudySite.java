@@ -32,6 +32,11 @@ public class StudySite extends AbstractDomainObject {
 
     ////// LOGIC
 
+    public void addAssignment(StudyParticipantAssignment assignment) {
+        getStudyParticipantAssignments().add(assignment);
+        assignment.setStudySite(this);
+    }
+
     /** Are there any assignments using this relationship? */
     @Transient
     public boolean isUsed() {
@@ -39,9 +44,8 @@ public class StudySite extends AbstractDomainObject {
     }
     
     @Transient
-    public String getSiteStudyNames()
-    {
-    	return study.getShortTitle() + " : " + site.getName();
+    public String getSiteStudyNames() {
+        return study.getShortTitle() + " : " + site.getName();
     }
 
     ////// BEAN PROPERTIES

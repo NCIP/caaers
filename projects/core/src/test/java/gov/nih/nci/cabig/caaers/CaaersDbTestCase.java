@@ -33,7 +33,7 @@ import java.util.Locale;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
-public class CaaersDbTestCase extends DbTestCase {
+public abstract class CaaersDbTestCase extends DbTestCase {
     protected final Log log = LogFactory.getLog(getClass());
 
     protected WebRequest webRequest = new StubWebRequest();
