@@ -29,30 +29,35 @@
         term="Burn"
         ctep_term=""
         select_ae=""
-        ctep_code=""
+        ctep_code="-17"
+        other_required="1"
         />
     <ctc_terms
         id="3002"
         category_id="301"
         term="Dry skin"
+        other_required="0"
         />
     <ctc_terms
         id="3003"
         category_id="301"
         term="Atrophy, subcutaneous fat"
         ctep_code="10016241"
+        other_required="0"
         />
     <ctc_terms
         id="3004"
         category_id="301"
         term="Rash: dermatitis associated with radiation"
         select_ae="Chemoradiation"
+        other_required="0"
         />
     <ctc_terms
         id="3005"
         category_id="301"
         term="Rash: dermatitis associated with radiation"
         select_ae="Radiation"
+        other_required="0"
         />
     <ctc_terms
         id="3010"
@@ -61,6 +66,7 @@
         select_ae="Skin (cellulitis)"
         ctep_term="Skin infection"
         ctep_code="90030270"
+        other_required="0"
         />
 
     <ctc_terms
@@ -68,16 +74,19 @@
         category_id="201"
         term="Burn"
         ctep_term="Thermal burn"
+        other_required="0"
         />
     <ctc_terms
         id="2002"
         category_id="201"
         term="Dry skin"
+        other_required="0"
         />
     <ctc_terms
         id="2003"
         category_id="201"
         term="Atrophy, subcutaneous fat"
         ctep_code="10016241"
+        other_required="0"
         />
 </dataset>

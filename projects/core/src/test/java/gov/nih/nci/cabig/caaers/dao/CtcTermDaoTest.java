@@ -10,10 +10,11 @@ import java.util.List;
  */
 public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
     public void testGetById() throws Exception {
-        CtcTerm loaded = getDao().getById(3002);
+        CtcTerm loaded = getDao().getById(3001);
         assertNotNull(loaded);
         assertEquals("Wrong category", 301, (int) loaded.getCategory().getId());
         assertEquals("Wrong CTC version", 3, (int) loaded.getCategory().getCtc().getId());
+        assertTrue("Other is required", loaded.isOtherRequired());
     }
 
     public void testGetBySubnameMatchesTermSubstring() throws Exception {
