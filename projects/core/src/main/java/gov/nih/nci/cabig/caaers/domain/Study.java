@@ -1,17 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * Domain object representing Study(Protocol)
@@ -152,4 +152,27 @@ public class Study extends AbstractDomainObject implements Serializable {
     public void setStudySites(List<StudySite> studySites) {
         this.studySites = studySites;
     }
+    
+    public boolean equals(Object other) {
+        if(this == other) return true;
+        if(!(other instanceof Study) ) return false;
+        
+        final Study that = (Study) other;
+        
+        return (
+           (this.shortTitle != null && this.shortTitle.equals(that.getShortTitle())) &&
+           (this.multiInstitutionIndicator != null && this.multiInstitutionIndicator.equals(that.isMultiInstitutionIndicator())));
+   }
+
+   public int hashCode() {
+		int hashCode = 17;
+		hashCode = 37 * hashCode
+				+ ((this.shortTitle != null) ? this.shortTitle.hashCode() : 0);
+		hashCode = 37
+				* hashCode
+				+ ((this.multiInstitutionIndicator != null) ? this.multiInstitutionIndicator
+						.hashCode()
+						: 0);
+		return hashCode;
+	}    
 }
