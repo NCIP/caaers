@@ -8,59 +8,67 @@
         name="CTCAE v3.0"
         />
     <ctc_categories
-        id="1"
+        id="201"
         name="allergy/immunology"
+        version_id="2"
         />
     <ctc_categories
-        id="2"
-        name="auditory/ear"
+        id="202"
+        name="auditory/hearing"
+        version_id="2"
         />
     <ctc_categories
-        id="3"
+        id="203"
         name="blood/bone marrow"
+        version_id="2"
         />
     <ctc_categories
-        id="4"
+        id="204"
+        name="cardiovascular (arrythmia)"
+        version_id="2"
+        />
+    <ctc_categories
+        id="301"
+        name="allergy/immunology"
+        version_id="3"
+        />
+    <ctc_categories
+        id="302"
+        name="auditory/ear"
+        version_id="3"
+        />
+    <ctc_categories
+        id="303"
+        name="blood/bone marrow"
+        version_id="3"
+        />
+    <ctc_categories
+        id="304"
         name="cardiac arrythmia"
-        />
-    <ctc_categories
-        id="12"
-        name="growth and development"
-        />
-    <ctc_version_categories
-        version_id="2"
-        category_id="1"
-        />
-    <ctc_version_categories
-        version_id="2"
-        category_id="2"
-        />
-    <ctc_version_categories
-        version_id="2"
-        category_id="3"
-        />
-    <ctc_version_categories
-        version_id="2"
-        category_id="4"
-        />
-    <ctc_version_categories
         version_id="3"
-        category_id="1"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="2"
+
+    <ctc_terms
+        id="1"
+        category_id="301"
+        term="Allergic reaction/hypersensitivity (including drug fever)"
+        short_name="Hypersensitivity"
+        ctep_code="10020751"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="3"
+    <ctc_terms
+        id="2"
+        category_id="301"
+        term="Allergic rhinitis (including sneezing, nasal stuffiness, postnasal drip)"
+        short_name="Allergic rhinitis"
+        ctep_code="10001723"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="4"
+    <ctc_terms
+        id="3"
+        category_id="301"
+        term="Allergy/Immunology - Other (Specify, __)"
+        short_name="Immune system disorder"
+        ctep_code="10021425"
+        other_required="1"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="12"
-        />
+
 </dataset>

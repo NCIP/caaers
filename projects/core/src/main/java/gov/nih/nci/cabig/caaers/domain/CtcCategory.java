@@ -1,6 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.OrderBy;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -8,6 +13,10 @@ import javax.persistence.Entity;
 @Entity
 public class CtcCategory extends AbstractImmutableDomainObject {
     private String name;
+    private Ctc ctc;
+    private List<CtcTerm> terms;
+
+    ////// BEAN PROPERTIES
 
     public String getName() {
         return name;
@@ -15,5 +24,25 @@ public class CtcCategory extends AbstractImmutableDomainObject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "version_id")
+    public Ctc getCtc() {
+        return ctc;
+    }
+
+    public void setCtc(Ctc ctc) {
+        this.ctc = ctc;
+    }
+
+    @OneToMany(mappedBy = "category")
+    @OrderBy // by ID for consistency
+    public List<CtcTerm> getTerms() {
+        return terms;
+    }
+
+    public void setTerms(List<CtcTerm> terms) {
+        this.terms = terms;
     }
 }

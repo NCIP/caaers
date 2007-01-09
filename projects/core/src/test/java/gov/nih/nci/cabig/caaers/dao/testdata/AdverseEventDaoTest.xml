@@ -6,28 +6,35 @@
         name="CTCAE v3.0"
         />
     <ctc_categories
-        id="1"
+        id="301"
         name="allergy/immunology"
+        version_id="3"
         />
     <ctc_categories
-        id="2"
+        id="302"
         name="auditory/ear"
+        version_id="3"
         />
     <ctc_categories
-        id="3"
+        id="303"
         name="blood/bone marrow"
-        />
-    <ctc_version_categories
         version_id="3"
-        category_id="1"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="2"
+    <ctc_terms
+        id="3007"
+        category_id="302"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term="Ear disorder"
+        ctep_code="10014004"
+        other_required="1"
         />
-    <ctc_version_categories
-        version_id="3"
-        category_id="3"
+    <ctc_terms
+        category_id="302"
+        id="3012"
+        term="Tinnitus"
+        ctep_term="Tinnitus"
+        ctep_code="10043882"
+        other_required="0"
         />
 
     <participant_assignments
@@ -43,9 +50,7 @@
         detection_date="2007-04-03 21:43:56.987"
         grade_code="5"
         attribution_code="1"
-        ctc_version_id="3"
-        ctc_category_id="1"
-        term="Rhinitis"
+        ctc_term_id="3007"
         hospitalization="0"
         />
 </dataset>

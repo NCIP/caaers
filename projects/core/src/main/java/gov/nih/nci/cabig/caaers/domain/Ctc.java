@@ -5,6 +5,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import java.util.List;
 
 /**
@@ -26,12 +28,8 @@ public class Ctc extends AbstractImmutableDomainObject {
         this.name = name;
     }
 
-    @ManyToMany
-    @JoinTable(
-        name = "ctc_version_categories",
-        joinColumns = @JoinColumn(name = "version_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @OneToMany(mappedBy = "ctc")
+    @OrderBy // by ID for consistency
     public List<CtcCategory> getCategories() {
         return categories;
     }

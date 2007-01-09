@@ -21,19 +21,36 @@ public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupp
         return (T) getHibernateTemplate().get(domainClass(), id);
     }
 
+    protected List<T> findBySubname(
+        String[] subnames, List<String> substringMatchProperties, List<String> exactMatchProperties
+    ) {
+        return findBySubname(subnames, null, null, substringMatchProperties, exactMatchProperties);
+    }
+
     @SuppressWarnings("unchecked")
-    protected List<T> findBySubname(String[] subnames, List<String> substringMatchProperties, List<String> exactMatchProperties) {
-        StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(" o where ");
-        List<String> params = new LinkedList<String>();
+    protected List<T> findBySubname(
+        String[] subnames, String extraConditions, List<Object> extraParameters,
+        List<String> substringMatchProperties, List<String> exactMatchProperties
+    ) {
+        StringBuilder query = new StringBuilder("from ")
+            .append(domainClass().getName()).append(" o where ");
+        if (extraConditions != null) query.append(extraConditions).append(" and ");
+        List<Object> params = new LinkedList<Object>();
+        if (extraParameters != null) params.addAll(extraParameters);
+
         for (int i = 0; i < subnames.length; i++) {
             buildSubnameQuery(subnames[i], query, params,
                 substringMatchProperties, exactMatchProperties);
             if (i < subnames.length - 1) query.append(" and ");
         }
+        
         return getHibernateTemplate().find(query.toString(), params.toArray());
     }
 
-    private void buildSubnameQuery(String subname, StringBuilder query, List<String> params, List<String> substringMatchProperties, List<String> exactMatchProperties) {
+    private void buildSubnameQuery(
+        String subname, StringBuilder query, List<Object> params,
+        List<String> substringMatchProperties, List<String> exactMatchProperties
+    ) {
         query.append('(');
         if (hasAny(substringMatchProperties)) {
             for (Iterator<String> it = substringMatchProperties.iterator(); it.hasNext();) {

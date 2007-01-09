@@ -1,0 +1,83 @@
+<dataset>
+    <ctc_versions
+        id="2"
+        name="CTC v2.0"
+        />
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="301"
+        version_id="3"
+        name="DERMATOLOGY/SKIN"
+        />
+    <ctc_categories
+        id="302"
+        version_id="3"
+        name="INFECTION"
+        />
+    <ctc_categories
+        id="201"
+        version_id="2"
+        name="DERMATOLOGY/SKIN"
+        />
+
+    <ctc_terms
+        id="3001"
+        category_id="301"
+        term="Burn"
+        ctep_term=""
+        select_ae=""
+        ctep_code=""
+        />
+    <ctc_terms
+        id="3002"
+        category_id="301"
+        term="Dry skin"
+        />
+    <ctc_terms
+        id="3003"
+        category_id="301"
+        term="Atrophy, subcutaneous fat"
+        ctep_code="10016241"
+        />
+    <ctc_terms
+        id="3004"
+        category_id="301"
+        term="Rash: dermatitis associated with radiation"
+        select_ae="Chemoradiation"
+        />
+    <ctc_terms
+        id="3005"
+        category_id="301"
+        term="Rash: dermatitis associated with radiation"
+        select_ae="Radiation"
+        />
+    <ctc_terms
+        id="3010"
+        category_id="302"
+        term="Infection (documented clinically or microbiologically) with Grade 3 or 4 neutrophils (ANC &lt;1.0 x 10e9/L)"
+        select_ae="Skin (cellulitis)"
+        ctep_term="Skin infection"
+        ctep_code="90030270"
+        />
+
+    <ctc_terms
+        id="2001"
+        category_id="201"
+        term="Burn"
+        ctep_term="Thermal burn"
+        />
+    <ctc_terms
+        id="2002"
+        category_id="201"
+        term="Dry skin"
+        />
+    <ctc_terms
+        id="2003"
+        category_id="201"
+        term="Atrophy, subcutaneous fat"
+        ctep_code="10016241"
+        />
+</dataset>

@@ -33,6 +33,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
             </list>
         </property>
     </bean>
@@ -75,4 +76,5 @@
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
+    <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
 </beans>

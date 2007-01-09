@@ -15,7 +15,6 @@ import java.sql.Timestamp;
  * @author Rhett Sutphin
  */
 /* NOTES:
-    - Term is free text (will be from a LUT once I can find an electronic list)
     - Expectedness mentioned in use case not yet implemented (need more info)
     - MedDRA code mentioned in use case not yet implemented
     */
@@ -27,11 +26,7 @@ import java.sql.Timestamp;
     }
 )
 public class AdverseEvent extends AbstractDomainObject {
-    // TODO: it seems like this should be a property of the study
-    private Ctc ctc;
-
-    private CtcCategory ctcCategory;
-    private String term;
+    private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
     private Attribution attribution;
@@ -43,30 +38,12 @@ public class AdverseEvent extends AbstractDomainObject {
     ////// BOUND PROPERTIES
 
     @ManyToOne
-    @JoinColumn(name = "ctc_version_id")
-    public Ctc getCtc() {
-        return ctc;
+    public CtcTerm getCtcTerm() {
+        return ctcTerm;
     }
 
-    public void setCtc(Ctc ctc) {
-        this.ctc = ctc;
-    }
-
-    @ManyToOne
-    public CtcCategory getCtcCategory() {
-        return ctcCategory;
-    }
-
-    public void setCtcCategory(CtcCategory ctcCategory) {
-        this.ctcCategory = ctcCategory;
-    }
-
-    public String getTerm() {
-        return term;
-    }
-
-    public void setTerm(String term) {
-        this.term = term;
+    public void setCtcTerm(CtcTerm ctcTerm) {
+        this.ctcTerm = ctcTerm;
     }
 
     public String getDetailsForOther() {
