@@ -94,14 +94,14 @@ public class ControllerTools {
     public static void addHierarchyToModel(PlannedCalendar plannedCalendar, Map<String, Object> model) {
         model.put("plannedCalendar", plannedCalendar);
         model.put("study", plannedCalendar.getStudy());
-    }
+    } */
 
     public static boolean isAjaxRequest(HttpServletRequest request) {
         String header = request.getHeader("X-Requested-With");
         return header != null && "XMLHttpRequest".equals(header);
     }
 
-    public static ModelAndView redirectToCalendarTemplate(int studyId) {
+   /* public static ModelAndView redirectToCalendarTemplate(int studyId) {
         return redirectToCalendarTemplate(studyId, null);
     }
 
