@@ -12,8 +12,8 @@
 
 	<!--_____ main content begins _____-->
 		<c:url value="/pages/createStudy" var="formAction" />
+	<form:form method="post" action="${formAction}">
 		<table>
-			<form:form method="post" action="${formAction}">
 				<tr>
 					<td>
 						<form:label	path="shortTitle">Short Title</form:label>
@@ -77,14 +77,26 @@
 						<form:input path="primarySponsorName" />
 					</td>
 				</tr>
+
+				<tr>
+					<td>
+						<form:label	path="studySites[0].site.name">Default Site Name</form:label>
+					</td>
+					<td>
+						<form:input path="studySites[0].site.name" />
+					</td>
+				</tr>
 				
 				<tr>
 					<td>
 						<input type="submit" value="Create Study" />
 					</td>
 				</tr>
-			</form:form>
 		</table>
+
+	</form:form>
+	
+
 
     </body>
 </html>
