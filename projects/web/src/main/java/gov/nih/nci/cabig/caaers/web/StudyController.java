@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import java.util.Date;
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -10,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -29,17 +34,27 @@ public final class StudyController extends CaaersAbstractFormController {
         setFormView("createStudy");
         setSuccessView("createStudy");
 	}
-
+    
+    @Override
+    protected Object formBackingObject(HttpServletRequest request) throws Exception{
+        // TODO: this is a temporary fix.  It should be moved to a service.
+    	Study study = (Study)getCommandClass().newInstance();
+    	StudySite defaultStudySite = new StudySite();
+        defaultStudySite.setSite(siteDao.getDefaultSite());
+        study.addStudySite(defaultStudySite);
+        return study;
+    }
+    
+    protected void initBinder(HttpServletRequest request,
+            ServletRequestDataBinder binder) throws Exception {
+            binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
+            super.initBinder(request, binder);
+    }    
+    
 	protected ModelAndView onSubmit(HttpServletRequest request,
 			HttpServletResponse response, Object oCommand, BindException errors)
 			throws Exception {
 		Study study = (Study) oCommand;
-
-        // TODO: this is a temporary fix.  It should be moved to a service.
-        StudySite defaultStudySite = new StudySite();
-        defaultStudySite.setSite(siteDao.getDefaultSite());
-        study.addStudySite(defaultStudySite);
-
         studyDao.save(study);
 		ModelAndView modelAndView = new ModelAndView(getSuccessView());
 		modelAndView.addObject("study", study);
