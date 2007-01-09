@@ -32,7 +32,7 @@ public final class StudyController extends CaaersAbstractFormController {
     public StudyController() {
 		setCommandClass(Study.class);
         setFormView("createStudy");
-        setSuccessView("createStudy");
+        setSuccessView("studySuccess");
 	}
     
     @Override
