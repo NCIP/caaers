@@ -6,6 +6,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
  * @author Rhett Sutphin
  */
 public enum Grade implements CodedEnum {
+    NORMAL(0),
     MILD(1),
     MODERATE(2),
     SEVERE(3),
