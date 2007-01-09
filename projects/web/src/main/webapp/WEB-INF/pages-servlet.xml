@@ -9,9 +9,9 @@
     >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <!--bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+	<bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="location"><value>/WEB-INF/special-views.xml</value></property>
-    </bean-->
+    </bean>
 
     <bean id="irViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass">
@@ -25,16 +25,21 @@
         </property>
     </bean>
 
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true"/>
+  
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
+        <property name="interceptors">
+            <list>
+                <ref bean="loginCheckInterceptor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="loginCheckInterceptor" class="gov.nih.nci.cabig.caaers.tools.accesscontrol.LoginCheckInterceptor"/>
 
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
 
-    <bean name="/welcome" id="welcomeController"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>internal-welcome</value></property>
-    </bean>
     
     <bean name="/createParticipant" id="newParticipantController" autowire="byName"
           class="gov.nih.nci.cabig.caaers.web.NewParticipantController">
@@ -56,12 +61,12 @@
         <property name="viewName"><value>searchStudy</value></property>
     </bean>    
 
-    <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
+    <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
     
     <bean name="/login" id="loginController" autowire="byName"
         class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
         <property name="targetView"><value>welcome</value></property>
-    </bean>
+    </bean> -->
 
     <bean name="/createAdverseEvent" id="createAdverseEvent" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.CreateAdverseEventController"/>
