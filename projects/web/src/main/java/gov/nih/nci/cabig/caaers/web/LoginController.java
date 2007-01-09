@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import gov.nih.nci.cabig.caaers.tools.accesscontrol.ApplicationSecurityManager;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +63,7 @@ public class LoginController extends CaaersAbstractFormController {
 		boolean loginSuccess = loginCommand.login(request.getRemoteAddr());
 
 		if (loginSuccess) {
-			//ApplicationSecurityManager.setUser(request, loginCredentials.getUsername());
+			ApplicationSecurityManager.setUser(request, loginCommand.getUsername());
 			return new ModelAndView(getTargetView(request));
 		} else {
 			Map<String, Object> model = errors.getModel();
