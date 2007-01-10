@@ -1,23 +1,22 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import static org.easymock.classextension.EasyMock.*;
-import org.apache.log4j.Category;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -133,7 +132,7 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
             .andReturn(expected);
 
         replayMocks();
-        List<CtcTerm> actual = facade.matchTerms("what", 12, null);
+        List<CtcTerm> actual = facade.matchTerms("what", 12, null, 10);
         verifyMocks();
 
         assertSame("Wrong list", expected, actual);
@@ -145,7 +144,7 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
             .andReturn(expected);
 
         replayMocks();
-        List<CtcTerm> actual = facade.matchTerms("what", 12, 7);
+        List<CtcTerm> actual = facade.matchTerms("what", 12, 7, 10);
         verifyMocks();
 
         assertSame("Wrong list", expected, actual);
@@ -157,7 +156,7 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
             .andReturn(expected);
 
         replayMocks();
-        List<CtcTerm> actual = facade.matchTerms("what happ", 2, 205);
+        List<CtcTerm> actual = facade.matchTerms("what happ", 2, 205, 10);
         verifyMocks();
 
         assertSame("Wrong list", expected, actual);
