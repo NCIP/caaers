@@ -70,12 +70,13 @@ div.row div.value { font-weight: normal; }
     Styles for scriptaculous-generated autocompleters
  */
 div.autocomplete {
-  position: absolute;
-  width: 250px;
-  background-color: white;
-  border: 1px solid #888;
-  margin: 0;
-  padding: 0;
+    position: absolute;
+    width: 250px;
+    background-color: white;
+    border: 1px solid #888;
+    border-top-width: 0; 
+    margin: 0;
+    padding: 0;
 }
 div.autocomplete ul {
     list-style-type: none;
@@ -88,6 +89,8 @@ div.autocomplete ul li {
     display: block;
     margin: 0;
     padding: 2px;
-    height: 32px;
+    border-style: solid; 
+    border-color: #888;
+    border-width: 1px 0 0 0;
     cursor: pointer;
 }

@@ -30,6 +30,10 @@ public class CreateAdverseEventCommand {
 
     ////// BOUND PROPERTIES
 
+    public AdverseEvent getAe() {
+        return adverseEvent;
+    }
+
     public Participant getParticipant() {
         return participant;
     }

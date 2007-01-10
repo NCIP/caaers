@@ -2,6 +2,39 @@
  *  caAERS-local classes & functions which require scriptaculous.
  */
 
+////// JS STYLES
+
+AE.slideAndHide = function(element, options) {
+    var e = $(element);
+    new Effect.Parallel(
+        [
+            new Effect.BlindUp(e, {sync:true}),
+            new Effect.Fade(e, {sync:true})
+        ], $H(options).merge({
+            duration: 1.0
+        })
+    );
+}
+
+AE.slideAndShow = function(element, options) {
+    var e = $(element);
+    new Effect.Parallel(
+        [
+            new Effect.BlindDown(e, {sync:true}),
+            new Effect.Appear(e, {sync:true})
+        ], $H(options).merge({
+            duration: 1.0
+        })
+    );
+}
+
+AE.highlight = function(element, options) {
+    var e = $(element)
+    new Effect.Highlight(element, Object.extend({
+        restorecolor: "#ffffff"
+    }, $H(options)));
+}
+
 // This is based on the code from https://dwr.dev.java.net/servlets/ReadMsg?list=users&msgNo=2629
 // Differences:  this version includes records whose display value does not include the typed string
 //    (this allows the server to match on multiple fields at once)

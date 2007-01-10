@@ -90,7 +90,9 @@
         for the other will be automatically constrained. (Try it and see.)
     </div>
 
-    <form:form cssClass="autoclear">
+    <form:form method="post" cssClass="autoclear">
+        <input type="hidden" name="_target${targetNumber}"/>
+        <input type="hidden" name="_page${pageNumber}"/>
         <div class="autocompleter">
             <div id="participant-entry" class="entry">
                 <h2>Select participant</h2>
@@ -103,6 +105,7 @@
                     <p id="participant-selected" style="display: none">
                         You've selected the participant <span id="participant-selected-name"></span>.
                     </p>
+                    <form:errors path="participant"/>
                 </div>
             </div>
             <div id="study-entry" class="entry">
@@ -116,6 +119,7 @@
                     <p id="study-selected" style="display: none">
                         You've selected the study <span id="study-selected-name"></span>.
                     </p>
+                    <form:errors path="study"/>
                 </div>
             </div>
         </div>

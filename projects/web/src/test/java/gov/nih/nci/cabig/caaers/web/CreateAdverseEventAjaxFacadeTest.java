@@ -3,14 +3,21 @@ package gov.nih.nci.cabig.caaers.web;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import static org.easymock.classextension.EasyMock.*;
+import org.apache.log4j.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author Rhett Sutphin
@@ -19,15 +26,21 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
     private CreateAdverseEventAjaxFacade facade;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
+    private CtcDao ctcDao;
+    private CtcTermDao ctcTermDao;
 
     protected void setUp() throws Exception {
         super.setUp();
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
+        ctcDao = registerDaoMockFor(CtcDao.class);
+        ctcTermDao = registerDaoMockFor(CtcTermDao.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
         facade.setStudyDao(studyDao);
+        facade.setCtcDao(ctcDao);
+        facade.setCtcTermDao(ctcTermDao);
     }
 
     public void testMatchParticipants() throws Exception {
@@ -114,4 +127,52 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
         assertEquals("Wrong study included", "Joyful", actualList.get(0).getShortTitle());
     }
 
+    public void testMatchTermsNoCategory() throws Exception {
+        List<CtcTerm> expected = new LinkedList<CtcTerm>();
+        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what" }), eq(12), (Integer) isNull()))
+            .andReturn(expected);
+
+        replayMocks();
+        List<CtcTerm> actual = facade.matchTerms("what", 12, null);
+        verifyMocks();
+
+        assertSame("Wrong list", expected, actual);
+    }
+
+    public void testMatchTermsWithCategory() throws Exception {
+        List<CtcTerm> expected = new LinkedList<CtcTerm>();
+        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what" }), eq(12), eq(7)))
+            .andReturn(expected);
+
+        replayMocks();
+        List<CtcTerm> actual = facade.matchTerms("what", 12, 7);
+        verifyMocks();
+
+        assertSame("Wrong list", expected, actual);
+    }
+
+    public void testMatchTermsMultipleSubnames() throws Exception {
+        List<CtcTerm> expected = new LinkedList<CtcTerm>();
+        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what", "happ" }), eq(2), eq(205)))
+            .andReturn(expected);
+
+        replayMocks();
+        List<CtcTerm> actual = facade.matchTerms("what happ", 2, 205);
+        verifyMocks();
+
+        assertSame("Wrong list", expected, actual);
+    }
+
+    public void testGetCategories() throws Exception {
+        int expectedId = 55;
+        Ctc ctc = setId(expectedId, new Ctc());
+        ctc.setCategories(new ArrayList<CtcCategory>());
+        expect(ctcDao.getById(expectedId)).andReturn(ctc);
+
+        replayMocks();
+        List<CtcCategory> actual = facade.getCategories(expectedId);
+        verifyMocks();
+
+        assertSame("Wrong list", ctc.getCategories(), actual);
+    }
 }
