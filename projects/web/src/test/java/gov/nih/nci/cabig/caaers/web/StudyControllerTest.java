@@ -3,16 +3,19 @@ package gov.nih.nci.cabig.caaers.web;
 import org.springframework.web.servlet.ModelAndView;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.SiteDao;
 
 public class StudyControllerTest extends WebTestCase {
 
     private StudyController controller = new StudyController();
     private StudyDao studyDao;
+	private SiteDao siteDao;
 
     protected void setUp() throws Exception {
         super.setUp();
         studyDao = registerMockFor(StudyDao.class);
         controller.setStudyDao(studyDao);
+		controller.setSiteDao(siteDao);
     }
     
     public void testViewOnGet() throws Exception {
