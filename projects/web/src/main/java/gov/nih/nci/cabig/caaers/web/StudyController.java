@@ -37,11 +37,8 @@ public final class StudyController extends CaaersAbstractFormController {
     
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception{
-        // TODO: this is a temporary fix.  It should be moved to a service.
+
     	Study study = (Study)getCommandClass().newInstance();
-    	StudySite defaultStudySite = new StudySite();
-        defaultStudySite.setSite(siteDao.getDefaultSite());
-        study.addStudySite(defaultStudySite);
         return study;
     }
     
@@ -56,7 +53,12 @@ public final class StudyController extends CaaersAbstractFormController {
 			throws Exception {
 		Study study = (Study) oCommand;
         studyDao.save(study);
-		ModelAndView modelAndView = new ModelAndView(getSuccessView());
+        // TODO: this is a temporary fix.  It should be moved to a service.
+        StudySite defaultStudySite = new StudySite();
+        defaultStudySite.setSite(siteDao.getDefaultSite());
+        study.addStudySite(defaultStudySite);
+
+        ModelAndView modelAndView = new ModelAndView(getSuccessView());
 		modelAndView.addObject("study", study);
 		modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;
