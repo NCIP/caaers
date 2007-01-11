@@ -37,6 +37,11 @@ public enum Grade implements CodedEnum {
         return displayName == null ? titleCasedName(this) : displayName;
     }
 
+    // for bean-property access
+    public String getName() {
+        return name();
+    }
+
     public String toString() {
         return toStringHelper(this);
     }

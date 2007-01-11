@@ -30,6 +30,11 @@ public enum Attribution implements CodedEnum {
         return titleCasedName(this);
     }
 
+    // for bean-property access
+    public String getName() {
+        return name();
+    }
+
     public String toString() {
         return toStringHelper(this);
     }
