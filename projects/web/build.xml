@@ -149,4 +149,37 @@
 
         <fail if="test.unit.failed">One or more unit tests failed.  See above or set test.failfast=true.</fail>
     </target>    
+	<target name="test.unit.report">
+	            <!-- junitreport -->
+	            <junitreport todir="${build-dir.unit-test}/junit">
+	                <fileset dir="${build-dir.unit-test}/junit">
+	                    <include name="TEST-*.xml"/>
+	                </fileset>
+	                <report format="frames" todir="${build-dir.unit-test}/junit/summary"/>
+	                <report format="noframes" todir="${build-dir.unit-test}/junit/summary"/>
+	            </junitreport>
+
+	            <!-- junitdocreport -->
+	            <taskdef name="junitDocReport" classname="edu.duke.cabig.catrip.test.report.ant.JUnitDocReport">
+	                 <classpath>
+	                    <path refid="cp.unit-test"/>
+	                </classpath>
+	            </taskdef>
+
+	            <junitDocReport format="html" useTestType="true" destfile="${build-dir.unit-test}/junit/summary/junitDocReport.html">
+	                <junitResults>
+	                    <fileset dir="${build-dir.unit-test}/junit">
+	                        <include name="*.xml"/>
+	                    </fileset>
+	                </junitResults>
+	                <junitDocs>
+	                    <fileset dir="${src-dir.unit-test}">
+	                        <include name="${unit-test.pattern}"/>
+	                    </fileset>
+	                </junitDocs>
+	            </junitDocReport>
+	        </target>
+
+	        <target name="reports" depends="test.unit.report"/>
+
 </project>
