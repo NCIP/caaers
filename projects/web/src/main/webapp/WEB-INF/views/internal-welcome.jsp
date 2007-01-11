@@ -10,7 +10,7 @@
         </p>
         
         <p>
-        	<ul><a href="createStudy">Create Study</a></ul>
+        	<ul><a href="/caaers/pages/createStudy">Create Study</a></ul>
         </p>
     </body>
 </html>
