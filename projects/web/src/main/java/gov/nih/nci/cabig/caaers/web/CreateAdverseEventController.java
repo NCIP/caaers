@@ -1,35 +1,30 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import org.springframework.web.servlet.mvc.AbstractWizardFormController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.ServletRequestDataBinder;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-
-import java.util.Map;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.beans.PropertyEditorSupport;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventController extends AbstractWizardFormController {
-    private static final int SELECT_ASSIGNMENT_PAGE = 0;
-    private static final int ENTER_SINGLE_BASIC_AE = 1;
-
+public class CreateAdverseEventController extends AbstractTabbedFlowFormController {
     private StudyParticipantAssignmentDao assignmentDao;
     private CtcDao ctcDao;
     private ParticipantDao participantDao;
@@ -38,11 +33,28 @@ public class CreateAdverseEventController extends AbstractWizardFormController {
 
     public CreateAdverseEventController() {
         setCommandClass(CreateAdverseEventCommand.class);
-        setCommandName("command");
-        setPages(new String[] {
-            "ae/selectAssignment",
-            "ae/enterBasic"
-        });
+        setFlow(new Flow("Create AE", Arrays.asList(
+            new Tab(0, "Select participant and study", "Begin", "ae/selectAssignment"),
+            new Tab(1, "Enter basic event information", "Basics", "ae/enterBasic") {
+                public Map<String, Object> referenceData() {
+                    Map<String, Object> refdata = super.referenceData();
+                    refdata.put("ctcVersions", ctcDao.getAll());
+                    refdata.put("grades", Grade.values());
+                    refdata.put("attributions", Attribution.values());
+                    return refdata;
+                }
+            },
+            new Tab(2, "Medical information", "Medical", "ae/notimplemented"),
+            new Tab(3, "Lab values", "Labs", "ae/notimplemented"),
+            new Tab(4, "Treatment information", "Treatment", "ae/notimplemented"),
+            new Tab(5, "Outcome information", "Outcome", "ae/notimplemented"),
+            new Tab(6, "Prior therapies", "Prior therapies", "ae/notimplemented"),
+            new Tab(7, "Concomitant medications", "Concomitant medications", "ae/notimplemented"),
+            new Tab(8, "Study agent(s)", "Agent", "ae/notimplemented"),
+            new Tab(9, "Medical device(s)", "Device", "ae/notimplemented"),
+            new Tab(10, "Reporter info", "Reporter", "ae/notimplemented"),
+            new Tab(11, "Confirm and save", "Save", "ae/notimplemented")
+        )));
     }
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
@@ -53,23 +65,6 @@ public class CreateAdverseEventController extends AbstractWizardFormController {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "ae.ctcTerm", ctcTermDao);
-    }
-
-    protected Map<?, ?> referenceData(HttpServletRequest request, int page) throws Exception {
-        Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("pageNumber", page);
-        switch (page) {
-            case SELECT_ASSIGNMENT_PAGE:
-                refdata.put("targetNumber", 1);
-                break;
-            case ENTER_SINGLE_BASIC_AE:
-                refdata.put("ctcVersions", ctcDao.getAll());
-                refdata.put("grades", Grade.values());
-                refdata.put("attributions", Attribution.values());
-                refdata.put("targetNumber", 0); // TODO
-                break;
-        }
-        return refdata;
     }
 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {

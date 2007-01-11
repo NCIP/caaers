@@ -1,0 +1,65 @@
+.tabpane {
+    margin: 1em;
+}
+
+.tabcontent {
+    border: 3px solid #009;
+}
+
+.tabcontent h1 {
+    font-size: 1.25em;
+    margin: 0 0 0.5em 0;
+    padding: 0.5em 1em 0.2em 1em;
+    background-color: #009;
+    color: #fff;
+}
+
+.tabcontent h2 {
+    font-size: 1.1em;
+}
+
+.tabcontent .body {
+    margin: 1em;
+}
+
+ul.tabs {
+    margin: 0; padding: 0;
+}
+
+li.tab {
+    display: block;
+    float: left;
+    margin: 0 4px;
+    padding: 4px;
+    background-color: #30f;
+    border: 1px solid #009;
+    border-bottom-width: 0;
+    font-size: 0.8em;
+}
+
+li.tab.current {
+    background-color: #009
+}
+
+li.tab a {
+    color: #fff;
+}
+
+.tabcontrols {
+    margin: 1em;
+}
+
+.tabcontrols a {
+    display: block;
+    border: 1px solid #009;
+    padding: 2px;
+    text-decoration: none;
+}
+
+#flow-next {
+    float: right;
+}
+
+#flow-prev {
+    float: left;
+}

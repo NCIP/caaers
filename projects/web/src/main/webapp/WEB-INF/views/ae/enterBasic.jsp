@@ -85,31 +85,48 @@
                     selectTerm(selectedChoice)
                 }
             })
+
+            <c:if test="${not empty command.ae.ctcTerm}">
+            var ctcTerm = {
+                id: ${command.ae.ctcTerm.id},
+                category: {
+                    id: ${command.ae.ctcTerm.category.id}
+                },
+                otherRequired: ${command.ae.ctcTerm.otherRequired}
+            }
+            $A($("ctc-version").options).each(function(opt) {
+                if (opt.value == ${command.ae.ctcTerm.category.ctc.id}) {
+                    opt.selected = true
+                }
+            })
+            ctcVersionSelector()
+            selectTerm(ctcTerm)
+            $("ctc-term-input").value = "${command.ae.ctcTerm.fullName}"
+            </c:if>
         })
     </script>
 </head>
 <body>
-    <h1>Create AE: Enter basic information</h1>
-
-    <div id="instructions">
+    <p id="instructions">
         You are entering an adverse event for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
-    </div>
+    </p>
 
     <form:form>
-        <input type="hidden" name="_target${targetNumber}"/>
-        <input type="hidden" name="_page${pageNumber}"/>
+        <form:errors path="*"/>
+
+        <tags:tabFields tab="${tab}"/>
         <div class="row">
             <div class="label"><form:label path="ae.detectionDate">Detection date</form:label></div>
             <div class="value"><form:input path="ae.detectionDate"/></div>
         </div>
         <div class="row">
             <div class="label"><form:label path="ae.grade">Grade</form:label></div>
-            <div class="value"><form:select path="ae.grade" items="${grades}" itemValue="code"/></div>
+            <div class="value"><form:select path="ae.grade" items="${grades}" itemValue="name"/></div>
         </div>
         <div class="row">
             <div class="label"><form:label path="ae.attribution">Attribution</form:label></div>
-            <div class="value"><form:select path="ae.attribution" items="${attributions}" itemValue="code"/></div>
+            <div class="value"><form:select path="ae.attribution" items="${attributions}" itemValue="name"/></div>
         </div>
         <div class="row">
             <div class="label"><label for="ctc-version">CTC version</label></div>
@@ -146,9 +163,6 @@
                 <div class="value">
                     <form:textarea path="ae.detailsForOther" cols="40" rows="5"/>
                 </div>
-            </div>
-            <div style="text-align: right">
-                <input type="submit" value="Submit"/>
             </div>
         </div>
     </form:form>

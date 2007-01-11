@@ -5,7 +5,11 @@
 
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="standard" page="standard.jsp">
-        <pattern>/*</pattern>
+        <pattern>/pages/*</pattern>
+    </decorator>
+
+    <decorator name="tabbedflow" page="tabbedflow.jsp">
+        <pattern>/pages/createAdverseEvent</pattern>
     </decorator>
 
     <excludes>
