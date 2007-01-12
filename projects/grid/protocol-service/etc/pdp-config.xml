@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="csmPDP" class="gov.nih.nci.cagrid.authorization.pdp.impl.CSMPDP">
+        <property name="authorizationManager">
+            <bean class="gov.nih.nci.security.SecurityServiceProvider"
+                factory-method="getAuthorizationManager">
+                <constructor-arg value="sdk"/>
+            </bean>
+        </property>
+        <property name="selectorSelector" ref="selectorSelector"/>
+    </bean>
+    <bean id="selectorSelector" class="gov.nih.nci.cagrid.authorization.pdp.impl.OperationPENodeSelectorSelector">
+        <property name="mappings">
+            <list>
+                <bean class="gov.nih.nci.cagrid.authorization.pdp.impl.RegExPENodeSelectorMapping">
+                    <property name="pattern" value=".*registerSubject"/>
+                    <property name="selector" ref="registerSubject"/>
+                </bean>
+                <bean class="gov.nih.nci.cagrid.authorization.pdp.impl.RegExPENodeSelectorMapping">
+                    <property name="pattern" value=".*"/>
+                    <property name="selector" ref="serviceAccess"/>
+                </bean>                
+            </list>
+        </property>
+    </bean>
+    <bean id="registerSubject" class="gov.nih.nci.cagrid.authorization.pdp.impl.ConstantPENodeSelector">
+        <property name="privilege" value="EXECUTE"></property>
+        <property name="objectId" value="{http://grid.caaers.cabig.nci.nih.gov/ProtocolService}registerSubject"/>
+    </bean>
+    <bean id="serviceAccess" class="gov.nih.nci.cagrid.authorization.pdp.impl.ConstantPENodeSelector">
+        <property name="privilege" value="ACCESS"></property>
+        <property name="objectId" value="http://grid.caaers.cabig.nci.nih.gov/ProtocolService"/>
+    </bean>
+    
+</beans>

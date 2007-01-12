@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registration xmlns="http://semanticbits.com/registration.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://semanticbits.com/registration.xsd file:/Users/joshua/dev/svn/caaers/trunk/projects/grid/protocol-service/test/resources/registration.xsd">
+
+    <eligibilityWaiverReasonText>Yadda</eligibilityWaiverReasonText>
+    <informedConsentFormSignedDate>2007-01-10</informedConsentFormSignedDate>
+    <offStudyDate>2007-01-10</offStudyDate>
+    <offStudyReasonCode>Yadda</offStudyReasonCode>
+    <offStudyReasonOtherText>Yadda</offStudyReasonOtherText>
+    <startDate>2007-01-10</startDate>
+    <studyParticipantIdentifier>12345</studyParticipantIdentifier>
+    <eligibilityIndicator>true</eligibilityIndicator>
+    <participant>
+        <administrativeGenderCode>M</administrativeGenderCode>
+        <birthDate>2007-01-10</birthDate>
+        <ethnicGroupCode>C</ethnicGroupCode>
+        <firstName>Yadda</firstName>
+        <lastName>Yadda</lastName>
+        <maritalStatusCode>M</maritalStatusCode>
+        <raceCode>C</raceCode>
+        <identifier>
+            <source>Yadda</source>
+            <type>Yadda</type>
+            <value>Yadda</value>
+            <isprimary>false</isprimary>
+        </identifier>
+        <address>
+            <city>Yadda</city>
+            <countryCode>US</countryCode>
+            <postalCode>21229</postalCode>
+            <stateCode>MD</stateCode>
+            <streetAddress>123 Somewhere Street</streetAddress>
+        </address>
+    </participant>
+</registration>
+

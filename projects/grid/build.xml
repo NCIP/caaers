@@ -1,0 +1,97 @@
+<project name="cptest" default="all">
+
+    <property environment="env"/>
+    <property name="globus.dir" value="${env.GLOBUS_LOCATION}"/>
+    <!--
+        <property name="cagrid.dir" value="${env.CAGRID_HOME}"/>
+    -->
+    <property name="cagrid.dir" value="/Users/joshua/dev/ew_cagrid_1_0/cagrid-1-0"/>
+
+    <patternset id="globus.jars">
+
+        <include name="addressing-1.0.jar"/>
+        <include name="axis-url.jar"/>
+        <include name="axis.jar"/>
+        <include name="bootstrap.jar"/>
+        <include name="cog-axis.jar"/>
+        <include name="cog-jglobus.jar"/>
+        <include name="cog-tomcat.jar"/>
+        <include name="cog-url.jar"/>
+        <include name="commonj.jar"/>
+        <include name="commons-cli-2.0.jar"/>
+        <include name="commons-digester.jar"/>
+        <include name="commons-discovery.jar"/>
+        <include name="concurrent.jar"/>
+        <include name="cryptix-asn1.jar"/>
+        <include name="cryptix.jar"/>
+        <include name="cryptix32.jar"/>
+        <include name="globus_wsrf_mds_aggregator_stubs.jar"/>
+        <include name="globus_wsrf_mds_aggregator.jar"/>
+        <include name="globus_wsrf_servicegroup_stubs.jar"/>
+        <include name="globus_wsrf_servicegroup.jar"/>
+        <include name="jaxrpc.jar"/>
+        <include name="jce-jdk13-125.jar"/>
+        <include name="jgss.jar"/>
+        <include name="naming-java.jar"/>
+        <include name="puretls.jar"/>
+        <include name="saaj.jar"/>
+        <include name="wsdl4j.jar"/>
+        <include name="wsrf_core_stubs.jar"/>
+        <include name="wsrf_core.jar"/>
+        <include name="wss4j.jar"/>
+        <include name="xmlsec.jar"/>
+
+    </patternset>
+    
+    <target name="get-globus-jars">
+        <copy todir="lib/globus">
+            <fileset dir="${globus.dir}/lib">
+                <patternset refid="globus.jars"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="get-cagrid-jars">
+        <copy todir="lib/cagrid">
+
+            <fileset dir="${cagrid.dir}/projects/authz/build">
+                <include name="caGrid-1.0-authz-common.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/authz/lib">
+                <include name="clm.jar"/>
+                <include name="csmapi.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/core/build/jars">
+                <include name="caGrid-1.0-core.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/gridgrouper/build/lib">
+                <include name="caGrid-1.0-gridgrouper-client.jar"/>
+                <include name="caGrid-1.0-gridgrouper-common.jar"/>
+                <include name="caGrid-1.0-gridgrouper-stubs.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/gridgrouper/lib">
+                <include name="grouper.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/metadata/build/lib">
+                <include name="caGrid-1.0-metadata-common.jar"/>
+                <include name="caGrid-1.0-metadata-security.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/projects/service-security-provider/build/lib">
+                <include name="caGrid-1.0-ServiceSecurityProvider-client.jar"/>
+                <include name="caGrid-1.0-ServiceSecurityProvider-common.jar"/>
+                <include name="caGrid-1.0-ServiceSecurityProvider-service.jar"/>
+                <include name="caGrid-1.0-ServiceSecurityProvider-stubs.jar"/>
+            </fileset>
+            <fileset dir="${cagrid.dir}/share/lib/mds">
+                <include name="globus_wsrf_mds_aggregator_stubs.jar"/>
+                <include name="globus_wsrf_mds_aggregator.jar"/>
+                <include name="globus_wsrf_servicegroup_stubs.jar"/>
+                <include name="globus_wsrf_servicegroup.jar"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="get-jars" depends="get-globus-jars, get-cagrid-jars"/>
+
+    <target name="all"/>
+</project>
