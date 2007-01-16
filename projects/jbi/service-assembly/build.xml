@@ -1,8 +1,8 @@
 <project name="ctms-intgrxn" default="all">
 
 	<property environment="env"/>
-	<property name="globus.dir" value="${env.GLOBUS_LOCATION}"/>
-	<property name="cagrid.dir" value="${env.CAGRID_HOME}"/>
+	<property name="globus.dir" value="../../grid/lib/globus"/>
+	<property name="cagrid.dir" value="../../grid/lib/cagrid"/>
 	<property name="servicemix.dir" value="${env.SERVICEMIX_HOME}"/>
 	<property name="lib.dir" value="lib"/>
 	<property name="test.lib.dir" value="test/lib"/>
@@ -98,7 +98,7 @@
 	
 	<target name="get-jars">
 		<copy todir="${ext.lib.dir}">
-			<fileset dir="${globus.dir}/lib">
+			<fileset dir="${globus.dir}">
 				<patternset refid="globus.jars"/>
 			</fileset>
 		</copy>
@@ -142,6 +142,9 @@
 				<fileset dir="${ext.lib.dir}">
 					<include name="*.jar"/>
 				</fileset>
+				<fileset dir="test/lib">
+					<include name="*.jar"/>
+				</fileset>
 			</classpath>
 		</javac>
 	</target>
@@ -171,8 +174,13 @@
 			includes="**/DataServiceProcessor.class"/>
 	</target>
 	
+	<target name="jar-http-header-trans" depends="compile">
+		<jar basedir="${build.classes.dir}" destfile="${build.dir}/http-header-trans.jar"
+			includes="**/HttpHeaderTrans*.class"/>
+	</target>
 	
-	<target name="build-service-units" depends="jar-basic-auth-trans, jar-grid-proxy-trans, jar-data-service-processor">
+	
+	<target name="build-service-units" depends="jar-basic-auth-trans, jar-grid-proxy-trans, jar-data-service-processor, jar-http-header-trans">
 		
 		<copy todir="${src.sm.dir}/basic-auth-trans/lib" overwrite="true">
 			<fileset dir="${build.dir}">
@@ -211,6 +219,19 @@
 		<zip destfile="${build.su.dir}/pipeline-su.zip">
 			<fileset dir="${src.sm.dir}/pipeline"/>
 	 	</zip>		
+		
+		<zip destfile="${build.su.dir}/http-su.zip">
+			<fileset dir="${src.sm.dir}/http"/>
+	 	</zip>
+		
+		<copy todir="${src.sm.dir}/http-header-trans/lib" overwrite="true">
+			<fileset dir="${build.dir}">
+				<include name="http-header-trans.jar"/>
+			</fileset>
+		</copy>
+		<zip destfile="${build.su.dir}/http-header-trans-su.zip">
+			<fileset dir="${src.sm.dir}/http-header-trans"/>
+	 	</zip>
 		
 	</target>
 		
