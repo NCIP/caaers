@@ -1,0 +1,50 @@
+<beans
+	xmlns:http="http://servicemix.apache.org/http/1.0"
+	xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0"
+	xmlns:grid="http://localhost:8083/ctmsi"
+	xmlns:svcsec="http://security.introduce.cagrid.nci.nih.gov">
+	
+<classpath>
+	<location>.</location>
+</classpath>
+
+<http:endpoint 
+	service="ctms:SimpleServiceConsumer" 
+	endpoint="simpleServiceConsumer" 
+	targetService="ctms:ws-routing-slip"
+	targetEndpoint="endpoint"
+	role="consumer" 
+	locationURI="http://localhost:8081/ctmsi/SimpleService" 
+	soap="true" 
+	wsdlResource="classpath:./SimpleService.wsdl"
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>
+
+<http:endpoint 
+	service="ctms:SimpleServiceProvider" 
+	endpoint="simpleServiceProvider" 
+	role="provider" 
+	locationURI="http://localhost:8086/SimpleService/services/SimpleServiceSOAP" 
+	soap="true"
+	wsdlResource="http://localhost:8080/SimpleService/services/SimpleServiceSOAP?wsdl"
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>
+
+
+<http:endpoint 
+	service="grid:CaBIOServiceConsumer" 
+	endpoint="endpoint" 
+	role="consumer" 
+	locationURI="http://localhost:8081/ctmsi/CaBIOSvc" 
+	soap="true" 
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>
+
+
+<http:endpoint 
+	service="grid:CaBIOServiceProvider" 
+	endpoint="endpoint" 
+	role="provider" 
+	locationURI="http://localhost:8085/wsrf/services/cagrid/CaBIOSvc" 
+	soap="true"
+	wsdlResource="http://localhost:8082/wsrf/services/cagrid/CaBIOSvc?wsdl"
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>	
+
+</beans>
