@@ -23,8 +23,9 @@ public class XPathTester {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		String fileName = "test/resources/eg.xml";
-		String xpath = "/msg/content/CQLQuery";
+		String fileName = "test/resources/eg2.xml";
+//		String xpath = "/msg/content/CQLQuery";
+		String xpath = "//*[local-name()='certificateAsString']/text()";
 
 		XPath xpathEngine = XPathFactory.newInstance().newXPath();
 
