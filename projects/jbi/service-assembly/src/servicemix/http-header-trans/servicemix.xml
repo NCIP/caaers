@@ -1,0 +1,27 @@
+<beans xmlns:sm="http://servicemix.apache.org/config/1.0"
+	     xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0"
+	     xmlns:grid="http://localhost:8083/ctmsi"
+	     xmlns:svcsec="http://security.introduce.cagrid.nci.nih.gov">
+	     
+	<classpath>
+		<location>lib/http-header-trans.jar</location>
+	</classpath>
+	                     
+	<sm:serviceunit id="jbi">
+		<sm:activationSpecs>
+
+		  <sm:activationSpec componentName="http-header-trans"
+                             service="grid:CaBIOSvc"
+                             endpoint="endpoint"
+                             interfaceName="svcsec:ServiceSecurity"
+                             >
+		    <sm:component>
+		      <bean class="gov.nih.nci.ctms.demo.trans.HttpHeaderTrans"/>
+
+		    </sm:component>
+		  </sm:activationSpec>
+
+		</sm:activationSpecs>
+	</sm:serviceunit>
+	
+</beans>
