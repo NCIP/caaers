@@ -18,8 +18,8 @@ class CreateCtcLookups extends edu.northwestern.bioinformatics.bering.Migration 
             t.addColumn("category_id", "integer", nullable: false)
         }
 
-        insert("ctc_versions", [ id: 2, name: "CTC v2.0" ])
-        insert("ctc_versions", [ id: 3, name: "CTCAE v3.0" ])
+        insert("ctc_versions", [ id: 2, name: "CTC v2.0" ], primaryKey: false)
+        insert("ctc_versions", [ id: 3, name: "CTCAE v3.0" ], primaryKey: false)
 
         insert("ctc_categories", [ id:  1, name: "allergy/immunology" ], primaryKey: false)
         insert("ctc_categories", [ id:  2, name: "auditory/ear" ], primaryKey: false)
