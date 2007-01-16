@@ -2,7 +2,6 @@
 <beans xmlns:eip="http://servicemix.apache.org/eip/1.0"
        xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0">
 
-
 <eip:pipeline service="ctms:pipeline" endpoint="endpoint">
   <eip:transformer>
     <eip:exchange-target service="ctms:routing-slip" />
@@ -20,6 +19,13 @@
   </eip:targets>
 </eip:static-routing-slip>
 
-    
+
+<eip:static-routing-slip service="ctms:ws-routing-slip" endpoint="endpoint">
+  <eip:targets>
+  	<eip:exchange-target service="ctms:http-header-trans" />
+  	<eip:exchange-target service="ctms:SimpleServiceProvider" />
+  </eip:targets>
+</eip:static-routing-slip>
+
 
 </beans>
