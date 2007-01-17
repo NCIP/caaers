@@ -24,7 +24,8 @@
 <%--<c:url value="/pages/createParticipant?id=${studyId}" var="formAction"/>
 <c:url value="/pages/createParticipant?id=1" var="formAction"/>--%>
 <form:form method="post">
-	<div class="row">
+    <tags:tabFields tab="${tab}"/>
+    <div class="row">
 	<div class="label"><form:label path="instituitionalPatientNumber">Institutional Patient Number</form:label>
 	</div>
 	<div class="value"><form:input path="instituitionalPatientNumber" />
