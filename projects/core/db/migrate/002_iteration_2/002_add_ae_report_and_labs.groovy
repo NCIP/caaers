@@ -28,5 +28,12 @@ class AddAeDetailsAndLabs extends edu.northwestern.bioinformatics.bering.Migrati
     }
 
     void down() {
+        dropTable("ae_labs")
+
+        execute("DELETE FROM adverse_events")
+        addColumn("adverse_events", "assignment_id", "integer")
+        dropColumn("adverse_events", "report_id")
+
+        dropTable("ae_reports")
     }
 }
