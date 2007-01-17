@@ -11,8 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
-
-
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,14 +30,17 @@ import java.util.List;
 public class Participant extends AbstractDomainObject {
 	private String institutionalPatientNumber;
 	private String institution;
-	private String studyParticipantName;
+	//private String studyParticipantName; // take action REMOVE
     private String firstName;
+    private String middleName; //take action ADD
+    private String maidenName; // take action ADD
     private String lastName;
     private Date dateOfBirth;
     private String gender;
     private String race;
     private String ethnicity;
     private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
+    private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     // business methods
     
@@ -97,7 +100,7 @@ public class Participant extends AbstractDomainObject {
 		this.institution = institution;
 	}
     
-	
+	/*
 	@Column(name= "study_participant_name")
     public String getStudyParticipantName() {
 		return studyParticipantName;
@@ -106,6 +109,7 @@ public class Participant extends AbstractDomainObject {
 	public void setStudyParticipantName(String studyParticipantName) {
 		this.studyParticipantName = studyParticipantName;
 	}
+	*/
 
 	@Column(name = "first_name")
     public String getFirstName() {
@@ -115,8 +119,25 @@ public class Participant extends AbstractDomainObject {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
-    @Column(name = "last_name")
+    @Column(name = "maiden_name")
+    public String getMaidenName() {
+		return maidenName;
+	}
+
+	public void setMaidenName(String maidenName) {
+		this.maidenName = maidenName;
+	}
+
+	@Column(name = "middle_name")
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	@Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -162,7 +183,7 @@ public class Participant extends AbstractDomainObject {
 	}
 
 
-    @OneToMany (mappedBy = "participant")
+    @OneToMany (mappedBy = "participant", fetch=FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
     @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyParticipantAssignment> getAssignments() {
@@ -173,6 +194,33 @@ public class Participant extends AbstractDomainObject {
         this.assignments = assignments;
     }
 
+    public void addStudyParticipantAssignment(StudyParticipantAssignment spa) {
+    	assignments.add(spa);
+    }
+    
+    @OneToMany
+    @Cascade({CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+    @JoinColumn(name = "participant_id")
+    public List<Identifier> getIdentifiers() {
+		return identifiers;
+	}
+
+	public void setIdentifiers(
+			List<Identifier> identifiers) {
+		this.identifiers = identifiers;
+	}
+	
+	public void addIdentifier(Identifier identifier)
+	{		
+		identifiers.add(identifier);		
+	}
+	
+	public void removeIdentifier(Identifier identifier)
+	{
+		identifiers.remove(identifier);
+	}
+    
+    
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

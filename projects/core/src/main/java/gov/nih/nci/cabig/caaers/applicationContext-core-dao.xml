@@ -34,6 +34,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
+                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
             </list>
@@ -80,4 +81,10 @@
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
+    
+   <!-- ACTUAL SERVICE LAYER -->
+   
+   <bean id="studyService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl" autowire="byName" />
+   <bean id="participantService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl" autowire="byName" />
+   
 </beans>
