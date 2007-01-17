@@ -15,7 +15,6 @@ public class NewParticipantCommandTest extends TestCase {
     public void testCreateParticipant() throws Exception {
         command.setInstituitionalPatientNumber("sipn001");
         command.setInstitution("i001");
-        command.setStudyParticipantName("Steve");
     	command.setFirstName("Steve");
         command.setLastName("Cheeks");
         command.setGender("Male");

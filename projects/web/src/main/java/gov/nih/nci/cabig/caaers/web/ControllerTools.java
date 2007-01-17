@@ -39,7 +39,7 @@ public class ControllerTools {
     public static void registerDomainObjectEditor(ServletRequestDataBinder binder, String field, CaaersDao<?> dao) {
         binder.registerCustomEditor(dao.domainClass(), field, new DaoBasedEditor(dao));
     }
-
+    
     /**
      * Determine whether the given request was made via an asynchronous request mechanism.
      * Current implementation works for prototype.js-initiated requests only.

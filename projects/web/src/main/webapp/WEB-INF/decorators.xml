@@ -11,6 +11,10 @@
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/createAdverseEvent</pattern>
     </decorator>
+    
+    <decorator name="tabbedflow" page="tabbedflow.jsp">
+        <pattern>/pages/createParticipant</pattern>
+    </decorator>
 
     <excludes>
         <pattern>/*/image/*</pattern>

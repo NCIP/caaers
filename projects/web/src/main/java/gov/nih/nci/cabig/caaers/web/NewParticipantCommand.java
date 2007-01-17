@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,7 +10,8 @@ import org.apache.commons.logging.LogFactory;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 /**
  * @author Krikor Krumlian
  */
@@ -18,26 +20,34 @@ public class NewParticipantCommand {
 	protected final Log log = LogFactory.getLog(getClass());
 	private String instituitionalPatientNumber;
 	private String institution;
-	private String studyParticipantName;
 	private String firstName;
+	private String middleName;
+	private String maidenName;
     private String lastName;
     private Date dateOfBirth;
     private String gender;
     private String race;
-    private String ethnicity;
+    private String ethnicity; 
     private String[] studySiteArray;
-    	
-	public Participant createParticipant() {
+    private String searchTypeText;
+    private String searchType;
+    
+    // NEWLY ADDED
+    private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
+    private List<Study> studies = new ArrayList<Study>();
+    private List<Identifier> identifiers = new ArrayList<Identifier>();
+	
+    public Participant createParticipant() {
 		Participant participant = new Participant();
 		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
 		participant.setInstitution(getInstitution());
-		participant.setStudyParticipantName(getStudyParticipantName());
 		participant.setFirstName(getFirstName());
 		participant.setLastName(getLastName());
 		participant.setDateOfBirth(getDateOfBirth());
 		participant.setGender(getGender());
 		participant.setRace(getRace());
 		participant.setEthnicity(getEthnicity());
+		participant.setIdentifiers(getIdentifiers());
         return participant;
     }
 	
@@ -45,21 +55,21 @@ public class NewParticipantCommand {
 		Participant participant = new Participant();
 		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
 		participant.setInstitution(getInstitution());
-		participant.setStudyParticipantName(getStudyParticipantName());
 		participant.setFirstName(getFirstName());
+		participant.setMaidenName(getMaidenName());
+		participant.setMiddleName(getMiddleName());
 		participant.setLastName(getLastName());
 		participant.setDateOfBirth(getDateOfBirth());
 		participant.setGender(getGender());
 		participant.setRace(getRace());
 		participant.setEthnicity(getEthnicity());
+		participant.setIdentifiers(getIdentifiers());
 		
-		for (int i = 0; i < studySiteArray.length ; i++) {
-			log.debug("the selected indexes : " + studySiteArray[i]);
+		for (int i = 0; i < studySites.size() ; i++) {
 			participant.getAssignments().add(
 					new StudyParticipantAssignment(participant,
-							studySites.get(Integer.parseInt(studySiteArray[i]))));
+							studySites.get(i)));
 		}
-		
         return participant;
     }
 	
@@ -78,14 +88,6 @@ public class NewParticipantCommand {
 	public void setInstitution(String institution) {
 			this.institution = institution;
 		}
-	
-	 public String getStudyParticipantName() {
-			return studyParticipantName;
-		}
-
-	public void setStudyParticipantName(String studyParticipantName) {
-			this.studyParticipantName = studyParticipantName;
-		}
 	 
 	public String getFirstName() {
 		return firstName;
@@ -93,6 +95,22 @@ public class NewParticipantCommand {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+	
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	
+	public String getMaidenName() {
+		return maidenName;
+	}
+
+	public void setMaidenName(String maidenName) {
+		this.maidenName = maidenName;
 	}
 
 	public String getGender() {
@@ -141,8 +159,46 @@ public class NewParticipantCommand {
 
 	public void setStudySiteArray(String[] studySiteArray) {
 		this.studySiteArray = studySiteArray;
-		log.debug("The list size is : " + studySiteArray == null ? "null" : studySiteArray.length);
+		//log.debug("The list size is : " + studySiteArray == null ? "null" : studySiteArray.length);
+	}
+
+	public String getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+
+	public String getSearchTypeText() {
+		return searchTypeText;
+	}
+
+	public void setSearchTypeText(String searchTypeText) {
+		this.searchTypeText = searchTypeText;
 	}
 	
+	public StudyParticipantAssignment getStudyParticipantAssignment() {
+		return studyParticipantAssignment;
+	}
 
+	public void setStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
+		this.studyParticipantAssignment = studyParticipantAssignment;
+	}
+	
+	public List<Study> getStudies() {
+		return studies;
+	}
+	
+	public void setStudies(List<Study> studies) {
+		this.studies = studies;
+	}
+	
+	public List<Identifier> getIdentifiers() {
+		return identifiers;
+	}
+	
+	public void setIdentifiers(List<Identifier> idnetifiers) {
+		this.identifiers = identifiers;
+	}
 }

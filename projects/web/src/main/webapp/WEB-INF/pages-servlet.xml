@@ -39,26 +39,44 @@
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
-
     
-    <bean name="/createParticipant" id="newParticipantController" autowire="byName"
-          class="gov.nih.nci.cabig.caaers.web.NewParticipantController">
+    <!--  Create Participant Workflow -->
+    <bean name="/createParticipant" id="CreateParticipant" autowire="byName" 
+    	  class="gov.nih.nci.cabig.caaers.web.CreateParticipantController" >
     </bean>
-	<!-- 
-    <bean name="/assignParticipant" id="assignParticipantController" autowire="byName"
-          class="gov.nih.nci.cabig.caaers.web.AssignParticipantController">
+    
+    <!--  Home Page includes searches for Studies and Participants -->
+    <bean name="/home" id="RegisterController" class="gov.nih.nci.cabig.caaers.web.SearchAndRegisterController" autowire="byName"> 
+	    <property name="formView" value="home"/>
+	    <property name="successView" value="reg_protocol_search"/>
+  	</bean>
+  	
+  	<!-- Search and Register Participant after we have searched for a Study -->
+  	<bean name="/searchRegisterParticipant" id="searchParticipantRegController"  class="gov.nih.nci.cabig.caaers.web.SearchParticipantRegisterController" autowire="byName">
+	    <property name="formView" value="reg_enroll_patient"/>
+	    <property name="successView" value="reg_patient_search"/>
     </bean>
-    -->
+    
+    <!-- Search and Register Study after we have searched for a Participant -->
+    <bean name="/searchRegisterStudy" id="searchStudyRegController"  class="gov.nih.nci.cabig.caaers.web.SearchStudyRegisterController" autowire="byName">
+	    <property name="formView" value="reg_enroll_study"/>
+	    <property name="successView" value="reg_study_search"/>
+	    <property name="commandClass" value="gov.nih.nci.cabig.caaers.web.SearchStudyCommand"></property>	   
+    </bean>
+    
+    <!-- Register Workflow -->
+    <bean name="/register" id="registrationController"  class="gov.nih.nci.cabig.caaers.web.RegistrationController" autowire="byName">
+	    <property name="pages">
+	    <list>
+		    <value>reg_submit</value>
+	    </list>
+	    </property>
+    </bean>
     
     <bean name="/createStudy" id="studyController" autowire="byName"
           class="gov.nih.nci.cabig.caaers.web.StudyController">
         <property name="formView"><value>createStudy</value></property>
         <property name="successView"><value>studySuccess</value></property>
-    </bean>
-
-    <bean name="/searchStudy" id="searchStudyController"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>searchStudy</value></property>
     </bean>    
 
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />

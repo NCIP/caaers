@@ -37,7 +37,7 @@ public class NewParticipantController extends SimpleFormController {
     public NewParticipantController() {
         setCommandClass(NewParticipantCommand.class);
         setFormView("createParticipant");
-        setSuccessView("createParticipant");
+        setSuccessView("aParticipant");
     }
     
     protected void initBinder(HttpServletRequest request,
