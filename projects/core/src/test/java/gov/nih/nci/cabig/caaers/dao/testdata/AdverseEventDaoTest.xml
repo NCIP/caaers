@@ -44,13 +44,19 @@
         date_of_enrollment="2004-01-05"
         />
 
+    <AE_REPORTS
+        id="-17"
+        assignment_id="-6"
+        />
+
     <ADVERSE_EVENTS
         id="-2"
-        assignment_id="-6"
+        report_id="-17"
         detection_date="2007-04-03 21:43:56.987"
         grade_code="5"
         attribution_code="1"
         ctc_term_id="3007"
-        hospitalization="0"
+        hospitalization_code="0"
+        expected="1"
         />
 </dataset>

@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,11 +17,9 @@ import java.sql.Timestamp;
  * @author Rhett Sutphin
  */
 /* NOTES:
-    - Expectedness mentioned in use case not yet implemented (need more info)
     - MedDRA code mentioned in use case not yet implemented
     */
 @Entity
-@Table
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
         @Parameter(name="sequence", value="seq_adverse_events_id")
@@ -30,12 +30,22 @@ public class AdverseEvent extends AbstractDomainObject {
     private String detailsForOther;
     private Grade grade;
     private Attribution attribution;
-    private Boolean hospitalization;
+    private Hospitalization hospitalization;
+    private Boolean expected;
 
-    private StudyParticipantAssignment assignment;
+    private AdverseEventReport report;
     private Timestamp detectionDate;
 
     ////// BOUND PROPERTIES
+
+    @ManyToOne
+    public AdverseEventReport getReport() {
+        return report;
+    }
+
+    public void setReport(AdverseEventReport report) {
+        this.report = report;
+    }
 
     @ManyToOne
     public CtcTerm getCtcTerm() {
@@ -74,15 +84,6 @@ public class AdverseEvent extends AbstractDomainObject {
         this.attribution = attribution;
     }
 
-    @ManyToOne
-    public StudyParticipantAssignment getAssignment() {
-        return assignment;
-    }
-
-    public void setAssignment(StudyParticipantAssignment assignment) {
-        this.assignment = assignment;
-    }
-
     public Timestamp getDetectionDate() {
         return detectionDate;
     }
@@ -91,11 +92,21 @@ public class AdverseEvent extends AbstractDomainObject {
         this.detectionDate = detectionDate;
     }
 
-    public Boolean getHospitalization() {
+    @Type(type = "hospitalization")
+    @Column(name = "hospitalization_code")
+    public Hospitalization getHospitalization() {
         return hospitalization;
     }
 
-    public void setHospitalization(Boolean hospitalization) {
+    public void setHospitalization(Hospitalization hospitalization) {
         this.hospitalization = hospitalization;
+    }
+
+    public Boolean getExpected() {
+        return expected;
+    }
+
+    public void setExpected(Boolean expected) {
+        this.expected = expected;
     }
 }

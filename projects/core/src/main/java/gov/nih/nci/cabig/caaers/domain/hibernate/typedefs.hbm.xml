@@ -11,4 +11,7 @@
     <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="attribution">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Attribution</param>
     </typedef>
+    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="hospitalization">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Hospitalization</param>
+    </typedef>
 </hibernate-mapping>
