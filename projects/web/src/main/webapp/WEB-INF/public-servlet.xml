@@ -33,8 +33,9 @@
         <property name="viewName"><value>internal-welcome</value></property>
     </bean>    
 
-    <bean name="/css/common-styles"
-          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>css-js/common-styles.css</value></property>
+    <bean name="/css/*"
+          class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
+        <property name="prefix"><value>css/</value></property>
+        <property name="suffix"><value>.css</value></property>
     </bean>
 </beans>
