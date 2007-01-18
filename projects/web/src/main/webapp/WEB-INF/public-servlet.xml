@@ -33,8 +33,8 @@
         <property name="viewName"><value>internal-welcome</value></property>
     </bean>    
 
-    <bean name="/css/common-images"
+    <bean name="/css/common-styles"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>css-js/common-images.css</value></property>
+        <property name="viewName"><value>css-js/common-styles.css</value></property>
     </bean>
 </beans>

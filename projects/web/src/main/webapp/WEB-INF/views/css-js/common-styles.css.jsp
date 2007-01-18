@@ -1,4 +1,5 @@
-/* CSS Document */
+<%@page contentType="text/css" language="java" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 /* general style propertyies */
 body { margin: 0 0 0 0; padding: 0; font-family: arial, verdana, sans-serif; font-size: 11px; color: #000000; background: #F4F4F5; }
@@ -14,7 +15,7 @@ select { font-family: arial, verdana, sans-serif; font-size: 11px; }
 input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size: 10px; padding: 0 3px 0 3px; }
 
 /* header bar */
-.header { background: repeat-x top; }
+.header { background: repeat-x top url(<chrome:imageUrl name="header_BG.gif"/>); }
 
 /* top nav */
 #topNav { color: #E6E6E6; font-weight: bold; background-color: #5C5C5C; }
@@ -61,15 +62,15 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 .workArea { padding: 0 10px 0 10px; }
 
 /* blue bar current title */
-#current { padding: 4px 0 4px 8px; background: #6E81A6 url(../images/blueCorner.gif) no-repeat top right; white-space: nowrap; font-size: 14px; font-weight: bold; color: #FFFFFF; line-height: 17px; }
+#current { padding: 4px 0 4px 8px; background: #6E81A6 url(<chrome:imageUrl name="blueCorner.gif"/>) no-repeat top right; white-space: nowrap; font-size: 14px; font-weight: bold; color: #FFFFFF; line-height: 17px; }
 #current .spacer { margin-right: 50px; }
 
 /* main dispaly table that holds all the content */
-.display { border-left: 1px solid #6E81A6; background: #D7D9E3 url(../images/display_BG.gif) repeat-y right; padding: 0 8px 8px 5px; }
-.display_B { background: #F4F4F5 url(../images/display_B.gif) repeat-x top; vertical-align: top; height: 4px; border: none; }
+.display { border-left: 1px solid #6E81A6; background: #D7D9E3 url(<chrome:imageUrl name="display_BG.gif"/>) repeat-y right; padding: 0 8px 8px 5px; }
+.display_B { background: #F4F4F5 url(<chrome:imageUrl name="display_B.gif"/>) repeat-x top; vertical-align: top; height: 4px; border: none; }
 
 /* Level 2 tabs */
-#level2 .tabs { background: #6E81A6 url(../images/level2_BG.gif) repeat-x top; padding: 9px 0 0 7px; margin-top: 0;}
+#level2 .tabs { background: #6E81A6 url(<chrome:imageUrl name="level2_BG.gif"/>) repeat-x top; padding: 9px 0 0 7px; margin-top: 0;}
 
 /* tabs */
 #level2 { background: none; padding-left: 0; white-space: nowrap; color: #333333; }
@@ -77,19 +78,19 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 #level2 a:visited { color: #333333; text-decoration: none; background-color: transparent; border: none; }
 #level2 a:hover { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
 #level2 a:active { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#level2 .current { background: #E9E9EB url(../images/tab2_h_BG.gif) repeat-x top; font-weight: bold; color: #3E3F6B; padding: 2px 10px 0 8px; vertical-align: bottom;}
+#level2 .current { background: #E9E9EB url(<chrome:imageUrl name="tab2_h_BG.gif"/>) repeat-x top; font-weight: bold; color: #3E3F6B; padding: 2px 10px 0 8px; vertical-align: bottom;}
 #level2 .current a:link { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #level2 .current a:visited { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #level2 .current a:hover { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #level2 .current a:active { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#level2 .tab { background: #E9E9EB url(../images/tab2_BG.gif) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
+#level2 .tab { background: #E9E9EB url(<chrome:imageUrl name="tab2_BG.gif"/>) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
 
 /* properties of the area directly under the tabs that has the angled graphic */
 #level2 .tabBotL { background: #E9E9EB; border: none; height: 8px; }
 #level2 .tabBotR { background: #E9E9EB; border: none; height: 8px; }
 
 /* tab table */
-.tabs { margin-top: 4px; background: #D7D9E3 url(../images/level3_BG.gif) no-repeat top right; }
+.tabs { margin-top: 4px; background: #D7D9E3 url(<chrome:imageUrl name="level3_BG.gif"/>) no-repeat top right; }
 
 /* tabs */
 #tabDisplay { background: none; padding-left: 0; white-space: nowrap; color: #333333; }
@@ -97,22 +98,22 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 #tabDisplay a:visited { color: #333333; text-decoration: none; background-color: transparent; border: none; }
 #tabDisplay a:hover { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
 #tabDisplay a:active { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#tabDisplay .current { background: #E9E9EB url(../images/tab3_h_BG.gif) repeat-x top; font-weight: bold; color: #6E81A6; padding: 2px 10px 0 8px; vertical-align: bottom;}
+#tabDisplay .current { background: #E9E9EB url(<chrome:imageUrl name="tab3_h_BG.gif"/>) repeat-x top; font-weight: bold; color: #6E81A6; padding: 2px 10px 0 8px; vertical-align: bottom;}
 #tabDisplay .current a:link { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #tabDisplay .current a:visited { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #tabDisplay .current a:hover { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
 #tabDisplay .current a:active { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#tabDisplay .tab { background: #E9E9EB url(../images/tab3_BG.gif) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
+#tabDisplay .tab { background: #E9E9EB url(<chrome:imageUrl name="tab3_BG.gif"/>) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
 
 /* properties of the area directly under the tabs that has the angled graphic */
-.tabBotL { background: #F5F5F8 url(../images/whiteCorner.gif) no-repeat top right; border-left: 1px solid #6E81A6; height: 18px;}
-.tabBotR { background: #F5F5F8 url(../images/whiteCorner.gif) no-repeat top right; border-left: 1px solid #6E81A6; height: 18px;}
+.tabBotL { background: #F5F5F8 url(<chrome:imageUrl name="whiteCorner.gif"/>) no-repeat top right; border-left: 1px solid #6E81A6; height: 18px;}
+.tabBotR { background: #F5F5F8 url(<chrome:imageUrl name="whiteCorner.gif"/>) no-repeat top right; border-left: 1px solid #6E81A6; height: 18px;}
 
 /* left area content */
-.contentL { background: #FFFFFF url(../images/content_BG.gif) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 8px 12px 8px; }
+.contentL { background: #FFFFFF url(<chrome:imageUrl name="content_BG.gif"/>) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 8px 12px 8px; }
 
 /* right area content */
-.contentR { background: #FFFFFF url(../images/content_BG.gif) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 8px 12px 8px; }
+.contentR { background: #FFFFFF url(<chrome:imageUrl name="content_BG.gif"/>) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 8px 12px 8px; }
 .contentR hr { height: 0; border-bottom: 1px dashed #CCCCCC; }
 .contentR .solid { height: 0; border-bottom: 1px solid #CCCCCC; }
 .contentR2 { background: #FFFFFF; border-left: 1px solid #CCCCCC; border-bottom: 4px solid #CCCCCC; padding: 0 0 6px 0; }
@@ -120,7 +121,7 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 .contentR4 { background: #FFFFFF; border-left: 1px solid #CCCCCC; padding: 0 0 6px 0; }
 
 /* content bottom border */
-.content_B { background: #D7D9E3 url(../images/content_B.gif) repeat-x top; vertical-align: top; height: 4px; border: none; }
+.content_B { background: #D7D9E3 url(<chrome:imageUrl name="content_B.gif"/>) repeat-x top; vertical-align: top; height: 4px; border: none; }
 
 /* general form 1 */
 #form1 { margin: 0; padding: 0; }
@@ -198,7 +199,7 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 .heightControl { height: 8px; }
 
 /* additional drivers/vehicles at the bottom of the page */
-.additionals { background: #FFFFFF url(../images/content_BG.gif) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 3px 12px 0; }
+.additionals { background: #FFFFFF url(<chrome:imageUrl name="content_BG.gif"/>) repeat-y right; border-left: 1px solid #6E81A6; padding: 4px 3px 12px 0; }
 .additionals hr { height: 0; border-bottom: 1px dashed #CCCCCC; }
 
 .additionals2 { background: #FFFFFF; padding: 10px 10px 15px 15px; }
