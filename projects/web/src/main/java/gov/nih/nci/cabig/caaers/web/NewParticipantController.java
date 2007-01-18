@@ -70,7 +70,7 @@ public class NewParticipantController extends SimpleFormController {
 
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         NewParticipantCommand participantCommand = (NewParticipantCommand) oCommand;
-        Participant participant = participantCommand.createParticipant(studySites);
+        Participant participant = participantCommand.createParticipant();
         participantDao.save(participant);
         
         ModelAndView modelAndView = new ModelAndView(getSuccessView());

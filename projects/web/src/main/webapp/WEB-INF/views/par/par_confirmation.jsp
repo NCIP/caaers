@@ -5,8 +5,9 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -24,7 +25,7 @@ function submitPage(s){
 <body>
 <form:form method="post">
 <tags:tabFields tab="${tab}" />
-You have entered the following information <br><br>
+<b>Participant</b> <br><br>
 Institutional Number     : <b>${command.instituitionalPatientNumber}</b><br>
 Institution              : <b>${command.institution}</b><br>
 Participant First Name   : <b>${command.firstName}</b><br>
@@ -33,11 +34,21 @@ Participant Maiden Name  : <b>${command.maidenName}</b><br>
 Participant Date of Birth: <b>${command.dateOfBirth}</b><br>
 Participant Gender       : <b>${command.gender}</b><br>
 Participant Race         : <b>${command.race}</b><br>
-Particiapnt Ethnicity    : <b>${command.ethnicity}</b><br>
+Particiapnt Ethnicity    : <b>${command.ethnicity}</b><br><br>
 
-<c:forEach var="study" items="${command.studySiteArray}" varStatus="status">
-${command.studySiteArray[status.count - 1]}
+<b>Study / Site</b><br><br>
+<c:forEach var="studySite" items="${command.studySites}" varStatus="status">
+Study Short Title        : <b>${studySite.study.shortTitle}</b><br>
+Site                     : <b>${studySite.site.name}</b><br>
 </c:forEach>
+
+<!-- For Hibernate to initialize these lists so when we -->
+<!-- go back to the previous page the list would load correctly -->
+<c:forEach var="study" items="${command.studies}" varStatus="status">
+<input type="hidden" name="test" value="${study.studySites[0].id}"/>
+</c:forEach>
+
+<br>
 <input type="hidden" id="nextView" name="nextView"/>
 <a href="javascript:submitPage('processFinish')">Finish</a> 
 </form:form>

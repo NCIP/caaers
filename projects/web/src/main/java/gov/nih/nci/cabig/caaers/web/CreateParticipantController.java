@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 // spring mvc imports  
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 // caaers imports
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -63,7 +64,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     public CreateParticipantController() {
         setCommandClass(NewParticipantCommand.class);
         setFlow(new Flow("Create Participant", Arrays.asList(	
-            new Tab(0, "Enter Participant Information", "New Participant", "par_create_participant") {
+            new Tab(0, "Enter Participant Information", "New Participant", "par/par_create_participant") {
                 public Map<String, Object> referenceData() {
                     Map<String, Object> refdata = super.referenceData();
                     Map<String, String> genders = new HashMap<String, String>();
@@ -78,14 +79,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
                     return refdata;
                 }
             },
-            new Tab(1, "Choose Study", "Choose Study", "par_choose_study") {
+            new Tab(1, "Choose Study", "Choose Study", "par/par_choose_study") {
                 public Map<String, Object> referenceData() {
                     Map<String, Object> refdata = super.referenceData();
                     refdata.put("searchType", getSearchType());
                     return refdata;
                 }
             },
-            new Tab(2, "Confirmation", "Confirmation", "par_confirmation") {
+            new Tab(2, "Confirmation", "Confirmation", "par/par_confirmation") {
                 public Map<String, Object> referenceData() {
                     Map<String, Object> refdata = super.referenceData();
                     return refdata;
@@ -93,6 +94,12 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
             }
         )));
     }
+    
+    protected void initBinder(HttpServletRequest request,
+            ServletRequestDataBinder binder) throws Exception {
+            binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
+            super.initBinder(request, binder);
+        }
     
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	log.debug("Entering formBackingObject ...");
@@ -110,12 +117,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		}
 		return participantCommand;
     }
+ 
     
     protected void onBind(HttpServletRequest request, Object command,BindException errors)throws Exception {
     	log.debug("Entering onBind...");
     	NewParticipantCommand participantCommand = (NewParticipantCommand)command;
     	String searchtext = participantCommand.getSearchTypeText();
     	String type       = participantCommand.getSearchType();
+    	List<StudySite> studySites = new ArrayList<StudySite>();
+    	// This will happen on page #2
     	if (searchtext != null && type != null && !searchtext.equals(""))
     	{
     		log.debug("Search text : " + searchtext + "Type : " + type);
@@ -143,7 +153,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     		participantCommand.setSearchTypeText("");
     		participantCommand.setSearchType("");
     	}
-    		
+    	// This will happen everytime studySiteArray is populated
+    	if (participantCommand.getStudySiteArray() != null) {
+			for (String st : participantCommand.getStudySiteArray()) {
+				StudySite studySite = studySiteDao.getById(Integer.parseInt(st));
+				studySites.add(studySite);
+			}
+			participantCommand.setStudySites(studySites);
+		}	
     }
     
     @Override
@@ -160,6 +177,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
     	log.debug("Entering Process Finish ...");
     	NewParticipantCommand participantCommand = (NewParticipantCommand)command;
+    	/*
     	List<StudySite> studySites = new ArrayList<StudySite>();
     	for(String st : participantCommand.getStudySiteArray())
     	{
@@ -167,12 +185,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     		studySites.add(studySite);
     	}
     	Participant participant = participantCommand.createParticipant(studySites);
+        */
+    	Participant participant = participantCommand.createParticipant();
         participantDao.save(participant);
         
         ModelAndView modelAndView = new ModelAndView("kk");
         modelAndView.addObject("participant", participant);
 		modelAndView.addAllObjects(errors.getModel());
-		return modelAndView;
+		response.sendRedirect("home");
+		return null;
     }
     private List<LOV> getSearchType() {
 		List<LOV> col = new ArrayList<LOV>();

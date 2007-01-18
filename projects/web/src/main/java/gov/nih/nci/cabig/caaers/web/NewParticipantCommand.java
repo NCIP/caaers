@@ -36,7 +36,9 @@ public class NewParticipantCommand {
     private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
     private List<Study> studies = new ArrayList<Study>();
     private List<Identifier> identifiers = new ArrayList<Identifier>();
+    private List<StudySite> studySites = new ArrayList<StudySite>();
 	
+    /*
     public Participant createParticipant() {
 		Participant participant = new Participant();
 		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
@@ -49,9 +51,9 @@ public class NewParticipantCommand {
 		participant.setEthnicity(getEthnicity());
 		participant.setIdentifiers(getIdentifiers());
         return participant;
-    }
+    }*/
 	
-	public Participant createParticipant(List<StudySite> studySites) {
+	public Participant createParticipant() {
 		Participant participant = new Participant();
 		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
 		participant.setInstitution(getInstitution());
@@ -159,7 +161,6 @@ public class NewParticipantCommand {
 
 	public void setStudySiteArray(String[] studySiteArray) {
 		this.studySiteArray = studySiteArray;
-		//log.debug("The list size is : " + studySiteArray == null ? "null" : studySiteArray.length);
 	}
 
 	public String getSearchType() {
@@ -192,6 +193,14 @@ public class NewParticipantCommand {
 	
 	public void setStudies(List<Study> studies) {
 		this.studies = studies;
+	}
+	
+	public List<StudySite> getStudySites() {
+		return studySites;
+	}
+	
+	public void setStudySites(List<StudySite> studySites) {
+		this.studySites = studySites;
 	}
 	
 	public List<Identifier> getIdentifiers() {

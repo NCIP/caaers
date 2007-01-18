@@ -24,8 +24,8 @@
 <%--<c:url value="/pages/createParticipant?id=${studyId}" var="formAction"/>
 <c:url value="/pages/createParticipant?id=1" var="formAction"/>--%>
 <form:form method="post">
-    <tags:tabFields tab="${tab}"/>
-    <div class="row">
+	<tags:tabFields tab="${tab}" />
+	<div class="row">
 	<div class="label"><form:label path="instituitionalPatientNumber">Institutional Patient Number</form:label>
 	</div>
 	<div class="value"><form:input path="instituitionalPatientNumber" />
@@ -75,11 +75,6 @@
 	</div>
 	<div class="value"><form:input path="ethnicity" /></div>
 	</div>
-	<form:input path="identifiers[0].source" />
-	<c:forEach var="index" begin="0" end="4">
-		<form:input path="identifiers[${index}].type" />
-	</c:forEach>
-
 
 	<table width="700" border="0" cellspacing="0" cellpadding="0"
 		id="table1">

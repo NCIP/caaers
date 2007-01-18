@@ -36,7 +36,7 @@ function updateTargetPage(s){
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
-	<form:form method="post">
+	<form:form id="searchForm" method="post">
 		<tr>
 			<!-- TITLE STARTS HERE -->
 			<td width="99%" height="43" valign="middle" id="title">Study
@@ -65,15 +65,16 @@ function updateTargetPage(s){
 				</tr>
 				<tr>
 					<td><form:input path="searchTypeText" size="25" /></td>
-					<td><input name="imageField" type="image" class="button"
-						onClick="submitPage('protocol');return false;"
-						src="images/b-go.gif" alt="GO" align="middle" width="22"
+					<td><input type="submit" alignment="center" value="go" name="_target1" alt="GO" align="middle" width="22"
 						height="10" border="0"></td>
 				</tr>
 			</table>
 			<span class="notation">^ Minimum two characters for search.</span></td>
 		</tr>
 </table>
+</form:form>
+<form:form  method="post">
+	<tags:tabFields tab="${tab}" />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
 	<tr>
@@ -96,13 +97,9 @@ function updateTargetPage(s){
 					<ec:row highlightRow="true">
 						<ec:column property="kk" style="width:10px" filterable="false"
 							sortable="false" title=" ">
-							<form:checkbox path="studySiteArray"
-								value="${study.studySites[0].id}" />
+							<form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
 						</ec:column>
-						<ec:column property="shortTitle" width="6" title="Short Title">
-							<a
-								href="searchRegisterParticipant?studySiteId=${study.studySites[0].id}">${study.shortTitle}</a>
-						</ec:column>
+						<ec:column property="shortTitle" width="6" title="Short Title" />
 						<ec:column property="longTitle" title="Long Title" />
 						<ec:column property="description" title="Description" />
 						<ec:column property="principalInvestigatorCode"

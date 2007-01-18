@@ -58,11 +58,12 @@ function submitPage(){
 					<tr>
 						<td width="100%" id="tabDisplay"><span class="tab"> <img
 							src="images/tabWhiteL.gif" width="3" height="16"
-							align="absmiddle"> 1. Select Study <img src="images/tabWhiteR.gif" width="3" height="16"
+							align="absmiddle"> 1. Select Study <img
+							src="images/tabWhiteR.gif" width="3" height="16"
 							align="absmiddle"></span><span class="current"><img
 							src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-						<b>2. Select Participant </b><img src="images/tabGrayR.gif" width="3"
-							height="16" align="absmiddle"></span><span class="tab"><img
+						<b>2. Select Participant </b><img src="images/tabGrayR.gif"
+							width="3" height="16" align="absmiddle"></span><span class="tab"><img
 							src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
 						3. Review and Submit <img src="images/tabGrayR.gif" width="3"
 							height="16" align="absmiddle"></span></td>
@@ -85,7 +86,8 @@ function submitPage(){
 						<!-- TITLE STARTS HERE -->
 						<td width="99%" height="43" valign="middle" id="title"><a
 							href="createparticipant.do?url=register.do&studySiteId=${studySiteId }">Create
-						new Participant for Registration</a> or search for an existing participant.</td>
+						new Participant for Registration</a> or search for an existing
+						participant.</td>
 
 						<form:form id="searchParticipant" name="searchParticipant"
 							method="post">
