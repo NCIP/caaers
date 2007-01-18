@@ -2,15 +2,12 @@
 
 /* general style propertyies */
 body { margin: 0 0 0 0; padding: 0; font-family: arial, verdana, sans-serif; font-size: 11px; color: #000000; background: #F4F4F5; }
-table, tr, td, ul, ol, li, p { font-family: arial, verdana, sans-serif; font-size: 11px; }
 
 ul, ol { margin-top: 0; }
 
 /* general link properties */
-a:link { color: #6E81A6; }
-a:visited { color: #6E81A6; }
-a:hover { color: #89ABD5; }
-a:active { color: #89ABD5; }
+a:link, a:visited { color: #6E81A6; }
+a:hover, a:active { color: #89ABD5; }
 
 /* general form object properties */
 select { font-family: arial, verdana, sans-serif; font-size: 11px; }
@@ -19,37 +16,37 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 /* header bar */
 .header { background: repeat-x top; }
 
-/* ge logo left */
-.gelogo { margin: 21px 0 22px 10px; }
-
 /* top nav */
 #topNav { color: #E6E6E6; font-weight: bold; background-color: #5C5C5C; }
 #topNav .left { padding: 0 0 0 8px; white-space: nowrap; }
 #topNav .right { padding: 0 10px 0 0; text-align: right; white-space: nowrap; }
 #topNav .divider { width: 6px; }
 #topNav .current { color: #3E3F6B; height: 18px; background-color:#FFFFFF; padding: 3px 24px 0 10px; vertical-align: bottom; }
-#topNav .currentL { height: 20px; width: 6px; }
 #topNav .currentR { height: 20px; width: 6px; }
-#topNav a:link    { color: #E6E6E6; text-decoration: none; background-color:#747474; border: solid #D6D6D6; border-width: 1px 0 0 1px; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav a:visited { color: #E6E6E6; text-decoration: none; background-color:#747474; border: solid #D6D6D6; border-width: 1px 0 0 1px; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav a:hover  { color: #FFFFFF; text-decoration: none; background-color:#747474; border: solid #D6D6D6; border-width: 1px 0 0 1px; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav a:active { color: #FFFFFF; text-decoration: none; background-color:#747474; border: solid #D6D6D6; border-width: 1px 0 0 1px; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav .right a:link    { color: #E6E6E6; text-decoration: none; background-color: transparent; border: none; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav .right a:visited { color: #E6E6E6; text-decoration: none; background-color: transparent; border: none; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav .right a:hover { color: #FFFFFF; text-decoration: none; background-color: transparent; border: none; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav .right a:active { color: #FFFFFF; text-decoration: none; background-color: transparent; border: none; padding: 2px 24px 0 10px; vertical-align: bottom; }
-#topNav .right .divider { display: none; }
+#topNav a {
+    text-decoration: none; background-color:#747474;
+    border: solid #D6D6D6; border-width: 1px 0 0 1px;
+    padding: 2px 24px 0 10px; vertical-align: bottom;
+}
+#topNav a:link, #topNav a:visited { color: #E6E6E6; }
+#topNav a:hover, #topNav a:active { color: #FFFFFF; }
+#topNav .right a {
+    background-color: transparent;
+    border: none;
+}
 
 /* sub nav */
-#subNav { background: #FFFFFF; border-bottom: 2px solid #3E3F6B; padding-left: 10px; color: #6E81A6; font-weight: bold; line-height: 20px; }
+#subNav {
+    background: #FFFFFF; border-bottom: 2px solid #3E3F6B;
+    padding-left: 10px; color: #6E81A6; font-weight: bold; line-height: 20px;
+}
 #subNav .welcome { text-decoration: none; font-weight: normal; }
 #subNav .spacer { margin: 0 12px 0 12px; }
 #subNav .left { padding-right: 10px; white-space: nowrap; }
 #subNav .right { padding-right: 10px; white-space: nowrap; }
-#subNav a:link { text-decoration: none; font-weight: normal; }
-#subNav a:visited { text-decoration: none; font-weight: normal; }
-#subNav a:hover { text-decoration: underline; font-weight: normal; }
-#subNav a:active { text-decoration: underline; font-weight: normal; }
+#subNav a { font-weight: normal; }
+#subNav a:link, #subNav a:visited { text-decoration: none; }
+#subNav a:hover, #subNav a:active { text-decoration: underline; }
 
 /* title - left of search */
 .titleArea { margin: 10px 0 10px 0; }
