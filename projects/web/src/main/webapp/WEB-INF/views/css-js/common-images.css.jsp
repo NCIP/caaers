@@ -1,4 +1,4 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ page contentType="text/css" language="java" %>
-.header { background-image: url(<tags:chromeImageUrl name="header_BG.gif"/>); }
+.header { background-image: url(<chrome:imageUrl name="header_BG.gif"/>); }
 
