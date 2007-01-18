@@ -5,6 +5,7 @@
 
     <property name="build-dir.main"      value="build/main/classes"/>
     <property name="build-dir.unit-test" value="build/test/classes"/>
+    <property name="build-dir.webapp"    value="build/main/webapp"/>
 
     <property name="war-name" value="${basedir}/../../caaers.war"/>
 
@@ -52,6 +53,18 @@
         <path refid="cp.core.test"/>
         <pathelement location="${build-dir.unit-test}"/>
         <fileset dir="lib/test">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="cp.tomcat.common">
+        <fileset dir="tools/tomcat/lib/common">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="cp.tomcat.server">
+        <fileset dir="tools/tomcat/lib/server">
             <include name="**/*.jar"/>
         </fileset>
     </path>
@@ -181,5 +194,119 @@
 	        </target>
 
 	        <target name="reports" depends="test.unit.report"/>
+
+    <!-- TOMCAT DEPLOYMENT -->
+
+    <target name="webapp" description="Merge created application into deployment directory" depends="compile, webapp.main"/>
+
+    <target name="webapp.main" description="Copy basic webapp only, without recompiling">
+        <!-- basic application - just copy from web directory -->
+        <copy todir="${build-dir.webapp}">
+            <fileset dir="src/main/webapp">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${build-dir.webapp}/WEB-INF/classes">
+            <fileset dir="${build-dir.main}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+        <copy todir="${build-dir.webapp}/WEB-INF/lib">
+            <fileset dir="../core/lib/main">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="../core/db/lib">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="../..">
+                <include name="caaers-core.jar"/>
+            </fileset>
+            <fileset dir="lib/main">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="webapp.create-context" depends="tomcat.init">
+        <property name="webapp.context.docBase" value="${basedir}/${build-dir.webapp}"/>
+        <echo file="${webapp.context-file}"><![CDATA[
+            <Context path="${tomcat.deploy-path}" docBase="${webapp.context.docBase}" debug="9">
+              <!--Realm className="org.apache.catalina.realm.JAASRealm" appName="caaers"
+                        userClassNames="gov.nih.nci.security.authorization.domainobjects.User"
+                        roleClassNames="gov.nih.nci.security.authorization.domainobjects.Role"/-->
+            </Context>
+        ]]></echo>
+    </target>
+
+    <target name="tomcat.init" depends="webapp">
+        <property name="tomcat.config-file" value="tools/tomcat/tomcat.properties"/>
+        <fail message="Tomcat manager not configured (could not read ${tomcat.config-file}).">
+            <condition>
+                <not><available file="${tomcat.config-file}"/></not>
+            </condition>
+        </fail>
+        <property file="${tomcat.config-file}"/>
+
+        <property name="webapp.context-file" value="${basedir}/tools/tomcat/context.xml"/>
+
+        <taskdef file="tools/tomcat/tomcatTasks.properties">
+            <classpath>
+                <path refid="cp.tomcat.common"/>
+                <path refid="cp.tomcat.server"/>
+            </classpath>
+        </taskdef>
+    </target>
+
+    <target name="tomcat.deploy" depends="tomcat.init, webapp.create-context"
+            description="Deploy to local Tomcat install for development">
+        <deploy url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            config="${webapp.context-file}"
+            path="${tomcat.deploy-path}"
+            />
+    </target>
+
+    <target name="tomcat.undeploy" depends="tomcat.init" description="Remove from local Tomcat install">
+        <undeploy url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            path="${tomcat.deploy-path}"
+            />
+    </target>
+
+    <target name="tomcat.redeploy" depends="tomcat.undeploy, tomcat.deploy"
+            description="Replace application in local Tomcat install (required for some configuration changes)"/>
+
+    <target name="tomcat.reload" depends="tomcat.init" description="Reload running application instance">
+        <reload url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            path="${tomcat.deploy-path}"
+            />
+    </target>
+
+    <target name="tomcat.start" depends="tomcat.init" description="Start previously deployed instance">
+        <start url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            path="${tomcat.deploy-path}"
+            />
+    </target>
+
+    <target name="tomcat.stop" depends="tomcat.init" description="Stop running instance">
+        <stop url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            path="${tomcat.deploy-path}"
+            />
+    </target>
+
+    <target name="tomcat.list" depends="tomcat.init">
+        <list url="${tomcat.manager.url}"
+            username="${tomcat.username}"
+            password="${tomcat.password}"
+            />
+    </target>
 
 </project>
