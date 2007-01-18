@@ -6,14 +6,12 @@
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="standard" page="standard.jsp">
         <pattern>/pages/*</pattern>
+        <pattern>/public/*</pattern>
     </decorator>
 
     <decorator name="tabbedflow" page="tabbedflow.jsp">
-        <pattern>/pages/createAdverseEvent</pattern>
-    </decorator>
-    
-    <decorator name="tabbedflow" page="tabbedflow.jsp">
-        <pattern>/pages/createParticipant</pattern>
+        <pattern>/pages/ae/*</pattern>
+        <pattern>/pages/participant/create</pattern>
     </decorator>
 
     <excludes>

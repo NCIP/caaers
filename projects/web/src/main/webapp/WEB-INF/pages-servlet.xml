@@ -9,7 +9,7 @@
     >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-	<bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="location"><value>/WEB-INF/special-views.xml</value></property>
     </bean>
 
@@ -29,19 +29,68 @@
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
         <property name="interceptors">
             <list>
-                <ref bean="loginCheckInterceptor"/>
+                <!--<ref bean="loginCheckInterceptor"/>-->
+                <ref local="sectionInterceptor"/>
             </list>
         </property>
     </bean>
     
+    <bean id="urlResolver" class="gov.nih.nci.cabig.caaers.tools.spring.BeanNameControllerUrlResolver">
+        <property name="servletName"><value>pages</value></property>
+    </bean>
+
     <bean id="loginCheckInterceptor" class="gov.nih.nci.cabig.caaers.tools.accesscontrol.LoginCheckInterceptor"/>
+
+    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
+        <property name="sections">
+            <list>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Adverse Events</value></property>
+                    <property name="pathMapping"><value>/ae/**</value></property>
+                    <property name="mainController"><value>createAdverseEventController</value></property>
+                    <property name="tasks">
+                        <list>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
+                                <property name="displayName"><value>Enter AE</value></property>
+                                <property name="linkName"><value>createAdverseEventController</value></property>
+                            </bean>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
+                                <property name="displayName"><value>Search AEs</value></property>
+                                <property name="linkName"><value>aesNotImplementedController</value></property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Studies</value></property>
+                    <property name="pathMapping"><value>/study/**</value></property>
+                    <property name="mainController"><value>studyController</value></property>
+                </bean>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Participants</value></property>
+                    <property name="pathMapping"><value>/participant/**</value></property>
+                    <property name="mainController"><value>createParticipantController</value></property>
+                </bean>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Reports</value></property>
+                    <property name="pathMapping"><value>/report/**</value></property>
+                    <property name="mainController"><value>reportsNotImplementedController</value></property>
+                </bean>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Administration</value></property>
+                    <property name="pathMapping"><value>/admin/**</value></property>
+                    <property name="mainController"><value>adminNotImplementedController</value></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
     
     <!--  Create Participant Workflow -->
-    <bean name="/createParticipant" id="CreateParticipant" autowire="byName" 
+    <bean name="/participant/create" id="createParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.CreateParticipantController" >
     </bean>
     
@@ -73,11 +122,11 @@
 	    </property>
     </bean>
     
-    <bean name="/createStudy" id="studyController" autowire="byName"
+    <bean name="/study/create" id="studyController" autowire="byName"
           class="gov.nih.nci.cabig.caaers.web.StudyController">
         <property name="formView"><value>createStudy</value></property>
         <property name="successView"><value>studySuccess</value></property>
-    </bean>    
+    </bean>
 
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
     
@@ -86,7 +135,36 @@
         <property name="targetView"><value>welcome</value></property>
     </bean> -->
 
-    <bean name="/createAdverseEvent" id="createAdverseEvent" autowire="byType"
+    <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.CreateAdverseEventController"/>
 
+    <bean name="/help" id="helpController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
+
+    <bean name="/ae/notImplemented" id="aesNotImplementedController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
+
+    <bean name="/study/notImplemented" id="studiesNotImplementedController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
+
+    <bean name="/participant/notImplemented" id="participantsNotImplementedController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
+
+    <bean name="/report/notImplemented" id="reportsNotImplementedController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
+
+    <bean name="/admin/notImplemented" id="adminNotImplementedController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>standardNotImplemented</value></property>
+    </bean>
 </beans>

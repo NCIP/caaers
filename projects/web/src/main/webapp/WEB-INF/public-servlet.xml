@@ -15,7 +15,7 @@
         </property>
     </bean>
 
-	<bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="location"><value>/WEB-INF/special-views.xml</value></property>
     </bean>
     
@@ -33,5 +33,8 @@
         <property name="viewName"><value>internal-welcome</value></property>
     </bean>    
 
-              
+    <bean name="/css/common-images"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>css-js/common-images.css</value></property>
+    </bean>
 </beans>
