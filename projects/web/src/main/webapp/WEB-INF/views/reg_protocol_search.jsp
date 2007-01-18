@@ -10,7 +10,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>ca AERS</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -32,46 +31,35 @@ function doNothing(){
 	<tr valign="middle">
 
 		<td class="right"><img src="images/topDivider.gif" width="2"
-			height="20" align="absmiddle" class="divider"><a href="logOff">Log
-		Off</a></td>
+			height="20" align="absmiddle" class="divider"></td>
 	</tr>
 </table>
-<!-- TOP NAVIGATION ENDS HERE -->
-<!-- SUB NAV STARTS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-	id="subNav">
-	<tr>
-		<td width="99%" valign="middle" class="welcome">Welcome, User
-		Name</td>
-		<td valign="middle" class="right"><a href="help">Help</a></td>
-	</tr>
-</table>
+
 <!-- SUB NAV ENDS HERE -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td class="display">
+		<td>
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0"
 					class="tabs">
 					<tr>
-						<td width="100%" id="tabDisplay"><span class="current">
-						<img src="images/tabWhiteL.gif" width="3" height="16"
-							align="absmiddle"> <b>1. Select Study</b> <img
-							src="images/tabWhiteR.gif" width="3" height="16"
-							align="absmiddle"> </span><span class="tab"><img
-							src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-						2. Select Patient <img src="images/tabGrayR.gif" width="3"
-							height="16" align="absmiddle"><img
-							src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-						3. Review and Submit <img src="images/tabGrayR.gif" width="3"
-							height="16" align="absmiddle"></span></td>
+						<td width="100%" id="tabDisplay">
+						<span class="current">
+							<img src="images/tabWhiteL.gif" width="3" height="16" align="absmiddle"> 
+							<b>1. Select Study</b> 
+							<img src="images/tabWhiteR.gif" width="3" height="16" align="absmiddle"> 
+						</span>
+						<span class="tab">
+							<img src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
+							2. Select Patient&nbsp;&nbsp;&nbsp;&nbsp; 
+							<img src="images/tabGrayR.gif" width="3" height="16" align="absmiddle">
+							<img src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
+							3. Review and Submit 
+							<img src="images/tabGrayR.gif" width="3" height="16" align="absmiddle">
+						</span></td>
 						<td><img src="images/spacer.gif" width="7" height="1"></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="tabBotL"><img src="images/spacer.gif"
-							width="1" height="7"></td>
 					</tr>
 				</table>
 				</td>

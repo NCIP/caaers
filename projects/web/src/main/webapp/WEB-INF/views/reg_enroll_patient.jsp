@@ -85,7 +85,7 @@ function submitPage(){
 					<tr>
 						<!-- TITLE STARTS HERE -->
 						<td width="99%" height="43" valign="middle" id="title"><a
-							href="createparticipant.do?url=register.do&studySiteId=${studySiteId }">Create
+							href="/caaers/pages/participant/create?studySiteId=${studySiteId }">Create
 						new Participant for Registration</a> or search for an existing
 						participant.</td>
 

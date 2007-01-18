@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -24,31 +23,13 @@ function submitPage(s){
 </head>
 <body>
 
-<!-- TOP NAVIGATION STARTS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" id="topNav">
-	<tr valign="middle">
-		<td>Registration | Study | Participant | Reports | <a href="logOff">LogOff</a></td>
-	</tr>
-</table>
-<!-- TOP NAVIGATION ENDS HERE -->
-
-
-<!-- SUB NAV STARTS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0" id="subNav">
-	<tr>
-		<td width="99%" valign="middle">&nbsp;</td>
-		<td valign="middle" class="right"><a href="help">Help</a></td>
-	</tr>
-</table>
-<!-- SUB NAV ENDS HERE -->
-
 <!-- MAIN BODY STARTS HERE -->
 <div class="workArea">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="titleArea">
 	<tr>
 		<!-- TITLE STARTS HERE -->
-		<td width="99%" height="43" valign="middle" id="title">Welcome User</td>
+		<td width="99%" height="43" valign="middle" id="title"></td>
 		<!-- TITLE ENDS HERE -->
 	</tr>
 </table>
@@ -56,11 +37,8 @@ function submitPage(s){
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<form:form id="searchForm" name="searchForm" method="post">
 		<form:hidden path="searchCategory" />	
-		<%--<tr><!-- CURRENT PROTOCOL/Subject TITLE STARTS HERE -->
-			<!-- <td id="current">Search</td>-->
-			<!-- CURRENT PROTOCOL/Subject TITLE ENDS HERE --></tr>--%>
 		<tr>
-			<td class="display"><!-- TABS LEFT START HERE -->
+			<td><!-- TABS LEFT START HERE -->
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="50%">
@@ -140,7 +118,6 @@ function submitPage(s){
 		</tr>
 	</form:form>
 </table>
-<div id="copyright"></div>
 </div>
 <!-- MAIN BODY ENDS HERE -->
 </body>

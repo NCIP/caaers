@@ -111,9 +111,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
         if(request.getParameter("studySiteId")!=null){
 			log.debug("Parameters found as.."+request.getParameter("studySiteId"));
 			studySite=studySiteDao.getById(Integer.parseInt(request.getParameter("studySiteId")));
+			Study study = studySite.getStudy();
+			study.getStudySites().get(0).getId(); // this code is to initialize object 
 			
-			participantCommand.getStudyParticipantAssignment().setStudySite(studySite);
-			participantCommand.getStudyParticipantAssignment().setDateOfEnrollment(new Date());
+			String[ ] studySiteArray = new String[1];
+			studySiteArray[0] = request.getParameter("studySiteId");
+			participantCommand.setStudySiteArray(studySiteArray);
+			participantCommand.getStudies().add(study);
+			//participantCommand.getStudyParticipantAssignment().setStudySite(studySite);
+			//participantCommand.getStudyParticipantAssignment().setDateOfEnrollment(new Date());
 		}
 		return participantCommand;
     }
