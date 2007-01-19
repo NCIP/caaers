@@ -35,6 +35,11 @@ public enum Attribution implements CodedEnum {
         return name();
     }
 
+    // ditto
+    public String getString() {
+        return toString();
+    }
+
     public String toString() {
         return toStringHelper(this);
     }
