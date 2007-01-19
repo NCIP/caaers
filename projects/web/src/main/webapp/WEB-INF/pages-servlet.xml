@@ -122,10 +122,10 @@
 	    </property>
     </bean>
     
-    <bean name="/study/create" id="studyController" autowire="byName"
+    <bean name="/study/create" id="createStudyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.StudyController">
-        <property name="formView"><value>createStudy</value></property>
-        <property name="successView"><value>studySuccess</value></property>
+    <!--  <property name="formView"><value>createStudy</value></property>
+        <property name="successView"><value>studySuccess</value></property> -->
     </bean>
 
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
