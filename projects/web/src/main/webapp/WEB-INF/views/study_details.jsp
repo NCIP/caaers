@@ -109,7 +109,7 @@ function validatePage(){
 									</form:select></td> 
 							 </tr> 
 								
-							<!-- 	<div class="label"><label for="diseaseCode">Disease
+							<%-- 	<div class="label"><label for="diseaseCode">Disease
 									Code:</label></div>
 						            <div class="value" align="right">
 					                <form:select path="diseaseCode">
@@ -117,7 +117,7 @@ function validatePage(){
 											itemValue="code"/>
 									</form:select></td>
             					</div>
-        						</div> -->
+        						</div> --%>
 								
 							 <tr>
 									<td class="label"><span class="red">*</span><em></em><strong>Disease
@@ -128,14 +128,14 @@ function validatePage(){
 									</form:select></td>
 							</tr> 
 								
-							<!-- <div class="label"><label for="monitorCode">Monitor Code:</label></div>
+							<%-- <div class="label"><label for="monitorCode">Monitor Code:</label></div>
 						            <div class="value" align="right">
 					                <form:select path="monitorCode">
 										<form:options items="${monitorCodeRefData}" itemLabel="desc"
 											itemValue="code"/>
 									</form:select></td>
             					</div>
-        						</div> -->
+        						</div> --%>
         						
 							 <tr>
 									<td class="label"><em></em>Monitor Code:</td>
@@ -145,7 +145,7 @@ function validatePage(){
 									</form:select></td>
 							</tr> 
 
-							<!-- 	<div class="label"><label for="phaseCode">Phase
+							<%-- 	<div class="label"><label for="phaseCode">Phase
 									Code:</label></div>
 						            <div class="value" align="right">
 					                <form:select path="phaseCode">
@@ -153,32 +153,13 @@ function validatePage(){
 											itemValue="code"/>
 									</form:select></td>
             					</div>
-        						</div> -->
+        						</div> --%>
         						
 								<tr>
 									<td class="label"><span class="red">*</span><em></em>Phase
 									Code:</td>
 									<td><form:select path="phaseCode">
 										<form:options items="${phaseCodeRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-								</tr> 
-<!-- 
-								<div class="label"><label for="sponsorCode">Sponsor
-									Code:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="sponsorCode">
-										<form:options items="${sponsorCodeRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div>
-     -->   						
-								 <tr>
-									<td class="label"><span class="red">*</span><em></em>Sponsor
-									Code:</td>
-									<td><form:select path="primarySponsorCode">
-										<form:options items="${primarySponsorCodeRefData}" itemLabel="desc"
 											itemValue="code" />
 									</form:select></td>
 								</tr> 
@@ -189,12 +170,12 @@ function validatePage(){
 						            <div class="value"><form:checkbox path="randomizedIndicator" /></div>
 						        </div> 
 						        
-						        <!-- 
+						        <%-- 
 								<tr>
 									<td class="label"><span class="red">*</span><em></em>Randomized
 									Indicator</td>
 									<td><form:checkbox path="randomizedIndicator" /></td>
-								</tr> --> 
+								</tr> --%> 
 								
 								 <div class="row">
 						            <div class="label"><form:label path="multiInstitutionIndicator">Multi
@@ -202,25 +183,25 @@ function validatePage(){
 						            <div class="value"><form:checkbox path="multiInstitutionIndicator" /></div>
 						        </div> 
 						        
-						        <!-- 
+						        <%-- 
 						        <tr>
 									<td class="label"><span class="red">*</span><em></em>Multi
 									Institution:</td>
 									<td><form:checkbox path="multiInstitutionIndicator" /></td>
-								</tr> --> 
+								</tr> --%> 
 								
 								<div class="row">
 						            <div class="label"><form:label path="blindedIndicator">Blinded Indicator:</form:label></div>
 						            <div class="value"><form:checkbox path="blindedIndicator" /></div>
 						        </div>
 						        
-						        <!-- 
+						        <%--
 								<tr>
 									<td class="label">Blinded Indicator:</td>
 									<td><form:checkbox path="blindedIndicator" /></td>
-								</tr> --> 
+								</tr> --%> 
 
-<!-- 
+<%-- 
 								<div class="label"><label for="type">Type Code:</label></div>
 						            <div class="value" align="right">
 					                <form:select path="type">
@@ -229,15 +210,15 @@ function validatePage(){
 									</form:select></td>
             					</div>
         						</div>
--->
+--%>
 								
-								<!-- <tr>
+								<%-- <tr>
 									<td class="label"><span class="red">*</span><em></em>Type Code:</td>
 									<td><form:select path="type">
 										<form:options items="${typeRefData}" itemLabel="desc"
 											itemValue="code" />
 									</form:select></td>
-								</tr> -->
+								</tr> --%>
 
 							</table>
 							</td>
