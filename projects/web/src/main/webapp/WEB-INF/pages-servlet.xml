@@ -64,7 +64,7 @@
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Studies</value></property>
                     <property name="pathMapping"><value>/study/**</value></property>
-                    <property name="mainController"><value>studyController</value></property>
+                    <property name="mainController"><value>createStudyController</value></property>
                 </bean>
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Participants</value></property>
