@@ -57,12 +57,23 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         flow.addTab(tab1);
         
         Tab tab2 = new Tab("Study Indicator", "Indicator", "study_identifiers");
-        
+                
         flow.addTab(tab2);
         
-        Tab tab3 = new Tab("Review and Submit", "Review", "study_reviewsummary");
-        
+        Tab tab3 =  new Tab("Study Sites", "sites", "study_studysite") {
+            
+            	public Map<String, Object> referenceData() {
+                    Map<String, Object> refdata = super.referenceData();                    
+                    refdata.put("sitesRefData", getSites());                    
+        	  		return refdata;
+               
+            }        	
+        };
         flow.addTab(tab3);
+        
+        Tab tab4 = new Tab("Review and Submit", "Review", "study_reviewsummary");
+        
+        flow.addTab(tab4);
         
         /*setFlow(new Flow("Create Study", Arrays.asList(            
             new Tab(0, "Study Details", "Details", "study_details") {
