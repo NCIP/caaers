@@ -59,7 +59,7 @@ function validatePage(){
 						id="table1">
 						<tr>
 							<td class="label">Short Title:</td>
-							<td class="label">${command.shortTitleText}</td>
+							<td class="label">${command.shortTitle}</td>
 						</tr>
 						<tr>
 							<td class="label">Target Accrual Number:</td>
@@ -73,10 +73,10 @@ function validatePage(){
 							<td class="label">Disease Code:</td>
 							<td>${command.diseaseCode}</td>
 						</tr>
-						<tr>
+					<!-- 	<tr>
 							<td class="label">Disease Type:</td>
 							<td>${command.type}</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td class="label">Monitor Code:</td>
 							<td>${command.monitorCode}</td>
