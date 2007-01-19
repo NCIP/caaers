@@ -37,7 +37,8 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         setCommandClass(Study.class);
         
         //TODO: this is a temp one. need to fix it.
-        Flow<Study> flow = new Flow<Study>("Create Study");        
+        Flow<Study> flow = new Flow<Study>("Create Study");       
+        
         Tab tab1 =  new Tab("Study Details", "Details", "study_details") {
             public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();                    
@@ -74,6 +75,8 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         Tab tab4 = new Tab("Review and Submit", "Review", "study_reviewsummary");
         
         flow.addTab(tab4);
+        
+        setFlow(flow);
         
         /*setFlow(new Flow("Create Study", Arrays.asList(            
             new Tab(0, "Study Details", "Details", "study_details") {
