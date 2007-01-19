@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@attribute name="title" required="true"%>
 <%@attribute name="id"%>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" <c:if test="${not empty id}">id="${id}"</c:if>>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="division" <c:if test="${not empty id}">id="${id}"</c:if>>
     <tr>
         <td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabs">
