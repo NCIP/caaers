@@ -46,7 +46,7 @@ public class Study extends AbstractDomainObject implements Serializable {
 	private String phaseCode;					
 	private String primarySponsorCode;	
 	private String status;
-	private String type;
+	// private String type;
 	
 	private Integer targetAccrualNumber;
 			  	
@@ -74,17 +74,17 @@ public class Study extends AbstractDomainObject implements Serializable {
 		return studySites;
 	}
 	
-//	@OneToMany
-//    @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
-//    @JoinColumn(name = "STU_ID")
-//	public List<Identifier> getIdentifiers() {
-//		return identifiers;
-//	}
-//
-//	public void setIdentifiers(List<Identifier> identifiers) {
-//		this.identifiers = identifiers;
-//	}
-//
+	@OneToMany
+    @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+    @JoinColumn(name = "STU_ID")
+ 	public List<Identifier> getIdentifiers() {
+		return identifiers;
+	}
+
+	public void setIdentifiers(List<Identifier> identifiers) {
+		this.identifiers = identifiers;
+	}
+
 	public void setStudySites(List<StudySite> studySites) {
 		this.studySites = studySites;
 	}	
@@ -219,7 +219,7 @@ public class Study extends AbstractDomainObject implements Serializable {
 		result = PRIME * result + ((status == null) ? 0 : status.hashCode());
 		result = PRIME * result + ((studySites == null) ? 0 : studySites.hashCode());
 		result = PRIME * result + targetAccrualNumber;
-		result = PRIME * result + ((type == null) ? 0 : type.hashCode());
+		//result = PRIME * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -274,11 +274,11 @@ public class Study extends AbstractDomainObject implements Serializable {
 			return false;
 		if (targetAccrualNumber != other.targetAccrualNumber)
 			return false;
-		if (type == null) {
+	/*	if (type == null) {
 			if (other.type != null)
 				return false;
 		} else if (!type.equals(other.type))
-			return false;
+			return false; */
 		return true;
 	}
 }
