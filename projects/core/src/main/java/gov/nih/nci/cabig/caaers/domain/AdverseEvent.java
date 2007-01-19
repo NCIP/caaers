@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
@@ -34,7 +35,7 @@ public class AdverseEvent extends AbstractDomainObject {
     private Boolean expected;
 
     private AdverseEventReport report;
-    private Timestamp detectionDate;
+    private Date detectionDate;
 
     ////// BOUND PROPERTIES
 
@@ -84,11 +85,11 @@ public class AdverseEvent extends AbstractDomainObject {
         this.attribution = attribution;
     }
 
-    public Timestamp getDetectionDate() {
+    public Date getDetectionDate() {
         return detectionDate;
     }
 
-    public void setDetectionDate(Timestamp detectionDate) {
+    public void setDetectionDate(Date detectionDate) {
         this.detectionDate = detectionDate;
     }
 
