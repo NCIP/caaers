@@ -206,8 +206,8 @@ public class Study extends AbstractDomainObject implements Serializable {
 //    	return 1;
 //	}
 
-	@Override
-	public int hashCode() {
+	/*@Override
+	 public int hashCode() {
 		final int PRIME = 31;
 		int result = super.hashCode();
 		result = PRIME * result + ((diseaseCode == null) ? 0 : diseaseCode.hashCode());		
@@ -221,7 +221,7 @@ public class Study extends AbstractDomainObject implements Serializable {
 		result = PRIME * result + targetAccrualNumber;
 		//result = PRIME * result + ((type == null) ? 0 : type.hashCode());
 		return result;
-	}
+	} 
 
 	@Override
 	public boolean equals(Object obj) {
@@ -274,11 +274,11 @@ public class Study extends AbstractDomainObject implements Serializable {
 			return false;
 		if (targetAccrualNumber != other.targetAccrualNumber)
 			return false;
-	/*	if (type == null) {
+		if (type == null) {
 			if (other.type != null)
 				return false;
 		} else if (!type.equals(other.type))
-			return false; */
+			return false; 
 		return true;
-	}
+	} */
 }

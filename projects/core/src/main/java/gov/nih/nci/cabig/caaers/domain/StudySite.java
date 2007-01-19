@@ -129,7 +129,7 @@ public class StudySite extends AbstractDomainObject {
 
 	//////OBJECT METHODS
 
-    public boolean equals(Object obj) {
+   /* public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof StudySite)) return false;
         final StudySite studySite = (StudySite) obj;
@@ -143,8 +143,8 @@ public class StudySite extends AbstractDomainObject {
     public int hashCode() {
         int result;
         result = (site != null ? site.hashCode() : 0);
-        result = 29 * result + (study != null ? study.hashCode() : 0);
+        //result = 29 * result + (study != null ? study.hashCode() : 0);
         result = 29 * result + (studyParticipantAssignments != null ? studyParticipantAssignments.hashCode() : 0);
         return result;
-    }
+    } */
 }
