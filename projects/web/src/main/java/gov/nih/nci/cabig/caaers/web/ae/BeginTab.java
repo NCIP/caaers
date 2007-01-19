@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
 */
-class BeginTab extends AeTab {
+public class BeginTab extends AeTab {
     public BeginTab() {
         super("Select participant and study", "Begin", "ae/selectAssignment");
     }

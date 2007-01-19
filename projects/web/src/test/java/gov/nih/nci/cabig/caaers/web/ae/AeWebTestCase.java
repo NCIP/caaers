@@ -9,7 +9,7 @@ import org.easymock.EasyMock;
 /**
  * @author Rhett Sutphin
  */
-public class AeWebTestCase extends WebTestCase {
+public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateAdverseEventCommand command;
 

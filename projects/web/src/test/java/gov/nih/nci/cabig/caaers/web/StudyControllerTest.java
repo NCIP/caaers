@@ -14,6 +14,7 @@ public class StudyControllerTest extends WebTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         studyDao = registerMockFor(StudyDao.class);
+        siteDao = registerDaoMockFor(SiteDao.class);
         controller.setStudyDao(studyDao);
 		controller.setSiteDao(siteDao);
     }
@@ -29,10 +30,7 @@ public class StudyControllerTest extends WebTestCase {
         request.addParameter("shortTitle", "Scott");
         request.addParameter("longTitle", "Male");
         request.addParameter("description", "Description");
-        request.addParameter("principalInvestigatorCode", "Principal Investigator Code");
-        request.addParameter("principalInvestigatorName", "Principal Investigator Name");
         request.addParameter("primarySponsorCode", "Primary Sponsor Code");
-        request.addParameter("primarySponsorName", "Primary Sponsor Name");
         request.addParameter("phaseCode", "PhaseCode");
         request.addParameter("reviewDate", "2006-01-01");
         

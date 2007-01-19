@@ -14,7 +14,7 @@ import org.springframework.web.bind.EscapedErrors;
 /**
  * @author Rhett Sutphin
  */
-public class AeTabTestCase extends AeWebTestCase {
+public abstract class AeTabTestCase extends AeWebTestCase {
     protected Errors errors;
 
     protected void setUp() throws Exception {

@@ -5,8 +5,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventCommand;
@@ -17,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.Date;
+import java.sql.Timestamp;
+import java.beans.PropertyEditor;
 
 /**
  * @author Rhett Sutphin
@@ -54,7 +54,8 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
-        ControllerTools.registerDomainObjectEditor(binder, "ae.ctcTerm", ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, "aeReport.primaryAdverseEvent.ctcTerm", ctcTermDao);
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
     }
 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
@@ -69,6 +70,8 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
 
     public void setCtcDao(CtcDao ctcDao) {
         this.ctcDao = ctcDao;
+        // TODO: this is a dumb, short-term solution
+        ((BasicsTab) getFlow().getTab(1)).setCtcDao(ctcDao);
     }
 
     public void setParticipantDao(ParticipantDao participantDao) {
@@ -81,25 +84,5 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
 
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
-    }
-
-    ////// INNER CLASSES
-
-    private class BasicsTab extends AeTab {
-        public BasicsTab() {
-            super("Enter basic event information", "Basics", "ae/enterBasic");
-        }
-
-        public Map<String, Object> referenceData() {
-            Map<String, Object> refdata = super.referenceData();
-            refdata.put("ctcVersions", ctcDao.getAll());
-            refdata.put("grades", Grade.values());
-            refdata.put("attributions", Attribution.values());
-            return refdata;
-        }
-
-        public boolean isAllowDirtyForward() {
-            return false;
-        }
     }
 }

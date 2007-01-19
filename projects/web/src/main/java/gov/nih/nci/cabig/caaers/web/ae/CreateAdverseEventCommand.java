@@ -4,13 +4,14 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 
 /**
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventCommand {
-    private AdverseEvent adverseEvent;
+    private AdverseEventReport aeReport;
 
     private Participant participant;
     private Study study;
@@ -19,7 +20,8 @@ public class CreateAdverseEventCommand {
 
     public CreateAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao) {
         this.assignmentDao = assignmentDao;
-        adverseEvent = new AdverseEvent();
+        aeReport = new AdverseEventReport();
+        aeReport.setPrimaryAdverseEvent(new AdverseEvent());
     }
 
     ////// LOGIC
@@ -34,8 +36,8 @@ public class CreateAdverseEventCommand {
 
     ////// BOUND PROPERTIES
 
-    public AdverseEvent getAe() {
-        return adverseEvent;
+    public AdverseEventReport getAeReport() {
+        return aeReport;
     }
 
     public Participant getParticipant() {
