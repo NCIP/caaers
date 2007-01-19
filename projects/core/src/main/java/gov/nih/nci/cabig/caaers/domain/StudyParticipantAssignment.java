@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -34,6 +36,7 @@ public class StudyParticipantAssignment extends AbstractDomainObject {
     private Participant participant;
     private StudySite studySite;
     private Date dateOfEnrollment;
+    private List<AdverseEventReport> aeReports;
 
     /*
      * Constructor
@@ -78,6 +81,15 @@ public class StudyParticipantAssignment extends AbstractDomainObject {
     @Column(name = "date_of_enrollment")
     public Date getDateOfEnrollment() {
         return dateOfEnrollment;
+    }
+
+    @OneToMany(mappedBy = "assignment")
+    public List<AdverseEventReport> getAeReports() {
+        return aeReports;
+    }
+
+    public void setAeReports(List<AdverseEventReport> aeReports) {
+        this.aeReports = aeReports;
     }
 
     ////// OBJECT METHODS

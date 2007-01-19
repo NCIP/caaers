@@ -26,4 +26,12 @@
         participant_id="-5"
         date_of_enrollment="2004-09-30"
         />
+    <AE_REPORTS
+        id="-99"
+        assignment_id="-13"
+        />
+    <AE_REPORTS
+        id="-100"
+        assignment_id="-13"
+        />
 </dataset>

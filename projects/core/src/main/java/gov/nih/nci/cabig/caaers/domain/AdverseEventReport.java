@@ -59,7 +59,7 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     public void setPrimaryAdverseEvent(AdverseEvent primaryAdverseEvent) {
         this.primaryAdverseEvent = primaryAdverseEvent;
-        primaryAdverseEvent.setReport(this);
+        if (primaryAdverseEvent != null) primaryAdverseEvent.setReport(this);
     }
 
     // This is annotated this way so that the IndexColumn will work with
