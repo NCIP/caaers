@@ -1,15 +1,17 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -27,152 +29,255 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class Study extends AbstractDomainObject implements Serializable {
+	
+	private Boolean blindedIndicator;
+	private Boolean multiInstitutionIndicator;
+	private Boolean randomizedIndicator;	
+	
+	// A name or abbreviated title by which the document is known
+	private String shortTitle;
+	private String longTitle;	
+	private String description;
+	private String precis;
+	
+	private String diseaseCode;		
+	private String monitorCode;		
+	private String phaseCode;					
+	private String primarySponsorCode;	
+	private String status;
+	private String type;
+	
+	private int targetAccrualNumber;
+			  	
+	private List<StudySite> studySites = new ArrayList<StudySite>();;			  
+	private List<Identifier> identifiers = new ArrayList<Identifier>();
+	
+	/// LOGIC	
+	
+	public void addStudySite(StudySite studySite)
+	{
+		studySites.add(studySite);
+		studySite.setStudy(this);
+	}
+	
+	public void addIdentifier(Identifier identifier)
+	{
+		identifiers.add(identifier);
+	}
+	
+	/// BEAN PROPERTIES
+		
+	@OneToMany (mappedBy="study", fetch=FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+	public List<StudySite> getStudySites() {
+		return studySites;
+	}
+	
+	@OneToMany
+    @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+    @JoinColumn(name = "STU_ID")	 	    
+	public List<Identifier> getIdentifiers() {
+		return identifiers;
+	}
 
-    /**
-     * For Backward compatibility.
-     */
-    private static final long serialVersionUID = -2650610294671313885L;
+	public void setIdentifiers(List<Identifier> identifiers) {
+		this.identifiers = identifiers;
+	}
 
-    private Boolean multiInstitutionIndicator;
+	public void setStudySites(List<StudySite> studySites) {
+		this.studySites = studySites;
+	}	
+	
+	public Boolean getBlindedIndicator() {
+		return blindedIndicator;
+	}
 
-    private String shortTitle;
+	public void setBlindedIndicator(Boolean blindedIndicator) {
+		this.blindedIndicator = blindedIndicator;
+	}
+	
+	public Boolean getMultiInstitutionIndicator() {
+		return multiInstitutionIndicator;
+	}
 
-    private String longTitle;
+	public void setMultiInstitutionIndicator(Boolean multiInstitutionIndicator) {
+		this.multiInstitutionIndicator = multiInstitutionIndicator;
+	}
+	
+	public Boolean getRandomizedIndicator() {
+		return randomizedIndicator;
+	}
 
-    private String description;
+	public void setRandomizedIndicator(Boolean randomizedIndicator) {
+		this.randomizedIndicator = randomizedIndicator;
+	}
 
-    private String principalInvestigatorCode;
+	public String getDescription() {
+		return description;
+	}
 
-    private String principalInvestigatorName;
+	public void setDescription(String descriptionText) {
+		this.description = descriptionText;
+	}
 
-    private String primarySponsorCode;
+	public String getDiseaseCode() {
+		return diseaseCode;
+	}
 
-    private String primarySponsorName;
+	public void setDiseaseCode(String diseaseCode) {
+		this.diseaseCode = diseaseCode;
+	}
 
-    private String phaseCode;
+	public String getLongTitle() {
+		return longTitle;
+	}
 
-    private Date reviewDate;
+	public void setLongTitle(String longTitleText) {
+		this.longTitle = longTitleText;
+	}
 
-    private List<StudySite> studySites = new LinkedList<StudySite>();
+	public String getMonitorCode() {
+		return monitorCode;
+	}
 
-    ////// LOGIC
+	public void setMonitorCode(String monitorCode) {
+		this.monitorCode = monitorCode;
+	}
 
-    public void addStudySite(StudySite studySite) {
-        getStudySites().add(studySite);
-        studySite.setStudy(this);
-    }
+	public String getPhaseCode() {
+		return phaseCode;
+	}
 
-    ////// BEAN PROPERTIES
+	public void setPhaseCode(String phaseCode) {
+		this.phaseCode = phaseCode;
+	}
 
-    public String getShortTitle() {
-        return shortTitle;
-    }
+	public String getPrecis() {
+		return precis;
+	}
 
-    public void setShortTitle(String shortTitle) {
-        this.shortTitle = shortTitle;
-    }
+	public void setPrecis(String precisText) {
+		this.precis = precisText;
+	}
 
-    public String getPrincipalInvestigatorCode() {
-        return principalInvestigatorCode;
-    }
+	public String getShortTitle() {
+		return shortTitle;
+	}
 
-    public void setPrincipalInvestigatorCode(String investigatorCode) {
-        this.principalInvestigatorCode = investigatorCode;
-    }
+	public void setShortTitle(String shortTitleText) {
+		this.shortTitle = shortTitleText;
+	}
 
-    public String getPrincipalInvestigatorName() {
-        return principalInvestigatorName;
-    }
+	public String getPrimarySponsorCode() {
+		return primarySponsorCode;
+	}
 
-    public void setPrincipalInvestigatorName(String investigatorName) {
-        this.principalInvestigatorName = investigatorName;
-    }
+	public void setPrimarySponsorCode(String sponsorCode) {
+		this.primarySponsorCode = sponsorCode;
+	}
 
-    public String getPrimarySponsorCode() {
-        return primarySponsorCode;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setPrimarySponsorCode(String sponsorCode) {
-        this.primarySponsorCode = sponsorCode;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public String getPhaseCode() {
-        return phaseCode;
-    }
+	public int getTargetAccrualNumber() {
+		return targetAccrualNumber;
+	}
 
-    public void setPhaseCode(String phaseCode) {
-        this.phaseCode = phaseCode;
-    }
+	public void setTargetAccrualNumber(int targetAccrualNumber) {
+		this.targetAccrualNumber = targetAccrualNumber;
+	}
 
-    public String getPrimarySponsorName() {
-        return primarySponsorName;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setPrimarySponsorName(String sponsorName) {
-        this.primarySponsorName = sponsorName;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public Boolean isMultiInstitutionIndicator() {
-        return multiInstitutionIndicator;
-    }
+	public int compareTo(Study o) {
+     //TODO
+    	return 1;
+	}
 
-    public void setMultiInstitutionIndicator(Boolean multiInstitutionIndicator) {
-        this.multiInstitutionIndicator = multiInstitutionIndicator;
-    }
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = super.hashCode();
+		result = PRIME * result + ((diseaseCode == null) ? 0 : diseaseCode.hashCode());		
+		result = PRIME * result + ((identifiers == null) ? 0 : identifiers.hashCode());
+		result = PRIME * result + ((longTitle == null) ? 0 : longTitle.hashCode());
+		result = PRIME * result + ((monitorCode == null) ? 0 : monitorCode.hashCode());
+		result = PRIME * result + ((phaseCode == null) ? 0 : phaseCode.hashCode());
+		result = PRIME * result + ((primarySponsorCode == null) ? 0 : primarySponsorCode.hashCode());
+		result = PRIME * result + ((status == null) ? 0 : status.hashCode());
+		result = PRIME * result + ((studySites == null) ? 0 : studySites.hashCode());
+		result = PRIME * result + targetAccrualNumber;
+		result = PRIME * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
 
-    public Date getReviewDate() {
-        return reviewDate;
-    }
-
-    public void setReviewDate(Date reviewDate) {
-        this.reviewDate = reviewDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLongTitle() {
-        return longTitle;
-    }
-
-    public void setLongTitle(String longTitle) {
-        this.longTitle = longTitle;
-    }
-
-    @OneToMany(mappedBy = "study", cascade = CascadeType.ALL)
-    public List<StudySite> getStudySites() {
-        return studySites;
-    }
-
-    public void setStudySites(List<StudySite> studySites) {
-        this.studySites = studySites;
-    }
-    
-    public boolean equals(Object other) {
-        if(this == other) return true;
-        if(!(other instanceof Study) ) return false;
-        
-        final Study that = (Study) other;
-        
-        return (
-           (this.shortTitle != null && this.shortTitle.equals(that.getShortTitle())) &&
-           (this.multiInstitutionIndicator != null && this.multiInstitutionIndicator.equals(that.isMultiInstitutionIndicator())));
-   }
-
-   public int hashCode() {
-		int hashCode = 17;
-		hashCode = 37 * hashCode
-				+ ((this.shortTitle != null) ? this.shortTitle.hashCode() : 0);
-		hashCode = 37
-				* hashCode
-				+ ((this.multiInstitutionIndicator != null) ? this.multiInstitutionIndicator
-						.hashCode()
-						: 0);
-		return hashCode;
-	}    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Study other = (Study) obj;
+		if (diseaseCode == null) {
+			if (other.diseaseCode != null)
+				return false;
+		} else if (!diseaseCode.equals(other.diseaseCode))
+			return false;		
+		if (identifiers == null) {
+			if (other.identifiers != null)
+				return false;
+		} else if (!identifiers.equals(other.identifiers))
+			return false;
+		if (longTitle == null) {
+			if (other.longTitle != null)
+				return false;
+		} else if (!longTitle.equals(other.longTitle))
+			return false;
+		if (monitorCode == null) {
+			if (other.monitorCode != null)
+				return false;
+		} else if (!monitorCode.equals(other.monitorCode))
+			return false;
+		if (phaseCode == null) {
+			if (other.phaseCode != null)
+				return false;
+		} else if (!phaseCode.equals(other.phaseCode))
+			return false;
+		if (primarySponsorCode == null) {
+			if (other.primarySponsorCode != null)
+				return false;
+		} else if (!primarySponsorCode.equals(other.primarySponsorCode))
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		if (studySites == null) {
+			if (other.studySites != null)
+				return false;
+		} else if (!studySites.equals(other.studySites))
+			return false;
+		if (targetAccrualNumber != other.targetAccrualNumber)
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
 }
