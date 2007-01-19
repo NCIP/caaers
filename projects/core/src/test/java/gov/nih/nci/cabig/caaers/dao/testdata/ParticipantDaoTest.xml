@@ -26,25 +26,19 @@
         name="New Site"/>
     <STUDIES 
     	id="-2001" 
-    	principal_investigator_code="ICODE_101"
-    	principal_investigator_name="Investigator Name"
-    	multi_institution_indicator="false" 
+    	multi_institution_indicator="false"
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_101" 
-    	primary_sponsor_name="Sponsor Name"/>    
+    	primary_sponsor_code="SCODE_101"/>
     
     <STUDIES 
     	id="-2000" 
-    	principal_investigator_code="ICODE_100"
-    	principal_investigator_name="Investigator Name"
     	multi_institution_indicator="false" 
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_100" 
-    	primary_sponsor_name="Sponsor Name"/>
+    	primary_sponsor_code="SCODE_100"/>
     
     <STUDY_SITES
         id="-3001"
