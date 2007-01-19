@@ -3,24 +3,26 @@
         id="-100"
         instituitional_patient_number="P001"
         institution="Hospital"
-        study_participant_name="Dilbert"
         first_name="Dilbert"
         last_name="Scott"
         birth_date="2006-01-02"
         gender="Female"
         ethnicity="ethnicity"
-        race="race"/>
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
     <PARTICIPANTS
         id="-101"
         instituitional_patient_number="P002"
         institution="Hospital"
-        study_participant_name="Michael"
         first_name="Michael"
         last_name="Jordan"
         birth_date="2006-01-02"
         gender="Male"
         ethnicity="ethnicity"
-        race="race"/>
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
     <SITES
         id="-1001"
         name="New Site"/>
