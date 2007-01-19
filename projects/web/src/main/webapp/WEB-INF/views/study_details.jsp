@@ -61,21 +61,21 @@ function validatePage(){
 							<table width="400" border="0" cellspacing="0" cellpadding="0"
 								id="table1">
 								<div class="row">
-						            <div class="label"><form:label path="shortTitleText">Short Title:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="shortTitleText" rows="2" cols="30"/></div>
+						            <div class="label"><form:label path="shortTitle">Short Title:</form:label></div>
+						            <div class="value" align="right"><form:textarea path="shortTitle" rows="2" cols="30"/></div>
 						        </div>
 						        <div class="row">
-						            <div class="label"><form:label path="longTitleText"><span class="red">*</span><em></em>Long
+						            <div class="label"><form:label path="longTitle"><span class="red">*</span><em></em>Long
 									Title:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="longTitleText" rows="5" cols="30"/></div>
+						            <div class="value" align="right"><form:textarea path="longTitle" rows="5" cols="30"/></div>
 						        </div>
 						        <div class="row">
-						            <div class="label"><form:label path="precisText">Precis Text:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="precisText" rows="2" cols="30"/></div>
+						            <div class="label"><form:label path="precis">Precis Text:</form:label></div>
+						            <div class="value" align="right"><form:textarea path="precis" rows="2" cols="30"/></div>
 						        </div>
 						        <div class="row">
-						            <div class="label"><form:label path="descriptionText">Description Text:</form:label></div>
-						            <div class="value" algin="right"><form:textarea path="descriptionText" rows="5" cols="30"/></div>
+						            <div class="label"><form:label path="description">Description Text:</form:label></div>
+						            <div class="value" algin="right"><form:textarea path="description" rows="5" cols="30"/></div>
 						        </div>																								
 							</table>
 							</td>
@@ -177,8 +177,8 @@ function validatePage(){
 								 <tr>
 									<td class="label"><span class="red">*</span><em></em>Sponsor
 									Code:</td>
-									<td><form:select path="sponsorCode">
-										<form:options items="${sponsorCodeRefData}" itemLabel="desc"
+									<td><form:select path="primarySponsorCode">
+										<form:options items="${primarySponsorCodeRefData}" itemLabel="desc"
 											itemValue="code" />
 									</form:select></td>
 								</tr> 
@@ -231,13 +231,13 @@ function validatePage(){
         						</div>
 -->
 								
-								<tr>
+								<!-- <tr>
 									<td class="label"><span class="red">*</span><em></em>Type Code:</td>
 									<td><form:select path="type">
 										<form:options items="${typeRefData}" itemLabel="desc"
 											itemValue="code" />
 									</form:select></td>
-								</tr>
+								</tr> -->
 
 							</table>
 							</td>
