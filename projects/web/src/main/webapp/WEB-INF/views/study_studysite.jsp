@@ -52,8 +52,8 @@ function validatePage(){
 						id="table1">
 						<tr>
 							<td class="label"><span class="red">*</span><em></em>Choose HealthCare Site:</td>
-							<td><form:select path="studySites[0].healthcareSite">
-								<form:options items="${healthCareSitesRefData}" itemLabel="name" itemValue="id" />
+							<td><form:select path="studySites[0].site">
+								<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 								</form:select></td>
 						</tr>
 						<tr>
