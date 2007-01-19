@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -25,7 +25,11 @@ public class CreateAdverseEventCommand {
     ////// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
-        return assignmentDao.getAssignment(getParticipant(), getStudy());
+        if (getParticipant() != null && getStudy() != null) {
+            return assignmentDao.getAssignment(getParticipant(), getStudy());
+        } else {
+            return null;
+        }
     }
 
     ////// BOUND PROPERTIES

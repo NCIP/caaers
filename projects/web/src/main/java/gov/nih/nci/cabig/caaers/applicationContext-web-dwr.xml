@@ -10,5 +10,5 @@
 
 
     <bean id="createAeAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.CreateAdverseEventAjaxFacade"/>
+          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade"/>
 </beans>

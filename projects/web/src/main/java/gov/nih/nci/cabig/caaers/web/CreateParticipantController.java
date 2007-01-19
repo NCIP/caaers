@@ -31,7 +31,7 @@ import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
 
-public class CreateParticipantController extends AbstractTabbedFlowFormController {
+public class CreateParticipantController extends AbstractTabbedFlowFormController<NewParticipantCommand> {
     private static Log log = LogFactory.getLog(RegistrationController.class);
     private StudySiteDao studySiteDao;
     private StudyService studyService;
@@ -63,36 +63,30 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     
     public CreateParticipantController() {
         setCommandClass(NewParticipantCommand.class);
-        setFlow(new Flow("Create Participant", Arrays.asList(	
-            new Tab(0, "Enter Participant Information", "New Participant", "par/par_create_participant") {
-                public Map<String, Object> referenceData() {
-                    Map<String, Object> refdata = super.referenceData();
-                    Map<String, String> genders = new HashMap<String, String>();
-                    Map<String, String> sources  = new HashMap<String, String>();
-                    genders.put("Female", "Female");
-                    genders.put("Male", "Male");
-                    sources.put("Duke", "Duke");
-                    sources.put("NorthWestern","NorthWestern");
-                    refdata.put("genders", genders);
-                    refdata.put("sources", sources);
-                    refdata.put("action", "New");
-                    return refdata;
-                }
-            },
-            new Tab(1, "Choose Study", "Choose Study", "par/par_choose_study") {
-                public Map<String, Object> referenceData() {
-                    Map<String, Object> refdata = super.referenceData();
-                    refdata.put("searchType", getSearchType());
-                    return refdata;
-                }
-            },
-            new Tab(2, "Confirmation", "Confirmation", "par/par_confirmation") {
-                public Map<String, Object> referenceData() {
-                    Map<String, Object> refdata = super.referenceData();
-                    return refdata;
-                }
+        setFlow(new Flow<NewParticipantCommand>("Create Participant"));
+        getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
+            public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                Map<String, String> genders = new HashMap<String, String>();
+                Map<String, String> sources  = new HashMap<String, String>();
+                genders.put("Female", "Female");
+                genders.put("Male", "Male");
+                sources.put("Duke", "Duke");
+                sources.put("NorthWestern","NorthWestern");
+                refdata.put("genders", genders);
+                refdata.put("sources", sources);
+                refdata.put("action", "New");
+                return refdata;
             }
-        )));
+        });
+        getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {
+            public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                refdata.put("searchType", getSearchType());
+                return refdata;
+            }
+        });
+        getFlow().addTab(new Tab("Confirmation", "Confirmation", "par/par_confirmation"));
     }
     
     protected void initBinder(HttpServletRequest request,
@@ -251,5 +245,11 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		public void setDesc(String desc) {
 			this.desc = desc;
 		}
-	}	
+	}
+
+    private static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<NewParticipantCommand> {
+        public Tab(String longTitle, String shortTitle, String viewName) {
+            super(longTitle, shortTitle, viewName);
+        }
+    }
 }

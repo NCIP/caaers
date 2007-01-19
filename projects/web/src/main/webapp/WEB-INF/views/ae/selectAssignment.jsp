@@ -83,7 +83,7 @@
     </script>
     </head>
     <body>
-        <chrome:body title="${flow.name}: ${tab.shortTitle}">
+        <chrome:body title="${flow.name}: ${tab.longTitle}">
         <p id="instructions">
             In order to create or edit an AE or SAE, you need to first select a participant and a
             study. You may start with either one. Once you have selected one, the options
@@ -99,21 +99,21 @@
                     <input type="text" id="participant-input" value="${command.participant.fullName}"/>
                     <input type="button" id="participant-clear" value="Clear"/>
                     <div id="participant-choices" class="autocomplete"></div>
+                    <tags:errors path="participant"/>
                     <p id="participant-selected" style="display: none">
                         You've selected the participant <span id="participant-selected-name"></span>.
                     </p>
-                    <form:errors path="participant"/>
                 </chrome:division>
                 <chrome:division title="Select study" id="study-entry">
                     <p>Enter a portion of a study's name or another registered identifier.</p>
                     <form:hidden path="study"/>
                     <input type="text" id="study-input" value="${command.study.shortTitle}"/>
                     <input type="button" id="study-clear" value="Clear"/>
+                    <tags:errors path="study"/>
                     <div id="study-choices" class="autocomplete"></div>
                     <p id="study-selected" style="display: none">
                         You've selected the study <span id="study-selected-name"></span>.
                     </p>
-                    <form:errors path="study"/>
                 </chrome:division>
             </div>
         </form:form>

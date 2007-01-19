@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.tabbedflow;
 
 import org.springframework.web.servlet.mvc.AbstractWizardFormController;
+import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -9,20 +10,20 @@ import java.util.HashMap;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractTabbedFlowFormController extends AbstractWizardFormController {
-    private Flow flow;
+public abstract class AbstractTabbedFlowFormController<C> extends AbstractWizardFormController {
+    private Flow<C> flow;
 
-    public Flow getFlow() {
+    public Flow<C> getFlow() {
         return flow;
     }
 
-    public void setFlow(Flow flow) {
+    public void setFlow(Flow<C> flow) {
         this.flow = flow;
     }
 
     protected Map<?, ?> referenceData(HttpServletRequest request, int page) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
-        Tab current = getFlow().getTab(page);
+        Tab<C> current = getFlow().getTab(page);
         refdata.put("tab", current);
         refdata.put("flow", getFlow());
         refdata.putAll(current.referenceData());
@@ -35,5 +36,16 @@ public abstract class AbstractTabbedFlowFormController extends AbstractWizardFor
 
     protected String getViewName(HttpServletRequest request, Object command, int page) {
         return getFlow().getTab(page).getViewName();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void validatePage(Object oCommand, Errors errors, int page, boolean finish) {
+        C command = (C) oCommand;
+        Tab<C> tab = getFlow().getTab(page);
+
+        setAllowDirtyForward(tab.isAllowDirtyForward());
+        setAllowDirtyBack(tab.isAllowDirtyBack());
+
+        tab.validate(command, errors);
     }
 }
