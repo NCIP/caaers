@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -47,9 +48,9 @@ public class Study extends AbstractDomainObject implements Serializable {
 	private String status;
 	private String type;
 	
-	private int targetAccrualNumber;
+	private Integer targetAccrualNumber;
 			  	
-	private List<StudySite> studySites = new ArrayList<StudySite>();;			  
+	private List<StudySite> studySites = new ArrayList<StudySite>();			  
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
 	
 	/// LOGIC	
@@ -73,17 +74,17 @@ public class Study extends AbstractDomainObject implements Serializable {
 		return studySites;
 	}
 	
-	@OneToMany
-    @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
-    @JoinColumn(name = "STU_ID")	 	    
-	public List<Identifier> getIdentifiers() {
-		return identifiers;
-	}
-
-	public void setIdentifiers(List<Identifier> identifiers) {
-		this.identifiers = identifiers;
-	}
-
+//	@OneToMany
+//    @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+//    @JoinColumn(name = "STU_ID")
+//	public List<Identifier> getIdentifiers() {
+//		return identifiers;
+//	}
+//
+//	public void setIdentifiers(List<Identifier> identifiers) {
+//		this.identifiers = identifiers;
+//	}
+//
 	public void setStudySites(List<StudySite> studySites) {
 		this.studySites = studySites;
 	}	
@@ -184,26 +185,26 @@ public class Study extends AbstractDomainObject implements Serializable {
 		this.status = status;
 	}
 
-	public int getTargetAccrualNumber() {
+	public Integer getTargetAccrualNumber() {
 		return targetAccrualNumber;
 	}
 
-	public void setTargetAccrualNumber(int targetAccrualNumber) {
+	public void setTargetAccrualNumber(Integer targetAccrualNumber) {
 		this.targetAccrualNumber = targetAccrualNumber;
 	}
 
-	public String getType() {
-		return type;
-	}
+//	public String getType() {
+//		return type;
+//	}
+//
+//	public void setType(String type) {
+//		this.type = type;
+//	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public int compareTo(Study o) {
-     //TODO
-    	return 1;
-	}
+    //TODO
+//	public int compareTo(Study o) {
+//    	return 1;
+//	}
 
 	@Override
 	public int hashCode() {
