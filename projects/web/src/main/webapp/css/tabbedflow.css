@@ -1,48 +1,5 @@
 .tabpane {
-    margin: 1em;
-}
-
-.tabcontent {
-    border: 3px solid #009;
-}
-
-.tabcontent h1 {
-    font-size: 1.25em;
-    margin: 0 0 0.5em 0;
-    padding: 0.5em 1em 0.2em 1em;
-    background-color: #009;
-    color: #fff;
-}
-
-.tabcontent h2 {
-    font-size: 1.1em;
-}
-
-.tabcontent .body {
-    margin: 1em;
-}
-
-ul.tabs {
-    margin: 0; padding: 0;
-}
-
-li.tab {
-    display: block;
-    float: left;
-    margin: 0 4px;
-    padding: 4px;
-    background-color: #30f;
-    border: 1px solid #009;
-    border-bottom-width: 0;
-    font-size: 0.8em;
-}
-
-li.tab.current {
-    background-color: #009
-}
-
-li.tab a {
-    color: #fff;
+    margin: 0;
 }
 
 .tabcontrols {
@@ -51,9 +8,11 @@ li.tab a {
 
 .tabcontrols a {
     display: block;
-    border: 1px solid #009;
-    padding: 2px;
+    background-color: #6E81A6;
+    color: #fff;
+    padding: 4px;
     text-decoration: none;
+    cursor: pointer; /* don't know why this is necessary */
 }
 
 #flow-next {

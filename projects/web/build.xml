@@ -85,6 +85,7 @@
     <target name="clean">
         <delete dir="${build-dir.main}"/>
         <delete dir="${build-dir.unit-test}"/>
+        <delete dir="${build-dir.webapp}"/>
         <delete file="${war-name}"/>
     </target>
 

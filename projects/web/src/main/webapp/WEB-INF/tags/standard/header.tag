@@ -13,7 +13,7 @@
     <!-- TOP NAVIGATION STARTS HERE -->
     <table width="100%" border="0" cellspacing="0" cellpadding="0" id="topNav">
         <tr valign="middle">
-            <td width="99%" class="left">
+            <td class="left">
                 <c:forEach items="${sections}" var="section">
                     <c:choose>
                         <c:when test="${section == currentSection}">

@@ -20,7 +20,7 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 /* top nav */
 #topNav { color: #E6E6E6; font-weight: bold; background-color: #5C5C5C; }
 #topNav .left { padding: 0 0 0 8px; white-space: nowrap; }
-#topNav .right { padding: 0 10px 0 0; text-align: right; white-space: nowrap; }
+#topNav .right { padding: 0; text-align: right; white-space: nowrap; }
 #topNav .divider { width: 6px; }
 #topNav .current { color: #3E3F6B; height: 18px; background-color:#FFFFFF; padding: 3px 24px 0 10px; vertical-align: bottom; }
 #topNav .currentR { height: 20px; width: 6px; }
@@ -56,54 +56,85 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 
 /* top page search */
 /*#search { white-space: nowrap; margin: 0; padding: 0; color: #6E81A6; font-weight: bold; }*/
-#search .field1 { border: 1px solid #CCCCCC; background: #FFFFFF; height: 18px; font-size: 11px; line-height: 18px; }
+.search .field1 { border: 1px solid #CCCCCC; background: #FFFFFF; height: 18px; font-size: 11px; line-height: 18px; }
 
 /* main padding properties of the working area body */
-.workArea { padding: 0 10px 0 10px; }
+.workArea { margin: 10px; }
 
 /* blue bar current title */
-#current { padding: 4px 0 4px 8px; background: #6E81A6 url(<chrome:imageUrl name="blueCorner.gif"/>) no-repeat top right; white-space: nowrap; font-size: 14px; font-weight: bold; color: #FFFFFF; line-height: 17px; }
+#current {
+    padding: 4px 0 4px 8px; background: #6E81A6 url(<chrome:imageUrl name="blueCorner.gif"/>) no-repeat top right;
+    white-space: nowrap; font-size: 14px; font-weight: bold;
+    color: #FFFFFF; line-height: 17px;
+}
 #current .spacer { margin-right: 50px; }
 
 /* main dispaly table that holds all the content */
-.display { border-left: 1px solid #6E81A6; background: #D7D9E3 url(<chrome:imageUrl name="display_BG.gif"/>) repeat-y right; padding: 0 8px 8px 5px; }
-.display_B { background: #F4F4F5 url(<chrome:imageUrl name="display_B.gif"/>) repeat-x top; vertical-align: top; height: 4px; border: none; }
+.display {
+    border-left: 1px solid #6E81A6;
+    background: #D7D9E3 url(<chrome:imageUrl name="display_BG.gif"/>) repeat-y right;
+    padding: 0 8px 8px 5px;
+}
+.display_B {
+    background: #F4F4F5 url(<chrome:imageUrl name="display_B.gif"/>) repeat-x top;
+    vertical-align: top; height: 4px; border: none;
+}
 
 /* Level 2 tabs */
-#level2 .tabs { background: #6E81A6 url(<chrome:imageUrl name="level2_BG.gif"/>) repeat-x top; padding: 9px 0 0 7px; margin-top: 0;}
-
-/* tabs */
-#level2 { background: none; padding-left: 0; white-space: nowrap; color: #333333; }
-#level2 a:link { color: #333333; text-decoration: none; background-color: transparent; border: none; }
-#level2 a:visited { color: #333333; text-decoration: none; background-color: transparent; border: none; }
-#level2 a:hover { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#level2 a:active { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#level2 .current { background: #E9E9EB url(<chrome:imageUrl name="tab2_h_BG.gif"/>) repeat-x top; font-weight: bold; color: #3E3F6B; padding: 2px 10px 0 8px; vertical-align: bottom;}
-#level2 .current a:link { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#level2 .current a:visited { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#level2 .current a:hover { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#level2 .current a:active { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#level2 .tab { background: #E9E9EB url(<chrome:imageUrl name="tab2_BG.gif"/>) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
+#level2 {
+    background: #6E81A6 url(<chrome:imageUrl name="level2_BG.gif"/>) repeat-x top;
+    padding: 9px 0 0 7px; margin: 0;
+    white-space: nowrap; color: #333333;
+}
+#level2 li.tab {
+    display: inline;
+    margin: 0;
+}
+#level2 a { background-color: transparent; border: none; }
+#level2 a:link, #level2 a:visited { color: #333333; text-decoration: none; }
+#level2 a:hover, #level2 a:active { color: #000000; text-decoration: underline; }
+#level2 .tab a {
+    background: #E9E9EB url(<chrome:imageUrl name="tab2_BG.gif"/>) repeat-x top;
+    padding: 2px 10px 0 8px; vertical-align: bottom;
+}
+#level2 .tab.current a {
+    background-image: url(<chrome:imageUrl name="tab2_h_BG.gif"/>);
+    font-weight: bold; color: #3E3F6B;
+}
+#level2 .tab.current a {
+    background-color: transparent; border: none; padding: 2px 10px 0 8px;
+}
+#level2 .tab.current a:link, #level2 .current a:visited { color: #6E81A6; text-decoration: none; }
+#level2 .tab.current a:hover, #level2 .current a:active { color: #89ABD5; text-decoration: underline; }
 
 /* properties of the area directly under the tabs that has the angled graphic */
-#level2 .tabBotL { background: #E9E9EB; border: none; height: 8px; }
-#level2 .tabBotR { background: #E9E9EB; border: none; height: 8px; }
+#level2-spacer { background: #E9E9EB; border: none; height: 8px; }
 
 /* tab table */
 .tabs { margin-top: 4px; background: #D7D9E3 url(<chrome:imageUrl name="level3_BG.gif"/>) no-repeat top right; }
 
 /* tabs */
-#tabDisplay { background: none; padding-left: 0; white-space: nowrap; color: #333333; }
-#tabDisplay a:link { color: #333333; text-decoration: none; background-color: transparent; border: none; }
-#tabDisplay a:visited { color: #333333; text-decoration: none; background-color: transparent; border: none; }
-#tabDisplay a:hover { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#tabDisplay a:active { color: #000000; text-decoration: underline; background-color: transparent; border: none; }
-#tabDisplay .current { background: #E9E9EB url(<chrome:imageUrl name="tab3_h_BG.gif"/>) repeat-x top; font-weight: bold; color: #6E81A6; padding: 2px 10px 0 8px; vertical-align: bottom;}
-#tabDisplay .current a:link { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#tabDisplay .current a:visited { color: #6E81A6; text-decoration: none; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#tabDisplay .current a:hover { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#tabDisplay .current a:active { color: #89ABD5; text-decoration: underline; background-color: transparent; border: none; padding: 2px 10px 0 8px;}
-#tabDisplay .tab { background: #E9E9EB url(<chrome:imageUrl name="tab3_BG.gif"/>) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
+.tabDisplay { background: none; padding-left: 0; white-space: nowrap; color: #333333; }
+.tabDisplay a:link, .tabDisplay a:visited {
+    color: #333333; text-decoration: none; 
+}
+.tabDisplay a:hover, .tabDisplay a:active {
+    color: #000000; text-decoration: underline;
+}
+.tabDisplay .current {
+    background: #E9E9EB url(<chrome:imageUrl name="tab3_h_BG.gif"/>) repeat-x top;
+    font-weight: bold; color: #6E81A6; padding: 2px 10px 0 8px; vertical-align: bottom;
+}
+.tabDisplay .current a {
+    padding: 2px 10px 0 8px;
+}
+.tabDisplay .current a:link, .tabDisplay .current a:visited {
+    color: #6E81A6; text-decoration: none;
+}
+.tabDisplay .current a:hover, .tabDisplay .current a:active {
+    color: #89ABD5; text-decoration: underline;
+}
+.tabDisplay .tab { background: #E9E9EB url(<chrome:imageUrl name="tab3_BG.gif"/>) repeat-x top; padding-bottom: 2px; padding: 2px 10px 0 8px; vertical-align: bottom;}
 
 /* properties of the area directly under the tabs that has the angled graphic */
 .tabBotL { background: #F5F5F8 url(<chrome:imageUrl name="whiteCorner.gif"/>) no-repeat top right; border-left: 1px solid #6E81A6; height: 18px;}
@@ -124,17 +155,24 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 .content_B { background: #D7D9E3 url(<chrome:imageUrl name="content_B.gif"/>) repeat-x top; vertical-align: top; height: 4px; border: none; }
 
 /* general form 1 */
-#form1 { margin: 0; padding: 0; }
-#form1 input { border: 0; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC; height: 15px; background: #EBEFF5; margin: 0; padding: 0 3px 0 3px; font-family: arial, verdana, sans-serif; font-size: 10px; font-weight: normal; line-height: 15px; }
-#form1 select { font-size: 10px; background: #EBEFF5; }
-#form1 .radio { background: none; border: 0; }
-#form1 .mi { width: 10px; border: 0; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC; }
-#form1 .long { white-space: normal; }
-#form1 .reissue { background: #F5F5CE; }
-#form1 .cancel { background: #FCD09D; }
-#form1 .disabled { background: #EEEEEE; }
-#form1 .blank { background: none; border: 0; }
-#form1 .state { padding-right: 8px; }
+form.standard { margin: 0; padding: 0; }
+form.standard input {
+    border: 0; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC;
+    height: 15px;
+    background: #EBEFF5; 
+    margin: 0; padding: 0 3px;
+    font-family: arial, verdana, sans-serif; font-size: 10px; font-weight: normal;
+    line-height: 15px;
+}
+form.standard select { font-size: 10px; background: #EBEFF5; }
+form.standard .radio { background: none; border: 0; }
+form.standard .mi { width: 10px; border: 0; border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC; }
+form.standard .long { white-space: normal; }
+form.standard .reissue { background: #F5F5CE; }
+form.standard .cancel { background: #FCD09D; }
+form.standard .disabled { background: #EEEEEE; }
+form.standard .blank { background: none; border: 0; }
+form.standard .state { padding-right: 8px; }
 
 #right { margin: 0; padding: 0; width: 550px; }
 
@@ -144,19 +182,19 @@ input { background: #EBEFF5; font-family: arial, verdana, sans-serif; font-size:
 
 .red { color: #EE3324; }
 
-#details .contentAreaL { border-right: 1px dashed #CCCCCC; padding: 3px; }
-#details .contentAreaR { padding: 3px 3px 3px 16px; }
-#details h3 { margin-top: 5px; margin-bottom: 5px; }
+.split-pane .contentAreaL { border-right: 1px dashed #CCCCCC; padding: 3px; }
+.split-pane .contentAreaR { padding: 3px 3px 3px 16px; }
+.split-pane h3 { margin-top: 5px; margin-bottom: 5px; }
 
-#table1 { margin: 0; }
-#table1 td { padding-top: 1px; padding-bottom: 1px; }
-#table1 .label { font-weight: bold; text-align: right; padding-right: 4px; white-space: nowrap; }
-#table1 .label2 { border-bottom: 2px solid #CCCCCC; background: #EEEEEE; padding: 3px 5px 3px 5px; }
-#table1 .note { font-weight: normal; font-size: 9px; font-style: italic; }
-#table1 .holder { padding: 5px; padding-bottom: 10px; border-bottom: 1px dashed #CCCCCC; }
-#table1 .holder2 { padding: 5px; padding-bottom: 10px; }
-#table1 .dashed td { border-bottom: 1px dashed #CCCCCC; }
-#table1 .dashed tr { border-bottom: 1px dashed #CCCCCC; }
+.table1 { margin: 0; }
+.table1 td { padding-top: 1px; padding-bottom: 1px; }
+.table1 .label { font-weight: bold; text-align: right; padding-right: 4px; white-space: nowrap; }
+.table1 .label2 { border-bottom: 2px solid #CCCCCC; background: #EEEEEE; padding: 3px 5px 3px 5px; }
+.table1 .note { font-weight: normal; font-size: 9px; font-style: italic; }
+.table1 .holder { padding: 5px; padding-bottom: 10px; border-bottom: 1px dashed #CCCCCC; }
+.table1 .holder2 { padding: 5px; padding-bottom: 10px; }
+.table1 .dashed td { border-bottom: 1px dashed #CCCCCC; }
+.table1 .dashed tr { border-bottom: 1px dashed #CCCCCC; }
 
 #table2 { border-top: 1px solid #CCCCCC; border-left: 1px solid #CCCCCC; border-bottom: 2px solid #CCCCCC; margin: 0; }
 #table2 td { border-bottom: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; text-align: center; padding: 2px 1px 2px 1px; }

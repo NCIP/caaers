@@ -2,6 +2,8 @@
 <%@taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -13,10 +15,14 @@
 </head>
 <body>
 <standard:header/>
-<h1><decorator:title/></h1>
-<div id="body">
-<decorator:body/>
+
+<div class="standard workArea">
+<c:set var="__decorator_title"><decorator:title/></c:set>
+<chrome:body title="${__decorator_title}">
+    <decorator:body/>
+</chrome:body>
 </div>
+
 <standard:footer/>
 </body>
 </html>

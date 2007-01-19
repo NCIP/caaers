@@ -8,6 +8,7 @@
 <%@taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
@@ -25,15 +26,17 @@
 <body>
 <standard:header/>
 <div class="tabpane">
-    <ul class="tabs autoclear">
+    <ul id="level2" class="tabs autoclear">
     <c:forEach items="${flow.tabs}" var="atab">
-        <li class="tab ${atab.number == tab.number ? 'current' : ''}">
-            <a href="#" class="tab${atab.number}">${atab.shortTitle}</a>
+        <c:set var="current">${atab.number == tab.number}</c:set>
+        <li class="tab ${current ? 'current' : ''}">
+            <img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_L.gif"/>" width="1" height="16" align="absmiddle"><a href="#" class="tab${atab.number}">${atab.shortTitle}</a><img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_R.gif"/>" width="6" height="16" align="absmiddle">
         </li>
     </c:forEach>
     </ul>
-    <div class="tabcontent">
-        <h1>${flow.name}: <decorator:title/></h1>
+    <div id="level2-spacer"></div>
+
+    <div class="tabcontent workArea">
         <div class="body">
             <decorator:body/>
         </div>

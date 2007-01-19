@@ -19,8 +19,30 @@
         <property name="location"><value>/WEB-INF/special-views.xml</value></property>
     </bean>
     
-    <bean id="publicHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+    <bean id="publicHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="sectionInterceptor"/>
+            </list>
+        </property>
+    </bean>
    
+    <bean id="publicUrlResolver" class="gov.nih.nci.cabig.caaers.tools.spring.BeanNameControllerUrlResolver">
+        <property name="servletName"><value>public</value></property>
+    </bean>
+
+    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
+        <property name="sections">
+            <list>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                    <property name="displayName"><value>Log in</value></property>
+                    <property name="pathMapping"><value>/login</value></property>
+                    <property name="mainController"><value>loginController</value></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
     <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName"/>
     
     <bean name="/login" id="loginController" autowire="byName"

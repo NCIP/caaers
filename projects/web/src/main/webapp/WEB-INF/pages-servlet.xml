@@ -30,7 +30,7 @@
         <property name="interceptors">
             <list>
                 <!--<ref bean="loginCheckInterceptor"/>-->
-                <ref local="sectionInterceptor"/>
+                <ref bean="sectionInterceptor"/>
             </list>
         </property>
     </bean>
@@ -167,4 +167,6 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>standardNotImplemented</value></property>
     </bean>
+
+    <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
 </beans>
