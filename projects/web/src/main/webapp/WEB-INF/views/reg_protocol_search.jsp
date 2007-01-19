@@ -10,111 +10,86 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="resources/styles.css" rel="stylesheet" type="text/css">
-<link href="resources/search.css" rel="stylesheet" type="text/css">
+<link href="/css/common.css" rel="stylesheet" type="text/css">
+<link href="/css/common-search.css" rel="stylesheet" type="text/css">
 <script>
 function submitPage(s){
 	document.getElementById("searchCategory").value=s;
 	document.getElementById("searchForm").submit();
 }
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
-function doNothing(){
-}
 </script>
 </head>
 <body>
+
+<!-- MAIN BODY STARTS HERE -->
+<div class="workArea">
+<form:form id="searchForm" name="searchForm" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
-	id="topNav">
+	class="titleArea">
+	<tr>
+		<!-- TITLE STARTS HERE -->
+		<td width="99%" height="43" valign="middle" id="title"><a href="/caaers/pages/study/create">Create
+						new Study for Registration</a> or search for an existing
+						study.</td>
 
-	<tr valign="middle">
+		<td valign="top">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			id="search">
+			<tr>
+				<td class="labels">&nbsp;</td>
+			</tr>
+			<!--
+			<tr>
+				<td class="searchType">Search <select name="select"
+					class="field1">
 
-		<td class="right"><img src="images/topDivider.gif" width="2"
-			height="20" align="absmiddle" class="divider"></td>
+					<option selected>Participant</option>
+					<option>Protocol</option>
+				</select> by <select name="select" class="field1">
+					<option selected>Participant Name</option>
+					<option>Participant Registration#</option>
+				</select></td>
+
+			</tr>
+			-->
+		</table>
+		<span class="notation">&nbsp;</span></td>
+		<td valign="top">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			id="search">
+			<tr>
+				<td align="left" class="labels"><span class="notation"><span
+					class="red">*</span><em></em></span>Search Study by:</td>
+
+				<td align="left" class="labels">Search String:</td>
+				<td class="labels">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+				    <form:select path="searchType">
+					  <form:options items="${searchType}" itemLabel="desc" itemValue="code" />
+				    </form:select>
+				</td>
+				<td><form:input path="searchTypeText" size="25" /></td>
+				<td><input name="imageField" type="image" class="button"
+					onClick="submitPage('protocol');return false;" src="/images/chrome/b-go.gif" alt="GO"
+					align="middle" width="22" height="10" border="0"></td>
+			</tr>
+
+		</table>
+		<span class="notation"><span class="labels">(<span
+			class="red">*</span><em>Required Information </em>)</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+		Minimum two characters for search.</span></td>
 	</tr>
 </table>
-
-<!-- SUB NAV ENDS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td>
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<td>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0"
-					class="tabs">
-					<tr>
-						<td width="100%" id="tabDisplay">
-						<span class="current">
-							<img src="images/tabWhiteL.gif" width="3" height="16" align="absmiddle"> 
-							<b>1. Select Study</b> 
-							<img src="images/tabWhiteR.gif" width="3" height="16" align="absmiddle"> 
-						</span>
-						<span class="tab">
-							<img src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-							2. Select Patient&nbsp;&nbsp;&nbsp;&nbsp; 
-							<img src="images/tabGrayR.gif" width="3" height="16" align="absmiddle">
-							<img src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-							3. Review and Submit 
-							<img src="images/tabGrayR.gif" width="3" height="16" align="absmiddle">
-						</span></td>
-						<td><img src="images/spacer.gif" width="7" height="1"></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-			<!-- MAIN BODY STARTS HERE -->
-			<tr>
-				<td>
-				<div class="workArea">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0"
-					class="titleArea">
-					<form:form id="searchForm" name="searchForm" method="post">
-						<tr>
-							<!-- TITLE STARTS HERE -->
-							<td width="99%" height="43" valign="middle" id="title">Study
-							Search</td>
-							<td valign="top">
-							<table width="100%" border="0" cellspacing="0" cellpadding="0"
-								id="search">
-								<tr>
-									<td class="labels">&nbsp;</td>
-								</tr>
-								<tr>
-									<td class="searchType">Search Study by <form:select
-										path="searchType">
-										<form:options items="${searchType}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-								</tr>
-							</table>
-							<span class="notation">&nbsp;</span></td>
-							<td valign="top">
-							<table width="100%" border="0" cellspacing="0" cellpadding="0"
-								id="search">
-								<tr>
-									<td align="left" class="labels">Search String:</td>
-									<td class="labels">&nbsp;</td>
-								</tr>
-								<tr>
-									<td><form:input path="searchTypeText" size="25" /></td>
-									<td><input name="imageField" type="image" class="button"
-										onClick="submitPage('protocol');return false;" src="images/b-go.gif"
-										alt="GO" align="middle" width="22" height="10" border="0"></td>
-								</tr>
-							</table>
-							<span class="notation">^ Minimum two characters for
-							search.</span></td>
-						</tr>
-					</form:form>
-				</table>		
+</form:form>
+<!-- TITLE/QUICK SEARCH AREA ENDS HERE --> <!-- CONTENT AREA STARTS HERE -->
+	<span class="notation"><span class="labels">Please Select one of the studies to proceed</span></span>
 	<ec:table 
     	items="studies"
     	var="study" 
     	action="${pageContext.request.contextPath}/pages/home" 
-    	imagePath="${pageContext.request.contextPath}/images/*.gif"
-    	title="Study Search Results"
+    	imagePath="${pageContext.request.contextPath}/images/table/*.gif"
     	showPagination="false"
     	cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
     	<ec:row highlightRow="true">
@@ -123,31 +98,16 @@ function doNothing(){
         </ec:column>
         <ec:column property="longTitle" title="Long Title" />
         <ec:column property="description" title="Description" />
-        <ec:column property="principalInvestigatorCode" title="InvestigatorCode" />
-        <ec:column property="principalInvestigatorName" title="InvestigatorName" />
+        <ec:column property="precis" title="Precis" />
+        <ec:column property="diseaseCode" title="Disease Code" />
+        <ec:column property="monitorCode" title="Monitor Code" />
         <ec:column property="primarySponsorCode" title="Sponsor Code" />
-        <ec:column property="primarySponsorName" title="Sponsor Name" />
         <%--
         <ec:column property="shortTitle" width="2" sortable="false" filterable="false" title="cpodfgdf">
         	<a href="newParticipant?studySiteId=${study.studySites[0].id}">cp</a>
         </ec:column>--%>
     </ec:row>
 </ec:table>
-								
-								<br>
-								<!-- LEFT FORM ENDS HERE --></td>
-								<!-- LEFT CONTENT ENDS HERE -->
-							</tr>
-						</table>
-						</td>
-					</tr>
-				</table>
-				</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-</table>
 </div>
 <!-- MAIN BODY ENDS HERE -->
 </body>

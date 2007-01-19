@@ -61,14 +61,8 @@ public class SearchStudyRegisterController extends SimpleFormController {
 			study.setLongTitle(searchtext);
 		else if ("d".equals(type))
 			study.setDescription(searchtext);
-//		else if ("pic".equals(type))
-//			study.setPrincipalInvestigatorCode(searchtext);
-//		else if ("pin".equals(type))
-//			study.setPrincipalInvestigatorName(searchtext);
 		else if ("psc".equals(type))
 			study.setPrimarySponsorCode(searchtext);
-//		else if ("psn".equals(type))
-//			study.setPrimarySponsorName(searchtext);
 		else if ("pc".equals(type))
 			study.setPhaseCode(searchtext);
 
@@ -115,21 +109,14 @@ public class SearchStudyRegisterController extends SimpleFormController {
 		LOV lov1 = new LOV("st",  "Short Title");
 		LOV lov2 = new LOV("lt",  "Long Title");
 		LOV lov3 = new LOV("d",   "Description");
-		LOV lov4 = new LOV("pic", "Principal Investigator Code");
-		LOV lov5 = new LOV("pin", "Principal Investigator Name");
-		LOV lov6 = new LOV("psc", "Primary Sponsor Code");
-		LOV lov7 = new LOV("psn", "Primary Sponsor Name");
-		LOV lov8 = new LOV("pc",  "Phase Code");
+		LOV lov4 = new LOV("psc", "Primary Sponsor Code");
+		LOV lov5 = new LOV("pc",  "Phase Code");
 		
 		col.add(lov1);
 		col.add(lov2);
 		col.add(lov3);
 		col.add(lov4);
 		col.add(lov5);
-		col.add(lov6);
-		col.add(lov7);
-		col.add(lov8);
-
 		return col;
 	}
 

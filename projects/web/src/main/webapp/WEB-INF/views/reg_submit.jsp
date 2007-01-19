@@ -9,7 +9,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -46,223 +45,182 @@ function updateTargetPage(s){
 <body>
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-	id="topNav">
-
-	<tr valign="middle">
-		<td class="right"><img src="images/topDivider.gif" width="2"
-			height="20" align="absmiddle" class="divider"><a href="logOff">Log
-		Off</a></td>
-	</tr>
-</table>
-<!-- TOP NAVIGATION ENDS HERE -->
-<!-- SUB NAV STARTS HERE -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-	id="subNav">
-	<tr>
-		<td valign="middle" class="right"><a href="help">Help</a></td>
-	</tr>
-</table>
 <!-- SUB NAV ENDS HERE -->
 <form:form name="reviewForm" method="post">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<td class="display">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<td>
-				<table width="100%" border="0" cellspacing="0" cellpadding="0"
-					class="tabs">
-					<tr>
-						<td width="100%" id="tabDisplay"><span class="tab"> <img
-							src="images/tabWhiteL.gif" width="3" height="16"
-							align="absmiddle"><a href="searchRegisterStudy?participantId=${command.participant.id}"> 1. Select Study</a>&nbsp&nbsp<img
-							src="images/tabWhiteR.gif" width="3" height="16"
-							align="absmiddle"><img src="images/tabGrayL.gif" width="3"
-							height="16" align="absmiddle"><a href="searchRegisterParticipant?studySiteId=${command.studySite.id}"> 2. Select Participant</a>&nbsp&nbsp<img
-							src="images/tabGrayR.gif" width="3" height="16" align="absmiddle"><img
-							src="images/tabGrayL.gif" width="3" height="16" align="absmiddle">
-						3. Review and Submit <img src="images/tabGrayR.gif" width="3"
-							height="16" align="absmiddle"></span></td>
-						<td><img src="images/spacer.gif" width="7" height="1"></td>
-					</tr>
-					<tr>
-						<td colspan="2" class="tabBotL"><img src="images/spacer.gif"
-							width="1" height="7"></td>
-					</tr>
-				</table>
-				<br>
-				</td>
-			</tr>
-			<!-- MAIN BODY STARTS HERE -->
-			<tr>
-				<td>
-				<div class="workArea">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					
-						<tr>
-							<!-- CURRENT DRIVER/UNIT TITLE STARTS HERE -->
+	<table width="100%" border="0" cellspacing="0" cellpadding="0"
+		class="titleArea">
+		<tr>
+			<!-- TITLE STARTS HERE -->
+			<td width="99%" height="43" valign="middle" id="title"><a
+				href="searchRegisterStudy?participantId=${command.participant.id}">
+			1. Select Study</a>&nbsp&nbsp <a
+				href="searchRegisterParticipant?studySiteId=${command.studySite.id}">
+			2. Select Participant</a>&nbsp&nbsp 3. Review and Submit</td>
 
-							<td id="current">Confirm Registration for 
-							${command.participant.firstName} ${command.participant.lastName} on
-							${command.studySite.study.shortTitle}</td>
-							<!-- CURRENT DRIVER/UNIT TITLE ENDS HERE -->
-						</tr>
+			<td valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0"
+				id="search">
+				<tr>
+					<td class="labels">&nbsp;</td>
+				</tr>
+			</table>
+			<span class="notation">&nbsp;</span></td>
+			<td valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0"
+				id="search">
+
+			</table>
+		</tr>
+	</table>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+
+			<!-- CURRENT DRIVER/UNIT TITLE STARTS HERE -->
+			<td id="current">Confirm Registration for
+			${command.participant.firstName} ${command.participant.lastName} on
+			${command.studySite.study.shortTitle}</td>
+			<!-- CURRENT DRIVER/UNIT TITLE ENDS HERE -->
+		</tr>
+		<tr>
+			<td class="display"><!-- TABS LEFT START HERE -->
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<br>
+					<!-- LEFT CONTENT STARTS HERE -->
+					<td valign="top" class="additionals2"><input type="hidden"
+						id="nextView" name="nextView"> <strong>Step 1. Participant Information </strong><br>
+					<table width="700" border="0" cellspacing="0" cellpadding="0"
+						id="details">
 						<tr>
-							<td class="display"><!-- TABS LEFT START HERE -->
-							<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<td width="50%" valign="top">
+							<table width="308" border="0" cellspacing="0" cellpadding="0"
+								id="table1">
 								<tr>
-									<br>
-									<!-- LEFT CONTENT STARTS HERE -->
-									<td valign="top" class="additionals2"><!-- LEFT FORM STARTS HERE -->
-									<!-- RIGHT CONTENT STARTS HERE --> <input type="hidden"
-										id="nextView" name="nextView"> <strong>Step 1. Participant
-									Information </strong><br>
-									<table width="700" border="0" cellspacing="0" cellpadding="0"
-										id="details">
-										<tr>
-											<td width="50%" valign="top">
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-												<tr>
-													<td><img src="images/spacer.gif" width="1" height="1"
-														class="heightControl"></td>
-													<td><img src="images/spacer.gif" width="1" height="1"
-														class="heightControl"></td>
-												</tr>
-												<tr>
-													<td class="label"><span class="red">*</span><em></em>First
-													Name:</td>
-													<td>${command.participant.firstName}</td>
-												</tr>
-												<tr>
-													<td class="label"><span class="red">*</span><em></em>Last
-													Name:</td>
-													<td>${command.participant.lastName}</td>
-												</tr>
-												<tr>
-													<td class="label"><span class="red">*</span><em></em>Gender:
-													</td>
-													<td>${command.participant.gender}</td>
-													
-												</tr>
-											</table>
-											</td>
-											<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-												<tr>
-													<td class="label"><span class="red">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span><em></em>Birth
-													Date:</td>
-													<td valign="top">${command.participant.dateOfBirth}</td>
-												</tr>
-												<tr>
-													<td class="label"><span class="red">*</span><em></em>Ethnicity:
-													</td>
-													<td>${command.participant.ethnicity}</td>
-												</tr>
-												<tr>
-													<td class="label"><span class="red">*</span><em></em>Race:</td>
-													<td>${command.participant.race}</td>
-												</tr>
-											</table>
-											</td>
-										</tr>
-									</table>
-									<a href="searchRegisterParticipant?studySiteId=${command.studySite.id}"><img
-										src="images/b-edit.gif" alt="Choose Different Participant" width="39" height="16"
-										border="0"></a>
+									<td class="label"><span class="red">*</span><em></em>First
+									Name:</td>
+									<td>${command.participant.firstName}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Last
+									Name:</td>
+									<td>${command.participant.lastName}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Gender:
+									</td>
+									<td>${command.participant.gender}</td>
 
-									<hr align="left" width="95%">
-									<strong><br>
-									Step 2. Study Information </strong> <br>
-									<br>
-									<div class="review"><strong>Study Details:</strong><br>
-									<table width="700" border="0" cellspacing="0" cellpadding="0"
-										id="details">
-										<tr>
-											<td width="50%" valign="top">
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-												<tr>
-													<td class="label">Short Title:</td>
-													<td>${command.studySite.study.shortTitle}</td>
-												</tr>
-												<tr>
-													<td class="label"><em></em> Investigator Code:</td>
-													<td>${command.studySite.study.principalInvestigatorCode}</td>
-												</tr>
-												<tr>
-													<td class="label"><em></em> Investigator Name:</td>
-													<td>${command.studySite.study.principalInvestigatorName}</td>
-												</tr>
-												<tr>
-													<td class="label"><em></em><em></em> Phase Code:</td>
-													<td>${command.studySite.study.phaseCode}</td>
-												</tr>
-											</table>
-											</td>
-											<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-												<tr>
-													<td class="label"><em></em>Sponsor Code:</td>
-													<td>${command.studySite.study.primarySponsorCode}</td>
-												</tr>
-												<tr>
-													<td class="label"><em></em>Sponsor Name:</td>
-													<td>${command.studySite.study.primarySponsorName}</td>
-												</tr>
-												<tr>
-													<td class="label">Review Date:</td>
-													<td>${command.studySite.study.reviewDate}</td>
-												</tr>
-											</table>
-											</td>
-										</tr>
-									</table>
-									<br>
-									<strong>Study Site Information:</strong><br>
-									<table width="700" border="0" cellspacing="0" cellpadding="0"
-										id="details">
-										
-										<tr>
-											<td width="50%" valign="top">
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-												<tr>
-													<td class="label"><em></em> Name:</td>
-													<td>${command.studySite.site.name}</td>
-												</tr>
-											</table>
-											</td>
-											<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
-											<table width="308" border="0" cellspacing="0" cellpadding="0"
-												id="table1">
-											</table>
-											</td>
-										</tr>
-			
-									</table>
-									<br>
-									<a href="searchRegisterStudy?participantId=${command.participant.id}"><img
-										src="images/b-edit.gif" alt="Choose Different Study" width="39" height="16"
-										border="0"></a>
-									<hr align="left" width="95%">
-									<br>
-							
-									
-									
-									<br>
-									<table width="700" border="0" cellspacing="0" cellpadding="0"
-										id="details">
-										<tr align="center">
-											<td colspan=2 valign="top"><br>
-											<br>
-											<a href="javascript:updateTargetPage('processFinish')"><img
-												src="images/b-submit.gif" alt="Submit" width="59"
-												height="16" border="0"></a> <a href="home"
-												<img src="images/b-startOver.gif" alt="Start Over" width="67"
+								</tr>
+							</table>
+							</td>
+							<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
+							<table width="308" border="0" cellspacing="0" cellpadding="0"
+								id="table1">
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Birth
+									Date:</td>
+									<td valign="top">${command.participant.dateOfBirth}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Ethnicity:
+									</td>
+									<td>${command.participant.ethnicity}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Race:</td>
+									<td>${command.participant.race}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+					<a
+						href="searchRegisterParticipant?studySiteId=${command.studySite.id}"><img
+						src="images/b-edit.gif" alt="Choose Different Participant"
+						width="39" height="16" border="0"></a>
+
+					<hr align="left" width="95%">
+					<strong>Step 2. Study Information </strong><br><br>
+					<table width="700" border="0" cellspacing="0" cellpadding="0"
+						id="details">
+						<tr>
+							<td width="50%" valign="top">
+							<table width="308" border="0" cellspacing="0" cellpadding="0"
+								id="table1">
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Short Title:
+									</td>
+									<td>${command.studySite.study.shortTitle}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Precis:
+									</td>
+									<td>${command.studySite.study.precis}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Disease Code:
+									</td>
+									<td>${command.studySite.study.diseaseCode}</td>
+
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Monitor Code:
+									</td>
+									<td>${command.studySite.study.monitorCode}</td>
+
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Type:
+									</td>
+									<td>${command.studySite.study.type}</td>
+
+								</tr>
+							</table>
+							</td>
+							<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
+							<table width="308" border="0" cellspacing="0" cellpadding="0"
+								id="table1">
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Birth
+									Date:</td>
+									<td valign="top">${command.studySite.study.longTitle}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Phase Code:
+									</td>
+									<td>${command.studySite.study.phaseCode}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Sponsor Code:</td>
+									<td>${command.studySite.study.primarySponsorCode}</td>
+								</tr>
+								<tr>
+									<td class="label"><span class="red">*</span><em></em>Status:</td>
+									<td>${command.studySite.study.status}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+					<a
+						href="searchRegisterStudy?participantId=${command.participant.id}"><img
+						src="images/b-edit.gif" alt="Choose Different Study" width="39"
+						height="16" border="0"></a>
+					<hr align="left" width="95%">
+					<br>
+
+
+
+					<br>
+					<table width="700" border="0" cellspacing="0" cellpadding="0"
+						id="details">
+						<tr align="center">
+							<td colspan=2 valign="top"><br>
+							<br>
+							<a href="javascript:updateTargetPage('processFinish')"><img
+								src="images/b-submit.gif" alt="Submit" width="59" height="16"
+								border="0"></a> <a href="home"
+								<img src="images/b-startOver.gif" alt="Start Over" width="67"
 												height="16" border="0"></a></td>
 										</tr>
 									</table>
