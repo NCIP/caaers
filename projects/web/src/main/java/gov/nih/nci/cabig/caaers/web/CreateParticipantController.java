@@ -137,14 +137,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     			study.setLongTitle(searchtext);
     		else if ("d".equals(type))
     			study.setDescription(searchtext);
-    		else if ("pic".equals(type))
-    			study.setPrincipalInvestigatorCode(searchtext);
-    		else if ("pin".equals(type))
-    			study.setPrincipalInvestigatorName(searchtext);
+//    		else if ("pic".equals(type))
+//    			study.setPrincipalInvestigatorCode(searchtext);
+//    		else if ("pin".equals(type))
+//    			study.setPrincipalInvestigatorName(searchtext);
     		else if ("psc".equals(type))
     			study.setPrimarySponsorCode(searchtext);
-    		else if ("psn".equals(type))
-    			study.setPrimarySponsorName(searchtext);
+//    		else if ("psn".equals(type))
+//    			study.setPrimarySponsorName(searchtext);
     		else if ("pc".equals(type))
     			study.setPhaseCode(searchtext);
 
