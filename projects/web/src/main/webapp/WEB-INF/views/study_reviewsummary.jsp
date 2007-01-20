@@ -45,8 +45,8 @@ function validatePage(){
 
 				<td valign="top" class="additionals2"><!-- LEFT FORM STARTS HERE -->
 				<!-- RIGHT CONTENT STARTS HERE --> <form:form method="post">
-				 <tags:tabFields tab="${tab}"/>
-					<div> <input type="hidden" name="_page" value="3"> </div>
+					<tags:tabFields tab="${tab}" />
+					<div><input type="hidden" name="_page" value="3"></div>
 					<strong>Step 5. Review and Submit</strong>
 					<br>
 					<br>
@@ -73,10 +73,10 @@ function validatePage(){
 							<td class="label">Disease Code:</td>
 							<td>${command.diseaseCode}</td>
 						</tr>
-					<!-- 	<tr>
+						<%-- 	<tr>
 							<td class="label">Disease Type:</td>
 							<td>${command.type}</td>
-						</tr> -->
+						</tr> --%>
 						<tr>
 							<td class="label">Monitor Code:</td>
 							<td>${command.monitorCode}</td>
@@ -172,38 +172,38 @@ function validatePage(){
 
 
 					<hr>
-					
+
 					<br>
 					<br>
 					<div class="review">
 
-	 			<table width="250" border="0" cellspacing="0" cellpadding="0"
+					<table width="250" border="0" cellspacing="0" cellpadding="0"
 						id="details">
-			
-				<tr>
-					<td align="center" colspan="3"><!-- action buttons begins -->
-					<table cellpadding="4" cellspacing="0" border="0">
+
 						<tr>
-							<td colspan=2 valign="top"><br>
-						<br>
-						<input type="image" name="_target0" src="/caaers/images/b-prev.gif"
-							border="0" alt="goto previous page"> 
-						<input type="image"
-							name="_finish" src="/caaers/images/b-save.gif" border="0"
-							alt="continue to next page"> <input type="image" name="_target0"
-							src="/caaers/images/b-cancel.gif" border="0"
-							alt="start over from start page"></td>
-					</tr>
-				</table>
-				</td>
-			</tr>
+							<td align="center" colspan="3"><!-- action buttons begins -->
+							<table cellpadding="4" cellspacing="0" border="0">
+								<tr>
+									<td colspan=2 valign="top"><br>
+									<br>
+									<input type="image" name="_target0"
+										src="/caaers/images/b-prev.gif" border="0"
+										alt="goto previous page"> <input type="image" name="_finish"
+										src="/caaers/images/b-save.gif" border="0"
+										alt="continue to next page"> <input type="image"
+										name="_target0" src="/caaers/images/b-cancel.gif" border="0"
+										alt="start over from start page"></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+					<br>
+				</form:form></td>
+				<!-- LEFT CONTENT ENDS HERE -->
 		</table>
-		<br>
-		</form:form></td>
-		<!-- LEFT CONTENT ENDS HERE -->
-</table>
-</td>
-</tr>
+		</td>
+	</tr>
 </table>
 <div id="copyright">&copy; 2006 SemanticBits. All Rights Reserved</div>
 </div>
