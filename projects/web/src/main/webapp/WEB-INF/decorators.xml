@@ -12,6 +12,8 @@
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/ae/*</pattern>
         <pattern>/pages/participant/create</pattern>
+        <pattern>/pages/study/create</pattern>
+        <pattern>/pages/createStudy</pattern>
     </decorator>
 
     <excludes>
