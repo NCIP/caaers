@@ -6,176 +6,98 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
+<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-<script language="JavaScript" type="text/JavaScript">
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
-</script>
-<script language="JavaScript" type="text/JavaScript">
-
-function validatePage(){
-	if(document.getElementById("longTitleText") != null)
-		return true;
-	else
-		return false;	
-}
-
-</script>
+<style type="text/css">
+        .label { width: 12em; text-align: right; padding: 4px; }
+    </style>
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<div class="workArea">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<!-- CURRENT DRIVER/UNIT TITLE STARTS HERE -->
+<chrome:body title="${flow.name}: ${tab.longTitle}">
+	   <form:form method="post" cssClass="standard">
+			<tags:tabFields tab="${tab}"/>
+			<div>
+                <table>
+				  <tr>
+				  <td>
+                 	<div class="row">					
+			            <div class="label" align="right"><form:label path="shortTitle">Short Title:</form:label></div>					
+			            <div class="value" align="left"><form:textarea path="shortTitle" rows="1" cols="50"/></div>
+			        </div>
+			        <div class="row">
+			            <div class="label"><form:label path="longTitle"><span class="red">*</span><em></em>Long
+		        				Title:</form:label></div>
+				        <div class="value"><form:textarea path="longTitle" rows="3" cols="50"/></div>
+				    </div>
+				    <div class="row">
+				         <div class="label"><form:label path="precis">Precis Text:</form:label></div>
+				         <div class="value"><form:textarea path="precis" rows="3" cols="50"/></div>
+				    </div>
+				    <div class="row">
+				         <div class="label"><form:label path="description">Description Text:</form:label></div>
+				         <div class="value"><form:textarea path="description" rows="3" cols="50"/></div>
+				     </div>																								
+		        
+                	<div class="row">
+				          <div class="label"><form:label path="targetAccrualNumber">Target Accrual Number:</form:label></div>
+				          <div class="value"><form:input path="targetAccrualNumber"/></div>
+				    </div>
+					</td>
+					<td>
+				
+					<div class="row">
+						<div class="label"><label for="status">Status:</label></div>
+						<div class="value">
+						<select id="status">							
+							<c:forEach items="${statusRefData}" var="temp">
+								<option value="${temp.code}">${temp.desc}</option>
+							</c:forEach>
+						</select>
+					</div>
+					</div>
 
-		<td id="current">Site Name-Id: ${sites[0].site.name}</td>
-		<!-- CURRENT DRIVER/UNIT TITLE ENDS HERE -->
-	</tr>
-	<tr>
-		<td class="display"><!-- TABS LEFT START HERE -->
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-				<!-- LEFT CONTENT STARTS HERE -->
+					<div class="row">
+						<div class="label"><label for="diseaseCode">Disease Code:</label></div>
+						<div class="value">
+						<select id="diseaseCode">							
+							<c:forEach items="${diseaseCodeRefData}" var="temp">
+								<option value="${temp.code}">${temp.desc}</option>
+							</c:forEach>
+						</select>
+					</div>
+					</div>
+					
+					<div class="row">
+						<div class="label"><label for="monitorCode">Monitor Code:</label></div>
+						<div class="value">
+						<select id="monitorCode">							
+							<c:forEach items="${monitorCodeRefData}" var="temp">
+								<option value="${temp.code}">${temp.desc}</option>
+							</c:forEach>
+						</select>
+					</div>
+					</div>
 
-				<td valign="top" class="additionals2"><!-- RIGHT CONTENT STARTS HERE -->
-				<form:form name="searchDetailsForm" method="post">
-					 <tags:tabFields tab="${tab}"/>
-					<div><input type="hidden" name="_page" value="0"></div>
-
-					<br>
-					<strong>Step 1. Study Details </strong> (<span class="red">*</span>
-					<em>Required Information </em>)<br>
-					<br>
-
-					<table width="900" border="0" cellspacing="0" cellpadding="0"
-						id="details">
-						<tr>
-							<td width="50%" valign="top">
-
-							<table width="400" border="0" cellspacing="0" cellpadding="0"
-								id="table1">
-								<div class="row">
-						            <div class="label"><form:label path="shortTitle">Short Title:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="shortTitle" rows="2" cols="30"/></div>
-						        </div>
-						        <div class="row">
-						            <div class="label"><form:label path="longTitle"><span class="red">*</span><em></em>Long
-									Title:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="longTitle" rows="5" cols="30"/></div>
-						        </div>
-						        <div class="row">
-						            <div class="label"><form:label path="precis">Precis Text:</form:label></div>
-						            <div class="value" align="right"><form:textarea path="precis" rows="2" cols="30"/></div>
-						        </div>
-						        <div class="row">
-						            <div class="label"><form:label path="description">Description Text:</form:label></div>
-						            <div class="value" algin="right"><form:textarea path="description" rows="5" cols="30"/></div>
-						        </div>																								
-							</table>
-							</td>
-
-							<td width="20%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-
-							<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
-							<table width="400" border="0" cellspacing="0" cellpadding="0"
-								id="table1">
-
-								<div class="row">
-						            <div class="label"><form:label path="targetAccrualNumber">Target Accrual Number:</form:label></div>
-						            <div class="value" algin="right"><form:input path="targetAccrualNumber"/></div>
-						        </div>
-						        <div class="row">
-						        
-           				 		<!--  <div class="label"><label for="status">Status:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="status">
-										<form:options items="${statusRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div> --> 
-						        
-							  <tr>
-									<td class="label"><span class="red">*</span><em></em>Status:</td>
-									<td><form:select path="status">
-										<form:options items="${statusRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td> 
-							 </tr> 
-								
-							<%-- 	<div class="label"><label for="diseaseCode">Disease
-									Code:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="diseaseCode">
-										<form:options items="${diseaseCodeRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div> --%>
-								
-							 <tr>
-									<td class="label"><span class="red">*</span><em></em><strong>Disease
-									Code:</strong>
-									<td><form:select path="diseaseCode">
-										<form:options items="${diseaseCodeRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-							</tr> 
-								
-							<%-- <div class="label"><label for="monitorCode">Monitor Code:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="monitorCode">
-										<form:options items="${monitorCodeRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div> --%>
-        						
-							 <tr>
-									<td class="label"><em></em>Monitor Code:</td>
-									<td><form:select path="monitorCode">
-										<form:options items="${monitorCodeRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-							</tr> 
-
-							<%-- 	<div class="label"><label for="phaseCode">Phase
-									Code:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="phaseCode">
-										<form:options items="${phaseCodeRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div> --%>
-        						
-								<tr>
-									<td class="label"><span class="red">*</span><em></em>Phase
-									Code:</td>
-									<td><form:select path="phaseCode">
-										<form:options items="${phaseCodeRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-								</tr> 
-								
-								<div class="row">
-						            <div class="label"><form:label path="randomizedIndicator">Randomized
-									Indicator</form:label></div>
-						            <div class="value"><form:checkbox path="randomizedIndicator" /></div>
-						        </div> 
-						        
-						        <%-- 
-								<tr>
-									<td class="label"><span class="red">*</span><em></em>Randomized
-									Indicator</td>
-									<td><form:checkbox path="randomizedIndicator" /></td>
-								</tr> --%> 
+					<div class="row">
+						<div class="label"><label for="phaseCode">Phase Code:</label></div>
+						<div class="value">
+						<select id="phaseCode">							
+							<c:forEach items="${phaseCodeRefData}" var="temp">
+								<option value="${temp.code}">${temp.desc}</option>
+							</c:forEach>
+						</select>
+					</div>
+					</div>
+       													        														
+					<div class="row">
+					    <div class="label"><form:label path="randomizedIndicator">Randomized Indicator</form:label></div>
+						<div class="value"><form:checkbox path="randomizedIndicator" /></div>
+				    </div> 
 								
 								 <div class="row">
 						            <div class="label"><form:label path="multiInstitutionIndicator">Multi
@@ -183,24 +105,13 @@ function validatePage(){
 						            <div class="value"><form:checkbox path="multiInstitutionIndicator" /></div>
 						        </div> 
 						        
-						        <%-- 
-						        <tr>
-									<td class="label"><span class="red">*</span><em></em>Multi
-									Institution:</td>
-									<td><form:checkbox path="multiInstitutionIndicator" /></td>
-								</tr> --%> 
 								
 								<div class="row">
 						            <div class="label"><form:label path="blindedIndicator">Blinded Indicator:</form:label></div>
 						            <div class="value"><form:checkbox path="blindedIndicator" /></div>
 						        </div>
 						        
-						        <%--
-								<tr>
-									<td class="label">Blinded Indicator:</td>
-									<td><form:checkbox path="blindedIndicator" /></td>
-								</tr> --%> 
-
+					
 <%-- 
 								<div class="label"><label for="type">Type Code:</label></div>
 						            <div class="value" align="right">
@@ -211,44 +122,13 @@ function validatePage(){
             					</div>
         						</div>
 --%>
+				</td>
+				</tr>
+				</table>
 								
-								<%-- <tr>
-									<td class="label"><span class="red">*</span><em></em>Type Code:</td>
-									<td><form:select path="type">
-										<form:options items="${typeRefData}" itemLabel="desc"
-											itemValue="code" />
-									</form:select></td>
-								</tr> --%>
-
-							</table>
-							</td>
-						<tr>
-							<td><img src="images/spacer.gif" width="1" height="1"
-								class="heightControl"></td>
-						</tr>
-						<tr>
-							<td align="center" colspan="3"><!-- action buttons begins -->
-							<table cellpadding="4" cellspacing="0" border="0">
-								<tr>
-									<td colspan=2 valign="top"><br>
-									<br>
-									<input type="image" name="_target1"
-										src="/caaers/images/b-next.gif" border="0"
-										alt="continue to next page">
-								</tr>
-							</table>
-							</td>
-						</tr>
-					</table>
-				</form:form> <!-- LEFT CONTENT ENDS HERE -->
-			</tr>
-		</table>
-		</td>
-	</tr>
-</table>
-<div id="copyright">&copy; 2006 SemanticBits Company. All Rights
-Reserved</div>
-</div>
+				</div>
+        </form:form>
+        </chrome:body>
 <!-- MAIN BODY ENDS HERE -->
 </body>
 </html>
