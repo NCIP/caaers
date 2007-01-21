@@ -6,140 +6,77 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
+<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-<script>
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
-function validatePage(){
-	return true;
-}
-</script>
+<style type="text/css">
+        .label { width: 12em; text-align: right; padding: 4px; }
+</style>
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<div class="workArea">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<tr>
-		<tr>
-			<!-- CURRENT DRIVER/UNIT TITLE STARTS HERE -->
-			<td id="current">Site Name-Id: ${sites[0].site.name}</td>
-			<!-- CURRENT DRIVER/UNIT TITLE ENDS HERE -->
-	</tr>
-
-	<tr>
-
-		<td class="display"><!-- TABS LEFT START HERE -->
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-
-				<!-- LEFT CONTENT STARTS HERE -->
-
-				<td valign="top" class="additionals2"><!-- LEFT FORM STARTS HERE -->
-				<!-- RIGHT CONTENT STARTS HERE --> 
+<chrome:body title="${flow.name}: ${tab.longTitle}">
 				<form:form method="post">
 				<tags:tabFields tab="${tab}"/>
-				<div><input type="hidden" name="_page" value="2"></div>
-					<strong>Step 2. Study Site </strong> (<span class="red">*</span>
-					<em>Required Information </em>)<br>
-
-					<br>
+				
 					<table width="600" border="0" cellspacing="0" cellpadding="0"
 						id="table1">
-						<tr>
-							<td class="label"><span class="red">*</span><em></em>Choose HealthCare Site:</td>
-							<td><form:select path="studySites[0].site">
-								<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
-								</form:select></td>
-						</tr>
-						<tr>
-							<td><img src="images/spacer.gif" width="1" height="3"
-								class="heightControl"></td>
-						</tr>						
+					
+					<div class="row">
+						<div class="label"><label for="studySites[0].site">Site:</label></div>
+						<div class="value">
+						<select id="studySites[0].site">							
+							<c:forEach items="${sitesRefData}" var="temp">
+								<option value="${temp.id}">${temp.name}</option>
+							</c:forEach>
+						</select>
+					</div>
+					</div>
+
 						
-						<tr>
-							<td><img src="images/spacer.gif" width="1" height="3"
-								class="heightControl"></td>
-						</tr>
-						<tr>
-							<td class="label"><span class="red">*</span><em></em>Status
-							Code:</td>
-							<td><form:input path="studySites[0].statusCode" /></td>
-						</tr>
-							<tr>
-							<td><img src="images/spacer.gif" width="1" height="3"
-								class="heightControl"></td>
-						</tr>
-						<tr>
-							<td class="label"><span class="red">*</span><em></em>Role
-							Code:</td>
-							<td><form:input path="studySites[0].roleCode" /></td>
-						</tr>
-						<tr>
-							<td><img src="images/spacer.gif" width="1" height="3"
-								class="heightControl"></td>
-						</tr>
-						<tr>
-							<td class="label"><span class="red">*</span><em></em>Start Date:</td>
-							<td valign="top" align="left"><form:input
-								path="studySites[0].startDate" />&nbsp;<a href="#"
+					<div class="row">					
+						 <div class="label" align="right"><form:label path="studySites[0].statusCode">Status
+							Code:</form:label></div>			
+						 <div class="value" align="left"><form:input path="studySites[0].statusCode"/></div>
+				    </div>	
+
+					<div class="row">					
+						 <div class="label" align="right"><form:label path="studySites[0].roleCode">Role
+							Code:</form:label></div>			
+						 <div class="value" align="left"><form:input path="studySites[0].roleCode"/></div>
+				    </div>	
+
+					<div class="row">					
+						 <div class="label" align="right"><form:label path="studySites[0].startDate">Start Date:</form:label></div>			
+						 <div class="value" align="left"><form:input path="studySites[0].startDate"/><a href="#"
 								onClick="parent.OpenWins('calendar.htm','calendar',200,236);return false;"><img
 								src="images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></td>
-						</tr>
-						<tr>
-							<td class="label">End Date:</td>
-							<td valign="top" align="left"><form:input
-								path="studySites[0].endDate" />&nbsp;<a href="#"
+								height="16" border="0" align="absmiddle"></a></div>
+				    </div>
+					
+					<div class="row">					
+						 <div class="label" align="right"><form:label path="studySites[0].endDate">End Date:</form:label></div>			
+						 <div class="value" align="left"><form:input path="studySites[0].endDate"/><a href="#"
 								onClick="parent.OpenWins('calendar.htm','calendar',200,236);return false;"><img
 								src="images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></td>
-						<tr>
-						<tr>
-							<td class="label"><span class="red">*</span><em></em>IRB
-								Approval Date:</td>
-							<td valign="top" align="left"><form:input
-								path="studySites[0].irbApprovalDate" />&nbsp;<a href="#"
+								height="16" border="0" align="absmiddle"></a></div>
+				    </div>
+					
+					<div class="row">					
+						 <div class="label" align="right"><form:label path="studySites[0].irbApprovalDate">IRB
+								Approval Date:</form:label></div>			
+						 <div class="value" align="left"><form:input path="studySites[0].irbApprovalDate"/><a href="#"
 								onClick="parent.OpenWins('calendar.htm','calendar',200,236);return false;"><img
 								src="images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></td>
-						</tr>
-						<tr>
-							<td><img src="images/spacer.gif" width="1" height="3"
-								class="heightControl"></td>
-						</tr>
-						<tr>
-							<td align="center" colspan="3"><!-- action buttons begins -->
-							<table cellpadding="4" cellspacing="0" border="0">
-								<tr>
-									<td colspan=2 valign="top"><br>
-										<br>
-										<input type="image" name="_target1" src="/caaers/images/b-prev.gif" border="0"
-											alt="goto previous page">									
-										<input type="image" name="_target3" src="/caaers/images/b-next.gif" border="0"
-											alt="continue to next page">
-										<input type="image" name="_target0" src="/caaers/images/b-cancel.gif" border="0"
-											alt="start over from start page">	
-									</td>						
-								</tr>
-							</table>
-							</td>
-						</tr>
+								height="16" border="0" align="absmiddle"></a></div>
+				    </div>																						
+												
 					</table>
-				</form:form></td>
-			</tr>
-		</table>
-		<br>
-		</td>
-		<!-- LEFT CONTENT ENDS HERE -->
-	</tr>
-</table>
-<div id="copyright">&copy; 2006 SemanticBits. All Rights Reserved</div>
-</div>
+				</form:form>		
 <!-- MAIN BODY ENDS HERE -->
+</chrome:body>
 </body>
 </html>
