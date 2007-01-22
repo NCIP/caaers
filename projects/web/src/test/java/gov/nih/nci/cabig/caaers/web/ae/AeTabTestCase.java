@@ -4,11 +4,15 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import org.easymock.classextension.EasyMock;
 import static org.easymock.classextension.EasyMock.*;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.EscapedErrors;
 
 /**
@@ -17,14 +21,28 @@ import org.springframework.web.bind.EscapedErrors;
 public abstract class AeTabTestCase extends AeWebTestCase {
     protected Errors errors;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        // initialize command as valid
+        // initialize command as minimally valid
+        // BeginTab
         command.setParticipant(new Participant());
         command.setStudy(new Study());
+
+        // BasicsTab
+        command.getAeReport().getPrimaryAdverseEvent().setGrade(Grade.MODERATE);
+        command.getAeReport().getPrimaryAdverseEvent().setAttribution(Attribution.POSSIBLE);
+        command.getAeReport().getPrimaryAdverseEvent().setCtcTerm(new CtcTerm());
 
         errors = new BindException(command, "command");
     }
 
+    protected void assertFieldRequiredErrorRaised(String fieldName, String displayName) {
+        assertEquals("Wrong number of errors for " + fieldName, 1, errors.getFieldErrorCount(fieldName));
+        ObjectError fieldError = errors.getFieldError(fieldName);
+        assertEquals("Wrong code for " + fieldName + " error", "REQUIRED", fieldError.getCode());
+        assertEquals("Wrong default message for " + fieldName + " error",
+            "Missing " + displayName, fieldError.getDefaultMessage());
+    }
 }

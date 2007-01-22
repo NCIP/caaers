@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import org.springframework.validation.Errors;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.apache.commons.beanutils.PropertyUtils;
+
 /**
  * @author Rhett Sutphin
 */
@@ -19,6 +24,20 @@ public class AeTab extends Tab<CreateAdverseEventCommand> {
     }
 
     protected void initFields() {
+    }
+
+    @Override
+    public void validate(CreateAdverseEventCommand command, Errors errors) {
+        super.validate(command, errors);
+        BeanWrapper commandBean = new BeanWrapperImpl(command);
+        for (List<InputField> fields : getFieldGroups().values()) {
+            for (InputField field : fields) {
+                Object propValue = commandBean.getPropertyValue(field.getPropertyName());
+                if (field.isRequired() && propValue == null) {
+                    errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+                }
+            }
+        }
     }
 
     public void addField(String group, InputField field) {
