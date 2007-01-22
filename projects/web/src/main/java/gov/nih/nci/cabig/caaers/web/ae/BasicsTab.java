@@ -28,8 +28,8 @@ public class BasicsTab extends AeTab {
 
     @Override
     protected void initFields() {
-        addField(MAIN_FIELD_GROUP,
-            new DefaultDateField("aeReport.primaryAdverseEvent.detectionDate", "Detection date", false));
+        addField(MAIN_FIELD_GROUP, new DefaultDateField(
+            "aeReport.primaryAdverseEvent.detectionDate", "Detection date", true));
         addField(MAIN_FIELD_GROUP, new CollectionSelectField(
             "aeReport.primaryAdverseEvent.grade", "Grade", true,
                 Arrays.asList(Grade.values()), "name", "string"));
