@@ -29,8 +29,8 @@
 						<div class="label"><form:label path="studySites[0].site">Site:</form:label></div>
 						<div class="value">
 						<form:select path="studySites[0].site">
-							<form:options items="${sitesRefData}" itemLabel="desc"
-									itemValue="code" />
+							<form:options items="${sitesRefData}" itemLabel="name"
+									itemValue="id" />
 						</form:select>						
 					</div>
 					</div>
