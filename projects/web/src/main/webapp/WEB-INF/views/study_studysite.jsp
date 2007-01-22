@@ -26,7 +26,7 @@
 						id="table1">
 					
 					<div class="row">
-						<div class="label"><form:label path="studySites[0].site">Site:</form:label></div>
+						<div class="label"><form:label path="studySites[0].site"><span class="red">*</span><em></em>Site:</form:label></div>
 						<div class="value">
 						<form:select path="studySites[0].site">
 							<form:options items="${sitesRefData}" itemLabel="name"
@@ -38,19 +38,19 @@
 
 						
 					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].statusCode">Status
+						 <div class="label" align="right"><form:label path="studySites[0].statusCode"><span class="red">*</span><em></em>Status
 							Code:</form:label></div>			
 						 <div class="value" align="left"><form:input path="studySites[0].statusCode"/></div>
 				    </div>	
 
 					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].roleCode">Role
+						 <div class="label" align="right"><form:label path="studySites[0].roleCode"><span class="red">*</span><em></em>Role
 							Code:</form:label></div>			
 						 <div class="value" align="left"><form:input path="studySites[0].roleCode"/></div>
 				    </div>	
 
 					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].startDate">Start Date:</form:label></div>			
+						 <div class="label" align="right"><form:label path="studySites[0].startDate"><span class="red">*</span><em></em>Start Date:</form:label></div>			
 						 <div class="value" align="left"><form:input path="studySites[0].startDate"/><a href="#"
 								onClick="parent.OpenWins('calendar.htm','calendar',200,236);return false;"><img
 								src="images/b-calendar.gif" alt="Calendar" width="17"
@@ -66,7 +66,7 @@
 				    </div>
 					
 					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].irbApprovalDate">IRB
+						 <div class="label" align="right"><form:label path="studySites[0].irbApprovalDate"><span class="red">*</span><em></em>IRB
 								Approval Date:</form:label></div>			
 						 <div class="value" align="left"><form:input path="studySites[0].irbApprovalDate"/><a href="#"
 								onClick="parent.OpenWins('calendar.htm','calendar',200,236);return false;"><img
