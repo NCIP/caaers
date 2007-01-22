@@ -20,7 +20,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,11 +37,11 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	public CreateStudyController() {
         setCommandClass(Study.class);
-        
+        setAllowDirtyForward(false);
         //TODO: this is a temp one. need to fix it.
         Flow<Study> flow = new Flow<Study>("Create Study");       
         
-        Tab tab1 =  new Tab("Study Details", "Details", "study_details") {
+        Tab tab1 =  new Tab("Study Details", "Study Details", "study_details") {
             public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();                    
                 refdata.put("diseaseCodeRefData", getDiseaseCodeList());
@@ -55,24 +57,34 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
     	  		return refdata;
             }        	
         };
+                
         flow.addTab(tab1);
         
-        Tab tab2 = new Tab("Study Indicator", "Indicator", "study_identifiers");
-                
+        Tab tab2 = new Tab("Study Identifiers", "Study Identifiers", "study_identifiers"){
+            
+        	public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();                             
+                refdata.put("identifiersSourceRefData", getIdentifiersSourceList());
+                refdata.put("identifiersTypeRefData", getIdentifiersTypeList());                    
+    	  		return refdata;
+        	}
+        };
+        
+        tab2.isAllowDirtyForward();
         flow.addTab(tab2);
         
-        Tab tab3 =  new Tab("Study Sites", "sites", "study_studysite") {
+        Tab tab3 =  new Tab("Study Sites", "Study sites", "study_studysite") {
             
             	public Map<String, Object> referenceData() {
                     Map<String, Object> refdata = super.referenceData();                    
-                    refdata.put("sitesRefData", getSites());                    
-        	  		return refdata;
+                    refdata.put("sitesRefData", getSites());
+                    return refdata;
                
             }        	
         };
         flow.addTab(tab3);
         
-        Tab tab4 = new Tab("Review and Submit", "Review", "study_reviewsummary");
+        Tab tab4 = new Tab("Review and Submit", "Submit", "study_reviewsummary");
         
         flow.addTab(tab4);
         
@@ -194,7 +206,38 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		
 		ModelAndView modelAndView= new ModelAndView("study_confirmation");
     	modelAndView.addAllObjects(errors.getModel());
-    	return modelAndView;
+    	response.sendRedirect("createStudy");
+    	return null;
+	}
+	
+	@Override
+	protected void postProcessPage(HttpServletRequest request, Object command,
+			Errors arg2, int pageNo) throws Exception {
+		
+		switch (pageNo)
+		{
+			case 1:
+				handleIdentifierAction((Study)command,
+				request.getParameter("_action"),
+				request.getParameter("_selected"));		
+				break;
+			default:
+				//do nothing						
+		}		
+	}
+	
+	private void handleIdentifierAction(Study study, String action, String selected)
+	{				
+		if ("addIdentifier".equals(action))
+		{	
+			Identifier id = new Identifier();
+			id.setValue("<enter value>");
+			study.addIdentifier(id);		
+		}
+		else if ("removeIdentifier".equals(action))
+		{				
+			study.getIdentifiers().remove(Integer.parseInt(selected));
+		}					
 	}
 	
 	private Study createDefaultStudyWithDesign()
@@ -394,4 +437,32 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
     	
     	return col;
 	}
+	
+	private List<Lov> getIdentifiersSourceList(){
+		List<Lov> col = new ArrayList<Lov>();
+		Lov lov1 = new Lov("D", "Duke University Comprehensive Cancer Center");
+		Lov lov2 = new Lov("N", "NCI Clinical Trials Unit");
+		Lov lov3 = new Lov("C", "CalGB");
+	
+		col.add(lov1);
+    	col.add(lov2);
+    	col.add(lov3);
+    	
+    	return col;
+	}
+	
+	private List<Lov> getIdentifiersTypeList(){
+		List<Lov> col = new ArrayList<Lov>();
+		Lov lov1 = new Lov("PA", "Protocol Authority");
+		Lov lov2 = new Lov("CC", "Co-ordinating Center");
+		Lov lov3 = new Lov("S", "Site");
+		Lov lov4 = new Lov("SI", "Site IRB");
+		
+		col.add(lov1);
+    	col.add(lov2);
+    	col.add(lov3);
+    	col.add(lov4);
+    	
+    	return col;
+	}        		
 }
