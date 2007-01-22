@@ -16,7 +16,7 @@ import org.hibernate.annotations.Parameter;
 @Table (name = "IDENTIFIERS")
 @GenericGenerator (name="id-generator", strategy = "native",
 		parameters = {
-			@Parameter(name="sequence", value="IDENTIFIERS_ID_SEQ")
+			@Parameter(name="sequence", value="seq_identifiers_id")
 		}
 )
 public class Identifier extends AbstractDomainObject
