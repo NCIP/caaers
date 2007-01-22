@@ -17,15 +17,4 @@ public interface MutableDomainObject extends DomainObject {
 	 */
 	void setVersion(Integer version);
 
-	/**
-	 * @return the grid-scoped unique identifier for this object
-	 */
-	String getGridId();
-
-	/**
-	 * Specify the grid-scoped unique identifier for this object
-	 * @param gridId
-	 */
-	void setGridId(String bigId);
-
 }
