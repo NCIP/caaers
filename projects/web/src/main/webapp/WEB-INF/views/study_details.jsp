@@ -51,7 +51,7 @@
 					<td>
 				
 					<div class="row">
-						<div class="label"><form:label path="status">Status:</form:label></div>
+						<div class="label"><form:label path="status"><span class="red">*</span><em></em>Status:</form:label></div>
 						<div class="value">
 						<form:select path="status">
 							<form:options items="${statusRefData}" itemLabel="desc"
@@ -61,7 +61,7 @@
 					</div>
 
 					<div class="row">
-						<div class="label"><form:label path="diseaseCode">Disease Code:</form:label></div>
+						<div class="label"><form:label path="diseaseCode"><span class="red">*</span><em></em>Disease Code:</form:label></div>
 						<div class="value">
 						<form:select path="diseaseCode">
 							<form:options items="${diseaseCodeRefData}" itemLabel="desc"
@@ -81,7 +81,7 @@
 					</div>
 
 					<div class="row">
-						<div class="label"><form:label path="phaseCode">Phase Code:</form:label></div>
+						<div class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase Code:</form:label></div>
 						<div class="value">
 						<form:select path="phaseCode">
 							<form:options items="${phaseCodeRefData}" itemLabel="desc"
@@ -91,7 +91,7 @@
 					</div>
        							
 					<div class="row">
-						<div class="label"><form:label path="primarySponsorCode">Sponsor Code:</form:label></div>
+						<div class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor Code:</form:label></div>
 						<div class="value">
 						<form:select path="primarySponsorCode">
 							<form:options items="${sponsorCodeRefData}" itemLabel="desc"
@@ -101,12 +101,12 @@
 					</div>					
 
 					<div class="row">
-					    <div class="label"><form:label path="randomizedIndicator">Randomized Indicator</form:label></div>
+					    <div class="label"><form:label path="randomizedIndicator"><span class="red">*</span><em></em>Randomized Indicator</form:label></div>
 						<div class="value"><form:checkbox path="randomizedIndicator" /></div>
 				    </div> 
 								
 								 <div class="row">
-						            <div class="label"><form:label path="multiInstitutionIndicator">Multi
+						            <div class="label"><form:label path="multiInstitutionIndicator"><span class="red">*</span><em></em>Multi
 									Institution:</form:label></div>
 						            <div class="value"><form:checkbox path="multiInstitutionIndicator" /></div>
 						        </div> 
