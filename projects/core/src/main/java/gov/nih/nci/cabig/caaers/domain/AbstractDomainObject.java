@@ -55,4 +55,10 @@ public abstract class AbstractDomainObject implements MutableDomainObject, GridI
                 : t1.getId().equals(t2.getId());
         }
     }
+    
+    ////// LOGIC
+
+    public boolean hasGridId() {
+        return getGridId() != null;
+    }    
 }

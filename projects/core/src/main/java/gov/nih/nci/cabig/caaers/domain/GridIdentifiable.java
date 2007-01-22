@@ -17,4 +17,9 @@ public interface GridIdentifiable {
 	 */
 	void setGridId(String gridId);
 
+	/**
+	 * Return true if the gridId is not null else return false.
+	 * */
+	boolean hasGridId();
+
 }
