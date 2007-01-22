@@ -5,7 +5,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${tab.longTitle}</title>
+    <title>${pageTitle}</title>
     <style type="text/css">
         .division {
             float: left;
@@ -82,11 +82,9 @@
     </script>
     </head>
     <body>
-        <chrome:body title="${flow.name}: ${tab.longTitle}">
+        <chrome:body title="${bodyTitle}">
         <p id="instructions">
-            In order to create or edit an AE or SAE, you need to first select a participant and a
-            study. You may start with either one. Once you have selected one, the options
-            for the other will be automatically constrained. (Try it and see.)
+            ${instructions}
         </p>
 
         <form:form method="post" cssClass="standard autoclear">

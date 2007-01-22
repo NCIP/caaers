@@ -55,8 +55,8 @@
                                 <property name="linkName"><value>createAdverseEventController</value></property>
                             </bean>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
-                                <property name="displayName"><value>Search AEs</value></property>
-                                <property name="linkName"><value>aesNotImplementedController</value></property>
+                                <property name="displayName"><value>List AEs</value></property>
+                                <property name="linkName"><value>listAdverseEventsController</value></property>
                             </bean>
                         </list>
                     </property>
@@ -136,6 +136,9 @@
 
     <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
+
+    <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
 
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
