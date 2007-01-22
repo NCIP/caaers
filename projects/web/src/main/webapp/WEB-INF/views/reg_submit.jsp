@@ -136,9 +136,7 @@ function updateTargetPage(s){
 						</tr>
 					</table>
 					<a
-						href="searchRegisterParticipant?studySiteId=${command.studySite.id}"><img
-						src="images/b-edit.gif" alt="Choose Different Participant"
-						width="39" height="16" border="0"></a>
+						href="searchRegisterParticipant?studySiteId=${command.studySite.id}">Choose Different Participant</a>
 
 					<hr align="left" width="95%">
 					<strong>Step 2. Study Information </strong><br><br>
@@ -199,9 +197,7 @@ function updateTargetPage(s){
 						</tr>
 					</table>
 					<a
-						href="searchRegisterStudy?participantId=${command.participant.id}"><img
-						src="images/b-edit.gif" alt="Choose Different Study" width="39"
-						height="16" border="0"></a>
+						href="searchRegisterStudy?participantId=${command.participant.id}">Choose Different Study</a>
 					<hr align="left" width="95%">
 					<br>
 
@@ -213,11 +209,8 @@ function updateTargetPage(s){
 						<tr align="center">
 							<td colspan=2 valign="top"><br>
 							<br>
-							<a href="javascript:updateTargetPage('processFinish')"><img
-								src="images/b-submit.gif" alt="Submit" width="59" height="16"
-								border="0"></a> <a href="home"
-								<img src="images/b-startOver.gif" alt="Start Over" width="67"
-												height="16" border="0"></a></td>
+							<a href="javascript:updateTargetPage('processFinish')">Submit</a> <a href="home">
+								Start Over</a></td>
 										</tr>
 									</table>
 									</div>

@@ -74,7 +74,7 @@ function submitPage(){
 				</td>
 				<td><form:input path="searchText" size="20"/></td>
 				<td><input name="imageField" type="image" class="button"
-					onClick="submitPage();" src="/images/chrome/b-go.gif" alt="GO"
+					onClick="submitPage();" src="../images/chrome/b-go.gif" alt="GO"
 					align="middle" width="22" height="10" border="0"></td>
 			</tr>
 
