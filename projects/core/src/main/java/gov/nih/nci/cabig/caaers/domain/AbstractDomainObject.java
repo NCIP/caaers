@@ -13,8 +13,17 @@ import javax.persistence.Version;
 public abstract class AbstractDomainObject implements MutableDomainObject {
     private Integer id;
     private Integer version;
+    private String gridId;
 
-    @Id @GeneratedValue(generator = "id-generator")
+    public String getGridId() {
+		return gridId;
+	}
+
+	public void setGridId(String gridId) {
+		this.gridId = gridId;
+	}
+
+	@Id @GeneratedValue(generator = "id-generator")
     public Integer getId() {
         return id;
     }
