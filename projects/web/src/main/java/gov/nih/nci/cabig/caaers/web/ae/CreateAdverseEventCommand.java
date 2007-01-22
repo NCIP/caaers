@@ -44,7 +44,7 @@ public class CreateAdverseEventCommand {
     }
 
     public void save() {
-        getAssignment().addReport(aeReport);
+        //getAssignment().addReport(aeReport);
         reportDao.save(getAeReport());
     }
 

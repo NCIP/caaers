@@ -6,6 +6,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
@@ -23,15 +24,15 @@ function submitPage(){
 </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
+<chrome:search title="">
 <form:form id="searchParticipant" name="searchParticipant" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
 	<tr>
 		<!-- TITLE STARTS HERE -->
-		<td width="99%" height="43" valign="middle" id="title"><a href="/caaers/pages/participant/create?studySiteId=${studySiteId }">Create
+		<td width="99%" height="43" valign="left" id="title"><a href="/caaers/pages/participant/create?studySiteId=${studySiteId }">Create
 						new Participant for Registration</a> or search for an existing
-						participant.</td>
+						participant.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 
 		<td valign="top">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -84,6 +85,8 @@ function submitPage(){
 	</tr>
 </table>
 </form:form>
+</chrome:search>
+<chrome:body title="Study Search results">
 <span class="notation"><span class="labels">Please Select one of the studies to proceed</span></span>					
 <ec:table 
     	items="participants"
@@ -107,5 +110,6 @@ function submitPage(){
         </ec:column>--%>
     </ec:row>
 </ec:table>
+</chrome:body>
 </body>
 </html>

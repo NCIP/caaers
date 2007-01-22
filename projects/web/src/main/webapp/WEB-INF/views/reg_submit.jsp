@@ -8,6 +8,7 @@
 <html>
 <html>
 <head>
+<title>Confirm and Submit</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
@@ -49,14 +50,14 @@ function updateTargetPage(s){
 <form:form name="reviewForm" method="post">
 	<table width="100%" border="0" cellspacing="0" cellpadding="0"
 		class="titleArea">
-		<tr>
+		<tr><%--
 			<!-- TITLE STARTS HERE -->
 			<td width="99%" height="43" valign="middle" id="title"><a
 				href="searchRegisterStudy?participantId=${command.participant.id}">
 			1. Select Study</a>&nbsp&nbsp <a
 				href="searchRegisterParticipant?studySiteId=${command.studySite.id}">
 			2. Select Participant</a>&nbsp&nbsp 3. Review and Submit</td>
-
+			--%>
 			<td valign="top">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				id="search">
@@ -96,17 +97,17 @@ function updateTargetPage(s){
 							<table width="308" border="0" cellspacing="0" cellpadding="0"
 								id="table1">
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>First
+									<td class="label">First
 									Name:</td>
 									<td>${command.participant.firstName}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Last
+									<td class="label">Last
 									Name:</td>
 									<td>${command.participant.lastName}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Gender:
+									<td class="label">Gender:
 									</td>
 									<td>${command.participant.gender}</td>
 
@@ -117,17 +118,17 @@ function updateTargetPage(s){
 							<table width="308" border="0" cellspacing="0" cellpadding="0"
 								id="table1">
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Birth
+									<td class="label">Birth
 									Date:</td>
 									<td valign="top">${command.participant.dateOfBirth}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Ethnicity:
+									<td class="label">Ethnicity:
 									</td>
 									<td>${command.participant.ethnicity}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Race:</td>
+									<td class="label">Race:</td>
 									<td>${command.participant.race}</td>
 								</tr>
 							</table>
@@ -148,54 +149,49 @@ function updateTargetPage(s){
 							<table width="308" border="0" cellspacing="0" cellpadding="0"
 								id="table1">
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Short Title:
+									<td class="label">Short Title:
 									</td>
 									<td>${command.studySite.study.shortTitle}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Precis:
+									<td class="label">Precis:
 									</td>
 									<td>${command.studySite.study.precis}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Disease Code:
+									<td class="label">Disease Code:
 									</td>
 									<td>${command.studySite.study.diseaseCode}</td>
 
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Monitor Code:
+									<td class="label">Monitor Code:
 									</td>
 									<td>${command.studySite.study.monitorCode}</td>
 
 								</tr>
-								<tr>
-									<td class="label"><span class="red">*</span><em></em>Type:
-									</td>
-									<td>${command.studySite.study.type}</td>
-
-								</tr>
+								
 							</table>
 							</td>
 							<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
 							<table width="308" border="0" cellspacing="0" cellpadding="0"
 								id="table1">
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Birth
+									<td class="label">Birth
 									Date:</td>
 									<td valign="top">${command.studySite.study.longTitle}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Phase Code:
+									<td class="label">Phase Code:
 									</td>
 									<td>${command.studySite.study.phaseCode}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Sponsor Code:</td>
+									<td class="label">Sponsor Code:</td>
 									<td>${command.studySite.study.primarySponsorCode}</td>
 								</tr>
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>Status:</td>
+									<td class="label">Status:</td>
 									<td>${command.studySite.study.status}</td>
 								</tr>
 							</table>

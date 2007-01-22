@@ -3,8 +3,21 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
+<style type="text/css">
+        /* TODO: all these are temporary */
+        .division {
+            float: left;
+            width: 45%;
+            margin: 1em;
+        }
+        .division-content {
+            padding: 1em;
+        }
+</style>
+<title> Search for a Study or Participant  
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
@@ -22,37 +35,11 @@ function submitPage(s){
 </script>
 </head>
 <body>
-
-<!-- MAIN BODY STARTS HERE -->
-<div class="workArea">
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="titleArea">
-	<tr>
-		<!-- TITLE STARTS HERE -->
-		<td width="99%" height="43" valign="middle" id="title"></td>
-		<!-- TITLE ENDS HERE -->
-	</tr>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-	<form:form id="searchForm" name="searchForm" method="post">
-		<form:hidden path="searchCategory" />	
-		<tr>
-			<td><!-- TABS LEFT START HERE -->
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="50%">
-					
-					<!-- TABS LEFT END HERE --></td>
-					<td><img src="images/spacer.gif" width="2" height="1"></td>
-					<td width="50%"><!-- TABS RIGHT START HERE -->
-					
-					<!-- TABS RIGHT END HERE --></td>
-				</tr>
-				<tr>
-					<!-- LEFT CONTENT STARTS HERE -->
-					<td valign="top" class="searchL"><!-- LEFT FORM STARTS HERE -->
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<br><br>
+	<form:form id="searchForm" name="searchForm" action="/caaers/pages/searchRegister" method="post">
+	<form:hidden path="searchCategory" />
+	<chrome:division title="Select Study" id="study-search">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
 							<h3>Study Search</h3>
@@ -70,19 +57,14 @@ function submitPage(s){
 								<tr><td><form:input path="searchTypeText" size="25" /></td></tr>
 								</div>
 							</table>
-
-							^ Minimum two characters for Study Name search.<br>
 							<br>
-							<a href="" onClick="submitPage('study');return false;"><img
-								src="images/SerachProtocols.gif" alt="Search Studies"
-								width="100" height="16" border="0"></a></td>
+							<a href="" onClick="submitPage('study');return false;">Search Studies</a></td>
 						</tr>
 					</table>
-					<!-- LEFT FORM ENDS HERE --></td>
-					<!-- LEFT CONTENT ENDS HERE -->
-					<td><img src="images/spacer.gif" width="2" height="1"></td>
-					<td valign="top" class="searchR">
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	
+	</chrome:division>
+	<chrome:division title="Select Participant" id="participant-search">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
 							<h3>Participant Search</h3>
@@ -104,21 +86,12 @@ function submitPage(s){
 								</tr>
 							</table>
 							<br>
-							<a href="" onClick="submitPage('participant');return false;"><img
-								src="images/SerachPatients.gif" alt="Search Participants" width="100"
-								height="16" border="0"></a></td>
+							<a href="" onClick="submitPage('participant');return false;">Search Participants</a></td>
 
 							</td>
 						</tr>
 					</table>
-					</td>
-				</tr>
-			</table>
-			</td>
-		</tr>
-	</form:form>
-</table>
-</div>
-<!-- MAIN BODY ENDS HERE -->
+	</chrome:division>
+</form:form>
 </body>
 </html>

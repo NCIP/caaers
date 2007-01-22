@@ -5,10 +5,11 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
+<title>Study Search</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -25,7 +26,7 @@ function submitPage(){
 </head>
 <body>
 
-<!-- MAIN BODY STARTS HERE -->
+<chrome:search title="">
 <form:form id="searchStudy" name="searchParticipant" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
@@ -86,5 +87,6 @@ function submitPage(){
 	</tr>
 </table>
 </form:form>
+</chrome:search>
 </body>
 </html>

@@ -19,7 +19,45 @@
         }
     </style>
 </head>
+<script>
+
+function submitPage(){
+	document.getElementById("searchParticipant").submit();
+}
+</script>
 <body>
+<chrome:body title="Search for a Participant">
+    <form:form id="searchParticipant" name="searchParticipant" action="/caaers/pages/searchRegisterParticipant?studySiteId=${studySiteId }"  method="post">
+        <a href="/caaers/pages/participant/create?studySiteId=${studySiteId }">Create
+						new Participant for Registration</a>
+    	<table border="0" cellspacing="0" cellpadding="0" class="search">
+            <tr>
+            </tr>
+            <tr>
+                <td class="searchType">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td><form:select path="searchType">
+						<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
+					</form:select></td>
+                <td><form:input path="searchText" size="25" /></td>
+                <td><input name="imageField" type="image" class="button"
+					onClick="submitPage();return false;" src="/images/chrome/b-go.gif" alt="GO"
+					align="middle" width="22" height="10" border="0"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="4" class="notation">
+                    <span class="labels">(<span class="red">*</span><em>Required Information</em>)</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ^ Minimum two characters for search.
+                </td>
+            </tr>
+        </table>
+    </form:form>
+</chrome:body>
+
+<br>
 <chrome:body title="Create a new Participant">
 <form:form method="post">
 	<tags:tabFields tab="${tab}" />

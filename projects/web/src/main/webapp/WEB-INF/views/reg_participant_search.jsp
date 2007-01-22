@@ -7,10 +7,11 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
+<title>Participant Search</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -27,15 +28,14 @@ function doNothing(){
 </head>
 <body>
 
-
-<!-- MAIN BODY STARTS HERE -->
+<chrome:search title="">
 <form:form id="searchForm" name="searchForm" method="post">
 <form:hidden path="searchCategory" />
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
 	<tr>
 		<!-- TITLE STARTS HERE -->
-		<td width="99%" height="43" valign="middle" id="title">1. Select Study &nbsp;&nbsp;&nbsp; <u>2. Select Participant</u> &nbsp;&nbsp;&nbsp; 3. Submit</td>
+		<td width="99%" height="43" valign="middle" id="title"></td>
 
 		<td valign="top">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
@@ -88,9 +88,10 @@ function doNothing(){
 	</tr>
 </table>
 </form:form>
+</chrome:search>
 
 
-
+<chrome:body title="Study Search results">
 
 		<span class="notation"><span class="labels">Please Select one of the Participants to proceed</span></span>						
 		<ec:table 
@@ -115,6 +116,7 @@ function doNothing(){
         </ec:column>--%>
     </ec:row>
 </ec:table>
+</chrome:body>
 <!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

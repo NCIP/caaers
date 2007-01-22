@@ -9,6 +9,14 @@
         <pattern>/public/*</pattern>
     </decorator>
 
+    <decorator name="tabbedflownonwizard" page="tabbedflownowizard.jsp">
+        <pattern>/pages/searchRegister</pattern>
+        <pattern>/pages/searchRegisterParticipant</pattern>
+        <pattern>/pages/searchRegisterStudy</pattern>
+        <pattern>/pages/register</pattern>
+        <pattern>/pages/participant/create?studySiteId</pattern>
+   </decorator>
+    
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/ae/create</pattern>
         <pattern>/pages/ae/edit</pattern>
@@ -16,6 +24,8 @@
         <pattern>/pages/study/create</pattern>
         <pattern>/pages/createStudy</pattern>
     </decorator>
+    
+    
 
     <excludes>
         <pattern>/*/image/*</pattern>

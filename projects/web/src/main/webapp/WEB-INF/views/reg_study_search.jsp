@@ -6,6 +6,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
@@ -24,7 +25,7 @@ function submitPage(){
 </head>
 <body>
 
-<!-- MAIN BODY STARTS HERE -->
+<chrome:search title="">
 <form:form id="searchStudy" name="searchStudy" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
@@ -85,13 +86,15 @@ function submitPage(){
 	</tr>
 </table>
 </form:form>
+</chrome:search>
+<chrome:body title="Study Search results">
 
 		<ec:table 
     	items="studies"
     	var="study" 
     	action="${pageContext.request.contextPath}/pages/home" 
     	imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-    	title="Study Search Results"
+    	title=""
     	showPagination="false"
     	cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
     	<ec:row highlightRow="true">
@@ -126,6 +129,7 @@ function submitPage(){
 	</tr>
 </table>
 </div>
+</chrome:body>
 <!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

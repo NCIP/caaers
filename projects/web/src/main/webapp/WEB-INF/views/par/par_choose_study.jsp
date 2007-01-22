@@ -6,6 +6,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
@@ -34,64 +35,40 @@ function updateTargetPage(s){
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0"
-	class="titleArea">
-	<form:form id="searchForm" method="post">
-		<tr>
-			<!-- TITLE STARTS HERE -->
-			<td width="99%" height="43" valign="middle" id="title">Study
-			Search</td>
-			<td valign="top">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0"
-				id="search">
-				<tr>
-					<td class="labels">&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="searchType">Search Study by <form:select
-						path="searchType">
-						<form:options items="${searchType}" itemLabel="desc"
-							itemValue="code" />
+<chrome:search title="Study Search">
+    <form:form id="searchForm" method="post">
+        <table border="0" cellspacing="0" cellpadding="0" class="search">
+            <tr>
+            </tr>
+            <tr>
+                <td class="searchType">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td><form:select path="searchType">
+						<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
 					</form:select></td>
-				</tr>
-			</table>
-			<span class="notation">&nbsp;</span></td>
-			<td valign="top">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0"
-				id="search">
-				<tr>
-					<td align="left" class="labels">Search String:</td>
-					<td class="labels">&nbsp;</td>
-				</tr>
-				<tr>
-					<td><form:input path="searchTypeText" size="25" /></td>
-					<td><input type="submit" alignment="center" value="go" name="_target1" alt="GO" align="middle" width="22"
+                <td><form:input path="searchText" size="25" /></td>
+                <td><input type="submit" alignment="center" value="go" name="_target1" alt="GO" align="middle" width="22"
 						height="10" border="0"></td>
-				</tr>
-			</table>
-			<span class="notation">^ Minimum two characters for search.</span></td>
-		</tr>
-</table>
-</form:form>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="4" class="notation">
+                    <span class="labels">(<span class="red">*</span><em>Required Information</em>)</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ^ Minimum two characters for search.
+                </td>
+            </tr>
+        </table>
+    </form:form>
+</chrome:search>
+<chrome:body title="Study Search results">
 <form:form  method="post">
 	<tags:tabFields tab="${tab}" />
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-
-	<tr>
-
-		<td class="display"><!-- TABS LEFT START HERE -->
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			<tr>
-
-				<!-- LEFT CONTENT STARTS HERE -->
-
-				<td valign="top" class="additionals"><!-- LEFT FORM STARTS HERE -->
-				<br>
-				<%--You have selected ${command.studyParticipantAssignment.studySite.study.shortTitle}--%>
 				<ec:table items="command.studies" var="study"
 					action="${pageContext.request.contextPath}/pages/newParticipant"
-					imagePath="${pageContext.request.contextPath}/images/*.gif"
-					title="Study Search Results" showPagination="false" form="command"
+					imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+				    showPagination="false" form="command"
 					cellspacing="0" cellpadding="0" border="0" width="80%" style=""
 					styleClass="">
 					<ec:row highlightRow="true">
@@ -110,21 +87,7 @@ function updateTargetPage(s){
 						<ec:column property="primarySponsorName" title="Sponsor Name" />
 					</ec:row>
 				</ec:table> </form:form> <br>
-
-				<!-- LEFT FORM ENDS HERE --></td>
-				<!-- LEFT CONTENT ENDS HERE -->
-			</tr>
-		</table>
-
-		</td>
-	</tr>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+</chrome:body>
 <!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

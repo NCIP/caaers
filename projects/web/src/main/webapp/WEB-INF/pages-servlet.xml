@@ -89,13 +89,24 @@
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
     
+    <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
+    
     <!--  Create Participant Workflow -->
     <bean name="/participant/create" id="createParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.CreateParticipantController" >
     </bean>
     
+    <!--  Home Page includes searches for Studies and Participants 
+    <bean name="/testHome" id="HomeController" class="gov.nih.nci.cabig.caaers.web.HomeController" autowire="byName" /> 
+    -->
+    
+    <bean name="/home" id="HomeController" class="gov.nih.nci.cabig.caaers.web.HomeController" autowire="byName"> 
+	    <property name="formView" value="home"/>
+	    <property name="successView" value="reg_protocol_search"/>
+  	</bean>
+    
     <!--  Home Page includes searches for Studies and Participants -->
-    <bean name="/home" id="RegisterController" class="gov.nih.nci.cabig.caaers.web.SearchAndRegisterController" autowire="byName"> 
+    <bean name="/searchRegister" id="RegisterController" class="gov.nih.nci.cabig.caaers.web.SearchAndRegisterController" autowire="byName"> 
 	    <property name="formView" value="home"/>
 	    <property name="successView" value="reg_protocol_search"/>
   	</bean>

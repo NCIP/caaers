@@ -31,6 +31,7 @@ public class NewParticipantCommand {
     private String[] studySiteArray;
     private String searchTypeText;
     private String searchType;
+    private String searchText;
     
     // NEWLY ADDED
     private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
@@ -177,6 +178,14 @@ public class NewParticipantCommand {
 
 	public void setSearchTypeText(String searchTypeText) {
 		this.searchTypeText = searchTypeText;
+	}
+	
+	public String getSearchText() {
+		return searchText;
+	}
+	
+	public void setSearchText(String searchText) {
+		this.searchText = searchText;
 	}
 	
 	public StudyParticipantAssignment getStudyParticipantAssignment() {

@@ -6,12 +6,17 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
+<title> Choose a Study </title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link href="/css/common.css" rel="stylesheet" type="text/css">
 <link href="/css/common-search.css" rel="stylesheet" type="text/css">
+<tags:stylesheetLink name="tabbedflow"/>
+<tags:javascriptLink name="tabbedflow"/>
 <script>
 function submitPage(s){
 	document.getElementById("searchCategory").value=s;
@@ -22,7 +27,7 @@ function submitPage(s){
 <body>
 
 <!-- MAIN BODY STARTS HERE -->
-<div class="workArea">
+<chrome:search title="">
 <form:form id="searchForm" name="searchForm" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0"
 	class="titleArea">
@@ -83,6 +88,10 @@ function submitPage(s){
 	</tr>
 </table>
 </form:form>
+</chrome:search>
+
+<chrome:body title="Study Search results">
+
 <!-- TITLE/QUICK SEARCH AREA ENDS HERE --> <!-- CONTENT AREA STARTS HERE -->
 	<span class="notation"><span class="labels">Please Select one of the studies to proceed</span></span>
 	<ec:table 
@@ -94,7 +103,7 @@ function submitPage(s){
     	cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
     	<ec:row highlightRow="true">
         <ec:column property="shortTitle" width="6" title="Short Title">
-           <a href="searchRegisterParticipant?studySiteId=${study.studySites[0].id}">${study.shortTitle}</a>
+           <a href="/caaers/pages/participant/create?studySiteId=${study.studySites[0].id}">${study.shortTitle}</a>
         </ec:column>
         <ec:column property="longTitle" title="Long Title" />
         <ec:column property="description" title="Description" />
@@ -109,6 +118,7 @@ function submitPage(s){
     </ec:row>
 </ec:table>
 </div>
+</chrome:body>
 <!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

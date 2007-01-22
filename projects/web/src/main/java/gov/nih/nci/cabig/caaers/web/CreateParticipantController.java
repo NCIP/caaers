@@ -36,6 +36,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     private StudySiteDao studySiteDao;
     private StudyService studyService;
     private ParticipantDao participantDao;
+    private ListValues listValues;
+    
+    public ListValues getListValues() {
+		return listValues;
+	}
+    
+    public void setListValues(ListValues listValues) {
+		this.listValues = listValues;
+	}
     
     public ParticipantDao getParticipantDao() {
 		return participantDao;
@@ -67,14 +76,17 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
         getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
             public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
-                Map<String, String> genders = new HashMap<String, String>();
-                Map<String, String> sources  = new HashMap<String, String>();
-                genders.put("Female", "Female");
-                genders.put("Male", "Male");
-                sources.put("Duke", "Duke");
-                sources.put("NorthWestern","NorthWestern");
-                refdata.put("genders", genders);
-                refdata.put("sources", sources);
+                //Map<String, String> genders = new HashMap<String, String>();
+                //Map<String, String> sources  = new HashMap<String, String>();
+                //genders.put("Female", "Female");
+                //genders.put("Male", "Male");
+                //sources.put("Duke", "Duke");
+                //sources.put("NorthWestern","NorthWestern");
+                //refdata.put("genders", genders);
+                refdata.put("genders", listValues.getParticipantGender());
+                refdata.put("ethnicity", listValues.getParticipantEthnicity());
+                refdata.put("sources", listValues.getParticipantIdentifierSource());
+                refdata.put("race", listValues.getParticipantRace());
                 refdata.put("action", "New");
                 return refdata;
             }
@@ -103,6 +115,41 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
         	participantCommand.getIdentifiers().add(new Identifier());
 		}
         if(request.getParameter("studySiteId")!=null){
+        	
+        	// TEST
+        	final String studySiteId = request.getParameter("studySiteId");
+        	setFlow(new Flow<NewParticipantCommand>("Create Participant"));
+            getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "reg_create_participant") {
+                public Map<String, Object> referenceData() {
+                    Map<String, Object> refdata = super.referenceData();
+                    //Map<String, String> genders = new HashMap<String, String>();
+                    //Map<String, String> sources  = new HashMap<String, String>();
+                    //genders.put("Female", "Female");
+                    //genders.put("Male", "Male");
+                    //sources.put("Duke", "Duke");
+                    //sources.put("NorthWestern","NorthWestern");
+                    //refdata.put("genders", genders);
+                    //refdata.put("sources", sources);
+                    //refdata.put("action", "New");
+                    refdata.put("searchType", listValues.getParticipantSearchType());
+                    refdata.put("genders", listValues.getParticipantGender());
+                    refdata.put("ethnicity", listValues.getParticipantEthnicity());
+                    refdata.put("sources", listValues.getParticipantIdentifierSource());
+                    refdata.put("race", listValues.getParticipantRace());
+                    refdata.put("action", "New");
+                    refdata.put("studySiteId", studySiteId);
+                    return refdata;
+                }
+            });
+            getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {
+                public Map<String, Object> referenceData() {
+                    Map<String, Object> refdata = super.referenceData();
+                    refdata.put("searchType", getSearchType());
+                    return refdata;
+                }
+            });
+            getFlow().addTab(new Tab("Confirmation", "Confirmation", "par/par_confirmation"));
+        	//TEST
 			log.debug("Parameters found as.."+request.getParameter("studySiteId"));
 			studySite=studySiteDao.getById(Integer.parseInt(request.getParameter("studySiteId")));
 			Study study = studySite.getStudy();
@@ -122,7 +169,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     protected void onBind(HttpServletRequest request, Object command,BindException errors)throws Exception {
     	log.debug("Entering onBind...");
     	NewParticipantCommand participantCommand = (NewParticipantCommand)command;
-    	String searchtext = participantCommand.getSearchTypeText();
+    	String searchtext = participantCommand.getSearchText();
     	String type       = participantCommand.getSearchType();
     	List<StudySite> studySites = new ArrayList<StudySite>();
     	// This will happen on page #2
