@@ -14,11 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.GridIdentifiable;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -90,16 +92,24 @@ public class DefaultStudyService implements StudyService {
 
    
     
-    private <T extends DomainObject> T load(T param, CaaersDao<T> dao, boolean required) {
-        T loaded = null;
-        if(param.getId() != null){
-            loaded = dao.getById(param.getId());
+    private <T extends DomainObject & GridIdentifiable> T load(T param, GridIdentifiableDao<T> dao, boolean required) {
+    	checkForGridId(param);
+    	T loaded = null;
+        if(param.getGridId() != null){
+            loaded = dao.getByGridId(param.getGridId());
         }
         if(required && loaded == null){
             throw new IllegalArgumentException(param.getClass().getSimpleName() + " doesn't exist.");
         }
         return loaded;
     }
+
+    private void checkForGridId(GridIdentifiable gridIdentifiable) {
+        if (!gridIdentifiable.hasGridId()) {
+            throw new IllegalArgumentException(
+                "No gridId on " + gridIdentifiable.getClass().getSimpleName().toLowerCase() + " parameter");
+        }
+    }    
     
     private class ParameterLoader{
         private Study study;
