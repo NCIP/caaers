@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 
 /**
  * @author Rhett Sutphin
@@ -17,10 +18,14 @@ public class CreateAdverseEventCommand {
     private Participant participant;
     private Study study;
 
+    private AdverseEventReportDao reportDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
-    public CreateAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao) {
+    public CreateAdverseEventCommand(
+        StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao
+    ) {
         this.assignmentDao = assignmentDao;
+        this.reportDao = reportDao;
         aeReport = new AdverseEventReport();
         aeReport.setPrimaryAdverseEvent(new AdverseEvent());
 
@@ -36,6 +41,11 @@ public class CreateAdverseEventCommand {
         } else {
             return null;
         }
+    }
+
+    public void save() {
+        getAssignment().addReport(aeReport);
+        reportDao.save(getAeReport());
     }
 
     ////// BOUND PROPERTIES
