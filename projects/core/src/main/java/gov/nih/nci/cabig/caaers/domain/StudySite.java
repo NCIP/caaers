@@ -24,7 +24,7 @@ import java.util.List;
 @Table (name = "study_sites")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="study_sites_id_seq")
+        @Parameter(name="sequence", value="seq_study_sites_id")
     }
 )
 public class StudySite extends AbstractDomainObject {	
