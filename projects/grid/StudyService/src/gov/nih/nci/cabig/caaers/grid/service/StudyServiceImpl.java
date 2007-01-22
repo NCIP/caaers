@@ -11,13 +11,8 @@ import java.rmi.RemoteException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * TODO:I am the service side implementation class. IMPLEMENT AND DOCUMENT ME
@@ -77,18 +72,10 @@ public class StudyServiceImpl extends StudyServiceImplBase {
 
             StudyService svc = (StudyService) this.ctx.getBean(STUDY_SERVICE_BEAN_NAME);
 
-            startTransaction();
-
             StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site);
 
-            endTransaction();
-
-            // assignment =
-            // ((DefaultStudyService)svc).getStudyParticipantAssignment(assignment.getParticipant(),
-            // assignment.getStudySite().getStudy());
-
-            // assignmentBean.setId(BigInteger.valueOf(assignment.getId().longValue()));
-            assignmentBean.setId(BigInteger.valueOf(-1));
+            //TODO: Switch to using grid id when that is reader
+            assignmentBean.setId(BigInteger.valueOf(assignment.getId().longValue()));
         } catch (Exception ex) {
             String msg = "Error assigning participant: " + ex.getMessage();
             logger.debug(msg, ex);
@@ -98,17 +85,17 @@ public class StudyServiceImpl extends StudyServiceImplBase {
 
     }
 
-    private void endTransaction() {
-        SessionFactory fact = (SessionFactory) this.ctx.getBean("sessionFactory");
-        Session session = SessionFactoryUtils.getSession(fact, true);
-        TransactionSynchronizationManager.unbindResource(fact);
-        SessionFactoryUtils.releaseSession(session, fact);
-    }
+//    private void endTransaction() {
+//        SessionFactory fact = (SessionFactory) this.ctx.getBean("sessionFactory");
+//        Session session = SessionFactoryUtils.getSession(fact, true);
+//        TransactionSynchronizationManager.unbindResource(fact);
+//        SessionFactoryUtils.releaseSession(session, fact);
+//    }
 
-    private void startTransaction() {
-        SessionFactory fact = (SessionFactory) this.ctx.getBean("sessionFactory");
-        Session session = SessionFactoryUtils.getSession(fact, true);
-        TransactionSynchronizationManager.bindResource(fact, new SessionHolder(session));
-    }
+//    private void startTransaction() {
+//        SessionFactory fact = (SessionFactory) this.ctx.getBean("sessionFactory");
+//        Session session = SessionFactoryUtils.getSession(fact, true);
+//        TransactionSynchronizationManager.bindResource(fact, new SessionHolder(session));
+//    }
 
 }
