@@ -26,7 +26,7 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "studies")
 @GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name = "sequence", value = "studies_id_seq")
+        @Parameter(name = "sequence", value = "seq_studies_id")
     }
 )
 public class Study extends AbstractDomainObject implements Serializable {
