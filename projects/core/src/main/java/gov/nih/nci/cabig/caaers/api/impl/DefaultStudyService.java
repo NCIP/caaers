@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
@@ -28,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
  *
  */
+@Transactional
 public class DefaultStudyService implements StudyService {
     
     private ParticipantDao participantDao;

@@ -53,6 +53,7 @@ public class StudyServiceTest extends CaaersDbTestCase {
                 StudyParticipantAssignment assignment = svc.assignParticipant(study, participant,
                                 site);
                 assertNotNull("Assignment is null", assignment);
+                assertNotNull("Assignment not flushed", assignment.getId());
                 assertNotNull("Assignment gridId is null", assignment.getGridId());
                 participantId = assignment.getParticipant().getId();
             }
