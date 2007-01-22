@@ -148,10 +148,10 @@
     </target>
 
     <target name="get-caaers-jars">
-	
+	<!--
 		<ant dir="../../web" antfile="build.xml" target="war" inheritAll="false"/>
 		<jar basedir="../../web/build/main/classes" destfile="ext/lib/caaers-web.jar" includes="**/*.class"/>
-
+-->
 	
         <copy todir="ext/lib" overwrite="true">
             <fileset dir="../../..">
