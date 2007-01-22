@@ -48,11 +48,16 @@ public class StudyParticipantAssignment extends AbstractDomainObject {
 		this.dateOfEnrollment = new Date();
 	}
     
-    public StudyParticipantAssignment()
-    {
-    	
+    public StudyParticipantAssignment() { }
+
+    ////// LOGIC
+
+    public void addReport(AdverseEventReport report) {
+        report.setAssignment(this);
+        aeReports.add(report);
     }
-    // //// BEAN PROPERTIES
+
+    ////// BEAN PROPERTIES
 
     public void setStudySite(StudySite studySite) {
         this.studySite = studySite;
