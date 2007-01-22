@@ -51,49 +51,55 @@
 					<td>
 				
 					<div class="row">
-						<div class="label"><label for="status">Status:</label></div>
+						<div class="label"><form:label path="status">Status:</form:label></div>
 						<div class="value">
-						<select id="status">							
-							<c:forEach items="${statusRefData}" var="temp">
-								<option value="${temp.code}">${temp.desc}</option>
-							</c:forEach>
-						</select>
+						<form:select path="status">
+							<form:options items="${statusRefData}" itemLabel="desc"
+									itemValue="code" />
+						</form:select>						
 					</div>
 					</div>
 
 					<div class="row">
-						<div class="label"><label for="diseaseCode">Disease Code:</label></div>
+						<div class="label"><form:label path="diseaseCode">Disease Code:</form:label></div>
 						<div class="value">
-						<select id="diseaseCode">							
-							<c:forEach items="${diseaseCodeRefData}" var="temp">
-								<option value="${temp.code}">${temp.desc}</option>
-							</c:forEach>
-						</select>
+						<form:select path="diseaseCode">
+							<form:options items="${diseaseCodeRefData}" itemLabel="desc"
+									itemValue="code"/>
+						</form:select>						
 					</div>
 					</div>
 					
 					<div class="row">
-						<div class="label"><label for="monitorCode">Monitor Code:</label></div>
+						<div class="label"><form:label path="monitorCode">Monitor Code:</form:label></div>
 						<div class="value">
-						<select id="monitorCode">							
-							<c:forEach items="${monitorCodeRefData}" var="temp">
-								<option value="${temp.code}">${temp.desc}</option>
-							</c:forEach>
-						</select>
+						<form:select path="monitorCode">
+							<form:options items="${monitorCodeRefData}" itemLabel="desc"
+									itemValue="code"/>
+						</form:select>												
 					</div>
 					</div>
 
 					<div class="row">
-						<div class="label"><label for="phaseCode">Phase Code:</label></div>
+						<div class="label"><form:label path="phaseCode">Phase Code:</form:label></div>
 						<div class="value">
-						<select id="phaseCode">							
-							<c:forEach items="${phaseCodeRefData}" var="temp">
-								<option value="${temp.code}">${temp.desc}</option>
-							</c:forEach>
-						</select>
+						<form:select path="phaseCode">
+							<form:options items="${phaseCodeRefData}" itemLabel="desc"
+									itemValue="code"/>
+						</form:select>												
 					</div>
 					</div>
-       													        														
+       							
+					<div class="row">
+						<div class="label"><form:label path="primarySponsorCode">Sponsor Code:</form:label></div>
+						<div class="value">
+						<form:select path="primarySponsorCode">
+							<form:options items="${sponsorCodeRefData}" itemLabel="desc"
+									itemValue="code"/>
+						</form:select>												
+					</div>
+					</div>					
+
 					<div class="row">
 					    <div class="label"><form:label path="randomizedIndicator">Randomized Indicator</form:label></div>
 						<div class="value"><form:checkbox path="randomizedIndicator" /></div>
@@ -112,16 +118,6 @@
 						        </div>
 						        
 					
-<%-- 
-								<div class="label"><label for="type">Type Code:</label></div>
-						            <div class="value" align="right">
-					                <form:select path="type">
-										<form:options items="${typeRefData}" itemLabel="desc"
-											itemValue="code"/>
-									</form:select></td>
-            					</div>
-        						</div>
---%>
 				</td>
 				</tr>
 				</table>
