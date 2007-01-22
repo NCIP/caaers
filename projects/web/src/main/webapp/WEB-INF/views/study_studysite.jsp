@@ -26,15 +26,15 @@
 						id="table1">
 					
 					<div class="row">
-						<div class="label"><label for="studySites[0].site">Site:</label></div>
+						<div class="label"><form:label path="studySites[0].site">Site:</form:label></div>
 						<div class="value">
-						<select id="studySites[0].site">							
-							<c:forEach items="${sitesRefData}" var="temp">
-								<option value="${temp.id}">${temp.name}</option>
-							</c:forEach>
-						</select>
+						<form:select path="studySites[0].site">
+							<form:options items="${sitesRefData}" itemLabel="desc"
+									itemValue="code" />
+						</form:select>						
 					</div>
 					</div>
+
 
 						
 					<div class="row">					
