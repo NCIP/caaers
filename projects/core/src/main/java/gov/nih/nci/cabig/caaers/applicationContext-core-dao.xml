@@ -39,7 +39,20 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
             </list>
         </property>
+        <property name="entityInterceptor">
+            <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
+        </property>
     </bean>
+    
+    <!-- 
+    
+    <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.CaBigGridIdentifierCreator"> 
+        <property name="handleRepositoryDir"><value>cabig</value></property>
+        <property name="context"><value>urn://cabig</value></property>
+    </bean>
+    -->
+    <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
+    
 
     <bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="properties">
