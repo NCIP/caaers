@@ -297,6 +297,20 @@
 				<input type="image" name="_target2" src="images/b-edit.gif"
 					border="0" alt="edit this page"></td>
 			</tr>
+			
+			<tr> <td>
+				<input type="image" name="_target0"
+						src="/caaers/images/b-prev.gif" border="0"
+						alt="goto previous page"> 
+				<input type="image" name="_finish"
+						src="/caaers/images/b-save.gif" border="0"
+						alt="continue to next page"> 
+				<input type="image"
+						name="_target0" src="/caaers/images/b-cancel.gif" border="0"
+						alt="start over from start page">
+						</td>
+								
+			</tr>
 						
 		</table>
 
