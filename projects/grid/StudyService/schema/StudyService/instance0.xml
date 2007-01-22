@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site xmlns="gme://caaers.caBIG/1.0/gov.nih.nci.cabig.caaers"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="gme://caaers.caBIG/1.0/gov.nih.nci.cabig.caaers file:/Users/joshua/dev/svn/caaers/trunk/projects/grid/StudyService/schema/StudyService/gov.nih.nci.cabig.caaers.domain.xsd" name="name1">
+</Site>

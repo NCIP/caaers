@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignParticipantRequest xmlns="http://grid.caaers.cabig.nci.nih.gov/StudyService"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://grid.caaers.cabig.nci.nih.gov/StudyService ./temp.xsd"
+    xmlns:domain="gme://caaers.caBIG/1.0/gov.nih.nci.cabig.caaers">
+    <study>
+        <domain:Study id="-2001" shortTitle="New Study" primarySponsorCode="SCODE_100"
+            primarySponsorName="yadda" principalInvestigatorCode="some code"
+            principalInvestigatorName="some name"/>
+    </study>
+
+    <participant>
+        <domain:Participant firstName="Mighty" middleName="A" lastName="Mouse"/>
+    </participant>
+    <site>
+        <domain:Site id="-1001" name="Some Site"/>
+    </site>
+
+
+</AssignParticipantRequest>

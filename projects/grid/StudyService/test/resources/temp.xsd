@@ -1,0 +1,43 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:wsrbf="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-BaseFaults-1.2-draft-01.xsd"
+  targetNamespace="http://grid.caaers.cabig.nci.nih.gov/StudyService"
+  xmlns:ns0="gme://caaers.caBIG/1.0/gov.nih.nci.cabig.caaers" elementFormDefault="qualified"
+>
+  <import namespace="gme://caaers.caBIG/1.0/gov.nih.nci.cabig.caaers"
+    schemaLocation="../../schema/StudyService/gov.nih.nci.cabig.caaers.domain.xsd"/>
+  <element name="AssignParticipantRequest">
+    <complexType>
+      <sequence>
+        <element name="study">
+          <complexType>
+            <sequence>
+              <element ref="ns0:Study" minOccurs="1" maxOccurs="1"/>
+            </sequence>
+          </complexType>
+        </element>
+        <element name="participant">
+          <complexType>
+            <sequence>
+              <element ref="ns0:Participant" minOccurs="1" maxOccurs="1"/>
+            </sequence>
+          </complexType>
+        </element>
+        <element name="site">
+          <complexType>
+            <sequence>
+              <element ref="ns0:Site" minOccurs="1" maxOccurs="1"/>
+            </sequence>
+          </complexType>
+        </element>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="AssignParticipantResponse">
+    <complexType>
+      <sequence>
+        <element ref="ns0:StudyParticipantAssignment" minOccurs="1" maxOccurs="1"/>
+      </sequence>
+    </complexType>
+  </element>
+
+</schema>
