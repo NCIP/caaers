@@ -16,7 +16,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * @author Padmaja Vedula
  * @author Rhett Sutphin
  */
-public class SiteDao extends CaaersDao<Site> {
+public class SiteDao extends GridIdentifiableDao<Site> {
     public Class<Site> domainClass() {
         return Site.class;
     }

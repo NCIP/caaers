@@ -15,7 +15,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * @author Rhett Sutphin
  */
-public class ParticipantDao extends CaaersDao<Participant> {
+public class ParticipantDao extends GridIdentifiableDao<Participant> {
     // these are for getBySubnames
     private static final List<String> SUBSTRING_MATCH_PROPERTIES
         = Arrays.asList("firstName", "lastName");

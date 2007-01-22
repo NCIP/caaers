@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rhett Sutphin
  */
 @Transactional
-public class StudyDao extends CaaersDao<Study> {
+public class StudyDao extends GridIdentifiableDao<Study> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES
         = Arrays.asList("shortTitle", "longTitle");
     private static final List<String> EXACT_MATCH_PROPERTIES
