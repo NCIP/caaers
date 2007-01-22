@@ -79,18 +79,25 @@ field.value="";
 								</tr>
 								<c:forEach items="${command.identifiers}" varStatus="status">
 									<tr align="center" class="results">
-										<td width="10%"><a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-											src="images/checkno.gif" border="0" alt="remove"></a></td>
-										<td width="20%"><form:select path="identifiers[${status.index}].source">
+										<td>
+										<div class="row">
+										<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
+											src="images/checkno.gif" border="0" alt="remove"></a>
+											</div>
+											</td>
+										<td> <div class="row">  <div class="value"> <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersSourceRefData}" itemLabel="desc"
-												itemValue="code" /></form:select></td>
-										<td width="20%"><form:select path="identifiers[${status.index}].type">
+												itemValue="code" /></form:select>
+											</div></div>
+										</td>
+
+										<td> <div class="row"> <div class="value"> <form:select path="identifiers[${status.index}].type">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
-												itemValue="code" /></form:select></td>
-										<td width="20%"><form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/></td>
-										<td width="25%" aligh="center"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
+												itemValue="code" /></form:select> </div></div></td>
+										<td> <div class="row"> <div class="value"><form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
+										<td><div class="row"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/> </div></td> 
 									</tr> 
 								</c:forEach> 
 								</table>
