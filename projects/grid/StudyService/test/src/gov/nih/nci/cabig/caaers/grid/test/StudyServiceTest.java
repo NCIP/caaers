@@ -29,13 +29,6 @@ import org.custommonkey.xmlunit.XMLTestCase;
  */
 public class StudyServiceTest extends XMLTestCase {
 
-    private static final String ASSIGN_PARTICIPANT_REQUEST = "AssignParticipantRequest.xml";
-
-    private static final String SERVICE_NAMESPACE = "http://grid.caaers.cabig.nci.nih.gov/StudyService";
-
-    private static final QName ASSIGN_PARTICIPANT_RESPONSE_QNAME = new QName(SERVICE_NAMESPACE,
-                    "AssignParticipantRequest");
-
     private static String DEFAULT_SERVICE_URL = "http://localhost:8080/wsrf/services/cagrid/StudyService";
 
     private StudyServiceClient client;
@@ -44,7 +37,6 @@ public class StudyServiceTest extends XMLTestCase {
      * 
      */
     public StudyServiceTest() {
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -52,7 +44,6 @@ public class StudyServiceTest extends XMLTestCase {
      */
     public StudyServiceTest(String arg0) {
         super(arg0);
-        // TODO Auto-generated constructor stub
     }
 
     public void setUp() {
@@ -95,8 +86,8 @@ public class StudyServiceTest extends XMLTestCase {
             StringWriter w = new StringWriter();
             Utils.serializeObject(assignment, assignmentQName, w, config);
             String xml = w.getBuffer().toString();
-            
-            System.out.println(xml);
+            assertXpathExists("/*[local-name()='StudyParticipantAssignment' and @id]", xml);
+            assertXpathExists("/*[local-name()='StudyParticipantAssignment' and @gridId]", xml);
             
         } catch (Exception ex) {
             fail("Error making call: " + ex.getMessage());
