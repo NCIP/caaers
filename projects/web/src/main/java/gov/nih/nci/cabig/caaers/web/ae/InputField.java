@@ -3,51 +3,21 @@ package gov.nih.nci.cabig.caaers.web.ae;
 /**
  * @author Rhett Sutphin
  */
-public abstract class InputField {
-    private String displayName;
-    private String propertyName;
-    private boolean required;
-    private String extraInformation;
+public interface InputField {
+    Category getCategory();
 
-    protected InputField() { }
+    /** @return the lowercased name of the value returned by {@link #getCategory} */
+    String getCategoryName();
 
-    protected InputField(String propertyName, String displayName, boolean required) {
-        this.displayName = displayName;
-        this.propertyName = propertyName;
-        this.required = required;
-    }
+    String getDisplayName();
 
-    public abstract String getType();
+    boolean isRequired();
 
-    public String getDisplayName() {
-        return displayName == null ? propertyName : displayName;
-    }
+    String getPropertyName();
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
+    String getExtraInformation();
 
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public String getExtraInformation() {
-        return extraInformation;
-    }
-
-    public void setExtraInformation(String extraInformation) {
-        this.extraInformation = extraInformation;
+    enum Category {
+        TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER
     }
 }

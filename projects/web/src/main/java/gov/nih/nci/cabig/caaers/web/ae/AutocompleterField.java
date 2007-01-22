@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 /**
  * @author Rhett Sutphin
  */
-public class AutocompleterField extends InputField {
+public class AutocompleterField extends AbstractInputField {
     public AutocompleterField() { }
 
     public AutocompleterField(String propertyName, String displayName, boolean required) {
@@ -18,7 +18,8 @@ public class AutocompleterField extends InputField {
         return getPropertyName() + "-choices";
     }
 
-    public String getType() {
-        return "autocompleter";
+    @Override
+    public Category getCategory() {
+        return Category.AUTOCOMPLETER;
     }
 }

@@ -6,7 +6,7 @@
 <div class="row" id="${field.propertyName}-row" <c:if test="${not empty cssStyle}">style="${cssStyle}"</c:if>>
     <div class="label">
         <c:choose>
-            <c:when test="${field.type == 'autocompleter'}">
+            <c:when test="${field.categoryName == 'autocompleter'}">
                 <label for="${field.textfieldId}">${field.displayName}</label>
             </c:when>
             <c:otherwise>

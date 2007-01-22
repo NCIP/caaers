@@ -14,7 +14,7 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
-*/
+ */
 public class BasicsTab extends AeTab {
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
@@ -29,7 +29,7 @@ public class BasicsTab extends AeTab {
     @Override
     protected void initFields() {
         addField(MAIN_FIELD_GROUP,
-            new DateField("aeReport.primaryAdverseEvent.detectionDate", "Detection date", false));
+            new DefaultDateField("aeReport.primaryAdverseEvent.detectionDate", "Detection date", false));
         addField(MAIN_FIELD_GROUP, new CollectionSelectField(
             "aeReport.primaryAdverseEvent.grade", "Grade", true,
                 Arrays.asList(Grade.values()), "name", "string"));
@@ -37,11 +37,11 @@ public class BasicsTab extends AeTab {
             "aeReport.primaryAdverseEvent.attribution", "Attribution", true,
                 Arrays.asList(Attribution.values()), "name", "string"));
 
-        InputField ctcTermField = new AutocompleterField("aeReport.primaryAdverseEvent.ctcTerm", "CTC term", true);
+        AbstractInputField ctcTermField = new AutocompleterField("aeReport.primaryAdverseEvent.ctcTerm", "CTC term", true);
         ctcTermField.setExtraInformation(
             "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
         addField(CTC_TERM_FIELD_GROUP, ctcTermField);
-        addField(CTC_OTHER_FIELD_GROUP, new TextArea("aeReport.primaryAdverseEvent.detailsForOther", "Other (specify)", false));
+        addField(CTC_OTHER_FIELD_GROUP, new DefaultTextArea("aeReport.primaryAdverseEvent.detailsForOther", "Other (specify)", false));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class BasicsTab extends AeTab {
         AdverseEvent ae = command.getAeReport().getPrimaryAdverseEvent();
         CtcTerm ctcTerm = ae.getCtcTerm();
         if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null) {
-            InputField field = getFieldGroups().get(CTC_OTHER_FIELD_GROUP).get(0);
+            InputField field = getFieldGroups().get(CTC_OTHER_FIELD_GROUP).getFields().get(0);
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
         }
     }

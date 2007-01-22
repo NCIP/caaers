@@ -1,5 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -8,9 +9,11 @@
     <title>${tab.longTitle}</title>
 </head>
 <body>
-    Not implemented
-    <form:form>
-        <tags:tabFields tab="${tab}"/>
-    </form:form>
+    <chrome:body title="${flow.name}: ${tab.longTitle}">
+        <p>Not implemented</p>
+        <form:form>
+            <tags:tabFields tab="${tab}"/>
+        </form:form>
+    </chrome:body>
 </body>
 </html>

@@ -7,7 +7,6 @@
 <head>
     <title>${tab.longTitle}</title>
     <style type="text/css">
-        /* TODO: all these are temporary */
         .division {
             float: left;
             width: 45%;

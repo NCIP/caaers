@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 
 /**
@@ -22,6 +23,9 @@ public class CreateAdverseEventCommand {
         this.assignmentDao = assignmentDao;
         aeReport = new AdverseEventReport();
         aeReport.setPrimaryAdverseEvent(new AdverseEvent());
+
+        // TODO temporary
+        aeReport.getLabs().add(new Lab());
     }
 
     ////// LOGIC

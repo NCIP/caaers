@@ -13,6 +13,7 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateAdverseEventCommand command;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);

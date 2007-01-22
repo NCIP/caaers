@@ -21,23 +21,28 @@ public abstract class AbstractTabbedFlowFormController<C> extends AbstractWizard
         this.flow = flow;
     }
 
-    protected Map<?, ?> referenceData(HttpServletRequest request, int page) throws Exception {
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map<?, ?> referenceData(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
         Tab<C> current = getFlow().getTab(page);
         refdata.put("tab", current);
         refdata.put("flow", getFlow());
-        refdata.putAll(current.referenceData());
+        refdata.putAll(current.referenceData((C) command));
         return refdata;
     }
 
+    @Override
     protected int getPageCount(HttpServletRequest request, Object command) {
         return getFlow().getTabCount();
     }
 
+    @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
         return getFlow().getTab(page).getViewName();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void validatePage(Object oCommand, Errors errors, int page, boolean finish) {
         C command = (C) oCommand;

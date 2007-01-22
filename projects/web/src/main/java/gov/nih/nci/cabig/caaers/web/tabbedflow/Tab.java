@@ -29,6 +29,10 @@ public class Tab<C> {
         return new HashMap<String, Object>();
     }
 
+    public Map<String, Object> referenceData(C command) {
+        return referenceData();
+    }
+
     public boolean isAllowDirtyForward() {
         return true;
     }

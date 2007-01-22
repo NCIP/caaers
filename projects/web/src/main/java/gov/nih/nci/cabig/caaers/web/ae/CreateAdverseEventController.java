@@ -36,7 +36,7 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
         flow.addTab(new BeginTab());
         flow.addTab(new BasicsTab());
         flow.addTab(new AeTab("Medical information", "Medical", "ae/notimplemented"));
-        flow.addTab(new AeTab("Lab values", "Labs", "ae/notimplemented"));
+        flow.addTab(new LabsTab());
         flow.addTab(new AeTab("Treatment information", "Treatment", "ae/notimplemented"));
         flow.addTab(new AeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new AeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
@@ -47,10 +47,12 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
         flow.addTab(new AeTab("Confirm and save", "Save", "ae/notimplemented"));
     }
 
+    @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         return new CreateAdverseEventCommand(assignmentDao);
     }
 
+    @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
@@ -58,6 +60,7 @@ public class CreateAdverseEventController extends AbstractTabbedFlowFormControll
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
     }
 
+    @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         throw new UnsupportedOperationException("processFinish not implemented");
     }

@@ -8,6 +8,6 @@
     <title>Not implemented</title>
 </head>
 <body>
-    Feature in progress
+    <p>Feature in progress</p>
 </body>
 </html>

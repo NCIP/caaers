@@ -1,0 +1,10 @@
+/* TODO: some of these may be moved up to common */
+.label { width: 12em; text-align: right; padding: 4px; }
+.value { margin-left: 13em; }
+.repeatedGroup {
+    border-top: 1px dotted black;
+    margin: 1em 2em;
+}
+.repeatedGroup.first {
+    border-top: none;
+}

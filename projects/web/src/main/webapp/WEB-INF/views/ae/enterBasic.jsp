@@ -7,9 +7,7 @@
 <html>
 <head>
     <title>Enter basic AE information</title>
-    <style type="text/css">
-        .label { width: 12em; text-align: right; padding: 4px; }
-    </style>
+    <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
@@ -27,10 +25,10 @@
             otherRequired: ${currentCtcTerm.otherRequired}
         }
         </c:if>
-        var ctcTermId = "${tab.fieldGroups.ctcTerm[0].propertyName}"
-        var ctcTermInputId = "${tab.fieldGroups.ctcTerm[0].textfieldId}"
-        var detailsForOtherId = "${tab.fieldGroups.ctcOther[0].propertyName}"
-        var detailsForOtherRowId = "${tab.fieldGroups.ctcOther[0].propertyName}-row"
+        var ctcTermId = "${fieldGroups.ctcTerm.fields[0].propertyName}"
+        var ctcTermInputId = "${fieldGroups.ctcTerm.fields[0].textfieldId}"
+        var detailsForOtherId = "${fieldGroups.ctcOther.fields[0].propertyName}"
+        var detailsForOtherRowId = "${fieldGroups.ctcOther.fields[0].propertyName}-row"
 
         function ctcVersionSelector() {
             ctcVersion = $F("ctc-version")
@@ -100,7 +98,7 @@
             Event.observe("ctc-version", "change", ctcVersionSelector)
             Event.observe("ctc-category", "change", ctcCategorySelector)
 
-            new Autocompleter.DWR(ctcTermInputId, "${tab.fieldGroups.ctcTerm[0].choicesId}",
+            new Autocompleter.DWR(ctcTermInputId, "${fieldGroups.ctcTerm.fields[0].choicesId}",
                 termPopulator, {
                 valueSelector: termValueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
@@ -134,23 +132,9 @@
             <tags:errors path="*"/>
     
             <tags:tabFields tab="${tab}"/>
-            <c:forEach items="${tab.fieldGroups.main}" var="field">
+            <c:forEach items="${fieldGroups.main.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
-<%--
-            <div class="row">
-                <div class="label"><form:label path="ae.detectionDate">Detection date</form:label></div>
-                <div class="value"><form:input path="ae.detectionDate"/></div>
-            </div>
-            <div class="row">
-                <div class="label"><form:label path="ae.grade">Grade</form:label></div>
-                <div class="value"><form:select path="ae.grade" items="${grades}" itemValue="name"/></div>
-            </div>
-            <div class="row">
-                <div class="label"><form:label path="ae.attribution">Attribution</form:label></div>
-                <div class="value"><form:select path="ae.attribution" items="${attributions}" itemValue="name"/></div>
-            </div>
---%>
             <div class="row">
                 <div class="label"><label for="ctc-version">CTC version</label></div>
                 <div class="value">
@@ -169,22 +153,8 @@
                         <select id="ctc-category"></select>
                     </div>
                 </div>
-                <tags:renderRow field="${tab.fieldGroups.ctcTerm[0]}"/>
-<%--
-                <div class="row">
-                    <div class="label"><label for="ae.ctcTerm-input">CTC term</label></div>
-                    <div class="value">
-                        <input size="50" id="ae.ctcTerm-input"/>
-                        <div id="ae.ctcTerm-choices" class="autocomplete"></div>
-                        <form:hidden path="ae.ctcTerm"/>
-                    </div>
-                    <div class="extra">
-                        Type a portion of the CTC term you are looking for.  If you select a category,
-                        only terms in that category will be shown.
-                    </div>
-                </div>
---%>
-                <tags:renderRow field="${tab.fieldGroups.ctcOther[0]}" cssStyle="display: none"/>
+                <tags:renderRow field="${fieldGroups.ctcTerm.fields[0]}"/>
+                <tags:renderRow field="${fieldGroups.ctcOther.fields[0]}" cssStyle="display: none"/>
             </div>
         </form:form>
     </chrome:division>

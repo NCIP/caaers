@@ -1,11 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * @author Rhett Sutphin
  */
-public class CollectionSelectField extends SelectField {
+public class CollectionSelectField extends DefaultSelectField {
     private Collection<?> items;
     private String itemValueProperty;
     private String itemLabelProperty;
@@ -14,37 +18,41 @@ public class CollectionSelectField extends SelectField {
         String propertyName, String displayName, boolean required,
         Collection<?> items, String itemValueProperty, String itemDisplayProperty
     ) {
-        super(propertyName, displayName, required);
+        super(propertyName, displayName, required, new LinkedHashMap<Object, Object>());
         this.items = items;
         this.itemValueProperty = itemValueProperty;
         this.itemLabelProperty = itemDisplayProperty;
+        buildOptions();
     }
 
-    public String getType() {
-        return "collection-select";
+    private void buildOptions() {
+        for (Object item : getItems()) {
+            BeanWrapper wrappedItem = new BeanWrapperImpl(item);
+            Object value = extractProperty(wrappedItem, getItemValueProperty());
+            Object label = extractProperty(wrappedItem, getItemLabelProperty());
+            getOptions().put(value, label);
+        }
+    }
+
+    private Object extractProperty(BeanWrapper wrappedItem, String propertyName) {
+        if (wrappedItem.getWrappedInstance() == null) {
+            return null;
+        } else if (propertyName == null) {
+            return wrappedItem.getWrappedInstance().toString();
+        } else {
+            return wrappedItem.getPropertyValue(propertyName);
+        }
     }
 
     public Collection<?> getItems() {
         return items;
     }
 
-    public void setItems(Collection<?> items) {
-        this.items = items;
-    }
-
     public String getItemValueProperty() {
         return itemValueProperty;
     }
 
-    public void setItemValueProperty(String itemValueProperty) {
-        this.itemValueProperty = itemValueProperty;
-    }
-
     public String getItemLabelProperty() {
         return itemLabelProperty;
-    }
-
-    public void setItemLabelProperty(String itemLabelProperty) {
-        this.itemLabelProperty = itemLabelProperty;
     }
 }
