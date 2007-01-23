@@ -243,10 +243,10 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getDiseaseCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("10028534", "Myelodysplastic syndrome NOS");
-		Lov lov2 = new Lov("10038272", "Refractory anemia with ringed sideroblasts");
-		Lov lov3 = new Lov("10024536", "Lip and/or oral cavity cancer stage 0");
-		Lov lov4 = new Lov("10031098", "Oropharyngeal cancer recurrent");
+		Lov lov1 = new Lov("Myelodysplastic syndrome NOS", "Myelodysplastic syndrome NOS");
+		Lov lov2 = new Lov("Refractory anemia with ringed sideroblasts", "Refractory anemia with ringed sideroblasts");
+		Lov lov3 = new Lov("Lip and/or oral cavity cancer stage 0", "Lip and/or oral cavity cancer stage 0");
+		Lov lov4 = new Lov("Oropharyngeal cancer recurrent", "Oropharyngeal cancer recurrent");
 		
 		col.add(lov1);
     	col.add(lov2);
@@ -258,10 +258,10 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getMonitorCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("10028534", "Monitor Code 1");
-		Lov lov2 = new Lov("10038272", "Monitor Code 2");
-		Lov lov3 = new Lov("10024536", "Monitor Code 3");
-		Lov lov4 = new Lov("10031098", "Monitor Code List 4");
+		Lov lov1 = new Lov("Monitor Code 1", "Monitor Code 1");
+		Lov lov2 = new Lov("Monitor Code 2", "Monitor Code 2");
+		Lov lov3 = new Lov("Monitor Code 3", "Monitor Code 3");
+		Lov lov4 = new Lov("Monitor Code List 4", "Monitor Code List 4");
 		
 		col.add(lov1);
     	col.add(lov2);
@@ -273,10 +273,10 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getPhaseCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("100", "Phase I");
-		Lov lov2 = new Lov("101", "Phase I/II");
-		Lov lov3 = new Lov("102", "Phase III");
-		Lov lov4 = new Lov("103", "NOT APPLICABLE");
+		Lov lov1 = new Lov("Phase I", "Phase I");
+		Lov lov2 = new Lov("Phase I/II", "Phase I/II");
+		Lov lov3 = new Lov("Phase III", "Phase III");
+		Lov lov4 = new Lov("NOT APPLICABLE", "NOT APPLICABLE");
 		
 		col.add(lov1);
     	col.add(lov2);
@@ -289,9 +289,9 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getSponsorCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("200", "Sponsor 1 - Duke");
-		Lov lov2 = new Lov("201", "Sponsor 2 - Nci");
-		Lov lov3 = new Lov("202", "Sponsor 3 - FDA");
+		Lov lov1 = new Lov("Sponsor 1 - Duke", "Sponsor 1 - Duke");
+		Lov lov2 = new Lov("Sponsor 2 - Nci", "Sponsor 2 - Nci");
+		Lov lov3 = new Lov("Sponsor 3 - FDA", "Sponsor 3 - FDA");
 		
 		col.add(lov1);
     	col.add(lov2);
@@ -302,11 +302,11 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getStatusList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("C", "Closed");
-		Lov lov2 = new Lov("O", "Open");
-		Lov lov3 = new Lov("S", "Suspended");
-		Lov lov4 = new Lov("T", "Terminated");
-		Lov lov5 = new Lov("I", "IRB Approved");
+		Lov lov1 = new Lov("Closed", "Closed");
+		Lov lov2 = new Lov("Open", "Open");
+		Lov lov3 = new Lov("Suspended", "Suspended");
+		Lov lov4 = new Lov("Terminated", "Terminated");
+		Lov lov5 = new Lov("IRB Approved", "IRB Approved");
 		
 		col.add(lov1);
     	col.add(lov2);
@@ -319,17 +319,15 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 
 	private List<Lov> getTypeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("C", "Diagnostic");
-		Lov lov2 = new Lov("GN", "Genetic Non-therapeutic");
-		Lov lov3 = new Lov("GT", "Genetic Non-therapeutic");
-		Lov lov4 = new Lov("N", "Non-therapeutic");
-		Lov lov5 = new Lov("P", "Primary Treatment");
-		Lov lov6 = new Lov("S", "Supportive");
-		Lov lov7 = new Lov("P", "Preventive'");
+		Lov lov1 = new Lov("Diagnostic", "Diagnostic");
+		Lov lov2 = new Lov("Genetic Non-therapeutic", "Genetic Non-therapeutic");		
+		Lov lov4 = new Lov("Non-therapeutic", "Non-therapeutic");
+		Lov lov5 = new Lov("Primary Treatment", "Primary Treatment");
+		Lov lov6 = new Lov("Supportive", "Supportive");
+		Lov lov7 = new Lov("Preventive", "Preventive");
 		
 		col.add(lov1);
-    	col.add(lov2);
-    	col.add(lov3);
+    	col.add(lov2);    	
     	col.add(lov4);
     	col.add(lov5);
     	col.add(lov6);
@@ -340,9 +338,9 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getIdentifiersSourceList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("D", "Duke University Comprehensive Cancer Center");
-		Lov lov2 = new Lov("N", "NCI Clinical Trials Unit");
-		Lov lov3 = new Lov("C", "CalGB");
+		Lov lov1 = new Lov("Duke University Comprehensive Cancer Center", "Duke University Comprehensive Cancer Center");
+		Lov lov2 = new Lov("NCI Clinical Trials Unit", "NCI Clinical Trials Unit");
+		Lov lov3 = new Lov("CalGB", "CalGB");
 	
 		col.add(lov1);
     	col.add(lov2);
@@ -353,10 +351,10 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getIdentifiersTypeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("PA", "Protocol Authority");
-		Lov lov2 = new Lov("CC", "Co-ordinating Center");
-		Lov lov3 = new Lov("S", "Site");
-		Lov lov4 = new Lov("SI", "Site IRB");
+		Lov lov1 = new Lov("Protocol Authority", "Protocol Authority");
+		Lov lov2 = new Lov("Co-ordinating Center", "Co-ordinating Center");
+		Lov lov3 = new Lov("Site", "Site");
+		Lov lov4 = new Lov("Site IRB", "Site IRB");
 		
 		col.add(lov1);
     	col.add(lov2);
