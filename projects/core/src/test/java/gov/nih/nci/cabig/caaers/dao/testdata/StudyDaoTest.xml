@@ -4,16 +4,19 @@
         multi_institution_indicator="false"
         short_title="Short Title"
         long_title="Long Title" description="Description"
-        primary_sponsor_code="SCODE_100"/>
+        primary_sponsor_code="SCODE_100"
+        grid_id=""
+        />
     <STUDIES
         id="-3"
         multi_institution_indicator="false"
         short_title="Shorter"
         long_title="Lengthy Title" description="Different description"
+        grid_id=""
         primary_sponsor_code="SCODE_100"/>
 
     <STUDIES
-    	grid_id="gridStudy"
+        grid_id="gridStudy"
         id="-4"
         multi_institution_indicator="false"
         short_title="Shortest"
