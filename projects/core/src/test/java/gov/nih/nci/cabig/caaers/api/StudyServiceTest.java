@@ -32,12 +32,12 @@ public class StudyServiceTest extends CaaersDbTestCase {
 
         try {
             int studySiteId = -3001;
-            String siteGridId = "gridSite";
+            String siteGridId = "gridSite";            
             Integer participantId = null;
             {
                 Site site = siteDao.getByGridId(siteGridId);
                 StudySite studySite = site.getStudySites().get(0);
-                assertEquals("Wrong study site found in test setup", siteGridId, studySite.getGridId());
+                assertEquals("Wrong study site found in test setup", studySiteId, studySite.getId().intValue());
                 Study study = studySite.getStudy();
 
                 Participant participant = new Participant();
@@ -47,6 +47,7 @@ public class StudyServiceTest extends CaaersDbTestCase {
                 participant.setInstitution("Some institution");
                 participant.setInstitutionalPatientNumber("Some patient number");
                 participant.setDateOfBirth(new Date());
+                participant.setGridId("gridParticipant");
 
                 StudyService svc = (StudyService) getApplicationContext()
                                 .getBean("studyServiceAPI");
