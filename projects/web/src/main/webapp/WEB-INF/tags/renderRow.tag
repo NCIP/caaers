@@ -5,14 +5,7 @@
 <%@attribute name="cssStyle"%>
 <div class="row" id="${field.propertyName}-row" <c:if test="${not empty cssStyle}">style="${cssStyle}"</c:if>>
     <div class="label">
-        <c:choose>
-            <c:when test="${field.categoryName == 'autocompleter'}">
-                <label for="${field.textfieldId}">${field.displayName}</label>
-            </c:when>
-            <c:otherwise>
-                <form:label path="${field.propertyName}">${field.displayName}</form:label>
-            </c:otherwise>
-        </c:choose>
+        <tags:renderLabel field="${field}"/>
     </div>
     <div class="value"><tags:renderInputs field="${field}"/></div>
     <c:if test="${not empty field.extraInformation}">

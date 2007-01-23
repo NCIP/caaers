@@ -21,24 +21,28 @@
         ${command.assignment.studySite.study.shortTitle}.
     </p>
 
-    <chrome:division>
-        <form:form cssClass="standard">
-            <tags:errors path="*"/>
-            <tags:tabFields tab="${tab}"/>
-
-            <c:forEach items="${fieldGroups}" var="labGroupEntry">
+    <form:form cssClass="standard">
+        <tags:errors path="*"/> <%-- TODO: this will need to be moved --%>
+        <tags:tabFields tab="${tab}"/>
+        <c:forEach items="${fieldGroups}" var="labGroupEntry">
+            <c:set var="fields" value="${labGroupEntry.value.fields}"/>
+            <chrome:division title="${labGroupEntry.value.displayName}">
                 <div class="repeatedGroup first" id="${labGroupEntry.value.name}">
-                    <h2>${labGroupEntry.value.displayName}</h2>
-                    <c:forEach items="${labGroupEntry.value.fields}" var="field">
-                        <tags:renderRow field="${field}"/>
+                    <tags:renderRow field="${fields[0]}"/>
+                    <tags:renderRow field="${fields[1]}"/>
+                    <c:forEach begin="2" end="7" step="2" var="i">
+                        <div class="row">
+                            <div class="label"><tags:renderLabel field="${fields[i]}"/></div>
+                            <div class="value">
+                                <tags:renderInputs field="${fields[i]}"/>
+                                <form:label path="${fields[i+1].propertyName}">date</form:label>
+                                <tags:renderInputs field="${fields[i+1]}"/>
+                            </div>
+                        </div>
                     </c:forEach>
                 </div>
-            </c:forEach>
-
-        </form:form>
-        <div class="row">
-            <div class="value"><input type="button" id="add-lab-button" value="Add another lab"/></div>
-        </div>
-    </chrome:division>
+            </chrome:division>
+        </c:forEach>
+    </form:form>
 </body>
 </html>
