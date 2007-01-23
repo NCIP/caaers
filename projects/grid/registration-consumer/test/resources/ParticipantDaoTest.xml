@@ -43,7 +43,8 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_100"/>
+    	primary_sponsor_code="SCODE_100"
+    	grid_id=""/>
     
     <STUDY_SITES
         id="-3001"

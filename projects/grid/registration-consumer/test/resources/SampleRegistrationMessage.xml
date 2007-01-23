@@ -1,37 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<registration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://semanticbits.com/registration.xsd ../../../../../../../../ew_caaers/c3prv2_codebase/projects/gridnode/schema/RegistrationConsumer/resgistration.xsd"
-    xmlns="http://semanticbits.com/registration.xsd" healthCareSiteGridId="gridSite"
-    studyGridId="gridStudy">
-
-    <eligibilityWaiverReasonText>Test</eligibilityWaiverReasonText>
-    <informedConsentFormSignedDate>2007-01-10</informedConsentFormSignedDate>
-    <offStudyDate>2007-01-10</offStudyDate>
-    <offStudyReasonCode>Test</offStudyReasonCode>
-    <offStudyReasonOtherText>Test</offStudyReasonOtherText>
-    <startDate>2007-01-10</startDate>
-    <studyParticipantIdentifier>12345</studyParticipantIdentifier>
-    <eligibilityIndicator>true</eligibilityIndicator>
-    <participant>
-        <administrativeGenderCode>M</administrativeGenderCode>
-        <birthDate>2007-01-10</birthDate>
-        <ethnicGroupCode>C</ethnicGroupCode>
-        <firstName>Test</firstName>
-        <lastName>Test</lastName>
-        <maritalStatusCode>M</maritalStatusCode>
-        <raceCode>C</raceCode>
+<registration xmlns="http://semanticbits.com/registration.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://semanticbits.com/registration.xsd file:/Users/joshua/dev/ew_caaers/c3prv2_codebase/projects/grid/RegistrationConsumer/schema/RegistrationConsumer/registration.xsd"
+ healthCareSiteGridId="gridSite"   
+ studyGridId="gridStudy"
+    >
+    <informedConsentFormSignedDate>2006-05-04</informedConsentFormSignedDate>
+    <enrollmentDate>2006-05-04</enrollmentDate>
+    <studyParticipantIdentifier>studyParticipantIdentifier0</studyParticipantIdentifier>
+    <eligibilityIndicator>false</eligibilityIndicator>
+    <participant participantGridId="gridParticipant">
+        <administrativeGenderCode>administrativeGenderCode0</administrativeGenderCode>
+        <birthDate>2006-05-04</birthDate>
+        <ethnicGroupCode>ethnicGroupCode0</ethnicGroupCode>
+        <firstName>firstName0</firstName>
+        <lastName>lastName0</lastName>
+        <maritalStatusCode>maritalStatusCode0</maritalStatusCode>
+        <raceCode>raceCode0</raceCode>
         <identifier>
-            <source>Test</source>
-            <type>Test</type>
-            <value>Test</value>
+            <source>source0</source>
+            <type>type0</type>
+            <value>value0</value>
+            <isprimary>false</isprimary>
+        </identifier>
+        <identifier>
+            <source>source1</source>
+            <type>type1</type>
+            <value>value1</value>
+            <isprimary>false</isprimary>
+        </identifier>
+        <identifier>
+            <source>source2</source>
+            <type>type2</type>
+            <value>value2</value>
             <isprimary>false</isprimary>
         </identifier>
         <address>
-            <city>Test</city>
-            <countryCode>US</countryCode>
-            <postalCode>21229</postalCode>
-            <stateCode>MD</stateCode>
-            <streetAddress>123 Somewhere Street</streetAddress>
+            <city>city0</city>
+            <countryCode>countryCode0</countryCode>
+            <postalCode>postalCode0</postalCode>
+            <stateCode>stateCode0</stateCode>
+            <streetAddress>streetAddress0</streetAddress>
         </address>
     </participant>
+    <study>
+        <identifier>
+            <source>source3</source>
+            <type>type3</type>
+            <value>value3</value>
+            <isprimary>false</isprimary>
+        </identifier>
+        <identifier>
+            <source>source4</source>
+            <type>type4</type>
+            <value>value4</value>
+            <isprimary>false</isprimary>
+        </identifier>
+        <identifier>
+            <source>source5</source>
+            <type>type5</type>
+            <value>value5</value>
+            <isprimary>false</isprimary>
+        </identifier>
+    </study>
+    <identifier>
+        <source>source6</source>
+        <type>type6</type>
+        <value>value6</value>
+        <isprimary>false</isprimary>
+    </identifier>
+    <identifier>
+        <source>source7</source>
+        <type>type7</type>
+        <value>value7</value>
+        <isprimary>false</isprimary>
+    </identifier>
+    <identifier>
+        <source>source8</source>
+        <type>type8</type>
+        <value>value8</value>
+        <isprimary>false</isprimary>
+    </identifier>
 </registration>

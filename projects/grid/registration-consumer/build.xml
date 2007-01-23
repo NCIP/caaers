@@ -92,6 +92,9 @@
 			<fileset dir="${lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
+			<fileset dir="${ext.globus.dir}/lib">
+				<include name="*.jar"/>
+			</fileset>			
 		</path>
 
 		<path id="test.compile.cp">
@@ -100,9 +103,7 @@
 			<fileset dir="${test.lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
-			<fileset dir="${ext.globus.dir}/lib">
-				<include name="*.jar"/>
-			</fileset>
+
 			<pathelement location="${build.dir}"/>
 			
 		</path>
@@ -137,7 +138,7 @@
 	</target>
 	
 	<target name="deploy" depends="jar">
-		<copy todir="${deploy.lib.dir}">
+		<copy todir="${deploy.lib.dir}" overwrite="true">
 			<fileset dir=".">
 				<include name="${jar.name}"/>
 			</fileset>
@@ -154,10 +155,15 @@
 	<target name="test" depends="compileTests">
 		<mkdir dir="${test.report.dir}"/>
 
-		<antcall target="insertTestData"/>
+		<!-- antcall target="insertTestData"/ -->
 
 		<junit printsummary="yes" showoutput="true">
 			<classpath refid="test.run.cp"/>
+			<classpath>
+				<fileset dir="../../core/db/lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
 			<formatter type="xml"/>
 			<batchtest fork="yes" todir="${test.report.dir}">
 				<fileset dir="${test.src.dir}">
@@ -175,7 +181,7 @@
 			<report format="frames" todir="${test.report.dir}"/>
 		</junitreport>
 
-		<antcall target="deleteTestData"/>
+		<!-- antcall target="deleteTestData"/ -->
 
 	</target>
 

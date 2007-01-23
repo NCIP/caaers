@@ -52,7 +52,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         StudyService svc = (StudyService) this.ctx.getBean(STUDY_SERVICE_BEAN_NAME);
         
         site.setGridId(registration.getHealthCareSiteGridId());
-        logger.debug("Site gridId = " + site.getGridId());
         study.setGridId(registration.getStudyGridId());
         
         ParticipantType partBean = registration.getParticipant();
