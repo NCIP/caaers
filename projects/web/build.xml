@@ -35,6 +35,10 @@
             <include name="**/*.jar"/>
         </fileset>
     </path>
+	
+	<path id="cp.sso">
+        <pathelement location="../../ctms-web-sso.jar"/>
+    </path>
 
     <path id="cp.main">
         <path refid="cp.compiled-source"/>
@@ -46,6 +50,7 @@
         <fileset dir="lib/main">
             <include name="**/*.jar"/>
         </fileset>
+    	<path refid="cp.sso"/>
     </path>
 
     <path id="cp.unit-test">
@@ -134,6 +139,12 @@
             </lib>
             <lib dir="../.." includes="caaers-core.jar"/>
             <classes dir="${build-dir.main}"/>
+        	
+        	<!-- begin web-sso jars -->
+        	<lib dir="../.." includes="ctms-web-sso.jar"/>
+        	<lib dir="../websso/lib/main" includes="*.jar"/>
+        	<!-- end web-sso jars -->
+        	
         </war>
     </target>
     
