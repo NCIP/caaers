@@ -21,18 +21,25 @@
 </head>
 <body>
 <chrome:body title="Create a new Participant">
-<form:form method="post">
+<p id="instructions">
+        You are creating a new Participant
+    </p>
+
+<chrome:division title="Participant">
+<form:form method="post" cssClass="standard">
+	 <tags:errors path="*"/>
 	<tags:tabFields tab="${tab}" />
+	<c:forEach items="${fieldGroups.main.fields}" var="field">
+                <tags:renderRow field="${field}"/>
+            </c:forEach>
 					<br><br>
 					<table width="100%" border="0" cellspacing="0" cellpadding="0"
 						id="details">
 						<tr>
 							<td width="50%" valign="top">
-							<table width="308" border="0" cellspacing="0" cellpadding="0"
-								id="table1">
+							<table width="308" border="0" cellspacing="0" cellpadding="0">
 								<tr>
-									<td class="label"><span class="red">*</span><em></em>First
-									Name:</td>
+									<td class="label"><span class="red">*</span><label for="firstName">First Name:</label></td>
 									<td><form:input path="firstName" /></td>
 								</tr>
 								<tr>
@@ -118,6 +125,7 @@
 
 
 </form:form>
+</chrome:division>
 </chrome:body>
 </body>
 </html>

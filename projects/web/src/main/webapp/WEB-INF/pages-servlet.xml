@@ -70,6 +70,18 @@
                     <property name="displayName"><value>Participants</value></property>
                     <property name="pathMapping"><value>/participant/**</value></property>
                     <property name="mainController"><value>createParticipantController</value></property>
+                    <property name="tasks">
+                        <list>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
+                                <property name="displayName"><value>Create Participant</value></property>
+                                <property name="linkName"><value>createParticipantController</value></property>
+                            </bean>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
+                                <property name="displayName"><value>Assign Participants to Studies</value></property>
+                                <property name="linkName"><value>HomeController</value></property>
+                            </bean>
+                        </list>
+                    </property>
                 </bean>
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Reports</value></property>
@@ -94,6 +106,10 @@
     <!--  Create Participant Workflow -->
     <bean name="/participant/create" id="createParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.CreateParticipantController" >
+    </bean>
+    
+    <bean name="/participant/view" id="viewParticipantController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.ViewParticipantController" >
     </bean>
     
     <!--  Home Page includes searches for Studies and Participants 

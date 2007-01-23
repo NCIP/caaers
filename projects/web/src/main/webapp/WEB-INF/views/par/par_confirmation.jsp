@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
+<title>Review and Submit</title>
 <link href="resources/styles.css" rel="stylesheet" type="text/css">
 <link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
@@ -24,7 +24,7 @@ function submitPage(s){
 </script>
 </head>
 <body>
-<chrome:body title="Confirm and Submit Participant">
+<chrome:body title="Review and Submit">
 <form:form method="post">
 <br><br>
 <b>Participant</b><br><br>

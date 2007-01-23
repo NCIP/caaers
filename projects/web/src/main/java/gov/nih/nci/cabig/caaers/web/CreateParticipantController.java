@@ -76,13 +76,6 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
         getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
             public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
-                //Map<String, String> genders = new HashMap<String, String>();
-                //Map<String, String> sources  = new HashMap<String, String>();
-                //genders.put("Female", "Female");
-                //genders.put("Male", "Male");
-                //sources.put("Duke", "Duke");
-                //sources.put("NorthWestern","NorthWestern");
-                //refdata.put("genders", genders);
                 refdata.put("genders", listValues.getParticipantGender());
                 refdata.put("ethnicity", listValues.getParticipantEthnicity());
                 refdata.put("sources", listValues.getParticipantIdentifierSource());
@@ -94,11 +87,17 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
         getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {
             public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
-                refdata.put("searchType", getSearchType());
+                refdata.put("searchType", listValues.getStudySearchType());
                 return refdata;
             }
         });
-        getFlow().addTab(new Tab("Confirmation", "Confirmation", "par/par_confirmation"));
+        getFlow().addTab(new Tab("Review and Submit", "Review and Submit", "par/par_confirmation") {
+            public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                return refdata;
+            }
+        });
+        //getFlow().addTab(new Tab("Confirmation", "Confirmation", "par/par_confirmation"));
     }
     
     protected void initBinder(HttpServletRequest request,
@@ -144,7 +143,8 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
             getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {
                 public Map<String, Object> referenceData() {
                     Map<String, Object> refdata = super.referenceData();
-                    refdata.put("searchType", getSearchType());
+                    //refdata.put("searchType", getSearchType());
+                    refdata.put("searchType", listValues.getParticipantSearchType());
                     return refdata;
                 }
             });
@@ -230,12 +230,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     	Participant participant = participantCommand.createParticipant();
         participantDao.save(participant);
         
-        ModelAndView modelAndView = new ModelAndView("kk");
+        ModelAndView modelAndView = new ModelAndView("par/par_confirm");
         modelAndView.addObject("participant", participant);
 		modelAndView.addAllObjects(errors.getModel());
-		response.sendRedirect("home");
+		response.sendRedirect("view?participantId=" + participant.getId() + "&type=confirm");
 		return null;
+		//return modelAndView;
     }
+    /*
     private List<LOV> getSearchType() {
 		List<LOV> col = new ArrayList<LOV>();
 		LOV lov1 = new LOV("st",  "Short Title");
@@ -281,6 +283,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 			this.desc = desc;
 		}
 	}
+	*/
 
     private static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<NewParticipantCommand> {
         public Tab(String longTitle, String shortTitle, String viewName) {
