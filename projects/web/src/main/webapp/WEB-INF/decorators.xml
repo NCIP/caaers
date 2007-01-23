@@ -18,14 +18,15 @@
    </decorator>
     
     <decorator name="tabbedflow" page="tabbedflow.jsp">
-        <pattern>/pages/ae/create</pattern>
-        <pattern>/pages/ae/edit</pattern>
         <pattern>/pages/participant/create</pattern>
         <pattern>/pages/study/create</pattern>
         <pattern>/pages/createStudy</pattern>
     </decorator>
     
-    
+    <decorator name="tabbedflow-singlebody" page="tabbedflow-singlebody.jsp">
+        <pattern>/pages/ae/create</pattern>
+        <pattern>/pages/ae/edit</pattern>
+    </decorator>
 
     <excludes>
         <pattern>/*/image/*</pattern>

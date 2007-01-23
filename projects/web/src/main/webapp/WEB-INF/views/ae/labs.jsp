@@ -16,7 +16,6 @@
     </script>
 </head>
 <body>
-<chrome:body title="${flow.name}: ${tab.longTitle}">
     <p id="instructions">
         You are entering labs for an AE for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
@@ -41,6 +40,5 @@
             <div class="value"><input type="button" id="add-lab-button" value="Add another lab"/></div>
         </div>
     </chrome:division>
-</chrome:body>
 </body>
 </html>

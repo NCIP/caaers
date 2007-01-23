@@ -120,8 +120,6 @@
     </script>
 </head>
 <body>
-    <chrome:body title="${flow.name}: ${tab.longTitle}">
-
     <p id="instructions">
         You are entering an adverse event for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
@@ -158,7 +156,5 @@
             </div>
         </form:form>
     </chrome:division>
-        
-    </chrome:body>
 </body>
 </html>

@@ -9,11 +9,9 @@
     <title>${tab.longTitle}</title>
 </head>
 <body>
-    <chrome:body title="${flow.name}: ${tab.longTitle}">
-        <p>Not implemented</p>
-        <form:form>
-            <tags:tabFields tab="${tab}"/>
-        </form:form>
-    </chrome:body>
+    <p>Not implemented</p>
+    <form:form>
+        <tags:tabFields tab="${tab}"/>
+    </form:form>
 </body>
 </html>

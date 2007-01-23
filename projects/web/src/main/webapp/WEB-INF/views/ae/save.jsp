@@ -9,15 +9,13 @@
     <title>${tab.longTitle}</title>
 </head>
 <body>
-    <chrome:body title="${flow.name}: ${tab.longTitle}">
-        <p>
-            Please review your entered report by clicking on the tabs along the top
-            of the form.  When you have entered as much data as you would like, please
-            click save (below) to store the new report.
-        </p>
-        <form:form>
-            <input type="hidden" name="_finish"/>
-        </form:form>
-    </chrome:body>
+    <p>
+        Please review your entered report by clicking on the tabs along the top
+        of the form.  When you have entered as much data as you would like, please
+        click save (below) to store the new report.
+    </p>
+    <form:form>
+        <input type="hidden" name="_finish"/>
+    </form:form>
 </body>
 </html>

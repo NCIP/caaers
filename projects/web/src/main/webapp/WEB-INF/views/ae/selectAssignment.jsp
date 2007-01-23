@@ -82,7 +82,6 @@
     </script>
     </head>
     <body>
-        <chrome:body title="${bodyTitle}">
         <p id="instructions">
             ${instructions}
         </p>
@@ -114,6 +113,5 @@
                 </chrome:division>
             </div>
         </form:form>
-        </chrome:body>
     </body>
 </html>
