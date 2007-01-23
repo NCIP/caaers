@@ -2,10 +2,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
 
-import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
 import org.springframework.validation.Errors;
 import org.springframework.beans.BeanWrapper;
@@ -14,7 +12,7 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
 */
-public class AeTab extends Tab<CreateAdverseEventCommand> {
+public class AeTab extends Tab<AdverseEventInputCommand> {
     private Map<String, InputFieldGroup> fieldGroups = new LinkedHashMap<String, InputFieldGroup>();
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
@@ -39,19 +37,19 @@ public class AeTab extends Tab<CreateAdverseEventCommand> {
      * @see gov.nih.nci.cabig.caaers.web.ae.RepeatingFieldGroupFactory
      * @see #getFieldGroups
      */
-    protected Map<String, InputFieldGroup> createFieldGroups(CreateAdverseEventCommand command) {
+    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         return getFieldGroups();
     }
 
     @Override
-    public Map<String, Object> referenceData(CreateAdverseEventCommand command) {
+    public Map<String, Object> referenceData(AdverseEventInputCommand command) {
         Map<String, Object> refdata = referenceData();
         refdata.put("fieldGroups", createFieldGroups(command));
         return refdata;
     }
 
     @Override
-    public void validate(CreateAdverseEventCommand command, Errors errors) {
+    public void validate(AdverseEventInputCommand command, Errors errors) {
         super.validate(command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
         for (InputFieldGroup fieldGroup : getFieldGroups().values()) {

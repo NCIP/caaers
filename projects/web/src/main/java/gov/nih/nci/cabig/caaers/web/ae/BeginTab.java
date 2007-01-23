@@ -25,7 +25,7 @@ public class BeginTab extends AeTab {
     }
 
     @Override
-    public void validate(CreateAdverseEventCommand command, Errors errors) {
+    public void validate(AdverseEventInputCommand command, Errors errors) {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
@@ -35,6 +35,7 @@ public class BeginTab extends AeTab {
         }
     }
 
+    @Override
     public boolean isAllowDirtyForward() {
         return false;
     }

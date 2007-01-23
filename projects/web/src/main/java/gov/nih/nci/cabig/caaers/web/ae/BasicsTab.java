@@ -57,7 +57,7 @@ public class BasicsTab extends AeTab {
     }
 
     @Override
-    public void validate(CreateAdverseEventCommand command, Errors errors) {
+    public void validate(AdverseEventInputCommand command, Errors errors) {
         super.validate(command, errors);
         AdverseEvent ae = command.getAeReport().getPrimaryAdverseEvent();
         CtcTerm ctcTerm = ae.getCtcTerm();

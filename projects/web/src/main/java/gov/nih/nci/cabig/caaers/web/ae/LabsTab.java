@@ -31,7 +31,7 @@ public class LabsTab extends AeTab {
     }
 
     @Override
-    protected Map<String, InputFieldGroup> createFieldGroups(CreateAdverseEventCommand command) {
+    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         Map<String, InputFieldGroup> groups = new LinkedHashMap<String, InputFieldGroup>();
         while (groups.size() < command.getAeReport().getLabs().size()) {
             InputFieldGroup group = fieldFactory.createGroup(groups.size());

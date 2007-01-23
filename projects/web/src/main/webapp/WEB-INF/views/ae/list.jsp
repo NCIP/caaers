@@ -16,7 +16,7 @@
     style="" styleClass="">
     <ec:row>
         <ec:column property="primaryAdverseEvent.ctcTerm" title="CTC term">
-            <a href="<c:url value="/pages/ae/edit?report=${report.id}"/>">
+            <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
                 <c:when test="${not empty report.primaryAdverseEvent}">
                     ${report.primaryAdverseEvent.ctcTerm.fullName}

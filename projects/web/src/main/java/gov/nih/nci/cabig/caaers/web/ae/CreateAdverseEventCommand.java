@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventCommand {
+public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private AdverseEventReport aeReport;
 
     private Participant participant;
@@ -44,7 +44,7 @@ public class CreateAdverseEventCommand {
     }
 
     public void save() {
-        //getAssignment().addReport(aeReport);
+        getAssignment().addReport(getAeReport());
         reportDao.save(getAeReport());
     }
 

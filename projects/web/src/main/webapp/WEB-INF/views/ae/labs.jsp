@@ -22,7 +22,7 @@
         ${command.assignment.studySite.study.shortTitle}.
     </p>
 
-    <chrome:division title="Labs">
+    <chrome:division>
         <form:form cssClass="standard">
             <tags:errors path="*"/>
             <tags:tabFields tab="${tab}"/>
