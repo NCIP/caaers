@@ -22,6 +22,7 @@ function validatePage(){
 }
 function fireAction(action, selected){
 	if(validatePage()){
+		document.getElementsByName('_target2')[0].name='_target1';
 		document.studyIdentifiersForm._action.value=action;
 		document.studyIdentifiersForm._selected.value=selected;		
 		document.studyIdentifiersForm.submit();
@@ -37,12 +38,12 @@ field.value="";
 <!-- MAIN BODY STARTS HERE -->
 <chrome:body title="${flow.name}: ${tab.longTitle}">	
 	
-	<form:form method="post" name="a">	
+	<%-- <form:form method="post" name="a">	
 	    <tags:tabFields tab="${tab}" />
-	</form:form>
+	</form:form> --%>
 
 	<form:form method="post" name="studyIdentifiersForm" cssClass="standard">
-
+		 <tags:tabFields tab="${tab}" />
 		<div>		
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
@@ -87,24 +88,22 @@ field.value="";
 									<tr align="center" class="results">
 										<td>
 										<div class="row">
-										<div class="label"></div>
-										<div class="value">
 										<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
 											src="images/checkno.gif" border="0" alt="remove"></a>
-											</div></div> 
+											</div>
 											</td>
-										<td> <div class="row"> <div class="label"></div> <div class="value"> <form:select path="identifiers[${status.index}].source">
+										<td> <div class="row">  <div class="value"> <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersSourceRefData}" itemLabel="desc"
 												itemValue="code" /></form:select>
 											</div></div>
 										</td>
 
-										<td> <div class="row"> <div class="label"></div><div class="value"> <form:select  path="identifiers[${status.index}].type">
+										<td> <div class="row"> <div class="value"> <form:select path="identifiers[${status.index}].type">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
 												itemValue="code" /></form:select> </div></div></td>
-										<td> <div class="row"> <div class="label"></div><div class="value"><form:input size="40" path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
+										<td> <div class="row"> <div class="value"><form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
 										<td><div class="row"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/> </div></td> 
 									</tr> 
 								</c:forEach> 
