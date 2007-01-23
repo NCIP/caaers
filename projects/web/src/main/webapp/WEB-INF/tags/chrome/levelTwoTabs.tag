@@ -6,7 +6,7 @@
 <c:forEach items="${flow.tabs}" var="atab">
     <c:set var="current" value="${atab.number == tab.number}"/>
     <li class="tab ${current ? 'current' : ''}">
-        <img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_L.gif"/>" width="1" height="16" align="absmiddle"><a href="#" class="tab${atab.number}">${atab.shortTitle}</a><img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_R.gif"/>" width="6" height="16" align="absmiddle">
+        <img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_L.gif"/>" width="1" height="16" align="absmiddle"><a href="#" class="tab${atab.number}">${atab.number + 1}. ${atab.shortTitle}</a><img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_R.gif"/>" width="6" height="16" align="absmiddle">
     </li>
 </c:forEach>
 </ul>
