@@ -41,7 +41,7 @@ public class CaaersRegistrationConsumerTest extends TestCase {
         RegistrationType reg = getRegistration();
         try{
             RegistrationConsumer consumer = new CaaersRegistrationConsumer();
-            consumer.createRegistration(reg);
+            consumer.register(reg);
         }catch(Exception ex){
             ex.printStackTrace();
             fail("Error creating registration: " + ex.getMessage());
@@ -53,7 +53,7 @@ public class CaaersRegistrationConsumerTest extends TestCase {
         RegistrationType reg = getRegistration();
         try{
             RegistrationConsumerClient client = new RegistrationConsumerClient(this.serviceUrl);
-            client.createRegistration(reg);
+            client.register(reg);
         }catch(Exception ex){
             ex.printStackTrace();
             fail("Error making call: " + ex.getMessage());
