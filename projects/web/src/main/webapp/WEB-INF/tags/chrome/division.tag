@@ -1,16 +1,20 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@attribute name="title" required="true"%>
+<%@attribute name="title"%>
 <%@attribute name="id"%>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="division" <c:if test="${not empty id}">id="${id}"</c:if>>
     <tr>
         <td>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabs">
             <tr>
-                <td width="100%" class="tabDisplay"><img src="<chrome:imageUrl name="tab3_h_L.gif"/>" width="1" height="16" align="absmiddle"><span class="current">
-                ${title}
-                </span>
-                <img src="<chrome:imageUrl name="tab3_h_R.gif"/>" width="7" height="16" align="absmiddle"></td>
+                <td width="100%" class="tabDisplay">
+                    <c:if test="${not empty title}">
+                        <img src="<chrome:imageUrl name="tab3_h_L.gif"/>" width="1" height="16" align="absmiddle"><span class="current">
+                        ${title}
+                        </span><img src="<chrome:imageUrl name="tab3_h_R.gif"/>" width="7" height="16" align="absmiddle">
+                    </c:if>
+                    <img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="16" align="absmiddle">
+                </td>
                 <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="7" height="1"></td>
             </tr>
             <tr>
