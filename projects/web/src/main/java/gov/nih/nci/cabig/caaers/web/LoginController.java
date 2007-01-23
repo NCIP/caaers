@@ -56,11 +56,19 @@ public class LoginController extends CaaersAbstractFormController {
 	protected ModelAndView processFormSubmission(HttpServletRequest request,
 			HttpServletResponse response, Object oCommand, BindException errors)
 			throws Exception {
-		LoginCommand loginCommand = (LoginCommand) oCommand;
-		log.debug("Username: " + loginCommand.getUsername());
-		log.debug("System Config file is: "
+        
+        boolean loginSuccess = false;
+        String user = ApplicationSecurityManager.getUser(request);
+        if(user != null){
+            loginSuccess = true;
+            log.debug("Username: " + user);
+        }else{
+            LoginCommand loginCommand = (LoginCommand) oCommand;
+            log.debug("Username: " + loginCommand.getUsername());
+            log.debug("System Config file is: "
 				+ System.getProperty("gov.nih.nci.security.configFile"));
-		boolean loginSuccess = loginCommand.login(request.getRemoteAddr());
+            loginSuccess = loginCommand.login(request.getRemoteAddr());
+        }
 
 		if (loginSuccess) {
 			ApplicationSecurityManager.setUser(request, loginCommand.getUsername());
