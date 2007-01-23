@@ -29,9 +29,9 @@ public class Lab extends AbstractDomainObject {
     private String name;
     private String units;  // TODO: source this from caDSR
 
-    private LabValue baseline = new LabValue();
-    private LabValue nadir = new LabValue();
-    private LabValue recovery = new LabValue();
+    private LabValue baseline;
+    private LabValue nadir;
+    private LabValue recovery;
 
     ////// BEAN PROPERTIES
 
@@ -69,6 +69,7 @@ public class Lab extends AbstractDomainObject {
         @AttributeOverride(name = "date", column = @Column(name = "baseline_date"))
     })
     public LabValue getBaseline() {
+        if (baseline == null) baseline = new LabValue();
         return baseline;
     }
 
@@ -82,6 +83,7 @@ public class Lab extends AbstractDomainObject {
         @AttributeOverride(name = "date", column = @Column(name = "nadir_date"))
     })
     public LabValue getNadir() {
+        if (nadir == null) nadir = new LabValue();
         return nadir;
     }
 
@@ -95,6 +97,7 @@ public class Lab extends AbstractDomainObject {
         @AttributeOverride(name = "date", column = @Column(name = "recovery_date"))
     })
     public LabValue getRecovery() {
+        if (recovery == null) recovery = new LabValue();
         return recovery;
     }
 
