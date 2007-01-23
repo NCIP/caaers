@@ -26,15 +26,7 @@
 <body>
 <standard:header/>
 <div class="tabpane">
-    <ul id="level2" class="tabs autoclear">
-    <c:forEach items="${flow.tabs}" var="atab">
-        <c:set var="current">${atab.number == tab.number}</c:set>
-        <li class="tab ${current ? 'current' : ''}">
-            <img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_L.gif"/>" width="1" height="16" align="absmiddle"><a href="#" class="tab${atab.number}">${atab.shortTitle}</a><img src="<chrome:imageUrl name="tab2${current ? '_h' : ''}_R.gif"/>" width="6" height="16" align="absmiddle">
-        </li>
-    </c:forEach>
-    </ul>
-    <div id="level2-spacer"></div>
+    <chrome:levelTwoTabs tab="${tab}" flow="${flow}"/>
 
     <div class="tabcontent workArea">
         <div class="body">
