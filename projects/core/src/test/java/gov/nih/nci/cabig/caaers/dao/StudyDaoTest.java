@@ -10,11 +10,17 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
+    
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
         assertNotNull("Study not found", loaded);
         assertEquals("Short Title", loaded.getShortTitle());
     }
+    
+    public void testGetByGridId() throws Exception{
+        Study study = getDao().getByGridId("gridStudy");
+        assertNotNull("Study not found", study);
+    }    
     
     public void testSave() throws Exception {
         Integer savedId;
@@ -61,4 +67,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         assertEquals("Wrong number of matches", 1, actual.size());
         assertEquals("Wrong match", -2, (int) actual.get(0).getId());
     }
+    
+
 }
