@@ -27,10 +27,20 @@
 			<div class="label" align="right"><form:label path="shortTitle">Short Title:</form:label></div>
 		    <div class="value" align="left"><form:label path="shortTitle">${command.shortTitle}</form:label></div>
 		</div>
-		
+
 		<div class="row">
-			<div class="label" align="right"><form:label path="targetAccrualNumber">Target Accrual Number:</form:label></div>
-		    <div class="value" align="left"><form:label path="targetAccrualNumber">${command.targetAccrualNumber}</form:label></div>
+			<div class="label" align="right"><form:label path="longTitle">Long Title:</form:label></div>
+		    <div class="value" align="left"><form:label path="longTitle">${command.longTitle}</form:label></div>
+		</div>
+
+		<div class="row">
+			<div class="label" align="right"><form:label path="precis">Precis Text:</form:label></div>
+		    <div class="value" align="left"><form:label path="precis">${command.precis}</form:label></div>
+		</div>
+
+		<div class="row">
+			<div class="label" align="right"><form:label path="description">Description Text:</form:label></div>
+		    <div class="value" align="left"><form:label path="description">${command.description}</form:label></div>
 		</div>
 
 		<div class="row">
@@ -59,22 +69,9 @@
 			<div class="value" align="left"><form:checkbox
 					path="multiInstitutionIndicator" /></div>
 		</div>
-		
-		<div class="row">
-			<div class="label" align="right"><form:label path="blindedIndicator">Blinded:</form:label></div>
-			<div class="label" align="left"><form:checkbox
-					path="blindedIndicator" /></div>
-		</div>
-			
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="randomizedIndicator">Randomized:</form:label></div>
-			<div class="label" align="left"><form:checkbox
-					path="randomizedIndicator" /></div>
-		</div>
-		
+				
 		<br> <br>
-				<input type="image" name="_target1" src="images/b-edit.gif"
+				<input type="image" name="_target0" src="images/b-edit.gif"
 					border="0" alt="edit this page">
 			
 		<h3><strong>Study Identifiers</strong></h3>
@@ -99,7 +96,7 @@
 			<div class="value" align="left"><form:label
 					path="identifiers[0].value">${command.identifiers[0].value}</form:label></div>
 		</div>
-		
+
 		<br> <br>
 		<input type="image" name="_target1" src="images/b-edit.gif"
 					border="0" alt="edit this page">
@@ -146,15 +143,12 @@
 		<input type="image" name="_target2" src="images/b-edit.gif"
 			border="0" alt="edit this page">
 				
-				<input type="image" name="_target0"
-						src="/caaers/images/b-prev.gif" border="0"
-						alt="goto previous page"> 
 				<input type="image" name="_finish"
 						src="/caaers/images/b-save.gif" border="0"
-						alt="continue to next page"> 
+						alt="Save"> 
 				<input type="image"
 						name="_target0" src="/caaers/images/b-cancel.gif" border="0"
-						alt="start over from start page">						
+						alt="Cancel">						
 
 	</form:form>
 </chrome:body>
