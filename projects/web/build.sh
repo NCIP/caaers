@@ -15,9 +15,9 @@ ANT_STATUS="$?"
 GROWL=`which growlnotify`
 if [ -e "$GROWL" ]; then
     if [ "$ANT_STATUS" -eq 0 ]; then
-        TITLE="Study calendar build successful"
+        TITLE="caAERS build successful"
     else
-        TITLE="Study calendar build failed"
+        TITLE="caAERS build failed"
     fi
     echo "
     `pwd`
