@@ -67,7 +67,8 @@
                 valueSelector: mode.valueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                     acPostSelect(mode, selectedChoice)
-                }
+                },
+                indicator: mode.basename + "-indicator"
             })
             Event.observe(mode.basename + "-clear", "click", function() {
                 $(mode.basename + "-selected").hide()
@@ -98,6 +99,7 @@
                     <form:hidden path="participant"/>
                     <input type="text" id="participant-input" value="${command.participant.fullName}"/>
                     <input type="button" id="participant-clear" value="Clear"/>
+                    <tags:indicator id="participant-indicator"/>
                     <div id="participant-choices" class="autocomplete"></div>
                     <tags:errors path="participant"/>
                     <p id="participant-selected" style="display: none">
@@ -109,6 +111,7 @@
                     <form:hidden path="study"/>
                     <input type="text" id="study-input" value="${command.study.shortTitle}"/>
                     <input type="button" id="study-clear" value="Clear"/>
+                    <tags:indicator id="study-indicator"/>
                     <tags:errors path="study"/>
                     <div id="study-choices" class="autocomplete"></div>
                     <p id="study-selected" style="display: none">

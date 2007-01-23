@@ -94,5 +94,14 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
                 return object;
             }
         }, options || {});
+    },
+
+    startIndicator: function() {
+      if (this.options.indicator) AE.showIndicator(this.options.indicator)
+    },
+
+    stopIndicator: function() {
+      if (this.options.indicator) AE.hideIndicator(this.options.indicator)
     }
+
 });
