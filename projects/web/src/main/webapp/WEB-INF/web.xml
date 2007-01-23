@@ -16,6 +16,35 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    
+    <!--
+    Checks for presence of grid proxy. If not found, forwards to failureUrl.
+    -->
+    <filter>
+        <filter-name>GridProxyFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.ctms.web.sso.GridProxyFilter</filter-class>
+        <init-param>
+            <param-name>failureUrl</param-name>
+            <param-value>/index.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ignoreUrlPattern</param-name>
+            <param-value>.*\/index.jsp|.*\/pages/login</param-value>
+        </init-param>
+        <init-param>
+            <param-name>gridProxyRetrievalStrategyBeanName</param-name>
+            <param-value>gridProxyRetrievalStrategy</param-value>
+        </init-param>
+        <init-param>
+            <param-name>isStrict</param-name>
+            <param-value>false</param-value>
+        </init-param>        
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>GridProxyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>    
 
     <filter>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
