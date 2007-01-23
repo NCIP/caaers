@@ -1,0 +1,62 @@
+<dataset>
+    <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_date="2006-01-02"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
+    <PARTICIPANTS
+        id="-101"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+        birth_date="2006-01-02"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
+    <SITES
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"/>
+    <STUDIES 
+    	id="-2001" 
+    	multi_institution_indicator="false"
+    	short_title="New Study"
+    	long_title="Long Title" 
+    	description="Description" 
+    	primary_sponsor_code="SCODE_101"
+    	grid_id="gridStudy"/>
+    
+    <STUDIES 
+    	id="-2000" 
+    	multi_institution_indicator="false" 
+    	short_title="Short Title"
+    	long_title="Long Title" 
+    	description="Description" 
+    	primary_sponsor_code="SCODE_100"/>
+    
+    <STUDY_SITES
+        id="-3001"
+        site_id="-1001"
+        study_id="-2001"
+        />
+    <STUDY_SITES
+        id="-3000"
+        site_id="-1001"
+        study_id="-2000"
+        />
+    <PARTICIPANT_ASSIGNMENTS
+        id="-10"
+        date_of_enrollment="2006-12-12"
+        participant_id="-100"
+        study_site_id="-3000"/>
+</dataset>
