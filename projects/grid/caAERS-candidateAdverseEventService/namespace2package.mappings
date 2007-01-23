@@ -1,0 +1,10 @@
+http\://createcandidateadverseeventservice.ctms.cabig.nci.nih.gov/CreateCandidateAdverseEventService=gov.nih.nci.cabig.ctms.createcandidateadverseeventservice.stubs
+http\://createcandidateadverseeventservice.ctms.cabig.nci.nih.gov/CreateCandidateAdverseEventService/bindings=gov.nih.nci.cabig.ctms.createcandidateadverseeventservice.stubs.bindings
+http\://createcandidateadverseeventservice.ctms.cabig.nci.nih.gov/CreateCandidateAdverseEventService/service=gov.nih.nci.cabig.ctms.createcandidateadverseeventservice.stubs.service
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+
+http\://ctom.nci.nih.gov/adverseEvent=adverseevent
+http\://createcandidateadverseeventservice.ctms.cabig.nci.nih.gov/CreateCandidateAdverseEventService/types=gov.nih.nci.cabig.ctms.createcandidateadverseeventservice.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+http\://ctom.nci.nih.gov/common=common
+

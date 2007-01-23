@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://ctom.nci.nih.gov/common" targetNamespace="http://ctom.nci.nih.gov/common" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="studySubjectAssignment" type="StudySubjectAssignment"/>
+	<xs:complexType name="StudySubjectAssignment">
+		<xs:sequence>
+			<xs:element name="study" type="Study"/>
+			<xs:element name="studySubjectIdentifier" type="xs:string"/>
+			<xs:element name="activity" type="Activity" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Study">
+		<xs:sequence>
+			<xs:element name="identifier" type="xs:string"/>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="assigningAuthority" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Activity">
+		<xs:sequence>
+			<xs:element name="identifier" type="xs:string"/>
+			<xs:element name="startDateTime" type="xs:dateTime"/>
+			<xs:element name="endDateTime" type="xs:dateTime"/>
+			<xs:element name="labTest" type="LabTest" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LabTest">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string"/>
+			<xs:element name="labResult" type="LabResult"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LabResult">
+		<xs:sequence>
+			<xs:element name="textResult" type="xs:string"/>
+			<xs:element name="numericResult" type="xs:float"/>
+			<xs:element name="unitOfMeasureCode" type="xs:string"/>
+			<xs:element name="referenceRangeComments" type="xs:string"/>
+			<xs:element name="referenceRangeHigh" type="xs:double"/>
+			<xs:element name="referenceRangeLow" type="xs:double"/>
+			<xs:element name="testPerformedDate" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

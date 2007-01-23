@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ctae="http://ctom.nci.nih.gov/adverseEvent"  targetNamespace="http://ctom.nci.nih.gov/adverseEvent" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:ctco="http://ctom.nci.nih.gov/common"><xs:import namespace="http://ctom.nci.nih.gov/common" schemaLocation="CTOMCommon.xsd"/>
+	<xs:element name="adverseEvent" type="ctae:AdverseEvent"/>
+	<xs:complexType name="AdverseEvent">
+		<xs:sequence>
+			<xs:element name="studySubjectAssignment" type="ctco:StudySubjectAssignment" minOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
