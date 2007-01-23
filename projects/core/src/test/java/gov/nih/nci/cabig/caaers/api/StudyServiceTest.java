@@ -24,20 +24,20 @@ public class StudyServiceTest extends CaaersDbTestCase {
     private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
 
     public String getTestDataFileName() {
-        String fileName = "../dao/testdata/ParticipantDaoTest.xml";
+        String fileName = "testdata/StudyServiceTest.xml";
         return fileName;
     }
-
+    
     public void testCreateAssignNewParticipant() {
 
         try {
-            int siteId = -1001;
             int studySiteId = -3001;
+            String siteGridId = "gridSite";
             Integer participantId = null;
             {
-                Site site = siteDao.getById(siteId);
+                Site site = siteDao.getByGridId(siteGridId);
                 StudySite studySite = site.getStudySites().get(0);
-                assertEquals("Wrong study site found in test setup", studySiteId, (int) studySite.getId());
+                assertEquals("Wrong study site found in test setup", siteGridId, studySite.getGridId());
                 Study study = studySite.getStudy();
 
                 Participant participant = new Participant();
