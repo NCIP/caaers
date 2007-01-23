@@ -53,7 +53,7 @@ field.value="";
 
 				<tr>
 					<table width="50%" border="0" cellspacing="10" cellpadding="0"
-									id="table1">
+									id="table1">								
 								
 								<tr>
 									<td>
@@ -87,22 +87,24 @@ field.value="";
 									<tr align="center" class="results">
 										<td>
 										<div class="row">
+										<div class="label"></div>
+										<div class="value">
 										<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
 											src="images/checkno.gif" border="0" alt="remove"></a>
-											</div>
+											</div></div> 
 											</td>
-										<td> <div class="row">  <div class="value"> <form:select path="identifiers[${status.index}].source">
+										<td> <div class="row"> <div class="label"></div> <div class="value"> <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersSourceRefData}" itemLabel="desc"
 												itemValue="code" /></form:select>
 											</div></div>
 										</td>
 
-										<td> <div class="row"> <div class="value"> <form:select path="identifiers[${status.index}].type">
+										<td> <div class="row"> <div class="label"></div><div class="value"> <form:select  path="identifiers[${status.index}].type">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
 												itemValue="code" /></form:select> </div></div></td>
-										<td> <div class="row"> <div class="value"><form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
+										<td> <div class="row"> <div class="label"></div><div class="value"><form:input size="40" path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
 										<td><div class="row"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/> </div></td> 
 									</tr> 
 								</c:forEach> 
