@@ -32,10 +32,7 @@
         <div class="body">
             <decorator:body/>
         </div>
-        <div class="tabcontrols autoclear">
-            <c:if test="${tab.number > 0}"><a id="flow-prev" class="tab${tab.number - 1}">&laquo; Previous</a></c:if>
-            <a id="flow-next">Save<c:if test="${tab.number < flow.tabCount - 1}"> &amp; Continue &raquo;</c:if></a>
-        </div>
+        <tags:tabControls tabNumber="${tab.number}" isLast="${tab.number < flow.tabCount - 1}"/>
     </div>
 </div>
 <form:form id="flowredirect">

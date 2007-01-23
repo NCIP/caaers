@@ -16,6 +16,10 @@
             padding: 1em;
         }
     </style>
+    <c:if test="${empty tab}">
+        <tags:stylesheetLink name="tabbedflow"/>
+        <tags:javascriptLink name="tabbedflow"/>
+    </c:if>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
@@ -88,7 +92,7 @@
 
         <form:form method="post" cssClass="standard autoclear">
             <tags:tabFields tab="${tab}"/>
-            <div>
+            <div class="autoclear">
                 <chrome:division title="Select participant" id="participant-entry">
                     <p>Enter a portion of a participant's name or another registered identifier.</p>
                     <form:hidden path="participant"/>
@@ -112,6 +116,9 @@
                     </p>
                 </chrome:division>
             </div>
+            <c:if test="${empty tab}">
+                <tags:tabControls tabNumber="${0}" isLast="${false}"/>
+            </c:if>
         </form:form>
     </body>
 </html>
