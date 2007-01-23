@@ -121,7 +121,7 @@ public class CaaersRegistrationConsumerTest extends DBTestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(new CaaersRegistrationConsumerTest("testCreateRegistrationLocal"));
-        // suite.addTest(new CaaersRegistrationConsumerTest("testCreateRegistrationRemote"));
+         suite.addTest(new CaaersRegistrationConsumerTest("testCreateRegistrationRemote"));
         return suite;
     }
 
