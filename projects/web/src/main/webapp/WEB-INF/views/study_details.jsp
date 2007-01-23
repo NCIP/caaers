@@ -42,11 +42,7 @@
 				         <div class="label"><form:label path="description">Description Text:</form:label></div>
 				         <div class="value"><form:textarea path="description" rows="3" cols="50"/></div>
 				     </div>																								
-		        
-                	<div class="row">
-				          <div class="label"><form:label path="targetAccrualNumber">Target Accrual Number:</form:label></div>
-				          <div class="value"><form:input path="targetAccrualNumber"/></div>
-				    </div>
+		                        	
 					</td>
 					<td>
 				
@@ -100,23 +96,14 @@
 					</div>
 					</div>					
 
-					<div class="row">
-					    <div class="label"><form:label path="randomizedIndicator"><span class="red">*</span><em></em>Randomized Indicator</form:label></div>
-						<div class="value"><form:checkbox path="randomizedIndicator" /></div>
-				    </div> 
+				
 								
 								 <div class="row">
 						            <div class="label"><form:label path="multiInstitutionIndicator"><span class="red">*</span><em></em>Multi
 									Institution:</form:label></div>
 						            <div class="value"><form:checkbox path="multiInstitutionIndicator" /></div>
 						        </div> 
-						        
-								
-								<div class="row">
-						            <div class="label"><form:label path="blindedIndicator">Blinded Indicator:</form:label></div>
-						            <div class="value"><form:checkbox path="blindedIndicator" /></div>
-						        </div>
-						        
+						        						        
 					
 				</td>
 				</tr>
