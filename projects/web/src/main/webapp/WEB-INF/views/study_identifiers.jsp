@@ -35,12 +35,18 @@ field.value="";
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
+<chrome:body title="${flow.name}: ${tab.longTitle}">	
+	
+	<form:form method="post" name="a">	
+	    <tags:tabFields tab="${tab}" />
+	</form:form>
 
 	<form:form method="post" name="studyIdentifiersForm" cssClass="standard">
-		<tags:tabFields tab="${tab}" />
-		<div>		<input type="hidden" name="_action" value="">
-					<input type="hidden" name="_selected" value=""></div>
+
+		<div>		
+			<input type="hidden" name="_action" value="">
+			<input type="hidden" name="_selected" value="">
+		</div>
 
 		<table width="700" border="0" cellspacing="0" cellpadding="0"
 			id="details">			
