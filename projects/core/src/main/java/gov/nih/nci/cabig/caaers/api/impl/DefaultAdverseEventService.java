@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.AdverseEventService;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.GridIdentifiable;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -14,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
@@ -24,16 +27,24 @@ public class DefaultAdverseEventService implements AdverseEventService {
     private SiteDao siteDao;
     private ParticipantDao participantDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
+    private AdverseEventReportDao adverseEventReportDao;
     
     public DefaultAdverseEventService() {
     }
 
-    public String createCandidateAdverseEvent(Study study, 
-                                              Participant participant, 
-                                              Site site, AdverseEvent ae, 
-                                              List<Lab> labs) {
-        return null;
-    }
+    public String createCandidateAdverseEvent(Study study,
+			Participant participant, Site site, AdverseEvent ae, List<Lab> labs) {
+		ParameterLoader loader = new ParameterLoader(study, site, participant);
+		StudyParticipantAssignment studyParticipantAssignment = getStudyParticipantAssignmentDao()
+				.getAssignment(loader.participant, loader.study);
+
+		AdverseEventReport adverseEventReport = new AdverseEventReport();
+		adverseEventReport.setAssignment(studyParticipantAssignment);
+		adverseEventReport.setPrimaryAdverseEvent(ae);
+		adverseEventReport.setLabs(labs);
+		getAdverseEventReportDao().save(adverseEventReport);
+		return adverseEventReport.getGridId();
+	}
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
@@ -74,13 +85,26 @@ public class DefaultAdverseEventService implements AdverseEventService {
             
         }
         if (hasIdentifiers){
-            //load based on identifiers
+//        	load based on identifiers
+        	loaded = loadByIdentifiers(param);
         }
         
         if(loaded == null){
             throw new IllegalArgumentException(param.getClass().getSimpleName() + " doesn't exist.");
         }
         return loaded;
+    }
+    
+    @SuppressWarnings("unchecked")
+	private  <T extends DomainObject> T loadByIdentifiers(T param) {
+    	DomainObject returnObject = null;
+    	if(param instanceof Participant) {
+    		returnObject = (DomainObject)getParticipantDao().getByIdentifier(((Participant)param).getIdentifiers().get(0));
+    	} else if(param instanceof Study) {
+    		returnObject = (DomainObject)getStudyDao().getByIdentifier(((Study)param).getIdentifiers().get(0));
+    	}
+    	return  (T)returnObject;
+    	//getByExample(param, {"identifiers"}, )
     }
 
     private boolean checkForGridId(GridIdentifiable gridIdentifiable) {
@@ -118,15 +142,29 @@ public class DefaultAdverseEventService implements AdverseEventService {
         return studyParticipantAssignmentDao;
     }
 
+	public AdverseEventReportDao getAdverseEventReportDao() {
+		return adverseEventReportDao;
+	}
+
+	public void setAdverseEventReportDao(AdverseEventReportDao adverseEventReportDao) {
+		this.adverseEventReportDao = adverseEventReportDao;
+	}
+    
     private class ParameterLoader{
         private Study study;
         private Site site;
+		private Participant participant;
         
         public ParameterLoader(Study study, Site site){
             loadStudy(study);
             loadSite(site);
         }
 
+        public ParameterLoader(Study study, Site site, Participant participant){
+            this(study,site);
+            loadParticipant(participant);
+        }        
+        
         public StudySite validateSiteInStudy() {
             StudySite studySite = null;
             for (StudySite aStudySite : getStudy().getStudySites()) {
@@ -141,13 +179,26 @@ public class DefaultAdverseEventService implements AdverseEventService {
         }
 
         private void loadSite(Site param) {
-            this.site = load(param, getSiteDao(), true);
+            if(param == null) {
+            	this.site = getSiteDao().getDefaultSite();
+            } else {
+	        	this.site = load(param, getSiteDao(), true);
+	            if(this.site == null) {
+	                if(this.site == null) {
+	                	this.site = getSiteDao().getDefaultSite();
+	                }
+	            }
+            }
         }
 
         private void loadStudy(Study param) {
             this.study = load(param, getStudyDao(), true);
         }
 
+        private void loadParticipant(Participant param) {
+            this.participant = load(param, getParticipantDao(), true);
+        }        
+        
         public Study getStudy() {
             return study;
         }
@@ -163,6 +214,14 @@ public class DefaultAdverseEventService implements AdverseEventService {
         public void setSite(Site site) {
             this.site = site;
         }
+
+		public Participant getParticipant() {
+			return participant;
+		}
+
+		public void setParticipant(Participant participant) {
+			this.participant = participant;
+		}
     }
 
 }
