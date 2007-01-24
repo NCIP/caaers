@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.dao;
 
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Example;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
@@ -25,6 +27,15 @@ public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifia
     @SuppressWarnings("unchecked")
 	public T getByGridId(T template) {
     	return (T) CollectionUtils.firstElement(getHibernateTemplate().findByExample(template));
+    }
+    
+    @SuppressWarnings("unchecked")
+	public T getByExample(T template, String[] propertyNames, DomainObject[] propertyValues) {
+    	Criteria criteria = getSession().createCriteria(template.getClass()).add(Example.create(template));
+    	for(int count = 0; count < propertyNames.length; count++) {
+    		criteria.createCriteria(propertyNames[count]).add(Example.create(propertyValues[count]));
+    	}
+    	return (T) CollectionUtils.firstElement(criteria.list());
     }
 
 /*    
