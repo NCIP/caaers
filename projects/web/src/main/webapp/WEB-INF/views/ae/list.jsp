@@ -58,7 +58,7 @@
         <ec:column property="primaryAdverseEvent.ctcTerm" title="CTC term">
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
-                <c:when test="${not empty report.primaryAdverseEvent}">
+                <c:when test="${not empty report.primaryAdverseEvent.ctcTerm}">
                     ${report.primaryAdverseEvent.ctcTerm.fullName}
                 </c:when>
                 <c:when test="${not empty report.labs}">
@@ -76,10 +76,13 @@
         <ec:column property="primaryAdverseEvent.grade.code" title="Grade"/>
         <ec:column property="primaryAdverseEvent.attribution.code" title="Attribution"/>
         <ec:column title="Notify PSC" sortable="false" filterable="false" property="dc">
-            <span class="notify-unit" id="notify-unit-${report.id}">
-                <a id="notify-${report.id}" class="notify" href="#">Notify</a>
-                <tags:indicator id="notify-indicator-${report.id}"/>
-            </span>
+            <%-- this logic should go elsewhere --%>
+            <c:if test="${not (empty report.primaryAdverseEvent.ctcTerm or empty report.primaryAdverseEvent.detectionDate)}">
+                <span class="notify-unit" id="notify-unit-${report.id}">
+                    <a id="notify-${report.id}" class="notify" href="#">Notify</a>
+                    <tags:indicator id="notify-indicator-${report.id}"/>
+                </span>
+            </c:if>
         </ec:column>
     </ec:row>
 </ec:table>
