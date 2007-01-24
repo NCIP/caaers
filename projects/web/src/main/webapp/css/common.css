@@ -66,6 +66,7 @@ div.row:after, .autoclear:after {
 div.row div.label, td.label { font-weight: bold; float: left; margin-left: 0.5em }
 div.row div.value { font-weight: normal; }
 
+
 /*
     Styles for scriptaculous-generated autocompleters
  */
