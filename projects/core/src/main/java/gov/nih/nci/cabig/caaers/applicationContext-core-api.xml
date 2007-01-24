@@ -17,4 +17,7 @@
 
     <bean id="studyServiceAPI" autowire="byType" lazy-init="true"
           class="gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService"/>
+    <bean id="adverseEventServiceAPI" autowire="byType" lazy-init="true"
+          class="gov.nih.nci.cabig.caaers.api.impl.DefaultAdverseEventService"/>
+
 </beans>
