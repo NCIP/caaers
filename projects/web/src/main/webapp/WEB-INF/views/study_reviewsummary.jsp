@@ -23,6 +23,7 @@
 	<form:form method="post">
 	<chrome:division id="study-details">
 		<tags:tabFields tab="${tab}"/>
+		<input type="hidden" name="_finish" value="true"/>
 		
 		<h3> <strong> Study Details </strong> </h3>		
 		<table  width="29%" border="0" cellspacing="0" cellpadding="0">
