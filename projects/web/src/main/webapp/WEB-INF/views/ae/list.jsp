@@ -44,8 +44,8 @@
 </head>
 <body>
 
-<p>
-    <a href="javascript:alert('Link to schedule with assignment.gridID=${command.assignment.gridId}')">View schedule in PSC</a>
+<p> <%-- TODO: configure studycalendar URL externally --%>
+    <a href="/studycalendar/pages/schedule?assignment=${command.assignment.gridId}" class="sso">View schedule in PSC</a>
 </p>
 
 <ec:table

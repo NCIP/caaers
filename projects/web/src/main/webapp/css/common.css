@@ -39,6 +39,8 @@ a:active {
     font-size: 80%;
 }
 
+#sso-form { display: none; }
+
 /****** SPECIAL TYPES */
 
 /*
