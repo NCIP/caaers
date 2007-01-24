@@ -36,81 +36,62 @@ field.value="";
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">	
-	
-	<%-- <form:form method="post" name="a">	
-	    <tags:tabFields tab="${tab}" />
-	</form:form> --%>
+<chrome:body title="${flow.name}: ${tab.longTitle}">		
 
 	<form:form method="post" name="studyIdentifiersForm" cssClass="standard">
+	<chrome:division id="study-details">
 		 <tags:tabFields tab="${tab}" />
+
 		<div>		
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
+		
+		<table  width="70%" border="0" cellspacing="0" cellpadding="0">
+		<br>
 
-		<table width="700" border="0" cellspacing="0" cellpadding="0"
-			id="details">			
-
-				<tr>
-					<table width="50%" border="0" cellspacing="10" cellpadding="0"
-									id="table1">								
-								
-								<tr>
-									<td>
-										<div class="row">
-											<div class="label" align="center"><a href="javascript:fireAction('addIdentifier','0');"><img
-										src="images/checkyes.gif" border="0" alt="Add another Identifier"></a> </div>
-										</div>
-									</td>
-									<td>
-										<div class="row">
-											<div class="label" align="center">Source<span class="red">*</span> </div>
-										</div>
-									</td>
-									<td>
-										<div class="row">
-											<div class="label" align="center">Identifier Type<span class="red">*</span> </div>
-										</div>
-									</td>
-									<td>
-										<div class="row">
-											<div class="label" align="center">Identifier<span class="red">*</span> </div>
-										</div>
-									</td>
-									<td>
-										<div class="row">
-											<div class="label" align="center">Primary Indicator</div>
-										</div>
-									</td>
-								</tr>
-								<c:forEach items="${command.identifiers}" varStatus="status">
-									<tr align="center" class="results">
+					<tr align="center">
+						<td width="20%">										
+							<b><a href="javascript:fireAction('addIdentifier','0');"><img
+								src="images/checkyes.gif" border="0" alt="Add"></a></b> 
+						</td>
+						<td> <b>Source<span class="red">*</span> </b></td>						
+						<td> <b>Identifier Type<span class="red">*</span> </b> </td>						
+						<td> <b> Identifier<span class="red">*</span> </b> </td>														
+						<td><b> Primary Indicator </b></td>
+					</tr>																			
+				 
+				    <tr>
+					<td> &nbsp;</td>
+					</tr>
+					<c:forEach items="${command.identifiers}" varStatus="status">
+						<tr align="center" class="results">
 										<td>
-										<div class="row">
-										<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-											src="images/checkno.gif" border="0" alt="remove"></a>
-											</div>
-											</td>
-										<td> <div class="row">  <div class="value"> <form:select path="identifiers[${status.index}].source">
+											<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
+											src="images/checkno.gif" border="0" alt="remove"></a>										
+										</td>
+										<td>
+										    <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersSourceRefData}" itemLabel="desc"
 												itemValue="code" /></form:select>
-											</div></div>
 										</td>
 
-										<td> <div class="row"> <div class="value"> <form:select path="identifiers[${status.index}].type">
+										<td> <form:select path="identifiers[${status.index}].type">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
-												itemValue="code" /></form:select> </div></div></td>
-										<td> <div class="row"> <div class="value"><form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </div> </div></td>
-										<td><div class="row"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/> </div></td> 
-									</tr> 
-								</c:forEach> 
-								</table>
-
-				</tr>
+												itemValue="code" /></form:select> </td>
+										<td> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
+										<td><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
+						</tr> 
+						<tr>
+					<td> &nbsp;</td>
+					</tr>
+					</c:forEach> 
 		</table>
+		
+
+			</chrome:division>
 	</form:form>
 	<!-- LEFT CONTENT ENDS HERE -->
 
