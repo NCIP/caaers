@@ -63,7 +63,7 @@ div.row:after, .autoclear:after {
 }
 /* IE only */
 * html div.row, * html div.autoclear { height: 1% }
-div.row div.label { font-weight: bold; float: left; margin-left: 0.5em }
+div.row div.label, td.label { font-weight: bold; float: left; margin-left: 0.5em }
 div.row div.value { font-weight: normal; }
 
 /*
