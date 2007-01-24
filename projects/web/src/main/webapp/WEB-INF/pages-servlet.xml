@@ -111,6 +111,10 @@
     <bean name="/participant/view" id="viewParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.ViewParticipantController" >
     </bean>
+
+    <bean name="/view_study" id="viewStudyController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
+    </bean>
     
     <!--  Home Page includes searches for Studies and Participants 
     <bean name="/testHome" id="HomeController" class="gov.nih.nci.cabig.caaers.web.HomeController" autowire="byName" /> 
