@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
 import java.util.Arrays;
@@ -86,6 +89,21 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
 	public List<Participant> searchByExample(Participant participant) {
 		return searchByExample(participant, true);
 	}
+
+	public Participant getByIdentifier(Identifier identifier) {
+
+    	Criteria criteria = getSession().createCriteria(domainClass());
+    	criteria.createCriteria("identifiers")
+    		.add(Restrictions.eq("type", identifier.getType()))
+    			.add(Restrictions.eq("source", identifier.getSource()))
+    			.add(Restrictions.eq("value", identifier.getValue()));
+    	return (Participant) CollectionUtils.firstElement(criteria.list());		
+    	
+/*		StringBuilder query = new StringBuilder("from ")
+        .append(domainClass().getName()).append(" o where identifiers in ?");
+        Object[] params = {identifiers};
+        return (Study) CollectionUtils.firstElement(getHibernateTemplate().find(query.toString(), params));
+*/	}
 
     
     
