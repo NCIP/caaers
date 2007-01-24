@@ -15,10 +15,6 @@
 <style type="text/css">
         .label { width: 12em; text-align: right; padding: 4px; }
 </style>
-<script type="text/javascript" src="/caaers/js/CalendarPopup.js"></script>
-<script language="JavaScript" id="js1">
-								var cal1 = new CalendarPopup();
-							</script>
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
