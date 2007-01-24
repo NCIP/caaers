@@ -22,67 +22,63 @@
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
+<chrome:body title="${flow.name}: ${tab.longTitle}">	
 				<form:form method="post">
+				<chrome:division id="study-details">
 				<tags:tabFields tab="${tab}"/>
 				
-					<table width="600" border="0" cellspacing="0" cellpadding="0"
+					<table width="28%" border="0" cellspacing="3" cellpadding="3"
 						id="table1">
 					
-					<div class="row">
-						<div class="label"><form:label path="studySites[0].site"><span class="red">*</span><em></em>Site:</form:label></div>
-						<div class="value">
-						<form:select path="studySites[0].site">
+					<tr>
+				      <td class="label"> <form:label path="studySites[0].site"><span class="red">*</span><em></em>Site:</form:label> </td>
+				      <td> <form:select path="studySites[0].site">
 							<form:options items="${sitesRefData}" itemLabel="name"
 									itemValue="id" />
-						</form:select>						
-					</div>
-					</div>
-
-
-						
-					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].statusCode"><span class="red">*</span><em></em>Status
-							Code:</form:label></div>			
-						 <div class="value" align="left"><form:input path="studySites[0].statusCode"/></div>
-				    </div>	
-
-					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].roleCode"><span class="red">*</span><em></em>Role
-							Code:</form:label></div>			
-						 <div class="value" align="left"><form:input path="studySites[0].roleCode"/></div>
-				    </div>	
-
-					<div class="row">		
+						</form:select> </td>        			  
+					</tr>
 					
-						 <div class="label" align="right"><form:label path="studySites[0].startDate"><span class="red">*</span><em></em>Start Date:</form:label></div>			
-						 <div class="value" align="left"><form:input
-								path="studySites[0].startDate" />&nbsp;<a href="#"
+					<tr>
+				      <td class="label"> <form:label path="studySites[0].statusCode"><span class="red">*</span><em></em>Status
+							Code:</form:label> </td>
+				      <td> <form:input path="studySites[0].statusCode"/> </td>        			  
+					</tr>
+						
+					<tr>
+				      <td class="label"> <form:label path="studySites[0].roleCode"><span class="red">*</span><em></em>Role
+							Code:</form:label> </td>
+				      <td> <form:input path="studySites[0].roleCode"/> </td>        			  
+					</tr>
+
+					<tr>
+				      <td class="label"><form:label path="studySites[0].startDate"><span class="red">*</span><em></em>Start Date:</form:label> </td>
+				      <td> <form:input path="studySites[0].startDate"/> <a href="#"
 								onClick="cal1.select(document.getElementById('studySites[0].startDate'),'anchor1','MM/dd/yyyy');return false;" name="anchor1" id="anchor1"><img
 								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></div>
-				    </div>
-					
-					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].endDate">End Date:</form:label></div>			
-						 <div class="value" align="left"><form:input
+								height="16" border="0" align="absmiddle"></a> </td>        			  
+					</tr>
+
+					<tr>
+				      <td class="label"><form:label path="studySites[0].endDate">End Date:</form:label> </td>
+				      <td><form:input
 								path="studySites[0].endDate" />&nbsp;<a href="#"
 								onClick="cal1.select(document.getElementById('studySites[0].endDate'),'anchor2','MM/dd/yyyy');return false;" name="anchor2" id="anchor2"><img
 								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></div>
-				    </div>
+								height="16" border="0" align="absmiddle"></a> </td>        			  
+					</tr>
 					
-					<div class="row">					
-						 <div class="label" align="right"><form:label path="studySites[0].irbApprovalDate"><span class="red">*</span><em></em>IRB
-								Approval Date:</form:label></div>			
-						 <div class="value" align="left"><form:input
+					<tr>
+				      <td class="label"><form:label path="studySites[0].irbApprovalDate"><span class="red">*</span><em></em>IRB
+								Approval Date:</form:label> </td>
+				      <td><form:input
 								path="studySites[0].irbApprovalDate" />&nbsp;<a href="#"
 								onClick="cal1.select(document.getElementById('studySites[0].irbApprovalDate'),'anchor3','MM/dd/yyyy');return false;" name="anchor3" id="anchor3"><img
 								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a>						 
-				    </div>																						
-												
+								height="16" border="0" align="absmiddle"></a></td>        			  
+					</tr>
+																	
 					</table>
+				</chrome:division>
 				</form:form>		
 <!-- MAIN BODY ENDS HERE -->
 </chrome:body>
