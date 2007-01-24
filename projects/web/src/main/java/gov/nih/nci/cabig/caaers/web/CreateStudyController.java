@@ -63,7 +63,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
     	  		return refdata;
         	}
         });                 
-        flow.addTab(new Tab<Study>("Study Sites", "Study sites", "study_studysite") {
+        flow.addTab(new Tab<Study>("Study Sites", "Study Sites", "study_studysite") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();                    
@@ -72,8 +72,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
            
         	}        	
         });
-        flow.addTab(new Tab<Study>("Review and Submit", "Submit", "study_reviewsummary"));                
-        
+        flow.addTab(new Tab<Study>("Review and Submit", "Review and Submit", "study_reviewsummary"));                        
         setFlow(flow);        
     }
 	
@@ -110,7 +109,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		
 		ModelAndView modelAndView= new ModelAndView("study_confirmation");
     	modelAndView.addAllObjects(errors.getModel());
-    	response.sendRedirect("createStudy");
+    	response.sendRedirect("view_study?studyName=" + study.getShortTitle() + "&type=confirm");
     	return null;
 	}
 	
