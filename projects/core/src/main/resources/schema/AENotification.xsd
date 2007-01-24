@@ -1,0 +1,14 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://semanticbits.com/aeNotification" 
+xmlns="http://semanticbits.com/aeNotification" elementFormDefault="qualified">
+
+<xs:element name="AENotification">
+	 <xs:complexType>
+	   <xs:sequence>
+	     <xs:element name="detectionDate" type="xs:date"/>
+	     <xs:element name="description" type="xs:string"/>
+	   </xs:sequence>
+	   <xs:attribute name="registrationGridId" type="xs:string"/>
+	 </xs:complexType>
+</xs:element>
+
+</xs:schema>
