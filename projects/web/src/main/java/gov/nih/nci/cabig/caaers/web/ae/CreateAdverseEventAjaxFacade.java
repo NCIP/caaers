@@ -6,14 +6,20 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Rhett Sutphin
@@ -23,6 +29,8 @@ public class CreateAdverseEventAjaxFacade {
     private ParticipantDao participantDao;
     private CtcTermDao ctcTermDao;
     private CtcDao ctcDao;
+    private AdverseEventReportDao aeReportDao;
+    private InteroperationService interoperationService;
 
     public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants = participantDao.getBySubnames(extractSubnames(text));
@@ -96,21 +104,45 @@ public class CreateAdverseEventAjaxFacade {
         return text.split("\\s+");
     }
 
+    public boolean pushAdverseEventToStudyCalendar(int aeReportId) {
+        AdverseEventReport report = aeReportDao.getById(aeReportId);
+        try {
+            interoperationService.pushToStudyCalendar(report);
+            return true;
+        } catch (CaaersSystemException ex) {
+            return false;
+        }
+    }
+
     ////// CONFIGURATION
 
+    @Required
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
 
+    @Required
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
 
+    @Required
     public void setCtcDao(CtcDao ctcDao) {
         this.ctcDao = ctcDao;
     }
 
+    @Required
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
+    }
+
+    @Required
+    public void setAeReportDao(AdverseEventReportDao aeReportDao) {
+        this.aeReportDao = aeReportDao;
+    }
+
+    @Required
+    public void setInteroperationService(InteroperationService interoperationService) {
+        this.interoperationService = interoperationService;
     }
 }

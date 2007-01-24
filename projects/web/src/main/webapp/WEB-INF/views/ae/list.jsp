@@ -5,8 +5,48 @@
 <head>
     <title>AEs for ${command.participant.fullName} on ${command.study.shortTitle}</title>
     <tags:stylesheetLink name="extremecomponents"/>
+    <tags:dwrJavascriptLink objects="createAE"/>
+    <style type="text/css">
+        .notify-unit.success {
+            color: #090;
+        }
+
+        .notify-unit.failure {
+            color: #900;
+        }
+    </style>
+    <script type="text/javascript">
+        function notifyPsc(aeReportId) {
+            AE.showIndicator("notify-indicator-" + aeReportId)
+            createAE.pushAdverseEventToStudyCalendar(aeReportId, function(result) {
+                AE.hideIndicator("notify-indicator-" + aeReportId)
+                var unit = $("notify-unit-" + aeReportId)
+                if (result) {
+                    Element.update(unit, "Notified")
+                    Element.addClassName(unit, "success")
+                } else {
+                    Element.update(unit, "Notification failed")
+                    Element.addClassName(unit, "failure")
+                }
+            })
+        }
+
+        Event.observe(window, "load", function() {
+            $$("a.notify").each(function(a) {
+                Event.observe(a, "click", function(e) {
+                    Event.stop(e);
+                    var aeReportId = Event.element(e).id.substring(7)
+                    notifyPsc(aeReportId)
+                })
+            })
+        })
+    </script>
 </head>
 <body>
+
+<p>
+    <a href="javascript:alert('Link to schedule with assignment.gridID=${command.assignment.gridId}')">View schedule in PSC</a>
+</p>
 
 <ec:table
     items="command.assignment.aeReports"
@@ -21,15 +61,26 @@
                 <c:when test="${not empty report.primaryAdverseEvent}">
                     ${report.primaryAdverseEvent.ctcTerm.fullName}
                 </c:when>
+                <c:when test="${not empty report.labs}">
+                    [Lab-based incomplete AE]
+                </c:when>
                 <c:otherwise>
                     [Incomplete AE]
                 </c:otherwise>
             </c:choose>
             </a>
         </ec:column>
-        <ec:column property="primaryAdverseEvent.detectionDate" title="Detection date"/>
+        <ec:column property="primaryAdverseEvent.detectionDate" title="Detection date">
+            <tags:formatDate value="${report.primaryAdverseEvent.detectionDate}"/>
+        </ec:column>
         <ec:column property="primaryAdverseEvent.grade.code" title="Grade"/>
         <ec:column property="primaryAdverseEvent.attribution.code" title="Attribution"/>
+        <ec:column title="Notify PSC" sortable="false" filterable="false" property="dc">
+            <span class="notify-unit" id="notify-unit-${report.id}">
+                <a id="notify-${report.id}" class="notify" href="#">Notify</a>
+                <tags:indicator id="notify-indicator-${report.id}"/>
+            </span>
+        </ec:column>
     </ec:row>
 </ec:table>
 </body>

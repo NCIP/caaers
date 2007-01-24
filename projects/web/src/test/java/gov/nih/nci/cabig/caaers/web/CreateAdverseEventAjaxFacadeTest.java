@@ -1,11 +1,15 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -13,6 +17,7 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.ArrayList;
@@ -28,19 +33,26 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
     private ParticipantDao participantDao;
     private CtcDao ctcDao;
     private CtcTermDao ctcTermDao;
+    private AdverseEventReportDao aeReportDao;
+    private InteroperationService interoperationService;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
         ctcDao = registerDaoMockFor(CtcDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
+        aeReportDao = registerDaoMockFor(AdverseEventReportDao.class);
+        interoperationService = registerMockFor(InteroperationService.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
         facade.setStudyDao(studyDao);
         facade.setCtcDao(ctcDao);
         facade.setCtcTermDao(ctcTermDao);
+        facade.setAeReportDao(aeReportDao);
+        facade.setInteroperationService(interoperationService);
     }
 
     public void testMatchParticipants() throws Exception {
@@ -174,5 +186,28 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
         verifyMocks();
 
         assertSame("Wrong list", ctc.getCategories(), actual);
+    }
+
+    public void testPushToPsc() throws Exception {
+        int expectedId = 510;
+        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        expect(aeReportDao.getById(510)).andReturn(report);
+        interoperationService.pushToStudyCalendar(report);
+
+        replayMocks();
+        assertTrue(facade.pushAdverseEventToStudyCalendar(expectedId));
+        verifyMocks();
+    }
+
+    public void testPushToPscAndFail() throws Exception {
+        int expectedId = 510;
+        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        expect(aeReportDao.getById(510)).andReturn(report);
+        interoperationService.pushToStudyCalendar(report);
+        expectLastCall().andThrow(new CaaersSystemException("Turbo bad"));
+
+        replayMocks();
+        assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));
+        verifyMocks();
     }
 }

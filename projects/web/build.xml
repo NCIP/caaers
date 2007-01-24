@@ -35,8 +35,11 @@
             <include name="**/*.jar"/>
         </fileset>
     </path>
-	
-	<path id="cp.sso">
+
+    <path id="cp.sso">
+        <fileset dir="../websso/lib/main">
+            <include name="**/*.jar"/>
+        </fileset>
         <pathelement location="../../ctms-web-sso.jar"/>
     </path>
 
@@ -50,7 +53,7 @@
         <fileset dir="lib/main">
             <include name="**/*.jar"/>
         </fileset>
-    	<path refid="cp.sso"/>
+        <path refid="cp.sso"/>
     </path>
 
     <path id="cp.unit-test">
@@ -139,12 +142,12 @@
             </lib>
             <lib dir="../.." includes="caaers-core.jar"/>
             <classes dir="${build-dir.main}"/>
-        	
+    	
         	<!-- begin web-sso jars -->
         	<lib dir="../.." includes="ctms-web-sso.jar"/>
         	<lib dir="../websso/lib/main" includes="*.jar"/>
         	<!-- end web-sso jars -->
-        	
+    	
         </war>
     </target>
     
@@ -212,7 +215,6 @@
     <target name="webapp" description="Merge created application into deployment directory" depends="compile, webapp.main"/>
 
     <target name="webapp.main" description="Copy basic webapp only, without recompiling">
-        <!-- basic application - just copy from web directory -->
         <copy todir="${build-dir.webapp}">
             <fileset dir="src/main/webapp">
                 <include name="**/*"/>
@@ -230,8 +232,12 @@
             <fileset dir="../core/db/lib">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="../websso/lib/main">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="../..">
                 <include name="caaers-core.jar"/>
+                <include name="ctms-web-sso.jar"/>
             </fileset>
             <fileset dir="lib/main">
                 <include name="**/*.jar"/>
