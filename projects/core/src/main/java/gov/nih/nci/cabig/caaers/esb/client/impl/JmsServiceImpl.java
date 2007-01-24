@@ -31,7 +31,10 @@ public class JmsServiceImpl implements MessageListener{
     private MessageConsumer consumer = null;
     private MessageProducer producer = null;
     
-    public JmsServiceImpl() {
+    public JmsServiceImpl(ConnectionFactory connectionFactory, Destination sendQueue, Destination recvQueue) {
+    	this.connectionFactory = connectionFactory;
+    	this.sendQueue = sendQueue;
+    	this.recvQueue = recvQueue;
     	initialize();
     }
 

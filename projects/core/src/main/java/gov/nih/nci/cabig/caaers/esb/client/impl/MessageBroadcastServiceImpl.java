@@ -15,8 +15,9 @@ import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
  * */
 public class MessageBroadcastServiceImpl extends JmsServiceImpl implements MessageBroadcastService {
 
-	public MessageBroadcastServiceImpl() {
-		super();
+	
+	public MessageBroadcastServiceImpl(ConnectionFactory connectionFactory, Destination sendQueue, Destination recvQueue) {
+		super(connectionFactory, sendQueue, recvQueue);
 	}
 	
 	public void broadcast(String message) throws BroadcastException {
