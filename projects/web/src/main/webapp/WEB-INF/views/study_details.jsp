@@ -22,93 +22,94 @@
 	   <form:form method="post" cssClass="standard">
 			<tags:tabFields tab="${tab}"/>
 			<div>
-                <table>
+			<chrome:division id="study-details">
+			 <table  width="75" border="0" cellspacing="0" cellpadding="0">
+			 <tr>
+			 <td>
+				 <table  width="40%" border="0" cellspacing="3" cellpadding="0">
 				  <tr>
-				  <td>
-                 	<div class="row">					
-			            <div class="label" align="right"><form:label path="shortTitle">Short Title:</form:label></div>					
-			            <div class="value" align="left"><form:textarea path="shortTitle" rows="1" cols="50"/></div>
-			        </div>
-			        <div class="row">
-			            <div class="label"><form:label path="longTitle"><span class="red">*</span><em></em>Long
-		        				Title:</form:label></div>
-				        <div class="value"><form:textarea path="longTitle" rows="3" cols="50"/></div>
-				    </div>
-				    <div class="row">
-				         <div class="label"><form:label path="precis">Precis Text:</form:label></div>
-				         <div class="value"><form:textarea path="precis" rows="3" cols="50"/></div>
-				    </div>
-				    <div class="row">
-				         <div class="label"><form:label path="description">Description Text:</form:label></div>
-				         <div class="value"><form:textarea path="description" rows="3" cols="50"/></div>
-				     </div>																								
-		                        	
-					</td>
-					<td>
-				
-					<div class="row">
-						<div class="label"><form:label path="status"><span class="red">*</span><em></em>Status:</form:label></div>
-						<div class="value">
-						<form:select path="status">
+				      <td class="label"> <form:label path="shortTitle">Short Title:</form:label> </td>
+				      <td> <form:textarea path="shortTitle" rows="1" cols="50"/> </td>        			  
+				  </tr>			                        
+
+				  <tr>
+				      <td class="label"> <form:label path="longTitle"><span class="red">*</span>Long Title:</form:label> </td>
+				      <td> <form:textarea path="longTitle" rows="3" cols="50"/> </td>        			  
+				  </tr>
+
+				  <tr>
+				      <td class="label"> <form:label path="precis">Precis Text:</form:label> </td>
+				      <td> <form:textarea path="precis" rows="3" cols="50"/> </td>        			  
+				  </tr>
+
+				  <tr>
+				      <td class="label"> <form:label path="description">Description Text:</form:label> </td>
+				      <td> <form:textarea path="description" rows="3" cols="50"/> </td>        			  
+				  </tr>
+
+                 </table>
+                </td>
+				<td>
+				<table  width="60%" border="0" cellspacing="10" cellpadding="3">
+
+				   <tr>				 
+        			  <td class="label"> <form:label path="status"><span class="red">*</span><em></em>Status:</form:label> </td>
+				      <td> <form:select path="status">
 							<form:options items="${statusRefData}" itemLabel="desc"
 									itemValue="code" />
-						</form:select>						
-					</div>
-					</div>
+						</form:select> </td>	
+				   </tr> 
 
-					<div class="row">
-						<div class="label"><form:label path="diseaseCode"><span class="red">*</span><em></em>Disease Code:</form:label></div>
-						<div class="value">
-						<form:select path="diseaseCode">
+				   <tr>				 
+        			  <td class="label"><form:label path="diseaseCode"><span class="red">*</span><em></em>Disease Code:</form:label></td>
+                    
+					  <td>	<form:select path="diseaseCode">
 							<form:options items="${diseaseCodeRefData}" itemLabel="desc"
 									itemValue="code"/>
-						</form:select>						
-					</div>
-					</div>
-					
-					<div class="row">
-						<div class="label"><form:label path="monitorCode">Monitor Code:</form:label></div>
-						<div class="value">
-						<form:select path="monitorCode">
+						</form:select>	</td>					
+					</tr>
+
+					<tr>				 
+        			  <td class="label"><form:label path="monitorCode">Monitor Code:</form:label></td>
+                    
+					  <td>	<form:select path="monitorCode">
 							<form:options items="${monitorCodeRefData}" itemLabel="desc"
 									itemValue="code"/>
-						</form:select>												
-					</div>
-					</div>
+						</form:select>	</td>					
+					</tr>
 
-					<div class="row">
-						<div class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase Code:</form:label></div>
-						<div class="value">
-						<form:select path="phaseCode">
+					<tr>				 
+        			  <td class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase Code:</form:label></td>
+                    
+					  <td>	<form:select path="phaseCode">
 							<form:options items="${phaseCodeRefData}" itemLabel="desc"
 									itemValue="code"/>
-						</form:select>												
-					</div>
-					</div>
-       							
-					<div class="row">
-						<div class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor Code:</form:label></div>
-						<div class="value">
+						</form:select>	</td>					
+					</tr>
+				
+					<tr>				 
+        			  <td class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor Code:</form:label></td>
+					 <td>
 						<form:select path="primarySponsorCode">
 							<form:options items="${sponsorCodeRefData}" itemLabel="desc"
 									itemValue="code"/>
 						</form:select>												
-					</div>
-					</div>					
-
-				
-								
-								 <div class="row">
-						            <div class="label"><form:label path="multiInstitutionIndicator"><span class="red">*</span><em></em>Multi
-									Institution:</form:label></div>
-						            <div class="value"><form:checkbox path="multiInstitutionIndicator" /></div>
-						        </div> 
-						        						        
+					</td>
+					</tr>					
 					
-				</td>
-				</tr>
+
+					<tr>				 
+        			  <td class="label"> <form:label path="multiInstitutionIndicator"><span class="red">*</span><em></em>Multi
+									Institution:</form:label></td>
+					  <td> <form:checkbox path="multiInstitutionIndicator" /></td>
+    		        </tr>
+
+				 </table>
+                 </td>
+				 </tr>
+                 
 				</table>
-								
+					</chrome:division>			
 				</div>
         </form:form>
         </chrome:body>
