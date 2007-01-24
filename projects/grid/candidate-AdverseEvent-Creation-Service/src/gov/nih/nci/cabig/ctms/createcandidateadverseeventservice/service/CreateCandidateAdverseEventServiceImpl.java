@@ -45,6 +45,7 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 		studyId.setSource(study.getAssigningAuthority());
 		studyId.setType(study.getName());
 		String mrn = studySubject.getStudySubjectIdentifier();
+		caaersStudy.addIdentifier(studyId);
 		
 		//Constructing the Participant
 		Participant subject = new Participant();
