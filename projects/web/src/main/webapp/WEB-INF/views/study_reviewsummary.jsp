@@ -19,126 +19,185 @@
 <body>
 <!-- MAIN BODY STARTS HERE -->
 <chrome:body title="${flow.name}: ${tab.longTitle}">
+	
 	<form:form method="post">
+	<chrome:division id="study-details">
 		<tags:tabFields tab="${tab}"/>
-			
-		<h3> <strong> Study Details </strong> </h3>		
-		<div class="row">
-			<div class="label" align="right"><form:label path="shortTitle">Short Title:</form:label></div>
-		    <div class="value" align="left"><form:label path="shortTitle">${command.shortTitle}</form:label></div>
-		</div>
-
-		<div class="row">
-			<div class="label" align="right"><form:label path="longTitle">Long Title:</form:label></div>
-		    <div class="value" align="left"><form:label path="longTitle">${command.longTitle}</form:label></div>
-		</div>
-
-		<div class="row">
-			<div class="label" align="right"><form:label path="precis">Precis Text:</form:label></div>
-		    <div class="value" align="left"><form:label path="precis">${command.precis}</form:label></div>
-		</div>
-
-		<div class="row">
-			<div class="label" align="right"><form:label path="description">Description Text:</form:label></div>
-		    <div class="value" align="left"><form:label path="description">${command.description}</form:label></div>
-		</div>
-
-		<div class="row">
-			<div class="label" align="right"><form:label path="status">Status:</form:label></div>
-			<div class="value" align="left"><form:label path="status">${command.status}</form:label></div>
-		</div>
-
-		<div class="row">
-			<div class="label" align="right"><form:label path="diseaseCode">Disease Code:</form:label></div>
-			<div class="value" align="left"><form:label path="diseaseCode">${command.diseaseCode}</form:label></div>
-		</div>
 		
-		<div class="row">
-			<div class="label" align="right"><form:label path="monitorCode">Monitor Code:</form:label></div>
-			<div class="value" align="left"><form:label path="monitorCode">${command.monitorCode}</form:label></div>
-		</div>
-	
-		<div class="row">
-			<div class="label" align="right"><form:label path="phaseCode">Phase Code:</form:label></div>
-			<div class="value" align="left"><form:label path="phaseCode">${command.phaseCode}</form:label></div>
-		</div>
-	
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="multiInstitutionIndicator">Multi Institution:</form:label></div>
-			<div class="value" align="left"><form:checkbox
-					path="multiInstitutionIndicator" /></div>
-		</div>
-				
-		<br> <br>
+		<h3> <strong> Study Details </strong> </h3>		
+		<table  width="29%" border="0" cellspacing="0" cellpadding="0">
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="shortTitle">Short Title:</form:label>
+			</td>
+			<td>
+				<form:label path="shortTitle">${command.shortTitle}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="longTitle">Long Title:</form:label>
+			</td>
+			<td>
+				<form:label path="longTitle">${command.longTitle}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="precis">Precis Text:</form:label>
+			</td>
+			<td>
+				<form:label path="precis">${command.precis}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="description">Description Text:</form:label>
+			</td>
+			<td>
+				<form:label path="description" >${command.description}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="status" >Status:</form:label>
+			</td>
+			<td>
+				<form:label path="status">${command.status}</form:label>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="label" align="right">
+				<form:label path="diseaseCode" >Disease Code:</form:label>
+			</td>
+			<td>
+				<form:label path="diseaseCode">${command.diseaseCode}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="monitorCode" >Monitor Code:</form:label>
+			</td>
+			<td>
+				<form:label path="monitorCode">${command.monitorCode}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label path="phaseCode" >Phase Code:</form:label>
+			</td>
+			<td>
+				<form:label path="phaseCode">${command.phaseCode}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label	path="multiInstitutionIndicator" >Multi Institution:</form:label>
+			</td>
+			<td>
+				<form:checkbox path="multiInstitutionIndicator" />
+			</td>
+		</tr>
+
+       </table>
+	   <br>
 				<input type="image" name="_target0" src="images/b-edit.gif"
 					border="0" alt="edit this page">
 			
 		<h3><strong>Study Identifiers</strong></h3>
 
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="identifiers[0].source">Source:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="identifiers[0].source">${command.identifiers[0].source}</form:label></div>
-		</div>
-				
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="identifiers[0].type">Type:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="identifiers[0].type">${command.identifiers[0].type}</form:label></div>
-		</div>
-		
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="identifiers[0].value">value:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="identifiers[0].value">${command.identifiers[0].value}</form:label></div>
-		</div>
+		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
+		<br>
 
-		<br> <br>
+					<tr align="center">						
+						<td> <b>Source<span class="red">*</span> </b></td>						
+						<td> <b>Identifier Type<span class="red">*</span> </b> </td>						
+						<td> <b> Identifier<span class="red">*</span> </b> </td>											
+					</tr>																			
+				 
+				    
+					<c:forEach items="${command.identifiers}" var="identifier">
+								<tr class="results">						
+									<td align="left">${identifier.source}</td>
+									<td align="left">${identifier.type}</td>										
+									<td align="left">${identifier.value}</td>											
+								</tr>
+					</c:forEach>				
+		</table>
+
+		 <br>
 		<input type="image" name="_target1" src="images/b-edit.gif"
 					border="0" alt="edit this page">
 			
 		<h3><strong>Study Site</strong></h3>
 
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="studySites[0].statusCode">Status:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="studySites[0].statusCode">${command.studySites[0].statusCode}</form:label></div>
-		</div>
-		
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="studySites[0].roleCode">Role:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="studySites[0].roleCode">${command.studySites[0].roleCode}</form:label></div>
-		</div>
-		
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="studySites[0].startDate">Start Date:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="studySites[0].startDate">${command.studySites[0].startDate}</form:label></div>
-		</div>
+		<table  width="29%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td class="label" align="right">
+				<form:label
+					path="studySites[0].statusCode">Status:</form:label>
+			</td>
+			<td>
+				<form:label
+					path="studySites[0].statusCode">${command.studySites[0].statusCode}</form:label>
+			</td>
+			</tr>
+			
+			<tr>
+			<td class="label" align="right">
+				<form:label
+					path="studySites[0].roleCode">Role:</form:label>
+			</td>
+			<td>
+				<form:label
+					path="studySites[0].roleCode">${command.studySites[0].roleCode}</form:label>
+			</td>
+		</tr>	
+			
+			<tr>
+			<td class="label" align="right">
+				<form:label
+					path="studySites[0].startDate">Start Date:</form:label>
+			</td>
+			<td>
+				<form:label
+					path="studySites[0].startDate">${command.studySites[0].startDate}</form:label>
+			</td>
+		</tr>
 
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="studySites[0].startDate">Start Date:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="studySites[0].startDate">${command.studySites[0].startDate}</form:label></div>
-		</div>
-		
-		<div class="row">
-			<div class="label" align="right"><form:label
-					path="studySites[0].irbApprovalDate">IRB Approval Date:</form:label></div>
-			<div class="value" align="left"><form:label
-					path="studySites[0].irbApprovalDate">${command.studySites[0].irbApprovalDate}</form:label></div>
-		</div>
-		
-		<br><br>
+		<tr>
+			<td class="label" align="right">
+				<form:label
+					path="studySites[0].endDate">End Date:</form:label>
+			</td>
+			<td>
+				<form:label
+					path="studySites[0].endDate">${command.studySites[0].endDate}</form:label>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="label" align="right">
+				<form:label
+					path="studySites[0].irbApprovalDate">IRB Approval Date:</form:label>
+			</td>
+			<td>
+				<form:label
+					path="studySites[0].irbApprovalDate">${command.studySites[0].irbApprovalDate}</form:label>
+			</td>
+		</tr>
+
+		</table>	
+	  <br>
 		
 		<input type="image" name="_target2" src="images/b-edit.gif"
 			border="0" alt="edit this page">
@@ -150,7 +209,9 @@
 						name="_target0" src="/caaers/images/b-cancel.gif" border="0"
 						alt="Cancel">						
 
+</chrome:division>
 	</form:form>
+
 </chrome:body>
 </body>
 </html>
