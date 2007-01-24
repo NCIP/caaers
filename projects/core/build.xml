@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <project name="caaers-core" default="compile" basedir=".">
     <property name="src-dir.main"      value="src/main/java" />
+    <property name="src-dir.resources" value="src/main/resources" />
     <property name="src-dir.unit-test" value="src/test/java" />
     
     <property name="build-dir.main"      value="build/main/classes"/>
+    <property name="build-dir.main.generated"      value="build/main/generated-source"/>
     <property name="build-dir.unit-test" value="build/test/classes"/>
   
     <property name="jar-name.main" value="${basedir}/../../caaers-core.jar"/>
@@ -34,6 +36,7 @@
         <fileset dir="lib/main">
             <include name="**/*.jar"/>
         </fileset>
+        <pathelement location="../../caaers-rules-client.jar"/>
     </path>
 
     <path id="cp.unit-test">
@@ -81,6 +84,7 @@
         <delete file="${jar-name.main}"/>
         <delete file="${jar-name.unit-test}"/>
     </target>
+    
 
     <target name="resources" description="Copy resources into classpath" depends="init">
         <copy file="${config.database.file}" tofile="${build-dir.main}/datasource.properties" overwrite="true"/>
@@ -98,7 +102,32 @@
         </copy>
     </target>
 
-    <target name="compile" description="Compile all java source" depends="resources">
+    <target name="generate-source">
+	<java jar="lib/main/jibx/xsd2jibx/xsd2jibx.jar" fork="true" failonerror="true" classpathref="cp.main">
+		<arg line="-d ${build-dir.main.generated} ${src-dir.resources}/schema/AENotification.xsd"/>
+		<classpath>
+			<pathelement path="lib/main/**/*.jar"/>
+		</classpath>
+	</java>
+	<copy todir="${build-dir.main.generated}" flatten="true">
+		<fileset dir="${build-dir.main.generated}" includes="**/*.xml"/>
+	</copy>
+    </target>
+    
+    <target name="generate-bindings" depends="generate-source">
+        <javac destdir="${build-dir.main}" classpathref="cp.main"
+               debug="true" source="1.5">
+            <src path="${build-dir.main.generated}"/>
+        </javac>
+	<java classname="org.jibx.binding.Compile" fork="true" failonerror="true" classpathref="cp.main">
+		<arg line="${build-dir.main.generated}/binding.xml"/>
+		<classpath>
+			<pathelement path="${build-dir.main}"/>
+		</classpath>			
+	</java>
+    </target>
+
+    <target name="compile" description="Compile all java source" depends="resources,generate-bindings">
         <javac destdir="${build-dir.main}" classpathref="cp.main"
                debug="true" source="1.5">
             <src path="${src-dir.main}"/>
