@@ -44,15 +44,17 @@
 
 	<bean id="messageBroadcastService"
 		class="gov.nih.nci.cabig.caaers.esb.client.impl.MessageBroadcastServiceImpl">
-		<property name="connectionFactory">
+		<constructor-arg>
 			<ref bean="connectionFactory" />
-		</property>
-		<property name="sendQueue">
+		</constructor-arg>
+		<constructor-arg>
 			<ref bean="sendQueueDestination" />
-		</property>
-		<property name="recvQueue">
+		</constructor-arg>
+		<constructor-arg>
 			<ref bean="recvQueueDestination" />
-		</property>
-	</bean>
+		</constructor-arg>
+	</bean>	
+	
+	
 
 </beans>
