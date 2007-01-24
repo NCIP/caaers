@@ -52,29 +52,18 @@
 
 					<tr>
 				      <td class="label"><form:label path="studySites[0].startDate"><span class="red">*</span><em></em>Start Date:</form:label> </td>
-				      <td> <form:input path="studySites[0].startDate"/> <a href="#"
-								onClick="cal1.select(document.getElementById('studySites[0].startDate'),'anchor1','MM/dd/yyyy');return false;" name="anchor1" id="anchor1"><img
-								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a> </td>        			  
+				      <td><tags:dateInput path="studySites[0].startDate"/></td>
 					</tr>
 
 					<tr>
 				      <td class="label"><form:label path="studySites[0].endDate">End Date:</form:label> </td>
-				      <td><form:input
-								path="studySites[0].endDate" />&nbsp;<a href="#"
-								onClick="cal1.select(document.getElementById('studySites[0].endDate'),'anchor2','MM/dd/yyyy');return false;" name="anchor2" id="anchor2"><img
-								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a> </td>        			  
+                      <td><tags:dateInput path="studySites[0].endDate"/></td>
 					</tr>
 					
 					<tr>
 				      <td class="label"><form:label path="studySites[0].irbApprovalDate"><span class="red">*</span><em></em>IRB
 								Approval Date:</form:label> </td>
-				      <td><form:input
-								path="studySites[0].irbApprovalDate" />&nbsp;<a href="#"
-								onClick="cal1.select(document.getElementById('studySites[0].irbApprovalDate'),'anchor3','MM/dd/yyyy');return false;" name="anchor3" id="anchor3"><img
-								src="/caaers/images/b-calendar.gif" alt="Calendar" width="17"
-								height="16" border="0" align="absmiddle"></a></td>        			  
+				      <td><tags:dateInput path="studySites[0].irbApprovalDate"/></td>        			  
 					</tr>
 																	
 					</table>

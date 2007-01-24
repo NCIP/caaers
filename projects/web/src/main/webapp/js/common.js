@@ -46,3 +46,15 @@ Element.addMethods( {
     }
 } );
 
+////// CALENDAR POPUP HANDLERS
+
+AE.calendar = new CalendarPopup()
+
+Element.observe(window, "load", function() {
+    $$("input.date").each(function(input) {
+        var anchorId = input.id + "-calbutton"
+        Element.observe(anchorId, "click", function(e) {
+            AE.calendar.select(input, anchorId, 'MM/dd/yyyy') // TODO: get this from the configuration
+        })
+    })
+});
