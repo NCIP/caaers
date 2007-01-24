@@ -1,11 +1,15 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Arrays;
@@ -68,4 +72,13 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+
+	public Study getByIdentifier(Identifier identifier) {
+    	Criteria criteria = getSession().createCriteria(domainClass());
+    	criteria.createCriteria("identifiers")
+    		.add(Restrictions.eq("type", identifier.getType()))
+    			.add(Restrictions.eq("source", identifier.getSource()))
+    			.add(Restrictions.eq("value", identifier.getValue()));
+    	return (Study) CollectionUtils.firstElement(criteria.list());
+	}
 }
