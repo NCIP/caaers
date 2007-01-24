@@ -6,21 +6,27 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
+<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>${tab.longTitle}</title>
+<title>Confirmation</title>
 </head>
 <body>
-<chrome:body title="${flow.name}: ${tab.longTitle}">
+<p id="instructions">
+   You have successfully created a new Study
+</p>
 <form:form name="searchDetailsForm" method="post">
 	<tags:tabFields tab="${tab}"/>
+				<div>
+			<chrome:division id="study-details">
+
 	<div><input type="hidden" name="_page" value="1"></div>
 					
-Study Created Successfully !!!
-							
+<h3> You have successfully created a new Study !!! </h3>
+		</chrome:division>
+</div>							
 </form:form>
-</chrome:body>	
 </body>
 </html>
