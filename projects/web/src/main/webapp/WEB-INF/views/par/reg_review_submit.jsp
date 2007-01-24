@@ -55,11 +55,11 @@ function submitPage(s){
                 <td width="75%" valign="top">${command.participants[0].lastName}</td>
             </tr>
             <tr>
-                <td class="label">&nbsp;&nbsp;&nbsp;&nbsp;Middle Name:</td>
+                <td class="label">Middle Name:</td>
                 <td>${command.participants[0].middleName}</td>
             </tr>
             <tr>
-                <td class="label"><strong>Maiden Name:</strong>
+                <td class="label">Maiden Name:</td>
                 <td valign="top">${command.participants[0].maidenName}</td>
             </tr>
             <tr>

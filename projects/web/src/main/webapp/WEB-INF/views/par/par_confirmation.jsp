@@ -22,82 +22,88 @@ function submitPage(s){
 </script>
 </head>
 <body>
-<chrome:body title="Review and Submit">
+
+
+
+<p id="instructions">
+   Please verify this data and press Save to Create this Participant
+</p>
+
 <form:form method="post">
-<br><br>
-<b>Participant</b><br><br>
-<table width="70%" border="0" cellspacing="0" cellpadding="0"
-						id="details">
-						<tr>
-							<td width="50%" valign="top">
-							<table width="308" border="0" cellspacing="0" cellpadding="0"
-								id="table1">
-								<tr>
-									<td class="label">First
-									Name:</td>
-									<td><b>${command.firstName}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label">Last
-									Name:</td>
-									<td><b>${command.lastName}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label">Middle
-									Name:</td>
-									<td><b>${command.middleName}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label"><em></em>Maiden
-									Name:</td>
-									<td><b>${command.maidenName}</b><br></td>
-								</tr>
-							</table>
-							</td>
-							<td width="50%" valign="top" class="contentAreaR"><strong><strong><strong></strong></strong></strong>
-							<table width="308" border="0" cellspacing="0" cellpadding="0"
-								id="table1">
-								<tr>
-									<td class="label">Birth
-									Date:</td>
-									<td valign="top"><b>${command.dateOfBirth}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label"><em></em>Ethnicity:
-									</td>
-									<td><b>${command.ethnicity}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label"><em></em>Race:</td>
-									<td><b>${command.race}</b><br></td>
-								</tr>
-								<tr>
-									<td class="label"><em></em>Gender:
-									</td>
-									<td><b>${command.gender}</b><br></td>
-
-								</tr>
-							</table>
-							</td>
-						</tr>
-					</table><br><br><br>
-
-<b>Study / Site</b><br><br>
-<c:forEach var="studySite" items="${command.studySites}" varStatus="status">
-Study Short Title        : <b>${studySite.study.shortTitle}</b><br>
-Site                     : <b>${studySite.site.name}</b><br>
-</c:forEach>
-
-<!-- For Hibernate to initialize these lists so when we -->
-<!-- go back to the previous page the list would load correctly -->
-<c:forEach var="study" items="${command.studies}" varStatus="status">
-<input type="hidden" name="test" value="${study.studySites[0].id}"/>
-</c:forEach>
-
-<br>
-<input type="hidden" id="nextView" name="nextView"/>
 <input type="hidden" id="_finish" name="_finish"/>
-<a href="javascript:submitPage('processFinish')">Finish</a> 
-</form:form>
-</chrome:body>
+<chrome:division title="${command.lastName}, ${command.firstName}">
+
+        <br>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
+    	<tr>
+    	<td width="30%" valign="top" class="contentAreaL">
+        <table border="0" cellspacing="0" cellpadding="0"
+               class="table1">
+               <strong>Participant Details</strong>
+            <tr>
+                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
+                         class="heightControl"></td>
+            </tr>
+            <tr>
+                <td class="label">First Name:</td>
+                <td width="75%" valign="top">${command.firstName}</td>
+            </tr>
+            <tr>
+                <td class="label">Last Name:</td>
+                <td width="75%" valign="top">${command.lastName}</td>
+            </tr>
+            <tr>
+                <td class="label">Middle Name:</td>
+                <td>${command.middleName}</td>
+            </tr>
+            <tr>
+                <td class="label"><strong>Maiden Name:</strong>
+                <td valign="top">${command.maidenName}</td>
+            </tr>
+            <tr>
+                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
+                         class="heightControl"></td>
+                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
+                         class="heightControl"></td>
+            </tr>
+            <tr>
+                <td class="label">Birth Date:</td>
+                <td><tags:formatDate value="${command.dateOfBirth}"/></td>
+            </tr>
+            <tr>
+                <td class="label">Ethnicity:</td>
+                <td>${command.ethnicity}</td>
+            </tr>
+            <tr>
+                <td class="label">Race:</td>
+                <td>${command.race}</td>
+            </tr>
+            <tr>
+                <td class="label">Gender:</td>
+                <td>${command.gender}</td>
+            </tr>
+        </table>
+        </td>
+        
+        <td width="50%" valign="top" class="contentAreaL">
+        <table border="0" cellspacing="0" cellpadding="0"
+               class="table1">
+               <strong>Assigned to Study</strong>
+               <tr>
+                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
+                         class="heightControl"></td>
+               </tr>
+               <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
+               		<tr><td><strong><c:out value="${status.count}"/>.</strong></td></tr>
+					<tr><td class="label">Study Short Title:</td><td><c:out value="${studySite.study.shortTitle}"/></td></tr>
+					<tr><td class="label">Site:</td><td><c:out value="${studySite.site.name}"/></td></tr>
+					</tr>
+			   </c:forEach>
+        </table>
+        </td>
+        </tr>
+   </table> 
+            
+</chrome:division>
+ </form:form> 
 </body>

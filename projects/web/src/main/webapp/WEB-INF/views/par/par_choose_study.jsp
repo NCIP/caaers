@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
+<title>choose a Study</title>
 <script>
 function submitPage(s){
 	document.getElementById("command").submit();
@@ -33,7 +33,7 @@ function updateTargetPage(s){
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<chrome:search title="Study Search">
+<chrome:search title="">
     <form:form id="searchForm" method="post">
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>

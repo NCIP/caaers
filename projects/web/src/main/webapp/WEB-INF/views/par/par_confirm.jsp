@@ -53,7 +53,7 @@ function submitPage(s){
                 <td>${participant.middleName}</td>
             </tr>
             <tr>
-                <td class="label"><strong>Maiden Name:</strong>
+                <td class="label">Maiden Name:</td>
                 <td valign="top">${participant.maidenName}</td>
             </tr>
             <tr>
@@ -64,18 +64,18 @@ function submitPage(s){
             </tr>
             <tr>
                 <td class="label">Birth Date:</td>
-                <tr><tags:formatDate value="${participant.dateOfBirth}"/></td>
+                <td><tags:formatDate value="${participant.dateOfBirth}"/></td>
             </tr>
             <tr>
-                <td class="label">Ethnic Group Code:</td>
+                <td class="label">Ethnicity:</td>
                 <td>${participant.ethnicity}</td>
             </tr>
             <tr>
-                <td class="label">Race Code:</td>
+                <td class="label">Race:</td>
                 <td>${participant.race}</td>
             </tr>
             <tr>
-                <td class="label">Administrative Gender Code:</td>
+                <td class="label">Gender:</td>
                 <td>${participant.gender}</td>
             </tr>
         </table>
@@ -92,7 +92,6 @@ function submitPage(s){
                <c:forEach var="assignments" items="${participant.assignments}" varStatus="status">
                		<tr><td><strong><c:out value="${status.count}"/>.</strong></td></tr>
 					<tr><td class="label">Study Short Title:</td><td><c:out value="${assignments.studySite.study.shortTitle}"/></td></tr>
-					<tr><td class="label">Study Long Title:</td><td><c:out value="${assignments.studySite.study.longTitle}"/></td></tr>
 					<tr><td class="label">Site:</td><td><c:out value="${assignments.studySite.site.name}"/></td></tr>
 					</tr>
 			   </c:forEach>

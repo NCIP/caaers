@@ -71,7 +71,7 @@
         	<tr valign="top">
             
                 <td class="label"><span class="red">*</span>Date of Birth:</td>
-                <td><form:input path="dateOfBirth" /></td>
+                <td><tags:dateInput path="dateOfBirth"/></td>
             </tr>
             <tr valign="top">
                 <td class="label">Ethnicity:</td>
