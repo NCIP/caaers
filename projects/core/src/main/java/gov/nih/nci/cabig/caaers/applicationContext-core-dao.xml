@@ -94,10 +94,5 @@
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
-    
-   <!-- ACTUAL SERVICE LAYER -->
-   
-   <bean id="studyService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl" autowire="byName" />
-   <bean id="participantService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl" autowire="byName" />
-   
+
 </beans>
