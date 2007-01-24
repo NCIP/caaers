@@ -75,10 +75,19 @@ public class StudyDao extends GridIdentifiableDao<Study> {
 
 	public Study getByIdentifier(Identifier identifier) {
     	Criteria criteria = getSession().createCriteria(domainClass());
-    	criteria.createCriteria("identifiers")
-    		.add(Restrictions.eq("type", identifier.getType()))
-    			.add(Restrictions.eq("source", identifier.getSource()))
-    			.add(Restrictions.eq("value", identifier.getValue()));
+    	criteria = criteria.createCriteria("identifiers");
+    	
+    	if(identifier.getType() != null) {
+    		criteria.add(Restrictions.eq("type", identifier.getType()));
+    	}
+    	
+    	if(identifier.getSource() != null) {
+    		criteria.add(Restrictions.eq("source", identifier.getSource()));
+    	}
+    	
+    	if(identifier.getValue() != null) {
+    		criteria.add(Restrictions.eq("value", identifier.getValue()));
+    	}    			
     	return (Study) CollectionUtils.firstElement(criteria.list());
 	}
 }
