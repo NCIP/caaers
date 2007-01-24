@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web;
 
 import junit.framework.TestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.web.NewParticipantCommand;
+import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 
 import java.util.Date;
 

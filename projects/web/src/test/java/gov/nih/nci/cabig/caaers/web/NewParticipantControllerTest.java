@@ -14,12 +14,14 @@ import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
+import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 
 /**
  * @author Krikor Krumlian
  */
 public class NewParticipantControllerTest extends WebTestCase {
-    private NewParticipantController controller = new NewParticipantController();
+    private CreateParticipantController controller = new CreateParticipantController();
     private ParticipantDao participantDao;
     private StudySiteDao   studySiteDao;
 
@@ -29,13 +31,6 @@ public class NewParticipantControllerTest extends WebTestCase {
         studySiteDao   = registerMockFor(StudySiteDao.class);
         controller.setParticipantDao(participantDao);
         controller.setStudySiteDao(studySiteDao);
-    }
-
-    public void testReferenceData() throws Exception {
-        Map<String, Object> refdata = controller.referenceData(request);
-        Map<String, String> genders = (Map<String, String>) refdata.get("genders");
-        assertEquals("Wrong action name", "Male", genders.get("Male"));
-        assertEquals("Wrong action name", "New", refdata.get("action"));
     }
 
     public void testViewOnGet() throws Exception {

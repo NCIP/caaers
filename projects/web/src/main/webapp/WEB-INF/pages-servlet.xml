@@ -78,7 +78,7 @@
                             </bean>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
                                 <property name="displayName"><value>Assign Participants to Studies</value></property>
-                                <property name="linkName"><value>HomeController</value></property>
+                                <property name="linkName"><value>assignController</value></property>
                             </bean>
                         </list>
                     </property>
@@ -103,59 +103,33 @@
     
     <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
     
-    <!--  Create Participant Workflow -->
+    <!--  PARTICIPANT   -->
     <bean name="/participant/create" id="createParticipantController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.CreateParticipantController" >
+    	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
     </bean>
     
     <bean name="/participant/view" id="viewParticipantController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.ViewParticipantController" >
+    	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
     </bean>
 
     <bean name="/view_study" id="viewStudyController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
     </bean>
     
-    <!--  Home Page includes searches for Studies and Participants 
-    <bean name="/testHome" id="HomeController" class="gov.nih.nci.cabig.caaers.web.HomeController" autowire="byName" /> 
-    -->
-    
-    <bean name="/home" id="HomeController" class="gov.nih.nci.cabig.caaers.web.HomeController" autowire="byName"> 
-	    <property name="formView" value="home"/>
-	    <property name="successView" value="reg_protocol_search"/>
+    <bean name="/participant/assign" id="assignController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
   	</bean>
     
-    <!--  Home Page includes searches for Studies and Participants -->
-    <bean name="/searchRegister" id="RegisterController" class="gov.nih.nci.cabig.caaers.web.SearchAndRegisterController" autowire="byName"> 
-	    <property name="formView" value="home"/>
-	    <property name="successView" value="reg_protocol_search"/>
-  	</bean>
-  	
-  	<!-- Search and Register Participant after we have searched for a Study -->
-  	<bean name="/searchRegisterParticipant" id="searchParticipantRegController"  class="gov.nih.nci.cabig.caaers.web.SearchParticipantRegisterController" autowire="byName">
-	    <property name="formView" value="reg_enroll_patient"/>
-	    <property name="successView" value="reg_patient_search"/>
+    <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
     </bean>
     
-    <!-- Search and Register Study after we have searched for a Participant -->
-    <bean name="/searchRegisterStudy" id="searchStudyRegController"  class="gov.nih.nci.cabig.caaers.web.SearchStudyRegisterController" autowire="byName">
-	    <property name="formView" value="reg_enroll_study"/>
-	    <property name="successView" value="reg_study_search"/>
-	    <property name="commandClass" value="gov.nih.nci.cabig.caaers.web.SearchStudyCommand"></property>	   
-    </bean>
-    
-    <!-- Register Workflow -->
-    <bean name="/register" id="registrationController"  class="gov.nih.nci.cabig.caaers.web.RegistrationController" autowire="byName">
-	    <property name="pages">
-	    <list>
-		    <value>reg_submit</value>
-	    </list>
-	    </property>
+    <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
     </bean>
     
     <bean name="/createStudy" id="createStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.CreateStudyController">
-	    
+          class="gov.nih.nci.cabig.caaers.web.CreateStudyController">  
 	</bean>
 
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />

@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
 import java.util.ArrayList;
@@ -30,9 +30,11 @@ import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
 public class CreateParticipantController extends AbstractTabbedFlowFormController<NewParticipantCommand> {
-    private static Log log = LogFactory.getLog(RegistrationController.class);
+    private static Log log = LogFactory.getLog(CreateParticipantController.class);
     private StudySiteDao studySiteDao;
     private StudyService studyService;
     private ParticipantDao participantDao;
@@ -204,6 +206,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		}	
     }
     
+    /*
     @Override
 	protected boolean isFinishRequest(HttpServletRequest request) {
     	log.debug("Entering isFinishRequest ...");
@@ -213,7 +216,8 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		if(viewName.equalsIgnoreCase("processFinish"))
 			return true;
 		return false;
-	}
+    }
+    */
     
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
     	log.debug("Entering Process Finish ...");
@@ -237,53 +241,6 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		return null;
 		//return modelAndView;
     }
-    /*
-    private List<LOV> getSearchType() {
-		List<LOV> col = new ArrayList<LOV>();
-		LOV lov1 = new LOV("st",  "Short Title");
-		LOV lov2 = new LOV("lt",  "Long Title");
-		LOV lov3 = new LOV("d",   "Description");
-		LOV lov4 = new LOV("psc", "Primary Sponsor Code");
-		LOV lov5 = new LOV("pc",  "Phase Code");
-		
-		col.add(lov1);
-		col.add(lov2);
-		col.add(lov3);
-		col.add(lov4);
-		col.add(lov5);
-
-		return col;
-	}
-
-	public class LOV {
-
-		private String code;
-
-		private String desc;
-
-		LOV(String code, String desc) {
-			this.code = code;
-			this.desc = desc;
-
-		}
-
-		public String getCode() {
-			return code;
-		}
-
-		public void setCode(String code) {
-			this.code = code;
-		}
-
-		public String getDesc() {
-			return desc;
-		}
-
-		public void setDesc(String desc) {
-			this.desc = desc;
-		}
-	}
-	*/
 
     private static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<NewParticipantCommand> {
         public Tab(String longTitle, String shortTitle, String viewName) {

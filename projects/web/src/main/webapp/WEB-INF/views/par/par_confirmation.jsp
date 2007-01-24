@@ -13,8 +13,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Review and Submit</title>
-<link href="resources/styles.css" rel="stylesheet" type="text/css">
-<link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
 function submitPage(s){
 	document.getElementById("nextView").value=s;
@@ -98,6 +96,7 @@ Site                     : <b>${studySite.site.name}</b><br>
 
 <br>
 <input type="hidden" id="nextView" name="nextView"/>
+<input type="hidden" id="_finish" name="_finish"/>
 <a href="javascript:submitPage('processFinish')">Finish</a> 
 </form:form>
 </chrome:body>

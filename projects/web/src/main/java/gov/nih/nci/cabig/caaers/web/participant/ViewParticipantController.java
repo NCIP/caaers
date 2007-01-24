@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.participant;
 
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ViewParticipantController extends ParameterizableViewController {
 
-	private static Log log = LogFactory.getLog(RegistrationController.class);
+	private static Log log = LogFactory.getLog(ViewParticipantController.class);
 	private ParticipantDao participantDao;
 	
 	public ViewParticipantController() {

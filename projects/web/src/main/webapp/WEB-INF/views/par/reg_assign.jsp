@@ -19,8 +19,6 @@
 </style>
 <title> Search for a Study or Participant  
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="resources/styles.css" rel="stylesheet" type="text/css">
-<link href="resources/search.css" rel="stylesheet" type="text/css">
 <script>
 function navRollOver(obj, state) {
   document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
@@ -29,23 +27,29 @@ function search(s){
 
 }
 function submitPage(s){
-	document.getElementById("searchCategory").value=s;
+	//document.getElementById("searchCategory").value=s;
 	document.getElementById("searchForm").submit();
+}
+
+function submitFormTwo(s){
+	//document.getElementById("searchCategory").value=s;
+	document.getElementById("searchForm2").submit();
 }
 </script>
 </head>
 <body>
-<br><br>
-	<form:form id="searchForm" name="searchForm" action="/caaers/pages/searchRegister" method="post">
-	<form:hidden path="searchCategory" />
+<p id="instructions">     
+In order to assign a Participant to a Study , you need to first search for either a  participant or a study. 
+</p>
+	<form:form id="searchForm" name="searchForm" action="/caaers/pages/participant/assignStudy" method="post" cssClass="standard">
 	<chrome:division title="Select Study" id="study-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
 							<h3>Study Search</h3>
 							<strong>1. Search Study by:</strong> <form:select
-								path="searchType">
-								<form:options items="${searchType}" itemLabel="desc"
+								path="studyType">
+								<form:options items="${studySearchType}" itemLabel="desc"
 									itemValue="code" />
 							</form:select> <br>
 							<br>
@@ -54,7 +58,7 @@ function submitPage(s){
 							<table border="0" cellspacing="0" cellpadding="0" id="search">
 								<div id="foo">
 								<tr><td align="left" class="labels">Search String:</td></tr>
-								<tr><td><form:input path="searchTypeText" size="25" /></td></tr>
+								<tr><td><form:input path="studyText" size="25" /></td></tr>
 								</div>
 							</table>
 							<br>
@@ -63,14 +67,16 @@ function submitPage(s){
 					</table>
 	
 	</chrome:division>
+	</form:form>
+	<form:form id="searchForm2" name="searchForm2" action="/caaers/pages/participant/assignParticipant" method="post" cssClass="standard">
 	<chrome:division title="Select Participant" id="participant-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
 							<h3>Participant Search</h3>
 							<strong>1. Search Participant by:</strong> <form:select
-								path="searchTypePart">
-								<form:options items="${searchTypePart}" itemLabel="desc"
+								path="participantType">
+								<form:options items="${participantSearchType}" itemLabel="desc"
 									itemValue="code" />
 							</form:select> <br>
 							<br>
@@ -82,11 +88,11 @@ function submitPage(s){
 									<td align="left" class="labels">Search String:</td>
 								</tr>
 								<tr>
-									<td><form:input path="searchTypeTextPart" size="25" /></td>
+									<td><form:input path="participantText" size="25" /></td>
 								</tr>
 							</table>
 							<br>
-							<a href="" onClick="submitPage('participant');return false;">Search Participants</a></td>
+							<a href="" onClick="submitFormTwo('participant');return false;">Search Participants</a></td>
 
 							</td>
 						</tr>

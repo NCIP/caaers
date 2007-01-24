@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>caAERS</title>
+<title>Search for a Study</title>
 <script>
 function submitPage(s){
 	document.getElementById("command").submit();
@@ -33,20 +33,21 @@ function updateTargetPage(s){
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<chrome:search title="Study Search">
-    <form:form id="searchForm" method="post">
+<chrome:search title="">
+    <form:form id="searchForm" method="post" cssClass="standard">
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
             </tr>
             <tr>
                 <td class="searchType">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Search for a Study&nbsp;&nbsp;
                 </td>
-                <td><form:select path="searchType">
-						<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
+                <td><form:select path="studyType">
+						<form:options items="${studySearchType}" itemLabel="desc"itemValue="code" />
 					</form:select></td>
-                <td><form:input path="searchText" size="25" /></td>
-                <td><input type="submit" alignment="center" value="go" name="_target1" alt="GO" align="middle" width="22"
+                <td><form:input path="studyText" size="25" /></td>
+                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
+                <td><input type="submit" alignment="center" value="go" name="${targetPage}" alt="GO" align="middle" width="22"
 						height="10" border="0"></td>
             </tr>
             <tr>
@@ -60,8 +61,11 @@ function updateTargetPage(s){
         </table>
     </form:form>
 </chrome:search>
-<chrome:body title="Study Search results">
-<form:form  method="post">
+<chrome:body title="Study Search Results">
+<p id="instructions">     
+Please choose a Study and then press Save & Continue to proceed 
+</p>
+<form:form  method="post" cssClass="standard">
 	<tags:tabFields tab="${tab}" />
 				<ec:table items="command.studies" var="study"
 					action="${pageContext.request.contextPath}/pages/newParticipant"
@@ -72,7 +76,7 @@ function updateTargetPage(s){
 					<ec:row highlightRow="true">
 						<ec:column property="kk" style="width:10px" filterable="false"
 							sortable="false" title=" ">
-							<form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
+							<form:radiobutton path="studyId" value="${study.id}" />
 						</ec:column>
 						<ec:column property="shortTitle" width="6" title="Short Title" />
 						<ec:column property="longTitle" title="Long Title" />

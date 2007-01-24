@@ -19,6 +19,8 @@
     
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/participant/create</pattern>
+        <pattern>/pages/participant/assignStudy</pattern>
+        <pattern>/pages/participant/assignParticipant</pattern>
         <pattern>/pages/study/create</pattern>
         <pattern>/pages/createStudy</pattern>
     </decorator>
