@@ -15,18 +15,35 @@
 <style type="text/css">
         .label { width: 12em; padding: 1px; }
 </style>
+
+<script language="JavaScript" type="text/JavaScript">
+
+function validatePage(){
+	return true;
+}
+function fireAction(tar){
+	if(validatePage()){
+		document.getElementsByName('_finish')[0].name=tar;			
+		document.review.submit();
+	}
+}
+function clearField(field){
+field.value="";
+}
+
+</script>
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
 <chrome:body title="${flow.name}: ${tab.longTitle}">
 	
-	<form:form method="post">
+	<form:form method="post" name="review">
 	<chrome:division id="study-details">
-		<tags:tabFields tab="${tab}"/>
+	<%--	<tags:tabFields tab="${tab}"/> --%>
 		<input type="hidden" name="_finish" value="true"/>
 		
 		<h3> <strong> Study Details </strong> </h3>		
-		<table  width="29%" border="0" cellspacing="0" cellpadding="0">
+		<table  width="60%" border="0" cellspacing="0" cellpadding="0">
 
 		<tr>
 			<td class="label" align="right">
@@ -111,8 +128,9 @@
 
        </table>
 	   <br>
-				<input type="image" name="_target0" src="images/b-edit.gif"
-					border="0" alt="edit this page">
+ 
+       <a href="javascript:fireAction('_target0');"><img
+					src="images/b-edit.gif" border="0" alt="edit this page"></a>
 			
 		<h3><strong>Study Identifiers</strong></h3>
 
@@ -136,8 +154,8 @@
 		</table>
 
 		 <br>
-		<input type="image" name="_target1" src="images/b-edit.gif"
-					border="0" alt="edit this page">
+		      <a href="javascript:fireAction('_target1');"><img
+					src="images/b-edit.gif" border="0" alt="edit this page"></a>
 			
 		<h3><strong>Study Site</strong></h3>
 
@@ -200,15 +218,8 @@
 		</table>	
 	  <br>
 		
-		<input type="image" name="_target2" src="images/b-edit.gif"
-			border="0" alt="edit this page">
-				
-				<input type="image" name="_finish"
-						src="/caaers/images/b-save.gif" border="0"
-						alt="Save"> 
-				<input type="image"
-						name="_target0" src="/caaers/images/b-cancel.gif" border="0"
-						alt="Cancel">						
+	  <a href="javascript:fireAction('_target2');"><img
+			src="images/b-edit.gif" border="0" alt="edit this page"></a>
 
 </chrome:division>
 	</form:form>
