@@ -127,7 +127,7 @@
 	</java>
     </target>
 
-    <target name="compile" description="Compile all java source" depends="resources"> <!-- generate-bindings -->
+    <target name="compile" description="Compile all java source" depends="resources,generate-bindings">
         <javac destdir="${build-dir.main}" classpathref="cp.main"
                debug="true" source="1.5">
             <src path="${src-dir.main}"/>
