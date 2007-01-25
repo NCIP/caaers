@@ -145,7 +145,7 @@
     	
         	<!-- begin web-sso jars -->
         	<lib dir="../.." includes="ctms-web-sso.jar"/>
-        	<lib dir="../websso/lib/main" includes="*.jar"/>
+        	<lib dir="../websso/lib/main" includes="*.jar" excludes="spring.jar"/>
         	<!-- end web-sso jars -->
     	
         </war>
