@@ -61,6 +61,20 @@
     </filter-mapping>
 
     <filter>
+        <filter-name>BeansInRequestFilter</filter-name>
+        <filter-class>gov.nih.nci.cabig.caaers.web.BeansInRequestFilter</filter-class>
+        <init-param>
+            <param-name>beanNames</param-name>
+            <param-value>configuration</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>BeansInRequestFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
         <filter-name>Sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
     </filter>

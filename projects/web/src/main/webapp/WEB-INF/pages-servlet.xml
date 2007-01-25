@@ -99,7 +99,15 @@
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Administration</value></property>
                     <property name="pathMapping"><value>/admin/**</value></property>
-                    <property name="mainController"><value>adminNotImplementedController</value></property>
+                    <property name="mainController"><value>configurationController</value></property>
+                    <property name="tasks">
+                        <list>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
+                                <property name="displayName"><value>Configure caAERS</value></property>
+                                <property name="linkName"><value>configurationController</value></property>
+                            </bean>
+                        </list>
+                    </property>
                 </bean>
             </list>
         </property>
@@ -108,40 +116,40 @@
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
-    
+
     <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
-    
+
     <!--  PARTICIPANT   -->
     <bean name="/participant/create" id="createParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
     </bean>
-    
+
     <bean name="/participant/view" id="viewParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
-    </bean>    
-    
+    </bean>
+
     <bean name="/participant/assign" id="assignController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
   	</bean>
-    
+
     <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
     </bean>
-    
+
     <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
     </bean>
-    
+
     <bean name="/study/create" id="createStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.CreateStudyController">  
+          class="gov.nih.nci.cabig.caaers.web.CreateStudyController">
 	</bean>
 
 	<bean name="/study/view" id="viewStudyController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
     </bean>
-    
+
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
-    
+
     <bean name="/login" id="loginController" autowire="byName"
         class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
         <property name="targetView"><value>welcome</value></property>
@@ -155,6 +163,9 @@
 
     <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
+
+    <bean name="/admin/configure" id="configurationController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">

@@ -3,8 +3,7 @@
 <%@taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons" %>
-<%-- TODO: make this dependent on some application setting (i.e., replace "true" in the next line with a condition) --%>
-<c:if test="${true or force}">
+<c:if test="${configuration.map.showDebugInformation or force}">
     <div id="debug">
         <!--h1>Request duration</h1>
         <p>

@@ -13,4 +13,9 @@
         <property name="url"><value>/pages/ae/list</value></property>
     </bean>
 
+    <bean id="redirectToConfiguration" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/admin/configure</value></property>
+    </bean>
+
 </beans>
