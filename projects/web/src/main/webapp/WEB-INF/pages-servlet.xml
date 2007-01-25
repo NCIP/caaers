@@ -47,7 +47,7 @@
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Adverse Events</value></property>
                     <property name="pathMapping"><value>/ae/**</value></property>
-                    <property name="mainController"><value>createAdverseEventController</value></property>
+                    <property name="mainController"><value>listAdverseEventsController</value></property>
                     <property name="tasks">
                         <list>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType">
