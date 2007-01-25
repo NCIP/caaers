@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -14,8 +15,10 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
+import java.sql.SQLException;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
  * @author Sujith Vellat Thayyilthodi
@@ -42,31 +45,27 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         getHibernateTemplate().saveOrUpdate(study);
     }
     
-    /*
-	 * Searches based on an example object. Typical usage from your service class: -
-	 * If you want to search based on diseaseCode, monitorCode,
-	 * <li><code>Study study = new Study();</li></code>
-	 * <li>code>study.setDiseaseCode("diseaseCode");</li></code>
-	 * <li>code>study.setDMonitorCode("monitorCode");</li></code>
-	 * <li>code>studyDao.searchByExample(study)</li></code>
-	 * @return list of matching study objects based on your sample study object
-	 */
-	public List<Study> searchByExample(Study study, boolean isWildCard) {
-		//Session session = getHibernateTemplate().getSessionFactory().openSession();
-		// TODO : This way of getting the session will not do exception translation
-		// http://forum.springframework.org/showthread.php?t=24031
-		Session s = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		Example searchCriteria = Example.create(study).excludeZeroes();
-		if (isWildCard)
-		{
-			searchCriteria.enableLike(MatchMode.ANYWHERE);
-			searchCriteria.ignoreCase();
-		}
-		//getHibernateTemplate().
-		//return (List<Study>) getHibernateTemplate().findByCriteria(searchCriteria);
-		
-		return (List<Study>)s.createCriteria(Study.class).add(searchCriteria).list();
-	}
+    /**
+     * Searches based on an example object. Typical usage from your service class: -
+     * If you want to search based on diseaseCode, monitorCode,
+     * <li><code>Study study = new Study();</li></code>
+     * <li>code>study.setDiseaseCode("diseaseCode");</li></code>
+     * <li>code>study.setDMonitorCode("monitorCode");</li></code>
+     * <li>code>studyDao.searchByExample(study)</li></code>
+     * @return list of matching study objects based on your sample study object
+     */
+    public List<Study> searchByExample(final Study example, final boolean isWildCard) {
+        return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Example searchCriteria = Example.create(example).excludeZeroes();
+                if (isWildCard) {
+                    searchCriteria.enableLike(MatchMode.ANYWHERE);
+                    searchCriteria.ignoreCase();
+                }
+                return session.createCriteria(Study.class).add(searchCriteria).list();
+            }
+        });
+    }
 
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,

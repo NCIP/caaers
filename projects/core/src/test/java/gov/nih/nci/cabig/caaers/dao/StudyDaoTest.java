@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Sujith Vellat Thayyilthodi
@@ -68,5 +70,24 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         assertEquals("Wrong match", -2, (int) actual.get(0).getId());
     }
     
+    public void testSearchByExactExample() throws Exception {
+        Study example = new Study();
+        example.setDescription("Description");
 
+        List<Study> actual = getDao().searchByExample(example, false);
+        assertEquals("Wrong number of matches", 1, actual.size());
+        assertEquals("Wrong match", -2, (int) actual.get(0).getId());
+    }
+
+    public void testSearchByWildcardExample() throws Exception {
+        Study example = new Study();
+        example.setShortTitle("orte");
+
+        List<Study> actual = getDao().searchByExample(example, true);
+        assertEquals("Wrong number of matches", 2, actual.size());
+        Set<Integer> ids = new HashSet<Integer>();
+        for (Study study : actual) ids.add(study.getId());
+        assertTrue(ids.contains(-3));
+        assertTrue(ids.contains(-4));
+    }
 }
