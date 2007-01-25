@@ -9,4 +9,4 @@
     <!-- TODO: actual value for gridProxy -->
     <input type="hidden" name="gridProxy" value="?"/>
 </form>
-<tags:debugInfo/>
+<%-- <tags:debugInfo/> --%>
