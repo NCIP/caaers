@@ -73,8 +73,8 @@ field.value="";
 										<td>
 										    <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
-											<form:options items="${identifiersSourceRefData}" itemLabel="desc"
-												itemValue="code" /></form:select>
+											<form:options items="${identifiersSourceRefData}" itemLabel="name"
+												itemValue="name" /></form:select>
 										</td>
 
 										<td> <form:select path="identifiers[${status.index}].type">
