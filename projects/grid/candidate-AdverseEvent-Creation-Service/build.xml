@@ -125,14 +125,17 @@
     </target>
 
     <target name="defineClasspaths">
-    
+
 	<!-- this will need to be done better if we don't switch to maven -->
-	<path id="cp.core.main">
-		<fileset dir="../../core/lib/main">
+        <copy todir="${lib.dir}">
+            <fileset dir="../../core/lib/main">
 		    <include name="**/*.jar"/>
-		</fileset>
-		<pathelement location="../../../caaers-core.jar"/>
-	</path>    
+            </fileset>
+            <fileset dir="../../..">
+            	    <include name="caaers-core.jar"/>
+            </fileset>
+        </copy>
+
         <path id="base.classpath">
             <fileset dir="${lib.dir}">
                 <include name="*.jar" />
@@ -144,7 +147,6 @@
                 <exclude name="${client.jar.name}" />
                 <exclude name="${service.jar.name}" />
             </fileset>
-            <path refid="cp.core.main"/>
         </path>
         <path id="service.build.classpath">
             <pathelement location="${stubs.dest}" />
