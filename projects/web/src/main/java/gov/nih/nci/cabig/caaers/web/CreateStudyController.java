@@ -58,7 +58,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();                             
-                refdata.put("identifiersSourceRefData", getIdentifiersSourceList());
+                refdata.put("identifiersSourceRefData", getSites());
                 refdata.put("identifiersTypeRefData", getIdentifiersTypeList());                    
     	  		return refdata;
         	}
