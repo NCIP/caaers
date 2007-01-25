@@ -109,7 +109,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		
 		ModelAndView modelAndView= new ModelAndView("study_confirmation");
     	modelAndView.addAllObjects(errors.getModel());
-    	response.sendRedirect("view_study?studyName=" + study.getShortTitle() + "&type=confirm");
+    	response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
     	return null;
 	}
 	
