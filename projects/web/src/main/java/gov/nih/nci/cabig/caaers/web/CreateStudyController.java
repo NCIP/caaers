@@ -242,76 +242,76 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private List<Lov> getDiseaseCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("Myelodysplastic syndrome NOS", "Myelodysplastic syndrome NOS");
-		Lov lov2 = new Lov("Refractory anemia with ringed sideroblasts", "Refractory anemia with ringed sideroblasts");
-		Lov lov3 = new Lov("Lip and/or oral cavity cancer stage 0", "Lip and/or oral cavity cancer stage 0");
-		Lov lov4 = new Lov("Oropharyngeal cancer recurrent", "Oropharyngeal cancer recurrent");
+		Lov lov1 = new Lov("AIDS", "AIDS");
+		Lov lov2 = new Lov("Benign", "Benign");
+		Lov lov3 = new Lov("Cancer", "Cancer");		
 		
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
-    	col.add(lov4);
     	
     	return col;
 	}
 	
+	
 	private List<Lov> getMonitorCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("Monitor Code 1", "Monitor Code 1");
-		Lov lov2 = new Lov("Monitor Code 2", "Monitor Code 2");
-		Lov lov3 = new Lov("Monitor Code 3", "Monitor Code 3");
-		Lov lov4 = new Lov("Monitor Code List 4", "Monitor Code List 4");
+		Lov lov1 = new Lov("Cancer Therapy Evaluation Program", "Cancer Therapy Evaluation Program");
+		Lov lov2 = new Lov("CTEP - Clinical Data Update System Complete", "CTEP - Clinical Data Update System Complete");
+		Lov lov3 = new Lov("CTEP - Clinical Data Update System Abbreviated", "CTEP - Clinical Data Update System Abbreviated");		
 		
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
-    	col.add(lov4);
     	
     	return col;
 	}
 	
 	private List<Lov> getPhaseCodeList(){
 		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("Phase I", "Phase I");
-		Lov lov2 = new Lov("Phase I/II", "Phase I/II");
-		Lov lov3 = new Lov("Phase III", "Phase III");
-		Lov lov4 = new Lov("NOT APPLICABLE", "NOT APPLICABLE");
-		
-		col.add(lov1);
-    	col.add(lov2);
-    	col.add(lov3);
-    	col.add(lov4);
-    	
-    	return col;
-	}
-	
-	
-	private List<Lov> getSponsorCodeList(){
-		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("Sponsor 1 - Duke", "Sponsor 1 - Duke");
-		Lov lov2 = new Lov("Sponsor 2 - Nci", "Sponsor 2 - Nci");
-		Lov lov3 = new Lov("Sponsor 3 - FDA", "Sponsor 3 - FDA");
-		
-		col.add(lov1);
-    	col.add(lov2);
-    	col.add(lov3);
-    		
-    	return col;
-	}
-	
-	private List<Lov> getStatusList(){
-		List<Lov> col = new ArrayList<Lov>();
-		Lov lov1 = new Lov("Closed", "Closed");
-		Lov lov2 = new Lov("Open", "Open");
-		Lov lov3 = new Lov("Suspended", "Suspended");
-		Lov lov4 = new Lov("Terminated", "Terminated");
-		Lov lov5 = new Lov("IRB Approved", "IRB Approved");
+		Lov lov1 = new Lov("Phase I Trial", "Phase I Trial");
+		Lov lov2 = new Lov("Phase I/II Trail", "Phase I/II Trail");
+		Lov lov3 = new Lov("Phase II Trial", "Phase II Trial");
+		Lov lov4 = new Lov("Phase III Trial", "Phase III Trial");
+		Lov lov5 = new Lov("Phase IV Trial", "Phase IV Trial");
+		Lov lov6 = new Lov("Phase 0 Trial", "Phase 0 Trial");
 		
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
     	col.add(lov4);
     	col.add(lov5);
+    	col.add(lov6);
+    	
+    	return col;
+	}
+		
+	private List<Lov> getSponsorCodeList(){
+		List<Lov> col = new ArrayList<Lov>();
+		Lov lov1 = new Lov("National Cancer Institute", "National Cancer Institute");		
+		
+		col.add(lov1);
+    		
+    	return col;
+	}
+	
+	private List<Lov> getStatusList(){
+		List<Lov> col = new ArrayList<Lov>();
+		Lov lov1 = new Lov("Active - Trial is open to accrual", "Active - Trial is open to accrual");
+		Lov lov2 = new Lov("Administratively Complete", "Administratively Complete");
+		Lov lov3 = new Lov("Approved - Trial has official CTEP approval", "Approved - Trial has official CTEP approval");
+		Lov lov4 = new Lov("Closed to Accrual &amp; Treatment", "Closed to Accrual &amp; Treatment");
+		Lov lov5 = new Lov("Closed to Accrual", "Closed to Accrual");
+		Lov lov6 = new Lov("Temporarily Closed to Accrual &amp; Treatment", "Temporarily Closed to Accrual &amp; Treatment");
+		Lov lov7 = new Lov("Temporarily Closed to Accrual", "Temporarily Closed to Accrual");
+		
+		col.add(lov1);
+    	col.add(lov2);
+    	col.add(lov3);
+    	col.add(lov4);
+    	col.add(lov5);
+    	col.add(lov6);
+    	col.add(lov7);
     	
     	return col;
 	}
@@ -320,7 +320,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		List<Lov> col = new ArrayList<Lov>();
 		Lov lov1 = new Lov("Diagnostic", "Diagnostic");
 		Lov lov2 = new Lov("Genetic Non-therapeutic", "Genetic Non-therapeutic");		
-		Lov lov4 = new Lov("Non-therapeutic", "Non-therapeutic");
+		Lov lov4 = new Lov("Genetic Therapeutic", "Genetic Therapeutic");
 		Lov lov5 = new Lov("Primary Treatment", "Primary Treatment");
 		Lov lov6 = new Lov("Supportive", "Supportive");
 		Lov lov7 = new Lov("Preventive", "Preventive");
