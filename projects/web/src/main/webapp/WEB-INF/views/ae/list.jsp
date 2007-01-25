@@ -44,9 +44,11 @@
 </head>
 <body>
 
-<p> <%-- TODO: configure studycalendar URL externally --%>
-    <a href="/studycalendar/pages/schedule?assignment=${command.assignment.gridId}" class="sso">View schedule in PSC</a>
+<c:if test="${not empty configuration.map.pscBaseUrl}">
+<p>
+    <a href="${configuration.map.pscBaseUrl}/pages/schedule?assignment=${command.assignment.gridId}" class="sso">View schedule in PSC</a>
 </p>
+</c:if>
 
 <ec:table
     items="command.assignment.aeReports"
