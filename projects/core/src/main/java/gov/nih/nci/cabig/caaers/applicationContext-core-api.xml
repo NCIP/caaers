@@ -15,13 +15,13 @@
 
     <tx:annotation-driven proxy-target-class="true"/>
 
-<!--
+
     <bean id="studyServiceAPI" autowire="byType" lazy-init="true"
           class="gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService"/>
     <bean id="adverseEventServiceAPI" autowire="byType" lazy-init="true"
           class="gov.nih.nci.cabig.caaers.api.impl.DefaultAdverseEventService"/>
--->
 
+<!--
 	<bean id="hibernateInterceptor" class="org.springframework.orm.hibernate.HibernateInterceptor"> 
 		<property name="sessionFactory"> 
 			<ref bean="sessionFactory"/>
@@ -52,4 +52,5 @@
 			</list> 
 		</property> 
 	</bean>
+-->
 </beans>
