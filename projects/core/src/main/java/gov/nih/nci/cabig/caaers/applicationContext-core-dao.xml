@@ -34,9 +34,11 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
-                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
+
+                <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -79,6 +81,9 @@
     <bean id="daoTemplate" abstract="true">
         <property name="hibernateTemplate"><ref local="hibernateTemplate"/></property>
     </bean>
+
+    <bean id="configuration" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration"/>
 
     <!--- ACTUAL DAOS -->
 
