@@ -54,6 +54,7 @@ public class StudyDao extends GridIdentifiableDao<Study> {
      * <li>code>studyDao.searchByExample(study)</li></code>
      * @return list of matching study objects based on your sample study object
      */
+    @SuppressWarnings("unchecked")
     public List<Study> searchByExample(final Study example, final boolean isWildCard) {
         return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -72,7 +73,8 @@ public class StudyDao extends GridIdentifiableDao<Study> {
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
-	public Study getByIdentifier(Identifier identifier) {
+    @SuppressWarnings("unchecked")
+    public Study getByIdentifier(Identifier identifier) {
     	Criteria criteria = getSession().createCriteria(domainClass());
     	criteria = criteria.createCriteria("identifiers");
     	
