@@ -5,7 +5,5 @@
     <div id="copyright">&copy; 2006 SemanticBits Company. All Rights Reserved</div>
     <div id="cabig-logo"><img src="<chrome:imageUrl name="caBIG_logo.gif"/>" alt="caBIG cancer Biomedical Informatics Grid"></div>
 </div>
-<form action="#" id="sso-form" target="_blank" method="post">
-    <input type="hidden" name="gridProxy" value="${sessionScope.gridProxy}"/>
-</form>
-<tags:debugInfo/> 
+<tags:ssoForm/>
+<tags:debugInfo/>
