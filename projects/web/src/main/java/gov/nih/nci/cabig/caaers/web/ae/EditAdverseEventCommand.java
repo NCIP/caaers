@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 
 /**
  * @author Rhett Sutphin
@@ -33,5 +34,8 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 
     public void setAeReport(AdverseEventReport aeReport) {
         this.aeReport = aeReport;
+        if (aeReport.getPrimaryAdverseEvent() == null) {
+            aeReport.setPrimaryAdverseEvent(new AdverseEvent());
+        }
     }
 }
