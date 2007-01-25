@@ -63,7 +63,7 @@
                 </bean>
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Studies</value></property>
-                    <property name="pathMapping"><value>/createStudy/**</value></property>
+                    <property name="pathMapping"><value>/study/**</value></property>
                     <property name="mainController"><value>createStudyController</value></property>
                     <property name="tasks">
                         <list>
@@ -118,11 +118,7 @@
     
     <bean name="/participant/view" id="viewParticipantController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
-    </bean>
-
-    <bean name="/view_study" id="viewStudyController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
-    </bean>
+    </bean>    
     
     <bean name="/participant/assign" id="assignController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
@@ -136,10 +132,14 @@
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
     </bean>
     
-    <bean name="/createStudy" id="createStudyController" autowire="byType"
+    <bean name="/study/create" id="createStudyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.CreateStudyController">  
 	</bean>
 
+	<bean name="/study/view" id="viewStudyController" autowire="byType"
+    	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
+    </bean>
+    
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
     
     <bean name="/login" id="loginController" autowire="byName"
