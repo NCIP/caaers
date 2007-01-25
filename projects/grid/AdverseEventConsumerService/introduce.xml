@@ -92,9 +92,20 @@
    <ns9:ResourcePropertiesList xsi:type="ns9:ResourcePropertiesListType" xmlns:ns9="gme://gov.nih.nci.cagrid.introduce/1/Resources">
     <ns9:ResourceProperty qName="ns10:ServiceMetadata" fileLocation="serviceMetadata.xml" populateFromFile="true" register="true" xsi:type="ns9:ResourcePropertyType" xmlns:ns10="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata"/>
    </ns9:ResourcePropertiesList>
+   <ns11:ServiceSecurity xsi:type="ns11:ServiceSecurity" xmlns:ns11="gme://gov.nih.nci.cagrid.introduce/1/Security">
+    <ns11:SecuritySetting xsi:type="ns11:SecuritySetting">Custom</ns11:SecuritySetting>
+    <ns11:TransportLevelSecurity xsi:type="ns11:TransportLevelSecurity">
+     <ns11:CommunicationMethod xsi:type="ns11:CommunicationMethod">Privacy</ns11:CommunicationMethod>
+    </ns11:TransportLevelSecurity>
+    <ns11:RunAsMode xsi:type="ns11:RunAsMode">System</ns11:RunAsMode>
+    <ns11:AnonymousClients xsi:type="ns11:AnonymousCommunication">No</ns11:AnonymousClients>
+    <ns11:ServiceAuthorization xsi:type="ns11:ServiceAuthorization">
+     <ns11:NoAuthorization xsi:type="ns11:NoAuthorization"/>
+    </ns11:ServiceAuthorization>
+   </ns11:ServiceSecurity>
   </ns3:Service>
  </ns3:Services>
- <ns11:Extensions xsi:type="ns11:ExtensionsType" xmlns:ns11="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns11:Extension name="cagrid_metadata" xsi:type="ns11:ExtensionType"/>
- </ns11:Extensions>
+ <ns12:Extensions xsi:type="ns12:ExtensionsType" xmlns:ns12="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ns12:Extension name="cagrid_metadata" xsi:type="ns12:ExtensionType"/>
+ </ns12:Extensions>
 </ns1:ServiceDescription>

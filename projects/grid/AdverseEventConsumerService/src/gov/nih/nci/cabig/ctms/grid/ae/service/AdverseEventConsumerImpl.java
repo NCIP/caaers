@@ -36,10 +36,7 @@ public class AdverseEventConsumerImpl extends AdverseEventConsumerImplBase {
         this.consumer = (AdverseEventConsumer) ctx.getBean(bean);
     }
 
-    public void register(gov.nih.nci.cabig.ctms.grid.ae.beans.AENotificationType aeNotification)
-                    throws RemoteException,
-                    gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration,
-                    gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
+	public void register(gov.nih.nci.cabig.ctms.grid.ae.beans.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
         this.consumer.register(aeNotification);
     }
 

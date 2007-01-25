@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.ctms.grid.ae.client;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
+import java.io.Reader;
 import java.rmi.RemoteException;
 
 import javax.xml.namespace.QName;
@@ -19,7 +22,9 @@ import org.globus.gsi.GlobusCredential;
 
 import gov.nih.nci.cabig.ctms.grid.ae.stubs.AdverseEventConsumerPortType;
 import gov.nih.nci.cabig.ctms.grid.ae.stubs.service.AdverseEventConsumerServiceAddressingLocator;
+import gov.nih.nci.cabig.ctms.grid.ae.beans.AENotificationType;
 import gov.nih.nci.cabig.ctms.grid.ae.common.AdverseEventConsumerI;
+import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.cagrid.introduce.security.client.ServiceSecurityClient;
 
 /**
@@ -94,9 +99,13 @@ public class AdverseEventConsumerClient extends ServiceSecurityClient implements
 		try{
 		if(!(args.length < 2)){
 			if(args[0].equals("-url")){
-			  AdverseEventConsumerClient client = new AdverseEventConsumerClient(args[1]);
-			  // place client calls here if you want to use this main as a
-			  // test....
+                String proxyFile = "proxy.txt";
+                String clientConfigFile = "src/gov/nih/nci/cabig/ctms/grid/ae/client/client-config.wsdd";
+                String aeFile = "test/resources/SampleAdverseEventMessage.xml";
+                AENotificationType ae = getNotification(clientConfigFile, aeFile);
+                GlobusCredential cred = new GlobusCredential(new FileInputStream(proxyFile));
+			  AdverseEventConsumerClient client = new AdverseEventConsumerClient(args[1], cred);
+			  client.register(ae);
 			} else {
 				usage();
 				System.exit(1);
@@ -110,6 +119,19 @@ public class AdverseEventConsumerClient extends ServiceSecurityClient implements
 			System.exit(1);
 		}
 	}
+    
+    public static AENotificationType getNotification(String clientConfigFile, String aeFile) {
+        AENotificationType ae = null;
+        try {
+            InputStream config = new FileInputStream(clientConfigFile);
+            Reader reader = new FileReader(aeFile);
+            ae = (AENotificationType) Utils.deserializeObject(reader, AENotificationType.class,
+                            config);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error deserializing sample adverse event: " + ex.getMessage(), ex);
+        }
+        return ae;
+    }
 
 	public gov.nih.nci.cagrid.metadata.security.ServiceSecurityMetadata getServiceSecurityMetadata() throws RemoteException {
       synchronized(portTypeMutex){
