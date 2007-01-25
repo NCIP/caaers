@@ -75,4 +75,14 @@ public class AdverseEventReport extends AbstractDomainObject {
     public void setLabs(List<Lab> labs) {
         this.labs = labs;
     }
+
+    public String getNotificationMessage() {
+        CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
+        String other = term.isOtherRequired()
+            ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
+        return String.format("Grade %d adverse event with term %s%s",
+            getPrimaryAdverseEvent().getGrade().getCode(),
+            term.getFullName(), other
+        );
+    }
 }
