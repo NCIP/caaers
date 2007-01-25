@@ -85,7 +85,6 @@
         <delete file="${jar-name.main}"/>
         <delete file="${jar-name.unit-test}"/>
     </target>
-    
 
     <target name="resources" description="Copy resources into classpath" depends="init">
         <copy file="${config.database.file}" tofile="${build-dir.main}/datasource.properties" overwrite="true"/>
@@ -128,7 +127,7 @@
 	</java>
     </target>
 
-    <target name="compile" description="Compile all java source" depends="resources,generate-bindings">
+    <target name="compile" description="Compile all java source" depends="resources"> <!-- generate-bindings -->
         <javac destdir="${build-dir.main}" classpathref="cp.main"
                debug="true" source="1.5">
             <src path="${src-dir.main}"/>
