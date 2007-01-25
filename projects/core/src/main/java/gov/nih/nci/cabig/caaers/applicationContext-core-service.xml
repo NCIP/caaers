@@ -42,7 +42,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="messageBroadcastService"
+	<bean id="messageBroadcastService" lazy-init="true"
 		class="gov.nih.nci.cabig.caaers.esb.client.impl.MessageBroadcastServiceImpl">
 		<constructor-arg>
 			<ref bean="connectionFactory" />
@@ -54,7 +54,7 @@
 			<ref bean="recvQueueDestination" />
 		</constructor-arg>
 	</bean>	
-	
-	
+
+
 
 </beans>
