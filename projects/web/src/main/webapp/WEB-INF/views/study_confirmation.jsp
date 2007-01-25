@@ -15,7 +15,7 @@
 </head>
 <body>
 <p id="instructions">
-   You have successfully created a new Study
+   You have successfully created Study
 </p>
 <form:form name="searchDetailsForm" method="post">
 	<tags:tabFields tab="${tab}"/>
@@ -24,7 +24,7 @@
 
 	<div><input type="hidden" name="_page" value="1"></div>
 					
-<h3> You have successfully created a new Study !!! </h3>
+<h3> <font color="green"> You have successfully created study with short title : ${param.studyName} </font></h3>
 		</chrome:division>
 </div>							
 </form:form>
