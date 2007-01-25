@@ -6,7 +6,6 @@
     <div id="cabig-logo"><img src="<chrome:imageUrl name="caBIG_logo.gif"/>" alt="caBIG cancer Biomedical Informatics Grid"></div>
 </div>
 <form action="#" id="sso-form" target="_blank" method="post">
-    <!-- TODO: actual value for gridProxy -->
-    <input type="hidden" name="gridProxy" value="?"/>
+    <input type="hidden" name="gridProxy" value="${sessionScope.gridProxy}"/>
 </form>
 <%-- <tags:debugInfo/> --%>
