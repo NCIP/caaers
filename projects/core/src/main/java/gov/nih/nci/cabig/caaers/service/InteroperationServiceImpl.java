@@ -21,7 +21,8 @@ public class InteroperationServiceImpl implements InteroperationService {
 				aeReport.getAssignment().getGridId());
 		aeNotification.setDetectionDate(
 				new java.sql.Date(aeReport.getPrimaryAdverseEvent().getDetectionDate().getTime()));
-		aeNotification.setDescription(aeReport.getPrimaryAdverseEvent().getDetailsForOther());
+        // TODO: verify that this is sufficient
+        aeNotification.setDescription(aeReport.getPrimaryAdverseEvent().getCtcTerm().getFullName());
 		getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
 	}
 
