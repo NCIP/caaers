@@ -17,6 +17,8 @@ import javax.persistence.Transient;
 import java.util.List;
 import java.util.LinkedList;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+
 /**
  * @author Rhett Sutphin
  */
@@ -47,13 +49,18 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @Transient
     public String getNotificationMessage() {
-        CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
-        String other = term.isOtherRequired()
-            ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
-        return String.format("Grade %d adverse event with term %s%s",
-            getPrimaryAdverseEvent().getGrade().getCode(),
-            term.getFullName(), other
-        );
+        if (getPrimaryAdverseEvent() != null) {
+            CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
+            String other = term.isOtherRequired()
+                ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
+            return String.format("Grade %d adverse event with term %s%s",
+                getPrimaryAdverseEvent().getGrade().getCode(),
+                term.getFullName(), other
+            );
+        } else {
+            throw new CaaersSystemException(
+                "Cannot create notification message until primary AE is filled in");
+        }
     }
 
     public void setPrimaryAdverseEvent(AdverseEvent primaryAdverseEvent) {

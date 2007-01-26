@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 /**
  * @author Rhett Sutphin
@@ -30,5 +31,15 @@ public class AdverseEventReportTest extends CaaersTestCase {
         ctcTerm.setOtherRequired(true);
         report.getPrimaryAdverseEvent().setDetailsForOther("other");
         assertEquals("Grade 2 adverse event with term Term - Select (other)", report.getNotificationMessage());
+    }
+    
+    public void testExceptionForNoAe() throws Exception {
+        report.setPrimaryAdverseEvent(null);
+        try {
+            report.getNotificationMessage();
+            fail("Exception not thrown");
+        } catch (CaaersSystemException cse) {
+            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+        }
     }
 }
