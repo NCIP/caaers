@@ -32,6 +32,10 @@ import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
+
+/**
+ * @author Krikor Krumlian
+ */
 public class AssignParticipantStudyController extends AbstractTabbedFlowFormController<AssignParticipantStudyCommand> {
     private static Log log = LogFactory.getLog(AssignParticipantStudyController.class);
     private StudySiteDao studySiteDao;
@@ -89,32 +93,14 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
 	public void setStudySiteDao(StudySiteDao studySiteDao) {
 		this.studySiteDao = studySiteDao;
 	}
+	
+	protected String getFormSessionAttributeName() {
+	
+	    return AssignController.class.getName() + ".FORM." + getCommandName();
+	}
     
     public AssignParticipantStudyController() {
-    	/*
-        setCommandClass(AssignParticipantStudyCommand.class);
-        setFlow(new Flow<AssignParticipantStudyCommand>("Assign Participant to Study"));
-        getFlow().addTab(new Tab("Search for Studies", "Search Study", "par/reg_protocol_search") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                refdata.put("studySearchType", listValues.getStudySearchType());
-                return refdata;
-            }
-        });
-        getFlow().addTab(new Tab("Choose Study", "Search Participant", "par/reg_participant_search") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                refdata.put("participantSearchType", listValues.getParticipantSearchType());
-                return refdata;
-            }
-        });
-        getFlow().addTab(new Tab("Review and Submit", "Review and Submit", "par/reg_review_submit") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                return refdata;
-            }
-        });
-        */
+    	// Look at subclasses
     }
     
     protected void initBinder(HttpServletRequest request,
@@ -122,31 +108,6 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
             binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
             super.initBinder(request, binder);
         }
-    
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-    	log.debug("Entering formBackingObject ...");
-    	AssignParticipantStudyCommand participantCommand = new AssignParticipantStudyCommand(); 
-        StudySite studySite=null;
-        for (int i = 0; i < 5; i++) {
-        	participantCommand.getIdentifiers().add(new Identifier());
-		}
-        if(request.getParameter("studySiteId")!=null){
-    
-			log.debug("Parameters found as.."+request.getParameter("studySiteId"));
-			studySite=studySiteDao.getById(Integer.parseInt(request.getParameter("studySiteId")));
-			Study study = studySite.getStudy();
-			study.getStudySites().get(0).getId(); // this code is to initialize object 
-			
-			String[ ] studySiteArray = new String[1];
-			studySiteArray[0] = request.getParameter("studySiteId");
-			participantCommand.setStudySiteArray(studySiteArray);
-			participantCommand.getStudies().add(study);
-			//participantCommand.getStudyParticipantAssignment().setStudySite(studySite);
-			//participantCommand.getStudyParticipantAssignment().setDateOfEnrollment(new Date());
-		}
-		return participantCommand;
-    }
- 
     
     protected void onBind(HttpServletRequest request, Object command,BindException errors)throws Exception {
     	log.debug("Entering onBind...");

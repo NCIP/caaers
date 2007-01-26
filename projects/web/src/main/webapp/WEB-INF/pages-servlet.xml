@@ -8,6 +8,7 @@
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
     >
+    
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
     <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
@@ -105,6 +106,7 @@
 
     <bean name="/participant/assign" id="assignController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
+    	  <property name="sessionForm"><value>true</value></property>
   	</bean>
 
     <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"

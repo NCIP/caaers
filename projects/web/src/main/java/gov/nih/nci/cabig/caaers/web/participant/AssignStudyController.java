@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import java.util.Map;
-
+/**
+ * @author Krikor Krumlian
+ */
 public class AssignStudyController extends AssignParticipantStudyController{
 	
 	public AssignStudyController() {
