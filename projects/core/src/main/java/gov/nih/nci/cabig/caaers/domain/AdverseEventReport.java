@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
+import javax.persistence.Transient;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -42,6 +43,26 @@ public class AdverseEventReport extends AbstractDomainObject {
     // private List<MedicalDevice> medicalDevices;
     // private ReporterInfo reporterInfo;
 
+    ////// LOGIC
+
+    @Transient
+    public String getNotificationMessage() {
+        CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
+        String other = term.isOtherRequired()
+            ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
+        return String.format("Grade %d adverse event with term %s%s",
+            getPrimaryAdverseEvent().getGrade().getCode(),
+            term.getFullName(), other
+        );
+    }
+
+    public void setPrimaryAdverseEvent(AdverseEvent primaryAdverseEvent) {
+        this.primaryAdverseEvent = primaryAdverseEvent;
+        if (primaryAdverseEvent != null) primaryAdverseEvent.setReport(this);
+    }
+
+    ////// BEAN PROPERTIES
+
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {
         return assignment;
@@ -57,11 +78,6 @@ public class AdverseEventReport extends AbstractDomainObject {
         return primaryAdverseEvent;
     }
 
-    public void setPrimaryAdverseEvent(AdverseEvent primaryAdverseEvent) {
-        this.primaryAdverseEvent = primaryAdverseEvent;
-        if (primaryAdverseEvent != null) primaryAdverseEvent.setReport(this);
-    }
-
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
@@ -74,15 +90,5 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     public void setLabs(List<Lab> labs) {
         this.labs = labs;
-    }
-
-    public String getNotificationMessage() {
-        CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
-        String other = term.isOtherRequired()
-            ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
-        return String.format("Grade %d adverse event with term %s%s",
-            getPrimaryAdverseEvent().getGrade().getCode(),
-            term.getFullName(), other
-        );
     }
 }
