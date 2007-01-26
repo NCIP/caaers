@@ -53,7 +53,7 @@ field.value="";
 					<tr align="center">
 						<td width="20%">										
 							<b><a href="javascript:fireAction('addIdentifier','0');"><img
-								src="images/checkyes.gif" border="0" alt="Add"></a></b> 
+								src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
 						</td>
 						<td> <b>Source<span class="red">*</span> </b></td>						
 						<td> <b>Identifier Type<span class="red">*</span> </b> </td>						
@@ -68,7 +68,7 @@ field.value="";
 						<tr align="center" class="results">
 										<td>
 											<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-											src="images/checkno.gif" border="0" alt="remove"></a>										
+											src="/caaers/images/checkno.gif" border="0" alt="remove"></a>										
 										</td>
 										<td>
 										    <form:select path="identifiers[${status.index}].source">
