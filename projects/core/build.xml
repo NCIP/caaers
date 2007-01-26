@@ -257,8 +257,8 @@
         </taskdef>
     </target>
 
-    <target name="tomcat.security" depends="tomcat.init" description="Automatically copies global (CSM/UPT) configuration files to Tomcat.">
-        <fail message="Could not locate Tomcat.  Please set the catalina.home property (tools/tomcat/tomcat.properties is a good place to do this).">
+    <target name="tomcat.security" depends="init" description="Automatically copies global (CSM/UPT) configuration files to Tomcat.">
+        <fail message="Could not locate Tomcat.  Please set the catalina.home property (-Dcatalina.home=/path/to/tomcat).">
             <condition>
                 <not><isset property="catalina.home"/></not>
             </condition>
@@ -295,10 +295,10 @@ The automatic portion of the security setup is complete.  If you have not
 done so already, please perform the following manual actions.
 
 * In ${catalina.home}/conf/catalina.properties, add two lines:
-  gov.nih.nci.security.c onfigFile=${tomcat.security.dir}/ApplicationSecurityConfig.xml
+  gov.nih.nci.security.configFile=${tomcat.security.dir}/ApplicationSecurityConfig.xml
   java.security.auth.login.config=${tomcat.security.dir}/csm_jaas.config
 
-* Execute ${basedir}/conf/upt/uptdata_caaers.sql
+* Execute ${basedir}/tools/csm/DataLoadPostgresCSMUser.sql
   against your target database (${datasource.url}).
 ========= END ==========
 ===== MANUAL STEPS =====</echo>
