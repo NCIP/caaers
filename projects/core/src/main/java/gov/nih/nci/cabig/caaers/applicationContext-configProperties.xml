@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    <bean id="configurationProperty" class="gov.nih.nci.cabig.caaers.utils.ConfigProperty">
+        <property name="map">
+            <map>       
+              <entry key="monitorCodeRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Cancer Therapy Evaluation Program" />
+                            <property name="desc" value="Cancer Therapy Evaluation Program" />
+                        </bean>                      
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        	<property name="code" value="CTEP - Clinical Data Update System Complete" />
+                            <property name="desc" value="CTEP - Clinical Data Update System Complete" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        	<property name="code" value="CTEP - Clinical Data Update System Abbreviated" />
+                            <property name="desc" value="CTEP - Clinical Data Update System Abbreviated" />
+                        </bean>
+                        </list>
+                </entry>
+                <entry key="diseaseCodeRefData">
+                    <list>
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="AIDS" />
+                            <property name="desc" value="AIDS" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Benign" />
+                            <property name="desc" value="Benign" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Cancer" />
+                            <property name="desc" value="Cancer" />
+                        </bean>
+                     </list>
+                </entry>                 
+                <entry key="statusRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Active - Trial is open to accrual" />
+                            <property name="desc" value="Active - Trial is open to accrual" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Administratively Complete" />
+                            <property name="desc" value="Administratively Complete" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Approved - Trial has official CTEP approval" />
+                            <property name="desc" value="Approved - Trial has official CTEP approval" />
+ 			           </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Closed to Accrual &amp; Treatment" />
+                            <property name="desc" value="Closed to Accrual &amp; Treatment" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                         	 <property name="code" value="Closed to Accrual" />
+                             <property name="desc" value="Closed to Accrual" />
+                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                         	<property name="code" value="Temporarily Closed to Accrual &amp; Treatment" />
+                            <property name="desc" value="Temporarily Closed to Accrual &amp; Treatment" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                         	<property name="code" value="Temporarily Closed to Accrual" />
+                            <property name="desc" value="Temporarily Closed to Accrual" />
+                        </bean>
+                    </list>
+                </entry>
+                <entry key="phaseCodeRefData">
+                    <list>
+                   		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase I Trial" />
+                            <property name="desc" value="Phase I Trial" />
+                        </bean>
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase I/II Trial" />
+                            <property name="desc" value="Phase I/II Trial" />
+                        </bean>
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase II Trial" />
+                            <property name="desc" value="Phase II Trial" />
+                        </bean>
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase III Trial" />
+                            <property name="desc" value="Phase III Trial" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase IV Trial " />
+                            <property name="desc" value="Phase IV Trial " />
+                        </bean> 
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Phase 0 Trial" />
+                            <property name="desc" value="Phase 0 Trial " />
+                        </bean>                      
+                    </list>
+                </entry>
+                <entry key="typeRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Diagnostic" />
+                            <property name="desc" value="Diagnostic" />
+                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Genetic Non-therapeutic" />
+                            <property name="desc" value="Genetic Non-therapeutic" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Genetic Therapeutic" />
+                            <property name="desc" value="Genetic Therapeutic" />  
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Primary Treatment" />
+                            <property name="desc" value="Primary Treatment" />  
+                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Supportive" />
+                            <property name="desc" value="Supportive" />  
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Preventive" />
+                            <property name="desc" value="Preventive" />  
+                        </bean>
+                    </list>
+                </entry>
+                <entry key="sponsorCodeRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="National Cancer Institute" />
+                            <property name="desc" value="National Cancer Institute" />  
+                        </bean>
+                    </list>
+                </entry>
+                
+                  <!-- codes for Identifiers -->                                    
+                <entry key="identifiersType">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Protocol Authority" />
+                            <property name="desc" value="Protocol Authority" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Co-ordinating Center" />
+                            <property name="desc" value="Co-ordinating Center" />
+ 			           </bean>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Site" />
+                            <property name="desc" value="Site" />
+                       </bean>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Site IRB" />
+                            <property name="desc" value="Site IRB" />
+                       </bean>                        
+                    </list>
+                </entry>                             
+                
+            </map>
+        </property>                      
+    </bean>
+</beans>
