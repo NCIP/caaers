@@ -20,7 +20,7 @@
       <none />
     </auth-method>
   </method>
-  <authz value="none" />
+  <authz value="csmPDP:gov.nih.nci.cagrid.authorization.pdp.impl.PDPDelegator" />
   <auth-method>
     <GSITransport>
       <protection-level>
