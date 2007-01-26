@@ -35,6 +35,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     
     public void testNotificationMessageExceptionForNoAe() throws Exception {
         report.setPrimaryAdverseEvent(null);
+        assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
             fail("Exception not thrown");
@@ -45,6 +46,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
 
     public void testNotificationMessageExceptionForNoGrade() throws Exception {
         report.getPrimaryAdverseEvent().setGrade(null);
+        assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
             fail("Exception not thrown");
@@ -55,6 +57,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     
     public void testNotificationMessageExceptionForNoTerm() throws Exception {
         report.getPrimaryAdverseEvent().setCtcTerm(null);
+        assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
             fail("Exception not thrown");
