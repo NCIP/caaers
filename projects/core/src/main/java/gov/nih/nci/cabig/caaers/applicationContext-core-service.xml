@@ -21,7 +21,7 @@
     <bean id="participantService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl"/>
     <bean id="interoperationService" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.service.MockInteroperationService"/>
+          class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 
 	<bean id="connectionFactory"
 		class="org.apache.activemq.ActiveMQConnectionFactory">
@@ -31,14 +31,14 @@
 	<bean id="sendQueueDestination"
 		class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>bridge.output.async</value>
+			<value>ae-message.inputQueue</value>
 		</constructor-arg>
 	</bean>
 
 	<bean id="recvQueueDestination"
 		class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
-			<value>esb.output</value>
+			<value>ae-message.outputQueue</value>
 		</constructor-arg>
 	</bean>
 
