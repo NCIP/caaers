@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
+import gov.nih.nci.cabig.caaers.tools.editors.GridIdentifiableDaoBasedEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.ServletRequestDataBinder;
 
@@ -41,6 +43,12 @@ public class ControllerTools {
         ServletRequestDataBinder binder, String field, CaaersDao<?> dao
     ) {
         binder.registerCustomEditor(dao.domainClass(), field, new DaoBasedEditor(dao));
+    }
+
+    public static void registerGridDomainObjectEditor(
+        ServletRequestDataBinder binder, String field, GridIdentifiableDao<?> dao
+    ) {
+        binder.registerCustomEditor(dao.domainClass(), field, new GridIdentifiableDaoBasedEditor(dao));
     }
 
     public static <E extends Enum<E>> void registerEnumEditor(

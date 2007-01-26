@@ -11,6 +11,8 @@ import org.springframework.validation.Errors;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author Rhett Sutphin
@@ -34,14 +36,24 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
-        ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
+        ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
+        ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
+        ControllerTools.registerGridDomainObjectEditor(binder, "assignment", assignmentDao);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected boolean isFormSubmission(HttpServletRequest request) {
-        return request.getParameter("participant") != null
-            && request.getParameter("study") != null;
+        Set<String> paramNames = request.getParameterMap().keySet();
+        boolean hasParticipant
+            =  paramNames.contains("participant")
+            || paramNames.contains("mrn")
+            || paramNames.contains("assignment");
+        boolean hasStudy
+            =  paramNames.contains("study") 
+            || paramNames.contains("nciIdentifier")
+            || paramNames.contains("assignment");
+        return hasParticipant && hasStudy;
     }
 
     @Override

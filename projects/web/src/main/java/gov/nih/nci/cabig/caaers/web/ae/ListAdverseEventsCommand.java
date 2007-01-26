@@ -17,6 +17,8 @@ public class ListAdverseEventsCommand {
     static final String PROTOCOL_AUTHORITY_IDENTIFIER_TYPE = "Protocol Authority Identifier";
     static final String MRN_IDENTIFIER_TYPE = "MRN";
 
+    private StudyParticipantAssignment assignment;
+
     private Study study;
     private Participant participant;
 
@@ -37,8 +39,11 @@ public class ListAdverseEventsCommand {
     ////// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
-        if (getParticipant() != null && getStudy() != null) {
-            return assignmentDao.getAssignment(getParticipant(), getStudy());
+        if (assignment != null) {
+            return assignment;
+        } else if (getParticipant() != null && getStudy() != null) {
+            assignment = assignmentDao.getAssignment(getParticipant(), getStudy());
+            return assignment;
         } else {
             return null;
         }
@@ -47,6 +52,8 @@ public class ListAdverseEventsCommand {
     public Study getStudy() {
         if (study != null) {
             return study;
+        } else if (assignment != null) {
+            return assignment.getStudySite().getStudy();
         } else if (nciIdentifier != null) {
             study = studyDao.getByIdentifier(
                 createIdentifierTemplate(PROTOCOL_AUTHORITY_IDENTIFIER_TYPE, nciIdentifier));
@@ -59,6 +66,8 @@ public class ListAdverseEventsCommand {
     public Participant getParticipant() {
         if (participant != null) {
             return participant;
+        } else if (assignment != null) {
+            return assignment.getParticipant();
         } else if (mrn != null) {
             participant = participantDao.getByIdentifier(
                 createIdentifierTemplate(MRN_IDENTIFIER_TYPE, mrn));
@@ -75,7 +84,11 @@ public class ListAdverseEventsCommand {
         return param;
     }
 
-    ////// BEAN PROPERTIES
+    ////// BOUND PROPERTIES
+
+    public void setAssignment(StudyParticipantAssignment assignment) {
+        this.assignment = assignment;
+    }
 
     public void setStudy(Study study) {
         this.study = study;
