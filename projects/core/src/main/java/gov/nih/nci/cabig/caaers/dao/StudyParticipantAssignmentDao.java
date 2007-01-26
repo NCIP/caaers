@@ -11,7 +11,8 @@ import java.util.List;
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
-public class StudyParticipantAssignmentDao extends CaaersDao<StudyParticipantAssignment> {
+public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyParticipantAssignment> {
+    @Override
     public Class<StudyParticipantAssignment> domainClass() {
         return StudyParticipantAssignment.class;
     }
