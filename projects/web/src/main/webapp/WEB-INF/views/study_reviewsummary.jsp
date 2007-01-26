@@ -13,7 +13,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <style type="text/css">
-        .label { width: 12em; padding: 1px; }
+       .label { width: 12em; padding: 1px;  margin-right: 0.5em; } 
+	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 </style>
 
 <script language="JavaScript" type="text/JavaScript">
@@ -43,13 +44,13 @@ field.value="";
 		<input type="hidden" name="_finish" value="true"/>
 		
 		<h3> <strong> Study Details </strong> </h3>		
-		<table  width="60%" border="0" cellspacing="0" cellpadding="0">
+		<table border="0" cellspacing="0" cellpadding="1" id="studyDetails">
 
 		<tr>
 			<td class="label" align="right">
 				<form:label path="shortTitle">Short Title:</form:label>
 			</td>
-			<td>
+			<td align="left">
 				<form:label path="shortTitle">${command.shortTitle}</form:label>
 			</td>
 		</tr>
@@ -159,7 +160,7 @@ field.value="";
 			
 		<h3><strong>Study Site</strong></h3>
 
-		<table  width="29%" border="0" cellspacing="0" cellpadding="0">
+		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
 			<td class="label" align="right">
 				<form:label
