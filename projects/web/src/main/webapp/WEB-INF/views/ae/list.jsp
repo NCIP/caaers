@@ -78,8 +78,7 @@
         <ec:column property="primaryAdverseEvent.grade.code" title="Grade"/>
         <ec:column property="primaryAdverseEvent.attribution.code" title="Attribution"/>
         <ec:column title="Notify PSC" sortable="false" filterable="false" property="dc">
-            <%-- this logic should go elsewhere --%>
-            <c:if test="${not (empty report.primaryAdverseEvent.ctcTerm or empty report.primaryAdverseEvent.detectionDate)}">
+            <c:if test="${report.isNotificationMessagePossible}">
                 <span class="notify-unit" id="notify-unit-${report.id}">
                     <a id="notify-${report.id}" class="notify" href="#">Notify</a>
                     <tags:indicator id="notify-indicator-${report.id}"/>
