@@ -78,7 +78,7 @@
         <ec:column property="primaryAdverseEvent.grade.code" title="Grade"/>
         <ec:column property="primaryAdverseEvent.attribution.code" title="Attribution"/>
         <ec:column title="Notify PSC" sortable="false" filterable="false" property="dc">
-            <c:if test="${report.isNotificationMessagePossible}">
+            <c:if test="${report.notificationMessagePossible}">
                 <span class="notify-unit" id="notify-unit-${report.id}">
                     <a id="notify-${report.id}" class="notify" href="#">Notify</a>
                     <tags:indicator id="notify-indicator-${report.id}"/>
