@@ -29,7 +29,7 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new ListAdverseEventsCommand(assignmentDao);
+        return new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao);
     }
 
     @Override
@@ -62,16 +62,8 @@ public class ListAdverseEventsController extends SimpleFormController {
         this.assignmentDao = assignmentDao;
     }
 
-    public ParticipantDao getParticipantDao() {
-        return participantDao;
-    }
-
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
-    }
-
-    public StudyDao getStudyDao() {
-        return studyDao;
     }
 
     public void setStudyDao(StudyDao studyDao) {
