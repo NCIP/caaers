@@ -49,17 +49,18 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @Transient
     public String getNotificationMessage() {
-        if (getPrimaryAdverseEvent() != null) {
-            CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
-            String other = term.isOtherRequired()
-                ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
-            return String.format("Grade %d adverse event with term %s%s",
-                getPrimaryAdverseEvent().getGrade().getCode(),
-                term.getFullName(), other
-            );
-        } else {
+        AdverseEvent ae = getPrimaryAdverseEvent();
+        if (ae == null || ae.getGrade() == null || ae.getCtcTerm() == null) {
             throw new CaaersSystemException(
                 "Cannot create notification message until primary AE is filled in");
+        } else {
+            CtcTerm term = ae.getCtcTerm();
+            String other = term.isOtherRequired()
+                ? String.format(" (%s)", ae.getDetailsForOther()) : "";
+            return String.format("Grade %d adverse event with term %s%s",
+                ae.getGrade().getCode(),
+                term.getFullName(), other
+            );
         }
     }
 

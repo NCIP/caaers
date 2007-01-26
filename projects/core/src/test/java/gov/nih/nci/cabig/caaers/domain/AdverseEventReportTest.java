@@ -33,8 +33,28 @@ public class AdverseEventReportTest extends CaaersTestCase {
         assertEquals("Grade 2 adverse event with term Term - Select (other)", report.getNotificationMessage());
     }
     
-    public void testExceptionForNoAe() throws Exception {
+    public void testNotificationMessageExceptionForNoAe() throws Exception {
         report.setPrimaryAdverseEvent(null);
+        try {
+            report.getNotificationMessage();
+            fail("Exception not thrown");
+        } catch (CaaersSystemException cse) {
+            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+        }
+    }
+
+    public void testNotificationMessageExceptionForNoGrade() throws Exception {
+        report.getPrimaryAdverseEvent().setGrade(null);
+        try {
+            report.getNotificationMessage();
+            fail("Exception not thrown");
+        } catch (CaaersSystemException cse) {
+            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+        }
+    }
+    
+    public void testNotificationMessageExceptionForNoTerm() throws Exception {
+        report.getPrimaryAdverseEvent().setCtcTerm(null);
         try {
             report.getNotificationMessage();
             fail("Exception not thrown");
