@@ -44,14 +44,9 @@ public class JmsServiceImpl implements MessageListener{
          */
         try {
             TextMessage message = session.createTextMessage();
-            System.out.println("XML Payload....");
 			message.setText(xml);
-            /*
-             * Send a non-text control message indicating end of messages.
-             */
-			System.out.println("sending jms....");
+            // Send a non-text control message indicating end of messages.
             producer.send(message);
-            System.out.println("jms sent....");
         }catch(Exception e){
         	throw new BroadcastException(e.getMessage(),e);
         }
@@ -66,13 +61,10 @@ public class JmsServiceImpl implements MessageListener{
 	}
 	public void onMessage(Message msg){
 		// TODO Auto-generated method stub
-		System.out.println("jms recieved..");
 		TextMessage message=null;
         if (msg instanceof TextMessage) {
 			message = (TextMessage) msg;
-	        System.out.println("XML Payload....");
 	        try {
-				System.out.println(message.getText());
 				messages.add(message.getText());
 			} catch (JMSException e) {
 				// TODO Auto-generated catch block
@@ -84,12 +76,10 @@ public class JmsServiceImpl implements MessageListener{
 	}
 	
 	public void initialize() throws BroadcastException{
-        System.out.println("initializing esb jms client....");
 		if(connectionFactory==null){
 			throw new BroadcastException("JMS Connection Factory not provided..");
 		}
         try {
-            System.out.println("creating connection and session....");
             connection = connectionFactory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             if(sendQueue!=null){
@@ -100,15 +90,15 @@ public class JmsServiceImpl implements MessageListener{
             if(recvQueue!=null){
                 consumer = session.createConsumer(recvQueue);
                 consumer.setMessageListener(this);
-                System.out.println("starting connection....");
                 connection.start();
-                System.out.println("connection started and subscriber registered....");
             }else{
                 System.out.println("no recieve queue provided....");
             }
         }
         catch (JMSException e) {
-            throw new BroadcastException("Exception occurred while registering: " ,e);
+            //throw new BroadcastException("Exception occurred while registering: " ,e);
+        	//Consuming this exception here....
+        	System.out.println(e.getMessage());
         }catch (Exception e) {
         	throw new BroadcastException("Exception occurred while registering: " ,e);
         }
