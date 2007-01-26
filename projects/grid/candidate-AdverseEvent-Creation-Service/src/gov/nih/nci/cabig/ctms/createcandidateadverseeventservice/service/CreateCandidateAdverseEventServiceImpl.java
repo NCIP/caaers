@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.ctms.createcandidateadverseeventservice.service;
 
 import gov.nih.nci.caaers.grid.beans.StudySubjectAssignment;
 import gov.nih.nci.cabig.caaers.api.AdverseEventService;
+import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Site;
@@ -44,6 +45,7 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 		Identifier studyId = new Identifier();
 		studyId.setSource(study.getAssigningAuthority());
 		studyId.setType(study.getName());
+		studyId.setValue(study.getIdentifier());
 		String mrn = studySubject.getStudySubjectIdentifier();
 		caaersStudy.addIdentifier(studyId);
 		
@@ -74,6 +76,9 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 			gov.nih.nci.caaers.grid.beans.LabTest test = tests[i];
 			gov.nih.nci.caaers.grid.beans.LabResult result = test.getLabResult();
 			lab.setName(test.getCode());
+			LabValue nadirLabValue = new LabValue();
+			nadirLabValue.setValue(result.getTextResult());
+			lab.setNadir(nadirLabValue);
 			lab.setUnits(result.getUnitOfMeasureCode());
 			labs.add(lab);
 			
