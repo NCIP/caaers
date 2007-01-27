@@ -22,6 +22,8 @@ public class Configuration extends HibernateDaoSupport {
         PSC_BASE_URL = new ConfigurationProperty.Text("pscBaseUrl");
     public static final ConfigurationProperty<String>
         LABVIEWER_BASE_URL = new ConfigurationProperty.Text("labViewerBaseUrl");
+    public static final ConfigurationProperty<String>
+        ESB_URL = new ConfigurationProperty.Text("esbUrl");
 
     private java.util.Map<String, Object> map;
     private Properties defaults;

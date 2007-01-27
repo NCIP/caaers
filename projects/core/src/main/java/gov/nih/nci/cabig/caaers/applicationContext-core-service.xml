@@ -28,7 +28,12 @@
 		<property name="brokerURL" value="tcp://10.10.10.2:61616" />
 	</bean>
 
-	<bean id="sendQueueDestination"
+    <!-- ALTERNATIVE
+    <bean id="connectionFactory" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersConnectionFactory"/>
+    -->
+
+    <bean id="sendQueueDestination"
 		class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg>
 			<value>ae-message.inputQueue</value>
