@@ -54,11 +54,14 @@ public class DefaultStudyService implements StudyService {
      * @see gov.nih.nci.cabig.caaers.api.StudyService#assignParticipant(gov.nih.nci.cabig.caaers.domain.Study, gov.nih.nci.cabig.caaers.domain.Participant, gov.nih.nci.cabig.caaers.domain.Site)
      */
     public StudyParticipantAssignment assignParticipant(Study study, Participant participant,
-                    Site site) {
+                    Site site, String registrationGridId) {
 
         
         
         StudyParticipantAssignment newAssignment = new StudyParticipantAssignment();
+        if (registrationGridId != null){
+            newAssignment.setGridId(registrationGridId);
+        }
         ParameterLoader loader = new ParameterLoader(study, site);
 
         Participant loadedParticipant = load(participant, getParticipantDao(), false);
