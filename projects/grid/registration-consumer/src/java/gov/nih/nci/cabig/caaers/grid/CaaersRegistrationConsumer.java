@@ -6,11 +6,13 @@ package gov.nih.nci.cabig.caaers.grid;
 import java.rmi.RemoteException;
 
 import gov.nih.nci.cabig.caaers.api.StudyService;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.common.RegistrationConsumer;
+import gov.nih.nci.cabig.ctms.grid.IdentifierType;
 import gov.nih.nci.cabig.ctms.grid.ParticipantType;
 import gov.nih.nci.cabig.ctms.grid.RegistrationType;
 import gov.nih.nci.cabig.ctms.stubs.types.InvalidRegistration;
@@ -62,6 +64,16 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         participant.setFirstName(partBean.getFirstName());
         participant.setLastName(partBean.getLastName());
         participant.setRace(partBean.getRaceCode());
+        
+        if(partBean.getIdentifier() != null) {
+        	Identifier identifier = new Identifier();
+        	for(int i = 0; i < partBean.getIdentifier().length; i++) {
+        		IdentifierType identifierType = partBean.getIdentifier()[i];
+        		identifier.setSource(identifierType.getSource());
+        		identifier.setType(identifierType.getType());
+        		identifier.setValue(identifierType.getValue());
+        	}
+        }
         
         StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site);
         logger.debug("Created assignment " + assignment.getGridId());
