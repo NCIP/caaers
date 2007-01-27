@@ -4,6 +4,8 @@
 package gov.nih.nci.cabig.caaers.grid;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -66,13 +68,17 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         participant.setRace(partBean.getRaceCode());
         
         if(partBean.getIdentifier() != null) {
-        	Identifier identifier = new Identifier();
+        	Identifier identifier = null;
+        	List identifiersList =  new ArrayList();
         	for(int i = 0; i < partBean.getIdentifier().length; i++) {
+        		identifier = new Identifier();
         		IdentifierType identifierType = partBean.getIdentifier()[i];
         		identifier.setSource(identifierType.getSource());
         		identifier.setType(identifierType.getType());
         		identifier.setValue(identifierType.getValue());
+        		identifiersList.add(identifier);
         	}
+        	participant.setIdentifiers(identifiersList);
         }
         
         StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site);
