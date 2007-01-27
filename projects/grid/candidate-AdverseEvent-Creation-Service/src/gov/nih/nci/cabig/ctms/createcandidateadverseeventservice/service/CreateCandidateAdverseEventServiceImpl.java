@@ -43,8 +43,8 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 		//Constructing caAERS Study
 		Study caaersStudy = new Study();
 		Identifier studyId = new Identifier();
-		studyId.setSource(study.getAssigningAuthority());
-		studyId.setType(study.getName());
+		//studyId.setSource(study.getAssigningAuthority());
+		//studyId.setType(study.getName());
 		studyId.setValue(study.getIdentifier());
 		String mrn = studySubject.getStudySubjectIdentifier();
 		caaersStudy.addIdentifier(studyId);
