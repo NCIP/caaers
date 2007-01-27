@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cabig.caaers.api;
 
@@ -16,7 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
- * 
+ *
  */
 public class StudyServiceTest extends CaaersDbTestCase {
 
@@ -27,12 +27,12 @@ public class StudyServiceTest extends CaaersDbTestCase {
         String fileName = "testdata/StudyServiceTest.xml";
         return fileName;
     }
-    
+
     public void testCreateAssignNewParticipant() {
 
         try {
             int studySiteId = -3001;
-            String siteGridId = "gridSite";            
+            String siteGridId = "gridSite";
             Integer participantId = null;
             {
                 Site site = siteDao.getByGridId(siteGridId);
@@ -52,14 +52,14 @@ public class StudyServiceTest extends CaaersDbTestCase {
                 StudyService svc = (StudyService) getApplicationContext()
                                 .getBean("studyServiceAPI");
                 StudyParticipantAssignment assignment = svc.assignParticipant(study, participant,
-                                site);
+                                site, "gridRegistration");
                 assertNotNull("Assignment is null", assignment);
                 assertNotNull("Assignment not flushed", assignment.getId());
                 assertNotNull("Assignment gridId is null", assignment.getGridId());
                 participantId = assignment.getParticipant().getId();
             }
             interruptSession();
-            
+
             Participant loaded = participantDao.getById(participantId.intValue());
             assertNotNull("Participant reloading failed", loaded);
             StudyParticipantAssignment newAssignment = null;
