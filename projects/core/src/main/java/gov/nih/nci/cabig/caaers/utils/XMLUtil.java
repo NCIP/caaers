@@ -24,7 +24,8 @@ public class XMLUtil {
 		} catch (JiBXException e) {
 			throw new CaaersSystemException(e.getMessage(), e);
 		}
-		return writer.toString();
+		//String returnString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
 	}
 
 }
