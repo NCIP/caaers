@@ -137,20 +137,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                 <entry key="identifiersType">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Protocol Authority" />
-                            <property name="desc" value="Protocol Authority" />
+                            <property name="code" value="Protocol Authority Identifier" />
+                            <property name="desc" value="Protocol Authority Identifier" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Co-ordinating Center" />
-                            <property name="desc" value="Co-ordinating Center" />
+                            <property name="code" value="Co-ordinating Center Identifier" />
+                            <property name="desc" value="Co-ordinating Center Identifier" />
  			           </bean>
                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Site" />
-                            <property name="desc" value="Site" />
+                            <property name="code" value="Site Identifier" />
+                            <property name="desc" value="Site Identifier" />
                        </bean>
                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Site IRB" />
-                            <property name="desc" value="Site IRB" />
+                            <property name="code" value="Site IRB Identifier" />
+                            <property name="desc" value="Site IRB Identifier" />
+                       </bean>                        
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="ClinicalTrails.gov Identifier" />
+                            <property name="desc" value="ClinicalTrails.gov Identifier" />
+                       </bean>                        
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Grid Identifier" />
+                            <property name="desc" value="Grid Identifier" />
+                       </bean>                        
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="C3D Identifier" />
+                            <property name="desc" value="C3D Identifier" />
                        </bean>                        
                     </list>
                 </entry>                             
