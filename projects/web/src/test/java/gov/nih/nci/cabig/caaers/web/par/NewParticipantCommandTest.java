@@ -1,8 +1,9 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.par;
 
 import junit.framework.TestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.Date;
 

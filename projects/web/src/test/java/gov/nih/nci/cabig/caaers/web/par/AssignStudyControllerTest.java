@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.web;
+package gov.nih.nci.cabig.caaers.web.par;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
@@ -14,42 +14,41 @@ import java.util.Arrays;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
-import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
+import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
+import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 /**
  * @author Krikor Krumlian
  */
-public class NewParticipantControllerTest extends WebTestCase {
-    private CreateParticipantController controller = new CreateParticipantController();
+public class AssignStudyControllerTest extends WebTestCase {
+    private AssignParticipantController controller = new AssignParticipantController();
     private ParticipantDao participantDao;
     private StudySiteDao   studySiteDao;
+    private ListValues listValues;
 
     protected void setUp() throws Exception {
         super.setUp();
         participantDao = registerMockFor(ParticipantDao.class);
         studySiteDao   = registerMockFor(StudySiteDao.class);
+        controller.setListValues(new ListValues());
         controller.setParticipantDao(participantDao);
         controller.setStudySiteDao(studySiteDao);
     }
-
-    public void testViewOnGet() throws Exception {
-        request.setMethod("GET");
-        ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("createParticipant", mv.getViewName());
-    }
-
+   
     public void testViewOnGoodSubmit() throws Exception {
         request.addParameter("firstName", "Boston");
         request.addParameter("lastName", "Scott");
         request.addParameter("gender", "Male");
         request.addParameter("dateOfBirth", "2006-12-12");
+        request.setParameter("_target1", "");
         
         ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("createParticipant", mv.getViewName());
+        assertEquals("par/reg_participant_search", mv.getViewName());
     }
 
-   private NewParticipantCommand postAndReturnCommand() throws Exception {
+   private AssignParticipantStudyCommand postAndReturnCommand() throws Exception {
         request.setMethod("POST");
         participantDao.save((Participant) notNull());  
         expectLastCall().atLeastOnce().asStub();
@@ -60,6 +59,6 @@ public class NewParticipantControllerTest extends WebTestCase {
 
         Object command = mv.getModel().get("command");
         assertNotNull("Command not present in model: " + mv.getModel(), command);
-        return (NewParticipantCommand) command;
+        return (AssignParticipantStudyCommand) command;
     }
 }
