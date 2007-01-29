@@ -234,6 +234,7 @@
             </fileset>
             <fileset dir="../websso/lib/main">
                 <include name="**/*.jar"/>
+                <exclude name="spring*.jar"/>
             </fileset>
             <fileset dir="../..">
                 <include name="caaers-core.jar"/>
