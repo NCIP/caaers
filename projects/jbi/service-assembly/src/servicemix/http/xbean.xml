@@ -2,12 +2,13 @@
 	xmlns:http="http://servicemix.apache.org/http/1.0"
 	xmlns:ctms="http://demo.ctms.nci.nih.gov/config/1.0"
 	xmlns:grid="http://localhost:8083/ctmsi"
-	xmlns:svcsec="http://security.introduce.cagrid.nci.nih.gov">
+	xmlns:svcsec="http://security.introduce.cagrid.nci.nih.gov"
+	xmlns:concat="http://concat.cagrid.nci.nh.gov">
 	
 <classpath>
 	<location>.</location>
 </classpath>
-
+<!--
 <http:endpoint 
 	service="ctms:SimpleServiceConsumer" 
 	endpoint="simpleServiceConsumer" 
@@ -27,7 +28,48 @@
 	soap="true"
 	wsdlResource="http://localhost:8080/SimpleService/services/SimpleServiceSOAP?wsdl"
 	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>
+	-->
+	<!--
+<http:endpoint 
+	service="ctms:SecureServiceConsumer" 
+	endpoint="secureServiceConsumer" 
+	targetService="ctms:SecureServiceProvider"
+	targetEndpoint="secureServiceProvider"
+	role="consumer" 
+	locationURI="http://localhost:8081/ctmsi/SecureService" 
+	soap="true" 
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>
 
+<http:endpoint 
+	service="ctms:SecureServiceProvider" 
+	endpoint="secureServiceProvider" 
+	role="provider" 
+	locationURI="http://localhost:8085/SecureService/services/SecureServiceSOAP" 
+	soap="true"
+	wsdlResource="http://localhost:8080/SecureService/services/SecureServiceSOAP?wsdl"
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>	
+	-->
+	
+	
+<http:endpoint 
+	service="concat:ConcatServiceConsumer" 
+	endpoint="concatServiceConsumer" 
+	role="consumer" 
+	locationURI="http://localhost:8081/ctmsi/ConcatService" 
+	soap="true" 
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"
+	defaultOperation="{http://concat.cagrid.nci.nih.gov/ConcatService}concat"/>
+
+<http:endpoint 
+	service="concat:ConcatServiceProvider" 
+	endpoint="concatServiceProvider" 
+	role="provider" 
+	locationURI="http://localhost:8085/wsrf/services/cagrid/ConcatService" 
+	soap="true"
+	wsdlResource="http://localhost:8080/wsrf/services/cagrid/ConcatService?wsdl"
+	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>	
+
+<!--
 
 <http:endpoint 
 	service="grid:CaBIOServiceConsumer" 
@@ -46,5 +88,6 @@
 	soap="true"
 	wsdlResource="http://localhost:8082/wsrf/services/cagrid/CaBIOSvc?wsdl"
 	defaultMep="http://www.w3.org/2004/08/wsdl/in-out"/>	
+	-->
 
 </beans>

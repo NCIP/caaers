@@ -4,7 +4,10 @@
 
 <eip:pipeline service="ctms:pipeline" endpoint="endpoint">
   <eip:transformer>
+  	<!--
     <eip:exchange-target service="ctms:routing-slip" />
+    -->
+    <eip:exchange-target service="ctms:jaas-routing-slip" />
   </eip:transformer>
   <eip:target>
     <eip:exchange-target service="ctms:jms-out" />
@@ -24,6 +27,13 @@
   <eip:targets>
   	<eip:exchange-target service="ctms:http-header-trans" />
   	<eip:exchange-target service="ctms:SimpleServiceProvider" />
+  </eip:targets>
+</eip:static-routing-slip>
+
+<eip:static-routing-slip service="ctms:jaas-routing-slip" endpoint="endpoint">
+  <eip:targets>
+  	<eip:exchange-target service="ctms:proxy2jaas" />
+  	<eip:exchange-target service="ctms:jaas2proxy" />
   </eip:targets>
 </eip:static-routing-slip>
 

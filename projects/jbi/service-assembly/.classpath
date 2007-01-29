@@ -78,5 +78,6 @@
 	<classpathentry kind="lib" path="test/lib/activeio-core-3.0-beta4.jar"/>
 	<classpathentry kind="lib" path="ext/lib/commons-discovery.jar"/>
 	<classpathentry kind="lib" path="ext/lib/caGrid-1.0-authentication-service-common.jar"/>
+	<classpathentry kind="lib" path="lib/caxchange-common-0.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

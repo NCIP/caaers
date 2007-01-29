@@ -166,7 +166,7 @@
 	
 	<target name="jar-grid-proxy-trans" depends="compile">
 		<jar basedir="${build.classes.dir}" destfile="${build.dir}/grid-proxy-trans.jar"
-			includes="**/GridProxy**.class"/>
+			includes="**/*GridProxy*.class"/>
 	</target>
 	
 	<target name="jar-data-service-processor" depends="compile">
@@ -194,6 +194,9 @@
 		<copy todir="${src.sm.dir}/grid-proxy-trans/lib" overwrite="true">
 			<fileset dir="${build.dir}">
 				<include name="grid-proxy-trans.jar"/>
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="caxchange-common-0.5.jar"/>
 			</fileset>
 		</copy>		
 		<zip destfile="${build.su.dir}/grid-proxy-trans-su.zip">

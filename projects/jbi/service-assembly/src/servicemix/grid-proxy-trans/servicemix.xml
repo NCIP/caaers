@@ -3,6 +3,7 @@
 	     
 	<classpath>
 		<location>lib/grid-proxy-trans.jar</location>
+		<location>lib/caxchange-common-0.5.jar</location>
 	</classpath>
 	                     
 	<sm:serviceunit id="jbi">
@@ -25,6 +26,23 @@
 		      </bean>
 		      
 
+		    </sm:component>
+		  </sm:activationSpec>
+		  
+		  <sm:activationSpec componentName="jaas2proxy"
+                             service="ctms:jaas2proxy">
+		    <sm:component>
+		      <bean class="gov.nih.nci.ctms.demo.trans.JAASSubject2GridProxy"/>
+		    </sm:component>
+		  </sm:activationSpec>
+		  
+		  <sm:activationSpec componentName="proxy2jaas"
+                             service="ctms:proxy2jaas">
+		    <sm:component>
+		      <bean class="gov.nih.nci.ctms.demo.trans.GridProxy2JAASSubject">
+		      	<property name="proxyXPath" value="/msg/credentials/proxy/text()"/>
+		      	<property name="contentXPath" value="/msg/content"/>
+		      </bean>
 		    </sm:component>
 		  </sm:activationSpec>
 

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.jbi.messaging.ExchangeStatus;
 import javax.jbi.messaging.InOut;
@@ -31,12 +32,19 @@ import org.xml.sax.SAXException;
  */
 public class HttpHeaderTrans extends ComponentSupport implements MessageExchangeListener {
 
-    private static final QName SERVICE_QNAME = new QName("http://localhost:8083/ctmsi",
-                    "CaBIOServiceProvider");
-
     private static final String CORRELATION_ID = "jp.props.corr_id";
 
     private static Map exchanges = new HashMap();
+    
+    private String targetServiceQName;
+
+    public String getTargetServiceQName() {
+        return targetServiceQName;
+    }
+
+    public void setTargetServiceQName(String targetServiceQName) {
+        this.targetServiceQName = targetServiceQName;
+    }
 
     /*
      * (non-Javadoc)
@@ -54,6 +62,8 @@ public class HttpHeaderTrans extends ComponentSupport implements MessageExchange
     }
 
     private void processResponse(MessageExchange exchange) throws MessagingException {
+        
+        
 
         if (exchange.getStatus() == ExchangeStatus.ACTIVE) {
             
@@ -88,23 +98,24 @@ public class HttpHeaderTrans extends ComponentSupport implements MessageExchange
             String id = exchange.getExchangeId();
             this.exchanges.put(id, exchange);
 
-            InOut inOut = createInOutExchange(SERVICE_QNAME, null, null);
+            InOut inOut = createInOutExchange(QName.valueOf(getTargetServiceQName()), null, null);
             inOut.setProperty(CORRELATION_ID, id);
 
             NormalizedMessage inMsg = getInMessage(exchange);
             removeHeader(inMsg);
             
-            NormalizedMessage msg = inOut.createMessage();
-            String xml = null;
-            try {
-                xml = new SourceTransformer().contentToString(exchange.getMessage("in"));
-            } catch (Exception ex) {
-                throw new MessagingException("Error getting content: " + ex.getMessage(), ex);
-            }
-            System.out.println("XML TO SVC: " + xml);
-            msg.setContent(new StreamSource(new ByteArrayInputStream(xml.getBytes())));
+//            NormalizedMessage msg = inOut.createMessage();
+//            String xml = null;
+//            try {
+//                xml = new SourceTransformer().contentToString(inMsg);
+//            } catch (Exception ex) {
+//                throw new MessagingException("Error getting content: " + ex.getMessage(), ex);
+//            }
+//            System.out.println("XML TO SVC: " + xml);
+//            msg.setContent(new StreamSource(new ByteArrayInputStream(xml.getBytes())));
             
-            inOut.setInMessage(msg);
+//            inOut.setInMessage(msg);
+            inOut.setInMessage(inMsg);
             send(inOut);
 
         }
@@ -116,12 +127,27 @@ public class HttpHeaderTrans extends ComponentSupport implements MessageExchange
             Object value = msg.getProperty(name);
 
             if ("javax.jbi.messaging.protocol.headers".equals(name)) {
-                System.out.println("Class: " + value.getClass().getName());
                 Map headers = (Map) value;
                 headers.remove("Transfer-Encoding");
             }
 
-            System.out.println("### " + name + "=" + value + " ###");
+            if("org.apache.servicemix.soap.headers".equals(name)){
+                Map headers = (Map)value;
+                for(Iterator j = headers.entrySet().iterator(); j.hasNext();){
+                    Entry entry = (Entry)j.next();
+                    Object entryKey = entry.getKey();
+                    Object entryValue = entry.getValue();
+                    String out = entryKey.toString();
+                    if(entryValue != null){
+                        out += "=" + entryValue.getClass().getName();
+                    }else{
+                        out += "=null";
+                    }
+                    System.out.println("SOAP HEADER: " + out);
+                }
+            }
+            
+//            System.out.println("### " + name + "=" + value + " ###");
         }
     }
 
