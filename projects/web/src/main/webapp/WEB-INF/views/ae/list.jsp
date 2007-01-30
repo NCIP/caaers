@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -50,9 +51,10 @@
 </p>
 </c:if>
 
+<c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
     items="command.assignment.aeReports"
-    var="report"
+    var="report" imagePath="${ecImagePath}"
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="80%"
     style="" styleClass="">
