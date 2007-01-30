@@ -63,6 +63,7 @@ function updateTargetPage(s){
 <chrome:body title="Study Search results">
 <form:form  method="post">
 	<tags:tabFields tab="${tab}" />
+	<tags:errors path="*"/>
 				<ec:table items="command.studies" var="study"
 					action="${pageContext.request.contextPath}/pages/newParticipant"
 					imagePath="${pageContext.request.contextPath}/images/table/*.gif"
