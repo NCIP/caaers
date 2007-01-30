@@ -32,6 +32,7 @@ public class AdverseEvent extends AbstractDomainObject {
     private Grade grade;
     private Hospitalization hospitalization;
     private Boolean expected;
+    private String comments;
 
     private AdverseEventReport report;
     private Date detectionDate;
@@ -98,5 +99,13 @@ public class AdverseEvent extends AbstractDomainObject {
 
     public void setExpected(Boolean expected) {
         this.expected = expected;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

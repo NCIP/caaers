@@ -57,5 +57,6 @@
         ctc_term_id="3007"
         hospitalization_code="0"
         expected="1"
+        comments="That was some big AE"
         />
 </dataset>

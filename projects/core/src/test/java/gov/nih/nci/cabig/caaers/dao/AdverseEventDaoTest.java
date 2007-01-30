@@ -29,5 +29,6 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong term", 3007, (int) loaded.getCtcTerm().getId());
         assertEquals("Wrong hosp.", Hospitalization.NONE, loaded.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, loaded.getExpected());
+        assertEquals("Wrong comments", "That was some big AE", loaded.getComments());
     }
 }
