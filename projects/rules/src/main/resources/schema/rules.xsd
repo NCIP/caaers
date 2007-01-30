@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/v1.0" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           elementFormDefault="qualified" 
+           targetNamespace="http://caaers.cabig.nci.nih.gov/rules/v1.0">
+
+	<xs:element name="ruleSet">
+		<xs:complexType>
+			<xs:sequence>
+				<!-- UUID -->
+				<xs:element name="id" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="name"/>
+				<!-- DEV, PROD, APPROVED Etc.-->
+				<xs:element name="status"/> 
+				<xs:element name="import"  minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element> 
+
+	<xs:element name="rule">
+	<xs:complexType>
+	  <xs:sequence>
+	     <xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
+	     <xs:element ref="rules:condition"/>
+	     <xs:element ref="rules:action"/>
+	  </xs:sequence>
+	  <xs:attribute name="name" type="xs:string" use="required"/>    
+	</xs:complexType>
+	    <xs:key name="ruleName">
+	      <xs:selector xpath="rules:rule"/>
+	      <xs:field xpath="@name"/>
+	    </xs:key>
+    </xs:element>
+
+	<xs:element name="rule-attribute">
+	    <xs:complexType>
+	      <xs:attribute name="name" type="xs:string" use="required"/>    
+	      <xs:attribute name="value" type="xs:string" use="required"/>      
+	    </xs:complexType>
+	</xs:element>
+
+  <xs:element name="condition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:and" minOccurs="0" maxOccurs="unbounded"/>        
+        <xs:element ref="rules:or"  minOccurs="0" maxOccurs="unbounded"/>                      
+        <xs:element ref="rules:not" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="rules:exists" minOccurs="0" maxOccurs="unbounded"/>                
+        <xs:element ref="rules:eval" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="rules:column" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="action">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="content"/>
+		<xs:element name="type" default="AE"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="and">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>        
+        <xs:element ref="rules:or" maxOccurs="unbounded" minOccurs="0"/>                      
+        <xs:element ref="rules:not" maxOccurs="unbounded" minOccurs="0"/>                
+        <xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
+        <xs:element ref="rules:eval" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="rules:column" maxOccurs="unbounded" minOccurs="0"/>        
+      </xs:sequence>            
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="or">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>        
+        <xs:element ref="rules:or" maxOccurs="unbounded" minOccurs="0"/>                      
+        <xs:element ref="rules:not" maxOccurs="unbounded" minOccurs="0"/>                
+        <xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
+        <xs:element ref="rules:eval" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:element ref="rules:column" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>             
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="not">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:column"/>        
+      </xs:sequence>       
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="exists">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:column"/>        
+      </xs:sequence>       
+    </xs:complexType>
+  </xs:element>
+   
+    <xs:element name="eval" type="xs:string" />
+      
+	<xs:element name="column">
+	<xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rules:field-binding" maxOccurs="unbounded" minOccurs="0"/>        
+<!--
+        <xs:element ref="rules:literal"/>                      
+        <xs:element ref="rules:predicate"/>                
+        <xs:element ref="rules:return-value"/>                
+        <xs:element ref="rules:bound-variable"/>   
+-->
+      </xs:sequence>   
+      <xs:attribute name="identifier" type="xs:string" use="optional"/>                
+      <xs:attribute name="object-type" type="xs:string" use="required"/>   
+
+    </xs:complexType>
+	</xs:element>
+
+    <xs:element name="field-binding">
+    	<xs:complexType>
+      		<xs:attribute name="field-name" type="xs:string" use="required"/>    
+      		<xs:attribute name="identifier" type="xs:string" use="required"/>      
+    	</xs:complexType>
+	</xs:element> 
+
+    
+</xs:schema>

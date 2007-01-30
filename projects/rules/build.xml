@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<project name="caaers-rules" default="all" basedir=".">
+    
+	<property name="src-dir.main"      value="src/main" />
+	<property name="src-dir.java"      value="src/main/java" />
+	<property name="src-dir.unit-test" value="src/test/java" />
+	<property name="src-dir.resources" value="${src-dir.main}/resources" />
+
+	<property name="build-dir.main"      value="build/main/classes"/>
+	<property name="build-dir.unit-test" value="build/test/classes"/>
+
+	<property name="jar-name.client" value="${basedir}/../../caaers-rules-client.jar"/>  
+	<property name="jar-name.main" value="${basedir}/../../caaers-rules.jar"/>
+	<property name="jar-name.unit-test" value="${basedir}/../../caaers-rules-testing.jar"/>
+
+	<!-- CLASSPATHS -->
+    
+	<path id="cp.compiled-source">
+		<pathelement location="${build-dir.main}"/>
+		<pathelement location="${build-dir.main}/generated"/>
+	</path>
+
+	<path id="cp.jdbc">
+		<fileset dir="db/lib">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="cp.main">
+		<path refid="cp.compiled-source"/>
+		<fileset dir="lib/main">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="cp.unit-test">
+		<path refid="cp.main"/>
+		<path refid="cp.jdbc"/>
+		<pathelement location="${build-dir.unit-test}"/>
+		<fileset dir="lib/test">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="cp.bering">
+		<path refid="cp.jdbc"/>
+		<fileset dir="tools/bering">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<!-- BASE TARGETS -->
+
+	<target name="default-properties">
+		<property name="test.failfast" value="false"/>
+		<property name="config.database" value="caaers"/>
+	</target>
+
+	<target name="init" depends="default-properties">
+		<mkdir dir="${build-dir.main}"/>
+		<mkdir dir="${build-dir.unit-test}"/>
+
+		<property name="config.database.file" value="db/${config.database}.properties"/>
+			<fail message="Database not configured (could not read ${config.database.file}.).  See db/readme.txt.">
+				<condition>
+					<not><available file="${config.database.file}"/></not>
+				</condition>
+			</fail>
+		<property file="${config.database.file}"/>
+		<echo>All database ops for this build will use ${datasource.url}</echo>
+	</target>
+
+	<!-- BUILD TARGETS -->
+
+	<target name="clean">
+		<delete dir="${build-dir.main}"/>
+		<delete dir="${build-dir.unit-test}"/>
+		<delete file="${jar-name.main}"/>
+		<delete file="${jar-name.unit-test}"/>
+	</target>
+
+
+	<target name="all" depends="generate,compile,bind,client"/>
+	
+
+	<target name="generate">
+		<delete dir="build/main/generated-sources" />
+		<mkdir dir="build/main/generated-sources" />
+
+		<java jar="lib/main/jibx/xsd2jibx/xsd2jibx.jar" fork="true" failonerror="true" classpathref="cp.main">
+			<arg line="-d build/main/generated-sources ${src-dir.resources}/schema/rules.xsd"/>
+			<classpath>
+				<pathelement path="lib/main/**/*.jar"/>
+			</classpath>		    
+		</java>
+
+		<delete dir="${build-dir.main}/generated" />
+		<mkdir dir="${build-dir.main}/generated" />
+		<javac destdir="${build-dir.main}/generated" classpathref="cp.main" debug="true" source="1.5">
+		    <src path="build/main/generated-sources"/>
+		</javac>
+
+	</target>
+
+	<target name="resources" description="Copy resources into classpath" depends="init">
+		<copy file="${config.database.file}" tofile="${build-dir.main}/datasource.properties" overwrite="true"/>
+		<copy todir="${build-dir.main}">
+		    <fileset dir="${src-dir.java}">
+			<include name="**/*.xml"/>
+			<include name="**/*.properties"/>
+			<include name="**/*.ftl"/>
+		    </fileset>
+		</copy>
+		<copy todir="${build-dir.unit-test}">
+		    <fileset dir="${src-dir.unit-test}">
+			<include name="**/*.xml"/>
+		    </fileset>
+		</copy>
+	</target>
+	
+	<target name="compile" description="Compile all java source" depends="resources">
+		<javac destdir="${build-dir.main}" classpathref="cp.main"
+		       debug="true" source="1.5">
+		    <src path="${src-dir.java}"/>
+		</javac>
+		<javac destdir="${build-dir.unit-test}" classpathref="cp.unit-test"
+		       debug="true" source="1.5">
+		    <src path="${src-dir.unit-test}"/>
+		</javac>
+	</target>
+
+	<target name="client">
+		<delete dir="${build-dir.main}/client" />
+		<mkdir dir="${build-dir.main}/client" />
+		
+		<copy todir="${build-dir.main}/client">
+			<fileset dir="${build-dir.main}/generated"/>			
+		</copy>
+
+		<copy todir="${build-dir.main}/client">
+			<fileset dir="${build-dir.main}"/>
+		</copy>
+
+		<jar basedir="${build-dir.main}/client" file="${jar-name.client}"/>
+	</target>	
+
+	<target name="bind">
+		<java classname="org.jibx.binding.Compile" fork="true" failonerror="true" classpathref="cp.main">
+			<arg line="build/main/generated-sources/gov/nih/nci/cabig/caaers/rules/v1_0/binding.xml"/>
+			<classpath>
+				<pathelement path="${build-dir.main}/generated"/>
+			</classpath>			
+		</java>	
+		<copy todir="C:\Docume~1\SUJITH\workspace\caaers-rules\bin">
+			<fileset dir="${build-dir.main}/generated"/>
+		</copy>
+	</target>
+
+</project>

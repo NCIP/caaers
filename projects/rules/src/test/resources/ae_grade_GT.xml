@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="gov.nih.nci.cabig.caaers.rules"
+         xmlns="http://drools.org/drools-3.0"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+         xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+         
+	<import name="gov.nih.nci.cabig.caaers.domain.*" />		
+
+	<rule name="Decide AE Type">
+		<rule-attribute name="salience" value="10" />
+		<lhs>
+		       <column object-type="AdverseEvent" identifier="adverseEvent"/>
+		       <eval>adverseEvent.getGrade().getCode() >= Grade.MODERATE.getCode() </eval>
+		</lhs>
+	    <rhs>
+	    		System.out.println("Found a SAE with Grade Greater Than Or Equal To Moderate");
+		</rhs>
+	</rule>
+</package>
