@@ -62,7 +62,6 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             AdverseEvent newEvent = new AdverseEvent();
             newEvent.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
             newEvent.setGrade(Grade.MILD);
-            newEvent.setAttribution(Attribution.PROBABLE);
             newEvent.setCtcTerm(term);
             newEvent.setExpected(Boolean.FALSE);
             newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
@@ -87,7 +86,6 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             assertDayOfDate("Wrong day for loaded time", 2004, Calendar.APRIL, 25, loadedAe.getDetectionDate());
             assertTimeOfDate("Wrong time for loaded time", 12, 10, 0, 0, loadedAe.getDetectionDate());
             assertEquals("Wrong grade", Grade.MILD, loadedAe.getGrade());
-            assertEquals("Wrong attribution", Attribution.PROBABLE, loadedAe.getAttribution());
             assertEquals("Wrong CTC term", 3012, (int) loadedAe.getCtcTerm().getId());
             assertNotNull("No report", loadedAe.getReport());
             assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedAe.getHospitalization());

@@ -30,7 +30,6 @@ public class AdverseEvent extends AbstractDomainObject {
     private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
-    private Attribution attribution;
     private Hospitalization hospitalization;
     private Boolean expected;
 
@@ -73,16 +72,6 @@ public class AdverseEvent extends AbstractDomainObject {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-    }
-
-    @Type(type = "attribution")
-    @Column(name = "attribution_code")
-    public Attribution getAttribution() {
-        return attribution;
-    }
-
-    public void setAttribution(Attribution attribution) {
-        this.attribution = attribution;
     }
 
     public Date getDetectionDate() {
