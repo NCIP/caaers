@@ -232,6 +232,9 @@
             <fileset dir="../core/db/lib">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="../core/tools/csm/lib">
+                <include name="**/*.jar"/>
+            </fileset>
             <fileset dir="../websso/lib/main">
                 <include name="**/*.jar"/>
                 <exclude name="spring*.jar"/>
