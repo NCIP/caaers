@@ -79,8 +79,6 @@ public class Participant extends AbstractDomainObject {
         return name.toString();
     }
     
-    
-    
     // bean methods
     @Column(name= "instituitional_patient_number")
     public String getInstitutionalPatientNumber() {

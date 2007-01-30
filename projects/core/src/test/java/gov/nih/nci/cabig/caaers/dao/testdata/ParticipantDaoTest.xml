@@ -23,6 +23,11 @@
         race="race"
         middle_name="m"
         maiden_name="m"/>
+    <IDENTIFIERS
+        participant_id="-100"
+        value="13js77"
+        source="Hosp"
+        type="MRN"/>
     <SITES
         id="-1001"
         name="New Site"/>

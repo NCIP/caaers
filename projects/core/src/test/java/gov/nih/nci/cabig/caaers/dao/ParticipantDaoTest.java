@@ -20,7 +20,25 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant not found", participant);
         assertEquals("Wrong last name", "Scott", participant.getLastName());
+        assertEquals("Wrong number of identifiers", 1, participant.getIdentifiers().size());
     }
+    
+/*  // TODO: make this test pass
+    public void testGetIsReadOnly() throws Exception {
+        {
+            Participant participant = getDao().getById(-100);
+            assertEquals("Wrong number of identifiers initially", 1, participant.getIdentifiers().size());
+            participant.setIdentifiers(null);
+        }
+
+        interruptSession();
+
+        {
+            Participant participant = getDao().getById(-100);
+            assertEquals("Identifiers incorrectly purged", 1, participant.getIdentifiers().size());
+        }
+    }
+*/
 
     public void testSaveAssignment() throws Exception {
         {
