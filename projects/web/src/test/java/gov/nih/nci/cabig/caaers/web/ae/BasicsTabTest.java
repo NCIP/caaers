@@ -21,10 +21,10 @@ public class BasicsTabTest extends AeTabTestCase {
         assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.grade", "Grade");
     }
 
-    public void testAttributionRequired() throws Exception {
-        primaryAe.setAttribution(null);
+    public void testHospitalizationRequired() throws Exception {
+        primaryAe.setHospitalization(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.attribution", "Attribution");
+        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.hospitalization", "Hospitalization");
     }
 
     public void testCtcTermRequired() throws Exception {

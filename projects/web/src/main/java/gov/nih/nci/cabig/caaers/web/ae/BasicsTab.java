@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -28,20 +29,27 @@ public class BasicsTab extends AeTab {
 
     @Override
     protected void initFields() {
+        addField(MAIN_FIELD_GROUP, new CollectionSelectField(
+            "aeReport.primaryAdverseEvent.grade", "Grade", true,
+                Arrays.asList(Grade.values()), "name", null));
         addField(MAIN_FIELD_GROUP, new DefaultDateField(
             "aeReport.primaryAdverseEvent.detectionDate", "Detection date", true));
         addField(MAIN_FIELD_GROUP, new CollectionSelectField(
-            "aeReport.primaryAdverseEvent.grade", "Grade", true,
-                Arrays.asList(Grade.values()), "name", "string"));
-        addField(MAIN_FIELD_GROUP, new CollectionSelectField(
-            "aeReport.primaryAdverseEvent.attribution", "Attribution", true,
-                Arrays.asList(Attribution.values()), "name", "string"));
+            "aeReport.primaryAdverseEvent.hospitalization", "Hospitalization", true,
+                Arrays.asList(Hospitalization.values()), "name", "displayName"));
+        addField(MAIN_FIELD_GROUP, new BooleanSelectField(
+            "aeReport.primaryAdverseEvent.expected", "Expected", true));
+        addField(MAIN_FIELD_GROUP, new DefaultTextArea(
+            "aeReport.primaryAdverseEvent.comments", "Comments", false));
 
-        AbstractInputField ctcTermField = new AutocompleterField("aeReport.primaryAdverseEvent.ctcTerm", "CTC term", true);
+        AutocompleterField ctcTermField
+            = new AutocompleterField("aeReport.primaryAdverseEvent.ctcTerm", "CTC term", true);
         ctcTermField.setExtraInformation(
-            "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
+            "Type a portion of the CTC term you are looking for.  " +
+            "If you select a category, only terms in that category will be shown.");
         addField(CTC_TERM_FIELD_GROUP, ctcTermField);
-        addField(CTC_OTHER_FIELD_GROUP, new DefaultTextArea("aeReport.primaryAdverseEvent.detailsForOther", "Other (specify)", false));
+        addField(CTC_OTHER_FIELD_GROUP, new DefaultTextArea(
+            "aeReport.primaryAdverseEvent.detailsForOther", "Other (specify)", false));
     }
 
     @Override

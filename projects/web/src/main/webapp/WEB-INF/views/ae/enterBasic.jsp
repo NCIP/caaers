@@ -11,7 +11,7 @@
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
-        var ctcVersion, ctcCategory, initialCtcTerm;
+        var ctcVersion, initialCtcTerm;
         <c:set var="currentCtcTerm" value="${command.aeReport.primaryAdverseEvent.ctcTerm}"/>
         <c:if test="${not empty command.aeReport.primaryAdverseEvent.ctcTerm}">
         initialCtcTerm = {
@@ -30,20 +30,24 @@
         var detailsForOtherId = "${fieldGroups.ctcOther.fields[0].propertyName}"
         var detailsForOtherRowId = "${fieldGroups.ctcOther.fields[0].propertyName}-row"
 
-        function ctcVersionSelector() {
+        function ctcVersionSelector(atLoad) {
             ctcVersion = $F("ctc-version")
             if (ctcVersion) {
                 updateCategories()
-                clearSelectedTerm()
-                AE.slideAndShow("ctc-details")
+                if (atLoad) {
+                    $("ctc-details").show()
+                } else {
+                    clearSelectedTerm()
+                    AE.slideAndShow("ctc-details")
+                }
             } else {
                 AE.slideAndHide("ctc-details")
             }
         }
 
         function ctcCategorySelector() {
+            console.log("category selector")
             clearSelectedTerm();
-            ctcCategory = $("ctc-category")
         }
 
         function updateCategories() {
@@ -69,6 +73,8 @@
         }
 
         function selectTerm(ctcTerm) {
+            console.log("selectTerm")
+
             $A($("ctc-category").options).each(function(opt) {
                 if (opt.value == ctcTerm.category.id) {
                     opt.selected = true
@@ -77,7 +83,11 @@
 
             $(ctcTermId).value = ctcTerm.id
             if (ctcTerm.otherRequired) {
-                AE.slideAndShow(detailsForOtherRowId)
+                if ($("ctc-details").visible()) {
+                    AE.slideAndShow(detailsForOtherRowId)
+                } else {
+                    $(detailsForOtherRowId).show()
+                }
             } else {
                 AE.slideAndHide(detailsForOtherRowId)
                 $(detailsForOtherId).value = ""
@@ -95,7 +105,21 @@
         }
 
         Event.observe(window, "load", function() {
-            Event.observe("ctc-version", "change", ctcVersionSelector)
+            // do this before any of the behaviors are applied to avoid their onChange side effects
+            if (initialCtcTerm) {
+                $A($("ctc-version").options).each(function(opt) {
+                    if (opt.value == initialCtcTerm.category.ctc.id) {
+                        opt.selected = true
+                    }
+                })
+                // select term first to work around a bug in showing the "other" row when the
+                // element is only partially visible
+                selectTerm(initialCtcTerm)
+                ctcVersionSelector(true)
+                $(ctcTermInputId).value = "${currentCtcTerm.fullName}"
+            }
+
+            Event.observe("ctc-version", "change", function() { ctcVersionSelector(false) })
             Event.observe("ctc-category", "change", ctcCategorySelector)
 
             new Autocompleter.DWR(ctcTermInputId, "${fieldGroups.ctcTerm.fields[0].choicesId}",
@@ -105,17 +129,6 @@
                     selectTerm(selectedChoice)
                 }
             })
-
-            if (initialCtcTerm) {
-                $A($("ctc-version").options).each(function(opt) {
-                    if (opt.value == initialCtcTerm.category.ctc.id) {
-                        opt.selected = true
-                    }
-                })
-                ctcVersionSelector()
-                selectTerm(initialCtcTerm)
-                $(ctcTermInputId).value = "${currentCtcTerm.fullName}"
-            }
         })
     </script>
 </head>
@@ -130,9 +143,7 @@
             <tags:errors path="*"/>
     
             <tags:tabFields tab="${tab}"/>
-            <c:forEach items="${fieldGroups.main.fields}" var="field">
-                <tags:renderRow field="${field}"/>
-            </c:forEach>
+
             <div class="row">
                 <div class="label"><label for="ctc-version">CTC version</label></div>
                 <div class="value">
@@ -153,6 +164,12 @@
                 </div>
                 <tags:renderRow field="${fieldGroups.ctcTerm.fields[0]}"/>
                 <tags:renderRow field="${fieldGroups.ctcOther.fields[0]}" cssStyle="display: none"/>
+            </div>
+
+            <div id="main-fields">
+                <c:forEach items="${fieldGroups.main.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                </c:forEach>
             </div>
         </form:form>
     </chrome:division>

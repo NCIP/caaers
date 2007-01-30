@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.springframework.ui.ModelMap;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 
 import java.util.Date;
 import java.util.Map;
@@ -61,8 +63,9 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport.primaryAdverseEvent.ctcTerm", ctcTermDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
-        ControllerTools.registerEnumEditor(binder, Attribution.class);
+        ControllerTools.registerEnumEditor(binder, Hospitalization.class);
     }
 
     @Override

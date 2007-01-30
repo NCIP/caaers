@@ -2,6 +2,9 @@
 form.standard .row {
     font-size: 11px;
 }
+ul.errors {
+    color: #EE3324;
+}
 .label {
     width: 12em; text-align: right; padding: 4px;
     font-weight: bold; white-space: nowrap;
@@ -13,4 +16,10 @@ form.standard .row {
 }
 .repeatedGroup.first {
     border-top: none;
+}
+
+#main-fields {
+    margin-top: 1.2em;
+    padding-top: 0.3em;
+    border-top: 1px solid #999;
 }

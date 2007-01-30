@@ -22,9 +22,9 @@ AE.slideAndShow = function(element, options) {
         [
             new Effect.BlindDown(e, {sync:true}),
             new Effect.Appear(e, {sync:true})
-        ], $H(options).merge({
+        ], $H({
             duration: 1.0
-        })
+        }).merge(options)
     );
 }
 
