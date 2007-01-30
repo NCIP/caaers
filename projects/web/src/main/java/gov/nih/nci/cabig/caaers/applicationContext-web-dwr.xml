@@ -8,7 +8,6 @@
     >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-
     <bean id="createAeAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade"/>
 </beans>

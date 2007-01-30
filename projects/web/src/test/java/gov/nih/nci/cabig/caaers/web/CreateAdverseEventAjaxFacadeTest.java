@@ -8,7 +8,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -23,6 +22,8 @@ import static org.easymock.classextension.EasyMock.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
+import java.util.Arrays;
 
 /**
  * @author Rhett Sutphin
@@ -56,27 +57,34 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
     }
 
     public void testMatchParticipants() throws Exception {
-        List<Participant> expectedList = new ArrayList<Participant>();
+        Participant expectedMatch = setId(3, createParticipant("Foo", "B"));
+        expectedMatch.setDateOfBirth(new Date());  // set not null so we can be sure it isn't copied
         expect(participantDao.getBySubnames(aryEq(new String[] { "foo" })))
-            .andReturn(expectedList);
+            .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Participant> actualList = facade.matchParticipants("foo", null);
         verifyMocks();
 
-        assertSame("Result not forwarded", expectedList, actualList);
+        assertEquals("Wrong number of results", 1, actualList.size());
+        Participant actualMatch = actualList.get(0);
+        assertNotSame("Returned match is not copy", expectedMatch, actualMatch);
+        assertEquals("id not copied", 3, (int) actualMatch.getId());
+        assertEquals("first not copied", "Foo", actualMatch.getFirstName());
+        assertEquals("last not copied", "B", actualMatch.getLastName());
+        assertNull("other field incorrectly copied", actualMatch.getDateOfBirth());
     }
     
     public void testMatchParticipantsMultipleSubnames() throws Exception {
-        List<Participant> expectedList = new ArrayList<Participant>();
+        Participant expectedMatch = setId(5, new Participant());
         expect(participantDao.getBySubnames(aryEq(new String[] { "foo", "zappa" })))
-            .andReturn(expectedList);
+            .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Participant> actualList = facade.matchParticipants("foo zappa", null);
         verifyMocks();
 
-        assertSame("Result not forwarded", expectedList, actualList);
+        assertEquals("Result not forwarded", 1, actualList.size());
     }
 
     public void testMatchParticipantsFiltersByStudyId() throws Exception {
@@ -98,27 +106,32 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
     }
 
     public void testMatchStudies() throws Exception {
-        List<Study> expectedList = new ArrayList<Study>();
+        Study expectedMatch = setId(22, createStudy("Jim's Study"));
         expect(studyDao.getBySubnames(aryEq(new String[] { "jim" })))
-            .andReturn(expectedList);
+            .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Study> actualList = facade.matchStudies("jim", null);
         verifyMocks();
 
-        assertSame("Result not forwarded", expectedList, actualList);
+        assertEquals("Result not forwarded", 1, actualList.size());
+        Study actualMatch = actualList.get(0);
+        assertNotSame("Returned match is not copy", expectedMatch, actualMatch);
+        assertEquals("id not copied", 22, (int) actualMatch.getId());
+        assertEquals("shortTitle not copied", "Jim's Study", actualMatch.getShortTitle());
+        assertNull("extra field incorrectly copied", actualMatch.getLongTitle());
     }
 
     public void testMatchStudiesMultipleSubnames() throws Exception {
-        List<Study> expectedList = new ArrayList<Study>();
+        Study expectedMatch = setId(22, createStudy("Jim's Study"));
         expect(studyDao.getBySubnames(aryEq(new String[] { "jules", "jim" })))
-            .andReturn(expectedList);
+            .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Study> actualList = facade.matchStudies("jules jim", null);
         verifyMocks();
 
-        assertSame("Result not forwarded", expectedList, actualList);
+        assertEquals("Result not forwarded", 1, actualList.size());
     }
 
     public void testMatchStudiesFiltersByParticipantId() throws Exception {
