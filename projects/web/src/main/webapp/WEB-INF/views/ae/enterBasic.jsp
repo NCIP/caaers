@@ -27,6 +27,7 @@
         </c:if>
         var ctcTermId = "${fieldGroups.ctcTerm.fields[0].propertyName}"
         var ctcTermInputId = "${fieldGroups.ctcTerm.fields[0].textfieldId}"
+        var ctcTermIndicatorId = "${fieldGroups.ctcTerm.fields[0].propertyName}-indicator"
         var detailsForOtherId = "${fieldGroups.ctcOther.fields[0].propertyName}"
         var detailsForOtherRowId = "${fieldGroups.ctcOther.fields[0].propertyName}-row"
 
@@ -127,7 +128,8 @@
                 valueSelector: termValueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                     selectTerm(selectedChoice)
-                }
+                },
+                indicator: ctcTermIndicatorId
             })
         })
     </script>

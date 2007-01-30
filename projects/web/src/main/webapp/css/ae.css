@@ -9,7 +9,7 @@ ul.errors {
     width: 12em; text-align: right; padding: 4px;
     font-weight: bold; white-space: nowrap;
 }
-.value { margin-left: 13em; }
+.value, .extra { margin-left: 13em; }
 .repeatedGroup {
     border-top: 1px dotted #6E81A6;
     margin: 1em 2em;
