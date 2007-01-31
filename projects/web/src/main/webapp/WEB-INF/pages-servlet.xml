@@ -22,7 +22,7 @@
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
         <property name="interceptors">
             <list>
-                <!--<ref bean="loginCheckInterceptor"/>-->
+                <ref bean="loginCheckInterceptor"/>
                 <ref bean="sectionInterceptor"/>
             </list>
         </property>
