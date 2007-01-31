@@ -56,7 +56,7 @@ public class ListAdverseEventsCommand {
             return assignment.getStudySite().getStudy();
         } else if (nciIdentifier != null) {
             study = studyDao.getByIdentifier(
-                createIdentifierTemplate(PROTOCOL_AUTHORITY_IDENTIFIER_TYPE, nciIdentifier));
+                createIdentifierTemplate(null, nciIdentifier));
             return study;
         } else {
             return null;

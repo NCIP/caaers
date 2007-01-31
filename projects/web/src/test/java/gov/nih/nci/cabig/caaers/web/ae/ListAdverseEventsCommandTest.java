@@ -42,7 +42,7 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
     public void testGetStudyByNciIdentifier() throws Exception {
         command.setNciIdentifier("NCI");
         Identifier expectedIdentifier = new Identifier();
-        expectedIdentifier.setType(ListAdverseEventsCommand.PROTOCOL_AUTHORITY_IDENTIFIER_TYPE);
+        expectedIdentifier.setType(null);
         expectedIdentifier.setValue("NCI");
         Study expectedStudy = new Study();
 
