@@ -47,7 +47,7 @@
     
     <bean name="/login" id="loginController" autowire="byName"
         class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
-        <property name="targetView"><value>welcome</value></property>
+        <property name="targetView"><value>/pages/ae/create</value></property>
     </bean>
 
     <bean name="/welcome" id="welcomeController"
