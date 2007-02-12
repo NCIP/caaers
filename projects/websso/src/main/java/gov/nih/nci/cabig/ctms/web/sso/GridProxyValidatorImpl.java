@@ -19,8 +19,10 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.TrustedCertificates;
+import org.globus.gsi.proxy.ProxyPathValidator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -31,56 +33,75 @@ import org.w3c.dom.NodeList;
  */
 public class GridProxyValidatorImpl implements GridProxyValidator {
 
-  private static final Log logger = LogFactory.getLog(GridProxyValidatorImpl.class);
+    private static final Log logger = LogFactory.getLog(GridProxyValidatorImpl.class);
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see sso.GridProxyValidator#validate(java.lang.String)
-   */
-  public boolean validate(String proxy) throws GridProxyValidationException {
-    boolean valid = false;
+    private String trustedCertsLocations;
 
-    GlobusCredential cred = null;
-    try {
-      cred = new GlobusCredential(new ByteArrayInputStream(proxy.getBytes()));
-    } catch (Exception ex) {
-      throw new GridProxyValidationException("Error instantiating GlobusCredentia: "
-              + ex.getMessage(), ex);
+    private String crlLocations;
+
+    public String getCrlLocations() {
+        return crlLocations;
     }
 
-    try {
-      cred.verify();
-      
-      X509Certificate[] chain = cred.getCertificateChain();
-      String dir = System.getProperty("user.home") + "/.globus/certificates";
-      X509Certificate[] trustedCerts = TrustedCertificates.loadCertificates(dir);
-      
-      if(trustedCerts == null){
-          logger.debug("trustedCerts is null");
-      }else{
-          logger.debug("Found " + trustedCerts.length + " trusted certs");
-          search: for(int i = 0; i < chain.length; i++){
-              X509Certificate cert = chain[i];
-              String issuerDN = cert.getIssuerDN().getName();
-              for(int j = 0; j < trustedCerts.length; j++){
-                  X509Certificate trustedCert = trustedCerts[j];
-                  String subjectDN  = trustedCert.getSubjectDN().getName();
-                  if(issuerDN.equals(subjectDN)){
-                      cert.verify(trustedCert.getPublicKey());
-                      logger.debug(cert.getSubjectDN() + " was signed by " + trustedCert.getSubjectDN());
-                      valid = true;
-                      break search;
-                  }
-              }
-          }
-      }
-
-    } catch (Exception ex) {
-      logger.debug("Proxy validation failed: " + ex.getMessage());
+    public void setCrlLocations(String crlLocations) {
+        this.crlLocations = crlLocations;
     }
 
-    return valid;
-  }
+    public String getTrustedCertsLocations() {
+        return trustedCertsLocations;
+    }
+
+    public void setTrustedCertsLocations(String trustedCertsLocations) {
+        this.trustedCertsLocations = trustedCertsLocations;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see sso.GridProxyValidator#validate(java.lang.String)
+     */
+    public boolean validate(String proxy) throws GridProxyValidationException {
+        boolean valid = false;
+
+        GlobusCredential cred = null;
+        try {
+            cred = new GlobusCredential(new ByteArrayInputStream(proxy.getBytes()));
+        } catch (Exception ex) {
+            throw new GridProxyValidationException("Error instantiating GlobusCredential: "
+                            + ex.getMessage(), ex);
+        }
+
+        try {
+
+            X509Certificate[] proxyChain = cred.getCertificateChain();
+            X509Certificate[] trustedCerts = null;
+            CertificateRevocationLists crls = null;
+
+            String tcLoc = getTrustedCertsLocations();
+            if (tcLoc != null) {
+                trustedCerts = TrustedCertificates.loadCertificates(tcLoc);
+            } else {
+                trustedCerts = TrustedCertificates.getDefaultTrustedCertificates()
+                                .getCertificates();
+            }
+
+            String crlLoc = getCrlLocations();
+            if (crlLoc != null) {
+                crls = CertificateRevocationLists.getCertificateRevocationLists(crlLoc);
+            } else {
+                crls = CertificateRevocationLists.getDefaultCertificateRevocationLists();
+            }
+
+            ProxyPathValidator ppv = new ProxyPathValidator();
+            ppv.validate(proxyChain, trustedCerts, crls);
+            
+            valid = true;
+
+        } catch (Exception ex) {
+            logger.debug("Proxy validation failed: " + ex.getMessage());
+        }
+
+        return valid;
+    }
 
 }
