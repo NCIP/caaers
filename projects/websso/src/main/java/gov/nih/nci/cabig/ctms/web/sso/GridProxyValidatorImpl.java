@@ -4,18 +4,7 @@
 package gov.nih.nci.cabig.ctms.web.sso;
 
 import java.io.ByteArrayInputStream;
-import java.io.StringWriter;
 import java.security.cert.X509Certificate;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,9 +12,6 @@ import org.globus.gsi.CertificateRevocationLists;
 import org.globus.gsi.GlobusCredential;
 import org.globus.gsi.TrustedCertificates;
 import org.globus.gsi.proxy.ProxyPathValidator;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
@@ -94,7 +80,7 @@ public class GridProxyValidatorImpl implements GridProxyValidator {
 
             ProxyPathValidator ppv = new ProxyPathValidator();
             ppv.validate(proxyChain, trustedCerts, crls);
-            
+
             valid = true;
 
         } catch (Exception ex) {
