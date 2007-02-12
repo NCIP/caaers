@@ -1,7 +1,9 @@
 <project name="websso" default="dist">
 	
-    <property name="src-dir.main" value="src/main/java" />
-    <property name="build-dir.main" value="build/main/classes"/>
+	<property name="src-dir.main" value="src/main/java" />
+	<property name="src-dir.test" value="src/test/java" />
+	<property name="build-dir.main" value="build/main/classes"/>
+	<property name="build-dir.test" value="build/test/classes"/>
 	<property name="jar-name" value="${basedir}/../../ctms-web-sso.jar"/>
 
 	<path id="cp.ext">
@@ -17,8 +19,17 @@
         </fileset>
     </path>	
 	
+	<path id="cp.test">
+		<path refid="cp.main"/>
+		<pathelement location="${build-dir.main}"/>
+        <fileset dir="lib/test">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>	
+	
    <target name="init">
-        <mkdir dir="${build-dir.main}"/>
+   	<mkdir dir="${build-dir.main}"/>
+   	<mkdir dir="${build-dir.test}"/>
     </target>	
 	
     <target name="compile" depends="init">
@@ -27,6 +38,13 @@
             <src path="${src-dir.main}"/>
         </javac>
     </target>
+	
+	<target name="compile-test" depends="compile">
+        <javac destdir="${build-dir.test}" classpathref="cp.test"
+               debug="true" source="1.5">
+            <src path="${src-dir.test}"/>
+        </javac>
+	    </target>
 	
 	<target name="dist" depends="compile">
 		<jar basedir="${build-dir.main}" destfile="${jar-name}"/>
@@ -46,5 +64,21 @@
 			</classpath>
 		</java>
 	</target>
+	
+    <target name="test" depends="compile-test">
+        <mkdir dir="test/results" />
+        <junit printsummary="yes" showoutput="true">
+            <classpath refid="cp.test" />
+        	<classpath>
+        		<pathelement location="${build-dir.test}"/>
+        	</classpath>
+            <formatter type="xml" />
+            <batchtest fork="yes" todir="test/results">
+                <fileset dir="${src-dir.test}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
 	
 </project>
