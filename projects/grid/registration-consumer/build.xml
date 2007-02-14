@@ -15,7 +15,7 @@
 	
 	<property name="deploy.lib.dir" value="${env.CATALINA_HOME}/webapps/wsrf/WEB-INF/lib"/>
 	
-	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"> </taskdef>
+	
 
 	<target name="get-caaers-jars">
 		<copy todir="ext/lib" overwrite="true">
