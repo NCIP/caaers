@@ -47,7 +47,6 @@
         }
 
         function ctcCategorySelector() {
-            console.log("category selector")
             clearSelectedTerm();
         }
 
@@ -74,8 +73,6 @@
         }
 
         function selectTerm(ctcTerm) {
-            console.log("selectTerm")
-
             $A($("ctc-category").options).each(function(opt) {
                 if (opt.value == ctcTerm.category.id) {
                     opt.selected = true
