@@ -24,6 +24,7 @@
         middle_name="m"
         maiden_name="m"/>
     <IDENTIFIERS
+        id="-200"
         participant_id="-100"
         value="13js77"
         source="Hosp"
