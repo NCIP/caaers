@@ -68,39 +68,44 @@ public class ListValues {
 	
 	public List<ListValues> getParticipantGender(){
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("Male", "Male");
-		ListValues lov2 = new ListValues("Female", "Female");
-		ListValues lov3 = new ListValues("Not Reported" , "Not Reported");
-		ListValues lov4 = new ListValues("Unknown" , "Unknown" );
+		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov2 = new ListValues("Male", "Male");
+		ListValues lov3 = new ListValues("Female", "Female");
+		ListValues lov4 = new ListValues("Not Reported" , "Not Reported");
+		ListValues lov5 = new ListValues("Unknown" , "Unknown" );
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
     	col.add(lov4);
+    	col.add(lov5);
     	return col;
 	}
 	
 	public List<ListValues> getParticipantEthnicity(){
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
-		ListValues lov2 = new ListValues("Non Hispanic or Latino", "Non Hispanic or Latino");
-		ListValues lov3 = new ListValues("Not Reported" , "Not Reported");
-		ListValues lov4 = new ListValues("Unknown" , "Unknown" );
+		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov2 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
+		ListValues lov3 = new ListValues("Non Hispanic or Latino", "Non Hispanic or Latino");
+		ListValues lov4 = new ListValues("Not Reported" , "Not Reported");
+		ListValues lov5 = new ListValues("Unknown" , "Unknown" );
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
     	col.add(lov4);
+    	col.add(lov5);
     	return col;
 	}
 	
 	public List<ListValues> getParticipantRace(){
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("Asian", "Asian");
-		ListValues lov2 = new ListValues("White", "White");
-		ListValues lov3 = new ListValues("Black or African American" , "Black or African American");
-		ListValues lov4 = new ListValues("American Indian or Alaska Native" , "American Indian or Alaska Native" );
-		ListValues lov5 = new ListValues("Native Hawaiian or other Pacific Islander" , "Native Hawaiian or other Pacific Islander" );
-		ListValues lov6 = new ListValues("Not Reported" , "Not Reported" );
-		ListValues lov7 = new ListValues("Unknown" , "Unknown" );
+		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov2 = new ListValues("Asian", "Asian");
+		ListValues lov3 = new ListValues("White", "White");
+		ListValues lov4 = new ListValues("Black or African American" , "Black or African American");
+		ListValues lov5 = new ListValues("American Indian or Alaska Native" , "American Indian or Alaska Native" );
+		ListValues lov6 = new ListValues("Native Hawaiian or other Pacific Islander" , "Native Hawaiian or other Pacific Islander" );
+		ListValues lov7 = new ListValues("Not Reported" , "Not Reported" );
+		ListValues lov8 = new ListValues("Unknown" , "Unknown" );
 		col.add(lov1);
     	col.add(lov2);
     	col.add(lov3);
@@ -108,6 +113,7 @@ public class ListValues {
     	col.add(lov5);
     	col.add(lov6);
     	col.add(lov7);
+    	col.add(lov8);
     	return col;
 	}
 	

@@ -87,9 +87,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
                 boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
                 boolean lastName = command.getLastName() == null || command.getLastName().equals("");
                 boolean dateOfBirth = command.getDateOfBirth() == null;
+                boolean gender = command.getGender().equals("---");
+                boolean ethnicity = command.getEthnicity().equals("---");
+                boolean race = command.getRace().equals("---");
                 if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
                 if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
                 if (dateOfBirth) errors.rejectValue("dateOfBirth", "REQUIRED", "Missing Date Of Birth");
+                if (gender) errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
+                if (ethnicity) errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
+                if (race) errors.rejectValue("race", "REQUIRED", "Please specify the Race");
             }
             
             @Override
