@@ -1,16 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.jbossrules.jsr94.repository.db;
 
-import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.jbossrules.jsr94.repository.RuleExecutionSetRepository;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -175,48 +171,6 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
             throw new NullPointerException( "bindUri cannot be null" );
         }
         this.map.remove( bindUri );
-    }	
-	
-
-    /**
-	 Serialize an object into a byte array, which can be stored in a database as a blob
-	 */
-	public static byte[] objectToByteArray(Object obj)
-			throws RuleException {
-		try {
-			ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-			ObjectOutputStream objectStream = new ObjectOutputStream(
-					byteArrayStream);
-			objectStream.writeObject(obj);
-			objectStream.flush();
-			return byteArrayStream.toByteArray();
-		} catch (NotSerializableException exception) {
-			throw new RuleException("Class, " + obj.getClass()
-					+ " is not serializable.", exception);
-		} catch (IOException ioe) {
-			throw new RuleException("Could not serialize class: "
-					+ obj.getClass() + ".", ioe);
-		}
-	}
-
-	/**
-	 Turn a byteArray back into an Object
-	 */
-	public static Object byteArrayToObject(byte[] byteArray)
-			throws RuleException {
-		try {
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(
-					byteArray);
-			ObjectInputStream objectInputStream = new ObjectInputStream(
-					inputStream);
-			return objectInputStream.readObject();
-		} catch (ClassNotFoundException cex) {
-			throw new RuleException(
-					"Could not find the class to deserialize to.", cex);
-		} catch (IOException ioe) {
-			throw new RuleException(
-					"Could not deserialize byte array.", ioe);
-		}
-	}    
+    }	 
     
 }
