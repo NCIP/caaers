@@ -33,7 +33,7 @@
         name="New Site"/>
     <STUDIES 
     	id="-2001" 
-    	multi_institution_indicator="false"
+    	multi_institution_indicator="0"
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
@@ -41,7 +41,7 @@
     
     <STUDIES 
     	id="-2000" 
-    	multi_institution_indicator="false" 
+    	multi_institution_indicator="0" 
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
