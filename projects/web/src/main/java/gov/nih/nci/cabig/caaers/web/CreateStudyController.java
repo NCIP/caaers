@@ -74,8 +74,12 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         flow.addTab(new Tab<Study>("Study Sites", "Study Sites", "study_studysite") {
             
         	public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();                    
+                Map<String, Object> refdata = super.referenceData();  
+                Map <String, List<Lov>> configMap = configurationProperty.getMap();
+                
                 refdata.put("sitesRefData", getSites());
+                refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
+    	  		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
                 return refdata;
            
         	}        	
@@ -129,8 +133,12 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		{
 			case 1:
 				handleIdentifierAction((Study)command,
-				request.getParameter("_action"),
-				request.getParameter("_selected"));		
+						request.getParameter("_action"),
+						request.getParameter("_selected"));		
+				break;
+			case 2:
+				handleStudySiteAction((Study)command, request.getParameter("_action"),
+						request.getParameter("_selected"));
 				break;
 			default:
 				//do nothing						
@@ -151,6 +159,19 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		}					
 	}
 	
+	private void handleStudySiteAction(Study study, String action, String selected)
+	{				
+		if ("addSite".equals(action))
+		{	
+			StudySite studySite = new StudySite();						
+			study.addStudySite(studySite);		
+		}
+		else if ("removeSite".equals(action))
+		{				
+			study.getStudySites().remove(Integer.parseInt(selected));
+		}					
+	}
+	
 	private Study createDefaultStudyWithDesign()
 	{
 		Study study = new Study(); 
@@ -164,9 +185,11 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		study.setIdentifiers(identifiers);
 		
 		List<Site> sites = getSites();
+		
 		for (Site site : sites) {
-			studySite.setSite(site);
+				studySite.setSite(site);
 		}
+		
 		return study;
 	}	
 
