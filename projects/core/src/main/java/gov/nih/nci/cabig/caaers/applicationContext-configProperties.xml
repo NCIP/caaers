@@ -165,7 +165,34 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                             <property name="desc" value="C3D Identifier" />
                        </bean>                        
                     </list>
-                </entry>                             
+                </entry>      
+                
+                <!-- codes for Study Site -->
+                
+                <entry key="studySiteStatusRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Active" />
+                            <property name="desc" value="Active" />
+                        </bean>                       
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Closed" />
+                            <property name="desc" value="Closed" />
+                        </bean>                       
+                    </list>
+                </entry>
+                <entry key="studySiteRoleCodeRefData">
+                    <list>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Site" />
+                            <property name="desc" value="Site" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Coordinating Center" />
+                            <property name="desc" value="Coordinating Center" />
+                        </bean>                                           
+                     </list>
+                </entry>                           
                 
             </map>
         </property>                      
