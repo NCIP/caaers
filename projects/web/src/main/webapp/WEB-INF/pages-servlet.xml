@@ -118,9 +118,9 @@
     </bean>
 
     <bean name="/study/create" id="createStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.CreateStudyController">
+          class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController">
 	</bean>
-
+	
 	<bean name="/study/view" id="viewStudyController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
     </bean>
