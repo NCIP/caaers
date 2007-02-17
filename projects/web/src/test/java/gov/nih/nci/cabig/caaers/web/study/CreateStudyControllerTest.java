@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.CreateStudyController;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.ArrayList;
