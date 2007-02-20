@@ -16,7 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import gov.nih.nci.cabig.caaers.RuleException;
-import gov.nih.nci.cabig.caaers.rules.v1_0.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
