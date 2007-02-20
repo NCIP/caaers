@@ -2,8 +2,11 @@ package gov.nih.nci.cabig.caaers.rules.service;
 
 import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.adapter.RuleAdapter;
-import gov.nih.nci.cabig.caaers.rules.v1_0.Rule;
-import gov.nih.nci.cabig.caaers.rules.v1_0.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.brxml.Category;
+import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.jbossrules.repository.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +14,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,6 +25,9 @@ import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * The entry point for Managing Rules.
  *
@@ -40,6 +45,10 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 	private LocalRuleExecutionSetProvider ruleSetProvider;
 
 	private RuleAdministrator ruleAdministrator;
+	
+	private RepositoryService repositoryService;
+	
+	private ApplicationContext applicationContext;
 
 	public RuleAuthoringServiceImpl() {
 		super();
@@ -53,6 +62,12 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 					Class
 					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
 */
+
+			this.applicationContext = new ClassPathXmlApplicationContext(
+	                new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-rules-jc*.xml" });
+
+			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
+
 			RuleServiceProviderManager.registerRuleServiceProvider(
 					RuleExecutionService.RULE_SERVICE_PROVIDER,
 					Class
@@ -66,6 +81,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 
 			this.ruleSetProvider = this.ruleAdministrator
 					.getLocalRuleExecutionSetProvider(null);
+			
 		} catch (RemoteException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (ConfigurationException e) {
@@ -74,7 +90,6 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 			throw new RuleException(e.getMessage(), e);
 		}
 	}
-
 	
 	/**
 	 * Save the set of rules.
@@ -84,7 +99,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 	 * 3) The compiled AST representation specific to the Rule Engine.
 	 * 
 	 * */
-	public void createRuleSet(RuleSet ruleSet) {
+/*	public void createRuleSet(RuleSet ruleSet) {
 		String bindUri = UUID.randomUUID().toString();
 		ruleSet.setId(bindUri);
 		final Map<String, Object> properties = new HashMap<String, Object>();
@@ -112,7 +127,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 		}
 
 	}
-	
+*/	
 
 
 	/**
@@ -145,34 +160,43 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 		return ruleServiceProvider;
 	}
 
+
+	public void createCategory(Category category) throws RemoteException {		
+		this.repositoryService.createCategory(category);
+	}
+	
+	public void createRuleSet(RuleSet ruleSet) throws RemoteException {
+		this.repositoryService.createRuleSet(ruleSet);
+	}
+	
 	public void createRule(Rule rule) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public List getAllRuleSets(String type) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Rule getRule(String ruleId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public RuleSet getRuleSet(String ruleSetId) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		this.repositoryService.createRule(rule);		
 	}
 
 	public void updateRule(Rule rule) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		this.repositoryService.createRule(rule);		
 	}
 
 	public void updateRuleSet(RuleSet ruleSet) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		this.repositoryService.createRuleSet(ruleSet);
+	}
+
+	public RuleSet getRuleSet(String ruleSetName) throws RemoteException {
+		return this.repositoryService.getRuleSet(ruleSetName);
+	}
+	
+	public Rule getRule(String ruleId) throws RemoteException {
+		return this.repositoryService.getRule(ruleId);
+	}
+	
+	public RuleSet[] getAllRuleSets() throws RemoteException {
+		return this.repositoryService.listRuleSets();
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
 	}
 
 }
