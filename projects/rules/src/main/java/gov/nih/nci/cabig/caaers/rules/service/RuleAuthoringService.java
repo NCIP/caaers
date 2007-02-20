@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.rules.service;
 
-import gov.nih.nci.cabig.caaers.rules.v1_0.Rule;
-import gov.nih.nci.cabig.caaers.rules.v1_0.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
 import java.rmi.RemoteException;
-import java.util.List;
 
 /**
  * Remote interface for Rule Provisioning. 
@@ -26,6 +25,6 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 
 	public Rule getRule(String ruleId) throws RemoteException;
 
-	public List getAllRuleSets(String type) throws RemoteException;
+	public RuleSet[] getAllRuleSets() throws RemoteException;
 
 }
