@@ -145,8 +145,11 @@
 	</target>	
 
 	<target name="bind">
+		<copy todir="build/main/generated-sources" flatten="true">
+			<fileset dir="build/main/generated-sources" includes="**/*.xml"/>
+		</copy>	
 		<java classname="org.jibx.binding.Compile" fork="true" failonerror="true" classpathref="cp.main">
-			<arg line="build/main/generated-sources/gov/nih/nci/cabig/caaers/rules/v1_0/binding.xml"/>
+			<arg line="build/main/generated-sources/binding.xml"/>
 			<classpath>
 				<pathelement path="${build-dir.main}/generated"/>
 			</classpath>			
