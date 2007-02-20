@@ -97,7 +97,7 @@ public class RuleServiceProviderImpl extends RuleServiceProvider implements java
             this.ruleRuntime = new RuleRuntimeImpl( getRepository() );
         }
         
-        return this.ruleRuntime;       
+        return this.ruleRuntime;
     }
 
     /**
