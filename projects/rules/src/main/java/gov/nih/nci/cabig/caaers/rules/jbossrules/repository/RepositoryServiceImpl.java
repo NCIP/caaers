@@ -57,9 +57,9 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 
 	public String createRule(Rule rule) throws RemoteException {
         try {
-			PackageItem packageItem = getRulesRepository().loadPackage( rule.getPackageName() );
+        	PackageItem packageItem = getRulesRepository().loadPackage( rule.getPackageName() );
 	        AssetItem asset = packageItem.addAsset( rule.getName(), rule.getDescription(), rule.getCategory(), rule.getFormat() ); 
-	        asset.updateContent(XMLUtil.toXML(rule));
+	        asset.updateContent(XMLUtil.getXML(rule));
 	        getRulesRepository().save();
 	        return asset.getUUID();
         }
@@ -121,7 +121,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
         	categories[i] = meta.getCategory(i).getName();
         }
         assetItem.updateCategoryList( categories );
-        assetItem.updateContent(XMLUtil.toXML(rule));
+        assetItem.updateContent(XMLUtil.getXML(rule));
         assetItem.checkin( meta.getCheckinComment() );
         
         return assetItem.getUUID();
