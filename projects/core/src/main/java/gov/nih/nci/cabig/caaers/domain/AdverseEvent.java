@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
@@ -39,7 +40,7 @@ public class AdverseEvent extends AbstractDomainObject {
 
     ////// BOUND PROPERTIES
 
-    @ManyToOne
+    @OneToOne
     public AdverseEventReport getReport() {
         return report;
     }
