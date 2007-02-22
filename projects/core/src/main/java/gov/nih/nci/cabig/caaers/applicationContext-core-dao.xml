@@ -37,6 +37,11 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
+               
+
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
             </list>
@@ -96,6 +101,7 @@
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
     <bean id="siteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteDao"/>
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
+    <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>

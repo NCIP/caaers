@@ -52,13 +52,28 @@ public class Study extends AbstractDomainObject implements Serializable {
 			  	
 	private List<StudySite> studySites = new ArrayList<StudySite>();			  
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
-	
+	private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
+	//private List<Participation> participations = new ArrayList<Participation>();
 	/// LOGIC	
 	
 	public void addStudySite(StudySite studySite)
 	{
 		studySites.add(studySite);
 		studySite.setStudy(this);
+	}
+	
+	/*
+	public void addParticipation(Participation participation)
+	{
+		participations.add(participation);
+		participation.setStudy(this);
+	}
+	*/
+	
+	public void addStudyAgent(StudyAgent studyAgent)
+	{
+		studyAgents.add(studyAgent);
+		studyAgent.setStudy(this);
 	}
 	
 	public void addIdentifier(Identifier identifier)
@@ -87,7 +102,29 @@ public class Study extends AbstractDomainObject implements Serializable {
 
 	public void setStudySites(List<StudySite> studySites) {
 		this.studySites = studySites;
-	}	
+	}
+	
+	/*
+	@OneToMany (mappedBy="study", fetch=FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+	public List<Participation> getParticipations() {
+		return participations;
+	}
+	
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
+	}
+	*/
+	
+	@OneToMany (mappedBy="study", fetch=FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+	public List<StudyAgent> getStudyAgents() {
+		return studyAgents;
+	}
+	
+	public void setStudyAgents(List<StudyAgent> studyAgents) {
+		this.studyAgents = studyAgents;
+	}
 	
 	public Boolean getBlindedIndicator() {
 		return blindedIndicator;
