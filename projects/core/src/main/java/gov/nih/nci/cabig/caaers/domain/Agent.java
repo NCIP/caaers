@@ -31,6 +31,7 @@ public class Agent extends AbstractDomainObject{
 	private String name;
 	private String description;
 	private String nameDescription;
+	private String nsc;
 	private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
 
 	@Column(name = "description")
@@ -68,6 +69,15 @@ public class Agent extends AbstractDomainObject{
 	
 	public void setNameDescription(String nameDescription) {
 		this.nameDescription = nameDescription;
+	}
+
+	@Column(name = "nsc")
+	public String getNsc() {
+		return nsc;
+	}
+
+	public void setNsc(String nsc) {
+		this.nsc = nsc;
 	}
 	
 	

@@ -17,7 +17,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public class AgentDao extends GridIdentifiableDao<Agent> {
     
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays
-			.asList("name", "description");
+			.asList("name", "nsc");
 
 	private static final List<String> EXACT_MATCH_PROPERTIES = Collections
 			.emptyList();
