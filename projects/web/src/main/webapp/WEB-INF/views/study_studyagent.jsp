@@ -142,6 +142,7 @@
                     	<form:input id="agent${status.index}-input" path="studyAgents[${status.index}].agentAsString"/>
                     	<tags:indicator id="agent${status.index}-indicator"/>
                     	<div id="agent${status.index}-choices" class="autocomplete"></div>
+                    	<input type="button" id="agent${status.index}-clear" value="Clear"/>
                     	<%--
                     	<p id="agent${status.index}-selected" style="display: none">
                         	You've selected the agent <span id="agent${status.index}-selected-name"></span>.
