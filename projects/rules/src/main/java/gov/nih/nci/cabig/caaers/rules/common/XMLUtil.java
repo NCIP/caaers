@@ -5,6 +5,11 @@ import gov.nih.nci.cabig.caaers.RuleException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
@@ -67,6 +72,26 @@ public class XMLUtil {
 		xstream.alias("metaData", gov.nih.nci.cabig.caaers.rules.brxml.MetaData.class);
 		xstream.alias("action", gov.nih.nci.cabig.caaers.rules.brxml.Action.class);
 		xstream.alias("column", gov.nih.nci.cabig.caaers.rules.brxml.Column.class);
+	}
+	
+	public static Object unmarshal(String xml) {
+		try {
+			Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
+			return unmarshaller.unmarshal(new StringReader(xml));
+		} catch (JAXBException e) {
+			throw new RuleException(e.getMessage(), e);
+		}		
+	}
+	
+	public static String marshal(Object object) {
+		StringWriter writer = new StringWriter();
+		try {
+			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
+			marshaller.marshal(object, writer);
+			return writer.toString();
+		} catch (JAXBException e) {
+			throw new RuleException(e.getMessage(), e);
+		}		
 	}
 	
 }
