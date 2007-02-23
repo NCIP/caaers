@@ -80,8 +80,9 @@
 	</target>
 
 
-	<target name="all" depends="generate,compile,bind,client"/>
+<!--	<target name="all" depends="generate,compile,bind,client"/> -->
 	
+	<target name="all" depends="jaxb,compile,client"/>
 
 	<target name="generate">
 		<delete dir="build/main/generated-sources" />
@@ -158,5 +159,29 @@
 			<fileset dir="${build-dir.main}/generated"/>
 		</copy>
 	</target>
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+		<classpath>
+			<fileset dir="lib/main/jaxb" includes="*.jar" />
+		</classpath>
+	</taskdef>
+
+    <target name="jaxb">
+    	<delete dir="build/main/generated-sources"/>
+    	<mkdir dir="build/main/generated-sources" />
+		<xjc destdir="build/main/generated-sources">
+			<arg line="-extension"/>
+			<schema  dir="${src-dir.resources}/schema/" includes="rules.xsd"/>
+			<binding dir="${src-dir.resources}/schema/" includes="*.xjb"/>
+		</xjc>
+
+		<delete dir="${build-dir.main}/generated" />
+		<mkdir dir="${build-dir.main}/generated" />
+		<javac destdir="${build-dir.main}/generated" classpathref="cp.main" debug="true" source="1.5">
+		    <src path="build/main/generated-sources"/>
+		</javac>
+
+	</target>
+
 
 </project>
