@@ -2,17 +2,29 @@
 <xs:schema xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/brxml" 
            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
            elementFormDefault="qualified" 
-           targetNamespace="http://caaers.cabig.nci.nih.gov/rules/brxml">
+           targetNamespace="http://caaers.cabig.nci.nih.gov/rules/brxml"
+		   xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+           xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+           jaxb:extensionBindingPrefixes="xjc"
+           jaxb:version="2.0">
 
-	
+<!--	
+    <xs:annotation>
+       <xs:appinfo>
+          <jaxb:globalBindings generateValueClass="false">
+           <xjc:simple />
+          </jaxb:globalBindings>
+       </xs:appinfo>
+    </xs:annotation>
+-->
+    	
 	<xs:element name="category">
 		<xs:complexType>
 			<xs:sequence>
 				<!-- UUID -->
-				<xs:element name="id" minOccurs="0"/>
-				<xs:element name="path"/>
-				<xs:element name="name"/>
-				<xs:element name="description" minOccurs="0"/>
+				<xs:element name="id" minOccurs="0" type="xs:string"/>
+				<xs:element name="path" type="xs:string"/>
+				<xs:element ref="rules:metaData" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>				
 	</xs:element>
@@ -21,13 +33,13 @@
 		<xs:complexType>
 			<xs:sequence>
 				<!-- UUID -->
-				<xs:element name="id" minOccurs="0" maxOccurs="1"/>
-				<xs:element name="name"/>
-				<xs:element name="description" minOccurs="0" />
+				<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="description" minOccurs="0" type="xs:string"/>
 				<!-- DEV, PROD, APPROVED Etc.-->
-				<xs:element name="status"/> 
-				<xs:element name="import" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="global" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="status" type="xs:string"/> 
+				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -42,11 +54,6 @@
 				<xs:element ref="rules:metaData" minOccurs="0" />
 			</xs:sequence>
 			<xs:attribute name="id" type="xs:string"/>
-			<xs:attribute name="name" type="xs:string" use="required"/>
-			<xs:attribute name="category" type="xs:string" use="required"/>
-			<xs:attribute name="packageName" type="xs:string" use="required"/>
-			<xs:attribute name="description" type="xs:string"/>
-			<xs:attribute name="format" type="xs:string"/>
 		</xs:complexType>
 		<xs:key name="ruleName">
 			<xs:selector xpath="rules:rule"/>
@@ -227,5 +234,67 @@
 			<xs:attribute name="dirty" type="xs:boolean" />    	
 		</xs:complexType>    	
 	</xs:element>
-  
+
+
+	<xs:complexType name="ServiceAction">
+		<xs:sequence>
+			<xs:element type="xs:string" name="className" />
+			<xs:element type="xs:string" name="methodName" />
+			<xs:element ref="rules:ServiceParam" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="ServiceParam">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:string" name="name" />	
+				<xs:element type="xs:string" name="type" />		
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:complexType name="JmsAction">
+		<xs:sequence>
+			<xs:element type="xs:string" name="server" />
+			<xs:element type="xs:string" name="port" />			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ServiceMixAction">
+		<xs:sequence>
+			<xs:element type="xs:string" name="endPoint" />
+		</xs:sequence>
+	</xs:complexType>  
+
+
+	<xs:complexType name="InternalAction">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="MessageAction">
+		<xs:sequence>
+			<xs:element type="xs:string" name="protocol" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AxisAction">
+		<xs:sequence>
+			<xs:element type="xs:string" name="endPoint" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Assert">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Retract">
+		<xs:sequence>
+			
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>
