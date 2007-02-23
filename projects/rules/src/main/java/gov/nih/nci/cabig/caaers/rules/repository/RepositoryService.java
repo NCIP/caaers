@@ -26,6 +26,8 @@ public interface RepositoryService extends Remote {
     public String createRule(Rule rule) throws RemoteException;
     
     
+    public void updateRule(Rule rule) throws RemoteException;
+    
     /**
      * Move the rule from one Ruleset/package to another
      * @throws RemoteException 
