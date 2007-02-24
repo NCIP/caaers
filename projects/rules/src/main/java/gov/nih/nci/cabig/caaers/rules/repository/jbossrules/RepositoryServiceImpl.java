@@ -5,8 +5,12 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
+import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +56,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
         }
         
         CategoryItem item = getRulesRepository().loadCategory( path );
-        item.addCategory( category.getName(), category.getDescription() );
+        item.addCategory( category.getMetaData().getName(), category.getMetaData().getDescription() );
         return Boolean.TRUE;
 	}
 
@@ -61,7 +65,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
         	MetaData metaData = rule.getMetaData();
         	PackageItem packageItem = getRulesRepository().loadPackage( metaData.getPackageName() );
         	Category initialCategory = metaData.getCategory().get(0);
-        	String categoryName = (initialCategory != null) ? initialCategory.getName() : getDefaultCategory();
+        	String categoryName = (initialCategory != null) ? initialCategory.getMetaData().getName() : getDefaultCategory();
 	        AssetItem asset = packageItem.addAsset( metaData.getName(), metaData.getDescription(), categoryName , metaData.getFormat() ); 
 	        asset.updateContent(XMLUtil.marshal(rule));
 	        getRulesRepository().save();
@@ -93,7 +97,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
             int numberOfCategories = categoryList.size();
             String[] categories = new String[numberOfCategories];
             for(int i = 0; i < numberOfCategories; i ++) {
-            	categories[i] = categoryList.get(i).getName();
+            	categories[i] = categoryList.get(i).getMetaData().getName();
             }
             assetItem.updateCategoryList( categories );
         	assetItem.updateContent(XMLUtil.marshal(rule));
@@ -159,7 +163,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
         int numberOfCategories = categoryList.size();
         String[] categories = new String[numberOfCategories];
         for(int i = 0; i < numberOfCategories; i ++) {
-        	categories[i] = categoryList.get(i).getName();
+        	categories[i] = categoryList.get(i).getMetaData().getName();
         }
         assetItem.updateCategoryList( categories );
         assetItem.updateContent(XMLUtil.marshal(rule));
@@ -204,8 +208,58 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 				e.printStackTrace();
 			}
     		repositoryConfigurator.setupRulesRepository(session);
-    		rulesRepository = new RulesRepository(session);
+    		rulesRepository = new RulesRepositoryEx(session);
     	}
     	return rulesRepository;
     }
+
+
+	public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) throws RemoteException {
+		CompiledPackageItem compiledPackageItem = ((RulesRepositoryEx)getRulesRepository()).createCompiledPackage(name, ruleSetInfo.getContent());
+		return compiledPackageItem.getUUID();
+	}
+
+	public RuleSetInfo[] listRegistrations() {
+		RuleSetInfo ruleSet = null;
+		Iterator iterator = getRulesRepository().listPackages();
+		ArrayList<RuleSetInfo> ruleSetList = new ArrayList<RuleSetInfo>();
+		while(iterator.hasNext()) {
+			CompiledPackageItem packageItem = (CompiledPackageItem)iterator.next();
+			ruleSet = new RuleSetInfo();
+			ruleSet.setBindUri(packageItem.getName());
+			ruleSet.setContent(getObjectFromInputStream(packageItem.getBinaryContent()));
+			ruleSetList.add(ruleSet);
+		}
+		return ruleSetList.toArray(new RuleSetInfo[ruleSetList.size()]);
+	}
+
+	public RuleSetInfo getRegisteredRuleset(String bindUri) {
+		RuleSetInfo ruleSetInfo = new RuleSetInfo();
+		ObjectInputStream objectInputStream = (ObjectInputStream) ((RulesRepositoryEx) getRulesRepository())
+				.loadCompiledPackage(bindUri).getBinaryContent();
+		try {
+			ruleSetInfo.setContent(objectInputStream.readObject());
+		} catch (IOException e) {
+			throw new RulesRepositoryException(e.getMessage(), e);
+		} catch (ClassNotFoundException e) {
+			throw new RulesRepositoryException(e.getMessage(), e);
+		}
+		return ruleSetInfo;
+	}
+	
+	private Object getObjectFromInputStream(InputStream inputStream) {
+		ObjectInputStream objectInputStream = (ObjectInputStream) inputStream;
+		try {
+			return objectInputStream.readObject();
+		} catch (IOException e) {
+			throw new RulesRepositoryException(e.getMessage(), e);
+		} catch (ClassNotFoundException e) {
+			throw new RulesRepositoryException(e.getMessage(), e);
+		}
+	}
+
+	public void deregisterRuleExecutionSet(String bindUri) {
+		((RulesRepositoryEx)getRulesRepository()).removeCompiledPackage(bindUri);		
+	}
+
 }
