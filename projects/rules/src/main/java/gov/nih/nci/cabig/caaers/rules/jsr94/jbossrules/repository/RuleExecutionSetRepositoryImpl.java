@@ -1,17 +1,13 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
 
+import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetRegisterException;
@@ -22,16 +18,19 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * */
 public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepository {
 
-	public static String CATALINA_HOME = "C:"+ File.separator + "caAERS";
 	
-    /** The Singleton instance of the repository. */
+	/** The Singleton instance of the repository. */
     // private static RuleExecutionSetRepository REPOSITORY;
     /** Holds the registered <code>RuleExecutionSet</code> objects. */
-    private final Map         map              = new HashMap();
+    //private final Map         map              = new HashMap();
+
+    private RepositoryService repositoryService;
+
 
     /** Private constructor; use <code>getInstance</code> instead. */
     public RuleExecutionSetRepositoryImpl() {
         // Hide the constructor.
+		this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().applicationContext.getBean("jcrService");
     }
 
 
@@ -45,8 +44,12 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      *         <code>RuleExecutionSet</code>s associated with them.
      */
     public List getRegistrations() {
-        final List list = new ArrayList();
-        list.addAll( this.map.keySet() );
+    	RuleSetInfo[] ruleSetInfos = getRepositoryService().listRegistrations();
+       	final List<String> list = new ArrayList<String>();    	
+    	for(int i = 0; i < ruleSetInfos.length; i++) {
+    		list.add(ruleSetInfos[i].getBindUri());
+    	}
+        //list.addAll( this.map.keySet() );
         return list;
     }
 
@@ -61,11 +64,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
-        
-    	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet) this.map.get( bindUri );
-    	if(ruleExecutionSet == null) {
-    		ruleExecutionSet = (RuleExecutionSet)readFromFile(bindUri);
-    	}
+    	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)getRepositoryService().getRegisteredRuleset(bindUri);
     	return ruleExecutionSet;
     }
 
@@ -74,7 +73,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * 
      * @param bindUri
      *            the URI to associate with the <code>RuleExecutionSet</code>.
-     * @param ruleSet
+     * @param ruleExecutionSet
      *            the <code>RuleExecutionSet</code> to associate with the URI
      * 
      * @throws RuleExecutionSetRegisterException
@@ -82,82 +81,25 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      *             bindUri or ruleSet are <code>null</code>)
      */
     public void registerRuleExecutionSet(final String bindUri,
-                                         final RuleExecutionSet ruleSet) throws RuleExecutionSetRegisterException {
+                                         final RuleExecutionSet ruleExecutionSet) throws RuleExecutionSetRegisterException {
         if ( bindUri == null ) {
             throw new RuleExecutionSetRegisterException( "bindUri cannot be null" );
         }
-        if ( ruleSet == null ) {
+        if ( ruleExecutionSet == null ) {
             throw new RuleExecutionSetRegisterException( "ruleSet cannot be null" );
         }
-		
-        this.map.put( bindUri,
-                      ruleSet );
-        writeToFile( bindUri,
-                ruleSet );
+		RuleSetInfo ruleSetInfo = new RuleSetInfo();
+		ruleSetInfo.setContent(ruleExecutionSet);
+		ruleSetInfo.setBindUri(bindUri);
+		try {
+			getRepositoryService().registerRuleSet(ruleExecutionSet.getName(), ruleSetInfo);
+		} catch (RemoteException e) {
+			throw new RuleExecutionSetRegisterException(e.getMessage(), e);
+		}
+
+		//this.map.put( bindUri, ruleExecutionSet );
     }
     
-    private Object readFromFile(final String bindUri) {
-    	String filePath = "";
-    	if (System.getProperty("CATALINA_HOME") != null) {
-			CATALINA_HOME = System.getProperty("CATALINA_HOME");
-			filePath = CATALINA_HOME + File.separator + "webapps"
-			+ File.separator + "caaers" + File.separator + "JBossRules"
-			+ File.separator + bindUri + File.separator + "RuleSet";
-    	} else {
-			filePath = CATALINA_HOME + File.separator + "JBossRules"
-			+ File.separator + bindUri + File.separator + "RuleSet";
-    	}
-
-        RuleExecutionSet ruleExecutionSet = null;
-    	FileInputStream fis;
-		try {
-			fis = new FileInputStream(filePath);
-	        ObjectInputStream ois = new ObjectInputStream(fis);
-	        ruleExecutionSet = (RuleExecutionSet) ois.readObject();
-	        ois.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	return ruleExecutionSet;
-    }
-    
-    private void writeToFile(final String bindUri,
-                                         final RuleExecutionSet ruleSet) {
-    	String filePath = "";
-    	if (System.getProperty("CATALINA_HOME") != null) {
-			CATALINA_HOME = System.getProperty("CATALINA_HOME");
-			filePath = CATALINA_HOME + File.separator + "webapps"
-			+ File.separator + "caaers" + File.separator + "JBossRules"
-			+ File.separator + bindUri;
-        } else {
-        	filePath = CATALINA_HOME + File.separator + "JBossRules"
-    		+ File.separator + bindUri;
-        }
-
-		File temp = new File(filePath);
-		temp.mkdirs();
-		try {
-			FileOutputStream fos = new FileOutputStream(filePath + File.separator + "RuleSet");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(ruleSet);
-			oos.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
 
     /**
      * Unregister a <code>RuleExecutionSet</code> from the given URI.
@@ -169,7 +111,18 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
         if ( bindUri == null ) {
             throw new NullPointerException( "bindUri cannot be null" );
         }
-        this.map.remove( bindUri );
-    }	 
-    
+        getRepositoryService().deregisterRuleExecutionSet(bindUri);
+
+        //this.map.remove( bindUri );
+    }
+
+
+	public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
 }
