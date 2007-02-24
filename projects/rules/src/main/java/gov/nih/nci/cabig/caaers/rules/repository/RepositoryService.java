@@ -3,13 +3,15 @@ package gov.nih.nci.cabig.caaers.rules.repository;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.CompiledPackageItem;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * 
- * @author Sujith Vellat Thayyilthodi
+ * @author Sujith Vellat Thayyilthodi 
  * */
 public interface RepositoryService extends Remote {
 
@@ -41,6 +43,7 @@ public interface RepositoryService extends Remote {
     public String createRuleSet(RuleSet ruleSet) throws RemoteException;
     
     /**
+     * 
      * This returns a list of packages where rules may be added.
      */
     public RuleSet[] listRuleSets() throws RemoteException;
@@ -66,6 +69,18 @@ public interface RepositoryService extends Remote {
      * null if there was some problem (and an exception was not thrown).
      */
     public String checkinVersion(Rule rule) throws RemoteException;
+    
+    
+    public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) throws RemoteException;
+
+	
+    public RuleSetInfo[] listRegistrations();
+
+    
+	public RuleSetInfo getRegisteredRuleset(String bindUri);
+
+	
+	public void deregisterRuleExecutionSet(String bindUri);
 
 
 
