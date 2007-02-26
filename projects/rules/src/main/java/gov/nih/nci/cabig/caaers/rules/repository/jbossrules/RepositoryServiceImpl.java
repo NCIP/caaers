@@ -22,9 +22,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.drools.repository.AssetItem;
+import org.drools.repository.AssetItemIterator;
 import org.drools.repository.CategoryItem;
 import org.drools.repository.PackageItem;
-import org.drools.repository.RepositoryConfigurator;
 import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
 import org.drools.repository.StateItem;
@@ -114,6 +114,13 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 	
 	public String createRuleSet(RuleSet ruleSet) throws RemoteException {
         PackageItem item = getRulesRepository().createPackage( ruleSet.getName(), ruleSet.getDescription() );
+        List imports = ruleSet.getImport();
+        String header = "";
+        for(int count = 0; count < imports.size(); count ++) {
+        	header += imports.get(count).toString();
+        }
+        item.updateHeader(header);
+        getRulesRepository().save();
         return item.getUUID();
 	}
 	
@@ -142,6 +149,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
         PackageItem item = getRulesRepository().loadPackage( name );
         RuleSet ruleSet = new RuleSet();
         ruleSet.setId(item.getUUID());
+        
+        ruleSet.getImport().add(item.getHeader());
 //        ruleSet.header = item.getHeader();
 //        ruleSet.externalURI = item.getExternalURI();
         ruleSet.setDescription(item.getDescription());
@@ -149,7 +158,14 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 //        ruleSet.lastModified = item.getLastModified().getTime();
 //        ruleSet.lasContributor = item.getLastContributor();
 //        ruleSet.state = item.getStateDescription();
-		return ruleSet;
+		
+        AssetItemIterator iterator = (AssetItemIterator)item.getAssets();
+        while(iterator.hasNext()) {
+        	AssetItem ruleItem = (AssetItem)iterator.next();
+        	Rule rule = (Rule)XMLUtil.unmarshal(ruleItem.getContent());
+        	ruleSet.getRule().add(rule);
+        }
+        return ruleSet;
 	}
 	
 	public String checkinVersion(Rule rule) throws RemoteException {
@@ -197,7 +213,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
     	
     	Session session = getSession();
     	if(rulesRepository == null) {
-    		RepositoryConfigurator repositoryConfigurator = new RepositoryConfigurator();
+    		RulesRepositoryEx.RepositoryConfiguratorEx repositoryConfigurator = new RulesRepositoryEx.RepositoryConfiguratorEx();
     		try {
 				session = (repositoryConfigurator.login(getRepository()));
 			} catch (LoginException e) {
@@ -235,10 +251,14 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 
 	public RuleSetInfo getRegisteredRuleset(String bindUri) {
 		RuleSetInfo ruleSetInfo = new RuleSetInfo();
-		ObjectInputStream objectInputStream = (ObjectInputStream) ((RulesRepositoryEx) getRulesRepository())
-				.loadCompiledPackage(bindUri).getBinaryContent();
+		ObjectInputStream objectInputStream;
 		try {
-			ruleSetInfo.setContent(objectInputStream.readObject());
+/*			objectInputStream = new ObjectInputStream(((RulesRepositoryEx) getRulesRepository())
+					.loadCompiledPackage(bindUri).getBinaryContent());		
+			ruleSetInfo.setContent(objectInputStream.readObject());*/
+			RulesRepositoryEx rulesRepositoryEx = ((RulesRepositoryEx) getRulesRepository());
+			ruleSetInfo.setContent(rulesRepositoryEx.convertByteArrayToObject(rulesRepositoryEx.loadCompiledPackage(bindUri).getBinaryContentAsBytes()));
+		
 		} catch (IOException e) {
 			throw new RulesRepositoryException(e.getMessage(), e);
 		} catch (ClassNotFoundException e) {

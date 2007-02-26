@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.CompiledPackageItem;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

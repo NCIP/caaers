@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,11 +31,16 @@ public class CompiledPackageItem extends VersionableItem{
     /**
      * The name of the rule package node type
      */
-    public static final String COMPILED_RULE_PACKAGE_TYPE_NAME           = "drools:compiledRulepackageNodeType";
-
+    public static final String RULE_PACKAGE_TYPE_NAME           = "droolsex:compiledRulepackageNodeType";
     
-	public static final String CONTENT_PROPERTY_BINARY_NAME = "drools:binaryContent";
-	public static final String CONTENT_PROPERTY_ATTACHMENT_FILENAME = "drools:attachmentFileName";
+	public static final String CONTENT_PROPERTY_BINARY_NAME = "droolsex:binaryContent";
+	public static final String CONTENT_PROPERTY_ATTACHMENT_FILENAME = "droolsex:attachmentFileName";
+	
+	
+    public static final String TITLE_PROPERTY_NAME            = "droolsex:title";
+    public static final String DESCRIPTION_PROPERTY_NAME      = "droolsex:description";
+    public static final String FORMAT_PROPERTY_NAME           = "droolsex:format";
+    public static final String LAST_MODIFIED_PROPERTY_NAME    = "droolsex:lastModified";
 	
 	public CompiledPackageItem(RulesRepository rulesRepository, Node node) {
 		super(rulesRepository, node);
@@ -69,6 +77,53 @@ public class CompiledPackageItem extends VersionableItem{
                        e );
             throw new RulesRepositoryException( e );
         }        
+    }
+    
+	public Object convertByteArrayToObject(byte[] bytes) throws IOException,
+			ClassNotFoundException {
+		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+				bytes);
+		ObjectInputStream objectInputStream = new ObjectInputStream(
+				byteArrayInputStream);
+		return objectInputStream.readObject();
+	}
+    
+    /**
+     * This is a convenience method for returning the binary data as a byte array.
+     */
+    public byte[] getBinaryContentAsBytes() {
+        try {
+            Node ruleNode = getVersionContentNode();
+            if ( ruleNode.hasProperty( CONTENT_PROPERTY_BINARY_NAME ) ) {
+                Property data = ruleNode.getProperty( CONTENT_PROPERTY_BINARY_NAME );
+                InputStream in = data.getStream();
+                
+                // Create the byte array to hold the data
+                byte[] bytes = new byte[(int) data.getLength()];
+            
+                // Read in the bytes
+                int offset = 0;
+                int numRead = 0;
+                while (offset < bytes.length
+                       && (numRead=in.read(bytes, offset, bytes.length-offset)) >= 0) {
+                    offset += numRead;
+                }
+            
+                // Ensure all the bytes have been read in
+                if (offset < bytes.length) {
+                    throw new RulesRepositoryException("Could not completely read asset "+ getName());
+                }
+            
+                // Close the input stream and return bytes
+                in.close();   
+                return bytes;
+            } else {
+                return null;
+            }
+        } catch ( Exception e ) {
+            if (e instanceof RuntimeException) throw (RuntimeException) e;
+            throw new RulesRepositoryException( e );
+        }  
     }
 
 	@Override
