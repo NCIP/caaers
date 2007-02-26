@@ -34,8 +34,6 @@ public class Study extends AbstractDomainObject implements Serializable {
 	private Boolean blindedIndicator;
 	private Boolean multiInstitutionIndicator;
 	private Boolean randomizedIndicator;	
-	
-	// A name or abbreviated title by which the document is known
 	private String shortTitle;
 	private String longTitle;	
 	private String description;
