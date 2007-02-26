@@ -176,7 +176,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 
 	public void updateRule(Rule rule) throws RemoteException {
 		// TODO Auto-generated method stub
-		this.repositoryService.createRule(rule);		
+		this.repositoryService.updateRule(rule);		
 	}
 
 	public void updateRuleSet(RuleSet ruleSet) throws RemoteException {
