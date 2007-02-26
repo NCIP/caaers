@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
     /** Private constructor; use <code>getInstance</code> instead. */
     public RuleExecutionSetRepositoryImpl() {
         // Hide the constructor.
-		this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().applicationContext.getBean("jcrService");
+		//this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
     }
 
 
@@ -64,7 +63,8 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
-    	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)getRepositoryService().getRegisteredRuleset(bindUri);
+    	RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
+    	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)ruleSetInfo.getContent();
     	return ruleExecutionSet;
     }
 
@@ -118,11 +118,12 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
 
 
 	public RepositoryService getRepositoryService() {
-		return repositoryService;
+		return RuleServiceContext.getInstance().repositoryService;
+		//return repositoryService;
 	}
 
 
-	public void setRepositoryService(RepositoryService repositoryService) {
+/*	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
-	}
+	}*/
 }
