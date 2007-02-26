@@ -18,13 +18,16 @@ import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetDeregistrationException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
 
+/**
+ * 
+ * @author Sujith Vellat Thayyilthodi
+ * */
 public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymentService {
 
 	private RepositoryService repositoryService;
 	
 	public RuleDeploymentServiceImpl() {
 		super();
-		this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().applicationContext.getBean("jcrService");
 	}
 	 
 	
@@ -37,18 +40,15 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		
 		//The repository configurations can be passed in AS  PROPERTIES
 		
-		RuleSet ruleSet = this.repositoryService.getRuleSet(ruleSetName);
+		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName);
 
 		try {
-			RuleAdapter ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.adapter.JBossXSLTRuleAdapter").newInstance();
+			RuleAdapter ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.JBossXSLTRuleAdapter").newInstance();
 			Object ruleSetObj = ruleAdapter.adapt(ruleSet);
-			RuleSetInfo ruleSetInfo = new RuleSetInfo();
-			ruleSetInfo.setContent(ruleSetObj);
-			this.repositoryService.registerRuleSet(ruleSetName, ruleSetInfo);
 			//Please note that we can only pass the Package here to the RuleExecution set.
 			//Since we still use drools implementation of LocalRuleExecutionSetProvider
 			final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider
-			.createRuleExecutionSet(ruleAdapter.adapt(ruleSet), properties);
+			.createRuleExecutionSet(ruleSetObj, properties);
 			RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri,
 					ruleExecutionSet, properties);
 		} catch (RuleExecutionSetCreateException e) {
@@ -91,9 +91,13 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 
 
 	public RuleSetInfo[] listRegistrations() {
-		return this.repositoryService.listRegistrations();
+		return getRepositoryService().listRegistrations();
 	}
 	
+	
+	private RepositoryService getRepositoryService() {
+		return (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
+	}
 
 
 }
