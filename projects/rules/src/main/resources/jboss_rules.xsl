@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <xsl:stylesheet version="1.0" 
-	xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/v1.0"
+	xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/brxml"
 	xmlns:drools="http://drools.org/drools-3.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
@@ -14,15 +14,20 @@
          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
          xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
 		
-		<import name="{rules:import}" />
+		<xsl:apply-templates select="rules:import"/>
 
 		<xsl:apply-templates select="rules:rule"/>
 	
 	</package>
 </xsl:template>
 
+
+<xsl:template match="rules:import">
+			<import name="{.}" xmlns="http://drools.org/drools-3.0"/>
+</xsl:template>
+
 <xsl:template match="rules:rule">
-	<rule name="{@name}" xmlns="http://drools.org/drools-3.0">
+	<rule name="{rules:metaData/@name}" xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates/>
 	</rule>
 </xsl:template>
