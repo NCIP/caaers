@@ -30,8 +30,7 @@ public class Agent extends AbstractDomainObject{
 	
 	private String name;
 	private String description;
-	private String nameDescription;
-	private String nsc;
+	private String nscNumber;
 	private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
 
 	@Column(name = "description")
@@ -62,23 +61,37 @@ public class Agent extends AbstractDomainObject{
 		this.studyAgents = studyAgents;
 	}
 
-	@Transient
-	public String getNameDescription() {
-		return nameDescription;
+	@Column(name = "nsc")
+	public String getNscNumber() {
+		return nscNumber;
+	}
+
+	public void setNscNumber(String nsc) {
+		this.nscNumber = nsc;
 	}
 	
-	public void setNameDescription(String nameDescription) {
-		this.nameDescription = nameDescription;
-	}
+	 public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
 
-	@Column(name = "nsc")
-	public String getNsc() {
-		return nsc;
-	}
+	        final Agent that = (Agent) o;
 
-	public void setNsc(String nsc) {
-		this.nsc = nsc;
-	}
+	        if (name != null ? !name.equals(that.name) : that.name != null)
+	            return false;
+	        if (description != null ? !description.equals(that.description) : that.description != null)
+	            return false;
+	        if (nscNumber != null ? !nscNumber.equals(that.nscNumber) : that.nscNumber != null) return false;
+	       
+	        return true;
+	    }
+
+	    public int hashCode() {
+	        int result;
+	        result = (name != null ? name.hashCode() : 0);
+	        result = 29 * result + (description != null ? description.hashCode() : 0);
+	        result = 29 * result + (nscNumber != null ? nscNumber.hashCode() : 0);
+	        return result;
+	    }
 	
 	
 	 
