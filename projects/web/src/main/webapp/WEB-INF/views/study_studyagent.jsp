@@ -35,6 +35,41 @@
 		function clearField(field){
            field.value="";
            }
+           
+        /*
+         * Used to check the INDIndicator checkbox if 
+         * INDIdentifier contains text
+         */
+           
+        function checkIndicator(index)
+        {
+	     	var indIndicator ='studyAgents[' + index + '].investigationalNewDrugIndicator1'
+	     	var indIdentifier = 'studyAgents[' + index + '].investigationalNewDrugIdentifier'
+	     	if ( $(indIdentifier).value.length > 0 )
+	     		{
+	     			$(indIndicator).checked=true;
+	     		} 
+        } 
+        
+        
+		function getLayer(SRC){
+			var tDIV = document.getElementById(SRC)             
+            tDIV.style.cursor = "hand"
+			tDIV.style.visibility = "visible"
+		}
+
+		function floatLayer(SRC){
+			var tDIV = document.getElementById(SRC)
+            //tDIV.style.top = window.event.clientY + 20
+			
+		}
+			
+		function hideLayer(SRC){
+			var tDIV = document.getElementById(SRC)
+            tDIV.style.visibility='hidden'
+		}
+
+          
    
         var agentAutocompleterProps = {
             basename: "agent",
@@ -44,9 +79,10 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.name
+                return obj.nscNumber + " :: " + obj.name
             }
         }
+        
               
         function acPostSelect(mode, selectedChoice) {
             //Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
@@ -106,8 +142,32 @@
 					<input type="hidden" name="_selected" value="">
 				</div>
 				
+				<div id="Tip1" 
+					style="position: absolute; 
+									 width: 200px; 
+									 left:285px; 
+									 top:188px; 
+									 visibility: hidden; 
+									 z-index:1; 
+									 padding: 4px; 
+									 background-color: #FFFFCC; 
+									 BORDER: 1px solid #000000">Investigational New Drug Identifier</div>
+									 
+				<div id="Tip2" 
+					style="position: absolute; 
+									 width: 200px; 
+									 left:585px; 
+									 top:188px; 
+									 visibility: hidden; 
+									 z-index:1; 
+									 padding: 4px; 
+									 background-color: #FFFFCC; 
+									 BORDER: 1px solid #000000">Investigational New Drug Indicator</div>					 
+
+
 				
-				<table  width="70%" border="0" cellspacing="0" cellpadding="0">
+				
+				<table  width="70%" border="0" cellspacing="0" cellpadding="3">
 				<br>
 
 					<tr align="center">
@@ -116,10 +176,12 @@
 								src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
 						</td>
 						<td> <b>Agent<span class="red">*</span> </b></td>
-						<td> <b>New Drug Identifier<span class="red">*</span> </b></td>													
+						<!-- <td> <b>IND Identifier<span class="red">*</span> </b></td> -->
+						<td><a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1')" onmousemove="floatLayer('Tip1')" onmouseout="hideLayer('Tip1')"> <b>IND Identifier<span class="red">*</span> </b></a></td>													
 						<td><b> Start Date </b></td>
 						<td><b> End Date </b></td>
-						<td> <b>New Drug Indicator<span class="red">*</span> </b></td>
+						<!-- <td> <b>IND Indicator </b></td> -->
+						<td><a href="javascript:void(0)" style="color:black;" onmouseover="getLayer('Tip2')" onmousemove="floatLayer('Tip2')" onmouseout="hideLayer('Tip2')"> <b>IND Indicator</b></a></td>
 					</tr>																			
 				 
 				    <tr>
@@ -139,7 +201,7 @@
 				
 					<td>
 						<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
-                    	<form:input id="agent${status.index}-input" path="studyAgents[${status.index}].agentAsString"/>
+                    	<form:input size="25" id="agent${status.index}-input" path="studyAgents[${status.index}].agentAsString"/>
                     	<tags:indicator id="agent${status.index}-indicator"/>
                     	<div id="agent${status.index}-choices" class="autocomplete"></div>
                     	<input type="button" id="agent${status.index}-clear" value="Clear"/>
@@ -150,10 +212,10 @@
                     	--%>
 					</td>
 		
-					<td width="15"><form:input path="studyAgents[${status.index}].investigationalNewDrugIdentifier" /></td>
+					<td valign="top"><form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" /></td>
 				    <td><tags:dateInput path="studyAgents[${status.index}].participation.startDate"/></td>
 				    <td><tags:dateInput path="studyAgents[${status.index}].participation.endDate"/></td>
-					<td><form:radiobutton path="studyAgents[${status.index}].investigationalNewDrugIndicator"/></td>
+					<td valign="top"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/></td>
 					
 					</tr>
 						
