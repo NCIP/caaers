@@ -214,6 +214,10 @@ field.value="";
 				<form:label
 					path="studySites[0].irbApprovalDate">${command.studySites[0].irbApprovalDate}</form:label>
 			</td>
+			<td>
+				<form:label
+					path="studyAgents[0].agent.name">${command.studyAgents[0].agent.name}</form:label>
+			</td>
 		</tr>
 
 		</table>	
@@ -221,6 +225,40 @@ field.value="";
 		
 	  <a href="javascript:fireAction('_target2');"><img
 			src="images/b-edit.gif" border="0" alt="edit this page"></a>
+			
+			
+
+	<h3><strong>Study Agents</strong></h3>
+
+		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
+		<br>
+
+					<tr align="center">						
+						<td> <b>Agent Name</b></td>						
+						<td> <b>Agent NSC Number</b> </td>
+						<td> <b>IND Identifier</b> </td>
+						<td> <b>IND Indicator</b> </td>		
+						<td> <b>Start Date</b> </td>
+						<td> <b>End Date</b> </td>														
+					</tr>																			
+				 
+				    
+					<c:forEach items="${command.studyAgents}" var="studyAgent">
+								<tr class="results">						
+									<td align="left">${studyAgent.agent.name}</td>
+									<td align="left">${studyAgent.agent.nscNumber}</td>
+									<td align="left">${studyAgent.investigationalNewDrugIdentifier}</td>
+									<td align="left">${studyAgent.investigationalNewDrugIndicator}</td>
+									<td align="left"><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
+									<td align="left"><tags:formatDate value="${studyAgent.participation.endDate}"/></td>											
+								</tr>
+					</c:forEach>				
+		</table>
+
+		 <br>
+		      <a href="javascript:fireAction('_target3');"><img
+					src="images/b-edit.gif" border="0" alt="edit this page"></a>
+				
 
 </chrome:division>
 	</form:form>
