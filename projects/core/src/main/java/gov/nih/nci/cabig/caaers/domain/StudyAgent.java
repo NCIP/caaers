@@ -101,6 +101,35 @@ public class StudyAgent extends AbstractDomainObject{
 		this.participation = participation;
 	}
 	
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		final StudyAgent that = (StudyAgent) o;
+
+		if (investigationalNewDrugIdentifier != null ? !investigationalNewDrugIdentifier.equals(that.investigationalNewDrugIdentifier) : that.investigationalNewDrugIdentifier != null)
+			return false;
+		if (study != null ? !study.equals(that.study)
+				: that.study != null)
+			return false;
+		if (agent != null ? !agent.equals(that.agent)
+				: that.agent != null)
+			return false;
+
+		return true;
+	}
+
+	public int hashCode() {
+		int result;
+		result = (investigationalNewDrugIdentifier != null ? investigationalNewDrugIdentifier.hashCode() : 0);
+		result = 29 * result
+				+ (agent != null ? agent.hashCode() : 0);
+		result = 29 * result + (study != null ? study.hashCode() : 0);
+		return result;
+	}
+	
 
 	
 	
