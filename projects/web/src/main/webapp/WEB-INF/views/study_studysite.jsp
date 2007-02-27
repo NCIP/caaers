@@ -15,53 +15,92 @@
 <style type="text/css">
         .label { width: 12em; text-align: right; padding: 4px; }
 </style>
+<script language="JavaScript" type="text/JavaScript">
+
+function validatePage(){
+	return true;
+}
+function fireAction(action, selected){
+	if(validatePage()){
+		document.getElementsByName('_target3')[0].name='_target2';
+		document.studySiteForm._action.value=action;
+		document.studySiteForm._selected.value=selected;		
+		document.studySiteForm.submit();
+	}
+}
+function clearField(field){
+field.value="";
+}
+
+</script>
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
 <chrome:body title="${flow.name}: ${tab.longTitle}">	
-				<form:form method="post">
+				<form:form method="post" name="studySiteForm">
 				<chrome:division id="study-details">
 				<tags:tabFields tab="${tab}"/>
+				<div>		
+					<input type="hidden" name="_action" value="">
+					<input type="hidden" name="_selected" value="">
+				</div>
 				
-					<table width="28%" border="0" cellspacing="3" cellpadding="3"
-						id="table1">
-					
-					<tr>
-				      <td class="label"> <form:label path="studySites[0].site"><span class="red">*</span><em></em>Site:</form:label> </td>
-				      <td> <form:select path="studySites[0].site">
-							<form:options items="${sitesRefData}" itemLabel="name"
-									itemValue="id" />
-						</form:select> </td>        			  
-					</tr>
-					
-					<tr>
-				      <td class="label"> <form:label path="studySites[0].statusCode"><span class="red">*</span><em></em>Status
-							Code:</form:label> </td>
-				      <td> <form:input path="studySites[0].statusCode"/> </td>        			  
-					</tr>
-						
-					<tr>
-				      <td class="label"> <form:label path="studySites[0].roleCode"><span class="red">*</span><em></em>Role
-							Code:</form:label> </td>
-				      <td> <form:input path="studySites[0].roleCode"/> </td>        			  
-					</tr>
+					<table border="0" id="table1" cellspacing="10" width="100%">
+	
+						<tr>
+							<td align="center"> <b> <span class="red">*</span><em></em>Site:</b> </td>
+							<td align="center"> <b> <span class="red">*</span><em></em>Status Code:</b> </td>
+							<td align="center"> <b> <span class="red">*</span><em></em>Role Code:</b> </td>
+							<td align="center"> <b> <span class="red">*</span><em></em>Start Date:</b> </td>
+							<td align="center"> <b> End Date:</b> </td>														
+							<td align="center"> <b> <span class="red">*</span><em></em>IRB Approval Date:</b> </td>														
+							<td align="center">										
+								<b><a href="javascript:fireAction('addSite','0');"><img
+									src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
+							</td>
+						</tr>
+				
+						<c:forEach varStatus="status" items="${command.studySites}">					
+							<tr>
+								<td align="center" width="15%"> 
+									<form:select path="studySites[${status.index}].site">
+        						  	 	<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
+									</form:select> 
+								</td>
+								
+								<td align="center" width="15%">
+								    <form:select path="studySites[${status.index}].statusCode">										
+									 	<form:options items="${studySiteStatusRefData}" itemLabel="desc"
+												itemValue="code" />
+									</form:select>
+								</td>	
+									
+								<td align="center" width="15%">
+									<form:select path="studySites[${status.index}].roleCode">										
+									 	<form:options items="${studySiteRoleCodeRefData}" itemLabel="desc"
+												itemValue="code" />
+									</form:select>									
+								</td>
+												
+							    <td align="center" width="15%">
+							    	<tags:dateInput path="studySites[${status.index}].startDate"/>							    
+							    </td>				
+							    
+							    <td align="center" width="15%">
+							        <tags:dateInput path="studySites[${status.index}].endDate"/>
+							    </td>
 
-					<tr>
-				      <td class="label"><form:label path="studySites[0].startDate"><span class="red">*</span><em></em>Start Date:</form:label> </td>
-				      <td><tags:dateInput path="studySites[0].startDate"/></td>
-					</tr>
-
-					<tr>
-				      <td class="label"><form:label path="studySites[0].endDate">End Date:</form:label> </td>
-                      <td><tags:dateInput path="studySites[0].endDate"/></td>
-					</tr>
-					
-					<tr>
-				      <td class="label"><form:label path="studySites[0].irbApprovalDate"><span class="red">*</span><em></em>IRB
-								Approval Date:</form:label> </td>
-				      <td><tags:dateInput path="studySites[0].irbApprovalDate"/></td>        			  
-					</tr>
-																	
+    	    				    <td align="center" width="15%">
+    	    				    	<tags:dateInput path="studySites[${status.index}].irbApprovalDate"/>
+    	    				    </td>   
+    	    				    
+    	    				    <td align="center" width="10%">
+									<a href="javascript:fireAction('removeSite',${status.index});"><img
+											src="/caaers/images/checkno.gif" border="0" alt="delete"></a>										
+								</td>
+							</tr>
+						</c:forEach>
+																						
 					</table>
 				</chrome:division>
 				</form:form>		
