@@ -50,26 +50,6 @@
 	     			$(indIndicator).checked=true;
 	     		} 
         } 
-        
-        
-		function getLayer(SRC){
-			var tDIV = document.getElementById(SRC)             
-            tDIV.style.cursor = "hand"
-			tDIV.style.visibility = "visible"
-		}
-
-		function floatLayer(SRC){
-			var tDIV = document.getElementById(SRC)
-            //tDIV.style.top = window.event.clientY + 20
-			
-		}
-			
-		function hideLayer(SRC){
-			var tDIV = document.getElementById(SRC)
-            tDIV.style.visibility='hidden'
-		}
-
-          
    
         var agentAutocompleterProps = {
             basename: "agent",
@@ -140,32 +120,7 @@
 				<div>		
 					<input type="hidden" name="_action" value="">
 					<input type="hidden" name="_selected" value="">
-				</div>
-				
-				<div id="Tip1" 
-					style="position: absolute; 
-									 width: 200px; 
-									 left:285px; 
-									 top:188px; 
-									 visibility: hidden; 
-									 z-index:1; 
-									 padding: 4px; 
-									 background-color: #FFFFCC; 
-									 BORDER: 1px solid #000000">Investigational New Drug Identifier</div>
-									 
-				<div id="Tip2" 
-					style="position: absolute; 
-									 width: 200px; 
-									 left:585px; 
-									 top:188px; 
-									 visibility: hidden; 
-									 z-index:1; 
-									 padding: 4px; 
-									 background-color: #FFFFCC; 
-									 BORDER: 1px solid #000000">Investigational New Drug Indicator</div>					 
-
-
-				
+				</div>	
 				
 				<table  width="70%" border="0" cellspacing="0" cellpadding="3">
 				<br>
@@ -177,11 +132,12 @@
 						</td>
 						<td> <b>Agent<span class="red">*</span> </b></td>
 						<!-- <td> <b>IND Identifier<span class="red">*</span> </b></td> -->
-						<td><a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1')" onmousemove="floatLayer('Tip1')" onmouseout="hideLayer('Tip1')"> <b>IND Identifier<span class="red">*</span> </b></a></td>													
+						<!-- <td><a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1')" onmousemove="floatLayer('Tip1')" onmouseout="hideLayer('Tip1')"> <b>IND Identifier<span class="red">*</span> </b></a></td> -->													
+						<td><b>IND Identifier<span class="red">*</span> </b><tags:hoverText description="Investigational New Drug Identifier"/></td>
 						<td><b> Start Date </b></td>
 						<td><b> End Date </b></td>
 						<!-- <td> <b>IND Indicator </b></td> -->
-						<td><a href="javascript:void(0)" style="color:black;" onmouseover="getLayer('Tip2')" onmousemove="floatLayer('Tip2')" onmouseout="hideLayer('Tip2')"> <b>IND Indicator</b></a></td>
+						<td><b>IND Indicator</b><tags:hoverText description="Investigational New Drug Indicator"/></td>
 					</tr>																			
 				 
 				    <tr>
