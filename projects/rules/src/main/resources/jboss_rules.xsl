@@ -45,10 +45,25 @@
 	</column>
 </xsl:template>
 
+
+<xsl:template match="rules:field-binding">
+	<field-binding field-name="{@field-name}" identifier="{@identifier}" xmlns="http://drools.org/drools-3.0"/>
+</xsl:template>
+
+<xsl:template match="rules:field-constraint">
+	<field-constraint field-name="{@field-name}" xmlns="http://drools.org/drools-3.0">
+		<xsl:apply-templates/>	
+	</field-constraint>
+</xsl:template>
+
+<xsl:template match="rules:literal-restriction">
+	<literal-restriction evaluator="{@evaluator}" value="{@value}" xmlns="http://drools.org/drools-3.0"/>
+</xsl:template>
+
 <xsl:template match="rules:eval">
-<eval xmlns="http://drools.org/drools-3.0">
-<xsl:value-of select="."/>
-</eval>
+	<eval xmlns="http://drools.org/drools-3.0">
+		<xsl:value-of select="."/>
+	</eval>
 </xsl:template>
 
 <xsl:template match="rules:action">
