@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
 
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;
@@ -39,7 +39,7 @@ public class RuleServiceContext {
 	private void initializeService() {
 		try {
 /*			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionService.RULE_SERVICE_PROVIDER,
+					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
 					Class
 					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
 */
@@ -50,11 +50,11 @@ public class RuleServiceContext {
 			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
 
 			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionService.RULE_SERVICE_PROVIDER, Class
+					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER, Class
 							.forName(DEFAULT_RULE_SERVICE_PROVIDER));
 			
 			this.ruleServiceProvider = RuleServiceProviderManager
-					.getRuleServiceProvider(RuleExecutionService.RULE_SERVICE_PROVIDER);
+					.getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
 
 			this.ruleAdministrator = this.ruleServiceProvider
 					.getRuleAdministrator();
