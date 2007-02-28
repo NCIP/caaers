@@ -86,8 +86,7 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
                 return refdata;
            
         	}        	
-        });
-        flow.addTab(new Tab<Study>("Review and Submit", "Review and Submit", "study_reviewsummary"));                        
+        });                        
         
         setFlow(flow);        
     }
