@@ -27,7 +27,6 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeDef;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.compact.CompactNodeTypeDefReader;
-import org.drools.repository.PackageItem;
 import org.drools.repository.RepositoryConfigurator;
 import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
@@ -196,6 +195,7 @@ public class RulesRepositoryEx extends RulesRepository {
         try {
 			Node rulePackageNode = folderNode.getNode(bindUri);
 			rulePackageNode.remove();
+			session.save();
 		} catch (PathNotFoundException e) {
 			throw new RulesRepositoryException(e.getMessage(), e);
 		} catch (RepositoryException e) {
