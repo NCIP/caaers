@@ -15,5 +15,8 @@
     <!--            
     <bean id="participantAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.participant.ParticipantAjaxFacade"/>
-    -->            
+    -->
+     <bean id="searchStudyAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.SearchStudyAjaxFacade"/>     
+	</beans>            
 </beans>
