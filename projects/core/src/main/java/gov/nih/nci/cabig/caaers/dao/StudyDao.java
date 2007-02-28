@@ -41,9 +41,21 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         return (List<Study>) getHibernateTemplate().find("from Study");
     }
 
-    public void save(Study study) {
-        getHibernateTemplate().saveOrUpdate(study);
+    public Study getStudyDesignById(int id) {				
+        Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
+        study.getIdentifiers().size();
+        study.getStudySites().size();
+                
+        return study;
     }
+    
+    public void save(Study study) {
+        getHibernateTemplate().saveOrUpdate(study);                        
+    }
+    
+    public void merge(Study study) {
+    	getHibernateTemplate().merge(study);    	
+    } 
     
     /**
      * Searches based on an example object. Typical usage from your service class: -
