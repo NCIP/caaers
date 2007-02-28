@@ -14,6 +14,11 @@
         <create creator="spring" javascript="createStudy">
             <param name="beanName" value="studyAjaxFacade"/>
         </create>
+        
+         <create creator="spring" javascript="searchStudy">
+            <param name="beanName" value="searchStudyAjaxFacade"/>            
+        </create>     
+        
         <create creator="new" javascript="date">
             <param name="class" value="java.util.Date"/>
         </create>
