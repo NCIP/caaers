@@ -16,6 +16,12 @@
         <pattern>/pages/register</pattern>
         <pattern>/pages/participant/create?studySiteId</pattern>
    </decorator>
+   
+    
+   
+   <decorator name="tabbedflow_update" page="tabbedflow_update.jsp">
+		<pattern>/pages/study/edit</pattern>       
+   </decorator>
     
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/participant/create</pattern>
