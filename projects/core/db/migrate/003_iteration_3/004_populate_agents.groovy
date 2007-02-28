@@ -1,4 +1,4 @@
-class AddCtcV2Terms extends edu.northwestern.bioinformatics.bering.Migration {
+		class AddCtcV2Terms extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
         // Have to break up the inserts so as not to exceed the java max method length
         m0()
@@ -55,6 +55,7 @@ class AddCtcV2Terms extends edu.northwestern.bioinformatics.bering.Migration {
 
     void m0() {
         // all0 (25 terms)
+        execute("DELETE FROM agents")
         insert('agents', [ id: 1, nsc: 723227, name: "(161-180)ESO-1 Peptide"], primaryKey: false)
         insert('agents', [ id: 2, nsc: 726584, name: "(H115D)VHL35 Peptide"], primaryKey: false)
         insert('agents', [ id: 3, nsc: 726190, name: "(R)-(-)-Gossypol acetic acid (Ascenta's AT-101)"], primaryKey: false)
