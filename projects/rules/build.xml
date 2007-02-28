@@ -13,6 +13,8 @@
 	<property name="jar-name.main" value="${basedir}/../../caaers-rules.jar"/>
 	<property name="jar-name.unit-test" value="${basedir}/../../caaers-rules-testing.jar"/>
 
+    <property name="war-name" value="${basedir}/../../rules.war"/>
+
 	<!-- CLASSPATHS -->
     
 	<path id="cp.compiled-source">
@@ -84,25 +86,6 @@
 	
 	<target name="all" depends="jaxb,compile,client"/>
 
-	<target name="generate">
-		<delete dir="build/main/generated-sources" />
-		<mkdir dir="build/main/generated-sources" />
-
-		<java jar="lib/main/jibx/xsd2jibx/xsd2jibx.jar" fork="true" failonerror="true" classpathref="cp.main">
-			<arg line="-d build/main/generated-sources ${src-dir.resources}/schema/rules.xsd"/>
-			<classpath>
-				<pathelement path="lib/main/**/*.jar"/>
-			</classpath>		    
-		</java>
-
-		<delete dir="${build-dir.main}/generated" />
-		<mkdir dir="${build-dir.main}/generated" />
-		<javac destdir="${build-dir.main}/generated" classpathref="cp.main" debug="true" source="1.5">
-		    <src path="build/main/generated-sources"/>
-		</javac>
-
-	</target>
-
 	<target name="resources" description="Copy resources into classpath" depends="init">
 		<copy file="${config.database.file}" tofile="${build-dir.main}/datasource.properties" overwrite="true"/>
 		<copy todir="${build-dir.main}">
@@ -144,20 +127,46 @@
 
 		<jar basedir="${build-dir.main}/client" file="${jar-name.client}"/>
 	</target>	
-
-	<target name="bind">
-		<copy todir="build/main/generated-sources" flatten="true">
-			<fileset dir="build/main/generated-sources" includes="**/*.xml"/>
-		</copy>	
-		<java classname="org.jibx.binding.Compile" fork="true" failonerror="true" classpathref="cp.main">
-			<arg line="build/main/generated-sources/binding.xml"/>
-			<classpath>
-				<pathelement path="${build-dir.main}/generated"/>
-			</classpath>			
-		</java>	
-		<copy todir="C:\Docume~1\SUJITH\workspace\caaers-rules\bin">
-			<fileset dir="${build-dir.main}/generated"/>
+	
+	
+    <target name="war" description="Create WAR for caAERS" depends="jaxb,compile, webserviceapp">
+        <echo>Creating ${war-name}</echo>
+        <war destfile="${war-name}" basedir="build/dist" webxml="src/main/resources/web.xml">
+            <exclude name="**/web.xml"/>
+            <!-- it would be better to do this with CP refs, but I don't see a way -->
+            <lib dir="build/dist/WEB-INF/lib">
+                <include name="**/*.jar"/>
+            </lib>
+            <classes dir="build/dist/WEB-INF/classes" />
+		</war>
+	</target>	
+	
+	<target name="webserviceapp">
+		<mkdir dir="build/dist" />
+		<mkdir dir="build/dist/WEB-INF/lib" />
+		<copy todir="build/dist/WEB-INF/lib" flatten="true" >
+			<fileset dir="lib/main">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="db/lib">
+				<include name="**/*.jar"/>
+			</fileset>
 		</copy>
+		<copy todir="build/dist/WEB-INF/classes" >
+			<fileset dir="src/main/resources">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/dist/WEB-INF/classes" >
+			<fileset dir="build/main/classes">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>
+		<copy todir="build/dist/WEB-INF/classes" >
+			<fileset dir="build/main/classes/generated">
+				<include name="**/*.*"/>
+			</fileset>
+		</copy>		
 	</target>
 
 	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
