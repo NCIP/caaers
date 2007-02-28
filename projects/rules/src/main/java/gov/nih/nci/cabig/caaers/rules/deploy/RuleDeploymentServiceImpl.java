@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.jws.WebService;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetDeregistrationException;
@@ -22,14 +23,27 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
+@WebService(
+        serviceName = "RuleDeploymentService"
+)
 public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymentService {
-
-	private RepositoryService repositoryService;
 	
 	public RuleDeploymentServiceImpl() {
 		super();
 	}
-	 
+
+	public void login(String userName, String password) throws RemoteException {
+		throw new RemoteException("Not Implemented");
+	}
+
+	/**
+	 * Read this configuration and make sure we have a JCR Repository implementation to support that.
+	 * @throws RemoteException 
+	 * */
+	public void configureRepository(RepositoryConfiguration repositoryConfiguration) throws RemoteException {
+		throw new RemoteException("Not Implemented");
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleDeploymentService#registerPackage(java.lang.String, java.lang.String)
@@ -75,20 +89,6 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			throw new RuleException(e.getMessage(), e);
 		}
 	}
-
-	/**
-	 * Read this configuration and make sure we have a JCR Repository implementation to support that.
-	 * */
-	public void configureRepository(RepositoryConfiguration repositoryConfiguration) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void login(String userName, String password) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public RuleSetInfo[] listRegistrations() {
 		return getRepositoryService().listRegistrations();

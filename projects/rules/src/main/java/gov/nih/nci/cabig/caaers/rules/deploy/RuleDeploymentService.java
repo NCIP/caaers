@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
+import java.rmi.RemoteException;
+
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
@@ -15,15 +17,17 @@ public interface RuleDeploymentService {
 	 * 
 	 * @param userName
 	 * @param password
+	 * @throws RemoteException 
 	 * */
-	public abstract void login(String userName, String password);
+	public abstract void login(String userName, String password) throws RemoteException;
 	
 	/**
 	 * Specify and Configure the repository which Rule Deployment Service should make use of.
 	 *  
 	 * @param repositoryConfiguration Configuration information for the Jackrabbit. 
+	 * @throws RemoteException 
 	 * */
-	public abstract void configureRepository(RepositoryConfiguration repositoryConfiguration);
+	public abstract void configureRepository(RepositoryConfiguration repositoryConfiguration) throws RemoteException;
 	
 	/**
 	 * Register the Rule Set. I mean deploy a drools package if you are a JBoss Rules fan...
