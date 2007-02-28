@@ -56,6 +56,8 @@
                         <list>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Study" p:linkName="createStudyController"/>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Search Study" p:linkName="searchStudyController"/>                         
                         </list>
                     </property>
                 </bean>
@@ -124,6 +126,14 @@
 	<bean name="/study/view" id="viewStudyController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
     </bean>
+    
+    <bean name="/study/search" id="searchStudyController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.SearchStudyController">
+	</bean>
+	
+	<bean name="/study/edit" id="editStudyController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
+	</bean>    
 
     <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
 
