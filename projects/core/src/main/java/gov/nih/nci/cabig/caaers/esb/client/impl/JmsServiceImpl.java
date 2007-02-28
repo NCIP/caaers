@@ -39,7 +39,8 @@ public class JmsServiceImpl implements MessageListener{
     }
 
     public void sendJms(String xml) throws BroadcastException{
-        /*
+    	initialize();
+    	/*
          * Create sender and text message.
          */
         try {
