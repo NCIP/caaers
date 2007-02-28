@@ -4,25 +4,21 @@ import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
+import javax.jws.WebService;
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
-import javax.rules.admin.LocalRuleExecutionSetProvider;
-import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
@@ -39,13 +35,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  * @author Sujith Vellat Thayyilthodi
  * */
+@WebService(
+        serviceName = "RuleAuthoringService"
+)
 public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 
 	private RuleServiceProvider ruleServiceProvider;
-
-	private LocalRuleExecutionSetProvider ruleSetProvider;
-
-	private RuleAdministrator ruleAdministrator;
 	
 	private RepositoryService repositoryService;
 	
@@ -59,7 +54,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 	private void initializeService() {
 		try {
 /*			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionService.RULE_SERVICE_PROVIDER,
+					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
 					Class
 					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
 */
@@ -70,21 +65,13 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
 
 			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionService.RULE_SERVICE_PROVIDER,
+					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
 					Class
 					.forName("gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl"));
 			
 			this.ruleServiceProvider = RuleServiceProviderManager
-					.getRuleServiceProvider(RuleExecutionService.RULE_SERVICE_PROVIDER);
-
-			this.ruleAdministrator = this.ruleServiceProvider
-					.getRuleAdministrator();
-
-			this.ruleSetProvider = this.ruleAdministrator
-					.getLocalRuleExecutionSetProvider(null);
+					.getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
 			
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
 		} catch (ConfigurationException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (ClassNotFoundException e) {
@@ -141,25 +128,24 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 		
 		RuleExecutionSet ruleExecutionSet;
 		try {
-			ruleExecutionSet = this.ruleSetProvider
+			ruleExecutionSet = this.ruleServiceProvider.getRuleAdministrator().getLocalRuleExecutionSetProvider(null)
 					.createRuleExecutionSet(ruleReader, properties);
-			this.ruleAdministrator.registerRuleExecutionSet(bindUri,
-					ruleExecutionSet, properties);
-			
-
-			
+			this.ruleServiceProvider.getRuleAdministrator().registerRuleExecutionSet(bindUri,
+					ruleExecutionSet, properties);			
 		} catch (RuleExecutionSetCreateException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (IOException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (RuleExecutionSetRegisterException e) {
 			throw new RuleException(e.getMessage(), e);
+		} catch (ConfigurationException e) {
+			throw new RuleException(e.getMessage(), e);
 		}
 	}
 
-	public RuleServiceProvider getRuleServiceProvider() {
+/*	public RuleServiceProvider getRuleServiceProvider() {
 		return ruleServiceProvider;
-	}
+	}*/
 
 
 	public void createCategory(Category category) throws RemoteException {		
@@ -175,12 +161,10 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 	}
 
 	public void updateRule(Rule rule) throws RemoteException {
-		// TODO Auto-generated method stub
 		this.repositoryService.updateRule(rule);		
 	}
 
 	public void updateRuleSet(RuleSet ruleSet) throws RemoteException {
-		// TODO Auto-generated method stub
 		this.repositoryService.createRuleSet(ruleSet);
 	}
 
