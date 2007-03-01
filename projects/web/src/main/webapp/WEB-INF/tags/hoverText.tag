@@ -66,5 +66,5 @@
 									 
 									 
 <a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1',event,'${description}')" onmousemove="floatLayer('Tip1',event)" onmouseout="hideLayer('Tip1')">
-<img src="/caaers/images/question.gif" border="0" alt="Add"></a>
+<img src="/caaers/images/question.gif" border="0"></a>
 						
