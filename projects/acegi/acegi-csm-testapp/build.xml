@@ -1,0 +1,90 @@
+<project name="acegi-csm-testapp">
+
+	<property file="build.properties" />
+
+	<!--
+
+			<jvmarg value="-Dgov.nih.nci.security.configFile=test/resources/ApplicationSecurityConfig.xml" />
+			<jvmarg value="-Djava.security.auth.login.config=test/resources/jaas.config" />
+
+			<jvmarg value="-Dtest.db.driver=${hibernate.connection.driver_class}" />
+			<jvmarg value="-Dtest.db.url=${hibernate.connection.url}" />
+			<jvmarg value="-Dtest.db.usr=${hibernate.connection.username}" />
+			<jvmarg value="-Dtest.db.pwd=${hibernate.connection.password}" />
+-->
+
+	<path id="tools.cp">
+		<fileset dir="${user.home}/.m2/repository/org/hibernate">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${user.home}/.m2/repository/commons-logging">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${user.home}/.m2/repository/dom4j/dom4j/1.6.1">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${user.home}/.m2/repository/javax/persistence/persistence-api/1.0">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${user.home}/.m2/repository/commons-collections/commons-collections/3.1">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${user.home}/.m2/repository/mysql/mysql-connector-java/3.1.11">
+			<include name="**/*.jar" />
+		</fileset>
+
+		<fileset dir="${user.home}/.m2/repository/dbunit/dbunit/2.2">
+			<include name="**/*.jar" />
+		</fileset>
+
+	</path>
+
+	<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="tools.cp" />
+
+	<target name="gen-ddl">
+		<mkdir dir="gen" />
+		<hibernatetool destdir="gen">
+			<classpath>
+				<pathelement location="target/classes" />
+			</classpath>
+			<annotationconfiguration configurationfile="tools/hibernate/hibernate.cfg.xml" />
+			<hbm2ddl export="true" drop="true" />
+		</hibernatetool>
+	</target>
+
+
+	<target name="createCSMSchema">
+		<property file="src/main/resources/hibernate.properties" />
+		<echo message="CREATE TABLES USING: ${hibernate.connection.driver_class} ${hibernate.connection.url}" />
+		<sql driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}" onerror="continue" src="src/main/sql/CSM.ddl">
+			<classpath refid="tools.cp" />
+		</sql>
+	</target>
+
+	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+	
+
+	<target name="insertCSMPolicy">
+		<property file="src/main/resources/hibernate.properties" />
+		<dbunit driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}">
+
+			<classpath refid="tools.cp" />
+
+			<operation type="INSERT" transaction="true" src="etc/CSM_policy.xml" />
+
+		</dbunit>
+	</target>
+
+	<target name="deleteCSMPolicy">
+		<property file="src/main/resources/hibernate.properties" />
+		<dbunit driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}">
+
+			<classpath refid="tools.cp" />
+
+			<operation type="DELETE" transaction="true" src="etc/CSM_policy.xml" />
+
+		</dbunit>
+	</target>
+
+
+</project>

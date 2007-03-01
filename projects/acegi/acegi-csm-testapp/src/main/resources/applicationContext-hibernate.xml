@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+	<!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location"
+			value="WEB-INF/classes/hibernate.properties" />
+	</bean>
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="${hibernate.connection.driver_class}"
+		p:maxActive="5" p:maxIdle="2" p:maxWait="180000"
+		p:removeAbandoned="true" p:removeAbandonedTimeout="300"
+		p:logAbandoned="true" p:validationQuery="SELECT 1"
+		p:testWhileIdle="true" p:testOnReturn="true"
+		p:timeBetweenEvictionRunsMillis="300000"
+		p:minEvictableIdleTimeMillis="600000"
+		p:url="${hibernate.connection.url}"
+		p:username="${hibernate.connection.username}"
+		p:password="${hibernate.connection.password}" />
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		autowire="byName">
+		<property name="annotatedClasses">
+			<list>
+				<value>testapp.bean.Person</value>
+				<value>testapp.bean.Statement</value>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:annotation-driven proxy-target-class="true" />
+
+	<bean id="hibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="checkWriteOperations">
+			<value>true</value>
+		</property>
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+
+	<bean id="openSessionInViewInterceptor"
+		class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor"
+		autowire="byName">
+		<property name="singleSession">
+			<value>true</value>
+		</property>
+		<property name="flushModeName">
+			<value>FLUSH_AUTO</value>
+		</property>
+	</bean>
+
+
+
+
+	<bean id="daoTemplate" abstract="true">
+		<property name="hibernateTemplate">
+			<ref local="hibernateTemplate" />
+		</property>
+	</bean>
+
+
+	<bean id="personDaoTarget" parent="daoTemplate"
+		class="testapp.dao.impl.PersonDaoImpl" />
+		
+	<bean id="personDao"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>testapp.dao.PersonDao</value>
+		</property>
+		<property name="target" ref="personDaoTarget" />
+		<property name="interceptorNames">
+			<list>
+
+				<value>personDaoSecurity</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="statementDaoTarget" parent="daoTemplate"
+		class="testapp.dao.impl.StatementDaoImpl" />
+	<bean id="statementDao"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>testapp.dao.StatementDao</value>
+		</property>
+		<property name="target" ref="statementDaoTarget" />
+		<property name="interceptorNames">
+			<list>
+
+				<value>statementDaoSecurity</value>
+			</list>
+		</property>
+	</bean>
+
+
+
+</beans>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<aop:aspectj-autoproxy />
+
+	<aop:config>
+		<!-- pointcuts -->
+
+		<!-- advisors -->
+
+		<!-- aspects -->
+		<aop:aspect id="assignDomainObjectOwnershipAspect"
+			ref="assignDomainObjectOwnershipBean">
+			<aop:around pointcut="execution(public * testapp.dao.impl.*DaoImpl.save(..))"
+				method="assignOwner" />
+		</aop:aspect>
+	</aop:config>
+	
+	<bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.security.acegi.csm.aop.DomainObjectOwnershipAssigner">
+		<property name="csmAuthorizationManager" ref="csmAuthorizationManager"/>
+	</bean>
+
+<!-- 
+	<bean id="csmPersonDaoAuthorizationAspectBean"
+		class="exp.authorization.CSMAuthorizationAspect">
+
+		<property name="privilegeAndObjectRetrievalStrategy">
+			<bean
+				class="exp.authorization.CSMPrivilegeAndObjectRetrievalStrategy">
+				<property name="processDomainObjectClass"
+					value="exp.bean.Person" />
+				<property name="mappings">
+					<list>
+						<bean
+							class="exp.authorization.RegexSignatureToPrivilegeMapping">
+							<property name="pattern" value=".*save" />
+							<property name="privilege" value="CREATE" />
+						</bean>
+						<bean
+							class="exp.authorization.RegexSignatureToPrivilegeMapping">
+							<property name="pattern" value=".*update" />
+							<property name="privilege" value="UPDATE" />
+						</bean>
+						<bean
+							class="exp.authorization.RegexSignatureToPrivilegeMapping">
+							<property name="pattern" value=".*find.*" />
+							<property name="privilege" value="READ" />
+						</bean>
+					</list>
+				</property>
+			</bean>
+		</property>
+
+		<property name="authorizationChecks">
+			<list>
+
+				<bean
+					class="exp.authorization.CSMGroupAuthorizationCheck">
+					<property name="csmAuthorizationManager"
+						ref="csmAuthorizationManager" />
+					<property name="objectIdGenerator"
+						ref="csmExtentIdGenerator" />
+				</bean>
+				<bean
+					class="exp.authorization.CSMUserAuthorizationCheck">
+					<property name="csmAuthorizationManager"
+						ref="csmAuthorizationManager" />
+					<property name="objectIdGenerator"
+						ref="csmObjectIdGenerator" />
+				</bean>
+				<bean
+					class="exp.authorization.CSMOwnershipAuthorizationCheck">
+					<property name="csmAuthorizationManager"
+						ref="csmAuthorizationManager" />
+					<property name="objectIdGenerator"
+						ref="csmObjectIdGenerator" />
+				</bean>
+			</list>
+		</property>
+
+		<property name="objectResultHandler" ref="objectResultHandler" />
+
+	</bean>
+ -->
+</beans>

@@ -1,0 +1,38 @@
+<security-config>
+	<upt-context-name>
+		<!-- Context Name for the UPT Application -->
+		UPT
+	</upt-context-name>
+	<application-list>
+	<!-- For every application using the security api an entry should be made here -->
+		<application>
+			<context-name>
+				testapp
+			</context-name>
+			<authentication>
+				<lockout-time>100
+				</lockout-time>
+				<allowed-login-time>100
+				</allowed-login-time>
+				<allowed-attempts>3
+				</allowed-attempts>
+				<authentication-provider-class>
+					<!--
+				gov.nih.nci.cagrid.authorization.impl.CSMGridAuthorizationManager
+				-->
+				</authentication-provider-class>
+			</authentication>
+			<authorization>
+				<authorization-provider-class>
+					<!--
+				gov.nih.nci.cagrid.authorization.impl.CSMGridAuthorizationManager
+				-->
+				</authorization-provider-class>
+				<hibernate-config-file>
+					<!-- Fully qualified file path -->
+					etc/hibernate.cfg.xml
+				</hibernate-config-file>
+			</authorization>
+		</application>
+	</application-list>
+</security-config>

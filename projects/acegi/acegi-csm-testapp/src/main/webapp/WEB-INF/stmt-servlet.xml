@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/personList.htm">personListController</prop>
+				<prop key="/person.htm">personFormController</prop>
+				<prop key="/statement.htm">statementFormController</prop>
+
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="personListController" class="testapp.web.PersonListController">
+		<property name="personDao" ref="personDao"/>
+	</bean>
+	
+	<bean id="personFormController" class="testapp.web.PersonFormController">
+	
+		<property name="formView" value="person"/>
+		<property name="successView" value="personList.htm"/>
+        
+        <property name="personDao" ref="personDao"/>
+	</bean>
+	
+	<bean id="statementFormController" class="testapp.web.StatementFormController">
+	
+		<property name="formView" value="statement"/>
+		<property name="successView" value="person.htm"/>
+        
+        <property name="personDao" ref="personDao"/>
+        <property name="statementDao" ref="statementDao"/>
+	</bean>
+	
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass">
+			<value>org.springframework.web.servlet.view.JstlView</value>
+		</property>
+		<property name="prefix">
+			<value>/WEB-INF/jsp/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+
+</beans>

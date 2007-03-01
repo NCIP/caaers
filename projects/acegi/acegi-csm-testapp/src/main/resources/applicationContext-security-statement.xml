@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+
+	<bean id="statementDaoSecurity" parent="daoSecurityTemplate"
+		class="org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor">
+
+		<property name="objectDefinitionSource">
+			<value>
+				testapp.dao.StatementDao.update=CSM_STATEMENT_UPDATE
+				testapp.dao.StatementDao.save=CSM_STATEMENT_SAVE
+				testapp.dao.StatementDao.find*=ROLE_admin_user,ROLE_normal_user,ROLE_restricted_user,CSM_STATEMENT_FIND
+			</value>
+		</property>
+
+		<property name="accessDecisionManager">
+			<bean class="org.acegisecurity.vote.AffirmativeBased">
+				<property name="allowIfAllAbstainDecisions">
+					<value>false</value>
+				</property>
+				<property name="decisionVoters">
+					<list>
+
+						<bean class="org.acegisecurity.vote.RoleVoter" />
+
+						<!--============== BEGIN STATEMENT SAVE ================-->
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_SAVE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="CREATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_SAVE" />
+
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMUserAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="CREATE" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_SAVE" />
+
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMOwnershipAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+						<!--============== END STATEMENT SAVE ================-->
+
+						<!--============== BEGIN STATEMENT UPDATE ================-->
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_UPDATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="UPDATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_UPDATE" />
+
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMUserAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="UPDATE" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="testapp.bean.Statement" />
+							<property name="processConfigAttribute"
+								value="CSM_STATEMENT_UPDATE" />
+
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMOwnershipAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+						<!--============== END STATEMENT UPDATE ================-->
+
+					</list>
+				</property>
+			</bean>
+		</property>
+
+		<property name="afterInvocationManager">
+			<bean class="gov.nih.nci.security.acegi.csm.aop.CSMAfterInvocationManager">
+
+				<property name="processConfigAttribute"
+					value="CSM_STATEMENT_FIND" />
+
+				<property name="objectResultHandler">
+					<bean
+						class="gov.nih.nci.security.acegi.csm.authorization.CSMBasicObjectResultHandler">
+						<property name="processDomainObjectClass"
+							value="testapp.bean.Statement" />
+						<property name="authorizationChecks">
+							<list>
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="READ" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMUserAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="requiredPermission"
+										value="READ" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMOwnershipAuthorizationCheck">
+									<property
+										name="csmAuthorizationManager" ref="csmAuthorizationManager" />
+									<property name="objectIdGenerator"
+										ref="csmObjectIdGenerator" />
+								</bean>
+
+							</list>
+						</property>
+					</bean>
+				</property>
+			</bean>
+
+		</property>
+
+
+	</bean>
+</beans>
