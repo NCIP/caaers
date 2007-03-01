@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.StudyService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +37,13 @@ public class SearchStudyAjaxFacade {
         model.addTable(table);
         
         Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);       
+        row.setHighlightRow(Boolean.TRUE);        
         model.addRow(row);
          
-        Column columnShortTitle = model.getColumnInstance();
+        Column columnShortTitle = model.getColumnInstance();        
         columnShortTitle.setProperty("shortTitle");
+        columnShortTitle.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
         model.addColumn(columnShortTitle);
-
         
         Column columnLongTitle = model.getColumnInstance();
         columnLongTitle.setProperty("longTitle");
@@ -62,32 +61,11 @@ public class SearchStudyAjaxFacade {
         columnMonitorCode.setProperty("monitorCode");
         model.addColumn(columnMonitorCode);
                 
-        /* Column columnTerm = model.getColumnInstance();
-        columnTerm.setProperty("term");
-        model.addColumn(columnTerm);
-
-        Column columnBorn = model.getColumnInstance();
-        columnBorn.setProperty("born");
-        columnBorn.setCell(TableConstants.DATE);
-        model.addColumn(columnBorn);
-
-        Column columnDied = model.getColumnInstance();
-        columnDied.setProperty("died");
-        columnDied.setCell(TableConstants.DATE);
-        model.addColumn(columnDied);
-
-        Column columnCareer = model.getColumnInstance();
-        columnCareer.setProperty("career");
-        model.addColumn(columnCareer); */
-
         return model.assemble();
     }
-    
+            	
     public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) 
     {
-        //WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
-        // PresidentsDao presidentsDao = (PresidentsDao) webApplicationContext.getBean("presidentsDao");
-    	
     	Study study = new Study();
     	StringTokenizer typeToken = new StringTokenizer(type, ",");
     	StringTokenizer textToken = new StringTokenizer(text, ",");
@@ -141,59 +119,11 @@ public class SearchStudyAjaxFacade {
         return "";
      }
      
-     public String a(HttpServletRequest request)
-     {
-    	 Context context = null;
-		 context = new HttpServletRequestContext(request);
-     
-		 TableModel model = new TableModelImpl(context);
-		 Object viewData = null;
-		 try {
-			viewData = build(model, new ArrayList());	          
-		 } catch (Exception e) {
-			e.printStackTrace();
-		 }       
-		 return viewData.toString(); 
-    	 
-    	// Study study = new Study();
-     	// Collection studies = null;
- 		/*try {
- 			// studies = studyService.search(study);
- 			studies = new ArrayList<Study>();
- 			Study st = new Study();
- 			st.setShortTitle("shortTitleText");
- 			st.setLongTitle("longTitleText");
- 			studies.add(st);
- 		} catch (Exception e1) {			
- 			e1.printStackTrace();
- 		} */
-
-         /*Context context = null;
-         if (parameterMap == null) {
-           context = new HttpServletRequestContext(request);
-         } else {
-           context = new HttpServletRequestContext(request, parameterMap);
-         } 
-
-         TableModel model = new TableModelImpl(context);
-         try {
-           return build(model, studies).toString();
-         } catch (Exception e) {
-           e.printStackTrace();
-         }
-
-         return ""; */
-    	 
-    	//return "help me123";
-     }
-    
 	public StudyService getStudyService() {
 		return studyService;
 	}
 
 	public void setStudyService(StudyService studyService) {
 		this.studyService = studyService;
-	} 
-	
-	
+	} 	
 }
