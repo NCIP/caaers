@@ -36,6 +36,19 @@
            field.value="";
            }
            
+        function hover(index)
+        {
+	       var formID = 'agent' + index + '-input'; 
+	       if ($(formID).value.length > 4)
+	       {
+		   	$(formID).title=$(formID).value;
+     	   }
+     	   else 
+     	   {
+	     	$(formID).title="";   
+     	   }
+        }   
+           
         /*
          * Used to check the INDIndicator checkbox if 
          * INDIdentifier contains text
@@ -59,7 +72,7 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.nscNumber + " :: " + obj.name
+                return obj.nscNumber + "<b> ::</b> " + obj.name
             }
         }
         
@@ -157,7 +170,7 @@
 				
 					<td>
 						<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
-                    	<form:input size="25" id="agent${status.index}-input" path="studyAgents[${status.index}].agentAsString"/>
+                    	<form:input size="25" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" path="studyAgents[${status.index}].agentAsString"/>
                     	<tags:indicator id="agent${status.index}-indicator"/>
                     	<div id="agent${status.index}-choices" class="autocomplete"></div>
                     	<input type="button" id="agent${status.index}-clear" value="Clear"/>
