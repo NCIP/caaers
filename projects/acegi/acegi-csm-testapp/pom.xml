@@ -105,7 +105,14 @@
 			<artifactId>standard</artifactId>
 			<version>1.1.2</version>
 			<scope>run</scope>
-		</dependency>		
+		</dependency>	
+		
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>8.1-404.jdbc3</version>
+			<scope>run</scope>
+		</dependency>			
 
 	</dependencies>
 </project>
