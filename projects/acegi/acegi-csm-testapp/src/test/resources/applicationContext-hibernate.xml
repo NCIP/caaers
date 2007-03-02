@@ -18,15 +18,18 @@
 			value="/hibernate.properties" />
 	</bean>
 
-	<bean id="dataSource"
-		class="org.apache.commons.dbcp.BasicDataSource"
-		p:driverClassName="${hibernate.connection.driver_class}"
+<!--
 		p:maxActive="5" p:maxIdle="2" p:maxWait="180000"
 		p:removeAbandoned="true" p:removeAbandonedTimeout="300"
 		p:logAbandoned="true" p:validationQuery="SELECT 1"
 		p:testWhileIdle="true" p:testOnReturn="true"
 		p:timeBetweenEvictionRunsMillis="300000"
 		p:minEvictableIdleTimeMillis="600000"
+-->
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="${hibernate.connection.driver_class}"
 		p:url="${hibernate.connection.url}"
 		p:username="${hibernate.connection.username}"
 		p:password="${hibernate.connection.password}" />
