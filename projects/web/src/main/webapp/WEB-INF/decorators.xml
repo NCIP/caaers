@@ -5,6 +5,7 @@
 
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="standard" page="standard.jsp">
+    	<pattern>/login.jsp</pattern>
         <pattern>/pages/*</pattern>
         <pattern>/public/*</pattern>
     </decorator>
