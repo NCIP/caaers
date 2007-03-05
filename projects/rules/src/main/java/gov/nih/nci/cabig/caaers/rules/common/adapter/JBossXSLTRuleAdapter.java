@@ -64,17 +64,17 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 					"C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
 			Transformer transformer = translet.newTransformer();
 			
-/*			transformer
+			transformer
 					.transform(
 							new StreamSource(new StringReader(xml)),
 							new StreamResult(
 									new FileOutputStream(
-											"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml")));*/
+											"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml")));
 		} catch (TransformerConfigurationException e) {
 			throw new RuleException(e.getMessage(), e);
-/*		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new RuleException(e.getMessage(), e);
-*/		} catch (TransformerException e) {
+		} catch (TransformerException e) {
 			throw new RuleException(e.getMessage(), e);
 		}
  
