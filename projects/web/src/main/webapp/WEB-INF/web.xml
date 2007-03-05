@@ -10,6 +10,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath*:gov/nih/nci/cabig/caaers/applicationContext*.xml
+            /WEB-INF/applicationContext-acegi-security.xml
         </param-value>
     </context-param>
 
@@ -20,6 +21,7 @@
     <!--
     Checks for presence of grid proxy. If not found, forwards to failureUrl.
     -->
+    <!--
     <filter>
         <filter-name>GridProxyFilter</filter-name>
         <filter-class>gov.nih.nci.cabig.ctms.web.sso.GridProxyFilter</filter-class>
@@ -45,6 +47,37 @@
         <filter-name>GridProxyFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>    
+    -->
+
+    <filter>
+        <filter-name>Sitemesh</filter-name>
+        <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+	<filter>
+		<filter-name>Acegi Filter Chain Proxy</filter-name>
+		<filter-class>
+			org.acegisecurity.util.FilterToBeanProxy
+		</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value>
+				org.acegisecurity.util.FilterChainProxy
+			</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>Acegi Filter Chain Proxy</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 
     <filter>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
@@ -74,15 +107,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>Sitemesh</filter-name>
-        <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
-    </filter>
 
-    <filter-mapping>
-        <filter-name>Sitemesh</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <servlet>
         <servlet-name>pages</servlet-name>
