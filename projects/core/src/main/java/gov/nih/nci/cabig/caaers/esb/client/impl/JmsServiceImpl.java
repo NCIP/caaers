@@ -35,7 +35,7 @@ public class JmsServiceImpl implements MessageListener{
     	this.connectionFactory = connectionFactory;
     	this.sendQueue = sendQueue;
     	this.recvQueue = recvQueue;
-    	initialize();
+    	//initialize();
     }
 
     public void sendJms(String xml) throws BroadcastException{
