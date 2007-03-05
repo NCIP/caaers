@@ -36,6 +36,10 @@
 	        </property>
     </bean>
     
+	<bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
+		<constructor-arg ref="xfire.transportManager"/>
+	</bean>
+    
     <import resource="classpath:org/codehaus/xfire/spring/xfire.xml"/>
 	
 </beans>
