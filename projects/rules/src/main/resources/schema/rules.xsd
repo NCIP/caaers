@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/brxml" 
+<xs:schema xmlns:rules="http://caaers.cabig.nci.nih.gov/rules/brxml"
+		   xmlns:action="http://caaers.cabig.nci.nih.gov/rules/action"
            xmlns:xs="http://www.w3.org/2001/XMLSchema" 
            elementFormDefault="qualified" 
            targetNamespace="http://caaers.cabig.nci.nih.gov/rules/brxml"
@@ -50,7 +51,7 @@
 			<xs:sequence>
 				<xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
 				<xs:element ref="rules:condition" minOccurs="0"/>
-				<xs:element ref="rules:action" minOccurs="0"/>
+				<xs:element name="action" type="rules:action" minOccurs="0"/>
 				<xs:element ref="rules:metaData" minOccurs="0" />
 			</xs:sequence>
 			<xs:attribute name="id" type="xs:string"/>
@@ -81,15 +82,6 @@
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="action">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="content"/>
-				<xs:element name="type" default="AE"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
 	<xs:element name="and">
 		<xs:complexType>
 			<xs:sequence>
@@ -99,7 +91,7 @@
 				<xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
 				<xs:element ref="rules:eval" maxOccurs="unbounded" minOccurs="0"/>
 				<xs:element ref="rules:column" maxOccurs="unbounded" minOccurs="0"/>        
-			</xs:sequence>            
+			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
   
@@ -236,6 +228,23 @@
 	</xs:element>
 
 
+	<xs:complexType name="action">
+		<xs:attribute name="actionId" type="xs:string" /> 
+	</xs:complexType>
+
+
+	<xs:complexType name="notification">
+      <xs:complexContent>
+        <xs:extension base="rules:action">
+			<xs:sequence>
+				<xs:element name="actionHandlerClass" type="xs:string" />
+				<xs:element type="xs:string" name="content" />
+			</xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+	</xs:complexType>
+
+
 	<xs:complexType name="ServiceAction">
 		<xs:sequence>
 			<xs:element type="xs:string" name="className" />
@@ -297,4 +306,8 @@
 			
 		</xs:sequence>
 	</xs:complexType>
+	
+	
+
+
 </xs:schema>
