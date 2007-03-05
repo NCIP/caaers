@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.rules.runtime;
 
 import gov.nih.nci.cabig.caaers.RuleException;
-import gov.nih.nci.cabig.caaers.rules.domain.Study;
+import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
+import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
+import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.Global;
+import gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -11,7 +14,6 @@ import java.util.Map;
 
 import javax.jws.WebService;
 import javax.rules.ConfigurationException;
-import javax.rules.ObjectFilter;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
@@ -52,34 +54,45 @@ public class RuleExecutionServiceImpl implements RuleExecutionService {
 		}
 	}
 
-	public String fireRules(String bindUri) {
-		try {
-			List inputObjects = new ArrayList();
-			Study study = new Study();
-			study.setPrimarySponsorCode("SC_1");
-			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindUri, new HashMap());
-			statelessRuleSession.executeRules(inputObjects);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "SUJITH";
-	}
-
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService#fireRules(java.lang.String, java.util.List)
 	 */
-	public List<Study> fireRules(String bindingUri, List<Study> inputObjects) throws RemoteException {
-		return fireRules(bindingUri, inputObjects, new HashMap());
+	public void fireRules(String bindingUri, StudySDO study, List<AdverseEventSDO> inputObjects) throws RemoteException {
+		try {
+			List allObjects = new ArrayList();
+			if(study != null) {
+				allObjects.add(study);
+			}
+			if(inputObjects != null) {
+				allObjects.addAll(inputObjects);
+			}
+			
+			RuleContext ruleContext = new RuleContext();
+			ruleContext.setInputObjects(inputObjects);
+			allObjects.add(ruleContext);
+			
+			Map customProperties = new HashMap();
+			customProperties.put(Global.ACTION_DISPATCHER.getCode(), new ActionDispatcher());
+			customProperties.put(Global.RULE_CONTEXT.getCode(), ruleContext);
+			
+			
+			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(
+					bindingUri, customProperties);
+			List<Object> outObjects = (List) statelessRuleSession
+					.executeRules(allObjects);
+			statelessRuleSession.release();
+			
+		} catch (Exception e) {
+			throw new RemoteException(e.getMessage(), e);
+		}
 	}
+
+/*	
 	
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService#fireRules(java.lang.String, java.util.List, java.util.Map)
-	 */
-	public List<Study> fireRules(String bindingUri, List<Study> inputObjects, Map<String, Object> properties) throws RemoteException {
+	public List<Object> fireRules(String bindingUri, List<Object> inputObjects, Map<String, Object> properties) throws RemoteException {
 		try {
 			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindingUri, properties);
-			List<Study> outObjects = (List)statelessRuleSession.executeRules(inputObjects);
+			List<Object> outObjects = (List)statelessRuleSession.executeRules(inputObjects);
 			statelessRuleSession.release();
 			return outObjects;
 		} catch (Exception e) {
@@ -87,10 +100,7 @@ public class RuleExecutionServiceImpl implements RuleExecutionService {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService#fireRules(java.lang.String, java.util.List, javax.rules.ObjectFilter)
-	 */
-	public void fireRules(String bindingUri, List<Study> inputObjects, ObjectFilter objectFilter) throws RemoteException {
+	public void fireRules(String bindingUri, List<Object> inputObjects, ObjectFilter objectFilter) throws RemoteException {
 		try {
 			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindingUri, new HashMap());
 			statelessRuleSession.executeRules(inputObjects, objectFilter);
@@ -99,19 +109,36 @@ public class RuleExecutionServiceImpl implements RuleExecutionService {
 			throw new RemoteException(e.getMessage(), e);
 		}
 	}
-
-	/**
-	 * Returns a named <code>StatelessRuleSession</code>.
-	 *
-	 *
-	 * @return StatelessRuleSession
-	 * @throws Exception
-	 */
+*/
 	private StatelessRuleSession getStatelessRuleSession(final String key,
 			final java.util.Map properties) throws Exception {
 		RuleRuntime ruleRuntime = this.ruleServiceProvider.getRuleRuntime();
 		return (StatelessRuleSession) ruleRuntime.createRuleSession(key,
 				properties, RuleRuntime.STATELESS_SESSION_TYPE);
 	}
+
+/*	public void fireRules(RuleExecutionInfo ruleExecutionInfo) throws RemoteException {
+		StatelessRuleSession statelessRuleSession;
+		try {
+			statelessRuleSession = getStatelessRuleSession(ruleExecutionInfo.getBindUri(), new HashMap());
+			statelessRuleSession.executeRules(ruleExecutionInfo.getInputObjects());
+			statelessRuleSession.release();
+		} catch (Exception e) {
+			throw new RemoteException(e.getMessage(), e);
+		}
+	}
+
+	public void fireRules(String bindingUri, List<? extends Object> inputObjects) throws RemoteException {
+		StatelessRuleSession statelessRuleSession;
+		try {
+			statelessRuleSession = getStatelessRuleSession(bindingUri , new HashMap());
+			statelessRuleSession.executeRules(inputObjects);
+			statelessRuleSession.release();
+		} catch (Exception e) {
+			throw new RemoteException(e.getMessage(), e);
+		}		
+		
+	}
+*/
 	
 }
