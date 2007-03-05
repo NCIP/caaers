@@ -1,5 +1,7 @@
 package testapp.test;
 
+import gov.nih.nci.security.acegi.csm.AbstractCSMTestCase;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,18 +34,14 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import testapp.bean.Person;
 import testapp.dao.PersonDao;
 
-public class CSMAuthTest extends DBTestCase {
-
-    private static final String APP = "testapp";
+public class CSMAuthTest extends AbstractCSMTestCase {
 
     public CSMAuthTest() {
         super();
-        init();
     }
 
     public CSMAuthTest(String name) {
         super(name);
-        init();
     }
 
     public static void main(String[] args) {
@@ -56,74 +54,14 @@ public class CSMAuthTest extends DBTestCase {
         return suite;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.dbunit.DatabaseTestCase#getDataSet()
-     */
-    @Override
-    protected IDataSet getDataSet() throws Exception {
-        String fileName = "etc/CSM_policy.xml";
-        File testFile = new File(fileName);
-        if (!testFile.exists()) {
-            throw new RuntimeException(fileName + " not found.");
-        }
-
-        return new FlatXmlDataSet(new FileInputStream(testFile));
-    }
-
-    protected DatabaseOperation getSetUpOperation() throws Exception {
-        return DatabaseOperation.CLEAN_INSERT;
-    }
-
-    protected DatabaseOperation getTearDownOperation() throws Exception {
-        return DatabaseOperation.DELETE_ALL;
-    }
-
-    private void init() {
-
-        // String driver = System.getProperty("test.db.driver",
-        // "org.hsqldb.jdbcDriver");
-        // String url = System.getProperty("test.db.url",
-        // "jdbc:hsqldb:mem:test");
-        // String usr = System.getProperty("test.db.usr", "sa");
-        // String pwd = System.getProperty("test.db.pwd", "");
-        
-        Properties props = new Properties();
-        try {
-            props.load(new FileInputStream("src/test/resources/hibernate.properties"));
-        } catch (Exception ex) {
-            throw new RuntimeException("Error loading properties: " + ex.getMessage(), ex);
-        }
-
-        String driver = props.getProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-        String url = props.getProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/testapp");
-        String usr = props.getProperty("hibernate.connection.username", "testapp");
-        String pwd = props.getProperty("hibernate.connection.password", "testapp");
-
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, driver);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, url);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, usr);
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, pwd);
-
+    public String[] getConfigFileLocations(){
+        return new String[]{"applicationContext*-test.xml"};
     }
 
     public void setUp() throws Exception {
-
-        Configuration cfg = new Configuration().configure(new File("etc/hibernate.cfg.xml"));
-        SchemaExport se = new SchemaExport(cfg);
-        try {
-             se.drop(false, true);
-        } catch (Exception ex) {
-
-        }
-        se.create(false, true);
         super.setUp();
 
-        System.setProperty("gov.nih.nci.security.configFile", "etc/ApplicationSecurityConfig.xml");
-
-        ApplicationContext appCtx = new ClassPathXmlApplicationContext(
-                        new String[] { "classpath:applicationContext-*.xml" });
+        ApplicationContext appCtx = getApplicationContext();
         HibernateTransactionManager txMgr = (HibernateTransactionManager) appCtx
                         .getBean("transactionManager");
         Session session = SessionFactoryUtils.getSession(txMgr.getSessionFactory(), true);
@@ -139,8 +77,7 @@ public class CSMAuthTest extends DBTestCase {
     public void testDomainObjectSecurity() {
         try {
 
-            ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-                            new String[] { "classpath:applicationContext-*.xml" });
+            ApplicationContext applicationContext = getApplicationContext();
 
             PersonDao dao = (PersonDao) applicationContext.getBean("personDao");
 

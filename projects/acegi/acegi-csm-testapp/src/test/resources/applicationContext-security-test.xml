@@ -8,8 +8,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 
 	<bean id="csmAuthorizationManager"
-		class="gov.nih.nci.security.acegi.csm.authorization.ExtendedCSMAuthorizationManagerImpl">
+		class="gov.nih.nci.security.acegi.csm.authorization.UserProvisioningManagerFactory"
+		factory-method="newUserProvisioningManager">
 		<constructor-arg value="testapp" />
+		<constructor-arg>
+			<bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+				<property name="locations" value="classpath:/hibernate.properties"/>
+			</bean>
+		</constructor-arg>
 	</bean>
 
 	<bean id="csmAuthenticationManager"

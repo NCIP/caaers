@@ -1,11 +1,13 @@
 <projectDescription>
   <name>acegi-csm-testapp</name>
   <comment/>
-  <projects/>
+  <projects>
+    <project>acegi-csm-test</project>
+    <project>acegi-csm</project>
+  </projects>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>
-      <arguments/>
     </buildCommand>
   </buildSpec>
   <natures>
