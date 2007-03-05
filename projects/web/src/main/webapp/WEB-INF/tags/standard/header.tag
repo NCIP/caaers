@@ -26,7 +26,7 @@
                 </c:forEach>
             </td>
 
-            <td class="right"><a href="<c:url value="/public/logout"/>">Log out</a></td>
+            <td class="right"><a href="<c:url value="/j_acegi_logout"/>">Log out</a></td>
         </tr>
     </table>
     <!-- TOP NAVIGATION ENDS HERE -->
