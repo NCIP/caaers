@@ -186,6 +186,34 @@
                 format="dtd"/>
         </dbunit>
     </target>
+	
+	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+	
+	<target name="insert-csm-policy" depends="init">
+		<dbunit driver="${datasource.driver}" 
+			url="${datasource.url}" 
+			userid="${datasource.username}" 
+			password="${datasource.password}">
+
+			<classpath refid="cp.unit-test" />
+
+			<operation type="CLEAN_INSERT" transaction="true" src="tools/csm/CSM_policy.xml" />
+
+		</dbunit>
+	</target>
+
+	<target name="delete-csm-policy" depends="init">
+		<dbunit driver="${datasource.driver}" 
+			url="${datasource.url}" 
+			userid="${datasource.username}" 
+			password="${datasource.password}">
+
+			<classpath refid="cp.unit-test" />
+
+			<operation type="DELETE_ALL" transaction="true" src="tools/csm/CSM_policy.xml" />
+
+		</dbunit>
+	</target>
 
     <target name="create-hsqldb" description="Creates the read-only HSQLDB instance for testing">
         <property name="hsqldb-dir" value="hsqldb"/>
