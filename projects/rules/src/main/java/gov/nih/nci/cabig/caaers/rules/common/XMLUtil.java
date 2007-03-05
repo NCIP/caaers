@@ -10,19 +10,19 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.jibx.runtime.BindingDirectory;
+/*import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.DomDriver;*/
 
 
 public class XMLUtil {
 
-	public static String toXML(Object rootElement) {
+/*	public static String toXML(Object rootElement) {
 		IMarshallingContext mctx = null;
 		StringWriter writer = new StringWriter();
 		try {
@@ -73,7 +73,7 @@ public class XMLUtil {
 		xstream.alias("action", gov.nih.nci.cabig.caaers.rules.brxml.Action.class);
 		xstream.alias("column", gov.nih.nci.cabig.caaers.rules.brxml.Column.class);
 	}
-	
+*/	
 	public static Object unmarshal(String xml) {
 		try {
 			Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
