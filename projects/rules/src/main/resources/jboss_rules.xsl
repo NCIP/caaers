@@ -13,11 +13,14 @@
 	<package name="{rules:name}" xmlns="http://drools.org/drools-3.0"
          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
          xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
-		
+
+		<global identifier="ruleContext" type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" xmlns="http://drools.org/drools-3.0" />
+		<global identifier="actionDispatcher" type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" xmlns="http://drools.org/drools-3.0" />
+
 		<xsl:apply-templates select="rules:import"/>
 
 		<xsl:apply-templates select="rules:rule"/>
-	
+
 	</package>
 </xsl:template>
 
@@ -68,7 +71,14 @@
 
 <xsl:template match="rules:action">
 	<rhs xmlns="http://drools.org/drools-3.0">
-		<xsl:value-of select="rules:content"/>
+		if(actionDispatcher != null) {
+			actionDispatcher.dispatchAction("<xsl:value-of select="@actionId"/>", ruleContext);
+		}
+		/*else if (decisionMaker != null) {
+			decisionMaker.getDecision();
+		}*/ else {
+			System.out.println("The Rule Conditions were met. But no action is specified. ");
+		}
 	</rhs>
 </xsl:template>
 
