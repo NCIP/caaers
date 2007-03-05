@@ -1,5 +1,7 @@
 package gov.nih.nci.security.acegi.csm.authorization;
 
+import gov.nih.nci.security.UserProvisioningManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,22 +9,20 @@ import java.util.Iterator;
 
 import org.acegisecurity.Authentication;
 
-import gov.nih.nci.security.AuthorizationManager;
-
 public abstract class AbstractCSMAuthorizationCheck implements CSMAuthorizationCheck {
 	
 	
 	private CSMObjectIdGenerator objectIdGenerator;
 
-	private AuthorizationManager csmAuthorizationManager;
+	private UserProvisioningManager csmUserProvisioningManager;
 
-	public AuthorizationManager getCsmAuthorizationManager() {
-		return csmAuthorizationManager;
+	public UserProvisioningManager getCsmUserProvisioningManager() {
+		return csmUserProvisioningManager;
 	}
 
 	public void setCsmAuthorizationManager(
-			AuthorizationManager csmAuthorizationManager) {
-		this.csmAuthorizationManager = csmAuthorizationManager;
+	                UserProvisioningManager csmUserProvisioningManager) {
+		this.csmUserProvisioningManager = csmUserProvisioningManager;
 	}
 
 	public CSMObjectIdGenerator getObjectIdGenerator() {

@@ -1,10 +1,14 @@
 package gov.nih.nci.security.acegi.csm.authorization;
 
 
+import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
+import gov.nih.nci.security.authorization.domainobjects.User;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
@@ -26,13 +30,11 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 
 		boolean isAuthorized = false;
 		try {
-			List groups = getCsmAuthorizationManager().getAccessibleGroups(
+			List groups = getCsmUserProvisioningManager().getAccessibleGroups(
 					objectId, checkPrivilege);
 			if (groups == null) {
-				logger.debug("######### found no groups for " + objectId); 
+				logger.debug("found no groups for " + objectId); 
 			} else {
-				logger.debug("######### found " + groups.size()
-						+ " groups for " + objectId);
 				for (Iterator i = groups.iterator(); i.hasNext();) {
 					Group group = (Group) i.next();
 					if (isMember(authentication.getName(), group.getGroupName())) {
@@ -50,23 +52,26 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 
 	protected boolean isMember(String userId, String groupName) {
 		boolean isMember = false;
-		ExtendedCSMAuthorizationManager mgr = (ExtendedCSMAuthorizationManager) getCsmAuthorizationManager();
-		String[] groupNames = mgr.getGroupNames(userId);
+		UserProvisioningManager mgr = (UserProvisioningManager) getCsmUserProvisioningManager();
+		Set groups = null;
+        try {
+            User user = mgr.getUser(userId);
+            groups = mgr.getGroups(user.getUserId().toString()  );
+        } catch (CSObjectNotFoundException ex) {
+            throw new RuntimeException("Error getting groups: " + ex.getMessage(), ex);
+        }
 
-		if (groupNames != null) {
-			logger.debug("######### found " + groupNames.length
-					+ " groups for user " + userId);
-			for (int i = 0; i < groupNames.length; i++) {
-				logger.debug("############ Comparing '" + groupNames[i]
-						+ "' to '" + groupName + "'");
-				if (groupNames[i].equals(groupName)) {
+		if (groups != null) {
+		    for(Iterator i = groups.iterator(); i.hasNext();){
+                Group group = (Group)i.next();
+				if (group.getGroupName().equals(groupName)) {
 					isMember = true;
 					break;
 				}
 			}
-			logger.debug("########## isMember? " + isMember);
+			logger.debug("isMember? " + isMember);
 		} else {
-			logger.debug("######### found no groups for user " + userId);
+			logger.debug("found no groups for user " + userId);
 		}
 		return isMember;
 	}

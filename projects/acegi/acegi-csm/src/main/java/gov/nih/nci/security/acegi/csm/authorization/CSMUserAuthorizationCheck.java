@@ -13,7 +13,7 @@ public class CSMUserAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 	public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
 		boolean isAuthorized = false;
 		try{
-			if(getCsmAuthorizationManager().checkPermission(authentication.getName(), objectId, privilege)){
+			if(getCsmUserProvisioningManager().checkPermission(authentication.getName(), objectId, privilege)){
 				isAuthorized = true;
 			}
 		}catch(Exception ex){

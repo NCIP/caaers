@@ -6,7 +6,7 @@ public class CSMOwnershipAuthorizationCheck extends
 		AbstractCSMAuthorizationCheck {
 
 	public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
-		return getCsmAuthorizationManager().checkOwnership(authentication.getName(), objectId);
+		return getCsmUserProvisioningManager().checkOwnership(authentication.getName(), objectId);
 	}
 
 }

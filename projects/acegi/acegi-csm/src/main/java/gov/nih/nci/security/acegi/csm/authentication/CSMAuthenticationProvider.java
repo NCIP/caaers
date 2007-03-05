@@ -1,9 +1,14 @@
 package gov.nih.nci.security.acegi.csm.authentication;
 
 import gov.nih.nci.security.AuthenticationManager;
-import gov.nih.nci.security.acegi.csm.authorization.ExtendedCSMAuthorizationManager;
+import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSInsufficientAttributesException;
 import gov.nih.nci.security.exceptions.CSLoginException;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+
+import java.util.Iterator;
+import java.util.Set;
 
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.AuthenticationServiceException;
@@ -20,7 +25,7 @@ public class CSMAuthenticationProvider extends
 		AbstractUserDetailsAuthenticationProvider {
 	
 	private AuthenticationManager csmAuthenticationManager;
-	private ExtendedCSMAuthorizationManager csmAuthorizationManager;
+	private UserProvisioningManager csmUserProvisioningManager;
 	private String rolePrefix = "ROLE_";
 
 	@Override
@@ -47,24 +52,29 @@ public class CSMAuthenticationProvider extends
 
 		GrantedAuthority[] authorities = null;
 		
-		ExtendedCSMAuthorizationManager mgr = getCsmAuthorizationManager();
-		String[] groupNames = mgr.getGroupNames(userName);
-		if(groupNames == null || groupNames.length == 0){
+		UserProvisioningManager mgr = getCsmUserProvisioningManager();
+		Set groups;
+        try {
+        	groups = mgr.getGroups(mgr.getUser(userName).getUserId().toString());
+        } catch (CSObjectNotFoundException ex) {
+            throw new AuthenticationServiceException("Error getting groups: " + ex.getMessage(), ex);
+        }
+		if(groups == null || groups.size() == 0){
 			authorities = new GrantedAuthority[0];
 		}else{
 			String prefix = getRolePrefix();
 			if(prefix == null){
 				prefix = "";
 			}
-			authorities = new GrantedAuthority[groupNames.length];
-			for(int i = 0; i < groupNames.length; i++){
-				
-				authorities[i] = new GrantedAuthorityImpl(prefix + groupNames[i]);
+			authorities = new GrantedAuthority[groups.size()];
+            int idx = 0;
+			for(Iterator i = groups.iterator(); i.hasNext(); idx++){
+				Group group = (Group)i.next();
+				authorities[idx] = new GrantedAuthorityImpl(prefix + group.getGroupName());
 			}
 		}
 		
-		UserDetails details = new User(userName, "ignored", true, true, true, true, authorities);
-		return details;
+		return new User(userName, "ignored", true, true, true, true, authorities);
 	}
 
 	public AuthenticationManager getCsmAuthenticationManager() {
@@ -76,13 +86,13 @@ public class CSMAuthenticationProvider extends
 		this.csmAuthenticationManager = csmAuthenticationManager;
 	}
 
-	public ExtendedCSMAuthorizationManager getCsmAuthorizationManager() {
-		return csmAuthorizationManager;
+	public UserProvisioningManager getCsmUserProvisioningManager() {
+		return csmUserProvisioningManager;
 	}
 
-	public void setCsmAuthorizationManager(
-			ExtendedCSMAuthorizationManager csmAuthorizationManager) {
-		this.csmAuthorizationManager = csmAuthorizationManager;
+	public void setCsmUserProvisioningManager(
+			UserProvisioningManager csmUserProvisioningManager) {
+		this.csmUserProvisioningManager = csmUserProvisioningManager;
 	}
 
 	public String getRolePrefix() {
