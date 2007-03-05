@@ -75,6 +75,8 @@
 	<!-- BUILD TARGETS -->
 
 	<target name="clean">
+		<delete dir="build/dist"/>
+		<delete dir="build/main"/>
 		<delete dir="${build-dir.main}"/>
 		<delete dir="${build-dir.unit-test}"/>
 		<delete file="${jar-name.main}"/>
@@ -84,7 +86,7 @@
 
 <!--	<target name="all" depends="generate,compile,bind,client"/> -->
 	
-	<target name="all" depends="jaxb,compile,client"/>
+	<target name="all" depends="war,client"/>
 
 	<target name="resources" description="Copy resources into classpath" depends="init">
 		<copy file="${config.database.file}" tofile="${build-dir.main}/datasource.properties" overwrite="true"/>
@@ -116,14 +118,17 @@
 	<target name="client">
 		<delete dir="${build-dir.main}/client" />
 		<mkdir dir="${build-dir.main}/client" />
-		
-		<copy todir="${build-dir.main}/client">
-			<fileset dir="${build-dir.main}/generated"/>			
-		</copy>
 
 		<copy todir="${build-dir.main}/client">
-			<fileset dir="${build-dir.main}"/>
+			<fileset dir="${build-dir.main}">
+				<include name="**/Rule*Service.*" />
+			</fileset>
 		</copy>
+
+		<javac destdir="${build-dir.main}/client" classpathref="cp.main"
+		       debug="true" source="1.5">
+		    <src path="build/main/generated-sources"/>
+		</javac>
 
 		<jar basedir="${build-dir.main}/client" file="${jar-name.client}"/>
 	</target>	
