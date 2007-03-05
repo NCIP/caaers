@@ -22,7 +22,9 @@
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
         <property name="interceptors">
             <list>
+            <!--
                 <ref bean="loginCheckInterceptor"/>
+                -->
                 <ref bean="sectionInterceptor"/>
             </list>
         </property>
@@ -32,7 +34,6 @@
         <property name="servletName"><value>pages</value></property>
     </bean>
 
-    <bean id="loginCheckInterceptor" class="gov.nih.nci.cabig.caaers.tools.accesscontrol.LoginCheckInterceptor"/>
 
     <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
         <property name="sections">
@@ -135,12 +136,6 @@
           class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
 	</bean>    
 
-    <!-- <bean id="loginCommand" class="gov.nih.nci.cabig.caaers.web.LoginCommand" autowire="byName" scope="prototype" />
-
-    <bean name="/login" id="loginController" autowire="byName"
-        class="gov.nih.nci.cabig.caaers.web.LoginController" lazy-init="true">
-        <property name="targetView"><value>welcome</value></property>
-    </bean> -->
 
     <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
