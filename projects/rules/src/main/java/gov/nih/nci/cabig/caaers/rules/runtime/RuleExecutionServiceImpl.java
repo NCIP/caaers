@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.Global;
 import gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher;
 
 import java.rmi.RemoteException;
