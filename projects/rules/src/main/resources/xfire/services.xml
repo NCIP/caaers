@@ -1,0 +1,19 @@
+<beans xmlns="http://xfire.codehaus.org/config/1.0">
+
+  <service>
+    <serviceBean>#ruleExecutionService</serviceBean>
+    <serviceFactory>#jaxbServiceFactory</serviceFactory>
+    <schemas>
+      <schema>META-INF/xfire/rules.xsd</schema>
+      <schema>META-INF/xfire/ExecuteRule.xsd</schema>
+    </schemas>
+    <style>document</style>
+  </service>
+
+<property name="jaxb.search.packages">
+  <list>
+   <entry>gov.nih.nci.cabig.caaers.rules.domain</entry>
+  </list>
+</property>
+
+</beans>
