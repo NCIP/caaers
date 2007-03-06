@@ -188,7 +188,7 @@
     </target>
 	
 	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
-		<classpath location="lib/test/dbunit-2.2.jar"/>
+		<classpath location="lib/test/dbunit-2.1.jar"/>
 	</taskdef>
 	
 	<target name="insert-csm-policy" depends="init">
@@ -199,7 +199,7 @@
 
 			<classpath refid="cp.unit-test" />
 
-			<operation type="CLEAN_INSERT" transaction="true" src="tools/csm/CSM_policy.xml" />
+			<operation type="CLEAN_INSERT" src="tools/csm/CSM_policy.xml" />
 
 		</dbunit>
 	</target>
@@ -212,7 +212,7 @@
 
 			<classpath refid="cp.unit-test" />
 
-			<operation type="DELETE_ALL" transaction="true" src="tools/csm/CSM_policy.xml" />
+			<operation type="DELETE_ALL" src="tools/csm/CSM_policy.xml" />
 
 		</dbunit>
 	</target>
