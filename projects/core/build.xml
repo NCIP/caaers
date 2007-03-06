@@ -187,7 +187,9 @@
         </dbunit>
     </target>
 	
-	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+		<classpath location="lib/test/dbunit-2.1.jar"/>
+	</taskdef>
 	
 	<target name="insert-csm-policy" depends="init">
 		<dbunit driver="${datasource.driver}" 
