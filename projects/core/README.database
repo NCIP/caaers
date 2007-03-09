@@ -1,0 +1,52 @@
+DATABASE CONFIGURATION (for developers)
+======================
+This doc describes the temporary database configuration system for maven 
+builds.  It is intended that this configuration system will be largely or 
+entirely replaced with one that allows deploy-time (instead of build-time) 
+configuration.
+
+This configuration system is based on maven's profiles system.  For 
+background, see [1].
+
+PROFILES.XML
+------------
+For the database configuration, we'll use the profiles.xml location for 
+storing profiles (you can also put profiles in the pom itself or in your 
+personal settings.xml file).  There's a file called "profiles.xml.sample" in 
+this directory; copy it to profiles.xml and open it up.
+
+There are four profiles defined in this file -- a default one, plus one for
+each supported database type.  You can fill in the correct URL and other
+properties for any profile you expect to use.
+
+If you need more configurations, just duplicate any of the blocks other
+than the default one.  Set the id to something that isn't already used and
+set the other properties appropriately.
+
+SELECTING A DATABASE
+--------------------
+When it comes time to build, you can select a profile using maven's -P switch,
+like so:
+
+ [core] $ mvn -P <profile-id> bering:migrate test
+
+If you omit the -P, the default database configuration will be used.
+
+INSTALLATION CONSIDERATIONS
+---------------------------
+Recall that when you build from a parallel subproject, maven will use the 
+version of the core JAR which is installed in your local repository.  So if
+you want to deploy the webapp (for instance) using your "postgresql" profile,
+be sure to install from core with it active.  
+
+Since the database you are deploying against is probably _not_ your unit test
+database, be sure to install without running the tests:
+
+ [core] $ mvn -P postgresql -Dmaven.test.skip=true install
+
+Otherwise maven will clobber your deployment test data when it runs the tests.
+
+
+
+-----
+[1] http://maven.apache.org/guides/introduction/introduction-to-profiles.html

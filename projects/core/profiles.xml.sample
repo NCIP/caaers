@@ -1,0 +1,69 @@
+<profiles>
+
+    <!-- DATABASE PROFILES -->
+
+    <profile>
+        <id>default-database</id>
+        <properties>
+            <datasource.url>jdbc:postgresql:caaers</datasource.url>
+            <datasource.username></datasource.username>
+            <datasource.password></datasource.password>
+            <datasource.driver>org.postgresql.Driver</datasource.driver>
+            <hibernate.dialect>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</hibernate.dialect>
+            <bering.dialect>edu.northwestern.bioinformatics.bering.dialect.PostgreSQL</bering.dialect>
+        </properties>
+    </profile>
+
+    <profile>
+        <id>postgresql</id>
+        <properties>
+            <datasource.url>jdbc:postgresql:caaers_test</datasource.url>
+            <datasource.username></datasource.username>
+            <datasource.password></datasource.password>
+            <datasource.driver>org.postgresql.Driver</datasource.driver>
+            <hibernate.dialect>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</hibernate.dialect>
+            <bering.dialect>edu.northwestern.bioinformatics.bering.dialect.PostgreSQL</bering.dialect>
+        </properties>
+        <activation>
+            <property>
+                <name>require</name> <value>manual activation</value>
+            </property>
+        </activation>
+    </profile>
+
+    <profile>
+        <id>oracle</id>
+        <properties>
+            <datasource.url>jdbc:oracle:thin:@host:port:service</datasource.url>
+            <datasource.username></datasource.username>
+            <datasource.password></datasource.password>
+            <datasource.driver>oracle.jdbc.OracleDriver</datasource.driver>
+            <hibernate.dialect>org.hibernate.dialect.Oracle9Dialect</hibernate.dialect>
+            <bering.dialect>edu.northwestern.bioinformatics.bering.dialect.Oracle</bering.dialect>
+        </properties>
+        <activation>
+            <property>
+                <name>require</name> <value>manual activation</value>
+            </property>
+        </activation>
+    </profile>
+
+    <!-- This configuration matches the database created by bering:hsqldb -->
+    <profile>
+        <id>hsqldb</id>
+        <properties>
+            <datasource.url>jdbc:hsqldb:file:${project.build.directory}/hsqldb/test</datasource.url>
+            <datasource.username>sa</datasource.username>
+            <datasource.password></datasource.password>
+            <datasource.driver>org.hsqldb.jdbcDriver</datasource.driver>
+            <hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
+            <bering.dialect>edu.northwestern.bioinformatics.bering.dialect.Hsqldb</bering.dialect>
+        </properties>
+        <activation>
+            <property>
+                <name>require</name> <value>manual activation</value>
+            </property>
+        </activation>
+    </profile>
+
+</profiles>

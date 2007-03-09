@@ -1,9 +1,0 @@
-tomcat.deploy-path=/caaers
-tomcat.server=localhost
-tomcat.manager.url=http://${tomcat.server}:8080/manager
-# This username and password must belong to an account in $CATALINA_HOME/conf/tomcat-users.xml
-#   with the manager role
-tomcat.username=
-tomcat.password=
-# The path to your tomcat install
-catalina.home=/path/to/tomcat/root

@@ -4,7 +4,7 @@ package gov.nih.nci.cabig.caaers.domain;
  * @author Rhett Sutphin
  * @author Sujith Vellat Thayyilthodi
  */
-public interface MutableDomainObject extends DomainObject {
+public interface MutableDomainObject extends DomainObject, GridIdentifiable {
 	/**
 	 * @return the optimistic locking version value for this object.
 	 */

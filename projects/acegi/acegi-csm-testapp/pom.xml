@@ -1,94 +1,84 @@
 <?xml version="1.0"?>
 <project>
-	<parent>
-		<artifactId>acegi</artifactId>
-		<groupId>gov.nih.nci.security</groupId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>gov.nih.nci.security</groupId>
-	<artifactId>acegi-csm-testapp</artifactId>
-	<packaging>war</packaging>
-	<name>acegi-csm-testapp Maven Webapp</name>
-	<version>1.0-SNAPSHOT</version>
-	<url>http://maven.apache.org</url>
-	<build>
-		<finalName>acegi-csm-testapp</finalName>
-	</build>
+    <parent>
+        <artifactId>acegi</artifactId>
+        <groupId>gov.nih.nci.security.acegi</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>acegi-csm-testapp</artifactId>
+    <packaging>war</packaging>
+    <name>acegi-csm-testapp Maven Webapp</name>
+    <build>
+        <finalName>acegi-csm-testapp</finalName>
+    </build>
 
-	<dependencies>
+    <dependencies>
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.2.1.ga</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-tools</artifactId>
-			<version>3.2.0.beta9a</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.2.1</version>
-			<scope>compile</scope>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.2.1.ga</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools</artifactId>
+            <version>3.2.0.beta9a</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.1</version>
+            <scope>compile</scope>
 
-			<exclusions>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xercesImpl</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xerces</groupId>
-					<artifactId>xmlParserAPIs</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
+            <exclusions>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xercesImpl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>xmlParserAPIs</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
+                </exclusion>
+            </exclusions>
 
-		</dependency>
+        </dependency>
 
-		<dependency>
-			<groupId>gov.nih.nci.security.acegi.csm</groupId>
-			<artifactId>acegi-csm</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>gov.nih.nci.security.acegi.csm</groupId>
-			<artifactId>acegi-csm-test</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>		
+        <dependency>
+            <groupId>gov.nih.nci.security.acegi</groupId>
+            <artifactId>acegi-csm-test</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
 
-		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.0</version>
-			<scope>run</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.1.2</version>
-			<scope>run</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
-			<scope>run</scope>
-		</dependency>	
-		
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+            <scope>run</scope>
+        </dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.2</version>
+            <scope>run</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+            <scope>run</scope>
+        </dependency>
+
+
+    </dependencies>
 </project>

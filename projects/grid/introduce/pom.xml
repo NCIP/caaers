@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>caaers-introduce</artifactId>
+    <packaging>pom</packaging>
+    <name>caAERS introduce-generated services</name>
+    <parent>
+        <groupId>gov.nih.nci.cabig.caaers</groupId>
+        <artifactId>caaers-grid</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <properties>
+        <assembly-file>${basedir}/ext-lib-assembly.xml</assembly-file>
+    </properties>
+    <modules>
+        <module>AdverseEventConsumerService</module>
+        <module>candidate-AdverseEvent-Creation-Service</module>
+        <module>protocol-service</module>
+        <module>StudyService</module>
+    </modules>
+
+    <!-- These dependencies are used by all introduce-based services -->
+    <dependencies>
+        <dependency>
+            <artifactId>caaers-core</artifactId>
+            <groupId>${groupId}</groupId>
+            <version>${version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>gov.nih.nci.security</groupId>
+            <artifactId>csmapi</artifactId>
+            <version>3.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.logging</groupId>
+            <artifactId>clm</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>gov.nih.nci.cabig.caaers.ext</groupId>
+            <artifactId>cagrid-everything</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-mds-aggregator</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-mds-aggregator-stubs</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-servicegroup</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-servicegroup-stubs</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>edu.internet2.middleware.grouper</groupId>
+            <artifactId>grouper</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cryptix</groupId>
+            <artifactId>cryptix</artifactId>
+            <version>3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cryptix</groupId>
+            <artifactId>cryptix-impl</artifactId>
+            <version>3.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cryptix</groupId>
+            <artifactId>cryptix-asn1</artifactId>
+            <version>3.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>cog-jglobus</artifactId>
+            <version>1.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bouncycastle-jce-jdk13</artifactId>
+            <version>125-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.claymoresystems</groupId>
+            <artifactId>puretls</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>castor</groupId>
+            <artifactId>castor</artifactId>
+            <version>0.9.9</version>
+        </dependency>
+    </dependencies>
+</project>

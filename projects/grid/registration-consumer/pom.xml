@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>caaers-registration-consumer</artifactId>
+    <packaging>jar</packaging>
+    <name>caAERS registration consumer</name>
+    <parent>
+        <groupId>gov.nih.nci.cabig.caaers</groupId>
+        <artifactId>caaers-grid</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.caaers</groupId>
+            <artifactId>caaers-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>gov.nih.nci.cabig.caaers.ext</groupId>
+            <artifactId>cagrid-everything</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>c3pr-registration-consumer-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>c3pr-registration-consumer-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>c3pr-registration-consumer-stubs</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version> <!-- is this the right version? -->
+        </dependency>
+        <dependency>
+            <groupId>axis-unofficial</groupId>
+            <artifactId>addressing</artifactId>
+            <version>1.0-SNAPSHOT</version> <!-- is this the right version? -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-mds-aggregator</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-mds-aggregator-stubs</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-servicegroup</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>globus-wsrf-servicegroup-stubs</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>wsrf-core</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>wsrf-core-stubs</artifactId>
+            <version>4.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.globus</groupId>
+            <artifactId>cog-jglobus</artifactId>
+            <version>1.4-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectmobius</groupId>
+            <artifactId>mobius-common-client</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectmobius</groupId>
+            <artifactId>mobius-factories</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectmobius</groupId>
+            <artifactId>mobius-gme-client</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectmobius</groupId>
+            <artifactId>mobius-mako-client</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectmobius</groupId>
+            <artifactId>mobius-tools</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>castor</artifactId>
+            <groupId>castor</groupId>
+            <version>0.9.9</version>
+        </dependency>
+
+        <!-- TEST-ONLY -->
+
+        <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>caaers-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>gov.nih.nci.cabig.caaers</groupId>
+    <artifactId>caaers</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>caAERS</name>
+    <description>
+        caAERS is the caBIG Adverse Event Reporting System.
+    </description>
+    <!-- TODO:
+    <licenses>
+        <license>
+            <name>LGPL</name>
+            <url>http://www.gnu.org/licenses/lgpl.txt</url>
+        </license>
+    </licenses>
+    -->
+    <scm>
+        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/trunk/projects</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/trunk/projects</connection>
+        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/trunk/projects</developerConnection>
+    </scm>
+    <repositories>
+        <repository>
+            <id>download.bioinformatics.northwestern.edu</id>
+            <name>Northwestern RHLCCC Bioinformatics</name>
+            <url>http://download.bioinformatics.northwestern.edu/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>download.bioinformatics.northwestern.edu</id>
+            <name>Northwestern RHLCCC Bioinformatics</name>
+            <url>http://download.bioinformatics.northwestern.edu/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    <modules>
+        <module>core</module>
+        <module>web</module>
+        <module>websso</module>
+        <module>acegi</module>
+        <module>grid</module>
+        <!--<module>jbi</module>-->
+        <!--<module>rules</module>-->
+    </modules>
+
+    <!-- Specify versions once for commonly-used deps -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>edu.northwestern.bioinformatics</groupId>
+                <artifactId>core-commons</artifactId>
+                <version>77</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring</artifactId>
+                <version>2.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-mock</artifactId>
+                <version>2.0.2</version>
+            </dependency>
+
+            <!-- submodules -->
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>${groupId}</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>gov.nih.nci.cabig.ctms</groupId>
+                <artifactId>websso</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- These dependencies are used by _all_ child projects -->
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.northwestern.bioinformatics</groupId>
+            <artifactId>core-commons-testing</artifactId>
+            <version>77</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+            <version>2.2.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-idea-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <ideaVersion>6.x</ideaVersion>
+                    <jdkName>1.5</jdkName>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <distributionManagement>
+        <repository>
+            <id>download.bioinformatics</id>
+            <name>Northwestern University RHLCCC Bioinformatics Core</name>
+            <url>scp://download.bioinformatics.northwestern.edu/var/www/html/download/maven2</url>
+        </repository>
+    </distributionManagement>
+</project>

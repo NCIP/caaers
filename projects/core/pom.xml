@@ -1,0 +1,306 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>caaers-core</artifactId>
+    <packaging>jar</packaging>
+    <name>caAERS core</name>
+    <parent>
+        <groupId>gov.nih.nci.cabig.caaers</groupId>
+        <artifactId>caaers</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <repositories>
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache snapshots (for ActiveMQ)</name>
+            <url>http://people.apache.org/maven-snapshot-repository/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <dependencies>
+
+        <!-- BUILD/RUNTIME DEPS -->
+        <dependency>
+            <groupId>gov.nih.nci.security.acegi</groupId>
+            <artifactId>acegi-csm</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>edu.northwestern.bioinformatics</groupId>
+            <artifactId>core-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.2.1.ga</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.2.1.ga</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jibx</groupId>
+            <artifactId>jibx-run</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jibx</groupId>
+            <artifactId>jibx-bind</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <!-- TODO: ESB-specific stuff should be in a different module -->
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jms_1.1_spec</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jboss</groupId>
+            <artifactId>jboss-jsr77</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>incubator-activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>4.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- RUNTIME-ONLY DEPS -->
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.1</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.2-504.jdbc3</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.7</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0.2.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- TEST-ONLY DEPS -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- TODO: we don't use dbunit directly - just as part of core-commons-testing -->
+        <dependency>
+            <groupId>dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>check-profiles-xml</id>
+                        <phase>validate</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                <fail message="Database not configured (could not read profiles.xml).  See README.database.">
+                                    <condition>
+                                        <not><available file="profiles.xml"/></not>
+                                    </condition>
+                                </fail>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!-- all deps have to go here (even for profile executions) -->
+                <dependencies>
+                    <dependency>
+                        <groupId>dbunit</groupId>
+                        <artifactId>dbunit</artifactId>
+                        <version>2.1</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>8.2-504.jdbc3</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>hsqldb</groupId>
+                        <artifactId>hsqldb</artifactId>
+                        <version>1.8.0.7</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>ojdbc14</artifactId>
+                        <version>10.2.0.2.0</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>gov.nih.nci.cabig.ctms</groupId>
+                <artifactId>xsd2jibx-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <schema>${basedir}/src/main/resources/schema/AENotification.xsd</schema>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals><goal>generate</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generate bindings using jibx compile. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <id>jibx-compile</id>
+                        <goals><goal>exec</goal></goals>
+                        <configuration>
+                            <executable>${java.home}/bin/java</executable>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>org.jibx.binding.Compile</argument>
+                                <argument>${xsd2jibx.binding}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>edu.northwestern.bioinformatics</groupId>
+                <artifactId>bering-maven-plugin</artifactId>
+                <configuration>
+                    <url>${datasource.url}</url>
+                    <dialect>${bering.dialect}</dialect>
+                    <driver>${datasource.driver}</driver>
+                    <username>${datasource.username}</username>
+                    <password>${datasource.password}</password>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>8.2-504.jdbc3</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>hsqldb</groupId>
+                        <artifactId>hsqldb</artifactId>
+                        <version>1.8.0.7</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>ojdbc14</artifactId>
+                        <version>10.2.0.2.0</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!-- This is the equivalent of insert-csm-policy in the ant script.
+                 To execute:
+                    mvn -P csm-policy initialize .
+                 If you need to use a non-default database config:
+                    mvn -P csm-policy,hsqldb initialize -->
+            <id>csm-policy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>insert-csm-policy</id>
+                                <phase>initialize</phase>
+                                <goals> <goal>run</goal> </goals>
+                                <configuration>
+                                    <tasks>
+                                        <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+                                            <classpath refid="maven.plugin.classpath"/>
+                                        </taskdef>
+                                        <dbunit driver="${datasource.driver}"
+                                            url="${datasource.url}"
+                                            userid="${datasource.username}"
+                                            password="${datasource.password}">
+                                            <operation type="CLEAN_INSERT" src="tools/csm/CSM_policy.xml" />
+                                        </dbunit>
+                                    </tasks>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
