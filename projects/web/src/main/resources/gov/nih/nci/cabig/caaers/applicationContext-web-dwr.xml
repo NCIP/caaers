@@ -1,0 +1,21 @@
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+    >
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+    <bean id="createAeAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade"/>
+    <bean id="studyAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
+    <!--            
+    <bean id="participantAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.participant.ParticipantAjaxFacade"/>
+    -->
+     <bean id="searchStudyAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.SearchStudyAjaxFacade"/>     
+</beans>
