@@ -6,51 +6,69 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+	<bean id="csmAuthorizationDao"
+		class="gov.nih.nci.security.dao.DIAuthorizationDao"
+		init-method="init">
+		<property name="sessionFactory">
+			<bean
+				class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+				<property name="dataSource" ref="dataSource" />
+				<property name="mappingResources">
+					<list>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/User.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml
+						</value>
+						<value>
+							gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml
+						</value>
+					</list>
+				</property>
+				<property name="hibernateProperties">
+					<value>
+						hibernate.dialect=${datasource.dialect}
+					</value>
+				</property>
+			</bean>
+		</property>
+		<property name="applicationContextName" value="caaers" />
+	</bean>
+
 
 	<bean id="csmUserProvisioningManager"
-		class="gov.nih.nci.security.acegi.csm.authorization.UserProvisioningManagerFactory"
-		factory-method="newUserProvisioningManager">
-		<constructor-arg value="caaers" />
-		<constructor-arg>
-			<!--
-			<bean class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-				<property name="locations" value="classpath:/hibernate.properties"/>
-			</bean>
-			-->
-			<map>
-				<entry>
-					<key>
-						<value>hibernate.connection.url</value>
-					</key>
-					<value>${datasource.url}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.username</value>
-					</key>
-					<value>${datasource.username}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.password</value>
-					</key>
-					<value>${datasource.password}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.dialect</value>
-					</key>
-					<value>${datasource.dialect}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.driver_class</value>
-					</key>
-					<value>${datasource.driver}</value>
-				</entry>
-			</map>
-		</constructor-arg>
+		class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
+		<property name="authorizationDAO" ref="csmAuthorizationDao" />
 	</bean>
+
 
 	<bean id="csmAuthenticationManager"
 		class="gov.nih.nci.security.SecurityServiceProvider"
@@ -70,7 +88,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="daoSecurityTemplate" abstract="true">
 
-		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="authenticationManager"
+			ref="authenticationManager" />
 
 	</bean>
 
