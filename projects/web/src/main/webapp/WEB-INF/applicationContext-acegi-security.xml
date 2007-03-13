@@ -116,8 +116,12 @@
 			</bean>
 		</property>
 
-		<property name="csmUserProvisioningManager"
-			ref="csmUserProvisioningManager" />
+		<property name="userDetailsService">
+			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+			</bean>
+		</property>
 
 		<property name="userCache">
 			<bean
