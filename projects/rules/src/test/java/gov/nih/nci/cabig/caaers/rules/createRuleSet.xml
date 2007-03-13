@@ -1,0 +1,9 @@
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+ <env:Header/>
+ <env:Body xmlns="http://www.webservicex.net">
+	<ruleSet>
+      
+      <!-- <ZipCode>49506</ZipCode> -->
+	</ruleSet>
+ </env:Body>
+</env:Envelope>
