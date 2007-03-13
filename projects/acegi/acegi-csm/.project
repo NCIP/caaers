@@ -1,6 +1,6 @@
 <projectDescription>
   <name>acegi-csm</name>
-  <comment/>
+  <comment>caAERS is the caBIG Adverse Event Reporting System.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

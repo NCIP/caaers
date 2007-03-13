@@ -20,7 +20,7 @@ public abstract class AbstractCSMAuthorizationCheck implements CSMAuthorizationC
 		return csmUserProvisioningManager;
 	}
 
-	public void setCsmAuthorizationManager(
+	public void setCsmUserProvisioningManager(
 	                UserProvisioningManager csmUserProvisioningManager) {
 		this.csmUserProvisioningManager = csmUserProvisioningManager;
 	}

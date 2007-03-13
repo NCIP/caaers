@@ -20,13 +20,14 @@ import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider;
 import org.acegisecurity.userdetails.User;
 import org.acegisecurity.userdetails.UserDetails;
+import org.acegisecurity.userdetails.UserDetailsService;
 
 public class CSMAuthenticationProvider extends
 		AbstractUserDetailsAuthenticationProvider {
 	
 	private AuthenticationManager csmAuthenticationManager;
-	private UserProvisioningManager csmUserProvisioningManager;
-	private String rolePrefix = "ROLE_";
+	private UserDetailsService userDetailsService;
+	
 
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userName,
@@ -50,31 +51,7 @@ public class CSMAuthenticationProvider extends
 			throw new AuthenticationServiceException("Error authenticating: " + ex.getMessage(), ex);
 		}
 
-		GrantedAuthority[] authorities = null;
-		
-		UserProvisioningManager mgr = getCsmUserProvisioningManager();
-		Set groups;
-        try {
-        	groups = mgr.getGroups(mgr.getUser(userName).getUserId().toString());
-        } catch (CSObjectNotFoundException ex) {
-            throw new AuthenticationServiceException("Error getting groups: " + ex.getMessage(), ex);
-        }
-		if(groups == null || groups.size() == 0){
-			authorities = new GrantedAuthority[0];
-		}else{
-			String prefix = getRolePrefix();
-			if(prefix == null){
-				prefix = "";
-			}
-			authorities = new GrantedAuthority[groups.size()];
-            int idx = 0;
-			for(Iterator i = groups.iterator(); i.hasNext(); idx++){
-				Group group = (Group)i.next();
-				authorities[idx] = new GrantedAuthorityImpl(prefix + group.getGroupName());
-			}
-		}
-		
-		return new User(userName, "ignored", true, true, true, true, authorities);
+		return getUserDetailsService().loadUserByUsername(userName);
 	}
 
 	public AuthenticationManager getCsmAuthenticationManager() {
@@ -86,21 +63,12 @@ public class CSMAuthenticationProvider extends
 		this.csmAuthenticationManager = csmAuthenticationManager;
 	}
 
-	public UserProvisioningManager getCsmUserProvisioningManager() {
-		return csmUserProvisioningManager;
+	public UserDetailsService getUserDetailsService() {
+		return userDetailsService;
 	}
 
-	public void setCsmUserProvisioningManager(
-			UserProvisioningManager csmUserProvisioningManager) {
-		this.csmUserProvisioningManager = csmUserProvisioningManager;
-	}
-
-	public String getRolePrefix() {
-		return rolePrefix;
-	}
-
-	public void setRolePrefix(String rolePrefix) {
-		this.rolePrefix = rolePrefix;
+	public void setUserDetailsService(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
 	}
 
 }
