@@ -24,14 +24,14 @@
         <dependency>
             <groupId>gov.nih.nci.security</groupId>
             <artifactId>csmapi</artifactId>
-            <version>3.2-SNAPSHOT</version>
+            <version>3.2.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>gov.nih.nci.security</groupId>
             <artifactId>clm</artifactId>
-            <version>3.2-SNAPSHOT</version>
+            <version>3.2.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
