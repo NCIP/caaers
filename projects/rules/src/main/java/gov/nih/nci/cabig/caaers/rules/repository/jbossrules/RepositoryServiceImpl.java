@@ -99,7 +99,6 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 					.toGregorianCalendar());
 			assetItem.updateDateExpired(meta.getDateExpired()
 					.toGregorianCalendar());
-
 			List<Category> categoryList = meta.getCategory();
 			int numberOfCategories = categoryList.size();
 			String[] categories = new String[numberOfCategories];
@@ -169,7 +168,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		while (iterator.hasNext()) {
 			AssetItem ruleItem = (AssetItem) iterator.next();
 			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
-			ruleSet.getRule().add(rule);
+			ruleSet.getArrayOfRule().getRule().add(rule);
 		}
 		return ruleSet;
 	}
