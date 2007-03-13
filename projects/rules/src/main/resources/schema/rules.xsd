@@ -41,41 +41,53 @@
 				<xs:element name="status" type="xs:string"/> 
 				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element minOccurs="0" maxOccurs="1" name="array-of-rule" type="rules:array-of-rule" />
+				<!-- <xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
+				</xs:element> -->
+				
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="rule">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
-				<xs:element ref="rules:condition" minOccurs="0"/>
-				<xs:element name="action" type="rules:action" minOccurs="0"/>
-				<xs:element ref="rules:metaData" minOccurs="0" />
-			</xs:sequence>
-			<xs:attribute name="id" type="xs:string"/>
-		</xs:complexType>
+  <xs:complexType name="array-of-rule">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="rule" type="rules:rule" />
+    </xs:sequence>
+  </xs:complexType>
+
+	<xs:complexType name="rule">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
+			<xs:element ref="rules:condition" minOccurs="0"/>
+			<xs:element name="action" type="rules:action" minOccurs="0"/>
+			<xs:element ref="rules:metaData" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string"/>
+	</xs:complexType>
+
+<!--
+	<xs:element>	
 		<xs:key name="ruleName">
 			<xs:selector xpath="rules:rule"/>
 			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
+-->
 
 	<xs:element name="rule-attribute">
 	    <xs:complexType>
-	      <xs:attribute name="name" type="xs:string" use="required"/>    
-	      <xs:attribute name="value" type="xs:string" use="required"/>      
+	      <xs:attribute name="name" type="xs:string" use="required"/>
+	      <xs:attribute name="value" type="xs:string" use="required"/>   
 	    </xs:complexType>
 	</xs:element>
 
 	<xs:element name="condition">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="rules:and" minOccurs="0" maxOccurs="unbounded"/>        
-				<xs:element ref="rules:or"  minOccurs="0" maxOccurs="unbounded"/>                      
+				<xs:element ref="rules:and" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="rules:or"  minOccurs="0" maxOccurs="unbounded"/>              
 				<xs:element ref="rules:not" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:exists" minOccurs="0" maxOccurs="unbounded"/>                
+				<xs:element ref="rules:exists" minOccurs="0" maxOccurs="unbounded"/>           
 				<xs:element ref="rules:eval" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="rules:column" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
@@ -85,7 +97,7 @@
 	<xs:element name="and">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>        
+				<xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>
 				<xs:element ref="rules:or" maxOccurs="unbounded" minOccurs="0"/>                      
 				<xs:element ref="rules:not" maxOccurs="unbounded" minOccurs="0"/>                
 				<xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
@@ -206,7 +218,7 @@
 			<xs:attribute name="description" type="xs:string" />
 			<xs:attribute name="title" type="xs:string" />
 			<xs:attribute name="state" type="xs:string" /> 
-			<xs:attribute name="lastModifiedDate" type="xs:date" />
+			<xs:attribute name="lastModifiedDate" type="xs:date" /> 
 			<xs:attribute name="lastContributor" type="xs:string" />
 			<xs:attribute name="versionNumber" type="xs:string" />
 			<xs:attribute name="createdDate" type="xs:date" />
