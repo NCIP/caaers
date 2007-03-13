@@ -6,6 +6,7 @@
 
     <display-name>caAERS Rule Web Services</display-name>
 
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -16,6 +17,26 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+<!--
+  <servlet>
+    <servlet-name>XFireServlet</servlet-name>
+    <display-name>XFire Servlet</display-name>
+    <servlet-class>
+        org.codehaus.xfire.transport.http.XFireConfigurableServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>XFireServlet</servlet-name>
+    <url-pattern>/servlet/XFireServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>XFireServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+-->
 
 	<servlet>
 		<servlet-name>XFireServlet</servlet-name>
@@ -29,5 +50,55 @@
 		<servlet-name>XFireServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
+
+
+
+<!--
+	<listener>
+		<listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>AxisServlet</servlet-name>
+		<display-name>Apache-Axis Servlet</display-name>
+		<servlet-class>
+			org.apache.axis.transport.http.AxisServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>*.jws</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>AxisAdminServlet</servlet-name>
+		<servlet-class>
+			org.apache.axis.transport.http.AdminServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>/servlet/AxisServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AxisAdminServlet</servlet-name>
+		<url-pattern>/servlet/AxisAdminServlet</url-pattern>
+	</servlet-mapping>
+
+-->
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
 
 </web-app>
