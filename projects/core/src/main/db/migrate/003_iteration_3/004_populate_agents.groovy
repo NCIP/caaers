@@ -1493,6 +1493,6 @@
     }
 
     void down() {
-        execute("DELETE * FROM agents")
+        execute("DELETE FROM agents")
     }
 }
