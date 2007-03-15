@@ -20,14 +20,22 @@
             </snapshots>
         </repository>
     </repositories>
+    <properties>
+        <db/>
+        <databaseConfigurationName>${db}</databaseConfigurationName>
+    </properties>
     <dependencies>
 
         <!-- BUILD/RUNTIME DEPS -->
         <dependency>
+            <groupId>${groupId}</groupId>
+            <artifactId>caaers-core-bootstrap</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -152,22 +160,6 @@
         <plugins>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>check-profiles-xml</id>
-                        <phase>validate</phase>
-                        <goals><goal>run</goal></goals>
-                        <configuration>
-                            <tasks>
-                                <fail message="Database not configured (could not read profiles.xml).  See README.database.">
-                                    <condition>
-                                        <not><available file="profiles.xml"/></not>
-                                    </condition>
-                                </fail>
-                            </tasks>
-                        </configuration>
-                    </execution>
-                </executions>
                 <!-- all deps have to go here (even for profile executions) -->
                 <dependencies>
                     <dependency>
@@ -193,6 +185,30 @@
                         <artifactId>ojdbc14</artifactId>
                         <version>10.2.0.2.0</version>
                         <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>gov.nih.nci.cabig.ctms</groupId>
+                <artifactId>property-factory-maven-plugin</artifactId>
+                <configuration>
+                    <beanXml><![CDATA[
+                        <bean class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
+                            <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
+                        </bean>
+                    ]]></beanXml>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals><goal>apply</goal></goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>${groupId}</groupId>
+                        <artifactId>caaers-core-bootstrap</artifactId>
+                        <version>${project.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>

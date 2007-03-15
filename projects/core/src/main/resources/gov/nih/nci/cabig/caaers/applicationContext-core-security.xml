@@ -55,7 +55,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</property>
 				<property name="hibernateProperties">
 					<value>
-						hibernate.dialect=${datasource.dialect}
+						hibernate.dialect=${hibernate.dialect}
 					</value>
 				</property>
 			</bean>

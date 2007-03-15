@@ -7,7 +7,11 @@
 
 <beans>
     <bean id="mainPropertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location"><value>classpath:datasource.properties</value></property>
+        <property name="properties">
+            <bean class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
+            </bean>
+        </property>
     </bean>
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>

@@ -1,52 +1,117 @@
 DATABASE CONFIGURATION (for developers)
 ======================
-This doc describes the temporary database configuration system for maven 
-builds.  It is intended that this configuration system will be largely or 
-entirely replaced with one that allows deploy-time (instead of build-time) 
-configuration.
+This doc describes the database configuration system for caAERS.  This system
+defers most database configuration determinations until the application is
+deployed, but lets developers easily switch between multiple configurations
+when building and testing database-dependent code.
 
-This configuration system is based on maven's profiles system.  For 
-background, see [1].
+WHERE IS IT?
+============
+caAERS configures its database access at runtime from a simple properties 
+file.  The file is named datasource.properties by default.  caAERS looks for
+it in the following locations, using the first copy it finds:
 
-PROFILES.XML
-------------
-For the database configuration, we'll use the profiles.xml location for 
-storing profiles (you can also put profiles in the pom itself or in your 
-personal settings.xml file).  There's a file called "profiles.xml.sample" in 
-this directory; copy it to profiles.xml and open it up.
+- ${catalina.home}/conf/caaers
+- ${user.home}/.caaers
+- /etc/caaers
 
-There are four profiles defined in this file -- a default one, plus one for
-each supported database type.  You can fill in the correct URL and other
-properties for any profile you expect to use.
+You can tell a particular caaers-core build to use a different filename by
+passing the "db" property when building.  E.g., if you say
 
-If you need more configurations, just duplicate any of the blocks other
-than the default one.  Set the id to something that isn't already used and
-set the other properties appropriately.
+ [core] $ mvn -Ddb=hsqldb test
 
-SELECTING A DATABASE
---------------------
-When it comes time to build, you can select a profile using maven's -P switch,
-like so:
+caAERS will look for a file called hsqldb.properties.
 
- [core] $ mvn -P <profile-id> bering:migrate test
+WHAT ARE THE PROPERTIES?
+========================
+You need to include the following properties for each datasource 
+configuration:
 
-If you omit the -P, the default database configuration will be used.
+- datasource.url
+- datasource.driver
+- datasource.username
+- datasource.password
 
-INSTALLATION CONSIDERATIONS
+N.b.: you no longer need to specify the dialects for hibernate or bering --
+they are automatically determined.  You can specify them if you want to -- use
+the properties hibernate.dialect and bering.dialect, respectively.
+
+There are examples for copy-and-pasting at the end of this doc.
+
+Installation considerations
 ---------------------------
 Recall that when you build from a parallel subproject, maven will use the 
 version of the core JAR which is installed in your local repository.  So if
 you want to deploy the webapp (for instance) using your "postgresql" profile,
-be sure to install from core with it active.  
-
+be sure to install from core with it selected.  
+ 
 Since the database you are deploying against is probably _not_ your unit test
-database, be sure to install without running the tests:
+database, you'll want to disable unit tests when doing the install.  You can 
+do this by including
 
- [core] $ mvn -P postgresql -Dmaven.test.skip=true install
+ maven.test.skip=true
 
-Otherwise maven will clobber your deployment test data when it runs the tests.
+in the datasource.properties for your deployment database.  Of course, you can
+also always disable tests per build if you prefer:
 
+ [core] $ mvn -Ddb=postgresql -Dmaven.test.skip=true install
 
+If you don't disable tests, maven will clobber your deployment test data when 
+it runs the tests as part of the install phase.
 
------
-[1] http://maven.apache.org/guides/introduction/introduction-to-profiles.html
+Running migrations
+------------------
+Most of the time, the maven plugin that finds the database properties and
+makes them available to the build will automatically be invoked.  
+Unfortunately, when running another stand-alone plugin, it isn't.  This means
+that you'll need to do:
+
+ [core] $ mvn initialize bering:migrate
+
+to make sure you are hitting the correct database when you run the migrations.
+
+JNDI
+====
+Note: JNDI support is not yet implemented -- the below is how I expect it will
+work.
+
+Developers will always need to use the property files described above for
+building and testing the core module.  However, when you are deploying the
+application, you also have the option of using a JNDI-configured datasource.
+
+If there's a JNDI context available, caAERS will look for a data source named
+java:comp/env/caaers/db/datasource.  This name may be changed when core is 
+built in the same way that the property file name is changed; e.g., if you 
+build core like so:
+
+ [core] $ mvn -Ddb=oracle install
+
+the resulting application will look for java:comp/env/caaers/db/oracle.  (This
+option would probably only be useful if you were hosting multiple caAERS 
+instances in the same application container.)
+
+EXAMPLES
+========
+
+PostgreSQL
+----------
+datasource.url=jdbc:postgresql:caaers
+datasource.driver=org.postgresql.Driver
+datasource.username=whomever
+datasource.password=whatever
+
+Oracle
+------
+datasource.url=jdbc:oracle:thin:@host:port:service
+datasource.driver=oracle.jdbc.OracleDriver
+datasource.username=whomever
+datasource.password=whatever
+
+HSQLDB (for testing)
+------
+# You need to replace CAAERS_WC with your actual working copy directory
+datasource.url=jdbc:hsqldb:file:CAAERS_WC/projects/core/target/hsqldb/test
+datasource.driver=org.hsqldb.jdbcDriver
+datasource.username=sa
+datasource.password=
+
