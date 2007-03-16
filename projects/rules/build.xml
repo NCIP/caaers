@@ -122,6 +122,7 @@
 		<copy todir="${build-dir.main}/client">
 			<fileset dir="${build-dir.main}">
 				<include name="**/Rule*Service.*" />
+				<include name="**/common/*.*" />
 			</fileset>
 		</copy>
 
