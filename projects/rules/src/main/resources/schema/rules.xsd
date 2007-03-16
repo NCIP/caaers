@@ -41,19 +41,12 @@
 				<xs:element name="status" type="xs:string"/> 
 				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element minOccurs="0" maxOccurs="1" name="array-of-rule" type="rules:array-of-rule" />
-				<!-- <xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
-				</xs:element> -->
+				<xs:element name="rule" type="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
+				</xs:element>
 				
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
-  <xs:complexType name="array-of-rule">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="rule" type="rules:rule" />
-    </xs:sequence>
-  </xs:complexType>
 
 	<xs:complexType name="rule">
 		<xs:sequence>
@@ -64,15 +57,6 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string"/>
 	</xs:complexType>
-
-<!--
-	<xs:element>	
-		<xs:key name="ruleName">
-			<xs:selector xpath="rules:rule"/>
-			<xs:field xpath="@name"/>
-		</xs:key>
-	</xs:element>
--->
 
 	<xs:element name="rule-attribute">
 	    <xs:complexType>
@@ -242,6 +226,7 @@
 
 	<xs:complexType name="action">
 		<xs:attribute name="actionId" type="xs:string" /> 
+		<xs:attribute name="name" type="xs:string" />
 	</xs:complexType>
 
 
