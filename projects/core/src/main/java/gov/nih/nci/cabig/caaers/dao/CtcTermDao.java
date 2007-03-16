@@ -20,8 +20,11 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
 
     public List<CtcTerm> getBySubname(String[] subnames, Integer ctcVersionId, Integer ctcCategoryId) {
         List<Object> extraParams = new LinkedList<Object>();
-        StringBuilder extraConds = new StringBuilder("o.category.ctc.id = ?");
-        extraParams.add(ctcVersionId);
+        StringBuilder extraConds = new StringBuilder("");
+        if (ctcVersionId != null) {
+        	extraConds.append("o.category.ctc.id = ?");
+        	extraParams.add(ctcVersionId);
+        }
         if (ctcCategoryId != null) {
             extraConds.append(" and o.category.id = ?");
             extraParams.add(ctcCategoryId);
