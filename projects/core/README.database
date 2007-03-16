@@ -72,23 +72,28 @@ to make sure you are hitting the correct database when you run the migrations.
 
 JNDI
 ====
-Note: JNDI support is not yet implemented -- the below is how I expect it will
-work.
-
 Developers will always need to use the property files described above for
 building and testing the core module.  However, when you are deploying the
 application, you also have the option of using a JNDI-configured datasource.
 
 If there's a JNDI context available, caAERS will look for a data source named
-java:comp/env/caaers/db/datasource.  This name may be changed when core is 
+java:/comp/env/caaers/db/datasource.  This name may be changed when core is 
 built in the same way that the property file name is changed; e.g., if you 
 build core like so:
 
  [core] $ mvn -Ddb=oracle install
 
-the resulting application will look for java:comp/env/caaers/db/oracle.  (This
-option would probably only be useful if you were hosting multiple caAERS 
-instances in the same application container.)
+the resulting application will look for java:/comp/env/caaers/db/oracle.  
+(Renaming this way option would probably only be useful if you were hosting 
+multiple caAERS instances in the same application container.)
+
+Note: if you are using PostgreSQL configured through JNDI you will still need
+a datasource.properties file.  It should include this line:
+
+datasource.rdbms=postgresql
+
+(It may contain other datasource configuration information, but it will be 
+ignored.)
 
 EXAMPLES
 ========
