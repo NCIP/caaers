@@ -59,7 +59,7 @@ public class Sponsor_Level_Rule_TestCase extends TestCase {
 
 		ruleSet.setName("gov.nih.nci.cabig.caaers.rules");
 		ruleSet.setStatus("DEV");
-		ruleSet.getArrayOfRule().getRule().add(rule);
+		ruleSet.getRule().add(rule);
     	ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
     	
 		rule.getMetaData().setName("Decide AE Type");
@@ -116,7 +116,7 @@ TO DOO
 
 		ruleSet.setName("gov.nih.nci.cabig.caaers.rules");
 		ruleSet.setStatus("DEV");
-		ruleSet.getArrayOfRule().getRule().add(rule);
+		ruleSet.getRule().add(rule);
     	ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
 
     	rule.getMetaData().setName("Decide AE Type");

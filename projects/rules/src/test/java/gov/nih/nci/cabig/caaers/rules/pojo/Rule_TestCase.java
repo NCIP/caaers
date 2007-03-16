@@ -56,7 +56,7 @@ public class Rule_TestCase extends TestCase {
 
 		ruleSet.setName("gov.nih.nci.cabig.caaers.rules");
 		ruleSet.setStatus("DEV");
-		ruleSet.getArrayOfRule().getRule().add(rule);
+		ruleSet.getRule().add(rule);
     	ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
 
 		MetaData ruleMetaData = new MetaData();

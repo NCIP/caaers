@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.rules;
 
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.brxml.ArrayOfRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
@@ -101,9 +100,7 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
 		ruleSet.setName("First RuleSet");
 		ruleSet.setDescription("First RuleSet");
 		Rule rule = new Rule();
-		ArrayOfRule arrayOfRule = new ArrayOfRule();
-		arrayOfRule.getRule().add(rule);
-		ruleSet.setArrayOfRule(arrayOfRule);
+		ruleSet.getRule().add(rule);
 		client.createRuleSet(ruleSet);		
 		
 	}

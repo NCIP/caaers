@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.rules;
 
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.brxml.ArrayOfRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -126,10 +125,8 @@ public class RuleAuthoringWebServiceClient {
 		column.getFieldConstraint().add(fieldConstraint);
 		condition.getColumn().add(column);
 		
-		newRule.setCondition(condition);    	
-		ArrayOfRule arrayOfRule = new ArrayOfRule();
-		arrayOfRule.getRule().add(newRule);
-		ruleSet.setArrayOfRule(arrayOfRule);
+		newRule.setCondition(condition);
+		ruleSet.getRule().add(newRule);
 
 		newRule = new Rule();
 		metaData = new MetaData();
@@ -148,7 +145,7 @@ public class RuleAuthoringWebServiceClient {
 		column.getFieldConstraint().add(fieldConstraint);
 		condition.getColumn().add(column);
 		newRule.setCondition(condition);  	
-		ruleSet.getArrayOfRule().getRule().add(newRule);
+		ruleSet.getRule().add(newRule);
 		return ruleSet;
 	}
 	
