@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<project name="caaers-rules" default="all" basedir=".">
+<project name="rules" default="all" basedir=".">
     
+	<property name="project-name"      value="rules" />
 	<property name="src-dir.main"      value="src/main" />
 	<property name="src-dir.java"      value="src/main/java" />
 	<property name="src-dir.unit-test" value="src/test/java" />
@@ -9,11 +10,10 @@
 	<property name="build-dir.main"      value="build/main/classes"/>
 	<property name="build-dir.unit-test" value="build/test/classes"/>
 
-	<property name="jar-name.client" value="${basedir}/../../caaers-rules-client.jar"/>  
-	<property name="jar-name.main" value="${basedir}/../../caaers-rules.jar"/>
-	<property name="jar-name.unit-test" value="${basedir}/../../caaers-rules-testing.jar"/>
-
-    <property name="war-name" value="${basedir}/../../rules.war"/>
+	<property name="jar-name.client" value="${basedir}/../../${project-name}-client.jar"/>  
+	<property name="jar-name.main" value="${basedir}/../../${project-name}.jar"/>
+	<property name="jar-name.unit-test" value="${basedir}/../../${project-name}-testing.jar"/>
+    	<property name="war-name" value="${basedir}/../../${project-name}.war"/>
 
 	<!-- CLASSPATHS -->
     
