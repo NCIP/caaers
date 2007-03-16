@@ -9,7 +9,7 @@
     "
     >
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-        p:driverClassName="${datasource.driver}"
+        p:driverClassName="s[datasource.driver]"
         p:maxActive="5" p:maxIdle="2"
         p:maxWait="180000"
         p:removeAbandoned="true"
@@ -20,8 +20,8 @@
         p:testOnReturn="true"
         p:timeBetweenEvictionRunsMillis="300000"
         p:minEvictableIdleTimeMillis="600000"
-        p:url="${datasource.url}"
-        p:username="${datasource.username}"
-        p:password="${datasource.password}"
+        p:url="s[datasource.url]"
+        p:username="s[datasource.username]"
+        p:password="s[datasource.password]"
         />
 </beans>

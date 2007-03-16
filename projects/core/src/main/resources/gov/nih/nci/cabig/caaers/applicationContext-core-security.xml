@@ -54,9 +54,9 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					</list>
 				</property>
 				<property name="hibernateProperties">
-					<value>
-						hibernate.dialect=${hibernate.dialect}
-					</value>
+                    <bean class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+                        <property name="dialectName"><value>s[hibernate.dialect]</value></property>
+                    </bean>
 				</property>
 			</bean>
 		</property>
