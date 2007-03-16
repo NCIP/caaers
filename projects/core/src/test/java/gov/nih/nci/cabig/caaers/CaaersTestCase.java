@@ -9,7 +9,9 @@ import org.easymock.IArgumentMatcher;
 import org.easymock.classextension.EasyMock;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+import javax.naming.NamingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -28,15 +30,20 @@ public abstract class CaaersTestCase extends CoreTestCase {
     private static ApplicationContext applicationContext = null;
     protected Set<Object> mocks = new HashSet<Object>();
 
-    public static ApplicationContext getDeployedApplicationContext() {
-        synchronized (CaaersTestCase.class) {
-            if (applicationContext == null) {
-                applicationContext = new ClassPathXmlApplicationContext(new String[] {
-                    "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
-                });
+    public synchronized static ApplicationContext getDeployedApplicationContext() {
+        if (applicationContext == null) {
+            // This might not be the right place for this
+            try {
+                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            } catch (NamingException e) {
+                throw new RuntimeException("", e);
             }
-            return applicationContext;
+            
+            applicationContext = new ClassPathXmlApplicationContext(new String[] {
+                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
+            });
         }
+        return applicationContext;
     }
 
     ////// MOCK REGISTRATION AND HANDLING

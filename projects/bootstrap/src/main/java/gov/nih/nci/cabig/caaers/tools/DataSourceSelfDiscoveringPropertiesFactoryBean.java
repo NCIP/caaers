@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect;
 import org.springframework.beans.factory.FactoryBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +26,7 @@ import java.util.Properties;
  *
  * @author Rhett Sutphin
  */
-public class DataSourceSelfDiscoveringPropertiesFactoryBean implements FactoryBean {
+public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConfigurationAccessor implements FactoryBean {
     private static final Log log = LogFactory.getLog(DataSourceSelfDiscoveringPropertiesFactoryBean.class);
 
     public static final String HIBERNATE_DIALECT_PROPERTY_NAME = "hibernate.dialect";
@@ -38,9 +37,7 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean implements FactoryBe
     public static final String PASSWORD_PROPERTY_NAME = "datasource.password";
     
     public static final String DEFAULT_POSTGRESQL_DIALECT = ImprovedPostgreSQLDialect.class.getName();
-    public static final String DEFAULT_DB_CONFIGURATION_NAME = "datasource";
 
-    private String databaseConfigurationName;
     private Properties properties;
     private Properties defaults;
 
@@ -148,16 +145,6 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean implements FactoryBe
     }
 
     ////// CONFIGURATION
-
-    public String getDatabaseConfigurationName() {
-        return StringUtils.isBlank(databaseConfigurationName)
-            ? DEFAULT_DB_CONFIGURATION_NAME
-            : databaseConfigurationName;
-    }
-
-    public void setDatabaseConfigurationName(String databaseConfigurationName) {
-        this.databaseConfigurationName = databaseConfigurationName;
-    }
 
     // defaults are intended mainly for testing dynamically guessed properties
     public Properties getDefaults() {
