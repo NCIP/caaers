@@ -200,7 +200,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>initialize</phase>
+                        <phase>validate</phase>
                         <goals><goal>apply</goal></goals>
                     </execution>
                 </executions>
