@@ -19,9 +19,33 @@ import org.jibx.runtime.JiBXException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;*/
 
-
+/**
+ * 
+ * @author Sujith Vellat Thayyilthodi
+ * */
 public class XMLUtil {
 
+	public static Object unmarshal(String xml) {
+		try {
+			Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
+			return unmarshaller.unmarshal(new StringReader(xml));
+		} catch (JAXBException e) {
+			throw new RuleException(e.getMessage(), e);
+		}		
+	}
+	
+	public static String marshal(Object object) {
+		StringWriter writer = new StringWriter();
+		try {
+			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
+			marshaller.marshal(object, writer);
+			return writer.toString();
+		} catch (JAXBException e) {
+			throw new RuleException(e.getMessage(), e);
+		}		
+	}
+	
+	
 /*	public static String toXML(Object rootElement) {
 		IMarshallingContext mctx = null;
 		StringWriter writer = new StringWriter();
@@ -74,24 +98,5 @@ public class XMLUtil {
 		xstream.alias("column", gov.nih.nci.cabig.caaers.rules.brxml.Column.class);
 	}
 */	
-	public static Object unmarshal(String xml) {
-		try {
-			Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
-			return unmarshaller.unmarshal(new StringReader(xml));
-		} catch (JAXBException e) {
-			throw new RuleException(e.getMessage(), e);
-		}		
-	}
-	
-	public static String marshal(Object object) {
-		StringWriter writer = new StringWriter();
-		try {
-			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
-			marshaller.marshal(object, writer);
-			return writer.toString();
-		} catch (JAXBException e) {
-			throw new RuleException(e.getMessage(), e);
-		}		
-	}
 	
 }

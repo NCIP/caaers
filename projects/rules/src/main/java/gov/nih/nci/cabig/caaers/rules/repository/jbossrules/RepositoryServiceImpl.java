@@ -168,7 +168,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		while (iterator.hasNext()) {
 			AssetItem ruleItem = (AssetItem) iterator.next();
 			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
-			ruleSet.getArrayOfRule().getRule().add(rule);
+			ruleSet.getRule().add(rule);
 		}
 		return ruleSet;
 	}
