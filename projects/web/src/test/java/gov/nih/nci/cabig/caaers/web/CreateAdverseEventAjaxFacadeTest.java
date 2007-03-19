@@ -39,6 +39,10 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
 
     @Override
     protected void setUp() throws Exception {
+    	//JAP: need this to encure that security aspect 
+    	//is initialized by Spring before it is applied 
+    	//by AspectJ.
+    	getDeployedApplicationContext();
         super.setUp();
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
