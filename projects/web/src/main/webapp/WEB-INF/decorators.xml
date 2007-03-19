@@ -35,6 +35,8 @@
     <decorator name="tabbedflow-singlebody" page="tabbedflow-singlebody.jsp">
         <pattern>/pages/ae/create</pattern>
         <pattern>/pages/ae/edit</pattern>
+        <pattern>/pages/rule/create</pattern>
+        <pattern>/pages/rule/notification/create</pattern>
     </decorator>
 
     <excludes>
