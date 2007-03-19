@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
+import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.TestingAuthenticationToken;
+
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
