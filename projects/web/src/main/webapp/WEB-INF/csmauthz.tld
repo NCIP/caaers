@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>csmauthz</short-name>
+	<uri>http://csm.ncicb.nci.nih.gov/authz</uri>
+	<description>
+	</description>
+
+	<tag>
+		<name>accesscontrol</name>
+		<tag-class>gov.nih.nci.security.acegi.csm.web.CSMAccessControlTag</tag-class>
+		<description>
+		</description>
+
+		<attribute>
+			<name>hasPrivileges</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+                A comma separated list of privilege names.
+			</description>
+		</attribute>
+		<attribute>
+			<name>domainObject</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+                The actual domain object instance for which permissions
+				are being evaluated.
+			</description>
+		</attribute>
+		<attribute>
+			<name>authorizationCheckName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+                The actual domain object instance for which permissions
+				are being evaluated.
+			</description>
+		</attribute>
+	</tag>
+
+	
+</taglib>
