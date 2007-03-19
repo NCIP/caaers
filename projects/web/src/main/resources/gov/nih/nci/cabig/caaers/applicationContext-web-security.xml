@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+
+	<util:map id="taskObjectPrivilegeMap">
+
+		<!--========== PARTICIPANT ===========-->
+		<entry key="/pages/participant/create"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" /> -->			
+		<entry key="/pages/participant/view"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_user"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:READ" /> -->
+		<entry key="/pages/participant/assign"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" /> -->
+		<entry key="/pages/participant/assignStudy"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" /> -->
+		<entry key="/pages/participant/assignParticipant"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" /> -->
+
+		<!--========== STUDY ===========-->
+		<entry key="/pages/study/create"
+			value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_study_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" /> -->
+		<entry key="/pages/study/view"
+			value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_user"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:READ" /> -->
+		<entry key="/pages/study/search"
+			value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_user"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:READ" /> -->
+		<entry key="/pages/study/edit"
+			value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_study_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" /> -->
+
+		<!--========== ADVERSE EVENT REPORT ===========-->
+		<entry key="/pages/ae/create"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" /> -->
+		<entry key="/pages/ae/edit"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" /> -->
+		<entry key="/pages/ae/list"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_user"/>			
+			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ" /> -->
+
+		<!--========== TODO: REPORT ===========-->
+
+		<!--========== TODO: ADMIN ===========-->
+		<entry key="/pages/admin/configure"
+			value="some.Object:ROLE_some_group_name"/>
+			<!-- value="some.Object:SOME_PRIVILEGE" /> -->
+		
+		<!--========= RULES ========-->
+		<entry key="/pages/rule/create" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/list" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/addRule" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/addColumn" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/notification/create" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/notification/list" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/deploy" value="ignored:ROLE_caaers_user"/>
+
+
+	</util:map>
+	
+
+	<bean id="taskPrivilegeAndObjectIdGenerator"
+		class="gov.nih.nci.cabig.caaers.web.security.TaskPrivilegeAndObjectIdGenerator">
+		<property name="objectPrivilegeMap"
+			ref="taskObjectPrivilegeMap" />
+	</bean>
+
+	<bean id="taskAuthorizationCheck"
+		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		
+		<property name="csmAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
+			<!-- 
+			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+			</bean>
+			-->
+		</property>
+		<property name="objectIdGenerator"
+			ref="taskPrivilegeAndObjectIdGenerator" />
+		<property name="privilegeGenerator"
+			ref="taskPrivilegeAndObjectIdGenerator" />
+	</bean>
+	
+
+	<util:map id="sectionObjectPrivilegeMap">
+		<entry key="/pages/ae/list" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/study/search" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/participant/create" value="ignored:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/>
+		<entry key="/pages/report/notImplemented" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/rule/create" value="ignored:ROLE_caaers_user"/>
+		<entry key="/pages/admin/configure" value="ignored:ROLE_caaers_super_user,ROLE_caaers_admin"/>
+	</util:map>
+	
+	<bean id="sectionPrivilegeAndObjectIdGenerator"
+		class="gov.nih.nci.cabig.caaers.web.security.SectionPrivilegeAndObjectIdGenerator">
+		<property name="objectPrivilegeMap"
+			ref="sectionObjectPrivilegeMap" />
+	</bean>
+
+	<bean id="sectionAuthorizationCheck"
+		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		
+		<property name="csmAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
+			<!-- 
+			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+			</bean>
+			-->
+		</property>
+		<property name="objectIdGenerator"
+			ref="sectionPrivilegeAndObjectIdGenerator" />
+		<property name="privilegeGenerator"
+			ref="sectionPrivilegeAndObjectIdGenerator" />
+	</bean>
+
+
+</beans>
