@@ -289,7 +289,22 @@
                     </dependency>
                 </dependencies>
             </plugin>
-        </plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                    	<configuration>
+                    		<source>1.5</source>
+                    	</configuration>
+                        <goals>
+                        	<goal>compile</goal>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+               </executions>
+           </plugin>
+		</plugins>
     </build>
 
     <profiles>
@@ -318,6 +333,12 @@
                                             url="${datasource.url}"
                                             userid="${datasource.username}"
                                             password="${datasource.password}">
+                                            <operation type="DELETE_ALL" src="tools/csm/CSM_policy.xml" />
+                                        </dbunit>                                        
+                                        <dbunit driver="${datasource.driver}"
+                                            url="${datasource.url}"
+                                            userid="${datasource.username}"
+                                            password="${datasource.password}">
                                             <operation type="CLEAN_INSERT" src="tools/csm/CSM_policy.xml" />
                                         </dbunit>
                                     </tasks>
@@ -328,5 +349,7 @@
                 </plugins>
             </build>
         </profile>
+        
+
     </profiles>
 </project>
