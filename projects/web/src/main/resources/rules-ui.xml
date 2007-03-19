@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<rule-ui xmlns="http://caaers.cabig.nci.nih.gov/rules/ui">
+	<condition>
+		<domain-object class-name="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO" display-uri="Adverse Event">
+			<field name="grade" display-uri="Grade">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchGrades</method-name>
+						<return-value>
+							<return-type>gov.nih.nci.cabig.caaers.domain.Grade</return-type>
+							<property-name>code</property-name>
+						</return-value>
+					</method-call>
+					<input-type>select</input-type>
+				</field-value>
+			</field>
+			<field name="term" display-uri="Term">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>
+			<field name="hospitalization" display-uri="Hospitalization">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchHospitalization</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>
+			<field name="hospitalizationHrs" display-uri="Hospitalization Hrs">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>			
+			
+			<field name="expectedness" display-uri="Expectedness">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>			
+						
+			<field name="attribution" display-uri="Attribution">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchAttribution</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>
+			
+			<field name="phase" display-uri="Phase">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+			</field>
+			
+
+		</domain-object>
+	</condition>
+
+	<operator name="==" display-uri="Equal To" />
+	<operator name="!=" display-uri="Not Equal To" />
+	<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
+	<operator name="&lt;=" display-uri="Less Than Or Equal To" />
+
+</rule-ui>
