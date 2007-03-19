@@ -184,5 +184,11 @@
             <artifactId>spring-mock</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
