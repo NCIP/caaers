@@ -127,6 +127,11 @@
     		<artifactId>jsr173_api</artifactId>
     		<version>1.0</version>
 		</dependency>
+        <dependency>
+            <groupId>jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.0</version>
+        </dependency>        		
   
         <!-- BUILD-ONLY DEPS -->
 
@@ -170,6 +175,7 @@
             <scope>runtime</scope>
         </dependency>
 
+
         <!-- TEST-ONLY DEPS -->
 
         <dependency>
@@ -184,11 +190,6 @@
             <artifactId>spring-mock</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
-        </dependency>
+
     </dependencies>
 </project>
