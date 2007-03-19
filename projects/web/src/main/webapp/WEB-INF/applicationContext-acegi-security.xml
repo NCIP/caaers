@@ -8,7 +8,7 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -86,10 +86,20 @@
 		<property name="objectDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-				PATTERN_TYPE_APACHE_ANT
-				/public/**=IS_AUTHENTICATED_ANONYMOUSLY
-				/pages/admin/**=ROLE_caaers_admin
-				/pages/**=ROLE_caaers_user
+				\A/public/.*\Z=IS_AUTHENTICATED_ANONYMOUSLY
+				\A/pages/participant/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/participant/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
+				\A/pages/participant/assign.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/study/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_coordinator
+				\A/pages/study/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
+				\A/pages/study/search.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
+				\A/pages/study/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_coordinator
+				\A/pages/ae/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/ae/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/ae/list.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
+				\A/pages/report.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
+				\A/pages/admin.*\Z=ROLE_caaers_admin
+				\A/pages.*\Z=ROLE_caaers_user
 			</value>
 		</property>
 	</bean>
@@ -99,6 +109,7 @@
 		<property name="providers">
 			<list>
 				<ref local="csmAuthenticationProvider" />
+				
 				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
 					<property name="key" value="anonymousAuthKey"/>
 				</bean>				
@@ -144,5 +155,28 @@
 	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
 	<bean id="loggerListener"
 		class="org.acegisecurity.event.authentication.LoggerListener" />
+		
+		
+	<bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+		<property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+ 		<property name="filterInvocationDefinitionSource">
+			<value>
+			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				\A.*\Z=REQUIRES_SECURE_CHANNEL
+			</value>
+		</property>
+	</bean>
+
+	<bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+	    <property name="channelProcessors">
+      		<list>
+ 	        	<ref local="secureChannelProcessor"/>
+        		<ref local="insecureChannelProcessor"/>
+     		</list>
+	    </property>
+	</bean>
+
+	<bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
+	<bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>		
 
 </beans>
