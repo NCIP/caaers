@@ -17,7 +17,10 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
+	<listener>
+		<listener-class>gov.nih.nci.cabig.caaers.web.rule.ContextListener</listener-class>
+	</listener>
+	
     <!--
     Checks for presence of grid proxy. If not found, forwards to failureUrl.
     -->
