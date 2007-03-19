@@ -5,6 +5,13 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" >
 
     <display-name>caAERS web interface</display-name>
+    
+    <jsp-config>
+		<taglib>
+			<taglib-uri>http://csm.ncicb.nci.nih.gov/authz</taglib-uri>
+			<taglib-location>/WEB-INF/csmauthz.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -52,6 +59,9 @@
     </filter-mapping>    
     -->
 
+
+
+
     <filter>
         <filter-name>Sitemesh</filter-name>
         <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
@@ -62,7 +72,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-
 	<filter>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<filter-class>
@@ -72,7 +81,7 @@
 			<param-name>targetClass</param-name>
 			<param-value>
 				org.acegisecurity.util.FilterChainProxy
-			</param-value>
+			</param-value>	
 		</init-param>
 	</filter>
 
@@ -80,7 +89,6 @@
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 
     <filter>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
@@ -95,6 +103,9 @@
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+
+
 
     <filter>
         <filter-name>BeansInRequestFilter</filter-name>
@@ -147,4 +158,15 @@
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
+    
+    
+    <security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure URLs</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 </web-app>
