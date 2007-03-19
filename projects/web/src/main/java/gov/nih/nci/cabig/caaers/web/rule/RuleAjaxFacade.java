@@ -1,0 +1,232 @@
+package gov.nih.nci.cabig.caaers.web.rule;
+
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.rules.brxml.Action;
+import gov.nih.nci.cabig.caaers.rules.brxml.Column;
+import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
+import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
+import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
+import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.web.servlet.mvc.AbstractFormController;
+
+public class RuleAjaxFacade {
+
+	private StudyDao studyDao;
+	
+	private CtcTermDao ctcTermDao;
+	
+    public List<Study> matchStudies(String text, Integer participantId) {
+        List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
+        if (participantId != null) {
+            for (Iterator<Study> it = studies.iterator(); it.hasNext();) {
+                Study study = it.next();
+                //if (!onStudy(study, participantId)) it.remove();
+            }
+        }
+        
+        // cut down objects for serialization
+        List<Study> reducedStudies = new ArrayList<Study>(studies.size());
+        for (Study study : studies) {
+            reducedStudies.add(
+                buildReduced(study, Arrays.asList("id", "shortTitle"))
+            );
+        }
+        return reducedStudies;
+    }
+    
+    public List<CtcTerm> fetchTerms() throws Exception {
+        List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames("%"), null, null);
+        // cut down objects for serialization
+        for (CtcTerm term : terms) {
+            term.getCategory().setTerms(null);
+            term.getCategory().getCtc().setCategories(null);
+        }
+        return terms;
+    }
+    
+    /**
+     * This will access the spring managed object from the session (RuleSet) and will
+     * update the object with Condition.
+     * 
+     * Then will forward to a jsp to get the html for that condition and will return that.
+     * 
+     * */
+    public String addRule(String name) {
+    	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
+    	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
+    	Rule newRule = new Rule();
+    	MetaData metaData = new MetaData();
+    	metaData.setName(name);
+    	newRule.setMetaData(metaData);
+
+    	Condition condition = newCondition();
+		newRule.setCondition(condition);
+		
+		Action action = new Action();
+		newRule.setAction(action);
+    	
+    	ruleSet.getRule().add(newRule);
+    	
+    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+    	request.setAttribute("ruleCount", ruleSet.getRule().size()-1);
+    	request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createRuleCommand);
+    	
+    	return getOutputFromJsp("/pages/rule/addRule");
+    }
+    
+    public String addCondition(int ruleCount) {
+    	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
+    	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
+    	Rule rule = ruleSet.getRule().get(ruleCount);
+    	Column column = newColumn();
+    	rule.getCondition().getColumn().add(column);
+
+    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+    	request.setAttribute("ruleCount", ruleCount);
+    	request.setAttribute("columnCount", rule.getCondition().getColumn().size()-1);
+    	return getOutputFromJsp("/pages/rule/addColumn");
+    }
+    
+    private Condition newCondition() {
+    	Condition condition = new Condition();
+		Column column = newColumn();
+		condition.getColumn().add(column);
+		return condition;
+    }
+    
+    private Column newColumn() {
+    	Column column = new Column();
+    	FieldConstraint fieldConstraint = newFieldConstraint();
+		column.getFieldConstraint().add(fieldConstraint);
+		return column;
+    }
+    
+    private FieldConstraint newFieldConstraint() {
+		FieldConstraint fieldConstraint = new FieldConstraint();
+		LiteralRestriction literalRestriction = new LiteralRestriction();
+		fieldConstraint.getLiteralRestriction().add(literalRestriction);
+		return fieldConstraint;
+    }
+
+    public Boolean removeCondition(int ruleCount, int columnCount) {
+    	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
+    	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
+    	Rule rule = ruleSet.getRule().get(ruleCount);
+    	return rule.getCondition().getColumn().remove(columnCount) != null;
+    }
+    
+    private CreateRuleCommand getAuthorRuleCommand() {
+    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+    	String commandName = CreateRuleController.class.getName()+".FORM.command";
+    	CreateRuleCommand createRuleCommand = (CreateRuleCommand)request.getSession().getAttribute(commandName); 
+    	request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createRuleCommand);
+    	return createRuleCommand;
+    }
+
+    private String getOutputFromJsp(String jspResource) {
+    	String html = "Error in rendering...";
+    	try {
+			html = WebContextFactory.get().forwardToString(jspResource);
+		} catch (ServletException e) {
+			throw new CaaersSystemException(e.getMessage(), e);
+		} catch (IOException e) {
+			throw new CaaersSystemException(e.getMessage(), e);
+		}
+    	return html;
+    }
+    
+    public List<Grade> fetchGrades() {
+    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+    	HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
+    	return Arrays.asList(Grade.values());
+    }
+    
+    // TODO: move this somewhere shared.  Or, better, obviate it.
+    @SuppressWarnings("unchecked")
+    private <T> T buildReduced(T src, List<String> properties) {
+        T dst = null;
+        try {
+            // it doesn't seem like this cast should be necessary
+            dst = (T) src.getClass().newInstance();
+        } catch (InstantiationException e) {
+            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
+        } catch (IllegalAccessException e) {
+            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
+        }
+
+        BeanWrapper source = new BeanWrapperImpl(src);
+        BeanWrapper destination = new BeanWrapperImpl(dst);
+        for (String property : properties) {
+            destination.setPropertyValue(
+                property,
+                source.getPropertyValue(property)
+            );
+        }
+        return dst;
+    }
+    
+    private String[] extractSubnames(String text) {
+        return text.split("\\s+");
+    }
+
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+	public CtcTermDao getCtcTermDao() {
+		return ctcTermDao;
+	}
+
+	public void setCtcTermDao(CtcTermDao ctcTermDao) {
+		this.ctcTermDao = ctcTermDao;
+	}
+	
+	public List<Action> getActions() {
+		List<Action> actions = new ArrayList<Action>();
+		Action action = new Action();
+		action.setActionId("1");
+		action.setName("24-Hour Notification to TRI");
+		actions.add(action);
+		
+		action.setActionId("2");
+		action.setName("24 Hour Report Submitted");
+		actions.add(action);
+		
+		action.setActionId("3");
+		action.setName("Pending 24-Hour 3 day Notification");
+		actions.add(action);
+		
+		action.setActionId("4");
+		action.setName("24 Hour Report Submitted");
+		actions.add(action);
+		
+		return actions;
+	}
+}
