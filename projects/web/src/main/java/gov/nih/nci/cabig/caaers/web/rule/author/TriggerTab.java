@@ -26,7 +26,7 @@ public class TriggerTab extends DefaultTab {
 	}
 
 	public TriggerTab() {
-        super("Enter Trigger Details", "Trigger", "rule/authorRuleSet");
+        super("Enter Trigger Details", "Trigger", "rule/author/authorRuleSet");
 	}
 
     @Override

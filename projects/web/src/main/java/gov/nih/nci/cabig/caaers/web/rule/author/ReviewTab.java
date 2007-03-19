@@ -9,6 +9,6 @@ public class ReviewTab extends DefaultTab {
 	}
 
 	public ReviewTab(){
-		super("Review and Submit", "Review", "rule/review");
+		super("Review and Submit", "Review", "rule/author/review");
 	}
 }

@@ -15,7 +15,7 @@ public class RuleTab extends DefaultTab {
 	}
 
 	public RuleTab() {
-		super("Add Rules","Rules","rule/authorRules");
+		super("Add Rules","Rules","rule/author/authorRules");
 	}
 
 
