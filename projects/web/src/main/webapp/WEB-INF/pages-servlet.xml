@@ -79,6 +79,24 @@
                     <property name="pathMapping"><value>/report/**</value></property>
                 </bean>
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                    p:displayName="Rules" p:mainController="createRuleController">
+                    <property name="pathMapping"><value>/rule/**</value></property>
+                    <property name="tasks">
+                        <list>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Create Trigger" p:linkName="createRuleController"/>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="List Triggers" p:linkName="listRuleController"/>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Deploy Triggers" p:linkName="deployRuleController"/>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Create Notification" p:linkName="createNotificationController"/> 
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="List Notifications" p:linkName="createNotificationController"/>                                
+                        </list>
+                    </property>
+                </bean>
+                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
                     p:displayName="Administration" p:mainController="configurationController">
                     <property name="pathMapping"><value>/admin/**</value></property>
                     <property name="tasks">
@@ -180,4 +198,34 @@
     </bean>
 
     <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
+
+    <bean name="/rule/create" id="createRuleController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController">
+    </bean>
+
+    <bean name="/rule/list" id="listRuleController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController">
+    </bean>
+
+    <bean name="/rule/addRule" id="addRuleController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>rule/author/addRule</value></property>
+    </bean>
+    
+    <bean name="/rule/addColumn" id="addRuleConditionController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>rule/author/addColumn</value></property>
+    </bean>    
+
+    <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
+    </bean>
+
+    <bean name="/rule/notification/list" id="listNotificationController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
+    </bean>
+    
+    <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
+    </bean> 
 </beans>
