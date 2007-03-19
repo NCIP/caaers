@@ -4,6 +4,7 @@
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
