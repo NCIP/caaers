@@ -2,9 +2,6 @@ package gov.nih.nci.security.acegi.csm.web;
 
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
 
-import java.util.Iterator;
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -12,6 +9,8 @@ import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.context.HttpSessionContextIntegrationFilter;
+import org.acegisecurity.context.SecurityContext;
 import org.acegisecurity.context.SecurityContextHolder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,14 +27,24 @@ public class CSMAccessControlTag extends TagSupport {
 
 	private String hasPrivileges = "";
 
+	private String authorizationCheckName = "";
 
 	public int doStartTag() throws JspException {
-		if ((null == hasPrivileges) || "".equals(hasPrivileges)) {
-			return Tag.SKIP_BODY;
+		if (authorizationCheckName == null
+				|| authorizationCheckName.trim().length() == 0) {
+			throw new JspException("authorizationCheckName is required");
 		}
 
-		final String evaledPrivilegesString = ExpressionEvaluationUtils
-				.evaluateString("hasPrivilege", hasPrivileges, pageContext);
+		String evaledAuthorizationCheckName = ExpressionEvaluationUtils
+				.evaluateString("authorizationCheckName",
+						authorizationCheckName, pageContext);
+
+		String evaledPrivilegesString = hasPrivileges;
+		if (evaledPrivilegesString != null
+				&& evaledPrivilegesString.trim().length() > 0) {
+			evaledPrivilegesString = ExpressionEvaluationUtils.evaluateString(
+					"hasPrivileges", hasPrivileges, pageContext);
+		}
 
 		String[] requiredPrivileges = evaledPrivilegesString.split(",");
 
@@ -50,50 +59,53 @@ public class CSMAccessControlTag extends TagSupport {
 		}
 
 		if (resolvedDomainObject == null) {
-			if (logger.isDebugEnabled()) {
-				logger
-						.debug("domainObject resolved to null, so including tag body");
-			}
 
-			// Of course they have access to a null object!
+			logger
+					.debug("domainObject resolved to null, so including tag body");
+
 			return Tag.EVAL_BODY_INCLUDE;
 		}
 
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			if (logger.isDebugEnabled()) {
-				logger
-						.debug("SecurityContextHolder did not return a non-null Authentication object, so skipping tag body");
-			}
+		Authentication auth = getAuthentication();
+		if (auth == null) {
+			logger
+					.debug("No Authentication object found in session, so skipping tag body");
 
 			return Tag.SKIP_BODY;
 		}
-
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
 
 		ApplicationContext context = getContext(pageContext);
 
-		List authzChecks = (List) context.getBean("commonAuthorizationChecks");
-
-		if ((authzChecks == null) || (authzChecks.size() == 0)) {
-			return Tag.SKIP_BODY;
+		CSMAuthorizationCheck authzCheck = (CSMAuthorizationCheck) context
+				.getBean(evaledAuthorizationCheckName);
+		if (authzCheck == null) {
+			throw new JspException(
+					"No authorization check found for bean name '"
+							+ evaledAuthorizationCheckName + "'.");
 		}
 
-		for (int i = 0; i < requiredPrivileges.length; i++) {
+		for (String requiredPrivilege : requiredPrivileges) {
 
-			for (Iterator j = authzChecks.iterator(); j.hasNext();) {
-				CSMAuthorizationCheck check = (CSMAuthorizationCheck) j.next();
-				if(check.checkAuthorization(auth, requiredPrivileges[i], resolvedDomainObject)){
-					return Tag.EVAL_BODY_INCLUDE;
-				}
+			if (authzCheck.checkAuthorization(auth, requiredPrivilege,
+					resolvedDomainObject)) {
+				logger.debug("Authorization succeeded, evaluating body");
+				return Tag.EVAL_BODY_INCLUDE;
 			}
+
 		}
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("No permission, so skipping tag body");
-		}
+		logger.debug("No permission, so skipping tag body");
 
 		return Tag.SKIP_BODY;
+	}
+
+	private Authentication getAuthentication() {
+		Authentication auth = null;
+		SecurityContext securityContext = (SecurityContext) this.pageContext.getSession().getAttribute(HttpSessionContextIntegrationFilter.ACEGI_SECURITY_CONTEXT_KEY);
+		if(securityContext != null){
+			auth = securityContext.getAuthentication();
+		}
+		return auth;
 	}
 
 	/**
@@ -126,6 +138,14 @@ public class CSMAccessControlTag extends TagSupport {
 
 	public void setHasPrivileges(String hasPermission) {
 		this.hasPrivileges = hasPermission;
+	}
+
+	public String getAuthorizationCheckName() {
+		return authorizationCheckName;
+	}
+
+	public void setAuthorizationCheckName(String authorizationCheckName) {
+		this.authorizationCheckName = authorizationCheckName;
 	}
 
 }

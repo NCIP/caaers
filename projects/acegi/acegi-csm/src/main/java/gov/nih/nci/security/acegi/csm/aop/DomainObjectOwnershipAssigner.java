@@ -11,9 +11,9 @@ public class DomainObjectOwnershipAssigner {
 	
 	private AuthorizationManager csmAuthorizationManager;
 
-	public Object assignOwner(ProceedingJoinPoint pjp) throws Throwable{
+	public Object assignOwner(ProceedingJoinPoint pjp, Object id) throws Throwable{
 		Object domainObject = pjp.getArgs()[0];
-		Object id = pjp.proceed();
+//		Object id = pjp.proceed();
 		
 		String owner = SecurityContextHolder.getContext().getAuthentication().getName();
 		String objectId = generateId(domainObject, id);
