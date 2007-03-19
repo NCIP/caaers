@@ -34,7 +34,6 @@
         <property name="servletName"><value>pages</value></property>
     </bean>
 
-
     <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
         <property name="sections">
             <list>
@@ -51,7 +50,7 @@
                     </property>
                 </bean>
                 <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
-                    p:displayName="Studies" p:mainController="createStudyController">
+                    p:displayName="Studies" p:mainController="searchStudyController">
                     <property name="pathMapping"><value>/study/**</value></property>
                     <property name="tasks">
                         <list>
@@ -109,6 +108,7 @@
             </list>
         </property>
     </bean>
+
 
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
