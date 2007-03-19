@@ -1,5 +1,6 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <div id="header">
     <!-- TOP LOGOS START HERE -->
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="header">
@@ -15,14 +16,18 @@
         <tr valign="middle">
             <td class="left">
                 <c:forEach items="${sections}" var="section">
-                    <c:choose>
-                        <c:when test="${section == currentSection}">
-                            <span class="current">${section.displayName}</span><img src="<chrome:imageUrl name="topNavR.gif"/>" width="2" height="20" align="absmiddle" class="currentR">
-                        </c:when>
-                        <c:otherwise>
-                            <a href="<c:url value="${section.mainUrl}"/>">${section.displayName}</a><img src="<chrome:imageUrl name="topDivider.gif"/>" width="2" height="20" align="absmiddle" class="divider">
-                        </c:otherwise>
-                    </c:choose>
+                	<csmauthz:accesscontrol 
+                		authorizationCheckName="sectionAuthorizationCheck" 
+                		domainObject="${section}">
+	                    <c:choose>
+	                        <c:when test="${section == currentSection}">
+	                            <span class="current">${section.displayName}</span><img src="<chrome:imageUrl name="topNavR.gif"/>" width="2" height="20" align="absmiddle" class="currentR">
+	                        </c:when>
+	                        <c:otherwise>
+	                            <a href="<c:url value="${section.mainUrl}"/>">${section.displayName}</a><img src="<chrome:imageUrl name="topDivider.gif"/>" width="2" height="20" align="absmiddle" class="divider">
+	                        </c:otherwise>
+	                    </c:choose>
+                    </csmauthz:accesscontrol>
                 </c:forEach>
             </td>
 
@@ -36,8 +41,10 @@
             <td width="99%" valign="middle">
                 <img src="<chrome:imageUrl name="arrowRight.gif"/>" width="3" height="5" align="absmiddle">Tasks
                 <c:forEach items="${currentSection.tasks}" var="task">
-                    <img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="20" align="absmiddle" class="spacer">
-                    <a href="<c:url value="${task.url}"/>">${task.displayName}</a>
+                	<csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                    	<img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="20" align="absmiddle" class="spacer">
+                    	<a href="<c:url value="${task.url}"/>">${task.displayName}</a>
+                    </csmauthz:accesscontrol>
                 </c:forEach>
             </td>
             <td valign="middle" class="right"><a href="<c:url value="/pages/help"/>">Help</a></td>
