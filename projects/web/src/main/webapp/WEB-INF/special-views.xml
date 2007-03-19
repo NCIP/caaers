@@ -12,4 +12,8 @@
         <property name="url"><value>/pages/admin/configure</value></property>
     </bean>
 
+    <bean id="redirectToTriggerList" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/rule/list</value></property>
+    </bean>
 </beans>
