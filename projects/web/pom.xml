@@ -12,29 +12,56 @@
     </parent>
     <repositories>
         <repository>
-			<id>java.net</id>
+            <id>java.net</id>
             <name>Java.Net repository (For JAXB) </name>
-			<url>https://maven-repository.dev.java.net/nonav/repository</url>
-			<layout>legacy</layout>
+            <url>https://maven-repository.dev.java.net/nonav/repository</url>
+            <layout>legacy</layout>
         </repository>
-		<repository>
-		  <id>codehaus</id>
-		  <name>Codehaus maven repository</name>
-		  <url>http://repository.codehaus.org/</url>
-		</repository>
+        <repository>
+            <id>codehaus</id>
+            <name>Codehaus maven repository</name>
+            <url>http://repository.codehaus.org/</url>
+        </repository>
     </repositories>
     <build>
         <finalName>caaers</finalName>
-                <!-- This is needed to "exclude" unit tests from security constraints. -->
         <plugins>
-        	<plugin>
+            <plugin>
+                <groupId>gov.nih.nci.cabig.ctms</groupId>
+                <artifactId>catman-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Set the manager.* properties in your local settings.xml -->
+                    <username>${manager.username}</username>
+                    <password>${manager.password}</password>
+                    <url>${manager.url}</url>
+                    <contextFile>${basedir}/target/local-tomcat/context.xml</contextFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals><goal>run</goal></goals>
+                        <configuration>
+                            <tasks>
+                                <echo file="${basedir}/target/local-tomcat/context.xml"><![CDATA[
+                                    <Context path="/caaers" docBase="${basedir}/target/${project.build.finalName}" debug="9"/>
+                                ]]></echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- This is needed to "exclude" unit tests from security constraints. -->
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                    	<configuration>
-                    		<source>1.5</source>
-                    	</configuration>
+                        <configuration>
+                            <source>1.5</source>
+                        </configuration>
                         <goals>
                             <goal>test-compile</goal>
                         </goals>
