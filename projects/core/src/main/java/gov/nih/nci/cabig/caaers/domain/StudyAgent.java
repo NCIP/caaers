@@ -45,8 +45,9 @@ public class StudyAgent extends AbstractDomainObject{
 	public StudyAgent() {
 		this.participation = new Participation(); 
 	}
-	
-	public String getInvestigationalNewDrugIdentifier() {
+
+    @Column(name="ind_identifier")
+    public String getInvestigationalNewDrugIdentifier() {
 		return investigationalNewDrugIdentifier;
 	}
 
@@ -59,6 +60,7 @@ public class StudyAgent extends AbstractDomainObject{
 		return investigationalNewDrugIndicator;
 	}
 
+    @Column(name="ind_indicator")
 	public void setInvestigationalNewDrugIndicator(
 			Boolean investigationalNewDrugIndicator) {
 		this.investigationalNewDrugIndicator = investigationalNewDrugIndicator;

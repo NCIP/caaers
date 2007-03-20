@@ -7,11 +7,11 @@ class BasicCsmPolicy extends edu.northwestern.bioinformatics.bering.Migration {
 
         insert('csm_application',
             [ application_id: -1, application_name: "caaers",
-              application_description: "", active_flag: 0, declarative_flag: 0 ],
+              application_description: "caAERS", active_flag: 0, declarative_flag: 0 ],
             primaryKey: false)
         insert('csm_application',
             [ application_id: -2, application_name: "csm_upt",
-              application_description: "", active_flag: 0, declarative_flag: 0 ],
+              application_description: "UPT", active_flag: 0, declarative_flag: 0 ],
             primaryKey: false)
 
         insert('csm_group', [ group_id: -1, group_name: 'caaers_admin', application_id: -1 ], primaryKey: false)
