@@ -12,15 +12,18 @@ import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.dao.DataAccessException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -104,13 +107,16 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         return CaaersTestCase.getDeployedApplicationContext();
     }
 
-    // XXX: This is sort of a hack, but it works.  (A more declarative solution would be better.)
+    @Override
     protected IDataTypeFactory createDataTypeFactory() {
-        Properties hibProps = (Properties) getApplicationContext().getBean("hibernateProperties");
-        String dialectName = hibProps.getProperty("hibernate.dialect").toLowerCase();
-        if (dialectName.contains("oracle")) {
+        String productName = ((String) getJdbcTemplate().execute(new ConnectionCallback() {
+            public Object doInConnection(Connection con) throws SQLException, DataAccessException {
+                return con.getMetaData().getDatabaseProductName();
+            }
+        })).toLowerCase();
+        if (productName.contains("oracle")) {
             return new OracleDataTypeFactory();
-        } else if (dialectName.contains("hsql")) {
+        } else if (productName.contains("hsql")) {
             return new HsqlDataTypeFactory();
         } else {
             return new DefaultDataTypeFactory();
