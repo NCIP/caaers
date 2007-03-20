@@ -17,5 +17,7 @@
           class="gov.nih.nci.cabig.caaers.web.participant.ParticipantAjaxFacade"/>
     -->
      <bean id="searchStudyAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.SearchStudyAjaxFacade"/>     
+          class="gov.nih.nci.cabig.caaers.web.SearchStudyAjaxFacade"/>   
+     <bean id="ruleAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade"/>          
 </beans>
