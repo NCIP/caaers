@@ -13,6 +13,7 @@
             <list>
                 <value>jndiDataSource</value>
                 <value>localPoolDataSource</value>
+                <!--<value>nonPooledDataSource</value>-->
             </list>
         </property>
     </bean>
@@ -37,5 +38,13 @@
         p:url="s[datasource.url]"
         p:username="s[datasource.username]"
         p:password="s[datasource.password]"
+        />
+
+    <!-- For manual testing only.  Definitely not for real life. -->
+    <bean id="nonPooledDataSource" lazy-init="true" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="s[datasource.driver]"
+          p:url="s[datasource.url]"
+          p:username="s[datasource.username]"
+          p:password="s[datasource.password]"
         />
 </beans>
