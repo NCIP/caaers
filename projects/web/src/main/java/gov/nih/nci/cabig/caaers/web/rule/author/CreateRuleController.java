@@ -8,7 +8,6 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +26,6 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
 		CreateRuleCommand command = (CreateRuleCommand) oCommand;
         command.save();
-//        Map<String, Object> model = new ModelMap("ruleSet", command.getRuleSet());
 		Map<String, Object> model = new HashMap();
 		model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);

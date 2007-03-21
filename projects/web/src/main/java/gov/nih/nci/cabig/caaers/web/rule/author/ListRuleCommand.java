@@ -1,9 +1,30 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
+import gov.nih.nci.cabig.caaers.web.rule.ServiceLocator;
+
+import java.rmi.RemoteException;
+import java.util.List;
+
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-public class ListRuleCommand {
+public class ListRuleCommand implements RuleInputCommand {
 
+	private List<RuleSet> ruleSets;
+	
+	public ListRuleCommand() throws RemoteException {
+		ruleSets = ServiceLocator.getInstance().getRemoteRuleAuthoringService().getAllRuleSets();
+		//ruleSets.remove(0);//removing the default
+	}
+
+	public List<RuleSet> getRuleSets() {
+		return ruleSets;
+	}
+
+	public void setRuleSets(List<RuleSet> ruleSets) {
+		this.ruleSets = ruleSets;
+	}
 }

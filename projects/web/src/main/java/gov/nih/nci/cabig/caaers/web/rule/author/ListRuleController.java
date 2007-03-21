@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
-import gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsCommand;
-
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
@@ -13,15 +15,24 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public class ListRuleController extends SimpleFormController {
     
 	public ListRuleController() {
-        setCommandClass(ListAdverseEventsCommand.class);
+        setCommandClass(ListRuleCommand.class);
         setBindOnNewForm(true);
-        setFormView("rule/list");
-        setSuccessView("rule/list");
+        setFormView("rule/author/list");
+        setSuccessView("rule/author/list");
     }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         return new ListRuleCommand();
     }
-
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(
+        HttpServletRequest request, Object command, Errors errors
+    ) throws Exception {
+        Map<String, Object> refdata = new HashMap<String, Object>();
+        refdata.put("pageTitle", "List Rules: Select Rule to Update");
+        return refdata;
+    }
 }

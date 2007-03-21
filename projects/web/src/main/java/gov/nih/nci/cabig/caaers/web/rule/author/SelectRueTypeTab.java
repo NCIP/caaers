@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTextArea;
+import gov.nih.nci.cabig.caaers.web.rule.DefaultTextField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,31 +16,22 @@ import java.util.Map;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-public class TriggerTab extends DefaultTab {
+public class SelectRueTypeTab extends DefaultTab {
 
     private static final String RULESET_FIELD_GROUP = "ruleset";
     private static final String TRIGGER_LEVEL_FIELD_GROUP = "triggerLevel";
 
-	public TriggerTab(String longTitle, String shortTitle, String viewName) {
+	public SelectRueTypeTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 	}
 
-	public TriggerTab() {
-        super("Enter Trigger Details", "Trigger", "rule/author/selectStudy");
+	public SelectRueTypeTab() {
+        super("Select Rule Level", "Rule Level", "rule/author/selectRuleLevel");
 	}
 
     @Override
     protected void initFields() {
 
-        addField(RULESET_FIELD_GROUP, new DefaultTextArea(
-                "ruleSet.description", "Description", true)); 
-        
-        AutocompleterField ruleLevelField
-        = new AutocompleterField("ruleSet.category", "Trigger Level", true);
-        ruleLevelField.setExtraInformation(
-                "Select a Trigger Level.  " +
-                "If you select a level, all the rule definitions will be linked to this level.");
-        addField(TRIGGER_LEVEL_FIELD_GROUP, ruleLevelField);
     }
 
 
@@ -47,7 +39,7 @@ public class TriggerTab extends DefaultTab {
     public Map<String, Object> referenceData() {
         Map<String, Object> refdata = super.referenceData();
 
-        refdata.put("triggerLevels", getCategories());
+        refdata.put("ruleLevels", getCategories());
         return refdata;
     }
     
@@ -56,22 +48,22 @@ public class TriggerTab extends DefaultTab {
 		Category category = new Category();
 		MetaData metaData = new MetaData();
 		category.setPath("/");
-		metaData.setName("Institution");
-		metaData.setDescription("Institutiona Level Triggers are registered under this category");
+		metaData.setName("Sponsor");
+		metaData.setDescription("Sponsor Level Triggers are registered under this category");
 		category.setMetaData(metaData);
         list.add(category);
         
         category = new Category();
 		metaData = new MetaData();
-		category.setPath("Institution");
-		metaData.setName("Sponsor");
-		metaData.setDescription("Institutiona Level Triggers are registered under this category");
+		category.setPath("Sponsor");
+		metaData.setName("Institution");
+		metaData.setDescription("Institutional Level Triggers are registered under this category");
 		category.setMetaData(metaData);
         list.add(category);        
 
         category = new Category();
 		metaData = new MetaData();
-		category.setPath("Sponsor");
+		category.setPath("Institution");
 		metaData.setName("Study");
 		metaData.setDescription("Study Level Triggers are registered under this category");
 		category.setMetaData(metaData);
