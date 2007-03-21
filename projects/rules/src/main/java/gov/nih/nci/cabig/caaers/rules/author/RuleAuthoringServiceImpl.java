@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Map;
 
 import javax.jws.WebService;
@@ -36,7 +37,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Sujith Vellat Thayyilthodi
  * */
 @WebService(
-        serviceName = "RuleAuthoringService"
+        serviceName = "RuleAuthoringService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"
 )
 public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 
@@ -60,7 +61,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 */
 
 			this.applicationContext = new ClassPathXmlApplicationContext(
-	                new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-rules-jc*.xml" });
+	                new String[] { "classpath*:config/spring/applicationContext-rules-jc*.xml" });
 
 			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
 
@@ -71,7 +72,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 			
 			this.ruleServiceProvider = RuleServiceProviderManager
 					.getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
-			
+		
 		} catch (ConfigurationException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (ClassNotFoundException e) {
@@ -176,7 +177,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 		return this.repositoryService.getRule(ruleId);
 	}
 	
-	public RuleSet[] getAllRuleSets() throws RemoteException {
+	public List<RuleSet> getAllRuleSets() throws RemoteException {
 		return this.repositoryService.listRuleSets();
 	}
 
