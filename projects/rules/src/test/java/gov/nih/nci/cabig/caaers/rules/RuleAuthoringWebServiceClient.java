@@ -17,27 +17,19 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.namespace.QName;
 
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.XFireFactory;
 import org.codehaus.xfire.aegis.AegisBindingProvider;
-import org.codehaus.xfire.aegis.type.Type;
-import org.codehaus.xfire.aegis.type.TypeMapping;
 import org.codehaus.xfire.annotations.AnnotationServiceFactory;
 import org.codehaus.xfire.annotations.jsr181.Jsr181WebAnnotations;
 import org.codehaus.xfire.client.XFireProxyFactory;
 import org.codehaus.xfire.jaxb2.JaxbServiceFactory;
-import org.codehaus.xfire.jaxb2.JaxbType;
 import org.codehaus.xfire.jaxb2.JaxbTypeRegistry;
 import org.codehaus.xfire.service.Service;
-import org.codehaus.xfire.service.ServiceFactory;
-import org.codehaus.xfire.service.binding.AbstractBinding;
 import org.codehaus.xfire.service.binding.ObjectServiceFactory;
 import org.codehaus.xfire.service.invoker.ObjectInvoker;
-import org.codehaus.xfire.soap.SoapConstants;
 
 /**
  * 
@@ -89,13 +81,21 @@ public class RuleAuthoringWebServiceClient {
 		//service.fireRules(bindUri);
 		
 		
+		List<RuleSet> x  =  service.getAllRuleSets();
+		for(int i = 0 ; i < x.size(); i++) {
+			System.out.println(x.get(i));
+			System.out.println(x.get(i).getName());
+		}
+		x.size();
 		
-		service.createRuleSet(getRuleSet());
+		//service.createRuleSet(getRuleSet());
 		//service.fireRules(bindUri, inObjects);
 	}
 
 	private RuleSet getRuleSet() {
 		RuleSet ruleSet = new RuleSet();
+		ruleSet.setName("gov.nih.nci.cabig.caaers.rules");
+		ruleSet.setDescription("Hai");
 		Rule newRule = new Rule();
 		MetaData metaData = new MetaData();
 		metaData.setName("First Rule");
@@ -167,12 +167,14 @@ public class RuleAuthoringWebServiceClient {
 	
 	private RuleAuthoringService getRemoteRuleAuthoringService()
 			throws MalformedURLException, JAXBException {
-		//ServiceFactory factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), XFireFactory.newInstance().getXFire().getTransportManager(), 
-		//		  new AegisBindingProvider(new JaxbTypeRegistry()));
+		ObjectServiceFactory factory = null;
+		XFire xFire = XFireFactory.newInstance().getXFire();
+		factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), xFire.getTransportManager(), 
+				  new AegisBindingProvider(new JaxbTypeRegistry()));
 //		factory = new JaxbServiceFactory();
 //		ServiceFactory factory = new AnnotationServiceFactory();
-		XFire xFire = XFireFactory.newInstance().getXFire();
-		ObjectServiceFactory factory = new JaxbServiceFactory(xFire.getTransportManager());
+		
+		//factory = new JaxbServiceFactory(xFire.getTransportManager());
         //factory.setStyle(SoapConstants.STYLE_DOCUMENT);		
 		
         

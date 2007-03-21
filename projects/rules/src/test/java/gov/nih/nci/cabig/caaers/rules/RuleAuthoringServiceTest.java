@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
@@ -73,7 +75,7 @@ public class RuleAuthoringServiceTest extends TestCase {
     }
     
     public void testGetAllRuleSets() throws Exception {
-		RuleSet[] ruleSets = this.ruleAuthoringServiceImpl.getAllRuleSets();
+		List<RuleSet> ruleSets = this.ruleAuthoringServiceImpl.getAllRuleSets();
 		System.out.println(ruleSets);
     }
     
