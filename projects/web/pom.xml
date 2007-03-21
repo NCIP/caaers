@@ -45,6 +45,7 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
+                                <mkdir dir="${basedir}/target/local-tomcat"/>
                                 <echo file="${basedir}/target/local-tomcat/context.xml"><![CDATA[
                                     <Context path="/caaers" docBase="${basedir}/target/${project.build.finalName}" debug="9"/>
                                 ]]></echo>
