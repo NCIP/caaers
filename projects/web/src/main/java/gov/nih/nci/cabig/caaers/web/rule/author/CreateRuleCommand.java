@@ -39,14 +39,15 @@ public class CreateRuleCommand implements RuleInputCommand {
 
 	public void save() {
 		try {
+
+			//Setting package name
 			try {
-				//Setting package name
+				RuleSet studyRuleSet = ServiceLocator.getInstance().getRemoteRuleAuthoringService().getRuleSet("gov.nih.nci.cabig.caaers.rule.study");
+			} catch(Exception exception) {
 				ruleSet.setName("gov.nih.nci.cabig.caaers.rule.study");
 				ServiceLocator.getInstance().getRemoteRuleAuthoringService().createRuleSet(ruleSet);
-			} catch(Exception e) {
-				//TODO check if package exists instead of catching exception
-				e.printStackTrace();
 			}
+
 			List<Rule> rules = ruleSet.getRule();
 			//Set the Package name and category for all rules before saving them.
 			for(Rule rule : rules) {
