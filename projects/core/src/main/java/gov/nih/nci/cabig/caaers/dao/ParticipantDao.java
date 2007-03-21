@@ -46,50 +46,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     public List<Participant> getBySubnames(String[] subnames) {
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
-    
-    /**
-	 * /* Searches based on an example object. Typical usage from your service
-	 * class: - If you want to search based on diseaseCode, monitorCode,
-	 * <li><code>Participant participant = new Participant();</li></code>
-	 * <li>code>participant.setLastName("last_namee");</li>
-	 * </code>
-	 * <li>code>participantDao.searchByExample(study)</li>
-	 * </code>
-	 * 
-	 * @return list of matching participant objects based on your sample
-	 *         participant object
-	 * @param participant
-	 * @return
-	 */
-	public List<Participant> searchByExample(Participant participant,
-			boolean isWildCard) {
-		Session s = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		
-		Example example = Example.create(participant).excludeZeroes();
-		Criteria participantCriteria = s.createCriteria(Participant.class);
-		if (isWildCard) {
-			example.ignoreCase().enableLike(MatchMode.ANYWHERE);
-			participantCriteria.add(example);
-			return (List<Participant>) participantCriteria.list();
 
-		}
-		return (List<Participant>) participantCriteria.add(example).list();
-
-	}
-	
-	/**
-	 * Default Search without a Wildchar
-	 * 
-	 * @see edu.duke.cabig.c3pr.dao.searchByExample(Participant participant,
-	 *      boolean isWildCard)
-	 * @param participant
-	 * @return Search results
-	 */
-	public List<Participant> searchByExample(Participant participant) {
-		return searchByExample(participant, true);
-	}
-
-	public Participant getByIdentifier(Identifier identifier) {
+    public Participant getByIdentifier(Identifier identifier) {
 
     	Criteria criteria = getSession().createCriteria(domainClass());
     	criteria = criteria.createCriteria("identifiers");

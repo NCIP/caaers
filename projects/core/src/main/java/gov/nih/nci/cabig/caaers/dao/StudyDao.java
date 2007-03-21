@@ -41,6 +41,7 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         return (List<Study>) getHibernateTemplate().find("from Study");
     }
 
+    // TODO: how is this different from #getById ?
     public Study getStudyDesignById(int id) {				
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
         study.getIdentifiers().size();
@@ -57,29 +58,6 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     	getHibernateTemplate().merge(study);    	
     } 
     
-    /**
-     * Searches based on an example object. Typical usage from your service class: -
-     * If you want to search based on diseaseCode, monitorCode,
-     * <li><code>Study study = new Study();</li></code>
-     * <li>code>study.setDiseaseCode("diseaseCode");</li></code>
-     * <li>code>study.setDMonitorCode("monitorCode");</li></code>
-     * <li>code>studyDao.searchByExample(study)</li></code>
-     * @return list of matching study objects based on your sample study object
-     */
-    @SuppressWarnings("unchecked")
-    public List<Study> searchByExample(final Study example, final boolean isWildCard) {
-        return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
-            public Object doInHibernate(Session session) throws HibernateException, SQLException {
-                Example searchCriteria = Example.create(example).excludeZeroes();
-                if (isWildCard) {
-                    searchCriteria.enableLike(MatchMode.ANYWHERE);
-                    searchCriteria.ignoreCase();
-                }
-                return session.createCriteria(Study.class).add(searchCriteria).list();
-            }
-        });
-    }
-
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);

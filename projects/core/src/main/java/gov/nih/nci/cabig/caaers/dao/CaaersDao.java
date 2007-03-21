@@ -1,13 +1,21 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.Session;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
 
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.sql.SQLException;
 
 /**
  * @author Rhett Sutphin
@@ -15,6 +23,8 @@ import java.util.Iterator;
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
 public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupport {
     protected final Log log = LogFactory.getLog(getClass());
+
+    public abstract Class<T> domainClass();
 
     @SuppressWarnings("unchecked")
     public T getById(int id) {
@@ -95,5 +105,35 @@ public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupp
         return properties != null && properties.size() > 0;
     }
 
-    public abstract Class<T> domainClass();
+    /**
+     * Searches based on an example object. For example, if you want to
+     * search for a Participant based on last name:
+     * <ul>
+     * <li><code>Participant sample = new Participant();</code></li>
+     * <li><code>sample.setLastName("last_namee");</code></li>
+     * <li><code>participantDao.searchByExample(study)</code></li>
+     * </ul>
+     *
+     * @return list of matching instances based on your sample object
+     */
+    @SuppressWarnings("unchecked")
+    public List<T> searchByExample(final T sample, final boolean inexactMatches) {
+        return (List<T>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Example example = Example.create(sample).excludeZeroes();
+                if (inexactMatches) example.ignoreCase().enableLike(MatchMode.ANYWHERE);
+
+                return session.createCriteria(domainClass()).add(example).list();
+            }
+        });
+    }
+
+    /**
+     * Default search -- case insensitive substring matches
+     *
+     * @see #searchByExample(gov.nih.nci.cabig.caaers.domain.DomainObject, boolean) 
+     */
+    public List<T> searchByExample(T example) {
+        return searchByExample(example, true);
+    }
 }
