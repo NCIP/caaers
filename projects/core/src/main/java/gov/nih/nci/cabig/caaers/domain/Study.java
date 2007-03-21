@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,11 +49,16 @@ public class Study extends AbstractDomainObject implements Serializable {
 	// private String type;
 	
 	private Integer targetAccrualNumber;
+	
+	//TODO move into Command Object
+	private String[] diseaseTermIds;
+	private String   diseaseCategoryAsText;
 			  	
 	private List<StudySite> studySites = new ArrayList<StudySite>();			  
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
 	private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
-	//private List<Participation> participations = new ArrayList<Participation>();
+	private List<StudyDisease> studyDiseases = new ArrayList<StudyDisease>();
+
 	/// LOGIC	
 	
 	public void addStudySite(StudySite studySite)
@@ -72,6 +79,13 @@ public class Study extends AbstractDomainObject implements Serializable {
 	{
 		studyAgents.add(studyAgent);
 		studyAgent.setStudy(this);
+	}
+	
+	public void addStudyDisease(StudyDisease studyDisease)
+	{
+		studyDisease.setStudy(this);
+		studyDiseases.add(studyDisease);
+		
 	}
 	
 	public void addIdentifier(Identifier identifier)
@@ -124,6 +138,16 @@ public class Study extends AbstractDomainObject implements Serializable {
 		this.studyAgents = studyAgents;
 	}
 	
+	@OneToMany (mappedBy="study", fetch=FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+	public List<StudyDisease> getStudyDiseases() {
+		return studyDiseases;
+	}
+
+	public void setStudyDiseases(List<StudyDisease> studyDiseases) {
+		this.studyDiseases = studyDiseases;
+	}
+
 	public Boolean getBlindedIndicator() {
 		return blindedIndicator;
 	}
@@ -227,6 +251,31 @@ public class Study extends AbstractDomainObject implements Serializable {
 	public void setTargetAccrualNumber(Integer targetAccrualNumber) {
 		this.targetAccrualNumber = targetAccrualNumber;
 	}
+
+	@Transient
+	public String[] getDiseaseTermIds() {
+		return diseaseTermIds;
+	}
+
+	public void setDiseaseTermIds(String[] diseaseTermIds) {
+		this.diseaseTermIds = diseaseTermIds;
+	}
+	
+	@Transient
+	public String getDiseaseCategoryAsText() {
+		return diseaseCategoryAsText;
+	}
+
+	public void setDiseaseCategoryAsText(String diseaseCategoryAsText) {
+		this.diseaseCategoryAsText = diseaseCategoryAsText;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 //	public String getType() {
 //		return type;

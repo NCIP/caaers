@@ -56,11 +56,12 @@ public class StudyAgent extends AbstractDomainObject{
 		this.investigationalNewDrugIdentifier = investigationalNewDrugIdentifier;
 	}
 	
+	@Column(name="ind_indicator")
 	public Boolean getInvestigationalNewDrugIndicator() {
 		return investigationalNewDrugIndicator;
 	}
 
-    @Column(name="ind_indicator")
+    
 	public void setInvestigationalNewDrugIndicator(
 			Boolean investigationalNewDrugIndicator) {
 		this.investigationalNewDrugIndicator = investigationalNewDrugIndicator;

@@ -40,6 +40,9 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                
 
 
@@ -101,6 +104,8 @@
     <bean id="siteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteDao"/>
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
+    <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
+    <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
