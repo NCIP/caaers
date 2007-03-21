@@ -67,7 +67,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			PackageItem packageItem = getRulesRepository().loadPackage(
 					metaData.getPackageName());
 			Category initialCategory = metaData.getCategory().get(0);
-			String categoryName = (initialCategory != null) ? initialCategory
+			String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
 					.getMetaData().getName() : getDefaultCategory();
 			AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
 					.getDescription(), categoryName, metaData.getFormat());
@@ -136,7 +136,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return rule;
 	}
 
-	public RuleSet[] listRuleSets() {
+	public List<RuleSet> listRuleSets() {
 		RuleSet ruleSet = null;
 		Iterator iterator = getRulesRepository().listPackages();
 		ArrayList<RuleSet> ruleSetList = new ArrayList<RuleSet>();
@@ -147,7 +147,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			ruleSet.setName(packageItem.getName());
 			ruleSetList.add(ruleSet);
 		}
-		return ruleSetList.toArray(new RuleSet[ruleSetList.size()]);
+		return ruleSetList;
 	}
 
 	public RuleSet getRuleSet(String name) {
