@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
@@ -48,26 +49,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     }
 
     public Participant getByIdentifier(Identifier identifier) {
-
-    	Criteria criteria = getSession().createCriteria(domainClass());
-    	criteria = criteria.createCriteria("identifiers");
-    	
-    	if(identifier.getType() != null) {
-    		criteria.add(Restrictions.eq("type", identifier.getType()));
-    	}
-    	
-    	if(identifier.getSource() != null) {
-    		criteria.add(Restrictions.eq("source", identifier.getSource()));
-    	}
-    	
-    	if(identifier.getValue() != null) {
-    		criteria.add(Restrictions.eq("value", identifier.getValue()));
-    	}    			
-    	return (Participant) CollectionUtils.firstElement(criteria.list());		
-    	
-	}
-
-    
-    
+        return findByIdentifier(identifier);
+    }
 }
 

@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -11,11 +13,14 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.sql.SQLException;
+
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 /**
  * @author Rhett Sutphin
@@ -135,5 +140,31 @@ public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupp
      */
     public List<T> searchByExample(T example) {
         return searchByExample(example, true);
+    }
+
+    /**
+     * Helper for DAOs which support domain classes with multiple identifiers.
+     */
+    @SuppressWarnings("unchecked")
+    protected T findByIdentifier(final Identifier identifier) {
+        return (T) CollectionUtils.firstElement(getHibernateTemplate().executeFind(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+                Criteria criteria = session.createCriteria(domainClass()).createCriteria("identifiers");
+
+                if (identifier.getType() != null) {
+                    criteria.add(Restrictions.eq("type", identifier.getType()));
+                }
+
+                if (identifier.getSource() != null) {
+                    criteria.add(Restrictions.eq("source", identifier.getSource()));
+                }
+
+                if (identifier.getValue() != null) {
+                    criteria.add(Restrictions.eq("value", identifier.getValue()));
+                }
+
+                return criteria.list();
+            }
+        }) );
     }
 }

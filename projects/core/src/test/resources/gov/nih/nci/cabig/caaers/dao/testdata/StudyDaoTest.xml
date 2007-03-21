@@ -24,5 +24,28 @@
         primary_sponsor_code="SCODE_100"
         />
 
+    <!-- the stu_id column really ought to be called study_id -->
+    <IDENTIFIERS
+        id="-15"
+        stu_id="-3"
+        value="1138-42"
+        source="Some guy"
+        type="local"
+        />
+    <IDENTIFIERS
+        id="-16"
+        stu_id="-2"
+        value="1138-43"
+        source="Some guy"
+        type="local"
+        />
+    <IDENTIFIERS
+        id="-17"
+        stu_id="-2"
+        value="1138-42"
+        source="The man"
+        type="uniqueness"
+        />
+
 
 </dataset>

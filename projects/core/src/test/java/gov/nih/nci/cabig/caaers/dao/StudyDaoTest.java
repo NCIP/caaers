@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 
 import java.util.List;
 import java.util.Set;
@@ -95,5 +96,12 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         for (Study study : actual) ids.add(study.getId());
         assertTrue(ids.contains(-3));
         assertTrue(ids.contains(-4));
+    }
+
+    public void testGetByIdentifierByTypeAndValue() throws Exception {
+        Identifier id = Identifier.createTemplate(null, "local", "1138-42");
+        Study match = getDao().getByIdentifier(id);
+        assertNotNull("No matches found", match);
+        assertEquals("Wrong study matched", -3, (int) match.getId());
     }
 }
