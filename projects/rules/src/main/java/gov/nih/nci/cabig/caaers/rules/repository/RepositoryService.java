@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 /**
  * 
@@ -45,7 +46,7 @@ public interface RepositoryService extends Remote {
      * 
      * This returns a list of packages where rules may be added.
      */
-    public RuleSet[] listRuleSets() throws RemoteException;
+    public List<RuleSet> listRuleSets() throws RemoteException;
 
     
     /**
