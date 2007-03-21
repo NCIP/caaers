@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -15,16 +14,13 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
-import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Rhett Sutphin
@@ -46,37 +42,7 @@ public class CreateAdverseEventAjaxFacade {
             }
         }
         // cut down objects for serialization
-        List<Participant> reducedParticipants = new ArrayList<Participant>(participants.size());
-        for (Participant participant : participants) {
-            reducedParticipants.add(
-                buildReduced(participant, Arrays.asList("firstName", "lastName", "id"))
-            );
-        }
-        return reducedParticipants;
-    }
-
-    // TODO: move this somewhere shared.  Or, better, obviate it.
-    @SuppressWarnings("unchecked")
-    private <T> T buildReduced(T src, List<String> properties) {
-        T dst = null;
-        try {
-            // it doesn't seem like this cast should be necessary
-            dst = (T) src.getClass().newInstance();
-        } catch (InstantiationException e) {
-            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
-        } catch (IllegalAccessException e) {
-            throw new CaaersSystemException("Failed to instantiate " + src.getClass().getName(), e);
-        }
-
-        BeanWrapper source = new BeanWrapperImpl(src);
-        BeanWrapper destination = new BeanWrapperImpl(dst);
-        for (String property : properties) {
-            destination.setPropertyValue(
-                property,
-                source.getPropertyValue(property)
-            );
-        }
-        return dst;
+        return reduceAll(participants, "firstName", "lastName", "id");
     }
 
     private boolean onStudy(Participant participant, Integer studyId) {
@@ -99,13 +65,7 @@ public class CreateAdverseEventAjaxFacade {
             }
         }
         // cut down objects for serialization
-        List<Study> reducedStudies = new ArrayList<Study>(studies.size());
-        for (Study study : studies) {
-            reducedStudies.add(
-                buildReduced(study, Arrays.asList("id", "shortTitle"))
-            );
-        }
-        return reducedStudies;
+        return reduceAll(studies, "id", "shortTitle");
     }
 
     private boolean onStudy(Study study, Integer participantId) {
