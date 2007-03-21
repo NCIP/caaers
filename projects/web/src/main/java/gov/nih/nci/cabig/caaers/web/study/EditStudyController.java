@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -38,6 +40,7 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 	private StudyDao studyDao;
 	private SiteDao siteDao;	
 	private ConfigProperty configurationProperty;
+	private DiseaseTermDao diseaseTermDao;
 	
 	public EditStudyController() {		
         setCommandClass(Study.class);        
@@ -73,7 +76,9 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
                 refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));                    
     	  		return refdata;
         	}
-        });                 
+        });
+        
+        
         flow.addTab(new Tab<Study>("Study Sites", "Study Sites", "study/edit_study_studysite") {
             
         	public Map<String, Object> referenceData() {
@@ -86,7 +91,18 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
                 return refdata;
            
         	}        	
-        });                        
+        });
+        
+        flow.addTab(new Tab<Study>("Study Diseases", "Study Diseases", "study/edit_study_studydisease"){
+            
+        	public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                //Map <String, List<Lov>> configMap = configurationProperty.getMap();
+                //refdata.put("identifiersSourceRefData", getSites());
+                //refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));                    
+    	  		return refdata;
+        	}
+        });         
         
         setFlow(flow);        
     }
@@ -162,6 +178,11 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 						request.getParameter("_action"),
 						request.getParameter("_selected"));
 				break;
+			case 3:
+				handleStudyDiseaseAction((Study)command, 
+						request.getParameter("_action"),
+						request.getParameter("_selected"));
+				break;	
 			default:
 				//do nothing						
 		}		
@@ -202,6 +223,24 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 			study.getStudySites().remove(Integer.parseInt(selected));
 		}					
 	}
+	
+	private void handleStudyDiseaseAction(Study study, String action, String selected)
+	{				
+		if ("addStudyDisease".equals(action))
+		{
+			String[] diseases = study.getDiseaseTermIds();
+			for (String diseaseId : diseases){
+				StudyDisease studyDisease = new StudyDisease();
+				studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				study.addStudyDisease(studyDisease);
+				
+			}
+		}
+		else if ("removeStudyDisease".equals(action))
+		{				
+			study.getStudyDiseases().remove(Integer.parseInt(selected));
+		}					
+	}
 		
 	public StudyDao getStudyDao() {
 		return studyDao;
@@ -218,7 +257,15 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 
 	public void setSiteDao(SiteDao siteDao) {
 		this.siteDao = siteDao;
-	}		
+	}
+	
+	public DiseaseTermDao getDiseaseTermDao() {
+		return diseaseTermDao;
+	}
+
+	public void setDiseaseTermDao(DiseaseTermDao diseaseTermDao) {
+		this.diseaseTermDao = diseaseTermDao;
+	}
 	
 	private List<Site> getSites()
 	{

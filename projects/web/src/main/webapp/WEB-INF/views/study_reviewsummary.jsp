@@ -258,6 +258,30 @@ field.value="";
 		 <br>
 		      <a href="javascript:fireAction('_target3');"><img
 					src="images/b-edit.gif" border="0" alt="edit this page"></a>
+					
+					
+	<h3><strong>Study Diseases</strong></h3>
+
+		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
+		<br>
+
+					<tr align="center">						
+						<td> <b>Disease Term</b></td>						
+						<td> <b>Primary</b> </td>										
+					</tr>																			
+				 
+				    
+					<c:forEach items="${command.studyDiseases}" var="studyDisease">
+								<tr class="results">						
+									<td align="left">${studyDisease.diseaseTerm.ctepTerm}</td>
+									<td align="left">${studyDisease.leadDisease}</td>									
+								</tr>
+					</c:forEach>				
+		</table>
+
+		 <br>
+		      <a href="javascript:fireAction('_target4');"><img
+					src="images/b-edit.gif" border="0" alt="edit this page"></a>								
 				
 
 </chrome:division>

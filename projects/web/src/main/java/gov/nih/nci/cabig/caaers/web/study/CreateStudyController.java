@@ -4,17 +4,20 @@ import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Participation;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.tools.editors.NullIdDaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
@@ -29,6 +32,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -38,10 +43,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kulasekaran
  */
 public class CreateStudyController extends AbstractTabbedFlowFormController<Study> {
-		    	
+	
+	private static Log log = LogFactory.getLog(CreateStudyController.class);
 	private StudyDao studyDao;
 	private SiteDao siteDao;
 	private AgentDao agentDao;
+	private DiseaseTermDao diseaseTermDao;
 	private ConfigProperty configurationProperty;
 	
 	public CreateStudyController() {		
@@ -94,6 +101,15 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         });
 
 		flow.addTab(new Tab<Study>("Study Agents", "Study Agents", "study_studyagent") {
+            
+        	public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                return refdata;
+           
+        	}        	
+        });
+		
+		flow.addTab(new Tab<Study>("Study Disease", "Study Disease", "study_studydisease") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
@@ -166,6 +182,10 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 				handleStudyAgentAction((Study)command, request.getParameter("_action"),
 						request.getParameter("_selected"));
 				break;
+			case 4:
+				handleStudyDiseaseAction((Study)command, request.getParameter("_action"),
+						request.getParameter("_selected"));
+				break;
 			default:
 				//do nothing						
 		}		
@@ -212,6 +232,26 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		}					
 	}
 	
+	private void handleStudyDiseaseAction(Study study, String action, String selected)
+	{				
+		if ("addStudyDisease".equals(action))
+		{
+			String[] diseases = study.getDiseaseTermIds();
+			log.debug("Study Diseases Size : " + study.getStudyDiseases().size());
+			for (String diseaseId : diseases){
+				log.debug("Disease Id : " + diseaseId);
+				StudyDisease studyDisease = new StudyDisease();
+				studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				study.addStudyDisease(studyDisease);
+				
+			}
+		}
+		else if ("removeStudyDisease".equals(action))
+		{				
+			study.getStudyDiseases().remove(Integer.parseInt(selected));
+		}					
+	}
+	
 	private Study createDefaultStudyWithDesign()
 	{
 		Study study = new Study(); 
@@ -220,9 +260,6 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		study.addStudySite(studySite);
 		
 		StudyAgent studyAgent = new StudyAgent();
-		//Participation participation = new Participation();
-		//participation.setAgent(new Agent());
-		//study.addParticipation(participation);
 		studyAgent.setAgent(new Agent());
 		study.addStudyAgent(studyAgent);
 			
@@ -263,8 +300,16 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 
 	public void setSiteDao(SiteDao siteDao) {
 		this.siteDao = siteDao;
-	}		
+	}
 	
+	public DiseaseTermDao getDiseaseTermDao() {
+		return diseaseTermDao;
+	}
+
+	public void setDiseaseTermDao(DiseaseTermDao diseaseTermDao) {
+		this.diseaseTermDao = diseaseTermDao;
+	}
+
 	private List<Site> getSites()
 	{
 		return siteDao.getAll();  	
