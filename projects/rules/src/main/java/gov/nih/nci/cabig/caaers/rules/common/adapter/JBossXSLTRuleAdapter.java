@@ -23,11 +23,11 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
 import org.drools.rule.Package;
-import org.jibx.runtime.BindingDirectory;
+/*import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
-
+*/
 /**
  * 
  * Adaptor class for converting the Rule in CaAERS format to 
