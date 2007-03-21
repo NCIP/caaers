@@ -34,11 +34,15 @@ public class ServiceLocator {
 			+ DEFAULT_SERVER + ":" + DEFAULT_PORT + "/" + DEFAULT_CONTEXT_NAME
 			+ "/services/RuleExecutionServiceImpl";
 	
+	private static final String RULE_DEPLOYMNT_SERVICE_URL = "http://"
+		+ DEFAULT_SERVER + ":" + DEFAULT_PORT + "/" + DEFAULT_CONTEXT_NAME
+		+ "/services/RuleDeploymentService";
+	
 	
 	private static final String DEFAULT_LOCAL_SERVICE_URL = "xfire.local:5050//rules/services/";
 	
 	private static final String DEFAULT_RULE_AUTHORING_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleAuthoringService";
-	private static final String DEFAULT_RULE_DEPLOYMENT_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleDeploymentServiceImpl";
+	private static final String DEFAULT_RULE_DEPLOYMENT_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleDeploymentService";
 	private static final String DEFAULT_RULE_EXECUTION_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleExecutionServiceImpl";
 	
 	private static ServiceLocator instance; 
@@ -100,6 +104,21 @@ public class ServiceLocator {
 		return service;
 	}
 
+	public RuleDeploymentService getRemoteRuleDeploymentService() {
+		XFire xFire = XFireFactory.newInstance().getXFire();
+		ServiceFactory factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), XFireFactory.newInstance().getXFire().getTransportManager(), 
+				  new AegisBindingProvider(new JaxbTypeRegistry()));
+		Service serviceModel = factory.create(RuleDeploymentService.class);
+		RuleDeploymentService service;
+		try {
+			service = (RuleDeploymentService) new XFireProxyFactory()
+					.create(serviceModel, RULE_AUTHORING_SERVICE_URL);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		return service;
+	}
+	
 	public RuleExecutionService getRuleExecutionService() {
 		Service serviceModel = new AnnotationServiceFactory()
 				.create(RuleExecutionService.class);
