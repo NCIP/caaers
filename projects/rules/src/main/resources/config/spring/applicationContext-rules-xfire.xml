@@ -12,13 +12,19 @@
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-autowire="no">
 
+
+    <import resource="classpath:org/codehaus/xfire/spring/xfire.xml"/>
+
+	<bean id="jaxbTypeMappingRegistry" class="org.codehaus.xfire.jaxb2.JaxbTypeRegistry"
+	init-method="createDefaultMappings" scope="singleton" />
+
 	
 	 <bean id="webAnnotations" class="org.codehaus.xfire.annotations.jsr181.Jsr181WebAnnotations"/>
 
 
 	 <bean id="handlerMapping" class="org.codehaus.xfire.spring.remoting.Jsr181HandlerMapping">
 	        <property name="typeMappingRegistry">
-	            <ref bean="xfire.typeMappingRegistry"/>
+	            <ref bean="jaxbTypeMappingRegistry"/>
 	        </property>
 	        <property name="xfire">
 	            <ref bean="xfire"/>
@@ -39,24 +45,10 @@
 	        </property>
     </bean>
 
-
+<!--
 	<bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
 		<constructor-arg ref="xfire.transportManager"/>
-	</bean>
-
-    <!--
-    <import resource="classpath:org/codehaus/xfire/spring/xfire.xml"/>
-    -->
-
-  <!-- <bean id="xfire.typeMappingRegistry"
-    class="org.codehaus.xfire.aegis.type.DefaultTypeMappingRegistry"
-    init-method="createDefaultMappings" scope="singleton"> -->
-  <bean id="xfire.typeMappingRegistry"
-    class="org.codehaus.xfire.jaxb2.JaxbTypeRegistry"
-    init-method="createDefaultMappings" scope="singleton">
-
-  </bean>
-  
+	</bean>  
   
   <bean id="xfire.serviceRegistry"
     class="org.codehaus.xfire.service.DefaultServiceRegistry"
@@ -76,6 +68,6 @@
       <ref bean="xfire.transportManager" />
     </constructor-arg>
   </bean>
-
+-->
 	
 </beans>
