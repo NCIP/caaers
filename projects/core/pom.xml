@@ -106,12 +106,12 @@
             <scope>runtime</scope>
             <exclusions>
                 <exclusion>
-                  <groupId>xml-apis</groupId>
-                  <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                    <artifactId>xml-apis</artifactId>
                 </exclusion>
                 <exclusion>
-                  <groupId>xerces</groupId>
-                  <artifactId>xerces</artifactId>
+                    <groupId>xerces</groupId>
+                    <artifactId>xerces</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -294,26 +294,24 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                    	<configuration>
-                    		<source>1.5</source>
-                    	</configuration>
+                        <configuration>
+                            <source>1.5</source>
+                        </configuration>
                         <goals>
-                        	<goal>compile</goal>
+                            <goal>compile</goal>
                             <goal>test-compile</goal>
                         </goals>
                     </execution>
-               </executions>
-           </plugin>
-		</plugins>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
         <profile>
             <!-- This is the equivalent of insert-csm-policy in the ant script.
                  To execute:
-                    mvn -P csm-policy initialize .
-                 If you need to use a non-default database config:
-                    mvn -P csm-policy,hsqldb initialize -->
+                    mvn -P csm-policy initialize . -->
             <id>csm-policy</id>
             <build>
                 <plugins>
@@ -330,15 +328,15 @@
                                             <classpath refid="maven.plugin.classpath"/>
                                         </taskdef>
                                         <dbunit driver="${datasource.driver}"
-                                            url="${datasource.url}"
-                                            userid="${datasource.username}"
-                                            password="${datasource.password}">
+                                                url="${datasource.url}"
+                                                userid="${datasource.username}"
+                                                password="${datasource.password}">
                                             <operation type="DELETE_ALL" src="tools/csm/CSM_policy.xml" />
-                                        </dbunit>                                        
+                                        </dbunit>
                                         <dbunit driver="${datasource.driver}"
-                                            url="${datasource.url}"
-                                            userid="${datasource.username}"
-                                            password="${datasource.password}">
+                                                url="${datasource.url}"
+                                                userid="${datasource.username}"
+                                                password="${datasource.password}">
                                             <operation type="CLEAN_INSERT" src="tools/csm/CSM_policy.xml" />
                                         </dbunit>
                                     </tasks>
@@ -349,7 +347,7 @@
                 </plugins>
             </build>
         </profile>
-        
+
 
     </profiles>
 </project>
