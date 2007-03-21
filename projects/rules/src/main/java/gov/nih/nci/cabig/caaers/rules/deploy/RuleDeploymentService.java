@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.rules.deploy;
 
 import java.rmi.RemoteException;
 
+import javax.jws.WebService;
+
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
@@ -10,6 +12,9 @@ import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
+@WebService(
+        serviceName = "RuleDeploymentService" , endpointInterface = "gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"
+)
 public interface RuleDeploymentService {
 
 	/**

@@ -24,7 +24,7 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * @author Sujith Vellat Thayyilthodi
  * */
 @WebService(
-        serviceName = "RuleDeploymentService"
+        serviceName = "RuleDeploymentService" , endpointInterface = "gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"
 )
 public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymentService {
 	
