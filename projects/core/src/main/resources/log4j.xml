@@ -34,30 +34,3 @@
         <appender-ref ref="file"/>
     </root>
 </log4j:configuration>
-<!--
-log4j.rootLogger=, FILE, STDOUT
-log4j.logger.org.springframework=INFO
-log4j.logger.net.sf.acegisecurity=DEBUG
-log4j.logger.org.apache.commons.digester=INFO
-log4j.logger.org.apache.catalina=INFO
-log4j.logger.org.hibernate=DEBUG
-log4j.logger.org.apache.jasper=INFO
-
-# Block those useless "Unable to proxy method" warnings
-log4j.filter.UNABLE_TO_PROXY=org.apache.log4j.varia.StringMatchFilter
-log4j.filter.UNABLE_TO_PROXY.acceptOnMatch=false
-log4j.filter.UNABLE_TO_PROXY.stringToMatch=Unable to proxy method
-
-log4j.appender.FILE=org.apache.log4j.RollingFileAppender
-log4j.appender.FILE.file=${catalina.home}/logs/caaers.log
-log4j.appender.FILE.MaxFileSize=2048KB
-log4j.appender.FILE.MaxBackupIndex=2
-log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
-log4j.appender.FILE.layout.ConversionPattern=%d [%15t] %-5p %c %x: %m%n
-
-log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
-log4j.appender.STDOUT.threshold=ERROR
-log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
-log4j.appender.STDOUT.layout.ConversionPattern=%d %-5p %c %x: %m%n
-log4j.appender.STDOUT.filter=UNABLE_TO_PROXY
--->
