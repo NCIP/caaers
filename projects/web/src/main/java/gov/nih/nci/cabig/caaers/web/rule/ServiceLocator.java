@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
+import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
+import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 
 import org.codehaus.xfire.XFire;
 import org.codehaus.xfire.XFireFactory;
@@ -9,14 +12,9 @@ import org.codehaus.xfire.aegis.AegisBindingProvider;
 import org.codehaus.xfire.annotations.AnnotationServiceFactory;
 import org.codehaus.xfire.annotations.jsr181.Jsr181WebAnnotations;
 import org.codehaus.xfire.client.XFireProxyFactory;
-import org.codehaus.xfire.jaxb2.JaxbType;
 import org.codehaus.xfire.jaxb2.JaxbTypeRegistry;
 import org.codehaus.xfire.service.Service;
 import org.codehaus.xfire.service.ServiceFactory;
-
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 /**
  * 
@@ -39,7 +37,7 @@ public class ServiceLocator {
 	
 	private static final String DEFAULT_LOCAL_SERVICE_URL = "xfire.local:5050//rules/services/";
 	
-	private static final String DEFAULT_RULE_AUTHORING_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleAuthoringServiceImpl";
+	private static final String DEFAULT_RULE_AUTHORING_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleAuthoringService";
 	private static final String DEFAULT_RULE_DEPLOYMENT_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleDeploymentServiceImpl";
 	private static final String DEFAULT_RULE_EXECUTION_LOCAL_SERVICE_URL = DEFAULT_LOCAL_SERVICE_URL + "/RuleExecutionServiceImpl";
 	
@@ -73,10 +71,9 @@ public class ServiceLocator {
 	}
 	
 	public RuleAuthoringService getRemoteRuleAuthoringService() {
+		XFire xFire = XFireFactory.newInstance().getXFire();
 		ServiceFactory factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), XFireFactory.newInstance().getXFire().getTransportManager(), 
 				  new AegisBindingProvider(new JaxbTypeRegistry()));
-
-//		ServiceFactory factory = new AnnotationServiceFactory();
 		Service serviceModel = factory.create(RuleAuthoringService.class);
 		RuleAuthoringService service;
 		try {
