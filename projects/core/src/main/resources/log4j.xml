@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <param name="threshold" value="WARN"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern" value="%d %-5p %c %x: %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.StringMatchFilter">
+            <param name="acceptOnMatch" value="false"/>
+            <param name="stringToMatch" value="Unable to proxy method"/>
+        </filter>
+    </appender>
+
+    <appender name="file" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="${catalina.home}/logs/caaers.log"/>
+        <param name="maxFileSize" value="2048KB"/>
+        <param name="maxBackupIndex" value="2"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- disable really verbose logging from libraries.  Switch to debug if necessary. -->
+    <logger name="org.springframework">        <level value="info"/></logger>
+    <logger name="org.apache.commons.digester"><level value="info"/></logger>
+    <logger name="org.apache.catalina">        <level value="info"/></logger>
+    <logger name="org.apache.jasper">          <level value="info"/></logger>
+
+    <root>
+        <priority value="debug"/>
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </root>
+</log4j:configuration>
+<!--
+log4j.rootLogger=, FILE, STDOUT
+log4j.logger.org.springframework=INFO
+log4j.logger.net.sf.acegisecurity=DEBUG
+log4j.logger.org.apache.commons.digester=INFO
+log4j.logger.org.apache.catalina=INFO
+log4j.logger.org.hibernate=DEBUG
+log4j.logger.org.apache.jasper=INFO
+
+# Block those useless "Unable to proxy method" warnings
+log4j.filter.UNABLE_TO_PROXY=org.apache.log4j.varia.StringMatchFilter
+log4j.filter.UNABLE_TO_PROXY.acceptOnMatch=false
+log4j.filter.UNABLE_TO_PROXY.stringToMatch=Unable to proxy method
+
+log4j.appender.FILE=org.apache.log4j.RollingFileAppender
+log4j.appender.FILE.file=${catalina.home}/logs/caaers.log
+log4j.appender.FILE.MaxFileSize=2048KB
+log4j.appender.FILE.MaxBackupIndex=2
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=%d [%15t] %-5p %c %x: %m%n
+
+log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender
+log4j.appender.STDOUT.threshold=ERROR
+log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+log4j.appender.STDOUT.layout.ConversionPattern=%d %-5p %c %x: %m%n
+log4j.appender.STDOUT.filter=UNABLE_TO_PROXY
+-->
