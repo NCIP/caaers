@@ -32,11 +32,15 @@ import org.springmodules.jcr.JcrTemplate;
 import org.springmodules.jcr.support.JcrDaoSupport;
 
 /**
- * Repository Service implementation for Drools. This delegates most of the work
- * to the org.drools.repository.RulesRepository. In case we need to get more
- * functionality from the repository than what drools provide we have the
- * flexibility to do so in this class, since this class has access to the JCR
- * Repository and the JCRSession.
+ * Repository Service implementation for Drools. 
+ * This delegates most of the work  to the <i>org.drools.repository.RulesRepository</i>.
+ * <p>
+ * In case we need to get more functionality from the repository than what drools provide we have the
+ * flexibility to do so in this class. 
+ * 
+ * This class has access to the JCR Repository and the JCRSession.
+ * 
+ * Spring transactional control also can be applied on this class.
  * 
  * @author Sujith Vellat Thayyilthodi
  */
@@ -150,27 +154,30 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return ruleSetList;
 	}
 
-	public RuleSet getRuleSet(String name) {
-		PackageItem item = getRulesRepository().loadPackage(name);
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setId(item.getUUID());
+	public RuleSet getRuleSet(String name) throws RemoteException {
+		try {
+			PackageItem item = getRulesRepository().loadPackage(name);
+			RuleSet ruleSet = new RuleSet();
+			ruleSet.setId(item.getUUID());
+			ruleSet.getImport().add(item.getHeader());
+			// ruleSet.header = item.getHeader();
+			// ruleSet.externalURI = item.getExternalURI();
+			ruleSet.setDescription(item.getDescription());
+			ruleSet.setName(item.getName());
+			// ruleSet.lastModified = item.getLastModified().getTime();
+			// ruleSet.lasContributor = item.getLastContributor();
+			// ruleSet.state = item.getStateDescription();
 
-		ruleSet.getImport().add(item.getHeader());
-		// ruleSet.header = item.getHeader();
-		// ruleSet.externalURI = item.getExternalURI();
-		ruleSet.setDescription(item.getDescription());
-		ruleSet.setName(item.getName());
-		// ruleSet.lastModified = item.getLastModified().getTime();
-		// ruleSet.lasContributor = item.getLastContributor();
-		// ruleSet.state = item.getStateDescription();
-
-		AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
-		while (iterator.hasNext()) {
-			AssetItem ruleItem = (AssetItem) iterator.next();
-			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
-			ruleSet.getRule().add(rule);
+			AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
+			while (iterator.hasNext()) {
+				AssetItem ruleItem = (AssetItem) iterator.next();
+				Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
+				ruleSet.getRule().add(rule);
+			}
+			return ruleSet;
+		} catch (RulesRepositoryException ex) {
+			throw new RemoteException(ex.getMessage(), ex);
 		}
-		return ruleSet;
 	}
 
 	public String checkinVersion(Rule rule) throws RemoteException {
@@ -262,14 +269,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 
 	public RuleSetInfo getRegisteredRuleset(String bindUri) {
 		RuleSetInfo ruleSetInfo = new RuleSetInfo();
-		ObjectInputStream objectInputStream;
 		try {
-			/*
-			 * objectInputStream = new ObjectInputStream(((RulesRepositoryEx)
-			 * getRulesRepository())
-			 * .loadCompiledPackage(bindUri).getBinaryContent());
-			 * ruleSetInfo.setContent(objectInputStream.readObject());
-			 */
 			RulesRepositoryEx rulesRepositoryEx = ((RulesRepositoryEx) getRulesRepository());
 			ruleSetInfo.setContent(rulesRepositoryEx
 					.convertByteArrayToObject(rulesRepositoryEx

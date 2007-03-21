@@ -53,8 +53,9 @@ public interface RepositoryService extends Remote {
      * Loads a package by its name (NOT UUID !).
      * @param name The name of the package (NOT THE UUID !).
      * @return Well, its pretty obvious if you think about it for a minute. Really.
+     * @throws RemoteException 
      */
-    public RuleSet getRuleSet(String name);
+    public RuleSet getRuleSet(String name) throws RemoteException;
     
     /**
      * This loads up all the stuff for a 
