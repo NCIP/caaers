@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
 import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 
 /*import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -44,9 +47,22 @@ public class XMLUtil {
 			throw new RuleException(e.getMessage(), e);
 		}		
 	}
+
+	public static String marshal(Rule rule) {
+		StringWriter writer = new StringWriter();
+		try {
+			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
+			marshaller.marshal( new JAXBElement( new QName("http://caaers.cabig.nci.nih.gov/rules/brxml","rule"), Rule.class, rule ), writer);
+			return writer.toString();
+		} catch (JAXBException e) {
+			throw new RuleException(e.getMessage(), e);
+		}	
+	}
 	
 	
-/*	public static String toXML(Object rootElement) {
+/*	
+ 	//REFERENCE THIS IF ANY DAY YOU WANT TO USE JIBX AS MECHANISM FOR DATABINDING
+	public static String toXML(Object rootElement) {
 		IMarshallingContext mctx = null;
 		StringWriter writer = new StringWriter();
 		try {
@@ -73,6 +89,8 @@ public class XMLUtil {
 		}
 		return obj;
 	}
+	
+	//REFERENCE THIS IF ANY DAY YOU WANT TO USE XSTREAM AS MECHANISM FOR DATABINDING
 	
 	public static String getXML(Object obj) {
 		XStream xstream = new XStream(new DomDriver());
