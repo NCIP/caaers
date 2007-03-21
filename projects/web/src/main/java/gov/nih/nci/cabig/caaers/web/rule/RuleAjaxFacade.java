@@ -164,6 +164,13 @@ public class RuleAjaxFacade {
     	return Arrays.asList(Grade.values());
     }
     
+    public void deployRuleSet(String name) {
+    	String bindUri = "URI_1";
+		String ruleSetName = "gov.nih.nci.cabig.caaers.rules";
+		ServiceLocator.getInstance().getRemoteRuleDeploymentService().
+		registerRuleSet(bindUri, ruleSetName);
+    }
+    
     // TODO: move this somewhere shared.  Or, better, obviate it.
     @SuppressWarnings("unchecked")
     private <T> T buildReduced(T src, List<String> properties) {
