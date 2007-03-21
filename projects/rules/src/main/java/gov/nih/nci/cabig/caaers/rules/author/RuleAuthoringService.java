@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.rules.author;
 
+import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
+import java.io.InputStream;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 
 import javax.jws.WebService;
 
@@ -18,6 +23,8 @@ import javax.jws.WebService;
 )
 public interface RuleAuthoringService extends java.rmi.Remote {
 
+	public void createCategory(Category category) throws RemoteException;
+	
 	public void createRuleSet(RuleSet ruleSet) throws RemoteException;
 	
 	public String createRule(Rule rule) throws RemoteException;
@@ -30,6 +37,10 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 
 	public Rule getRule(String ruleId) throws RemoteException;
 
-	public RuleSet[] getAllRuleSets() throws RemoteException;
+	public List<RuleSet> getAllRuleSets() throws RemoteException;
+	
+	public void setRepositoryService(RepositoryService repositoryService);
 
+	public void addRuleExecutionSet(final String bindUri,
+				final InputStream resourceAsStream, final Map properties); 
 }
