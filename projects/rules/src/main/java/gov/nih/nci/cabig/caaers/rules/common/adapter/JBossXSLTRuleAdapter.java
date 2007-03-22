@@ -44,7 +44,7 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 	public Object adapt(RuleSet ruleSet) {
 		String xml = XMLUtil.marshal(ruleSet);
 
-/*		System.setProperty("javax.xml.transform.TransformerFactory",
+		System.setProperty("javax.xml.transform.TransformerFactory",
 				"org.apache.xalan.processor.TransformerFactoryImpl");
 		TransformerFactory transformerFactory = TransformerFactory
 				.newInstance();
@@ -67,12 +67,11 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 		} catch (TransformerException e) {
 			throw new RuleException(e.getMessage(), e);
 		}
- */
+ 
 		
 		PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
 		conf.setCompiler( PackageBuilderConfiguration.JANINO );
 		//conf.setJavaLanguageLevel( "1.4" );
-		PackageBuilder builder = new PackageBuilder( conf );
 		
 		Package package1 = new Package();
 		try { 
@@ -90,5 +89,4 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 
 		return package1;
 	}
-	 
 }
