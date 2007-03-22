@@ -46,6 +46,8 @@ class BasicCsmPolicy extends edu.northwestern.bioinformatics.bering.Migration {
     }
 
     void down() {
+        execute("DELETE FROM csm_user_group");
+        execute("DELETE FROM csm_user_group_role_pg");
         execute("DELETE FROM csm_protection_element");
         execute("DELETE FROM csm_privilege");
         execute("DELETE FROM csm_group");
