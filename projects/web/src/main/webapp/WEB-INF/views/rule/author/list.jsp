@@ -31,6 +31,15 @@
 					});
 			} catch(e) {alert(e)}
 		}
+		
+		function fireRulesNow(mode) {
+			try {
+				authorRule.fireRules("gov.nih.nci.cabig.caaers.rule", mode, function(values) {
+							alert("rule fired ");
+					});
+			} catch(e) {alert(e)}
+		}
+		
     </script>
 </head>
 <body>
@@ -54,5 +63,16 @@
         </ec:column>
     </ec:row>
 </ec:table>
+
+
+<p>
+
+<a href="javascript:fireRulesNow('1')">Successful Execution</a>
+
+<br/>
+
+<a href="javascript:fireRulesNow('2')">Non - Successful Execution</a>
+</p>
+
 </body>
 </html>
