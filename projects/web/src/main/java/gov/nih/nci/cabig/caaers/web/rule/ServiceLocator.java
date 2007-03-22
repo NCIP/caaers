@@ -112,7 +112,7 @@ public class ServiceLocator {
 		RuleDeploymentService service;
 		try {
 			service = (RuleDeploymentService) new XFireProxyFactory()
-					.create(serviceModel, RULE_AUTHORING_SERVICE_URL);
+					.create(serviceModel, RULE_DEPLOYMNT_SERVICE_URL);
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
