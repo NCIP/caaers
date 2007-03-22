@@ -14,10 +14,13 @@ import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
+import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -164,11 +167,34 @@ public class RuleAjaxFacade {
     	return Arrays.asList(Grade.values());
     }
     
-    public void deployRuleSet(String name) {
+    public void deployRuleSet(String ruleSetName) throws RemoteException{
     	String bindUri = "URI_1";
-		String ruleSetName = "gov.nih.nci.cabig.caaers.rules";
 		ServiceLocator.getInstance().getRemoteRuleDeploymentService().
 		registerRuleSet(bindUri, ruleSetName);
+    }
+    
+    public void fireRules(String bindUri, String mode)  throws RemoteException {
+    	StudySDO study = new StudySDO();
+    	study.setShortTitle("AML/MDS 9911");
+    	List<AdverseEventSDO> list = new ArrayList();
+    	if("1".equals(mode)) {
+    		list.add(getSuccessful());
+    	} else {
+    		list.add(getNonSuccessful());
+    	}
+   		ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, study, list);
+    }
+    
+    private AdverseEventSDO getSuccessful() {
+    	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+    	adverseEventSDO.setGrade("2");
+    	return adverseEventSDO;
+    }
+
+    private AdverseEventSDO getNonSuccessful() {
+    	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+    	adverseEventSDO.setGrade("0");
+    	return adverseEventSDO;
     }
     
     // TODO: move this somewhere shared.  Or, better, obviate it.
