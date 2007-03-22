@@ -83,11 +83,11 @@
                     <property name="tasks">
                         <list>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Trigger" p:linkName="createRuleController"/>
+                                p:displayName="Create Rule" p:linkName="createRuleController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="List Triggers" p:linkName="listRuleController"/>
+                                p:displayName="List Rules" p:linkName="listRuleController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="Deploy Triggers" p:linkName="deployRuleController"/>
+                                p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Notification" p:linkName="createNotificationController"/> 
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
