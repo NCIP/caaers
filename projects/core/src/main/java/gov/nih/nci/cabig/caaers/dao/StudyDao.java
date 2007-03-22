@@ -42,22 +42,22 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     }
 
     // TODO: how is this different from #getById ?
-    public Study getStudyDesignById(int id) {				
+    public Study getStudyDesignById(int id) {
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
         study.getIdentifiers().size();
         study.getStudySites().size();
-                
+
         return study;
     }
-    
+
     public void save(Study study) {
-        getHibernateTemplate().saveOrUpdate(study);                        
+        getHibernateTemplate().saveOrUpdate(study);
     }
-    
+
     public void merge(Study study) {
-    	getHibernateTemplate().merge(study);    	
-    } 
-    
+        getHibernateTemplate().merge(study);
+    }
+
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);

@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.ComparisonUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.easymock.IArgumentMatcher;
 import org.easymock.classextension.EasyMock;
@@ -29,6 +30,24 @@ import java.util.Set;
 public abstract class CaaersTestCase extends CoreTestCase {
     private static ApplicationContext applicationContext = null;
     protected Set<Object> mocks = new HashSet<Object>();
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        // JAP: need this to ensure that security aspect
+        // is initialized by Spring before it is applied
+        // by AspectJ.
+        // RMS: This is needed often enough that we'll
+        // just do it everywhere.
+        getDeployedApplicationContext();
+        SecurityTestUtils.switchToSuperuser();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        SecurityTestUtils.switchToNoUser();
+        super.tearDown();
+    }
 
     public synchronized static ApplicationContext getDeployedApplicationContext() {
         if (applicationContext == null) {

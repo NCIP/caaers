@@ -46,13 +46,13 @@ public abstract class CaaersDbTestCase extends DbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        SecurityTestUtils.switchUser("default-test-user", "ROLE_caaers_super_user");
+        SecurityTestUtils.switchToSuperuser();
         beginSession();
     }
 
     protected void tearDown() throws Exception {
         endSession();
-        SecurityTestUtils.switchUser(null);
+        SecurityTestUtils.switchToNoUser();
         super.tearDown();
     }
 

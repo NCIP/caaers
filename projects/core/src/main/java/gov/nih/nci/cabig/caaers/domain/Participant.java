@@ -28,12 +28,11 @@ import java.util.List;
     }
 )
 public class Participant extends AbstractDomainObject {
-	private String institutionalPatientNumber;
-	private String institution;
-	//private String studyParticipantName; // take action REMOVE
+    private String institutionalPatientNumber;
+    private String institution;
     private String firstName;
-    private String middleName; //take action ADD
-    private String maidenName; // take action ADD
+    private String middleName;
+    private String maidenName;
     private String lastName;
     private Date dateOfBirth;
     private String gender;
@@ -42,11 +41,9 @@ public class Participant extends AbstractDomainObject {
     private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
     private List<Identifier> identifiers = new ArrayList<Identifier>();
 
-    // business methods
-    
-    // The participant identifier could be the Medical Record No based on the site 
+    ////// LOGIC
 
-	public void addAssignment(StudyParticipantAssignment studyParticipantAssignment){
+    public void addAssignment(StudyParticipantAssignment studyParticipantAssignment){
         getAssignments().add(studyParticipantAssignment);
         studyParticipantAssignment.setParticipant(this);
     }
@@ -78,38 +75,34 @@ public class Participant extends AbstractDomainObject {
         }
         return name.toString();
     }
+
+    @Transient
+    public List<Study> getStudies() {
+        List<Study> collected = new ArrayList<Study>(getAssignments().size());
+        for (StudyParticipantAssignment assignment : getAssignments()) {
+            collected.add(assignment.getStudySite().getStudy());
+        }
+        return collected;
+    }
     
-    // bean methods
-    @Column(name= "instituitional_patient_number")
+    ////// BEAN PROPERTIES
+
     public String getInstitutionalPatientNumber() {
-		return institutionalPatientNumber;
-	}
+        return institutionalPatientNumber;
+    }
 
-	public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
-		this.institutionalPatientNumber = instituitionalPatientNumber;
-	}
-	
-	@Column(name= "institution")
-	public String getInstitution() {
-		return institution;
-	}
+    public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
+        this.institutionalPatientNumber = instituitionalPatientNumber;
+    }
 
-	public void setInstitution(String institution) {
-		this.institution = institution;
-	}
-    
-	/*
-	@Column(name= "study_participant_name")
-    public String getStudyParticipantName() {
-		return studyParticipantName;
-	}
+    public String getInstitution() {
+        return institution;
+    }
 
-	public void setStudyParticipantName(String studyParticipantName) {
-		this.studyParticipantName = studyParticipantName;
-	}
-	*/
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
 
-	@Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -117,25 +110,23 @@ public class Participant extends AbstractDomainObject {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    @Column(name = "maiden_name")
+
     public String getMaidenName() {
-		return maidenName;
-	}
+        return maidenName;
+    }
 
-	public void setMaidenName(String maidenName) {
-		this.maidenName = maidenName;
-	}
+    public void setMaidenName(String maidenName) {
+        this.maidenName = maidenName;
+    }
 
-	@Column(name = "middle_name")
-	public String getMiddleName() {
-		return middleName;
-	}
+    public String getMiddleName() {
+        return middleName;
+    }
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
-	@Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -143,7 +134,7 @@ public class Participant extends AbstractDomainObject {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
+
     @Column(name = "birth_date")
     public Date getDateOfBirth() {
         return dateOfBirth;
@@ -152,8 +143,7 @@ public class Participant extends AbstractDomainObject {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    
-    @Column(name = "gender")
+
     public String getGender() {
         return gender;
     }
@@ -161,25 +151,22 @@ public class Participant extends AbstractDomainObject {
     public void setGender(String gender) {
         this.gender = gender;
     }
-    
-    @Column(name = "ethnicity")
+
     public String getEthnicity() {
-		return ethnicity;
-	}
+        return ethnicity;
+    }
 
-	public void setEthnicity(String ethnicity) {
-		this.ethnicity = ethnicity;
-	}
+    public void setEthnicity(String ethnicity) {
+        this.ethnicity = ethnicity;
+    }
 
-	@Column(name = "race")
-	public String getRace() {
-		return race;
-	}
+    public String getRace() {
+        return race;
+    }
 
-	public void setRace(String race) {
-		this.race = race;
-	}
-
+    public void setRace(String race) {
+        this.race = race;
+    }
 
     @OneToMany (mappedBy = "participant", fetch=FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
@@ -187,38 +174,31 @@ public class Participant extends AbstractDomainObject {
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
     }
-    
+
     public void setAssignments(List<StudyParticipantAssignment> assignments) {
         this.assignments = assignments;
     }
 
-    public void addStudyParticipantAssignment(StudyParticipantAssignment spa) {
-    	assignments.add(spa);
-    }
-    
     @OneToMany
     @Cascade({CascadeType.ALL,CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     public List<Identifier> getIdentifiers() {
-		return identifiers;
-	}
+        return identifiers;
+    }
 
-	public void setIdentifiers(
-			List<Identifier> identifiers) {
-		this.identifiers = identifiers;
-	}
-	
-	public void addIdentifier(Identifier identifier)
-	{		
-		identifiers.add(identifier);		
-	}
-	
-	public void removeIdentifier(Identifier identifier)
-	{
-		identifiers.remove(identifier);
-	}
-    
-    
+    public void setIdentifiers(List<Identifier> identifiers) {
+        this.identifiers = identifiers;
+    }
+
+    public void addIdentifier(Identifier identifier) {
+        identifiers.add(identifier);
+    }
+
+    public void removeIdentifier(Identifier identifier) {
+        identifiers.remove(identifier);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -237,6 +217,7 @@ public class Participant extends AbstractDomainObject {
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (firstName != null ? firstName.hashCode() : 0);

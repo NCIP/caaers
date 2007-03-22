@@ -14,14 +14,22 @@ import org.acegisecurity.providers.TestingAuthenticationToken;
  *
  */
 public class SecurityTestUtils {
-	public static void switchUser(String userName, String... roles) {
-		GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-		for (int i = 0; i < roles.length; i++) {
-			authorities[i] = new GrantedAuthorityImpl(roles[i]);
-		}
-		Authentication auth = new TestingAuthenticationToken(userName,
-				"ignored", authorities);
-		auth.setAuthenticated(true);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-	}
+    public static void switchUser(String userName, String... roles) {
+        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
+        for (int i = 0; i < roles.length; i++) {
+            authorities[i] = new GrantedAuthorityImpl(roles[i]);
+        }
+        Authentication auth = new TestingAuthenticationToken(userName,
+            "ignored", authorities);
+        auth.setAuthenticated(true);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+
+    public static void switchToSuperuser() {
+        switchUser("test-default-user", "ROLE_caaers_super_user");
+    }
+
+    public static void switchToNoUser() {
+        switchUser(null);
+    }
 }
