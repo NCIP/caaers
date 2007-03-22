@@ -84,9 +84,10 @@ public class Participant extends AbstractDomainObject {
         }
         return collected;
     }
-    
+
     ////// BEAN PROPERTIES
 
+    @Column(name= "instituitional_patient_number") // TODO: correct the column name's spelling
     public String getInstitutionalPatientNumber() {
         return institutionalPatientNumber;
     }
