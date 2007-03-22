@@ -13,20 +13,20 @@ public class RuleDeploymentServiceTest extends TestCase {
 		this.ruleDeploymentService = new RuleDeploymentServiceImpl();
 	}
 	
-	public void testRegisterRuleSet() {
+	public void testRegisterRuleSet() throws Exception{
 		String bindUri = "URI_1";
 		String ruleSetName = "gov.nih.nci.cabig.caaers.rules";
 		//ruleSetName = "default";
 		ruleDeploymentService.registerRuleSet(bindUri, ruleSetName);
 	}
 	
-	public void testDeregisterRuleSet() {
+	public void testDeregisterRuleSet() throws Exception{
 		String bindUri = "URI_1";
 		bindUri = "gov.nih.nci.cabig.caaers.rules";
 		ruleDeploymentService.deregisterRuleSet(bindUri);
 	}
 	
-	public void redeployRule() {
+	public void redeployRule() throws Exception{
 		String bindUri = "URI_1";
 		bindUri = "gov.nih.nci.cabig.caaers.rules";
 		String ruleSetName = "gov.nih.nci.cabig.caaers.rules";

@@ -16,6 +16,11 @@ import javax.rules.admin.RuleAdministrator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * 
+ * 
+ * @author Sujith Vellat Thayyilthodi
+ * */
 public class RuleServiceContext {
 
 	private static final String DEFAULT_RULE_SERVICE_PROVIDER = "gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl";
@@ -45,7 +50,7 @@ public class RuleServiceContext {
 */
 
 			this.applicationContext = new ClassPathXmlApplicationContext(
-	                new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-rules-jc*.xml" });
+	                new String[] { "classpath*:config/spring/applicationContext-rules-jc*.xml" });
 
 			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
 

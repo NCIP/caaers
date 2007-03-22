@@ -39,8 +39,9 @@ public interface RuleDeploymentService {
 	 * 
 	 * @param bindUri
 	 * @param ruleSetName
+	 * @throws RemoteException 
 	 * */
-	public abstract void registerRuleSet(String bindUri, String ruleSetName);
+	public abstract void registerRuleSet(String bindUri, String ruleSetName) throws RemoteException;
 	
 	
 	/**
@@ -48,11 +49,11 @@ public interface RuleDeploymentService {
 	 * 
 	 * @param bindUri
 	 * */
-	public abstract void deregisterRuleSet(String bindUri);
+	public abstract void deregisterRuleSet(String bindUri) throws RemoteException;;
 	
 	/**
 	 * List the information of all RuleSets currently deployed in the Server.
 	 * */
-	public RuleSetInfo[] listRegistrations();
+	public RuleSetInfo[] listRegistrations() throws RemoteException;;
 
 }

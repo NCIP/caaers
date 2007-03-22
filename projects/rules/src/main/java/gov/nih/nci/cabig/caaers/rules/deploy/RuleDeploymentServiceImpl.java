@@ -48,7 +48,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleDeploymentService#registerPackage(java.lang.String, java.lang.String)
 	 */
-	public void registerRuleSet(String bindUri, String ruleSetName) {
+	public void registerRuleSet(String bindUri, String ruleSetName) throws RemoteException {
 		final Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put("source", "xml");
 		
