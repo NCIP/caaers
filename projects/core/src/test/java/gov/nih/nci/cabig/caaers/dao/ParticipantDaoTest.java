@@ -20,6 +20,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant not found", participant);
         assertEquals("Wrong last name", "Scott", participant.getLastName());
+        assertEquals("Wrong first name", "Dilbert", participant.getFirstName());
         assertEquals("Wrong number of identifiers", 1, participant.getIdentifiers().size());
     }
     

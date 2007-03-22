@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Locale;
 
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+
 /**
  * @author Rhett Sutphin
  */
@@ -44,11 +46,13 @@ public abstract class CaaersDbTestCase extends DbTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
+        SecurityTestUtils.switchUser("default-test-user", "ROLE_caaers_super_user");
         beginSession();
     }
 
     protected void tearDown() throws Exception {
         endSession();
+        SecurityTestUtils.switchUser(null);
         super.tearDown();
     }
 

@@ -14,7 +14,7 @@ import org.acegisecurity.providers.TestingAuthenticationToken;
  *
  */
 public class SecurityTestUtils {
-	public static void switchUser(String userName, String[] roles) {
+	public static void switchUser(String userName, String... roles) {
 		GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
 		for (int i = 0; i < roles.length; i++) {
 			authorities[i] = new GrantedAuthorityImpl(roles[i]);
