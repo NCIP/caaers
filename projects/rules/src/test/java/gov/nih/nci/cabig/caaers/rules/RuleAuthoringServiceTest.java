@@ -88,7 +88,7 @@ public class RuleAuthoringServiceTest extends TestCase {
 		rule.setMetaData(metaData);
 		Category category = new Category();
 		category.setMetaData(new MetaData());
-		category.setPath(INSTITUTIONAL_LEVEL);
+		category.setPath("");
 		category.getMetaData().setName(INSTITUTIONAL_LEVEL);
 		metaData.getCategory().add(category);
 		
