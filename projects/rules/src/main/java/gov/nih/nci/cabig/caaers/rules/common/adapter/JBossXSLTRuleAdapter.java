@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
+import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.rule.Package;
 /*import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -42,19 +43,8 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 
 	public Object adapt(RuleSet ruleSet) {
 		String xml = XMLUtil.marshal(ruleSet);
-/*		try {
 
-			IBindingFactory bfact = BindingDirectory.getFactory(RuleSet.class);
-			IMarshallingContext mctx = bfact.createMarshallingContext();
-			mctx.marshalDocument(ruleSet, "UTF-8", null, new FileOutputStream(
-					"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_General.xml"));
-		} catch (JiBXException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (FileNotFoundException e) {
-			throw new RuleException(e.getMessage(), e);
-		}*/
-
-		System.setProperty("javax.xml.transform.TransformerFactory",
+/*		System.setProperty("javax.xml.transform.TransformerFactory",
 				"org.apache.xalan.processor.TransformerFactoryImpl");
 		TransformerFactory transformerFactory = TransformerFactory
 				.newInstance();
@@ -77,12 +67,18 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 		} catch (TransformerException e) {
 			throw new RuleException(e.getMessage(), e);
 		}
- 
+ */
+		
+		PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
+		conf.setCompiler( PackageBuilderConfiguration.JANINO );
+		//conf.setJavaLanguageLevel( "1.4" );
+		PackageBuilder builder = new PackageBuilder( conf );
+		
 		Package package1 = new Package();
 		try { 
 			Reader ruleReader = new InputStreamReader(
 					new FileInputStream ("C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml"));
-			PackageBuilder packageBuilder = new PackageBuilder();
+			PackageBuilder packageBuilder = new PackageBuilder(conf);
 			packageBuilder.addPackageFromXml(ruleReader);
 			package1 = packageBuilder.getPackage();
 		} catch (IOException e) {

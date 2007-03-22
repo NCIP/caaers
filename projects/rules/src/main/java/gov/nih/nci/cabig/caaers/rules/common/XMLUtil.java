@@ -48,7 +48,7 @@ public class XMLUtil {
 		}		
 	}
 
-	public static String marshal(Rule rule) {
+/*	public static String marshal(Rule rule) {
 		StringWriter writer = new StringWriter();
 		try {
 			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
@@ -58,7 +58,7 @@ public class XMLUtil {
 			throw new RuleException(e.getMessage(), e);
 		}	
 	}
-	
+*/	
 	
 /*	
  	//REFERENCE THIS IF ANY DAY YOU WANT TO USE JIBX AS MECHANISM FOR DATABINDING

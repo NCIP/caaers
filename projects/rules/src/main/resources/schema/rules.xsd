@@ -41,14 +41,15 @@
 				<xs:element name="status" type="xs:string"/> 
 				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="rule" type="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
+				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
 				</xs:element>
 				
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:complexType name="rule">
+	<xs:element name="rule">
+	<xs:complexType>
 		<xs:sequence>
 			<xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
 			<xs:element ref="rules:condition" minOccurs="0"/>
@@ -57,7 +58,8 @@
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string"/>
 	</xs:complexType>
-
+	</xs:element>
+	
 	<xs:element name="rule-attribute">
 	    <xs:complexType>
 	      <xs:attribute name="name" type="xs:string" use="required"/>

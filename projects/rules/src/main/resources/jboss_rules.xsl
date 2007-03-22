@@ -26,7 +26,7 @@
 
 
 <xsl:template match="rules:import">
-			<import name="{.}" xmlns="http://drools.org/drools-3.0"/>
+			<!-- <import name="{.}" xmlns="http://drools.org/drools-3.0"/> -->
 </xsl:template>
 
 <xsl:template match="rules:rule">

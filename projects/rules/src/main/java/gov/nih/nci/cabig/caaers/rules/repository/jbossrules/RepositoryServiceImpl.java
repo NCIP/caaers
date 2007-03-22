@@ -226,7 +226,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 
 	private RulesRepository getRulesRepository() {
 
-		Session session = getSession();
+		Session session = null;//getSession();
 		if (rulesRepository == null) {
 			RulesRepositoryEx.RepositoryConfiguratorEx repositoryConfigurator = new RulesRepositoryEx.RepositoryConfiguratorEx();
 			try {

@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
@@ -39,14 +40,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @WebService(
         serviceName = "RuleAuthoringService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"
 )
-public class RuleAuthoringServiceImpl implements RuleAuthoringService{
+public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 
 	private RuleServiceProvider ruleServiceProvider;
 	
 	private RepositoryService repositoryService;
 	
-	private ApplicationContext applicationContext;
-
 	public RuleAuthoringServiceImpl() {
 		super();
 		initializeService();
@@ -60,10 +59,10 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
 */
 
-			this.applicationContext = new ClassPathXmlApplicationContext(
+/*			this.applicationContext = new ClassPathXmlApplicationContext(
 	                new String[] { "classpath*:config/spring/applicationContext-rules-jc*.xml" });
-
-			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
+*/
+			this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
 
 			RuleServiceProviderManager.registerRuleServiceProvider(
 					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
@@ -144,9 +143,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 		}
 	}
 
-/*	public RuleServiceProvider getRuleServiceProvider() {
-		return ruleServiceProvider;
-	}*/
+
 
 
 	public void createCategory(Category category) throws RemoteException {		
@@ -184,5 +181,5 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService{
 	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
 	}
-
+	
 }

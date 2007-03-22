@@ -18,13 +18,15 @@ import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
 import javax.rules.StatelessRuleSession;
 
-@WebService
 /**
  * Sample Rule Engine implementation built as a facade over JBoss Rules. This
  * calls the JBoss Rules via JSR-94 apis.
  *
  * @author Sujith Vellat Thayyilthodi
  */
+@WebService(
+        serviceName = "RuleExecutionService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService"
+)
 public class RuleExecutionServiceImpl implements RuleExecutionService {
 
 	public static final String RULE_SERVICE_PROVIDER = "http://drools.org/";
