@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.runtime.action;
 
-import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
@@ -43,6 +43,7 @@ public class ActionDispatcher {
 		
 		//Imagining that i found a notification action
 		Notification notification = new Notification();
+		notification.setActionId(actionId);
 		
 		actionContext.setAction(notification);
 		return actionContext;

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.runtime;
 
-import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher;

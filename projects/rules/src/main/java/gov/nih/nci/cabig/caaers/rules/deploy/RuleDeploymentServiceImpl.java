@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;

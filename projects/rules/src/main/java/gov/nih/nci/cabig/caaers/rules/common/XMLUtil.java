@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 
 import java.io.StringReader;

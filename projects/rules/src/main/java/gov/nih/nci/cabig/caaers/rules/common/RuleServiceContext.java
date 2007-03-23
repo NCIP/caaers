@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.common;
 
 import java.rmi.RemoteException;
 
-import gov.nih.nci.cabig.caaers.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
