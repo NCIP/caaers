@@ -32,12 +32,17 @@ import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
 */
 /**
+ * Adaptor class for converting the Rule in CaAERS format to JBoss Rules format.
  * 
- * Adaptor class for converting the Rule in CaAERS format to 
- * JBoss Rules format.
+ * This class serializes the RuleSet information passed in to XML format.
+ * This XML is passed through an XSLT pipeline which knows how to convert the XML
+ * to another XML format which is applicable to JBoss Rules.
  * 
- * Only this class knows about JBoss Rules and Caeers Generic Rule 
- * format
+ * The JBoss Rule XML is then loaded and compiled. The net output being the Package.
+ * 
+ * The Package object is then returned.
+ * 
+ * Only this class knows about JBoss Rules and Caeers Generic Rule format
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
@@ -57,12 +62,15 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 					"C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
 			Transformer transformer = translet.newTransformer();
 			
-			transformer
-					.transform(
-							new StreamSource(new StringReader(xml)),
-							new StreamResult(
-									new FileOutputStream(
-											"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml")));
+			//For Testing Purpose
+			if(Boolean.TRUE.equals(System.getProperty("caaers.rules.debug"))) {
+				transformer
+						.transform(
+								new StreamSource(new StringReader(xml)),
+								new StreamResult(
+										new FileOutputStream(
+												"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml")));
+			}
 			
 			transformer.transform(new StreamSource(new StringReader(xml)),
 					new StreamResult(outputStream));			
@@ -80,22 +88,26 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 		conf.setCompiler( PackageBuilderConfiguration.JANINO );
 		//conf.setJavaLanguageLevel( "1.4" );
 		
-		Package package1 = new Package();
-		try { 
-			Reader ruleReader = new InputStreamReader(
+		Package droolsPackage = new Package();
+		try {
+			Reader ruleReader = null;
+			
+			//For Testing Purpose
+			if(Boolean.TRUE.equals(System.getProperty("caaers.rules.debug"))) {
+				ruleReader = new InputStreamReader(
 					new FileInputStream ("C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml"));
+			}
 			ruleReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
 			
 			PackageBuilder packageBuilder = new PackageBuilder(conf);
 			packageBuilder.addPackageFromXml(ruleReader);
-			package1 = packageBuilder.getPackage();
+			droolsPackage = packageBuilder.getPackage();
 		} catch (IOException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (DroolsParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuleException(e.getMessage(), e);
 		}
 
-		return package1;
+		return droolsPackage;
 	}
 }
