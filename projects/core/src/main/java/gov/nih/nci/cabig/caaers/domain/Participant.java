@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * @author Krikor Krumlian
+ * @author Rhett Sutphin
  */
 @Entity
 @Table
@@ -27,7 +28,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_participants_id")
     }
 )
-public class Participant extends AbstractDomainObject {
+public class Participant extends AbstractIdentifiableDomainObject {
     private String institutionalPatientNumber;
     private String institution;
     private String firstName;
@@ -39,7 +40,6 @@ public class Participant extends AbstractDomainObject {
     private String race;
     private String ethnicity;
     private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
-    private List<Identifier> identifiers = new ArrayList<Identifier>();
 
     ////// LOGIC
 
@@ -180,23 +180,12 @@ public class Participant extends AbstractDomainObject {
         this.assignments = assignments;
     }
 
+    @Override
     @OneToMany
     @Cascade({CascadeType.ALL,CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     public List<Identifier> getIdentifiers() {
-        return identifiers;
-    }
-
-    public void setIdentifiers(List<Identifier> identifiers) {
-        this.identifiers = identifiers;
-    }
-
-    public void addIdentifier(Identifier identifier) {
-        identifiers.add(identifier);
-    }
-
-    public void removeIdentifier(Identifier identifier) {
-        identifiers.remove(identifier);
+        return super.getIdentifiers();
     }
 
     @Override
