@@ -21,7 +21,8 @@ public class EmailWebServiceClient {
 			+ DEFAULT_SERVER + ":" + DEFAULT_PORT + "/" + DEFAULT_CONTEXT_NAME
 			+ "/services/RuleExecutionServiceImpl";
 	
-	private static final String DEFAULT_SMTP_HOST = "smtp.east.cox.net";
+	private static final String DEFAULT_SMTP_HOST = "smtp.1and1.com"; //"smtp.east.cox.net";
+	//private static final String DEFAULT_SMTP_HOST = "smtp.east.cox.net";
 	
 	private EmailService emailService;
 	
@@ -35,13 +36,13 @@ public class EmailWebServiceClient {
 		this.emailService = new EmailServiceImpl();
 		smtpConfig = new SmtpConfig();
 		smtpConfig.setHost(DEFAULT_SMTP_HOST);
-		smtpConfig.setUser("vtsujith@yahoo.co.uk");
+		smtpConfig.setUser("sujith.vt@semanticbits.com");
 		smtpConfig.setAuth("true");
 
 		EmailInfo emailInfo = new EmailInfo();
 
-		emailInfo.setFrom("vtsujith@yahoo.co.uk");
-		emailInfo.getTo().add("vtsujith@yahoo.co.uk");
+		emailInfo.setFrom("sujith.vt@semanticbits.com");
+		emailInfo.getTo().add("sujith.vt@semanticbits.com");
 		emailInfo.setSubject("Test Mail");
 		emailInfo.setContent("There is not much content.1111..");
 
