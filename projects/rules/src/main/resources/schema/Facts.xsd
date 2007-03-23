@@ -13,9 +13,12 @@
 
 	<xs:element name="adverse-event-SDO">
 		<xs:complexType>
-			<xs:attribute name="category" type="xs:string" use="optional"/>
-			<xs:attribute name="hospitalization" type="xs:string" use="optional"/>
+			<xs:attribute name="phase" type="xs:string" use="optional"/>
 			<xs:attribute name="attribution" type="xs:string" use="optional"/>
+			<xs:attribute name="expected" type="xs:string" use="optional"/>
+			<xs:attribute name="hospitalization" type="xs:string" use="optional"/>
+			<!--  <xs:attribute name="hospitalizationHrs" type="xs:string" use="optional"/>  -->
+			<xs:attribute name="category" type="xs:string" use="optional"/>
 			<xs:attribute name="grade" type="xs:string" use="optional"/>
 			<xs:attribute name="term" type="xs:string" use="optional"/>
 		</xs:complexType>
