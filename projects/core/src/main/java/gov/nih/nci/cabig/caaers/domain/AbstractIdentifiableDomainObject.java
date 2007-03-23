@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractIdentifiableDomainObject extends AbstractDomainObject implements IdentifiableByAssignedIdentifers {
+public abstract class AbstractIdentifiableDomainObject extends AbstractDomainObject implements IdentifiableByAssignedIdentifers {
     private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
     private List<Identifier> identifiers;
 
@@ -53,6 +53,7 @@ public class AbstractIdentifiableDomainObject extends AbstractDomainObject imple
      */
     @Transient
     public List<Identifier> getIdentifiers() {
+        if (identifiers == null) identifiers = new ArrayList<Identifier>();
         return identifiers;
     }
 
