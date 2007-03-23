@@ -47,7 +47,7 @@
                             <tasks>
                                 <mkdir dir="${basedir}/target/local-tomcat"/>
                                 <echo file="${basedir}/target/local-tomcat/context.xml"><![CDATA[
-                                    <Context path="/caaers" docBase="${basedir}/target/${project.build.finalName}" debug="9"/>
+                                    <Context path="/caaers" docBase="${basedir}/src/main/webapp" debug="9"/>
                                 ]]></echo>
                             </tasks>
                         </configuration>
