@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.jws.WebService;
+import javax.mail.Authenticator;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -19,7 +22,8 @@ import javax.mail.internet.MimeMessage;
 public class EmailServiceImpl implements EmailService {
 
 	public void send(EmailInfo ei, SmtpConfig smtpConfig) {
-		MimeMessage mesg = new MimeMessage(getSMTPSession(smtpConfig));
+		Session mailSession = getSMTPSession(smtpConfig);
+		MimeMessage mesg = new MimeMessage(mailSession);
 
 		String addr = ei.getFrom();
 		if (addr != null && addr.trim().length() > 0)
@@ -55,6 +59,19 @@ public class EmailServiceImpl implements EmailService {
 				mesg.setSentDate(new Date());
 
 				System.out.println(ei);
+
+/*				Transport trans = mailSession.getTransport("smtp");
+				trans.connect(
+						mailSession.getProperty("mail.smtp.host"), 
+			        	mailSession.getProperty("mail.smtp.user"), 
+			        	mailSession.getProperty("mail.smtp.password")		
+				);
+				
+				mesg.saveChanges();
+				trans.sendMessage(mesg, mesg.getAllRecipients());
+				
+				trans.close();*/
+				
 				javax.mail.Transport.send(mesg);
 			} catch (AddressException e) {
 				throw new EmailException(e.getMessage(), e);
@@ -80,11 +97,26 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	private Session getSMTPSession(SmtpConfig smtpConfig) {
-		Properties sessionProps = new Properties();
+		Properties sessionProps = System.getProperties();
 		sessionProps.put("mail.smtp.host", smtpConfig.getHost());
 		sessionProps.put("mail.smtp.user", smtpConfig.getUser());
+		sessionProps.put("mail.smtp.password", "Flash@100");
 		sessionProps.put("mail.smtp.auth", true);
-		return javax.mail.Session.getInstance(sessionProps, null);
+		sessionProps.put("mail.smtp.port", "25");
+		sessionProps.put("mail.transport.protocol","smtp");
+		return javax.mail.Session.getInstance(sessionProps, new Auth(smtpConfig));
 	}
+
+	 class Auth extends Authenticator {
+		 
+		 private SmtpConfig smtpConfig = null;
+		 Auth(SmtpConfig smtpConfig) {
+			 this.smtpConfig = smtpConfig;
+		 }
+		 
+	     protected PasswordAuthentication getPasswordAuthentication() {
+	         return new PasswordAuthentication(smtpConfig.getUser(),"Flash@100");
+	     }
+	 }
 
 }
