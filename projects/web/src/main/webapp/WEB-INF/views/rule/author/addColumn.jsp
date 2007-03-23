@@ -35,6 +35,8 @@
 			<form:option value="3"/>
 			<form:option value="4"/>
 			<form:option value="5"/>
+			<form:option value="Yes"/>
+			<form:option value="No"/>
 		</form:select>
 	</span>
 	

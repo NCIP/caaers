@@ -3,8 +3,12 @@ package gov.nih.nci.cabig.caaers.web.rule;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -35,6 +39,11 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
+/**
+ * All the DWR methods specific to rules will be here
+ * 
+ * @author Sujith Vellat Thayyilthodi
+ * */
 public class RuleAjaxFacade {
 
 	private StudyDao studyDao;
@@ -173,24 +182,80 @@ public class RuleAjaxFacade {
 		registerRuleSet(bindUri, ruleSetName);
     }
     
-    public void fireRules(String bindUri, String mode)  throws RemoteException {
+    public void fireRules(String bindUri, String mode) throws RemoteException {
     	StudySDO study = new StudySDO();
     	study.setShortTitle("AML/MDS 9911");
     	List<AdverseEventSDO> list = new ArrayList();
     	if("1".equals(mode)) {
     		list.add(getSuccessful());
-    	} else {
+    	} else if ("2".equals(mode)) {
     		list.add(getNonSuccessful());
+       	} else if ("3".equals(mode)) {
+    		list.add(getSuccessfulAgain());
     	}
-   		ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, study, list);
+
+    	ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, study, list);
     }
     
+    public void fireAERules(String bindUri) throws RemoteException {
+		AdverseEventReport adverseEventReport = null; 
+		StudySDO studySDO = null;
+		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
+		
+		AdverseEvent adverseEvent = adverseEventReport.getPrimaryAdverseEvent(); 
+		if(adverseEvent != null) { //Little over defensive
+			studySDO = new StudySDO();
+			Study study = adverseEventReport.getAssignment().getStudySite().getStudy();
+			studySDO.setShortTitle(study.getShortTitle());
+			
+			AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+			
+			// ATTRIBUTION
+			//adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from -- ask Rhett
+
+			//PHASE -- // Where to get this from -- ask Rhett
+			String phase = adverseEventReport.getAssignment().getStudySite().getStudy().getPhaseCode();
+			adverseEventSDO.setPhase(phase);
+			
+			//EXPECTED
+			boolean expected = adverseEvent.getExpected();
+			adverseEventSDO.setExpected((String.valueOf(expected)));
+			
+			//GRADE
+			int grade = adverseEvent.getGrade().getCode();
+			adverseEventSDO.setGrade(String.valueOf(grade));
+					
+			//CATEGORY
+			CtcCategory category = adverseEvent.getCtcTerm().getCategory();
+			adverseEventSDO.setCategory(category.getName());
+			
+			//CTC TERM
+			CtcTerm ctcTerm = adverseEventReport.getPrimaryAdverseEvent().getCtcTerm();
+			adverseEventSDO.setTerm(ctcTerm.getFullName());
+			
+			//HOSPITALIZATION
+			int hospitalization = adverseEventReport.getPrimaryAdverseEvent().getHospitalization().getCode();
+			Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
+			
+			adverseEventSDO.setHospitalization(isHospitalization.toString());
+		}
+		ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, studySDO, list);
+    }
+
     private AdverseEventSDO getSuccessful() {
     	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-    	adverseEventSDO.setGrade("2");
+    	adverseEventSDO.setGrade("3");
+    	adverseEventSDO.setHospitalization("No");
+    	adverseEventSDO.setAttribution("3");
     	return adverseEventSDO;
     }
 
+    private AdverseEventSDO getSuccessfulAgain() {
+    	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+    	adverseEventSDO.setGrade("1");
+    	return adverseEventSDO;
+    }
+    
     private AdverseEventSDO getNonSuccessful() {
     	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
     	adverseEventSDO.setGrade("0");

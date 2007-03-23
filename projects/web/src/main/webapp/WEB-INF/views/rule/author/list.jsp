@@ -34,7 +34,7 @@
 		
 		function fireRulesNow(mode) {
 			try {
-				authorRule.fireRules("gov.nih.nci.cabig.caaers.rule", mode, function(values) {
+				authorRule.fireRules("gov.nih.nci.cabig.caaers.rule.study", mode, function(values) {
 							alert("rule fired ");
 					});
 			} catch(e) {alert(e)}
@@ -67,12 +67,14 @@
 
 <p>
 
-<a href="javascript:fireRulesNow('1')">Successful Execution</a>
+<a href="javascript:fireRulesNow('3')">Successful Execution</a>
 
 <br/>
 
 <a href="javascript:fireRulesNow('2')">Non - Successful Execution</a>
 </p>
+
+<a href="javascript:fireRulesNow('1')">Successful Execution 2</a>
 
 </body>
 </html>

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.ServiceLocator;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Command Object holding information for Rule authoring 
@@ -53,6 +54,7 @@ public class CreateRuleCommand implements RuleInputCommand {
 			for(Rule rule : rules) {
 				rule.getMetaData().getCategory().add(getStudycategory());
 				rule.getMetaData().setPackageName("gov.nih.nci.cabig.caaers.rule.study");
+				rule.getCondition().getColumn().get(0).setIdentifier("adverseEventSDO");
 				rule.getCondition().getColumn().add(getStudyColumn(getShortTitle()));
 				rule.getMetaData().setDescription("Dummy Description");
 				ServiceLocator.getInstance().getRemoteRuleAuthoringService().createRule(rule);
@@ -122,13 +124,17 @@ public class CreateRuleCommand implements RuleInputCommand {
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.StudySDO");
 		column.setIdentifier("studySDO");
-		FieldConstraint fieldConstraint = column.getFieldConstraint().get(0);
+		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
+		FieldConstraint fieldConstraint = new FieldConstraint();
 		fieldConstraint.setFieldName("shortTitle");
+		fieldConstraints.add(fieldConstraint);
+		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		literalRestriction.setValue(studyShortTitle);
-		fieldConstraint.getLiteralRestriction().add(literalRestriction);
-		column.getFieldConstraint().add(fieldConstraint);
+		literalRestrictions.add(literalRestriction);
+		fieldConstraint.setLiteralRestriction(literalRestrictions);
+		column.setFieldConstraint(fieldConstraints);
 		return column;
 	}
 

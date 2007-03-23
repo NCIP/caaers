@@ -268,10 +268,8 @@
 																<form:option value="3"/>
 																<form:option value="4"/>
 																<form:option value="5"/>
-																<form:option value="Hospitalized"/>
-																<form:option value="Unexpected"/>
-																<form:option value="Unlikely Related"/>
-																<form:option value="5"/>
+																<form:option value="Yes"/>
+																<form:option value="No"/>
 															</form:select>
 														</span>
 
@@ -294,8 +292,8 @@
 													<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 													<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
 														<option value=""/>Please Select-- </option>
-														<form:option value="1">Pending AE Report 3 day Notification</form:option>
-														<form:option value="2">Pending AE Report 5 day Notification</form:option>
+														<form:option value="1">Pending AE Report 5 day Notification</form:option>
+														<form:option value="2">Pending AE Report 10 day Notification</form:option>
 														<form:option value="3">Send Email to Site IRB</form:option>
 														<form:option value="4">Send Email to Study Research Nurse</form:option>
 													</form:select>
@@ -308,22 +306,6 @@
 												</div>
 												<c:if test="${ruleCount} == 0" >
 												<br/>
-												<div id="action-template"  style="margin-left:200px;">
-													<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-													<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
-														<option value=""/>Please Select-- </option>
-														<form:option value="1">Pending AE Report 3 day Notification</form:option>
-														<form:option value="2">Pending AE Report 5 day Notification</form:option>
-														<form:option value="3">Send Email to Site IRB</form:option>
-														<form:option value="4">Send Email to Study Research Nurse</form:option>
-													</form:select>
-													<a href="javascript:addAction(${ruleCount})">
-														<img id="add-action-image" onclick="addAction(${ruleCount})" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand"/>
-													</a>
-													<a href="javascript:addAction(${ruleCount})">
-														<img id="remove-action-image" onclick="deleteAction(${ruleCount})" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand"/>											
-													</a>
-												</div>
 												</c:if>
 											</div>
 										</div>											
