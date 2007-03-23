@@ -1,0 +1,17 @@
+#!/bin/sh
+
+mvn "$@"
+MVN_STATUS="$?"
+
+# Use growl to indicate build completion if available
+GROWL=`which growlnotify`
+if [ -e "$GROWL" ]; then
+    if [ "$MVN_STATUS" -eq 0 ]; then
+        TITLE="caAERS build successful"
+    else
+        TITLE="caAERS build failed"
+    fi
+    echo "
+    `pwd`
+    $@" | $GROWL $TITLE
+fi
