@@ -36,6 +36,8 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 	public RuleSet getRuleSet(String ruleSetId) throws RemoteException;
 
 	public Rule getRule(String ruleId) throws RemoteException;
+	
+	public List<Rule> getRulesByCategory(String categoryPath) throws RemoteException;
 
 	public List<RuleSet> getAllRuleSets() throws RemoteException;
 	

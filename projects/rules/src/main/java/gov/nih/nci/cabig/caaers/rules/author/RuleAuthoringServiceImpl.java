@@ -24,9 +24,6 @@ import javax.rules.RuleServiceProviderManager;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * The entry point for Managing Rules.
  *
@@ -53,15 +50,6 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 
 	private void initializeService() {
 		try {
-/*			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
-					Class
-					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
-*/
-
-/*			this.applicationContext = new ClassPathXmlApplicationContext(
-	                new String[] { "classpath*:config/spring/applicationContext-rules-jc*.xml" });
-*/
 			this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
 
 			RuleServiceProviderManager.registerRuleServiceProvider(
@@ -177,9 +165,16 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 	public List<RuleSet> getAllRuleSets() throws RemoteException {
 		return this.repositoryService.listRuleSets();
 	}
+	
+	public List<Rule> getRulesByCategory(String categoryPath) throws RemoteException {
+		return this.repositoryService.getRulesByCategory(categoryPath);
+	}
 
 	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
 	}
+
+	
+	
 	
 }

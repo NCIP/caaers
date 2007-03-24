@@ -56,7 +56,7 @@ public interface RepositoryService extends Remote {
      * @throws RemoteException 
      */
     public RuleSet getRuleSet(String name) throws RemoteException;
-    
+
     /**
      * This loads up all the stuff for a 
      * rule asset based on the UUID (always latest and editable version).
@@ -75,14 +75,15 @@ public interface RepositoryService extends Remote {
     public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) throws RemoteException;
 
 	
-    public RuleSetInfo[] listRegistrations();
+    public RuleSetInfo[] listRegistrations() throws RemoteException;
 
     
-	public RuleSetInfo getRegisteredRuleset(String bindUri);
+	public RuleSetInfo getRegisteredRuleset(String bindUri) throws RemoteException;
 
 	
-	public void deregisterRuleExecutionSet(String bindUri);
+	public void deregisterRuleExecutionSet(String bindUri) throws RemoteException;
 
 
+	public List<Rule> getRulesByCategory(String string) throws RemoteException;
 
 }

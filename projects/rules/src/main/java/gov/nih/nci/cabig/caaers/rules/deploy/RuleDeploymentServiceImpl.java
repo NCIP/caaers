@@ -90,7 +90,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		}
 	}
 
-	public RuleSetInfo[] listRegistrations() {
+	public RuleSetInfo[] listRegistrations() throws RemoteException {
 		return getRepositoryService().listRegistrations();
 	}
 	

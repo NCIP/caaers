@@ -62,6 +62,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		CategoryItem item = getRulesRepository().loadCategory(path);
 		item.addCategory(category.getMetaData().getName(), category
 				.getMetaData().getDescription());
+		getRulesRepository().save();
 		return Boolean.TRUE;
 	}
 
@@ -298,6 +299,10 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	public void deregisterRuleExecutionSet(String bindUri) {
 		((RulesRepositoryEx) getRulesRepository())
 				.removeCompiledPackage(bindUri);
+	}
+
+	public List<Rule> getRulesByCategory(String categoryTag) throws RemoteException {
+		return getRulesRepository().findAssetsByCategory(categoryTag);
 	}
 
 }

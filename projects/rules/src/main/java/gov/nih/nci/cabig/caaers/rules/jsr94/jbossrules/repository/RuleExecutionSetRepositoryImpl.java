@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
 
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
@@ -32,7 +33,12 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      *         <code>RuleExecutionSet</code>s associated with them.
      */
     public List getRegistrations() {
-    	RuleSetInfo[] ruleSetInfos = getRepositoryService().listRegistrations();
+    	RuleSetInfo[] ruleSetInfos;
+		try {
+			ruleSetInfos = getRepositoryService().listRegistrations();
+		} catch (RemoteException e) {
+			throw new RuleException(e.getMessage(), e);
+		}
        	final List<String> list = new ArrayList<String>();    	
     	for(int i = 0; i < ruleSetInfos.length; i++) {
     		list.add(ruleSetInfos[i].getBindUri());
@@ -51,7 +57,12 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
-    	RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
+    	RuleSetInfo ruleSetInfo;
+		try {
+			ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
+		} catch (RemoteException e) {
+			throw new RuleException(e.getMessage(), e);
+		}
     	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)ruleSetInfo.getContent();
     	return ruleExecutionSet;
     }
@@ -97,7 +108,11 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
         if ( bindUri == null ) {
             throw new NullPointerException( "bindUri cannot be null" );
         }
-        getRepositoryService().deregisterRuleExecutionSet(bindUri);
+        try {
+			getRepositoryService().deregisterRuleExecutionSet(bindUri);
+		} catch (RemoteException e) {
+			throw new RuleException(e.getMessage(),e);
+		}
     }
 
 
