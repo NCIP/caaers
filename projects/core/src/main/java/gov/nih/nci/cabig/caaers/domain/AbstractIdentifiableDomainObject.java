@@ -2,14 +2,11 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Subclass of @{link AbstractDomainObject> that implements
