@@ -110,11 +110,6 @@
                     </select>
                 </div>
             </div>
-
-
-            <c:if test="${empty tab}">
-						    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
-            </c:if>
             
         </form:form>
 

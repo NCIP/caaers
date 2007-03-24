@@ -14,7 +14,7 @@
 
 </head>
 
-<body">
+<body onload="nextTab();">
 
     <p id="instructions">
         You are creating Rules. You can create one or more rules at Sponsor, Institution or Study level.   </p>
