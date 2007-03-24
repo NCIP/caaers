@@ -60,6 +60,7 @@
 
 	<target name="init" depends="default-properties">
 		<mkdir dir="${build-dir.main}"/>
+		<mkdir dir="${build-dir.main}/repo"/>
 		<mkdir dir="${build-dir.unit-test}"/>
 
 		<property name="config.database.file" value="db/${config.database}.properties"/>
@@ -122,7 +123,7 @@
 		<copy todir="${build-dir.main}/client">
 			<fileset dir="${build-dir.main}">
 				<include name="**/Rule*Service.*" />
-				<include name="**/common/*.*" />
+				<include name="**/common/**/*.*" />
 				<include name="**/repository/RepositoryService.*" /> 
 			</fileset>
 		</copy>
