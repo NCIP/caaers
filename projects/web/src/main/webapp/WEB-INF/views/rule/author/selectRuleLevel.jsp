@@ -10,20 +10,11 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="authorRule"/>
-
-    <script type="text/javascript">
-			function nextTab(level) {
-				    $('flowredirect-target').name = "_target" + "1";
-				    $('flowredirect').submit();
-			}
-
-	</script>
-
-  <title>Select Rule Level</title>
+    <title>Select Rule Level</title>
 
 </head>
 
-<body>
+<body">
 
     <p id="instructions">
         You are creating Rules. You can create one or more rules at Sponsor, Institution or Study level.   </p>
@@ -33,29 +24,21 @@
         <form:form cssClass="standard">
 
             <tags:errors path="*"/>
+            
+            <tags:tabFields tab="${tab}"/>
 
 
             <div class="row">
-
-								<a href="javascript:nextTab(1);"> Click here to create Rules at <b>Sponsor</b> Level </a>
-
+                <label><form:radiobutton path="level" value="Sponsor"/>Create Rules at <b>Sponsor</b> Level</label>
             </div>
 
             <div class="row">
-
-								<a href="javascript:nextTab(1);"> Click here to create Rules at <b>Institution</b> Level </a>
-
+                <label><form:radiobutton path="level" value="Institution"/>Create Rules at <b>Institution</b> Level</label>
             </div>
             
             <div class="row">
-
-								<a href="javascript:nextTab(1);"> Click here to create Rules at <b>Study Level</b> </a>
-
+                <label><form:radiobutton path="level" value="Study"/>Create Rules at <b>Study</b> Level</label>
             </div>            
-
-            <c:if test="${empty tab}">
-						    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
-            </c:if>
             
         </form:form>
 
