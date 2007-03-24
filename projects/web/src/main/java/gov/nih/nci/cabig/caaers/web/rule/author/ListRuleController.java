@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,10 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  * */
 public class ListRuleController extends SimpleFormController {
     
-	public ListRuleController() {
+	private RuleAuthoringService ruleAuthoringService;
+	
+	public ListRuleController(RuleAuthoringService ruleAuthoringService) {
+		this.ruleAuthoringService = ruleAuthoringService;
         setCommandClass(ListRuleCommand.class);
         setBindOnNewForm(true);
         setFormView("rule/author/list");
@@ -23,7 +28,7 @@ public class ListRuleController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new ListRuleCommand();
+        return new ListRuleCommand(ruleAuthoringService);
     }
     
     @Override
