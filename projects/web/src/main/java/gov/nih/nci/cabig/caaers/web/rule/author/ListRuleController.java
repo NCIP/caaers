@@ -18,8 +18,7 @@ public class ListRuleController extends SimpleFormController {
     
 	private RuleAuthoringService ruleAuthoringService;
 	
-	public ListRuleController(RuleAuthoringService ruleAuthoringService) {
-		this.ruleAuthoringService = ruleAuthoringService;
+	public ListRuleController() {
         setCommandClass(ListRuleCommand.class);
         setBindOnNewForm(true);
         setFormView("rule/author/list");
@@ -40,4 +39,12 @@ public class ListRuleController extends SimpleFormController {
         refdata.put("pageTitle", "List Rules: Select Rule to Update");
         return refdata;
     }
+
+	public RuleAuthoringService getRuleAuthoringService() {
+		return ruleAuthoringService;
+	}
+
+	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
+		this.ruleAuthoringService = ruleAuthoringService;
+	}
 }

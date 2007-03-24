@@ -16,7 +16,7 @@ public abstract class AbstractRuleInputController <C extends RuleInputCommand> e
 	
     protected AbstractRuleInputController() {
         initFlow();
-        addCommonTabs();
+        
     }
 
     protected void initFlow() {
@@ -24,12 +24,5 @@ public abstract class AbstractRuleInputController <C extends RuleInputCommand> e
     }
     
     protected abstract String getFlowName();
-
-    protected final void addCommonTabs() {
-    	getFlow().addTab(new SelectRueTypeTab());
-    	getFlow().addTab(new TriggerTab());
-        getFlow().addTab(new RuleTab());
-        getFlow().addTab(new ReviewTab());
-    }
 
 }

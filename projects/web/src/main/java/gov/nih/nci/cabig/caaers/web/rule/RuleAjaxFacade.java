@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
@@ -18,8 +19,10 @@ import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
@@ -49,6 +52,12 @@ public class RuleAjaxFacade {
 	private StudyDao studyDao;
 	
 	private CtcTermDao ctcTermDao;
+	
+	private RuleAuthoringService ruleAuthoringService;
+	
+	private RuleExecutionService ruleExecutionService;
+	
+	private RuleDeploymentService ruleDeploymentService;
 	
     public List<Study> matchStudies(String text, Integer participantId) {
         List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
@@ -178,8 +187,7 @@ public class RuleAjaxFacade {
     
     public void deployRuleSet(String ruleSetName) throws RemoteException{
     	String bindUri = "CAAERS_AE_RULES";
-		ServiceLocator.getInstance().getRemoteRuleDeploymentService().
-		registerRuleSet(bindUri, ruleSetName);
+    	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
     }
     
     public void fireRules(String bindUri, String mode) throws RemoteException {
@@ -194,7 +202,7 @@ public class RuleAjaxFacade {
     		list.add(getSuccessfulAgain());
     	}
 
-    	ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, study, list);
+    	getRuleExecutionService().fireRules(bindUri, study, list);
     }
     
     public void fireAERules() throws RemoteException {
@@ -240,7 +248,7 @@ public class RuleAjaxFacade {
 			
 			adverseEventSDO.setHospitalization(isHospitalization.toString());
 		}
-		ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, studySDO, list);
+		getRuleExecutionService().fireRules(bindUri, studySDO, list);
     }
 
     private AdverseEventSDO getSuccessful() {
@@ -327,5 +335,29 @@ public class RuleAjaxFacade {
 		actions.add(action);
 		
 		return actions;
+	}
+
+	public RuleAuthoringService getRuleAuthoringService() {
+		return ruleAuthoringService;
+	}
+
+	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
+		this.ruleAuthoringService = ruleAuthoringService;
+	}
+
+	public RuleDeploymentService getRuleDeploymentService() {
+		return ruleDeploymentService;
+	}
+
+	public void setRuleDeploymentService(RuleDeploymentService ruleDeploymentService) {
+		this.ruleDeploymentService = ruleDeploymentService;
+	}
+
+	public RuleExecutionService getRuleExecutionService() {
+		return ruleExecutionService;
+	}
+
+	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+		this.ruleExecutionService = ruleExecutionService;
 	}
 }
