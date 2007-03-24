@@ -33,21 +33,20 @@ public class CreateRuleCommand implements RuleInputCommand {
 	
 	private String shortTitle;
 	
+	private String level;
+	
 	
 	public CreateRuleCommand() {
 		ruleSet = new RuleSet();
 	}
+	
+
 
 	public void save() {
 		try {
-
-			//Setting package name
-			try {
-				RuleSet studyRuleSet = ServiceLocator.getInstance().getRemoteRuleAuthoringService().getRuleSet("gov.nih.nci.cabig.caaers.rule.study");
-			} catch(Exception exception) {
-				ruleSet.setName("gov.nih.nci.cabig.caaers.rule.study");
-				ServiceLocator.getInstance().getRemoteRuleAuthoringService().createRuleSet(ruleSet);
-			}
+			
+			//Create Package if it does not exist
+			createPackage();
 
 			List<Rule> rules = ruleSet.getRule();
 			//Set the Package name and category for all rules before saving them.
@@ -62,6 +61,15 @@ public class CreateRuleCommand implements RuleInputCommand {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void createPackage() throws RemoteException {
+		try {
+			RuleSet studyRuleSet = ServiceLocator.getInstance().getRemoteRuleAuthoringService().getRuleSet(getPackageName());
+		} catch(Exception exception) {
+			ruleSet.setName(getPackageName());
+			ServiceLocator.getInstance().getRemoteRuleAuthoringService().createRuleSet(ruleSet);
+		}		
 	}
 
 	/**
@@ -146,6 +154,22 @@ public class CreateRuleCommand implements RuleInputCommand {
 		this.shortTitle = shortTitle;
 	}
 
+	public String getLevel() {
+		return level;
+	}
 
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	private String getPackageName() {
+		String packageName = "gov.nih.nci.cabig.caaers.rule.study";
+		if(INSTITUTIONAL_LEVEL.equals(getLevel())) {
+			packageName = "gov.nih.nci.cabig.caaers.rule.institution";
+		} else if(SPONSOR_LEVEL.equals(getLevel())) {
+			packageName = "gov.nih.nci.cabig.caaers.rule.sponsor";
+		}
+		return packageName;
+	}
 
 }

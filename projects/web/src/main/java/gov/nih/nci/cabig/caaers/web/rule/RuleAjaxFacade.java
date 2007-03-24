@@ -177,7 +177,7 @@ public class RuleAjaxFacade {
     }
     
     public void deployRuleSet(String ruleSetName) throws RemoteException{
-    	String bindUri = "URI_1";
+    	String bindUri = "CAAERS_AE_RULES";
 		ServiceLocator.getInstance().getRemoteRuleDeploymentService().
 		registerRuleSet(bindUri, ruleSetName);
     }
@@ -197,8 +197,9 @@ public class RuleAjaxFacade {
     	ServiceLocator.getInstance().getRemoteExecutionService().fireRules(bindUri, study, list);
     }
     
-    public void fireAERules(String bindUri) throws RemoteException {
-		AdverseEventReport adverseEventReport = null; 
+    public void fireAERules() throws RemoteException {
+    	String bindUri = "CAAERS_AE_RULES";
+    	AdverseEventReport adverseEventReport = null; 
 		StudySDO studySDO = null;
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 		
