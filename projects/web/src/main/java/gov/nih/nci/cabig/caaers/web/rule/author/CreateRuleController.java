@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 
 import java.util.Map;
@@ -17,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
  * */
 public class CreateRuleController extends AbstractRuleInputController<CreateRuleCommand> {
 
+	private RuleAuthoringService ruleAuthoringService;
+	
     public CreateRuleController() {
         super();
-        setCommandClass(CreateRuleCommand.class);
+        addCommonTabs();
     }
 
 	@Override
@@ -31,14 +34,35 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return new ModelAndView("redirectToTriggerList", model);
 
 	}
+	
+	@Override
+	protected Object formBackingObject(HttpServletRequest request) {
+		return new CreateRuleCommand(ruleAuthoringService);	
+	}
 
     @Override
     protected void initFlow() {
         super.initFlow();
+        
     }
 
     @Override
     protected String getFlowName() {
         return "Author Rule";
     }
+
+    protected void addCommonTabs() {
+    	getFlow().addTab(new SelectRueTypeTab());
+    	getFlow().addTab(new TriggerTab());
+        getFlow().addTab(new RuleTab(ruleAuthoringService));
+        getFlow().addTab(new ReviewTab());
+    }    
+    
+	public RuleAuthoringService getRuleAuthoringService() {
+		return ruleAuthoringService;
+	}
+
+	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
+		this.ruleAuthoringService = ruleAuthoringService;
+	}
 }
