@@ -17,19 +17,8 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * */
 public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepository {
 
-	
-	/** The Singleton instance of the repository. */
-    // private static RuleExecutionSetRepository REPOSITORY;
-    /** Holds the registered <code>RuleExecutionSet</code> objects. */
-    //private final Map         map              = new HashMap();
 
-    private RepositoryService repositoryService;
-
-
-    /** Private constructor; use <code>getInstance</code> instead. */
     public RuleExecutionSetRepositoryImpl() {
-        // Hide the constructor.
-		//this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
     }
 
 
@@ -48,7 +37,6 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
     	for(int i = 0; i < ruleSetInfos.length; i++) {
     		list.add(ruleSetInfos[i].getBindUri());
     	}
-        //list.addAll( this.map.keySet() );
         return list;
     }
 
@@ -92,12 +80,10 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
 		ruleSetInfo.setContent(ruleExecutionSet);
 		ruleSetInfo.setBindUri(bindUri);
 		try {
-			getRepositoryService().registerRuleSet(ruleExecutionSet.getName(), ruleSetInfo);
+			getRepositoryService().registerRuleSet(bindUri, ruleSetInfo);
 		} catch (RemoteException e) {
 			throw new RuleExecutionSetRegisterException(e.getMessage(), e);
 		}
-
-		//this.map.put( bindUri, ruleExecutionSet );
     }
     
 
@@ -112,18 +98,11 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
             throw new NullPointerException( "bindUri cannot be null" );
         }
         getRepositoryService().deregisterRuleExecutionSet(bindUri);
-
-        //this.map.remove( bindUri );
     }
 
 
 	public RepositoryService getRepositoryService() {
 		return RuleServiceContext.getInstance().repositoryService;
-		//return repositoryService;
 	}
 
-
-/*	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}*/
 }
