@@ -5,48 +5,50 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.List;
 
 /**
  * 
+ * 
  * @author Sujith Vellat Thayyilthodi 
  * */
-public interface RepositoryService extends Remote {
+public interface RepositoryService {
 
 	/**
      * This will create a new category at the specified path.
      */
-    public Boolean createCategory(Category category) throws RemoteException;
+    public Boolean createCategory(Category category);
+    
+    /**
+     * Returns the Category associated with the category path passed in as argument
+     * */
+    public Category getCategory(String categoryPath);
     
     /**
      * Creates a brand new rule with the initial category.
      * Return the UUID of the item created.
      * String ruleName, String description, String initialCategory, String initialPackage, String format
      */
-    public String createRule(Rule rule) throws RemoteException;
+    public String createRule(Rule rule);
     
     
-    public void updateRule(Rule rule) throws RemoteException;
+    public void updateRule(Rule rule);
     
     /**
-     * Move the rule from one Ruleset/package to another
-     * @throws RemoteException 
-     *  
+     * Move the rule from one Ruleset/package to another 
      * */
-    public void moveRule(String newRuleSetName, String ruleId) throws RemoteException;
+    public void moveRule(String newRuleSetName, String ruleId);
     
     /**
      * 
      * */
-    public String createRuleSet(RuleSet ruleSet) throws RemoteException;
+    public String createRuleSet(RuleSet ruleSet);
     
     /**
      * 
      * This returns a list of packages where rules may be added.
      */
-    public List<RuleSet> listRuleSets() throws RemoteException;
+    public List<RuleSet> listRuleSets();
 
     
     /**
@@ -55,35 +57,35 @@ public interface RepositoryService extends Remote {
      * @return Well, its pretty obvious if you think about it for a minute. Really.
      * @throws RemoteException 
      */
-    public RuleSet getRuleSet(String name) throws RemoteException;
+    public RuleSet getRuleSet(String name);
 
     /**
      * This loads up all the stuff for a 
      * rule asset based on the UUID (always latest and editable version).
      * @param ruleId UUID
      */
-    public Rule getRule(String ruleId) throws RemoteException;    
+    public Rule getRule(String ruleId);    
     
     /**
      * This checks in a new version of an asset. 
      * @return the UUID of the asset you are checking in, 
      * null if there was some problem (and an exception was not thrown).
      */
-    public String checkinVersion(Rule rule) throws RemoteException;
+    public String checkinVersion(Rule rule);
     
     
-    public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) throws RemoteException;
+    public String registerRuleSet(String name, RuleSetInfo ruleSetInfo);
 
 	
-    public RuleSetInfo[] listRegistrations() throws RemoteException;
+    public RuleSetInfo[] listRegistrations();
 
     
-	public RuleSetInfo getRegisteredRuleset(String bindUri) throws RemoteException;
+	public RuleSetInfo getRegisteredRuleset(String bindUri);
 
 	
-	public void deregisterRuleExecutionSet(String bindUri) throws RemoteException;
+	public void deregisterRuleExecutionSet(String bindUri);
 
 
-	public List<Rule> getRulesByCategory(String string) throws RemoteException;
+	public List<Rule> getRulesByCategory(String string);
 
 }

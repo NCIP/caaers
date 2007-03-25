@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
 
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
@@ -11,7 +12,6 @@ import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +53,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 
 	private Repository repository;
 
-	public Boolean createCategory(Category category) throws RemoteException {
+	public Boolean createCategory(Category category) {
 		String path = category.getPath();
 		if (path == null || "".equals(path)) {
 			path = "/";
@@ -66,38 +66,37 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return Boolean.TRUE;
 	}
 
-	public String createRule(Rule rule) throws RemoteException {
-		try {
-			MetaData metaData = rule.getMetaData();
-			PackageItem packageItem = getRulesRepository().loadPackage(
-					metaData.getPackageName());
-			Category initialCategory = metaData.getCategory().get(0);
-			String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
-					.getMetaData().getName() : getDefaultCategory();
-			AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
-					.getDescription(), categoryName, metaData.getFormat());
-			asset.updateContent(XMLUtil.marshal(rule));
-			getRulesRepository().save();
-			return asset.getUUID();
-		} catch (RulesRepositoryException ex) {
-			throw new RemoteException(ex.getMessage(), ex);
-		}
+	public String createRule(Rule rule) {
+		MetaData metaData = rule.getMetaData();
+		PackageItem packageItem = getRulesRepository().loadPackage(
+				metaData.getPackageName());
+		Category initialCategory = metaData.getCategory().get(0);
+		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
+				.getMetaData().getName() : getDefaultCategory();
+		AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
+				.getDescription(), categoryName, metaData.getFormat());
+		asset.updateContent(XMLUtil.marshal(rule));
+		getRulesRepository().save();
+		return asset.getUUID();
 	}
 
 	private String getDefaultCategory() {
 		return "default";
 	}
 
-	public void updateRule(Rule rule) throws RemoteException {
-		try {
+	public void updateRule(Rule rule) {
 			AssetItem assetItem = getRulesRepository().loadAssetByUUID(
 					rule.getId());
 
 			// Check whether the node is updateable
-			if (assetItem.getNode().getPrimaryNodeType().getName().equals(
-					"nt:version")) {
-				String message = "Error. Tags can only be added to the head version of a rule node";
-				throw new RulesRepositoryException(message);
+			try {
+				if (assetItem.getNode().getPrimaryNodeType().getName().equals(
+						"nt:version")) {
+					String message = "Error. Tags can only be added to the head version of a rule node";
+					throw new RulesRepositoryException(message);
+				}
+			} catch (RepositoryException e) {
+				throw new RuleException(e.getMessage(), e); 			
 			}
 			MetaData meta = rule.getMetaData();
 			assetItem.updateDateEffective(meta.getDateEffective()
@@ -108,21 +107,16 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			int numberOfCategories = categoryList.size();
 			String[] categories = new String[numberOfCategories];
 			for (int i = 0; i < numberOfCategories; i++) {
-				categories[i] = categoryList.get(i).getMetaData().getName();
+				categories[i] = categoryList.get(i).getPath() + "/"+ categoryList.get(i).getMetaData().getName();
 			}
 			assetItem.updateCategoryList(categories);
-			assetItem.updateContent(XMLUtil.marshal(rule));
+//			assetItem.updateContent(XMLUtil.marshal(rule));
 			assetItem.updateState(StateItem.DRAFT_STATE_NAME);
 			getRulesRepository().save();
-		} catch (RulesRepositoryException ex) {
-			throw new RemoteException(ex.getMessage(), ex);
-		} catch (RepositoryException ex) {
-			throw new RemoteException(ex.getMessage(), ex);
-		}
 
 	}
 
-	public String createRuleSet(RuleSet ruleSet) throws RemoteException {
+	public String createRuleSet(RuleSet ruleSet) {
 		PackageItem item = getRulesRepository().createPackage(
 				ruleSet.getName(), ruleSet.getDescription());
 		List imports = ruleSet.getImport();
@@ -135,7 +129,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return item.getUUID();
 	}
 
-	public Rule getRule(String ruleId) throws RemoteException {
+	public Rule getRule(String ruleId) {
 		AssetItem item = getRulesRepository().loadAssetByUUID(ruleId);
 		Rule rule = (Rule) XMLUtil.unmarshal(item.getContent());
 		return rule;
@@ -155,8 +149,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return ruleSetList;
 	}
 
-	public RuleSet getRuleSet(String name) throws RemoteException {
-		try {
+	public RuleSet getRuleSet(String name) {
+		
 			PackageItem item = getRulesRepository().loadPackage(name);
 			RuleSet ruleSet = new RuleSet();
 			ruleSet.setId(item.getUUID());
@@ -176,12 +170,10 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 				ruleSet.getRule().add(rule);
 			}
 			return ruleSet;
-		} catch (RulesRepositoryException ex) {
-			throw new RemoteException(ex.getMessage(), ex);
-		}
+		
 	}
 
-	public String checkinVersion(Rule rule) throws RemoteException {
+	public String checkinVersion(Rule rule) {
 		AssetItem assetItem = getRulesRepository()
 				.loadAssetByUUID(rule.getId());
 		MetaData meta = rule.getMetaData();
@@ -204,8 +196,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return assetItem.getUUID();
 	}
 
-	public void moveRule(String newRuleSetName, String ruleId)
-			throws RemoteException {
+	public void moveRule(String newRuleSetName, String ruleId) {
 		getRulesRepository().moveRuleItemPackage(newRuleSetName, ruleId, "");
 	}
 
@@ -245,8 +236,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return rulesRepository;
 	}
 
-	public String registerRuleSet(String name, RuleSetInfo ruleSetInfo)
-			throws RemoteException {
+	public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) {
 		CompiledPackageItem compiledPackageItem = ((RulesRepositoryEx) getRulesRepository())
 				.createCompiledPackage(name, ruleSetInfo.getContent());
 		return compiledPackageItem.getUUID();
@@ -301,8 +291,19 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 				.removeCompiledPackage(bindUri);
 	}
 
-	public List<Rule> getRulesByCategory(String categoryTag) throws RemoteException {
+	public List<Rule> getRulesByCategory(String categoryTag) {
 		return getRulesRepository().findAssetsByCategory(categoryTag);
+	}
+
+	public Category getCategory(String categoryPath) {
+		CategoryItem categoryItem = getRulesRepository().loadCategory(categoryPath);
+		
+		Category category = new Category();
+		category.setPath(categoryItem.getFullPath());
+		MetaData metaData = new MetaData();
+		metaData.setName(categoryItem.getName());
+		category.setMetaData(metaData);
+		return category;
 	}
 
 }

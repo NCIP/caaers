@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.author;
 
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
+import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,9 @@ import javax.rules.RuleServiceProviderManager;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 /**
  * The entry point for Managing Rules.
  *
@@ -143,7 +148,18 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 	}
 	
 	public String createRule(Rule rule) throws RemoteException {
-		return this.repositoryService.createRule(rule);		
+		String ruleId = this.repositoryService.createRule(rule);
+		rule.setId(ruleId);
+		MetaData metaData = rule.getMetaData();
+		metaData.setCheckinComment("Initial Version");
+		try {
+			metaData.setDateEffective(DatatypeFactory.newInstance().newXMLGregorianCalendar());
+			metaData.setDateExpired(DatatypeFactory.newInstance().newXMLGregorianCalendar());
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+		}
+		this.updateRule(rule);
+		return ruleId;
 	}
 
 	public void updateRule(Rule rule) throws RemoteException {
@@ -172,6 +188,10 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 
 	public void setRepositoryService(RepositoryService repositoryService) {
 		this.repositoryService = repositoryService;
+	}
+
+	public Category getCategory(String categoryPath) throws RemoteException {
+		return this.repositoryService.getCategory(categoryPath);
 	}
 
 	

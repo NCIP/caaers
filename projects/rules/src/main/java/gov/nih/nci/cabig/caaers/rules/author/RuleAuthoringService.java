@@ -25,6 +25,8 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 
 	public void createCategory(Category category) throws RemoteException;
 	
+	public Category getCategory(String categoryPath) throws RemoteException;
+	
 	public void createRuleSet(RuleSet ruleSet) throws RemoteException;
 	
 	public String createRule(Rule rule) throws RemoteException;
@@ -44,5 +46,5 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 	public void setRepositoryService(RepositoryService repositoryService);
 
 	public void addRuleExecutionSet(final String bindUri,
-				final InputStream resourceAsStream, final Map properties); 
+				final InputStream resourceAsStream, final Map properties);
 }

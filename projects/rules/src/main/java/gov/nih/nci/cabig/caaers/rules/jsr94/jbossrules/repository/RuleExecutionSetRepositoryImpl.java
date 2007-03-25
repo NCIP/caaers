@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +31,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      *         <code>RuleExecutionSet</code>s associated with them.
      */
     public List getRegistrations() {
-    	RuleSetInfo[] ruleSetInfos;
-		try {
-			ruleSetInfos = getRepositoryService().listRegistrations();
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
+    	RuleSetInfo[] ruleSetInfos = getRepositoryService().listRegistrations();
        	final List<String> list = new ArrayList<String>();    	
     	for(int i = 0; i < ruleSetInfos.length; i++) {
     		list.add(ruleSetInfos[i].getBindUri());
@@ -57,12 +50,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
-    	RuleSetInfo ruleSetInfo;
-		try {
-			ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
+    	RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
     	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)ruleSetInfo.getContent();
     	return ruleExecutionSet;
     }
@@ -90,11 +78,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
 		RuleSetInfo ruleSetInfo = new RuleSetInfo();
 		ruleSetInfo.setContent(ruleExecutionSet);
 		ruleSetInfo.setBindUri(bindUri);
-		try {
-			getRepositoryService().registerRuleSet(bindUri, ruleSetInfo);
-		} catch (RemoteException e) {
-			throw new RuleExecutionSetRegisterException(e.getMessage(), e);
-		}
+		getRepositoryService().registerRuleSet(bindUri, ruleSetInfo);
     }
     
 
@@ -108,11 +92,7 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
         if ( bindUri == null ) {
             throw new NullPointerException( "bindUri cannot be null" );
         }
-        try {
-			getRepositoryService().deregisterRuleExecutionSet(bindUri);
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(),e);
-		}
+		getRepositoryService().deregisterRuleExecutionSet(bindUri);
     }
 
 
