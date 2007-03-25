@@ -1,11 +1,9 @@
 class CreateGridIdentifiers extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
         if (databaseMatches('oracle')) {
-            File input = new File("src/main/db/migrate/002_iteration_2/GridIdentifiersOracleSQL_create.sql")
-            execute(input.text)
+            external("GridIdentifiersOracleSQL_create.sql")
         } else if (databaseMatches('postgresql')){
-            File input = new File("src/main/db/migrate/002_iteration_2/GridIdentifiersPostgreSQL_create.sql")
-            execute(input.text)
+            external("GridIdentifiersPostgreSQL_create.sql")
         }
         
         addColumn('adverse_events','grid_id' , 'string' , nullable:true);
