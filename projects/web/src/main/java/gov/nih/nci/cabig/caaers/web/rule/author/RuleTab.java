@@ -11,31 +11,30 @@ import java.util.Map;
 
 
 /**
- * 
+ * This tab will display all the Rules.
+ * User will be crreating / editing / deleting rules from this tab.
  * @author Sujith Vellat Thayyilthodi
  * */
 public class RuleTab extends DefaultTab {
-
-	private RuleAuthoringService ruleAuthoringService;
 	
 	public RuleTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 	}
 
-	public RuleTab(RuleAuthoringService ruleAuthoringService) {
-		super("Add Rules","Rules","rule/author/authorRules");
-		this.ruleAuthoringService = ruleAuthoringService;		
+	public RuleTab() {
+		super("Add Rules","Rules","rule/author/authorRules");		
 	}
 
     @Override
     public Map<String, Object> referenceData(RuleInputCommand command) {
-    	RuleSet ruleSet = ((CreateRuleCommand)command).getRuleSet();
+    	CreateRuleCommand createRuleCommand = ((CreateRuleCommand)command);
+    	RuleSet ruleSet = createRuleCommand.getRuleSet();
     	if (ruleSet.getRule().size() == 0) {
 			try {
-				List<Rule> rules = ruleAuthoringService.getRulesByCategory(
-								getCategoryPath((CreateRuleCommand) command));
+				RuleAuthoringService ruleAuthoringService = createRuleCommand.getRuleAuthoringService();
+				List<Rule> rules = ruleAuthoringService.getRulesByCategory(getCategoryPath((CreateRuleCommand) command));
 				ruleSet.getRule().addAll(rules);
-				((CreateRuleCommand) command).setRuleSet(ruleSet);
+				createRuleCommand.setRuleSet(ruleSet);
 			} catch (Exception e) {
 				e.printStackTrace();
 				//throw new CaaersSystemException(e.getMessage(), e);

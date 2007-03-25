@@ -22,7 +22,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
     public CreateRuleController() {
         super();
-        addCommonTabs();
+        addTabs();
     }
 
 	@Override
@@ -51,10 +51,10 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return "Author Rule";
     }
 
-    protected void addCommonTabs() {
+    protected void addTabs() {
     	getFlow().addTab(new SelectRueTypeTab());
     	getFlow().addTab(new TriggerTab());
-        getFlow().addTab(new RuleTab(ruleAuthoringService));
+        getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
     }    
     
