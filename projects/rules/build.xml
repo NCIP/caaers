@@ -60,7 +60,6 @@
 
 	<target name="init" depends="default-properties">
 		<mkdir dir="${build-dir.main}"/>
-		<mkdir dir="${build-dir.main}/repo"/>
 		<mkdir dir="${build-dir.unit-test}"/>
 
 		<property name="config.database.file" value="db/${config.database}.properties"/>
@@ -152,6 +151,7 @@
 	<target name="webserviceapp">
 		<mkdir dir="build/dist" />
 		<mkdir dir="build/dist/WEB-INF/lib" />
+		<mkdir dir="build/dist/WEB-INF/classes/repo" />
 		<copy todir="build/dist/WEB-INF/lib" flatten="true" >
 			<fileset dir="lib/main">
 				<include name="**/*.jar"/>
