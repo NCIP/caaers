@@ -67,8 +67,22 @@
                             <goal>test-compile</goal>
                         </goals>
                     </execution>
-               </executions>
-           </plugin>
+                </executions>
+            </plugin>
+            <!-- clean up from war:inplace  -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/webapp/WEB-INF/lib</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/webapp/WEB-INF/classes</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
