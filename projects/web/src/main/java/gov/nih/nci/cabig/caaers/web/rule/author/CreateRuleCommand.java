@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Command Object holding information for Rule authoring 
  * 
@@ -87,16 +89,6 @@ public class CreateRuleCommand implements RuleInputCommand {
 		}
 	}
 	
-	private void createCategory(String path, String name, String description) throws RemoteException {
-		Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath(path);
-		metaData.setName(name);
-		metaData.setDescription(description);
-		category.setMetaData(metaData);		
-		ruleAuthoringService.createCategory(category);
-	}
-	
 	public RuleSet getRuleSet() {
 		return ruleSet;
 	}
@@ -132,45 +124,53 @@ public class CreateRuleCommand implements RuleInputCommand {
 	}
 	
 	
-	private List<Category> getAllCategories() throws RemoteException {
+	private List<Category> getAllCategories() {
 		List<Category> categories = new ArrayList<Category>();
 		if(STUDY_LEVEL.equals(getLevel())) {
 			String study = getCategory();
 			categories.add(getStudycategory());
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL + "/" + STUDY_LEVEL);
-			metaData.setName(study);
-			metaData.setDescription("Study Level Triggers are registered under this category");
-			category.setMetaData(metaData);		
-			ruleAuthoringService.createCategory(category);
+			Category category = createCategory(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL + "/" + STUDY_LEVEL, study, "Sponsor Level Rules are registered under this category");
 			categories.add(category);
 		} else if(INSTITUTIONAL_LEVEL.equals(getLevel())) {
 			String institution = getCategory();
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL);
-			metaData.setName(institution);
-			metaData.setDescription("Study Level Triggers are registered under this category");
-			category.setMetaData(metaData);		
-			ruleAuthoringService.createCategory(category);				
+			Category category = createCategory(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL, institution, "Institution Level Rules are registered under this category");
 			categories.add(category);
 		} else if(SPONSOR_LEVEL.equals(getLevel())) {
 			String sponsor = getCategory();
 			categories.add(getSponsorCategory());
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(SPONSOR_LEVEL);
-			metaData.setName(sponsor);
-			metaData.setDescription("Study Level Triggers are registered under this category");
-			category.setMetaData(metaData);		
-			ruleAuthoringService.createCategory(category);			
+			Category category = createCategory(SPONSOR_LEVEL, sponsor, "Institution Level Rules are registered under this category");
 			categories.add(category);
 		}
-		
 		return categories;
 	}
 
+	/**
+	 * Create a category if it does not exist in the DB
+	 * */
+	private Category createCategory(String path, String name, String description) {
+		Category category = null;
+		try {
+			category = ruleAuthoringService.getCategory(path + "/" + name);
+		} catch(RemoteException e) {
+			//Forget this exception now
+			e.printStackTrace();
+		}
+		category = new Category();
+		MetaData metaData = new MetaData();
+		category.setPath(path);
+		metaData.setName(name);
+		metaData.setDescription(description);
+		category.setMetaData(metaData);		
+		try {
+			ruleAuthoringService.createCategory(category);
+		} catch(RemoteException remoteException) {
+			throw new CaaersSystemException(remoteException.getMessage(), remoteException);
+		}
+		return category;
+	}
+	
+
+	
 	public Category getStudycategory() {
         Category category = new Category();
 		MetaData metaData = new MetaData();
@@ -226,6 +226,14 @@ public class CreateRuleCommand implements RuleInputCommand {
 			fieldName = "site";
 		}
 		return fieldName;
+	}
+
+	public RuleAuthoringService getRuleAuthoringService() {
+		return ruleAuthoringService;
+	}
+
+	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
+		this.ruleAuthoringService = ruleAuthoringService;
 	}
 
 }
