@@ -35,7 +35,7 @@
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -63,6 +63,25 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate</artifactId>
             <version>3.2.1.ga</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>asm</groupId>
+                    <artifactId>asm-attrs</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_3</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -78,6 +97,11 @@
             <groupId>org.jibx</groupId>
             <artifactId>jibx-bind</artifactId>
             <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.northwestern.bioinformatics</groupId>
+            <artifactId>bering</artifactId>
+            <version>0.6-SNAPSHOT</version>
         </dependency>
 
         <!-- TODO: ESB-specific stuff should be in a different module -->
@@ -96,9 +120,21 @@
             <artifactId>activemq-core</artifactId>
             <version>4.1-SNAPSHOT</version>
         </dependency>
+        <dependency> <!-- This is apparently an activemq dep, but it isn't getting pulled in -->
+            <groupId>backport-util-concurrent</groupId>
+            <artifactId>backport-util-concurrent</artifactId>
+            <version>3.0</version>
+        </dependency>
 
         <!-- RUNTIME-ONLY DEPS -->
 
+<!--
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+-->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -131,6 +167,13 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc14</artifactId>
             <version>10.2.0.2.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Groovy (used by bering) needs this version, but hibernate is pulling in 1.5.3 -->
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>2.2.3</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -268,6 +311,12 @@
                     <username>${datasource.username}</username>
                     <password>${datasource.password}</password>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals><goal>resources</goal></goals>
+                    </execution>
+                </executions>
                 <dependencies>
                     <dependency>
                         <groupId>postgresql</groupId>
