@@ -29,12 +29,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     private AdverseEventReportDao reportDao;
     private RuleExecutionService ruleExecutionService;
     
-    
-    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-		this.ruleExecutionService = ruleExecutionService;
-	}
-
-	public CreateAdverseEventController() {
+    public CreateAdverseEventController() {
         super();
         setCommandClass(CreateAdverseEventCommand.class);
     }
@@ -71,5 +66,9 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
         // TODO: this is a dumb, short-term solution
         ((BasicsTab) getFlow().getTab(1)).setCtcDao(ctcDao);
     }
+
+    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+		this.ruleExecutionService = ruleExecutionService;
+	}
 
 }
