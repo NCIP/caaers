@@ -131,6 +131,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 		Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
 		
 		adverseEventSDO.setHospitalization(isHospitalization.toString());
+		list.add(adverseEventSDO);
 		try {
 			getRuleExecutionService().fireRules(bindUri, studySDO, list);
 		}catch(Exception e) {

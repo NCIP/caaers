@@ -24,7 +24,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     private RuleExecutionService ruleExecutionService;
 
     public EditAdverseEventController() {
-        setCommandClass(EditAdverseEventCommand.class);
+        //setCommandClass(EditAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
 
