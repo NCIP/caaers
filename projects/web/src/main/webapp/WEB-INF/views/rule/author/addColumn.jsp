@@ -28,16 +28,20 @@
 	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 	<span id="rule-${ruleCount}-column-${columnCount}-field-value">
-		<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
-			<option value=""/>Please Select-- </option>
-			<form:option value="1"/>
-			<form:option value="2"/>
-			<form:option value="3"/>
-			<form:option value="4"/>
-			<form:option value="5"/>
-			<form:option value="Yes"/>
-			<form:option value="No"/>
-		</form:select>
+	<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
+	<%--
+	<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
+		<option value=""/>Please Select-- </option>
+		<form:option value="1"/>
+		<form:option value="2"/>
+		<form:option value="3"/>
+		<form:option value="4"/>
+		<form:option value="5"/>
+		<form:option value="Yes"/>
+		<form:option value="No"/>
+		<form:option value="Phase I Trial"/>
+	</form:select>
+	--%>
 	</span>
 	
 	<a href="javascript:fetchCondition(${ruleCount})">
