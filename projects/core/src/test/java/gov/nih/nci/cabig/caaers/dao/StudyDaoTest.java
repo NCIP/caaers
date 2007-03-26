@@ -76,6 +76,16 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         assertEquals("Wrong number of matches", 1, actual.size());
         assertEquals("Wrong match", -2, (int) actual.get(0).getId());
     }
+
+    public void testGetBySubnameWithNullSubnamesReturnsNothing() throws Exception {
+        List<Study> actual = getDao().getBySubnames(null);
+        assertEquals(0, actual.size());
+    }
+    
+    public void testGetBySubnameWithNoSubnamesReturnsNothing() throws Exception {
+        List<Study> actual = getDao().getBySubnames(new String[] { });
+        assertEquals(0, actual.size());
+    }
     
     public void testSearchByExactExample() throws Exception {
         Study example = new Study();

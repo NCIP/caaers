@@ -18,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.Collections;
 import java.sql.SQLException;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
@@ -64,6 +65,8 @@ public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupp
         String[] subnames, String extraConditions, List<Object> extraParameters,
         List<String> substringMatchProperties, List<String> exactMatchProperties
     ) {
+        if (subnames == null || subnames.length == 0) return Collections.emptyList();
+
         StringBuilder query = new StringBuilder("from ")
             .append(domainClass().getName()).append(" o where ");
         if (extraConditions != null) query.append(extraConditions).append(" and ");

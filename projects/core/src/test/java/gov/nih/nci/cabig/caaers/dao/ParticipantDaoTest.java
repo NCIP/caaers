@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.Date;
 import java.util.List;
@@ -114,6 +115,16 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         List<Participant> matches = getDao().getBySubnames(new String[] { "P002" });
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
+    }
+
+    public void testGetBySubnameWithNullSubnamesReturnsNothing() throws Exception {
+        List<Participant> actual = getDao().getBySubnames(null);
+        assertEquals(0, actual.size());
+    }
+
+    public void testGetBySubnameWithNoSubnamesReturnsNothing() throws Exception {
+        List<Participant> actual = getDao().getBySubnames(new String[] { });
+        assertEquals(0, actual.size());
     }
 
     public void testGetBySubnameMatchesIntersectionOfMultiple() throws Exception {
