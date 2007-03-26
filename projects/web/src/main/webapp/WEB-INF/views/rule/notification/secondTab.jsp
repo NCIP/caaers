@@ -1,5 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ruletags" tagdir="/WEB-INF/tags/rule"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -46,7 +47,7 @@
 
             <div id="ruleset-fields">
                 <c:forEach items="${fieldGroups.ruleset.fields}" var="field">
-                    <tags:row field="${field}"/>
+                    <ruletags:row field="${field}"/>
                 </c:forEach>
             </div>
 
