@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -29,14 +33,18 @@ public class CreateRuleCommand implements RuleInputCommand {
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
+	private StudyDao studyDao;
+	
 	private RuleSet ruleSet;
 	
-	private String category;
+	private String categoryIdentifier;
 	
 	private String level;
 	
-	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService) {
-		this.ruleAuthoringService = ruleAuthoringService;
+	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao) {
+		setRuleAuthoringService(ruleAuthoringService);
+		setStudyDao(studyDao);
+		
 		createCategories();
 		ruleSet = new RuleSet();
 	}
@@ -48,14 +56,17 @@ public class CreateRuleCommand implements RuleInputCommand {
 			createPackage();
 
 			List<Rule> rules = ruleSet.getRule();
-			//Set the Package name and category for all rules before saving them.
+			//Set the Package name and categoryIdentifier for all rules before saving them.
 			for(Rule rule : rules) {
 				rule.getMetaData().getCategory().addAll(getAllCategories());
 				rule.getMetaData().setPackageName(getPackageName());
 				//rule.getCondition().getColumn().get(0).setIdentifier("adverseEventSDO");
 				populateCategoryBasedColumns(rule);
 				rule.getMetaData().setDescription("Setting Description since its mandatory by JBoss Repository config");
-				ruleAuthoringService.createRule(rule);
+				if(rule.getId() == null)
+					ruleAuthoringService.createRule(rule);
+				else
+					ruleAuthoringService.updateRule(rule);
 			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -64,25 +75,26 @@ public class CreateRuleCommand implements RuleInputCommand {
 	
 	private void createPackage() throws RemoteException {
 		try {
-			RuleSet studyRuleSet = ruleAuthoringService.getRuleSet(getPackageName());
-		} catch(Exception exception) {
 			ruleSet.setName(getPackageName());
 			ruleAuthoringService.createRuleSet(ruleSet);
+		} catch(Exception exception) {
+			//Ignore this error .. Package already exists 
 		}		
 	}
 
 	/**
-	 * Loads the category. If not found creates one.
+	 * Loads the categoryIdentifier. If not found creates one. 
+	 * //TODO : This needs to be called only once.
 	 * */
 	private void createCategories() {
 		
 		try {
 
-			createCategory("/", SPONSOR_LEVEL, "Sponsor Level Rules are registered under this category");
-	
-			createCategory(SPONSOR_LEVEL, INSTITUTIONAL_LEVEL, "Institution Level Rules are registered under this category");
+			createCategory("", SPONSOR_LEVEL, "Sponsor Level Rules are always linked with this categoryIdentifier");
 
-			createCategory(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL, STUDY_LEVEL, "Study Level Rules are registered under this category");
+			createCategory("", INSTITUTIONAL_LEVEL, "Institution Level Rules are always linked with this categoryIdentifier");
+
+			createCategory("", STUDY_LEVEL, "Study Level Rules are always linked with this categoryIdentifier");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,12 +109,12 @@ public class CreateRuleCommand implements RuleInputCommand {
 		this.ruleSet = ruleSet;
 	}
 	
-	public String getCategory() {
-		return category;
+	public String getCategoryIdentifier() {
+		return categoryIdentifier;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategoryIdentifier(String categoryIdentifier) {
+		this.categoryIdentifier = categoryIdentifier;
 	}
 
 	public String getLevel() {
@@ -123,29 +135,50 @@ public class CreateRuleCommand implements RuleInputCommand {
 		return packageName;
 	}
 	
-	
+	/**
+	 * Here we decide, to which all categories the Rule needs to be linked.
+	 * If its a study level rule. 
+	 * 1. Its linked to global STUDY category.
+	 * 2. Linked to the category named with Study Short Title
+	 * 3. Linked to the category named with Study SponsorCode   
+	 * */
 	private List<Category> getAllCategories() {
 		List<Category> categories = new ArrayList<Category>();
 		if(STUDY_LEVEL.equals(getLevel())) {
-			String study = getCategory();
-			categories.add(getStudycategory());
-			Category category = createCategory(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL + "/" + STUDY_LEVEL, study, "Sponsor Level Rules are registered under this category");
-			categories.add(category);
+			String shortTitle = getCategoryIdentifier(); //short title of study
+			categories.add(getCategory(STUDY_LEVEL));
+			Study template = new Study();
+			template.setShortTitle(shortTitle);
+			Study study = CollectionUtils.firstElement(studyDao.searchByExample(template, false));
+			//Create Sponsor Category
+			categories.add(createCategory("",study.getPrimarySponsorCode(), "Primary Sponsor Code for Study " + study.getShortTitle()));
+			//Create Institution Categories
+			List<StudySite> studySites = study.getStudySites();
+			for(StudySite studySite : studySites) {
+				categories.add(createCategory(study.getPrimarySponsorCode(), studySite.getSite().getName(), "This is a study Site with primary Sponsor being " + study.getPrimarySponsorCode()));
+				//Create Study Categories
+				categories.add(createCategory(study.getPrimarySponsorCode() + "/" + studySite.getSite().getName(), study.getShortTitle(), ""));
+			}
 		} else if(INSTITUTIONAL_LEVEL.equals(getLevel())) {
-			String institution = getCategory();
-			Category category = createCategory(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL, institution, "Institution Level Rules are registered under this category");
+			String institution = getCategoryIdentifier();
+			categories.add(getCategory(INSTITUTIONAL_LEVEL));
+			Category category = createCategory(INSTITUTIONAL_LEVEL, institution, "Institution Level Rules are registered under this categoryIdentifier");
 			categories.add(category);
 		} else if(SPONSOR_LEVEL.equals(getLevel())) {
-			String sponsor = getCategory();
-			categories.add(getSponsorCategory());
-			Category category = createCategory(SPONSOR_LEVEL, sponsor, "Institution Level Rules are registered under this category");
-			categories.add(category);
+			String sponsorCode = getCategoryIdentifier();
+			categories.add(getCategory(SPONSOR_LEVEL));
+			Study template = new Study();
+			template.setPrimarySponsorCode(sponsorCode);
+			List<Study> studies = studyDao.searchByExample(template, false);
+			for(Study study : studies) {
+				categories.add(createCategory("", sponsorCode, "Institution Level Rules are registered under this categoryIdentifier"));
+			}
 		}
 		return categories;
 	}
 
 	/**
-	 * Create a category if it does not exist in the DB
+	 * Create a categoryIdentifier if it does not exist in the DB
 	 * */
 	private Category createCategory(String path, String name, String description) {
 		Category category = null;
@@ -155,6 +188,8 @@ public class CreateRuleCommand implements RuleInputCommand {
 			//Forget this exception now
 			e.printStackTrace();
 		}
+		if(category != null) return category;
+
 		category = new Category();
 		MetaData metaData = new MetaData();
 		category.setPath(path);
@@ -169,31 +204,17 @@ public class CreateRuleCommand implements RuleInputCommand {
 		return category;
 	}
 	
-
-	
-	public Category getStudycategory() {
-        Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath(SPONSOR_LEVEL + "/" +INSTITUTIONAL_LEVEL);
-		metaData.setName(STUDY_LEVEL);
-		metaData.setDescription("Study Level Triggers are registered under this category");
-		category.setMetaData(metaData);	
-		return category;
-	}
-
-	private Category getSponsorCategory() {
-        Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath("/");
-		metaData.setName(SPONSOR_LEVEL);
-		metaData.setDescription("Sponsor Level Triggers are registered under this category");
-		category.setMetaData(metaData);
-		return category;
+	public Category getCategory(String categoryPath) {
+		try {
+			return ruleAuthoringService.getCategory(categoryPath);
+		}catch(RemoteException e) {
+			throw new CaaersSystemException(e.getMessage(), e);
+		}
 	}
 	
 	private void populateCategoryBasedColumns(Rule rule) {
 		if(STUDY_LEVEL.equals(getLevel())) {
-			rule.getCondition().getColumn().add(getCategoryBasedColumn(getCategory()));
+			rule.getCondition().getColumn().add(getCategoryBasedColumn(getCategoryIdentifier()));
 		} else if(SPONSOR_LEVEL.equals(getLevel())) {
 			
 		}
@@ -234,6 +255,14 @@ public class CreateRuleCommand implements RuleInputCommand {
 
 	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
 		this.ruleAuthoringService = ruleAuthoringService;
+	}
+
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
 	}
 
 }

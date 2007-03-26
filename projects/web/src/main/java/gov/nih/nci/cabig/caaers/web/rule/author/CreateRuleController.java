@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +21,11 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
 	private RuleAuthoringService ruleAuthoringService;
 	
+	private StudyDao studyDao;
+	
     public CreateRuleController() {
-        super();
+    	super();
+    	setBindOnNewForm(false);
         addTabs();
     }
 
@@ -37,7 +41,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) {
-		return new CreateRuleCommand(ruleAuthoringService);	
+		return new CreateRuleCommand(ruleAuthoringService, studyDao);	
 	}
 
     @Override
@@ -50,7 +54,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     protected String getFlowName() {
         return "Author Rule";
     }
-
+    
     protected void addTabs() {
     	getFlow().addTab(new SelectRueTypeTab());
     	getFlow().addTab(new TriggerTab());
@@ -64,5 +68,13 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
 	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
 		this.ruleAuthoringService = ruleAuthoringService;
+	}
+
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
 	}
 }

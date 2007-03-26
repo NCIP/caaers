@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventCommand;
@@ -26,8 +27,14 @@ import java.util.Map;
 public class CreateAdverseEventController extends AbstractAdverseEventInputController<CreateAdverseEventCommand> {
     private CtcDao ctcDao;
     private AdverseEventReportDao reportDao;
+    private RuleExecutionService ruleExecutionService;
+    
+    
+    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+		this.ruleExecutionService = ruleExecutionService;
+	}
 
-    public CreateAdverseEventController() {
+	public CreateAdverseEventController() {
         super();
         setCommandClass(CreateAdverseEventCommand.class);
     }
@@ -45,7 +52,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new CreateAdverseEventCommand(assignmentDao, reportDao);
+        return new CreateAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService);
     }
 
     @Override

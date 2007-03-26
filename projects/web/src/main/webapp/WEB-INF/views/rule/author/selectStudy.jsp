@@ -31,7 +31,7 @@
 			
 			function postSelect(selectedChoice) {
 				// Invoked when user selects the study.
-				$("category").value = selectedChoice.shortTitle;
+				$("categoryIdentifier").value = selectedChoice.shortTitle;
 				// Fetch the study details
 //				alert("Going to fetch the details of this study");
 			}
@@ -90,7 +90,7 @@
 							<div class="row">
 									<div class="label"><label for="study-input">Select Study</label></div>
 									<div class="value">
-											<form:hidden path="category"/>
+											<form:hidden path="categoryIdentifier"/>
 											<input type="text" id="study-input" />
 											<tags:indicator id="study-indicator"/>
 									</div>
