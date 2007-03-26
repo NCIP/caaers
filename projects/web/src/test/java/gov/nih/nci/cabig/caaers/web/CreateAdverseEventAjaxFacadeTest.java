@@ -39,10 +39,6 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
 
     @Override
     protected void setUp() throws Exception {
-    	//JAP: need this to encure that security aspect 
-    	//is initialized by Spring before it is applied 
-    	//by AspectJ.
-    	getDeployedApplicationContext();
         super.setUp();
         studyDao = registerDaoMockFor(StudyDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
@@ -222,6 +218,18 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
         expect(aeReportDao.getById(510)).andReturn(report);
         interoperationService.pushToStudyCalendar(report);
         expectLastCall().andThrow(new CaaersSystemException("Turbo bad"));
+
+        replayMocks();
+        assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));
+        verifyMocks();
+    }
+    
+    public void testPushToPscAndFailWithArbitraryException() throws Exception {
+        int expectedId = 510;
+        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        expect(aeReportDao.getById(510)).andReturn(report);
+        interoperationService.pushToStudyCalendar(report);
+        expectLastCall().andThrow(new RuntimeException("Turbo bad"));
 
         replayMocks();
         assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));

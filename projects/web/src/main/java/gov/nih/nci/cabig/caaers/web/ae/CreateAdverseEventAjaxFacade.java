@@ -21,11 +21,15 @@ import java.util.List;
 import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 /**
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventAjaxFacade {
+    private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
+
     private StudyDao studyDao;
     private ParticipantDao participantDao;
     private CtcTermDao ctcTermDao;
@@ -113,6 +117,10 @@ public class CreateAdverseEventAjaxFacade {
             interoperationService.pushToStudyCalendar(report);
             return true;
         } catch (CaaersSystemException ex) {
+            // this happens if the interoperationService isn't correctly configured
+            return false;
+        } catch (RuntimeException re) {
+            log.error("Unexpected error in communicating with study calendar", re);
             return false;
         }
     }
