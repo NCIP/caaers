@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 import java.net.MalformedURLException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class RuleAuthoringWebServiceClient {
 
 	public static void main(String[] args) throws Exception {
 		if(args.length == 0) {
-			new RuleAuthoringWebServiceClient().testExecuteRuleRemote();
+		//	new RuleAuthoringWebServiceClient().testExecuteRuleRemote();
+			new RuleAuthoringWebServiceClient().testGetRulesByCategory();
 		} else {
 			//new RuleAuthoringWebServiceClient().testExecuteRuleLocal();
 		}
@@ -149,6 +151,13 @@ public class RuleAuthoringWebServiceClient {
 		return ruleSet;
 	}
 	
+	public void testGetRulesByCategory() throws RemoteException, MalformedURLException, JAXBException {
+		RuleAuthoringService service = getRemoteRuleAuthoringService();
+		List rules = service.getRulesByCategory("/National Cancer Institute/default/AML-MDS 9911");
+		Rule rule = service.getRule("65f28bca-1d44-4866-ae1d-5dde24e692d5");
+		System.out.println("Rules = "+ rules);
+	}
+	
 /*	public void testExecuteRuleLocal() throws Exception {
 		String bindUri = "URI_1";
 		bindUri = "gov.nih.nci.cabig.caaers.rules";
@@ -169,9 +178,9 @@ public class RuleAuthoringWebServiceClient {
 			throws MalformedURLException, JAXBException {
 		ObjectServiceFactory factory = null;
 		XFire xFire = XFireFactory.newInstance().getXFire();
-		factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), xFire.getTransportManager(), 
+/*		factory = new AnnotationServiceFactory(new Jsr181WebAnnotations(), xFire.getTransportManager(), 
 				  new AegisBindingProvider(new JaxbTypeRegistry()));
-//		factory = new JaxbServiceFactory();
+*/		factory = new JaxbServiceFactory();
 //		ServiceFactory factory = new AnnotationServiceFactory();
 		
 		//factory = new JaxbServiceFactory(xFire.getTransportManager());

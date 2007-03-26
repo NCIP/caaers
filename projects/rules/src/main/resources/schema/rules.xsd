@@ -25,7 +25,7 @@
 				<!-- UUID -->
 				<xs:element name="id" minOccurs="0" type="xs:string"/>
 				<xs:element name="path" type="xs:string"/>
-				<xs:element ref="rules:metaData" minOccurs="0" />
+				<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>				
 	</xs:element>
@@ -51,152 +51,132 @@
 	<xs:element name="rule">
 	<xs:complexType>
 		<xs:sequence>
-			<xs:element maxOccurs="unbounded" minOccurs="0" ref="rules:rule-attribute"/>        
-			<xs:element ref="rules:condition" minOccurs="0"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="rule-attribute" type="rules:rule-attribute"/>        
+			<xs:element name="condition" type="rules:condition" minOccurs="0"/>
 			<xs:element name="action" type="rules:action" minOccurs="0"/>
-			<xs:element ref="rules:metaData" minOccurs="0" />
+			<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string"/>
 	</xs:complexType>
 	</xs:element>
 	
-	<xs:element name="rule-attribute">
-	    <xs:complexType>
-	      <xs:attribute name="name" type="xs:string" use="required"/>
-	      <xs:attribute name="value" type="xs:string" use="required"/>   
-	    </xs:complexType>
-	</xs:element>
+	<xs:complexType name="rule-attribute">
+	  <xs:attribute name="name" type="xs:string" use="required"/>
+	  <xs:attribute name="value" type="xs:string" use="required"/>   
+	</xs:complexType>
 
-	<xs:element name="condition">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="rules:and" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:or"  minOccurs="0" maxOccurs="unbounded"/>              
-				<xs:element ref="rules:not" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:exists" minOccurs="0" maxOccurs="unbounded"/>           
-				<xs:element ref="rules:eval" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:column" minOccurs="0" maxOccurs="unbounded"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
 
-	<xs:element name="and">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>
-				<xs:element ref="rules:or" maxOccurs="unbounded" minOccurs="0"/>                      
-				<xs:element ref="rules:not" maxOccurs="unbounded" minOccurs="0"/>                
-				<xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
-				<xs:element ref="rules:eval" maxOccurs="unbounded" minOccurs="0"/>
-				<xs:element ref="rules:column" maxOccurs="unbounded" minOccurs="0"/>        
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+	<xs:complexType name="condition">
+		<xs:sequence>
+			<xs:element name="and" type="rules:and" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="or" type="rules:or"  minOccurs="0" maxOccurs="unbounded"/>              
+			<xs:element name="not" type="rules:not" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="exists" type="rules:exists" minOccurs="0" maxOccurs="unbounded"/>           
+			<xs:element name="eval" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="column" type="rules:column" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="and">
+		<xs:sequence>
+			<xs:element name="and" type="rules:and" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="or" type="rules:or"  minOccurs="0" maxOccurs="unbounded"/>              
+			<xs:element name="not" type="rules:not" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="exists" type="rules:exists" minOccurs="0" maxOccurs="unbounded"/>           
+			<xs:element name="eval" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="column" type="rules:column" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
   
-	<xs:element name="or">
-		<xs:complexType>
+
+		<xs:complexType name="or">
 			<xs:sequence>
-				<xs:element ref="rules:and" maxOccurs="unbounded" minOccurs="0"/>        
-				<xs:element ref="rules:or" maxOccurs="unbounded" minOccurs="0"/>                      
-				<xs:element ref="rules:not" maxOccurs="unbounded" minOccurs="0"/>                
-				<xs:element ref="rules:exists" maxOccurs="unbounded" minOccurs="0"/>                
-				<xs:element ref="rules:eval" maxOccurs="unbounded" minOccurs="0"/>
-				<xs:element ref="rules:column" maxOccurs="unbounded" minOccurs="0"/>
+			<xs:element name="and" type="rules:and" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="or" type="rules:or"  minOccurs="0" maxOccurs="unbounded"/>              
+			<xs:element name="not" type="rules:not" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="exists" type="rules:exists" minOccurs="0" maxOccurs="unbounded"/>           
+			<xs:element name="eval" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="column" type="rules:column" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>             
 		</xs:complexType>
-	</xs:element>
   
-	<xs:element name="not">
-		<xs:complexType>
+		<xs:complexType name="not">
 			<xs:sequence>
-				<xs:element ref="rules:column"/>        
+				<xs:element name="column" type="rules:column"/>        
 			</xs:sequence>       
 		</xs:complexType>
-	</xs:element>
 
-	<xs:element name="exists">
-		<xs:complexType>
+
+		<xs:complexType name="exists">
 			<xs:sequence>
-				<xs:element ref="rules:column"/>        
+				<xs:element name="column" type="rules:column"/>        
 			</xs:sequence>       
 		</xs:complexType>
-	</xs:element>
+
    
-	<xs:element name="eval" type="xs:string" />
 
 
-	<xs:element name="column">
-		<xs:complexType>
+		<xs:complexType name="column">
 			<xs:sequence>
-				<xs:element ref="rules:field-binding" maxOccurs="unbounded" minOccurs="0"/>        
-				<xs:element ref="rules:field-constraint" maxOccurs="unbounded" minOccurs="0"/>                      
-				<xs:element ref="rules:predicate" maxOccurs="unbounded" minOccurs="0"/>                
+				<xs:element name="field-binding" type="rules:field-binding" maxOccurs="unbounded" minOccurs="0"/>        
+				<xs:element name="field-constraint" type="rules:field-constraint" maxOccurs="unbounded" minOccurs="0"/>                      
+				<xs:element name="predicate" type="rules:predicate" maxOccurs="unbounded" minOccurs="0"/>                
 			</xs:sequence>   
 			<xs:attribute name="identifier" type="xs:string" use="optional"/>                
 			<xs:attribute name="object-type" type="xs:string" use="required"/>   
 		</xs:complexType>
-	</xs:element>  
 
 
-	<xs:element name="field-constraint">
-		<xs:complexType>
+		<xs:complexType name="field-constraint">
 			<xs:sequence>  
 				<!-- commenting out the bellow ref as it is printing an error -->
-				<!-- xs:element ref="drools:connective-restriction"/ -->
-				<xs:element ref="rules:literal-restriction" maxOccurs="unbounded" minOccurs="0"/>                      
-				<xs:element ref="rules:variable-restriction" maxOccurs="unbounded" minOccurs="0"/>               
-				<xs:element ref="rules:return-value-restriction" maxOccurs="unbounded" minOccurs="0"/>            
+				<!-- xs:element name="" type="drools:connective-restriction"/ -->
+				<xs:element name="literal-restriction" type="rules:literal-restriction" maxOccurs="unbounded" minOccurs="0"/>                      
+				<xs:element name="variable-restriction" type="rules:variable-restriction" maxOccurs="unbounded" minOccurs="0"/>               
+				<xs:element name="return-value-restriction" type="rules:return-value-restriction" maxOccurs="unbounded" minOccurs="0"/>            
 			</xs:sequence>
 			<xs:attribute name="field-name" type="xs:string" use="required"/>                
 		</xs:complexType>
-	</xs:element>
 
 
 
-	<xs:element name="field-binding">
-		<xs:complexType>
+		<xs:complexType name="field-binding">
 			<xs:attribute name="field-name" type="xs:string" use="required"/>    
 			<xs:attribute name="identifier" type="xs:string" use="required"/>      
 		</xs:complexType>
-	</xs:element> 
 
 
-	<xs:element name="literal-restriction">
-		<xs:complexType>
+		<xs:complexType name="literal-restriction">
 			<xs:attribute name="evaluator" type="xs:string" use="required"/>      
 			<xs:attribute name="value" type="xs:string" use="required"/>            
 		</xs:complexType>
-	</xs:element>  
 
-	<xs:element name="variable-restriction">
-		<xs:complexType>
+		<xs:complexType name="variable-restriction">
 			<xs:attribute name="evaluator" type="xs:string" use="required"/>      
 			<xs:attribute name="identifier" type="xs:string" use="required"/>            
 		</xs:complexType>
-	</xs:element>    
 
-	<xs:element name="return-value-restriction">
-		<xs:complexType>
+
+		<xs:complexType name="return-value-restriction">
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
 					<xs:attribute name="evaluator" type="xs:string" use="required"/>  
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
-	</xs:element>
+
   
   
-	<xs:element name="predicate">
-		<xs:complexType>
+		<xs:complexType name="predicate">
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
-	</xs:element>   
   
-	<xs:element name="metaData">
-		<xs:complexType>
+		<xs:complexType name="metaData">
 			<xs:sequence>
 				<xs:element ref="rules:category" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
@@ -223,7 +203,7 @@
 			<xs:attribute name="dateExpired" type="xs:date" />
 			<xs:attribute name="dirty" type="xs:boolean" />    	
 		</xs:complexType>    	
-	</xs:element>
+
 
 
 	<xs:complexType name="action">
@@ -248,18 +228,16 @@
 		<xs:sequence>
 			<xs:element type="xs:string" name="className" />
 			<xs:element type="xs:string" name="methodName" />
-			<xs:element ref="rules:ServiceParam" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="ServiceParam" type="rules:ServiceParam" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:element name="ServiceParam">
-		<xs:complexType>
+		<xs:complexType name="ServiceParam">
 			<xs:sequence>
 				<xs:element type="xs:string" name="name" />	
 				<xs:element type="xs:string" name="type" />		
 			</xs:sequence>
 		</xs:complexType>
-	</xs:element>
 	
 	<xs:complexType name="JmsAction">
 		<xs:sequence>

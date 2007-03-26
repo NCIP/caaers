@@ -6,6 +6,7 @@ import org.codehaus.xfire.aegis.AegisBindingProvider;
 import org.codehaus.xfire.annotations.AnnotationServiceFactory;
 import org.codehaus.xfire.annotations.jsr181.Jsr181WebAnnotations;
 import org.codehaus.xfire.client.XFireProxyFactory;
+import org.codehaus.xfire.jaxb2.JaxbType;
 import org.codehaus.xfire.jaxb2.JaxbTypeRegistry;
 import org.codehaus.xfire.service.Service;
 import org.codehaus.xfire.service.ServiceFactory;
@@ -114,6 +115,7 @@ public class CaaersXFireClientFactoryBean implements FactoryBean, InitializingBe
         throws Exception
     {
         Service serviceModel = getServiceFactory().create(getServiceInterface());
+        serviceModel.setProperty(JaxbType.ENABLE_VALIDATION, "false");
         return new XFireProxyFactory().create(serviceModel, getServiceUrl());
     }
 

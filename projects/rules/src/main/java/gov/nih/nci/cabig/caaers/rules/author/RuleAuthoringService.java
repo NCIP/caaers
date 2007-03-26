@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.rules.author;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -43,8 +42,6 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 
 	public List<RuleSet> getAllRuleSets() throws RemoteException;
 	
-	public void setRepositoryService(RepositoryService repositoryService);
-
 	public void addRuleExecutionSet(final String bindUri,
 				final InputStream resourceAsStream, final Map properties);
 }

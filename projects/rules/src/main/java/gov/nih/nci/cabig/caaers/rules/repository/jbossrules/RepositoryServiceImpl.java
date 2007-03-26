@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
 
 import gov.nih.nci.cabig.caaers.rules.RuleException;
+import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
@@ -20,6 +21,7 @@ import javax.jcr.LoginException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.UnsupportedRepositoryOperationException;
 
 import org.drools.repository.AssetItem;
 import org.drools.repository.AssetItemIterator;
@@ -99,9 +101,11 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 				throw new RuleException(e.getMessage(), e); 			
 			}
 			MetaData meta = rule.getMetaData();
-			assetItem.updateDateEffective(meta.getDateEffective()
+			if(meta.getDateEffective() != null)
+				assetItem.updateDateEffective(meta.getDateEffective()
 					.toGregorianCalendar());
-			assetItem.updateDateExpired(meta.getDateExpired()
+			if(meta.getDateExpired() != null)
+				assetItem.updateDateExpired(meta.getDateExpired()
 					.toGregorianCalendar());
 			List<Category> categoryList = meta.getCategory();
 			int numberOfCategories = categoryList.size();
@@ -109,8 +113,11 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			for (int i = 0; i < numberOfCategories; i++) {
 				categories[i] = categoryList.get(i).getPath() + "/"+ categoryList.get(i).getMetaData().getName();
 			}
+			
 			assetItem.updateCategoryList(categories);
-//			assetItem.updateContent(XMLUtil.marshal(rule));
+			rule.getMetaData().setDateEffective(null);
+			rule.getMetaData().setDateExpired(null);
+			assetItem.updateContent(XMLUtil.marshal(rule));
 			assetItem.updateState(StateItem.DRAFT_STATE_NAME);
 			getRulesRepository().save();
 
@@ -291,15 +298,63 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 				.removeCompiledPackage(bindUri);
 	}
 
+	/**
+	 * Load all the Rules associated with the Category Tag mentioned.
+	 *  
+	 * */
 	public List<Rule> getRulesByCategory(String categoryTag) {
-		return getRulesRepository().findAssetsByCategory(categoryTag);
+		List<Rule> rules = new ArrayList<Rule>();
+		MetaData metaData = null;
+		Rule rule = null;
+
+		List<AssetItem> assetItems = getRulesRepository().findAssetsByCategory(categoryTag);
+		
+		for(AssetItem assetItem : assetItems) {
+			rule = (Rule)XMLUtil.unmarshal(assetItem.getContent());
+			rule.setId(assetItem.getUUID());
+			copyToMetaData(rule.getMetaData(), assetItem);
+			XMLUtil.unmarshal(XMLUtil.marshal(rule));
+			rules.add(rule);
+		}
+		return rules;
+	}
+	
+	/**
+	 * This will be improved by using Reflection + Mapping.
+	 * Dirty way of manual mapping now.
+	 * */
+	private void copyToMetaData(MetaData metaData, AssetItem assetItem) {
+		Category category = null;
+		metaData.setName(assetItem.getName());
+		List<CategoryItem> categoryItems = assetItem.getCategories();
+		List<Category> categories = new ArrayList<Category>();
+		for(CategoryItem categoryItem : categoryItems) {
+			category = new Category();
+			try {
+				category.setId(categoryItem.getNode().getUUID());
+				category.setPath(categoryItem.getNode().getPath());
+				MetaData catMetaData = new MetaData();
+				catMetaData.setName(categoryItem.getName());
+				category.setMetaData(catMetaData);
+			} catch (UnsupportedRepositoryOperationException e) {
+				throw new RuleException(e.getMessage(), e);
+			} catch (RepositoryException e) {
+				throw new RuleException(e.getMessage(), e);
+			}
+			metaData.getCategory().add(category);
+		}
 	}
 
 	public Category getCategory(String categoryPath) {
 		CategoryItem categoryItem = getRulesRepository().loadCategory(categoryPath);
 		
 		Category category = new Category();
-		category.setPath(categoryItem.getFullPath());
+		String fullPath = categoryItem.getFullPath();
+		if(fullPath.lastIndexOf("/") != -1) {
+			category.setPath(fullPath.substring(0, fullPath.lastIndexOf("/")));
+		} else {
+			category.setPath("");
+		}
 		MetaData metaData = new MetaData();
 		metaData.setName(categoryItem.getName());
 		category.setMetaData(metaData);

@@ -188,6 +188,7 @@
     	<mkdir dir="build/main/generated-sources" />
 		<xjc destdir="build/main/generated-sources">
 			<arg line="-extension"/>
+			<arg line="-npa"/>
 			<arg line="-Xcollection-setter-injector"/>
 			<schema  dir="${src-dir.resources}/schema/" includes="*.xsd"/>
 			<binding dir="${src-dir.resources}/schema/" includes="*.xjb"/>

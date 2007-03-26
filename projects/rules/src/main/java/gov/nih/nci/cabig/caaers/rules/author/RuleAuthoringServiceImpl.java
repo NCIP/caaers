@@ -15,10 +15,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.PathNotFoundException;
 import javax.jws.WebService;
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;
@@ -28,7 +29,8 @@ import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+
+import org.drools.repository.RulesRepositoryException;
 /**
  * The entry point for Managing Rules.
  *
@@ -183,18 +185,32 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 	}
 	
 	public List<Rule> getRulesByCategory(String categoryPath) throws RemoteException {
+		//First check if the category exists
+		try {
+			this.repositoryService.getCategory(categoryPath);
+		} catch(RulesRepositoryException rulesRepositoryException) {
+			if(rulesRepositoryException.getCause() instanceof PathNotFoundException) {
+				//Category does not exist
+				return new ArrayList<Rule>();
+			} else {
+				throw new RemoteException(rulesRepositoryException.getMessage(), rulesRepositoryException);
+			}
+		}
 		return this.repositoryService.getRulesByCategory(categoryPath);
 	}
 
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
-
 	public Category getCategory(String categoryPath) throws RemoteException {
+		try {
+			this.repositoryService.getCategory(categoryPath);
+		} catch(RulesRepositoryException rulesRepositoryException) {
+			if(rulesRepositoryException.getCause() instanceof PathNotFoundException) {
+				//Category does not exist
+				return null;
+			} else {
+				throw new RemoteException(rulesRepositoryException.getMessage(), rulesRepositoryException);
+			}
+		}
 		return this.repositoryService.getCategory(categoryPath);
 	}
-
-	
-	
 	
 }
