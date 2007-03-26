@@ -9,22 +9,16 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
  * 
  * @author Sujith Vellat Thayyilthodi
  */
-public class BroadcastException extends CaaersSystemException{
-
-
-/*    public BroadcastException() {
-        super();    //To change body of overridden methods use File | Settings | File Templates.
-    }*/
-
+public class BroadcastException extends CaaersSystemException {
     public BroadcastException(String string) {
-        super(string);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string);
     }
 
     public BroadcastException(String string, Throwable throwable) {
-        super(string, throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(string, throwable);
     }
 
     public BroadcastException(Throwable throwable) {
-        super(throwable);    //To change body of overridden methods use File | Settings | File Templates.
+        super(throwable);
     }
 }

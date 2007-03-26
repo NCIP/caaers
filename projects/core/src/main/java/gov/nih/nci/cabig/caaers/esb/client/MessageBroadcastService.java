@@ -1,16 +1,17 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Refactoring pending.
+ *
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public interface MessageBroadcastService {
-	
-	public void broadcast(String message) throws BroadcastException;
-	
-	public Vector getBroadcastStatus();
+
+    void broadcast(String message) throws BroadcastException;
+
+    List<String> getBroadcastStatus();
 
 }
