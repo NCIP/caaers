@@ -9,6 +9,9 @@
 </head>
 <body>
     <p>Feature in progress</p>
+    <p>
+    Please review the rules defined by clicking on the tabs along the top of the form. Please click save (below) to store the new set of rules.
+    </p>
     <form:form>
         <input type="hidden" name="_finish"/>
     </form:form>    
