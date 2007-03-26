@@ -187,6 +187,11 @@ public class RuleAjaxFacade {
     
     public void deployRuleSet(String ruleSetName) throws RemoteException{
     	String bindUri = "CAAERS_AE_RULES";
+    	try {
+    		getRuleDeploymentService().deregisterRuleSet(bindUri);
+    	} catch (Exception e) {
+    		//A hack... for the first time this exception will be there...ignore...
+    	}
     	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
     }
     
