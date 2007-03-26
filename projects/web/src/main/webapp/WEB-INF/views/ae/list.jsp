@@ -57,7 +57,8 @@
     var="report" imagePath="${ecImagePath}"
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="80%"
-    style="" styleClass="">
+    style="" styleClass=""
+    filterable="false">
     <ec:row>
         <ec:column property="primaryAdverseEvent.ctcTerm" title="CTC term">
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
