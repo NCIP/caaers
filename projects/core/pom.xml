@@ -369,6 +369,7 @@
                                         <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
                                             <classpath refid="maven.plugin.classpath"/>
                                         </taskdef>
+                                        <echo>Inserting test CSM users into ${datasource.url}</echo>
                                         <dbunit driver="${datasource.driver}"
                                                 url="${datasource.url}"
                                                 userid="${datasource.username}"
