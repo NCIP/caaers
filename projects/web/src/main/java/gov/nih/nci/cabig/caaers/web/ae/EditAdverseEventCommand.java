@@ -24,6 +24,10 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
     private RuleExecutionService ruleExecutionService;
     ////// LOGIC
 
+    public EditAdverseEventCommand() {
+    	
+    }
+    
     public EditAdverseEventCommand(RuleExecutionService ruleExecutionService2) {
 		setRuleExecutionService(ruleExecutionService);
 	}
