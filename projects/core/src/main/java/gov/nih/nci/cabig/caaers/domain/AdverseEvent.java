@@ -32,7 +32,7 @@ public class AdverseEvent extends AbstractDomainObject {
     private String detailsForOther;
     private Grade grade;
     private Hospitalization hospitalization;
-    private Boolean expected;
+    private Boolean expected = false;
     private String comments;
 
     private AdverseEventReport report;
