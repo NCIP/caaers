@@ -12,6 +12,7 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
 /**
@@ -19,6 +20,8 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController<EditAdverseEventCommand> {
     private AdverseEventReportDao adverseEventReportDao;
+    
+    private RuleExecutionService ruleExecutionService;
 
     public EditAdverseEventController() {
         setCommandClass(EditAdverseEventCommand.class);
@@ -31,6 +34,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
 
     @Override
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+        return new EditAdverseEventCommand(ruleExecutionService);
+    }
+    
+    @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request,binder);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", adverseEventReportDao);
@@ -40,6 +48,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditAdverseEventCommand command = (EditAdverseEventCommand) oCommand;
+        
+        command.fireAERules();
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
@@ -56,5 +66,13 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         // TODO: this is a dumb, short-term solution
         ((BasicsTab) getFlow().getTab(0)).setCtcDao(ctcDao);
     }
+
+	public RuleExecutionService getRuleExecutionService() {
+		return ruleExecutionService;
+	}
+
+	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+		this.ruleExecutionService = ruleExecutionService;
+	}
 
 }
