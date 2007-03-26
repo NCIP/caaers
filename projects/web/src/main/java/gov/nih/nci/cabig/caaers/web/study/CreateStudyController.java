@@ -12,16 +12,12 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.Participation;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
-import gov.nih.nci.cabig.caaers.tools.editors.NullIdDaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
-import gov.nih.nci.cabig.caaers.tools.editors.GridIdentifiableDaoBasedEditor;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -130,7 +126,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 				.getDateEditor(true));
 		binder.registerCustomEditor(Site.class, new DaoBasedEditor(
 				siteDao));
-		binder.registerCustomEditor(Agent.class, new NullIdDaoBasedEditor(
+		binder.registerCustomEditor(Agent.class, new DaoBasedEditor(
 				agentDao));
 		//ControllerTools.registerGridDomainObjectEditor(binder, "agent", agentDao);
 	}

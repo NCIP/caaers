@@ -4,6 +4,7 @@ import java.beans.PropertyEditorSupport;
 
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A {@link java.beans.PropertyEditor} that supports binding domain objects by their IDs
@@ -11,11 +12,30 @@ import gov.nih.nci.cabig.caaers.dao.CaaersDao;
  * @author Rhett Sutphin
  */
 /* TODO: this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: after moving to CTMS commons, add tests for the config params */
 public class DaoBasedEditor extends PropertyEditorSupport {
+    private boolean strictIdChecking, nullForBlanks;
     private CaaersDao<?> dao;
 
+    /**
+     * Same as <code>{@link #DaoBasedEditor(CaaersDao, boolean, boolean)}(dao, false, true)</code>
+     * @param dao
+     */
     public DaoBasedEditor(CaaersDao<?> dao) {
+        this(dao, false, true);
+    }
+
+    /**
+     * @param dao The dao against which to resolve provided IDs
+     * @param strictIdChecking Whether or not to allow {@link #setValue} where the value has no ID.
+     *      Due to the sometimes-odd way spring uses PEs, you probably want this to be false.
+     * @param nullForBlanks Whether to treat a blank string as "no object".  If false, you'll get a
+     *      NumberFormatException for blank strings.
+     */
+    public DaoBasedEditor(CaaersDao<?> dao, boolean strictIdChecking, boolean nullForBlanks) {
         this.dao = dao;
+        this.strictIdChecking = strictIdChecking;
+        this.nullForBlanks = nullForBlanks;
     }
 
     @Override
@@ -27,7 +47,7 @@ public class DaoBasedEditor extends PropertyEditorSupport {
     }
 
     private void setValue(DomainObject value) {
-        if (value != null && value.getId() == null) {
+        if (value != null && value.getId() == null && strictIdChecking) {
             throw new IllegalArgumentException("This editor can't handle values without IDs");
         }
         super.setValue(value);
@@ -39,7 +59,8 @@ public class DaoBasedEditor extends PropertyEditorSupport {
         if (domainObj == null) {
             return null;
         } else {
-            return domainObj.getId().toString();
+            Integer id = domainObj.getId();
+            return id == null ? null : id.toString();
         }
     }
 
@@ -47,6 +68,8 @@ public class DaoBasedEditor extends PropertyEditorSupport {
     public void setAsText(String text) throws IllegalArgumentException {
         DomainObject newValue;
         if (text == null) {
+            newValue = null;
+        } else if (nullForBlanks && StringUtils.isBlank(text)) {
             newValue = null;
         } else {
             Integer id = new Integer(text);
