@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Date;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Rhett Sutphin
@@ -103,6 +104,17 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
 
         assertEquals("Wrong number of participants returned", 1, actualList.size());
         assertEquals("Wrong participant included", "Two", actualList.get(0).getLastName());
+    }
+
+    public void testMatchParticipantsWithBlankToken() throws Exception {
+        expect(participantDao.getBySubnames(aryEq(new String[] { })))
+            .andReturn(Collections.<Participant>emptyList());
+
+        replayMocks();
+        List<Participant> actualList = facade.matchParticipants(" ", null);
+        verifyMocks();
+
+        assertEquals("Should return nothing", 0, actualList.size());
     }
 
     public void testMatchStudies() throws Exception {
