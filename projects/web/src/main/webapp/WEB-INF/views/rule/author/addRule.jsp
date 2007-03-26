@@ -52,9 +52,9 @@
 
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-					<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
+					<form:input path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value"/>
 					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
+					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
 						<option value=""/>Please Select-- </option>
 						<form:option value="1"/>
 						<form:option value="2"/>
