@@ -16,4 +16,9 @@
         <property name="contextRelative"><value>true</value></property>
         <property name="url"><value>/pages/rule/list</value></property>
     </bean>
+    <bean id="redirectToNotificationList" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/rule/notification/list</value></property>
+    </bean>
+    
 </beans>

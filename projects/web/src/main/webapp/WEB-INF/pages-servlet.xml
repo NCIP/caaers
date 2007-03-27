@@ -91,7 +91,7 @@
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Notification" p:linkName="createNotificationController"/> 
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="List Notifications" p:linkName="createNotificationController"/>                                
+                                p:displayName="List Notifications" p:linkName="listNotificationController"/>                                
                         </list>
                     </property>
                 </bean>
@@ -219,10 +219,30 @@
 
     <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
+        <property name="allRoles">
+        	<list>
+        		<value>Sponsor</value>
+        		<value>IRB</value>
+        	</list>
+        </property>
+        <property name="map">
+            <map>       
+              <entry key="Sponsor">
+                    <list>
+                        <value>vtsujith@gmail.com</value>
+                    </list>
+              </entry>
+              <entry key="IRB">
+                    <list>
+                        <value>vtsujith@yahoo.co.uk</value>
+                    </list>
+              </entry>
+	        </map>
+        </property>
     </bean>
 
     <bean name="/rule/notification/list" id="listNotificationController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
+        class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController">
     </bean>
     
     <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
