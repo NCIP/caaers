@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This applicationContext contains the definition of the DAOs
+-->
+
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+    >
+
+    <!-- HIBERNATE CONFIGURATION -->
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+        <property name="annotatedClasses">
+            <list>
+                <value>gov.nih.nci.cabig.caaers.rules.domain.Notification</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+        <property name="dialectName"> <value>s[hibernate.dialect]</value> </property>
+        <property name="properties">
+            <props>
+                <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
+                <prop key="hibernate.jdbc.batch_size">30</prop>
+            </props>
+        </property>
+    </bean>    
+    
+   
+    <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" autowire="byName">
+        <property name="singleSession"><value>true</value></property>
+        <property name="flushModeName"><value>FLUSH_AUTO</value></property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="checkWriteOperations"><value>true</value></property>
+        <property name="sessionFactory"><ref bean="sessionFactory"/></property>
+    </bean>
+
+    <bean id="daoTemplate" abstract="true">
+        <property name="hibernateTemplate"><ref local="hibernateTemplate"/></property>
+    </bean>
+
+    <!--- ACTUAL DAOS -->
+
+    <tx:annotation-driven proxy-target-class="true"/>
+
+    <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.rules.dao.NotificationDao"/>
+
+</beans>
