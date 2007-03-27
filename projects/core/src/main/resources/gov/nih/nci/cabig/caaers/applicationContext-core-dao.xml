@@ -43,7 +43,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.StudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
-               
+                <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
 
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
@@ -109,5 +109,6 @@
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
+    <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
 
 </beans>
