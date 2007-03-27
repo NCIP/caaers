@@ -181,11 +181,11 @@ public class RulesRepositoryEx extends RulesRepository {
             return new CompiledPackageItem(this, rulePackageNode);
         }
         catch(Exception e) {
-            log.log(Level.SEVERE, "Unable to load a rule package. ", e);
+            log.log(Level.SEVERE, "Unable to load a compiled rule package. ", e);
             if (e instanceof RuntimeException ) {
                 throw (RuntimeException) e;                
             } else {
-                throw new RulesRepositoryException("Unable to load a rule package. ", e);
+                throw new RulesRepositoryException("Unable to load a compiled rule package. ", e);
             }
         }
 	}

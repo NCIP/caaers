@@ -7,6 +7,9 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
 
 import java.util.logging.Logger;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
@@ -15,17 +18,27 @@ public class ActionDispatcher {
 
 	Logger log = Logger.getLogger(ActionDispatcher.class.toString());
 	
+	private ApplicationContext applicationContext;
+	
+	public ActionDispatcher() {
+		this.applicationContext = new ClassPathXmlApplicationContext(
+                new String[] { "classpath*:config/spring/applicationContext-rules-email.xml" });		
+	}
+	
 	public void dispatchAction(String actionId, RuleContext ruleContext) {
 		ActionContext actionContext = fetchAction(actionId);
 		Action action = actionContext.getAction();
+		NotificationHandler notificationHandler = null;
 		if(action instanceof Notification) {
 			Notification notification = (Notification)action;
 			String actionHandlerClass = notification.getActionHandlerClass();
 			if(actionHandlerClass == null) {
-				actionHandlerClass = DefaultEmailNotificationHandler.class.getName();
+				//actionHandlerClass = DefaultEmailNotificationHandler.class.getName();
 				log.info("Could not find a actionHandler class. Using the Default class " + actionHandlerClass);
+				notificationHandler = (NotificationHandler)this.applicationContext.getBean("defaultEmailNotificationHandler");
+			} else{
+				notificationHandler = (NotificationHandler)loadObject(actionHandlerClass);
 			}
-			NotificationHandler notificationHandler = (NotificationHandler)loadObject(actionHandlerClass);
 			notificationHandler.performNotify(actionContext, ruleContext);
 		}
 	}
@@ -65,5 +78,13 @@ public class ActionDispatcher {
 		} catch (ClassNotFoundException e) {
 			throw new RuleException(e.getMessage(), e);
 		}
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 }

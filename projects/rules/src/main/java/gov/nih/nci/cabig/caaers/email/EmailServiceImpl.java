@@ -9,7 +9,6 @@ import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -59,18 +58,6 @@ public class EmailServiceImpl implements EmailService {
 				mesg.setSentDate(new Date());
 
 				System.out.println(ei);
-
-/*				Transport trans = mailSession.getTransport("smtp");
-				trans.connect(
-						mailSession.getProperty("mail.smtp.host"), 
-			        	mailSession.getProperty("mail.smtp.user"), 
-			        	mailSession.getProperty("mail.smtp.password")		
-				);
-				
-				mesg.saveChanges();
-				trans.sendMessage(mesg, mesg.getAllRecipients());
-				
-				trans.close();*/
 				
 				javax.mail.Transport.send(mesg);
 			} catch (AddressException e) {
@@ -86,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
 				.size()];
 		for (int count = 0; count < addresses.size(); count++) {
 			String emailAddress = addresses.get(count);
-			internetAddress[count++] = new InternetAddress(emailAddress);
+			internetAddress[count] = new InternetAddress(emailAddress);
 		}
 		return internetAddress;
 	}
@@ -100,9 +87,9 @@ public class EmailServiceImpl implements EmailService {
 		Properties sessionProps = System.getProperties();
 		sessionProps.put("mail.smtp.host", smtpConfig.getHost());
 		sessionProps.put("mail.smtp.user", smtpConfig.getUser());
-		sessionProps.put("mail.smtp.password", "Flash@100");
-		sessionProps.put("mail.smtp.auth", true);
-		sessionProps.put("mail.smtp.port", "25");
+		sessionProps.put("mail.smtp.password", smtpConfig.getPassword());
+		sessionProps.put("mail.smtp.auth", Boolean.valueOf(smtpConfig.getAuth()).booleanValue());
+		sessionProps.put("mail.smtp.port", smtpConfig.getPort());
 		sessionProps.put("mail.transport.protocol","smtp");
 		return javax.mail.Session.getInstance(sessionProps, new Auth(smtpConfig));
 	}
@@ -115,7 +102,7 @@ public class EmailServiceImpl implements EmailService {
 		 }
 		 
 	     protected PasswordAuthentication getPasswordAuthentication() {
-	         return new PasswordAuthentication(smtpConfig.getUser(),"Flash@100");
+	         return new PasswordAuthentication(smtpConfig.getUser(),smtpConfig.getPassword());
 	     }
 	 }
 

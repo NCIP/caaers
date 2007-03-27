@@ -308,10 +308,14 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		Rule rule = null;
 
 		List<AssetItem> assetItems = getRulesRepository().findAssetsByCategory(categoryTag);
-		
+		List<String> addedIds = new ArrayList<String>();
 		for(AssetItem assetItem : assetItems) {
+			//This is a hack ... because the drools-repository doesn't treat versioning well. Lets avoid duplicates for this release
+			if(addedIds.contains(assetItem.getUUID())) continue;
+			
 			rule = (Rule)XMLUtil.unmarshal(assetItem.getContent());
 			rule.setId(assetItem.getUUID());
+			addedIds.add(assetItem.getUUID());
 			copyToMetaData(rule.getMetaData(), assetItem);
 			XMLUtil.unmarshal(XMLUtil.marshal(rule));
 			rules.add(rule);
