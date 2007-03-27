@@ -25,6 +25,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="user" type="xs:string"/>
+				<xs:element name="password" type="xs:string"/>
 				<xs:element name="host" type="xs:string" />
 				<xs:element name="port" type="xs:string" minOccurs="0" />
 				<xs:element name="connectiontimeout" type="xs:string" minOccurs="0" />
@@ -35,7 +36,7 @@
 				<xs:element name="sendpartial" type="xs:string" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
-	</xs:element>	
+	</xs:element>
 	
 	
 </xs:schema>
