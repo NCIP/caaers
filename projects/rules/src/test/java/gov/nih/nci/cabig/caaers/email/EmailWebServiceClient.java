@@ -21,8 +21,8 @@ public class EmailWebServiceClient {
 			+ DEFAULT_SERVER + ":" + DEFAULT_PORT + "/" + DEFAULT_CONTEXT_NAME
 			+ "/services/RuleExecutionServiceImpl";
 	
-	private static final String DEFAULT_SMTP_HOST = "smtp.1and1.com"; //"smtp.east.cox.net";
-	//private static final String DEFAULT_SMTP_HOST = "smtp.east.cox.net";
+	//private static final String DEFAULT_SMTP_HOST = "localhost"; //"smtp.1and1.com"; //"smtp.east.cox.net";
+	private static final String DEFAULT_SMTP_HOST = "smtp.comcast.net"; //"smtp.east.cox.net";
 	
 	private EmailService emailService;
 	
