@@ -1,8 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.web.rule.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTextField;
+
+import java.util.List;
 
 /***
  * This tab has the details of Email Message.
@@ -13,6 +16,8 @@ import gov.nih.nci.cabig.caaers.web.rule.DefaultTextField;
  * */
 public class SecondTab extends DefaultTab {
 
+	private List<String> allRoles;
+	
 	private static final String NOTIFICATION_DETAILS_FIELD_GROUP = "ruleset";
 	
 	public SecondTab(String longTitle, String shortTitle, String viewName) {
@@ -23,14 +28,15 @@ public class SecondTab extends DefaultTab {
 		this("Specify Notification Details", "Notification Details", "rule/notification/secondTab");
 	}
 
-	@Override
-    protected void initFields() {
+	
+    protected void initializeFields() {
         //
 		// Specify Recipients
 		//
-		
-		addField(NOTIFICATION_DETAILS_FIELD_GROUP, new DefaultTextField(
-                "from", "Name", true));
+
+        addField(NOTIFICATION_DETAILS_FIELD_GROUP, new CollectionSelectField(
+                "selectedRoles", "Roles", true,
+                getAllRoles(), null, null));
 
         addField(NOTIFICATION_DETAILS_FIELD_GROUP, new DefaultTextField(
                 "to", "Email Address", true));
@@ -48,5 +54,14 @@ public class SecondTab extends DefaultTab {
         // merge the variables using velocity.
         // think of a good editor for message (Instead of text area)
     }
+
+	public List<String> getAllRoles() {
+		return allRoles;
+	}
+
+	public void setAllRoles(List<String> roles) {
+		this.allRoles = roles;
+		initializeFields();
+	}
 	
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -33,6 +34,8 @@ public class CreateRuleCommand implements RuleInputCommand {
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
+	private NotificationDao notificationDao; 
+	
 	private StudyDao studyDao;
 	
 	private RuleSet ruleSet;
@@ -41,10 +44,10 @@ public class CreateRuleCommand implements RuleInputCommand {
 	
 	private String level;
 	
-	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao) {
+	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, NotificationDao notificationDao) {
 		setRuleAuthoringService(ruleAuthoringService);
 		setStudyDao(studyDao);
-		
+		setNotificationDao(notificationDao);
 		createCategories();
 		ruleSet = new RuleSet();
 	}
@@ -76,6 +79,7 @@ public class CreateRuleCommand implements RuleInputCommand {
 	private void createPackage() throws RemoteException {
 		try {
 			ruleSet.setName(getPackageName());
+			ruleSet.setDescription("The package for deploying study level rules");
 			ruleAuthoringService.createRuleSet(ruleSet);
 		} catch(Exception exception) {
 			//Ignore this error .. Package already exists 
@@ -263,6 +267,14 @@ public class CreateRuleCommand implements RuleInputCommand {
 
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+
+	public NotificationDao getNotificationDao() {
+		return notificationDao;
+	}
+
+	public void setNotificationDao(NotificationDao notificationDao) {
+		this.notificationDao = notificationDao;
 	}
 
 }

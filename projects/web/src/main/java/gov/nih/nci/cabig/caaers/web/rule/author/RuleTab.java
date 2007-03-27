@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,8 @@ public class RuleTab extends DefaultTab {
 				//throw new CaaersSystemException(e.getMessage(), e);
 			}
 		}
+    	Map refdata = new HashMap();
+    	refdata.put("notifications", createRuleCommand.getNotificationDao().getAll());
         return super.referenceData(command);
     }
     

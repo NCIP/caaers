@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
@@ -23,7 +24,17 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	private StudyDao studyDao;
 	
-    public CreateRuleController() {
+	private NotificationDao notificationDao;
+	
+    public NotificationDao getNotificationDao() {
+		return notificationDao;
+	}
+
+	public void setNotificationDao(NotificationDao notificationDao) {
+		this.notificationDao = notificationDao;
+	}
+
+	public CreateRuleController() {
     	super();
     	setBindOnNewForm(false);
         addTabs();
@@ -41,7 +52,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) {
-		return new CreateRuleCommand(ruleAuthoringService, studyDao);	
+		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao);	
 	}
 
     @Override
