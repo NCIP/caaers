@@ -12,6 +12,7 @@
 		<style>
 		#message {width:80%; height:200px}
 		#subject,#to,#from {width : 81%}
+		#roles{width:30%}
 		</style>
 		
 		<script type="text/javascript" src="/caaers/js/tiny_mce/tiny_mce_src.js"></script>
@@ -54,6 +55,8 @@
             <c:if test="${empty tab}">
 						    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
             </c:if>
+
+        <input type="hidden" name="_finish"/>
             
         </form:form>
 
