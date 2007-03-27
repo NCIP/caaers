@@ -21,12 +21,12 @@ public class ActionDispatcher {
 	private ApplicationContext applicationContext;
 	
 	public ActionDispatcher() {
-		this.applicationContext = new ClassPathXmlApplicationContext(
-                new String[] { "classpath*:config/spring/applicationContext-rules-email.xml" });		
+		//Hard coding now...this value should be pluggable	
 	}
 	
 	public void dispatchAction(String actionId, RuleContext ruleContext) {
-		ActionContext actionContext = fetchAction(actionId);
+		ActionContext actionContext = new ActionContext();
+		actionContext.setActionId(actionId);
 		Action action = actionContext.getAction();
 		NotificationHandler notificationHandler = null;
 		if(action instanceof Notification) {
@@ -35,31 +35,13 @@ public class ActionDispatcher {
 			if(actionHandlerClass == null) {
 				//actionHandlerClass = DefaultEmailNotificationHandler.class.getName();
 				log.info("Could not find a actionHandler class. Using the Default class " + actionHandlerClass);
+				//bean name .. hard coding now ...needs to be pluggable...
 				notificationHandler = (NotificationHandler)this.applicationContext.getBean("defaultEmailNotificationHandler");
 			} else{
 				notificationHandler = (NotificationHandler)loadObject(actionHandlerClass);
 			}
 			notificationHandler.performNotify(actionContext, ruleContext);
 		}
-	}
-	
-	/**
-	 * Fetch the Action Type based on action Id from DB
-	 * 
-	 * @param actionId 
-	 * */
-	private ActionContext fetchAction(String actionId) {
-		log.info("Action with action Id = " + actionId + "found. Fetching it...");
-		System.out.println("Action with action Id = " + actionId + "found. Fetching it...");
-		
-		ActionContext actionContext = new ActionContext();
-		
-		//Imagining that i found a notification action
-		Notification notification = new Notification();
-		notification.setActionId(actionId);
-		
-		actionContext.setAction(notification);
-		return actionContext;
 	}
 	
 	public Object loadObject(String className) {

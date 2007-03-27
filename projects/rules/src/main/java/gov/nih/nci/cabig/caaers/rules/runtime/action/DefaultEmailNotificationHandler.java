@@ -2,10 +2,15 @@ package gov.nih.nci.cabig.caaers.rules.runtime.action;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import gov.nih.nci.cabig.caaers.email.EmailInfo;
 import gov.nih.nci.cabig.caaers.email.EmailServiceImpl;
 import gov.nih.nci.cabig.caaers.email.SmtpConfig;
+import gov.nih.nci.cabig.caaers.rules.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
+import gov.nih.nci.cabig.caaers.rules.domain.Notification;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
 
 /**
@@ -17,6 +22,8 @@ public class DefaultEmailNotificationHandler implements NotificationHandler {
 	private SmtpConfig smtpConfig;
 	
 	private EmailInfo emailInfo;
+	
+	private ApplicationContext applicationContext;
 	
 	public void performNotify(ActionContext actionContext, RuleContext ruleContext) {
 		System.out.print("Going to invoke the Notification Service");
@@ -38,6 +45,14 @@ public class DefaultEmailNotificationHandler implements NotificationHandler {
 	
 	public void testSendSMTPMAil(Integer actionId, RuleContext ruleContext) {
 		EmailServiceImpl emailService = new EmailServiceImpl();
+		this.applicationContext = new ClassPathXmlApplicationContext(
+                new String[] { "classpath*:config/spring/applicationContext-dao.xml" });		
+		NotificationDao notificationDao = (NotificationDao)applicationContext.getBean("NotificationDao");
+		
+		Notification notification = notificationDao.getById(actionId);
+		emailInfo.setContent(notification.getContent());
+		
+		
 		if(actionId.equals(1)) {
 			System.out.println("***********************************************************************");
 			System.out.print("Going to SEND EMAIL NOTIFICATION -  5 DAY REPORT ");

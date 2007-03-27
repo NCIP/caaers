@@ -10,6 +10,8 @@ public class ActionContext {
 
 	private Action action;
 
+	private String actionId;
+	
 	public Action getAction() {
 		return action;
 	}
@@ -17,5 +19,14 @@ public class ActionContext {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+
+	public String getActionId() {
+		return actionId;
+	}
+
+	public void setActionId(String actionId) {
+		this.actionId = actionId;
+	}
+
 
 }
