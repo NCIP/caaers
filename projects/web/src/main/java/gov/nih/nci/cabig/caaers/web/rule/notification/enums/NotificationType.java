@@ -6,10 +6,10 @@ import gov.nih.nci.cabig.caaers.domain.CodedEnum;
  * @author Sujith Vellat Thayyilthodi
  * */
 public enum NotificationType implements CodedEnum {
-	   DEFAULT_EMAIL_NOTIFICATION(1, "Email Notification"),
+	   EMAIL_NOTIFICATION(1, "Email Notification"),
 	   FAX_NOTIFICATION(2, "Fax Notification"),
 	   PAGER_NOTIFICATION(3, "Pager Notification"),
-	   XML_NOTIFICATION(3, "XML Notification");
+	   XML_NOTIFICATION(4, "XML Notification");
 
 	   private int code;
 	   private String name;

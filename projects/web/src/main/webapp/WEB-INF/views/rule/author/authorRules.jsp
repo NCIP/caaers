@@ -71,21 +71,20 @@
 		var sections = new Array();
 
 		function addRule() {
-			var name = $F('newRuleName');
-			if (name != '') {
 				try {
 
 					authorRule.addRule(name, function (html) {
 						sections.push('rule-' + (sections.length + 1));
-						var totalHtml = $('allRules').innerHTML;
-						totalHtml = totalHtml + html;
-						$('allRules').innerHTML = totalHtml;		
-						//Effect.Appear('rule-' + (sections.length + 1));
+						var columnHolder = getElementHolderDiv();
+						columnHolder.innerHTML = html;
+						var newRule = columnHolder.childNodes[1].cloneNode(true);
+						columnHolder.innerHTML = "";
+						$('allRules').appendChild(newRule);
+						Effect.Appear('rule-' + (sections.length));
 						createRuleSortable();
 					});
 
 				} catch(e) {alert(e)}
-			}
 		}
 
 
@@ -197,10 +196,10 @@
             <tags:tabFields tab="${tab}"/>
 
 						<div id="createNewss">
-							<!-- <h3>Create New Rule</h3> -->
-							<input type="text" id="newRuleName" size="50">
+							<!-- <h3 style="position:relative; float:left">Create New Rule</h3> -->
+							<!-- <input type="text" id="newRuleName" size="50"> -->
 							<a href="javascript:addRule();" title="Click to Add a new Rule">
-								<img src="/caaers/images/rule/new.gif" style="height:20px; border:0px" align="absmiddle"/>
+								<img src="/caaers/images/rule/new_fact.gif" style="" align="absmiddle"/>
 							</a>
 						</div>
 
@@ -212,7 +211,7 @@
 								<c:set var="ruleCount" value="${ruleStatus.index}" />
 								<div id="rule-${ruleCount + 1}" class="section">
 										<h3 style="position:relative; float:left" class="handle"">
-										<span style="position:relative; float:left">${command.ruleSet.rule[ruleCount].metaData.name}</span>
+										<span style="position:relative; float:left">Rule - (${ruleCount+1})</span>
 										<a href="javascript:deleteRule(${ruleCount + 1})">
 											<img id="close-image" src="/caaers/images/rule/window-close.gif"  align="absmiddle"  style="position:relative; float:right; height:18px; border:0px"/>
 										</a>
@@ -221,6 +220,11 @@
 											<img id="toggle-image-${ruleCount + 1}" onclick="" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle"  style="position:relative; float:right; height:18px; border:0px"/>
 										</a>
 										</h3>
+										<div style="margin-left:50px;">
+											<label class="label" for="condition">Name</label>
+											<form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px"/>
+										</div>	
+										<br/>
 										<div id="rule-condition-action-container-${ruleCount + 1}">
 											<div style="margin-left:50px;">
 												<label class="label" for="condition">Condition(s)</label>
@@ -262,19 +266,6 @@
 
 														<span id="rule-${ruleCount}-column-${columnCount}-field-value">
 															<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
-															<%--
-															<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
-																<option value=""/>Please Select-- </option>
-																<form:option value="1"/>
-																<form:option value="2"/>
-																<form:option value="3"/>
-																<form:option value="4"/>
-																<form:option value="5"/>
-																<form:option value="Yes"/>
-																<form:option value="No"/>
-																<form:option value="Phase I Trial"/>
-															</form:select>
-															--%>
 														</span>
 
 														<a href="javascript:fetchCondition(${ruleCount})">

@@ -4,9 +4,9 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 
-<div id="rule-${ruleCount + 1}" class="section">
+<div id="rule-${ruleCount + 1}" class="section" style="display:none">
 	<h3 style="position:relative; float:left" class="handle"">
-	<span style="position:relative; float:left">${command.ruleSet.rule[ruleCount].metaData.name}</span>
+	<span style="position:relative; float:left">Rule - (${ruleCount+1})</span>
 	<a href="javascript:deleteRule(${ruleCount + 1})">
 		<img id="close-image" src="/caaers/images/rule/window-close.gif"  align="absmiddle"  style="position:relative; float:right; height:18px"/>
 	</a>
@@ -16,8 +16,13 @@
 	</a>
 	</h3>
 	<div id="crap-${ruleCount + 1}">
-	<form:form>
+		<form:form>
 
+		<div style="margin-left:50px;">
+			<label class="label" for="ruleSet.rule[${ruleCount+1}].metaData.name">Name</label>
+			<form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px"/>
+		</div>
+		<br/>
 		<div style="margin-left:50px;">
 			<label class="label" for="condition">Condition</label>
 		</div>
@@ -53,19 +58,6 @@
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 					<form:input path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value"/>
-					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
-						<option value=""/>Please Select-- </option>
-						<form:option value="1"/>
-						<form:option value="2"/>
-						<form:option value="3"/>
-						<form:option value="4"/>
-						<form:option value="5"/>
-						<form:option value="Yes"/>
-						<form:option value="No"/>
-						<form:option value="Phase I Trial"/>
-					</form:select>
-					--%>
 
 					<a href="javascript:fetchCondition(${ruleCount})">
 						<img id="add-column-${ruleCount}" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand; border:0px"/>

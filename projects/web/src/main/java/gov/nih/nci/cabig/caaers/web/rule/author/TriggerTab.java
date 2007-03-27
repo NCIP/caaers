@@ -31,8 +31,8 @@ public class TriggerTab extends DefaultTab {
     @Override
     protected void initFields() {
 
-        addField(RULESET_FIELD_GROUP, new DefaultTextArea(
-                "ruleSet.description", "Description", true)); 
+        //addField(RULESET_FIELD_GROUP, new DefaultTextArea(
+        //        "ruleSet.description", "Description", true)); 
         
         AutocompleterField ruleLevelField
         = new AutocompleterField("ruleSet.category", "Trigger Level", true);
