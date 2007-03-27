@@ -124,6 +124,9 @@
 				<include name="**/Rule*Service.*" />
 				<include name="**/common/**/*.*" />
 				<include name="**/repository/RepositoryService.*" /> 
+				<include name="**/runtime/RuleContext.*" /> 
+				<include name="**/runtime/action/*.*" />
+				<include name="**/email/*.*" />
 			</fileset>
 		</copy>
 
