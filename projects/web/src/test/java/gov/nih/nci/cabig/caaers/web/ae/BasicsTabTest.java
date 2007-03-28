@@ -7,41 +7,42 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
  */
 public class BasicsTabTest extends AeTabTestCase {
     private BasicsTab tab = new BasicsTab();
-    private AdverseEvent primaryAe;
+    private AdverseEvent ae0;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        primaryAe = command.getAeReport().getPrimaryAdverseEvent();
+        ae0 = command.getAeReport().getAdverseEvents().get(0);
+        assertNotNull(ae0.getCtcTerm());
     }
 
     public void testGradeRequired() throws Exception {
-        primaryAe.setGrade(null);
+        ae0.setGrade(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.grade", "Grade");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].grade", "Grade");
     }
 
     public void testHospitalizationRequired() throws Exception {
-        primaryAe.setHospitalization(null);
+        ae0.setHospitalization(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.hospitalization", "Hospitalization");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].hospitalization", "Hospitalization");
     }
 
     public void testCtcTermRequired() throws Exception {
-        primaryAe.setCtcTerm(null);
+        ae0.setCtcTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.ctcTerm", "CTC term");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].ctcTerm", "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
         doValidate();
-        assertEquals(0, errors.getFieldErrorCount("aeReport.primaryAdverseEvent.detailsForOther"));
+        assertEquals(0, errors.getFieldErrorCount("aeReport.adverseEvents[0].detailsForOther"));
     }
 
     public void testOtherRequiredIfTermRequiresIt() throws Exception {
-        primaryAe.getCtcTerm().setOtherRequired(true);
+        ae0.getCtcTerm().setOtherRequired(true);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.primaryAdverseEvent.detailsForOther", "Other (specify)");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (specify)");
     }
 
     private void doValidate() {

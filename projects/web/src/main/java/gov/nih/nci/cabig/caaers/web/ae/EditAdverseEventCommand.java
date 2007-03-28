@@ -52,16 +52,18 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 
     public void setAeReport(AdverseEventReport aeReport) {
         this.aeReport = aeReport;
-        if (aeReport.getPrimaryAdverseEvent() == null) {
-            aeReport.setPrimaryAdverseEvent(new AdverseEvent());
+        if (aeReport.getAdverseEvents().size() == 0) {
+            aeReport.addAdverseEvent(new AdverseEvent());
         }
     }
-    
+
+    // TODO: this code is *exactly* the same as in CreateAdverseEventCommand
+    // Put it in the (already extant) shared superclass
     public void fireAERules() {
     	String bindUri = "CAAERS_AE_RULES";
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 		
-		AdverseEvent adverseEvent = aeReport.getPrimaryAdverseEvent(); 
+		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0); 
 		StudySDO studySDO = new StudySDO();
 		Study study = aeReport.getAssignment().getStudySite().getStudy();
 		studySDO.setShortTitle(study.getShortTitle());
@@ -88,11 +90,11 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 		adverseEventSDO.setCategory(category.getName());
 		
 		//CTC TERM
-		CtcTerm ctcTerm = aeReport.getPrimaryAdverseEvent().getCtcTerm();
+		CtcTerm ctcTerm = adverseEvent.getCtcTerm();
 		adverseEventSDO.setTerm(ctcTerm.getFullName());
 		
 		//HOSPITALIZATION
-		int hospitalization = aeReport.getPrimaryAdverseEvent().getHospitalization().getCode();
+		int hospitalization = adverseEvent.getHospitalization().getCode();
 		Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
 		
 		adverseEventSDO.setHospitalization(isHospitalization.toString());

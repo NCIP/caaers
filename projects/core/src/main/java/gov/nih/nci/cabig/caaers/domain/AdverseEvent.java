@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -40,7 +41,10 @@ public class AdverseEvent extends AbstractDomainObject {
 
     ////// BOUND PROPERTIES
 
-    @OneToOne
+    // This is annotated this way so that the IndexColumn in the parent
+    // will work with the bidirectional mapping
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(insertable=false, updatable=false, nullable=false)
     public AdverseEventReport getReport() {
         return report;
     }

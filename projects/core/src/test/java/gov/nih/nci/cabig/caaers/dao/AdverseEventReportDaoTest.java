@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 
 import java.util.Calendar;
@@ -26,7 +25,8 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
 
     public void testGet() throws Exception {
         AdverseEventReport loaded = getDao().getById(-1);
-        assertEquals("Wrong primary AE", -11, (int) loaded.getPrimaryAdverseEvent().getId());
+        assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
+        assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
         assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
     }
 
@@ -59,20 +59,28 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         Integer savedId;
         {
             CtcTerm term = ctcTermDao.getById(3012);
-            AdverseEvent newEvent = new AdverseEvent();
-            newEvent.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
-            newEvent.setGrade(Grade.MILD);
-            newEvent.setCtcTerm(term);
-            newEvent.setExpected(Boolean.FALSE);
-            newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+            AdverseEvent event0 = new AdverseEvent();
+            event0.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+            event0.setGrade(Grade.MILD);
+            event0.setCtcTerm(term);
+            event0.setExpected(Boolean.FALSE);
+            event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+
+            AdverseEvent event1 = new AdverseEvent();
+            event1.setDetectionDate(new Timestamp(DateUtils.createDate(2003, Calendar.APRIL, 25).getTime() + 600000));
+            event1.setGrade(Grade.SEVERE);
+            event1.setCtcTerm(term);
+            event1.setExpected(Boolean.FALSE);
+            event1.setHospitalization(Hospitalization.HOSPITALIZATION);
 
             AdverseEventReport newReport = new AdverseEventReport();
-            newReport.setPrimaryAdverseEvent(newEvent);
+            newReport.addAdverseEvent(event0);
+            newReport.addAdverseEvent(event1);
             newReport.setAssignment(assignmentDao.getById(-14));
 
             getDao().save(newReport);
-            assertNotNull("No ID for newly saved event", newEvent.getId());
-            savedId = newEvent.getId();
+            assertNotNull("No ID for newly saved report", newReport.getId());
+            savedId = newReport.getId();
         }
 
         interruptSession();
@@ -81,15 +89,17 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             AdverseEventReport loaded = getDao().getById(savedId);
             assertNotNull("Saved report not found", loaded);
             assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
-            AdverseEvent loadedAe = loaded.getPrimaryAdverseEvent();
-            assertNotNull("Cascaded AE not found", loadedAe);
-            assertDayOfDate("Wrong day for loaded time", 2004, Calendar.APRIL, 25, loadedAe.getDetectionDate());
-            assertTimeOfDate("Wrong time for loaded time", 12, 10, 0, 0, loadedAe.getDetectionDate());
-            assertEquals("Wrong grade", Grade.MILD, loadedAe.getGrade());
-            assertEquals("Wrong CTC term", 3012, (int) loadedAe.getCtcTerm().getId());
-            assertNotNull("No report", loadedAe.getReport());
-            assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedAe.getHospitalization());
-            assertEquals("Wrong expectedness", Boolean.FALSE, loadedAe.getExpected());
+            assertEquals("Wrong number of AEs", 2, loaded.getAdverseEvents().size());
+            AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
+            assertNotNull("Cascaded AE not found", loadedEvent0);
+            assertDayOfDate("Wrong day for loaded time", 2004, Calendar.APRIL, 25, loadedEvent0.getDetectionDate());
+            assertTimeOfDate("Wrong time for loaded time", 12, 10, 0, 0, loadedEvent0.getDetectionDate());
+            assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
+            assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getCtcTerm().getId());
+            assertNotNull("No report", loadedEvent0.getReport());
+            assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedEvent0.getHospitalization());
+            assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
+            assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
         }
     }
 }

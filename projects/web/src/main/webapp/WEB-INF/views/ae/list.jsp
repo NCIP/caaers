@@ -60,11 +60,11 @@
     style="" styleClass=""
     filterable="false">
     <ec:row>
-        <ec:column property="primaryAdverseEvent.ctcTerm" title="CTC term">
+        <ec:column property="adverseEvents[0].ctcTerm" title="CTC term">
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
-                <c:when test="${not empty report.primaryAdverseEvent.ctcTerm}">
-                    ${report.primaryAdverseEvent.ctcTerm.fullName}
+                <c:when test="${not empty report.adverseEvents[0].ctcTerm}">
+                    ${report.adverseEvents[0].ctcTerm.fullName}
                 </c:when>
                 <c:when test="${not empty report.labs}">
                     [Lab-based incomplete AE]
@@ -75,11 +75,11 @@
             </c:choose>
             </a>
         </ec:column>
-        <ec:column property="primaryAdverseEvent.detectionDate" title="Detection date">
-            <tags:formatDate value="${report.primaryAdverseEvent.detectionDate}"/>
+        <ec:column property="adverseEvents[0].detectionDate" title="Detection date">
+            <tags:formatDate value="${report.adverseEvents[0].detectionDate}"/>
         </ec:column>
-        <ec:column property="primaryAdverseEvent.grade.code" title="Grade"/>
-        <ec:column property="primaryAdverseEvent.attribution.code" title="Attribution"/>
+        <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
+        <ec:column property="adverseEvents[0].attribution.code" title="Attribution"/>
         <ec:column title="Notify Study Calendar" sortable="false" filterable="false" property="dc">
             <c:if test="${report.notificationMessagePossible}">
                 <span class="notify-unit" id="notify-unit-${report.id}">

@@ -9,18 +9,20 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 public class AdverseEventReportTest extends CaaersTestCase {
     private AdverseEventReport report;
     private CtcTerm ctcTerm;
+    private AdverseEvent adverseEvent;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         report = new AdverseEventReport();
-        report.setPrimaryAdverseEvent(new AdverseEvent());
-        report.getPrimaryAdverseEvent().setGrade(Grade.MODERATE);
+        adverseEvent = new AdverseEvent();
+        report.addAdverseEvent(adverseEvent);
+        adverseEvent.setGrade(Grade.MODERATE);
         ctcTerm = new CtcTerm();
         ctcTerm.setTerm("Term");
         ctcTerm.setSelect("Select");
         ctcTerm.setOtherRequired(false);
-        report.getPrimaryAdverseEvent().setCtcTerm(this.ctcTerm);
+        adverseEvent.setCtcTerm(this.ctcTerm);
     }
 
     public void testNotificationMessage() throws Exception {
@@ -29,12 +31,12 @@ public class AdverseEventReportTest extends CaaersTestCase {
 
     public void testNotificationMessageWithOther() throws Exception {
         ctcTerm.setOtherRequired(true);
-        report.getPrimaryAdverseEvent().setDetailsForOther("other");
+        adverseEvent.setDetailsForOther("other");
         assertEquals("Grade 2 adverse event with term Term - Select (other)", report.getNotificationMessage());
     }
     
     public void testNotificationMessageExceptionForNoAe() throws Exception {
-        report.setPrimaryAdverseEvent(null);
+        report.getAdverseEvents().clear();
         assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
@@ -45,7 +47,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     }
 
     public void testNotificationMessageExceptionForNoGrade() throws Exception {
-        report.getPrimaryAdverseEvent().setGrade(null);
+        adverseEvent.setGrade(null);
         assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
@@ -56,7 +58,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     }
     
     public void testNotificationMessageExceptionForNoTerm() throws Exception {
-        report.getPrimaryAdverseEvent().setCtcTerm(null);
+        adverseEvent.setCtcTerm(null);
         assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import org.easymock.classextension.EasyMock;
 import static org.easymock.classextension.EasyMock.*;
@@ -32,9 +33,10 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         command.setStudy(new Study());
 
         // BasicsTab
-        command.getAeReport().getPrimaryAdverseEvent().setGrade(Grade.MODERATE);
-        command.getAeReport().getPrimaryAdverseEvent().setHospitalization(Hospitalization.NONE);
-        command.getAeReport().getPrimaryAdverseEvent().setCtcTerm(new CtcTerm());
+        AdverseEvent event = command.getAeReport().getAdverseEvents().get(0);
+        event.setGrade(Grade.MODERATE);
+        event.setHospitalization(Hospitalization.NONE);
+        event.setCtcTerm(new CtcTerm());
 
         errors = new BindException(command, "command");
     }

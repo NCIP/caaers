@@ -16,8 +16,10 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
         InputFieldGroup actualGroup = factory.createGroup(3);
         assertEquals("Wrong number of fields", 1, actualGroup.getFields().size());
         InputField actualField = actualGroup.getFields().get(0);
-        assertEquals("Field property name not qualified", "root.list[3].textField", actualField.getPropertyName());
-        assertEquals("Category not preserved", InputField.Category.TEXT, actualField.getCategory());
+        assertEquals("Field property name not qualified",
+            "root.list[3].textField", actualField.getPropertyName());
+        assertEquals("Category not preserved",
+            InputField.Category.TEXT, actualField.getCategory());
     }
 
     public void testSelectFieldsWrapped() throws Exception {
@@ -26,8 +28,10 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
         InputFieldGroup actualGroup = factory.createGroup(7);
         assertEquals("Wrong number of fields", 1, actualGroup.getFields().size());
         InputField actualField = actualGroup.getFields().get(0);
-        assertEquals("Field property name not qualified", "root.list[7].selectField", actualField.getPropertyName());
-        assertEquals("Category not preserved", InputField.Category.SELECT, actualField.getCategory());
+        assertEquals("Field property name not qualified",
+            "root.list[7].selectField", actualField.getPropertyName());
+        assertEquals("Category not preserved",
+            InputField.Category.SELECT, actualField.getCategory());
         assertTrue("SelectField type not preserved", actualField instanceof SelectField);
         Map<Object,Object> actualOptions = ((SelectField) actualField).getOptions();
         assertEquals("Wrong number of options", 1, actualOptions.size());

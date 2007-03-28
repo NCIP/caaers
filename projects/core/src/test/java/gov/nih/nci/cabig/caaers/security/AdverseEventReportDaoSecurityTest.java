@@ -66,7 +66,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
         AdverseEventReport newReport = new AdverseEventReport();
-        newReport.setPrimaryAdverseEvent(newEvent);
+        newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
         
         SecurityTestUtils.switchUser("user_1", new String[] { "ROLE_that_does_not_exist" });
@@ -104,7 +104,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
         AdverseEventReport newReport = new AdverseEventReport();
-        newReport.setPrimaryAdverseEvent(newEvent);
+        newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
 
 		try {
@@ -116,12 +116,12 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 		Integer id = newReport.getId();
 		assertNotNull("Report id is null", id);
 
-		SecurityTestUtils.switchUser("user_1", new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		AdverseEventReport report = adverseEventReportDao.getById(id);
 		assertNotNull("report " + id + " is null", report);
 		
-		report.getPrimaryAdverseEvent().setComments("Yadda");
+		report.getAdverseEvents().get(0).setComments("Yadda");
 		try {
 			adverseEventReportDao.save(report);
 			fail("Should have failed to update report");
@@ -130,8 +130,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 		} catch (RuntimeException ex) {
 			assertTrue(ex.getCause() instanceof AccessDeniedException);
 		}
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			adverseEventReportDao.save(report);
 		} catch (Exception ex) {

@@ -12,8 +12,8 @@
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var ctcVersion, initialCtcTerm;
-        <c:set var="currentCtcTerm" value="${command.aeReport.primaryAdverseEvent.ctcTerm}"/>
-        <c:if test="${not empty command.aeReport.primaryAdverseEvent.ctcTerm}">
+        <c:set var="currentCtcTerm" value="${command.aeReport.adverseEvents[0].ctcTerm}"/>
+        <c:if test="${not empty command.aeReport.adverseEvents[0].ctcTerm}">
         initialCtcTerm = {
             id: ${currentCtcTerm.id},
             category: {

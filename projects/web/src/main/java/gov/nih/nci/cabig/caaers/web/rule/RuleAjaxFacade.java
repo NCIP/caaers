@@ -215,9 +215,12 @@ public class RuleAjaxFacade {
     	AdverseEventReport adverseEventReport = null; 
 		StudySDO studySDO = null;
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
-		
-		AdverseEvent adverseEvent = adverseEventReport.getPrimaryAdverseEvent(); 
-		if(adverseEvent != null) { //Little over defensive
+
+        // XXX: there's no way this code could work -- adverseEventReport is never initialized.
+        AdverseEvent adverseEvent = adverseEventReport.getAdverseEvents().get(0);
+        // TODO: This code is *exactly* the same as in CreateAdverseEventCommand.
+        // Don't do that -- put it in a shared utility library
+        if(adverseEvent != null) { //Little over defensive
 			studySDO = new StudySDO();
 			Study study = adverseEventReport.getAssignment().getStudySite().getStudy();
 			studySDO.setShortTitle(study.getShortTitle());
@@ -244,11 +247,11 @@ public class RuleAjaxFacade {
 			adverseEventSDO.setCategory(category.getName());
 			
 			//CTC TERM
-			CtcTerm ctcTerm = adverseEventReport.getPrimaryAdverseEvent().getCtcTerm();
+			CtcTerm ctcTerm = adverseEvent.getCtcTerm();
 			adverseEventSDO.setTerm(ctcTerm.getFullName());
 			
 			//HOSPITALIZATION
-			int hospitalization = adverseEventReport.getPrimaryAdverseEvent().getHospitalization().getCode();
+			int hospitalization = adverseEvent.getHospitalization().getCode();
 			Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
 			
 			adverseEventSDO.setHospitalization(isHospitalization.toString());

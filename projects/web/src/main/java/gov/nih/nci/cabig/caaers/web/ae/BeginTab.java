@@ -1,13 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import org.springframework.validation.Errors;
+import org.springframework.beans.BeanWrapper;
 
 import java.util.Map;
 
 /**
  * @author Rhett Sutphin
 */
-public class BeginTab extends AeTab {
+public class BeginTab extends EmptyAeTab {
     public BeginTab() {
         super("Select participant and study", "Begin", "ae/selectAssignment");
     }
@@ -25,7 +26,10 @@ public class BeginTab extends AeTab {
     }
 
     @Override
-    public void validate(AdverseEventInputCommand command, Errors errors) {
+    protected void validate(
+        AdverseEventInputCommand command, BeanWrapper commandBean,
+        Map<String, InputFieldGroup> fieldGroups, Errors errors
+    ) {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");

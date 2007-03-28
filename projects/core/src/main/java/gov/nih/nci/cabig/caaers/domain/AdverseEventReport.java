@@ -1,23 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.IndexColumn;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.OneToOne;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
+import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.LinkedList;
-
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -31,12 +30,11 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 )
 public class AdverseEventReport extends AbstractDomainObject {
     private StudyParticipantAssignment assignment;
-    private AdverseEvent primaryAdverseEvent;
+    private List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
 
     private List<Lab> labs = new LinkedList<Lab>();
 
     // TODO
-    // private List<AdverseEvent> otherAdverseEvents;
     // private MedicalInformation medicalInformation;
     // private TreatmentInformation treatmentInformation;
     // private List<PriorTherapy> priorTherapies;
@@ -50,11 +48,12 @@ public class AdverseEventReport extends AbstractDomainObject {
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
-            CtcTerm term = getPrimaryAdverseEvent().getCtcTerm();
+            AdverseEvent firstAe = getAdverseEvents().get(0);
+            CtcTerm term = firstAe.getCtcTerm();
             String other = term.isOtherRequired()
-                ? String.format(" (%s)", getPrimaryAdverseEvent().getDetailsForOther()) : "";
+                ? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
             return String.format("Grade %d adverse event with term %s%s",
-                getPrimaryAdverseEvent().getGrade().getCode(),
+                firstAe.getGrade().getCode(),
                 term.getFullName(), other
             );
         } else {
@@ -65,13 +64,14 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @Transient
     public boolean isNotificationMessagePossible() {
-        AdverseEvent ae = getPrimaryAdverseEvent();
+        if (getAdverseEvents().size() < 1) return false;
+        AdverseEvent ae = getAdverseEvents().get(0);
         return ae != null && ae.getGrade() != null && ae.getCtcTerm() != null;
     }
 
-    public void setPrimaryAdverseEvent(AdverseEvent primaryAdverseEvent) {
-        this.primaryAdverseEvent = primaryAdverseEvent;
-        if (primaryAdverseEvent != null) primaryAdverseEvent.setReport(this);
+    public void addAdverseEvent(AdverseEvent adverseEvent) {
+        getAdverseEvents().add(adverseEvent);
+        if (adverseEvent != null) adverseEvent.setReport(this);
     }
 
     ////// BEAN PROPERTIES
@@ -85,10 +85,18 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.assignment = assignment;
     }
 
-    @OneToOne(mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public AdverseEvent getPrimaryAdverseEvent() {
-        return primaryAdverseEvent;
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<AdverseEvent> getAdverseEvents() {
+        return adverseEvents;
+    }
+
+    public void setAdverseEvents(List<AdverseEvent> adverseEvents) {
+        this.adverseEvents = adverseEvents;
     }
 
     // This is annotated this way so that the IndexColumn will work with

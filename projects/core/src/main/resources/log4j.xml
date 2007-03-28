@@ -14,7 +14,7 @@
     </appender>
 
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="${catalina.home}/logs/caaers.log"/>
+        <param name="file" value="caaers.log"/>
         <param name="maxFileSize" value="2048KB"/>
         <param name="maxBackupIndex" value="2"/>
         <layout class="org.apache.log4j.PatternLayout">

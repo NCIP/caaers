@@ -19,10 +19,15 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventCommand implements AdverseEventInputCommand {
+    private static final Log log = LogFactory.getLog(CreateAdverseEventCommand.class);
+
     private AdverseEventReport aeReport;
 
     private Participant participant;
@@ -46,7 +51,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.assignmentDao = assignmentDao;
         this.reportDao = reportDao;
         aeReport = new AdverseEventReport();
-        aeReport.setPrimaryAdverseEvent(new AdverseEvent());
+        aeReport.addAdverseEvent(new AdverseEvent());
 
         // TODO temporary
         aeReport.getLabs().add(new Lab());
@@ -91,12 +96,14 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     public void setStudy(Study study) {
         this.study = study;
     }
-    
+
+    // TODO:
+    //   - This only handles the first AE
     public void fireAERules() {
     	String bindUri = "CAAERS_AE_RULES";
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 		
-		AdverseEvent adverseEvent = aeReport.getPrimaryAdverseEvent(); 
+		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
 		StudySDO studySDO = new StudySDO();
 		Study study = aeReport.getAssignment().getStudySite().getStudy();
 		studySDO.setShortTitle(study.getShortTitle());
@@ -123,21 +130,21 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 		adverseEventSDO.setCategory(category.getName());
 		
 		//CTC TERM
-		CtcTerm ctcTerm = aeReport.getPrimaryAdverseEvent().getCtcTerm();
+		CtcTerm ctcTerm = adverseEvent.getCtcTerm();
 		adverseEventSDO.setTerm(ctcTerm.getFullName());
 		
 		//HOSPITALIZATION
-		int hospitalization = aeReport.getPrimaryAdverseEvent().getHospitalization().getCode();
+		int hospitalization = adverseEvent.getHospitalization().getCode();
 		Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
 		
 		adverseEventSDO.setHospitalization(isHospitalization.toString());
 		list.add(adverseEventSDO);
 		try {
 			getRuleExecutionService().fireRules(bindUri, studySDO, list);
-		}catch(Exception e) {
-			Logger.getLogger(this.toString()).info("Exception while firing rules" + e.getMessage());
-			Logger.getLogger(this.toString()).log(Level.FINE, "Exception while firing rules" + e.getMessage());
-		}
+		} catch(Exception e) {
+            log.error("Exception while firing rules: " + e.getMessage(), e);
+            // TODO: why is this exception swallowed?
+        }
     }
 
 	public RuleExecutionService getRuleExecutionService() {

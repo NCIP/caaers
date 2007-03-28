@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -24,6 +25,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     private CtcTermDao ctcTermDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         participantDao = registerDaoMockFor(ParticipantDao.class);
@@ -41,7 +43,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     }
 
     public void testBindDetectionDate() throws Exception {
-        request.setParameter("aeReport.primaryAdverseEvent.detectionDate", "12/30/1999");
+        request.setParameter("aeReport.adverseEvents[0].detectionDate", "12/30/1999");
         request.setParameter("_target1", "");
         controller.handleRequest(request, response); // once to get the session in place
         ModelAndView mv = controller.handleRequest(request, response);
@@ -49,7 +51,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         assertNotNull(command);
         Errors errors = (Errors) mv.getModel().get(BindingResult.class.getName() + ".command");
         System.err.println(errors);
-        assertDayOfDate(1999, Calendar.DECEMBER, 30,
-            command.getAeReport().getPrimaryAdverseEvent().getDetectionDate());
+        AdverseEvent event = command.getAeReport().getAdverseEvents().get(0);
+        assertDayOfDate(1999, Calendar.DECEMBER, 30, event.getDetectionDate());
     }
 }

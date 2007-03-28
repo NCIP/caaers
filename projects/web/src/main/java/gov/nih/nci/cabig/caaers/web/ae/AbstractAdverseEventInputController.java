@@ -45,16 +45,16 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     protected final void addCommonTabs() {
         getFlow().addTab(new BasicsTab());
-        getFlow().addTab(new AeTab("Medical information", "Medical", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Medical information", "Medical", "ae/notimplemented"));
         getFlow().addTab(new LabsTab());
-        getFlow().addTab(new AeTab("Treatment information", "Treatment", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Outcome information", "Outcome", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Concomitant medications", "Concomitant medications", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Study agent(s)", "Agent", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Medical device(s)", "Device", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Reporter info", "Reporter", "ae/notimplemented"));
-        getFlow().addTab(new AeTab("Confirm and save", "Save", "ae/save"));
+        getFlow().addTab(new EmptyAeTab("Treatment information", "Treatment", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Concomitant medications", "Concomitant medications", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Study agent(s)", "Agent", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Medical device(s)", "Device", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Reporter info", "Reporter", "ae/notimplemented"));
+        getFlow().addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
     }
 
     @Override
