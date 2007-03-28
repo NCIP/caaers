@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.tools;
 
 import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
-import gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect;
-import org.springframework.beans.factory.FactoryBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.FactoryBean;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +35,8 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     public static final String USERNAME_PROPERTY_NAME = "datasource.username";
     public static final String PASSWORD_PROPERTY_NAME = "datasource.password";
     
-    public static final String DEFAULT_POSTGRESQL_DIALECT = ImprovedPostgreSQLDialect.class.getName();
+    public static final String DEFAULT_POSTGRESQL_DIALECT
+        = "edu.northwestern.bioinformatics.bering.dialect.hibernate.ImprovedPostgreSQLDialect";
 
     private Properties properties;
     private Properties defaults;
@@ -48,6 +48,10 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     ////// FACTORYBEAN IMPLEMENTATION
 
     public synchronized Object getObject() throws Exception {
+        return getProperties();
+    }
+
+    public synchronized Properties getProperties() {
         if (properties == null) {
             initProperties();
         }

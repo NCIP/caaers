@@ -52,7 +52,7 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     }
 
     public void testExplicitHibernateDialectTrumps() throws Exception {
-        String expectedDialect = org.hibernate.dialect.PostgreSQLDialect.class.getName();
+        String expectedDialect = "org.hibernate.dialect.PostgreSQLDialect";
         factoryBean.getDefaults().setProperty(RDBMS_PROPERTY_NAME, "PostgreSQL");
         factoryBean.getDefaults().setProperty(HIBERNATE_DIALECT_PROPERTY_NAME, expectedDialect);
         Assert.assertEquals(expectedDialect, getActualProperties().getProperty(HIBERNATE_DIALECT_PROPERTY_NAME));
