@@ -19,14 +19,24 @@
 		PROTECTION_GROUP_NAME="gov.nih.nci.cabig.caaers.domain.Participant" 
 		PROTECTION_GROUP_DESCRIPTION="Participant Extent Protection Group"
 		APPLICATION_ID="-1" LARGE_ELEMENT_COUNT_FLAG="0"
-		UPDATE_DATE="2007-01-31" />		
+		UPDATE_DATE="2007-01-31" />	
 		
+	<CSM_PROTECTION_GROUP PROTECTION_GROUP_ID="-3"
+		PROTECTION_GROUP_NAME="gov.nih.nci.cabig.caaers.domain.AdverseEventReport" 
+		PROTECTION_GROUP_DESCRIPTION="AdverseEventReport Extent Protection Group"
+		APPLICATION_ID="-1" LARGE_ELEMENT_COUNT_FLAG="0"
+		UPDATE_DATE="2007-01-31" />				
+		
+	<CSM_PROTECTION_GROUP PROTECTION_GROUP_ID="-4"
+		PROTECTION_GROUP_NAME="gov.nih.nci.cabig.caaers.domain.Rule" 
+		PROTECTION_GROUP_DESCRIPTION="Rule Extent Protection Group"
+		APPLICATION_ID="-1" LARGE_ELEMENT_COUNT_FLAG="0"
+		UPDATE_DATE="2007-01-31" />			
 						
 	<!--============== PROTECTION ELEMENTS ================== -->
 	<CSM_PROTECTION_ELEMENT PROTECTION_ELEMENT_ID="-1"
 		PROTECTION_ELEMENT_NAME="caaers" PROTECTION_ELEMENT_DESCRIPTION="caAERS Application"
 		OBJECT_ID="caaers" APPLICATION_ID="-1" UPDATE_DATE="2007-01-27" />
-		
 
 	<CSM_PROTECTION_ELEMENT PROTECTION_ELEMENT_ID="-2"
 		PROTECTION_ELEMENT_NAME="gov.nih.nci.cabig.caaers.domain.Study"
@@ -38,6 +48,18 @@
 		PROTECTION_ELEMENT_NAME="gov.nih.nci.cabig.caaers.domain.Participant"
 		PROTECTION_ELEMENT_DESCRIPTION="Participant Extent Protection Element"
 		OBJECT_ID="gov.nih.nci.cabig.caaers.domain.Participant"
+		ATTRIBUTE="" APPLICATION_ID="-1" UPDATE_DATE="2007-01-31" />		
+
+	<CSM_PROTECTION_ELEMENT PROTECTION_ELEMENT_ID="-4"
+		PROTECTION_ELEMENT_NAME="gov.nih.nci.cabig.caaers.domain.AdverseEventReport"
+		PROTECTION_ELEMENT_DESCRIPTION="AdverseEventReport Extent Protection Element"
+		OBJECT_ID="gov.nih.nci.cabig.caaers.domain.AdverseEventReport"
+		ATTRIBUTE="" APPLICATION_ID="-1" UPDATE_DATE="2007-01-31" />		
+
+	<CSM_PROTECTION_ELEMENT PROTECTION_ELEMENT_ID="-5"
+		PROTECTION_ELEMENT_NAME="gov.nih.nci.cabig.caaers.domain.Rule"
+		PROTECTION_ELEMENT_DESCRIPTION="Rule Extent Protection Element"
+		OBJECT_ID="gov.nih.nci.cabig.caaers.domain.Rule"
 		ATTRIBUTE="" APPLICATION_ID="-1" UPDATE_DATE="2007-01-31" />		
 		
 		
@@ -55,11 +77,19 @@
 	<CSM_PG_PE PG_PE_ID="-2" PROTECTION_GROUP_ID="-2"
 		PROTECTION_ELEMENT_ID="-3" />
 		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.AdverseEventReport Extent 
+		 Protection Group to gov.nih.nci.cabig.caaers.domain.AdverseEventReport 
+		 Extent Protection Element -->
+	<CSM_PG_PE PG_PE_ID="-3" PROTECTION_GROUP_ID="-3"
+		PROTECTION_ELEMENT_ID="-4" />
 
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Rule Extent 
+		 Protection Group to gov.nih.nci.cabig.caaers.domain.Rule 
+		 Extent Protection Element -->
+	<CSM_PG_PE PG_PE_ID="-4" PROTECTION_GROUP_ID="-4"
+		PROTECTION_ELEMENT_ID="-5" />
 		
 	<!--==================== ROLES ======================-->
-	
-	<!-- gov.nih.nci.cabig.caaers.domain.Study -->
 	
 	<CSM_ROLE ROLE_ID="-1" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Study.CREATE"
 		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
@@ -69,19 +99,48 @@
 		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
 		UPDATE_DATE="2007-01-31" />
 
-	<CSM_ROLE ROLE_ID="-3" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Participant.CREATE"
+	<CSM_ROLE ROLE_ID="-3" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Study.READ"
 		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
 		UPDATE_DATE="2007-01-31" />
 
-	<CSM_ROLE ROLE_ID="-4" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Participant.UPDATE"
+	<CSM_ROLE ROLE_ID="-4" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Participant.CREATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
+
+	<CSM_ROLE ROLE_ID="-5" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Participant.UPDATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
+
+	<CSM_ROLE ROLE_ID="-6" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Participant.READ"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />		
+		
+	<CSM_ROLE ROLE_ID="-7" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.AdverseEventReport.CREATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
+
+	<CSM_ROLE ROLE_ID="-8" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.AdverseEventReport.UPDATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
+
+	<CSM_ROLE ROLE_ID="-9" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ"
 		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
 		UPDATE_DATE="2007-01-31" />
 		
-				
-	<!--==================== ROLE TO PRIVILEGE MAPPIGNS =================-->
+	<CSM_ROLE ROLE_ID="-10" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Rule.CREATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
 
-	<!-- gov.nih.nci.cabig.caaers.domain.Study -->
-	
+	<CSM_ROLE ROLE_ID="-11" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Rule.UPDATE"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />
+
+	<CSM_ROLE ROLE_ID="-12" ROLE_NAME="gov.nih.nci.cabig.caaers.domain.Rule.READ"
+		ROLE_DESCRIPTION="" APPLICATION_ID="-1" ACTIVE_FLAG="1"
+		UPDATE_DATE="2007-01-31" />		
+				
+	<!--==================== ROLE TO PRIVILEGE MAPPINGS =================-->
+
 	<!-- Maps gov.nih.nci.cabig.caaers.domain.Study.CREATE to CREATE -->
 	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-1" ROLE_ID="-1"
 		PRIVILEGE_ID="-1" UPDATE_DATE="2007-01-27"/>
@@ -90,14 +149,45 @@
 	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-2" ROLE_ID="-2"
 		PRIVILEGE_ID="-5" UPDATE_DATE="2007-01-27"/>
 		
-	<!-- Maps gov.nih.nci.cabig.caaers.domain.Participant.CREATE to CREATE -->
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Study.READ to READ -->
 	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-3" ROLE_ID="-3"
+		PRIVILEGE_ID="-3" UPDATE_DATE="2007-01-27"/>		
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Participant.CREATE to CREATE -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-4" ROLE_ID="-4"
 		PRIVILEGE_ID="-1" UPDATE_DATE="2007-01-27"/>
 		
 	<!-- Maps gov.nih.nci.cabig.caaers.domain.Participant.UPDATE to UPDATE -->
-	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-4" ROLE_ID="-4"
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-5" ROLE_ID="-5"
 		PRIVILEGE_ID="-5" UPDATE_DATE="2007-01-27"/>
 		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Participant.READ to READ -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-6" ROLE_ID="-6"
+		PRIVILEGE_ID="-3" UPDATE_DATE="2007-01-27"/>		
+
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.AdverseEventReport.CREATE to CREATE -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-7" ROLE_ID="-7"
+		PRIVILEGE_ID="-1" UPDATE_DATE="2007-01-27"/>
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.AdverseEventReport.UPDATE to UPDATE -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-8" ROLE_ID="-8"
+		PRIVILEGE_ID="-5" UPDATE_DATE="2007-01-27"/>
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ to READ -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-9" ROLE_ID="-9"
+		PRIVILEGE_ID="-3" UPDATE_DATE="2007-01-27"/>
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Rule.CREATE to CREATE -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-10" ROLE_ID="-10"
+		PRIVILEGE_ID="-1" UPDATE_DATE="2007-01-27"/>
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Rule.UPDATE to UPDATE -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-11" ROLE_ID="-11"
+		PRIVILEGE_ID="-5" UPDATE_DATE="2007-01-27"/>
+		
+	<!-- Maps gov.nih.nci.cabig.caaers.domain.Rule.READ to READ -->
+	<CSM_ROLE_PRIVILEGE ROLE_PRIVILEGE_ID="-12" ROLE_ID="-12"
+		PRIVILEGE_ID="-3" UPDATE_DATE="2007-01-27"/>		
 		
 	<!--==================== USERS ====================-->
 	<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
@@ -134,30 +224,27 @@
 	<!--==================== USER TO GROUP MAPPINGS ====================-->
 	
 	<!-- 
-	
-		SYSTEM_ADMIN is in:
-			- caaers_admin
-			- caaers_user
-			- caaers_super_user 
+			SYSTEM_ADMIN is in all groups.
 	-->
 	<CSM_USER_GROUP USER_GROUP_ID="-1" USER_ID="-1" GROUP_ID="-1" />
 	<CSM_USER_GROUP USER_GROUP_ID="-2" USER_ID="-1" GROUP_ID="-2" />
 	<CSM_USER_GROUP USER_GROUP_ID="-3" USER_ID="-1" GROUP_ID="-3" />
 	<CSM_USER_GROUP USER_GROUP_ID="-4" USER_ID="-1" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-5" USER_ID="-1" GROUP_ID="-5" />
 
 	<!-- 
 		study_cd1 is in:
 			- caaers_user
 			- caaers_study_cd 
 	-->
-	<CSM_USER_GROUP USER_GROUP_ID="-5" USER_ID="-2" GROUP_ID="-2" />
-	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-2" GROUP_ID="-4" />
 
 	<!-- 
 		study_cd2 is in:
 			- caaers_user 
 	-->
-	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-3" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-8" USER_ID="-3" GROUP_ID="-2" />
 
 	
 	<!-- 
@@ -165,8 +252,8 @@
 			- caaers_user
 			- caaers_participant_cd 
 	-->
-	<CSM_USER_GROUP USER_GROUP_ID="-8" USER_ID="-4" GROUP_ID="-2" />
-	<CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-5" />
+	<CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-10" USER_ID="-4" GROUP_ID="-5" />
 	
 	
 	<!--==================== GRANT PRIVILEGES TO GROUPS =========================-->
@@ -182,13 +269,147 @@
 		 gov.nih.nci.cabig.caaers.domain.Study.UPDATE role on 
 		 gov.nih.nci.cabig.caaers.domain.Study protection group-->
 	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-2" GROUP_ID="-4"
-		ROLE_ID="-2" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />	
+		ROLE_ID="-2" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_study_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.Study.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.Study protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-3" GROUP_ID="-4"
+		ROLE_ID="-3" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
 
-	<!-- Gives admin_user group the testapp.bean.Person.READ role on testapp.bean.Person protection group-->		
-	<!--
-	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-3" GROUP_ID="-1"
-		ROLE_ID="-3" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />			
-		-->
+
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Study.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Study protection group-->		
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-4" GROUP_ID="-3"
+		ROLE_ID="-1" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Study.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Study protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-5" GROUP_ID="-3"
+		ROLE_ID="-2" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Study.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.Study protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-6" GROUP_ID="-3"
+		ROLE_ID="-3" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
+
+	<!-- Gives caaers_user group the
+                 gov.nih.nci.cabig.caaers.domain.Study.READ role on
+                 gov.nih.nci.cabig.caaers.domain.Study protection group-->
+        <CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-7" GROUP_ID="-2"
+                ROLE_ID="-3" PROTECTION_GROUP_ID="-1" UPDATE_DATE="2007-01-31" />
+				
+
+
+	<!-- gov.nih.nci.cabig.caaers.domain.Participant -->
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-8" GROUP_ID="-5"
+		ROLE_ID="-4" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-9" GROUP_ID="-5"
+		ROLE_ID="-5" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-10" GROUP_ID="-5"
+		ROLE_ID="-6" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />			
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-11" GROUP_ID="-3"
+		ROLE_ID="-4" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-12" GROUP_ID="-3"
+		ROLE_ID="-5" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Participant.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-13" GROUP_ID="-3"
+		ROLE_ID="-6" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />			
+		
+	<!-- Gives caaers_user group the
+                 gov.nih.nci.cabig.caaers.domain.Participant.READ role on
+                 gov.nih.nci.cabig.caaers.domain.Participant protection group-->
+        <CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-14" GROUP_ID="-2"
+                ROLE_ID="-6" PROTECTION_GROUP_ID="-2" UPDATE_DATE="2007-01-31" />
+
+
+	<!-- gov.nih.nci.cabig.caaers.domain.AdverseEventReport -->
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-15" GROUP_ID="-5"
+		ROLE_ID="-7" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-16" GROUP_ID="-5"
+		ROLE_ID="-8" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_participant_cd group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-17" GROUP_ID="-5"
+		ROLE_ID="-9" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />		
+
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-18" GROUP_ID="-3"
+		ROLE_ID="-7" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-19" GROUP_ID="-3"
+		ROLE_ID="-8" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-20" GROUP_ID="-3"
+		ROLE_ID="-9" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />		
+
+	<!-- Gives caaers_user group the
+                 gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ role on
+                 gov.nih.nci.cabig.caaers.domain.AdverseEventReport protection group-->
+        <CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-21" GROUP_ID="-2"
+                ROLE_ID="-9" PROTECTION_GROUP_ID="-3" UPDATE_DATE="2007-01-31" />
+
+
+	<!-- gov.nih.nci.cabig.caaers.domain.Rule -->
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Rule.CREATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Rule protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-22" GROUP_ID="-3"
+		ROLE_ID="-10" PROTECTION_GROUP_ID="-4" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Rule.UPDATE role on 
+		 gov.nih.nci.cabig.caaers.domain.Rule protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-23" GROUP_ID="-3"
+		ROLE_ID="-11" PROTECTION_GROUP_ID="-4" UPDATE_DATE="2007-01-31" />
+		
+	<!-- Gives caaers_super_user group the 
+		 gov.nih.nci.cabig.caaers.domain.Rule.READ role on 
+		 gov.nih.nci.cabig.caaers.domain.Rule protection group-->
+	<CSM_USER_GROUP_ROLE_PG USER_GROUP_ROLE_PG_ID="-24" GROUP_ID="-3"
+		ROLE_ID="-12" PROTECTION_GROUP_ID="-4" UPDATE_DATE="2007-01-31" />		
 
 	<!--==================== USER TO PROTECTION ELEMENT MAPPINGS ==================-->
 	<!-- SYSTEM_ADMIN owns the caAERS Application -->
