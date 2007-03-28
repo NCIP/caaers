@@ -7,6 +7,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
 
+
+
 	<bean id="csmAuthorizationDao"
 		class="gov.nih.nci.security.dao.DIAuthorizationDao"
 		init-method="init">
@@ -55,70 +57,39 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					</list>
 				</property>
 				<property name="hibernateProperties">
-                    <bean class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
-                        <property name="dialectName"><value>s[hibernate.dialect]</value></property>
-                    </bean>
+					<bean
+						class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+						<property name="dialectName">
+							<value>s[hibernate.dialect]</value>
+						</property>
+						<property name="properties">
+							<props>
+								<!-- 
+								<prop key="hibernate.show_sql">
+									true
+								</prop>
+								<prop key="hibernate.format_sql">
+									true
+								</prop>
+ 								-->
+								<prop key="hibernate.connection.release_mode">
+									after_transaction
+								</prop>
+
+							</props>
+						</property>
+					</bean>
 				</property>
 			</bean>
 		</property>
 		<property name="applicationContextName" value="caaers" />
 	</bean>
 
-<!-- 
-						hibernate.c3p0.min_size=5
-						hibernate.c3p0.max_size=20
-						hibernate.c3p0.timeout=300
-						hibernate.c3p0.max_statements=50
-						hibernate.c3p0.idle_test_period=3000
- -->
-
 	<bean id="csmUserProvisioningManager"
 		class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
 		<property name="authorizationDAO" ref="csmAuthorizationDao" />
 	</bean>
 
-<!-- 
- 	<bean id="csmUserProvisioningManager"
-		class="gov.nih.nci.security.acegi.csm.authorization.UserProvisioningManagerFactory"
-		factory-method="newUserProvisioningManager">
-		<constructor-arg value="caaers" />
-		<constructor-arg>
-			<map>
-				<entry>
-					<key>
-						<value>hibernate.connection.url</value>
-					</key>
-					<value>${datasource.url}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.username</value>
-					</key>
-					<value>${datasource.username}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.password</value>
-					</key>
-					<value>${datasource.password}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.dialect</value>
-					</key>
-					<value>${datasource.dialect}</value>
-				</entry>
-				<entry>
-					<key>
-						<value>hibernate.connection.driver_class</value>
-					</key>
-					<value>${datasource.driver}</value>
-				</entry>
-			</map>
-		</constructor-arg>
-	</bean>
-
- -->
 	<bean id="csmAuthenticationManager"
 		class="gov.nih.nci.security.SecurityServiceProvider"
 		factory-method="getAuthenticationManager">
@@ -134,64 +105,62 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="csmExtentIdGenerator"
 		class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator" />
-		
+
 	<aop:aspectj-autoproxy />
-	<aop:spring-configured/>
-		
+	<aop:spring-configured />
+
 	<aop:config>
 		<!-- pointcuts -->
-		<!-- Unfortunately, Spring doesn't support cflow
-			TODO: consider using AspectJ compile-time weaving to make use of more powerver pointcut expressions
 		<aop:pointcut id="daoSaveOrUpdatePointcut"
-			expression="(execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+))) &amp;&amp; !cflow(call(public void gov.nih.nci.cabig.caaers.DaoTestCase+.test*()))"/>
-			 -->
-		<aop:pointcut id="daoSaveOrUpdatePointcut"
-			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+))"/>			 
-			
-			
+			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+))" />
+
+
 		<!-- advisors -->
-		
+
 
 		<!-- aspects -->
 		<!-- 
-		<aop:aspect id="assignDomainObjectOwnershipAspect"
+			<aop:aspect id="assignDomainObjectOwnershipAspect"
 			ref="assignDomainObjectOwnershipBean">
 			<aop:after-returning 
-				pointcut-ref="daoSaveOrUpdatePointcut"
-				method="assignOwner"
-				returning="domainObject" />
-		</aop:aspect>
-		 -->
+			pointcut-ref="daoSaveOrUpdatePointcut"
+			method="assignOwner"
+			returning="domainObject" />
+			</aop:aspect>
+		-->
 
-		<aop:aspect id="studySecurityInterceptorAspect" ref="studySecurityInterceptorAspectBean">
-			<aop:around 
-      			pointcut-ref="daoSaveOrUpdatePointcut"
-      			method="advise"/>		
+		<aop:aspect id="studySecurityInterceptorAspect"
+			ref="studySecurityInterceptorAspectBean">
+			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"
+				method="advise" />
 		</aop:aspect>
-		<aop:aspect id="participantSecurityInterceptorAspect" ref="participantSecurityInterceptorAspectBean">
-			<aop:around 
-      			pointcut-ref="daoSaveOrUpdatePointcut"
-      			method="advise"/>		
+		<aop:aspect id="participantSecurityInterceptorAspect"
+			ref="participantSecurityInterceptorAspectBean">
+			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"
+				method="advise" />
 		</aop:aspect>
 
-		
+
 	</aop:config>
-	
+
 	<!-- 
-	<bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
+		<bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
 		<property name="csmAuthorizationManager" ref="csmUserProvisioningManager"/>
-	</bean>
+		</bean>
 	-->
-	
-	
-	<bean id="studySecurityInterceptorAspectBean" class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
-		<property name="securityInterceptor" ref="studyDaoSecurity"/>
+
+
+	<bean id="studySecurityInterceptorAspectBean"
+		class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
+		<property name="securityInterceptor" ref="studyDaoSecurity" />
 	</bean>
-	
-	<bean id="participantSecurityInterceptorAspectBean" class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
-		<property name="securityInterceptor" ref="participantDaoSecurity"/>
+
+	<bean id="participantSecurityInterceptorAspectBean"
+		class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
+		<property name="securityInterceptor"
+			ref="participantDaoSecurity" />
 	</bean>
-	
+
 
 	<bean id="daoSecurityTemplate" abstract="true">
 
@@ -203,16 +172,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="studyDaoSecurity" parent="daoSecurityTemplate"
 		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
 		<property name="objectDefinitionSource">
-		<!-- 
-			<value>
+			<!--
+				<value>
 				gov.nih.nci.cabig.caaers.dao.StudyDao.save=CSM_STUDY_CREATE
 				gov.nih.nci.cabig.caaers.dao.StudyDao.merge=CSM_STUDY_UPDATE
-			</value>
-			 -->
+				</value>
+			-->
 			<value>
 				gov.nih.nci.cabig.caaers.dao.StudyDao.save=ROLE_caaers_super_user,ROLE_caaers_study_cd
 				gov.nih.nci.cabig.caaers.dao.StudyDao.merge=ROLE_caaers_super_user,ROLE_caaers_study_cd
-			</value>			 
+			</value>
+
 		</property>
 		<property name="accessDecisionManager">
 
@@ -222,66 +192,57 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</property>
 				<property name="decisionVoters">
 					<list>
+
 						<bean class="org.acegisecurity.vote.RoleVoter" />
-
-						<!--============== BEGIN STUDY CREATE ================-->
 						<!-- 
-						<bean
+							<bean
 							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
-
+							
 							<property name="processDomainObjectClass"
-								value="gov.nih.nci.cabig.caaers.domain.Study" />
+							value="gov.nih.nci.cabig.caaers.domain.Study" />
 							<property name="processConfigAttribute"
-								value="CSM_STUDY_CREATE" />
+							value="CSM_STUDY_CREATE" />
 							<property name="authorizationCheck">
-								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-									<property
-										name="csmUserProvisioningManager"
-										ref="csmUserProvisioningManager" />
-									<property name="requiredPermission"
-										value="CREATE" />
-									<property name="objectIdGenerator"
-										ref="csmExtentIdGenerator" />
-								</bean>
+							<bean
+							class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+							<property
+							name="csmUserProvisioningManager"
+							ref="csmUserProvisioningManager" />
+							<property name="requiredPermission"
+							value="CREATE" />
+							<property name="objectIdGenerator"
+							ref="csmExtentIdGenerator" />
+							</bean>
 							</property>
-
-						</bean>
-						 -->
-						<!--============== END STUDY CREATE ================-->
-						
-						<!--============== BEGIN STUDY UPDATE ================-->
-						<!-- 
-						<bean
+							
+							</bean>
+							<bean
 							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
-
+							
 							<property name="processDomainObjectClass"
-								value="gov.nih.nci.cabig.caaers.domain.Study" />
+							value="gov.nih.nci.cabig.caaers.domain.Study" />
 							<property name="processConfigAttribute"
-								value="CSM_STUDY_UPDATE" />
+							value="CSM_STUDY_UPDATE" />
 							<property name="authorizationCheck">
-								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-									<property
-										name="csmUserProvisioningManager"
-										ref="csmUserProvisioningManager" />
-									<property name="requiredPermission"
-										value="UPDATE" />
-									<property name="objectIdGenerator"
-										ref="csmExtentIdGenerator" />
-								</bean>
+							<bean
+							class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+							<property
+							name="csmUserProvisioningManager"
+							ref="csmUserProvisioningManager" />
+							<property name="requiredPermission"
+							value="UPDATE" />
+							<property name="objectIdGenerator"
+							ref="csmExtentIdGenerator" />
+							</bean>
 							</property>
-
-						</bean>
-						 -->
-						<!--============== END STUDY UPDATE ================-->						
-						
+							</bean>
+						-->
 					</list>
 				</property>
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="participantDaoSecurity" parent="daoSecurityTemplate"
 		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
 		<property name="objectDefinitionSource">
@@ -303,14 +264,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</property>
 			</bean>
 		</property>
-	</bean>	
-	
+	</bean>
+
 	<bean id="studyParticipantAssignmentAspect"
 		class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
 		factory-method="aspectOf">
-		
-		<property name="securityInterceptor" ref="participantDaoSecurity"/>
-		
+
+		<property name="securityInterceptor"
+			ref="participantDaoSecurity" />
+
 	</bean>
 
 </beans>
