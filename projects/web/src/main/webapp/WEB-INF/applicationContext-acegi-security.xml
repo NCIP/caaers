@@ -87,15 +87,15 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				\A/public/.*\Z=IS_AUTHENTICATED_ANONYMOUSLY
-				\A/pages/participant/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/participant/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
 				\A/pages/participant/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/participant/assign.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
-				\A/pages/study/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_coordinator
+				\A/pages/participant/assign.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
+				\A/pages/study/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_cd
 				\A/pages/study/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
 				\A/pages/study/search.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/study/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_coordinator
-				\A/pages/ae/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
-				\A/pages/ae/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_coordinator
+				\A/pages/study/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_cd
+				\A/pages/ae/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
+				\A/pages/ae/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
 				\A/pages/ae/list.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
 				\A/pages/report.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
 				\A/pages/admin.*\Z=ROLE_caaers_admin
