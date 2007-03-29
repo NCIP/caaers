@@ -147,8 +147,6 @@
                 <artifactId>maven-idea-plugin</artifactId>
                 <configuration>
                     <downloadSources>true</downloadSources>
-                    <ideaVersion>6.x</ideaVersion>
-                    <jdkName>1.5</jdkName>
                 </configuration>
             </plugin>
         </plugins>
