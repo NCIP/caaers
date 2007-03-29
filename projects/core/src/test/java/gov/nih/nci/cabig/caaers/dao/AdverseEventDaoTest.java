@@ -23,8 +23,6 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testGet() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("AE not found", loaded);
-        assertDayOfDate("Wrong day for AE time", 2007, Calendar.APRIL, 3, loaded.getDetectionDate());
-        assertTimeOfDate("Wrong time for AE time", 21, 43, 56, 987, loaded.getDetectionDate());
         assertEquals("Wrong grade", Grade.DEATH, loaded.getGrade());
         assertEquals("Wrong term", 3007, (int) loaded.getCtcTerm().getId());
         assertEquals("Wrong hosp.", Hospitalization.NONE, loaded.getHospitalization());

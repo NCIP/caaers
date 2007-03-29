@@ -20,21 +20,25 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class BasicsTab extends AeTab {
+    private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
     private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
 
     private CtcDao ctcDao;
+    private InputFieldGroup reportFieldGroup;
     private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
     public BasicsTab() {
         super("Enter basic AE information", "Basics", "ae/enterBasic");
 
+        reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
+        reportFieldGroup.getFields().add(new DefaultDateField(
+            "aeReport.detectionDate", "Detection date", true));
+
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(new CollectionSelectField("grade", "Grade", true,
                 Arrays.asList(Grade.values()), "name", null));
-        mainFieldFactory.addField(new DefaultDateField(
-            "detectionDate", "Detection date", true));
         mainFieldFactory.addField(new CollectionSelectField(
             "hospitalization", "Hospitalization", true,
                 Arrays.asList(Hospitalization.values()), "name", "displayName"));
@@ -57,6 +61,7 @@ public class BasicsTab extends AeTab {
     @Override
     protected List<InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         List<InputFieldGroup> groups = new LinkedList<InputFieldGroup>();
+        groups.add(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();
         for (int i = 0 ; i < aeCount ; i++) {
             groups.add(mainFieldFactory.createGroup(i));

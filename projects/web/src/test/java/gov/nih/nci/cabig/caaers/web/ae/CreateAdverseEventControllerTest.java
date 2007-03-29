@@ -43,15 +43,12 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     }
 
     public void testBindDetectionDate() throws Exception {
-        request.setParameter("aeReport.adverseEvents[0].detectionDate", "12/30/1999");
+        request.setParameter("aeReport.detectionDate", "12/30/1999");
         request.setParameter("_target1", "");
         controller.handleRequest(request, response); // once to get the session in place
         ModelAndView mv = controller.handleRequest(request, response);
         CreateAdverseEventCommand command = (CreateAdverseEventCommand) mv.getModel().get("command");
         assertNotNull(command);
-        Errors errors = (Errors) mv.getModel().get(BindingResult.class.getName() + ".command");
-        System.err.println(errors);
-        AdverseEvent event = command.getAeReport().getAdverseEvents().get(0);
-        assertDayOfDate(1999, Calendar.DECEMBER, 30, event.getDetectionDate());
+        assertDayOfDate(1999, Calendar.DECEMBER, 30, command.getAeReport().getDetectionDate());
     }
 }

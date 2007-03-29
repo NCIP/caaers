@@ -30,7 +30,8 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 	StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao)getApplicationContext().getBean("studyParticipantAssignmentDao");
 	AdverseEventReportDao adverseEventReportDao = (AdverseEventReportDao)getApplicationContext().getBean("adverseEventReportDao");	
 	
-	public String getTestDataFileName() {
+	@Override
+    public String getTestDataFileName() {
         return "../dao/testdata/AdverseEventReportDaoTest.xml";
     }
 
@@ -43,23 +44,22 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 	
 	protected void setUp() throws Exception{
 		super.setUp();
-		SecurityTestUtils.switchUser("user_1", new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 	}
 	
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SecurityTestUtils.switchUser("user_1", new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 	}
 	
 	public void testAdverseEventSave() {
 
 		
 		
-		SecurityTestUtils.switchUser("participant_cd1", new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		
 		CtcTerm term = ctcTermDao.getById(3012);
         AdverseEvent newEvent = new AdverseEvent();
-        newEvent.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
         newEvent.setGrade(Grade.MILD);
         newEvent.setCtcTerm(term);
         newEvent.setExpected(Boolean.FALSE);
@@ -68,8 +68,9 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         AdverseEventReport newReport = new AdverseEventReport();
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
-        
-        SecurityTestUtils.switchUser("user_1", new String[] { "ROLE_that_does_not_exist" });
+        newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+
+        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 		try {
 			adverseEventReportDao.save(newReport);
 			fail("Should have failed to save report");
@@ -79,8 +80,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 			assertTrue(ex.getCause() instanceof AccessDeniedException);
 		}
 
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			adverseEventReportDao.save(newReport);
 		} catch (Exception ex) {
@@ -93,11 +93,10 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
 
 	public void testAdverseEventUpdate() {
-		SecurityTestUtils.switchUser("participant_cd1", new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		
 		CtcTerm term = ctcTermDao.getById(3012);
         AdverseEvent newEvent = new AdverseEvent();
-        newEvent.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
         newEvent.setGrade(Grade.MILD);
         newEvent.setCtcTerm(term);
         newEvent.setExpected(Boolean.FALSE);
@@ -106,6 +105,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         AdverseEventReport newReport = new AdverseEventReport();
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
+        newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
 
 		try {
 			adverseEventReportDao.save(newReport);

@@ -60,14 +60,12 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         {
             CtcTerm term = ctcTermDao.getById(3012);
             AdverseEvent event0 = new AdverseEvent();
-            event0.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
             event0.setGrade(Grade.MILD);
             event0.setCtcTerm(term);
             event0.setExpected(Boolean.FALSE);
             event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
             AdverseEvent event1 = new AdverseEvent();
-            event1.setDetectionDate(new Timestamp(DateUtils.createDate(2003, Calendar.APRIL, 25).getTime() + 600000));
             event1.setGrade(Grade.SEVERE);
             event1.setCtcTerm(term);
             event1.setExpected(Boolean.FALSE);
@@ -77,6 +75,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             newReport.addAdverseEvent(event0);
             newReport.addAdverseEvent(event1);
             newReport.setAssignment(assignmentDao.getById(-14));
+            newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
 
             getDao().save(newReport);
             assertNotNull("No ID for newly saved report", newReport.getId());
@@ -89,11 +88,11 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             AdverseEventReport loaded = getDao().getById(savedId);
             assertNotNull("Saved report not found", loaded);
             assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
+            assertDayOfDate("Wrong day for loaded date", 2004, Calendar.APRIL, 25, loaded.getDetectionDate());
+
             assertEquals("Wrong number of AEs", 2, loaded.getAdverseEvents().size());
             AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
             assertNotNull("Cascaded AE not found", loadedEvent0);
-            assertDayOfDate("Wrong day for loaded time", 2004, Calendar.APRIL, 25, loadedEvent0.getDetectionDate());
-            assertTimeOfDate("Wrong time for loaded time", 12, 10, 0, 0, loadedEvent0.getDetectionDate());
             assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
             assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getCtcTerm().getId());
             assertNotNull("No report", loadedEvent0.getReport());

@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
@@ -30,6 +31,7 @@ import java.util.List;
 )
 public class AdverseEventReport extends AbstractDomainObject {
     private StudyParticipantAssignment assignment;
+    private Date detectionDate;
     private List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
 
     private List<Lab> labs = new LinkedList<Lab>();
@@ -75,6 +77,14 @@ public class AdverseEventReport extends AbstractDomainObject {
     }
 
     ////// BEAN PROPERTIES
+
+    public Date getDetectionDate() {
+        return detectionDate;
+    }
+
+    public void setDetectionDate(Date detectionDate) {
+        this.detectionDate = detectionDate;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {

@@ -47,12 +47,12 @@
     <AE_REPORTS
         id="-17"
         assignment_id="-6"
+        detection_date="2007-04-03 21:43:56.987"
         />
 
     <ADVERSE_EVENTS
         id="-2"
         report_id="-17"
-        detection_date="2007-04-03 21:43:56.987"
         grade_code="5"
         ctc_term_id="3007"
         hospitalization_code="0"

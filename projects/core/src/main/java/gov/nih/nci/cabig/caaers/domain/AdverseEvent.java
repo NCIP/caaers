@@ -37,7 +37,6 @@ public class AdverseEvent extends AbstractDomainObject {
     private String comments;
 
     private AdverseEventReport report;
-    private Date detectionDate;
 
     ////// BOUND PROPERTIES
 
@@ -78,14 +77,6 @@ public class AdverseEvent extends AbstractDomainObject {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
-    }
-
-    public Date getDetectionDate() {
-        return detectionDate;
-    }
-
-    public void setDetectionDate(Date detectionDate) {
-        this.detectionDate = detectionDate;
     }
 
     @Type(type = "hospitalization")
