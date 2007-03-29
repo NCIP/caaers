@@ -18,7 +18,17 @@ class CreateGridIdentifiers extends edu.northwestern.bioinformatics.bering.Migra
     }
     
     void down() {
-        dropTable("nas")
-        dropTable("handles")
+        dropTable("nas", primaryKey: false)
+        dropTable("handles", primaryKey: false)
+
+        dropColumn('adverse_events', 'grid_id');
+        dropColumn('ae_reports', 'grid_id');
+        dropColumn('ae_labs', 'grid_id');
+        dropColumn('identifiers', 'grid_id');
+        dropColumn('participants', 'grid_id');
+        dropColumn('sites', 'grid_id');
+        dropColumn('studies', 'grid_id');
+        dropColumn('participant_assignments', 'grid_id');
+        dropColumn('study_sites', 'grid_id');
     }
 }
