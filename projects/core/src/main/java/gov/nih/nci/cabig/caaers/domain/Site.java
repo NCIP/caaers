@@ -31,13 +31,22 @@ public class Site extends AbstractDomainObject {
 
     private String name;
     private List<StudySite> studySites = new ArrayList<StudySite>();
-
+    private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+    
+    
     ////// LOGIC
 
     public void addStudySite(StudySite studySite) {
         getStudySites().add(studySite);
         studySite.setSite(this);
     }
+    
+   
+    public void addSiteInvestigator(SiteInvestigator siteInvestigator) {
+        getSiteInvestigators().add(siteInvestigator);
+        siteInvestigator.setSite(this);
+    }
+   
 
     ////// BEAN PROPERTIES
 
@@ -61,6 +70,17 @@ public class Site extends AbstractDomainObject {
         return studySites;
     }
 
+    @OneToMany (mappedBy = "site", fetch = FetchType.LAZY)    
+    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<SiteInvestigator> getSiteInvestigators() {
+		return siteInvestigators;
+	}
+
+	public void setSiteInvestigators(List<SiteInvestigator> siteInvestigators) {
+		this.siteInvestigators = siteInvestigators;
+	}
+
+    
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
