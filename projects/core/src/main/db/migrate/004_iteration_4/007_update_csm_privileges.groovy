@@ -8,6 +8,11 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		execute("DELETE FROM csm_protection_element");
 		execute("DELETE FROM csm_protection_group");
 		
+		if(databaseMatches('oracle')){
+			execute('DROP TRIGGER SET_CSM_PG_PE_PG_PE_ID');
+			execute('DROP TRIGGER SET_CSM_PG_PE_UPDATE_DATE');
+		}		
+		
 		
 		///////////////////////
 		// PROTECTION GROUPS //
