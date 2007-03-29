@@ -1,20 +1,20 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * @author Krikor Krumlian
@@ -36,9 +36,21 @@ public class StudySite extends AbstractDomainObject {
     private Date startDate;
     private Date endDate;
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
+    private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
+    private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
     
     //////LOGIC
 
+    public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
+        studyPersonnels.add(studyPersonnel);
+        studyPersonnel.setStudySite(this);
+    }
+    
+    public void addStudyInvestigators(StudyInvestigator studyInvestigator) {
+        getStudyInvestigators().add(studyInvestigator);
+        studyInvestigator.setStudySite(this);
+    }
+    
     public void addAssignment(StudyParticipantAssignment assignment) {
         getStudyParticipantAssignments().add(assignment);
         assignment.setStudySite(this);
@@ -87,6 +99,17 @@ public class StudySite extends AbstractDomainObject {
         return studyParticipantAssignments;
     }    
 
+    
+    @OneToMany (mappedBy = "studySite")
+    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<StudyInvestigator> getStudyInvestigators() {
+		return studyInvestigators;
+	}
+
+	public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
+		this.studyInvestigators = studyInvestigators;
+	}	
+	
     public void setIrbApprovalDate(Date irbApprovalDate) {
         this.irbApprovalDate = irbApprovalDate;
     }
@@ -125,7 +148,19 @@ public class StudySite extends AbstractDomainObject {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
-	}	
+	}
+
+	@OneToMany (mappedBy = "studySite")
+    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })    
+	public List<StudyPersonnel> getStudyPersonnels() {
+		return studyPersonnels;
+	}
+
+	public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
+		this.studyPersonnels = studyPersonnels;
+	}
+
+	
 
 	//////OBJECT METHODS
 
