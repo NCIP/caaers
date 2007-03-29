@@ -25,11 +25,11 @@
             otherRequired: ${currentCtcTerm.otherRequired}
         }
         </c:if>
-        var ctcTermId = "${fieldGroups.ctcTerm.fields[0].propertyName}"
-        var ctcTermInputId = "${fieldGroups.ctcTerm.fields[0].textfieldId}"
-        var ctcTermIndicatorId = "${fieldGroups.ctcTerm.fields[0].propertyName}-indicator"
-        var detailsForOtherId = "${fieldGroups.ctcOther.fields[0].propertyName}"
-        var detailsForOtherRowId = "${fieldGroups.ctcOther.fields[0].propertyName}-row"
+        var ctcTermId = "${fieldGroups.ctcTerm0.fields[0].propertyName}"
+        var ctcTermInputId = "${fieldGroups.ctcTerm0.fields[0].attributes.textfieldId}"
+        var ctcTermIndicatorId = "${fieldGroups.ctcTerm0.fields[0].propertyName}-indicator"
+        var detailsForOtherId = "${fieldGroups.ctcOther0.fields[0].propertyName}"
+        var detailsForOtherRowId = "${fieldGroups.ctcOther0.fields[0].propertyName}-row"
 
         function ctcVersionSelector(atLoad) {
             ctcVersion = $F("ctc-version")
@@ -120,7 +120,7 @@
             Event.observe("ctc-version", "change", function() { ctcVersionSelector(false) })
             Event.observe("ctc-category", "change", ctcCategorySelector)
 
-            new Autocompleter.DWR(ctcTermInputId, "${fieldGroups.ctcTerm.fields[0].choicesId}",
+            new Autocompleter.DWR(ctcTermInputId, "${fieldGroups.ctcTerm0.fields[0].attributes.choicesId}",
                 termPopulator, {
                 valueSelector: termValueSelector,
                 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
@@ -132,28 +132,36 @@
     </script>
 </head>
 <body>
-    <p id="instructions">
-        You are entering an adverse event for ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
-    </p>
+    <form:form cssClass="standard">
+        <tags:tabFields tab="${tab}"/>
 
-    <chrome:division title="Primary AE">
-        <form:form cssClass="standard">
-            <tags:errors path="*"/>
-    
-            <tags:tabFields tab="${tab}"/>
+        <chrome:division title="Report">
+            <p id="instructions">
+                You are entering an adverse event report for ${command.assignment.participant.fullName} on
+                ${command.assignment.studySite.study.shortTitle}.
+            </p>
 
-            <div class="row">
-                <div class="label"><label for="ctc-version">CTC version</label></div>
-                <div class="value">
-                    <select id="ctc-version">
-                        <option value="">Please select --</option>
-                        <c:forEach items="${ctcVersions}" var="ctc">
-                            <option value="${ctc.id}">${ctc.name}</option>
-                        </c:forEach>
-                    </select>
+            <div class="report-fields">
+                <c:forEach items="${fieldGroups.report.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                </c:forEach>
+                <div class="row">
+                    <div class="label"><label for="ctc-version">CTC version</label></div>
+                    <div class="value">
+                        <select id="ctc-version">
+                            <option value="">Please select --</option>
+                            <c:forEach items="${ctcVersions}" var="ctc">
+                                <option value="${ctc.id}">${ctc.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
                 </div>
             </div>
+        </chrome:division>
+
+        <chrome:division title="Adverse Event 1">
+            <tags:errors path="*"/>
+
             <div id="ctc-details" style="display: none">
                 <div class="row">
                     <div class="label"><label for="ctc-category">CTC category</label></div>
@@ -161,16 +169,16 @@
                         <select id="ctc-category"></select>
                     </div>
                 </div>
-                <tags:renderRow field="${fieldGroups.ctcTerm.fields[0]}"/>
-                <tags:renderRow field="${fieldGroups.ctcOther.fields[0]}" cssStyle="display: none"/>
+                <tags:renderRow field="${fieldGroups.ctcTerm0.fields[0]}"/>
+                <tags:renderRow field="${fieldGroups.ctcOther0.fields[0]}" cssStyle="display: none"/>
             </div>
 
-            <div id="main-fields">
-                <c:forEach items="${fieldGroups.main.fields}" var="field">
+            <div class="main-fields">
+                <c:forEach items="${fieldGroups.main0.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 </c:forEach>
             </div>
-        </form:form>
-    </chrome:division>
+        </chrome:division>
+    </form:form>
 </body>
 </html>

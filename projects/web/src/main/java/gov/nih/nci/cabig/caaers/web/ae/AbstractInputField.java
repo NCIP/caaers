@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.Map;
+import java.util.LinkedHashMap;
+
 /**
  * @author Rhett Sutphin
  */
@@ -7,7 +10,7 @@ public abstract class AbstractInputField implements InputField {
     private String displayName;
     private String propertyName;
     private boolean required;
-    private String extraInformation;
+    private Map<String, Object> attributes;
 
     protected AbstractInputField() { }
 
@@ -15,6 +18,7 @@ public abstract class AbstractInputField implements InputField {
         this.displayName = displayName;
         this.propertyName = propertyName;
         this.required = required;
+        this.attributes = new LinkedHashMap<String, Object>();
     }
 
     public abstract Category getCategory();
@@ -47,11 +51,11 @@ public abstract class AbstractInputField implements InputField {
         this.propertyName = propertyName;
     }
 
-    public String getExtraInformation() {
-        return extraInformation;
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
-    public void setExtraInformation(String extraInformation) {
-        this.extraInformation = extraInformation;
+    public void setAttributes(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 }

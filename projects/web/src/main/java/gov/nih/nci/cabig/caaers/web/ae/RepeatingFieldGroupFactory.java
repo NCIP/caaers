@@ -92,8 +92,8 @@ public class RepeatingFieldGroupFactory {
             return qualifiedPropertyName(src.getPropertyName());
         }
 
-        public String getExtraInformation() {
-            return src.getExtraInformation();
+        public Map<String, Object> getAttributes() {
+            return src.getAttributes();
         }
 
         private String qualifiedPropertyName(String propertyName) {

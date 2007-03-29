@@ -18,7 +18,7 @@ ul.errors {
     border-top: none;
 }
 
-#main-fields {
+.main-fields {
     margin-top: 1.2em;
     padding-top: 0.3em;
     border-top: 1px solid #999;

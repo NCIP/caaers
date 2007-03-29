@@ -49,7 +49,7 @@ public class BasicsTab extends AeTab {
 
         ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         AutocompleterField ctcTermField = new AutocompleterField("ctcTerm", "CTC term", true);
-        ctcTermField.setExtraInformation(
+        ctcTermField.getAttributes().put(InputField.DETAILS,
             "Type a portion of the CTC term you are looking for.  " +
             "If you select a category, only terms in that category will be shown.");
         ctcTermFieldFactory.addField(ctcTermField);

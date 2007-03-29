@@ -8,8 +8,8 @@
         <tags:renderLabel field="${field}"/>
     </div>
     <div class="value"><tags:renderInputs field="${field}"/></div>
-    <c:if test="${not empty field.extraInformation}">
-        <div class="extra">${field.extraInformation}</div>
+    <c:if test="${not empty field.attributes.details}">
+        <div class="extra">${field.attributes.details}</div>
     </c:if>
 </div>
 

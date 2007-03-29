@@ -1,9 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.Map;
+
 /**
  * @author Rhett Sutphin
  */
 public interface InputField {
+    String DETAILS = "details";
+
     Category getCategory();
 
     /** @return the lowercased name of the value returned by {@link #getCategory} */
@@ -15,7 +19,7 @@ public interface InputField {
 
     String getPropertyName();
 
-    String getExtraInformation();
+    Map<String, Object> getAttributes();
 
     enum Category {
         TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER
