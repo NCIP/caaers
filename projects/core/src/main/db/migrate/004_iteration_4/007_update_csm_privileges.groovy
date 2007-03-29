@@ -8,16 +8,6 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		execute("DELETE FROM csm_protection_element");
 		execute("DELETE FROM csm_protection_group");
 		
-		if(databaseMatches('oracle')){
-			execute('DROP TRIGGER SET_CSM_PG_PE_PG_PE_ID');
-			execute('DROP TRIGGER SET_CSM_PG_PE_UPDATE_DATE');
-			execute('DROP TRIGGER SET_CSM_ROLE_PRIV_ROLE_PRIVILE');
-			execute('DROP TRIGGER SET_CSM_ROLE_PRIV_UPDATE_DATE');
-			execute('DROP TRIGGER SET_CSM_USER_GROU_USER_GROUP_I');
-			execute('DROP TRIGGER SET_CSM_USER_PE_USER_PROTECTIO');
-			execute('DROP TRIGGER SET_CSM_USER_PE_UPDATE_DATE');
-		}		
-		
 		
 		///////////////////////
 		// PROTECTION GROUPS //
@@ -136,7 +126,6 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_pg_pe',
 			[
-				pg_pe_id: -1,
 				protection_group_id: -1,
 				protection_element_id: -2,
 			],
@@ -148,7 +137,6 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_pg_pe',
 			[
-				pg_pe_id: -2,
 				protection_group_id: -2,
 				protection_element_id: -3,
 			],
@@ -160,7 +148,6 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_pg_pe',
 			[
-				pg_pe_id: -3,
 				protection_group_id: -3,
 				protection_element_id: -4,
 			],
@@ -172,7 +159,6 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_pg_pe',
 			[
-				pg_pe_id: -4,
 				protection_group_id: -4,
 				protection_element_id: -5,
 			],
@@ -288,7 +274,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -1, role_id: -1, privilege_id: -1
+				role_id: -1, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -297,7 +283,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -2, role_id: -2, privilege_id: -5
+				role_id: -2, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -306,7 +292,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -3, role_id: -3, privilege_id: -3
+				role_id: -3, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -316,7 +302,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -4, role_id: -4, privilege_id: -1
+				role_id: -4, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -325,7 +311,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -5, role_id: -5, privilege_id: -5
+				role_id: -5, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -334,7 +320,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -6, role_id: -6, privilege_id: -3
+				role_id: -6, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -344,7 +330,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -7, role_id: -7, privilege_id: -1
+				role_id: -7, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -353,7 +339,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -8, role_id: -8, privilege_id: -5
+				role_id: -8, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -362,7 +348,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -9, role_id: -9, privilege_id: -3
+				role_id: -9, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -371,7 +357,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -10, role_id: -10, privilege_id: -1
+				role_id: -10, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -380,7 +366,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -11, role_id: -11, privilege_id: -5
+				role_id: -11, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -389,7 +375,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -12, role_id: -12, privilege_id: -3
+				role_id: -12, privilege_id: -3
 			],
 			primaryKey: false
 		)
