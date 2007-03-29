@@ -11,6 +11,11 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		if(databaseMatches('oracle')){
 			execute('DROP TRIGGER SET_CSM_PG_PE_PG_PE_ID');
 			execute('DROP TRIGGER SET_CSM_PG_PE_UPDATE_DATE');
+			execute('DROP TRIGGER SET_CSM_ROLE_PRIV_ROLE_PRIVILE');
+			execute('DROP TRIGGER SET_CSM_ROLE_PRIV_UPDATE_DATE');
+			execute('DROP TRIGGER SET_CSM_USER_GROU_USER_GROUP_I');
+			execute('DROP TRIGGER SET_CSM_USER_PE_USER_PROTECTIO');
+			execute('DROP TRIGGER SET_CSM_USER_PE_UPDATE_DATE');
 		}		
 		
 		
