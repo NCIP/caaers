@@ -112,8 +112,8 @@ class CreateCtcLookups extends edu.northwestern.bioinformatics.bering.Migration 
     }
 
     void down() {
-        dropTable("ctc_version_categories")
-        dropTable("ctc_categories")
-        dropTable("ctc_versions")
+        dropTable("ctc_version_categories", primaryKey: false)
+        dropTable("ctc_categories", primaryKey: false)
+        dropTable("ctc_versions", primaryKey: false)
     }
 }

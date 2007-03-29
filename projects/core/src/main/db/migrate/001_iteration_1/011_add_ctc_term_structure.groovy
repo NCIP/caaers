@@ -31,7 +31,8 @@ class AddCtcTermStructure extends edu.northwestern.bioinformatics.bering.Migrati
     }
 
     void down() {
-        dropTable("ctc_categories")
+        dropTable('ctc_terms', primaryKey: false)
+        dropTable('ctc_categories', primaryKey: false)
 
         // readd as from 009
         createTable("ctc_categories") { t->
@@ -48,6 +49,10 @@ class AddCtcTermStructure extends edu.northwestern.bioinformatics.bering.Migrati
 
         execute('ALTER TABLE ctc_version_categories ADD CONSTRAINT fk_ctc_ver_cat_ver FOREIGN KEY (version_id) REFERENCES ctc_versions')
         execute('ALTER TABLE ctc_version_categories ADD CONSTRAINT fk_ctc_ver_cat_cat FOREIGN KEY (category_id) REFERENCES ctc_categories')
+
+        // readd from 010
+        execute("ALTER TABLE adverse_events ADD CONSTRAINT fk_adv_ev_ctc_cat FOREIGN KEY (ctc_category_id) REFERENCES ctc_categories");
+
         // skipped restoring data since there's no live system to restore
     }
 }

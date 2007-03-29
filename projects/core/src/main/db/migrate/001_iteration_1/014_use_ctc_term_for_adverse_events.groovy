@@ -10,7 +10,7 @@ class UseCtcTermForAdverseEvents extends edu.northwestern.bioinformatics.bering.
 
     void down() {
         execute("ALTER TABLE adverse_events DROP CONSTRAINT fk_adv_ev_ctc_term");
-        dropColumn("adverse_events", "ctc_term_id", "integer")
+        dropColumn("adverse_events", "ctc_term_id")
         addColumn("adverse_events", "term", "string")
         addColumn("adverse_events", "ctc_category_id", "integer")
         addColumn("adverse_events", "ctc_version_id", "integer")
