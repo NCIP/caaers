@@ -19,8 +19,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_group_id: -1,
 				protection_group_name: 'gov.nih.nci.cabig.caaers.domain.Study',
 				protection_group_description: 'Study Extent Protection Group',
-				application_id: -1, large_element_count_flag: 0,
-				update_date: '1974-12-14'
+				application_id: -1, large_element_count_flag: 0
 			],
 			primaryKey: false
 		)
@@ -30,8 +29,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_group_id: -2,
 				protection_group_name: 'gov.nih.nci.cabig.caaers.domain.Participant',
 				protection_group_description: 'Participant Extent Protection Group',
-				application_id: -1, large_element_count_flag: 0,
-				update_date: '1974-12-14'
+				application_id: -1, large_element_count_flag: 0
 			],
 			primaryKey: false
 		)
@@ -41,8 +39,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_group_id: -3,
 				protection_group_name: 'gov.nih.nci.cabig.caaers.domain.AdverseEventReport',
 				protection_group_description: 'AdverseEventReport Extent Protection Group',
-				application_id: -1, large_element_count_flag: 0,
-				update_date: '1974-12-14'
+				application_id: -1, large_element_count_flag: 0
 			],
 			primaryKey: false
 		)
@@ -52,8 +49,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_group_id: -4,
 				protection_group_name: 'gov.nih.nci.cabig.caaers.domain.Rule',
 				protection_group_description: 'Rule Extent Protection Group',
-				application_id: -1, large_element_count_flag: 0,
-				update_date: '1974-12-14'
+				application_id: -1, large_element_count_flag: 0
 			],
 			primaryKey: false
 		)
@@ -68,8 +64,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_element_name: 'caaers',
 				protection_element_description: 'caAERS Application',
 				object_id: 'caaers', attribute: '',
-				application_id: -1,
-				update_date: '1974-12-14'
+				application_id: -1
 			],
 			primaryKey: false
 		)
@@ -81,8 +76,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_element_description: 'Study Extent Protection Element',
 				object_id: 'gov.nih.nci.cabig.caaers.domain.Study', 
 				attribute: '',
-				application_id: -1,
-				update_date: '1974-12-14'
+				application_id: -1
 			],
 			primaryKey: false
 		)
@@ -94,8 +88,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_element_description: 'Participant Extent Protection Element',
 				object_id: 'gov.nih.nci.cabig.caaers.domain.Participant', 
 				attribute: '',
-				application_id: -1,
-				update_date: '1974-12-14'
+				application_id: -1
 			],
 			primaryKey: false
 		)
@@ -107,8 +100,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_element_description: 'AdverseEventReport Extent Protection Element',
 				object_id: 'gov.nih.nci.cabig.caaers.domain.AdverseEventReport', 
 				attribute: '',
-				application_id: -1,
-				update_date: '1974-12-14'
+				application_id: -1
 			],
 			primaryKey: false
 		)
@@ -120,8 +112,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 				protection_element_description: 'Rule Extent Protection Element',
 				object_id: 'gov.nih.nci.cabig.caaers.domain.Rule', 
 				attribute: '',
-				application_id: -1,
-				update_date: '1974-12-14'
+				application_id: -1
 			],
 			primaryKey: false
 		)
@@ -185,8 +176,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -1, role_name: 'gov.nih.nci.cabig.caaers.domain.Study.CREATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -194,8 +184,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -2, role_name: 'gov.nih.nci.cabig.caaers.domain.Study.UPDATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -203,8 +192,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -3, role_name: 'gov.nih.nci.cabig.caaers.domain.Study.READ',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -212,8 +200,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -4, role_name: 'gov.nih.nci.cabig.caaers.domain.Participant.CREATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -221,8 +208,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -5, role_name: 'gov.nih.nci.cabig.caaers.domain.Participant.UPDATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -230,8 +216,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -6, role_name: 'gov.nih.nci.cabig.caaers.domain.Participant.READ',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -240,8 +225,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -7, role_name: 'gov.nih.nci.cabig.caaers.domain.AdverseEventReport.CREATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -249,8 +233,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -8, role_name: 'gov.nih.nci.cabig.caaers.domain.AdverseEventReport.UPDATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -258,8 +241,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -9, role_name: 'gov.nih.nci.cabig.caaers.domain.AdverseEventReport.READ',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -267,8 +249,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -10, role_name: 'gov.nih.nci.cabig.caaers.domain.Rule.CREATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -276,8 +257,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -11, role_name: 'gov.nih.nci.cabig.caaers.domain.Rule.UPDATE',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -285,8 +265,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_role',
 			[
 				role_id: -12, role_name: 'gov.nih.nci.cabig.caaers.domain.Rule.READ',
-				role_description: '', application_id: -1, active_flag: 1,
-				update_date: '1974-12-14'
+				role_description: '', application_id: -1, active_flag: 1
 			],
 			primaryKey: false
 		)
@@ -299,8 +278,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -1, role_id: -1, privilege_id: -1,
-				update_date: '1974-12-14'
+				role_privilege_id: -1, role_id: -1, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -309,8 +287,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -2, role_id: -2, privilege_id: -5,
-				update_date: '1974-12-14'
+				role_privilege_id: -2, role_id: -2, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -319,8 +296,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -3, role_id: -3, privilege_id: -3,
-				update_date: '1974-12-14'
+				role_privilege_id: -3, role_id: -3, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -330,8 +306,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -4, role_id: -4, privilege_id: -1,
-				update_date: '1974-12-14'
+				role_privilege_id: -4, role_id: -4, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -340,8 +315,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -5, role_id: -5, privilege_id: -5,
-				update_date: '1974-12-14'
+				role_privilege_id: -5, role_id: -5, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -350,8 +324,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -6, role_id: -6, privilege_id: -3,
-				update_date: '1974-12-14'
+				role_privilege_id: -6, role_id: -6, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -361,8 +334,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -7, role_id: -7, privilege_id: -1,
-				update_date: '1974-12-14'
+				role_privilege_id: -7, role_id: -7, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -371,8 +343,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -8, role_id: -8, privilege_id: -5,
-				update_date: '1974-12-14'
+				role_privilege_id: -8, role_id: -8, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -381,8 +352,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -9, role_id: -9, privilege_id: -3,
-				update_date: '1974-12-14'
+				role_privilege_id: -9, role_id: -9, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -391,8 +361,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -10, role_id: -10, privilege_id: -1,
-				update_date: '1974-12-14'
+				role_privilege_id: -10, role_id: -10, privilege_id: -1
 			],
 			primaryKey: false
 		)
@@ -401,8 +370,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -11, role_id: -11, privilege_id: -5,
-				update_date: '1974-12-14'
+				role_privilege_id: -11, role_id: -11, privilege_id: -5
 			],
 			primaryKey: false
 		)
@@ -411,8 +379,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert(
 			'csm_role_privilege',
 			[
-				role_privilege_id: -12, role_id: -12, privilege_id: -3,
-				update_date: '1974-12-14'
+				role_privilege_id: -12, role_id: -12, privilege_id: -3
 			],
 			primaryKey: false
 		)
@@ -430,8 +397,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -1,
-				group_id: -4, role_id: -1, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -4, role_id: -1, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -442,8 +408,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -2,
-				group_id: -4, role_id: -2, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -4, role_id: -2, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -454,8 +419,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -3,
-				group_id: -4, role_id: -3, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -4, role_id: -3, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -468,8 +432,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -4,
-				group_id: -3, role_id: -1, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -1, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -480,8 +443,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -5,
-				group_id: -3, role_id: -2, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -2, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -492,8 +454,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -6,
-				group_id: -3, role_id: -3, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -3, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -506,8 +467,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -7,
-				group_id: -2, role_id: -3, protection_group_id: -1,
-				update_date: '1974-12-14'
+				group_id: -2, role_id: -3, protection_group_id: -1
 			],
 			primaryKey: false
 		)
@@ -522,8 +482,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -8,
-				group_id: -5, role_id: -4, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -4, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -534,8 +493,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -9,
-				group_id: -5, role_id: -5, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -5, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -546,8 +504,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -10,
-				group_id: -5, role_id: -6, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -6, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -559,8 +516,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -11,
-				group_id: -3, role_id: -4, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -4, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -571,8 +527,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -12,
-				group_id: -3, role_id: -5, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -5, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -583,8 +538,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -13,
-				group_id: -3, role_id: -6, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -6, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -596,8 +550,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -14,
-				group_id: -2, role_id: -6, protection_group_id: -2,
-				update_date: '1974-12-14'
+				group_id: -2, role_id: -6, protection_group_id: -2
 			],
 			primaryKey: false
 		)
@@ -611,8 +564,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -15,
-				group_id: -5, role_id: -7, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -7, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -623,8 +575,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -16,
-				group_id: -5, role_id: -8, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -8, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -635,8 +586,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -17,
-				group_id: -5, role_id: -9, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -5, role_id: -9, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -648,8 +598,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -18,
-				group_id: -3, role_id: -7, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -7, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -660,8 +609,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -19,
-				group_id: -3, role_id: -8, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -8, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -672,8 +620,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -20,
-				group_id: -3, role_id: -9, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -9, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -685,8 +632,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -21,
-				group_id: -2, role_id: -9, protection_group_id: -3,
-				update_date: '1974-12-14'
+				group_id: -2, role_id: -9, protection_group_id: -3
 			],
 			primaryKey: false
 		)
@@ -701,8 +647,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -22,
-				group_id: -3, role_id: -10, protection_group_id: -4,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -10, protection_group_id: -4
 			],
 			primaryKey: false
 		)
@@ -713,8 +658,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -23,
-				group_id: -3, role_id: -11, protection_group_id: -4,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -11, protection_group_id: -4
 			],
 			primaryKey: false
 		)
@@ -725,8 +669,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			'csm_user_group_role_pg',
 			[
 				user_group_role_pg_id: -24,
-				group_id: -3, role_id: -12, protection_group_id: -4,
-				update_date: '1974-12-14'
+				group_id: -3, role_id: -12, protection_group_id: -4
 			],
 			primaryKey: false
 		)
