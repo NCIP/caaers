@@ -45,14 +45,11 @@ field.value="";
 					<input type="hidden" name="_selected" value="">
 				</div>
 				
-					<table border="0" id="table1" cellspacing="10" width="100%">
+					<table border="0" id="table1" cellspacing="10" width="60%">
 	
 						<tr>
 							<td align="center"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-							<td align="center"> <b> <span class="red">*</span><em></em>Status Code:</b> </td>
-							<td align="center"> <b> <span class="red">*</span><em></em>Role Code:</b> </td>
-							<td align="center"> <b> <span class="red">*</span><em></em>Start Date:</b> </td>
-							<td align="center"> <b> End Date:</b> </td>														
+							<td align="center"> <b> <span class="red">*</span><em></em>Role:</b> </td>										
 							<td align="center"> <b> <span class="red">*</span><em></em>IRB Approval Date:</b> </td>														
 							<td align="center">										
 								<b><a href="javascript:fireAction('addSite','0');"><img
@@ -67,28 +64,13 @@ field.value="";
         						  	 	<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 									</form:select> 
 								</td>
-								
-								<td align="center" width="15%">
-								    <form:select path="studySites[${status.index}].statusCode">										
-									 	<form:options items="${studySiteStatusRefData}" itemLabel="desc"
-												itemValue="code" />
-									</form:select>
-								</td>	
-									
+																	
 								<td align="center" width="15%">
 									<form:select path="studySites[${status.index}].roleCode">										
 									 	<form:options items="${studySiteRoleCodeRefData}" itemLabel="desc"
 												itemValue="code" />
 									</form:select>									
-								</td>
-												
-							    <td align="center" width="15%">
-							    	<tags:dateInput path="studySites[${status.index}].startDate"/>							    
-							    </td>				
-							    
-							    <td align="center" width="15%">
-							        <tags:dateInput path="studySites[${status.index}].endDate"/>
-							    </td>
+								</td>																		   
 
     	    				    <td align="center" width="15%">
     	    				    	<tags:dateInput path="studySites[${status.index}].irbApprovalDate"/>
