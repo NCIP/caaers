@@ -71,29 +71,38 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                 <entry key="phaseCodeRefData">
                     <list>
                    		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase I Trial" />
-                            <property name="desc" value="Phase I Trial" />
+                            <property name="code" value="0" />
+                            <property name="desc" value="0" />
+                        </bean>
+                   		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="I" />
+                            <property name="desc" value="I" />
                         </bean>
                          <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase I/II Trial" />
-                            <property name="desc" value="Phase I/II Trial" />
+                            <property name="code" value="I/II" />
+                            <property name="desc" value="I/II" />
                         </bean>
                          <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase II Trial" />
-                            <property name="desc" value="Phase II Trial" />
+                            <property name="code" value="II" />
+                            <property name="desc" value="II" />
                         </bean>
                          <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase III Trial" />
-                            <property name="desc" value="Phase III Trial" />
+                            <property name="code" value="III" />
+                            <property name="desc" value="III" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase IV Trial " />
-                            <property name="desc" value="Phase IV Trial " />
+                            <property name="code" value="IV" />
+                            <property name="desc" value="IV" />
                         </bean> 
                          <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Phase 0 Trial" />
-                            <property name="desc" value="Phase 0 Trial " />
+                            <property name="code" value="Pilot" />
+                            <property name="desc" value="Pilot" />
                         </bean>                      
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Other" />
+                            <property name="desc" value="Other" />
+                        </bean>                      
+                        
                     </list>
                 </entry>
                 <entry key="typeRefData">
