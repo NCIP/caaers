@@ -20,6 +20,7 @@
 <!-- MAIN BODY STARTS HERE -->
 <chrome:body title="${flow.name}: ${tab.longTitle}">
 	   <form:form method="post" cssClass="standard">
+	   		<tags:errors path="*"/>
 			<tags:tabFields tab="${tab}"/>
 			<div>
 			<chrome:division id="study-details">
@@ -49,37 +50,11 @@
 
                  </table>
                 </td>
-				<td>
-				<table  width="60%" border="0" cellspacing="10" cellpadding="3">
-
-				   <tr>				 
-        			  <td class="label"> <form:label path="status"><span class="red">*</span><em></em>Status:</form:label> </td>
-				      <td> <form:select path="status">
-							<form:options items="${statusRefData}" itemLabel="desc"
-									itemValue="code" />
-						</form:select> </td>	
-				   </tr> 
-
-				   <tr>				 
-        			  <td class="label"><form:label path="diseaseCode"><span class="red">*</span><em></em>Disease Code:</form:label></td>
-                    
-					  <td>	<form:select path="diseaseCode">
-							<form:options items="${diseaseCodeRefData}" itemLabel="desc"
-									itemValue="code"/>
-						</form:select>	</td>					
-					</tr>
-
+				<td valign="top">
+				<table width="60%" border="0" cellspacing="10" cellpadding="3">
+				  
 					<tr>				 
-        			  <td class="label"><form:label path="monitorCode">Monitor Code:</form:label></td>
-                    
-					  <td>	<form:select path="monitorCode">
-							<form:options items="${monitorCodeRefData}" itemLabel="desc"
-									itemValue="code"/>
-						</form:select>	</td>					
-					</tr>
-
-					<tr>				 
-        			  <td class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase Code:</form:label></td>
+        			  <td class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase :</form:label></td>
                     
 					  <td>	<form:select path="phaseCode">
 							<form:options items="${phaseCodeRefData}" itemLabel="desc"
@@ -88,21 +63,14 @@
 					</tr>
 				
 					<tr>				 
-        			  <td class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor Code:</form:label></td>
+        			  <td class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor :</form:label></td>
 					 <td>
 						<form:select path="primarySponsorCode">
 							<form:options items="${sponsorCodeRefData}" itemLabel="desc"
 									itemValue="code"/>
 						</form:select>												
 					</td>
-					</tr>					
-					
-
-					<tr>				 
-        			  <td class="label"> <form:label path="multiInstitutionIndicator"><span class="red">*</span><em></em>Multi
-									Institution:</form:label></td>
-					  <td> <form:checkbox path="multiInstitutionIndicator" /></td>
-    		        </tr>
+					</tr>									
 
 				 </table>
                  </td>
