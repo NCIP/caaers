@@ -55,10 +55,10 @@ field.value="";
 							<b><a href="javascript:fireAction('addIdentifier','0');"><img
 								src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
 						</td>
-						<td> <b>Source<span class="red">*</span> </b></td>						
-						<td> <b>Identifier Type<span class="red">*</span> </b> </td>						
-						<td> <b> Identifier<span class="red">*</span> </b> </td>														
-						<td><b> Primary Indicator </b></td>
+						<td> <b>Identifier<span class="red">*</span> </b> </td>															
+						<td> <b>Type<span class="red">*</span> </b> </td>						
+						<td> <b>Source<span class="red">*</span> </b></td>					
+						<td> <b>Primary Indicator </b></td>
 					</tr>																			
 				 
 				    <tr>
@@ -70,18 +70,22 @@ field.value="";
 											<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
 											src="/caaers/images/checkno.gif" border="0" alt="remove"></a>										
 										</td>
+										
+										<td> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
+
+										<td> <form:select path="identifiers[${status.index}].type">
+											<option value="">--Please Select--									
+											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
+												itemValue="code" /></form:select> 
+										</td>
+										
 										<td>
 										    <form:select path="identifiers[${status.index}].source">
 											<option value="">--Please Select--									
 											<form:options items="${identifiersSourceRefData}" itemLabel="name"
 												itemValue="name" /></form:select>
 										</td>
-
-										<td> <form:select path="identifiers[${status.index}].type">
-											<option value="">--Please Select--									
-											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
-												itemValue="code" /></form:select> </td>
-										<td> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
+										
 										<td><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
 						</tr> 
 						<tr>
