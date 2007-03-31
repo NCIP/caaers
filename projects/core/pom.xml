@@ -376,17 +376,12 @@
                                             <classpath refid="maven.plugin.classpath"/>
                                         </taskdef>
                                         <echo>Inserting test CSM users into ${datasource.url}</echo>
+
                                         <dbunit driver="${datasource.driver}"
                                                 url="${datasource.url}"
                                                 userid="${datasource.username}"
                                                 password="${datasource.password}">
-                                            <operation type="DELETE_ALL" src="tools/csm/CSM_policy.xml" />
-                                        </dbunit>
-                                        <dbunit driver="${datasource.driver}"
-                                                url="${datasource.url}"
-                                                userid="${datasource.username}"
-                                                password="${datasource.password}">
-                                            <operation type="CLEAN_INSERT" src="tools/csm/CSM_policy.xml" />
+                                            <operation type="INSERT" src="tools/csm/CSM_policy.xml" />
                                         </dbunit>
                                     </tasks>
                                 </configuration>
