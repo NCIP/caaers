@@ -9,19 +9,16 @@
 <c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
 
 <chrome:division title="${fieldGroup.displayName}" cssClass="lab" id="lab-${index}" style="${style}">
-    <c:set var="fields" value="${fieldGroup.fields}"/>
-    <div class="repeatedGroup">
-        <tags:renderRow field="${fields[0]}"/>
-        <tags:renderRow field="${fields[1]}"/>
-        <c:forEach begin="2" end="7" step="2" var="i">
-            <div class="row">
-                <div class="label"><tags:renderLabel field="${fields[i]}"/></div>
-                <div class="value">
-                    <tags:renderInputs field="${fields[i]}"/>
-                    <form:label path="${fields[i+1].propertyName}">date</form:label>
-                    <tags:renderInputs field="${fields[i+1]}"/>
-                </div>
+    <tags:renderRow field="${fieldGroup.fields[0]}"/>
+    <tags:renderRow field="${fieldGroup.fields[1]}"/>
+    <c:forEach begin="2" end="7" step="2" var="i">
+        <div class="row">
+            <div class="label"><tags:renderLabel field="${fieldGroup.fields[i]}"/></div>
+            <div class="value">
+                <tags:renderInputs field="${fieldGroup.fields[i]}"/>
+                <form:label path="${fieldGroup.fields[i+1].propertyName}">date</form:label>
+                <tags:renderInputs field="${fieldGroup.fields[i+1]}"/>
             </div>
-        </c:forEach>
-    </div>
+        </div>
+    </c:forEach>
 </chrome:division>

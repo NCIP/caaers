@@ -22,7 +22,7 @@ public class LabsTab extends AeTab {
         fieldFactory.addField(new DefaultTextField("name", "Lab name", true));
         fieldFactory.addField(new DefaultTextField("units", "Units", true));
         addLabValueFields("baseline", "Baseline");
-        addLabValueFields("nadir", "AE lab");
+        addLabValueFields("nadir", "AE");
         addLabValueFields("recovery", "Recovery");
     }
 
