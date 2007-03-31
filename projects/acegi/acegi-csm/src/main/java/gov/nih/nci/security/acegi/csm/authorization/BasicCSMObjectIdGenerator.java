@@ -27,6 +27,13 @@ public class BasicCSMObjectIdGenerator implements CSMObjectIdGenerator {
 		if (object != null) {
 			Class klass = object.getClass();
 			String className = klass.getName();
+			
+			//Remove the proxy part, if it exists
+			int idx = className.indexOf("$$");
+			if(idx > -1){
+				className = className.substring(0, idx);
+			}
+			
 			Object id = null;
 			String methodName = getIdMethodName();
 			if (methodName != null && methodName.length() > 0) {
@@ -45,9 +52,9 @@ public class BasicCSMObjectIdGenerator implements CSMObjectIdGenerator {
 				sep = "";
 			}
 			if (isClassNameFirst()) {
-				objectId = klass.getName() + sep + id;
+				objectId = className + sep + id;
 			} else {
-				objectId = id + sep + klass.getName();
+				objectId = id + sep + className;
 			}
 		}
 		return objectId;

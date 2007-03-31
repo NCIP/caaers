@@ -67,12 +67,6 @@ public class CSMAccessControlTag extends TagSupport {
 		}
 
 		Authentication auth = getAuthentication();
-		if (auth == null) {
-			logger
-					.debug("No Authentication object found in session, so skipping tag body");
-
-			return Tag.SKIP_BODY;
-		}
 
 		ApplicationContext context = getContext(pageContext);
 

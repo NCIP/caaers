@@ -37,7 +37,7 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 			} else {
 				for (Iterator i = groups.iterator(); i.hasNext();) {
 					Group group = (Group) i.next();
-					if (isMember(authentication.getName(), group.getGroupName())) {
+					if (authentication != null && isMember(authentication.getName(), group.getGroupName())) {
 						isAuthorized = true;
 						break;
 					}
