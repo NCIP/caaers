@@ -41,7 +41,7 @@ public class DefaultAdverseEventService implements AdverseEventService {
 		AdverseEventReport adverseEventReport = new AdverseEventReport();
 		adverseEventReport.setAssignment(studyParticipantAssignment);
 		adverseEventReport.addAdverseEvent(ae);
-		adverseEventReport.setLabs(labs);
+		adverseEventReport.getLabs().addAll(labs);
 		getAdverseEventReportDao().save(adverseEventReport);
 		return adverseEventReport.getGridId();
 	}

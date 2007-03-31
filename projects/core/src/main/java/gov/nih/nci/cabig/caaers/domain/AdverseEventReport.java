@@ -6,6 +6,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.apache.commons.collections.Factory;
+import org.apache.commons.collections.list.LazyList;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,9 +34,11 @@ import java.util.Date;
 public class AdverseEventReport extends AbstractDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
-    private List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+    private List<AdverseEvent> adverseEventsInternal;
+    private List<AdverseEvent> adverseEvents;
 
-    private List<Lab> labs = new LinkedList<Lab>();
+    private List<Lab> labsInternal;
+    private List<Lab> labs;
 
     // TODO
     // private MedicalInformation medicalInformation;
@@ -45,12 +49,17 @@ public class AdverseEventReport extends AbstractDomainObject {
     // private List<MedicalDevice> medicalDevices;
     // private ReporterInfo reporterInfo;
 
+    public AdverseEventReport() {
+        setAdverseEventsInternal(new ArrayList<AdverseEvent>());
+        setLabsInternal(new ArrayList<Lab>());
+    }
+
     ////// LOGIC
 
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
-            AdverseEvent firstAe = getAdverseEvents().get(0);
+            AdverseEvent firstAe = getAdverseEventsInternal().get(0);
             CtcTerm term = firstAe.getCtcTerm();
             String other = term.isOtherRequired()
                 ? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
@@ -66,14 +75,53 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @Transient
     public boolean isNotificationMessagePossible() {
-        if (getAdverseEvents().size() < 1) return false;
-        AdverseEvent ae = getAdverseEvents().get(0);
+        if (getAdverseEventsInternal().size() < 1) return false;
+        AdverseEvent ae = getAdverseEventsInternal().get(0);
         return ae != null && ae.getGrade() != null && ae.getCtcTerm() != null;
     }
 
     public void addAdverseEvent(AdverseEvent adverseEvent) {
-        getAdverseEvents().add(adverseEvent);
+        getAdverseEventsInternal().add(adverseEvent);
         if (adverseEvent != null) adverseEvent.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<AdverseEvent> getAdverseEvents() {
+        return adverseEvents;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void createLazyAdverseEvents() {
+        this.adverseEvents = LazyList.decorate(getAdverseEventsInternal(), new Factory() {
+            public Object create() {
+                AdverseEvent ae = new AdverseEvent();
+                ae.setReport(AdverseEventReport.this);
+                return ae;
+            }
+        });
+    }
+
+    public void addLab(Lab lab) {
+        getLabsInternal().add(lab);
+        if (lab != null) lab.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<Lab> getLabs() {
+        return labs;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void createLazyLabs() {
+        this.labs = LazyList.decorate(getLabsInternal(), new Factory() {
+            public Object create() {
+                Lab lab = new Lab();
+                lab.setReport(AdverseEventReport.this);
+                return lab;
+            }
+        });
     }
 
     ////// BEAN PROPERTIES
@@ -101,12 +149,14 @@ public class AdverseEventReport extends AbstractDomainObject {
     @JoinColumn(name="report_id", nullable=false)
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<AdverseEvent> getAdverseEvents() {
-        return adverseEvents;
+    protected List<AdverseEvent> getAdverseEventsInternal() {
+        return adverseEventsInternal;
     }
 
-    public void setAdverseEvents(List<AdverseEvent> adverseEvents) {
-        this.adverseEvents = adverseEvents;
+    @SuppressWarnings("unchecked")
+    protected void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
+        this.adverseEventsInternal = adverseEvents;
+        createLazyAdverseEvents();
     }
 
     // This is annotated this way so that the IndexColumn will work with
@@ -115,11 +165,12 @@ public class AdverseEventReport extends AbstractDomainObject {
     @JoinColumn(name="report_id", nullable=false)
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<Lab> getLabs() {
-        return labs;
+    protected List<Lab> getLabsInternal() {
+        return labsInternal;
     }
 
-    public void setLabs(List<Lab> labs) {
-        this.labs = labs;
+    protected void setLabsInternal(List<Lab> labsInternal) {
+        this.labsInternal = labsInternal;
+        createLazyLabs();
     }
 }

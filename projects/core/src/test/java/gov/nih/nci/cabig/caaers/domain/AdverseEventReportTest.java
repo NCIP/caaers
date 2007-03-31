@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+
 /**
  * @author Rhett Sutphin
  */
@@ -25,6 +28,50 @@ public class AdverseEventReportTest extends CaaersTestCase {
         adverseEvent.setCtcTerm(this.ctcTerm);
     }
 
+    public void testGetAdverseEventNeverThrowsIndexOutOfBounds() throws Exception {
+        AdverseEvent e4 = report.getAdverseEvents().get(4);
+        assertNotNull(e4);
+        assertSame(report, e4.getReport());
+    }
+
+    public void testSetAdverseEventsInternalReflectedInAdverseEvents() throws Exception {
+        report.setAdverseEventsInternal(new ArrayList<AdverseEvent>(Arrays.asList(
+            Fixtures.setId(10, new AdverseEvent()),
+            Fixtures.setId(12, new AdverseEvent()),
+            Fixtures.setId(14, new AdverseEvent())
+        )));
+        assertEquals(10, (int) report.getAdverseEvents().get(0).getId());
+        assertEquals(12, (int) report.getAdverseEvents().get(1).getId());
+        assertEquals(14, (int) report.getAdverseEvents().get(2).getId());
+    }
+
+    public void testDynamicallyCreatedAdverseEventsInInternal() throws Exception {
+        AdverseEvent e4 = report.getAdverseEvents().get(4);
+        assertSame(e4, report.getAdverseEventsInternal().get(4));
+    }
+
+    public void testGetLabNeverThrowsIndexOutOfBounds() throws Exception {
+        Lab l4 = report.getLabs().get(4);
+        assertNotNull(l4);
+        assertSame(report, l4.getReport());
+    }
+
+    public void testSetLabsInternalReflectedInLabs() throws Exception {
+        report.setLabsInternal(new ArrayList<Lab>(Arrays.asList(
+            Fixtures.setId(10, new Lab()),
+            Fixtures.setId(12, new Lab()),
+            Fixtures.setId(14, new Lab())
+        )));
+        assertEquals(10, (int) report.getLabs().get(0).getId());
+        assertEquals(12, (int) report.getLabs().get(1).getId());
+        assertEquals(14, (int) report.getLabs().get(2).getId());
+    }
+
+    public void testDynamicallyCreatedLabsInInternal() throws Exception {
+        Lab l4 = report.getLabs().get(4);
+        assertSame(l4, report.getLabsInternal().get(4));
+    }
+
     public void testNotificationMessage() throws Exception {
         assertEquals("Grade 2 adverse event with term Term - Select", report.getNotificationMessage());
     }
@@ -36,7 +83,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     }
     
     public void testNotificationMessageExceptionForNoAe() throws Exception {
-        report.getAdverseEvents().clear();
+        report.getAdverseEventsInternal().clear();
         assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();
