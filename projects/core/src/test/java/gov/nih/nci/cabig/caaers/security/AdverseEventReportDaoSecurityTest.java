@@ -18,6 +18,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import org.acegisecurity.AccessDeniedException;
+import org.acegisecurity.Authentication;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -26,6 +30,8 @@ import org.acegisecurity.AccessDeniedException;
 public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
 
+	private static final Log logger = LogFactory.getLog(AdverseEventReportDaoSecurityTest.class);
+	
 	CtcTermDao ctcTermDao = (CtcTermDao)getApplicationContext().getBean("ctcTermDao");
 	StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao)getApplicationContext().getBean("studyParticipantAssignmentDao");
 	AdverseEventReportDao adverseEventReportDao = (AdverseEventReportDao)getApplicationContext().getBean("adverseEventReportDao");	
@@ -52,6 +58,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 	}
 	
+	
 	public void testAdverseEventSave() {
 
 		
@@ -71,13 +78,18 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
 
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        
+        
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.debug("################## auth = " + auth.getName() + " #####################");
 		try {
 			adverseEventReportDao.save(newReport);
 			fail("Should have failed to save report");
 		}catch(AccessDeniedException ex){
 			assertTrue(true);
 		} catch (RuntimeException ex) {
-			assertTrue(ex.getCause() instanceof AccessDeniedException);
+			Throwable rootCause = SecurityTestUtils.getRootCause(ex);
+			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
 
 		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
@@ -90,6 +102,8 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 		}
 		
 	}
+
+	
 
 
 	public void testAdverseEventUpdate() {
@@ -128,7 +142,8 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 		}catch(AccessDeniedException ex){
 			assertTrue(true);
 		} catch (RuntimeException ex) {
-			assertTrue(ex.getCause() instanceof AccessDeniedException);
+			Throwable rootCause = SecurityTestUtils.getRootCause(ex);
+			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
 		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {

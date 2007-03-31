@@ -32,4 +32,12 @@ public class SecurityTestUtils {
     public static void switchToNoUser() {
         switchUser(null);
     }
+    
+    public static Throwable getRootCause(Exception ex) {
+		Throwable t = ex;
+		do{
+			t = t.getCause();
+		}while(t.getCause() != null);
+		return t;
+	}
 }
