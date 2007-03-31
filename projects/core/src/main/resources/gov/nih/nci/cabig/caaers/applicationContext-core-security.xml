@@ -8,7 +8,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="authorizationSwitch"
 		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch">
-		<property name="on" value="false" />
+		<property name="on" value="true" />
 	</bean>
 
 
