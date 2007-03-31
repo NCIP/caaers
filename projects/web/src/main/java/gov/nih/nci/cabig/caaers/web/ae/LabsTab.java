@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.Map;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -33,11 +32,9 @@ public class LabsTab extends AeTab {
     }
 
     @Override
-    protected List<InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        List<InputFieldGroup> groups = new LinkedList<InputFieldGroup>();
-        while (groups.size() < command.getAeReport().getLabs().size()) {
-            groups.add(fieldFactory.createGroup(groups.size()));
-        }
+    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+        InputFieldGroupMap groups = new InputFieldGroupMap();
+        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;
     }
 }

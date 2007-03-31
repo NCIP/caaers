@@ -3,13 +3,14 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.springframework.ui.ModelMap;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Date;
 import java.util.Map;
@@ -26,46 +28,62 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand> extends AbstractTabbedFlowFormController<AdverseEventInputCommand> {
+public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
+    extends AbstractTabbedFlowFormController<AdverseEventInputCommand>
+    implements InitializingBean
+{
+    public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+
+    private TabAutowirer autowirer;
+    protected ParticipantDao participantDao;
+    protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
-    private ParticipantDao participantDao;
-    private StudyDao studyDao;
-    private CtcTermDao ctcTermDao;
+    protected CtcTermDao ctcTermDao;
+    protected AdverseEventReportDao reportDao;
+    protected RuleExecutionService ruleExecutionService;
 
     protected AbstractAdverseEventInputController() {
-        initFlow();
-        addCommonTabs();
+        setFlow(new Flow<AdverseEventInputCommand>(getFlowName()));
+        addTabs(getFlow());
     }
 
-    protected void initFlow() {
-        setFlow(new Flow<AdverseEventInputCommand>(getFlowName()));
+    protected void addTabs(Flow<AdverseEventInputCommand> flow) {
+        flow.addTab(new BasicsTab());
+        flow.addTab(new EmptyAeTab("Medical information", "Medical", "ae/notimplemented"));
+        flow.addTab(new LabsTab());
+        flow.addTab(new EmptyAeTab("Treatment information", "Treatment", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Concomitant medications", "Concomitant medications", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Study agent(s)", "Agent", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Medical device(s)", "Device", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Reporter info", "Reporter", "ae/notimplemented"));
+        flow.addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
     }
 
     protected abstract String getFlowName();
-
-    protected final void addCommonTabs() {
-        getFlow().addTab(new BasicsTab());
-        getFlow().addTab(new EmptyAeTab("Medical information", "Medical", "ae/notimplemented"));
-        getFlow().addTab(new LabsTab());
-        getFlow().addTab(new EmptyAeTab("Treatment information", "Treatment", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Concomitant medications", "Concomitant medications", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Study agent(s)", "Agent", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Medical device(s)", "Device", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Reporter info", "Reporter", "ae/notimplemented"));
-        getFlow().addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
-    }
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
-        ControllerTools.registerDomainObjectEditor(binder, "aeReport.primaryAdverseEvent.ctcTerm", ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
+        ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
+    }
+
+    /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */
+    @Override
+    protected String getViewName(HttpServletRequest request, Object command, int page) {
+        String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
+        if (subviewName != null) {
+            return "ae/ajax/" + subviewName;
+        } else {
+            return super.getViewName(request, command, page);
+        }
     }
 
     @Override
@@ -85,8 +103,12 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     ////// CONFIGURATION
 
-    public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
-        this.assignmentDao = assignmentDao;
+    public void afterPropertiesSet() throws Exception {
+        autowirer.injectDependencies(getFlow());
+    }
+
+    public void setAutowirer(TabAutowirer autowirer) {
+        this.autowirer = autowirer;
     }
 
     public void setParticipantDao(ParticipantDao participantDao) {
@@ -97,7 +119,19 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.studyDao = studyDao;
     }
 
+    public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
+        this.assignmentDao = assignmentDao;
+    }
+
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
+    }
+
+    public void setReportDao(AdverseEventReportDao reportDao) {
+        this.reportDao = reportDao;
+    }
+
+    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+        this.ruleExecutionService = ruleExecutionService;
     }
 }

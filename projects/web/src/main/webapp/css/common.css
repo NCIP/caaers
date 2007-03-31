@@ -27,7 +27,7 @@ a:active {
     color: #f00;
 }
 
-.error {
+.errors, .error {
     color: #c03;
 }
 

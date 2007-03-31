@@ -19,7 +19,7 @@
     </appender>
 
     <!-- disable really verbose logging from libraries.  Switch to debug if necessary. -->
-    <logger name="net.sf.acegisecurity">       <level value="info"/></logger>
+    <logger name="org.acegisecurity">          <level value="info"/></logger>
     <logger name="org.springframework">        <level value="info"/></logger>
     <logger name="org.apache.commons.digester"><level value="info"/></logger>
     <logger name="org.apache.catalina">        <level value="info"/></logger>

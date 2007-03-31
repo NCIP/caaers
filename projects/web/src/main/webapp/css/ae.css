@@ -2,14 +2,11 @@
 form.standard .row {
     font-size: 11px;
 }
-ul.errors {
-    color: #EE3324;
-}
 .label {
-    width: 12em; text-align: right; padding: 4px;
+    width: 9em; text-align: right; padding: 4px;
     font-weight: bold; white-space: nowrap;
 }
-.value, .extra { margin-left: 13em; }
+.value, .extra { margin-left: 11em; }
 .repeatedGroup {
     border-top: 1px dotted #6E81A6;
     margin: 1em 2em;
@@ -19,7 +16,13 @@ ul.errors {
 }
 
 .main-fields {
-    margin-top: 1.2em;
-    padding-top: 0.3em;
-    border-top: 1px solid #999;
+    float: left;
+    width: 30em;
+    border-left: 1px solid #999;
+}
+
+.ctc-details {
+    padding-right: 1.2em;
+    float: left;
+    width: 40em;
 }

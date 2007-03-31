@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.tabbedflow;
 
 import org.springframework.web.servlet.mvc.AbstractWizardFormController;
 import org.springframework.validation.Errors;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -11,6 +13,8 @@ import java.util.HashMap;
  * @author Rhett Sutphin
  */
 public abstract class AbstractTabbedFlowFormController<C> extends AbstractWizardFormController {
+    private final Log log = LogFactory.getLog(getClass());
+
     private Flow<C> flow;
 
     public Flow<C> getFlow() {
@@ -29,6 +33,8 @@ public abstract class AbstractTabbedFlowFormController<C> extends AbstractWizard
         refdata.put("tab", current);
         refdata.put("flow", getFlow());
         refdata.putAll(current.referenceData((C) command));
+        log.debug("Returning reference data for page " + page);
+        log.debug("Command is " + command);
         return refdata;
     }
 

@@ -22,17 +22,14 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 public class EditAdverseEventCommand implements AdverseEventInputCommand {
     private AdverseEventReport aeReport;
     private RuleExecutionService ruleExecutionService;
+
     ////// LOGIC
 
-    public EditAdverseEventCommand() {
-    	
+    public EditAdverseEventCommand(RuleExecutionService ruleExecutionService) {
+        setRuleExecutionService(ruleExecutionService);
     }
-    
-    public EditAdverseEventCommand(RuleExecutionService ruleExecutionService2) {
-		setRuleExecutionService(ruleExecutionService);
-	}
 
-	public StudyParticipantAssignment getAssignment() {
+    public StudyParticipantAssignment getAssignment() {
         return aeReport.getAssignment();
     }
 
@@ -58,12 +55,12 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
     }
 
     // TODO: this code is *exactly* the same as in CreateAdverseEventCommand
-    // Put it in the (already extant) shared superclass
+    // Put it somewhere shared
     public void fireAERules() {
     	String bindUri = "CAAERS_AE_RULES";
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 		
-		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0); 
+		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
 		StudySDO studySDO = new StudySDO();
 		Study study = aeReport.getAssignment().getStudySite().getStudy();
 		studySDO.setShortTitle(study.getShortTitle());

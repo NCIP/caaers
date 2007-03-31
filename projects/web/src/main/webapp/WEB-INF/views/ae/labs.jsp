@@ -20,6 +20,9 @@
         You are entering labs for an AE for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
     </p>
+    <p>
+        TODO: this page is temporarily broken.
+    </p>
 
     <form:form cssClass="standard">
         <tags:errors path="*"/> <%-- TODO: this will need to be moved --%>

@@ -16,8 +16,6 @@ import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,23 +37,14 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private RuleExecutionService ruleExecutionService;
 
     public CreateAdverseEventCommand(
-            StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao
-        ) {
-    	this(assignmentDao, reportDao, null);
-    }
-
-    
-    public CreateAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService
     ) {
         this.assignmentDao = assignmentDao;
         this.reportDao = reportDao;
-        aeReport = new AdverseEventReport();
-        aeReport.addAdverseEvent(new AdverseEvent());
+        this.aeReport = new AdverseEventReport();
+        // ensure there's at least one before the fields are generated
+        this.aeReport.addAdverseEvent(new AdverseEvent());
 
-        // TODO temporary
-        aeReport.getLabs().add(new Lab());
-        
         setRuleExecutionService(ruleExecutionService);
     }
 

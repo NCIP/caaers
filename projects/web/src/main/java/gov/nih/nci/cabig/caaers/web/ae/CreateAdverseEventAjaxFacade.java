@@ -19,10 +19,16 @@ import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.directwebremoting.WebContextFactory;
+
+import javax.servlet.ServletException;
 
 /**
  * @author Rhett Sutphin
@@ -123,6 +129,46 @@ public class CreateAdverseEventAjaxFacade {
             log.error("Unexpected error in communicating with study calendar", re);
             return false;
         }
+    }
+
+    /**
+     * Returns the HTML for the section of the basic AE entry form for
+     * the adverse event with the given index
+     * @param index
+     * @return
+     */
+    public String addAdverseEventFormSection(int index, Integer aeReportId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("index", Integer.toString(index));
+        return renderAjaxView("adverseEventFormSection", aeReportId, params);
+    }
+
+    private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
+        String mode = aeReportId == null ? "create" : "edit";
+        if (aeReportId != null) params.put("aeReport", aeReportId.toString());
+        params.put(AbstractAdverseEventInputController.AJAX_SUBVIEW_PARAMETER, viewName);
+
+        String url = String.format("/pages/ae/%s?%s", mode, createQueryString(params));
+        log.debug("Attempting to return contents of " + url);
+        try {
+            String html = WebContextFactory.get().forwardToString(url);
+            if (log.isDebugEnabled()) log.debug("Retrieved HTML:\n" + html);
+            return html;
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e);
+        }
+    }
+
+    // TODO: there's got to be a library version of this somewhere
+    private String createQueryString(Map<String, String> params) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sb.append(entry.getKey()).append('=').append(entry.getValue())
+                .append('&');
+        }
+        return sb.toString().substring(0, sb.length() - 1);
     }
 
     ////// CONFIGURATION

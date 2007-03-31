@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.List;
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -12,7 +13,7 @@ public class EmptyAeTab extends AeTab {
     }
 
     @Override
-    protected List<InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        return Collections.emptyList();
+    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+        return Collections.emptyMap();
     }
 }

@@ -10,9 +10,9 @@
         <form:select path="${field.propertyName}" items="${field.options}"/>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="50" id="${field.attributes.textfieldId}"/>
+        <input size="50" id="${field.propertyName}-input"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
-        <div id="${field.attributes.choicesId}" class="autocomplete"></div>
+        <div id="${field.propertyName}-choices" class="autocomplete"></div>
         <form:hidden path="${field.propertyName}"/>
     </c:when>
     <c:otherwise>

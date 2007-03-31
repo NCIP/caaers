@@ -8,8 +8,6 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 
 import java.util.Map;
 import java.util.Arrays;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Required;
@@ -59,16 +57,15 @@ public class BasicsTab extends AeTab {
     }
 
     @Override
-    protected List<InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        List<InputFieldGroup> groups = new LinkedList<InputFieldGroup>();
-        groups.add(reportFieldGroup);
+    @SuppressWarnings("unchecked")
+    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();
-        for (int i = 0 ; i < aeCount ; i++) {
-            groups.add(mainFieldFactory.createGroup(i));
-            groups.add(ctcTermFieldFactory.createGroup(i));
-            groups.add(ctcOtherFieldFactory.createGroup(i));
-        }
-        return groups;
+        map.addRepeatingFieldGroupFactory(mainFieldFactory, aeCount);
+        map.addRepeatingFieldGroupFactory(ctcTermFieldFactory, aeCount);
+        map.addRepeatingFieldGroupFactory(ctcOtherFieldFactory, aeCount);
+        return map;
     }
 
     @Override
@@ -103,8 +100,15 @@ public class BasicsTab extends AeTab {
         }
     }
 
+    ////// CONFIGURATION
+
     @Required
     public void setCtcDao(CtcDao ctcDao) {
         this.ctcDao = ctcDao;
+    }
+
+    // for testing
+    CtcDao getCtcDao() {
+        return ctcDao;
     }
 }

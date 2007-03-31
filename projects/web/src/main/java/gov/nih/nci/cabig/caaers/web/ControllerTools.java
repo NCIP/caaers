@@ -45,6 +45,12 @@ public class ControllerTools {
         binder.registerCustomEditor(dao.domainClass(), field, new DaoBasedEditor(dao));
     }
 
+    public static void registerDomainObjectEditor(
+        ServletRequestDataBinder binder, CaaersDao<?> dao
+    ) {
+        binder.registerCustomEditor(dao.domainClass(), new DaoBasedEditor(dao));
+    }
+
     public static void registerGridDomainObjectEditor(
         ServletRequestDataBinder binder, String field, GridIdentifiableDao<?> dao
     ) {

@@ -10,6 +10,7 @@
     border: 3px #5F1 double ;
     font-size: 10pt ;
     text-align: left ;
+    overflow-x: scroll ;
 }
 
 #debug h1, #debug h2 {

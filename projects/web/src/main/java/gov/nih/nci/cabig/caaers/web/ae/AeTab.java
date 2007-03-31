@@ -1,14 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
-
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import org.springframework.validation.Errors;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.validation.Errors;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -24,16 +23,17 @@ public abstract class AeTab extends Tab<AdverseEventInputCommand> {
      * @param command
      * @see gov.nih.nci.cabig.caaers.web.ae.RepeatingFieldGroupFactory
      */
-    protected abstract List<InputFieldGroup> createFieldGroups(AdverseEventInputCommand command);
+    protected abstract Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command);
 
     @Override
     public Map<String, Object> referenceData(AdverseEventInputCommand command) {
         Map<String, Object> refdata = referenceData();
-        refdata.put("fieldGroups", createFieldGroupMap(createFieldGroups(command)));
+        refdata.put("fieldGroups", createFieldGroups(command));
         return refdata;
     }
 
-    private static Map<String, InputFieldGroup> createFieldGroupMap(List<InputFieldGroup> groups) {
+    /** Helper which subclasses can use to implement #createFieldGroupMap(command) if they are using a simple list */
+    protected static Map<String, InputFieldGroup> createFieldGroupMap(List<InputFieldGroup> groups) {
         Map<String, InputFieldGroup> groupMap = new LinkedHashMap<String, InputFieldGroup>();
         for (InputFieldGroup group : groups) groupMap.put(group.getName(), group);
         return groupMap;
@@ -43,8 +43,8 @@ public abstract class AeTab extends Tab<AdverseEventInputCommand> {
     public final void validate(AdverseEventInputCommand command, Errors errors) {
         super.validate(command, errors);
         BeanWrapper commandBean = new BeanWrapperImpl(command);
-        List<InputFieldGroup> fieldGroups = createFieldGroups(command);
-        for (InputFieldGroup fieldGroup : fieldGroups) {
+        Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
+        for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 Object propValue = commandBean.getPropertyValue(field.getPropertyName());
                 if (field.isRequired() && propValue == null) {
@@ -53,7 +53,7 @@ public abstract class AeTab extends Tab<AdverseEventInputCommand> {
                 }
             }
         }
-        validate(command, commandBean, createFieldGroupMap(fieldGroups), errors);
+        validate(command, commandBean, fieldGroups, errors);
     }
 
     /**

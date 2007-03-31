@@ -9,22 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-import gov.nih.nci.cabig.caaers.web.ControllerTools;
-
 /**
  * @author Rhett Sutphin
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController<EditAdverseEventCommand> {
-    private AdverseEventReportDao adverseEventReportDao;
-    
-    private RuleExecutionService ruleExecutionService;
-
     public EditAdverseEventController() {
-        //setCommandClass(EditAdverseEventCommand.class);
+        setCommandClass(EditAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
 
@@ -39,12 +29,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
     
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        super.initBinder(request,binder);
-        ControllerTools.registerDomainObjectEditor(binder, "aeReport", adverseEventReportDao);
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditAdverseEventCommand command = (EditAdverseEventCommand) oCommand;
@@ -55,24 +39,4 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
-
-    ////// CONFIGURATION
-
-    public void setAdverseEventReportDao(AdverseEventReportDao adverseEventReportDao) {
-        this.adverseEventReportDao = adverseEventReportDao;
-    }
-
-    public void setCtcDao(CtcDao ctcDao) {
-        // TODO: this is a dumb, short-term solution
-        ((BasicsTab) getFlow().getTab(0)).setCtcDao(ctcDao);
-    }
-
-	public RuleExecutionService getRuleExecutionService() {
-		return ruleExecutionService;
-	}
-
-	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-		this.ruleExecutionService = ruleExecutionService;
-	}
-
 }

@@ -5,7 +5,7 @@
 
 <decorators defaultdir="/WEB-INF/decorators">
     <decorator name="standard" page="standard.jsp">
-    	<pattern>/login.jsp</pattern>
+        <pattern>/login.jsp</pattern>
         <pattern>/pages/*</pattern>
         <pattern>/public/*</pattern>
     </decorator>
@@ -17,8 +17,6 @@
         <pattern>/pages/register</pattern>
         <pattern>/pages/participant/create?studySiteId</pattern>
    </decorator>
-   
-    
    
    <decorator name="tabbedflow_update" page="tabbedflow_update.jsp">
 		<pattern>/pages/study/edit</pattern>       
@@ -42,5 +40,7 @@
     <excludes>
         <pattern>/*/image/*</pattern>
         <pattern>/*/js/*</pattern>
+        <!-- exclude Ajax subview renderings -->
+        <pattern>*subview*</pattern>
     </excludes>
 </decorators>

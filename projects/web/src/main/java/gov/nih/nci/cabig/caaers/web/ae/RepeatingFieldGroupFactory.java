@@ -50,6 +50,10 @@ public class RepeatingFieldGroupFactory {
         this.displayNameCreator = displayNameCreator;
     }
 
+    public String getBasename() {
+        return basename;
+    }
+
     public static class RepeatingFieldGroup extends DefaultInputFieldGroup {
         private int index;
 
