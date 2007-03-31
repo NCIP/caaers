@@ -6,7 +6,15 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
+	<bean id="authorizationSwitch"
+		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch">
+		<property name="on" value="false" />
+	</bean>
 
+
+	<bean id="csmApplicationContextName" class="java.lang.String">
+		<constructor-arg value="caaers" />
+	</bean>
 
 
 	<bean id="csmAuthorizationDao"
@@ -65,14 +73,15 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 						<property name="properties">
 							<props>
 								<!-- 
-								<prop key="hibernate.show_sql">
+									<prop key="hibernate.show_sql">
 									true
-								</prop>
-								<prop key="hibernate.format_sql">
+									</prop>
+									<prop key="hibernate.format_sql">
 									true
-								</prop>
- 								-->
-								<prop key="hibernate.connection.release_mode">
+									</prop>
+								-->
+								<prop
+									key="hibernate.connection.release_mode">
 									after_transaction
 								</prop>
 
@@ -82,7 +91,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</property>
 			</bean>
 		</property>
-		<property name="applicationContextName" value="caaers" />
+		<property name="applicationContextName"
+			ref="csmApplicationContextName" />
 	</bean>
 
 	<bean id="csmUserProvisioningManager"
@@ -93,7 +103,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="csmAuthenticationManager"
 		class="gov.nih.nci.security.SecurityServiceProvider"
 		factory-method="getAuthenticationManager">
-		<constructor-arg value="caaers" />
+		<constructor-arg ref="csmApplicationContextName" />
 	</bean>
 
 	<bean id="csmObjectIdGenerator"
@@ -139,6 +149,11 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"
 				method="advise" />
 		</aop:aspect>
+		<aop:aspect id="adverseEventReportSecurityInterceptorAspect"
+			ref="adverseEventReportSecurityInterceptorAspectBean">
+			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"
+				method="advise" />
+		</aop:aspect>
 
 
 	</aop:config>
@@ -160,6 +175,12 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 		<property name="securityInterceptor"
 			ref="participantDaoSecurity" />
 	</bean>
+	
+	<bean id="adverseEventReportSecurityInterceptorAspectBean"
+		class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
+		<property name="securityInterceptor"
+			ref="adverseEventReportDaoSecurity" />
+	</bean>
 
 
 	<bean id="daoSecurityTemplate" abstract="true">
@@ -172,17 +193,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 	<bean id="studyDaoSecurity" parent="daoSecurityTemplate"
 		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
 		<property name="objectDefinitionSource">
-			<!--
-				<value>
+
+			<value>
 				gov.nih.nci.cabig.caaers.dao.StudyDao.save=CSM_STUDY_CREATE
 				gov.nih.nci.cabig.caaers.dao.StudyDao.merge=CSM_STUDY_UPDATE
-				</value>
-			-->
-			<value>
+			</value>
+			<!-- 
+				<value>
 				gov.nih.nci.cabig.caaers.dao.StudyDao.save=ROLE_caaers_super_user,ROLE_caaers_study_cd
 				gov.nih.nci.cabig.caaers.dao.StudyDao.merge=ROLE_caaers_super_user,ROLE_caaers_study_cd
-			</value>
-
+				</value>
+			-->
 		</property>
 		<property name="accessDecisionManager">
 
@@ -193,64 +214,78 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				<property name="decisionVoters">
 					<list>
 
-						<bean class="org.acegisecurity.vote.RoleVoter" />
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+							<property name="authorizationSwitch"
+								ref="authorizationSwitch" />
+						</bean>
 						<!-- 
-							<bean
-							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
-							
-							<property name="processDomainObjectClass"
-							value="gov.nih.nci.cabig.caaers.domain.Study" />
-							<property name="processConfigAttribute"
-							value="CSM_STUDY_CREATE" />
-							<property name="authorizationCheck">
-							<bean
-							class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-							<property
-							name="csmUserProvisioningManager"
-							ref="csmUserProvisioningManager" />
-							<property name="requiredPermission"
-							value="CREATE" />
-							<property name="objectIdGenerator"
-							ref="csmExtentIdGenerator" />
-							</bean>
-							</property>
-							
-							</bean>
-							<bean
-							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
-							
-							<property name="processDomainObjectClass"
-							value="gov.nih.nci.cabig.caaers.domain.Study" />
-							<property name="processConfigAttribute"
-							value="CSM_STUDY_UPDATE" />
-							<property name="authorizationCheck">
-							<bean
-							class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-							<property
-							name="csmUserProvisioningManager"
-							ref="csmUserProvisioningManager" />
-							<property name="requiredPermission"
-							value="UPDATE" />
-							<property name="objectIdGenerator"
-							ref="csmExtentIdGenerator" />
-							</bean>
-							</property>
-							</bean>
+							<bean class="org.acegisecurity.vote.RoleVoter" />
 						-->
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.Study" />
+							<property name="processConfigAttribute"
+								value="CSM_STUDY_CREATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="CREATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.Study" />
+							<property name="processConfigAttribute"
+								value="CSM_STUDY_UPDATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="UPDATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+						</bean>
+
 					</list>
 				</property>
 			</bean>
 		</property>
 	</bean>
+
 
 	<bean id="participantDaoSecurity" parent="daoSecurityTemplate"
 		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
 		<property name="objectDefinitionSource">
 			<value>
+				gov.nih.nci.cabig.caaers.dao.ParticipantDao.save=CSM_PARTICIPANT_CREATE,CSM_PARTICIPANT_UPDATE
+				gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant=CSM_PARTICIPANT_CREATE,CSM_PARTICIPANT_UPDATE
+			</value>
+			<!-- 
+			<value>
 				gov.nih.nci.cabig.caaers.dao.ParticipantDao.save=ROLE_caaers_super_user,ROLE_caaers_participant_cd
 				gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant=ROLE_caaers_super_user,ROLE_caaers_participant_cd
 				gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao.save=ROLE_caaers_super_user,ROLE_caaers_participant_cd
 			</value>
+			 -->
 		</property>
 		<property name="accessDecisionManager">
 			<bean class="org.acegisecurity.vote.AffirmativeBased">
@@ -259,12 +294,133 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 				</property>
 				<property name="decisionVoters">
 					<list>
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+							<property name="authorizationSwitch"
+								ref="authorizationSwitch" />
+						</bean>
+						
+						<!-- 
 						<bean class="org.acegisecurity.vote.RoleVoter" />
+						 -->
+						
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.Participant" />
+							<property name="processConfigAttribute"
+								value="CSM_PARTICIPANT_CREATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="CREATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.Participant" />
+							<property name="processConfigAttribute"
+								value="CSM_PARTICIPANT_UPDATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="UPDATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+						</bean>						
 					</list>
 				</property>
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="adverseEventReportDaoSecurity" parent="daoSecurityTemplate"
+		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
+		<property name="objectDefinitionSource">
+			<value>
+				gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao.save=CSM_AE_REPORT_CREATE,CSM_AE_REPORT_UPDATE
+			</value>
+
+		</property>
+		<property name="accessDecisionManager">
+			<bean class="org.acegisecurity.vote.AffirmativeBased">
+				<property name="allowIfAllAbstainDecisions">
+					<value>false</value>
+				</property>
+				<property name="decisionVoters">
+					<list>
+
+						<bean
+						
+							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+							<property name="authorizationSwitch"
+								ref="authorizationSwitch" />
+						</bean>
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport" />
+							<property name="processConfigAttribute"
+								value="CSM_AE_REPORT_CREATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="CREATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+
+						</bean>
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMBasicAccessDecisionVoter">
+
+							<property name="processDomainObjectClass"
+								value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport" />
+							<property name="processConfigAttribute"
+								value="CSM_AE_REPORT_UPDATE" />
+							<property name="authorizationCheck">
+								<bean
+									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									<property
+										name="csmUserProvisioningManager"
+										ref="csmUserProvisioningManager" />
+									<property name="requiredPermission"
+										value="UPDATE" />
+									<property name="objectIdGenerator"
+										ref="csmExtentIdGenerator" />
+								</bean>
+							</property>
+						</bean>						
+
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>	
 
 	<bean id="studyParticipantAssignmentAspect"
 		class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
