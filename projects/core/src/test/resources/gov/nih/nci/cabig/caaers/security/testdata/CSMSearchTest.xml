@@ -1,0 +1,6 @@
+<dataset>
+	<CSM_GROUP GROUP_ID="-1001" 
+		GROUP_NAME="{http://some.host/SomeGridGrouper}someStem:someGroup" 
+		GROUP_DESC=""
+		UPDATE_DATE="1974-12-14" APPLICATION_ID="-1" />
+</dataset>
