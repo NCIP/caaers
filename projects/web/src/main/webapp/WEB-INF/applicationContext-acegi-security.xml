@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<beans>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<bean id="filterChainProxy"
 		class="org.acegisecurity.util.FilterChainProxy">
@@ -65,6 +69,39 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<util:map id="filterObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
+		<entry key="/pages/participant/create.*" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
+		<entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+		<entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
+		<entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="/pages/study/view.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="/pages/ae/create.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE"/>
+		<entry key="/pages/ae/edit.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE"/>
+		<entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ"/>
+		
+		<!-- TODO: set up correct default -->
+		<entry key="/pages/.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+	</util:map>
+	
+	<bean id="filterPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
+		<property name="objectPrivilegeMap" ref="filterObjectPrivilegeMap"/>
+	</bean>
+	
+	<bean id="filterAuthorizationCheck" class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		<property name="csmAuthorizationCheck">
+			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+			</bean>
+		</property>
+		<property name="objectIdGenerator"
+			ref="filterPrivilegeAndObjectIdGenerator" />
+		<property name="privilegeGenerator"
+			ref="filterPrivilegeAndObjectIdGenerator" />
+	</bean>
 
 	<bean id="filterInvocationInterceptor"
 		class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
@@ -76,9 +113,16 @@
 					value="false" />
 				<property name="decisionVoters">
 					<list>
-						<bean class="org.acegisecurity.vote.RoleVoter" />
+						<bean class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+							<property name="authorizationSwitch" ref="authorizationSwitch"/>
+						</bean>
 						<bean
 							class="org.acegisecurity.vote.AuthenticatedVoter" />
+							
+						<bean class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+							<property name="processConfigAttribute" value="CSM_FILTER_CHECK"/>
+							<property name="authorizationCheck" ref="filterAuthorizationCheck"/>
+						</bean>							
 					</list>
 				</property>
 			</bean>
@@ -87,20 +131,8 @@
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				\A/public/.*\Z=IS_AUTHENTICATED_ANONYMOUSLY
-				\A/pages/participant/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
-				\A/pages/participant/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/participant/assign.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
-				\A/pages/study/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_cd
-				\A/pages/study/view.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/study/search.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/study/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_study_cd
-				\A/pages/ae/create.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
-				\A/pages/ae/edit.*\Z=ROLE_caaers_super_user,ROLE_caaers_participant_cd
-				\A/pages/ae/list.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/report.*\Z=ROLE_caaers_super_user,ROLE_caaers_user
-				\A/pages/admin.*\Z=ROLE_caaers_admin
-				\A/pages.*\Z=ROLE_caaers_user
-			</value>
+				\A/pages/.*\Z=CSM_FILTER_CHECK
+			</value>			 
 		</property>
 	</bean>
 
@@ -109,7 +141,6 @@
 		<property name="providers">
 			<list>
 				<ref local="csmAuthenticationProvider" />
-				
 				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
 					<property name="key" value="anonymousAuthKey"/>
 				</bean>				
@@ -123,7 +154,7 @@
 		<property name="csmAuthenticationManager">
 			<bean class="gov.nih.nci.security.SecurityServiceProvider"
 				factory-method="getAuthenticationManager">
-				<constructor-arg value="caaers" />
+				<constructor-arg ref="csmApplicationContextName" />
 			</bean>
 		</property>
 

@@ -76,7 +76,7 @@ public abstract class AbstractPrivilegeAndObjectIdGenerator implements CSMPrivil
 	
 	protected String[] getObjectPrivilegeArray(String key){
 		String[] objectPrivilegeArray = null;
-		String objectPrivilege = getObjectPrivilegeMap().get(key);
+		String objectPrivilege = getObjectPrivilegeString(key);
 		if (objectPrivilege != null) {
 			
 			objectPrivilegeArray = objectPrivilege
@@ -91,6 +91,10 @@ public abstract class AbstractPrivilegeAndObjectIdGenerator implements CSMPrivil
 
 		}
 		return objectPrivilegeArray;
+	}
+	
+	protected String getObjectPrivilegeString(String key){
+		return getObjectPrivilegeMap().get(key);
 	}
 	
 	protected abstract String getKeyValue(Object object);

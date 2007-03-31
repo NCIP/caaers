@@ -80,6 +80,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="taskAuthorizationCheck"
 		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
 		
+		<property name="authorizationSwitch" ref="authorizationSwitch"/>
+		
 		<property name="csmAuthorizationCheck">
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
@@ -87,6 +89,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
+				
 			</bean>
 
 		</property>
@@ -115,6 +118,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean id="sectionAuthorizationCheck"
 		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
 		
+		<property name="authorizationSwitch" ref="authorizationSwitch"/>
+		
 		<property name="csmAuthorizationCheck">
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
@@ -122,6 +127,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
+
 			</bean>
 
 		</property>
