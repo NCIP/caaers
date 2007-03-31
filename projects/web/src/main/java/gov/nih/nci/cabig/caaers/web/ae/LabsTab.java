@@ -22,7 +22,7 @@ public class LabsTab extends AeTab {
         fieldFactory.addField(new DefaultTextField("name", "Lab name", true));
         fieldFactory.addField(new DefaultTextField("units", "Units", true));
         addLabValueFields("baseline", "Baseline");
-        addLabValueFields("nadir", "Nadir");
+        addLabValueFields("nadir", "AE lab");
         addLabValueFields("recovery", "Recovery");
     }
 
@@ -32,6 +32,7 @@ public class LabsTab extends AeTab {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());

@@ -74,3 +74,51 @@ Event.observe(window, "load", function() {
         })
     })
 })
+
+////// FORM EDITING
+
+// Provides a uniform set of functions for editing a form containing a
+// dynamically-resizable list.  Only "add" is implemented so far.
+var ListEditor = Class.create();
+Object.extend(ListEditor.prototype, {
+    // divisionClass: class for the container.  Each container should have this
+    //    class, and have the id "${divisionClass}-${listIndex}"
+    // dwrNS: the DWR namespace object in which the ajax fns can be found
+    // basename:  the base of the name for the various ajax fns
+    //     e.g., add will call dwrNS.add${basename}
+    initialize: function(divisionClass, dwrNS, basename, options) {
+        this.divisionClass = divisionClass
+        this.dwrNS = dwrNS
+        this.basename = basename
+        this.options = Object.extend({
+            addButton:    "add-" + divisionClass + "-button",
+            addIndicator: "add-" + divisionClass + "-indicator",
+            addParameters: [ ]
+        }, options)
+
+        this.options.addButton = $(this.options.addButton)
+        this.options.addIndicator = $(this.options.addIndicator)
+        if (this.options.addButton) {
+            this.options.addButton.observe("click", this.add.bindAsEventListener(this))
+        }
+    },
+
+    add: function() {
+        if (this.options.addButton) this.options.addButton.disable()
+        if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
+        var addFn = this.dwrNS["add" + this.basename]
+        var sel = "." + this.divisionClass
+        var nextIndex = $$(sel).length
+        var args = [nextIndex].concat(this.options.addParameters).concat([
+            function(html) {
+                new Insertion.After($$(sel).last(), html)
+                if (this.options.addCallback) this.options.addCallback(nextIndex)
+                AE.slideAndShow(this.divisionClass + "-" + nextIndex)
+                if (this.options.addButton) this.options.addButton.enable()
+                if (this.options.addIndicator) AE.hideIndicator(this.options.addIndicator)
+            }.bind(this)
+        ])
+        addFn.apply(this, args)
+    }
+
+})

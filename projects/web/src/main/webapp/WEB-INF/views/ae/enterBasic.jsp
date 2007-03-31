@@ -31,7 +31,7 @@
             </c:if>
         </c:forEach>
 
-        var EnterAEForms = [ ]
+        var AESections = [ ]
 
         function ctcVersion() {
             return $F("ctc-version");
@@ -41,10 +41,10 @@
             return term.fullName;
         }
 
-        var EnterAE = Class.create();
-        Object.extend(EnterAE.prototype, {
+        var AESection = Class.create();
+        Object.extend(AESection.prototype, {
             initialize: function(index, ctcTerm) {
-                EnterAEForms[index] = this;
+                AESections[index] = this;
                 this.index = index
                 this.initialCtcTerm = ctcTerm;
 
@@ -133,20 +133,7 @@
                 })
             },
 
-            showCtc: function() {
-                $(this.ctcDetailsId).show()
-            },
-
-            slideAndShowCtc: function() {
-                AE.slideAndShow(this.ctcDetailsId)
-            },
-
-            slideAndHideCtc: function() {
-                AE.slideAndHide(this.ctcDetailsId)
-            },
-
             ctcVersionChanged: function(evt, atLoad) {
-                console.log("ctcVersionChanged(" + $A(arguments).join(", ") + ")")
                 if (ctcVersion()) {
                     this.updateCategories()
                     if (!atLoad) {
@@ -163,17 +150,6 @@
             }
         })
 
-        function addAdverseEvent() {
-            $('add-ae-button').disable()
-            var nextIndex = $$(".ae-section").length
-            createAE.addAdverseEventFormSection(nextIndex, aeReportId, function(html) {
-                new Insertion.After($$('.ae-section').last(), html)
-                new EnterAE(nextIndex)
-                AE.slideAndShow("ae-section-" + nextIndex)
-                $('add-ae-button').enable()
-            })
-        }
-
         Event.observe(window, "load", function() {
             // do this before any of the behaviors are applied to avoid their onChange side effects
             if (initialCtcTerm) {
@@ -186,9 +162,15 @@
                 })
             }
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-            new EnterAE(${status.index}, initialCtcTerm[${status.index}])
+            new AESection(${status.index}, initialCtcTerm[${status.index}])
             </c:forEach>
-            $('add-ae-button').observe("click", addAdverseEvent)
+            new ListEditor("ae-section", createAE, "AdverseEvent", {
+                addParameters: [aeReportId],
+                addCallback: function(nextIndex) {
+                    console.log("addCallback(%s)", nextIndex)
+                    new AESection(nextIndex);
+                }
+            })
         })
     </script>
 </head>
@@ -201,14 +183,7 @@
                 You are entering an adverse event report for ${command.assignment.participant.fullName} on
                 ${command.assignment.studySite.study.shortTitle}.
             </p>
-            <form:errors path="*">
-                <c:if test="${not empty messages}">
-                    <p class="error">
-                        There are problems with your submission.
-                        Please correct them before proceeding.
-                    </p>
-                </c:if>
-            </form:errors>
+            <tags:hasErrorsMessage/>
 
             <div class="report-fields">
                 <c:forEach items="${fieldGroups.report.fields}" var="field">
@@ -229,10 +204,11 @@
         </chrome:division>
 
         <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-            <ae:enterAdverseEvent index="${status.index}"/>
+            <ae:oneAdverseEvent index="${status.index}"/>
         </c:forEach>
 
-        <input type="button" id="add-ae-button" value="Add another AE"/>
+        <input type="button" id="add-ae-section-button" value="Add another AE"/>
+        <tags:indicator id="add-ae-section-indicator"/>
     </form:form>
 </body>
 </html>

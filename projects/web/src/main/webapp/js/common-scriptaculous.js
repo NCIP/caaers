@@ -6,7 +6,7 @@
 
 AE.slideAndHide = function(element, options) {
     var e = $(element);
-    new Effect.Parallel(
+    if (e) new Effect.Parallel(
         [
             new Effect.BlindUp(e, {sync:true}),
             new Effect.Fade(e, {sync:true})
@@ -18,7 +18,7 @@ AE.slideAndHide = function(element, options) {
 
 AE.slideAndShow = function(element, options) {
     var e = $(element);
-    new Effect.Parallel(
+    if (e) new Effect.Parallel(
         [
             new Effect.BlindDown(e, {sync:true}),
             new Effect.Appear(e, {sync:true})
@@ -30,7 +30,7 @@ AE.slideAndShow = function(element, options) {
 
 AE.highlight = function(element, options) {
     var e = $(element)
-    new Effect.Highlight(element, Object.extend({
+    if (e) new Effect.Highlight(element, Object.extend({
         restorecolor: "#ffffff"
     }, $H(options)));
 }

@@ -137,10 +137,22 @@ public class CreateAdverseEventAjaxFacade {
      * @param index
      * @return
      */
-    public String addAdverseEventFormSection(int index, Integer aeReportId) {
+    public String addAdverseEvent(int index, Integer aeReportId) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("index", Integer.toString(index));
         return renderAjaxView("adverseEventFormSection", aeReportId, params);
+    }
+
+    /**
+     * Returns the HTML for the section of the lab form for
+     * the lab with the given index
+     * @param index
+     * @return
+     */
+    public String addLab(int index, Integer aeReportId) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("index", Integer.toString(index));
+        return renderAjaxView("labFormSection", aeReportId, params);
     }
 
     private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
