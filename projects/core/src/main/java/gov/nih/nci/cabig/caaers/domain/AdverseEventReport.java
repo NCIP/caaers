@@ -34,17 +34,20 @@ import java.util.Date;
 public class AdverseEventReport extends AbstractDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
+    // TODO: consider creating an aspect which handles the internal/external thing
     private List<AdverseEvent> adverseEventsInternal;
     private List<AdverseEvent> adverseEvents;
 
     private List<Lab> labsInternal;
     private List<Lab> labs;
 
+    private List<ConcomitantMedication> concomitantMedicationsInternal;
+    private List<ConcomitantMedication> concomitantMedications;
+
     // TODO
     // private MedicalInformation medicalInformation;
     // private TreatmentInformation treatmentInformation;
     // private List<PriorTherapy> priorTherapies;
-    // private List<ConcomitantMedication> concomitantMedications;
     // private List<Agent> agents;
     // private List<MedicalDevice> medicalDevices;
     // private ReporterInfo reporterInfo;
@@ -52,6 +55,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     public AdverseEventReport() {
         setAdverseEventsInternal(new ArrayList<AdverseEvent>());
         setLabsInternal(new ArrayList<Lab>());
+        setConcomitantMedicationsInternal(new ArrayList<ConcomitantMedication>());
     }
 
     ////// LOGIC
@@ -93,13 +97,8 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @SuppressWarnings("unchecked")
     private void createLazyAdverseEvents() {
-        this.adverseEvents = LazyList.decorate(getAdverseEventsInternal(), new Factory() {
-            public Object create() {
-                AdverseEvent ae = new AdverseEvent();
-                ae.setReport(AdverseEventReport.this);
-                return ae;
-            }
-        });
+        this.adverseEvents = LazyList.decorate(getAdverseEventsInternal(),
+            new AdverseEventReportChildFactory(AdverseEvent.class, this));
     }
 
     public void addLab(Lab lab) {
@@ -115,13 +114,20 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     @SuppressWarnings("unchecked")
     private void createLazyLabs() {
-        this.labs = LazyList.decorate(getLabsInternal(), new Factory() {
-            public Object create() {
-                Lab lab = new Lab();
-                lab.setReport(AdverseEventReport.this);
-                return lab;
-            }
-        });
+        this.labs = LazyList.decorate(getLabsInternal(),
+            new AdverseEventReportChildFactory(Lab.class, this));
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<ConcomitantMedication> getConcomitantMedications() {
+        return concomitantMedications;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void createLazyConcomitantMedications() {
+        this.concomitantMedications = LazyList.decorate(getConcomitantMedicationsInternal(),
+            new AdverseEventReportChildFactory(ConcomitantMedication.class, this));
     }
 
     ////// BEAN PROPERTIES
@@ -172,5 +178,20 @@ public class AdverseEventReport extends AbstractDomainObject {
     protected void setLabsInternal(List<Lab> labsInternal) {
         this.labsInternal = labsInternal;
         createLazyLabs();
+    }
+
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<ConcomitantMedication> getConcomitantMedicationsInternal() {
+        return concomitantMedicationsInternal;
+    }
+
+    protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
+        this.concomitantMedicationsInternal = concomitantMedicationsInternal;
+        createLazyConcomitantMedications();
     }
 }

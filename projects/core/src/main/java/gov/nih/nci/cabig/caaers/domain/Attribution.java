@@ -40,6 +40,7 @@ public enum Attribution implements CodedEnum {
         return toString();
     }
 
+    @Override
     public String toString() {
         return toStringHelper(this);
     }

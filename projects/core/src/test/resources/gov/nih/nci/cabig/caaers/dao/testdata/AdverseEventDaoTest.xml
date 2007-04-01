@@ -43,6 +43,8 @@
         study_site_id="-4"
         date_of_enrollment="2004-01-05"
         />
+    <agents id="-101"/>
+    <studies id="-100" short_title="Min" primary_sponsor_code="?"/>
 
     <AE_REPORTS
         id="-17"
@@ -58,5 +60,29 @@
         hospitalization_code="0"
         expected="1"
         comments="That was some big AE"
+        />
+
+    <STUDY_AGENTS
+        id="-23"
+        study_id="-100"
+        agent_id="-101"
+        />
+    <AE_ATTRIBUTIONS
+        id="-1"
+        cause_type="SA"
+        cause_id="-23"
+        attribution_code="3"
+        adverse_event_id="-2"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-77"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-7"
+        cause_type="CM"
+        cause_id="-77"
+        attribution_code="2"
+        adverse_event_id="-2"
         />
 </dataset>

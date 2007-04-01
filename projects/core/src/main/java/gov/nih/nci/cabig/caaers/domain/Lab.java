@@ -23,9 +23,7 @@ import javax.persistence.JoinColumn;
         @Parameter(name="sequence", value="seq_ae_labs_id")
     }
 )
-public class Lab extends AbstractDomainObject {
-    private AdverseEventReport report;
-
+public class Lab extends AbstractAdverseEventReportChild {
     private String name;
     private String units;  // TODO: source this from caDSR
 
@@ -34,18 +32,6 @@ public class Lab extends AbstractDomainObject {
     private LabValue recovery;
 
     ////// BEAN PROPERTIES
-
-    // This is annotated this way so that the IndexColumn in the parent
-    // will work with the bidirectional mapping
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable=false, updatable=false, nullable=false)
-    public AdverseEventReport getReport() {
-        return report;
-    }
-
-    public void setReport(AdverseEventReport report) {
-        this.report = report;
-    }
 
     public String getName() {
         return name;

@@ -34,6 +34,7 @@
         ctep_code="10043882"
         other_required="0"
         />
+    <agents id="-101"/>
 
     <PARTICIPANT_ASSIGNMENTS
         id="-14"
@@ -78,5 +79,16 @@
         id="-22"
         report_id="-1"
         list_index="2"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-30"
+        list_index="1"
+        report_id="-1"
+        agent_id="-101"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-31"
+        list_index="0"
+        report_id="-1"
         />
 </dataset>

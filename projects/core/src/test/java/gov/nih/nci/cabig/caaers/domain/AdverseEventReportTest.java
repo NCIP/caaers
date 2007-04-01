@@ -72,6 +72,12 @@ public class AdverseEventReportTest extends CaaersTestCase {
         assertSame(l4, report.getLabsInternal().get(4));
     }
 
+    public void testGetConMedNeverThrowsIndexOutOfBounds() throws Exception {
+        ConcomitantMedication cm4 = report.getConcomitantMedications().get(4);
+        assertNotNull(cm4);
+        assertSame(report, cm4.getReport());
+    }
+
     public void testNotificationMessage() throws Exception {
         assertEquals("Grade 2 adverse event with term Term - Select", report.getNotificationMessage());
     }

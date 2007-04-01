@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 
 import java.util.Calendar;
 import java.sql.Timestamp;
@@ -44,6 +45,18 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertLabValue("Wrong baseline", "3.66", 2003, Calendar.APRIL, 17, l1.getBaseline());
         assertLabValue("Wrong nadir", "0.4", 2007, Calendar.MARCH, 14, l1.getNadir());
         assertLabValue("Wrong nadir", "3.54", 2007, Calendar.MARCH, 19, l1.getRecovery());
+    }
+
+    public void testGetConcomitantMedications() throws Exception {
+        AdverseEventReport loaded = getDao().getById(-1);
+        assertEquals("Wrong number of concomitant meds", 2, loaded.getConcomitantMedications().size());
+        assertEquals("Wrong con med 0", -31, (int) loaded.getConcomitantMedications().get(0).getId());
+        assertEquals("Wrong con med 1", -30, (int) loaded.getConcomitantMedications().get(1).getId());
+
+        ConcomitantMedication cm1 = loaded.getConcomitantMedications().get(1);
+        assertSame("Wrong report", loaded, cm1.getReport());
+        assertEquals("Wrong agent", -101, (int) cm1.getAgent().getId());
+        assertNull("Wrong other", cm1.getOther());
     }
 
     private static void assertLabValue(
