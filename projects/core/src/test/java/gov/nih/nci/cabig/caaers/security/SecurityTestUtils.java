@@ -53,7 +53,7 @@ public class SecurityTestUtils {
     public static void insertCSMPolicy(DataSource dataSource){
     	try{
     		DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(dataSource);
-    		FlatXmlDataSet data = new FlatXmlDataSet(new File("tools/csm/CSM_policy.xml"));
+    		FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
     		DatabaseOperation op = DatabaseOperation.INSERT;
     		op.execute(conn, data);
     		conn.close();
@@ -65,7 +65,7 @@ public class SecurityTestUtils {
     public static void deleteCSMPolicy(DataSource dataSource){
     	try{
     		DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(dataSource);
-    		FlatXmlDataSet data = new FlatXmlDataSet(new File("tools/csm/CSM_policy.xml"));
+    		FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
     		DatabaseOperation op = DatabaseOperation.DELETE_ALL;
     		op.execute(conn, data);
     		conn.close();
