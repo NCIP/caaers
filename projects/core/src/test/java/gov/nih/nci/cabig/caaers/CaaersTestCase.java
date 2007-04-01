@@ -13,6 +13,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -39,13 +41,18 @@ public abstract class CaaersTestCase extends CoreTestCase {
         // by AspectJ.
         // RMS: This is needed often enough that we'll
         // just do it everywhere.
-        getDeployedApplicationContext();
+        ApplicationContext ctx = getDeployedApplicationContext();
+        DataSource dataSource = (DataSource)ctx.getBean("dataSource");
+		SecurityTestUtils.insertCSMPolicy(dataSource);
         SecurityTestUtils.switchToSuperuser();
     }
 
     @Override
     protected void tearDown() throws Exception {
         SecurityTestUtils.switchToNoUser();
+        ApplicationContext ctx = getDeployedApplicationContext();
+        DataSource dataSource = (DataSource)ctx.getBean("dataSource");
+		SecurityTestUtils.deleteCSMPolicy(dataSource);
         super.tearDown();
     }
 

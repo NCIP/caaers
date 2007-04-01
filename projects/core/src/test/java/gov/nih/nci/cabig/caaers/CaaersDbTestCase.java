@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
+
 /**
  * @author Rhett Sutphin
  */
@@ -45,7 +46,9 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     private boolean shouldFlush = true;
 
     protected void setUp() throws Exception {
+    	
         super.setUp();
+        SecurityTestUtils.insertCSMPolicy(this.getDataSource());
         SecurityTestUtils.switchToSuperuser();
         beginSession();
     }
@@ -53,7 +56,9 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     protected void tearDown() throws Exception {
         endSession();
         SecurityTestUtils.switchToNoUser();
+        SecurityTestUtils.deleteCSMPolicy(this.getDataSource());
         super.tearDown();
+        
     }
 
     public void runBare() throws Throwable {

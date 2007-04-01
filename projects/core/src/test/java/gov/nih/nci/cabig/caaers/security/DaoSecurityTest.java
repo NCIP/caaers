@@ -10,9 +10,18 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
+import java.io.File;
 import java.util.Date;
 
+import javax.sql.DataSource;
+
 import org.acegisecurity.AccessDeniedException;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 /**
@@ -31,6 +40,8 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 	public DaoSecurityTest() {
 
 	}
+	
+	
 
 	/**
 	 * @param arg0
@@ -38,8 +49,19 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 	public DaoSecurityTest(String testName) {
 		super(testName);
 	}
+	
+	protected void onSetUpBeforeTransaction(){
+		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
+		SecurityTestUtils.insertCSMPolicy(dataSource);
+	}
+	protected void onTearDownAfterTransaction(){
+		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
+		SecurityTestUtils.deleteCSMPolicy(dataSource);
+	}
 
 	public void testStudySave() {
+		
+		
 
 		SecurityTestUtils.switchUser("user_1",
 				new String[] { "ROLE_that_does_not_exist" });
