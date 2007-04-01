@@ -218,6 +218,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
 							<property name="authorizationSwitch"
 								ref="authorizationSwitch" />
+							<property name="requiresAuthentication" value="false"/>
 						</bean>
 						<!-- 
 							<bean class="org.acegisecurity.vote.RoleVoter" />
@@ -298,6 +299,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
 							<property name="authorizationSwitch"
 								ref="authorizationSwitch" />
+							<property name="requiresAuthentication" value="false"/>
 						</bean>
 						
 						<!-- 
@@ -368,10 +370,10 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 					<list>
 
 						<bean
-						
 							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
 							<property name="authorizationSwitch"
 								ref="authorizationSwitch" />
+							<property name="requiresAuthentication" value="false"/>
 						</bean>
 
 						<bean
