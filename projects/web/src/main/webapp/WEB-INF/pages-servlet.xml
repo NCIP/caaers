@@ -104,6 +104,8 @@
                                 p:displayName="Configure caAERS" p:linkName="configurationController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Investigator" p:linkName="createInvestigatorController"/>            
+							<bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Create Research Staff" p:linkName="createResearchStaffController"/>                                                                        
                         </list>
                     </property>
                 </bean>
@@ -177,6 +179,14 @@
 	<bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >
     </bean>
+    
+    <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController"/>
+
+	<bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
+    	  class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
+    </bean>
+    
 
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
