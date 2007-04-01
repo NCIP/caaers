@@ -174,6 +174,10 @@
 	<bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController"/>
 
+	<bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType"
+    	  class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >
+    </bean>
+
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>standardNotImplemented</value></property>
