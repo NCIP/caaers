@@ -193,7 +193,7 @@
             <groupId>dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>2.1</version>
-            <scope>test</scope>
+            <scope>complile</scope>
         </dependency>
     </dependencies>
 
@@ -387,7 +387,7 @@
                                                 url="${datasource.url}"
                                                 userid="${datasource.username}"
                                                 password="${datasource.password}">
-                                            <operation type="INSERT" src="tools/csm/CSM_policy.xml" />
+                                            <operation type="INSERT" src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" />
                                         </dbunit>
                                     </tasks>
                                 </configuration>
