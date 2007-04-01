@@ -120,6 +120,7 @@
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
     <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
 
+	<bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
 	<bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
 </beans>
