@@ -113,11 +113,13 @@ public class CreateInvestigatorController extends AbstractTabbedFlowFormControll
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
 			Object command, BindException errors) throws Exception {
 		
-		investigatorDao.save((Investigator) command);
+		Investigator inv = (Investigator) command;
+		investigatorDao.save(inv);
 		
 		//ModelAndView modelAndView= new ModelAndView("admin/investigator_details");		
     	//modelAndView.addAllObjects(errors.getModel());
-		response.sendRedirect("createInvestigator");
+		//response.sendRedirect("createInvestigator");
+		response.sendRedirect("viewInvestigator?fullName=" + inv.getFullName() + "&type=confirm");
     	return null;
 	}
 	
