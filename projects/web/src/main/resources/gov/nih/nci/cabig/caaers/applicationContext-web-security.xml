@@ -58,6 +58,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========== TODO: ADMIN ===========-->
 		<entry key="/pages/admin/configure"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/configure"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/createInvestigator"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/viewInvestigator"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/createResearchStaff"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/viewResearchStaff"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		
 		<!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
