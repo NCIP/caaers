@@ -203,6 +203,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                      </list>
                 </entry>                           
                 
+                 <entry key="invRoleCodeRefData">
+                    <list>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Principal Investigator" />
+                            <property name="desc" value="Principal Investigator" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Co-Investigator" />
+                            <property name="desc" value="Co-Investigator" />
+                        </bean>                                           
+                     </list>
+                </entry>                                           
+                
+                <entry key="invStatusCodeRefData">
+                    <list>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Active" />
+                            <property name="desc" value="Active" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Inactive" />
+                            <property name="desc" value="Inactive" />
+                        </bean>                                           
+                     </list>
+                </entry>                                           
+                
             </map>
         </property>                      
     </bean>
