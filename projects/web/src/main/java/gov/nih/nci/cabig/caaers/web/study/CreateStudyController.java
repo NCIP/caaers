@@ -1,13 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDisease;
@@ -45,6 +51,8 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	private SiteDao siteDao;
 	private AgentDao agentDao;
 	private DiseaseTermDao diseaseTermDao;
+	private SiteInvestigatorDao siteInvestigatorDao;
+	private ResearchStaffDao researchStaffDao;
 	private ConfigProperty configurationProperty;
 	
 	public CreateStudyController() {		
@@ -69,7 +77,18 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
     	  		refdata.put("blindedIndicator", getBooleanList());
     	  		refdata.put("nciIdentifier", getBooleanList());
     	  		return refdata;
-            }        	
+            }
+            
+            @Override
+            public void validate(Study command, Errors errors) {
+                boolean longTitle = command.getLongTitle() == null || command.getLongTitle().equals("");                
+                if (longTitle) errors.rejectValue("longTitle", "REQUIRED", "Missing Long Title");                
+            }
+            
+            @Override
+            public boolean isAllowDirtyForward() {
+                return false;
+            }
         });
         flow.addTab(new Tab<Study>("Study Identifiers", "Study Identifiers", "study_identifiers"){
             
@@ -96,6 +115,33 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         	}        	
         });
 
+        flow.addTab(new Tab<Study>("Study Investigators", "Study Investigators", "study_investigator") {
+            
+        	public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();
+                Map <String, List<Lov>> configMap = configurationProperty.getMap();
+                //List<StudySite> studySites = new ArrayList<StudySite>();
+                //refdata.put("siteInvestigatorRefData", getSiteInvestigator());
+                refdata.put("invRoleCodeRefData", configMap.get("invRoleCodeRefData"));
+                refdata.put("invStatusCodeRefData", configMap.get("invStatusCodeRefData"));
+                return refdata;           
+        	}        	
+        });
+        
+        flow.addTab(new Tab<Study>("Study Personnel", "Study Personnel", "study_personnels") {
+            
+        	public Map<String, Object> referenceData() {
+                Map<String, Object> refdata = super.referenceData();  
+                Map <String, List<Lov>> configMap = configurationProperty.getMap();
+                //List<StudySite> studySites = new ArrayList<StudySite>();
+                //refdata.put("researchStaffRefData", getResearchStaff());
+                refdata.put("invRoleCodeRefData", configMap.get("invRoleCodeRefData"));
+                refdata.put("invStatusCodeRefData", configMap.get("invStatusCodeRefData"));
+                
+                return refdata;           
+        	}        	
+        });
+ 
 		flow.addTab(new Tab<Study>("Study Agents", "Study Agents", "study_studyagent") {
             
         	public Map<String, Object> referenceData() {
@@ -128,6 +174,11 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 				siteDao));
 		binder.registerCustomEditor(Agent.class, new DaoBasedEditor(
 				agentDao));
+		binder.registerCustomEditor(SiteInvestigator.class, new DaoBasedEditor(
+				siteInvestigatorDao));
+		binder.registerCustomEditor(ResearchStaff.class, new DaoBasedEditor(
+				researchStaffDao));
+
 		//ControllerTools.registerGridDomainObjectEditor(binder, "agent", agentDao);
 	}
 	
@@ -174,11 +225,53 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 				handleStudySiteAction((Study)command, request.getParameter("_action"),
 						request.getParameter("_selected"));
 				break;
-			case 3:
+
+			case 3:				
+				//if(request.getParameter("_action").equals("siteChange"))
+				if("siteChange".equals(request.getParameter("_action")))
+				{
+					request.getSession().setAttribute("site_id", request.getParameter("_selected"));
+					//Study st = (Study)command;										
+					StudySite studySite = ((Study)command).getStudySites().get(Integer.parseInt(request.getParameter("_selected")));
+					if(studySite.getStudyInvestigators().size() == 0 )
+					{						
+						StudyInvestigator studyInvestigator = new StudyInvestigator();	
+						studyInvestigator.setSiteInvestigator(new SiteInvestigator());
+						studySite.addStudyInvestigators(studyInvestigator);
+					}
+				}
+				else {
+					handleStudyInvestigatorAction((Study)command, request.getParameter("_action"),
+							request.getParameter("_selected"), request.getParameter("_studysiteindex"));
+				}					
+				
+				break;				
+
+			case 4:				
+				//if(request.getParameter("_action").equals("siteChange"))
+				if("siteChange".equals(request.getParameter("_action")))
+				{
+					request.getSession().setAttribute("site_id_for_per", request.getParameter("_selected"));
+					
+					StudySite studySite = ((Study)command).getStudySites().get(Integer.parseInt(request.getParameter("_selected")));
+					if(studySite.getStudyPersonnels().size() == 0 )
+					{						
+						StudyPersonnel studyPersonnel = new StudyPersonnel();						
+						studySite.addStudyPersonnel(studyPersonnel);
+					}										
+				}
+				else {
+					handleStudyPersonnelAction((Study)command, request.getParameter("_action"),
+							request.getParameter("_selected"), request.getParameter("_studysiteindex"));
+				}					
+				
+				break;				
+								
+			case 5:
 				handleStudyAgentAction((Study)command, request.getParameter("_action"),
 						request.getParameter("_selected"));
 				break;
-			case 4:
+			case 6:
 				handleStudyDiseaseAction((Study)command, request.getParameter("_action"),
 						request.getParameter("_selected"));
 				break;
@@ -214,6 +307,37 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		}					
 	}
 	
+	private void handleStudyInvestigatorAction(Study study, String action, String selected, String studysiteindex)
+	{				
+		if ("addInv".equals(action))
+		{	
+			StudyInvestigator studyInvestigator = new StudyInvestigator();
+			studyInvestigator.setSiteInvestigator(new SiteInvestigator());
+			StudySite studySite = study.getStudySites().get(Integer.parseInt(studysiteindex));
+			studySite.addStudyInvestigators(studyInvestigator);														
+		}
+		else if ("removeInv".equals(action))
+		{	
+			study.getStudySites().get(Integer.parseInt(studysiteindex)).getStudyInvestigators().remove(Integer.parseInt(selected));
+		}					
+					
+	}	
+	
+	private void handleStudyPersonnelAction(Study study, String action, String selected, String studysiteindex)
+	{				
+		if ("addInv".equals(action))
+		{	
+			StudyPersonnel studyPersonnel = new StudyPersonnel();
+			StudySite studySite = study.getStudySites().get(Integer.parseInt(studysiteindex));
+			studySite.addStudyPersonnel(studyPersonnel);														
+		}
+		else if ("removeInv".equals(action))
+		{	
+			study.getStudySites().get(Integer.parseInt(studysiteindex)).getStudyPersonnels().remove(Integer.parseInt(selected));
+		}					
+					
+	}	
+
 	private void handleStudyAgentAction(Study study, String action, String selected)
 	{				
 		if ("addStudyAgent".equals(action))
@@ -254,6 +378,13 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 			  
 		StudySite studySite = new StudySite();
 		study.addStudySite(studySite);
+		// adding studyinvestigator.
+		StudyInvestigator studyInvestigator = new StudyInvestigator();				
+		studySite.addStudyInvestigators(studyInvestigator);			
+		
+		// adding studypersonnel
+		StudyPersonnel studyPersonnel = new StudyPersonnel();
+		studySite.addStudyPersonnel(studyPersonnel);
 		
 		StudyAgent studyAgent = new StudyAgent();
 		studyAgent.setAgent(new Agent());
@@ -342,5 +473,21 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 
 	public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
+	}
+
+	public ResearchStaffDao getResearchStaffDao() {
+		return researchStaffDao;
+	}
+
+	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
+	}
+
+	public SiteInvestigatorDao getSiteInvestigatorDao() {
+		return siteInvestigatorDao;
+	}
+
+	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
+		this.siteInvestigatorDao = siteInvestigatorDao;
 	}        		
 }
