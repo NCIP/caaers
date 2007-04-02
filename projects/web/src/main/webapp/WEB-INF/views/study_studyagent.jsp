@@ -25,7 +25,7 @@
 			
 	function fireAction(action, selected){
 	if(validatePage()){
-		document.getElementsByName('_target4')[0].name='_target3';
+		document.getElementsByName('_target6')[0].name='_target5';
 		document.studyAgentsForm._action.value=action;
 		document.studyAgentsForm._selected.value=selected;		
 		document.studyAgentsForm.submit();
