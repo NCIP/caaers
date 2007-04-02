@@ -63,7 +63,7 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
 
     @OneToMany
     @JoinColumn(name="adverse_event_id", nullable=false)
-    // @IndexColumn(name="list_index")
+    @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Where(clause = "cause_type = 'SA'") // it is pretty lame that this is necessary
     public List<StudyAgentAttribution> getStudyAgentAttributions() {
@@ -76,7 +76,7 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
 
     @OneToMany
     @JoinColumn(name="adverse_event_id", nullable=false)
-    // @IndexColumn(name="list_index")
+    @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Where(clause = "cause_type = 'CM'") // it is pretty lame that this is necessary
     public List<ConcomitantMedicationAttribution> getConcomitantMedicationAttributions() {

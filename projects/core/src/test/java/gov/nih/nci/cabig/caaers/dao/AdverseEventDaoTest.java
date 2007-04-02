@@ -34,21 +34,27 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
 
     public void testLoadStudyAgentAttributions() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
-        assertEquals(1, loaded.getStudyAgentAttributions().size());
-        StudyAgentAttribution actual = loaded.getStudyAgentAttributions().get(0);
+        assertEquals(2, loaded.getStudyAgentAttributions().size());
+        StudyAgentAttribution actual = loaded.getStudyAgentAttributions().get(1);
         assertEquals("Wrong attribution", -1, (int) actual.getId());
         assertEquals("Wrong study agent", -23, (int) actual.getCause().getId());
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.POSSIBLE, actual.getAttribution());
+
+        assertEquals("Wrong study agent attribution 0", -27,
+            (int) loaded.getStudyAgentAttributions().get(0).getCause().getId());
     }
 
     public void testLoadConMedAttributions() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
-        assertEquals(1, loaded.getConcomitantMedicationAttributions().size());
+        assertEquals(2, loaded.getConcomitantMedicationAttributions().size());
         ConcomitantMedicationAttribution actual = loaded.getConcomitantMedicationAttributions().get(0);
         assertEquals("Wrong attribution", -7, (int) actual.getId());
         assertEquals("Wrong con med", -77, (int) actual.getCause().getId());
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.UNLIKELY, actual.getAttribution());
+
+        assertEquals("Wrong con med attrib 1", -78,
+            (int) loaded.getConcomitantMedicationAttributions().get(1).getCause().getId());
     }
 }

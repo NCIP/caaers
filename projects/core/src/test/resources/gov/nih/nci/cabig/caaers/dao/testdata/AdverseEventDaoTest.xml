@@ -44,6 +44,7 @@
         date_of_enrollment="2004-01-05"
         />
     <agents id="-101"/>
+    <agents id="-102"/>
     <studies id="-100" short_title="Min" primary_sponsor_code="?"/>
 
     <AE_REPORTS
@@ -67,15 +68,34 @@
         study_id="-100"
         agent_id="-101"
         />
+    <STUDY_AGENTS
+        id="-27"
+        study_id="-100"
+        agent_id="-102"
+        />
     <AE_ATTRIBUTIONS
         id="-1"
         cause_type="SA"
         cause_id="-23"
         attribution_code="3"
         adverse_event_id="-2"
+        list_index="1"
         />
+    <AE_ATTRIBUTIONS
+        id="-2"
+        cause_type="SA"
+        cause_id="-27"
+        attribution_code="1"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
     <CONCOMITANT_MEDICATIONS
         id="-77"
+        report_id="-17"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-78"
         report_id="-17"
         />
     <AE_ATTRIBUTIONS
@@ -84,5 +104,14 @@
         cause_id="-77"
         attribution_code="2"
         adverse_event_id="-2"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-8"
+        cause_type="CM"
+        cause_id="-78"
+        attribution_code="5"
+        adverse_event_id="-2"
+        list_index="1"
         />
 </dataset>
