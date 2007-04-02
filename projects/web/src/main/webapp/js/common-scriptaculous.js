@@ -105,3 +105,22 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
     }
 
 });
+
+// Creates an autocompleter matching the field names created by tag:renderInputs
+AE.createStandardAutocompleter = function(propertyName, populator, valueSelector, options) {
+    var opts = Object.extend({
+        indicator: propertyName + "-indicator",
+        valueSelector: valueSelector,
+        // if you replace this option, you'll need to include this functionality
+        afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+            $(propertyName).value = selectedChoice.id
+        }
+    }, options || { })
+
+    return new Autocompleter.DWR(
+        propertyName + "-input",
+        propertyName + "-choices",
+        populator,
+        opts
+    )
+}

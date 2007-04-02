@@ -9,7 +9,7 @@
     <title>${tab.longTitle}</title>
 </head>
 <body>
-    <p>Not implemented</p>
+    <p>This tab of the flow is under construction.  Please continue to the next tab.</p>
     <form:form>
         <tags:tabFields tab="${tab}"/>
     </form:form>

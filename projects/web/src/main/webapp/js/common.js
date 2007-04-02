@@ -32,16 +32,38 @@ Element.addMethods( {
     // Like prototype's hide(), but uses the visibility CSS prop instead of display
     conceal: function() {
         for (var i = 0; i < arguments.length; i++) {
-          var element = $(arguments[i]);
-          element.style.visibility = 'hidden';
+            var element = $(arguments[i]);
+            element.style.visibility = 'hidden';
         }
     },
 
     // Like prototype's show(), but uses the visibility CSS prop instead of display
     reveal: function() {
         for (var i = 0; i < arguments.length; i++) {
-          var element = $(arguments[i]);
-          element.style.visibility = 'visible';
+            var element = $(arguments[i]);
+            element.style.visibility = 'visible';
+        }
+    },
+
+    // Disable all form elements contained in this element and add the class "disabled"
+    disableDescendants: function() {
+        for (var i = 0; i < arguments.length; i++) {
+            var element = $(arguments[i]);
+            element.addClassName("disabled")
+            element.descendants().each(function(elt) {
+                if (elt.disable) elt.disable()
+            })
+        }
+    },
+
+    // Enable all form elements contained in this element and remove the class "disabled"
+    enableDescendants: function() {
+        for (var i = 0; i < arguments.length; i++) {
+            var element = $(arguments[i]);
+            element.removeClassName("disabled")
+            element.descendants().each(function(elt) {
+                if (elt.enable) elt.enable()
+            })
         }
     }
 } );
@@ -104,9 +126,12 @@ Object.extend(ListEditor.prototype, {
     },
 
     add: function() {
+        var fnName = "add" + this.basename;
+        var addFn = this.dwrNS[fnName]
+        if (!addFn) { alert("There is no function the selected dwr namespace named " + fnName); return; }
+
         if (this.options.addButton) this.options.addButton.disable()
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
-        var addFn = this.dwrNS["add" + this.basename]
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
         var args = [nextIndex].concat(this.options.addParameters).concat([

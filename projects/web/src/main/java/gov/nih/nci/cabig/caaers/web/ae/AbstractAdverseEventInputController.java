@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
+    protected AgentDao agentDao;
     protected AdverseEventReportDao reportDao;
     protected RuleExecutionService ruleExecutionService;
 
@@ -54,9 +56,8 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         flow.addTab(new EmptyAeTab("Treatment information", "Treatment", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
-        flow.addTab(new EmptyAeTab("Concomitant medications", "Concomitant medications", "ae/notimplemented"));
-        flow.addTab(new EmptyAeTab("Study agent(s)", "Agent", "ae/notimplemented"));
-        flow.addTab(new EmptyAeTab("Medical device(s)", "Device", "ae/notimplemented"));
+        flow.addTab(new ConcomitantMedicationsTab());
+        flow.addTab(new EmptyAeTab("Attribution", "Attribution", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Reporter info", "Reporter", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
     }
@@ -67,12 +68,13 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
+        ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, agentDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
-        ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
     }
 
     /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */
@@ -125,6 +127,10 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
+    }
+
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
     }
 
     public void setReportDao(AdverseEventReportDao reportDao) {

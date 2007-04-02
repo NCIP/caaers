@@ -5,9 +5,13 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 /**
  * @author Rhett Sutphin
  */
-public class BasicsTabTest extends AeTabTestCase {
-    private BasicsTab tab = new BasicsTab();
+public class BasicsTabTest extends AeTabTestCase<BasicsTab> {
     private AdverseEvent ae0;
+
+    @Override
+    protected BasicsTab createTab() {
+        return new BasicsTab();
+    }
 
     @Override
     protected void setUp() throws Exception {
@@ -36,18 +40,12 @@ public class BasicsTabTest extends AeTabTestCase {
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
         doValidate();
-        assertEquals(0, errors.getFieldErrorCount("aeReport.adverseEvents[0].detailsForOther"));
+        assertEquals(0, getErrors().getFieldErrorCount("aeReport.adverseEvents[0].detailsForOther"));
     }
 
     public void testOtherRequiredIfTermRequiresIt() throws Exception {
         ae0.getCtcTerm().setOtherRequired(true);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (specify)");
-    }
-
-    private void doValidate() {
-        replayMocks();
-        tab.validate(command, errors);
-        verifyMocks();
     }
 }

@@ -18,7 +18,7 @@
             </div>
         </div>
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-        <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" cssStyle="display: none"/>
+        <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none"/>
     </div>
 
     <div id="main-fields-${index}" class="main-fields">

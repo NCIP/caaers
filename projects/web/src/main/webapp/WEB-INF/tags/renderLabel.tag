@@ -3,7 +3,7 @@
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.ae.InputField"%>
 <c:choose>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <label for="${field.attributes.textfieldId}">${field.displayName}</label>
+        <label for="${field.propertyName}-input">${field.displayName}</label>
     </c:when>
     <c:otherwise>
         <form:label path="${field.propertyName}">${field.displayName}</form:label>

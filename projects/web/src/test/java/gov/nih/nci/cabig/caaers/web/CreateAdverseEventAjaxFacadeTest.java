@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -16,20 +14,24 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
+import gov.nih.nci.cabig.caaers.web.dwr.MockWebContextBuilder;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Date;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
+public class CreateAdverseEventAjaxFacadeTest extends WebTestCase {
     private CreateAdverseEventAjaxFacade facade;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
@@ -37,6 +39,8 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
     private CtcTermDao ctcTermDao;
     private AdverseEventReportDao aeReportDao;
     private InteroperationService interoperationService;
+
+    private WebContext webContext;
 
     @Override
     protected void setUp() throws Exception {
@@ -55,6 +59,11 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
         facade.setCtcTermDao(ctcTermDao);
         facade.setAeReportDao(aeReportDao);
         facade.setInteroperationService(interoperationService);
+
+        webContext = registerMockFor(WebContext.class);
+        expect(webContext.getHttpServletRequest()).andReturn(request).anyTimes();
+        expect(webContext.getHttpServletResponse()).andReturn(response).anyTimes();
+        WebContextFactory.setWebContextBuilder(new MockWebContextBuilder(webContext));
     }
 
     public void testMatchParticipants() throws Exception {
@@ -245,6 +254,48 @@ public class CreateAdverseEventAjaxFacadeTest extends CaaersTestCase {
 
         replayMocks();
         assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));
+        verifyMocks();
+    }
+
+    public void testAddConcomitantMedications() throws Exception {
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+            .andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
+        verifyMocks();
+    }
+
+    public void testAddConcomitantMedicationsNoReport() throws Exception {
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/create");
+        expect(webContext.forwardToString("/pages/ae/create?index=4&subview=conMedFormSection"))
+            .andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addConcomitantMedication(4, null));
+        verifyMocks();
+    }
+
+    public void testAddConcomitantMedicationsRemovesContextPath() throws Exception {
+        request.setContextPath("/caaers");
+        expect(webContext.getCurrentPage()).andReturn("/caaers/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+            .andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
+        verifyMocks();
+    }
+
+    public void testAddConcomitantMedicationsDoesNotRemoveContextPathIfNotThere() throws Exception {
+        request.setContextPath("/caaers");
+        expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
+        expect(webContext.forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+            .andReturn("The HTML");
+
+        replayMocks();
+        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
         verifyMocks();
     }
 }

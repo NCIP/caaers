@@ -2,6 +2,10 @@
 form.standard .row {
     font-size: 11px;
 }
+form.standard .disabled {
+    background: transparent;
+    color: #666;
+}
 .label {
     width: 9em; text-align: right; padding: 4px;
     font-weight: bold; white-space: nowrap;

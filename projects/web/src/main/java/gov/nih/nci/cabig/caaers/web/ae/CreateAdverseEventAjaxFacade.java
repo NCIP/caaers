@@ -21,14 +21,17 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.WebContext;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
@@ -138,9 +141,7 @@ public class CreateAdverseEventAjaxFacade {
      * @return
      */
     public String addAdverseEvent(int index, Integer aeReportId) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("index", Integer.toString(index));
-        return renderAjaxView("adverseEventFormSection", aeReportId, params);
+        return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
     }
 
     /**
@@ -150,26 +151,56 @@ public class CreateAdverseEventAjaxFacade {
      * @return
      */
     public String addLab(int index, Integer aeReportId) {
-        Map<String, String> params = new HashMap<String, String>();
+        return renderIndexedAjaxView("labFormSection", index, aeReportId);
+    }
+
+    /**
+     * Returns the HTML for the section of the concomitant medications form for
+     * the concomitant medication with the given index
+     * @param index
+     * @return
+     */
+    public String addConcomitantMedication(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("conMedFormSection", index, aeReportId);
+    }
+
+    private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
+        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
         params.put("index", Integer.toString(index));
-        return renderAjaxView("labFormSection", aeReportId, params);
+        return renderAjaxView(viewName, aeReportId, params);
     }
 
     private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
-        String mode = aeReportId == null ? "create" : "edit";
+        WebContext webContext = WebContextFactory.get();
+
         if (aeReportId != null) params.put("aeReport", aeReportId.toString());
         params.put(AbstractAdverseEventInputController.AJAX_SUBVIEW_PARAMETER, viewName);
 
-        String url = String.format("/pages/ae/%s?%s", mode, createQueryString(params));
+        String url = String.format("%s?%s",
+            getCurrentPageContextRelative(webContext), createQueryString(params));
         log.debug("Attempting to return contents of " + url);
         try {
-            String html = WebContextFactory.get().forwardToString(url);
+            String html = webContext.forwardToString(url);
             if (log.isDebugEnabled()) log.debug("Retrieved HTML:\n" + html);
             return html;
         } catch (ServletException e) {
             throw new CaaersSystemException(e);
         } catch (IOException e) {
             throw new CaaersSystemException(e);
+        }
+    }
+
+    private String getCurrentPageContextRelative(WebContext webContext) {
+        String contextPath = webContext.getHttpServletRequest().getContextPath();
+        String page = webContext.getCurrentPage();
+        if (contextPath == null) {
+            log.debug("context path not set");
+            return page;
+        } else if (!page.startsWith(contextPath)) {
+            log.debug(page + " does not start with context path " + contextPath);
+            return page;
+        } else {
+            return page.substring(contextPath.length());
         }
     }
 

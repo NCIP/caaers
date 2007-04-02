@@ -12,7 +12,7 @@
     <c:when test="${field.categoryName == 'autocompleter'}">
         <input size="50" id="${field.propertyName}-input"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
-        <div id="${field.propertyName}-choices" class="autocomplete"></div>
+        <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
         <form:hidden path="${field.propertyName}"/>
     </c:when>
     <c:otherwise>

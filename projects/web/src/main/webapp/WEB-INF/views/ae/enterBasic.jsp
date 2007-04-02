@@ -71,14 +71,13 @@
                 Event.observe("ctc-version", "change", this.ctcVersionChanged.bindAsEventListener(this, false))
                 Event.observe(this.ctcCategoryId, "change", this.ctcCategorySelector)
 
-                new Autocompleter.DWR(this.ctcTermInputId, this.ctcTermChoicesId,
-                    this.termPopulator.bind(this), {
-                    valueSelector: termValueSelector,
-                    afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                        this.selectTerm(selectedChoice)
-                    }.bind(this),
-                    indicator: this.ctcTermIndicatorId
-                })
+                AE.createStandardAutocompleter(
+                    aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
+                        afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                            this.selectTerm(selectedChoice)
+                        }.bind(this)
+                    }
+                )
             },
 
             clearSelectedTerm: function() {
@@ -139,13 +138,9 @@
                     if (!atLoad) {
                         this.clearSelectedTerm()
                     }
-                    $(this.ctcDetailsId).descendants().each(function(elt) {
-                        if (elt.enable) elt.enable()
-                    })
+                    $(this.ctcDetailsId).enableDescendants()
                 } else {
-                    $(this.ctcDetailsId).descendants().each(function(elt) {
-                        if (elt.disable) elt.disable()
-                    })
+                    $(this.ctcDetailsId).disableDescendants()
                 }
             }
         })
@@ -167,7 +162,6 @@
             new ListEditor("ae-section", createAE, "AdverseEvent", {
                 addParameters: [aeReportId],
                 addCallback: function(nextIndex) {
-                    console.log("addCallback(%s)", nextIndex)
                     new AESection(nextIndex);
                 }
             })
