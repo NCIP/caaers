@@ -22,6 +22,8 @@ import org.hibernate.annotations.Parameter;
 public class StudyInvestigator extends AbstractDomainObject {
 	
 	private String signatureText;
+	private String roleCode;
+	private String statusCode;
 	private SiteInvestigator siteInvestigator;
 	private StudySite studySite;
 	
@@ -52,5 +54,23 @@ public class StudyInvestigator extends AbstractDomainObject {
 
 	public void setStudySite(StudySite studySite) {
 		this.studySite = studySite;
+	}
+
+	@Column(name = "role_code")
+	public String getRoleCode() {
+		return roleCode;
+	}
+
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
+	}
+
+	@Column(name = "status_code")
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 }
