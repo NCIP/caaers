@@ -32,7 +32,7 @@
     function fireAction(action, selected){
     if(validatePage()){
         addDiseasesToCart()
-        document.getElementsByName('_target5')[0].name='_target4';
+        document.getElementsByName('_target7')[0].name='_target6';
         document.studyDiseasesForm._action.value=action;
         document.studyDiseasesForm._selected.value=selected;
         document.studyDiseasesForm.submit();
