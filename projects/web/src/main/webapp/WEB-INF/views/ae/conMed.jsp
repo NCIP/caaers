@@ -21,7 +21,7 @@
                 this.agentProperty = cmProperty + ".agent"
                 this.otherProperty = cmProperty + ".other"
 
-                $(this.agentProperty + "-input").value = agentName
+                if (agentName) $(this.agentProperty + "-input").value = agentName
 
                 $("select-agent-" + this.index)
                     .observe("click", this.updateAgentOrOther.bind(this))
@@ -74,6 +74,7 @@
             </c:forEach>
 
             new ListEditor("conmed", createAE, "ConcomitantMedication", {
+                addFirstAfter: "instructions",
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterConMed(index);

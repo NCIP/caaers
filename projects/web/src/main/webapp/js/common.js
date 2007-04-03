@@ -120,6 +120,7 @@ Object.extend(ListEditor.prototype, {
 
         this.options.addButton = $(this.options.addButton)
         this.options.addIndicator = $(this.options.addIndicator)
+        this.options.addFirstAfter = $(this.options.addFirstAfter)
         if (this.options.addButton) {
             this.options.addButton.observe("click", this.add.bindAsEventListener(this))
         }
@@ -136,7 +137,8 @@ Object.extend(ListEditor.prototype, {
         var nextIndex = $$(sel).length
         var args = [nextIndex].concat(this.options.addParameters).concat([
             function(html) {
-                new Insertion.After($$(sel).last(), html)
+                var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
+                new Insertion.After(after, html)
                 if (this.options.addCallback) this.options.addCallback(nextIndex)
                 AE.slideAndShow(this.divisionClass + "-" + nextIndex)
                 if (this.options.addButton) this.options.addButton.enable()
