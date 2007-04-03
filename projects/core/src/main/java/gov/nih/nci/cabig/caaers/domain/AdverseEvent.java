@@ -1,27 +1,23 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 /**
  * @author Rhett Sutphin
@@ -67,6 +63,7 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Where(clause = "cause_type = 'SA'") // it is pretty lame that this is necessary
     public List<StudyAgentAttribution> getStudyAgentAttributions() {
+        if (studyAgentAttributions == null) studyAgentAttributions = new ArrayList<StudyAgentAttribution>();
         return studyAgentAttributions;
     }
 
@@ -80,6 +77,9 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Where(clause = "cause_type = 'CM'") // it is pretty lame that this is necessary
     public List<ConcomitantMedicationAttribution> getConcomitantMedicationAttributions() {
+        if (concomitantMedicationAttributions == null) {
+            concomitantMedicationAttributions = new ArrayList<ConcomitantMedicationAttribution>();
+        }
         return concomitantMedicationAttributions;
     }
 

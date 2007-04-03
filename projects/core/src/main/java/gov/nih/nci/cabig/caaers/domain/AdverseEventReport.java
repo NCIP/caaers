@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import org.apache.commons.collections.list.LazyList;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.apache.commons.collections.Factory;
-import org.apache.commons.collections.list.LazyList;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,9 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -116,6 +114,11 @@ public class AdverseEventReport extends AbstractDomainObject {
     private void createLazyLabs() {
         this.labs = LazyList.decorate(getLabsInternal(),
             new AdverseEventReportChildFactory(Lab.class, this));
+    }
+
+    public void addConcomitantMedication(ConcomitantMedication concomitantMedication) {
+        getConcomitantMedicationsInternal().add(concomitantMedication);
+        if (concomitantMedication != null) concomitantMedication.setReport(this);
     }
 
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
