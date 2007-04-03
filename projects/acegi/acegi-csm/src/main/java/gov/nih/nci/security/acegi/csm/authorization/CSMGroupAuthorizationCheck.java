@@ -1,6 +1,5 @@
 package gov.nih.nci.security.acegi.csm.authorization;
 
-
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
@@ -20,11 +19,12 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 
 	private static final Log logger = LogFactory
 			.getLog(CSMGroupAuthorizationCheck.class);
-	
-	public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
-		
+
+	public boolean checkAuthorizationForObjectId(Authentication authentication,
+			String privilege, String objectId) {
+
 		String checkPrivilege = privilege;
-		if(checkPrivilege == null){
+		if (checkPrivilege == null) {
 			checkPrivilege = getRequiredPermission();
 		}
 
@@ -33,11 +33,13 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 			List groups = getCsmUserProvisioningManager().getAccessibleGroups(
 					objectId, checkPrivilege);
 			if (groups == null) {
-				logger.debug("found no groups for " + objectId); 
+				logger.debug("found no groups for " + objectId);
 			} else {
 				for (Iterator i = groups.iterator(); i.hasNext();) {
 					Group group = (Group) i.next();
-					if (authentication != null && isMember(authentication.getName(), group.getGroupName())) {
+					if (authentication != null
+							&& isMember(authentication, group
+									.getGroupName())) {
 						isAuthorized = true;
 						break;
 					}
@@ -50,20 +52,26 @@ public class CSMGroupAuthorizationCheck extends AbstractCSMAuthorizationCheck {
 		return isAuthorized;
 	}
 
-	protected boolean isMember(String userId, String groupName) {
+	protected boolean isMember(Authentication authentication, String groupName) {
+		
 		boolean isMember = false;
+		
+		String userId = authentication.getName();
 		UserProvisioningManager mgr = (UserProvisioningManager) getCsmUserProvisioningManager();
 		Set groups = null;
-        try {
-            User user = mgr.getUser(userId);
-            groups = mgr.getGroups(user.getUserId().toString()  );
-        } catch (CSObjectNotFoundException ex) {
-            throw new RuntimeException("Error getting groups: " + ex.getMessage(), ex);
-        }
+		try {
+			User user = mgr.getUser(userId);
+			if (user != null) {
+				groups = mgr.getGroups(user.getUserId().toString());
+			}
+		} catch (CSObjectNotFoundException ex) {
+			throw new RuntimeException("Error getting groups: "
+					+ ex.getMessage(), ex);
+		}
 
 		if (groups != null) {
-		    for(Iterator i = groups.iterator(); i.hasNext();){
-                Group group = (Group)i.next();
+			for (Iterator i = groups.iterator(); i.hasNext();) {
+				Group group = (Group) i.next();
 				if (group.getGroupName().equals(groupName)) {
 					isMember = true;
 					break;
