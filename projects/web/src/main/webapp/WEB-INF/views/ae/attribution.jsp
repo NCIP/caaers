@@ -18,6 +18,7 @@
         #attribution th {
             text-align: right;
             padding: 2px;
+            font-weight: normal;
         }
         #attribution tr.top th.ae, #attribution tr.fields td {
             border: solid #6E81A6;
@@ -26,10 +27,20 @@
         #attribution tr.top th {
             text-align: center;
             vertical-align: bottom;
-            font-size: 110%;
+        }
+        #attribution tr.top th .index {
+            font-weight: normal;
+            border-bottom: 1px solid #6E81A6;
+        }
+        #attribution tr.top th .grade {
+        }
+        #attribution tr.top th .term {
+            font-weight: bold;
+            font-size: 120%;
         }
         #attribution tr.subhead th {
             text-align: left;
+            font-weight: bold;
             font-size: 120%;
             background-color: #D7D9E3;
             color: black;
@@ -75,9 +86,9 @@
                 <th>Possible cause</th>
                 <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="status">
                     <th class="ae">
-                        AE ${status.count}
-                        <br/>${ae.grade}
-                        <br/>${ae.ctcTerm.fullName}
+                        <div class="index">AE ${status.count}</div>
+                        <div class="grade">${ae.grade}</div>
+                        <div class="term">${ae.ctcTerm.fullName}</div>
                     </th>
                 </c:forEach>
             </tr>
