@@ -29,9 +29,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         command = createCommand();
     }
 
-    protected CreateAdverseEventCommand createCommand() {
-        return createRealCommand();
-    }
+    protected abstract CreateAdverseEventCommand createCommand();
 
     protected final CreateAdverseEventCommand createRealCommand() {
         return new CreateAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService);
@@ -44,10 +42,5 @@ public abstract class AeWebTestCase extends WebTestCase {
                 return assignment;
             }
         };
-    }
-
-    protected void expectGetAssignment(StudyParticipantAssignment spa) {
-        EasyMock.expect(assignmentDao.getAssignment(command.getParticipant(), command.getStudy()))
-            .andReturn(spa).anyTimes();
     }
 }

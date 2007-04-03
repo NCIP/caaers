@@ -42,8 +42,9 @@ public abstract class AeTabTestCase<T extends AeTab> extends AeWebTestCase {
 
     protected abstract T createTab();
 
-    protected void expectGetAssignment() {
-        expectGetAssignment(assignment);
+    @Override
+    protected CreateAdverseEventCommand createCommand() {
+        return createMockCommand();
     }
 
     protected InputFieldGroup getFieldGroup(String fieldGroupName) {

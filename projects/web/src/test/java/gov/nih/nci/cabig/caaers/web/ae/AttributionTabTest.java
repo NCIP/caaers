@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 
 import java.util.Map;
 import java.util.List;
@@ -15,11 +16,6 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
     @Override
     protected AttributionTab createTab() {
         return new AttributionTab();
-    }
-
-    @Override
-    protected CreateAdverseEventCommand createCommand() {
-        return createMockCommand();
     }
 
     public void testStudyAgentFieldsIncluded() throws Exception {
@@ -125,7 +121,9 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
     private void ensureStudyAgentCount(int count) {
         Study study = command.getAeReport().getAssignment().getStudySite().getStudy();
         while (study.getStudyAgents().size() < count) {
-            study.addStudyAgent(new StudyAgent());
+            StudyAgent sa = new StudyAgent();
+            sa.setAgent(new Agent());
+            study.addStudyAgent(sa);
         }
     }
 

@@ -4,8 +4,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
  * @author Rhett Sutphin
  */
 public class BeginTabTest extends AeTabTestCase<BeginTab> {
-    private BeginTab tab = new BeginTab();
-
     @Override
     protected BeginTab createTab() {
         return new BeginTab();
@@ -26,7 +24,7 @@ public class BeginTabTest extends AeTabTestCase<BeginTab> {
     }
     
     public void testAssignmentRequired() throws Exception {
-        expectGetAssignment(null);
+        assignment = null;
         doValidate();
         assertEquals(1, getErrors().getErrorCount());
         assertEquals(1, getErrors().getGlobalErrorCount());
