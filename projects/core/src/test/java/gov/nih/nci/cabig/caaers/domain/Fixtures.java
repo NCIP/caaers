@@ -28,8 +28,18 @@ public class Fixtures {
         return site;
     }
 
+    /** Creates an assignment and the associated Study, Participant, StudySite, and Site objs */
+    public static StudyParticipantAssignment createAssignment() {
+        return assignParticipant(
+            createParticipant("D", "C"),
+            createStudy("DC"),
+            createSite("N/A")
+        );
+    }
+
     public static StudyParticipantAssignment assignParticipant(Participant p, Study study, Site site) {
         StudySite ss = new StudySite();
+        ss.setSite(site);
         study.addStudySite(ss);
         site.addStudySite(ss);
 
