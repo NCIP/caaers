@@ -91,11 +91,12 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+            <!-- version is in parent pom -->
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-	    <version>3.2</version>
+            <!-- version is in parent pom -->
         </dependency>
         <dependency>
             <groupId>org.directwebremoting</groupId>
@@ -123,7 +124,12 @@
             <artifactId>caaers-rules-client</artifactId>
             <version>1.0-SNAPSHOT</version> 
         </dependency>
-		<dependency>
+        <dependency>
+            <groupId>net.sourceforge.collections</groupId>
+            <artifactId>collections-generic</artifactId>
+            <version>4.01</version>
+        </dependency>
+        <dependency>
 			<groupId>org.codehaus.xfire</groupId>
 			<artifactId>xfire-jaxb2</artifactId>
 			<version>1.2</version>

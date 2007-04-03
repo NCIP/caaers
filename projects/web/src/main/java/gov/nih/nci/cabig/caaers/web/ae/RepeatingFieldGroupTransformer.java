@@ -1,20 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections15.Transformer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.regex.Pattern;
+import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Rhett Sutphin
 */
-public class RepeatingFieldGroupTransformer implements Transformer {
+public class RepeatingFieldGroupTransformer implements Transformer<String, InputFieldGroup> {
     private static final Log log = LogFactory.getLog(RepeatingFieldGroupTransformer.class);
     private static final Pattern CREATED_FIELD_GROUP_PATTERN
         = Pattern.compile("([a-zA-Z_-]+)(\\d+)");
@@ -22,10 +20,9 @@ public class RepeatingFieldGroupTransformer implements Transformer {
     private Map<String, RepeatingFieldGroupFactory> factories
         = new HashMap<String, RepeatingFieldGroupFactory>();
 
-    public Object transform(Object input) {
-        if (log.isDebugEnabled()) log.debug("Creating new field group for " + input);
+    public InputFieldGroup transform(String in) {
+        if (log.isDebugEnabled()) log.debug("Creating new field group for " + in);
 
-        String in = input.toString();
         Matcher match = CREATED_FIELD_GROUP_PATTERN.matcher(in);
         if (match.matches()) {
             String basename = match.group(1);

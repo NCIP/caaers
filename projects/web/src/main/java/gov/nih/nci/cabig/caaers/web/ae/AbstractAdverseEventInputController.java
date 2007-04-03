@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -57,7 +58,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
         flow.addTab(new ConcomitantMedicationsTab());
-        flow.addTab(new EmptyAeTab("Attribution", "Attribution", "ae/notimplemented"));
+        flow.addTab(new AttributionTab());
         flow.addTab(new EmptyAeTab("Reporter info", "Reporter", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
     }
@@ -75,6 +76,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
+        ControllerTools.registerEnumEditor(binder, Attribution.class);
     }
 
     /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */

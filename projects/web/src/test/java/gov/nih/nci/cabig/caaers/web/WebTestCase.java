@@ -16,6 +16,7 @@ public abstract class WebTestCase extends CaaersTestCase {
     protected MockServletContext servletContext;
     protected MockHttpSession session;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         servletContext = new MockServletContext();

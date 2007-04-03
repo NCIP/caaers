@@ -2,13 +2,11 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import org.springframework.web.servlet.ModelAndView;
 import static org.easymock.classextension.EasyMock.*;
 
@@ -18,7 +16,10 @@ import java.util.Calendar;
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventControllerTest extends AdverseEventControllerTestCase {
+    private StudyParticipantAssignment assignment;
+
     private CreateAdverseEventController controller;
+    private CreateAdverseEventCommand firstCommand;
 
     @Override
     protected void setUp() throws Exception {
@@ -31,6 +32,16 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setAssignmentDao(assignmentDao);
         controller.setReportDao(adverseEventReportDao);
         controller.setAgentDao(agentDao);
+        controller.afterPropertiesSet();
+
+        // This can't be a constant b/c it has to be created after the application context is
+        // loaded
+        assignment = Fixtures.createAssignment();
+
+        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
+            .andReturn(assignment).anyTimes();
+
+        passFirstPage();
     }
 
     public void testBindDetectionDate() throws Exception {
@@ -57,15 +68,44 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         assertSame(expectedAgent,
             command.getAeReport().getConcomitantMedications().get(2).getAgent());
     }
+    
+    public void testBindAttributions() throws Exception {
+        assignment.getStudySite().getStudy().addStudyAgent(new StudyAgent());
+        assignment.getStudySite().getStudy().addStudyAgent(new StudyAgent());
+        firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
+        firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
+        firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
+        
+        request.setParameter("attributionMap[studyAgent][1][1]", Attribution.DEFINITE.name());
+        request.setParameter("attributionMap[conMed][0][2]", Attribution.PROBABLE.name());
+
+        CreateAdverseEventCommand command = bindAndReturnCommand();
+        assertEquals(Attribution.DEFINITE,
+            command.getAttributionMap().get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY).get(1).get(1));
+        assertEquals(Attribution.PROBABLE,
+            command.getAttributionMap().get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
+    }
 
     private CreateAdverseEventCommand bindAndReturnCommand() throws Exception {
-        request.setParameter("_target1", "");
-        controller.handleRequest(request, response); // once to get the session in place
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
         CreateAdverseEventCommand command = (CreateAdverseEventCommand) mv.getModel().get("command");
         assertNotNull(command);
         return command;
+    }
+
+    // get the session in place & set study/participant
+    private void passFirstPage() throws Exception {
+        request.setParameter("_target0", "");
+        replayMocks();
+        firstCommand
+            = (CreateAdverseEventCommand) controller.handleRequest(request, response).getModel().get("command");
+        firstCommand.setParticipant(assignment.getParticipant());
+        firstCommand.setStudy(assignment.getStudySite().getStudy());
+        resetMocks();
+
+        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
+            .andReturn(assignment).anyTimes();
     }
 }

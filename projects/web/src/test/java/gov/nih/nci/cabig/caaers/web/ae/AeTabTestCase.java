@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -26,8 +28,8 @@ public abstract class AeTabTestCase<T extends AeTab> extends AeWebTestCase {
 
         // initialize command as minimally valid
         // BeginTab
-        command.setParticipant(new Participant());
-        command.setStudy(new Study());
+        command.setParticipant(assignment.getParticipant());
+        command.setStudy(assignment.getStudySite().getStudy());
 
         // BasicsTab
         AdverseEvent event = command.getAeReport().getAdverseEvents().get(0);
@@ -39,6 +41,10 @@ public abstract class AeTabTestCase<T extends AeTab> extends AeWebTestCase {
     }
 
     protected abstract T createTab();
+
+    protected void expectGetAssignment() {
+        expectGetAssignment(assignment);
+    }
 
     protected InputFieldGroup getFieldGroup(String fieldGroupName) {
         return getTab().createFieldGroups(command).get(fieldGroupName);

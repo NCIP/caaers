@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -21,6 +24,8 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
  */
 public class EditAdverseEventCommand implements AdverseEventInputCommand {
     private AdverseEventReport aeReport;
+    private Map<String, List<List<Attribution>>> attributionMap;
+
     private RuleExecutionService ruleExecutionService;
 
     ////// LOGIC
@@ -47,11 +52,16 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
         return aeReport;
     }
 
+    public Map<String, List<List<Attribution>>> getAttributionMap() {
+        return attributionMap;
+    }
+
     public void setAeReport(AdverseEventReport aeReport) {
         this.aeReport = aeReport;
         if (aeReport.getAdverseEvents().size() == 0) {
             aeReport.addAdverseEvent(new AdverseEvent());
         }
+        this.attributionMap = new AttributionMap(aeReport);
     }
 
     // TODO: this code is *exactly* the same as in CreateAdverseEventCommand

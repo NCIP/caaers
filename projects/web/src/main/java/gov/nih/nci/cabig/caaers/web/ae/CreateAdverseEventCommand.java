@@ -11,11 +11,14 @@ import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +38,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
     
     private RuleExecutionService ruleExecutionService;
+    private Map<String, List<List<Attribution>>> attributionMap;
 
     public CreateAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService
@@ -44,6 +48,8 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport = new AdverseEventReport();
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
+
+        this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
     }
@@ -58,6 +64,13 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         }
     }
 
+    // This method deliberately sets only one side of the bidirectional link.
+    // This is so hibernate will not discover the link from the persistent side
+    // (assignment) and try to save the report before we want it to.
+    private void updateReportAssignmentLink() {
+        getAeReport().setAssignment(getAssignment());
+    }
+
     public void save() {
         getAssignment().addReport(getAeReport());
         reportDao.save(getAeReport());
@@ -70,12 +83,17 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         return aeReport;
     }
 
+    public Map<String, List<List<Attribution>>> getAttributionMap() {
+        return attributionMap;
+    }
+
     public Participant getParticipant() {
         return participant;
     }
 
     public void setParticipant(Participant participant) {
         this.participant = participant;
+        updateReportAssignmentLink();
     }
 
     public Study getStudy() {
@@ -84,6 +102,10 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
     public void setStudy(Study study) {
         this.study = study;
+        // TODO: this is temporary -- need a cleaner way to force this to load
+        // in same session as study is loaded and/or reassociate study with hib session later
+        if (study != null) this.study.getStudyAgents().size();
+        updateReportAssignmentLink();
     }
 
     // TODO:
