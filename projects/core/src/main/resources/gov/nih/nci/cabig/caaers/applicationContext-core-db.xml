@@ -40,7 +40,7 @@
         p:password="s[datasource.password]"
         />
 
-    <!-- For manual testing only.  Definitely not for real life. -->
+    <!-- For manual testing and bering.  Not for the deployed application. -->
     <bean id="nonPooledDataSource" lazy-init="true" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="s[datasource.driver]"
           p:url="s[datasource.url]"
@@ -49,6 +49,17 @@
         />
 
     <bean id="beringMigrator" class="edu.northwestern.bioinformatics.bering.servlet.DeployedMigrator">
-        <property name="dataSource"><ref bean="dataSource"/></property>
+        <!-- We can't use the local pool data source because its validation query
+             is dependent on bering having run at least once. -->
+        <property name="dataSource">
+            <bean class="gov.nih.nci.cabig.caaers.tools.spring.DeferredLoadingFactoryBean">
+                <property name="beanNames">
+                    <list>
+                        <value>jndiDataSource</value>
+                        <value>nonPooledDataSource</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
     </bean>
 </beans>
