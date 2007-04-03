@@ -5,6 +5,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Rhett Sutphin
@@ -18,6 +19,21 @@ import javax.persistence.ManyToOne;
 public class ConcomitantMedication extends AbstractAdverseEventReportChild {
     private Agent agent;
     private String other;
+
+    ////// LOGIC
+
+    @Transient
+    public String getName() {
+        if (getAgent() != null) {
+            return getAgent().getName();
+        } else if (getOther() != null) {
+            return "Other: " + getOther();
+        } else {
+            return null;
+        }
+    }
+
+    ////// BOUND PROPERTIES
 
     @ManyToOne
     public Agent getAgent() {
