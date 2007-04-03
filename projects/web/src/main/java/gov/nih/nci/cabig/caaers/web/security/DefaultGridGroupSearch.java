@@ -125,7 +125,9 @@ public class DefaultGridGroupSearch implements GridGroupSearch {
 				Exception ex = t.getException();
 				logger.error("Call to " + url + " failed: " + ex.getMessage(), ex);
 			}else{
-				arrayList.addAll(t.getGroupNames());
+				List l = t.getGroupNames();
+				logger.debug("Call to " + url + " succeeded. User is member of " + l.size() + " groups.");
+				arrayList.addAll(l);
 			}
 		}
 		

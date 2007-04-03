@@ -96,7 +96,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
  		-->
-			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.caaers.web.security.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 				
@@ -134,7 +134,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
  -->
-			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.cabig.caaers.web.security.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 

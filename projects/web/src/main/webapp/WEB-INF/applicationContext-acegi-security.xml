@@ -12,7 +12,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				PATTERN_TYPE_APACHE_ANT
-				/**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+				/**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,gridSSOProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
 			</value>
 		</property>
 	</bean>
@@ -36,11 +36,30 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager"
 			ref="authenticationManager" />
-		<property name="authenticationFailureUrl"
-			value="/login.jsp" />
+		<property name="authenticationFailureUrl" value="/login.jsp" />
 		<property name="defaultTargetUrl" value="/" />
 		<property name="filterProcessesUrl"
 			value="/j_acegi_security_check" />
+	</bean>
+
+	<bean id="authenticationProcessingFilterEntryPoint"
+		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="loginFormUrl" value="/login.jsp" />
+		<property name="forceHttps" value="false" />
+	</bean>
+
+	<bean id="gridSSOProcessingFilter"
+		class="gov.nih.nci.cabig.caaers.web.security.GridSSOProcessingFilter">
+		<property name="ignoreFailure" value="true" />
+		<property name="authenticationManager"
+			ref="gridSSOAuthenticationManager" />
+		<property name="authenticationEntryPoint"
+			ref="authenticationProcessingFilterEntryPoint" />
+		<property name="authenticationRequestPopulator">
+			<bean class="gov.nih.nci.cabig.caaers.web.security.GlobusCredentialAuthenticationRequestPopulator">
+				<property name="gridProxyParameterName" value="gridProxy"/>
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="securityContextHolderAwareRequestFilter"
@@ -55,13 +74,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean id="exceptionTranslationFilter"
 		class="org.acegisecurity.ui.ExceptionTranslationFilter">
-		<property name="authenticationEntryPoint">
-			<bean
-				class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-				<property name="loginFormUrl" value="/login.jsp" />
-				<property name="forceHttps" value="false" />
-			</bean>
-		</property>
+		<property name="authenticationEntryPoint"
+			ref="authenticationProcessingFilterEntryPoint" />
 		<property name="accessDeniedHandler">
 			<bean
 				class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
@@ -69,30 +83,46 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 	</bean>
-	
-	<util:map id="filterObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
-		<entry key="/pages/participant/create.*" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
-		<entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-		<entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-		<entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
-		<entry key="/pages/study/view.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-		<entry key="/pages/ae/create.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE"/>
-		<entry key="/pages/ae/edit.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE"/>
-		<entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ"/>
-		
+
+	<util:map id="filterObjectPrivilegeMap"
+		map-class="java.util.LinkedHashMap">
+		<entry key="/pages/participant/create.*"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
+		<entry key="/pages/participant/view.*"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
+		<entry key="/pages/participant/assign.*"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
+		<entry key="/pages/study/create.*"
+			value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
+		<entry key="/pages/study/view.*"
+			value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
+		<entry key="/pages/study/search.*"
+			value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
+		<entry key="/pages/study/edit.*"
+			value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
+		<entry key="/pages/ae/create.*"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />
+		<entry key="/pages/ae/edit.*"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" />
+		<entry key="/pages/ae/list.*"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ" />
+
 		<!-- TODO: set up correct default -->
-		<entry key="/pages/.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/.*"
+			value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
 	</util:map>
-	
-	<bean id="filterPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
-		<property name="objectPrivilegeMap" ref="filterObjectPrivilegeMap"/>
+
+	<bean id="filterPrivilegeAndObjectIdGenerator"
+		class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
+		<property name="objectPrivilegeMap"
+			ref="filterObjectPrivilegeMap" />
 	</bean>
-	
-	<bean id="filterAuthorizationCheck" class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+
+	<bean id="filterAuthorizationCheck"
+		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
 		<property name="csmAuthorizationCheck">
-			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+			<bean
+				class="gov.nih.nci.cabig.caaers.web.security.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 			</bean>
@@ -113,16 +143,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					value="false" />
 				<property name="decisionVoters">
 					<list>
-						<bean class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
-							<property name="authorizationSwitch" ref="authorizationSwitch"/>
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+							<property name="authorizationSwitch"
+								ref="authorizationSwitch" />
 						</bean>
 						<bean
 							class="org.acegisecurity.vote.AuthenticatedVoter" />
-							
-						<bean class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
-							<property name="processConfigAttribute" value="CSM_FILTER_CHECK"/>
-							<property name="authorizationCheck" ref="filterAuthorizationCheck"/>
-						</bean>							
+
+						<bean
+							class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+							<property name="processConfigAttribute"
+								value="CSM_FILTER_CHECK" />
+							<property name="authorizationCheck"
+								ref="filterAuthorizationCheck" />
+						</bean>
 					</list>
 				</property>
 			</bean>
@@ -132,7 +167,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				\A/public/.*\Z=IS_AUTHENTICATED_ANONYMOUSLY
 				\A/pages/.*\Z=CSM_FILTER_CHECK
-			</value>			 
+			</value>
 		</property>
 	</bean>
 
@@ -141,11 +176,54 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="providers">
 			<list>
 				<ref local="csmAuthenticationProvider" />
-				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
-					<property name="key" value="anonymousAuthKey"/>
-				</bean>				
+				<ref local="gridAuthenticationProvider" />
+				<bean
+					class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+					<property name="key" value="anonymousAuthKey" />
+				</bean>
 			</list>
 		</property>
+	</bean>
+
+	<bean id="gridSSOAuthenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="globusCredentialAuthenticationProvider" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="globusCredentialAuthenticationProvider"
+		class="gov.nih.nci.cabig.caaers.web.security.GlobusCredentialAuthenticationProvider">
+
+		<property name="userDetailsService">
+			<bean
+				class="gov.nih.nci.cabig.caaers.web.security.CSMGridUserDetailsService">
+				<property name="gridGroupSearch" ref="gridGroupSearch" />
+			</bean>
+		</property>
+
+		<property name="validator" ref="gridProxyValidator" />
+
+	</bean>
+
+	<bean id="gridAuthenticationProvider"
+		class="gov.nih.nci.cabig.caaers.web.security.GridAuthenticationProvider">
+
+		<property name="userDetailsService">
+			<bean
+				class="gov.nih.nci.cabig.caaers.web.security.CSMGridUserDetailsService">
+				<property name="gridGroupSearch" ref="gridGroupSearch" />
+			</bean>
+		</property>
+		
+		<property name="authenticationClient" ref="gridAuthenticationClient"/>
+		
+		<property name="validator" ref="gridProxyValidator" />
+		
+		<property name="userCache" ref="userCache" />
+
 	</bean>
 
 	<bean id="csmAuthenticationProvider"
@@ -159,26 +237,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 
 		<property name="userDetailsService">
-			<bean class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
+			<bean
+				class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 			</bean>
 		</property>
 
-		<property name="userCache">
-			<bean
-				class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-				<property name="cache">
-					<bean
-						class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-						<property name="cacheManager">
-							<bean
-								class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
-						</property>
-						<property name="cacheName" value="userCache" />
+		<property name="userCache" ref="userCache" />
+	</bean>
 
-					</bean>
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<bean
+				class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<bean
+						class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
 				</property>
+				<property name="cacheName" value="userCache" />
+
 			</bean>
 		</property>
 	</bean>
@@ -186,28 +265,34 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
 	<bean id="loggerListener"
 		class="org.acegisecurity.event.authentication.LoggerListener" />
-		
-		
-	<bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
-		<property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
- 		<property name="filterInvocationDefinitionSource">
+
+
+	<bean id="channelProcessingFilter"
+		class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+		<property name="channelDecisionManager">
+			<ref local="channelDecisionManager" />
+		</property>
+		<property name="filterInvocationDefinitionSource">
 			<value>
-			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
 				\A.*\Z=REQUIRES_SECURE_CHANNEL
 			</value>
 		</property>
 	</bean>
 
-	<bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
-	    <property name="channelProcessors">
-      		<list>
- 	        	<ref local="secureChannelProcessor"/>
-        		<ref local="insecureChannelProcessor"/>
-     		</list>
-	    </property>
+	<bean id="channelDecisionManager"
+		class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+		<property name="channelProcessors">
+			<list>
+				<ref local="secureChannelProcessor" />
+				<ref local="insecureChannelProcessor" />
+			</list>
+		</property>
 	</bean>
 
-	<bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
-	<bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>		
+	<bean id="secureChannelProcessor"
+		class="org.acegisecurity.securechannel.SecureChannelProcessor" />
+	<bean id="insecureChannelProcessor"
+		class="org.acegisecurity.securechannel.InsecureChannelProcessor" />
 
 </beans>

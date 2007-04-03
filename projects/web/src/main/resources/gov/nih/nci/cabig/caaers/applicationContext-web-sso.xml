@@ -15,15 +15,6 @@
     
     <bean id="gridProxyValidator" class="gov.nih.nci.cabig.ctms.web.sso.GridProxyValidatorImpl"/>
     
-    <bean id="gridProxyRetrievalStrategy" class="gov.nih.nci.cabig.caaers.tools.accesscontrol.CaaersGridProxyRetrievalStrategy">
-    	<property name="authenticationClient" ref="gridAuthenticationClient"/>
-    	<property name="validator" ref="gridProxyValidator"/>
-    	<property name="usernameParam" value="j_username"/>
-    	<property name="passwordParam" value="j_password"/>
-    	<property name="gridProxyParam" value="gridProxy"/>    	
-    	<property name="gridGroupSearch" ref="gridGroupSearch"/>
-    </bean>
-    
     <bean id="gridGroupSearch" class="gov.nih.nci.cabig.caaers.web.security.DefaultGridGroupSearch">
     	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     	<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
