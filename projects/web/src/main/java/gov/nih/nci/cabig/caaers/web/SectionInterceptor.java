@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.chrome.Section;
 /**
  * @author Rhett Sutphin
  */
+/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
 public class SectionInterceptor extends HandlerInterceptorAdapter {
     private List<Section> sections;
     private String attributePrefix;

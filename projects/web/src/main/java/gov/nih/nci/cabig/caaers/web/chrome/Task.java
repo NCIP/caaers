@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
  *
  * @author Rhett Sutphin
  */
+/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
 public class Task {
     private String displayName;
     private String linkName;

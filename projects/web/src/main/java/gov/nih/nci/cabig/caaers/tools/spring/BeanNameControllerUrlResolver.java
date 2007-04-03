@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.CaaersError;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
 public class BeanNameControllerUrlResolver implements ControllerUrlResolver, BeanFactoryPostProcessor, Ordered {
     private Log log = LogFactory.getLog(getClass());
 

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.Controller;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
 public class ResolvedControllerReference {
     private String beanName;
     private String className;

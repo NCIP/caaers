@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Rhett Sutphin
  */
+/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
 public class Section {
     private List<String> pathMappings = new LinkedList<String>();
     private String displayName;
