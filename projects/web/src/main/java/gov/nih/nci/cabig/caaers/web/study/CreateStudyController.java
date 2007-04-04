@@ -142,7 +142,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         	}        	
         });
  
-		flow.addTab(new Tab<Study>("Study Agents", "Study Agents", "study_studyagent") {
+		flow.addTab(new Tab<Study>("Study Agents", "Study Agents", "study/study_studyagent") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
@@ -151,7 +151,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         	}        	
         });
 		
-		flow.addTab(new Tab<Study>("Study Disease", "Study Disease", "study_studydisease") {
+		flow.addTab(new Tab<Study>("Study Disease", "Study Disease", "study/study_studydisease") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
@@ -161,7 +161,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         });
         
         
-        flow.addTab(new Tab<Study>("Review and Submit", "Review and Submit", "study_reviewsummary"));                        
+        flow.addTab(new Tab<Study>("Review and Submit", "Review and Submit", "study/study_reviewsummary"));                        
         setFlow(flow);        
     }
 	
