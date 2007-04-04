@@ -233,7 +233,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_STUDY_CREATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
@@ -254,7 +254,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_STUDY_UPDATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
@@ -315,7 +315,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_PARTICIPANT_CREATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
@@ -336,7 +336,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_PARTICIPANT_UPDATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
@@ -385,7 +385,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_AE_REPORT_CREATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
@@ -406,7 +406,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 								value="CSM_AE_REPORT_UPDATE" />
 							<property name="authorizationCheck">
 								<bean
-									class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+									class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 									<property
 										name="csmUserProvisioningManager"
 										ref="csmUserProvisioningManager" />
