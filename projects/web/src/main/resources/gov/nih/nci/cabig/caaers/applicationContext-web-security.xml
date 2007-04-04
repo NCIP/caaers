@@ -96,7 +96,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
  		-->
-			<bean class="gov.nih.nci.cabig.caaers.web.security.CSMGridGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 				
@@ -134,7 +134,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- 
 			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
  -->
-			<bean class="gov.nih.nci.cabig.caaers.web.security.CSMGridGroupAuthorizationCheck">
+			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
 
@@ -146,6 +146,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="privilegeGenerator"
 			ref="sectionPrivilegeAndObjectIdGenerator" />
 	</bean>
+	
+    <bean id="gridAuthenticationClient" class="gov.nih.nci.security.acegi.grid.authentication.GridBasicAuthenticationClientImpl">
+    	<property name="idpUrl" value="https://localhost:58443/wsrf/services/cagrid/AuthenticationService"/>
+		<property name="ifsUrl" value="https://localhost:28443/wsrf/services/cagrid/Dorian"/>
+		<property name="proxyLifetimeHours" value="12"/>
+		<property name="proxyLifetimeMinutes" value="0"/>
+		<property name="proxyLifetimeSeconds" value="0"/>
+		<property name="delegationPathLength" value="0"/>
+    </bean>
+    
+    <bean id="gridProxyValidator" class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl"/>
+    
+    <bean id="gridGroupSearch" class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGroupSearch">
+    	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+    	<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
+    	<!-- Timeout per GridGrouperInstance -->
+    	<property name="gridGrouperTimeout" value="10000"/>
+    	<property name="gridGrouperClientFactory" ref="gridGrouperClientFactory"/>
+    </bean>
+    
+    <bean id="gridGrouperClientFactory" class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGrouperClientFactory"/>	
 
 
 </beans>

@@ -4,25 +4,6 @@
 
 <beans>
     
-    <bean id="gridAuthenticationClient" class="gov.nih.nci.cabig.ctms.web.sso.GridBasicAuthenticationClientImpl">
-    	<property name="idpUrl" value="https://localhost:58443/wsrf/services/cagrid/AuthenticationService"/>
-		<property name="ifsUrl" value="https://localhost:28443/wsrf/services/cagrid/Dorian"/>
-		<property name="proxyLifetimeHours" value="12"/>
-		<property name="proxyLifetimeMinutes" value="0"/>
-		<property name="proxyLifetimeSeconds" value="0"/>
-		<property name="delegationPathLength" value="0"/>
-    </bean>
-    
-    <bean id="gridProxyValidator" class="gov.nih.nci.cabig.ctms.web.sso.GridProxyValidatorImpl"/>
-    
-    <bean id="gridGroupSearch" class="gov.nih.nci.cabig.caaers.web.security.DefaultGridGroupSearch">
-    	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-    	<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
-    	<!-- Timeout per GridGrouperInstance -->
-    	<property name="gridGrouperTimeout" value="10000"/>
-    	<property name="gridGrouperClientFactory" ref="gridGrouperClientFactory"/>
-    </bean>
-    
-    <bean id="gridGrouperClientFactory" class="gov.nih.nci.cabig.caaers.web.security.DefaultGridGrouperClientFactory"/>
+
     
 </beans>

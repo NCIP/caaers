@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.security.acegi.grid.authorization.GlobusCredentialAuthenticationToken;
+
 import java.io.ByteArrayInputStream;
 
 import javax.servlet.http.HttpServletRequest;
