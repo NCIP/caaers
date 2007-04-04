@@ -19,15 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 public class ViewStudyController extends ParameterizableViewController {
 	
 	public ViewStudyController() {
-		setViewName("study_confirmation");
+		setViewName("study/study_confirmation");
 	}	
 
 	public ModelAndView handleRequestInternal(
 		        HttpServletRequest request,
 		        HttpServletResponse response) throws Exception {
 		 
-		 setViewName("study_confirmation");
-		 ModelAndView mav = new ModelAndView("study_confirmation");
+		 setViewName("study/study_confirmation");
+		 ModelAndView mav = new ModelAndView("study/study_confirmation");
 		
 		 return mav;        
 		    }
