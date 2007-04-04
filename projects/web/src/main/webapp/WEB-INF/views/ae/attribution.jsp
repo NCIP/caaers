@@ -68,14 +68,37 @@
             text-align: center;
             padding: 2px;
         }
-        .attribution tr.fields:hover td, .attribution tr.fields:hover th {
+        .attribution tr.fields:hover th {
             background-color: #6E81A6;
             color: white;
         }
         .attribution tr.fields td, .attribution tr.fields th {
             border-bottom: 1px solid #6E81A6;
         }
+        .attribution td.unrelated { background-color: #fff }
+        .attribution td.unlikely  { background-color: #ccc }
+        .attribution td.possible  { background-color: #A0BBF2 }
+        .attribution td.probable  { background-color: #879ECC }
+        .attribution td.definite  { background-color: #6E81A6 }
     </style>
+    <script type="text/javascript">
+        function updateCodeClass(evt) {
+            var attrib_level = $F(Event.element(evt))
+            var td = Event.findElement(evt, "TD")
+            if (td) {
+                // deliberately overwriting all classes here -- this is so we don't have to
+                // hard-code the class names to remove
+                td.className = attrib_level.toLowerCase()
+            }
+        }
+
+        Event.observe(window, "load", function() {
+            $$(".attribution tr.fields select").each(function(sel) {
+                updateCodeClass({ target: sel })
+                sel.observe("change", updateCodeClass)
+            })
+        })
+    </script>
 </head>
 <body>
 <form:form cssClass="standard">
