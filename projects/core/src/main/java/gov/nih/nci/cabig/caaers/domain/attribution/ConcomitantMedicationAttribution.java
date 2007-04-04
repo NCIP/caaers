@@ -3,9 +3,9 @@ package gov.nih.nci.cabig.caaers.domain.attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Entity;
 
 /**
  * @author Rhett Sutphin
@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 @DiscriminatorValue("CM")
 public class ConcomitantMedicationAttribution extends AdverseEventAttribution<ConcomitantMedication> {
     @ManyToOne
-    @JoinColumn(name = "cause_id")
+    @JoinColumn(name = "cause_id", nullable = false)
     @Override
     public ConcomitantMedication getCause() {
         return super.getCause();

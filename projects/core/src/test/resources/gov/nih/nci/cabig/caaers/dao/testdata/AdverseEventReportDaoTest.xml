@@ -91,4 +91,5 @@
         list_index="0"
         report_id="-1"
         />
+    <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70" cause_id="-31" cause_type="CM" attribution_code="4"/>
 </dataset>

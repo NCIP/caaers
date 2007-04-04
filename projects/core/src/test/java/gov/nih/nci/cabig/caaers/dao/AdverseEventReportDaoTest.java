@@ -9,8 +9,12 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.Date;
 import java.sql.Timestamp;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.*;
@@ -23,6 +27,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
+    private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
 
     public void testGet() throws Exception {
         AdverseEventReport loaded = getDao().getById(-1);
@@ -112,6 +117,47 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedEvent0.getHospitalization());
             assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
             assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
+        }
+    }
+    
+    public void testSaveNewReportWithConMedWithAttribution() throws Exception {
+        Integer savedId;
+        {
+            AdverseEventReport report = new AdverseEventReport();
+            report.setAssignment(assignmentDao.getById(-14));
+            report.setDetectionDate(new Date());
+
+            AdverseEvent ae0 = report.getAdverseEvents().get(0);
+            ae0.setCtcTerm(ctcTermDao.getById(3012));
+
+            ConcomitantMedication conMed = report.getConcomitantMedications().get(0);
+            conMed.setAgent(agentDao.getById(-101));
+
+            ae0.getConcomitantMedicationAttributions().add(new ConcomitantMedicationAttribution());
+            ConcomitantMedicationAttribution conMedAttrib = ae0.getConcomitantMedicationAttributions().get(0);
+            conMedAttrib.setCause(conMed);
+            conMedAttrib.setAttribution(Attribution.PROBABLE);
+
+            getDao().save(report);
+            assertNotNull("No ID for new report", report.getId());
+            savedId = report.getId();
+        }
+
+        interruptSession();
+
+        {
+            AdverseEventReport loaded = getDao().getById(savedId);
+            assertNotNull("Report not found", loaded);
+
+            assertEquals(1, loaded.getConcomitantMedications().size());
+            assertEquals("Wrong concomitant med", -101,
+                (int) loaded.getConcomitantMedications().get(0).getAgent().getId());
+
+            List<ConcomitantMedicationAttribution> attribs
+                = loaded.getAdverseEvents().get(0).getConcomitantMedicationAttributions();
+            assertEquals(1, attribs.size());
+            assertEquals("Wrong number of con med attribs", -101,
+                (int) attribs.get(0).getCause().getAgent().getId());
         }
     }
 }

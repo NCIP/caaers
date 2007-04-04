@@ -157,7 +157,10 @@ public class AdverseEventReport extends AbstractDomainObject {
     @OneToMany
     @JoinColumn(name="report_id", nullable=false)
     @IndexColumn(name="list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {
+        // Manually-managing PERSIST cascades due to cascade ordering issue
+        CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
+        CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
     protected List<AdverseEvent> getAdverseEventsInternal() {
         return adverseEventsInternal;
     }

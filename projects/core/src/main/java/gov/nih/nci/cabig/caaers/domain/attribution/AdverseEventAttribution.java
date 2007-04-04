@@ -66,7 +66,11 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends Ab
     }
 
     @Transient
-    // this is transient only here -- subclasses need to override it and specify what it refers to
+    /* this is only transient here -- subclasses need to override it and specify what it refers to
+       This should work:
+    @ManyToOne
+    @JoinColumn(name = "cause_id", nullable = false)
+     */
     public T getCause() {
         return cause;
     }
