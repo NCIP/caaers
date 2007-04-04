@@ -3,6 +3,10 @@
  */
 package gov.nih.nci.cabig.ctms.web.sso;
 
+import gov.nih.nci.security.acegi.grid.Utils;
+import gov.nih.nci.security.acegi.grid.authentication.GridBasicAuthenticationClient;
+import gov.nih.nci.security.acegi.grid.authentication.GridProxyValidator;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
