@@ -43,7 +43,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
         // just do it everywhere.
         ApplicationContext ctx = getDeployedApplicationContext();
         DataSource dataSource = (DataSource)ctx.getBean("dataSource");
-		SecurityTestUtils.insertCSMPolicy(dataSource);
+        SecurityTestUtils.insertCSMPolicy(dataSource);
         SecurityTestUtils.switchToSuperuser();
     }
 
@@ -52,7 +52,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
         SecurityTestUtils.switchToNoUser();
         ApplicationContext ctx = getDeployedApplicationContext();
         DataSource dataSource = (DataSource)ctx.getBean("dataSource");
-		SecurityTestUtils.deleteCSMPolicy(dataSource);
+        SecurityTestUtils.deleteCSMPolicy(dataSource);
         super.tearDown();
     }
 
@@ -64,12 +64,15 @@ public abstract class CaaersTestCase extends CoreTestCase {
             } catch (NamingException e) {
                 throw new RuntimeException("", e);
             }
-            
-            applicationContext = new ClassPathXmlApplicationContext(new String[] {
-                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
-            });
+            applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
         }
         return applicationContext;
+    }
+
+    public static String[] getConfigLocations() {
+        return new String[] {
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
+        };
     }
 
     ////// MOCK REGISTRATION AND HANDLING

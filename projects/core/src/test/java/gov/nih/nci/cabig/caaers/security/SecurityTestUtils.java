@@ -4,6 +4,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
@@ -49,29 +50,34 @@ public class SecurityTestUtils {
 		}while(t.getCause() != null);
 		return t;
 	}
-    
-    public static void insertCSMPolicy(DataSource dataSource){
-    	try{
-    		DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(dataSource);
-    		FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
-    		DatabaseOperation op = DatabaseOperation.INSERT;
-    		op.execute(conn, data);
-    		conn.close();
-    	}catch(Exception ex){
-    		throw new RuntimeException("Error inserting CSM policy: " + ex.getMessage(), ex);
-    	}
+
+    public static void insertCSMPolicy(DataSource dataSource) throws SQLException {
+        DatabaseDataSourceConnection conn = null;
+        try{
+            conn = new DatabaseDataSourceConnection(dataSource);
+            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
+            DatabaseOperation op = DatabaseOperation.INSERT;
+            op.execute(conn, data);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error inserting CSM policy: " + ex.getMessage(), ex);
+        } finally {
+            if (conn != null) conn.close();
+        }
     }
-    
-    public static void deleteCSMPolicy(DataSource dataSource){
-    	try{
-    		DatabaseDataSourceConnection conn = new DatabaseDataSourceConnection(dataSource);
-    		FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
-    		DatabaseOperation op = DatabaseOperation.DELETE_ALL;
-    		op.execute(conn, data);
-    		conn.close();
-    	}catch(Exception ex){
-    		throw new RuntimeException("Error inserting CSM policy: " + ex.getMessage(), ex);
-    	}
+
+    public static void deleteCSMPolicy(DataSource dataSource) throws SQLException {
+        DatabaseDataSourceConnection conn = null;
+        try{
+            conn = new DatabaseDataSourceConnection(dataSource);
+            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader().getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
+            DatabaseOperation op = DatabaseOperation.DELETE_ALL;
+            op.execute(conn, data);
+            conn.close();
+        }catch(Exception ex){
+            throw new RuntimeException("Error inserting CSM policy: " + ex.getMessage(), ex);
+        } finally {
+            if (conn == null) conn.close();
+        }
     }
 
 }

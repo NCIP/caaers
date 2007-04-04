@@ -3,26 +3,18 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
-
-import java.io.File;
-import java.util.Date;
+import org.acegisecurity.AccessDeniedException;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import javax.sql.DataSource;
-
-import org.acegisecurity.AccessDeniedException;
-import org.dbunit.database.DatabaseDataSourceConnection;
-import org.dbunit.database.IDatabaseConnection;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.operation.DatabaseOperation;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.AbstractTransactionalSpringContextTests;
+import java.util.Date;
 
 /**
  * @author joshua
@@ -31,40 +23,20 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
 public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 
 	public String[] getConfigLocations() {
-		return new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" };
+		return CaaersTestCase.getConfigLocations();
 	}
 
-	/**
-	 * 
-	 */
-	public DaoSecurityTest() {
-
-	}
-	
-	
-
-	/**
-	 * @param arg0
-	 */
-	public DaoSecurityTest(String testName) {
-		super(testName);
-	}
-	
-	protected void onSetUpBeforeTransaction(){
+	protected void onSetUpBeforeTransaction() throws Exception {
 		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
 		SecurityTestUtils.insertCSMPolicy(dataSource);
 	}
-	protected void onTearDownAfterTransaction(){
+	protected void onTearDownAfterTransaction() throws Exception {
 		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
 		SecurityTestUtils.deleteCSMPolicy(dataSource);
 	}
 
 	public void testStudySave() {
-		
-		
-
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		StudyDao dao = (StudyDao) getApplicationContext().getBean("studyDao");
 
@@ -84,8 +56,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
 
-		SecurityTestUtils.switchUser("study_cd1",
-				new String[] { "ROLE_caaers_study_cd" });
+		SecurityTestUtils.switchUser("study_cd1", "ROLE_caaers_study_cd");
 		try {
 			dao.save(study);
 		} catch (Exception ex) {
@@ -93,14 +64,12 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			fail("Should not have failed to save study: " + ex.getMessage());
 		}
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 	}
 
 	public void testStudyUpdate() {
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		StudyDao dao = (StudyDao) getApplicationContext().getBean("studyDao");
 
@@ -109,8 +78,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		study.setPrimarySponsorCode("SCODE_101");
-		SecurityTestUtils.switchUser("study_cd1",
-				new String[] { "ROLE_caaers_study_cd" });
+		SecurityTestUtils.switchUser("study_cd1", "ROLE_caaers_study_cd");
 		try {
 			dao.save(study);
 		} catch (Exception ex) {
@@ -143,15 +111,13 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			fail("Should not have failed to merge study: " + ex.getMessage());
 		}
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 	}
 
 	public void testParticipantSave() {
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		ParticipantDao dao = (ParticipantDao) getApplicationContext().getBean(
 				"participantDao");
@@ -174,8 +140,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
 
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			dao.save(participant);
 		} catch (Exception ex) {
@@ -183,14 +148,12 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			fail("Should not have failed to save participant: "
 					+ ex.getMessage());
 		}
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 	}
 
 	public void testParticipantUpdate() {
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });		
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 		
 		ParticipantDao dao = (ParticipantDao) getApplicationContext().getBean(
 				"participantDao");
@@ -203,8 +166,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		participant.setEthnicity("ethnicity");
 		participant.setRace("race");
 
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			dao.save(participant);
 		} catch (Exception ex) {
@@ -214,8 +176,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		Integer id = participant.getId();
 		assertNotNull("Participant id is null", id);
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		participant = dao.getById(id);
 		assertNotNull("participant " + id + " is null", participant);
@@ -229,8 +190,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			Throwable rootCause = SecurityTestUtils.getRootCause(ex);
 			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			dao.save(participant);
 		} catch (Exception ex) {
@@ -239,15 +199,13 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 					+ ex.getMessage());
 		}
 		
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 	}
 
 	public void testStudyParticipantAssignment() {
 
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		StudyParticipantAssignment a = new StudyParticipantAssignment();
 		try {
@@ -260,16 +218,14 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
 		}
 
-		SecurityTestUtils.switchUser("participant_cd1",
-				new String[] { "ROLE_caaers_participant_cd" });
+		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 		try {
 			a.setParticipant(new Participant());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			fail("Should not have prevented setting participant");
 		}
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 	}
 	
@@ -284,8 +240,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 			fail("Should not have prevented setting participant");
 		}
 		authzSwitch.setOn(true);
-		SecurityTestUtils.switchUser("user_1",
-				new String[] { "ROLE_that_does_not_exist" });
+		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 		try {
 			a.setParticipant(new Participant());
 			fail("Should have prevented setting participant");

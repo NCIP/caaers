@@ -45,14 +45,15 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     protected WebRequest webRequest = new StubWebRequest();
     private boolean shouldFlush = true;
 
+    @Override
     protected void setUp() throws Exception {
-    	
         super.setUp();
         SecurityTestUtils.insertCSMPolicy(this.getDataSource());
         SecurityTestUtils.switchToSuperuser();
         beginSession();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         endSession();
         SecurityTestUtils.switchToNoUser();
@@ -61,6 +62,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         
     }
 
+    @Override
     public void runBare() throws Throwable {
         setUp();
         try {
