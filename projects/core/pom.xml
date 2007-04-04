@@ -25,7 +25,6 @@
         <databaseConfigurationName>${db}</databaseConfigurationName>
     </properties>
     <dependencies>
-
         <!-- BUILD/RUNTIME DEPS -->
         <dependency>
             <groupId>${groupId}</groupId>
@@ -291,7 +290,12 @@
                             <executable>${java.home}/bin/java</executable>
                             <arguments>
                                 <argument>-classpath</argument>
-                                <classpath/>
+                                <classpath>
+									<dependency>org.jibx:jibx-run</dependency>
+									<dependency>org.jibx:jibx-bind</dependency>
+									<dependency>bcel:bcel</dependency>
+									<dependency>xpp3:xpp3</dependency>
+								</classpath>
                                 <argument>org.jibx.binding.Compile</argument>
                                 <argument>${xsd2jibx.binding}</argument>
                             </arguments>
