@@ -3,6 +3,9 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.security.acegi.grid.Utils;
+import gov.nih.nci.security.acegi.grid.authorization.GlobusCredentialAuthenticationToken;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -141,6 +144,22 @@ public class GridSSOProcessingFilter implements Filter, InitializingBean {
 								+ authResult.toString());
 				SecurityContextHolder.getContext()
 						.setAuthentication(authResult);
+				
+				
+				/*
+				 * TODO: remove hack
+				 * 
+				 * This is a hack to get the gridProxy into the session
+				 * so that the SSO-link functionality works. It should
+				 * be removed when the final SSO framework is in place.
+				 * 
+				 */
+				//begin hack
+				GlobusCredentialAuthenticationToken gcToken = (GlobusCredentialAuthenticationToken)authResult;
+				httpRequest.getSession().setAttribute("gridProxy", Utils.toString(gcToken.getGlobusCredential()));
+				//end hack
+				
+				
 				if (getRememberMeServices() != null) {
 					getRememberMeServices().loginSuccess(httpRequest,
 							httpResponse, authResult);
