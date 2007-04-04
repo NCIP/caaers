@@ -98,6 +98,11 @@
             <!-- version is in parent pom -->
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <!-- version is in parent pom -->
+        </dependency>
+        <dependency>
             <groupId>org.directwebremoting</groupId>
             <artifactId>dwr</artifactId>
             <version>2.0.rc2</version>
@@ -133,12 +138,6 @@
 			<groupId>org.codehaus.xfire</groupId>
 			<artifactId>xfire-spring</artifactId>
 			<version>1.2</version>
-			<exclusions>
-				<exclusion>
-				  <artifactId>spring</artifactId>
-				  <groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>					
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.xfire</groupId>
