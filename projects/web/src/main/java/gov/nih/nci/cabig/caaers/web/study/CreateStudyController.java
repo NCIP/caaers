@@ -60,7 +60,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 
         Flow<Study> flow = new Flow<Study>("Create Study");       
         
-        flow.addTab(new Tab<Study>("Study Details", "Study Details", "study_details") {
+        flow.addTab(new Tab<Study>("Study Details", "Study Details", "study/study_details") {
             public Map<String, Object> referenceData() {
             	            	
                 Map<String, Object> refdata = super.referenceData();
@@ -90,7 +90,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
                 return false;
             }
         });
-        flow.addTab(new Tab<Study>("Study Identifiers", "Study Identifiers", "study_identifiers"){
+        flow.addTab(new Tab<Study>("Study Identifiers", "Study Identifiers", "study/study_identifiers"){
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
@@ -101,7 +101,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
     	  		return refdata;
         	}
         });                 
-        flow.addTab(new Tab<Study>("Study Sites", "Study Sites", "study_studysite") {
+        flow.addTab(new Tab<Study>("Study Sites", "Study Sites", "study/study_studysite") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();  
@@ -115,7 +115,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         	}        	
         });
 
-        flow.addTab(new Tab<Study>("Study Investigators", "Study Investigators", "study_investigator") {
+        flow.addTab(new Tab<Study>("Study Investigators", "Study Investigators", "study/study_investigator") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
@@ -128,7 +128,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
         	}        	
         });
         
-        flow.addTab(new Tab<Study>("Study Personnel", "Study Personnel", "study_personnels") {
+        flow.addTab(new Tab<Study>("Study Personnel", "Study Personnel", "study/study_personnels") {
             
         	public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();  
