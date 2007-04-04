@@ -37,7 +37,7 @@ public class SearchStudyController extends AbstractTabbedFlowFormController<Sear
 		
         Flow<SearchStudyCommand> flow = new Flow<SearchStudyCommand>("Search Study");       
         
-        flow.addTab(new Tab<SearchStudyCommand>("Study Search Results", "", "study_search") {
+        flow.addTab(new Tab<SearchStudyCommand>("Study Search Results", "", "study/study_search") {
             public Map<String, Object> referenceData() {
             	            	
                 Map<String, Object> refdata = super.referenceData();
