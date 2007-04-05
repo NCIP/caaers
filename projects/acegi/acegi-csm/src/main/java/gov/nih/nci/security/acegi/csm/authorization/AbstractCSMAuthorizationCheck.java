@@ -10,13 +10,14 @@ import java.util.Iterator;
 import org.acegisecurity.Authentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public abstract class AbstractCSMAuthorizationCheck implements
 		CSMAuthorizationCheck {
 	
 	private static final Log logger = LogFactory.getLog(AbstractCSMAuthorizationCheck.class);
 
-	private AuthorizationSwitch authorizationSwitch = new AuthorizationSwitch();
+	private AuthorizationSwitch authorizationSwitch;
 
 	private CSMObjectIdGenerator objectIdGenerator;
 
@@ -45,11 +46,16 @@ public abstract class AbstractCSMAuthorizationCheck implements
 		if (!getAuthorizationSwitch().isOn()) {
 			
 			logger.warn("###### AuthorizationSwitch is OFF #####");
-			
+            if (logger.isDebugEnabled()) {
+                logger.debug("Specifically, " + getAuthorizationSwitch() +" is the one that's off");
+            }
+
 			isAuthorized = true;
 		} else {
 			
-			logger.debug("###### AuthorizationSwitch is ON #####");
+			if (logger.isDebugEnabled()) {
+                logger.debug("###### " + getAuthorizationSwitch() +" is ON #####");
+            }
 			
 			if (object != null) {
 
@@ -94,7 +100,8 @@ public abstract class AbstractCSMAuthorizationCheck implements
 		return authorizationSwitch;
 	}
 
-	public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
+    @Required
+    public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
 		this.authorizationSwitch = authorizationSwitch;
 	}
 

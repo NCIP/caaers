@@ -12,6 +12,7 @@ import org.acegisecurity.context.SecurityContextHolder;
 import org.acegisecurity.vote.AccessDecisionVoter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * If the configured AuthorizationSwitch is on, the vote method
@@ -24,7 +25,7 @@ public class AuthorizationSwitchVoter implements AccessDecisionVoter {
 	
 	private static final Log logger = LogFactory.getLog(AuthorizationSwitchVoter.class);
 	
-	private AuthorizationSwitch authorizationSwitch = new AuthorizationSwitch();
+	private AuthorizationSwitch authorizationSwitch;
 	
 	private boolean requiresAuthentication = true;
 
@@ -40,7 +41,8 @@ public class AuthorizationSwitchVoter implements AccessDecisionVoter {
 		return authorizationSwitch;
 	}
 
-	public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
+    @Required
+    public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
 		this.authorizationSwitch = authorizationSwitch;
 	}
 
