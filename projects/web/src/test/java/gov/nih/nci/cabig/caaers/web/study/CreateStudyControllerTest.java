@@ -39,7 +39,7 @@ public class CreateStudyControllerTest extends WebTestCase {
     public void testViewOnGet() throws Exception {
         request.setMethod("GET");
         ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("study_details", mv.getViewName());
+        assertEquals("study/study_details", mv.getViewName());
     }
 
     public void testViewOnGoodSubmit() throws Exception {
@@ -54,7 +54,7 @@ public class CreateStudyControllerTest extends WebTestCase {
         
         controller.handleRequest(request, response);
         ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("study_identifiers", mv.getViewName());
+        assertEquals("study/study_identifiers", mv.getViewName());
     }    
    
    /*private NewParticipantCommand postAndReturnCommand() throws Exception {
