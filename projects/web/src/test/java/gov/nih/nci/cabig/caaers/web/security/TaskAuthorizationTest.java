@@ -9,7 +9,9 @@ import gov.nih.nci.cabig.caaers.web.chrome.Section;
 import gov.nih.nci.cabig.caaers.web.chrome.Task;
 
 import java.io.IOException;
+import java.io.File;
 import java.util.List;
+import java.net.URISyntaxException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,30 +32,28 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
  */
 public class TaskAuthorizationTest extends CaaersTestCase {
 
-	ApplicationContext ctx = null;
+	private ApplicationContext ctx = null;
 
-	public TaskAuthorizationTest() {
-		super();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 		ApplicationContext parent = getDeployedApplicationContext();
 
 		String[] locations = new String[] { "WEB-INF/pages-servlet.xml",
 				"WEB-INF/applicationContext-acegi-security.xml" };
-		MockServletContext servletContext = new MockServletContext(
-				"src/main/webapp", new FileSystemResourceLoader());
+
+        String webappDir = "file:" + getModuleRelativeFile(getClass(), "src/main/webapp").getAbsolutePath();
+        MockServletContext servletContext = new MockServletContext(webappDir,
+            new FileSystemResourceLoader());
 		XmlWebApplicationContext context = new XmlWebApplicationContext();
 		context.setParent(parent);
 		context.setServletContext(servletContext);
 		context.setConfigLocations(locations);
 		context.refresh();
 		this.ctx = context;
-		
-		
-
 	}
 
-	public void testAllTasksCovered() {
-
-
+    public void testAllTasksCovered() {
 		TaskPrivilegeAndObjectIdGenerator taskGen = (TaskPrivilegeAndObjectIdGenerator) this.ctx
 				.getBean("taskPrivilegeAndObjectIdGenerator");
 		SectionInterceptor si = (SectionInterceptor) this.ctx

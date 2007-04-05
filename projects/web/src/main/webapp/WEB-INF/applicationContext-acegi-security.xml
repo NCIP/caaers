@@ -127,14 +127,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="filterObjectPrivilegeMap" />
 	</bean>
 
-	<bean id="filterAuthorizationCheck"
+	<bean id="filterAuthorizationCheck" autowire="byType"
 		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
 		<property name="csmAuthorizationCheck">
 			<bean
 				class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager"
 					ref="csmUserProvisioningManager" />
-			</bean>
+                <property name="authorizationSwitch" ref="authorizationSwitch"/>
+            </bean>
 		</property>
 		<property name="objectIdGenerator"
 			ref="filterPrivilegeAndObjectIdGenerator" />

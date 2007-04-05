@@ -4,6 +4,7 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import junit.framework.TestCase;
 
 import org.acegisecurity.Authentication;
@@ -70,8 +71,7 @@ public class CSMTest extends TestCase {
 					"ignored",
 					new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
 
-			ApplicationContext ctx = new ClassPathXmlApplicationContext(
-					new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" });
+			ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
 
 //			 BasicDataSource bds = (BasicDataSource)ctx.getBean("dataSource");
 

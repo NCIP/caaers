@@ -8,7 +8,8 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 		class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
 		<property name="csmUserProvisioningManager"
 			ref="csmUserProvisioningManager" />
-	</bean>
+        <property name="authorizationSwitch" ref="authorizationSwitch"/>
+    </bean>
 
 
 </beans>

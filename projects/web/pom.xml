@@ -11,12 +11,18 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <repositories>
+        <!-- It appears that this repo is mirrored a ibiblio now, so we don't need it.
+             Plus, it is horribly, horribly slow.
         <repository>
             <id>java.net</id>
             <name>Java.Net repository (For JAXB) </name>
             <url>https://maven-repository.dev.java.net/nonav/repository</url>
             <layout>legacy</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
+        -->
         <repository>
             <id>codehaus</id>
             <name>Codehaus maven repository</name>
