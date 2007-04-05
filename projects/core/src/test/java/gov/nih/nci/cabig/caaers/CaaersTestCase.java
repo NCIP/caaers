@@ -2,10 +2,11 @@ package gov.nih.nci.cabig.caaers;
 
 import edu.nwu.bioinformatics.commons.ComparisonUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
-
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.easymock.IArgumentMatcher;
 import org.easymock.classextension.EasyMock;
 import org.springframework.context.ApplicationContext;
@@ -13,8 +14,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -30,8 +29,12 @@ import java.util.Set;
  */
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
 public abstract class CaaersTestCase extends CoreTestCase {
+    private static Log log = LogFactory.getLog(CaaersTestCase.class);
+
     private static ApplicationContext applicationContext = null;
+
     protected Set<Object> mocks = new HashSet<Object>();
+    private boolean authorizationOnByDefault;
 
     @Override
     protected void setUp() throws Exception {
@@ -42,8 +45,9 @@ public abstract class CaaersTestCase extends CoreTestCase {
         // RMS: This is needed often enough that we'll
         // just do it everywhere.
         ApplicationContext ctx = getDeployedApplicationContext();
-        DataSource dataSource = (DataSource)ctx.getBean("dataSource");
-        SecurityTestUtils.insertCSMPolicy(dataSource);
+        // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
+        // SecurityTestUtils.insertCSMPolicy(dataSource);
+        authorizationOnByDefault = SecurityTestUtils.enableAuthorization(false, ctx);
         SecurityTestUtils.switchToSuperuser();
     }
 
@@ -51,8 +55,9 @@ public abstract class CaaersTestCase extends CoreTestCase {
     protected void tearDown() throws Exception {
         SecurityTestUtils.switchToNoUser();
         ApplicationContext ctx = getDeployedApplicationContext();
-        DataSource dataSource = (DataSource)ctx.getBean("dataSource");
-        SecurityTestUtils.deleteCSMPolicy(dataSource);
+        SecurityTestUtils.enableAuthorization(authorizationOnByDefault, ctx);
+        // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
+        // SecurityTestUtils.deleteCSMPolicy(dataSource);
         super.tearDown();
     }
 
@@ -64,6 +69,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
             } catch (NamingException e) {
                 throw new RuntimeException("", e);
             }
+            log.debug("Initializing test version of deployed application context");
             applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
         }
         return applicationContext;

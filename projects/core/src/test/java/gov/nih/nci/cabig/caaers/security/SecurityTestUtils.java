@@ -18,6 +18,7 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -41,6 +42,14 @@ public class SecurityTestUtils {
 
     public static void switchToNoUser() {
         switchUser(null);
+    }
+
+    public static boolean enableAuthorization(boolean on, ApplicationContext context) {
+        AuthorizationSwitch sw = (AuthorizationSwitch) context.getBean("authorizationSwitch");
+        if (sw == null) throw new RuntimeException("Authorization switch not found");
+        boolean current = sw.isOn();
+        sw.setOn(on);
+        return current;
     }
     
     public static Throwable getRootCause(Exception ex) {

@@ -3,50 +3,34 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
-import gov.nih.nci.security.authorization.domainobjects.Group;
-import gov.nih.nci.security.authorization.domainobjects.Privilege;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
-import gov.nih.nci.security.authorization.domainobjects.ProtectionElementPrivilegeContext;
-
-import java.util.Iterator;
-import java.util.Set;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
 public class CSMTest extends TestCase {
-
-	private ClassPathXmlApplicationContext ctx;
-
 	private UserProvisioningManager mgr;
 
-	public CSMTest() {
-		init();
-	}
+	public CSMTest() { }
 
-	public CSMTest(String name) {
-		super(name);
-		init();
-	}
+	public CSMTest(String name) { super(name); }
 
-	public void init() {
-		ctx = new ClassPathXmlApplicationContext(
-				new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" });
+	@Override
+    public void setUp() throws Exception {
+        super.setUp();
+        ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
 		mgr = (UserProvisioningManager) ctx
 				.getBean("csmUserProvisioningManager");
 	}
@@ -70,8 +54,7 @@ public class CSMTest extends TestCase {
 					"ignored",
 					new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
 
-			ApplicationContext ctx = new ClassPathXmlApplicationContext(
-					new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" });
+			ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
 
 			BasicDataSource bds = (BasicDataSource) ctx.getBean("dataSource");
 
@@ -146,7 +129,7 @@ public class CSMTest extends TestCase {
 		}
 	}
 
-	private void verifyPrivilegesForObjectIdsAndGroup(
+	private static void verifyPrivilegesForObjectIdsAndGroup(
 			UserProvisioningManager mgr, String group, String[] objectIds,
 			String[] privileges) throws Exception {
 		for (String objectId : objectIds) {
@@ -154,7 +137,7 @@ public class CSMTest extends TestCase {
 		}
 	}
 
-	private void verifyPrivilegesForGroup(UserProvisioningManager mgr,
+	private static void verifyPrivilegesForGroup(UserProvisioningManager mgr,
 			String group, String objectId, String[] privileges)
 			throws Exception {
 		for (String privilege : privileges) {
@@ -165,7 +148,7 @@ public class CSMTest extends TestCase {
 
 	}
 
-	private String getGroupAccessErrorMessage(String group, String privilege,
+	private static String getGroupAccessErrorMessage(String group, String privilege,
 			String objectId) {
 		return group + " doesn't have " + privilege + " privilege on "
 				+ objectId;
