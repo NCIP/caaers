@@ -25,14 +25,14 @@ public class SearchStudyControllerTest extends WebTestCase {
     public void testViewOnGet() throws Exception {
         request.setMethod("GET");        
         ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("study_search", mv.getViewName());
+        assertEquals("study/study_search", mv.getViewName());
     }
 
     public void testViewOnAddSearch() throws Exception {    	
         request.setParameter("_selected", "-1");
         controller.handleRequest(request, response);
         ModelAndView mv = controller.handleRequest(request, response);
-        assertEquals("study_search", mv.getViewName());
+        assertEquals("study/study_search", mv.getViewName());
     }   
    
 }
