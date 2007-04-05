@@ -14,6 +14,8 @@
 <title>${tab.longTitle}</title>
 <style type="text/css">
         .label { width: 12em; text-align: right; padding: 4px; }
+        td#linkPosition a img { position:absolute; right: 30px; }
+        
 </style>
 <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createStudy"/>
@@ -135,63 +137,52 @@
 					<input type="hidden" name="_selected" value="">
 				</div>	
 				
-				<table  width="70%" border="0" cellspacing="0" cellpadding="3">
-				<br>
-
-					<tr align="center">
-						<td width="20%">										
-							<b><a href="javascript:fireAction('addStudyAgent','0');"><img
-								src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
-						</td>
-						<td> <b>Agent<span class="red">*</span> </b></td>
-						<!-- <td> <b>IND Identifier<span class="red">*</span> </b></td> -->
-						<!-- <td><a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1')" onmousemove="floatLayer('Tip1')" onmouseout="hideLayer('Tip1')"> <b>IND Identifier<span class="red">*</span> </b></a></td> -->													
-						<td><b>IND Identifier<span class="red">*</span> </b><tags:hoverText description="Investigational New Drug Identifier"/></td>
-						<td><b> Start Date </b></td>
-						<td><b> End Date </b></td>
-						<!-- <td> <b>IND Indicator </b></td> -->
-						<td><b>IND Indicator</b><tags:hoverText description="Investigational New Drug Indicator"/></td>
-					</tr>																			
-				 
-				    <tr>
-					<td> &nbsp;</td>
-					</tr>
+				<a style=" vertical-align:-5px; float:right;" href="javascript:fireAction('addStudyAgent','0');"><img src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><br>
+				<hr style=" width:100%; border-width:2px"/>
+				<table width="100%" cellpadding="0">
+				<c:forEach  items="${command.studyAgents}" varStatus="status">		 
+					<tr>
 					
-					
-					<c:forEach  items="${command.studyAgents}" varStatus="status"> 
-				    
-					<tr align="center" class="results">
-					
-					<td>
-						<a href="javascript:fireAction('removeStudyAgent',${status.index});">
-							<img src="/caaers/images/checkno.gif" border="0" alt="remove">
-						</a>										
-					</td>
-				
-					<td>
+					<td id="linkPosition" rowspan="1">
+						
+						<b>Agent:</b>
 						<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
-                    	<form:input size="25" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" path="studyAgents[${status.index}].agentAsString"/>
+                    	<form:input size="85%" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" path="studyAgents[${status.index}].agentAsString"/>
                     	<tags:indicator id="agent${status.index}-indicator"/>
                     	<div id="agent${status.index}-choices" class="autocomplete"></div>
                     	<input type="button" id="agent${status.index}-clear" value="Clear"/>
-                    	<%--
-                    	<p id="agent${status.index}-selected" style="display: none">
-                        	You've selected the agent <span id="agent${status.index}-selected-name"></span>.
-                    	</p>
-                    	--%>
+                    	
+                    	<a  href="javascript:fireAction('removeStudyAgent',${status.index});">
+							<img  src="/caaers/images/checkno.gif" border="0" alt="remove">
+						</a>
+						
 					</td>
-		
-					<td valign="top"><form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" /></td>
-				    <td><tags:dateInput path="studyAgents[${status.index}].participation.startDate"/></td>
-				    <td><tags:dateInput path="studyAgents[${status.index}].participation.endDate"/></td>
-					<td valign="top"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/></td>
 					
 					</tr>
-						
+					<tr>
+					<td>
 					
-					</c:forEach>
-																	
-					</table>
+					<b style=" padding-left:40px; padding-right:5px">IND Identifier:</b>
+					<form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" />
+					<tags:hoverText description="Investigational New Drug Identifier"/>
+					<b style=" padding-left:10px; padding-right:2px">&nbsp;&nbsp;&nbsp;&nbsp;</b>
+					<form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
+					<b style=" padding-left:10px;">IND Indicator</b>
+					<tags:hoverText description="Investigational New Drug Indicator"/>
+					
+					</td>
+					</tr>
+					<tr>
+					<td>
+					<hr style=" border-width:1px"/>
+					</td>
+					</tr>
+					
+				</c:forEach>
+				
+				
+				</table>
+				
 				</chrome:division>
 				</form:form>		
 <!-- MAIN BODY ENDS HERE -->
