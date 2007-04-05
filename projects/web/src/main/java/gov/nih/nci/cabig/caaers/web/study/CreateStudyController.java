@@ -378,13 +378,14 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 			  
 		StudySite studySite = new StudySite();
 		study.addStudySite(studySite);
-		// adding studyinvestigator.
-		StudyInvestigator studyInvestigator = new StudyInvestigator();				
-		studySite.addStudyInvestigators(studyInvestigator);			
+	
+		// adding studyinvestigator.		
+		//StudyInvestigator studyInvestigator = new StudyInvestigator();				
+		//studySite.addStudyInvestigators(studyInvestigator);			
 		
 		// adding studypersonnel
-		StudyPersonnel studyPersonnel = new StudyPersonnel();
-		studySite.addStudyPersonnel(studyPersonnel);
+		//StudyPersonnel studyPersonnel = new StudyPersonnel();
+		//studySite.addStudyPersonnel(studyPersonnel);
 		
 		StudyAgent studyAgent = new StudyAgent();
 		studyAgent.setAgent(new Agent());
