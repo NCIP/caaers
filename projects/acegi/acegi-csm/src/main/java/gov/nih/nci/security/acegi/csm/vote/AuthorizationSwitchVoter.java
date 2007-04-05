@@ -70,6 +70,7 @@ public class AuthorizationSwitchVoter implements AccessDecisionVoter {
 			if(!isRequiresAuthentication() ||
 					isRequiresAuthentication() && 
 					SecurityContextHolder.getContext().getAuthentication() != null){
+				logger.warn("###### AuthorizationSwitch ACCESS_GRANTED #####");
 				retVal = AccessDecisionVoter.ACCESS_GRANTED;
 			}
 			
