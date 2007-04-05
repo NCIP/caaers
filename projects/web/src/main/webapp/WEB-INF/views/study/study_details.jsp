@@ -39,12 +39,12 @@
 				  </tr>
 
 				  <tr>
-				      <td class="label"> <form:label path="precis">Precis Text:</form:label> </td>
+				      <td class="label"> <form:label path="precis">Precis:</form:label> </td>
 				      <td> <form:textarea path="precis" rows="3" cols="50"/> </td>        			  
 				  </tr>
 
 				  <tr>
-				      <td class="label"> <form:label path="description">Description Text:</form:label> </td>
+				      <td class="label"> <form:label path="description">Description:</form:label> </td>
 				      <td> <form:textarea path="description" rows="3" cols="50"/> </td>        			  
 				  </tr>
 
@@ -54,7 +54,7 @@
 				<table width="60%" border="0" cellspacing="10" cellpadding="3">
 				  
 					<tr>				 
-        			  <td class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase :</form:label></td>
+        			  <td class="label"><form:label path="phaseCode"><span class="red">*</span><em></em>Phase:</form:label></td>
                     
 					  <td>	<form:select path="phaseCode">
 							<form:options items="${phaseCodeRefData}" itemLabel="desc"
@@ -63,7 +63,7 @@
 					</tr>
 				
 					<tr>				 
-        			  <td class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor :</form:label></td>
+        			  <td class="label"><form:label path="primarySponsorCode"><span class="red">*</span><em></em>Sponsor:</form:label></td>
 					 <td>
 						<form:select path="primarySponsorCode">
 							<form:options items="${sponsorCodeRefData}" itemLabel="desc"
