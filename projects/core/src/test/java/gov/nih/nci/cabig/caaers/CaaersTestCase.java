@@ -23,6 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.io.File;
+import java.net.URISyntaxException;
 
 /**
  * @author Rhett Sutphin
@@ -133,6 +135,25 @@ public abstract class CaaersTestCase extends CoreTestCase {
     protected static <T> T matchByProperties(T template) {
         EasyMock.reportMatcher(new PropertyMatcher<T>(template));
         return null;
+    }
+
+    /**
+     * Finds a file in the same module as the given class.  For example, say you have a package named
+     * <kbd>web</kbd> and you need to refer to <kbd>web/src/main/foo/bar</kbd>.  Pass this method a
+     * class that's in that module (i.e., compiled into <kbd>web/target/test-classes</kbd>) and
+     * <kbd>src/main/foo/bar</kbd> to get the path to the local copy of
+     * <kbd>web/src/main/foo/bar</kbd>.
+     *
+     * @param clazz A class from the desired module
+     * @param filename Path to the desired file, relative to the module root
+     */
+    public static File getModuleRelativeFile(Class<?> clazz, String filename) {
+        try {
+            File classDirectory = new File(clazz.getResource("/").toURI());
+            return new File(new File(classDirectory, "../.."), filename);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Could not locate '/' relative to " + clazz.getName(), e);
+        }
     }
 
     /**
