@@ -30,6 +30,7 @@ import java.util.Set;
 /* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
 public abstract class CaaersTestCase extends CoreTestCase {
     private static Log log = LogFactory.getLog(CaaersTestCase.class);
+    private static RuntimeException acLoadFailure = null;
 
     private static ApplicationContext applicationContext = null;
 
@@ -62,15 +63,25 @@ public abstract class CaaersTestCase extends CoreTestCase {
     }
 
     public synchronized static ApplicationContext getDeployedApplicationContext() {
-        if (applicationContext == null) {
+        if (acLoadFailure == null && applicationContext == null) {
             // This might not be the right place for this
             try {
                 SimpleNamingContextBuilder.emptyActivatedContextBuilder();
             } catch (NamingException e) {
                 throw new RuntimeException("", e);
             }
-            log.debug("Initializing test version of deployed application context");
-            applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+
+            try {
+                log.debug("Initializing test version of deployed application context");
+                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+            } catch (RuntimeException e) {
+                acLoadFailure = e;
+                throw e;
+            }
+        } else if (acLoadFailure != null) {
+            throw new CaaersSystemException(
+                "Application context loading already failed.  Will not retry.  " +
+                    "Original cause attached.", acLoadFailure);
         }
         return applicationContext;
     }
@@ -127,6 +138,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
     /**
      * Easymock matcher that compares two objects on their property values
      */
+    @SuppressWarnings("unchecked")
     private static class PropertyMatcher<T> implements IArgumentMatcher {
         private T template;
         private Map<String, Object> templateProperties;
