@@ -4,7 +4,6 @@
 package gov.nih.nci.security.acegi.grid.authentication;
 
 import gov.nih.nci.security.acegi.grid.Utils;
-import gov.nih.nci.security.acegi.grid.authorization.GlobusCredentialAuthenticationToken;
 
 import org.acegisecurity.AccountExpiredException;
 import org.acegisecurity.Authentication;
@@ -56,6 +55,9 @@ public class GlobusCredentialAuthenticationProvider implements
 			}else{
 				throw ex;
 			}
+		}catch(Exception ex){
+			logger.error("Unexpected error getting user. Throwing BadCredentialsException.", ex);
+			throw new BadCredentialsException("Bad credentials", ex);
 		}
 
 		if (!user.isAccountNonLocked()) {
@@ -96,6 +98,9 @@ public class GlobusCredentialAuthenticationProvider implements
 		} catch (GridProxyValidationException ex) {
 			throw new BadCredentialsException("Couldn't validate credentials: "
 					+ ex.getMessage(), ex);
+		}catch(Exception ex){
+			logger.error("Unexpected error validating proxy. Throwing BadCredentialsException.", ex);
+			throw new BadCredentialsException("Bad credentials.", ex);
 		}
 		if (!valid) {
 			throw new BadCredentialsException("Credentials are not valid.");

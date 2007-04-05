@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nih.nci.security.acegi.grid.authorization;
+package gov.nih.nci.security.acegi.grid.authentication;
 
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.providers.AbstractAuthenticationToken;
@@ -19,14 +19,12 @@ public class GlobusCredentialAuthenticationToken extends
 	public GlobusCredentialAuthenticationToken(GlobusCredential globusCredential) {
 		super(null);
 		this.globusCredential = globusCredential;
-		setAuthenticated(false);
 	}
 
 	public GlobusCredentialAuthenticationToken(
 			GlobusCredential globusCredential, GrantedAuthority[] authorities) {
 		super(authorities);
 		this.globusCredential = globusCredential;
-		setAuthenticated(true);
 	}
 
 	/*
