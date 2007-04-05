@@ -70,6 +70,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                 </entry>
                 <entry key="phaseCodeRefData">
                     <list>
+	                    <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="--please select--" />
+                            <property name="desc" value="--please select--" />
+                        </bean>
                    		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="0" />
                             <property name="desc" value="0" />
@@ -135,6 +139,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                 </entry>
                 <entry key="sponsorCodeRefData">
                     <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="--please select--" />
+                            <property name="desc" value="--please select--" />
+                        </bean>
+                    
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="National Cancer Institute" />
                             <property name="desc" value="National Cancer Institute" />  
