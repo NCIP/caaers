@@ -41,7 +41,12 @@ public class AgentDao extends GridIdentifiableDao<Agent> {
     
     public Agent getByName(String name) {
         List<Agent> results = getHibernateTemplate().find("from Agent where name= ?", name);
-        return results.get(0);
+        return results.size() > 0 ? results.get(0) : null;
+    }
+    
+    public Agent getByNscNumber(String nscNumber) {
+        List<Agent> results = getHibernateTemplate().find("from Agent where nsc= ?", nscNumber);
+        return results.size() > 0 ? results.get(0) : null;
     }
     
 }

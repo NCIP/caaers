@@ -39,7 +39,7 @@ public class SiteDao extends GridIdentifiableDao<Site> {
     
     public Site getByName(String name) {
         List<Site> results = getHibernateTemplate().find("from Site where name= ?", name);
-        return results.get(0);
+        return results.size() > 0 ? results.get(0) : null;
     }
     
 }
