@@ -373,7 +373,8 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	}
 	
 	private Study createDefaultStudyWithDesign()
-	{
+	{	
+		
 		Study study = new Study(); 
 			  
 		StudySite studySite = new StudySite();
@@ -387,9 +388,9 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 		//StudyPersonnel studyPersonnel = new StudyPersonnel();
 		//studySite.addStudyPersonnel(studyPersonnel);
 		
-		StudyAgent studyAgent = new StudyAgent();
-		studyAgent.setAgent(new Agent());
-		study.addStudyAgent(studyAgent);
+		//StudyAgent studyAgent = new StudyAgent();
+		//studyAgent.setAgent(new Agent());
+		//study.addStudyAgent(studyAgent);
 			
 		List<Identifier> identifiers = new ArrayList<Identifier>();
 		Identifier id = new Identifier(); 
