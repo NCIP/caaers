@@ -65,6 +65,6 @@
 									 BORDER: 1px solid #000000"></div>
 									 
 									 
-<a href="javascript:void(0)"  style="color:black;" onmouseover="getLayer('Tip1',event,'${description}')" onmousemove="floatLayer('Tip1',event)" onmouseout="hideLayer('Tip1')">
-<img src="/caaers/images/question.gif" border="0"></a>
+<a href="javascript:void(0)"  style="color:black; padding-left:3px; vertical-align:-5px;" onmouseover="getLayer('Tip1',event,'${description}')" onmousemove="floatLayer('Tip1',event)" onmouseout="hideLayer('Tip1')">
+<img src="/caaers/images/q.gif" border="0"></a>
 						

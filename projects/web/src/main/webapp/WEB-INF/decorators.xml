@@ -20,7 +20,8 @@
    
    <decorator name="tabbedflow_update" page="tabbedflow_update.jsp">
 		<pattern>/pages/study/edit</pattern>  
- 		<pattern>/pages/admin/createInvestigator</pattern>   
+ 		<pattern>/pages/admin/createInvestigator</pattern>
+ 		<pattern>/pages/admin/migrateStudies</pattern>   
   		<pattern>/pages/admin/createResearchStaff</pattern>     
    </decorator>
     

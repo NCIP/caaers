@@ -68,6 +68,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/viewResearchStaff"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/migrateStudies"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		
 		<!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
