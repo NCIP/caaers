@@ -214,10 +214,6 @@ field.value="";
 				<form:label
 					path="studySites[0].irbApprovalDate">${command.studySites[0].irbApprovalDate}</form:label>
 			</td>
-			<td>
-				<form:label
-					path="studyAgents[0].agent.name">${command.studyAgents[0].agent.name}</form:label>
-			</td>
 		</tr>
 
 		</table>	

@@ -127,7 +127,11 @@
 </head>
 <body>
 <!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">	
+<chrome:body title="${flow.name}: ${tab.longTitle}">
+<p id="instructions">
+   Add Agents by Clicking on the add link 
+</p>
+
 				<form:form method="post" name="studyAgentsForm" cssClass="standard">
 				<chrome:division id="study-details">
 				<tags:tabFields tab="${tab}"/>
