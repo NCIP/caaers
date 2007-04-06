@@ -152,6 +152,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="allowIfAllAbstainDecisions"
 					value="false" />
 				<property name="decisionVoters">
+
 					<list>
 						<bean
 							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
@@ -159,25 +160,24 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 								ref="authorizationSwitch" />
 						</bean>
 						<bean
-							class="org.acegisecurity.vote.AuthenticatedVoter" />
-
-						<bean
 							class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
 							<property name="processConfigAttribute"
 								value="CSM_FILTER_CHECK" />
 							<property name="authorizationCheck"
 								ref="filterAuthorizationCheck" />
 						</bean>
+
 					</list>
 				</property>
 			</bean>
 		</property>
+
 		<property name="objectDefinitionSource">
 			<value>
 				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-				\A/public/.*\Z=IS_AUTHENTICATED_ANONYMOUSLY
 				\A/pages/.*\Z=CSM_FILTER_CHECK
 			</value>
+
 		</property>
 	</bean>
 
@@ -194,10 +194,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 			</list>
 		</property>
+
 	</bean>
 
-	<bean id="csmGridUserDetailsService"
-		class="gov.nih.nci.security.acegi.grid.authorization.CSMGridUserDetailsService">
+	<bean id="gridUserDetailsService"
+		class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService">
 		<property name="gridGroupSearch" ref="gridGroupSearch" />
 	</bean>
 
@@ -205,7 +206,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider">
 
 		<property name="userDetailsService"
-			ref="csmGridUserDetailsService" />
+			ref="gridUserDetailsService" />
 
 
 		<property name="validator" ref="gridProxyValidator" />
@@ -217,7 +218,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 		<property name="userDetailsService"
-			ref="csmGridUserDetailsService" />
+			ref="gridUserDetailsService" />
 
 		<property name="authenticationClient"
 			ref="gridAuthenticationClient" />

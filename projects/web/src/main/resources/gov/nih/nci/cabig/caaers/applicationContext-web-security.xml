@@ -160,7 +160,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     
     <bean id="gridProxyValidator" class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl"/>
     
-    <bean id="gridGroupSearch" class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGroupSearch">
+    <bean id="gridGroupSearch" class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupSearch">
     	<property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     	<property name="csmApplicationContextName" ref="csmApplicationContextName"/>
     	<!-- Timeout per GridGrouperInstance -->
