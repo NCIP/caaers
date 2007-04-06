@@ -21,10 +21,10 @@ import org.springframework.dao.DataAccessException;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class CSMGridUserDetailsService implements UserDetailsService {
+public class GridUserDetailsService implements UserDetailsService {
 
 	private static final Log logger = LogFactory
-			.getLog(CSMGridUserDetailsService.class);
+			.getLog(GridUserDetailsService.class);
 
 	private GridGroupSearch gridGroupSearch;
 

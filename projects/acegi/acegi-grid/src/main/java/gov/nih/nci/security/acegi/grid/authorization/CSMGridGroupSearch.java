@@ -26,9 +26,9 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  *
  */
-public class DefaultGridGroupSearch implements GridGroupSearch {
+public class CSMGridGroupSearch implements GridGroupSearch {
 	
-	private static final Log logger = LogFactory.getLog(DefaultGridGroupSearch.class);
+	private static final Log logger = LogFactory.getLog(CSMGridGroupSearch.class);
 	
 	
     private UserProvisioningManager userProvisioningManager;
