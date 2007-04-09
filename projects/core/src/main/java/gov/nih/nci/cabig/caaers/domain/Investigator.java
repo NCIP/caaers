@@ -154,7 +154,7 @@ public class Investigator extends AbstractDomainObject {
 		this.race = race;
 	}
 	
-	@Column(name = "nci_identifiers")
+	@Column(name = "nci_identifier")
 	public String getNciIdentifier() {
 		return nciIdentifier;
 	}
