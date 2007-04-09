@@ -80,6 +80,10 @@
                 <td class="label">Middle Name:</td>
                 <td><form:input path="middleName" /></td>
             </tr>
+            <tr>
+                <td class="label">NCI Identifier:</td>
+                <td><form:input path="nciIdentifier" /></td>
+            </tr>
             
         </table>
         </td>
