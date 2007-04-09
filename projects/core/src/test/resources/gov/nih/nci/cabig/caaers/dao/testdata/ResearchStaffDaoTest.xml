@@ -1,0 +1,12 @@
+<dataset>
+    <RESEARCH_STAFFS
+        id="-100"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_date="2006-01-02"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
+</dataset>
