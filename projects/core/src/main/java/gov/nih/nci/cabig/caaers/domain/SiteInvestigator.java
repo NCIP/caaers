@@ -29,6 +29,7 @@ public class SiteInvestigator extends AbstractDomainObject {
 	private Site site;
     private Investigator investigator;    	
     private String statusCode;
+    private String emailAddress;
     private Date statusDate;
     private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
     
@@ -69,6 +70,15 @@ public class SiteInvestigator extends AbstractDomainObject {
 	
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
+	}
+	
+	@Column(name = "email_address")
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 	
 	@Column(name = "status_date")
