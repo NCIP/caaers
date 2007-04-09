@@ -134,7 +134,8 @@
 	
 						<tr>
 							<td align="center"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-							<td align="center"> <b> <span class="red">*</span><em></em>Status Code:</b> </td>							
+							<td align="center"> <b> <em></em>Email Address:</b> </td>							
+							<td align="center"> <b> <span class="red">*</span><em></em>Status:</b> </td>							
 							<td align="center">										
 								<b><a href="javascript:fireAction('addSite','0');"><img
 									src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
@@ -149,13 +150,17 @@
 									</form:select> 
 								</td>
 								
+								<td align="center" width="15%">							
+									<form:input path="siteInvestigators[${status.index}].emailAddress" />								  									
+								</td>
+								
 								<td align="center" width="15%">
 								    <form:select path="siteInvestigators[${status.index}].statusCode">										
 									 	<form:options items="${studySiteStatusRefData}" itemLabel="desc"
 												itemValue="code" />
 									</form:select>
-								</td>	
-						
+								</td>										
+								
     	    				    <td align="center" width="10%">
 									<a href="javascript:fireAction('removeSite',${status.index});"><img
 											src="/caaers/images/checkno.gif" border="0" alt="delete"></a>										
