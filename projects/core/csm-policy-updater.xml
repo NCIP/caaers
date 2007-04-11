@@ -1,4 +1,4 @@
-<project name="csm-policy-updated" default="insert">
+<project name="csm-policy-updated" default="usage">
 
 	<property environment="env"/>
 	<property name="war.name" value="caaers"/>
@@ -25,6 +25,9 @@
 			<arg value="${operation}"/>
 			<arg value="${dataFile}"/>
 		</java>	
+	</target>
+	<target name="usage">
+		<echo>Usage: insert|delete &lt;path_to_data_file&gt;</echo>
 	</target>
 
 </project>
