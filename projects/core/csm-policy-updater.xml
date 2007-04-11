@@ -2,7 +2,7 @@
 
 	<property environment="env"/>
 	<property name="war.name" value="caaers"/>
-	<property name="dataFile" value="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"/>
+	<property name="dataFile" value="CSM_policy.xml"/>
 	
 	<path id="cp">
 		<fileset dir="${env.CATALINA_HOME}/webapps/${war.name}/WEB-INF/lib">
