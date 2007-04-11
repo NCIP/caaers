@@ -1,0 +1,22 @@
+<project name="package-caaers" default="package">
+
+	<property name="temp.dir" value="tmp"/>
+	<property name="web.module.path" value="../web"/>
+	<property name="war.name" value="caaers"/>	
+	<property name="dest.dir" value="${temp.dir}/${war.name}"/>
+			
+	<target name="package" depends="clean">
+
+		<mkdir dir="${dest.dir}"/>
+		<copy file="${web.module.path}/target/${war.name}.war" todir="${dest.dir}"/>
+		<copy file="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" todir="${dest.dir}"/>
+		<copy file="csm-policy-updater.xml" tofile="${dest.dir}/build.xml"/>
+		<tstamp/>
+		<zip destfile="${war.name}-${DSTAMP}.zip" basedir="${temp.dir}"/>
+	</target>
+	
+	<target name="clean">
+		<delete dir="${temp.dir}"/>	
+	</target>
+
+</project>

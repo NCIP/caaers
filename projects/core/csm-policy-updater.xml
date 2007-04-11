@@ -9,6 +9,7 @@
 			<include name="*.jar"/>
 		</fileset>
 	</path>
+	
 	<target name="insert">
 		<antcall target="run">
 			<param name="operation" value="insert"/>
