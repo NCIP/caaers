@@ -1,0 +1,30 @@
+<project name="csm-policy-updated" default="insert">
+
+	<property environment="env"/>
+	<property name="war.name" value="caaers"/>
+	<property name="dataFile" value="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"/>
+	
+	<path id="cp">
+		<fileset dir="${env.CATALINA_HOME}/webapps/${war.name}/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<target name="insert">
+		<antcall target="run">
+			<param name="operation" value="insert"/>
+		</antcall>
+	</target>
+	<target name="delete">
+		<antcall target="run">
+			<param name="operation" value="delete"/>
+		</antcall>
+	</target>
+	<target name="run">
+		<property name="operation" value="insert"/>
+		<java classname="gov.nih.nci.cabig.caaers.tools.CSMPolicyUpdater" classpathref="cp">
+			<arg value="${operation}"/>
+			<arg value="${dataFile}"/>
+		</java>	
+	</target>
+
+</project>
