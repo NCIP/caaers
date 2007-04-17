@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyController.Tab;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.Map;
 /**

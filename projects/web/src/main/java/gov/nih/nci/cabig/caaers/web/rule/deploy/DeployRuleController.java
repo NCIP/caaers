@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.rule.deploy;
 
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

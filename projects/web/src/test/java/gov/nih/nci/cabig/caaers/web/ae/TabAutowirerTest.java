@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 /**
  * @author Rhett Sutphin

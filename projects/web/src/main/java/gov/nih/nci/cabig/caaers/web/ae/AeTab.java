@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
@@ -8,6 +7,8 @@ import org.springframework.validation.Errors;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 /**
  * @author Rhett Sutphin

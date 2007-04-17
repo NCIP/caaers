@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventCommand;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import javax.servlet.http.HttpServletRequest;
 

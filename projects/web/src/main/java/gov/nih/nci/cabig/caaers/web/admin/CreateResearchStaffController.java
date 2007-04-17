@@ -5,9 +5,9 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class CreateResearchStaffController extends AbstractTabbedFlowFormControl
 	public CreateResearchStaffController() {		
         setCommandClass(ResearchStaff.class);        
 
-        Flow<ResearchStaff> flow = new Flow<ResearchStaff>("Create Research Staff");       
+        Flow<ResearchStaff> flow = new Flow<ResearchStaff>("Create Research Staff");
                 
         flow.addTab(new Tab<ResearchStaff>("Enter Research Staff Information", "New Research Staff", "admin/research_staff_details") {
             public Map<String, Object> referenceData() {

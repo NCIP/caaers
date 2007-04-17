@@ -24,10 +24,10 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 public class CreateParticipantController extends AbstractTabbedFlowFormController<NewParticipantCommand> {
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
@@ -201,7 +201,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		//return modelAndView;
     }
 
-    private static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<NewParticipantCommand> {
+    private static class Tab extends gov.nih.nci.cabig.ctms.web.tabs.Tab<NewParticipantCommand> {
         public Tab(String longTitle, String shortTitle, String viewName) {
             super(longTitle, shortTitle, viewName);
         }

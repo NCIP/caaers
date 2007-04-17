@@ -5,8 +5,8 @@ import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

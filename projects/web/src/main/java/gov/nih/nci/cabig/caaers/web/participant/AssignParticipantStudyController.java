@@ -4,7 +4,6 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 // java servlet imports
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,16 +20,13 @@ import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.ParticipantService;
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 
 
 /**
@@ -207,7 +203,7 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
 		//return modelAndView;
     }
 
-    protected static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<AssignParticipantStudyCommand> {
+    protected static class Tab extends gov.nih.nci.cabig.ctms.web.tabs.Tab<AssignParticipantStudyCommand> {
         public Tab(String longTitle, String shortTitle, String viewName) {
             super(longTitle, shortTitle, viewName);
         }

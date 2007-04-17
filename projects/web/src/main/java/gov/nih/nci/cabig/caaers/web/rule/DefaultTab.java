@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

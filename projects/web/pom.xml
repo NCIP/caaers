@@ -119,16 +119,26 @@
             <!-- version is in parent pom -->
         </dependency>
         <dependency>
-            <groupId>org.directwebremoting</groupId>
-            <artifactId>dwr</artifactId>
-            <version>2.0.rc2</version>
-        </dependency>
-        <dependency>
             <groupId>${groupId}</groupId>
             <artifactId>caaers-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.caaers</groupId>
+            <artifactId>caaers-rules-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>ctms-commons-web</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.directwebremoting</groupId>
+            <artifactId>dwr</artifactId>
+            <version>2.0.rc2</version>
+        </dependency>
         <dependency>
             <groupId>org.extremecomponents</groupId>
             <artifactId>extremecomponents</artifactId>
@@ -136,15 +146,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>gov.nih.nci.cabig.caaers</groupId>
-            <artifactId>caaers-rules-client</artifactId>
-            <version>1.0-SNAPSHOT</version> 
-        </dependency>
-        <dependency>
             <groupId>net.sourceforge.collections</groupId>
             <artifactId>collections-generic</artifactId>
             <version>4.01</version>
         </dependency>
+        <!-- TODO: remove these direct deps when caaers-rules is built with maven -->
         <dependency>
 			<groupId>org.codehaus.xfire</groupId>
 			<artifactId>xfire-jaxb2</artifactId>

@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import gov.nih.nci.cabig.caaers.web.rule.author.ReviewTab;
-import gov.nih.nci.cabig.caaers.web.rule.author.RuleTab;
-import gov.nih.nci.cabig.caaers.web.rule.author.SelectRueTypeTab;
-import gov.nih.nci.cabig.caaers.web.rule.author.TriggerTab;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 /**
  *

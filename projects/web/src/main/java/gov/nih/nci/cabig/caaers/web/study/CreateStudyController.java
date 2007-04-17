@@ -21,9 +21,9 @@ import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +58,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	public CreateStudyController() {		
         setCommandClass(Study.class);        
 
-        Flow<Study> flow = new Flow<Study>("Create Study");       
+        Flow<Study> flow = new Flow<Study>("Create Study");
         
         flow.addTab(new Tab<Study>("Study Details", "Details", "study/study_details") {
             public Map<String, Object> referenceData() {

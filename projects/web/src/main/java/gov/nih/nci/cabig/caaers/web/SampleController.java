@@ -1,17 +1,16 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-import org.springframework.validation.BindException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.validation.BindException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
+
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 
 /**
  * @author Rhett Sutphin
@@ -34,7 +33,7 @@ public class SampleController extends AbstractTabbedFlowFormController<Object> {
         return new ModelAndView(new RedirectView("/pages/ae/sample", true));
     }
 
-    private static class Tab extends gov.nih.nci.cabig.caaers.web.tabbedflow.Tab<Object> {
+    private static class Tab extends gov.nih.nci.cabig.ctms.web.tabs.Tab<Object> {
         public Tab(String longTitle, String shortTitle, String viewName) {
             super(longTitle, shortTitle, viewName);
         }

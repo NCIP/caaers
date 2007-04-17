@@ -1,28 +1,23 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import org.extremecomponents.table.context.Context;
 import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
-import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Kulasekaran
@@ -35,7 +30,7 @@ public class SearchStudyController extends AbstractTabbedFlowFormController<Sear
 	public SearchStudyController() {		             
 		setCommandClass(SearchStudyCommand.class);
 		
-        Flow<SearchStudyCommand> flow = new Flow<SearchStudyCommand>("Search Study");       
+        Flow<SearchStudyCommand> flow = new Flow<SearchStudyCommand>("Search Study");
         
         flow.addTab(new Tab<SearchStudyCommand>("Study Search Results", "", "study/study_search") {
             public Map<String, Object> referenceData() {

@@ -13,9 +13,9 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +45,7 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 	public EditStudyController() {		
         setCommandClass(Study.class);        
 
-        Flow<Study> flow = new Flow<Study>("Edit Study");       
+        Flow<Study> flow = new Flow<Study>("Edit Study");
         
         flow.addTab(new Tab<Study>("Study Details", "Study Details", "study/edit_study_details") {
             public Map<String, Object> referenceData() {

@@ -10,9 +10,9 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +40,7 @@ public class CreateInvestigatorController extends AbstractTabbedFlowFormControll
 	public CreateInvestigatorController() {		
         setCommandClass(Investigator.class);        
 
-        Flow<Investigator> flow = new Flow<Investigator>("Create Investigator");       
+        Flow<Investigator> flow = new Flow<Investigator>("Create Investigator");
                 
         flow.addTab(new Tab<Investigator>("Enter Investigator Information", "New Investigator", "admin/investigator_details") {
             public Map<String, Object> referenceData() {

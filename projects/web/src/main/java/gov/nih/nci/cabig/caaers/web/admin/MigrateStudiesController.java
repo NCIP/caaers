@@ -1,26 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Site;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Flow;
-import gov.nih.nci.cabig.caaers.web.tabbedflow.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import com.thoughtworks.xstream.XStream;
 import java.io.BufferedReader;
@@ -30,7 +23,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -54,7 +46,7 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
 	public MigrateStudiesController() {		
         setCommandClass(MigrateStudiesCommand.class);        
 
-        Flow<MigrateStudiesCommand> flow = new Flow<MigrateStudiesCommand>("Create Studies");       
+        Flow<MigrateStudiesCommand> flow = new Flow<MigrateStudiesCommand>("Create Studies");
         
         flow.addTab(new Tab<MigrateStudiesCommand>("Import Studies", "Import Studies", "admin/migrate_studies") {
             public Map<String, Object> referenceData() {
