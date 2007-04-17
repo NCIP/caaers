@@ -74,19 +74,19 @@
                 <td><tags:dateInput path="dateOfBirth"/></td>
             </tr>
             <tr valign="top">
-                <td class="label">Ethnicity:</td>
+                <td class="label"><span class="red">*</span>Ethnicity:</td>
                 <td><form:select path="ethnicity">
 					<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
 				    </form:select></td>
             </tr>
             <tr valign="top">
-                <td class="label">Race:</td>
+                <td class="label"><span class="red">*</span>Race:</td>
                 <td><form:select path="race">
 					<form:options items="${race}" itemLabel="desc" itemValue="code" />
 				    </form:select></td>
             </tr>
             <tr valign="top">
-                <td class="label">Gender:</td>
+                <td class="label"><span class="red">*</span>Gender:</td>
                 <td><form:select path="gender">
 					<form:options items="${genders}" itemLabel="desc" itemValue="code" />
 				    </form:select></td>
