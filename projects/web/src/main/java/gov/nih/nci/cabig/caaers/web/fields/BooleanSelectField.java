@@ -1,6 +1,5 @@
-package gov.nih.nci.cabig.caaers.web.ae;
+package gov.nih.nci.cabig.caaers.web.fields;
 
-import java.util.Map;
 import java.util.LinkedHashMap;
 
 /**

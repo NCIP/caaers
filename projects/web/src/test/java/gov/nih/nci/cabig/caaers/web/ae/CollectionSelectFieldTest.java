@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
 import java.util.Collection;

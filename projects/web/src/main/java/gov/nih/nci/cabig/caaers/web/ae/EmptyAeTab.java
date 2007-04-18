@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.List;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+
 import java.util.Collections;
 import java.util.Map;
 

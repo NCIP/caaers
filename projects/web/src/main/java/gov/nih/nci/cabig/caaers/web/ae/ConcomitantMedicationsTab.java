@@ -7,6 +7,11 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 /**
  * @author Rhett Sutphin

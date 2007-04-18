@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.List;
-import java.util.LinkedList;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+
 import java.util.Map;
 
 /**

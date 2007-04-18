@@ -34,7 +34,7 @@ public class DefaultTab extends Tab<RuleInputCommand> {
      *
      * @param command
      * @return
-     * @see gov.nih.nci.cabig.caaers.web.ae.RepeatingFieldGroupFactory
+     * @see gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory
      * @see #getFieldGroups
      */
     protected Map<String, InputFieldGroup> createFieldGroups(RuleInputCommand command) {

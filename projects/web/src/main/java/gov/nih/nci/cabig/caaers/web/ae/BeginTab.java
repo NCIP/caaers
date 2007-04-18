@@ -5,6 +5,8 @@ import org.springframework.beans.BeanWrapper;
 
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+
 /**
  * @author Rhett Sutphin
 */
