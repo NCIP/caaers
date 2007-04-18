@@ -68,7 +68,7 @@ public class BasicsTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();

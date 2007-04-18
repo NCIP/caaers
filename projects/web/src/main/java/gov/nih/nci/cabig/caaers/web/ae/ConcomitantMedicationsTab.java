@@ -33,7 +33,7 @@ public class ConcomitantMedicationsTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;

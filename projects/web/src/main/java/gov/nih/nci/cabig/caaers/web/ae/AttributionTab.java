@@ -28,7 +28,7 @@ public class AttributionTab extends AeTab {
     }
 
     @Override
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         List<AttributionBlock> blocks = createBlocks(command.getAeReport());
         for (AttributionBlock block : blocks) {

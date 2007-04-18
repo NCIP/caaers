@@ -14,7 +14,7 @@ public class EmptyAeTab extends AeTab {
     }
 
     @Override
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         return Collections.emptyMap();
     }
 }
