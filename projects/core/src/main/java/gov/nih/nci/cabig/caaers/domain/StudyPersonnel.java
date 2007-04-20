@@ -13,7 +13,7 @@ import org.hibernate.annotations.Parameter;
  * @author Kulasekaran
  */
 @Entity
-@Table (name="study_personnels")
+@Table (name="study_personnel")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
         @Parameter(name="sequence", value="seq_study_personnels_id")
