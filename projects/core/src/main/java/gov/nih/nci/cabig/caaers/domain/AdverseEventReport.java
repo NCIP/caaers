@@ -43,7 +43,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
-    private Reporter repoter;
+    private Reporter reporter;
     
     private Physician physician;
     
@@ -207,14 +207,14 @@ public class AdverseEventReport extends AbstractDomainObject {
     }
     
     @OneToOne
-    @JoinColumn(name="repoter_id")
+    @JoinColumn(name="reporter_id")
     @Cascade(value = { CascadeType.ALL })
-	public Reporter getRepoter() {
-		return repoter;
+	public Reporter getReporter() {
+		return reporter;
 	}
 
-	public void setRepoter(Reporter repoter) {
-		this.repoter = repoter;
+	public void setReporter(Reporter reporter) {
+		this.reporter = reporter;
 	}
 	
 	
