@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 
 /**
@@ -20,7 +21,10 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
 	private static final List<Object> EXTRA_PARAMS
 			= Collections.emptyList();
 
-
+	public List<ResearchStaff> getAll() {
+        return getHibernateTemplate().find("from ResearchStaff");
+    }  
+	
     @Override
     public Class<ResearchStaff> domainClass() {
         return ResearchStaff.class;
