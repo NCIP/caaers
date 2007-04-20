@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -37,10 +38,20 @@ public class ResearchStaff extends AbstractDomainObject {
     private String race;
     private String ethnicity; 
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
+	
+	@OneToMany
+    @JoinColumn(name="staff_id")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
+	public List<ContactMechanism> getContactMechanims() {
+		return contactMechanims;
+	}
     
-    
-    // business methods
-    	   	    
+	public void setContactMechanims(List<ContactMechanism> contactMechanims) {
+		this.contactMechanims = contactMechanims;
+	} 		
+        
+	//	 business methods	   	    
     @Transient
     public String getLastFirst() {
         StringBuilder name = new StringBuilder();

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,7 +18,6 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table
-//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
         @Parameter(name="sequence", value="seq_repoter_id")
@@ -25,46 +25,17 @@ import org.hibernate.annotations.Parameter;
 )
 public class Reporter extends Person {
 	
+	private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
+	
 	@OneToMany
-    @JoinColumn(name="person_id" ,nullable=false)
+    @JoinColumn(name="reporter_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
 	public List<ContactMechanism> getContactMechanims() {
-		return super.getContactMechanims();
+		return contactMechanims;
 	}
     
 	public void setContactMechanims(List<ContactMechanism> contactMechanims) {
-		super.setContactMechanims(contactMechanims);
+		this.contactMechanims = contactMechanims;
 	} 		
 	
-	public String getFirstName() {
-		return super.getFirstName();
-	}
-
-	public void setFirstName(String firstName) {
-		super.setFirstName(firstName);
-	}
-
-	public String getLastName() {
-		return super.getLastName();
-	}
-
-	public void setLastName(String lastName) {
-		super.setLastName(lastName);
-	}	
-
-	public String getMaidenName() {
-		return super.getMaidenName();
-	}
-
-	public void setMaidenName(String maidenName) {
-		super.setMaidenName(maidenName);
-	}
-
-	public String getMiddleName() {
-		return super.getMiddleName();
-	}
-
-	public void setMiddleName(String middleName) {
-		super.setMiddleName(middleName);
-	}
 }

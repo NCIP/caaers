@@ -28,18 +28,20 @@ import org.hibernate.annotations.Parameter;
 )
 public class Physician extends Person {
 		
-	/*
+	private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
+	
 	@OneToMany
-    @JoinColumn(name="person_id" ,nullable=false)
+    @JoinColumn(name="physician_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
 	public List<ContactMechanism> getContactMechanims() {
-		return super.getContactMechanims();
+		return contactMechanims;
 	}
-    
+   
 	public void setContactMechanims(List<ContactMechanism> contactMechanims) {
-		super.setContactMechanims(contactMechanims);
-	} */		
+		this.contactMechanims = contactMechanims;
+	} 		
 	
+	/*
 	public String getFirstName() {
 		return super.getFirstName();
 	}
@@ -54,7 +56,7 @@ public class Physician extends Person {
 
 	public void setLastName(String lastName) {
 		super.setLastName(lastName);
-	}	
+	}
 
 	public String getMaidenName() {
 		return super.getMaidenName();
@@ -70,5 +72,5 @@ public class Physician extends Person {
 
 	public void setMiddleName(String middleName) {
 		super.setMiddleName(middleName);
-	}
+	} */
 }
