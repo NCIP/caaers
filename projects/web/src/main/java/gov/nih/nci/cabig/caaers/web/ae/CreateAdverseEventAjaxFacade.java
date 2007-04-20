@@ -1,37 +1,37 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.io.IOException;
-
-import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.WebContext;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * @author Rhett Sutphin
@@ -44,8 +44,16 @@ public class CreateAdverseEventAjaxFacade {
     private CtcTermDao ctcTermDao;
     private CtcDao ctcDao;
     private AdverseEventReportDao aeReportDao;
+    private ResearchStaffDao researchStaffDao;
     private InteroperationService interoperationService;
 
+    
+    public ResearchStaff getResearchStaff(String text) {    	
+    	ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
+    	
+    	return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "maidenName");
+    }
+    
     public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants = participantDao.getBySubnames(extractSubnames(text));
         if (studyId != null) {
@@ -239,6 +247,11 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setAeReportDao(AdverseEventReportDao aeReportDao) {
         this.aeReportDao = aeReportDao;
+    }
+    
+    @Required
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+        this.researchStaffDao = researchStaffDao;
     }
 
     @Required
