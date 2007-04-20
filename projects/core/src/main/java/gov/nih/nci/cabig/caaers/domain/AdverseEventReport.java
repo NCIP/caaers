@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.ArrayList;
@@ -42,15 +43,19 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
+    private Reporter repoter;
+    
+    private Physician physician;
+    
     // TODO
     // private MedicalInformation medicalInformation;
     // private TreatmentInformation treatmentInformation;
     // private List<PriorTherapy> priorTherapies;
     // private List<Agent> agents;
     // private List<MedicalDevice> medicalDevices;
-    // private ReporterInfo reporterInfo;
+    // private ReporterInfo reporterInfo;    
 
-    public AdverseEventReport() {
+	public AdverseEventReport() {
         setAdverseEventsInternal(new ArrayList<AdverseEvent>());
         setLabsInternal(new ArrayList<Lab>());
         setConcomitantMedicationsInternal(new ArrayList<ConcomitantMedication>());
@@ -200,4 +205,27 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.concomitantMedicationsInternal = concomitantMedicationsInternal;
         createLazyConcomitantMedications();
     }
+    
+    @OneToOne
+    @JoinColumn(name="repoter_id")
+    @Cascade(value = { CascadeType.ALL })
+	public Reporter getRepoter() {
+		return repoter;
+	}
+
+	public void setRepoter(Reporter repoter) {
+		this.repoter = repoter;
+	}
+	
+	
+	@OneToOne
+    @JoinColumn(name="physician_id")
+    @Cascade(value = { CascadeType.ALL })
+	public Physician getPhysician() {
+		return physician;
+	}
+
+	public void setPhysician(Physician physician) {
+		this.physician = physician;
+	}
 }
