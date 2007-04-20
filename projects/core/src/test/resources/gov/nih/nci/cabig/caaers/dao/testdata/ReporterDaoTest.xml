@@ -1,0 +1,21 @@
+<dataset>
+    <REPORTERS
+        id="-100"
+        first_name="Dilbert"
+        last_name="Scott"
+        middle_name="m"
+        maiden_name="m"/>
+     
+     <CONTACT_MECHANISMS
+     	id="-1"
+     	type="email"
+     	value="abc@abc.com"
+     	person_id="-100"/>
+
+     <CONTACT_MECHANISMS
+     	id="-2"
+     	type="email"
+     	value="123@abc.com"
+     	person_id="-100"/>
+     	
+</dataset>
