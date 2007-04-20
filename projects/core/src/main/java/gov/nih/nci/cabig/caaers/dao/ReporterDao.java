@@ -13,8 +13,8 @@ public class ReporterDao extends GridIdentifiableDao<Reporter> {
         return Reporter.class;
     }
 
-    public void save(Reporter repoter) {
-        getHibernateTemplate().saveOrUpdate(repoter);
+    public void save(Reporter reporter) {
+        getHibernateTemplate().saveOrUpdate(reporter);
     }
 }
 
