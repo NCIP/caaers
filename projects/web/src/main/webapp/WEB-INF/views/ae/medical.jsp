@@ -84,44 +84,44 @@
 		
 		<chrome:division title="Patient Demographic Information">
 		
+		<div class="row"> 
+	        <div class="medical-label">Patient ID</div>
+			<div class="text"> ${command.participant.id} </div
+		</div> 
+
 		<div class="row">
-	        <div class="label">Patient ID</div>
-			<div class="value"><form:label path="participant.id"/></div>
+	        <div class="medical-label">Birth Date</div>
+			<div class="text"> ${command.participant.dateOfBirth}</div>
 		</div>
 
 		<div class="row">
-	        <div class="label">Birth Date</div>
-			<div class="value"><form:label path="participant.dateOfBirth"/></div>
-		</div>
-
-		<div class="row">
-	        <div class="label">Race</div>
-			<div class="value"><form:label path="participant.race"/></div>
+	        <div class="medical-label">Race</div>
+			<div class="text">${command.participant.race}</div>
 		</div>
 		
 		<div class="row">
-	        <div class="label">Ethnicity</div>
-			<div class="value"><form:label path="participant.ethnicity"/></div>
+	        <div class="medical-label">Ethnicity</div>
+			<div class="text">${command.participant.ethnicity}</div>
 		</div>
 
 		<div class="row">
-	        <div class="label">Gender</div>
-			<div class="value"><form:label path="participant.gender"/></div>
+	        <div class="medical-label">Gender</div>
+			<div class="text">${command.participant.gender}</div>
 		</div>
 
 		<div class="row">
-	        <div class="label">Height (cm)</div>
-			<div class="value"> </div>
+	        <div class="medical-label">Height (cm)</div>
+			<div class="value"> <input type="text"/> </div>
 		</div>
 
 		<div class="row">
-	        <div class="label">Weight (kg)</div>
-			<div class="value"> </div>
+	        <div class="medical-label">Weight (kg)</div>
+			<div class="value"> <input type="text"/> </div>
 		</div>
 
 		<div class="row">
-	        <div class="label">Baseline performance status at initiation of protocol (-ECOG/Zubrod scale)</div>
-			<div class="value"> </div>
+	        <div class="medical-label">Baseline performance status</div>
+			<div class="value"> <input type="text"/> </div>
 		</div>
 
 		</chrome:division>
