@@ -11,6 +11,7 @@ form.standard .disabled {
     font-weight: bold; white-space: nowrap;
 }
 .value, .extra { margin-left: 11em; }
+.text { padding: 4px; margin-left: 11em;}
 /*
 .repeatedGroup {
     border-top: 1px dotted #6E81A6;
