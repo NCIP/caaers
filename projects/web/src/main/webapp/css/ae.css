@@ -10,6 +10,11 @@ form.standard .disabled {
     width: 9em; text-align: right; padding: 4px;
     font-weight: bold; white-space: nowrap;
 }
+.medical-label {
+    width: 16em; text-align: right; padding: 4px;
+    font-weight: bold; white-space: nowrap; font-weight: bold; float: left; margin-left: 0.5em
+}
+
 .value, .extra { margin-left: 11em; }
 .text { padding: 4px; margin-left: 11em;}
 /*
