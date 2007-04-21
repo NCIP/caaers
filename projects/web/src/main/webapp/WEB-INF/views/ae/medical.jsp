@@ -132,6 +132,23 @@
             If appropriate Disease Name is not on the list above, provide appropriate Disease
         </p>
         		
+		<div class="row">
+			<div class="label">Select Disease</div>
+			<div class="value"> 			
+				<select id="disease" name="disease" onChange="javascript:chooseDisease();">
+					<option value=-1>please select--</option>
+					<c:forEach var="studyDisease " varStatus="status" items="${command.study.studyDiseases}">	
+							<option value=${studyDisease.diseaseTerm.id}>${studyDisease.diseaseTerm.term} </option>
+					</c:forEach>
+				</select>
+		    </div>
+        </div> 
+
+		<div class="row">
+	        <div class="medical-label"> Disease Entered </div>
+			<div class="value"> <input type="text"/> </div>
+		</div>
+
 		</chrome:division>
     </form:form>
 </body>
