@@ -31,6 +31,7 @@
 			document.getElementsByName('aeReport.reporter.firstName')[0].value=staff.firstName;
 			document.getElementsByName('aeReport.reporter.lastName')[0].value=staff.lastName;
 			document.getElementsByName('aeReport.reporter.middleName')[0].value=staff.middleName;
+			document.getElementsByName('aeReport.reporter.contactMechanims[0].value')[0].value= staff.firstName + '@gmail.com';
 
 			if(document.getElementById("option1").checked)
 			{
