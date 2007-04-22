@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,16 +44,16 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
-    private Reporter reporter;    
+    // private TreatmentInformation treatmentInformation;
+
+    private Reporter reporter;
     private Physician physician;
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
-    
+
     // TODO
     // private MedicalInformation medicalInformation;
-    // private TreatmentInformation treatmentInformation;
     // private List<PriorTherapy> priorTherapies;
-    // private List<Agent> agents;
     // private List<MedicalDevice> medicalDevices;
     // private ReporterInfo reporterInfo;    
 
@@ -206,49 +207,66 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.concomitantMedicationsInternal = concomitantMedicationsInternal;
         createLazyConcomitantMedications();
     }
-    
+
+/*  // Not ready to commit yet.
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    public TreatmentInformation getTreatmentInformation() {
+        if (treatmentInformation == null) treatmentInformation = new TreatmentInformation();
+        return treatmentInformation;
+    }
+
+    public void setTreatmentInformation(TreatmentInformation treatmentInformation) {
+        this.treatmentInformation = treatmentInformation;
+    }
+*/
+
     @OneToOne
     @JoinColumn(name="reporter_id")
     @Cascade(value = { CascadeType.ALL })
-	public Reporter getReporter() {
-		return reporter;
-	}
+    public Reporter getReporter() {
+        return reporter;
+    }
 
-	public void setReporter(Reporter reporter) {
-		this.reporter = reporter;
-	}
-		
-	@OneToOne
+    public void setReporter(Reporter reporter) {
+        this.reporter = reporter;
+    }
+
+    @OneToOne
     @JoinColumn(name="physician_id")
     @Cascade(value = { CascadeType.ALL })
-	public Physician getPhysician() {
-		return physician;
-	}
+    public Physician getPhysician() {
+        return physician;
+    }
 
-	public void setPhysician(Physician physician) {
-		this.physician = physician;
-	}
-	
-	@OneToOne
-    @JoinColumn(name="disease_history_id")
-    @Cascade(value = { CascadeType.ALL })
-	public DiseaseHistory getDiseaseHistory() {
-		return diseaseHistory;
-	}
+    public void setPhysician(Physician physician) {
+        this.physician = physician;
+    }
 
-	public void setDiseaseHistory(DiseaseHistory diseaseHistory) {
-		this.diseaseHistory = diseaseHistory;
-	}
+    // TODO: The migration containing this column hasn't been committed, so I'm
+    // marking it transient.  RMS20070422.
+    // @OneToOne
+    // @JoinColumn(name="disease_history_id")
+    // @Cascade(value = { CascadeType.ALL })
+    @Transient
+    public DiseaseHistory getDiseaseHistory() {
+        return diseaseHistory;
+    }
 
-	@OneToOne
-    @JoinColumn(name="participant_history_id")
-    @Cascade(value = { CascadeType.ALL })
-	public ParticipantHistory getParticipantHistory() {
-		return participantHistory;
-	}
+    public void setDiseaseHistory(DiseaseHistory diseaseHistory) {
+        this.diseaseHistory = diseaseHistory;
+    }
 
-	public void setParticipantHistory(ParticipantHistory participantHistory) {
-		this.participantHistory = participantHistory;
-	}
+    // TODO: The migration containing this column hasn't been committed, so I'm
+    // marking it transient.  RMS20070422.
+    // @OneToOne
+    // @JoinColumn(name="participant_history_id")
+    // @Cascade(value = { CascadeType.ALL })
+    @Transient
+    public ParticipantHistory getParticipantHistory() {
+        return participantHistory;
+    }
 
+    public void setParticipantHistory(ParticipantHistory participantHistory) {
+        this.participantHistory = participantHistory;
+    }
 }
