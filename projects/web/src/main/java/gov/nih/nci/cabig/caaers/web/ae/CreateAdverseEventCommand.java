@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -53,8 +54,9 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport = new AdverseEventReport();
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
-        
-        this.aeReport.setReporter(createReporter());                                  
+
+        this.aeReport.setTreatmentInformation(new TreatmentInformation());
+        this.aeReport.setReporter(createReporter());
         this.aeReport.setPhysician(createPhysician());                           
                 
         this.attributionMap = new AttributionMap(aeReport);
@@ -148,11 +150,13 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.study = study;
         // TODO: this is temporary -- need a cleaner way to force this to load
         // in same session as study is loaded and/or reassociate study with hib session later
-        if (study != null) this.study.getStudyAgents().size();
-        if (study != null) this.study.getStudyDiseases().size();
-        if (study != null) this.study.getStudySites().size();
-        for(StudySite site : study.getStudySites()){
-        	site.getStudyPersonnels().size();
+        if (study != null) {
+            this.study.getStudyAgents().size();
+            this.study.getStudyDiseases().size();
+            this.study.getStudySites().size();
+            for(StudySite site : study.getStudySites()){
+                site.getStudyPersonnels().size();
+            }
         }
         updateReportAssignmentLink();
     }
