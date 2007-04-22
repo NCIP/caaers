@@ -52,6 +52,8 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
 	            <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ContactMechanism</value>
+   	            <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
+  	            <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
