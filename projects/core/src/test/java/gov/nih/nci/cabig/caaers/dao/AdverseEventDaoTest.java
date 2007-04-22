@@ -1,22 +1,13 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import edu.nwu.bioinformatics.commons.DateUtils;
-import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.*;
-
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-
-import java.sql.Timestamp;
-import java.util.Calendar;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 
 /**
  * @author Rhett Sutphin
@@ -32,17 +23,17 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong comments", "That was some big AE", loaded.getComments());
     }
 
-    public void testLoadStudyAgentAttributions() throws Exception {
+    public void testLoadCourseAgentAttributions() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
-        assertEquals(2, loaded.getStudyAgentAttributions().size());
-        StudyAgentAttribution actual = loaded.getStudyAgentAttributions().get(1);
+        assertEquals(2, loaded.getCourseAgentAttributions().size());
+        CourseAgentAttribution actual = loaded.getCourseAgentAttributions().get(1);
         assertEquals("Wrong attribution", -1, (int) actual.getId());
-        assertEquals("Wrong study agent", -23, (int) actual.getCause().getId());
+        assertEquals("Wrong agent", -23, (int) actual.getCause().getId());
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.POSSIBLE, actual.getAttribution());
 
-        assertEquals("Wrong study agent attribution 0", -27,
-            (int) loaded.getStudyAgentAttributions().get(0).getCause().getId());
+        assertEquals("Wrong treatment attribution 0", -27,
+            (int) loaded.getCourseAgentAttributions().get(0).getCause().getId());
     }
 
     public void testLoadConMedAttributions() throws Exception {
@@ -56,5 +47,18 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
 
         assertEquals("Wrong con med attrib 1", -78,
             (int) loaded.getConcomitantMedicationAttributions().get(1).getCause().getId());
+    }
+
+    public void testLoadOtherCauseAttributions() throws Exception {
+        AdverseEvent loaded = getDao().getById(-2);
+        assertEquals(2, loaded.getOtherCauseAttributions().size());
+        OtherCauseAttribution actual = loaded.getOtherCauseAttributions().get(1);
+        assertEquals("Wrong attribution", -11, (int) actual.getId());
+        assertEquals("Wrong other cause", -71, (int) actual.getCause().getId());
+        assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
+        assertEquals("Wrong attribution", Attribution.UNRELATED, actual.getAttribution());
+
+        assertEquals("Wrong other cause attribution 0", -72,
+            (int) loaded.getOtherCauseAttributions().get(0).getCause().getId());
     }
 }

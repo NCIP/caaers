@@ -58,11 +58,12 @@
                 <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
-                <value>gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
             </list>

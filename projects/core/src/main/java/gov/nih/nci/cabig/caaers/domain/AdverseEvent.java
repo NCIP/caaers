@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -40,8 +41,9 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
     private String comments;
 
     private AdverseEventReport report;
-    private List<StudyAgentAttribution> studyAgentAttributions;
+    private List<CourseAgentAttribution> courseAgentAttributions;
     private List<ConcomitantMedicationAttribution> concomitantMedicationAttributions;
+    private List<OtherCauseAttribution> otherCauseAttributions;
 
     ////// BOUND PROPERTIES
 
@@ -61,14 +63,14 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
     @JoinColumn(name="adverse_event_id", nullable=false)
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @Where(clause = "cause_type = 'SA'") // it is pretty lame that this is necessary
-    public List<StudyAgentAttribution> getStudyAgentAttributions() {
-        if (studyAgentAttributions == null) studyAgentAttributions = new ArrayList<StudyAgentAttribution>();
-        return studyAgentAttributions;
+    @Where(clause = "cause_type = 'CA'") // it is pretty lame that this is necessary
+    public List<CourseAgentAttribution> getCourseAgentAttributions() {
+        if (courseAgentAttributions == null) courseAgentAttributions = new ArrayList<CourseAgentAttribution>();
+        return courseAgentAttributions;
     }
 
-    public void setStudyAgentAttributions(List<StudyAgentAttribution> studyAgentAttributions) {
-        this.studyAgentAttributions = studyAgentAttributions;
+    public void setCourseAgentAttributions(List<CourseAgentAttribution> courseAgentAttributions) {
+        this.courseAgentAttributions = courseAgentAttributions;
     }
 
     @OneToMany
@@ -85,6 +87,22 @@ public class AdverseEvent extends AbstractDomainObject implements AdverseEventRe
 
     public void setConcomitantMedicationAttributions(List<ConcomitantMedicationAttribution> concomitantMedicationAttributions) {
         this.concomitantMedicationAttributions = concomitantMedicationAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="adverse_event_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "cause_type = 'OC'") // it is pretty lame that this is necessary
+    public List<OtherCauseAttribution> getOtherCauseAttributions() {
+        if (otherCauseAttributions == null) {
+            otherCauseAttributions = new ArrayList<OtherCauseAttribution>();
+        }
+        return otherCauseAttributions;
+    }
+
+    public void setOtherCauseAttributions(List<OtherCauseAttribution> otherCauseAttributions) {
+        this.otherCauseAttributions = otherCauseAttributions;
     }
 
     @ManyToOne

@@ -52,6 +52,10 @@
         assignment_id="-6"
         detection_date="2007-04-03 21:43:56.987"
         />
+    <TREATMENTS
+        id="-17"
+        report_id="-17"
+        />
 
     <ADVERSE_EVENTS
         id="-2"
@@ -63,19 +67,17 @@
         comments="That was some big AE"
         />
 
-    <STUDY_AGENTS
+    <COURSE_AGENTS
         id="-23"
-        study_id="-100"
-        agent_id="-101"
+        treatment_id="-17"
         />
-    <STUDY_AGENTS
+    <COURSE_AGENTS
         id="-27"
-        study_id="-100"
-        agent_id="-102"
+        treatment_id="-17"
         />
     <AE_ATTRIBUTIONS
         id="-1"
-        cause_type="SA"
+        cause_type="CA"
         cause_id="-23"
         attribution_code="3"
         adverse_event_id="-2"
@@ -83,7 +85,7 @@
         />
     <AE_ATTRIBUTIONS
         id="-2"
-        cause_type="SA"
+        cause_type="CA"
         cause_id="-27"
         attribution_code="1"
         adverse_event_id="-2"
@@ -111,6 +113,31 @@
         cause_type="CM"
         cause_id="-78"
         attribution_code="5"
+        adverse_event_id="-2"
+        list_index="1"
+        />
+
+    <OTHER_CAUSES
+        id="-72"
+        report_id="-17"
+        />
+    <OTHER_CAUSES
+        id="-71"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-10"
+        cause_type="OC"
+        cause_id="-72"
+        attribution_code="4"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-11"
+        cause_type="OC"
+        cause_id="-71"
+        attribution_code="1"
         adverse_event_id="-2"
         list_index="1"
         />
