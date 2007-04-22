@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 import java.util.Calendar;
@@ -91,6 +92,18 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertEquals("Wrong dose route", "aural", agent1.getDose().getRoute());
         assertEquals("Wrong total dose", new BigDecimal("7"), agent1.getTotalDoseAdministeredThisCourse());
         assertEquals("Wrong duration", "8 times every third hour", agent1.getDurationAndSchedule());
+    }
+
+    public void testGetOtherCauses() throws Exception {
+        AdverseEventReport loaded = getDao().getById(-1);
+
+        assertEquals("Wrong number of causes", 3, loaded.getOtherCauses().size());
+        assertEquals("Wrong cause 0", -81, (int) loaded.getOtherCauses().get(0).getId());
+        assertEquals("Wrong cause 1", -80, (int) loaded.getOtherCauses().get(1).getId());
+        assertEquals("Wrong cause 2", -82, (int) loaded.getOtherCauses().get(2).getId());
+
+        assertEquals("Wrong text for cause 1", "Crossed against light",
+            loaded.getOtherCauses().get(1).getText());
     }
 
     private static void assertLabValue(
@@ -199,6 +212,21 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
                 CourseAgent ca = ti.getCourseAgents().get(0);
                 assertEquals(new BigDecimal(480), ca.getAdministrationDelay());
                 assertEquals(new BigDecimal("45.2"), ca.getDose().getAmount());
+            }
+        });
+    }
+
+    public void testSaveOtherCauses() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(AdverseEventReport report) {
+                report.getOtherCauses().get(0).setText("Insomnia");
+                report.getOtherCauses().get(1).setText("Bus");
+            }
+
+            public void assertCorrect(AdverseEventReport loaded) {
+                assertEquals("Wrong number of other causes", 2, loaded.getOtherCauses().size());
+                assertEquals("Wrong cause 0", "Insomnia", loaded.getOtherCauses().get(0).getText());
+                assertEquals("Wrong cause 1", "Bus", loaded.getOtherCauses().get(1).getText());
             }
         });
     }

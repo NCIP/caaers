@@ -44,6 +44,9 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
+    private List<OtherCause> otherCausesInternal;
+    private List<OtherCause> otherCauses;
+
     private TreatmentInformation treatmentInformation;
 
     private Reporter reporter;
@@ -61,6 +64,7 @@ public class AdverseEventReport extends AbstractDomainObject {
         setAdverseEventsInternal(new ArrayList<AdverseEvent>());
         setLabsInternal(new ArrayList<Lab>());
         setConcomitantMedicationsInternal(new ArrayList<ConcomitantMedication>());
+        setOtherCausesInternal(new ArrayList<OtherCause>());
     }
 
     ////// LOGIC
@@ -140,6 +144,23 @@ public class AdverseEventReport extends AbstractDomainObject {
             new AdverseEventReportChildFactory(ConcomitantMedication.class, this));
     }
 
+    public void addOtherCause(OtherCause otherCause) {
+        getOtherCausesInternal().add(otherCause);
+        if (otherCause != null) otherCause.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<OtherCause> getOtherCauses() {
+        return otherCauses;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void createLazyOtherCauses() {
+        this.otherCauses = LazyList.decorate(getOtherCausesInternal(),
+            new AdverseEventReportChildFactory(OtherCause.class, this));
+    }
+
     ////// BEAN PROPERTIES
 
     public Date getDetectionDate() {
@@ -206,6 +227,21 @@ public class AdverseEventReport extends AbstractDomainObject {
     protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
         this.concomitantMedicationsInternal = concomitantMedicationsInternal;
         createLazyConcomitantMedications();
+    }
+
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<OtherCause> getOtherCausesInternal() {
+        return otherCausesInternal;
+    }
+
+    protected void setOtherCausesInternal(List<OtherCause> otherCausesInternal) {
+        this.otherCausesInternal = otherCausesInternal;
+        createLazyOtherCauses();
     }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")

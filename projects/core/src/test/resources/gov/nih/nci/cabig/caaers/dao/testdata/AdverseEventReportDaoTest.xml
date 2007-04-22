@@ -121,4 +121,23 @@
         total_dose_this_course=".84"
         duration_and_schedule="daily"
         />
+
+    <OTHER_CAUSES
+        id="-82"
+        report_id="-1"
+        list_index="2"
+        cause_text="Tire fire"
+        />
+    <OTHER_CAUSES
+        id="-81"
+        report_id="-1"
+        list_index="0"
+        cause_text="Cuyahoga river"
+        />
+    <OTHER_CAUSES
+        id="-80"
+        report_id="-1"
+        list_index="1"
+        cause_text="Crossed against light"
+        />
 </dataset>

@@ -61,6 +61,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
             </list>
