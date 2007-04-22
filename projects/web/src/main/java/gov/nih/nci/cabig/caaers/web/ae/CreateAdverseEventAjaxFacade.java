@@ -6,12 +6,14 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseSiteDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -45,8 +47,15 @@ public class CreateAdverseEventAjaxFacade {
     private CtcDao ctcDao;
     private AdverseEventReportDao aeReportDao;
     private ResearchStaffDao researchStaffDao;
+    private DiseaseSiteDao diseaseSiteDao;
     private InteroperationService interoperationService;
 
+    
+    public List<DiseaseSite> matchDisease(String text) {
+        List<DiseaseSite> diseaseSites = diseaseSiteDao.getBySubnames(extractSubnames(text));
+        
+        return diseaseSites;                
+    }  
     
     public ResearchStaff getResearchStaff(String text) {    	
     	ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
@@ -258,4 +267,9 @@ public class CreateAdverseEventAjaxFacade {
     public void setInteroperationService(InteroperationService interoperationService) {
         this.interoperationService = interoperationService;
     }
+
+    @Required
+	public void setDiseaseSiteDao(DiseaseSiteDao diseaseSiteDao) {
+		this.diseaseSiteDao = diseaseSiteDao;
+	}
 }
