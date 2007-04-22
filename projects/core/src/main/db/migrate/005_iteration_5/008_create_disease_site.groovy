@@ -1,6 +1,6 @@
 class CreateAnatomicSite extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        createTable('anatomic_site') { t ->
+        createTable('anatomic_sites') { t ->
             t.addColumn('name', 'string', nullable:false)
             t.addColumn('category', 'string', nullable:false)
             t.addColumn('grid_id', 'string', nullable:true)
@@ -9,7 +9,7 @@ class CreateAnatomicSite extends edu.northwestern.bioinformatics.bering.Migratio
     }
 
     void down() {
-        dropTable('anatomic_site')
+        dropTable('anatomic_sites')
     }
 
 }
