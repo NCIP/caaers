@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
@@ -15,8 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
  * @author Rhett Sutphin
  */
 public class AttributionMapTest extends CaaersTestCase {
-    private static final StudyAgent STUDY_AGENT_0 = new StudyAgent();
-
+    private static final CourseAgent COURSE_AGENT_0 = new CourseAgent();
     private static final ConcomitantMedication CON_MED_0 = new ConcomitantMedication();
     private static final ConcomitantMedication CON_MED_1 = new ConcomitantMedication();
 
@@ -28,10 +29,11 @@ public class AttributionMapTest extends CaaersTestCase {
         super.setUp();
         report = new AdverseEventReport();
         report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"), createSite("DC")));
+        report.setTreatmentInformation(new TreatmentInformation());
 
         report.getConcomitantMedications().add(CON_MED_0);
         report.getConcomitantMedications().add(CON_MED_1);
-        report.getAssignment().getStudySite().getStudy().getStudyAgents().add(STUDY_AGENT_0);
+        report.getTreatmentInformation().getCourseAgents().add(COURSE_AGENT_0);
 
         getAe(0).getCourseAgentAttributions().add(new CourseAgentAttribution());
         getAe(0).getCourseAgentAttributions().get(0).setAttribution(Attribution.UNLIKELY);
@@ -49,7 +51,7 @@ public class AttributionMapTest extends CaaersTestCase {
     public void testGetExistingStudyAgentAttribution() throws Exception {
         assertAttributionsMatch(
             getAe(0).getCourseAgentAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY, 0, 0
+            AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 0, 0
         );
     }
 
@@ -60,12 +62,12 @@ public class AttributionMapTest extends CaaersTestCase {
         );
     }
 
-    public void testAddStudyAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
+    public void testAddCourseAgentAttribution() throws Exception {
+        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(1).add(Attribution.PROBABLE);
         assertAttributionsMatch(
             getAe(1).getCourseAgentAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY, 1, 0
+            AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 1, 0
         );
     }
 
@@ -79,7 +81,7 @@ public class AttributionMapTest extends CaaersTestCase {
     }
 
     public void testSetExistingStudyAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
+        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(0).set(0, Attribution.PROBABLE);
         assertEquals(Attribution.PROBABLE,
             getAe(0).getCourseAgentAttributions().get(0).getAttribution());
@@ -102,14 +104,14 @@ public class AttributionMapTest extends CaaersTestCase {
         assertSame("Cause not set", CON_MED_1, actualAeAttribution.getCause());
     }
 
-    public void testSetNonExistentStudyAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
+    public void testSetNonExistentCourseAgentAttribution() throws Exception {
+        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(1).set(0, Attribution.UNRELATED);
         CourseAgentAttribution actualAeAttribution
             = getAe(1).getCourseAgentAttributions().get(0);
         assertEquals("Wrong attribution", Attribution.UNRELATED, actualAeAttribution.getAttribution());
         assertSame("AE not set", getAe(1), actualAeAttribution.getAdverseEvent());
-        assertSame("Cause not set", STUDY_AGENT_0, actualAeAttribution.getCause());
+        assertSame("Cause not set", COURSE_AGENT_0, actualAeAttribution.getCause());
     }
 
     public void testGetNonInitializedAttributionIsUnrelated() throws Exception {

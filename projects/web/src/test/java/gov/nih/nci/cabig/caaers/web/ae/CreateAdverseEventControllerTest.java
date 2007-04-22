@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import org.springframework.web.servlet.ModelAndView;
 import static org.easymock.classextension.EasyMock.*;
 
@@ -70,18 +71,18 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     }
     
     public void testBindAttributions() throws Exception {
-        assignment.getStudySite().getStudy().addStudyAgent(new StudyAgent());
-        assignment.getStudySite().getStudy().addStudyAgent(new StudyAgent());
+        firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
+        firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
         
-        request.setParameter("attributionMap[studyAgent][1][1]", Attribution.DEFINITE.name());
+        request.setParameter("attributionMap[courseAgent][1][1]", Attribution.DEFINITE.name());
         request.setParameter("attributionMap[conMed][0][2]", Attribution.PROBABLE.name());
 
         CreateAdverseEventCommand command = bindAndReturnCommand();
         assertEquals(Attribution.DEFINITE,
-            command.getAttributionMap().get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY).get(1).get(1));
+            command.getAttributionMap().get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(1));
         assertEquals(Attribution.PROBABLE,
             command.getAttributionMap().get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
     }

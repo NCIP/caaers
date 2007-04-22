@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public interface AdverseEventInputCommand {
-    String STUDY_AGENT_ATTRIBUTION_KEY = "studyAgent";
+    String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
 
     StudyParticipantAssignment getAssignment();

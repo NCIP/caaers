@@ -41,7 +41,7 @@ public class AttributionTab extends AeTab {
 
     private List<AttributionBlock> createBlocks(AdverseEventReport report) {
         List<AttributionBlock> blocks = new ArrayList<AttributionBlock>();
-        blocks.add(new AttributionBlock("Treatment",
+        blocks.add(new AttributionBlock("Course", "Course",
             createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
         blocks.add(new AttributionBlock("Concomitant medication",
             createGroups(CauseAndAttributionAccessor.CONCOMITANT_MEDICATION, report)));
@@ -59,10 +59,13 @@ public class AttributionTab extends AeTab {
         private String displayName;
         private List<InputFieldGroup> rows;
 
-        public AttributionBlock(String displayName, List<InputFieldGroup> rows) {
-            this.displayName = displayName;
-            if (rows.size() != 1) this.displayName += "s";
+        public AttributionBlock(String singularName, String pluralName, List<InputFieldGroup> rows) {
+            this.displayName = rows.size() == 1 ? singularName : pluralName;
             this.rows = rows;
+        }
+
+        public AttributionBlock(String displayName, List<InputFieldGroup> rows) {
+            this(displayName, displayName + 's', rows);
         }
 
         public String getDisplayName() {

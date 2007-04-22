@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.Map;
@@ -19,27 +21,27 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
         return new AttributionTab();
     }
 
-    public void testStudyAgentFieldsIncluded() throws Exception {
-        ensureStudyAgentCount(2);
+    public void testCourseAgentFieldsIncluded() throws Exception {
+        ensureCourseAgentCount(2);
         ensureAeCount(4);
 
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
         assertEquals("Wrong number of study agent groups", 2, map.size());
-        InputFieldGroup actualGroup0 = map.get("studyAgent0");
+        InputFieldGroup actualGroup0 = map.get("courseAgent0");
         assertNotNull(actualGroup0);
         assertEquals(4, actualGroup0.getFields().size());
-        assertEquals("attributionMap[studyAgent][0][0]", actualGroup0.getFields().get(0).getPropertyName());
-        assertEquals("attributionMap[studyAgent][1][0]", actualGroup0.getFields().get(1).getPropertyName());
-        assertEquals("attributionMap[studyAgent][2][0]", actualGroup0.getFields().get(2).getPropertyName());
-        assertEquals("attributionMap[studyAgent][3][0]", actualGroup0.getFields().get(3).getPropertyName());
+        assertEquals("attributionMap[courseAgent][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[courseAgent][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[courseAgent][2][0]", actualGroup0.getFields().get(2).getPropertyName());
+        assertEquals("attributionMap[courseAgent][3][0]", actualGroup0.getFields().get(3).getPropertyName());
 
-        InputFieldGroup actualGroup1 = map.get("studyAgent1");
+        InputFieldGroup actualGroup1 = map.get("courseAgent1");
         assertNotNull(actualGroup1);
         assertEquals(4, actualGroup0.getFields().size());
-        assertEquals("attributionMap[studyAgent][0][1]", actualGroup1.getFields().get(0).getPropertyName());
-        assertEquals("attributionMap[studyAgent][1][1]", actualGroup1.getFields().get(1).getPropertyName());
-        assertEquals("attributionMap[studyAgent][2][1]", actualGroup1.getFields().get(2).getPropertyName());
-        assertEquals("attributionMap[studyAgent][3][1]", actualGroup1.getFields().get(3).getPropertyName());
+        assertEquals("attributionMap[courseAgent][0][1]", actualGroup1.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[courseAgent][1][1]", actualGroup1.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[courseAgent][2][1]", actualGroup1.getFields().get(2).getPropertyName());
+        assertEquals("attributionMap[courseAgent][3][1]", actualGroup1.getFields().get(3).getPropertyName());
     }
 
     public void testConMedFieldsIncluded() throws Exception {
@@ -72,21 +74,21 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
     }
 
     public void testCreateStudyAgentBlock() throws Exception {
-        ensureStudyAgentCount(1);
+        ensureCourseAgentCount(1);
         ensureAeCount(2);
 
         AttributionTab.AttributionBlock block = getBlocks().get(0);
         assertEquals(1, block.getRows().size());
-        assertEquals("Study agent", block.getDisplayName());
+        assertEquals("Course", block.getDisplayName());
     }
 
     public void testCreateStudyAgentsBlock() throws Exception {
-        ensureStudyAgentCount(2);
+        ensureCourseAgentCount(2);
         ensureAeCount(2);
 
         AttributionTab.AttributionBlock block = getBlocks().get(0);
         assertEquals(2, block.getRows().size());
-        assertEquals("Study agents", block.getDisplayName());
+        assertEquals("Course", block.getDisplayName());
     }
 
     public void testCreateConMedBlock() throws Exception {
@@ -119,12 +121,11 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
         }
     }
 
-    private void ensureStudyAgentCount(int count) {
-        Study study = command.getAeReport().getAssignment().getStudySite().getStudy();
-        while (study.getStudyAgents().size() < count) {
-            StudyAgent sa = new StudyAgent();
-            sa.setAgent(new Agent());
-            study.addStudyAgent(sa);
+    private void ensureCourseAgentCount(int count) {
+        TreatmentInformation info = command.getAeReport().getTreatmentInformation();
+        while (info.getCourseAgents().size() < count) {
+            CourseAgent ca = new CourseAgent();
+            info.addCourseAgent(ca);
         }
     }
 

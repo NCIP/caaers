@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
@@ -13,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author Rhett Sutphin
@@ -55,7 +57,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     private static class CourseAgentAccessor extends CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
         @Override
         public String getKey() {
-            return AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY;
+            return AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY;
         }
 
         @Override
@@ -70,12 +72,17 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         protected List<CourseAgent> getCauseList(AdverseEventReport aeReport) {
-            return aeReport.getTreatmentInformation().getCourseAgents();
+            TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
+            return treatmentInformation == null
+                ? Collections.<CourseAgent>emptyList()
+                : treatmentInformation.getCourseAgents();
         }
 
         @Override
-        public String getDisplayName(CourseAgent studyAgent) {
-            return studyAgent.getStudyAgent().getAgent().getName();
+        public String getDisplayName(CourseAgent courseAgent) {
+            // TODO: correct this
+            // return courseAgent.getStudyAgent().getAgent().getName();
+            return courseAgent.toString();
         }
     }
 
