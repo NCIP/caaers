@@ -1,6 +1,3 @@
-/**
- * 
- */
 package gov.nih.nci.cabig.caaers.security;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
@@ -25,91 +22,106 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
  */
 public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
+    private static final Log logger = LogFactory.getLog(AdverseEventReportDaoSecurityTest.class);
 
+    CtcTermDao ctcTermDao;
+    StudyParticipantAssignmentDao assignmentDao;
+    AdverseEventReportDao adverseEventReportDao;
 
-	private static final Log logger = LogFactory.getLog(AdverseEventReportDaoSecurityTest.class);
-	
-	CtcTermDao ctcTermDao = (CtcTermDao)getApplicationContext().getBean("ctcTermDao");
-	StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao)getApplicationContext().getBean("studyParticipantAssignmentDao");
-	AdverseEventReportDao adverseEventReportDao = (AdverseEventReportDao)getApplicationContext().getBean("adverseEventReportDao");	
-	
-	@Override
+    @Override
     public String getTestDataFileName() {
         return "../dao/testdata/AdverseEventReportDaoTest.xml";
     }
 
-	/**
-	 * 
-	 */
-	public AdverseEventReportDaoSecurityTest() {
+    @Override
+    protected void setUp() throws Exception{
+        super.setUp();
+        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
+        assignmentDao = (StudyParticipantAssignmentDao)
+            getApplicationContext().getBean("studyParticipantAssignmentDao");
+        adverseEventReportDao = (AdverseEventReportDao)
+            getApplicationContext().getBean("adverseEventReportDao");
+    }
 
-	}
-	
-	protected void setUp() throws Exception{
-		super.setUp();
-		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
-	}
-	
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
-	}
-	
-	
-	public void testAdverseEventSave() {
+    @Override
+    protected void tearDown() throws Exception {
+        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        super.tearDown();
+    }
 
-		
-		
-		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
-		
-		CtcTerm term = ctcTermDao.getById(3012);
-        AdverseEvent newEvent = new AdverseEvent();
-        newEvent.setGrade(Grade.MILD);
-        newEvent.setCtcTerm(term);
-        newEvent.setExpected(Boolean.FALSE);
-        newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+    public void testAdverseEventSave() {
+        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
-        AdverseEventReport newReport = new AdverseEventReport();
-        newReport.addAdverseEvent(newEvent);
-        newReport.setAssignment(assignmentDao.getById(-14));
-        newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+        AdverseEventReport newReport = createReport();
 
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
-        
-        
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         logger.debug("################## auth = " + auth.getName() + " #####################");
-		try {
-			adverseEventReportDao.save(newReport);
-			fail("Should have failed to save report");
-		}catch(AccessDeniedException ex){
-			assertTrue(true);
-		} catch (RuntimeException ex) {
-			Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
-		}
+        try {
+            adverseEventReportDao.save(newReport);
+            fail("Should have failed to save report");
+        } catch (AccessDeniedException ex){
+            // expected
+            // TODO: what is actually expected here?  AccessDeniedException or a wrapped exception?
+        } catch (RuntimeException ex) {
+            Throwable rootCause = SecurityTestUtils.getRootCause(ex);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+        }
 
-		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
-		try {
-			adverseEventReportDao.save(newReport);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			fail("Should not have failed to save report: "
-					+ ex.getMessage());
-		}
-		
-	}
+        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+        adverseEventReportDao.save(newReport);
+        Integer id = newReport.getId();
+        assertNotNull("Report not saved", id);
 
-	
+        interruptSession();
 
+        assertNotNull("Saved report not reloadable", adverseEventReportDao.getById(id));
+    }
 
-	public void testAdverseEventUpdate() {
-		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
-		
-		CtcTerm term = ctcTermDao.getById(3012);
+    public void testAdverseEventUpdate() {
+        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+
+        AdverseEventReport newReport = createReport();
+
+        adverseEventReportDao.save(newReport);
+
+        Integer id = newReport.getId();
+        assertNotNull("Report id is null", id);
+
+        interruptSession();
+
+        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+
+        AdverseEventReport report = adverseEventReportDao.getById(id);
+        assertNotNull("report " + id + " is null", report);
+
+        report.getAdverseEvents().get(0).setComments("Yadda");
+        try {
+            adverseEventReportDao.save(report);
+            fail("Should have failed to update report");
+        } catch(AccessDeniedException ex){
+            // expected
+            // TODO: what is actually expected here?  AccessDeniedException or a wrapped exception?
+        } catch (RuntimeException ex) {
+            Throwable rootCause = SecurityTestUtils.getRootCause(ex);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+        }
+        SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
+
+        adverseEventReportDao.save(report);
+
+        interruptSession();
+
+        assertEquals("Report not updated", "Yadda",
+            adverseEventReportDao.getById(id).getAdverseEvents().get(0).getComments());
+    }
+
+    private AdverseEventReport createReport() {
+        CtcTerm term = ctcTermDao.getById(3012);
         AdverseEvent newEvent = new AdverseEvent();
         newEvent.setGrade(Grade.MILD);
         newEvent.setCtcTerm(term);
@@ -120,40 +132,6 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
         newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
-
-		try {
-			adverseEventReportDao.save(newReport);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			fail("Should not have failed to save report: " + ex.getMessage());
-		}
-		Integer id = newReport.getId();
-		assertNotNull("Report id is null", id);
-
-		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
-
-		AdverseEventReport report = adverseEventReportDao.getById(id);
-		assertNotNull("report " + id + " is null", report);
-		
-		report.getAdverseEvents().get(0).setComments("Yadda");
-		try {
-			adverseEventReportDao.save(report);
-			fail("Should have failed to update report");
-		}catch(AccessDeniedException ex){
-			assertTrue(true);
-		} catch (RuntimeException ex) {
-			Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-			assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
-		}
-		SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
-		try {
-			adverseEventReportDao.save(report);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			fail("Should not have failed to update report: "
-					+ ex.getMessage());
-		}
-
-	}
-
+        return newReport;
+    }
 }
