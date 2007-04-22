@@ -1,26 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.tools.IndexedLazyList;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.Collection;
-import java.util.ListIterator;
-
-import org.apache.commons.collections15.map.LazyMap;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.list.AbstractListDecorator;
+import org.apache.commons.collections15.map.LazyMap;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * This is a nested collection view of an AdverseEventReport, exposing the various attributions

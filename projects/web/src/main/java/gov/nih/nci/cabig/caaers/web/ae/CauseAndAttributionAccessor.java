@@ -1,19 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * @author Rhett Sutphin
@@ -22,8 +21,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     private static final Map<String, CauseAndAttributionAccessor<?, ?>> KEY_TO_ACCESSOR
         = new LinkedHashMap<String, CauseAndAttributionAccessor<?, ?>>();
 
-    public static final CauseAndAttributionAccessor<StudyAgent, StudyAgentAttribution>
-        STUDY_AGENT = new StudyAgentAccessor();
+    public static final CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution>
+        COURSE_AGENT = new CourseAgentAccessor();
     public static final CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution>
         CONCOMITANT_MEDICATION = new ConcomitantMedicationAccessor();
 
@@ -53,30 +52,30 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
     public abstract String getDisplayName(C c);
 
-    private static class StudyAgentAccessor extends CauseAndAttributionAccessor<StudyAgent, StudyAgentAttribution> {
+    private static class CourseAgentAccessor extends CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
         @Override
         public String getKey() {
             return AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY;
         }
 
         @Override
-        public List<StudyAgentAttribution> getAttributionsList(AdverseEvent adverseEvent) {
-            return adverseEvent.getStudyAgentAttributions();
+        public List<CourseAgentAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getCourseAgentAttributions();
         }
 
         @Override
-        public StudyAgentAttribution createAttribution() {
-            return new StudyAgentAttribution();
+        public CourseAgentAttribution createAttribution() {
+            return new CourseAgentAttribution();
         }
 
         @Override
-        protected List<StudyAgent> getCauseList(AdverseEventReport aeReport) {
-            return aeReport.getAssignment().getStudySite().getStudy().getStudyAgents();
+        protected List<CourseAgent> getCauseList(AdverseEventReport aeReport) {
+            return aeReport.getTreatmentInformation().getCourseAgents();
         }
 
         @Override
-        public String getDisplayName(StudyAgent studyAgent) {
-            return studyAgent.getAgent().getName();
+        public String getDisplayName(CourseAgent studyAgent) {
+            return studyAgent.getStudyAgent().getAgent().getName();
         }
     }
 

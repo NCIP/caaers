@@ -6,11 +6,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 
 /**
  * @author Rhett Sutphin
@@ -34,8 +33,8 @@ public class AttributionMapTest extends CaaersTestCase {
         report.getConcomitantMedications().add(CON_MED_1);
         report.getAssignment().getStudySite().getStudy().getStudyAgents().add(STUDY_AGENT_0);
 
-        getAe(0).getStudyAgentAttributions().add(new StudyAgentAttribution());
-        getAe(0).getStudyAgentAttributions().get(0).setAttribution(Attribution.UNLIKELY);
+        getAe(0).getCourseAgentAttributions().add(new CourseAgentAttribution());
+        getAe(0).getCourseAgentAttributions().get(0).setAttribution(Attribution.UNLIKELY);
         getAe(0).getConcomitantMedicationAttributions().add(new ConcomitantMedicationAttribution());
         getAe(0).getConcomitantMedicationAttributions().get(0).setAttribution(Attribution.POSSIBLE);
 
@@ -49,7 +48,7 @@ public class AttributionMapTest extends CaaersTestCase {
 
     public void testGetExistingStudyAgentAttribution() throws Exception {
         assertAttributionsMatch(
-            getAe(0).getStudyAgentAttributions().get(0).getAttribution(),
+            getAe(0).getCourseAgentAttributions().get(0).getAttribution(),
             AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY, 0, 0
         );
     }
@@ -65,7 +64,7 @@ public class AttributionMapTest extends CaaersTestCase {
         map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
             .get(1).add(Attribution.PROBABLE);
         assertAttributionsMatch(
-            getAe(1).getStudyAgentAttributions().get(0).getAttribution(),
+            getAe(1).getCourseAgentAttributions().get(0).getAttribution(),
             AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY, 1, 0
         );
     }
@@ -83,7 +82,7 @@ public class AttributionMapTest extends CaaersTestCase {
         map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
             .get(0).set(0, Attribution.PROBABLE);
         assertEquals(Attribution.PROBABLE,
-            getAe(0).getStudyAgentAttributions().get(0).getAttribution());
+            getAe(0).getCourseAgentAttributions().get(0).getAttribution());
     }
 
     public void testSetExistingConMedAttribution() throws Exception {
@@ -106,8 +105,8 @@ public class AttributionMapTest extends CaaersTestCase {
     public void testSetNonExistentStudyAgentAttribution() throws Exception {
         map.get(AdverseEventInputCommand.STUDY_AGENT_ATTRIBUTION_KEY)
             .get(1).set(0, Attribution.UNRELATED);
-        StudyAgentAttribution actualAeAttribution
-            = getAe(1).getStudyAgentAttributions().get(0);
+        CourseAgentAttribution actualAeAttribution
+            = getAe(1).getCourseAgentAttributions().get(0);
         assertEquals("Wrong attribution", Attribution.UNRELATED, actualAeAttribution.getAttribution());
         assertSame("AE not set", getAe(1), actualAeAttribution.getAdverseEvent());
         assertSame("Cause not set", STUDY_AGENT_0, actualAeAttribution.getCause());

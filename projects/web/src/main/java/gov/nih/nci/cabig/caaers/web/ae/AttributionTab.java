@@ -41,8 +41,8 @@ public class AttributionTab extends AeTab {
 
     private List<AttributionBlock> createBlocks(AdverseEventReport report) {
         List<AttributionBlock> blocks = new ArrayList<AttributionBlock>();
-        blocks.add(new AttributionBlock("Study agent",
-            createGroups(CauseAndAttributionAccessor.STUDY_AGENT, report)));
+        blocks.add(new AttributionBlock("Treatment",
+            createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
         blocks.add(new AttributionBlock("Concomitant medication",
             createGroups(CauseAndAttributionAccessor.CONCOMITANT_MEDICATION, report)));
         return blocks;
