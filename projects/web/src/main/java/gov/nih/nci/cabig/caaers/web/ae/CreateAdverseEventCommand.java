@@ -4,14 +4,19 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -48,12 +53,48 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport = new AdverseEventReport();
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
-
+        
+        this.aeReport.setReporter(createReporter());                                  
+        this.aeReport.setPhysician(createPhysician());                           
+                
         this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
     }
 
+    private Reporter createReporter() {    	    	
+    	Reporter reporter = new Reporter();
+    	
+    	reporter.setContactMechanims(createContactMechanismList());
+    	return reporter;                    	
+    }
+    
+    private Physician createPhysician() {    	    	
+    	Physician physician = new Physician();
+    	
+    	physician.setContactMechanims(createContactMechanismList());
+    	return physician;                    	
+    }
+    
+    private ArrayList<ContactMechanism> createContactMechanismList()
+    {
+    	ArrayList<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
+        
+        ContactMechanism contact = new ContactMechanism();
+        contact.setType(EMAIL);
+        contacts.add(contact);
+        
+        contact = new ContactMechanism();
+        contact.setType(FAX);
+        contacts.add(contact);
+        
+        contact = new ContactMechanism();
+        contact.setType(PHONE);
+        contacts.add(contact);
+        
+        return contacts;
+    }
+    
     ////// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
@@ -105,6 +146,11 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         // TODO: this is temporary -- need a cleaner way to force this to load
         // in same session as study is loaded and/or reassociate study with hib session later
         if (study != null) this.study.getStudyAgents().size();
+        if (study != null) this.study.getStudyDiseases().size();
+        if (study != null) this.study.getStudySites().size();
+        for(StudySite site : study.getStudySites()){
+        	site.getStudyPersonnels().size();
+        }
         updateReportAssignmentLink();
     }
 
@@ -164,5 +210,9 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
 	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
 		this.ruleExecutionService = ruleExecutionService;
+	}
+
+	public void setAeReport(AdverseEventReport aeReport) {
+		this.aeReport = aeReport;
 	}    
 }
