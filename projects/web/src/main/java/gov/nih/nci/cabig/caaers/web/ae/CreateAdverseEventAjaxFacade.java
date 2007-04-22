@@ -4,12 +4,14 @@ import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -45,17 +47,17 @@ public class CreateAdverseEventAjaxFacade {
     private CtcDao ctcDao;
     private AdverseEventReportDao aeReportDao;
     private ResearchStaffDao researchStaffDao;
-    // private DiseaseSiteDao diseaseSiteDao;
+    private AnatomicSiteDao anatomicSiteDao;
     private InteroperationService interoperationService;
 
     
-/*  TODO: DiseaseSite & its DAO haven't been committed, so I'm commenting this out.  RMS20070422.
-    public List<DiseaseSite> matchDisease(String text) {
-        List<DiseaseSite> diseaseSites = diseaseSiteDao.getBySubnames(extractSubnames(text));
+
+    public List<AnatomicSite> matchAnatomicSite(String text) {
+        List<AnatomicSite> anatomicSites = anatomicSiteDao.getBySubnames(extractSubnames(text));
         
-        return diseaseSites;                
+        return anatomicSites;                
     }  
-*/
+
 
     public ResearchStaff getResearchStaff(String text) {    	
     	ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
@@ -268,9 +270,9 @@ public class CreateAdverseEventAjaxFacade {
         this.interoperationService = interoperationService;
     }
 
-    // TODO: see above
-//    @Required
-//    public void setDiseaseSiteDao(DiseaseSiteDao diseaseSiteDao) {
-//        this.diseaseSiteDao = diseaseSiteDao;
-//    }
+    
+    @Required
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+        this.anatomicSiteDao = anatomicSiteDao;
+    }
 }
