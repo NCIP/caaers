@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -17,7 +19,6 @@ import org.springframework.validation.Errors;
  * @author Kulasekaran
  */
 public class ReporterTab extends AeTab {
-    
 	private ResearchStaffDao researchStaffDao;
 	
     public ReporterTab() {
@@ -26,9 +27,8 @@ public class ReporterTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        return map;
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+        return new InputFieldGroupMap();
     }
 
     @Override
@@ -43,14 +43,6 @@ public class ReporterTab extends AeTab {
         return false;
     }
 
-    @Override
-    protected void validate(
-        AdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-    	
-    }        
-    
     private List<ResearchStaff> getStaff()
 	{
 		return researchStaffDao.getAll();  	

@@ -79,19 +79,22 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private ArrayList<ContactMechanism> createContactMechanismList()
     {
     	ArrayList<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
-        
+/*
+        // TODO: this code references undefined fields.
+        // Please fix them.  RMS20070422.
         ContactMechanism contact = new ContactMechanism();
         contact.setType(EMAIL);
         contacts.add(contact);
-        
+
         contact = new ContactMechanism();
         contact.setType(FAX);
         contacts.add(contact);
-        
+
         contact = new ContactMechanism();
         contact.setType(PHONE);
         contacts.add(contact);
-        
+*/
+
         return contacts;
     }
     

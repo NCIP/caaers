@@ -1,44 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.Map;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
+import java.util.Map;
 
 /**
  * @author Kulasekaran
  */
-public class MedicalInfoTab extends AeTab {	
-	
+public class MedicalInfoTab extends AeTab {
     public MedicalInfoTab() {
         super("Medical info", "Medical", "ae/medical");
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        return map;
+    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+        return new InputFieldGroupMap();
     }
 
-    @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();        
-        
-        return refdata;
-    }
-        
     @Override
     public boolean isAllowDirtyForward() {
         return false;
     }
-
-    @Override
-    protected void validate(
-        AdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-    	
-    }        
-    
 }
