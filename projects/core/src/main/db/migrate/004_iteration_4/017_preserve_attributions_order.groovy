@@ -4,6 +4,6 @@ class PreserveAttributionsOrder extends edu.northwestern.bioinformatics.bering.M
     }
 
     void down() {
-        dropColumn("ae_attributions")
+        dropColumn("ae_attributions", "list_index")
     }
 }
