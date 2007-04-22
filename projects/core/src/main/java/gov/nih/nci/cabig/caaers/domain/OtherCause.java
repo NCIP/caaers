@@ -14,7 +14,7 @@ import javax.persistence.Column;
 @Table(name = "other_causes")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_ae_other_causes_id")
+        @Parameter(name="sequence", value="seq_other_causes_id")
     }
 )
 public class OtherCause extends AbstractAdverseEventReportChild {
