@@ -11,6 +11,12 @@
             <param name="acceptOnMatch" value="false"/>
             <param name="stringToMatch" value="Unable to proxy method"/>
         </filter>
+        <!-- conceal expected authorization switch warnings when
+            running tests -->
+        <filter class="org.apache.log4j.varia.StringMatchFilter">
+            <param name="acceptOnMatch" value="false"/>
+            <param name="stringToMatch" value="##### AuthorizationSwitch"/>
+        </filter>
     </appender>
 
     <!-- for testing, purge the log on each run -->
