@@ -43,9 +43,10 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
-    private Reporter reporter;
-    
+    private Reporter reporter;    
     private Physician physician;
+    private ParticipantHistory participantHistory;
+    private DiseaseHistory diseaseHistory;
     
     // TODO
     // private MedicalInformation medicalInformation;
@@ -216,8 +217,7 @@ public class AdverseEventReport extends AbstractDomainObject {
 	public void setReporter(Reporter reporter) {
 		this.reporter = reporter;
 	}
-	
-	
+		
 	@OneToOne
     @JoinColumn(name="physician_id")
     @Cascade(value = { CascadeType.ALL })
@@ -228,4 +228,27 @@ public class AdverseEventReport extends AbstractDomainObject {
 	public void setPhysician(Physician physician) {
 		this.physician = physician;
 	}
+	
+	@OneToOne
+    @JoinColumn(name="disease_history_id")
+    @Cascade(value = { CascadeType.ALL })
+	public DiseaseHistory getDiseaseHistory() {
+		return diseaseHistory;
+	}
+
+	public void setDiseaseHistory(DiseaseHistory diseaseHistory) {
+		this.diseaseHistory = diseaseHistory;
+	}
+
+	@OneToOne
+    @JoinColumn(name="participant_history_id")
+    @Cascade(value = { CascadeType.ALL })
+	public ParticipantHistory getParticipantHistory() {
+		return participantHistory;
+	}
+
+	public void setParticipantHistory(ParticipantHistory participantHistory) {
+		this.participantHistory = participantHistory;
+	}
+
 }
