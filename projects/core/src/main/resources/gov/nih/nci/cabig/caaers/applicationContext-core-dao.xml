@@ -53,6 +53,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ContactMechanism</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
+   	            <value>gov.nih.nci.cabig.caaers.domain.DiseaseSite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
@@ -133,4 +134,5 @@
     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
 	<bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
 	<bean id="physicianDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PhysicianDao"/>
+	<bean id="diseaseSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseSiteDao"/>
 </beans>
