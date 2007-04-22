@@ -120,4 +120,12 @@ public class AdverseEventReportTest extends CaaersTestCase {
             assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
         }
     }
+    
+/*  It would be nice if this test could pass, but it seems to cause issues with hibernate.
+    public void testTreatmentInformationNeverNull() throws Exception {
+        assertNotNull(report.getTreatmentInformation());
+        report.setTreatmentInformation(null);
+        assertNotNull(report.getTreatmentInformation());
+    }
+*/
 }

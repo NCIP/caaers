@@ -92,4 +92,33 @@
         report_id="-1"
         />
     <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70" cause_id="-31" cause_type="CM" attribution_code="4"/>
+
+    <TREATMENTS
+        id="-10"
+        report_id="-1"
+        first_course_date="2005-06-04"
+        adverse_event_course_date="2006-07-09"
+        adverse_event_course_number="8"
+        />
+    <COURSE_AGENTS
+        id="-20"
+        treatment_id="-10"
+        list_index="1"
+        administration_delay_minutes="240"
+        dose_amount="17.4"
+        dose_units="mg"
+        dose_route="aural"
+        total_dose_this_course="7"
+        duration_and_schedule="8 times every third hour"
+        />
+    <COURSE_AGENTS
+        id="-19"
+        treatment_id="-10"
+        list_index="0"
+        dose_amount=".33"
+        dose_units="kg"
+        dose_route="oral"
+        total_dose_this_course=".84"
+        duration_and_schedule="daily"
+        />
 </dataset>

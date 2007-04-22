@@ -50,16 +50,17 @@
                 <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
-	            <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ContactMechanism</value>
-   	            <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
-  	            <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.StudyAgentAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
-
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
             </list>

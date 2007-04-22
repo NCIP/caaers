@@ -44,7 +44,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     private List<ConcomitantMedication> concomitantMedicationsInternal;
     private List<ConcomitantMedication> concomitantMedications;
 
-    // private TreatmentInformation treatmentInformation;
+    private TreatmentInformation treatmentInformation;
 
     private Reporter reporter;
     private Physician physician;
@@ -57,7 +57,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     // private List<MedicalDevice> medicalDevices;
     // private ReporterInfo reporterInfo;    
 
-	public AdverseEventReport() {
+    public AdverseEventReport() {
         setAdverseEventsInternal(new ArrayList<AdverseEvent>());
         setLabsInternal(new ArrayList<Lab>());
         setConcomitantMedicationsInternal(new ArrayList<ConcomitantMedication>());
@@ -208,17 +208,17 @@ public class AdverseEventReport extends AbstractDomainObject {
         createLazyConcomitantMedications();
     }
 
-/*  // Not ready to commit yet.
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public TreatmentInformation getTreatmentInformation() {
-        if (treatmentInformation == null) treatmentInformation = new TreatmentInformation();
+        //if (treatmentInformation == null) treatmentInformation = new TreatmentInformation();
         return treatmentInformation;
     }
 
     public void setTreatmentInformation(TreatmentInformation treatmentInformation) {
         this.treatmentInformation = treatmentInformation;
+        if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
-*/
 
     @OneToOne
     @JoinColumn(name="reporter_id")

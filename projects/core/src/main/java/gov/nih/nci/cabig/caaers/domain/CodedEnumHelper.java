@@ -9,7 +9,7 @@ import java.util.HashMap;
  *
  * @author Rhett Sutphin
  */
-class CodedEnumHelper {
+class CodedEnumHelper extends EnumHelper {
     private static Map<Class<? extends CodedEnum>, Map<Integer, Object>> byClassAndCode
         = new HashMap<Class<? extends CodedEnum>, Map<Integer, Object>>();
 
@@ -31,11 +31,5 @@ class CodedEnumHelper {
         return new StringBuilder()
             .append(instance.getCode()).append(": ")
             .append(instance.getDisplayName()).toString();
-    }
-
-    static <T extends Enum<T> & CodedEnum> String titleCasedName(T instance) {
-        StringBuilder name = new StringBuilder(instance.name().toLowerCase());
-        name.replace(0, 1, name.substring(0, 1).toUpperCase());
-        return name.toString();
     }
 }
