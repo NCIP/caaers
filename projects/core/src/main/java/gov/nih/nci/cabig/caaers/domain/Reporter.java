@@ -20,7 +20,7 @@ import org.hibernate.annotations.Parameter;
 @Table
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_repoter_id")
+        @Parameter(name="sequence", value="seq_reporters_id")
     }
 )
 public class Reporter extends Person {
