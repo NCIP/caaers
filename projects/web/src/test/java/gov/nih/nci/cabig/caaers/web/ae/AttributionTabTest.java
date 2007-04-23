@@ -7,10 +7,13 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.Map;
 import java.util.List;
+import java.math.BigDecimal;
 
 /**
  * @author Rhett Sutphin
@@ -25,10 +28,17 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
         ensureCourseAgentCount(2);
         ensureAeCount(4);
 
+        CourseAgent ca0 = command.getAeReport().getTreatmentInformation().getCourseAgents().get(0);
+        ca0.setStudyAgent(createStudyAgent("Witch niece"));
+        ca0.getDose().setAmount(new BigDecimal(56));
+        ca0.getDose().setUnits("ug");
+        ca0.getDose().setRoute("IV");
+
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
         assertEquals("Wrong number of study agent groups", 2, map.size());
         InputFieldGroup actualGroup0 = map.get("courseAgent0");
         assertNotNull(actualGroup0);
+        assertEquals("Witch niece (56ug IV)", actualGroup0.getDisplayName());
         assertEquals(4, actualGroup0.getFields().size());
         assertEquals("attributionMap[courseAgent][0][0]", actualGroup0.getFields().get(0).getPropertyName());
         assertEquals("attributionMap[courseAgent][1][0]", actualGroup0.getFields().get(1).getPropertyName());

@@ -80,9 +80,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(CourseAgent courseAgent) {
-            // TODO: correct this
-            // return courseAgent.getStudyAgent().getAgent().getName();
-            return courseAgent.toString();
+            return courseAgent.getDisplayName();
         }
     }
 
