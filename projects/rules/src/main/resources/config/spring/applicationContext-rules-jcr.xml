@@ -33,7 +33,7 @@
 	
 	<bean id="repository" class="org.springmodules.jcr.jackrabbit.TransientRepositoryFactoryBean">
 		<property name="configuration" value="classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-postgresql.xml"/>
-		<property name="homeDir" value="/repo"/>
+		<property name="homeDir" value="file://Users/vinaykumar/Documents/repo"/>
 	</bean>
 
 
