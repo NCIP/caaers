@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 
 /**
  * @author Rhett Sutphin
@@ -69,6 +70,20 @@ public class CourseAgent extends AbstractDomainObject {
         }
         setAdministrationDelayAmount(units == null ? null : units.fromMinutes(administrationDelay));
         setAdministrationDelayUnits(units);
+    }
+
+    @Transient
+    public String getDisplayName() {
+        StringBuilder sb = new StringBuilder();
+        if (getStudyAgent() == null) {
+            sb.append("[no agent]");
+        } else {
+            sb.append(getStudyAgent().getAgent().getName());
+        }
+        if (getDose() != null && getDose().getAmount() != null) {
+            sb.append(" (").append(getDose().getDisplayName()).append(')');
+        }
+        return sb.toString();
     }
 
     ////// BEAN PROPERTIES

@@ -60,4 +60,21 @@ public class CourseAgentTest extends CaaersTestCase {
         assertEquals(DelayUnits.MINUTES, courseAgent.getAdministrationDelayUnits());
         assertEquals("4258.3", courseAgent.getAdministrationDelayAmount().toString());
     }
+
+    public void testGetDisplayNameWhenBlank() throws Exception {
+        assertEquals("[no agent]", courseAgent.getDisplayName());
+    }
+
+    public void testDisplayNameWithNoDose() throws Exception {
+        courseAgent.setStudyAgent(Fixtures.createStudyAgent("Witch hazel"));
+        assertEquals("Witch hazel", courseAgent.getDisplayName());
+    }
+
+    public void testDisplayName() throws Exception {
+        courseAgent.setStudyAgent(Fixtures.createStudyAgent("Witch hazel"));
+        courseAgent.getDose().setAmount(new BigDecimal("532.1"));
+        courseAgent.getDose().setUnits("L");
+        courseAgent.getDose().setRoute("oral");
+        assertEquals("Witch hazel (532.1L oral)", courseAgent.getDisplayName());
+    }
 }
