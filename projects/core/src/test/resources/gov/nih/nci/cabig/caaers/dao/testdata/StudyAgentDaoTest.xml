@@ -1,0 +1,17 @@
+<dataset>
+    <STUDIES
+        id="-2"
+        short_title="Zeppo"
+        long_title="Zeppelin"
+        primary_sponsor_code="Z2"
+        />
+    <AGENTS
+        id="-3002"
+        name="Orange"
+        />
+    <STUDY_AGENTS
+        id="-11"
+        study_id="-2"
+        agent_id="-3002"
+        />
+</dataset>

@@ -79,7 +79,7 @@ public class StudyAgent extends AbstractDomainObject{
 	
 	@ManyToOne
     @JoinColumn(name = "agent_id")
-    @Cascade(value = { CascadeType.ALL })
+    // We should never create new agents here, so no cascades
 	public Agent getAgent() {
 		return agent;
 	}

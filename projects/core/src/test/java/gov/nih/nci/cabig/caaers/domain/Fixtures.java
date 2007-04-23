@@ -49,4 +49,11 @@ public class Fixtures {
 
         return assignment;
     }
+
+    public static StudyAgent createStudyAgent(String agentName) {
+        StudyAgent agent = new StudyAgent();
+        agent.setAgent(new Agent());
+        agent.getAgent().setName(agentName);
+        return agent;
+    }
 }
