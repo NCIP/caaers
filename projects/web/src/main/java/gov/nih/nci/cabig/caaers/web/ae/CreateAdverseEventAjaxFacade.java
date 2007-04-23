@@ -183,6 +183,16 @@ public class CreateAdverseEventAjaxFacade {
         return renderIndexedAjaxView("conMedFormSection", index, aeReportId);
     }
 
+    /**
+     * Returns the HTML for the section of the course agent form for
+     * the course agent with the given index
+     * @param index
+     * @return
+     */
+    public String addCourseAgent(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("courseAgentFormSection", index, aeReportId);
+    }
+
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
         params.put("index", Integer.toString(index));

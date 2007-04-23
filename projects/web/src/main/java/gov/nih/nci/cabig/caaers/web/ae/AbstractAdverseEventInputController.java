@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -43,6 +44,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected CtcTermDao ctcTermDao;
     protected AgentDao agentDao;
     protected AdverseEventReportDao reportDao;
+    protected StudyAgentDao studyAgentDao;
     protected RuleExecutionService ruleExecutionService;
 
     protected AbstractAdverseEventInputController() {
@@ -53,8 +55,8 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected void addTabs(Flow<AdverseEventInputCommand> flow) {
         flow.addTab(new BasicsTab());
         flow.addTab(new MedicalInfoTab());
+        flow.addTab(new TreatmentTab());
         flow.addTab(new LabsTab());
-        flow.addTab(new EmptyAeTab("Treatment information", "Treatment", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
         flow.addTab(new ConcomitantMedicationsTab());
@@ -72,6 +74,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -137,6 +140,10 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     public void setReportDao(AdverseEventReportDao reportDao) {
         this.reportDao = reportDao;
+    }
+
+    public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
+        this.studyAgentDao = studyAgentDao;
     }
 
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {

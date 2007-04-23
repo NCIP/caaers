@@ -8,10 +8,13 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.CourseDate;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import org.springframework.web.servlet.ModelAndView;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Calendar;
+import java.math.BigDecimal;
 
 /**
  * @author Rhett Sutphin
@@ -33,11 +36,12 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setAssignmentDao(assignmentDao);
         controller.setReportDao(adverseEventReportDao);
         controller.setAgentDao(agentDao);
+        controller.setStudyAgentDao(studyAgentDao);
         controller.afterPropertiesSet();
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
-        assignment = Fixtures.createAssignment();
+        assignment = createAssignment();
 
         expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
             .andReturn(assignment).anyTimes();
@@ -68,6 +72,41 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         CreateAdverseEventCommand command = bindAndReturnCommand();
         assertSame(expectedAgent,
             command.getAeReport().getConcomitantMedications().get(2).getAgent());
+    }
+
+    public void testBindStudyAgent() throws Exception {
+        StudyAgent expected = setId(332, createStudyAgent("Zed"));
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].studyAgent", "332");
+        expect(studyAgentDao.getById(332)).andReturn(expected);
+
+        CreateAdverseEventCommand command = bindAndReturnCommand();
+        assertSame(expected,
+            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getStudyAgent());
+    }
+
+    public void testBindAdverseEventCourse() throws Exception {
+        request.setParameter("aeReport.treatmentInformation.adverseEventCourse.date", "7/3/2023");
+        request.setParameter("aeReport.treatmentInformation.adverseEventCourse.number", "7");
+
+        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CourseDate aeCourse = command.getAeReport().getTreatmentInformation().getAdverseEventCourse();
+
+        assertEquals(7, (int) aeCourse.getNumber());
+        assertDayOfDate(2023, Calendar.JULY, 3, aeCourse.getDate());
+    }
+
+    public void testBindBigDecimalFields() throws Exception {
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].dose.amount", "432.1");
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].totalDoseAdministeredThisCourse", "9433");
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].administrationDelayAmount", "12");
+
+        CreateAdverseEventCommand command = bindAndReturnCommand();
+        assertEquals(new BigDecimal("432.1"),
+            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getDose().getAmount());
+        assertEquals(new BigDecimal("9433"),
+            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getTotalDoseAdministeredThisCourse());
+        assertEquals(new BigDecimal("12"),
+            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getAdministrationDelayAmount());
     }
     
     public void testBindAttributions() throws Exception {

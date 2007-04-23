@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -60,6 +61,9 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport = aeReport;
         if (aeReport.getAdverseEvents().size() == 0) {
             aeReport.addAdverseEvent(new AdverseEvent());
+        }
+        if (aeReport.getTreatmentInformation() == null) {
+            aeReport.setTreatmentInformation(new TreatmentInformation());
         }
         this.attributionMap = new AttributionMap(aeReport);
     }

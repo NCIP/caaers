@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 /**
@@ -23,6 +24,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected StudyParticipantAssignmentDao assignmentDao;
     protected AdverseEventReportDao adverseEventReportDao;
     protected RuleExecutionService ruleExecutionService;
+    protected StudyAgentDao studyAgentDao;
     protected AgentDao agentDao;
 
     @Override
@@ -36,6 +38,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         adverseEventReportDao = registerDaoMockFor(AdverseEventReportDao.class);
         ruleExecutionService = registerMockFor(RuleExecutionService.class);
         agentDao = registerDaoMockFor(AgentDao.class);
+        studyAgentDao = registerDaoMockFor(StudyAgentDao.class);
 
         autowirer = new TabAutowirer();
         autowirer.setAdverseEventReportDao(adverseEventReportDao);
