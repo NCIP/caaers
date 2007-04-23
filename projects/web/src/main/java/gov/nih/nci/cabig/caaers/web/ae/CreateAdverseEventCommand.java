@@ -7,9 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -58,7 +60,10 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport.setTreatmentInformation(new TreatmentInformation());
         this.aeReport.setReporter(createReporter());
         this.aeReport.setPhysician(createPhysician());                           
-                
+        this.aeReport.setDiseaseHistory(new DiseaseHistory());
+        this.aeReport.setParticipantHistory(new ParticipantHistory());
+               
+        
         this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
@@ -81,7 +86,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private ArrayList<ContactMechanism> createContactMechanismList()
     {
     	ArrayList<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
-/*
+
         // TODO: this code references undefined fields.
         // Please fix them.  RMS20070422.
         ContactMechanism contact = new ContactMechanism();
@@ -95,7 +100,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         contact = new ContactMechanism();
         contact.setType(PHONE);
         contacts.add(contact);
-*/
+
 
         return contacts;
     }
