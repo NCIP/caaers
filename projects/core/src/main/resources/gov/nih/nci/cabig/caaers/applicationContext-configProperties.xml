@@ -237,7 +237,33 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         </bean>                                           
                      </list>
                 </entry>                                           
-                
+
+                <entry key="heightUnitsRefData">
+                    <list>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Inch" />
+                            <property name="desc" value="Inch" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Centimeter" />
+                            <property name="desc" value="Centimeter" />
+                        </bean>                                           
+                     </list>
+                </entry>                                           
+
+
+                <entry key="weightUnitsRefData">
+                    <list>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Kilogram" />
+                            <property name="desc" value="Kilogram" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Pound" />
+                            <property name="desc" value="Pound" />
+                        </bean>                                           
+                     </list>
+                </entry>                                                           
             </map>
         </property>                      
     </bean>
