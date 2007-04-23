@@ -17,6 +17,10 @@ public interface AdverseEventInputCommand {
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
 
+    String EMAIL = "email";
+    String FAX = "fax";
+    String PHONE = "phone";
+    
     StudyParticipantAssignment getAssignment();
 
     Participant getParticipant();
