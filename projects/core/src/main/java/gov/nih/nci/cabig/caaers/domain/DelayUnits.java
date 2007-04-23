@@ -18,7 +18,7 @@ public enum DelayUnits {
         this.factor = new BigDecimal(factor);
     }
 
-    String getDisplayName() {
+    public String getDisplayName() {
         return titleCasedName(this);
     }
 

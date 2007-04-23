@@ -54,4 +54,10 @@ public class DelayUnitsTest extends CaaersTestCase {
         assertFalse(HOURS.isExact(new BigDecimal(1441)));
         assertFalse(HOURS.isExact(new BigDecimal("1440.2")));
     }
+
+    public void testDisplayName() throws Exception {
+        assertEquals("Hours", HOURS.getDisplayName());
+        assertEquals("Minutes", MINUTES.getDisplayName());
+        assertEquals("Days", DAYS.getDisplayName());
+    }
 }
