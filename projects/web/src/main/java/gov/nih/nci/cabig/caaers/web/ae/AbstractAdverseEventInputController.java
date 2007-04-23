@@ -60,6 +60,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
         flow.addTab(new ConcomitantMedicationsTab());
+        flow.addTab(new OtherCausesTab());
         flow.addTab(new AttributionTab());
         flow.addTab(new ReporterTab());
         flow.addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
