@@ -21,7 +21,7 @@ public class ParticipantHistory extends AbstractIdentifiableDomainObject
 {			
 	private int height;
     private int weight;
-    private String baselinePerformance;
+    private String baselinePerformanceStatus;
 
     public int getHeight() {
 		return height;
@@ -39,12 +39,12 @@ public class ParticipantHistory extends AbstractIdentifiableDomainObject
 		this.weight = weight;
 	}	
 
-	public String getBaselinePerformance() {
-		return baselinePerformance;
+	public String getBaselinePerformanceStatus() {
+		return baselinePerformanceStatus;
 	}
 
-	public void setBaselinePerformance(String baselinePerformance) {
-		this.baselinePerformance = baselinePerformance;
+	public void setBaselinePerformanceStatus(String baselinePerformance) {
+		this.baselinePerformanceStatus = baselinePerformance;
 	}
 }
 
