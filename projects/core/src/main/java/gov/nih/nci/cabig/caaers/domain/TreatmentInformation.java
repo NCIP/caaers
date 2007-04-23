@@ -41,7 +41,7 @@ public class TreatmentInformation extends AbstractDomainObject implements Advers
     private List<CourseAgent> courseAgents;
 
     private Date firstCourseDate;
-    private CourseDate adverseEventCourse = new CourseDate();
+    private CourseDate adverseEventCourse;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -101,6 +101,7 @@ public class TreatmentInformation extends AbstractDomainObject implements Advers
         @AttributeOverride(name = "number", column = @Column(name = "adverse_event_course_number"))
     })
     public CourseDate getAdverseEventCourse() {
+        if (adverseEventCourse == null) adverseEventCourse = new CourseDate();
         return adverseEventCourse;
     }
 
