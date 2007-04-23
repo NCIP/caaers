@@ -19,23 +19,25 @@ import org.hibernate.annotations.Parameter;
 )
 public class ParticipantHistory extends AbstractIdentifiableDomainObject
 {			
-	private int height;
-    private int weight;
+	private float height;
+    private float weight;
     private String baselinePerformanceStatus;
-
-    public int getHeight() {
+    private String heightUnitOfMeasure;
+    private String weightUnitOfMeasure;
+    
+    public float getHeight() {
 		return height;
 	}
     
-	public void setHeight(int height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 	
-	public int getWeight() {
+	public float getWeight() {
 		return weight;
 	}
 	
-	public void setWeight(int weight) {
+	public void setWeight(float weight) {
 		this.weight = weight;
 	}	
 
@@ -45,6 +47,22 @@ public class ParticipantHistory extends AbstractIdentifiableDomainObject
 
 	public void setBaselinePerformanceStatus(String baselinePerformance) {
 		this.baselinePerformanceStatus = baselinePerformance;
+	}
+
+	public String getHeightUnitOfMeasure() {
+		return heightUnitOfMeasure;
+	}
+
+	public void setHeightUnitOfMeasure(String heightUnitOfMeasure) {
+		this.heightUnitOfMeasure = heightUnitOfMeasure;
+	}
+
+	public String getWeightUnitOfMeasure() {
+		return weightUnitOfMeasure;
+	}
+
+	public void setWeightUnitOfMeasure(String weightUnitOfMeasure) {
+		this.weightUnitOfMeasure = weightUnitOfMeasure;
 	}
 }
 
