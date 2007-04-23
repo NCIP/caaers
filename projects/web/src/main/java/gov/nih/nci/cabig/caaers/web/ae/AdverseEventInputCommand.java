@@ -16,6 +16,7 @@ import java.util.Map;
 public interface AdverseEventInputCommand {
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
+    String OTHER_CAUSES_ATTRIBUTION_KEY = "other";
 
     String EMAIL = "email";
     String FAX = "fax";

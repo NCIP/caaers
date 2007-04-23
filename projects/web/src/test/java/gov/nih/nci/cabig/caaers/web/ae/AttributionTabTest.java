@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -83,6 +84,23 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
         assertEquals("attributionMap[conMed][2][2]", actualGroup2.getFields().get(2).getPropertyName());
     }
 
+    public void testOtherCauseFieldsIncluded() throws Exception {
+        ensureOtherCauseCount(2);
+        ensureAeCount(1);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of other cause groups", 2, map.size());
+
+        InputFieldGroup actualGroup0 = map.get("other0");
+        assertNotNull(actualGroup0);
+        assertEquals(1, actualGroup0.getFields().size());
+        assertEquals("attributionMap[other][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        InputFieldGroup actualGroup1 = map.get("other1");
+        assertNotNull(actualGroup1);
+        assertEquals(1, actualGroup1.getFields().size());
+        assertEquals("attributionMap[other][0][1]", actualGroup1.getFields().get(0).getPropertyName());
+    }
+
     public void testCreateStudyAgentBlock() throws Exception {
         ensureCourseAgentCount(1);
         ensureAeCount(2);
@@ -142,6 +160,12 @@ public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
     private void ensureConMedCount(int count) {
         while (command.getAeReport().getConcomitantMedications().size() < count) {
             command.getAeReport().addConcomitantMedication(new ConcomitantMedication());
+        }
+    }
+
+    private void ensureOtherCauseCount(int count) {
+        while (command.getAeReport().getOtherCauses().size() < count) {
+            command.getAeReport().addOtherCause(new OtherCause());
         }
     }
 }

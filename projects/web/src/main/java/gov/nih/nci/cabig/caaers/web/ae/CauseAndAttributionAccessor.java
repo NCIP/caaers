@@ -7,9 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,8 +19,10 @@ import java.util.Map;
 import java.util.Collections;
 
 /**
+ * This class is part of the implementation of AttributionMap and AttributionTab.
+ *
  * @author Rhett Sutphin
-*/
+ */
 public abstract class CauseAndAttributionAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>> {
     private static final Map<String, CauseAndAttributionAccessor<?, ?>> KEY_TO_ACCESSOR
         = new LinkedHashMap<String, CauseAndAttributionAccessor<?, ?>>();
@@ -27,6 +31,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         COURSE_AGENT = new CourseAgentAccessor();
     public static final CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution>
         CONCOMITANT_MEDICATION = new ConcomitantMedicationAccessor();
+    public static final CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution>
+        OTHER_CAUSE = new OtherCauseAccessor();
 
     protected CauseAndAttributionAccessor() {
         KEY_TO_ACCESSOR.put(getKey(), this);
@@ -108,6 +114,33 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         public String getDisplayName(ConcomitantMedication concomitantMedication) {
             return concomitantMedication.getName();
+        }
+    }
+
+    private static class OtherCauseAccessor extends CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
+        @Override
+        public String getKey() {
+            return AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<OtherCause> getCauseList(AdverseEventReport aeReport) {
+            return aeReport.getOtherCauses();
+        }
+
+        @Override
+        public OtherCauseAttribution createAttribution() {
+            return new OtherCauseAttribution();
+        }
+
+        @Override
+        public List<OtherCauseAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getOtherCauseAttributions();
+        }
+
+        @Override
+        public String getDisplayName(OtherCause otherCause) {
+            return otherCause.getText();
         }
     }
 }

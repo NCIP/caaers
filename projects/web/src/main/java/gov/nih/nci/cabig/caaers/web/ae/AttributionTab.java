@@ -45,6 +45,8 @@ public class AttributionTab extends AeTab {
             createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
         blocks.add(new AttributionBlock("Concomitant medication",
             createGroups(CauseAndAttributionAccessor.CONCOMITANT_MEDICATION, report)));
+        blocks.add(new AttributionBlock("Other cause",
+            createGroups(CauseAndAttributionAccessor.OTHER_CAUSE, report)));
         return blocks;
     }
 
