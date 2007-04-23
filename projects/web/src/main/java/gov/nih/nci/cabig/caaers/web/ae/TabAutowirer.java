@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -32,6 +33,7 @@ public class TabAutowirer {
     private CtcDao ctcDao;
     private CtcTermDao ctcTermDao;
     private AdverseEventReportDao adverseEventReportDao;
+    private ResearchStaffDao researchStaffDao;
     private RuleExecutionService ruleExecutionService;
 
     public void injectDependencies(Flow<AdverseEventInputCommand> flow) {
@@ -131,7 +133,15 @@ public class TabAutowirer {
     public void setCtcTermDao(CtcTermDao ctcTermDao) {
         this.ctcTermDao = ctcTermDao;
     }
+    
+    public ResearchStaffDao getResearchStaffDao() {
+		return researchStaffDao;
+	}
 
+	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
+	}
+	
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
         this.ruleExecutionService = ruleExecutionService;
     }
