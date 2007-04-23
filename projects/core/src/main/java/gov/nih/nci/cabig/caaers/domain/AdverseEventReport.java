@@ -278,12 +278,9 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.physician = physician;
     }
 
-    // TODO: The migration containing this column hasn't been committed, so I'm
-    // marking it transient.  RMS20070422.
-    // @OneToOne
-    // @JoinColumn(name="disease_history_id")
-    // @Cascade(value = { CascadeType.ALL })
-    @Transient
+    @OneToOne
+    @JoinColumn(name="disease_history_id")
+    @Cascade(value = { CascadeType.ALL })    
     public DiseaseHistory getDiseaseHistory() {
         return diseaseHistory;
     }
@@ -292,12 +289,9 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.diseaseHistory = diseaseHistory;
     }
 
-    // TODO: The migration containing this column hasn't been committed, so I'm
-    // marking it transient.  RMS20070422.
-    // @OneToOne
-    // @JoinColumn(name="participant_history_id")
-    // @Cascade(value = { CascadeType.ALL })
-    @Transient
+    @OneToOne
+    @JoinColumn(name="participant_history_id")
+    @Cascade(value = { CascadeType.ALL })
     public ParticipantHistory getParticipantHistory() {
         return participantHistory;
     }
