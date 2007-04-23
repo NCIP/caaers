@@ -72,17 +72,30 @@
 
 		<div class="row">
 	        <div class="medical-label">Height (cm)</div>
-			<div class="value"> <input type="text"/> </div>
+			<div class="value"> <form:input path="aeReport.participantHistory.height" /> &nbsp;
+
+				<form:select path="aeReport.participantHistory.heightUnitOfMeasure">
+					<option value="please select --">please select --</option>
+					<form:options items="${heightUnitsRefData}" itemLabel="desc"
+							itemValue="code"/>
+				</form:select>
+				</div>
 		</div>
 
 		<div class="row">
 	        <div class="medical-label">Weight (kg)</div>
-			<div class="value"> <input type="text"/> </div>
+			<div class="value"> <form:input path="aeReport.participantHistory.weight" /> &nbsp;
+				<form:select path="aeReport.participantHistory.weightUnitOfMeasure">
+					<option value="please select --">please select --</option>
+					<form:options items="${weightUnitsRefData}" itemLabel="desc"
+							itemValue="code"/>
+				</form:select>
+			</div>
 		</div>
 
 		<div class="row">
 	        <div class="medical-label">Baseline performance status</div>
-			<div class="value"> <input type="text"/> </div>
+			<div class="value"> <form:input path="aeReport.participantHistory.baselinePerformanceStatus" /> </div>
 		</div>
 
 		</chrome:division>
@@ -105,7 +118,7 @@
             If appropriate Disease is not in the list above then provide appropriate Disease
         </p>
 		<div class="row">
-	        <div class="medical-label"> Enter Disease </div>
+	        <div class="medical-label"> Disease Name</div>
 			<div class="value"> <input id="dis" type="text"/> </div>
 		</div>
 
@@ -123,11 +136,11 @@
         </div> 
 
 		<p id="instructions">
-            If appropriate Disease Site is not in the list above then provide appropriate Disease
+            If appropriate Disease Site is not in the list above then provide appropriate Disease Site
         </p>
 
 		<div class="row">
-	        <div class="medical-label"> Enter Disease Site </div>
+	        <div class="medical-label"> Disease Site </div>
 			<div class="value"> <input id="dis_site" type="text"/> </div>
 		</div>
 
