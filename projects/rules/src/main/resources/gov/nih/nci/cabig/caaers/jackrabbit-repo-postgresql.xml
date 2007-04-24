@@ -67,9 +67,9 @@
 	<FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
-		<param name="schema" value="postgresql"/>
-		<param name="user" value="postgresql"/>
-		<param name="password" value="postgresql"/>
+		<param name="schema" value="postgres"/>
+		<param name="user" value="postgres"/>
+		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
 	</FileSystem>
 
@@ -86,9 +86,9 @@
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
 		<!--  <param name="schema" value="postgresql"/> -->
-		<param name="schema" value="postgresql"/>
-		<param name="user" value="postgresql"/>
-		<param name="password" value="postgresql"/>
+		<param name="schema" value="postgres"/>
+		<param name="user" value="postgres"/>
+		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
 		<param name="externalBLOBs" value="false"/>
 	</PersistenceManager>
@@ -183,9 +183,9 @@
 	<FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
-	    <param name="schema" value="postgresql"/>
-		<param name="user" value="postgresql"/>
-		<param name="password" value="postgresql"/>
+	    <param name="schema" value="postgres"/>
+		<param name="user" value="postgres"/>
+		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
 	</FileSystem>
 
@@ -207,9 +207,9 @@
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
 		<!--  <param name="schema" value="postgresql"/> -->
-	    <param name="schema" value="postgresql"/>
-		<param name="user" value="postgresql"/>
-		<param name="password" value="postgresql"/>
+	    <param name="schema" value="postgres"/>
+		<param name="user" value="postgres"/>
+		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
 		<param name="externalBLOBs" value="false"/>
 	</PersistenceManager>
