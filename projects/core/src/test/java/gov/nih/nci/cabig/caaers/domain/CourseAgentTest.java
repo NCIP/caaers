@@ -77,4 +77,59 @@ public class CourseAgentTest extends CaaersTestCase {
         courseAgent.getDose().setRoute("oral");
         assertEquals("Witch hazel (532.1L oral)", courseAgent.getDisplayName());
     }
+
+    public void testIsModifiedDoseWhenNotModified() throws Exception {
+        courseAgent.getDose().setAmount(new BigDecimal(37));
+        courseAgent.getDose().setRoute("shampoo");
+        courseAgent.getDose().setUnits("mg");
+        courseAgent.getModifiedDose().setAmount(new BigDecimal(37));
+        courseAgent.getModifiedDose().setRoute("shampoo");
+        courseAgent.getModifiedDose().setUnits("mg");
+
+        assertFalse(courseAgent.isDoseModified());
+    }
+
+    public void testIsModifiedDoseWhenNoModifiedValues() throws Exception {
+        courseAgent.getDose().setAmount(new BigDecimal(37));
+        courseAgent.getDose().setRoute("shampoo");
+        courseAgent.getDose().setUnits("mg");
+        courseAgent.getModifiedDose().setAmount(null);
+        courseAgent.getModifiedDose().setRoute(null);
+        courseAgent.getModifiedDose().setUnits(null);
+
+        assertFalse(courseAgent.isDoseModified());
+    }
+
+    public void testIsModifiedDoseWhenAmountModified() throws Exception {
+        courseAgent.getDose().setAmount(new BigDecimal(37));
+        courseAgent.getDose().setRoute("shampoo");
+        courseAgent.getDose().setUnits("mg");
+        courseAgent.getModifiedDose().setAmount(new BigDecimal(55));
+        courseAgent.getModifiedDose().setRoute("shampoo");
+        courseAgent.getModifiedDose().setUnits("mg");
+
+        assertTrue(courseAgent.isDoseModified());
+    }
+
+    public void testIsModifiedDoseWhenRouteModified() throws Exception {
+        courseAgent.getDose().setAmount(new BigDecimal(37));
+        courseAgent.getDose().setRoute("shampoo");
+        courseAgent.getDose().setUnits("mg");
+        courseAgent.getModifiedDose().setAmount(new BigDecimal(55));
+        courseAgent.getModifiedDose().setRoute("soap");
+        courseAgent.getModifiedDose().setUnits("mg");
+
+        assertTrue(courseAgent.isDoseModified());
+    }
+
+    public void testIsModifiedDoseWhenUnitsModified() throws Exception {
+        courseAgent.getDose().setAmount(new BigDecimal(37));
+        courseAgent.getDose().setRoute("shampoo");
+        courseAgent.getDose().setUnits("mg");
+        courseAgent.getModifiedDose().setAmount(new BigDecimal(55));
+        courseAgent.getModifiedDose().setRoute("shampoo");
+        courseAgent.getModifiedDose().setUnits("g");
+
+        assertTrue(courseAgent.isDoseModified());
+    }
 }

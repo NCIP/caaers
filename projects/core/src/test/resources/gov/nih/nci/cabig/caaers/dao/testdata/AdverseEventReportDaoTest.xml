@@ -108,8 +108,12 @@
         dose_amount="17.4"
         dose_units="mg"
         dose_route="aural"
+        modified_dose_amount="10"
+        modified_dose_units="mg"
+        modified_dose_route="aural"
         total_dose_this_course="7"
         duration_and_schedule="8 times every third hour"
+        last_administered_date="2006-07-10"
         />
     <COURSE_AGENTS
         id="-19"

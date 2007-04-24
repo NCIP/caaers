@@ -11,8 +11,10 @@ import javax.persistence.Transient;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.AttributeOverride;
 import java.math.BigDecimal;
-import java.util.regex.Pattern;
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
@@ -33,13 +35,15 @@ public class CourseAgent extends AbstractDomainObject {
 
     private BigDecimal administrationDelayAmount;
     private DelayUnits administrationDelayUnits;
+    private Dose modifiedDose;
+
+    private Date lastAdministeredDate;
     private BigDecimal totalDoseAdministeredThisCourse;
 
     ////// LOGIC
 
     /**
      * Administration delay is stored in minutes.
-     * @return
      */
     @Column(name = "administration_delay_minutes")
     public BigDecimal getAdministrationDelay() {
@@ -86,6 +90,12 @@ public class CourseAgent extends AbstractDomainObject {
         return sb.toString();
     }
 
+    @Transient
+    public boolean isDoseModified() {
+        return getModifiedDose().getAmount() != null
+            && !getDose().equals(getModifiedDose());
+    }
+
     ////// BEAN PROPERTIES
 
     // This is annotated this way so that the IndexColumn in the parent
@@ -119,6 +129,21 @@ public class CourseAgent extends AbstractDomainObject {
         this.dose = dose;
     }
 
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
+        @AttributeOverride(name = "units", column = @Column(name = "modified_dose_units")),
+        @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route"))
+    })
+    public Dose getModifiedDose() {
+        if (modifiedDose == null) modifiedDose = new Dose();
+        return modifiedDose;
+    }
+
+    public void setModifiedDose(Dose modifiedDose) {
+        this.modifiedDose = modifiedDose;
+    }
+
     public String getDurationAndSchedule() {
         return durationAndSchedule;
     }
@@ -134,6 +159,14 @@ public class CourseAgent extends AbstractDomainObject {
 
     public void setTotalDoseAdministeredThisCourse(BigDecimal totalDoseAdministeredThisCourse) {
         this.totalDoseAdministeredThisCourse = totalDoseAdministeredThisCourse;
+    }
+
+    public Date getLastAdministeredDate() {
+        return lastAdministeredDate;
+    }
+
+    public void setLastAdministeredDate(Date lastAdministeredDate) {
+        this.lastAdministeredDate = lastAdministeredDate;
     }
 
     @Transient

@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 import java.util.Calendar;
@@ -90,8 +89,14 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertEquals("Wrong dose amount", new BigDecimal("17.4"), agent1.getDose().getAmount());
         assertEquals("Wrong dose units", "mg", agent1.getDose().getUnits());
         assertEquals("Wrong dose route", "aural", agent1.getDose().getRoute());
-        assertEquals("Wrong total dose", new BigDecimal("7"), agent1.getTotalDoseAdministeredThisCourse());
         assertEquals("Wrong duration", "8 times every third hour", agent1.getDurationAndSchedule());
+
+        assertEquals("Wrong modified dose amount", new BigDecimal("10"), agent1.getModifiedDose().getAmount());
+        assertEquals("Wrong modified dose units", "mg", agent1.getModifiedDose().getUnits());
+        assertEquals("Wrong modified dose route", "aural", agent1.getModifiedDose().getRoute());
+
+        assertEquals("Wrong total dose", new BigDecimal("7"), agent1.getTotalDoseAdministeredThisCourse());
+        assertDayOfDate("Wrong last administered date", 2006, Calendar.JULY, 10, agent1.getLastAdministeredDate());
     }
 
     public void testGetOtherCauses() throws Exception {
