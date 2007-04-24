@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -49,7 +50,14 @@ import org.jibx.runtime.JiBXException;
 public class JBossXSLTRuleAdapter implements RuleAdapter {
 
 	public Object adapt(RuleSet ruleSet) {
+		List<String> imports = ruleSet.getImport();
+		
+		for(String s: imports){
+			System.out.println(s);
+		}
+		
 		String xml = XMLUtil.marshal(ruleSet);
+		System.out.println("Marshalled:"+xml);
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 		System.setProperty("javax.xml.transform.TransformerFactory",
@@ -57,9 +65,12 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 		TransformerFactory transformerFactory = TransformerFactory
 				.newInstance();
 		try {
-			Templates translet = transformerFactory
-			.newTemplates(new StreamSource(
-					"C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
+			//Templates translet = transformerFactory.newTemplates(new StreamSource("C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
+			
+			Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("jboss_rules.xsl")));
+
+			
+			
 			Transformer transformer = translet.newTransformer();
 			
 			//For Testing Purpose
@@ -99,6 +110,8 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 			}
 			ruleReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
 			
+			outputStream.writeTo(System.out);
+			//System.out.println(outputStream.toByteArray());
 			PackageBuilder packageBuilder = new PackageBuilder(conf);
 			packageBuilder.addPackageFromXml(ruleReader);
 			droolsPackage = packageBuilder.getPackage();
