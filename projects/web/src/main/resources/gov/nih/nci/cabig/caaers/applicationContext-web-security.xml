@@ -14,44 +14,32 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========== PARTICIPANT ===========-->
 		<entry key="/pages/participant/create"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->
 		<entry key="/pages/participant/view"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_user"/> -->			
 		<entry key="/pages/participant/assign"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->			
 		<entry key="/pages/participant/assignStudy"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->
 		<entry key="/pages/participant/assignParticipant"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Participant:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->
 
 		<!--========== STUDY ===========-->
 		<entry key="/pages/study/create"
 			value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_study_coordinator"/> -->
 		<entry key="/pages/study/view"
 			value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_user"/> -->
 		<entry key="/pages/study/search"
 			value="gov.nih.nci.cabig.caaers.domain.Study:READ" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_user"/> -->
 		<entry key="/pages/study/edit"
 			value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.Study:ROLE_caaers_super_user,ROLE_caaers_study_coordinator"/> -->
 
 		<!--========== ADVERSE EVENT REPORT ===========-->
 		<entry key="/pages/ae/create"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->
 		<entry key="/pages/ae/edit"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_participant_coordinator"/> -->
 		<entry key="/pages/ae/list"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ" />
-			<!-- value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:ROLE_caaers_super_user,ROLE_caaers_user"/> -->
 
 		<!--========== TODO: REPORT ===========-->
 
@@ -95,9 +83,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="authorizationSwitch" ref="authorizationSwitch"/>
 		
 		<property name="csmAuthorizationCheck">
-		<!-- 
-			<bean class="gov.nih.nci.cabig.caaers.web.security.RoleCheck"/>
- 		-->
 			<bean
                 class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
 				<property name="csmUserProvisioningManager" ref="csmUserProvisioningManager" />

@@ -4,6 +4,7 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.web.chrome.Task;
+import gov.nih.nci.security.acegi.csm.authorization.AbstractPrivilegeAndObjectIdGenerator;
 
 /**
  * 
