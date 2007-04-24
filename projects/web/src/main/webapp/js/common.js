@@ -70,8 +70,10 @@ Element.addMethods( {
 
 ////// CALENDAR POPUP HANDLERS
 
-Element.observe(window, "load", function() {
-    $$("input.date").each(function(input) {
+AE.registerCalendarPopups = function(containerId) {
+    var sel = "input.date"
+    if (containerId) sel = "#" + containerId + " " + sel
+    $$(sel).each(function(input) {
         var anchorId = input.id + "-calbutton"
         Calendar.setup(
             {
@@ -82,6 +84,10 @@ Element.observe(window, "load", function() {
             }
         );
     })
+}
+
+Element.observe(window, "load", function() {
+    AE.registerCalendarPopups()
 });
 
 ////// SSO

@@ -34,7 +34,11 @@ public class TreatmentTabTest extends AeTabTestCase<TreatmentTab> {
             "aeReport.treatmentInformation.courseAgents[2].durationAndSchedule",
             "aeReport.treatmentInformation.courseAgents[2].administrationDelayAmount",
             "aeReport.treatmentInformation.courseAgents[2].administrationDelayUnits",
-            "aeReport.treatmentInformation.courseAgents[2].totalDoseAdministeredThisCourse"
+            "aeReport.treatmentInformation.courseAgents[2].modifiedDose.amount",
+            "aeReport.treatmentInformation.courseAgents[2].modifiedDose.units",
+            "aeReport.treatmentInformation.courseAgents[2].modifiedDose.route",
+            "aeReport.treatmentInformation.courseAgents[2].totalDoseAdministeredThisCourse",
+            "aeReport.treatmentInformation.courseAgents[2].lastAdministeredDate"
         );
     }
 

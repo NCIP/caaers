@@ -11,6 +11,8 @@ import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseDate;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.Errors;
+import org.springframework.validation.BindingResult;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Calendar;
@@ -99,14 +101,30 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].dose.amount", "432.1");
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].totalDoseAdministeredThisCourse", "9433");
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].administrationDelayAmount", "12");
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount", "");
 
         CreateAdverseEventCommand command = bindAndReturnCommand();
-        assertEquals(new BigDecimal("432.1"),
-            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getDose().getAmount());
-        assertEquals(new BigDecimal("9433"),
-            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getTotalDoseAdministeredThisCourse());
-        assertEquals(new BigDecimal("12"),
-            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getAdministrationDelayAmount());
+        CourseAgent courseAgent1 = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
+        assertEquals(new BigDecimal("432.1"), courseAgent1.getDose().getAmount());
+        assertEquals(new BigDecimal("9433"), courseAgent1.getTotalDoseAdministeredThisCourse());
+        assertEquals(new BigDecimal("12"), courseAgent1.getAdministrationDelayAmount());
+        assertNull(courseAgent1.getModifiedDose().getAmount());
+    }
+
+    public void testBindBigDecimalToEmptySetsNull() throws Exception {
+        String property = "aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount";
+
+        firstCommand.getAeReport().getTreatmentInformation().getCourseAgents().get(1)
+            .getModifiedDose().setAmount(new BigDecimal(44));
+        request.setParameter(property, "");
+
+        Object[] objects = bindAndReturnCommandAndErrors();
+        CreateAdverseEventCommand command = (CreateAdverseEventCommand) objects[0];
+        Errors errors = (Errors) objects[1];
+        assertFalse("Should not be any errors: " + errors, errors.hasFieldErrors(property));
+        CourseAgent courseAgent1
+            = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
+        assertNull(courseAgent1.getModifiedDose().getAmount());
     }
     
     public void testBindAttributions() throws Exception {
@@ -126,13 +144,21 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
             command.getAttributionMap().get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
     }
 
-    private CreateAdverseEventCommand bindAndReturnCommand() throws Exception {
+    private Object[] bindAndReturnCommandAndErrors() throws Exception {
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
         CreateAdverseEventCommand command = (CreateAdverseEventCommand) mv.getModel().get("command");
+        Errors errors = (Errors) mv.getModel().get(BindingResult.MODEL_KEY_PREFIX + "command");
         assertNotNull(command);
-        return command;
+        return new Object[] { command, errors };
+    }
+
+    private CreateAdverseEventCommand bindAndReturnCommand() throws Exception {
+        Object[] objects = bindAndReturnCommandAndErrors();
+        Errors errors = (Errors) objects[1];
+        assertFalse("No errors expected: " + errors, errors.hasErrors());
+        return (CreateAdverseEventCommand) objects[0];
     }
 
     // get the session in place & set study/participant

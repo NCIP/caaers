@@ -13,16 +13,78 @@
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
+        function switchModified(checkbox) {
+            var index = checkbox.id.substring(18)
+            var hasModified = checkbox.checked
+            enableModified(index, hasModified)
+            var baseProp = "aeReport.treatmentInformation.courseAgents[" + index + "]."
+            if (hasModified) {
+                $(baseProp + "modifiedDose.amount").value = ""
+                $(baseProp + "modifiedDose.units").value = $(baseProp + "dose.units").value
+                $(baseProp + "modifiedDose.route").value = $(baseProp + "dose.route").value
+            } else {
+                $A([
+                    baseProp + "modifiedDose.amount",
+                    baseProp + "modifiedDose.units",
+                    baseProp + "modifiedDose.route"
+                ]).each(function(input) {
+                    $(input).value = "";
+                })
+            }
+        }
+
+        function enableModified(index, enable) {
+            var baseProp = "aeReport.treatmentInformation.courseAgents[" + index + "]."
+            $A([
+                baseProp + "modifiedDose.amount",
+                baseProp + "modifiedDose.units",
+                baseProp + "modifiedDose.route"
+            ]).each(function(input) {
+                $(input).disabled = !enable;
+            })
+        }
+
+        function switchModifiedHandler(event) {
+            switchModified(Event.element(event))
+        }
+
+        function renableModified() {
+            alert("Submit handler invoked")
+            var courseAgentCount = $$(".courseAgent").size
+            for (var i = 0 ; i < courseAgentCount ; i++) {
+                enableModified(index, true)
+            }
+        }
+
+        function registerDoseModHandler(index) {
+            var checkbox = $('dose-mod-checkbox-' + index)
+            checkbox.observe('click', switchModifiedHandler)
+            enableModified(index, checkbox.checked)
+        }
+
         Element.observe(window, "load", function() {
             new ListEditor("courseAgent", createAE, "CourseAgent", {
                 addParameters: [aeReportId],
-                addFirstAfter: "treatmentInfo"
+                addFirstAfter: "treatmentInfo",
+                addCallback: function(index) {
+                    registerDoseModHandler(index)
+                    AE.registerCalendarPopups("courseAgent-" + index)
+                }
+            })
+            console.log($("command"))
+            Event.observe("command", "submit", renableModified)
+            $$('.dose-mod-checkbox').each(function(elt) {
+                var index = elt.id.substring(18)
+                registerDoseModHandler(index)
             })
         })
     </script>
     <style type="text/css">
         .label {
             width: 18em;
+        }
+        .value {
+            margin-left: 19em;
         }
     </style>
 </head>

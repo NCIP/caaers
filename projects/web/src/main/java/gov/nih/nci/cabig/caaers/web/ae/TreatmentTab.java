@@ -43,9 +43,15 @@ public class TreatmentTab extends AeTab {
     public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
         RepeatingFieldGroupFactory caFields = new RepeatingFieldGroupFactory("courseAgent",
             "aeReport.treatmentInformation.courseAgents");
+        caFields.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
+            public String createDisplayName(int index) {
+                return "Course agent " + (index + 1);
+            }
+        });
+
         caFields.addField(new CollectionSelectField(
-            "studyAgent", "Study Agent", true, command.getStudy().getStudyAgents(), "id", "agent.name"
-        ));
+            "studyAgent", "Study Agent", true, command.getStudy().getStudyAgents(),
+            "id", "agent.name"));
         caFields.addField(new DefaultTextField(
             "dose.amount", "Dose amount", true));
         caFields.addField(new DefaultTextField(
@@ -62,7 +68,16 @@ public class TreatmentTab extends AeTab {
             Arrays.asList(DelayUnits.values()), null, "displayName"));
 
         caFields.addField(new DefaultTextField(
+            "modifiedDose.amount", "Modified dose amount", false));
+        caFields.addField(new DefaultTextField(
+            "modifiedDose.units", "Modified dose units", false));
+        caFields.addField(new DefaultTextField(
+            "modifiedDose.route", "Modified route", false));
+
+        caFields.addField(new DefaultTextField(
             "totalDoseAdministeredThisCourse", "Total dose administered this course", false));
+        caFields.addField(new DefaultDateField(
+            "lastAdministeredDate", "Date last administered", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(treatmentFields);
