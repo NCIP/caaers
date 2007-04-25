@@ -2,9 +2,14 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -21,32 +26,61 @@ import org.hibernate.annotations.Parameter;
 )
 public class DiseaseHistory extends AbstractIdentifiableDomainObject
 {			
-	private String diseaseTerm;
-	private String diseaseSite;
-	private Date diagnosisDate;
+	private String otherPrimaryDiseaseCode;
+	private String otherPrimaryDiseaseSiteCode;
+	private Date dateOfInitialPathologicDiagnosis;
+	private StudyDisease studyDisease;
+	private AnatomicSite anatomicSite;
+	
 
-	public Date getDiagnosisDate() {
-		return diagnosisDate;
+	@OneToOne
+	@JoinColumn(name="anatomic_site_id")
+	@Cascade(value = { CascadeType.ALL })
+	public AnatomicSite getAnatomicSite() {
+		return anatomicSite;
+	}
+
+	public void setAnatomicSite(AnatomicSite anatomicSite) {
+		this.anatomicSite = anatomicSite;
+	}
+
+	@Column(name = "diagnosis_date")
+	public Date getDateOfInitialPathologicDiagnosis() {
+		return dateOfInitialPathologicDiagnosis;
 	}
 	
-	public void setDiagnosisDate(Date diagnosisDate) {
-		this.diagnosisDate = diagnosisDate;
+	public void setDateOfInitialPathologicDiagnosis(
+			Date dateOfInitialPathologicDiagnosis) {
+		this.dateOfInitialPathologicDiagnosis = dateOfInitialPathologicDiagnosis;
 	}
 	
-	public String getDiseaseSite() {
-		return diseaseSite;
+	@Column(name = "other_disease_code")
+	public String getOtherPrimaryDiseaseCode() {
+		return otherPrimaryDiseaseCode;
 	}
 	
-	public void setDiseaseSite(String diseaseSite) {
-		this.diseaseSite = diseaseSite;
+	public void setOtherPrimaryDiseaseCode(String otherPrimaryDiseaseCode) {
+		this.otherPrimaryDiseaseCode = otherPrimaryDiseaseCode;
 	}
 	
-	public String getDiseaseTerm() {
-		return diseaseTerm;
+	@Column(name = "other_disease_site_code")
+	public String getOtherPrimaryDiseaseSiteCode() {
+		return otherPrimaryDiseaseSiteCode;
 	}
 	
-	public void setDiseaseTerm(String diseaseTerm) {
-		this.diseaseTerm = diseaseTerm;
+	public void setOtherPrimaryDiseaseSiteCode(String otherPrimaryDiseaseSiteCode) {
+		this.otherPrimaryDiseaseSiteCode = otherPrimaryDiseaseSiteCode;
+	}
+	
+	@OneToOne
+	@JoinColumn(name="study_disease_id")
+	@Cascade(value = { CascadeType.ALL })	  
+	public StudyDisease getStudyDisease() {
+		return studyDisease;
+	}
+	
+	public void setStudyDisease(StudyDisease studyDisease) {
+		this.studyDisease = studyDisease;
 	}
 }
 
