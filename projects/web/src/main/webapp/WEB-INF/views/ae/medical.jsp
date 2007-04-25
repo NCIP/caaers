@@ -118,7 +118,7 @@
 
 		<div class="row">
 	        <div class="medical-label">Height</div>
-			<div class="value"> <form:input path="aeReport.participantHistory.height"/> &nbsp;
+			<div class="value"> <input id= "aeReport.participantHistory.height" name="aeReport.participantHistory.height" value= "${command.aeReport.participantHistory.height == 0.0 ? '' : command.aeReport.participantHistory.height}" /> &nbsp;
 
 				<form:select path="aeReport.participantHistory.heightUnitOfMeasure">
 					<form:options items="${heightUnitsRefData}" itemLabel="desc"
@@ -129,14 +129,14 @@
 
 		<div class="row">
 	        <div class="medical-label">Weight</div>
-			<div class="value"> <form:input path="aeReport.participantHistory.weight"/> &nbsp;
+			<div class="value"> <input id= "aeReport.participantHistory.weight" name="aeReport.participantHistory.weight" value= "${command.aeReport.participantHistory.weight == 0.0 ? '' : command.aeReport.participantHistory.weight}" /> &nbsp;
 				<form:select path="aeReport.participantHistory.weightUnitOfMeasure">
 					<form:options items="${weightUnitsRefData}" itemLabel="desc"
 							itemValue="code"/>
 				</form:select>
 			</div>
 		</div>
-
+		
 		<div class="row">
 	        <div class="medical-label">Baseline performance status</div>
 			<div class="value"> <form:input path="aeReport.participantHistory.baselinePerformanceStatus" /> </div>
@@ -164,7 +164,13 @@
 				<select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
 					<option value=-1>please select--</option>
 					<c:forEach var="studyDisease" varStatus="status" items="${command.study.studyDiseases}">	
-							<option value=${studyDisease.id}>${studyDisease.diseaseTerm.term} </option>
+							<c:if test="${command.aeReport.diseaseHistory.studyDisease.id == studyDisease.id }">
+								<option value=${studyDisease.id} selected="true">${studyDisease.diseaseTerm.term} </option>
+							</c:if>
+							<c:if test="${command.aeReport.diseaseHistory.studyDisease.id != studyDisease.id }">
+								<option value=${studyDisease.id}>${studyDisease.diseaseTerm.term} </option>
+							</c:if>
+
 					</c:forEach>
 				</select>
 		    </div>
