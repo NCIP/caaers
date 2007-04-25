@@ -111,43 +111,43 @@ public class GridSSOProcessingFilter implements Filter, InitializingBean {
 		Authentication existingAuth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		if (existingAuth != null) {
-			logger.debug("Existing Authentication found for " + existingAuth.getName() + ". Proceeeding with filter.");
+//			logger.debug("Existing Authentication found for " + existingAuth.getName() + ". Proceeeding with filter.");
 			chain.doFilter(request, response);
 		} else {
-			logger.debug("No Authentication found.");
+//			logger.debug("No Authentication found.");
 			AuthenticationException error = null;
 			Authentication authResult = null;
 			try {
-				logger.debug("Populating authentication request...");
+//				logger.debug("Populating authentication request...");
 				Authentication authRequest = getAuthenticationRequestPopulator()
 						.populate(httpRequest);
 				authResult = getAuthenticationManager().authenticate(
 						authRequest);
-				logger.debug("...done");
+//				logger.debug("...done");
 			} catch (AuthenticationException ex) {
-				logger.debug("Authentication request failed.", ex);
+//				logger.info("Authentication request failed: " + ex.getMessage());
 				error = ex;
 			}
 			if (error != null){
-				logger.debug("Error encountered.");
+//				logger.debug("Error encountered.");
 				SecurityContextHolder.getContext().setAuthentication(null);
 				if (getRememberMeServices() != null) {
 					getRememberMeServices()
 							.loginFail(httpRequest, httpResponse);
 				}
 				if (isIgnoreFailure()) {
-					logger.debug("Ignoring failure.");
+//					logger.debug("Ignoring failure.");
 					chain.doFilter(request, response);
 				} else {
-					logger.debug("Commencing AuthenticationEntryPoint");
+//					logger.debug("Commencing AuthenticationEntryPoint");
 					getAuthenticationEntryPoint().commence(request, response,
 							error);
 				}
 			
 			} else {
-				logger
-						.debug("Authentication success: "
-								+ authResult.toString());
+//				logger
+//						.debug("Authentication success: "
+//								+ authResult.toString());
 				SecurityContextHolder.getContext()
 						.setAuthentication(authResult);
 				
@@ -162,12 +162,12 @@ public class GridSSOProcessingFilter implements Filter, InitializingBean {
 				 */
 				//begin hack
 				try{
-					logger.debug("Doing gridProxy hack...");
+//					logger.debug("Doing gridProxy hack...");
 					GlobusCredentialAuthenticationToken gcToken = (GlobusCredentialAuthenticationToken)authResult;
 					httpRequest.getSession().setAttribute("gridProxy", Utils.toString(gcToken.getGlobusCredential()));
-					logger.debug("...done hack.");
+//					logger.debug("...done hack.");
 				}catch(Exception ex){
-					logger.warn("Failed to do gridProxy hack: " + ex.getMessage(), ex); 
+//					logger.warn("Failed to do gridProxy hack: " + ex.getMessage(), ex); 
 				}
 				//end hack
 				
@@ -176,7 +176,7 @@ public class GridSSOProcessingFilter implements Filter, InitializingBean {
 					getRememberMeServices().loginSuccess(httpRequest,
 							httpResponse, authResult);
 				}
-				logger.debug("Proceeding with filter after successful authentication.");
+//				logger.debug("Proceeding with filter after successful authentication.");
 				chain.doFilter(request, response);
 			}
 		}
