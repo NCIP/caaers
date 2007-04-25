@@ -150,19 +150,8 @@
 			<div class="medical-label">Disease Name</div>
 			<div class="value"> 		
 			
-				<%-- <form:select path="aeReport.diseaseHistory.studyDisease">
-					<form:option value="" label="Please Select--"/>
-					<form:options items="${command.study.studyDiseases}" itemValue="id" itemLabel="diseaseTerm.term"/>
-				</form:select> --%>
-
-				<%-- <form:select path="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
-					<option value=-1>please select--</option>
-					<c:forEach var="studyDisease" varStatus="status" items="${command.study.studyDiseases}">	
-							<option value=${studyDisease.id}>${studyDisease.diseaseTerm.term} </option>
-					</c:forEach> 
-				</form:select> --%>
 				<select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
-					<option value=-1>please select--</option>
+					<option value="">please select--</option>
 					<c:forEach var="studyDisease" varStatus="status" items="${command.study.studyDiseases}">	
 							<c:if test="${command.aeReport.diseaseHistory.studyDisease.id == studyDisease.id }">
 								<option value=${studyDisease.id} selected="true">${studyDisease.diseaseTerm.term} </option>
