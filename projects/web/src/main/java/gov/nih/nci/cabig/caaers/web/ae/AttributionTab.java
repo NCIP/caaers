@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.SelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
  * @author Rhett Sutphin
  */
 public class AttributionTab extends AeTab {
-    private static final SelectField BASE_FIELD = new CollectionSelectField(
+    private static final CollectionSelectField BASE_FIELD = new CollectionSelectField(
         null, null, true, Arrays.asList(Attribution.values()), "name", null);
 
     protected AttributionTab() {

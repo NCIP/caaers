@@ -12,13 +12,15 @@ public abstract class AbstractInputField implements InputField {
     private boolean required;
     private Map<String, Object> attributes;
 
-    protected AbstractInputField() { }
+    protected AbstractInputField() {
+        this.attributes = new LinkedHashMap<String, Object>();
+    }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
+        this();
         this.displayName = displayName;
         this.propertyName = propertyName;
         this.required = required;
-        this.attributes = new LinkedHashMap<String, Object>();
     }
 
     public abstract Category getCategory();

@@ -8,7 +8,7 @@
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}"/></c:when>
     <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}"/></c:when>
     <c:when test="${field.categoryName == 'select'}">
-        <form:select path="${field.propertyName}" items="${field.options}"/>
+        <form:select path="${field.propertyName}" items="${field.attributes.options}"/>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
         <input size="${empty size ? '50' : size}" id="${field.propertyName}-input"/>

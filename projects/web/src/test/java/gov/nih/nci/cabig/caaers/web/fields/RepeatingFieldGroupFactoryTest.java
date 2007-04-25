@@ -32,8 +32,9 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
             "root.list[7].selectField", actualField.getPropertyName());
         assertEquals("Category not preserved",
             InputField.Category.SELECT, actualField.getCategory());
-        assertTrue("SelectField type not preserved", actualField instanceof SelectField);
-        Map<Object,Object> actualOptions = ((SelectField) actualField).getOptions();
+        Map<Object,Object> actualOptions =
+            (Map<Object,Object>) actualField.getAttributes().get(InputField.OPTIONS);
+        assertNotNull(actualOptions);
         assertEquals("Wrong number of options", 1, actualOptions.size());
         assertEquals("Wrong option", "V", actualOptions.get("k"));
     }

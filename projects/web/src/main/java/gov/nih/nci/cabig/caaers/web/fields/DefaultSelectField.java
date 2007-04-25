@@ -5,16 +5,14 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class DefaultSelectField extends AbstractInputField implements SelectField {
-    private Map<Object, Object> options;
-
+public class DefaultSelectField extends AbstractInputField {
     public DefaultSelectField() { }
 
     public DefaultSelectField(
         String propertyName, String displayName, boolean required, Map<Object, Object> options
     ) {
         super(propertyName, displayName, required);
-        this.options = options;
+        setOptions(options);
     }
 
     @Override
@@ -23,10 +21,10 @@ public class DefaultSelectField extends AbstractInputField implements SelectFiel
     }
 
     public Map<Object, Object> getOptions() {
-        return options;
+        return (Map<Object, Object>) getAttributes().get(OPTIONS);
     }
 
     public void setOptions(Map<Object, Object> options) {
-        this.options = options;
+        getAttributes().put(OPTIONS, options);
     }
 }

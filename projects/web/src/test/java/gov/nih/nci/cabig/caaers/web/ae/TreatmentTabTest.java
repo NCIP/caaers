@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.SelectField;
 
 import java.util.Map;
 
@@ -52,8 +51,9 @@ public class TreatmentTabTest extends AeTabTestCase<TreatmentTab> {
             }
         }
         assertNotNull("No field for " + propertyName, field);
-        assertTrue("Field for " + propertyName + " is not a select", field instanceof SelectField);
-        return ((SelectField) field).getOptions();
+        Map<Object, Object> options = (Map<Object, Object>) field.getAttributes().get(InputField.OPTIONS);
+        assertNotNull("Field for " + propertyName + " is not a select", options);
+        return options;
     }
 
     public void testDelayUnitsInField() throws Exception {

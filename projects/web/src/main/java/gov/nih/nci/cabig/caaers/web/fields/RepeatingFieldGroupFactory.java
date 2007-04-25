@@ -29,11 +29,7 @@ public class RepeatingFieldGroupFactory {
     private List<InputField> createWrappedFields(RepeatingFieldGroup group) {
         List<InputField> wrappedFields = new LinkedList<InputField>();
         for (InputField field : baseFields) {
-            if (field instanceof SelectField) {
-                wrappedFields.add(new SelectFieldWrapper((SelectField) field, group));
-            } else {
-                wrappedFields.add(new InputFieldWrapper<InputField>(field, group));
-            }
+            wrappedFields.add(new InputFieldWrapper(field, group));
         }
         return wrappedFields;
     }
@@ -67,52 +63,18 @@ public class RepeatingFieldGroupFactory {
         }
     }
 
-    private class InputFieldWrapper<T extends InputField> implements InputField {
-        protected T src;
+    private class InputFieldWrapper extends QualifiedPropertyNameInputField {
         private RepeatingFieldGroup group;
 
-        public InputFieldWrapper(T src, RepeatingFieldGroup group) {
-            this.src = src;
+        public InputFieldWrapper(InputField src, RepeatingFieldGroup group) {
+            super(src);
             this.group = group;
         }
 
-        public Category getCategory() {
-            return src.getCategory();
-        }
-
-        public String getCategoryName() {
-            return src.getCategoryName();
-        }
-
-        public String getDisplayName() {
-            return src.getDisplayName();
-        }
-
-        public boolean isRequired() {
-            return src.isRequired();
-        }
-
-        public String getPropertyName() {
-            return qualifiedPropertyName(src.getPropertyName());
-        }
-
-        public Map<String, Object> getAttributes() {
-            return src.getAttributes();
-        }
-
-        private String qualifiedPropertyName(String propertyName) {
+        @Override
+        protected String qualifyPropertyName(String propertyName) {
             return new StringBuilder(listPropertyName).append('[').append(group.getIndex()).append("].")
                 .append(propertyName).toString();
-        }
-    }
-
-    private class SelectFieldWrapper extends InputFieldWrapper<SelectField> implements SelectField {
-        public SelectFieldWrapper(SelectField src, RepeatingFieldGroup group) {
-            super(src, group);
-        }
-
-        public Map<Object, Object> getOptions() {
-            return src.getOptions();
         }
     }
 

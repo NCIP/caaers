@@ -3,10 +3,20 @@ package gov.nih.nci.cabig.caaers.web.fields;
 import java.util.Map;
 
 /**
+ * Collects the basic information about a form field in a Spring MVC application.
+ * The goal is for fields to be (mostly) rendered automatically and consistently,
+ * including labels and the "required" indicator.
+ * <p>
+ * Also enables (but does not implement) some simple automatic validation
+ * (via the required flag).
+ *
+ * @see TabWithFields
+ * @see InputFieldGroup
  * @author Rhett Sutphin
  */
 public interface InputField {
     String DETAILS = "details";
+    String OPTIONS = "options";
 
     Category getCategory();
 
