@@ -4,10 +4,12 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
@@ -47,6 +49,8 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected AgentDao agentDao;
     protected AdverseEventReportDao reportDao;
     protected StudyAgentDao studyAgentDao;
+    protected StudyDiseaseDao studyDiseaseDao;
+    protected AnatomicSiteDao anatomicSiteDao;
     protected RuleExecutionService ruleExecutionService;
 
     protected AbstractAdverseEventInputController() {
@@ -78,6 +82,8 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -149,6 +155,14 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.studyAgentDao = studyAgentDao;
     }
 
+    public void setStudyDiseaseDao(StudyDiseaseDao studyDiseaseDao) {
+		this.studyDiseaseDao = studyDiseaseDao;
+	}
+
+	public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+		this.anatomicSiteDao = anatomicSiteDao;
+	}
+	
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
         this.ruleExecutionService = ruleExecutionService;
     }
