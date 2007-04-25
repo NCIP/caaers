@@ -2,12 +2,6 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import static gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory.*;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupTransformer;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 
 /**
  * @author Rhett Sutphin
