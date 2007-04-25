@@ -118,7 +118,7 @@
 
 		<div class="row">
 	        <div class="medical-label">Height</div>
-			<div class="value"> <input id="aeReport.participantHistory.height" name="aeReport.participantHistory.height"/> &nbsp;
+			<div class="value"> <input path="aeReport.participantHistory.height"/> &nbsp;
 
 				<form:select path="aeReport.participantHistory.heightUnitOfMeasure">
 					<form:options items="${heightUnitsRefData}" itemLabel="desc"
@@ -129,7 +129,7 @@
 
 		<div class="row">
 	        <div class="medical-label">Weight</div>
-			<div class="value"> <input id="aeReport.participantHistory.weight" name="aeReport.participantHistory.weight"/> &nbsp;
+			<div class="value"> <input path="aeReport.participantHistory.weight"/> &nbsp;
 				<form:select path="aeReport.participantHistory.weightUnitOfMeasure">
 					<form:options items="${weightUnitsRefData}" itemLabel="desc"
 							itemValue="code"/>
