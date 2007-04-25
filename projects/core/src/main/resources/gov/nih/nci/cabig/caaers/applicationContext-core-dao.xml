@@ -137,4 +137,5 @@
 	<bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
 	<bean id="physicianDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PhysicianDao"/>
 	<bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
+	<bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
 </beans>
