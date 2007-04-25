@@ -38,7 +38,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
 		<property name="authenticationManager"
 			ref="authenticationManager" />
-		<property name="authenticationFailureUrl" value="/login.jsp" />
+		<property name="authenticationFailureUrl" value="/login.jsp?login_error=1" />
 		<property name="defaultTargetUrl" value="/" />
 		<property name="filterProcessesUrl"
 			value="/j_acegi_security_check" />
