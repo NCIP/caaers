@@ -9,7 +9,8 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<bean id="authorizationSwitch"
-		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch">
+		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
+		factory-method="getInstance">
 		<property name="on" value="true" />
 	</bean>
 
@@ -233,8 +234,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<list>
 						<bean
 							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
-							<property name="authorizationSwitch"
-								ref="authorizationSwitch" />
+							<property name="authorizationSwitch" ref="authorizationSwitch" />
 							<property name="requiresAuthentication" value="false"/>
 						</bean>
 						<bean
