@@ -251,7 +251,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                      </list>
                 </entry>                                           
 
-
                 <entry key="weightUnitsRefData">
                     <list>
                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
@@ -264,6 +263,36 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         </bean>                                           
                      </list>
                 </entry>                                                           
+                
+                <entry key="bpsRefData">
+                    <list>
+                    	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="please select--" />
+                            <property name="desc" value="please select--" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="0 = Normal Activity, asymptomatic" />
+                            <property name="desc" value="0 = Normal Activity, asymptomatic" />
+                        </bean>    
+                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="1 = Symptomatic, fully ambulatory" />
+                            <property name="desc" value="1 = Symptomatic, fully ambulatory" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="2 = Symptomatic, in bed less than 50% of time" />
+                            <property name="desc" value="2 = Symptomatic, in bed less than 50% of time" />
+                        </bean>                                           
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="3 = Symptomatic, in bed more than 50% of time" />
+                            <property name="desc" value="3 = Symptomatic, in bed more than 50% of time" />
+                        </bean>                                           
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="4 = 100% bedridden" />
+                            <property name="desc" value="4 = 100% bedridden" />
+                        </bean>
+                     </list>
+                </entry>                                                           
+                
             </map>
         </property>                      
     </bean>
