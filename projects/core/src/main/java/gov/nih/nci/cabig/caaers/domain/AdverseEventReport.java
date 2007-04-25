@@ -51,8 +51,8 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     private Reporter reporter;
     private Physician physician;
-    //private ParticipantHistory participantHistory;
-    //private DiseaseHistory diseaseHistory;
+    private ParticipantHistory participantHistory;
+    private DiseaseHistory diseaseHistory;
 
     // TODO
     // private MedicalInformation medicalInformation;
@@ -277,7 +277,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     public void setPhysician(Physician physician) {
         this.physician = physician;
     }
-/*
+
     @OneToOne
     @JoinColumn(name="disease_history_id")
     @Cascade(value = { CascadeType.ALL })    
@@ -298,5 +298,5 @@ public class AdverseEventReport extends AbstractDomainObject {
 
     public void setParticipantHistory(ParticipantHistory participantHistory) {
         this.participantHistory = participantHistory;
-    } */
+    }  
 }
