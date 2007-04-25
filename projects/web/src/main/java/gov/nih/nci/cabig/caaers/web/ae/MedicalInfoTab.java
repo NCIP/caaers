@@ -31,6 +31,7 @@ public class MedicalInfoTab extends AeTab {
         Map<String, Object> refdata = super.referenceData();
         refdata.put("heightUnitsRefData", configMap.get("heightUnitsRefData"));
         refdata.put("weightUnitsRefData", configMap.get("weightUnitsRefData"));
+        refdata.put("bpsRefData", configMap.get("bpsRefData"));
         return refdata;
     }
     
