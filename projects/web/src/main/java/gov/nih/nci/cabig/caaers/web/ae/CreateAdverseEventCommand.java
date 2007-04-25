@@ -60,7 +60,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport.setTreatmentInformation(new TreatmentInformation());
         this.aeReport.setReporter(createReporter());
         this.aeReport.setPhysician(createPhysician());                           
-        this.aeReport.setDiseaseHistory(new DiseaseHistory());
+        this.aeReport.setDiseaseHistory(createDiseaseHistory());
         this.aeReport.setParticipantHistory(new ParticipantHistory());
                
         
@@ -69,6 +69,11 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         setRuleExecutionService(ruleExecutionService);
     }
 
+    private DiseaseHistory createDiseaseHistory() {
+    	DiseaseHistory diseaseHistory = new DiseaseHistory();    	
+    	return diseaseHistory;
+    }
+    
     private Reporter createReporter() {    	    	
     	Reporter reporter = new Reporter();
     	
