@@ -69,9 +69,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="hibernateProperties">
 					<bean
 						class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+													<!-- 
 						<property name="dialectName">
+
 							<value>s[hibernate.dialect]</value>
+
 						</property>
+							 -->						
 						<property name="properties">
 							<props>
 								<!-- 
