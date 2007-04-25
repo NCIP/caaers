@@ -139,7 +139,13 @@
 		
 		<div class="row">
 	        <div class="medical-label">Baseline performance status</div>
-			<div class="value"> <form:input path="aeReport.participantHistory.baselinePerformanceStatus" /> </div>
+	        <div class="value">
+		        <form:select path="aeReport.participantHistory.baselinePerformanceStatus">
+					<form:options items="${bpsRefData}" itemLabel="desc"
+						itemValue="code"/>
+				</form:select>
+	        </div>	        
+
 		</div>
 
 		</chrome:division>
