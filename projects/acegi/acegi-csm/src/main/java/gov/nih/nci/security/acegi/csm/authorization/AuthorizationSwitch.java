@@ -15,7 +15,13 @@ public class AuthorizationSwitch {
 
     private boolean on = true;
 
-    public AuthorizationSwitch() {
+    private static AuthorizationSwitch instance = new AuthorizationSwitch();
+    
+    public static AuthorizationSwitch getInstance(){
+    	return instance;
+    }
+    
+    private AuthorizationSwitch() {
         if (log.isDebugEnabled()) log.debug(this + " created");
     }
 
