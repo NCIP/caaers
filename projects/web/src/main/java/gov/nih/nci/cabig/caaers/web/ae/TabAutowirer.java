@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import org.apache.commons.logging.Log;
@@ -35,8 +36,17 @@ public class TabAutowirer {
     private AdverseEventReportDao adverseEventReportDao;
     private ResearchStaffDao researchStaffDao;
     private RuleExecutionService ruleExecutionService;
+    private ConfigProperty configurationProperty;
 
-    public void injectDependencies(Flow<AdverseEventInputCommand> flow) {
+    public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
+
+	public void injectDependencies(Flow<AdverseEventInputCommand> flow) {
         BeanWrapper thisWrapped = new BeanWrapperImpl(this);
         for (Tab<AdverseEventInputCommand> tab : flow.getTabs()) {
             injectDependencies(tab, thisWrapped);
