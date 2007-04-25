@@ -240,14 +240,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
 
                 <entry key="heightUnitsRefData">
                     <list>
+	                    <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Centimeter" />
+                            <property name="desc" value="Centimeter" />
+                        </bean>
                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Inch" />
                             <property name="desc" value="Inch" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Centimeter" />
-                            <property name="desc" value="Centimeter" />
-                        </bean>                                           
+                        </bean>                          	                                           
                      </list>
                 </entry>                                           
 
