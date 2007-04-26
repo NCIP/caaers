@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 
 import java.util.Map;
@@ -52,27 +53,19 @@ public class TreatmentTab extends AeTab {
         caFields.addField(new CollectionSelectField(
             "studyAgent", "Study Agent", true, command.getStudy().getStudyAgents(),
             "id", "agent.name"));
-        caFields.addField(new DefaultTextField(
-            "dose.amount", "Dose amount", true));
-        caFields.addField(new DefaultTextField(
-            "dose.units", "Dose units", true));
-        caFields.addField(new DefaultTextField(
-            "dose.route", "Route", false));
+        caFields.addField(createDoseField("dose", "Dose", true));
         caFields.addField(new DefaultTextArea(
             "durationAndSchedule", "Duration and schedule", false));
 
-        caFields.addField(new DefaultTextField(
-            "administrationDelayAmount", "Administration delay", false));
-        caFields.addField(new CollectionSelectField(
-            "administrationDelayUnits", "Administration delay units", false,
-            Arrays.asList(DelayUnits.values()), null, "displayName"));
+        caFields.addField(new CompositeField(null,
+            new DefaultInputFieldGroup(null, "Administration delay")
+                .addField(new DefaultTextField("administrationDelayAmount", "", false))
+                .addField(new CollectionSelectField(
+                    "administrationDelayUnits", "", false,
+                    Arrays.asList(DelayUnits.values()), null, "displayName"))
+        ));
 
-        caFields.addField(new DefaultTextField(
-            "modifiedDose.amount", "Modified dose amount", false));
-        caFields.addField(new DefaultTextField(
-            "modifiedDose.units", "Modified dose units", false));
-        caFields.addField(new DefaultTextField(
-            "modifiedDose.route", "Modified route", false));
+        caFields.addField(createDoseField("modifiedDose", "Modified dose", false));
 
         caFields.addField(new DefaultTextField(
             "totalDoseAdministeredThisCourse", "Total dose administered this course", false));
@@ -85,5 +78,13 @@ public class TreatmentTab extends AeTab {
             command.getAeReport().getTreatmentInformation().getCourseAgents().size());
 
         return map;
+    }
+
+    private CompositeField createDoseField(String doseProperty, String displayName, boolean required) {
+        InputFieldGroup group = new DefaultInputFieldGroup(null, displayName)
+            .addField(new DefaultTextField("amount", "", required))
+            .addField(new DefaultTextField("units", "units", required))
+            .addField(new DefaultTextField("route", "route", false /* never required */));
+        return new CompositeField(doseProperty, group);
     }
 }

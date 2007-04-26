@@ -10,6 +10,14 @@
     <c:when test="${field.categoryName == 'select'}">
         <form:select path="${field.propertyName}" items="${field.attributes.options}"/>
     </c:when>
+    <c:when test="${field.categoryName == 'composite'}">
+        <c:forEach items="${field.attributes.subfields}" var="subfield">
+            <label>
+                ${subfield.displayName}${empty subfield.displayName ? '' : ':'}
+                <tags:renderInputs field="${subfield}"/>
+            </label>
+        </c:forEach>
+    </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
         <input size="${empty size ? '50' : size}" id="${field.propertyName}-input"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
@@ -20,4 +28,4 @@
         UNIMPLEMENTED FIELD TYPE ${field.categoryName} for ${field.propertyName}
     </c:otherwise>
 </c:choose>
-<tags:errors path="${field.propertyName}"/>
+<tags:errors path="${field.propertyName}.*"/>

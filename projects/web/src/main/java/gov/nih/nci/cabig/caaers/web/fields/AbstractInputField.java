@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+
 import java.util.Map;
 import java.util.LinkedHashMap;
 
@@ -21,6 +24,25 @@ public abstract class AbstractInputField implements InputField {
         this.displayName = displayName;
         this.propertyName = propertyName;
         this.required = required;
+    }
+
+    /** This base implementation does a simple not-null check if the field is required. */ 
+    public void validate(BeanWrapper commandBean, Errors errors) {
+        validateRequired(this, commandBean, errors);
+    }
+
+    /**
+     * Helper so that other InputField implementations can easily implement requiredness
+     * validation just like this class.
+     */
+    public static void validateRequired(InputField field, BeanWrapper commandBean, Errors errors) {
+        if (field.isRequired()) {
+            Object propValue = commandBean.getPropertyValue(field.getPropertyName());
+            if (propValue == null) {
+                errors.rejectValue(field.getPropertyName(),
+                    "REQUIRED", "Missing " + field.getDisplayName());
+            }
+        }
     }
 
     public abstract Category getCategory();
@@ -59,5 +81,13 @@ public abstract class AbstractInputField implements InputField {
 
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
+    }
+
+    ////// OBJECT METHODS
+
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append("[propertyName=").append(getPropertyName()).append(']')
+            .toString();
     }
 }

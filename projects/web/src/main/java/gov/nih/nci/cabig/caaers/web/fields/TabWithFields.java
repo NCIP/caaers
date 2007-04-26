@@ -54,18 +54,14 @@ public abstract class TabWithFields<C> extends Tab<C> {
         Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
         for (InputFieldGroup fieldGroup : fieldGroups.values()) {
             for (InputField field : fieldGroup.getFields()) {
-                Object propValue = commandBean.getPropertyValue(field.getPropertyName());
-                if (field.isRequired() && propValue == null) {
-                    errors.rejectValue(field.getPropertyName(),
-                        "REQUIRED", "Missing " + field.getDisplayName());
-                }
+                field.validate(commandBean, errors);
             }
         }
         validate(command, commandBean, fieldGroups, errors);
     }
 
     /**
-     * Template method for subclasses to provide additional self-validation.
+     * Template method for subclasses to provide additional non-field self-validation.
      */
     protected void validate(
         C command, BeanWrapper commandBean,

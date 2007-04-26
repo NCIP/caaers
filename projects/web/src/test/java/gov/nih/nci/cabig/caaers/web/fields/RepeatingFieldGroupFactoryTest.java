@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -22,6 +23,7 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
             InputField.Category.TEXT, actualField.getCategory());
     }
 
+    @SuppressWarnings("unchecked")
     public void testSelectFieldsWrapped() throws Exception {
         factory.addField(new DefaultSelectField("selectField", "DC", false,
             Collections.<Object, Object>singletonMap("k", "V")));
@@ -37,5 +39,27 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
         assertNotNull(actualOptions);
         assertEquals("Wrong number of options", 1, actualOptions.size());
         assertEquals("Wrong option", "V", actualOptions.get("k"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testCompositeFieldsWrapped() throws Exception {
+        DefaultInputFieldGroup group = new DefaultInputFieldGroup("dc");
+        group.setFields(Collections.<InputField>singletonList(new DefaultTextField("subfield", "DC", true)));
+        factory.addField(new CompositeField("compositeField", group));
+
+        // create other groups to make sure share state isn't being mutated
+        for (int i = 0 ; i <= 3 ; i++) factory.createGroup(i);
+
+        InputFieldGroup actualGroup = factory.createGroup(4);
+        assertEquals("Wrong number of fields", 1, actualGroup.getFields().size());
+        InputField actualField = actualGroup.getFields().get(0);
+        assertEquals("Field property name not qualified",
+            "root.list[4].compositeField", actualField.getPropertyName());
+        List<InputField> fields
+            = (List<InputField>) actualField.getAttributes().get(InputField.SUBFIELDS);
+        assertNotNull("Subfields not present", fields);
+        assertEquals("Wrong number of subfields", 1, fields.size());
+        assertEquals("Subfield name not correctly qualified",
+            "root.list[4].compositeField.subfield", fields.get(0).getPropertyName());
     }
 }

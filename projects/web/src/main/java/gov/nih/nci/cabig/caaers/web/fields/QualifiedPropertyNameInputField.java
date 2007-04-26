@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+
 import java.util.Map;
 
 /**
@@ -14,6 +17,10 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
     protected InputField getSourceField() {
         return src;
+    }
+
+    public void validate(BeanWrapper commandBean, Errors errors) {
+        AbstractInputField.validateRequired(this, commandBean, errors);
     }
 
     public Category getCategory() {
@@ -33,7 +40,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     }
 
     public String getPropertyName() {
-        return qualifyPropertyName(src.getPropertyName());
+        return qualifyPropertyName(getSourceField().getPropertyName());
     }
 
     public Map<String, Object> getAttributes() {
@@ -41,4 +48,12 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     }
 
     protected abstract String qualifyPropertyName(String propertyName);
+
+
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append("[propertyName=").append(getPropertyName())
+            .append("; source propertyName=").append(getSourceField().getPropertyName())
+            .append(']').toString();
+    }
 }

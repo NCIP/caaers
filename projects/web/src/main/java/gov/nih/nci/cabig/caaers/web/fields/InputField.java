@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+
 import java.util.Map;
 
 /**
@@ -17,6 +20,7 @@ import java.util.Map;
 public interface InputField {
     String DETAILS = "details";
     String OPTIONS = "options";
+    String SUBFIELDS = "subfields";
 
     Category getCategory();
 
@@ -27,11 +31,13 @@ public interface InputField {
 
     boolean isRequired();
 
+    void validate(BeanWrapper commandBean, Errors errors);
+
     String getPropertyName();
 
     Map<String, Object> getAttributes();
 
     enum Category {
-        TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER
+        TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER, COMPOSITE
     }
 }

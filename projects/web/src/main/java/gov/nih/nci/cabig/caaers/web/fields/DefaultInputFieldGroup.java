@@ -16,6 +16,15 @@ public class DefaultInputFieldGroup extends AbstractInputFieldGroup {
         super(name);
     }
 
+    public DefaultInputFieldGroup(String name, String displayName) {
+        super(name, displayName);
+    }
+
+    public DefaultInputFieldGroup addField(InputField newField) {
+        getFields().add(newField);
+        return this;
+    }
+
     public List<InputField> getFields() {
         return fields;
     }
