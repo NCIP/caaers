@@ -1,0 +1,112 @@
+"category","name"
+Body Category$Body site
+Bone Marrow$Bone Marrow
+Bone Marrow$Peripheral blood
+Central Nervous System$Brainstem
+Central Nervous System$CSF
+Central Nervous System$Cerebellum
+Central Nervous System$Cerebrum
+Dermatology$Skin
+Gastrointestinal$Anus
+Gastrointestinal$Appendix
+Gastrointestinal$Colon
+Gastrointestinal$Duodenum
+Gastrointestinal$Esophagus
+Gastrointestinal$Ileum
+Gastrointestinal$Jejunum
+Gastrointestinal$Liver
+Gastrointestinal$Pancreas
+Gastrointestinal$Rectum
+Gastrointestinal$Spleen
+Gastrointestinal$Sigmoid Colon
+Gastrointestinal$Stomach
+Gastrointestinal$Bile Duct
+Head and Neck$Ear-External
+Head and Neck$Ear-Inner
+Head and Neck$Ear-Mid
+Head and Neck$Eye-Globe
+Head and Neck$Eye-Orbit
+Head and Neck$Mouth
+Head and Neck$Pharnyx
+Head and Neck$Sinuses
+Head and Neck$Throat
+Head and Neck$Thyroid
+Head and Neck$Nose
+Head and Neck$Nasopharynx
+Genitourinary$Bladder
+Genitourinary$Cervix
+Genitourinary$Fallopian Tube
+Genitourinary$Kidney
+Genitourinary$Ovary
+Genitourinary$Pelvis
+Genitourinary$Penis
+Genitourinary$Testicle
+Genitourinary$Ureter
+Genitourinary$Uterus
+Genitourinary$Vagina
+Genitourinary$Prostate
+Lymph Node$Axilla
+Lymph Node$Brachial
+Lymph Node$Cervical
+Lymph Node$Epitrochlear
+Lymph Node$Femoral
+Lymph Node$Hilar
+Lymph Node$Iliac
+Lymph Node$Inguinal
+Lymph Node$Internal Mammary
+Lymph Node$Lymphnode
+Lymph Node$Mediastinum
+Lymph Node$Mesenteric
+Lymph Node$Mid-Pelvis
+Lymph Node$Neck
+Lymph Node$Occipital
+Lymph Node$Paraaortic
+Lymph Node$Pelvis
+Lymph Node$Periauricular
+Lymph Node$Popliteal
+Lymph Node$Retroperitoneal
+Lymph Node$Subclavian
+Lymph Node$Submental
+Lymph Node$Supraclavicular
+Musculoskeletal$Back
+Musculoskeletal$Feet
+Musculoskeletal$Femur
+Musculoskeletal$Fibula
+Musculoskeletal$Hands
+Musculoskeletal$Humerus
+Musculoskeletal$Iliac
+Musculoskeletal$Mandible
+Musculoskeletal$Muscle LE Distal
+Musculoskeletal$Muscle LE Proximal
+Musculoskeletal$Muscle UE Distal
+Musculoskeletal$Muscle UE Proximal
+Musculoskeletal$Radius
+Musculoskeletal$Ribs
+Musculoskeletal$Skull
+Musculoskeletal$Spine-C
+Musculoskeletal$Spine-L
+Musculoskeletal$Spine-S
+Musculoskeletal$Spine-T
+Musculoskeletal$Sternum
+Musculoskeletal$Tibia
+Musculoskeletal$Ulna
+Thoracic (Pulmonary)$Ant-LLL
+Thoracic (Pulmonary)$Ant-LUL
+Thoracic (Pulmonary)$Ant-RLL
+Thoracic (Pulmonary)$Ant-RML
+Thoracic (Pulmonary)$Ant-RUL
+Thoracic (Pulmonary)$Breast
+Thoracic (Pulmonary)$Chest
+Thoracic (Pulmonary)$Hilar
+Thoracic (Pulmonary)$Lung
+Thoracic (Pulmonary)$Mediastinum
+Thoracic (Pulmonary)$Pericardial
+Thoracic (Pulmonary)$Pleural
+Thoracic (Pulmonary)$Post-LLL
+Thoracic (Pulmonary)$Post-LUL
+Thoracic (Pulmonary)$Post-RLL
+Thoracic (Pulmonary)$Post-RML
+Thoracic (Pulmonary)$Post-RUL
+Thoracic (Pulmonary)$Retrocrural
+Other$Other
+Other$Adrenal Gland
