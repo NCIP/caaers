@@ -2,8 +2,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -18,11 +22,22 @@ public class MedicalInfoTab extends AeTab {
 	public MedicalInfoTab() {
         super("Medical info", "Medical", "ae/medical");
     }
-
+	
     @Override
-    @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
-        return new InputFieldGroupMap();
+    	
+    	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSite");
+        fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
+            public String createDisplayName(int index) {
+                return "Site of Metastatic Diseases";
+            }
+        });
+        fieldFactory.addField(new AutocompleterField("anatomicSite", "Site Name", false));
+        fieldFactory.addField(new DefaultTextField("otherMetastaticDiseaseSite", "Other Site", false));
+        
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        map.addRepeatingFieldGroupFactory(fieldFactory, 1);
+        return map;
     }
 
     @Override
