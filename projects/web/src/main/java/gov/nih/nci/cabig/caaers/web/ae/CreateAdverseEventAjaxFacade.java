@@ -14,12 +14,15 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
+import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -28,12 +31,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.servlet.mvc.AbstractFormController;
 
 /**
  * @author Rhett Sutphin
@@ -182,6 +187,23 @@ public class CreateAdverseEventAjaxFacade {
     public String addConcomitantMedication(int index, Integer aeReportId) {
         return renderIndexedAjaxView("conMedFormSection", index, aeReportId);
     }
+    
+    /**
+     * Returns the HTML for the section of the metastatic disease site form for
+     * the metastatic disease with the given index
+     * @param index
+     * @return
+     */
+    public String addMetastaticDiseaseSite(int index, Integer aeReportId) {    	    	
+        
+    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        String commandName = CreateAdverseEventController.class.getName()+".FORM.command";
+        CreateAdverseEventCommand createAdverseEventCommand = (CreateAdverseEventCommand)request.getSession().getAttribute(commandName); 
+        request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createAdverseEventCommand);
+        
+        createAdverseEventCommand.getAeReport().getDiseaseHistory().addMetastaticDiseaseSite(new MetastaticDiseaseSite());
+        return renderIndexedAjaxView("metastaticFormSection", index, aeReportId);
+    }
 
     /**
      * Returns the HTML for the section of the course agent form for
@@ -190,6 +212,7 @@ public class CreateAdverseEventAjaxFacade {
      * @return
      */
     public String addCourseAgent(int index, Integer aeReportId) {
+    	
         return renderIndexedAjaxView("courseAgentFormSection", index, aeReportId);
     }
 
