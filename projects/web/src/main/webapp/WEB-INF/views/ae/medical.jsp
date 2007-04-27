@@ -10,6 +10,14 @@
 
 	<style type="text/css">
         .instructions { margin-left: 17.5em; }
+		.label {
+		width: 16em; text-align: right; padding: 4px;
+		font-weight: bold; white-space: nowrap; font-weight: bold; float: left; margin-left: 0.5em
+		}
+		.value, .extra {
+			margin-left: 11em;
+
+		}
     </style>
 
     <tags:stylesheetLink name="ae"/>
@@ -78,6 +86,78 @@
             acCreate(anatomicAutocompleterProps)
             updateSelectedDisplay(anatomicAutocompleterProps)
             // Element.update("flow-next", "Continue &raquo;")
+        })
+
+        var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+
+        var EnterConMed = Class.create()
+        Object.extend(EnterConMed.prototype, {
+            initialize: function(index, anatomicSiteName) {				
+                this.index = index
+                var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSite[" + index + "]";
+                this.anatomicSiteProperty = cmProperty + ".anatomicSite"
+                this.otherProperty = cmProperty + ".otherMetastaticDiseaseSite"
+
+                if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
+                $("select-anatomicSite-" + this.index)
+                    .observe("click", this.updateAnatomicOrOther.bind(this))
+                $("select-otherMetastaticDiseaseSite-" + this.index)
+                    .observe("click", this.updateAnatomicOrOther.bind(this))
+
+                AE.createStandardAutocompleter(
+                    this.anatomicSiteProperty, this.termPopulator.bind(this),
+                    function(anatomicSite) { return anatomicSite.name })
+
+                this.initializeAnatomicOrOther()
+            },
+
+            termPopulator: function(autocompleter, text) {
+	                createAE.matchAnatomicSite(text, function(values) {
+                    autocompleter.setChoices(values)
+                })
+            },
+
+            updateAnatomicOrOther: function() {
+                var isAnatomicSite = $("select-anatomicSite-" + this.index).checked
+                var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
+                var otherRow = $(this.otherProperty + "-row")
+                if (isAnatomicSite) {
+                    anatomicSiteRow.removeClassName("disabled")
+                    otherRow.addClassName("disabled")
+                    anatomicSiteRow.getElementsByClassName("value")[0].enableDescendants()
+                    otherRow.getElementsByClassName("value")[0].disableDescendants()
+                } else {
+                    otherRow.removeClassName("disabled")
+                    anatomicSiteRow.addClassName("disabled")
+                    otherRow.getElementsByClassName("value")[0].enableDescendants()
+                    anatomicSiteRow.getElementsByClassName("value")[0].disableDescendants()
+                }
+            },
+
+            initializeAnatomicOrOther: function() {
+                var otherValue = $(this.otherProperty).value
+                if (otherValue.length == 0) {
+                    $("select-anatomicSite-" + this.index).click()
+                } else {
+                    $("select-otherMetastaticDiseaseSite-" + this.index).click()
+                }
+            }
+        })
+
+        Element.observe(window, "load", function() {
+
+            <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status" var="site">
+            new EnterConMed(${status.index}, '${site.anatomicSite.name}')
+            </c:forEach>
+			
+			
+            new ListEditor("metastatic", createAE, "MetastaticDiseaseSite", {
+                addFirstAfter: "ins",
+                addParameters: [aeReportId],
+                addCallback: function(index) {
+                    new EnterConMed(index);
+                }
+            })
         })
 
     </script>
@@ -208,6 +288,18 @@
 		</div>
 
 		</chrome:division>
+
+		<div id="ins">
+			
+		<c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
+             <ae:oneMetastatic index="${status.index}"/> 
+        </c:forEach>
+
+		</div>
+
+        <input type="button" value="Add a metastatic disease site" id="add-metastatic-button"/>
+        <tags:indicator id="add-metastatic-indicator"/>
+
     </form:form>
 </body>
 </html>
