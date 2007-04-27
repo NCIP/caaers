@@ -36,6 +36,10 @@ public class DiseaseHistory extends AbstractIdentifiableDomainObject
 	private AnatomicSite anatomicSite;
 	private List<MetastaticDiseaseSite> metastaticDiseaseSite = new ArrayList<MetastaticDiseaseSite>(); 
 
+	public void addMetastaticDiseaseSite(MetastaticDiseaseSite metastaticDiseaseSite) {
+        getMetastaticDiseaseSite().add(metastaticDiseaseSite);        
+    }
+	
 	@OneToOne
 	@JoinColumn(name="anatomic_site_id")
 	@Cascade(value = { CascadeType.ALL })
