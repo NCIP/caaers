@@ -244,8 +244,6 @@
     </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
     <form:form method="post" name="studyDiseasesForm" cssClass="standard">
         <%--<chrome:division id="study-details"> --%>
             <tags:tabFields tab="${tab}" />
@@ -319,7 +317,5 @@
 
             </chrome:division>
     </form:form>
-    <!-- MAIN BODY ENDS HERE -->
-</chrome:body>
 </body>
 </html>

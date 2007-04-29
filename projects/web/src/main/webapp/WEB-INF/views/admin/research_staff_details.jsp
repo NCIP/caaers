@@ -7,6 +7,7 @@
 
 <html>
 <head>
+    <title>Add research staff</title>
 <style type="text/css">
         div.label {
             width: 35%;
@@ -20,7 +21,6 @@
     </style>
 </head>
 <body>
-<chrome:body title="Create a new Research Staff">
 <p id="instructions">
         You are creating a new Research Staff
     </p>
@@ -98,9 +98,9 @@
         </table>
         </td>
         </tr>
-        </table>		
+        </table>
+        <input type="submit" value="Save"/>
         </form:form>
     </chrome:division>    
-</chrome:body>
 </body>
 </html>

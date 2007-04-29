@@ -20,7 +20,6 @@
     </style>
 </head>
 <body>
-<chrome:body title="Create a new Participant">
 <p id="instructions">
         You are creating a new Participant
     </p>
@@ -129,7 +128,5 @@
         
         </form:form>
     </chrome:division>    
-    
-</chrome:body>
 </body>
 </html>

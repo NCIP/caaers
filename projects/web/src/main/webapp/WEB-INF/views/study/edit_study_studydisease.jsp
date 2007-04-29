@@ -264,8 +264,6 @@
     </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
 	<form:form method="post" name="studyDiseasesForm" cssClass="standard">
 		<%--<chrome:division id="study-details"> --%>
 			<%--<tags:tabFields tab="${tab}" /> --%>
@@ -325,7 +323,6 @@
 									 ${studyDisease.diseaseTerm.ctepTerm}</td>
 								<td style="width:35px;">
 								<form:checkbox  path="studyDiseases[${status.index}].leadDisease" /></td>
-								</td>
 							</tr>
 
 						</c:forEach>
@@ -335,7 +332,5 @@
 			</chrome:division>
 
 	</form:form>
-	<!-- MAIN BODY ENDS HERE -->
-</chrome:body>
 </body>
 </html>

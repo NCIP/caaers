@@ -127,9 +127,6 @@ function fireAction1(action, selected, studysiteindex){
 </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-
-<chrome:body title="${flow.name}: ${tab.longTitle}">	
 				<form:form method="post" name="studySiteForm">
 
 				<table border="0" id="table1" cellspacing="10" width="100%">
@@ -257,7 +254,5 @@ function fireAction1(action, selected, studysiteindex){
 				</tr>
 				</table>
 				</form:form>		
-<!-- MAIN BODY ENDS HERE -->
-</chrome:body>
 </body>
 </html>

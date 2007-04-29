@@ -7,6 +7,7 @@
 
 <html>
 <head>
+    <title>Import Studies</title>
 <style type="text/css">
         div.label {
             width: 35%;
@@ -57,7 +58,6 @@
 
 </head>
 <body> <br>
-<chrome:body title="Import Studies">
 <p id="instructions">
         Import Studies/Protocols into caAERS
 </p>
@@ -93,9 +93,8 @@
 								</tr>
 					</c:forEach>				
 		</table>
-
+        <input type="submit" value="Save"/>
         </form:form>
     </chrome:division>    
-</chrome:body>
 </body>
 </html>

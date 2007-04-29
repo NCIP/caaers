@@ -126,8 +126,6 @@
     </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
 <p id="instructions">
    Add Agents by Clicking on the add link 
 </p>
@@ -189,7 +187,5 @@
 				
 				</chrome:division>
 				</form:form>		
-<!-- MAIN BODY ENDS HERE -->
-</chrome:body>
 </body>
 </html>

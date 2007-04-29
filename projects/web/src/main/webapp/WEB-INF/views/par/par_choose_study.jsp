@@ -60,33 +60,32 @@ function updateTargetPage(s){
         </table>
     </form:form>
 </chrome:search>
-<chrome:body title="Study Search results">
+
 <form:form  method="post">
 	<tags:tabFields tab="${tab}" />
 	<tags:errors path="*"/>
-				<ec:table items="command.studies" var="study"
-					action="${pageContext.request.contextPath}/pages/newParticipant"
-					imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-				    showPagination="false" form="command"
-					cellspacing="0" cellpadding="0" border="0" width="80%" style=""
-					styleClass="">
-					<ec:row highlightRow="true">
-						<ec:column property="kk" style="width:10px" filterable="false"
-							sortable="false" title=" ">
-							<form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
-						</ec:column>
-						<ec:column property="shortTitle" width="6" title="Short Title" />
-						<ec:column property="longTitle" title="Long Title" />
-						<ec:column property="description" title="Description" />
-						<ec:column property="principalInvestigatorCode"
-							title="InvestigatorCode" />
-						<ec:column property="principalInvestigatorName"
-							title="InvestigatorName" />
-						<ec:column property="primarySponsorCode" title="Sponsor Code" />
-						<ec:column property="primarySponsorName" title="Sponsor Name" />
-					</ec:row>
-				</ec:table> </form:form> <br>
-</chrome:body>
-<!-- MAIN BODY ENDS HERE -->
+    <ec:table items="command.studies" var="study"
+        action="${pageContext.request.contextPath}/pages/newParticipant"
+        imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+        showPagination="false" form="command"
+        cellspacing="0" cellpadding="0" border="0" width="80%" style=""
+        styleClass="">
+        <ec:row highlightRow="true">
+            <ec:column property="kk" style="width:10px" filterable="false"
+                sortable="false" title=" ">
+                <form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
+            </ec:column>
+            <ec:column property="shortTitle" width="6" title="Short Title" />
+            <ec:column property="longTitle" title="Long Title" />
+            <ec:column property="description" title="Description" />
+            <ec:column property="principalInvestigatorCode"
+                title="InvestigatorCode" />
+            <ec:column property="principalInvestigatorName"
+                title="InvestigatorName" />
+            <ec:column property="primarySponsorCode" title="Sponsor Code" />
+            <ec:column property="primarySponsorName" title="Sponsor Name" />
+        </ec:row>
+    </ec:table>
+</form:form>
 </body>
 </html>

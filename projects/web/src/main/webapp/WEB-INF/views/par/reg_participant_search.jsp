@@ -55,8 +55,7 @@ function doNothing(){
 </chrome:search>
 
 
-<chrome:body title="Study Search results">
-<p id="instructions">     
+<p id="instructions">
 Please use the form above to search for a Participant and assign it to <b>${command.studySites[0].study.shortTitle}</b> and then press Save & Continue to proceed 
 </p>
 <form:form  method="post">
@@ -85,7 +84,5 @@ Please use the form above to search for a Participant and assign it to <b>${comm
     </ec:row>
 </ec:table>
 </form:form>
-</chrome:body>
-<!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

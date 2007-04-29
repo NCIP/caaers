@@ -7,6 +7,7 @@
 
 <html>
 <head>
+    <title>Add investigator</title>
 <style type="text/css">
         div.label {
             width: 35%;
@@ -41,7 +42,6 @@
 
 </head>
 <body>
-<chrome:body title="Create a new Investigator">
 <p id="instructions">
         You are creating a new Investigator
     </p>
@@ -169,9 +169,8 @@
 						</c:forEach> 
 																						
 					</table> 
-
+               <input type="submit" value="Save"/>
         </form:form>
     </chrome:division>    
-</chrome:body>
 </body>
 </html>

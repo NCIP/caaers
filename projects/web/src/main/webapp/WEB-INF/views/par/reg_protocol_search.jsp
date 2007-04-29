@@ -61,8 +61,8 @@ function updateTargetPage(s){
         </table>
     </form:form>
 </chrome:search>
-<chrome:body title="Study Search Results">
-<p id="instructions">     
+
+<p id="instructions">
 Please choose a Study and then press Save & Continue to proceed 
 </p>
 <form:form  method="post" cssClass="standard">
@@ -89,7 +89,5 @@ Please choose a Study and then press Save & Continue to proceed
 						<ec:column property="primarySponsorName" title="Sponsor Name" />
 					</ec:row>
 				</ec:table> </form:form> <br>
-</chrome:body>
-<!-- MAIN BODY ENDS HERE -->
 </body>
 </html>

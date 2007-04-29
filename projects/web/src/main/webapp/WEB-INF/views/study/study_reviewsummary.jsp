@@ -35,9 +35,6 @@ field.value="";
 </script>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
-	
 	<form:form method="post" name="review">
 	<chrome:division id="study-details">
 	<%--	<tags:tabFields tab="${tab}"/> --%>
@@ -283,6 +280,5 @@ field.value="";
 </chrome:division>
 	</form:form>
 
-</chrome:body>
 </body>
 </html>

@@ -17,8 +17,6 @@
     </style>
 </head>
 <body>
-<!-- MAIN BODY STARTS HERE -->
-<chrome:body title="${flow.name}: ${tab.longTitle}">
 	   <form:form method="post" cssClass="standard">
 			<%-- 	<tags:tabFields tab="${tab}"/> --%>
 			<%--	<input type="hidden" name="_finish" value="true"/> --%>
@@ -113,7 +111,5 @@
 					</chrome:division>			
 				</div>
         </form:form>
-        </chrome:body>
-<!-- MAIN BODY ENDS HERE -->
 </body>
 </html>
