@@ -10,20 +10,12 @@
         <pattern>/public/*</pattern>
     </decorator>
 
-    <decorator name="tabbedflownonwizard" page="tabbedflownowizard.jsp">
-        <pattern>/pages/searchRegister</pattern>
-        <pattern>/pages/searchRegisterParticipant</pattern>
-        <pattern>/pages/searchRegisterStudy</pattern>
-        <pattern>/pages/register</pattern>
-        <pattern>/pages/participant/create?studySiteId</pattern>
-   </decorator>
-   
-   <decorator name="tabbedflow_update" page="tabbedflow_update.jsp">
-		<pattern>/pages/study/edit</pattern>  
- 		<pattern>/pages/admin/createInvestigator</pattern>
- 		<pattern>/pages/admin/migrateStudies</pattern>   
-  		<pattern>/pages/admin/createResearchStaff</pattern>     
-   </decorator>
+    <decorator name="tabbedflow_update" page="tabbedflow_update.jsp">
+        <pattern>/pages/study/edit</pattern>
+        <pattern>/pages/admin/createInvestigator</pattern>
+        <pattern>/pages/admin/migrateStudies</pattern>
+        <pattern>/pages/admin/createResearchStaff</pattern>
+    </decorator>
     
     <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/participant/create</pattern>
