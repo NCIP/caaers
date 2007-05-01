@@ -32,9 +32,6 @@ public class StudyDisease extends AbstractDomainObject{
 	private Study study;
 	private DiseaseTerm diseaseTerm;
 	private Boolean leadDisease;
-	//private String[] diseaseTermId;
-	//private String diseaseTermAsString;
-
 
 	/*
 	 * Constructor -- Initializes participation at create time 
@@ -74,27 +71,6 @@ public class StudyDisease extends AbstractDomainObject{
 	}
 	
 	
-	
-	/*
-	@Transient
-	public String[] getDiseaseTermId() {
-		return diseaseTermId;
-	}
-
-	public void setDiseaseTermId(String[] diseaseTermId) {
-		this.diseaseTermId = diseaseTermId;
-	}
-	
-	@Transient
-	public String getDiseaseTermAsString() {
-		return diseaseTermAsString;
-	}
-
-	public void setDiseaseTermAsString(String diseaseTermAsString) {
-		this.diseaseTermAsString = diseaseTermAsString;
-	}
-	*/
-
 	
 	public boolean equals(Object o) {
 		if (this == o)

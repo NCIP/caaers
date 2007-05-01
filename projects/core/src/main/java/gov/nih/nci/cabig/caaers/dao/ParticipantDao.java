@@ -11,6 +11,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -23,6 +24,10 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
         = Arrays.asList("firstName", "lastName");
     private static final List<String> EXACT_MATCH_PROPERTIES
         = Arrays.asList("institutionalPatientNumber");
+    private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES
+    	= Arrays.asList("firstName","lastName");
+    private static final List<String> EMPTY_PROPERTIES
+		= Collections.emptyList();
 
     @Override
     public Class<Participant> domainClass() {
@@ -47,6 +52,17 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     public List<Participant> getBySubnames(String[] subnames) {
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    /**
+     * @param subnames a set of substrings to match
+     * @return a list of participants such that each entry in <code>subnames</code> is a
+     *  case-insensitive substring match of the participant's name or other identifier
+     */
+    @SuppressWarnings("unchecked")
+    public List<Participant> getByUniqueIdentifiers(String[] subnames) {
+        return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
+    }
+    
 
     public Participant getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);

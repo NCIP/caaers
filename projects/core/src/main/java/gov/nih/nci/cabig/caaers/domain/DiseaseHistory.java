@@ -32,7 +32,7 @@ public class DiseaseHistory extends AbstractIdentifiableDomainObject
 	private String otherPrimaryDiseaseCode;
 	private String otherPrimaryDiseaseSiteCode;
 	private Date dateOfInitialPathologicDiagnosis;
-	private StudyDisease studyDisease;
+	private CtepStudyDisease ctepStudyDisease;
 	private AnatomicSite anatomicSite;
 	private List<MetastaticDiseaseSite> metastaticDiseaseSite = new ArrayList<MetastaticDiseaseSite>(); 
 
@@ -82,12 +82,12 @@ public class DiseaseHistory extends AbstractIdentifiableDomainObject
 	@OneToOne
 	@JoinColumn(name="study_disease_id")
 	@Cascade(value = { CascadeType.ALL })	  
-	public StudyDisease getStudyDisease() {
-		return studyDisease;
+	public CtepStudyDisease getCtepStudyDisease() {
+		return ctepStudyDisease;
 	}
 	
-	public void setStudyDisease(StudyDisease studyDisease) {
-		this.studyDisease = studyDisease;
+	public void setCtepStudyDisease(CtepStudyDisease ctepStudyDisease) {
+		this.ctepStudyDisease = ctepStudyDisease;
 	}
 
 	@OneToMany

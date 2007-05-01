@@ -13,6 +13,13 @@
     >
 
     <!-- HIBERNATE CONFIGURATION -->
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
+    
+    <bean id="MedDRADao" class="gov.nih.nci.cabig.caaers.dao.MedDRADao">
+    	<property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+    </bean>
+    
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
         <property name="mappingLocations">
@@ -40,7 +47,9 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
-                <value>gov.nih.nci.cabig.caaers.domain.StudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
@@ -65,8 +74,18 @@
                 <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
 
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -139,4 +158,8 @@
 	<bean id="physicianDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PhysicianDao"/>
 	<bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
 	<bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
+	<bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
+	
+	<bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
+	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
 </beans>

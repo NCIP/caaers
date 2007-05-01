@@ -8,7 +8,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<bean id="authenticationManager"
 		class="org.acegisecurity.MockAuthenticationManager" />
-
+<!-- 
 	<bean id="testAuthenticationPopulator"
 		class="gov.nih.nci.cabig.caaers.security.TestAuthenticationPopulator">
 		<property name="username" value="SYSTEM_ADMIN" />
@@ -19,7 +19,7 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 			</list>
 		</property>
 	</bean>
-<!-- 
+
 	<bean id="testCsmGroupAuthorizationCheck"
 		class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
 		<property name="csmUserProvisioningManager"

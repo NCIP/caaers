@@ -11,11 +11,9 @@ import javax.persistence.Transient;
 @Entity
 public class DiseaseTerm extends AbstractImmutableDomainObject {
     private String term;
-    //private String select;
     private String ctepTerm;
     private String medraCode;
     private DiseaseCategory category;
-    //private boolean otherRequired;
 
     ////// LOGIC
 

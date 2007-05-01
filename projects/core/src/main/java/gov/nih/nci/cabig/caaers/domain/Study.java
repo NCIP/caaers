@@ -16,7 +16,9 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
@@ -52,10 +54,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     //TODO move into Command Object
     private String[] diseaseTermIds;
     private String   diseaseCategoryAsText;
+    private String   diseaseLlt;
 
     private List<StudySite> studySites = new ArrayList<StudySite>();
     private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
-    private List<StudyDisease> studyDiseases = new ArrayList<StudyDisease>();
+    //private List<StudyDisease> studyDiseases = new ArrayList<StudyDisease>();
+    private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
+    private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
 
     /// LOGIC
 
@@ -78,6 +83,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void setDiseaseCategoryAsText(String diseaseCategoryAsText) {
         this.diseaseCategoryAsText = diseaseCategoryAsText;
     }
+    
+    @Transient
+	public String getDiseaseLlt() {
+		return diseaseLlt;
+	}
+
+	public void setDiseaseLlt(String diseaseLlt) {
+		this.diseaseLlt = diseaseLlt;
+	}
 
     public void addStudySite(StudySite studySite) {
         studySites.add(studySite);
@@ -89,9 +103,20 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         studyAgent.setStudy(this);
     }
 
+    /*
     public void addStudyDisease(StudyDisease studyDisease) {
         studyDisease.setStudy(this);
         studyDiseases.add(studyDisease);
+    }
+    */
+    public void addCtepStudyDisease(CtepStudyDisease ctepStudyDisease) {
+    	ctepStudyDisease.setStudy(this);
+    	ctepStudyDiseases.add(ctepStudyDisease);
+    }
+    
+    public void addMeddraStudyDisease(MeddraStudyDisease meddraStudyDisease) {
+    	meddraStudyDisease.setStudy(this);
+    	meddraStudyDiseases.add(meddraStudyDisease);
     }
 
     /// BEAN PROPERTIES
@@ -124,6 +149,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.studyAgents = studyAgents;
     }
 
+    /*
     @OneToMany (mappedBy="study", fetch=FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyDisease> getStudyDiseases() {
@@ -133,8 +159,35 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void setStudyDiseases(List<StudyDisease> studyDiseases) {
         this.studyDiseases = studyDiseases;
     }
+    */
+    
+    //@OneToMany (mappedBy="study", fetch=FetchType.LAZY)
+    //@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OneToMany
+    @JoinColumn(name="study_id", nullable=false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "term_type = 'ctep'") // it is pretty lame that this is necessary
+    public List<CtepStudyDisease> getCtepStudyDiseases() {
+		return ctepStudyDiseases;
+	}
 
-    public Boolean getBlindedIndicator() {
+	public void setCtepStudyDiseases(List<CtepStudyDisease> ctepStudyDiseases) {
+		this.ctepStudyDiseases = ctepStudyDiseases;
+	}
+	
+	@OneToMany
+    @JoinColumn(name="study_id", nullable=false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "term_type = 'meddra'") // it is pretty lame that this is necessary
+    public List<MeddraStudyDisease> getMeddraStudyDiseases() {
+		return meddraStudyDiseases;
+	}
+
+	public void setMeddraStudyDiseases(List<MeddraStudyDisease> meddraStudyDiseases) {
+		this.meddraStudyDiseases = meddraStudyDiseases;
+	}
+
+	public Boolean getBlindedIndicator() {
         return blindedIndicator;
     }
 
@@ -236,5 +289,5 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     public void setTargetAccrualNumber(Integer targetAccrualNumber) {
         this.targetAccrualNumber = targetAccrualNumber;
-    }
+    }    
 }

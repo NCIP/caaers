@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 
@@ -30,7 +31,11 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         = Arrays.asList("shortTitle", "longTitle");
     private static final List<String> EXACT_MATCH_PROPERTIES
         = Collections.emptyList();
-
+    private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES
+		= Arrays.asList("longTitle");
+    private static final List<String> EMPTY_PROPERTIES
+		= Collections.emptyList();
+    
     @Override
     public Class<Study> domainClass() {
         return Study.class;
@@ -42,6 +47,8 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     }
 
     // TODO: how is this different from #getById ?
+    // KK : I am guessing the difference here is that identifiers and studysites are being 
+    // loaded hence no lazy initialization exception . 
     public Study getStudyDesignById(int id) {
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
         study.getIdentifiers().size();
@@ -61,6 +68,16 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
+    /**
+     * @param subnames a set of substrings to match
+     * @return a list of participants such that each entry in <code>subnames</code> is a
+     *  case-insensitive substring match of the participant's name or other identifier
+     */
+    @SuppressWarnings("unchecked")
+    public List<Study> getByUniqueIdentifiers(String[] subnames) {
+        return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
     }
 
     public Study getByIdentifier(Identifier identifier) {
