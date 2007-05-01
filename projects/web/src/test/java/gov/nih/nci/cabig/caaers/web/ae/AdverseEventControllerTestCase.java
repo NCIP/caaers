@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 
 /**
  * @author Rhett Sutphin
@@ -31,6 +32,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected AgentDao agentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
+    protected PriorTherapyDao priorTherapyDao;
  	
     @Override
     protected void setUp() throws Exception {
@@ -46,6 +48,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         studyAgentDao = registerDaoMockFor(StudyAgentDao.class);
         ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class);
         anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class);
+        priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class);
      
         autowirer = new TabAutowirer();
         autowirer.setAdverseEventReportDao(adverseEventReportDao);
@@ -54,6 +57,6 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         autowirer.setCtcTermDao(ctcTermDao);
         autowirer.setParticipantDao(participantDao);
         autowirer.setRuleExecutionService(ruleExecutionService);
-        autowirer.setStudyDao(studyDao);        
+        autowirer.setStudyDao(studyDao);
     }
 }
