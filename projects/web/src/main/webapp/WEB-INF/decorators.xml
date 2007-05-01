@@ -10,7 +10,7 @@
         <pattern>/public/*</pattern>
     </decorator>
 
-    <decorator name="tabbedflow-singlebody" page="tabbedflow-singlebody.jsp">
+    <decorator name="tabbedflow" page="tabbedflow.jsp">
         <pattern>/pages/study/edit</pattern>
         <pattern>/pages/study/create</pattern>
         <pattern>/pages/participant/create</pattern>
