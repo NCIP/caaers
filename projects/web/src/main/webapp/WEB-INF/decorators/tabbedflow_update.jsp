@@ -26,7 +26,7 @@
 <body>
 <standard:header/>
 <div class="tabpane">
-    <chrome:levelTwoTabs tab="${tab}" flow="${flow}"/>
+    <chrome:workflowTabs tab="${tab}" flow="${flow}"/>
 
     <div class="tabcontent workArea">
         <div class="body">

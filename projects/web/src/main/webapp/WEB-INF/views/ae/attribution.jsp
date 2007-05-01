@@ -101,21 +101,18 @@
     </script>
 </head>
 <body>
-<form:form cssClass="standard">
-    <tags:tabFields tab="${tab}"/>
-    <chrome:division>
-        <p id="instructions">
-            You are attributing adverse events to causes for
-            ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
-        </p>
-        <tags:hasErrorsMessage/>
-
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="instructions">
+        You are attributing adverse events to causes for
+        ${command.assignment.participant.fullName} on
+        ${command.assignment.studySite.study.shortTitle}.
+    </jsp:attribute>
+    <jsp:attribute name="singleFields">
         <c:forEach var="offset" begin="0" end="${fn:length(command.aeReport.adverseEvents) - 1}" step="${MAX_COLS}">
             <ae:attributionTable adverseEvents="${command.aeReport.adverseEvents}" blocks="${blocks}"
                                  maxAEs="${MAX_COLS}" offset="${offset}"/>
         </c:forEach>
-    </chrome:division>
-</form:form>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

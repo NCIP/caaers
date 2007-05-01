@@ -1,24 +1,12 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!-- TODO: This view needs to be refactored. -->
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
-<style type="text/css">
-        /* TODO: all these are temporary */
-        .division {
-            float: left;
-            width: 45%;
-            margin: 1em;
-        }
-        .division-content {
-            padding: 1em;
-        }
-</style>
-<title> Search for a Study or Participant  
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title> Search for a Study or Participant
 <script>
 function navRollOver(obj, state) {
   document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
@@ -42,11 +30,10 @@ function submitFormTwo(s){
 In order to assign a Participant to a Study , you need to first search for either a  participant or a study. 
 </p>
 	<form:form id="searchForm" name="searchForm" action="/caaers/pages/participant/assignStudy" method="post" cssClass="standard">
-	<chrome:division title="Select Study" id="study-search">
+	<chrome:box autopad="true" cssClass="paired" title="Select Study" id="study-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
-							<h3>Study Search</h3>
 							<strong>1. Search Study by:</strong> <form:select
 								path="studyType">
 								<form:options items="${studySearchType}" itemLabel="desc"
@@ -66,14 +53,13 @@ In order to assign a Participant to a Study , you need to first search for eithe
 						</tr>
 					</table>
 	
-	</chrome:division>
+	</chrome:box>
 	</form:form>
 	<form:form id="searchForm2" name="searchForm2" action="/caaers/pages/participant/assignParticipant" method="post" cssClass="standard">
-	<chrome:division title="Select Participant" id="participant-search">
+	<chrome:box autopad="true" cssClass="paired" title="Select Participant" id="participant-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr valign="top">
 							<td width="99%">
-							<h3>Participant Search</h3>
 							<strong>1. Search Participant by:</strong> <form:select
 								path="participantType">
 								<form:options items="${participantSearchType}" itemLabel="desc"
@@ -97,7 +83,7 @@ In order to assign a Participant to a Study , you need to first search for eithe
 							</td>
 						</tr>
 					</table>
-	</chrome:division>
+	</chrome:box>
 </form:form>
 </body>
 </html>

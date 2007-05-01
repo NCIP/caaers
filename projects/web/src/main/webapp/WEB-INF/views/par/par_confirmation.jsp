@@ -24,15 +24,12 @@ function submitPage(s){
 <body>
 
 
-
-<p id="instructions">
-   Please verify this data and press Save to Create this Participant
-</p>
-
-<form:form method="post">
-<input type="hidden" id="_finish" name="_finish"/>
-<chrome:division title="${command.lastName}, ${command.firstName}">
-
+<tags:tabForm tab="${tab}" flow="${flow}" title="${command.lastName}, ${command.firstName}">
+    <jsp:attribute name="instructions">
+        Please verify this data and press Save to Create this Participant
+    </jsp:attribute>
+    <jsp:attribute name="singleFields">
+        <input type="hidden" id="_finish" name="_finish"/>
         <br>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
     	<tr>
@@ -103,7 +100,6 @@ function submitPage(s){
         </td>
         </tr>
    </table> 
-            
-</chrome:division>
- </form:form> 
+    </jsp:attribute>
+</tags:tabForm>
 </body>

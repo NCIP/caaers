@@ -46,7 +46,7 @@
         You are creating a new Investigator
     </p>
     
-    <chrome:division title="Investigator" id="investigator">
+    <chrome:box title="Investigator" id="investigator" autopad="true">
     <form:form method="post" cssClass="standard" name="studySiteForm">
 	<div>		
 		<input type="hidden" name="_action" value="">
@@ -171,6 +171,6 @@
 					</table> 
                <input type="submit" value="Save"/>
         </form:form>
-    </chrome:division>    
+    </chrome:box>    
 </body>
 </html>

@@ -25,7 +25,7 @@
         You are creating a new Research Staff
     </p>
     
-    <chrome:division title="Research Staff" id="research_staff">
+    <chrome:box title="Research Staff" id="research_staff" autopad="true">
     <form:form method="post" cssClass="standard" name="studySiteForm">
 	<div>		
 		<input type="hidden" name="_action" value="">
@@ -101,6 +101,6 @@
         </table>
         <input type="submit" value="Save"/>
         </form:form>
-    </chrome:division>    
+    </chrome:box>    
 </body>
 </html>

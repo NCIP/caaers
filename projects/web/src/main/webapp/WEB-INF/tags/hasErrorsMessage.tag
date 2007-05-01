@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <form:errors path="*">
     <c:if test="${not empty messages}">
-        <p class="error">
+        <p class="errors">
             There are problems with your submission.
             Please correct them before proceeding.
         </p>

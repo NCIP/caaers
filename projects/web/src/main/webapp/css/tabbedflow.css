@@ -1,24 +1,107 @@
-.tabpane {
-    margin: 0;
+/*
+ * Styles for tabbed flow controllers
+ */
+
+/* second-level tabs */
+
+#workflow-tabs {
+  background: #A2A2A2 url(../images/chrome/workflow-tab_R.gif) no-repeat center left;
+  padding-right: 12px;
+  min-height: 18px; font-size: .85em;
 }
 
-.tabcontrols {
-    margin: 1em;
+#workflow-tabs li {
+  background: url(../images/chrome/workflow-tab_BG.gif) no-repeat top left;
+  padding: 2px 0;
+  line-height: 14px;
+  border: 0 solid #000;
+  border-right-width: 1px;
 }
 
-.tabcontrols a {
-    display: block;
-    background-color: #6E81A6;
-    color: #fff;
-    padding: 4px;
-    text-decoration: none;
-    cursor: pointer; /* don't know why this is necessary */
+#workflow-tabs li.selected {
+  background-image: url(../images/chrome/workflow-tab_BG_s.gif);
 }
 
-#flow-next {
-    float: right;
+#workflow-tabs li div {
+  position: relative;
+  left: 6px;
+  background: url(../images/chrome/workflow-tab_R.gif) no-repeat top right; 
+  padding: 0 16px 0 10px;
 }
 
-#flow-prev {
-    float: left;
+#workflow-tabs li.selected div {
+  background-image: url(../images/chrome/workflow-tab_R_s.gif);
+}
+
+#workflow-tabs li.last div {
+  background-image: none;
+}
+
+#workflow-tabs a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333333;
+}
+
+#workflow-tabs a:hover {
+  color: #002EE2;
+}
+
+/**** MAJOR PAGE DIVISIONS */
+
+#summary-pane {
+  width: 25%;
+}
+
+#summary-pane .row .label {
+  width: 35%;
+}
+
+#summary-pane .row .value {
+  margin-left: 40%;
+}
+
+#main-pane {
+  width: 70%;
+}
+
+/**** FLOW-SPECIFIC CONTROLS */
+
+.buttons {
+  border-top: 1px solid #000;
+  clear: both;
+}
+
+.buttons a {
+  color: #eee;
+  background-color: #3876C1;
+  text-decoration: none;
+  padding: 3px;
+  margin: 3px;
+  border: 1px solid #ddd;
+  display: block;
+  float: left;
+}
+
+.buttons a:hover {
+  color: #333;
+  background-color: #5C94D5;
+}
+
+.local-buttons {
+  font-size: 0.9em;
+  float: right;
+  clear: both;
+}
+
+.flow-buttons {
+  clear: both;
+  margin-top: 8px;
+}
+
+.flow-buttons .prev {
+  float: left;
+}
+.flow-buttons .next {
+  float: right;
 }

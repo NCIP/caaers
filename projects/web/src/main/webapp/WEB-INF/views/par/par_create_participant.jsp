@@ -1,3 +1,7 @@
+<%--
+    TODO: this entire flow's views need to be refactored.
+--%>
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -7,30 +11,17 @@
 
 <html>
 <head>
-<style type="text/css">
-        div.label {
-            width: 35%;
-        }
-        div.submit {
-            text-align: right;
-        }
-        form {
-            width: 20em;
-        }
-    </style>
 </head>
 <body>
-<p id="instructions">
+    <p class="instructions">
         You are creating a new Participant
     </p>
     
-    <chrome:division title="Participant" id="participant">
-    <form:form method="post" cssClass="standard">
-    <tags:errors path="*"/>
-	<tags:tabFields tab="${tab}" />
+    <tags:tabForm tab="${tab}" flow="${flow}">
+        <jsp:attribute name="singleFields">
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
         <tr><td>
-        	
+
             <table width="50%" border="0" cellspacing="0" cellpadding="0" class="contentAreaL">
         	<tr valign="top">
                 <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
@@ -125,8 +116,7 @@
 		</c:forEach>
 
 	</table>
-        
-        </form:form>
-    </chrome:division>    
+        </jsp:attribute>
+    </tags:tabForm>    
 </body>
 </html>

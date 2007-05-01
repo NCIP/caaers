@@ -6,17 +6,14 @@ form.standard .disabled {
     background: transparent;
     color: #666;
 }
-.label {
-    width: 9em; text-align: right; padding: 4px;
-    font-weight: bold; white-space: nowrap;
-}
-.medical-label {
-    width: 16em; text-align: right; padding: 4px;
-    font-weight: bold; white-space: nowrap; font-weight: bold; float: left; margin-left: 0.5em
+div.row div.label {
+    width: 9em;
+    /*text-align: right; padding: 4px;*/
+    /*font-weight: bold; white-space: nowrap;*/
 }
 
-.value, .extra { margin-left: 11em; }
-.text { padding: 4px; margin-left: 11em;}
+div.row div.value, div.row div.extra { margin-left: 11em; }
+
 /*
 .repeatedGroup {
     border-top: 1px dotted #6E81A6;
@@ -28,10 +25,11 @@ form.standard .disabled {
     float: left;
     width: 30em;
     border-left: 1px solid #999;
+    margin-bottom: 0.5em;
 }
 
 .ctc-details {
     padding-right: 1.2em;
     float: left;
-    width: 40em;
+    width: 45em;
 }

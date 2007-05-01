@@ -45,7 +45,7 @@
     </style>
 </head>
 <body>
-    <chrome:division>
+    <chrome:box autopad="true">
     <c:url value="/pages/admin/configure" var="action"/>
     <form:form action="${action}" cssClass="standard">
         <c:forEach items="${command.conf}" var="entry" varStatus="status">
@@ -77,10 +77,11 @@
         <div class="row submit">
             <input type="submit" value="Save"/>
         </div>
+
+        <c:if test="${param.updated}">
+            <p class="updated">Settings saved</p>
+        </c:if>
     </form:form>
-    </chrome:division>
-    <c:if test="${param.updated}">
-        <p class="updated">Settings saved</p>
-    </c:if>
+    </chrome:box>
 </body>
 </html>

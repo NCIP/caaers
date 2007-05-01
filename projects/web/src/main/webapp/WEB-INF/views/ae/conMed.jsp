@@ -74,7 +74,7 @@
             </c:forEach>
 
             new ListEditor("conmed", createAE, "ConcomitantMedication", {
-                addFirstAfter: "instructions",
+                addFirstAfter: "single-fields",
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterConMed(index);
@@ -84,21 +84,21 @@
     </script>
 </head>
 <body>
-<form:form cssClass="standard">
-        <p id="instructions">
-            You are entering concomitant medications for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}.  For each medication, if there's
-            an appropriate known agent, enter that.  Otherwise, enter a description in the other
-            field.
-        </p>
-        <tags:hasErrorsMessage/>
-
-        <tags:tabFields tab="${tab}"/>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="instructions">
+        You are entering concomitant medications for ${command.assignment.participant.fullName}
+        on ${command.assignment.studySite.study.shortTitle}.  For each medication, if there's
+        an appropriate known agent, enter that.  Otherwise, enter a description in the other
+        field.
+    </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
             <ae:oneConMed index="${status.index}"/>
         </c:forEach>
-        <input type="button" value="Add a medication" id="add-conmed-button"/>
-        <tags:indicator id="add-conmed-indicator"/>
-    </form:form>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="conmed" label="Add a medication"/>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

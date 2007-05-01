@@ -16,7 +16,7 @@
         Element.observe(window, "load", function() {
             new ListEditor("otherCause", createAE, "OtherCause", {
                 addParameters: [aeReportId],
-                addFirstAfter: "instructions"
+                addFirstAfter: "single-fields"
             })
         })
     </script>
@@ -27,19 +27,19 @@
     </style>
 </head>
 <body>
-    <form:form cssClass="standard">
-        <p id="instructions">
-            You are entering other causes for ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
-        </p>
-        <tags:hasErrorsMessage/>
-
-        <tags:tabFields tab="${tab}"/>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="instructions">
+        You are entering other causes for ${command.assignment.participant.fullName} on
+        ${command.assignment.studySite.study.shortTitle}.
+    </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.otherCauses}" varStatus="status">
             <ae:oneOtherCause index="${status.index}"/>
         </c:forEach>
-        <input type="button" value="Add another cause" id="add-otherCause-button"/>
-        <tags:indicator id="add-otherCause-indicator"/>
-    </form:form>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause"/>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

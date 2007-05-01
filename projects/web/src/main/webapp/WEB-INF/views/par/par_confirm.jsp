@@ -1,5 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!-- TODO: This view is virtually identical to the last screen of the create
+    participant flow.  Factor out their commonalities. -->
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -14,7 +15,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Confirmation</title>
+<title>View Participant</title>
 <script>
 function submitPage(s){
 	document.getElementById("nextView").value=s;
@@ -27,8 +28,7 @@ function submitPage(s){
 <p id="instructions">
    You have successfully created a new Participant
 </p>
-<chrome:division title="${participant.lastName}, ${participant.firstName}">
-
+<chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
         <br>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
     	<tr>
@@ -99,5 +99,5 @@ function submitPage(s){
         </td>
         </tr>
    </table>            
-</chrome:division>
+</chrome:box>
 </body>

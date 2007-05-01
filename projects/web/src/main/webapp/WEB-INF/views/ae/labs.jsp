@@ -22,19 +22,19 @@
     </script>
 </head>
 <body>
-    <form:form cssClass="standard">
-        <p id="instructions">
-            You are entering labs for ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
-        </p>
-        <tags:hasErrorsMessage/>
-
-        <tags:tabFields tab="${tab}"/>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="instructions">
+        You are entering labs for ${command.assignment.participant.fullName} on
+        ${command.assignment.studySite.study.shortTitle}.
+    </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.labs}" varStatus="status">
             <ae:oneLab index="${status.index}"/>
         </c:forEach>
-        <input type="button" value="Add a lab" id="add-lab-button"/>
-        <tags:indicator id="add-lab-indicator"/>
-    </form:form>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="labe" label="Add a lab"/>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

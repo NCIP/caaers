@@ -5,17 +5,16 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <title>${tab.longTitle}</title>
-</head>
 <body>
-    <p>
-        Please review your entered report by clicking on the tabs along the top
-        of the form.  When you have entered as much data as you would like, please
-        click save (below) to store the new report.
-    </p>
-    <form:form>
-        <input type="hidden" name="_finish"/>
-    </form:form>
+    <tags:tabForm tab="${tab}" flow="${flow}">
+        <jsp:attribute name="instructions">
+            Please review your entered report by clicking on the tabs along the top
+            of the form.  When you have entered as much data as you would like, please
+            click save (below) to store the new report.
+        </jsp:attribute>
+        <jsp:attribute name="singleFields">
+            <input type="hidden" name="_finish"/>
+        </jsp:attribute>
+    </tags:tabForm>
 </body>
 </html>

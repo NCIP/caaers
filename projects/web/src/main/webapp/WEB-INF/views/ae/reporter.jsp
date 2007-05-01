@@ -77,107 +77,97 @@
     </script>
 </head>
 <body>
-    <form:form cssClass="standard">
-        
-        <tags:hasErrorsMessage/>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="instructions">
+        You are entering reporter information.  You can select from the existing 
+        study personnel or you can enter a new one.
+    </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
+        <chrome:division title="Reporter Details">
+        <div class="row">
+            <p class="instructions">
+            <div class="label">Study Personnel</div>
+            <div class="value">
+                <select id="staff" name="staff" onChange="javascript:chooseStaff();">
+                    <option value=-1>please select--</option>
+                    <c:forEach var="site" varStatus="status" items="${command.study.studySites}">
+                        <c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">
+                            <option value=${personnel.researchStaff.id}>${personnel.researchStaff.firstName}, ${personnel.researchStaff.lastName} </option>
+                        </c:forEach>
+                    </c:forEach>
+                </select>
+            </div>
+        </div>
 
-        <tags:tabFields tab="${tab}"/>
-		
-		<chrome:division title="Reporter Details">
-		
-		<div class="row">
-			<p id="instructions">
-            You are entering reporter information. 
-			You can select from the existing study personnel or you can enter a new one. </p>
-			<div class="label">Study Personnel</div>
-			<div class="value"> 
-			<%--	<select id="staff" name="staff" onChange="javascript:chooseStaff();">
-					<option value=-1>please select--</option>
-					<c:forEach var="staff" varStatus="status" items="${staffRefData}"> 																
-						<option value=${staff.id}>${staff.firstName}</option>
-					</c:forEach>
-				</select> --%>
+        <div class="row">
+            <div class="label">First Name</div>
+            <div class="value"><form:input path="aeReport.reporter.firstName"/></div>
+        </div>
 
-				<select id="staff" name="staff" onChange="javascript:chooseStaff();">
-					<option value=-1>please select--</option>
-					<c:forEach var="site" varStatus="status" items="${command.study.studySites}">	
-						<c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">
-							<option value=${personnel.researchStaff.id}>${personnel.researchStaff.firstName}, ${personnel.researchStaff.lastName} </option>
-						</c:forEach>
-					</c:forEach>
-				</select>
-		    </div>
-        </div> 
+        <div class="row">
+            <div class="label">Last Name</div>
+            <div class="value"><form:input path="aeReport.reporter.lastName"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">First Name</div>
-			<div class="value"><form:input path="aeReport.reporter.firstName"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Middle Name</div>
+            <div class="value"><form:input path="aeReport.reporter.middleName"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Last Name</div>
-			<div class="value"><form:input path="aeReport.reporter.lastName"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Email</div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanims[0].value"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Middle Name</div>
-			<div class="value"><form:input path="aeReport.reporter.middleName"/></div>
-		</div>
-		
-		<div class="row">
-	        <div class="label">Email</div>
-			<div class="value"><form:input path="aeReport.reporter.contactMechanims[0].value"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Fax</div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanims[1].value"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Fax</div>
-			<div class="value"><form:input path="aeReport.reporter.contactMechanims[1].value"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Phone</div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanims[2].value"/></div>
+        </div>
+        </chrome:division>
 
-		<div class="row">
-	        <div class="label">Phone</div>
-			<div class="value"><form:input path="aeReport.reporter.contactMechanims[2].value"/></div>
-		</div>
+        <chrome:division title="Physician Details">
 
-		</chrome:division>
+        <p id="instructions">
+            If the physician is the reporter then check this box.
 
-		<chrome:division title="Physician Details">
-
-		<p id="instructions">
-            If the physician is the reporter then check this box. 
-        
         <input type="checkbox" id="option1" name="option1" onClick="javascript:selected()"> </p>
 
-		<div class="row">
-	        <div class="label">First Name</div>
-			<div class="value"><form:input path="aeReport.physician.firstName"/></div>
-		</div>
+        <div class="row">
+            <div class="label">First Name</div>
+            <div class="value"><form:input path="aeReport.physician.firstName"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Last Name</div>
-			<div class="value"><form:input path="aeReport.physician.lastName"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Last Name</div>
+            <div class="value"><form:input path="aeReport.physician.lastName"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Middle Name</div>
-			<div class="value"><form:input path="aeReport.physician.middleName"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Middle Name</div>
+            <div class="value"><form:input path="aeReport.physician.middleName"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Email</div>
-			<div class="value"><form:input path="aeReport.physician.contactMechanims[0].value"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Email</div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanims[0].value"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Fax</div>
-			<div class="value"><form:input path="aeReport.physician.contactMechanims[1].value"/></div>
-		</div>
+        <div class="row">
+            <div class="label">Fax</div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanims[1].value"/></div>
+        </div>
 
-		<div class="row">
-	        <div class="label">Phone</div>
-			<div class="value"><form:input path="aeReport.physician.contactMechanims[2].value"/></div>
-		</div>
-		</chrome:division>
-    </form:form>
+        <div class="row">
+            <div class="label">Phone</div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanims[2].value"/></div>
+        </div>
+    </chrome:division>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

@@ -65,7 +65,7 @@
         Element.observe(window, "load", function() {
             new ListEditor("courseAgent", createAE, "CourseAgent", {
                 addParameters: [aeReportId],
-                addFirstAfter: "treatmentInfo",
+                addFirstAfter: "single-fields",
                 addCallback: function(index) {
                     registerDoseModHandler(index)
                     AE.registerCalendarPopups("courseAgent-" + index)
@@ -80,24 +80,21 @@
         })
     </script>
     <style type="text/css">
-        .label {
+        div.row div.label {
             width: 18em;
         }
-        .value {
+        div.row div.value {
             margin-left: 19em;
         }
     </style>
 </head>
 <body>
-    <form:form cssClass="standard">
-        <p id="instructions">
+    <tags:tabForm tab="${tab}" flow="${flow}">
+        <jsp:attribute name="instructions">
             You are entering treatment information for ${command.assignment.participant.fullName} on
             ${command.assignment.studySite.study.shortTitle}.
-        </p>
-        <tags:hasErrorsMessage/>
-
-        <tags:tabFields tab="${tab}"/>
-        <chrome:division id="treatmentInfo">
+        </jsp:attribute>
+        <jsp:attribute name="singleFields">
             <div class="row">
                 <div class="label">
                     <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
@@ -117,13 +114,15 @@
                     <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[1]}" size="4"/>
                 </div>
             </div>
-        </chrome:division>
-
-        <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status">
-            <ae:oneCourseAgent index="${status.index}"/>
-        </c:forEach>
-        <input type="button" value="Add a course agent" id="add-courseAgent-button"/>
-        <tags:indicator id="add-courseAgent-indicator"/>
-    </form:form>
+        </jsp:attribute>
+        <jsp:attribute name="repeatingFields">
+            <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status">
+                <ae:oneCourseAgent index="${status.index}"/>
+            </c:forEach>
+        </jsp:attribute>
+        <jsp:attribute name="localButtons">
+            <tags:listEditorAddButton divisionClass="courseAgent" label="Add a course agent"/>
+        </jsp:attribute>
+    </tags:tabForm>
 </body>
 </html>

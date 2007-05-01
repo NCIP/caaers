@@ -194,9 +194,11 @@ public class CreateAdverseEventAjaxFacade {
      * @param index
      * @return
      */
+    // TODO: use the same methods for this as for everything else
     public String addMetastaticDiseaseSite(int index, Integer aeReportId) {    	    	
         
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        // TODO: this won't work in the edit flow
         String commandName = CreateAdverseEventController.class.getName()+".FORM.command";
         CreateAdverseEventCommand createAdverseEventCommand = (CreateAdverseEventCommand)request.getSession().getAttribute(commandName); 
         request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createAdverseEventCommand);
@@ -212,7 +214,6 @@ public class CreateAdverseEventAjaxFacade {
      * @return
      */
     public String addCourseAgent(int index, Integer aeReportId) {
-    	
         return renderIndexedAjaxView("courseAgentFormSection", index, aeReportId);
     }
 

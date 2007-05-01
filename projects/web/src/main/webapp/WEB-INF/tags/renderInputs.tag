@@ -19,7 +19,7 @@
         </c:forEach>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="${empty size ? '50' : size}" id="${field.propertyName}-input"/>
+        <input size="${empty size ? '50' : size}" type="text" id="${field.propertyName}-input"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
         <form:hidden path="${field.propertyName}"/>
@@ -28,4 +28,5 @@
         UNIMPLEMENTED FIELD TYPE ${field.categoryName} for ${field.propertyName}
     </c:otherwise>
 </c:choose>
+<tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>

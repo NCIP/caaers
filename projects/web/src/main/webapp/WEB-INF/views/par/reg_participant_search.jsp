@@ -58,19 +58,19 @@ function doNothing(){
 <p id="instructions">
 Please use the form above to search for a Participant and assign it to <b>${command.studySites[0].study.shortTitle}</b> and then press Save & Continue to proceed 
 </p>
-<form:form  method="post">
-	<tags:tabFields tab="${tab}" />						
-		<ec:table 
-    	items="command.participantSearchResults"
-    	var="participant" 
-    	action="${pageContext.request.contextPath}/pages/home" 
-    	imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-    	showPagination="false"
-    	cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
-    	<ec:row highlightRow="true">
-    	<ec:column property="kk" style="width:10px" filterable="false" sortable="false" title=" ">
-			<form:radiobutton path="participantId" value="${participant.id}" />
-		</ec:column>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="singleFields">
+        <ec:table
+        items="command.participantSearchResults"
+        var="participant"
+        action="${pageContext.request.contextPath}/pages/home"
+        imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+        showPagination="false"
+        cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
+        <ec:row highlightRow="true">
+        <ec:column property="kk" style="width:10px" filterable="false" sortable="false" title=" ">
+            <form:radiobutton path="participantId" value="${participant.id}" />
+        </ec:column>
         <ec:column property="firstName" title="First Name"/>
         <ec:column property="lastName" title="Last Name" />
         <ec:column property="dateOfBirth" title="Date of Birth" cell="date" parse="yyyy-MM-dd" format="MM/dd/yyyy" />
@@ -79,10 +79,11 @@ Please use the form above to search for a Participant and assign it to <b>${comm
         <ec:column property="ethnicity" title="Ethnicity" />
         <%--
         <ec:column property="shortTitle" width="2" sortable="false" filterable="false" title="cpodfgdf">
-        	<a href="newParticipant?studySiteId=${study.studySites[0].id}">cp</a>
+            <a href="newParticipant?studySiteId=${study.studySites[0].id}">cp</a>
         </ec:column>--%>
-    </ec:row>
-</ec:table>
-</form:form>
+        </ec:row>
+        </ec:table>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

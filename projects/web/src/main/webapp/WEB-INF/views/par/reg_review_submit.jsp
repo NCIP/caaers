@@ -24,16 +24,13 @@ function submitPage(s){
 </script>
 </head>
 <body>
-<form:form method="post">
 <p id="instructions">
    Please review the information and press Save to assign the Participant <b>${command.participants[0].lastName}, ${command.participants[0].firstName}</b>
    to Study <b>${command.studySites[0].study.shortTitle}</b>
 </p>
-<input type="hidden" id="_finish" name="_finish"/>
-
-
-
-<chrome:division title="${command.participants[0].lastName}, ${command.participants[0].firstName}">
+<tags:tabForm tab="${tab}" flow="${flow}" title="${command.participants[0].lastName}, ${command.participants[0].firstName}">
+    <jsp:attribute name="singleFields">
+        <input type="hidden" id="_finish" name="_finish"/>
 
         <br>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
@@ -85,7 +82,7 @@ function submitPage(s){
                 <td>${command.participants[0].gender}</td>
             </tr>
         </table>
-        </td>    
+        </td>
         <td width="50%" valign="top" class="contentAreaL">
         <table border="0" cellspacing="0" cellpadding="0"
                class="table1">
@@ -103,9 +100,9 @@ function submitPage(s){
         </table>
         </td>
         </tr>
-   </table>           
-</chrome:division>
-</form:form>
+   </table>
+    </jsp:attribute>
+</tags:tabForm>
 
 
 </body>

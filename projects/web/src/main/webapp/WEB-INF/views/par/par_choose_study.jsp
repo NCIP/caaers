@@ -46,13 +46,13 @@ function updateTargetPage(s){
 						<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
 					</form:select></td>
                 <td><form:input path="searchText" size="25" /></td>
-                <td><input type="submit" alignment="center" value="go" name="_target1" alt="GO" align="middle" width="22"
-						height="10" border="0"></td>
+                <td><input type="submit" value="go" name="_target1" alt="GO"></td>
             </tr>
             <tr>
                 <td></td>
                 <td colspan="4" class="notation">
-                    <span class="labels">(<span class="red">*</span><em>Required Information</em>)</span>
+                    <span class="labels">(<span class="red">*</span><em>Required
+                        Information</em>)</span>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     ^ Minimum two characters for search.
                 </td>
@@ -61,31 +61,31 @@ function updateTargetPage(s){
     </form:form>
 </chrome:search>
 
-<form:form  method="post">
-	<tags:tabFields tab="${tab}" />
-	<tags:errors path="*"/>
-    <ec:table items="command.studies" var="study"
-        action="${pageContext.request.contextPath}/pages/newParticipant"
-        imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-        showPagination="false" form="command"
-        cellspacing="0" cellpadding="0" border="0" width="80%" style=""
-        styleClass="">
-        <ec:row highlightRow="true">
-            <ec:column property="kk" style="width:10px" filterable="false"
-                sortable="false" title=" ">
-                <form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
-            </ec:column>
-            <ec:column property="shortTitle" width="6" title="Short Title" />
-            <ec:column property="longTitle" title="Long Title" />
-            <ec:column property="description" title="Description" />
-            <ec:column property="principalInvestigatorCode"
-                title="InvestigatorCode" />
-            <ec:column property="principalInvestigatorName"
-                title="InvestigatorName" />
-            <ec:column property="primarySponsorCode" title="Sponsor Code" />
-            <ec:column property="primarySponsorName" title="Sponsor Name" />
-        </ec:row>
-    </ec:table>
-</form:form>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="singleFields">
+        <ec:table items="command.studies" var="study"
+            action="${pageContext.request.contextPath}/pages/newParticipant"
+            imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+            showPagination="false" form="command"
+            cellspacing="0" cellpadding="0" border="0" width="80%" style=""
+            styleClass="">
+            <ec:row highlightRow="true">
+                <ec:column property="kk" style="width:10px" filterable="false"
+                    sortable="false" title=" ">
+                    <form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
+                </ec:column>
+                <ec:column property="shortTitle" width="6" title="Short Title" />
+                <ec:column property="longTitle" title="Long Title" />
+                <ec:column property="description" title="Description" />
+                <ec:column property="principalInvestigatorCode"
+                    title="InvestigatorCode" />
+                <ec:column property="principalInvestigatorName"
+                    title="InvestigatorName" />
+                <ec:column property="primarySponsorCode" title="Sponsor Code" />
+                <ec:column property="primarySponsorName" title="Sponsor Name" />
+            </ec:row>
+        </ec:table>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

@@ -18,6 +18,7 @@
         <pattern>/pages/participant/assignParticipant</pattern>
         <pattern>/pages/ae/create</pattern>
         <pattern>/pages/ae/edit</pattern>
+        <pattern>/pages/ae/sample</pattern>
         <pattern>/pages/rule/create</pattern>
         <pattern>/pages/rule/notification/create</pattern>
     </decorator>

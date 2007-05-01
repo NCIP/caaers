@@ -14,7 +14,9 @@
         <div class="row">
             <div class="label"><label for="ctc-category-${index}">CTC category</label></div>
             <div class="value">
-                <select id="ctc-category-${index}"></select>
+                <select id="ctc-category-${index}">
+                    <option>Please select CTC version first</option>
+                </select>
             </div>
         </div>
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>

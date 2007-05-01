@@ -7,14 +7,6 @@
 <head>
     <title>${pageTitle}</title>
     <style type="text/css">
-        .division {
-            float: left;
-            width: 45%;
-            margin: 1em;
-        }
-        .division-content {
-            padding: 1em;
-        }
     </style>
     <c:if test="${empty tab}">
         <tags:stylesheetLink name="tabbedflow"/>
@@ -94,7 +86,7 @@
         <form:form method="post" cssClass="standard autoclear">
             <tags:tabFields tab="${tab}"/>
             <div class="autoclear">
-                <chrome:division title="Select participant" id="participant-entry">
+                <chrome:box title="Select participant" id="participant-entry" cssClass="paired" autopad="true">
                     <p>Enter a portion of a participant's name or another registered identifier.</p>
                     <form:hidden path="participant"/>
                     <input type="text" id="participant-input" value="${command.participant.fullName}"/>
@@ -105,8 +97,8 @@
                     <p id="participant-selected" style="display: none">
                         You've selected the participant <span id="participant-selected-name"></span>.
                     </p>
-                </chrome:division>
-                <chrome:division title="Select study" id="study-entry">
+                </chrome:box>
+                <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
                     <p>Enter a portion of a study's name or another registered identifier.</p>
                     <form:hidden path="study"/>
                     <input type="text" id="study-input" value="${command.study.shortTitle}"/>
@@ -117,11 +109,16 @@
                     <p id="study-selected" style="display: none">
                         You've selected the study <span id="study-selected-name"></span>.
                     </p>
-                </chrome:division>
+                </chrome:box>
             </div>
-            <c:if test="${empty tab}">
-                <tags:tabControls tabNumber="${0}" isLast="${false}"/>
-            </c:if>
+            <c:choose>
+                <c:when test="${empty tab}">
+                    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
+                </c:when>
+                <c:otherwise>
+                    <tags:tabControls tab="${tab}" flow="${flow}"/>
+                </c:otherwise>
+            </c:choose>
         </form:form>
     </body>
 </html>

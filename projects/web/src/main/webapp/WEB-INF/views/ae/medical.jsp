@@ -7,22 +7,19 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-
-	<style type="text/css">
-        .instructions { margin-left: 17.5em; }
-		.label {
-		width: 16em; text-align: right; padding: 4px;
-		font-weight: bold; white-space: nowrap; font-weight: bold; float: left; margin-left: 0.5em
-		}
-		.value, .extra {
-			margin-left: 11em;
-
-		}
-    </style>
-
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    <style type="text/css">
+        .instructions { margin-left: 17.5em; }
+        div.row div.label {
+            width: 16em;
+        }
+        div.row div.value {
+            margin-left: 17em;
+        }
+    </style>
+
     <script type="text/javascript">
 		
 		function chooseDisease(){
@@ -163,143 +160,135 @@
     </script>
 </head>
 <body>
-    <form:form cssClass="standard">
-        
-        <tags:hasErrorsMessage/>
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="singleFields">
+    <%-- The database identifier shouldn't be here.
+         TODO: it should probably be the primary assigned id
+    <div class="row">
+        <div class="label">Patient ID</div>
+        <div class="value"> ${command.participant.id} </div>
+    </div>
+     --%>
 
-        <tags:tabFields tab="${tab}"/>
-		
-		<chrome:division title="Patient Demographic Information">
-		
-		<div class="row"> 
-	        <div class="medical-label">Patient ID</div>
-			<div class="text"> ${command.participant.id} </div>
-		</div> 
+    <div class="row">
+        <div class="label">Birth Date</div>
+        <div class="value"><tags:formatDate value="${command.participant.dateOfBirth}"/></div>
+    </div>
 
-		<div class="row">
-	        <div class="medical-label">Birth Date</div>
-			<div class="text"><tags:formatDate value="${command.participant.dateOfBirth}"/></div>
-		</div>
+    <div class="row">
+        <div class="label">Race</div>
+        <div class="value">${command.participant.race}</div>
+    </div>
 
-		<div class="row">
-	        <div class="medical-label">Race</div>
-			<div class="text">${command.participant.race}</div>
-		</div>
-		
-		<div class="row">
-	        <div class="medical-label">Ethnicity</div>
-			<div class="text">${command.participant.ethnicity}</div>
-		</div>
+    <div class="row">
+        <div class="label">Ethnicity</div>
+        <div class="value">${command.participant.ethnicity}</div>
+    </div>
 
-		<div class="row">
-	        <div class="medical-label">Gender</div>
-			<div class="text">${command.participant.gender}</div>
-		</div>
+    <div class="row">
+        <div class="label">Gender</div>
+        <div class="value">${command.participant.gender}</div>
+    </div>
 
-		<div class="row">
-	        <div class="medical-label">Height</div>
-			<div class="value"> <input id= "aeReport.participantHistory.height" name="aeReport.participantHistory.height" value= "${command.aeReport.participantHistory.height == 0.0 ? '' : command.aeReport.participantHistory.height}" /> &nbsp;
+    <div class="row">
+        <div class="label">Height</div>
+        <div class="value"> <input id= "aeReport.participantHistory.height" name="aeReport.participantHistory.height" value= "${command.aeReport.participantHistory.height == 0.0 ? '' : command.aeReport.participantHistory.height}" type="text" /> &nbsp;
 
-				<form:select path="aeReport.participantHistory.heightUnitOfMeasure">
-					<form:options items="${heightUnitsRefData}" itemLabel="desc"
-							itemValue="code"/>
-				</form:select>
-				</div>
-		</div>
+            <form:select path="aeReport.participantHistory.heightUnitOfMeasure">
+                <form:options items="${heightUnitsRefData}" itemLabel="desc"
+                        itemValue="code"/>
+            </form:select>
+            </div>
+    </div>
 
-		<div class="row">
-	        <div class="medical-label">Weight</div>
-			<div class="value"> <input id= "aeReport.participantHistory.weight" name="aeReport.participantHistory.weight" value= "${command.aeReport.participantHistory.weight == 0.0 ? '' : command.aeReport.participantHistory.weight}" /> &nbsp;
-				<form:select path="aeReport.participantHistory.weightUnitOfMeasure">
-					<form:options items="${weightUnitsRefData}" itemLabel="desc"
-							itemValue="code"/>
-				</form:select>
-			</div>
-		</div>
-		
-		<div class="row">
-	        <div class="medical-label">Baseline performance status</div>
-	        <div class="value">
-		        <form:select path="aeReport.participantHistory.baselinePerformanceStatus">
-					<form:options items="${bpsRefData}" itemLabel="desc"
-						itemValue="code"/>
-				</form:select>
-	        </div>	        
+    <div class="row">
+        <div class="label">Weight</div>
+        <div class="value"> <input id= "aeReport.participantHistory.weight" name="aeReport.participantHistory.weight" value= "${command.aeReport.participantHistory.weight == 0.0 ? '' : command.aeReport.participantHistory.weight}" type="text" /> &nbsp;
+            <form:select path="aeReport.participantHistory.weightUnitOfMeasure">
+                <form:options items="${weightUnitsRefData}" itemLabel="desc"
+                        itemValue="code"/>
+            </form:select>
+        </div>
+    </div>
 
-		</div>
+    <div class="row">
+        <div class="label">Baseline performance status</div>
+        <div class="value">
+            <form:select path="aeReport.participantHistory.baselinePerformanceStatus">
+                <form:options items="${bpsRefData}" itemLabel="desc"
+                    itemValue="code"/>
+            </form:select>
+        </div>
 
-		</chrome:division>
+    </div>
 
-		<chrome:division title="Patient Disease Information">
-        		
-		<div class="row">
-			<div class="medical-label">Disease Name</div>
-			<div class="value"> 		
-			
-				<select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
-					<option value="">please select--</option>
-					<c:forEach var="studyDisease" varStatus="status" items="${command.study.studyDiseases}">	
-							<c:if test="${command.aeReport.diseaseHistory.studyDisease.id == studyDisease.id }">
-								<option value=${studyDisease.id} selected="true">${studyDisease.diseaseTerm.term} </option>
-							</c:if>
-							<c:if test="${command.aeReport.diseaseHistory.studyDisease.id != studyDisease.id }">
-								<option value=${studyDisease.id}>${studyDisease.diseaseTerm.term} </option>
-							</c:if>
+    </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
+        <chrome:division title="Patient Disease Information">
+                <div class="row">
+                    <div class="label">Disease Name</div>
+                    <div class="value">
 
-					</c:forEach>
-				</select>
-		    </div>
-        </div> 
+                        <select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
+                            <option value="">please select--</option>
+                            <c:forEach var="studyDisease" varStatus="status" items="${command.study.studyDiseases}">
+                                    <c:if test="${command.aeReport.diseaseHistory.studyDisease.id == studyDisease.id }">
+                                        <option value="${studyDisease.id}" selected="true">${studyDisease.diseaseTerm.term} </option>
+                                    </c:if>
+                                    <c:if test="${command.aeReport.diseaseHistory.studyDisease.id != studyDisease.id }">
+                                        <option value="${studyDisease.id}">${studyDisease.diseaseTerm.term} </option>
+                                    </c:if>
 
-		<p id="instructions" class="instructions">
-			If appropriate Disease Name is not on the list above, provide appropriate Disease Name in the "Disease Name Not Listed" field.</p>
-		<div class="row">
-	        <div class="medical-label">Disease Name Not Listed</div>
-			<div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseCode"/> </div>
-		</div>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
 
-		<div class="row">
-			<div class="medical-label">Primary Site of Disease</div>
-			<div class="value"> 			
-					<form:hidden path="aeReport.diseaseHistory.anatomicSite"/>
-					<input type="text" size="38" id="aeReport.diseaseHistory.anatomicSite-input" value="${command.aeReport.diseaseHistory.anatomicSite.name}"/>
-					<input type="button" id="aeReport.diseaseHistory.anatomicSite-clear" value="Clear"/>
-                    <tags:indicator id="aeReport.diseaseHistory.anatomicSite-indicator"/>     
-					<tags:errors path="aeReport.diseaseHistory.anatomicSite"/>
-                    <div id="aeReport.diseaseHistory.anatomicSite-choices" class="autocomplete"></div>
-					<p id="aeReport.diseaseHistory.anatomicSite-selected" style="display:none">
-                        You've selected the anatomic <span id="aeReport.diseaseHistory.anatomicSite-selected-name"></span>.
-                    </p>
-		    </div>
-        </div> 
+                <p id="instructions" class="instructions">
+                    If appropriate Disease Name is not on the list above, provide appropriate Disease Name in the "Disease Name Not Listed" field.</p>
+                <div class="row">
+                    <div class="label">Disease Name Not Listed</div>
+                    <div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseCode"/> </div>
+                </div>
 
-		<p id="instructions" class="instructions">
-				If the appropriate site is not listed, type the specific site in the "Other Primary Site of Disease" field.
-		</p>
+                <div class="row">
+                    <div class="label">Primary Site of Disease</div>
+                    <div class="value">
+                            <form:hidden path="aeReport.diseaseHistory.anatomicSite"/>
+                            <input type="text" size="38" id="aeReport.diseaseHistory.anatomicSite-input" value="${command.aeReport.diseaseHistory.anatomicSite.name}"/>
+                            <input type="button" id="aeReport.diseaseHistory.anatomicSite-clear" value="Clear"/>
+                            <tags:indicator id="aeReport.diseaseHistory.anatomicSite-indicator"/>
+                            <tags:errors path="aeReport.diseaseHistory.anatomicSite"/>
+                            <div id="aeReport.diseaseHistory.anatomicSite-choices" class="autocomplete"></div>
+                            <p id="aeReport.diseaseHistory.anatomicSite-selected" style="display:none">
+                                You've selected the anatomic <span id="aeReport.diseaseHistory.anatomicSite-selected-name"></span>.
+                            </p>
+                    </div>
+                </div>
 
-		<div class="row">
-	        <div class="medical-label">Other Primary Site of Disease</div>
-			<div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode"/> </div>
-		</div>
+                <p class="instructions">
+                        If the appropriate site is not listed, type the specific site in the "Other Primary Site of Disease" field.
+                </p>
 
-		<div class="row">
-	        <div class="medical-label">Date of initial diagnosis</div>
-			<div class="value"> <tags:dateInput path="aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"/> </div>
-		</div>
+                <div class="row">
+                    <div class="label">Other Primary Site of Disease</div>
+                    <div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode"/> </div>
+                </div>
 
-		</chrome:division>
+                <div class="row">
+                    <div class="label">Date of initial diagnosis</div>
+                    <div class="value"> <tags:dateInput path="aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"/> </div>
+                </div>
 
-		<div id="ins">
-			
-		<c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
-             <ae:oneMetastatic index="${status.index}"/> 
+            </chrome:division>
+
+        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
+             <ae:oneMetastatic index="${status.index}"/>
         </c:forEach>
-
-		</div>
-
-        <input type="button" value="Add a metastatic disease site" id="add-metastatic-button"/>
-        <tags:indicator id="add-metastatic-indicator"/>
-
-    </form:form>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="metastatic" label="Add a metastatic disease site"/>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

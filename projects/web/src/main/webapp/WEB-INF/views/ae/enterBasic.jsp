@@ -169,16 +169,12 @@
     </script>
 </head>
 <body>
-    <form:form cssClass="standard">
-        <tags:tabFields tab="${tab}"/>
-
-        <chrome:division title="Report">
-            <p id="instructions">
-                You are entering an adverse event report for ${command.assignment.participant.fullName} on
-                ${command.assignment.studySite.study.shortTitle}.
-            </p>
-            <tags:hasErrorsMessage/>
-
+    <tags:tabForm tab="${tab}" flow="${flow}">
+        <jsp:attribute name="instructions">
+            You are entering an adverse event report for ${command.assignment.participant.fullName} on
+            ${command.assignment.studySite.study.shortTitle}.
+        </jsp:attribute>
+        <jsp:attribute name="singleFields">
             <div class="report-fields">
                 <c:forEach items="${fieldGroups.report.fields}" var="field">
                     <tags:renderRow field="${field}"/>
@@ -195,14 +191,15 @@
                     </div>
                 </div>
             </div>
-        </chrome:division>
-
-        <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-            <ae:oneAdverseEvent index="${status.index}"/>
-        </c:forEach>
-
-        <input type="button" id="add-ae-section-button" value="Add another AE"/>
-        <tags:indicator id="add-ae-section-indicator"/>
-    </form:form>
+        </jsp:attribute>
+        <jsp:attribute name="repeatingFields">
+            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
+                <ae:oneAdverseEvent index="${status.index}"/>
+            </c:forEach>
+        </jsp:attribute>
+        <jsp:attribute name="localButtons">
+            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE"/>
+        </jsp:attribute>
+    </tags:tabForm>
 </body>
 </html>

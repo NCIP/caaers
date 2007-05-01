@@ -62,7 +62,7 @@
         Import Studies/Protocols into caAERS
 </p>
     
-    <chrome:division title="Import Studies " id="studies">
+    <chrome:box autopad="true" title="Import Studies " id="studies">
     <form:form method="post" cssClass="standard" name="studySiteForm">
 	<div>		
 		<input type="hidden" name="_action" value="">
@@ -95,6 +95,6 @@
 		</table>
         <input type="submit" value="Save"/>
         </form:form>
-    </chrome:division>    
+    </chrome:box>
 </body>
 </html>

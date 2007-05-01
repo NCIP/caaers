@@ -17,12 +17,10 @@
 <body>
 <standard:header/>
 
-<div class="standard workArea">
 <c:set var="__decorator_title"><decorator:title/></c:set>
 <chrome:body title="${__decorator_title}">
     <decorator:body/>
 </chrome:body>
-</div>
 
 <standard:footer/>
 </body>
