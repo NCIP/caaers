@@ -39,7 +39,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setReportDao(adverseEventReportDao);
         controller.setAgentDao(agentDao);
         controller.setStudyAgentDao(studyAgentDao);
-        controller.setStudyDiseaseDao(studyDiseaseDao);
+        controller.setCtepStudyDiseaseDao(ctepStudyDiseaseDao);
         controller.setAnatomicSiteDao(anatomicSiteDao);
         controller.afterPropertiesSet();
 

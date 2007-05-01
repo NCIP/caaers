@@ -56,8 +56,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/viewResearchStaff"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/migrateStudies"
+		<entry key="/pages/admin/import"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
+		<entry key="/pages/admin/importMeddra"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	
 		
 		<!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>

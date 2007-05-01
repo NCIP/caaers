@@ -107,7 +107,9 @@
 							<bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Research Staff" p:linkName="createResearchStaffController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="Import Studies" p:linkName="migrateStudiesController"/>                                                                            
+                                p:displayName="Import" p:linkName="importController"/> 
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Import MedDRA" p:linkName="importMeddraController"/>                                                                               
                         </list>
                     </property>
                 </bean>
@@ -178,8 +180,12 @@
 	<bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController"/>
           
-    <bean name="/admin/migrateStudies" id="migrateStudiesController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.MigrateStudiesController"/>      
+    <bean name="/admin/import" id="importController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.ImportController"/>
+          
+    <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" >
+    </bean>            
 
 	<bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >

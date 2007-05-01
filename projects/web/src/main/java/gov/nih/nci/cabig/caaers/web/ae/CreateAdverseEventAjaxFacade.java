@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -20,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
@@ -54,6 +56,7 @@ public class CreateAdverseEventAjaxFacade {
     private ResearchStaffDao researchStaffDao;
     private AnatomicSiteDao anatomicSiteDao;
     private InteroperationService interoperationService;
+    private PriorTherapyDao priorTherapyDao;
 
     
 
@@ -61,7 +64,12 @@ public class CreateAdverseEventAjaxFacade {
         List<AnatomicSite> anatomicSites = anatomicSiteDao.getBySubnames(extractSubnames(text));
         
         return anatomicSites;                
-    }  
+    } 
+    
+    public List<PriorTherapy> matchPriorTherapies(String text) {
+        List<PriorTherapy> priorTherapies = priorTherapyDao.getBySubnames(extractSubnames(text));
+        return priorTherapies;                
+    }
 
 
     public ResearchStaff getResearchStaff(String text) {    	
@@ -226,6 +234,16 @@ public class CreateAdverseEventAjaxFacade {
     public String addOtherCause(int index, Integer aeReportId) {
         return renderIndexedAjaxView("otherCauseFormSection", index, aeReportId);
     }
+    
+    /**
+     * Returns the HTML for the section of the other causes form for
+     * the other cause with the given index
+     * @param index
+     * @return
+     */
+    public String addPriorTherapy(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("priorTherapyFormSection", index, aeReportId);
+    }
 
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
@@ -319,4 +337,12 @@ public class CreateAdverseEventAjaxFacade {
     public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
         this.anatomicSiteDao = anatomicSiteDao;
     }
+    
+    @Required
+	public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+		this.priorTherapyDao = priorTherapyDao;
+	}
+    
+    
+    
 }

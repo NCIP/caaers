@@ -9,10 +9,11 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -49,9 +50,10 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected AgentDao agentDao;
     protected AdverseEventReportDao reportDao;
     protected StudyAgentDao studyAgentDao;
-    protected StudyDiseaseDao studyDiseaseDao;
+    protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected RuleExecutionService ruleExecutionService;
+    protected PriorTherapyDao priorTherapyDao;
 
     protected AbstractAdverseEventInputController() {
         setFlow(new Flow<AdverseEventInputCommand>(getFlowName()));
@@ -64,7 +66,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         flow.addTab(new TreatmentTab());
         flow.addTab(new LabsTab());
         flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
-        flow.addTab(new EmptyAeTab("Prior therapies", "Prior therapies", "ae/notimplemented"));
+        flow.addTab(new PriorTherapyTab());
         flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
         flow.addTab(new AttributionTab());
@@ -82,8 +84,9 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
-        ControllerTools.registerDomainObjectEditor(binder, studyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -148,15 +151,15 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     }
 
     public void setReportDao(AdverseEventReportDao reportDao) {
-        this.reportDao = reportDao;
+        this.reportDao = reportDao; 
     }
 
     public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
         this.studyAgentDao = studyAgentDao;
     }
 
-    public void setStudyDiseaseDao(StudyDiseaseDao studyDiseaseDao) {
-		this.studyDiseaseDao = studyDiseaseDao;
+	public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
+		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
 	}
 
 	public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
@@ -166,4 +169,9 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
         this.ruleExecutionService = ruleExecutionService;
     }
+
+	public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+		this.priorTherapyDao = priorTherapyDao;
+	}
+    
 }

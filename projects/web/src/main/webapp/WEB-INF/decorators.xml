@@ -21,6 +21,7 @@
         <pattern>/pages/ae/sample</pattern>
         <pattern>/pages/rule/create</pattern>
         <pattern>/pages/rule/notification/create</pattern>
+        <pattern>/pages/admin/import</pattern>
     </decorator>
 
     <excludes>

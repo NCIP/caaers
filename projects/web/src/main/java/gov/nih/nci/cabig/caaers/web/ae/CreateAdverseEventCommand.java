@@ -162,7 +162,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         // in same session as study is loaded and/or reassociate study with hib session later
         if (study != null) {
             this.study.getStudyAgents().size();
-            this.study.getStudyDiseases().size();
+            this.study.getCtepStudyDiseases().size();
             this.study.getStudySites().size();
             for(StudySite site : study.getStudySites()){
                 site.getStudyPersonnels().size();

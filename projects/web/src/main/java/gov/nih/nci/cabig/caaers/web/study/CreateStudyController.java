@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Site;
@@ -17,6 +18,8 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDisease;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.tools.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -51,6 +54,7 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	private SiteDao siteDao;
 	private AgentDao agentDao;
 	private DiseaseTermDao diseaseTermDao;
+	private LowLevelTermDao lowLevelTermDao;
 	private SiteInvestigatorDao siteInvestigatorDao;
 	private ResearchStaffDao researchStaffDao;
 	private ConfigProperty configurationProperty;
@@ -354,21 +358,39 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 	
 	private void handleStudyDiseaseAction(Study study, String action, String selected)
 	{				
+		if ("addMeddraStudyDisease".equals(action))
+		{
+			String diseaseCode= study.getDiseaseLlt();
+			MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
+			meddraStudyDisease.setMeddraCode(diseaseCode);
+			meddraStudyDisease.setTerm(lowLevelTermDao.getById(Integer.parseInt(diseaseCode)) == null ?
+					lowLevelTermDao.getById(1) : lowLevelTermDao.getById(Integer.parseInt(diseaseCode)));
+			study.addMeddraStudyDisease(meddraStudyDisease);
+		}
+		if ("removeMeddraStudyDisease".equals(action))
+		{
+			study.getMeddraStudyDiseases().remove(Integer.parseInt(selected));
+		}
+		
+		
 		if ("addStudyDisease".equals(action))
 		{
 			String[] diseases = study.getDiseaseTermIds();
-			log.debug("Study Diseases Size : " + study.getStudyDiseases().size());
+			log.debug("Study Diseases Size : " + study.getCtepStudyDiseases().size());
 			for (String diseaseId : diseases){
 				log.debug("Disease Id : " + diseaseId);
-				StudyDisease studyDisease = new StudyDisease();
-				studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
-				study.addStudyDisease(studyDisease);
+				//StudyDisease studyDisease = new StudyDisease();
+				//studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				//study.addStudyDisease(studyDisease);
+				CtepStudyDisease ctepStudyDisease = new CtepStudyDisease();
+				ctepStudyDisease.setTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				study.addCtepStudyDisease(ctepStudyDisease);
 				
 			}
 		}
 		else if ("removeStudyDisease".equals(action))
 		{				
-			study.getStudyDiseases().remove(Integer.parseInt(selected));
+			study.getCtepStudyDiseases().remove(Integer.parseInt(selected));
 		}					
 	}
 	
@@ -491,5 +513,15 @@ public class CreateStudyController extends AbstractTabbedFlowFormController<Stud
 
 	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
 		this.siteInvestigatorDao = siteInvestigatorDao;
-	}        		
+	}
+
+	public LowLevelTermDao getLowLevelTermDao() {
+		return lowLevelTermDao;
+	}
+
+	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+		this.lowLevelTermDao = lowLevelTermDao;
+	}
+	
+	
 }

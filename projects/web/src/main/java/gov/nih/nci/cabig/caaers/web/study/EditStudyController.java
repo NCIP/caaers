@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -230,15 +231,19 @@ public class EditStudyController extends AbstractTabbedFlowFormController<Study>
 		{
 			String[] diseases = study.getDiseaseTermIds();
 			for (String diseaseId : diseases){
-				StudyDisease studyDisease = new StudyDisease();
-				studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
-				study.addStudyDisease(studyDisease);
+				//StudyDisease studyDisease = new StudyDisease();
+				//studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				//study.addStudyDisease(studyDisease);
+				CtepStudyDisease ctepStudyDisease = new CtepStudyDisease();
+				ctepStudyDisease.setTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
+				study.addCtepStudyDisease(ctepStudyDisease);
 				
 			}
 		}
 		else if ("removeStudyDisease".equals(action))
 		{				
-			study.getStudyDiseases().remove(Integer.parseInt(selected));
+			//study.getStudyDiseases().remove(Integer.parseInt(selected));
+			study.getCtepStudyDiseases().remove(Integer.parseInt(selected));
 		}					
 	}
 		

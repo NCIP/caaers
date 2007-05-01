@@ -264,9 +264,9 @@ field.value="";
 					</tr>																			
 				 
 				    
-					<c:forEach items="${command.studyDiseases}" var="studyDisease">
+					<c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
 								<tr class="results">						
-									<td align="left">${studyDisease.diseaseTerm.ctepTerm}</td>
+									<td align="left">${studyDisease.term.cterm}</td>
 									<td align="left">${studyDisease.leadDisease}</td>									
 								</tr>
 					</c:forEach>				

@@ -253,7 +253,8 @@
                  <input type="hidden" name="_selected" value="">
             </div>
             <chrome:division title="Disease" id="disease">
-
+					<h4> CTEP Disease Terms </h4>
+					<hr>
                     Search for a Disease Category<br>
                     <input:hidden id="disease" />
                     <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
@@ -279,14 +280,26 @@
                     </select> <form:select id="disease-sel-hidden" size="1"
                         path="diseaseTermIds">
                     </form:select>
+                    
+                    <br>
+                    <h4> Meddra Terms </h4>
+					<hr>
+					Enter one or multiple meddra codes seperated by a comma and press Add
+                    <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
+                    <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
+                        src="/caaers/images/checkyess.gif" border="0" alt="Add"></a>
+                    
 
 
             </chrome:division>
-            <chrome:division title="Selected Disease - ${fn:length(command.studyDiseases)} " id="diseases">
-            <c:if test="${fn:length(command.studyDiseases) == 0}" >
+            <chrome:division title="Selected Diseases " id="diseases">
+            <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
+            	<c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
  	 			No Diseases Selected
+ 	 			</c:if>
 			</c:if>
-            <c:forEach items="${command.studyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
+            <c:forEach items="${command.ctepStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
+            Ctep<hr>
              <div STYLE="  font-size: 12px; overflow: auto;">
                     <TABLE border="0"  width="100%" id="studyDetails">
                         <tr>
@@ -294,26 +307,54 @@
                             <td style="width:55px;" >Primary</td>
                         </tr>
                     </TABLE>
-                    </div>
-                    </c:forEach>
+              </div>
+            </c:forEach>
 
 
 
-                    <div STYLE=" height: 400px;  font-size: 12px; overflow: auto;">
+                    <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
                     <table border="1" width="96%" id="studyDetails">
-                        <c:forEach items="${command.studyDiseases}" var="studyDisease"
+                        <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease"
                             varStatus="status">
                             <tr>
                                 <td ><a href="javascript:fireAction('removeStudyDisease',${status.index});">X</a>&nbsp;
-                                     ${studyDisease.diseaseTerm.ctepTerm}</td>
+                                     ${studyDisease.term.ctepTerm}</td>
                                 <td style="width:35px;">
-                                <form:checkbox  path="studyDiseases[${status.index}].leadDisease" /></td>
+                                <form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></td>
                                 </td>
                             </tr>
 
                         </c:forEach>
                     </table>
                     </DIV>
+                    
+                    
+            <c:forEach items="${command.meddraStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
+            Meddra<hr>
+             <div STYLE="  font-size: 12px; overflow: auto;">
+                    <TABLE border="0"  width="100%" id="studyDetails">
+                        <tr>
+                            <td>Disease Term</td>
+                        </tr>
+                    </TABLE>
+              </div>
+            </c:forEach>
+
+
+
+                    <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
+                    <table border="1" width="96%" id="studyDetails">
+                        <c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease"
+                            varStatus="status">
+                            <tr>
+                                <td ><a href="javascript:fireAction('removeMeddraStudyDisease',${status.index});">X</a>&nbsp;
+                                     ${meddraStudyDisease.meddraCode} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ${meddraStudyDisease.term.meddraTerm}</td>
+                            </tr>
+
+                        </c:forEach>
+                    </table>
+                    </DIV>
+        
 
             </chrome:division>
     </form:form>
