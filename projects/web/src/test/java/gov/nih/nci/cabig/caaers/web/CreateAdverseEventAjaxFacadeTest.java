@@ -16,9 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
-import gov.nih.nci.cabig.caaers.web.dwr.MockWebContextBuilder;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.ArrayList;
@@ -31,7 +28,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventAjaxFacadeTest extends WebTestCase {
+public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private CreateAdverseEventAjaxFacade facade;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
@@ -39,8 +36,6 @@ public class CreateAdverseEventAjaxFacadeTest extends WebTestCase {
     private CtcTermDao ctcTermDao;
     private AdverseEventReportDao aeReportDao;
     private InteroperationService interoperationService;
-
-    private WebContext webContext;
 
     @Override
     protected void setUp() throws Exception {
@@ -59,11 +54,6 @@ public class CreateAdverseEventAjaxFacadeTest extends WebTestCase {
         facade.setCtcTermDao(ctcTermDao);
         facade.setAeReportDao(aeReportDao);
         facade.setInteroperationService(interoperationService);
-
-        webContext = registerMockFor(WebContext.class);
-        expect(webContext.getHttpServletRequest()).andReturn(request).anyTimes();
-        expect(webContext.getHttpServletResponse()).andReturn(response).anyTimes();
-        WebContextFactory.setWebContextBuilder(new MockWebContextBuilder(webContext));
     }
 
     public void testMatchParticipants() throws Exception {
