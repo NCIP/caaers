@@ -51,16 +51,17 @@ public class CreateStudyControllerTest extends WebTestCase {
         configProperty = registerMockFor(ConfigProperty.class);
         expect(configProperty.getMap()).andReturn(Collections.emptyMap()).anyTimes();
 
+        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
+            siteDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
+        tabConfigurer.addBean("configurationProperty", configProperty);
+
         controller = new CreateStudyController();
         controller.setStudyDao(studyDao);
         controller.setSiteDao(siteDao);
         controller.setAgentDao(agentDao);
         controller.setResearchStaffDao(researchStaffDao);
         controller.setSiteInvestigatorDao(siteInvestigatorDao);
-        controller.setTabConfigurer(
-            new StaticTabConfigurer(
-                Collections.singletonMap("configurationProperty", configProperty),
-                siteDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao));
+        controller.setTabConfigurer(tabConfigurer);
         controller.afterPropertiesSet();
     }
 
