@@ -37,11 +37,12 @@ function call(i) {
 
 		var temp = i + ''
 		$(temp).style.display=""
+		$(temp +'-indicator').className=''
 		importMeddra.handleMedDRA($('input').value, 
 								  i,
 								  function(str) {
 									  var message = "<b> " + str + "</b>" 
-									  $(temp+'-indicator').style.display="none";
+									  $(temp+'-indicator').className='indicator'
 									  $(temp+'-done').innerHTML=message;
 									  $(temp+'-done').style.display="";
 									  t= t +1; 
@@ -49,16 +50,8 @@ function call(i) {
 									  });
 }
 
-
-
-
-
 	Event.observe(window, "load", function() {
-		
 		Event.observe("button","click",function() { call(0) })
-		//Event.observe("button","click",function() { importMeddra.test() })
-	 	
-		       
     	}           
     )
 
@@ -74,45 +67,44 @@ function call(i) {
 	<input typ="text" id="input" />
 	<input type="button" id="button" value="Import Meddra"><br><br>
 	
-	
 	<div id="0" style="display:none">
 		Importing Low Level Terms :
-		<img id="0-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
-		<span id="0-done" style="display:none position:">Done</span>
+		<tags:indicator id="0-indicator" />
+		<span id="0-done" style="display:none">Done</span>
 	</div>
 	<div id="1" style="display:none">
-		Importing Preferred Terms
-		<img id="1-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing Preferred Terms :
+		<tags:indicator id="1-indicator" />
 		<span id="1-done" style="display:none">Done</span>
 	</div>
 	<div id="2" style="display:none">
-		Importing High Level Terms
-		<img id="2-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing High Level Terms :
+		<tags:indicator id="2-indicator" />
 		<span id="2-done" style="display:none">Done</span>
 	</div>
 	<div id="3" style="display:none">
-		Importing High Level Group Terms
-		<img id="3-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing High Level Group Terms :
+		<tags:indicator id="3-indicator" />
 		<span id="3-done" style="display:none">Done</span>
 	</div>
 	<div id="4" style="display:none">
-		Importing System Organ Classes 
-		<img id="4-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing System Organ Classes :
+		<tags:indicator id="4-indicator" />
 		<span id="4-done" style="display:none">Done</span>
 	</div>
 	<div id="5" style="display:none">
-		Importing High Level Term & Preferred Term relationships 
-		<img id="5-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing High Level Term & Preferred Term relationships :
+		<tags:indicator id="5-indicator" />
 		<span id="5-done" style="display:none">Done</span>
 	</div>
 	<div id="6" style="display:none">
-		Importing High Level Group Term & High Level Term relationships
-		<img id="6-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Importing High Level Group Term & High Level Term relationships :
+		<tags:indicator id="6-indicator" />
 		<span id="6-done" style="display:none">Done</span>
 	</div>
 	<div id="7" style="display:none">
-		Import System Organ Class & High Level Group Term relationships
-		<img id="7-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator"/>
+		Import System Organ Class & High Level Group Term relationships :
+		<tags:indicator id="7-indicator" />
 		<span id="7-done" style="display:none">Done</span>
 	</div>
 
