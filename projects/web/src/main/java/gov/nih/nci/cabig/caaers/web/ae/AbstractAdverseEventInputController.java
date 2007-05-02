@@ -38,11 +38,9 @@ import java.math.BigDecimal;
  */
 public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
     extends AbstractTabbedFlowFormController<AdverseEventInputCommand>
-    implements InitializingBean
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
-    private TabAutowirer autowirer;
     protected ParticipantDao participantDao;
     protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
@@ -122,14 +120,6 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     ////// CONFIGURATION
 
-    public void afterPropertiesSet() throws Exception {
-        autowirer.injectDependencies(getFlow());
-    }
-
-    public void setAutowirer(TabAutowirer autowirer) {
-        this.autowirer = autowirer;
-    }
-
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
@@ -162,10 +152,10 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
 	}
 
-	public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
-		this.anatomicSiteDao = anatomicSiteDao;
-	}
-	
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+        this.anatomicSiteDao = anatomicSiteDao;
+    }
+
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
         this.ruleExecutionService = ruleExecutionService;
     }

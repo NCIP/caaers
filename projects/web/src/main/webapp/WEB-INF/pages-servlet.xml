@@ -117,12 +117,13 @@
         </property>
     </bean>
 
-
     <bean id="noCacheTemplate" abstract="true">
         <property name="cacheSeconds"><value>0</value></property>
     </bean>
 
     <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
+
+    <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
     <!--  PARTICIPANT   -->
     <bean name="/participant/create" id="createParticipantController" autowire="byName"
@@ -161,9 +162,6 @@
 	<bean name="/study/edit" id="editStudyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
 	</bean>    
-
-    <bean id="adverseEventHelper" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.TabAutowirer"/>
 
     <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>

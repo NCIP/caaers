@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -31,7 +30,6 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     protected void setUp() throws Exception {
         super.setUp();
         controller = new CreateAdverseEventController();
-        controller.setAutowirer(autowirer);
         controller.setParticipantDao(participantDao);
         controller.setStudyDao(studyDao);
         controller.setCtcTermDao(ctcTermDao);

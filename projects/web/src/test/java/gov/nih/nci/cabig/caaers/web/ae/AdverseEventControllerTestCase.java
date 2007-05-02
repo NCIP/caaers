@@ -18,9 +18,9 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 /**
  * @author Rhett Sutphin
  */
+// TODO: this used to have multiple subclasses.  If it's not going to any more, merge it
+// with the one remaining one.
 public abstract class AdverseEventControllerTestCase extends WebTestCase {
-    protected TabAutowirer autowirer;
-
     protected ParticipantDao participantDao;
     protected StudyDao studyDao;
     protected CtcDao ctcDao;
@@ -33,7 +33,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
- 	
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -49,14 +49,5 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class);
         anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class);
         priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class);
-     
-        autowirer = new TabAutowirer();
-        autowirer.setAdverseEventReportDao(adverseEventReportDao);
-        autowirer.setAssignmentDao(assignmentDao);
-        autowirer.setCtcDao(ctcDao);
-        autowirer.setCtcTermDao(ctcTermDao);
-        autowirer.setParticipantDao(participantDao);
-        autowirer.setRuleExecutionService(ruleExecutionService);
-        autowirer.setStudyDao(studyDao);
     }
 }
