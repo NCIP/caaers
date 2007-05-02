@@ -5,13 +5,14 @@
 <%@attribute name="tab" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Tab" %>
 <%@attribute name="flow" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" %>
 <%@attribute name="title"%>
+<%@attribute name="formName"%>
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="singleFields" fragment="true" %>
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
 
 <chrome:box title="${empty title ? tab.shortTitle : title}">
-    <form:form>
+    <form:form name="${formName}">
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>

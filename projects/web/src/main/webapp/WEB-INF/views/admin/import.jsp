@@ -74,7 +74,7 @@
 <p id="instructions">
         Import Studies/Protocols or Participants into caAERS
 </p>
-    <tags:tabFormName tab="${tab}" flow="${flow}" name="ImportForm">
+    <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm">
         <jsp:attribute name="singleFields">
 	<div>		
 		<input type="hidden" name="_action" value="">
