@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 
 import java.util.List;
@@ -33,24 +35,29 @@ public class CreateStudyAjaxFacade {
     private ResearchStaffDao researchStaffDao;
     private SiteDao siteDao;
     
-    public List<SiteInvestigator> matchSiteInvestigator(String text, String indexId) {     	    	    	
-    	String[] arr = new String[1];
-    	arr[0] = text;
+    public List<SiteInvestigator> matchSiteInvestigator(String text, int indexId) {
+    	String[] arr = new String[] { text };
     	Study study = getStudyCommand();
-    	int siteId = study.getStudySites().get(Integer.parseInt(indexId)).getSite().getId();
-    	List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);    	
-    	return siteInvestigators;    	    	
+    	int siteId = study.getStudySites().get(indexId).getSite().getId();
+    	List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
+
+        return ObjectTools.reduceAll(siteInvestigators,
+            new ObjectTools.Initializer<SiteInvestigator>() {
+                public void initialize(SiteInvestigator instance) {
+                    instance.setInvestigator(new Investigator());
+                }
+            },
+            "id", "investigator.firstName", "investigator.lastName");
     }
      
-    public List<ResearchStaff> matchResearch(String text) {     	    	    	
-    	String[] arr = new String[1];
-    	arr[0] = text;
-    	List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(arr);
-    	return researchStaffs;    	    	
+    public List<ResearchStaff> matchResearch(String text) {
+    	List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text });
+        return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName");
     }
     
     private Study getStudyCommand() {
-    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+        // TODO: this won't work with editing
+        HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
     	String commandName = CreateStudyController.class.getName()+".FORM.command";
     	Study study = (Study)request.getSession().getAttribute(commandName); 
     	request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, study);

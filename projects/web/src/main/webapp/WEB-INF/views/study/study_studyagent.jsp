@@ -130,10 +130,9 @@
    Add Agents by Clicking on the add link 
 </p>
 
-				<form:form method="post" name="studyAgentsForm" cssClass="standard">
-				<chrome:division id="study-details">
-				<tags:tabFields tab="${tab}"/>
-				
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm">
+    <jsp:attribute name="singleFields">
+
 				<div>		
 					<input type="hidden" name="_action" value="">
 					<input type="hidden" name="_selected" value="">
@@ -185,7 +184,7 @@
 				
 				</table>
 				
-				</chrome:division>
-				</form:form>		
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

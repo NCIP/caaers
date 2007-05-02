@@ -6,12 +6,14 @@
 <%@attribute name="flow" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" %>
 <%@attribute name="title"%>
 <%@attribute name="formName"%>
+<%@attribute name="boxId"%>
+<%@attribute name="boxClass" %>
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="singleFields" fragment="true" %>
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
 
-<chrome:box title="${empty title ? tab.shortTitle : title}">
+<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
     <form:form name="${formName}">
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">

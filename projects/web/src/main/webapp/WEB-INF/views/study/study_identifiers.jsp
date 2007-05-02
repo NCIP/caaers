@@ -35,11 +35,9 @@ field.value="";
 </script>
 </head>
 <body>
-	<form:form method="post" name="studyIdentifiersForm" cssClass="standard">
-	<chrome:division id="study-details">
-		 <tags:tabFields tab="${tab}" />
-
-		<div>		
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm">
+    <jsp:attribute name="singleFields">
+		<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
@@ -50,7 +48,7 @@ field.value="";
 					<tr align="center">
 						<td width="20%">										
 							<b><a href="javascript:fireAction('addIdentifier','0');"><img
-								src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
+								src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a></b> 
 						</td>
 						<td> <b>Identifier<span class="red">*</span> </b> </td>															
 						<td> <b>Type<span class="red">*</span> </b> </td>						
@@ -91,10 +89,7 @@ field.value="";
 					</c:forEach> 
 		</table>
 		
-
-			</chrome:division>
-	</form:form>
-	<!-- LEFT CONTENT ENDS HERE -->
-
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

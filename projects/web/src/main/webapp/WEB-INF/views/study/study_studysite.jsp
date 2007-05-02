@@ -35,10 +35,9 @@ field.value="";
 </script>
 </head>
 <body>
-				<form:form method="post" name="studySiteForm">
-				<chrome:division id="study-details">
-				<tags:tabFields tab="${tab}"/>
-				<div>		
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm">
+    <jsp:attribute name="singleFields">
+                <div>
 					<input type="hidden" name="_action" value="">
 					<input type="hidden" name="_selected" value="">
 				</div>
@@ -82,7 +81,7 @@ field.value="";
 						</c:forEach>
 																						
 					</table>
-				</chrome:division>
-				</form:form>		
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

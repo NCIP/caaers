@@ -17,11 +17,9 @@
     </style>
 </head>
 <body>
-	   <form:form method="post" cssClass="standard">
-	   		<tags:errors path="*"/>
-			<tags:tabFields tab="${tab}"/>
-			<div>
-			<chrome:division id="study-details">
+<tags:tabForm tab="${tab}" flow="${flow}">
+    <jsp:attribute name="singleFields">
+            <div>
 			 <table  width="75" border="0" cellspacing="0" cellpadding="0">
 			 <tr>
 			 <td>
@@ -75,8 +73,8 @@
 				 </tr>
                  
 				</table>
-					</chrome:division>			
 				</div>
-        </form:form>
+    </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

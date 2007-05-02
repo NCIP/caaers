@@ -13,10 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
         /* TODO: all these are temporary */
-        .label { width: 12em; text-align: right; padding: 4px; }
-        .division { float: left; width: 45%; margin: 1em;}
-        .division-content { padding: 1em; }
-         #studyDiseases td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
+        .box { float: left; width: 45%; margin: 1em;}
 </style>
 
 <title>${tab.longTitle}</title>
@@ -244,17 +241,16 @@
     </script>
 </head>
 <body>
+    <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" cssClass="standard">
-        <%--<chrome:division id="study-details"> --%>
-            <tags:tabFields tab="${tab}" />
+        <tags:tabFields tab="${tab}"/>
+        <chrome:box title="${tab.shortTitle}">
 
             <div>
                  <input type="hidden" name="_action" value="">
                  <input type="hidden" name="_selected" value="">
             </div>
-            <chrome:division title="Disease" id="disease">
-					<h4> CTEP Disease Terms </h4>
-					<hr>
+            <chrome:division title="CTEP Disease Terms" id="disease">
                     Search for a Disease Category<br>
                     <input:hidden id="disease" />
                     <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
@@ -280,19 +276,17 @@
                     </select> <form:select id="disease-sel-hidden" size="1"
                         path="diseaseTermIds">
                     </form:select>
-                    
-                    <br>
-                    <h4> Meddra Terms </h4>
-					<hr>
+            </chrome:division>
+            <chrome:division title="Meddra Terms">
 					Enter one or multiple meddra codes seperated by a comma and press Add
                     <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
                         src="/caaers/images/checkyess.gif" border="0" alt="Add"></a>
-                    
-
-
             </chrome:division>
-            <chrome:division title="Selected Diseases " id="diseases">
+            <tags:tabControls tab="${tab}" flow="${flow}"/>
+        </chrome:box>
+
+            <chrome:box title="Selected Diseases " id="diseases">
             <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
             	<c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
  	 			No Diseases Selected
@@ -356,7 +350,7 @@
                     </DIV>
         
 
-            </chrome:division>
+            </chrome:box>
     </form:form>
 </body>
 </html>

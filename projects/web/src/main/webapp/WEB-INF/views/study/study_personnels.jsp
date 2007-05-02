@@ -127,12 +127,11 @@ function fireAction1(action, selected, studysiteindex){
 </script>
 </head>
 <body>
-				<form:form method="post" name="studySiteForm">
 
 				<table border="0" id="table1" cellspacing="10" width="100%">
 					<tr>
 					<td valign="top" width="25%">
-						<chrome:division id="Summary" title="Summary">
+						<chrome:box id="Summary" title="Summary">
 						<font size="2"><b> Study Sites </b> </font>
 						<br><br>
 						<table border="0" id="table1" cellspacing="0" cellpadding="0" width="100%">
@@ -162,12 +161,13 @@ function fireAction1(action, selected, studysiteindex){
 						</tr>	
 						</c:forEach>
 						</table>				
-						</chrome:division>
+						</chrome:box>
 					</td>
 					<td width="75%" valign="top">
-					<chrome:division id="study-details">
-					<tags:tabFields tab="${tab}"/>
-					<div>		
+                <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm">
+                    <jsp:attribute name="singleFields">
+
+					<div>
 						<input type="hidden" name="_action" value="">
 						<input type="hidden" name="_selected" value="">
 						<input type="hidden" name="_studysiteindex" value="">				
@@ -249,10 +249,10 @@ function fireAction1(action, selected, studysiteindex){
 						</c:forEach>
 																						
 					</table> 
-				</chrome:division>
-				</td> 
+                    </jsp:attribute>
+                </tags:tabForm>
+				</td>
 				</tr>
 				</table>
-				</form:form>		
 </body>
 </html>
