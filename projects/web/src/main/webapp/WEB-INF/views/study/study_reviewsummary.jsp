@@ -35,13 +35,12 @@ field.value="";
 </script>
 </head>
 <body>
-	<form:form method="post" name="review">
-	<chrome:division id="study-details">
-	<%--	<tags:tabFields tab="${tab}"/> --%>
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review">
+    <jsp:attribute name="repeatingFields">
 		<input type="hidden" name="_finish" value="true"/>
-		
-		<h3> <strong> Study Details </strong> </h3>		
-		<table border="0" cellspacing="0" cellpadding="1" id="studyDetails">
+
+        <chrome:division>
+        <table border="0" cellspacing="0" cellpadding="1" id="studyDetails">
 
 		<tr>
 			<td class="label" align="right">
@@ -125,13 +124,11 @@ field.value="";
 		</tr>
 
        </table>
-	   <br>
- 
-       <a href="javascript:fireAction('_target0');"><img
-					src="images/b-edit.gif" border="0" alt="edit this page"></a>
-			
-		<h3><strong>Study Identifiers</strong></h3>
+            <a href="javascript:fireAction('_target0');"><img
+                         src="images/b-edit.gif" border="0" alt="edit this page"></a>
+        </chrome:division>
 
+		<chrome:division title="Identifiers">
 		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
 		<br>
 
@@ -154,9 +151,9 @@ field.value="";
 		 <br>
 		      <a href="javascript:fireAction('_target1');"><img
 					src="images/b-edit.gif" border="0" alt="edit this page"></a>
-			
-		<h3><strong>Study Site</strong></h3>
-
+			</chrome:division>
+        <chrome:division title="Sites">
+            <!-- TODO:  this only shows one site -->
 		<table border="0" cellspacing="0" cellpadding="0">
 			<tr>
 			<td class="label" align="right">
@@ -218,10 +215,10 @@ field.value="";
 		
 	  <a href="javascript:fireAction('_target2');"><img
 			src="images/b-edit.gif" border="0" alt="edit this page"></a>
-			
+	</chrome:division>
 			
 
-	<h3><strong>Study Agents</strong></h3>
+    <chrome:division title="Agents">
 
 		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -247,13 +244,11 @@ field.value="";
 								</tr>
 					</c:forEach>				
 		</table>
+        <a href="javascript:fireAction('_target3');"><img
+              src="images/b-edit.gif" border="0" alt="edit this page"></a>
+    </chrome:division>
 
-		 <br>
-		      <a href="javascript:fireAction('_target3');"><img
-					src="images/b-edit.gif" border="0" alt="edit this page"></a>
-					
-					
-	<h3><strong>Study Diseases</strong></h3>
+	<chrome:division title="Diseases">
 
 		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -266,7 +261,7 @@ field.value="";
 				    
 					<c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
 								<tr class="results">						
-									<td align="left">${studyDisease.term.cterm}</td>
+									<td align="left">${studyDisease.term.ctepTerm}</td>
 									<td align="left">${studyDisease.leadDisease}</td>									
 								</tr>
 					</c:forEach>				
@@ -275,10 +270,9 @@ field.value="";
 		 <br>
 		      <a href="javascript:fireAction('_target4');"><img
 					src="images/b-edit.gif" border="0" alt="edit this page"></a>								
-				
-
-</chrome:division>
-	</form:form>
+    </chrome:division>
+    </jsp:attribute>
+</tags:tabForm>
 
 </body>
 </html>
