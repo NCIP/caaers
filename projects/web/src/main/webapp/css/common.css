@@ -245,6 +245,10 @@ ul.tabs li {
     margin: 1em;
 }
 
+.division {
+    clear: both;
+}
+
 /**** REUSABLE PAGE ELEMENTS/CLASSES */
 
 .required-indicator {
