@@ -16,7 +16,7 @@
         Element.observe(window, "load", function() {
             new ListEditor("lab", createAE, "Lab", {
                 addParameters: [aeReportId],
-                addFirstAfter: "instructions"
+                addFirstAfter: "single-fields"
             })
         })
     </script>
@@ -33,7 +33,7 @@
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="labe" label="Add a lab"/>
+        <tags:listEditorAddButton divisionClass="lab" label="Add a lab"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>
