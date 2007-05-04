@@ -17,52 +17,51 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_participant_history_id")
     }
 )
-public class ParticipantHistory extends AbstractIdentifiableDomainObject
-{			
-	private float height;
+public class ParticipantHistory extends AbstractAdverseEventReportSingleChild {
+    private float height;
     private float weight;
     private String baselinePerformanceStatus;
     private String heightUnitOfMeasure;
     private String weightUnitOfMeasure;
-    
+
     public float getHeight() {
-		return height;
-	}
-    
-	public void setHeight(float height) {
-		this.height = height;
-	}
-	
-	public float getWeight() {
-		return weight;
-	}
-	
-	public void setWeight(float weight) {
-		this.weight = weight;
-	}	
+        return height;
+    }
 
-	public String getBaselinePerformanceStatus() {
-		return baselinePerformanceStatus;
-	}
+    public void setHeight(float height) {
+        this.height = height;
+    }
 
-	public void setBaselinePerformanceStatus(String baselinePerformance) {
-		this.baselinePerformanceStatus = baselinePerformance;
-	}
+    public float getWeight() {
+        return weight;
+    }
 
-	public String getHeightUnitOfMeasure() {
-		return heightUnitOfMeasure;
-	}
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
 
-	public void setHeightUnitOfMeasure(String heightUnitOfMeasure) {
-		this.heightUnitOfMeasure = heightUnitOfMeasure;
-	}
+    public String getBaselinePerformanceStatus() {
+        return baselinePerformanceStatus;
+    }
 
-	public String getWeightUnitOfMeasure() {
-		return weightUnitOfMeasure;
-	}
+    public void setBaselinePerformanceStatus(String baselinePerformance) {
+        this.baselinePerformanceStatus = baselinePerformance;
+    }
 
-	public void setWeightUnitOfMeasure(String weightUnitOfMeasure) {
-		this.weightUnitOfMeasure = weightUnitOfMeasure;
-	}
+    public String getHeightUnitOfMeasure() {
+        return heightUnitOfMeasure;
+    }
+
+    public void setHeightUnitOfMeasure(String heightUnitOfMeasure) {
+        this.heightUnitOfMeasure = heightUnitOfMeasure;
+    }
+
+    public String getWeightUnitOfMeasure() {
+        return weightUnitOfMeasure;
+    }
+
+    public void setWeightUnitOfMeasure(String weightUnitOfMeasure) {
+        this.weightUnitOfMeasure = weightUnitOfMeasure;
+    }
 }
 

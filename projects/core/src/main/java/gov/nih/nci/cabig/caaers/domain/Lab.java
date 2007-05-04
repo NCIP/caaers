@@ -9,9 +9,6 @@ import javax.persistence.Embedded;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 
 /**
  * @author Rhett Sutphin
@@ -23,7 +20,7 @@ import javax.persistence.JoinColumn;
         @Parameter(name="sequence", value="seq_ae_labs_id")
     }
 )
-public class Lab extends AbstractAdverseEventReportChild {
+public class Lab extends AbstractAdverseEventReportCollectionElementChild {
     private String name;
     private String units;  // TODO: source this from caDSR
 

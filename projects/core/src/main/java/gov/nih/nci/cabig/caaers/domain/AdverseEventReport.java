@@ -295,10 +295,7 @@ public class AdverseEventReport extends AbstractDomainObject {
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
 
-    // TODO: the join columns for these 1:1s should be in the dependent objects' tables, not here.
-
-    @OneToOne
-    @JoinColumn(name="reporter_id")
+    @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Reporter getReporter() {
         return reporter;
@@ -308,8 +305,7 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.reporter = reporter;
     }
 
-    @OneToOne
-    @JoinColumn(name="physician_id")
+    @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Physician getPhysician() {
         return physician;
@@ -319,9 +315,8 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.physician = physician;
     }
 
-    @OneToOne
-    @JoinColumn(name="disease_history_id")
-    @Cascade(value = { CascadeType.ALL })    
+    @OneToOne(mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL })
     public DiseaseHistory getDiseaseHistory() {
         return diseaseHistory;
     }
@@ -331,8 +326,7 @@ public class AdverseEventReport extends AbstractDomainObject {
         this.diseaseHistory = diseaseHistory;
     }
 
-    @OneToOne
-    @JoinColumn(name="participant_history_id")
+    @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public ParticipantHistory getParticipantHistory() {
         if (participantHistory == null) participantHistory = new ParticipantHistory();

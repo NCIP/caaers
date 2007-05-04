@@ -16,7 +16,7 @@ import javax.persistence.Transient;
         @Parameter(name="sequence", value="seq_concomitant_medications_id")
     }
 )
-public class ConcomitantMedication extends AbstractAdverseEventReportChild {
+public class ConcomitantMedication extends AbstractAdverseEventReportCollectionElementChild {
     private Agent agent;
     private String other;
 

@@ -20,7 +20,7 @@ import java.util.Date;
         @Parameter(name="sequence", value="seq_ae_prior_therapies_id")
     }
 )
-public class AdverseEventPriorTherapy extends AbstractAdverseEventReportChild {
+public class AdverseEventPriorTherapy extends AbstractAdverseEventReportCollectionElementChild {
     private PriorTherapy priorTherapy;
     private String other;
     private Date startDate;

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
@@ -9,13 +9,11 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractAdverseEventReportChild extends AbstractDomainObject implements AdverseEventReportChild {
+public class AbstractAdverseEventReportSingleChild extends AbstractDomainObject implements AdverseEventReportChild {
     private AdverseEventReport report;
 
-    // This is annotated this way so that the IndexColumn in the parent
-    // will work with the bidirectional mapping
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable=false, updatable=false, nullable=false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id")
     public AdverseEventReport getReport() {
         return report;
     }

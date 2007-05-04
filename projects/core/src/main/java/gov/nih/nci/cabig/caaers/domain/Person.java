@@ -2,50 +2,46 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.MappedSuperclass;
 
-
 /**
  * @author Kulasekaran
- * @version 1.0
  */
 @MappedSuperclass
-public abstract class Person extends AbstractIdentifiableDomainObject
-{			
-	private String firstName;
+public abstract class Person extends AbstractIdentifiableDomainObject {
+    private String firstName;
     private String middleName;
     private String maidenName;
-    private String lastName;          
-    
-	public String getFirstName() {
-		return firstName;
-	}
+    private String lastName;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}	
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getMaidenName() {
-		return maidenName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setMaidenName(String maidenName) {
-		this.maidenName = maidenName;
-	}
+    public String getMaidenName() {
+        return maidenName;
+    }
 
-	public String getMiddleName() {
-		return middleName;
-	}
+    public void setMaidenName(String maidenName) {
+        this.maidenName = maidenName;
+    }
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-		
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 }
 

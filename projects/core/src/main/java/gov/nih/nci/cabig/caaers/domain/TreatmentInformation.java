@@ -17,9 +17,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Table;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import java.util.List;
 import java.util.Date;
 import java.util.LinkedList;
@@ -34,9 +31,7 @@ import java.util.LinkedList;
         @Parameter(name="sequence", value="seq_treatments_id")
     }
 )
-public class TreatmentInformation extends AbstractDomainObject implements AdverseEventReportChild {
-    private AdverseEventReport report;
-
+public class TreatmentInformation extends AbstractAdverseEventReportSingleChild {
     private List<CourseAgent> courseAgentsInternal;
     private List<CourseAgent> courseAgents;
 
@@ -76,16 +71,6 @@ public class TreatmentInformation extends AbstractDomainObject implements Advers
     }
 
     ////// BEAN PROPERTIES
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_id")
-    public AdverseEventReport getReport() {
-        return report;
-    }
-
-    public void setReport(AdverseEventReport report) {
-        this.report = report;
-    }
 
     public Date getFirstCourseDate() {
         return firstCourseDate;
