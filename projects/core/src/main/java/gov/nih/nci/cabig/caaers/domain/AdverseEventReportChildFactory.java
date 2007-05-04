@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.apache.commons.collections.functors.InstantiateFactory;
+import org.apache.commons.collections15.functors.InstantiateFactory;
 
 /**
  * @author Rhett Sutphin
  */
-public class AdverseEventReportChildFactory extends InstantiateFactory {
+public class AdverseEventReportChildFactory<T extends AdverseEventReportChild> extends InstantiateFactory<T> {
     private AdverseEventReport report;
 
-    public <T extends AdverseEventReportChild> AdverseEventReportChildFactory(
+    public AdverseEventReportChildFactory(
         Class<T> classToInstantiate, AdverseEventReport parent
     ) {
         super(classToInstantiate);
@@ -16,8 +16,8 @@ public class AdverseEventReportChildFactory extends InstantiateFactory {
     }
 
     @Override
-    public Object create() {
-        AdverseEventReportChild child = (AdverseEventReportChild) super.create();
+    public T create() {
+        T child = super.create();
         child.setReport(report);
         return child;
     }

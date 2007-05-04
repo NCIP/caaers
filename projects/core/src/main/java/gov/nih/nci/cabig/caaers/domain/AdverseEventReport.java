@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import org.apache.commons.collections.list.LazyList;
+import gov.nih.nci.cabig.caaers.tools.LazyListHelper;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.OneToOne;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,21 +32,7 @@ import java.util.List;
 public class AdverseEventReport extends AbstractDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
-    // TODO: consider creating an aspect which handles the internal/external thing
-    private List<AdverseEvent> adverseEventsInternal;
-    private List<AdverseEvent> adverseEvents;
-
-    private List<Lab> labsInternal;
-    private List<Lab> labs;
-
-    private List<ConcomitantMedication> concomitantMedicationsInternal;
-    private List<ConcomitantMedication> concomitantMedications;
-
-    private List<OtherCause> otherCausesInternal;
-    private List<OtherCause> otherCauses;
-    
-    private List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal;
-    private List<AdverseEventPriorTherapy> adverseEventPriorTherapies;
+    private LazyListHelper lazyListHelper;
 
     private TreatmentInformation treatmentInformation;
 
@@ -58,17 +42,20 @@ public class AdverseEventReport extends AbstractDomainObject {
     private DiseaseHistory diseaseHistory;
 
     // TODO
-    // private MedicalInformation medicalInformation;
-    // private List<PriorTherapy> priorTherapies;
     // private List<MedicalDevice> medicalDevices;
-    // private ReporterInfo reporterInfo;    
 
     public AdverseEventReport() {
-        setAdverseEventsInternal(new ArrayList<AdverseEvent>());
-        setLabsInternal(new ArrayList<Lab>());
-        setConcomitantMedicationsInternal(new ArrayList<ConcomitantMedication>());
-        setOtherCausesInternal(new ArrayList<OtherCause>());
-        setAdverseEventPriorTherapiesInternal(new ArrayList<AdverseEventPriorTherapy>());
+        lazyListHelper = new LazyListHelper();
+        addReportChildLazyList(AdverseEvent.class);
+        addReportChildLazyList(Lab.class);
+        addReportChildLazyList(ConcomitantMedication.class);
+        addReportChildLazyList(OtherCause.class);
+        addReportChildLazyList(AdverseEventPriorTherapy.class);
+    }
+
+    private <T extends AdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
+        lazyListHelper.add(klass,
+            new AdverseEventReportChildFactory<T>(klass, this));
     }
 
     ////// LOGIC
@@ -105,13 +92,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<AdverseEvent> getAdverseEvents() {
-        return adverseEvents;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createLazyAdverseEvents() {
-        this.adverseEvents = LazyList.decorate(getAdverseEventsInternal(),
-            new AdverseEventReportChildFactory(AdverseEvent.class, this));
+        return lazyListHelper.getLazyList(AdverseEvent.class);
     }
 
     public void addLab(Lab lab) {
@@ -122,13 +103,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<Lab> getLabs() {
-        return labs;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createLazyLabs() {
-        this.labs = LazyList.decorate(getLabsInternal(),
-            new AdverseEventReportChildFactory(Lab.class, this));
+        return lazyListHelper.getLazyList(Lab.class);
     }
 
     public void addConcomitantMedication(ConcomitantMedication concomitantMedication) {
@@ -139,13 +114,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<ConcomitantMedication> getConcomitantMedications() {
-        return concomitantMedications;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createLazyConcomitantMedications() {
-        this.concomitantMedications = LazyList.decorate(getConcomitantMedicationsInternal(),
-            new AdverseEventReportChildFactory(ConcomitantMedication.class, this));
+        return lazyListHelper.getLazyList(ConcomitantMedication.class);
     }
 
     public void addAdverseEventPriorTherapies(AdverseEventPriorTherapy adverseEventPriorTherapy) {
@@ -156,15 +125,9 @@ public class AdverseEventReport extends AbstractDomainObject {
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapies() {
-        return adverseEventPriorTherapies;
+        return lazyListHelper.getLazyList(AdverseEventPriorTherapy.class);
     }
 
-    @SuppressWarnings("unchecked")
-    private void createLazyAdverseEventPriorTherapies() {
-        this.adverseEventPriorTherapies = LazyList.decorate(getAdverseEventPriorTherapiesInternal(),
-            new AdverseEventReportChildFactory(AdverseEventPriorTherapy.class, this));
-    }
-    
     public void addOtherCause(OtherCause otherCause) {
         getOtherCausesInternal().add(otherCause);
         if (otherCause != null) otherCause.setReport(this);
@@ -173,13 +136,7 @@ public class AdverseEventReport extends AbstractDomainObject {
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<OtherCause> getOtherCauses() {
-        return otherCauses;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void createLazyOtherCauses() {
-        this.otherCauses = LazyList.decorate(getOtherCausesInternal(),
-            new AdverseEventReportChildFactory(OtherCause.class, this));
+        return lazyListHelper.getLazyList(OtherCause.class);
     }
 
     ////// BEAN PROPERTIES
@@ -211,13 +168,12 @@ public class AdverseEventReport extends AbstractDomainObject {
         CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
         CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
     protected List<AdverseEvent> getAdverseEventsInternal() {
-        return adverseEventsInternal;
+        return lazyListHelper.getInternalList(AdverseEvent.class);
     }
 
     @SuppressWarnings("unchecked")
     protected void setAdverseEventsInternal(List<AdverseEvent> adverseEvents) {
-        this.adverseEventsInternal = adverseEvents;
-        createLazyAdverseEvents();
+        lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
 
     // This is annotated this way so that the IndexColumn will work with
@@ -227,12 +183,11 @@ public class AdverseEventReport extends AbstractDomainObject {
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     protected List<Lab> getLabsInternal() {
-        return labsInternal;
+        return lazyListHelper.getInternalList(Lab.class);
     }
 
     protected void setLabsInternal(List<Lab> labsInternal) {
-        this.labsInternal = labsInternal;
-        createLazyLabs();
+        lazyListHelper.setInternalList(Lab.class, labsInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
@@ -242,12 +197,11 @@ public class AdverseEventReport extends AbstractDomainObject {
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     protected List<ConcomitantMedication> getConcomitantMedicationsInternal() {
-        return concomitantMedicationsInternal;
+        return lazyListHelper.getInternalList(ConcomitantMedication.class);
     }
 
     protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
-        this.concomitantMedicationsInternal = concomitantMedicationsInternal;
-        createLazyConcomitantMedications();
+        lazyListHelper.setInternalList(ConcomitantMedication.class, concomitantMedicationsInternal);
     }
 
     // This is annotated this way so that the IndexColumn will work with
@@ -257,12 +211,11 @@ public class AdverseEventReport extends AbstractDomainObject {
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     protected List<OtherCause> getOtherCausesInternal() {
-        return otherCausesInternal;
+        return lazyListHelper.getInternalList(OtherCause.class);
     }
 
     protected void setOtherCausesInternal(List<OtherCause> otherCausesInternal) {
-        this.otherCausesInternal = otherCausesInternal;
-        createLazyOtherCauses();
+        lazyListHelper.setInternalList(OtherCause.class, otherCausesInternal);
     }
     
     
@@ -273,14 +226,13 @@ public class AdverseEventReport extends AbstractDomainObject {
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapiesInternal() {
-		return adverseEventPriorTherapiesInternal;
+        return lazyListHelper.getInternalList(AdverseEventPriorTherapy.class);
 	}
 
 	public void setAdverseEventPriorTherapiesInternal(
 			List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal) {
-		this.adverseEventPriorTherapiesInternal = adverseEventPriorTherapiesInternal;
-		createLazyAdverseEventPriorTherapies();
-	}  
+        lazyListHelper.setInternalList(AdverseEventPriorTherapy.class, adverseEventPriorTherapiesInternal);
+	}
    
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
