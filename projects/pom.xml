@@ -80,6 +80,11 @@
                 <version>1.1</version>
             </dependency>
             <dependency>
+                <groupId>net.sourceforge.collections</groupId>
+                <artifactId>collections-generic</artifactId>
+                <version>4.01</version>
+            </dependency>
+            <dependency>
                 <groupId>edu.northwestern.bioinformatics</groupId>
                 <artifactId>core-commons</artifactId>
                 <version>77</version>

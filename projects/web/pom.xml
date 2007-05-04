@@ -148,7 +148,7 @@
         <dependency>
             <groupId>net.sourceforge.collections</groupId>
             <artifactId>collections-generic</artifactId>
-            <version>4.01</version>
+            <!-- version is in parent pom -->
         </dependency>
         <!-- TODO: remove these direct deps when caaers-rules is built with maven -->
         <dependency>
