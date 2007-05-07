@@ -43,6 +43,11 @@
         </dependency>
 
         <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>ctms-commons-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.7.0</version>
