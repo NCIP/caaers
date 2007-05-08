@@ -6,6 +6,7 @@
 <%@attribute name="flow" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" %>
 <%@attribute name="title"%>
 <%@attribute name="formName"%>
+<%@attribute name="enctype"%>
 <%@attribute name="boxId"%>
 <%@attribute name="boxClass" %>
 <%@attribute name="instructions" fragment="true" %>
@@ -14,7 +15,7 @@
 <%@attribute name="localButtons" fragment="true" %>
 
 <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
-    <form:form name="${formName}">
+    <form:form name="${formName}" enctype="${enctype}">
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
