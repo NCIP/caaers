@@ -28,9 +28,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -43,6 +43,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.util.FileCopyUtils;
 
 /**
  * @author Krikor Krumlian
@@ -71,8 +72,18 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             
             @Override
             public boolean isAllowDirtyForward() {
-                return false;
+                return true;
             }
+            
+            @Override
+            public void postProcess(HttpServletRequest request,
+                    				ImportCommand command,
+                    				Errors errors)
+             {
+            	// TODO: see why the command variable type has a comma attached to it
+            	handleLoad(command, command.getType().replace(',', ' ').trim());
+             }
+            
             
         });
         
@@ -136,136 +147,55 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	return null;
 	}
 	
-	@Override
-	protected void postProcessPage(HttpServletRequest request, Object command,
-			Errors arg2, int pageNo) throws Exception {
+	private void handleLoad(ImportCommand command, String type){
 		
-		switch (pageNo)
-		{
-			case 0:
-				if (request.getParameter("_selected").equals("0")){
-				handleStudyLoadAction((ImportCommand)command, request.getParameter("_action"),
-					request.getParameter("_selected"));
-				}
-				if (request.getParameter("_selected").equals("1")){
-				handleParticipantLoad((ImportCommand)command, request.getParameter("_action"),
-							request.getParameter("_selected"));
-				}
-				break;	
-				
-			default:
-				//do nothing						
-		}		
-	}
-	
-	private void handleParticipantLoad(ImportCommand command, String action, String selected)
-	{
 		XStream xstream = new XStream();
     	
-    	//xstream.alias("studies", Studies.class);
-    	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
+    	// common
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
     	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Site.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
-    	
-    	xstream.registerConverter(new DateConverter("yyyy-MM-dd",
-    			new String[]{}));
-		
-    	log.debug("Here the participant text : " + command.getParticipantFileName() );
-    	File xmlFile = new File(command.getParticipantFileName());
-    	
-    	
-    	
-    	//declared here only to make visible to finally clause
-        BufferedReader input = null;
-        try {
-          //use buffering, reading one line at a time
-          //FileReader always assumes default encoding is OK!
-          input = new BufferedReader( new FileReader(xmlFile) );
-          ObjectInputStream in = xstream.createObjectInputStream(input);
-          
-          while (true)
-          {
-          Participant participant = (Participant)in.readObject();
-          createParticipantObjects(participant, command);
-          
-          
-          //log.debug(studyy.getStudySites().size());
-          log.debug(participant.getFirstName());
-          
-          }
-       
-        }
-        catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-          }
-        catch (FileNotFoundException ex) {
-          ex.printStackTrace();
-        }
-        catch (IOException ex){
-          ex.printStackTrace();
-        }
-        finally {
-          try {
-            if (input!= null) {
-              //flush and close both "input" and its underlying FileReader
-              input.close();
-            }
-          }
-          catch (IOException ex) {
-            ex.printStackTrace();
-          }
-          
-          log.debug("Hey : "  + command.getParticipants().size());
-          
-        }
-	}
-	
-	
-	
-	private void handleStudyLoadAction(ImportCommand command, String action, String selected)
-	{
-		
-		XStream xstream = new XStream();
-    	
-    	//xstream.alias("studies", Studies.class);
-    	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
-    	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
-    	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Site.class);
-    	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
+    	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
+    	// study specific
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
     	xstream.alias("agent", gov.nih.nci.cabig.caaers.domain.Agent.class);
     	xstream.alias("studyDisease", gov.nih.nci.cabig.caaers.domain.StudyDisease.class);
     	xstream.alias("diseaseTerm", gov.nih.nci.cabig.caaers.domain.DiseaseTerm.class);
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
-		
-    	log.debug("Here the text : " + command.getStudyFileName() );
-    	File xmlFile = new File(command.getStudyFileName());
+    	// participant specific
+    	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	
-    	//declared here only to make visible to finally clause
         BufferedReader input = null;
         try {
-          //use buffering, reading one line at a time
-          //FileReader always assumes default encoding is OK!
-          input = new BufferedReader( new FileReader(xmlFile) );
-          ObjectInputStream in = xstream.createObjectInputStream(input);
-          
-          while (true)
-          {
-          Study studyy = (Study)in.readObject();
-          createStudyObjects(studyy, command);
-          
-          
-          //log.debug(studyy.getStudySites().size());
-          log.debug(studyy.getShortTitle());
-  		  log.debug(studyy.getIdentifiers().get(0).getSource());
-  		  log.debug("Size : " + studyy.getIdentifiers().size());
-  		  log.debug(studyy.getShortTitle());
-          
+        	
+        	File xmlFile = File.createTempFile("file","uploaded");
+        	FileCopyUtils.copy(type.equals("participant") ? 
+        			command.getParticipantFile().getInputStream() : 
+        				command.getStudyFile().getInputStream(),
+        			new FileOutputStream(xmlFile));
+        	
+        	input = new BufferedReader( new FileReader(xmlFile) );
+            ObjectInputStream in = xstream.createObjectInputStream(input);
+        	
+          if (type.equals("participant")){
+        	  System.out.println("Yahoo");
+        	  while (true)
+              {
+              Participant participant = (Participant)in.readObject();
+              createParticipantObjects(participant, command);
+              }  
           }
-       
+          
+          if (type.equals("study")){
+        	  System.out.println("IBM");
+        	  while (true)
+              {
+              Study study = (Study)in.readObject();
+              createStudyObjects(study, command);
+              }  
+          }
         }
         catch (ClassNotFoundException ex) {
             ex.printStackTrace();
@@ -287,11 +217,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             ex.printStackTrace();
           }
           
-          log.debug("Hey : "  + command.getStudies().size());
-          
+          log.debug("Study List size "  + command.getStudies().size());
+          log.debug("Participant List size "  + command.getParticipants().size());   
         }
-		
-					
 	}
 	
 	
@@ -333,26 +261,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			}
 		}	
 	}
-				
-				/*
-				Site site = siteDao.getByName(studyParticipantAssignment.getStudySite().getSite().getName());
-				if (site != null && site.getStudySites() != null && site.getStudySites().size() > 0) 
-				{
-					for (int j = 0; j < site.getStudySites().size(); j++) 
-					{
-						if (site.getStudySites().get(j).getStudy().getLongTitle()
-								.equals(studyParticipantAssignment.getStudySite().getStudy().getLongTitle())) 
-						{
-							
-							studySite = site.getStudySites().get(j);
-							participant.getAssignments().add(
-									new StudyParticipantAssignment(participant,
-											studySite));
-							break;
-						}
-					}
-				}
-				*/
 	
 
 	/*
@@ -491,9 +399,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	
 	private ImportCommand createCommandObject()
 	{
-		//do nothing
-		ImportCommand msc = new ImportCommand();
-		return msc;
+		ImportCommand ic = new ImportCommand();
+		return ic;
 	}
 
 	public StudyDao getStudyDao() {

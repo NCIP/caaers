@@ -68,4 +68,7 @@ public class DiseaseTab extends StudyTab {
     public void setDiseaseTermDao(DiseaseTermDao diseaseTermDao) {
         this.diseaseTermDao = diseaseTermDao;
     }
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
 }

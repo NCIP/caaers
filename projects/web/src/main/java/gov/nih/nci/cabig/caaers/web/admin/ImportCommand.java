@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -12,28 +13,37 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
  */
 public class ImportCommand {
 	
-	private String studyFileName;
-	private String participantFileName;
+	private MultipartFile participantFile;
+	private MultipartFile studyFile;
+	private String type;
 	private List<Study> studies = new ArrayList<Study>();
 	private List<Participant> participants = new ArrayList<Participant>();
 	private HashMap<Participant,List<String>> participantErrors = new HashMap<Participant,List<String>>();
 	private HashMap<Study,List<String>> studyErrors = new HashMap<Study,List<String>>();
 	
-
-	public String getStudyFileName() {
-		return studyFileName;
+	
+	public String getType() {
+		return type;
 	}
 
-	public void setStudyFileName(String studyFileName) {
-		this.studyFileName = studyFileName;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getParticipantFileName() {
-		return participantFileName;
+	public MultipartFile getParticipantFile() {
+		return participantFile;
 	}
 
-	public void setParticipantFileName(String participantFileName) {
-		this.participantFileName = participantFileName;
+	public void setParticipantFile(MultipartFile participantFile) {
+		this.participantFile = participantFile;
+	}
+
+	public MultipartFile getStudyFile() {
+		return studyFile;
+	}
+
+	public void setStudyFile(MultipartFile studyFile) {
+		this.studyFile = studyFile;
 	}
 
 	public List<Study> getStudies() {
@@ -67,8 +77,6 @@ public class ImportCommand {
 			participantErrors.get(participant).add(errorMessage);
 		} 
 		else{
-			//ArrayList<MigrationError> migerr = new ArrayList<MigrationError>();
-			//migerr.add(new MigrationError(errorMessage));
 			ArrayList<String> errorMessages = new ArrayList<String>();
 			errorMessages.add(errorMessage);
 			participantErrors.put(participant, errorMessages);		
@@ -88,8 +96,6 @@ public class ImportCommand {
 			studyErrors.get(study).add(errorMessage);
 		} 
 		else{
-			//ArrayList<MigrationError> migerr = new ArrayList<MigrationError>();
-			//migerr.add(new MigrationError(errorMessage));
 			ArrayList<String> errorMessages = new ArrayList<String>();
 			errorMessages.add(errorMessage);
 			studyErrors.put(study, errorMessages);		

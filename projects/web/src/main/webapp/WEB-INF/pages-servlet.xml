@@ -18,6 +18,12 @@
     <bean id="irViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
         p:viewClass="org.springframework.web.servlet.view.InternalResourceView"
         p:prefix="/WEB-INF/views/" p:suffix=".jsp"/>
+    
+    <bean id="multipartResolver"
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <!-- one of the properties available; the maximum file size in bytes -->
+    <property name="maxUploadSize" value="10000000"/>
+	</bean>    
   
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
         <property name="interceptors">

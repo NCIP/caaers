@@ -9,29 +9,6 @@
 <head>
 <tags:includeScriptaculous/>
 	<script language="JavaScript" type="text/JavaScript">
-
-	function validatePage(){
-		return true;
-	}
-	function fireAction(action, selected){
-		if(validatePage()){
-							
-			//document.getElementsByName('_finish')[0].name='xyz';	
-			document.getElementsByName('_target1')[0].name='_target0';			            
-			document.ImportForm._action.value=action;
-			document.ImportForm._selected.value=selected;		
-			document.ImportForm.submit();
-		}
-	}
-	function clearField(field){
-		field.value="";
-	}
-	
-	function populateHiddenFileName(id){
-		
-		$(id + "FileName").value = $( id + "FileNamefake").value
-		fireAction('addSite', id == "study" ? '0' : '1');		
-	}
 	
 	function toggle(in_id,out_id)
 	{
@@ -39,18 +16,17 @@
 			Effect.Shrink(out_id);
 		}
 		Effect.toggle(in_id, 'appear');
+		$('type').value = in_id;
 	}
 	
 	function showIf()
 	{
-		if ( $('studyFileName').value != "" ){
+		if ( $('type').value == "study" ){
 			$('study').style.display = ""
-			$('study-selected').style.display = ""
 				
 		}
-		if ( $('participantFileName').value != "" ){
-			$('participant').style.display = ""	
-			$('participant-selected').style.display = ""
+		if (  $('type').value == "participant"){
+			$('participant').style.display = ""
 		}		
 	}
 	
@@ -58,8 +34,6 @@
 	Event.observe(window, "load", function() {
 		
 		showIf()
-		Event.observe("studyFileNamefake", "change", function() { populateHiddenFileName("study") })
-		Event.observe("participantFileNamefake", "change", function() { populateHiddenFileName("participant") })
 		Event.observe("study_button","click",function() { toggle('study','participant') })
 		Event.observe("participant_button","click",function() { toggle('participant','study') })
 	 	
@@ -74,7 +48,7 @@
 <p id="instructions">
         Import Studies/Protocols or Participants into caAERS
 </p>
-    <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm">
+    <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
 	<div>		
 		<input type="hidden" name="_action" value="">
@@ -84,11 +58,21 @@
 		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
 		<input type="button" id="participant_button" value="Import Participant         ">
 		
+		 <tags:errors path="*"/>
+    	 
+		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study"> 
+    	<input id="study_file" type="file" name="studyFile" />
+		<input id="type" type="hidden" name="type" />
+		</div>
 		
+		<div style="display: none;position:relative;top:-30px; left:200px;" id = "participant"> 
+    	<input id="participant_file" type="file" name="participantFile" />
+		<input id="type" type="hidden" name="type" />
+		</div>
+    	
+		
+		<%--		
 		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study">
-    	<tags:errors path="*"/>
-    	
-    	
     	 Please select a Study xml file to import<br><br>
     	<input id="studyFileName" type="hidden" value="${command.studyFileName}" name="studyFileName" />
         <input id="studyFileNamefake" type="file" name="temp" /> 
@@ -101,8 +85,9 @@
     	<input id="participantFileNamefake" type="file" name="temp" /> 
     	<div style="display: none;" id="participant-selected">You have selected the following file ${command.participantFileName}</div>
     	</div>
+    	--%>
 
  </jsp:attribute>
-    </tags:tabFormName>    
+    </tags:tabForm>    
 </body>
 </html>
