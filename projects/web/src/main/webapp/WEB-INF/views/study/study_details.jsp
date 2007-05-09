@@ -12,9 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-<style type="text/css">
-        .label { width: 12em; text-align: right; padding: 4px; }
-    </style>
+
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
