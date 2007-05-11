@@ -28,6 +28,6 @@ class PopulatePriorTherapy extends edu.northwestern.bioinformatics.bering.Migrat
     }
 
     void down() {
-        execute("DELETE * FROM prior_therapies")
+        execute("DELETE FROM prior_therapies")
     }
 }

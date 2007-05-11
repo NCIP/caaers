@@ -8,6 +8,6 @@ class ChangeContactMechanisms extends edu.northwestern.bioinformatics.bering.Mig
     void down() {
         removeColumn('contact_mechanisms','reporter_id');
     	removeColumn('contact_mechanisms','physician_id');
-    	addColumn('contact_mechanisms','person_id' , 'string' , nullable:false); 
+    	addColumn('contact_mechanisms','person_id' , 'string'); // can't re-add as not null 
     }
 }

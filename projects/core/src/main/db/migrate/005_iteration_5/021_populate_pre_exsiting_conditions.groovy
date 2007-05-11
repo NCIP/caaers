@@ -52,6 +52,6 @@ class PopulatePreExistingConditions extends edu.northwestern.bioinformatics.beri
     }
 
     void down() {
-        execute("DELETE * FROM pre_existing_conditions")
+        execute("DELETE FROM pre_existing_conditions")
     }
 }

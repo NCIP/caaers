@@ -10,6 +10,6 @@ class ChangeStudyDiseases extends edu.northwestern.bioinformatics.bering.Migrati
     void down() {
         removeColumn('study_diseases','term_id');
     	removeColumn('study_diseases','term_type');
-    	addColumn('study_diseases','disease_term_id' , 'integer' , nullable:false); 
+    	addColumn('study_diseases','disease_term_id' , 'integer'); // can't recreate as non null 
     }
 }

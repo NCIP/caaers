@@ -140,6 +140,6 @@ class PopulateAnatomicSite extends edu.northwestern.bioinformatics.bering.Migrat
     }
 
     void down() {
-        execute("DELETE * FROM anatomic_sites")
+        execute("DELETE FROM anatomic_sites")
     }
 }
