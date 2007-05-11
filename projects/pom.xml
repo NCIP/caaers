@@ -165,7 +165,32 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                     <reportSet>
+                        <reports>
+                           <report>index</report>
+                           <report>summary</report>
+                           <report>dependencies</report>
+                           <!--<report>project-team</report>-->
+                           <report>mailing-list</report>
+                           <report>issue-tracking</report>
+                           <!--<report>license</report>-->
+                           <report>scm</report>
+                        </reports>
+                     </reportSet>
+                  </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <!-- Current version (2.1) doesn't work.  See, e.g.,
+                     http://jira.codehaus.org/browse/MCOBERTURA-57. -->
+                <version>2.0</version>
             </plugin>
         </plugins>
     </reporting>
@@ -176,5 +201,11 @@
             <name>Northwestern University RHLCCC Bioinformatics Core</name>
             <url>scp://download.bioinformatics.northwestern.edu/var/www/html/download/maven2</url>
         </repository>
+        <!--
+        <site>
+            <id>download.bioinformatics</id>
+            <url>scp://download.bioinformatics.northwestern.edu/var/www/html/download/mvn-sites/caaers</url>
+        </site>
+        -->
     </distributionManagement>
 </project>
