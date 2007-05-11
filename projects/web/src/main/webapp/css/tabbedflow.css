@@ -72,26 +72,18 @@
   clear: both;
 }
 
-.buttons a {
-  color: #eee;
-  background-color: #3876C1;
-  text-decoration: none;
-  padding: 3px;
+.buttons input {
+  padding: 2px;
   margin: 3px;
-  border: 1px solid #ddd;
-  display: block;
-  float: left;
-}
-
-.buttons a:hover {
-  color: #333;
-  background-color: #5C94D5;
 }
 
 .local-buttons {
-  font-size: 0.9em;
   float: right;
   clear: both;
+}
+
+.local-buttons input {
+    font-size: 0.9em;
 }
 
 .flow-buttons {

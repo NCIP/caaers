@@ -49,10 +49,6 @@
         </div>
     </chrome:body>
 </div>
-<form:form id="flowredirect">
-    <input type="hidden" name="_target${tab.targetNumber}" id="flowredirect-target"/>
-    <input type="hidden" name="_page${tab.number}"/>
-</form:form>
 <standard:footer/>
 </body>
 </html>

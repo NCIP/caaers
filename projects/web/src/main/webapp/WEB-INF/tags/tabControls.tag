@@ -14,14 +14,14 @@
     <div class="flow-buttons">
         <span class="prev">
             <c:if test="${tabNumber > 0}">
-                <a href="#" id="flow-prev" class="tab${tabNumber - 1}">&laquo; Previous</a>
+                <input type="submit" id="flow-prev" class="tab${tabNumber - 1}" value="&laquo; Previous"/>
             </c:if>
         </span>
         <span class="next">
             <!-- TODO: implement this -->
             <!--<a href="#" id="flow-update">Save</a>-->
             <%--<c:if test="${not isLast}">--%>
-                <a href="#" id="flow-next">Save &amp; Continue &raquo;</a>
+                <input type="submit" id="flow-next" value="Save &amp; Continue &raquo;"/>
             <%--</c:if>--%>
         </span>
     </div>
