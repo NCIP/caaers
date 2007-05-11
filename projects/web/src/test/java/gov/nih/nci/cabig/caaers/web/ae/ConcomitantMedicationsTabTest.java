@@ -41,7 +41,7 @@ public class ConcomitantMedicationsTabTest extends AeTabTestCase<ConcomitantMedi
         ObjectError fieldError = getErrors().getFieldError("aeReport.concomitantMedications[0]");
         assertNotNull(fieldError);
         assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
-        assertEquals("Wrong message", "Either Agent or Other is required",
+        assertEquals("Wrong message", "Either a known medication or other is required",
             fieldError.getDefaultMessage());
     }
 }

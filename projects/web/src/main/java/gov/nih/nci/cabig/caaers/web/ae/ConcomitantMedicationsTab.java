@@ -27,7 +27,7 @@ public class ConcomitantMedicationsTab extends AeTab {
                 return "Medication " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("agent", "Agent", false));
+        fieldFactory.addField(new AutocompleterField("agent", "Known medication", false));
         fieldFactory.addField(new DefaultTextField("other", "Other", false));
     }
 
@@ -60,7 +60,7 @@ public class ConcomitantMedicationsTab extends AeTab {
             errors.rejectValue(
                 String.format("aeReport.concomitantMedications[%d]", index),
                 "REQUIRED",
-                "Either Agent or Other is required"
+                "Either a known medication or other is required"
             );
         }
     }
