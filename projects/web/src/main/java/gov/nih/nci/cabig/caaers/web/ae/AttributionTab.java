@@ -2,13 +2,13 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.Map;
 import java.util.List;

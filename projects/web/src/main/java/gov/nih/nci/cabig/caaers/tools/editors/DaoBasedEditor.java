@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
-import java.beans.PropertyEditorSupport;
-
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.dao.CaaersDao;
+import gov.nih.nci.cabig.ctms.dao.DomainObjectDao;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.apache.commons.lang.StringUtils;
+
+import java.beans.PropertyEditorSupport;
 
 /**
  * A {@link java.beans.PropertyEditor} that supports binding domain objects by their IDs
@@ -15,13 +15,12 @@ import org.apache.commons.lang.StringUtils;
 /* TODO: after moving to CTMS commons, add tests for the config params */
 public class DaoBasedEditor extends PropertyEditorSupport {
     private boolean strictIdChecking, nullForBlanks;
-    private CaaersDao<?> dao;
+    private DomainObjectDao<?> dao;
 
     /**
-     * Same as <code>{@link #DaoBasedEditor(CaaersDao, boolean, boolean)}(dao, false, true)</code>
-     * @param dao
+     * Same as <code>{@link #DaoBasedEditor(DomainObjectDao, boolean, boolean)}(dao, false, true)</code>
      */
-    public DaoBasedEditor(CaaersDao<?> dao) {
+    public DaoBasedEditor(DomainObjectDao<?> dao) {
         this(dao, false, true);
     }
 
@@ -32,7 +31,7 @@ public class DaoBasedEditor extends PropertyEditorSupport {
      * @param nullForBlanks Whether to treat a blank string as "no object".  If false, you'll get a
      *      NumberFormatException for blank strings.
      */
-    public DaoBasedEditor(CaaersDao<?> dao, boolean strictIdChecking, boolean nullForBlanks) {
+    public DaoBasedEditor(DomainObjectDao<?> dao, boolean strictIdChecking, boolean nullForBlanks) {
         this.dao = dao;
         this.strictIdChecking = strictIdChecking;
         this.nullForBlanks = nullForBlanks;

@@ -5,13 +5,13 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.LinkedHashMap;
 import java.util.List;
