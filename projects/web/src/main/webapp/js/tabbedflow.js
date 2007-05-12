@@ -16,4 +16,5 @@ Event.observe(window, "load", function() {
         Event.observe(a, "click", AE.tabbedFlowSelectAndSubmit)
     })
     if ($("flow-prev")) Event.observe("flow-prev", "click", AE.tabbedFlowUpdateTarget)
+    if ($("flow-update")) Event.observe("flow-update", "click", AE.tabbedFlowUpdateTarget)
 })

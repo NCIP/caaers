@@ -19,11 +19,11 @@
         </span>
         <span class="next">
             <input type="reset" value="Reset tab"/>
-            <!-- TODO: implement this -->
-            <!--<a href="#" id="flow-update">Save</a>-->
-            <%--<c:if test="${not isLast}">--%>
+            <!-- TODO: different display for edit vs. create modes -->
+            <input type="submit" id="flow-update" class="tab${tabNumber}" value="Save"/>
+            <c:if test="${not isLast}">
                 <input type="submit" id="flow-next" value="Save &amp; Continue &raquo;"/>
-            <%--</c:if>--%>
+            </c:if>
         </span>
     </div>
 </div>
