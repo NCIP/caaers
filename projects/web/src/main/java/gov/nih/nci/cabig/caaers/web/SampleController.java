@@ -33,16 +33,6 @@ public class SampleController extends AbstractTabbedFlowFormController<Object> {
     }
 
     @Override
-    protected Map<?, ?> referenceData(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
-        Map refdata = super.referenceData(request, command, errors, page);
-        Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Participant", "Curabitur Tellus");
-        summary.put("Study", "Nunc vel odio vivamus mattis libero a dolor in at nibh donec mattis fermentum ligula");
-        refdata.put("summary", summary);
-        return refdata;
-    }
-
-    @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         log.info("Sample controller finished");
         return new ModelAndView(new RedirectView("/pages/ae/sample", true));
