@@ -1,29 +1,18 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
-
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.HibernateException;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
-
-import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
-import java.sql.SQLException;
+import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
 /**
  * @author Sujith Vellat Thayyilthodi
- * @author Rhett Sutphin
+ * @author Rhett Sutphin , Priyatam
  */
 @Transactional
 public class StudyDao extends GridIdentifiableDao<Study> {
@@ -46,14 +35,27 @@ public class StudyDao extends GridIdentifiableDao<Study> {
         return (List<Study>) getHibernateTemplate().find("from Study");
     }
 
-    // TODO: how is this different from #getById ?
-    // KK : I am guessing the difference here is that identifiers and studysites are being 
-    // loaded hence no lazy initialization exception . 
-    public Study getStudyDesignById(int id) {
+    /**
+     //TODO - Refactor this code with Hibernate Detached objects !!!
+      
+	 * This is a hack to load all collection objects in memory. Useful
+	 * for editing a Study when you know you will be needing all collections
+	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done
+	 * for each collection
+	 * @param id
+	 * @return Fully loaded Study
+	 */
+	public Study getStudyDesignById(int id) {				
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
         study.getIdentifiers().size();
         study.getStudySites().size();
-
+        for (StudySite studySite : study.getStudySites()) {
+			studySite.getStudyInvestigators().size();
+			studySite.getStudyPersonnels().size();		
+		}
+        study.getMeddraStudyDiseases().size();
+        study.getStudyAgents().size();
+       
         return study;
     }
 
