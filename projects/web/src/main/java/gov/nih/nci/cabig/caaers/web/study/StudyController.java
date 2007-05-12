@@ -41,28 +41,28 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Priyatam
  */
 public abstract class StudyController extends AbstractTabbedFlowFormController<Study>{
-    protected static final Log log = LogFactory.getLog(StudyController.class);
+    private static final Log log = LogFactory.getLog(StudyController.class);
     protected StudyDao studyDao;
     private SiteDao siteDao;
     private AgentDao agentDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
-	
-	public StudyController() {		
-		setCommandClass(Study.class);        	       
-	    Flow<Study> flow = new Flow<Study>("Create Study");    
-	    layoutTabs(flow);
-		setFlow(flow);  
+
+    public StudyController() {
+        setCommandClass(Study.class);
+        Flow<Study> flow = new Flow<Study>("Create Study");
+        layoutTabs(flow);
+        setFlow(flow);
     }
 
-	/**
-	 * Template method to let the subclass decide the order of tab
-	 */
-	protected abstract void layoutTabs(Flow flow);
-	
-	@Override
+    /**
+     * Template method to let the subclass decide the order of tab
+     */
+    protected abstract void layoutTabs(Flow flow);
+
+    @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-		throws Exception {
+        throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
         ControllerTools.registerDomainObjectEditor(binder, siteDao);
@@ -70,7 +70,7 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
     }
-	
+
     /**
      * Template method for individual controllers
      * @param request
@@ -79,81 +79,83 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
      * @param page
      * @return
      */
-	@Override
-    protected Map<String, Object> referenceDataController(HttpServletRequest request, Object command, 
-    	Errors errors, int page) {
-		Study study = (Study) command;
-    	Map<String, Object> refdata = new HashMap<String, Object>();
-    	
-		if (isSummaryEnabled()) {
-	    	Map<String, String> summary = new LinkedHashMap<String, String>();
-	    	if (study.getPrimaryIdentifier()!= null )
-		   	{
-	    		summary.put("Primary identifier", study.getPrimaryIdentifier().toString());
-		   	}
-	    	if (study.getShortTitle() != null) {
-	    	 	summary.put("Short title", study.getShortTitle());	  		  
-	    	}
-	    	if (study.getPrimarySponsorCode() != null) {
-	    		summary.put("Sponsor", study.getPrimarySponsorCode().toString());	 		   
-	    	}
-		   	if (study.getPhaseCode() != null) {
-		   	   	summary.put("Phase", study.getPhaseCode().toString());
-		   	}
-		   	refdata.put("summary", summary);
-		}
-		if (isUpdate()) {
-			refdata.put("isUpdate", "isUpdate");
-		}
-	   	
-	   	return refdata;
-    }
-	
-    /**
-	 * Override this in sub controller if summary is needed
-	 * @return
-	 */
-	protected boolean isSummaryEnabled() {
-		return false;
-	}
-	
-	/**
-	 * Override this in sub controller if update is needed
-	 * @return
-	 */
-	protected boolean isUpdate() {
-		return false;
-	}
-	
-	
-	/**
-	 * Hook to imlement this in subclass (depending on create/edit)
-	 * @param request - HttpServletRequest
-	 * @throws ServletException
-	 */
-	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
-		// implement this in sub class
-		return null;
-	}
-	
-	/* (non-Javadoc)
-     * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-     * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
-     * java.lang.Object, org.springframework.validation.BindException)
-     */
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
-       Object command, BindException errors) throws Exception {
-       Study study = (Study) command;
-       studyDao.save(study);
+    @Override
+    protected Map referenceData(
+        HttpServletRequest request, Object command, Errors errors, int page
+    ) throws Exception {
+        Map<String, Object> refdata = super.referenceData(request, command, errors, page);
 
-       ModelAndView modelAndView = new ModelAndView("study_confirmation");
-       modelAndView.addAllObjects(errors.getModel());
-       response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
-       return null;
-	}
-	
-	protected Study createDefaultStudyWithDesign() {
+        Study study = (Study) command;
+
+        if (isSummaryEnabled()) {
+            Map<String, String> summary = new LinkedHashMap<String, String>();
+            if (study.getPrimaryIdentifier()!= null )
+            {
+                summary.put("Primary identifier", study.getPrimaryIdentifier().toString());
+            }
+            if (study.getShortTitle() != null) {
+                summary.put("Short title", study.getShortTitle());
+            }
+            if (study.getPrimarySponsorCode() != null) {
+                summary.put("Sponsor", study.getPrimarySponsorCode().toString());
+            }
+            if (study.getPhaseCode() != null) {
+                summary.put("Phase", study.getPhaseCode().toString());
+            }
+            refdata.put("summary", summary);
+        }
+        if (isUpdate()) {
+            refdata.put("isUpdate", "isUpdate");
+        }
+
+        return refdata;
+    }
+
+    /**
+     * Override this in sub controller if summary is needed
+     * @return
+     */
+    protected boolean isSummaryEnabled() {
+        return false;
+    }
+
+    /**
+     * Override this in sub controller if update is needed
+     * @return
+     */
+    protected boolean isUpdate() {
+        return false;
+    }
+
+
+    /**
+     * Hook to imlement this in subclass (depending on create/edit)
+     * @param request - HttpServletRequest
+     * @throws ServletException
+     */
+    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+        // implement this in sub class
+        return null;
+    }
+
+    /* (non-Javadoc)
+    * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
+    * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
+    * java.lang.Object, org.springframework.validation.BindException)
+    */
+    @Override
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
+                                         Object command, BindException errors) throws Exception {
+        Study study = (Study) command;
+        studyDao.save(study);
+
+        ModelAndView modelAndView = new ModelAndView("study_confirmation");
+        modelAndView.addAllObjects(errors.getModel());
+        response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
+        return null;
+    }
+
+    protected Study createDefaultStudyWithDesign() {
         Study study = new Study();
 
         StudySite studySite = new StudySite();
@@ -185,45 +187,45 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
 
         return study;
     }
-	
-	public AgentDao getAgentDao() {
-		return agentDao;
-	}
 
-	public void setAgentDao(AgentDao agentDao) {
-		this.agentDao = agentDao;
-	}
+    public AgentDao getAgentDao() {
+        return agentDao;
+    }
 
-	public ResearchStaffDao getResearchStaffDao() {
-		return researchStaffDao;
-	}
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
+    }
 
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}
+    public ResearchStaffDao getResearchStaffDao() {
+        return researchStaffDao;
+    }
 
-	public SiteDao getSiteDao() {
-		return siteDao;
-	}
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+        this.researchStaffDao = researchStaffDao;
+    }
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
-	}
+    public SiteDao getSiteDao() {
+        return siteDao;
+    }
 
-	public SiteInvestigatorDao getSiteInvestigatorDao() {
-		return siteInvestigatorDao;
-	}
+    public void setSiteDao(SiteDao siteDao) {
+        this.siteDao = siteDao;
+    }
 
-	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
-		this.siteInvestigatorDao = siteInvestigatorDao;
-	}
+    public SiteInvestigatorDao getSiteInvestigatorDao() {
+        return siteInvestigatorDao;
+    }
 
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
+    public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
+        this.siteInvestigatorDao = siteInvestigatorDao;
+    }
 
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
 
 }
