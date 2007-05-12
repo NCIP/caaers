@@ -19,7 +19,6 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 	private static final List<Object> EXTRA_PARAMS
 			= Collections.emptyList();
 	
-    @Override
 	public Class<AnatomicSite> domainClass() {
         return AnatomicSite.class;
     } 

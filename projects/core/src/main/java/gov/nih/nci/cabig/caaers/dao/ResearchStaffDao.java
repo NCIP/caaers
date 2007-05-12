@@ -25,7 +25,6 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
         return getHibernateTemplate().find("from ResearchStaff");
     }  
 	
-    @Override
     public Class<ResearchStaff> domainClass() {
         return ResearchStaff.class;
     }

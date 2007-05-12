@@ -14,7 +14,6 @@ public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("text", "meddraTerm", "meddraCode");
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-    @Override
     public Class<PriorTherapy> domainClass() {
         return PriorTherapy.class;
     }

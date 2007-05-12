@@ -8,8 +8,6 @@ import java.util.List;
  * @author Sujith Vellat Thayyilthodi
  * */
 public class NotificationDao extends CaaersDao<Notification> {
-
-	@Override
 	public Class<Notification> domainClass() {
 		return Notification.class;
 	}

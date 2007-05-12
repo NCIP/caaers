@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.ctms.dao.DomainObjectDao;
+import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public abstract class CaaersDao<T extends DomainObject> extends DomainObjectDao<T> {
+public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainObjectDao<T> {
     /**
      * A variation of {@link #findBySubname} that does not allow for extra conditions
      */

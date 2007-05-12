@@ -21,7 +21,6 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
 	private static final List<Object> EXTRA_PARAMS
 		= Collections.emptyList();
 
-	@Override
     public Class<SiteInvestigator> domainClass() {
         return SiteInvestigator.class;
     } 

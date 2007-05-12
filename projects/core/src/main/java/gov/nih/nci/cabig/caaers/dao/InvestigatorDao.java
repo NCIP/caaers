@@ -7,8 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
  * 
  */
 public class InvestigatorDao extends GridIdentifiableDao<Investigator> {
-    
-    @Override
     public Class<Investigator> domainClass() {
         return Investigator.class;
     }

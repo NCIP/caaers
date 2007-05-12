@@ -7,8 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
  * @author Kulasekaran
  */
 public class ReporterDao extends GridIdentifiableDao<Reporter> {
-
-    @Override
     public Class<Reporter> domainClass() {
         return Reporter.class;
     }

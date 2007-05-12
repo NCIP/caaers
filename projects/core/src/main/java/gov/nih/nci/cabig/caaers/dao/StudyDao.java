@@ -25,7 +25,6 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     private static final List<String> EMPTY_PROPERTIES
 		= Collections.emptyList();
     
-    @Override
     public Class<Study> domainClass() {
         return Study.class;
     }
