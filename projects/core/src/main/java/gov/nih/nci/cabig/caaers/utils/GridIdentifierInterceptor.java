@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import gov.nih.nci.cabig.caaers.CaaersError;
-import gov.nih.nci.cabig.caaers.domain.MutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 
 import java.io.Serializable;
 import java.util.UUID;

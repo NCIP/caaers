@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.OrderBy;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 /**
  * @author Krikor Krumlian
  * @author Rhett Sutphin
@@ -26,7 +28,7 @@ import javax.persistence.OrderBy;
         @Parameter(name="sequence", value="seq_sites_id")
     }
 )
-public class Site extends AbstractDomainObject {
+public class Site extends AbstractMutableDomainObject {
     public static final String DEFAULT_SITE_NAME = "default";
 
     private String name;

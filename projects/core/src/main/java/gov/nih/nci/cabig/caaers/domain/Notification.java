@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Sujith Vellat Thayyilthodi
@@ -18,7 +19,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name = "sequence", value = "seq_notifications_id")
     }
 )
-public class Notification extends AbstractDomainObject implements Serializable {
+public class Notification extends AbstractMutableDomainObject implements Serializable {
 
 	private String email;
 	

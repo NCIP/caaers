@@ -1,13 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractImmutableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Participation;
-
 import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 

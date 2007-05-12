@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,7 +30,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_ae_reports_id")
     }
 )
-public class AdverseEventReport extends AbstractDomainObject {
+public class AdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
     private LazyListHelper lazyListHelper;

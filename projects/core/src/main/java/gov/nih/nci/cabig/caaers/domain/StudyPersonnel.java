@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Kulasekaran
@@ -19,7 +20,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_study_personnel_id")
     }
 )
-public class StudyPersonnel extends AbstractDomainObject {
+public class StudyPersonnel extends AbstractMutableDomainObject {
 
 	private String roleCode;
 	private String statusCode;	

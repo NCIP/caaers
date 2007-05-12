@@ -129,7 +129,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<aop:config>
 		<!-- pointcuts -->
 		<aop:pointcut id="daoSaveOrUpdatePointcut"
-			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.caaers.domain.AbstractDomainObject+))" />
+			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))" />
 
 
 		<!-- advisors -->

@@ -15,6 +15,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Kulasekaran
@@ -26,7 +27,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_investigators_id")
     }
 )
-public class Investigator extends AbstractDomainObject {
+public class Investigator extends AbstractMutableDomainObject {
 	
 	private String firstName;
     private String middleName; 

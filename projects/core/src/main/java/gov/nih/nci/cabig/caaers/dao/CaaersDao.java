@@ -1,42 +1,27 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.Participant;
+import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.hibernate.Session;
+import gov.nih.nci.cabig.ctms.dao.DomainObjectDao;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.Collections;
 import java.sql.SQLException;
-
-import edu.nwu.bioinformatics.commons.CollectionUtils;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
  */
-/* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
-public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupport {
-    protected final Log log = LogFactory.getLog(getClass());
-
-    public abstract Class<T> domainClass();
-
-    @SuppressWarnings("unchecked")
-    public T getById(int id) {
-        return (T) getHibernateTemplate().get(domainClass(), id);
-    }
-
+public abstract class CaaersDao<T extends DomainObject> extends DomainObjectDao<T> {
     /**
      * A variation of {@link #findBySubname} that does not allow for extra conditions
      */
@@ -139,7 +124,7 @@ public abstract class CaaersDao<T extends DomainObject> extends HibernateDaoSupp
     /**
      * Default search -- case insensitive substring matches
      *
-     * @see #searchByExample(gov.nih.nci.cabig.caaers.domain.DomainObject, boolean) 
+     * @see #searchByExample(gov.nih.nci.cabig.ctms.domain.DomainObject, boolean) 
      */
     public List<T> searchByExample(T example) {
         return searchByExample(example, true);

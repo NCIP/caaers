@@ -8,6 +8,8 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 /**
  * Subclass of @{link AbstractDomainObject> that implements
  * {@link gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers}.
@@ -15,7 +17,7 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public abstract class AbstractIdentifiableDomainObject extends AbstractDomainObject implements IdentifiableByAssignedIdentifers {
+public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDomainObject implements IdentifiableByAssignedIdentifers {
     private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
     private List<Identifier> identifiers;
 

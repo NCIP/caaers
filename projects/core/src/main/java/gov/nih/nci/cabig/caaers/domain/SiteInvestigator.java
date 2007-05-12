@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 @Entity
 @Table (name = "site_investigators")
@@ -24,7 +25,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_site_investigators_id")
     }
 )
-public class SiteInvestigator extends AbstractDomainObject {
+public class SiteInvestigator extends AbstractMutableDomainObject {
 
 	private Site site;
     private Investigator investigator;    	

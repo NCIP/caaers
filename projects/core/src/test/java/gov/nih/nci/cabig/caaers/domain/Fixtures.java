@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 /**
  * @author Rhett Sutphin
  */

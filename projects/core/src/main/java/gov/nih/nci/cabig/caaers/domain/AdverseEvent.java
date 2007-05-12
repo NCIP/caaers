@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -32,7 +33,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_adverse_events_id")
     }
 )
-public class AdverseEvent extends AbstractDomainObject implements AdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableDomainObject implements AdverseEventReportChild {
     private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;

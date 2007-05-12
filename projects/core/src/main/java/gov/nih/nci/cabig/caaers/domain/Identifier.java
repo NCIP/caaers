@@ -5,6 +5,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Priyatam
@@ -18,7 +19,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_identifiers_id")
     }
 )
-public class Identifier extends AbstractDomainObject {
+public class Identifier extends AbstractMutableDomainObject {
     private String source;
     private String type;
     private String value;

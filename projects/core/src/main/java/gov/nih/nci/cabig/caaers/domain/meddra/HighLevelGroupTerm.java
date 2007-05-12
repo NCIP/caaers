@@ -2,15 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.meddra;
 
 import java.util.List;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractImmutableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Participation;
-
-import javax.persistence.Embedded;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;

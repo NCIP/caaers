@@ -3,16 +3,16 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 /**
  * @author Sujith Vellat Thayyilthodi
- * @author Rhett Sutphin , Priyatam
+ * @author Rhett Sutphin
+ * @author Priyatam
  */
 @Transactional
 public class StudyDao extends GridIdentifiableDao<Study> {

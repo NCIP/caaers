@@ -16,6 +16,8 @@ import javax.persistence.AttributeOverride;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 /**
  * @author Rhett Sutphin
  */
@@ -26,7 +28,7 @@ import java.util.Date;
         @Parameter(name="sequence", value="seq_course_agents_id")
     }
 )
-public class CourseAgent extends AbstractDomainObject {
+public class CourseAgent extends AbstractMutableDomainObject {
     private TreatmentInformation treatmentInformation;
 
     private StudyAgent studyAgent;

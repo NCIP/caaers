@@ -1,38 +1,19 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.hibernate.Session;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
 
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import java.sql.PreparedStatement;
 
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.Collections;
 import java.sql.SQLException;
-
-import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 /**
  * @author Krikor Krumlian
  */
-public class MedDRADao{
+public class MedDRADao {
 	protected final Log log = LogFactory.getLog(getClass());
 	private JdbcTemplate jdbcTemplate;
 	

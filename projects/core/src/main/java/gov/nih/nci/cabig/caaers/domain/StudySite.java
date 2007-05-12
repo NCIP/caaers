@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Krikor Krumlian
@@ -28,7 +29,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_study_sites_id")
     }
 )
-public class StudySite extends AbstractDomainObject {	
+public class StudySite extends AbstractMutableDomainObject {
 	private Site site;
     private Study study;    
 	private Date irbApprovalDate;

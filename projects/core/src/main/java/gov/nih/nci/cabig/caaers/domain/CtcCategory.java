@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.ManyToOne;

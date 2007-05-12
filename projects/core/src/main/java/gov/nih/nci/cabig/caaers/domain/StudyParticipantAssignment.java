@@ -9,15 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractDomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 
@@ -32,7 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
         @Parameter(name="sequence", value="seq_participant_assignments_id")
     }
 )
-public class StudyParticipantAssignment extends AbstractDomainObject {
+public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Participant participant;
     private StudySite studySite;
     private Date dateOfEnrollment;
@@ -110,7 +107,7 @@ public class StudyParticipantAssignment extends AbstractDomainObject {
         if (studySite != null ? !studySite.equals(that.studySite) : that.studySite != null)
             return false;
         // Participant#equals calls this method, so we can't use it here
-        if (!AbstractDomainObject.equalById(participant, that.participant)) return false;
+        if (!AbstractMutableDomainObject.equalById(participant, that.participant)) return false;
 
         return true;
     }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
+
 /**
  * @author Krikor Krumlian
  */

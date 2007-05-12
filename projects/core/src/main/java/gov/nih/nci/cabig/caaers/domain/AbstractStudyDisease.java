@@ -1,12 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractDomainObject;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -17,10 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.FetchType;
 
 /**
  * @author Krikor Krumlian
@@ -39,7 +33,7 @@ import javax.persistence.FetchType;
         @Parameter(name = "sequence", value = "seq_study_diseases_id")
     }
 )
-public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractDomainObject {
+public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject {
     private T term;
     private Study study;
 

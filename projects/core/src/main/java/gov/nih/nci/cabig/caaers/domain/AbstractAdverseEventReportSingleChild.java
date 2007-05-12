@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -9,7 +11,7 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractAdverseEventReportSingleChild extends AbstractDomainObject implements AdverseEventReportChild {
+public class AbstractAdverseEventReportSingleChild extends AbstractMutableDomainObject implements AdverseEventReportChild {
     private AdverseEventReport report;
 
     @OneToOne(fetch = FetchType.LAZY)
