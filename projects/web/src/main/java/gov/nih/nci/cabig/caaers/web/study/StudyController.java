@@ -80,6 +80,7 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
      * @return
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected Map referenceData(
         HttpServletRequest request, Object command, Errors errors, int page
     ) throws Exception {
