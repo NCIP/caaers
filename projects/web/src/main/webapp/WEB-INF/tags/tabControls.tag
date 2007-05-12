@@ -18,6 +18,7 @@
             </c:if>
         </span>
         <span class="next">
+            <input type="reset" value="Reset tab"/>
             <!-- TODO: implement this -->
             <!--<a href="#" id="flow-update">Save</a>-->
             <%--<c:if test="${not isLast}">--%>

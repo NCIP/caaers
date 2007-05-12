@@ -58,18 +58,11 @@
                 this.detailsForOtherId = aeProperty + ".detailsForOther"
                 this.detailsForOtherRowId = aeProperty + ".detailsForOther-row"
 
-                this.ctcCategorySelector = this.clearSelectedTerm.bindAsEventListener(this)
-
-                if (ctcTerm) {
-                    // select term first to work around a bug in showing the "other" row when the
-                    // element is only partially visible
-                    this.selectTerm(ctcTerm)
-                    $(this.ctcTermInputId).value = termValueSelector(ctcTerm)
-                }
+                this.resetTermText()
                 this.ctcVersionChanged(null, true)
 
                 Event.observe("ctc-version", "change", this.ctcVersionChanged.bindAsEventListener(this, false))
-                Event.observe(this.ctcCategoryId, "change", this.ctcCategorySelector)
+                Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
 
                 AE.createStandardAutocompleter(
                     aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
@@ -78,6 +71,15 @@
                         }.bind(this)
                     }
                 )
+            },
+
+            resetTermText: function() {
+                if (this.initialCtcTerm) {
+                    // select term first to work around a bug in showing the "other" row when the
+                    // element is only partially visible
+                    this.selectTerm(this.initialCtcTerm)
+                    $(this.ctcTermInputId).value = termValueSelector(this.initialCtcTerm)
+                }
             },
 
             clearSelectedTerm: function() {
@@ -145,8 +147,7 @@
             }
         })
 
-        Event.observe(window, "load", function() {
-            // do this before any of the behaviors are applied to avoid their onChange side effects
+        function updateCtcVersion() {
             if (initialCtcTerm) {
                 $A($("ctc-version").options).each(function(opt) {
                     initialCtcTerm.each(function(term) {
@@ -156,6 +157,21 @@
                     })
                 })
             }
+        }
+
+        function postReset() {
+            AESections.each(function(ae) {
+                ae.resetTermText()
+            })
+        }
+
+        Event.observe(window, "load", function() {
+            // do this before any of the behaviors are applied to avoid their onChange side effects
+            updateCtcVersion()
+            Event.observe("command", "reset", function() {
+                // onReset fires _before_ the reset; delay action so it happens afterward
+                setTimeout(postReset, 150)
+            })
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
             new AESection(${status.index}, initialCtcTerm[${status.index}])
             </c:forEach>
@@ -185,7 +201,7 @@
                         <select id="ctc-version">
                             <option value="">Please select --</option>
                             <c:forEach items="${ctcVersions}" var="ctc">
-                                <option value="${ctc.id}">${ctc.name}</option>
+                                <option value="${ctc.id}" <c:if test="${command.aeReport.adverseEvents[0].ctcTerm.category.ctc.id == ctc.id}">selected</c:if>>${ctc.name}</option>
                             </c:forEach>
                         </select>
                     </div>
