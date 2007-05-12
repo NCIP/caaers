@@ -17,6 +17,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+
 /**
  * @author Kulasekaran
  */
@@ -39,6 +40,11 @@ public class ResearchStaff extends AbstractDomainObject {
     private String ethnicity; 
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
     private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
+    
+    public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
+        getStudyPersonnels().add(studyPersonnel);        
+    }
+    
 	
 	@OneToMany
     @JoinColumn(name="staff_id")
