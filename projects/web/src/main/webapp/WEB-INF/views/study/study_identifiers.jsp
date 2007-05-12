@@ -12,21 +12,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-<style type="text/css">
-        .label { width: 12em; text-align: right; padding: 4px; }
-</style>
 <script language="JavaScript" type="text/JavaScript">
 
-function validatePage(){
-	return true;
-}
 function fireAction(action, selected){
-	if(validatePage()){
-		document.getElementsByName('_target2')[0].name='_target1';
-		document.studyIdentifiersForm._action.value=action;
-		document.studyIdentifiersForm._selected.value=selected;		
-		document.studyIdentifiersForm.submit();
-	}
+	document.getElementById('command')._target.name='_noname';
+	document.studyIdentifiersForm._action.value=action;
+	document.studyIdentifiersForm._selected.value=selected;		
+	document.studyIdentifiersForm.submit();
 }
 function clearField(field){
 field.value="";
@@ -41,54 +33,39 @@ field.value="";
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
+		<p id="instructions">
+			Add Identifiers associated with the Study
+			<a href="javascript:fireAction('addIdentifier','0');"><img
+				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><br>
+		</p>
 		
-		<table  width="70%" border="0" cellspacing="0" cellpadding="0">
-		<br>
+		<table id="tablecontent">
+		<tr align="center">
+			<th scope="col"> Identifier<span class="red">*</span> </th>														
+			<th scope="col"> Type<span class="red">*</span> </b> </th>						
+			<th scope="col"> Source<span class="red">*</span> </b></th>					
+			<th scope="col"> Primary Indicator </b></th>
+			<th scope="col"></th>
+		</tr>																		
+		<c:forEach items="${command.identifiers}" varStatus="status">
+		<tr align="center" class="results">
+			<td class="alt"> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
+			<td class="alt"><form:select path="identifiers[${status.index}].type">
+				<option value="">--please select --</option>								
+				<form:options items="${identifiersTypeRefData}" itemLabel="desc"
+					itemValue="code" /></form:select></td>	
+			<td class="alt">
+			    <form:select path="identifiers[${status.index}].source">
+				<option value="">--please select --</option>					
+				<form:options items="${identifiersSourceRefData}" itemLabel="name"
+					itemValue="name" /></form:select></td>
+			<td class="alt"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
+			<td class="alt"><a href="javascript:fireAction('removeIdentifier',${status.index});"><img
+				src="/caaers/images/checkno.gif" border="0" alt="remove"></a></td>
+		</tr> 
 
-					<tr align="center">
-						<td width="20%">										
-							<b><a href="javascript:fireAction('addIdentifier','0');"><img
-								src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a></b> 
-						</td>
-						<td> <b>Identifier<span class="red">*</span> </b> </td>															
-						<td> <b>Type<span class="red">*</span> </b> </td>						
-						<td> <b>Source<span class="red">*</span> </b></td>					
-						<td> <b>Primary Indicator </b></td>
-					</tr>																			
-				 
-				    <tr>
-					<td> &nbsp;</td>
-					</tr>
-					<c:forEach items="${command.identifiers}" varStatus="status">
-						<tr align="center" class="results">
-										<td>
-											<a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-											src="/caaers/images/checkno.gif" border="0" alt="remove"></a>										
-										</td>
-										
-										<td> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
-
-										<td> <form:select path="identifiers[${status.index}].type">
-											<option value="">--Please Select--									
-											<form:options items="${identifiersTypeRefData}" itemLabel="desc"
-												itemValue="code" /></form:select> 
-										</td>
-										
-										<td>
-										    <form:select path="identifiers[${status.index}].source">
-											<option value="">--Please Select--									
-											<form:options items="${identifiersSourceRefData}" itemLabel="name"
-												itemValue="name" /></form:select>
-										</td>
-										
-										<td><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
-						</tr> 
-						<tr>
-					<td> &nbsp;</td>
-					</tr>
-					</c:forEach> 
-		</table>
-		
+		</c:forEach> 
+	</table>
     </jsp:attribute>
 </tags:tabForm>
 </body>

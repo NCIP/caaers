@@ -24,7 +24,7 @@
 
     function fireAction(action, selected){
         addDiseasesToCart()
-        document.getElementById('command').targetPage.name='_noname';
+      	document.getElementById('command')._target.name='_noname';
         document.studyDiseasesForm._action.value=action;
         document.studyDiseasesForm._selected.value=selected;
         document.studyDiseasesForm.submit();
@@ -263,7 +263,7 @@
                         <option value="">Please select a Category first</option>
                     </select> <span id="disease-selected-name"></span> <a
                         href="javascript:fireAction('addStudyDisease','0');"><img
-                        src="/caaers/images/checkyess.gif" border="0" alt="Add"></a> <br>
+                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a> <br>
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
@@ -275,7 +275,7 @@
 					Enter one or multiple meddra codes seperated by a comma and press Add
                     <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
-                        src="/caaers/images/checkyess.gif" border="0" alt="Add"></a>
+                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
             </chrome:division>
             <tags:tabControls tab="${tab}" flow="${flow}"/>
         </chrome:box>
@@ -301,11 +301,12 @@
 
 
                     <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
-                    <table border="1" width="96%" id="studyDetails">
+                    <table border="0" width="96%" id="studyDetails">
                         <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease"
                             varStatus="status">
                             <tr>
-                                <td ><a href="javascript:fireAction('removeStudyDisease',${status.index});">X</a>&nbsp;
+                                <td ><a href="javascript:fireAction('removeStudyDisease',${status.index});">
+								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Add"></a></a>&nbsp;
                                      ${studyDisease.term.ctepTerm}</td>
                                 <td style="width:35px;">
                                 <form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></td>
@@ -331,7 +332,7 @@
 
 
                     <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
-                    <table border="1" width="96%" id="studyDetails">
+                    <table border="0" width="96%" id="studyDetails">
                         <c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease"
                             varStatus="status">
                             <tr>

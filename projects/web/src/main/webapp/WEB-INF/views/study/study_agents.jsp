@@ -22,7 +22,7 @@
     <script type="text/javascript">
 			
 	function fireAction(action, selected){
-		document.getElementById('command').targetPage.name='_noname';
+		document.getElementById('command')._target.name='_noname';
 		document.studyAgentsForm._action.value=action;
 		document.studyAgentsForm._selected.value=selected;		
 		document.studyAgentsForm.submit();
@@ -126,58 +126,43 @@
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm">
     <jsp:attribute name="singleFields">
+		<div>		
+			<input type="hidden" name="_action" value="">
+			<input type="hidden" name="_selected" value="">
+		</div>	
+		<p id="instructions">
+			Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
+			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
+		</p>
+		
+		<table id="tablecontent">
+		<tr>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Agent:</b> </th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Identifier:</b> </th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Indicator:</b> </th>
+			<th scope="col" align="left" class="specalt"></th>
+		</tr>
 
-				<div>		
-					<input type="hidden" name="_action" value="">
-					<input type="hidden" name="_selected" value="">
-				</div>	
-				
-				<a style=" vertical-align:-5px; float:right;" href="javascript:fireAction('addStudyAgent','0');"><img src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><br>
-				<hr style=" width:100%; border-width:2px"/>
-				<table width="100%" cellpadding="0">
-				<c:forEach  items="${command.studyAgents}" varStatus="status">		 
-					<tr>
-					
-					<td id="linkPosition" rowspan="1">
-						
-						<b>Agent:</b>
-						<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
-                    	<form:input size="85%" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" path="studyAgents[${status.index}].agentAsString"/>
-                    	<tags:indicator id="agent${status.index}-indicator"/>
-                    	<div id="agent${status.index}-choices" class="autocomplete"></div>
-                    	<input type="button" id="agent${status.index}-clear" value="Clear"/>
-                    	
-                    	<a  href="javascript:fireAction('removeStudyAgent',${status.index});">
-							<img  src="/caaers/images/checkno.gif" border="0" alt="remove">
-						</a>
-						
-					</td>
-					
-					</tr>
-					<tr>
-					<td>
-					
-					<b style=" padding-left:40px; padding-right:5px">IND Identifier:</b>
-					<form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" />
-					<tags:hoverText description="Investigational New Drug Identifier"/>
-					<b style=" padding-left:10px; padding-right:2px">&nbsp;&nbsp;&nbsp;&nbsp;</b>
-					<form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
-					<b style=" padding-left:10px;">IND Indicator</b>
-					<tags:hoverText description="Investigational New Drug Indicator"/>
-					
-					</td>
-					</tr>
-					<tr>
-					<td>
-					<hr style=" border-width:1px"/>
-					</td>
-					</tr>
-					
-				</c:forEach>
-				
-				
-				</table>
-				
+		<c:forEach  items="${command.studyAgents}" varStatus="status">		
+			<tr>
+				<td class="alt" id="linkPosition" rowspan="1">				
+					<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
+                 	<form:input size="50" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" 
+                 		path="studyAgents[${status.index}].agentAsString"/>
+                 	<tags:indicator id="agent${status.index}-indicator"/>
+                 	<div id="agent${status.index}-choices" class="autocomplete"></div>
+                 	<input type="button" id="agent${status.index}-clear" value="Clear"/>			
+				</td>
+				<td class="alt"><form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" />
+					<tags:hoverText description="Investigational New Drug Identifier"/></td>
+				<td class="alt"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
+					<tags:hoverText description="Investigational New Drug Indicator"/></td>
+				<td class="alt">
+					<a href="javascript:fireAction('rem>oveStudyAgent',${status.index});">
+						<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="remove"></a></td>
+			</tr>
+		</c:forEach>
+	</table>
     </jsp:attribute>
 </tags:tabForm>
 </body>

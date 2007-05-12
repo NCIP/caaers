@@ -20,239 +20,232 @@
 <tags:dwrJavascriptLink objects="createStudy"/>
 
 <script language="JavaScript" type="text/JavaScript">
-
-function validatePage(){
-	return true;
-}
-function fireAction(action, selected){
-	if(validatePage()){
-		document.getElementsByName('_target5')[0].name='_target4';
-		document.studySiteForm._action.value=action;
-		document.studySiteForm._selected.value=selected;		
-		document.studySiteForm.submit();
-	}
-}
-function clearField(field){
-field.value="";
+function fireAction(action, selectedSite, selectedPersonnel){
+	document.getElementById('command')._target.name='_noname';
+	document.form._action.value=action;
+	document.form._selectedSite.value=selectedSite;
+	document.form._selectedPersonnel.value=selectedPersonnel;
+//  need to disable validations while submitting
+//  role = 'studySites['+selectedSite+'].studyPersonnels['+selectedPersonnel+'].roleCode';
+//  $(role).className='none';
+//	status = 'studySites['+selectedSite+'].studyPersonnels['+selectedPersonnel+'].statusCode';
+//	$(status).className='none';
+	document.form.submit();
+	fireListeners(selected);
 }
 
 function chooseSites(){
-		//alert("inside choose sites");
-		document.getElementsByName('_target5')[0].name='_target4';
-		document.studySiteForm._action.value="siteChange";
-		document.studySiteForm._selected.value=document.getElementById('site').value;		
-		document.studySiteForm.submit();
+	document.getElementById('command')._target.name='_noname';
+	document.form._action.value="siteChange";
+	document.form._selectedSite.value=document.getElementById('site').value;
+	document.form.submit();
 }
 
-function chooseSitesfromSummary(selected){
-		//alert("inside chooseSitesfromSummary");
-		//alert(selected);
-		document.getElementsByName('_target5')[0].name='_target4';
-		document.studySiteForm._action.value="siteChange";
-		document.studySiteForm._selected.value=selected;		
-		document.studySiteForm.submit();
+function chooseSitesfromSummary(_selectedSite){
+	document.getElementById('command')._target.name='_noname';
+	document.form._action.value="siteChange";
+	document.form._selectedSite.value=_selectedSite;
+	document.form.submit();
 }
 
-function fireAction1(action, selected, studysiteindex){
+/// AJAX
 
-	//alert("inside fireAction1");
-	//alert(selected);
-	//alert(studysiteindex);
-	if(validatePage()){
-		document.getElementsByName('_target5')[0].name='_target4';
-		document.studySiteForm._action.value=action;
-		document.studySiteForm._selected.value=selected;
-		document.studySiteForm._studysiteindex.value=studysiteindex;
-		document.studySiteForm.submit();
+var personnelAutocompleterProps = {
+	basename: "personnel",
+    populator: function(autocompleter, text) {
+    createStudy.matchResearch(text, function(values) {
+	    autocompleter.setChoices(values)
+	})
+    },
+    valueSelector: function(obj) {
+	return obj.fullName
+    }
+}
+
+
+function acPostSelect(mode, selectedChoice) {
+	$(mode.basename).value = selectedChoice.id;
+}
+
+function updateSelectedDisplay(mode) {
+
+    if ($(mode.basename).value) {
+	Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
+	$(mode.basename + '-selected').show()
+    }
+}
+
+function acCreate(mode) {
+    new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
+	mode.populator, {
+	valueSelector: mode.valueSelector,
+	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+	    acPostSelect(mode, selectedChoice)
+	},
+	indicator: mode.basename + "-indicator"
+    })
+    Event.observe(mode.basename + "-clear", "click", function() {
+	//$(mode.basename + "-selected").hide()
+	$(mode.basename).value = ""
+	$(mode.basename + "-input").value = ""
+    })
+}
+
+function fireListeners(count)
+{
+	index = 0;
+	autoCompleteId = 'personnel' + index ;
+	for (i=0;i<count;i++)
+	{
+	 // change the basename property to agent0 ,agent1 ...
+	 personnelAutocompleterProps.basename=autoCompleteId
+	 acCreate(personnelAutocompleterProps)
+	 index++
+	 autoCompleteId= 'personnel' + index  ;
 	}
+
+	personnelAutocompleterProps.basename='personnel' + count ;
+	acCreate(personnelAutocompleterProps);
 }
 
-	var researchAutocompleterProps = {
-            basename: "research",
-            populator: function(autocompleter, text) {				 
-				 createStudy.matchResearch(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-            valueSelector: function(obj) {				
-                return obj.firstName
-            }
-        }
+Event.observe(window, "load", function() {
+	index = 0;
+	autoCompleteId = 'personnel' + index ;
+	while( $(autoCompleteId)  )
+	{
+	 // change the basename property to personnel0 ,personnel1 ...
+	 personnelAutocompleterProps.basename=autoCompleteId
+	 acCreate(personnelAutocompleterProps)
+	 index++
+	 autoCompleteId= 'personnel' + index  ;
+	}
+	//Element.update("flow-next", "Continue &raquo;")
+})
 
-		function acPostSelect(mode, selectedChoice) {			
-            //Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
-            $(mode.basename).value = selectedChoice.id;
-            //$(mode.basename + '-selected').show()
-            //new Effect.Highlight(mode.basename + "-selected")
-        }
-
-		function updateSelectedDisplay(mode) {
-            if ($(mode.basename).value) {
-                Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-                $(mode.basename + '-selected').show()
-            }
-        }
-
-		function acCreate(mode) {
-
-			new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-                mode.populator, {
-                valueSelector: mode.valueSelector,
-                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                    acPostSelect(mode, selectedChoice)
-                },
-                indicator: mode.basename + "-indicator"
-            })
-
-			Event.observe(mode.basename + "-clear", "click", function() {
-                //$(mode.basename + "-selected").hide()
-                $(mode.basename).value = ""
-                $(mode.basename + "-input").value = ""
-            })
-        }
-
-		Event.observe(window, "load", function() {
-	        index = 0;
-	        autoCompleteId = 'research' + index ;
-	        while( $(autoCompleteId)  )
-	        { 
-		     // change the basename property to agent0 ,agent1 ...
-	         researchAutocompleterProps.basename=autoCompleteId
-             acCreate(researchAutocompleterProps)
-             index++
-             autoCompleteId= 'research' + index  ; 
-            }           
-            Element.update("flow-next", "Continue &raquo;")
-        }) 	
 </script>
 </head>
 <body>
 
-				<table border="0" id="table1" cellspacing="10" width="100%">
-					<tr>
-					<td valign="top" width="25%">
-						<chrome:box id="Summary" title="Summary">
-						<font size="2"><b> Study Sites </b> </font>
-						<br><br>
-						<table border="0" id="table1" cellspacing="0" cellpadding="0" width="100%">
-						<c:forEach var="studySite" varStatus="status" items="${command.studySites}">					
-							<tr>
-								<td> 
-									<a onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit person assigned to a study"> <font size="2"> <b> ${studySite.site.name} </b> </font> </a>
-								</td>																									            
-							</tr>
-							<tr>
-								<td> 
-									Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
-								</td>																									            
-							</tr>
-							<tr>
-								<td> 
-									<br>	
-								</td>																									            
-							</tr>
-						</c:forEach>
-						<c:forEach begin="1" end="15">					
-
-						<tr>
-							<td> 
-								<br>	
-							</td>																						
-						</tr>	
-						</c:forEach>
-						</table>				
-						</chrome:box>
-					</td>
-					<td width="75%" valign="top">
-                <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm">
-                    <jsp:attribute name="singleFields">
-
-					<div>
-						<input type="hidden" name="_action" value="">
-						<input type="hidden" name="_selected" value="">
-						<input type="hidden" name="_studysiteindex" value="">				
-					</div>
-				<p id="instructions">
-					Please choose a study site and link Research staff to that study site
-				</p>
-					<c:set var="index1" value="0"/>
-					<c:if test="${!empty site_id_for_per}">
-						<c:set var="index1" value="${site_id_for_per}"/>
-					</c:if>
-
-					<table border="0" id="table1" cellspacing="10" width="30%">
+<table border="0" id="table1" cellspacing="10" width="100%">
+	<tr>
 	
-	                   <tr>
-	                   		<td align="right"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-	                   		<td align="left">  	
-								<select id="site" name="site" onchange="javascript:chooseSites();">
-									<c:forEach var="studySite" varStatus="status" items="${command.studySites}"> 									
-										<c:if test="${index1 == status.index }">				
-											<option selected="true" value=${status.index}>${studySite.site.name}</option>
-										</c:if>
-										<c:if test="${index1 != status.index }">				
-											<option value=${status.index}>${studySite.site.name}</option>
-										</c:if>														
-									</c:forEach>
-				    			</select>		                   	                   		 
-	                   		</td>
-	                   </tr> 
-					</table>
+	<td width="75%" valign="top">
+    <tags:tabForm tab="${tab}" flow="${flow}" formName="form">
+    <jsp:attribute name="singleFields">
 
-					<c:set var="index" value="0"/>
-					<c:if test="${!empty site_id_for_per}">
-						<c:set var="index" value="${site_id_for_per}"/>
-					</c:if>
+	<div>
+		<input type="hidden" name="_action" value="">
+		<input type="hidden" name="_selectedSite" value="">
+		<input type="hidden" name="_selectedPersonnel" value="">
+	</div>
+	<p id="instructions">
+		Please choose a study site and link Research staff to that study site
+	</p>
+	<c:set var="selected_site" value="0"/>
+	<c:if test="${not empty selectedSite}">
+		<c:set var="selected_site" value="${selectedSite}"/>
+	</c:if>
 
-					<table border="0" id="table1" cellspacing="0" width="100%">
-						<tr>
-							<td align="left"> <b> <span class="red">*</span><em></em>Research Staff:</b> </td>
-							<td align="left"> <b> <span class="red">*</span><em></em>Role:</b> </td>
-							<td align="left"> <b> <span class="red">*</span><em></em>Status:</b> </td>
-							<td align="left">										
-								<b><a href="javascript:fireAction1('addInv','0', ${index});"><img
-									src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
-							</td>
-						</tr>
-									
-												
-					    <c:forEach varStatus="status" items="${command.studySites[index].studyPersonnels}">					
-							<tr>							
-							<td align="left" width="50%">	
+	<table border="0" id="table1" cellspacing="0">
+	   <tr>
+			<td align="left"> <b> <span class="red">*</span><em></em>Site:</b> </td>
+			<td align="left">
+				<select id="site" name="site" onchange="javascript:chooseSites();">
+					<c:forEach  items="${command.studySites}" var="studySite" varStatus="status">
+						<c:if test="${selected_site == status.index }">
+							<option selected="true" value=${status.index}>${studySite.site.name}</option>
+						</c:if>
+						<c:if test="${selected_site != status.index }">
+							<option value=${status.index}>${studySite.site.name}</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</td>
+	   </tr>
+	</table>
 
-									<form:hidden id="research${status.index}"			path="studySites[${index}].studyPersonnels[${status.index}].researchStaff"/>
-										<input id="research${status.index}-input" name="studySites[${index}].studyPersonnels[${status.index}].researchStaff.firstName" type="text" value="${command.studySites[index].studyPersonnels[status.index].researchStaff.firstName}" size="80"/>                   				
-                    					<input type="button" id="research${status.index}-clear" value="Clear"/>
-                    					<tags:indicator id="research${status.index}-indicator"/> 
-										<div id="research${status.index}-choices" class="autocomplete" style="display:none"></div>
-								</td>																
-			
-								<td align="left" width="20%"> 								
-										<form:select path="studySites[${index}].studyPersonnels[${status.index}].roleCode">				
-									 	<form:options items="${invRoleCodeRefData}" itemLabel="desc"
-												itemValue="code" />  
-										</form:select>																						
-								</td>
+	<br>
+	<hr>
+	<p id="instructions">
+		Add Research Staff <a href="javascript:fireAction('addStudyPersonnel',${selected_site}, '0');"><img
+			src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add Research Staff"></a></a>
+	</p>
+	<table id="tablecontent">
+		<tr>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Name:</b> </th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Role:</b> </th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Status:</b> </th>
+			<th scope="col" align="left" class="specalt"></th>
+		</tr>
 
-								<td align="left" width="10%"> 
-									<form:select path="studySites[${index}].studyPersonnels[${status.index}].statusCode">			
-									 <form:options items="${invStatusCodeRefData}" itemLabel="desc"
-												itemValue="code" />  
-									</form:select>																						
-								</td>															
-										
-    	    				    <td align="left" width="20%">
-									<a href="javascript:fireAction1('removeInv',${status.index}, ${index});"><img
-											src="/caaers/images/checkno.gif" border="0" alt="delete"></a>										
-								</td>
-							</tr>
-						</c:forEach>
-																						
-					</table> 
-                    </jsp:attribute>
-                </tags:tabForm>
-				</td>
-				</tr>
-				</table>
+		<c:forEach varStatus="status" items="${command.studySites[selected_site].studyPersonnels}">
+			<tr>
+				<td class="alt">
+					<form:hidden id="personnel${status.index}" path="studySites[${selected_site}].studyPersonnels[${status.index}].researchStaff"/>
+					<input type="text" class="validate-notEmpty" id="personnel${status.index}-input" size="30" value="${command.studySites[selected_site].studyPersonnels[status.index].researchStaff.fullName}"/>
+					<input type="button" id="personnel${status.index}-clear" value="Clear"/>
+					<tags:indicator id="personnel${status.index}-indicator"/>
+					<div id="personnel${status.index}-choices" class="autocomplete"></div></td>
+				<td class="alt">
+					<form:select path="studySites[${selected_site}].studyPersonnels[${status.index}].roleCode" cssClass="validate-notEmpty">
+						<option value="">--Please Select--</option>
+						<form:options items="${studyPersonnelRoleRefData}" itemLabel="desc" itemValue="desc"/>
+					</form:select></td>
+				<td class="alt">
+					<form:select path="studySites[${selected_site}].studyPersonnels[${status.index}].statusCode" cssClass="validate-notEmpty">
+						<option value="">--Please Select--</option>
+						<form:options items="${studyPersonnelStatusRefData}" itemLabel="desc" itemValue="desc" />
+					</form:select></td>
+				<td class="alt">
+					<a href="javascript:fireAction('removeStudyPersonnel',${selected_site}, ${status.index});"><img
+						src="<c:url value="/images/checkno.gif"/>" border="0" alt="delete"></a></td>
+			</tr>
+		</c:forEach>
+		<tr>
+		<td class="alt">
+		<p id="personnel-selected" style="display: none">
+			You've selected the study personnel <span id="personnel-selected-name"></span>.
+		</p>
+		</td>
+		</tr>
+	</table>
+    </jsp:attribute>
+    </tags:tabForm>
+	</td>
+
+	<td valign="top" width="25%">
+		<chrome:box id="Summary" title="Summary">
+		<font size="2"><b> Study Sites </b> </font>
+		<br><br>
+		<table border="0" id="table1" cellspacing="0" cellpadding="0" width="100%">
+		<c:forEach var="studySite" varStatus="status" items="${command.studySites}">					
+			<tr>
+				<td> 
+					<a onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit person assigned to a study"> <font size="2"> <b> ${studySite.site.name} </b> </font> </a>
+				</td>																									            
+			</tr>
+			<tr>
+				<td> 
+					Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
+				</td>																									            
+			</tr>
+			<tr>
+				<td> 
+					<br>	
+				</td>																									            
+			</tr>
+		</c:forEach>
+		<c:forEach begin="1" end="15">					
+		<tr>
+			<td> 
+				<br>	
+			</td>																						
+		</tr>	
+		</c:forEach>
+		</table>				
+		</chrome:box>
+	</td>
+</tr>
+</table>
 </body>
 </html>

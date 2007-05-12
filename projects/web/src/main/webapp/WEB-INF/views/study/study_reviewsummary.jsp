@@ -16,32 +16,13 @@
        .label { width: 12em; padding: 1px;  margin-right: 0.5em; } 
 	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 </style>
-
-<script language="JavaScript" type="text/JavaScript">
-
-function validatePage(){
-	return true;
-}
-function fireAction(tar){
-	if(validatePage()){
-		document.getElementsByName('_finish')[0].name=tar;			
-		document.review.submit();
-	}
-}
-function clearField(field){
-field.value="";
-}
-
-</script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
 		<input type="hidden" name="_finish" value="true"/>
-
-        <chrome:division>
-        <table border="0" cellspacing="0" cellpadding="1" id="studyDetails">
-
+        <chrome:division title="details">
+        <table width="50%" border="0" cellspacing="0" cellpadding="0" id="tablecontent">
 		<tr>
 			<td class="label" align="right">
 				<form:label path="shortTitle">Short Title:</form:label>
@@ -86,15 +67,6 @@ field.value="";
 				<form:label path="status">${command.status}</form:label>
 			</td>
 		</tr>
-		
-		<tr>
-			<td class="label" align="right">
-				<form:label path="diseaseCode" >Disease Code:</form:label>
-			</td>
-			<td>
-				<form:label path="diseaseCode">${command.diseaseCode}</form:label>
-			</td>
-		</tr>
 
 		<tr>
 			<td class="label" align="right">
@@ -114,163 +86,127 @@ field.value="";
 			</td>
 		</tr>
 
-		<tr>
-			<td class="label" align="right">
-				<form:label	path="multiInstitutionIndicator" >Multi Institution:</form:label>
-			</td>
-			<td>
-				<form:checkbox path="multiInstitutionIndicator" />
-			</td>
-		</tr>
-
        </table>
-            <a href="javascript:fireAction('_target0');"><img
-                         src="images/b-edit.gif" border="0" alt="edit this page"></a>
-        </chrome:division>
+       </chrome:division>
 
 		<chrome:division title="Identifiers">
-		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
-		<br>
-
-					<tr align="center">						
-						<td> <b>Source<span class="red">*</span> </b></td>						
-						<td> <b>Identifier Type<span class="red">*</span> </b> </td>						
-						<td> <b> Identifier<span class="red">*</span> </b> </td>											
-					</tr>																			
-				 
-				    
-					<c:forEach items="${command.identifiers}" var="identifier">
-								<tr class="results">						
-									<td align="left">${identifier.source}</td>
-									<td align="left">${identifier.type}</td>										
-									<td align="left">${identifier.value}</td>											
-								</tr>
-					</c:forEach>				
-		</table>
-
-		 <br>
-		      <a href="javascript:fireAction('_target1');"><img
-					src="images/b-edit.gif" border="0" alt="edit this page"></a>
-			</chrome:division>
-        <chrome:division title="Sites">
-            <!-- TODO:  this only shows one site -->
-		<table border="0" cellspacing="0" cellpadding="0">
+		<table id="tablecontent">
 			<tr>
-			<td class="label" align="right">
-				<form:label
-					path="studySites[0].statusCode">Status:</form:label>
-			</td>
-			<td>
-				<form:label
-					path="studySites[0].statusCode">${command.studySites[0].statusCode}</form:label>
-			</td>
+				<th scope="col" align="left">Source</td>
+				<th scope="col" align="left">Type</td>
+				<th scope="col" align="left">Identifier</td>
 			</tr>
-			
-			<tr>
-			<td class="label" align="right">
-				<form:label
-					path="studySites[0].roleCode">Role:</form:label>
-			</td>
-			<td>
-				<form:label
-					path="studySites[0].roleCode">${command.studySites[0].roleCode}</form:label>
-			</td>
-		</tr>	
-			
-			<tr>
-			<td class="label" align="right">
-				<form:label
-					path="studySites[0].startDate">Start Date:</form:label>
-			</td>
-			<td>
-				<form:label
-					path="studySites[0].startDate">${command.studySites[0].startDate}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label
-					path="studySites[0].endDate">End Date:</form:label>
-			</td>
-			<td>
-				<form:label
-					path="studySites[0].endDate">${command.studySites[0].endDate}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label
-					path="studySites[0].irbApprovalDate">IRB Approval Date:</form:label>
-			</td>
-			<td>
-				<form:label
-					path="studySites[0].irbApprovalDate">${command.studySites[0].irbApprovalDate}</form:label>
-			</td>
-		</tr>
-
-		</table>	
-	  <br>
-		
-	  <a href="javascript:fireAction('_target2');"><img
-			src="images/b-edit.gif" border="0" alt="edit this page"></a>
-	</chrome:division>
-			
-
-    <chrome:division title="Agents">
-
-		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
-		<br>
-
-					<tr align="center">						
-						<td> <b>Agent Name</b></td>						
-						<td> <b>Agent NSC Number</b> </td>
-						<td> <b>IND Identifier</b> </td>
-						<td> <b>IND Indicator</b> </td>		
-						<td> <b>Start Date</b> </td>
-						<td> <b>End Date</b> </td>														
-					</tr>																			
-				 
-				    
-					<c:forEach items="${command.studyAgents}" var="studyAgent">
-								<tr class="results">						
-									<td align="left">${studyAgent.agent.name}</td>
-									<td align="left">${studyAgent.agent.nscNumber}</td>
-									<td align="left">${studyAgent.investigationalNewDrugIdentifier}</td>
-									<td align="left">${studyAgent.investigationalNewDrugIndicator}</td>
-									<td align="left"><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
-									<td align="left"><tags:formatDate value="${studyAgent.participation.endDate}"/></td>											
-								</tr>
-					</c:forEach>				
+			<c:forEach items="${command.identifiers}" var="identifier">
+			<tr class="results">
+				<td class="alt" align="left">${identifier.source}</td>
+				<td class="alt" align="left">${identifier.type}</td>
+				<td class="alt" align="left">${identifier.value}</td>
+			</tr>
+		</c:forEach>
 		</table>
-        <a href="javascript:fireAction('_target3');"><img
-              src="images/b-edit.gif" border="0" alt="edit this page"></a>
+		<br>
+		</chrome:division>
+        <chrome:division title="Sites">
+       <table id="tablecontent">
+				<tr>
+					<th scope="col" align="left">Study Site</td>
+					<th scope="col" align="left">Status</td>
+					<th scope="col" align="left">Role</td>
+					<th scope="col" align="left">Start Date</td>
+					<th scope="col" align="left">IRB Approval Date</td>
+				</tr>
+				<c:forEach items="${command.studySites}" var="studySite">
+				<tr class="results">
+					<td class="alt" align="left">${studySite.site.name}</td>
+					<td class="alt" align="left">${studySite.statusCode}</td>
+					<td class="alt" align="left">${studySite.roleCode}</td>
+					<td class="alt" align="left">${studySite.startDate}</td>
+					<td class="alt" align="left">${studySite.irbApprovalDate}</td>
+				</tr>
+				</c:forEach>
+			</table>	
+	  <br>
+	</chrome:division>
+
+	<chrome:division title="Investigators">
+		<table id="tablecontent">
+			<tr>
+				<th scope="col" align="left">Investigator</td>
+				<th scope="col" align="left">Role</td>
+				<th scope="col" align="left">Status</td>
+			</tr>
+			<c:forEach items="${command.studySites}" var="studySite" varStatus="status">
+				<c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" varStatus="status">
+				<tr class="results">
+					<td class="alt" align="left">${studyInvestigator.siteInvestigator.investigator.fullName}</td>
+					<td class="alt" align="left">${studyInvestigator.roleCode}</td>
+					<td class="alt" align="left">${studyInvestigator.statusCode}</td>
+				</tr>
+				</c:forEach>
+			</c:forEach>
+		</table>
+    </chrome:division>
+    
+    <chrome:division title="Personnel">
+		<table id="mytable">
+			<tr>
+				<th scope="col" align="left">Name</td>
+				<th scope="col" align="left">Role</td>
+				<th scope="col" align="left">Status</td>
+				</tr>
+				<c:forEach items="${command.studySites}" var="studySite" varStatus="status">
+					<c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="status">
+					<tr class="results">
+						<td class="alt">${studyPersonnel.researchStaff.fullName}</td>
+						<td class="alt">${studyPersonnel.roleCode}</td>
+						<td class="alt">${studyPersonnel.statusCode}</td>
+					</tr>
+					</c:forEach>
+				</c:forEach>								
+		</table>
+    </chrome:division>
+    
+    <chrome:division title="Agents">
+		<table id="tablecontent">
+		<tr >						
+			<th scope="col">Agent Name</b></th>						
+			<th scope="col">Agent NSC Number</th>
+			<th scope="col">IND Identifier</th>
+			<th scope="col">IND Indicator</th>	
+			<th scope="col">Start Date</th>
+			<th scope="col">End Date</th>														
+		</tr>																			
+	 	    
+		<c:forEach items="${command.studyAgents}" var="studyAgent">
+			<tr>						
+				<td class="alt">${studyAgent.agent.name}</td>
+				<td class="alt">${studyAgent.agent.nscNumber}</td>
+				<td class="alt">${studyAgent.investigationalNewDrugIdentifier}</td>
+				<td class="alt">${studyAgent.investigationalNewDrugIndicator}</td>
+				<td class="alt"><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
+				<td class="alt"><tags:formatDate value="${studyAgent.participation.endDate}"/></td>											
+			</tr>
+		</c:forEach>				
+		</table>
     </chrome:division>
 
 	<chrome:division title="Diseases">
-
-		<table  width="60%" border="1" cellspacing="0" cellpadding="0">
+		<table id ="tablecontent">
 		<br>
-
-					<tr align="center">						
-						<td> <b>Disease Term</b></td>						
-						<td> <b>Primary</b> </td>										
-					</tr>																			
-				 
-				    
-					<c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
-								<tr class="results">						
-									<td align="left">${studyDisease.term.ctepTerm}</td>
-									<td align="left">${studyDisease.leadDisease}</td>									
-								</tr>
-					</c:forEach>				
+			<tr>						
+				<th scope="col">Disease Term</th>						
+				<th scope="col">Primary</th>										
+			</tr>																		
+		    
+			<c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
+				<tr class="results">						
+					<td class="alt">${studyDisease.term.ctepTerm}</td>
+					<td class="alt">${studyDisease.leadDisease}</td>									
+				</tr>
+			</c:forEach>				
 		</table>
-
 		 <br>
-		      <a href="javascript:fireAction('_target4');"><img
-					src="images/b-edit.gif" border="0" alt="edit this page"></a>								
-    </chrome:division>
+		 </chrome:division>
     </jsp:attribute>
 </tags:tabForm>
 
