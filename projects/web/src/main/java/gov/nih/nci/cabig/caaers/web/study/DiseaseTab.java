@@ -24,7 +24,7 @@ public class DiseaseTab extends StudyTab {
     private LowLevelTermDao lowLevelTermDao;
 
     public DiseaseTab() {
-        super("Study Disease", "Disease", "study/study_studydisease");
+        super("Study Disease", "Disease", "study/study_diseases");
     }
 
     @Override

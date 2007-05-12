@@ -13,7 +13,7 @@ import org.springframework.validation.Errors;
  */
 public class AgentsTab extends StudyTab {
     public AgentsTab() {
-        super("Study Agents", "Agents", "study/study_studyagent");
+        super("Study Agents", "Agents", "study/study_agents");
     }
 
     @Override

@@ -25,10 +25,10 @@ class DetailsTab extends StudyTab {
         addConfigMapToRefdata(refdata, "sponsorCodeRefData");
         addConfigMapToRefdata(refdata, "statusRefData");
         addConfigMapToRefdata(refdata, "typeRefData");
-        refdata.put("multiInstitutionIndicator", getBooleanList());
-        refdata.put("randomizedIndicator", getBooleanList());
-        refdata.put("blindedIndicator", getBooleanList());
-        refdata.put("nciIdentifier", getBooleanList());
+        refdata.put("multiInstitutionIndicator", getConfigurationProperty().getMap().get("yesNo"));
+        refdata.put("randomizedIndicator",getConfigurationProperty().getMap().get("yesNo"));
+        refdata.put("blindedIndicator", getConfigurationProperty().getMap().get("yesNo"));
+        refdata.put("nciIdentifier", getConfigurationProperty().getMap().get("yesNo"));
         return refdata;
     }
 

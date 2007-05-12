@@ -16,7 +16,7 @@ class SitesTab extends StudyTab {
     private SiteDao siteDao;
 
     public SitesTab() {
-        super("Study Sites", "Sites", "study/study_studysite");
+        super("Study Sites", "Sites", "study/study_sites");
     }
 
     @Override

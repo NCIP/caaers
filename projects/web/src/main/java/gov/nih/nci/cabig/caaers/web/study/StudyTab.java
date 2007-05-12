@@ -4,20 +4,26 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.validation.Errors;
+
 /**
- * @author Rhett Sutphin
+ * @author Rhett Sutphin, Priyatam
  */
 public abstract class StudyTab extends Tab<Study> {
     // TODO: This should be named after the class, but the existing context instance
     // is named like this.  Alternate TODO: get rid of this bogus class entirely.
     private ConfigProperty configurationProperty;
+    protected static final Log log = LogFactory.getLog(EditStudyController.class);
 
     public StudyTab() { }
-
+   
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
@@ -33,28 +39,5 @@ public abstract class StudyTab extends Tab<Study> {
     protected void addConfigMapToRefdata(Map<String, Object> refdata, String name) {
         refdata.put(name, getConfigurationProperty().getMap().get(name));
     }
-
-    // TODO: replace this with something else
-    protected static List<StringBean> getBooleanList() {
-        List<StringBean> col = new ArrayList<StringBean>();
-        col.add(new StringBean("YES"));
-        col.add(new StringBean("NO"));
-        return col;
-    }
-
-    private static class StringBean {
-        String str;
-
-        StringBean(String str) {
-            this.str = str;
-        }
-
-        public void setStr(String str) {
-            this.str = str;
-        }
-
-        public String getStr() {
-            return str;
-        }
-    }
+    
 }
