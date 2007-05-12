@@ -45,7 +45,7 @@ public class EditStudyControllerTest extends WebTestCase {
         };
         controller.setStudyDao(studyDao);
 		controller.setSiteDao(siteDao);
-		controller.setConfigurationProperty(new ConfigProperty());
+	//	controller.setConfigurationProperty(new ConfigProperty());
     }
     
     public void testViewOnGet() throws Exception {
