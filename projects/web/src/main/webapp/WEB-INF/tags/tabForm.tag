@@ -4,6 +4,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="tab" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Tab" %>
 <%@attribute name="flow" required="true" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" %>
+<%@attribute name="willSave"%>
 <%@attribute name="title"%>
 <%@attribute name="formName"%>
 <%@attribute name="enctype"%>
@@ -14,6 +15,7 @@
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
 
+<c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
 <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
     <form:form name="${formName}" enctype="${enctype}">
         <tags:tabFields tab="${tab}"/>
@@ -23,6 +25,6 @@
             <jsp:invoke fragment="singleFields"/>
         </chrome:division>
         <jsp:invoke fragment="repeatingFields"/>
-        <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}"/>
+        <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}"/>
     </form:form>
 </chrome:box>

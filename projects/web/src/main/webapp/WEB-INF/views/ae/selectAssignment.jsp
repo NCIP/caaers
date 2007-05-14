@@ -74,7 +74,6 @@
             acCreate(studyAutocompleterProps)
             updateSelectedDisplay(participantAutocompleterProps)
             updateSelectedDisplay(studyAutocompleterProps)
-            Element.update("flow-next", "Continue &raquo;")
         })
     </script>
     </head>
@@ -113,10 +112,10 @@
             </div>
             <c:choose>
                 <c:when test="${empty tab}">
-                    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
+                    <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
                 </c:when>
                 <c:otherwise>
-                    <tags:tabControls tab="${tab}" flow="${flow}"/>
+                    <tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
                 </c:otherwise>
             </c:choose>
         </form:form>
