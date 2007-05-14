@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
-import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
+import gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao;
 
 /**
  * A {@link java.beans.PropertyEditor} that supports binding domain objects by their IDs or their
