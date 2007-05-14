@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AeTabTestCase<T extends AeTab> extends AeWebTestCase {
+public abstract class AeTabTestCase<T extends AeTab<CreateAdverseEventCommand>> extends AeWebTestCase {
     private T tab;
     private Errors errors;
 
