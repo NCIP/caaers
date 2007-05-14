@@ -12,6 +12,12 @@
     <build>
         <finalName>acegi-csm-testapp</finalName>
     </build>
+    <!-- The unit tests for this project have a hardcoded dependency on a particular MySQL
+        database.  This makes test result aggregation fail (for the whole project), so I'm
+        disabling them by default.  RMS20070508 -->
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
 
     <dependencies>
 
