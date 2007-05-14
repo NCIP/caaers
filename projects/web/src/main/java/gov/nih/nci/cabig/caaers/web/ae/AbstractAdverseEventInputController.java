@@ -1,43 +1,39 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.validation.BindException;
-import org.springframework.ui.ModelMap;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.beans.propertyeditors.CustomNumberEditor;
-import org.springframework.beans.factory.InitializingBean;
-
 import java.util.Date;
 import java.util.Map;
-import java.math.BigDecimal;
 
 /**
  * @author Rhett Sutphin
  */
 public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
-    extends AbstractTabbedFlowFormController<AdverseEventInputCommand>
+    extends AutomaticSaveFlowFormController<C, AdverseEventReport, AdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -54,22 +50,22 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected PriorTherapyDao priorTherapyDao;
 
     protected AbstractAdverseEventInputController() {
-        setFlow(new Flow<AdverseEventInputCommand>(getFlowName()));
+        setFlow(new Flow<C>(getFlowName()));
         addTabs(getFlow());
     }
 
-    protected void addTabs(Flow<AdverseEventInputCommand> flow) {
-        flow.addTab(new BasicsTab());
-        flow.addTab(new MedicalInfoTab());
-        flow.addTab(new TreatmentTab());
-        flow.addTab(new LabsTab());
-        flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
-        flow.addTab(new PriorTherapyTab());
-        flow.addTab(new ConcomitantMedicationsTab());
-        flow.addTab(new OtherCausesTab());
-        flow.addTab(new AttributionTab());
-        flow.addTab(new ReporterTab());
-        flow.addTab(new EmptyAeTab("Confirm and save", "Save", "ae/save"));
+    protected void addTabs(Flow<C> flow) {
+        flow.addTab(new BasicsTab<C>());
+        flow.addTab(new MedicalInfoTab<C>());
+        flow.addTab(new TreatmentTab<C>());
+        flow.addTab(new LabsTab<C>());
+        flow.addTab(new EmptyAeTab<C>("Outcome information", "Outcome", "ae/notimplemented"));
+        flow.addTab(new PriorTherapyTab<C>());
+        flow.addTab(new ConcomitantMedicationsTab<C>());
+        flow.addTab(new OtherCausesTab<C>());
+        flow.addTab(new AttributionTab<C>());
+        flow.addTab(new ReporterTab<C>());
+        flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
     }
 
     protected abstract String getFlowName();
@@ -109,13 +105,20 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
     ) throws Exception {
         C command = (C) oCommand;
-        doSave(command);
+        save(command, errors);
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
 
-    protected void doSave(C command) {
+    @Override
+    protected AdverseEventReportDao getDao() {
+        return reportDao;
+    }
+
+    @Override
+    protected AdverseEventReport getPrimaryDomainObject(C command) {
+        return command.getAeReport();
     }
 
     ////// CONFIGURATION
@@ -148,9 +151,9 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.studyAgentDao = studyAgentDao;
     }
 
-	public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
-		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
-	}
+    public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
+        this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
+    }
 
     public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
         this.anatomicSiteDao = anatomicSiteDao;
@@ -160,8 +163,8 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.ruleExecutionService = ruleExecutionService;
     }
 
-	public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-		this.priorTherapyDao = priorTherapyDao;
-	}
-    
+    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+        this.priorTherapyDao = priorTherapyDao;
+    }
+
 }

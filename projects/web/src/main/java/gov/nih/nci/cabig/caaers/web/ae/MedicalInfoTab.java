@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Kulasekaran
  */
-public class MedicalInfoTab extends AeTab {
+public class MedicalInfoTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 	
 	private ConfigProperty configurationProperty;
 	
@@ -24,7 +24,7 @@ public class MedicalInfoTab extends AeTab {
     }
 	
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(C command) {
     	
     	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSite");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {

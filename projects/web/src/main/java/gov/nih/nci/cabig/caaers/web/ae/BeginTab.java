@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 /**
  * @author Rhett Sutphin
 */
-public class BeginTab extends EmptyAeTab {
+public class BeginTab extends EmptyAeTab<CreateAdverseEventCommand> {
     public BeginTab() {
         super("Select participant and study", "Begin", "ae/selectAssignment");
     }
@@ -29,7 +29,7 @@ public class BeginTab extends EmptyAeTab {
 
     @Override
     protected void validate(
-        AdverseEventInputCommand command, BeanWrapper commandBean,
+        CreateAdverseEventCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         boolean noStudy = command.getStudy() == null;

@@ -16,7 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 /**
  * @author Rhett Sutphin
  */
-public class ConcomitantMedicationsTab extends AeTab {
+public class ConcomitantMedicationsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     private RepeatingFieldGroupFactory fieldFactory;
 
     public ConcomitantMedicationsTab() {
@@ -33,7 +33,7 @@ public class ConcomitantMedicationsTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(C command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;
@@ -46,7 +46,7 @@ public class ConcomitantMedicationsTab extends AeTab {
 
     @Override
     protected void validate(
-        AdverseEventInputCommand command, BeanWrapper commandBean,
+        C command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         for (ListIterator<ConcomitantMedication> it = command.getAeReport().getConcomitantMedications().listIterator(); it.hasNext();) {

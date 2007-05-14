@@ -1,25 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventController extends AbstractAdverseEventInputController<CreateAdverseEventCommand> {
+public class CreateAdverseEventController
+    extends AbstractAdverseEventInputController<CreateAdverseEventCommand>
+{
     public CreateAdverseEventController() {
         super();
         setCommandClass(CreateAdverseEventCommand.class);
     }
 
     @Override
-    public void addTabs(Flow<AdverseEventInputCommand> flow) {
+    public void addTabs(Flow<CreateAdverseEventCommand> flow) {
         flow.addTab(new BeginTab());
         super.addTabs(flow);
     }
-
 
     @Override
     protected String getFlowName() {
@@ -32,7 +33,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     }
 
     @Override
-    protected void doSave(CreateAdverseEventCommand command) {
+    protected void save(CreateAdverseEventCommand command, Errors errors) {
         command.save();
     }
 }

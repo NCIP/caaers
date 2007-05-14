@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class LabsTab extends AeTab {
+public class LabsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     private RepeatingFieldGroupFactory fieldFactory;
 
     public LabsTab() {

@@ -18,7 +18,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Kulasekaran
  */
-public class ReporterTab extends AeTab {
+public class ReporterTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 	private ResearchStaffDao researchStaffDao;
 	
     public ReporterTab() {
@@ -27,7 +27,7 @@ public class ReporterTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(C command) {
         return new InputFieldGroupMap();
     }
 

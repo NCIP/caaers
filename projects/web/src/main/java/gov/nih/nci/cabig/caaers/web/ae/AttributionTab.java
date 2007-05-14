@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * @author Rhett Sutphin
  */
-public class AttributionTab extends AeTab {
+public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     private static final CollectionSelectField BASE_FIELD = new CollectionSelectField(
         null, null, true, Arrays.asList(Attribution.values()), "name", null);
 
@@ -27,7 +27,7 @@ public class AttributionTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(C command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         List<AttributionBlock> blocks = createBlocks(command.getAeReport());
         for (AttributionBlock block : blocks) {
@@ -50,7 +50,7 @@ public class AttributionTab extends AeTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(AdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(C command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("blocks", createBlocks(command.getAeReport()));
         return refdata;
@@ -78,12 +78,12 @@ public class AttributionTab extends AeTab {
         }
     }
 
-    private static <C extends DomainObject, A extends AdverseEventAttribution<C>>
+    private static <D extends DomainObject, A extends AdverseEventAttribution<D>>
     List<InputFieldGroup> createGroups(
-        CauseAndAttributionAccessor<C, A> accessor, AdverseEventReport report
+        CauseAndAttributionAccessor<D, A> accessor, AdverseEventReport report
     ) {
         List<InputFieldGroup> groups = new ArrayList<InputFieldGroup>();
-        List<C> causes = accessor.getCauseList(report);
+        List<D> causes = accessor.getCauseList(report);
         for (int c = 0 ; c < causes.size(); c++) {
             DefaultInputFieldGroup newGroup
                 = new DefaultInputFieldGroup(accessor.getKey() + c);

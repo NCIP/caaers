@@ -19,7 +19,7 @@ import sun.management.resources.agent;
 /**
  * @author Rhett Sutphin
  */
-public class TreatmentTab extends AeTab {
+public class TreatmentTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     private InputFieldGroup treatmentFields;
 
     public TreatmentTab() {
@@ -41,7 +41,7 @@ public class TreatmentTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(C command) {
         RepeatingFieldGroupFactory caFields = new RepeatingFieldGroupFactory("courseAgent",
             "aeReport.treatmentInformation.courseAgents");
         caFields.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
