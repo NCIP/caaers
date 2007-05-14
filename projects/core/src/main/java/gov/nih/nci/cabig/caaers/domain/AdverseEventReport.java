@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * @author Rhett Sutphin
@@ -83,6 +85,52 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         if (getAdverseEventsInternal().size() < 1) return false;
         AdverseEvent ae = getAdverseEventsInternal().get(0);
         return ae != null && ae.getGrade() != null && ae.getCtcTerm() != null;
+    }
+
+    @Transient
+    public Participant getParticipant() {
+        return getAssignment() == null ? null : getAssignment().getParticipant();
+    }
+
+    @Transient
+    public Study getStudy() {
+        StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
+        return ss == null ? null : ss.getStudy();
+    }
+
+    @Transient
+    public Map<String, String> getSummary() {
+        Map<String, String> summary = new LinkedHashMap<String, String>();
+        summary.put("Participant", summaryLine(getParticipant()));
+        summary.put("Study", summaryLine(getStudy()));
+        String primaryAeLine = null;
+        if (getAdverseEvents().size() > 0) {
+            primaryAeLine = getAdverseEvents().get(0).getCtcTerm().getCtepTerm();
+        }
+        summary.put("Primary AE", primaryAeLine);
+        summary.put("Adverse event count", Integer.toString(getAdverseEvents().size()));
+
+        return summary;
+    }
+
+    private String summaryLine(Participant participant) {
+        if (participant == null) return null;
+        StringBuilder sb = new StringBuilder(participant.getFullName());
+        appendPrimaryIdentifier(participant, sb);
+        return sb.toString();
+    }
+
+    private String summaryLine(Study study) {
+        if (study == null) return null;
+        StringBuilder sb = new StringBuilder(study.getShortTitle());
+        appendPrimaryIdentifier(study, sb);
+        return sb.toString();
+    }
+
+    private void appendPrimaryIdentifier(IdentifiableByAssignedIdentifers ided, StringBuilder sb) {
+        if (ided.getPrimaryIdentifier() != null) {
+            sb.append(" (").append(ided.getPrimaryIdentifier().getValue()).append(')');
+        }
     }
 
     public void addAdverseEvent(AdverseEvent adverseEvent) {
