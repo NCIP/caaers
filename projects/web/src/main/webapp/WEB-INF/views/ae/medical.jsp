@@ -82,7 +82,6 @@
         Event.observe(window, "load", function() {
             acCreate(anatomicAutocompleterProps)
             updateSelectedDisplay(anatomicAutocompleterProps)
-            // Element.update("flow-next", "Continue &raquo;")
         })
 
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
