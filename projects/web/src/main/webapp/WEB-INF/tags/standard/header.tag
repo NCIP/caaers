@@ -22,19 +22,14 @@
         </ul>
 
         <div id="taskbar">
-        Tasks:
-        <c:forEach items="${currentSection.tasks}" var="task">
-            <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-            <c:choose>
-	             <c:when test="${task == currentTask}">
-	            	<<img src="<c:url value="/images/arrowRight.gif"/>" width="3" height="5" align="absmiddle">a href="<c:url value="${task.url}"/>">${task.displayName}</a>
-	             </c:when>
-	             <c:otherwise>
-	               	<a href="<c:url value="${task.url}"/>">${task.displayName}</a>
-	             </c:otherwise>         
-	        </c:choose>
-            </csmauthz:accesscontrol>
-        </c:forEach>
+            <c:if test="${not empty currentSection.tasks}">
+                Tasks:
+                <c:forEach items="${currentSection.tasks}" var="task">
+                    <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
+                        <a href="<c:url value="${task.url}"/>">${task.displayName}</a>
+                    </csmauthz:accesscontrol>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
 </div>
