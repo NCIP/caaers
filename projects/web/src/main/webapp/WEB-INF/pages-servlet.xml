@@ -49,9 +49,9 @@
                     <property name="tasks">
                         <list>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="Enter AE report" p:linkName="createAdverseEventController"/>
+                                p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="List AEs" p:linkName="listAdverseEventsController"/>
+                                p:displayName="List reports" p:linkName="listAdverseEventsController"/>
                         </list>
                     </property>
                 </bean>
@@ -63,7 +63,7 @@
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Study" p:linkName="createStudyController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
-                                p:displayName="Search Study" p:linkName="searchStudyController"/>                         
+                                p:displayName="Search Studies" p:linkName="searchStudyController"/>
                         </list>
                     </property>
                 </bean>
