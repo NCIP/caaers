@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -37,6 +38,17 @@ public class Identifier extends AbstractMutableDomainObject {
         return createTemplate(null, null, value);
     }
 
+    /**
+     * Null-safe conversion from primaryIndicator property to simple boolean.
+     * TODO: switch the db field to not-null, default false so this isn't necessary.
+     */
+    @Transient
+    public boolean isPrimary() {
+        return getPrimaryIndicator() == null ? false : getPrimaryIndicator();
+    }
+
+    ////// BEAN PROPERTIES
+
     public String getSource() {
         return source;
     }
@@ -67,5 +79,16 @@ public class Identifier extends AbstractMutableDomainObject {
 
     public void setPrimaryIndicator(Boolean primaryIndicator) {
         this.primaryIndicator = primaryIndicator;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append("[value=").append(getValue())
+            .append("; primary? ").append(getPrimaryIndicator())
+            .append("; type=").append(getType())
+            .append("; source=").append(getSource())
+            .append(']').toString()
+            ;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
- * Subclass of @{link AbstractDomainObject> that implements
+ * Subclass of {@link AbstractMutableDomainObject> that implements
  * {@link gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers}.
  *
  * @author Rhett Sutphin
@@ -25,8 +25,9 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 
     @Transient
     public Identifier getPrimaryIdentifier() {
+        if (log.isDebugEnabled()) log.debug("Searching for primary identifier in " + getIdentifiers());
         for (Identifier identifier : getIdentifiers()) {
-            if (identifier.getPrimaryIndicator()) return identifier;
+            if (identifier.isPrimary()) return identifier;
         }
         // TODO: this should probably be fatal (i.e., it should be validated at entry time)
         log.warn(getClass().getName() + '#' + getId() + " does not have a primary identifier");
