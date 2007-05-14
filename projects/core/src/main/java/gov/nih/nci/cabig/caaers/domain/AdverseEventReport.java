@@ -104,7 +104,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         summary.put("Participant", summaryLine(getParticipant()));
         summary.put("Study", summaryLine(getStudy()));
         String primaryAeLine = null;
-        if (getAdverseEvents().size() > 0) {
+        if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getCtcTerm() != null) {
             primaryAeLine = getAdverseEvents().get(0).getCtcTerm().getCtepTerm();
         }
         summary.put("Primary AE", primaryAeLine);
