@@ -24,7 +24,7 @@ public class CreateAdverseEventController
 
     @Override
     protected String getFlowName() {
-        return "Create AE";
+        return "Create expedited report";
     }
 
     @Override
@@ -35,5 +35,10 @@ public class CreateAdverseEventController
     @Override
     protected void save(CreateAdverseEventCommand command, Errors errors) {
         command.save();
+    }
+
+    @Override
+    protected boolean displaySummary(int page) {
+        return page != 0;
     }
 }

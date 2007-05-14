@@ -20,7 +20,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 
     @Override
     protected String getFlowName() {
-        return "Edit AE";
+        return "Edit expedited report";
     }
 
     @Override

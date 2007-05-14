@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,6 +87,22 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(
+        HttpServletRequest request, Object oCommand, Errors errors, int page
+    ) throws Exception {
+        Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+        if (displaySummary(page)) {
+            refdata.put("summary", ((C) oCommand).getAeReport().getSummary());
+        }
+        return refdata;
+    }
+
+    protected boolean displaySummary(int page) {
+        return true;
     }
 
     /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */
