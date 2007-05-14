@@ -134,7 +134,7 @@
 			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
 		</p>
 		
-		<table id="tablecontent">
+		<table class="tablecontent">
 		<tr>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Agent:</b> </th>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Identifier:</b> </th>

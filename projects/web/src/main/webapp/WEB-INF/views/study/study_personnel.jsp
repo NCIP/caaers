@@ -169,7 +169,7 @@ Event.observe(window, "load", function() {
 		Add Research Staff <a href="javascript:fireAction('addStudyPersonnel',${selected_site}, '0');"><img
 			src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add Research Staff"></a></a>
 	</p>
-	<table id="tablecontent">
+	<table class="tablecontent">
 		<tr>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Name:</b> </th>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Role:</b> </th>

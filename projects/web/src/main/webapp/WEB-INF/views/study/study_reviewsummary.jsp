@@ -20,156 +20,119 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
-		<input type="hidden" name="_finish" value="true"/>
-        <chrome:division title="details">
-        <table width="50%" border="0" cellspacing="0" cellpadding="0" id="tablecontent">
-		<tr>
-			<td class="label" align="right">
-				<form:label path="shortTitle">Short Title:</form:label>
-			</td>
-			<td align="left">
-				<form:label path="shortTitle">${command.shortTitle}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="longTitle">Long Title:</form:label>
-			</td>
-			<td>
-				<form:label path="longTitle">${command.longTitle}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="precis">Precis Text:</form:label>
-			</td>
-			<td>
-				<form:label path="precis">${command.precis}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="description">Description Text:</form:label>
-			</td>
-			<td>
-				<form:label path="description" >${command.description}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="status" >Status:</form:label>
-			</td>
-			<td>
-				<form:label path="status">${command.status}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="monitorCode" >Monitor Code:</form:label>
-			</td>
-			<td>
-				<form:label path="monitorCode">${command.monitorCode}</form:label>
-			</td>
-		</tr>
-
-		<tr>
-			<td class="label" align="right">
-				<form:label path="phaseCode" >Phase Code:</form:label>
-			</td>
-			<td>
-				<form:label path="phaseCode">${command.phaseCode}</form:label>
-			</td>
-		</tr>
-
-       </table>
+        <input type="hidden" name="_finish" value="true"/>
+        <chrome:division>
+            <div class="row">
+                <div class="label">Short Title</div>
+                <div class="value">${command.shortTitle}</div>
+            </div>
+            <div class="row">
+                <div class="label">Long Title</div>
+                <div class="value">${command.longTitle}</div>
+            </div>
+            <div class="row">
+                <div class="label">Precis</div>
+                <div class="value">${command.precis}</div>
+            </div>
+            <div class="row">
+                <div class="label">Description</div>
+                <div class="value">${command.description}</div>
+            </div>
+            <div class="row">
+                <div class="label">Status</div>
+                <div class="value">${command.status}</div>
+            </div>
+            <div class="row">
+                <div class="label">Monitor code</div>
+                <div class="value">${command.monitorCode}</div>
+            </div>
+            <div class="row">
+                <div class="label">Phase code</div>
+                <div class="value">${command.phaseCode}</div>
+            </div>
        </chrome:division>
 
 		<chrome:division title="Identifiers">
-		<table id="tablecontent">
+		<table class="tablecontent">
 			<tr>
-				<th scope="col" align="left">Source</td>
-				<th scope="col" align="left">Type</td>
-				<th scope="col" align="left">Identifier</td>
+				<th scope="col">Source</th>
+				<th scope="col">Type</th>
+				<th scope="col">Identifier</th>
 			</tr>
 			<c:forEach items="${command.identifiers}" var="identifier">
 			<tr class="results">
-				<td class="alt" align="left">${identifier.source}</td>
-				<td class="alt" align="left">${identifier.type}</td>
-				<td class="alt" align="left">${identifier.value}</td>
+				<td>${identifier.source}</td>
+				<td>${identifier.type}</td>
+				<td>${identifier.value}</td>
 			</tr>
 		</c:forEach>
 		</table>
 		<br>
 		</chrome:division>
         <chrome:division title="Sites">
-       <table id="tablecontent">
+       <table class="tablecontent">
 				<tr>
-					<th scope="col" align="left">Study Site</td>
-					<th scope="col" align="left">Status</td>
-					<th scope="col" align="left">Role</td>
-					<th scope="col" align="left">Start Date</td>
-					<th scope="col" align="left">IRB Approval Date</td>
+					<th scope="col">Study Site</th>
+					<th scope="col">Status</th>
+					<th scope="col">Role</th>
+					<th scope="col">Start Date</th>
+					<th scope="col">IRB Approval Date</th>
 				</tr>
 				<c:forEach items="${command.studySites}" var="studySite">
 				<tr class="results">
-					<td class="alt" align="left">${studySite.site.name}</td>
-					<td class="alt" align="left">${studySite.statusCode}</td>
-					<td class="alt" align="left">${studySite.roleCode}</td>
-					<td class="alt" align="left">${studySite.startDate}</td>
-					<td class="alt" align="left">${studySite.irbApprovalDate}</td>
+					<td>${studySite.site.name}</td>
+					<td>${studySite.statusCode}</td>
+					<td>${studySite.roleCode}</td>
+					<td>${studySite.startDate}</td>
+					<td>${studySite.irbApprovalDate}</td>
 				</tr>
 				</c:forEach>
 			</table>	
 	  <br>
 	</chrome:division>
 
-	<chrome:division title="Investigators">
-		<table id="tablecontent">
-			<tr>
-				<th scope="col" align="left">Investigator</td>
-				<th scope="col" align="left">Role</td>
-				<th scope="col" align="left">Status</td>
-			</tr>
-			<c:forEach items="${command.studySites}" var="studySite" varStatus="status">
-				<c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" varStatus="status">
-				<tr class="results">
-					<td class="alt" align="left">${studyInvestigator.siteInvestigator.investigator.fullName}</td>
-					<td class="alt" align="left">${studyInvestigator.roleCode}</td>
-					<td class="alt" align="left">${studyInvestigator.statusCode}</td>
-				</tr>
-				</c:forEach>
-			</c:forEach>
-		</table>
+    <chrome:division title="Investigators">
+        <table class="tablecontent">
+            <tr>
+                <th scope="col">Investigator</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+            <c:forEach items="${command.studySites}" var="studySite" varStatus="status">
+                <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" varStatus="status">
+                    <tr class="results">
+                        <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
+                        <td>${studyInvestigator.roleCode}</td>
+                        <td>${studyInvestigator.statusCode}</td>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
+        </table>
     </chrome:division>
     
     <chrome:division title="Personnel">
-		<table id="mytable">
-			<tr>
-				<th scope="col" align="left">Name</td>
-				<th scope="col" align="left">Role</td>
-				<th scope="col" align="left">Status</td>
-				</tr>
-				<c:forEach items="${command.studySites}" var="studySite" varStatus="status">
-					<c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="status">
-					<tr class="results">
-						<td class="alt">${studyPersonnel.researchStaff.fullName}</td>
-						<td class="alt">${studyPersonnel.roleCode}</td>
-						<td class="alt">${studyPersonnel.statusCode}</td>
-					</tr>
-					</c:forEach>
-				</c:forEach>								
-		</table>
+        <table class="tablecontent">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+            <c:forEach items="${command.studySites}" var="studySite" varStatus="status">
+                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="status">
+                    <tr class="results">
+                        <td>${studyPersonnel.researchStaff.fullName}</td>
+                        <td>${studyPersonnel.roleCode}</td>
+                        <td>${studyPersonnel.statusCode}</td>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
+        </table>
     </chrome:division>
     
     <chrome:division title="Agents">
-		<table id="tablecontent">
+		<table class="tablecontent">
 		<tr >						
-			<th scope="col">Agent Name</b></th>						
+			<th scope="col">Agent Name</th>
 			<th scope="col">Agent NSC Number</th>
 			<th scope="col">IND Identifier</th>
 			<th scope="col">IND Indicator</th>	
@@ -179,34 +142,34 @@
 	 	    
 		<c:forEach items="${command.studyAgents}" var="studyAgent">
 			<tr>						
-				<td class="alt">${studyAgent.agent.name}</td>
-				<td class="alt">${studyAgent.agent.nscNumber}</td>
-				<td class="alt">${studyAgent.investigationalNewDrugIdentifier}</td>
-				<td class="alt">${studyAgent.investigationalNewDrugIndicator}</td>
-				<td class="alt"><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
-				<td class="alt"><tags:formatDate value="${studyAgent.participation.endDate}"/></td>											
+				<td>${studyAgent.agent.name}</td>
+				<td>${studyAgent.agent.nscNumber}</td>
+				<td>${studyAgent.investigationalNewDrugIdentifier}</td>
+				<td>${studyAgent.investigationalNewDrugIndicator}</td>
+				<td><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
+				<td><tags:formatDate value="${studyAgent.participation.endDate}"/></td>
 			</tr>
 		</c:forEach>				
 		</table>
     </chrome:division>
 
-	<chrome:division title="Diseases">
-		<table id ="tablecontent">
-		<br>
-			<tr>						
-				<th scope="col">Disease Term</th>						
-				<th scope="col">Primary</th>										
-			</tr>																		
-		    
-			<c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
-				<tr class="results">						
-					<td class="alt">${studyDisease.term.ctepTerm}</td>
-					<td class="alt">${studyDisease.leadDisease}</td>									
-				</tr>
-			</c:forEach>				
-		</table>
-		 <br>
-		 </chrome:division>
+    <chrome:division title="Diseases">
+        <table class="tablecontent">
+            <br>
+            <tr>
+                <th scope="col">Primary</th>
+                <th scope="col">Disease Term</th>
+            </tr>
+
+            <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
+                <tr class="results">
+                    <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
+                    <td>${studyDisease.term.ctepTerm}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br>
+    </chrome:division>
     </jsp:attribute>
 </tags:tabForm>
 

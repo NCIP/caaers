@@ -35,7 +35,7 @@ function fireAction(action, selected){
 			<a href="javascript:fireAction('addSite','0');"><img
 					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><br>
 		</p>
-		<table id="tablecontent">
+		<table class="tablecontent">
 			<tr>
 				<th scope="col"><span class="red">*</span><em></em>Site:</td>
 				<th scope="col"><span class="red">*</span><em></em>Role:</td>										

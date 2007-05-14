@@ -164,7 +164,7 @@ Event.observe(window, "load", function() {
 			Add investigators <a href="javascript:fireAction('addInv',${selected_site}, '0');"><img
 				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
 		</p>
-		<table id="tablecontent">
+		<table class="tablecontent">
 		<tr>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Investigator:</b></th>
 			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Role:</b> </th>

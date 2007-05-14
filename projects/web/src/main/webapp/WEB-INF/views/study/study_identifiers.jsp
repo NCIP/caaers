@@ -37,7 +37,7 @@ field.value="";
 				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><br>
 		</p>
 		
-		<table id="tablecontent">
+		<table class="tablecontent">
 		<tr align="center">
 			<th scope="col"> Identifier<span class="red">*</span> </th>														
 			<th scope="col"> Type<span class="red">*</span> </b> </th>						
