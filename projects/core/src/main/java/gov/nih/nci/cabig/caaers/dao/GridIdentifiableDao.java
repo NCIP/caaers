@@ -7,8 +7,12 @@ import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
 
 /**
  * @author Sujith Vellat Thayyilthodi
+ * @author Rhett Sutphin
  */
-public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifiable> extends CaaersDao<T> {
+public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifiable>
+    extends CaaersDao<T>
+    implements gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao<T> 
+{
     @SuppressWarnings("unchecked")
     public T getByGridId(T template) {
         return (T) CollectionUtils.firstElement(getHibernateTemplate().findByExample(template));
