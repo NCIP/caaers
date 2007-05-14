@@ -48,9 +48,8 @@
         <property name="viewName"><value>internal-welcome</value></property>
     </bean>    
 
-    <bean name="/css/*"
-          class="org.springframework.web.servlet.mvc.UrlFilenameViewController">
-        <property name="prefix"><value>css/</value></property>
-        <property name="suffix"><value>.css</value></property>
+    <bean name="/login" id="loginController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>login</value></property>
     </bean>
 </beans>
