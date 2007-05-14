@@ -119,7 +119,6 @@ Event.observe(window, "load", function() {
 	 index++
 	 autoCompleteId= 'personnel' + index  ;
 	}
-	//Element.update("flow-next", "Continue &raquo;")
 })
 
 </script>

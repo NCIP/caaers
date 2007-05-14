@@ -114,7 +114,6 @@
            index++
            autoCompleteId= 'agent' + index  ; 
           }           
-          Element.update("flow-next", "Continue &raquo;")
       })
      
    </script>

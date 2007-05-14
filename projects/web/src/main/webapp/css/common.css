@@ -201,13 +201,6 @@ ul.tabs li {
   padding: 8px;
 }
 
-.content .section {
-	float:left;
-	width:45%;
-    margin-bottom: 0.5em;
-    padding-right: 1.2em;  
-}
-
 .box h3 {
   position: relative;
   border-top: solid 1px #000;
@@ -372,10 +365,6 @@ img.indicator {
 	font: normal 11px auto Arial, Helvetica, sans-serif;
 	color: #4f6b72;
 	background: #E6EAE9;
-}
-
-a {
-	color: #c75f3e;
 }
 
 #tablecontent caption {

@@ -228,8 +228,6 @@
 
            Event.observe("disease-sub-category", "change", function() { showDiseases() })
            populateSelectsOnLoad();
-
-           Element.update("flow-next", "Continue &raquo;")
        })
 
     </script>
