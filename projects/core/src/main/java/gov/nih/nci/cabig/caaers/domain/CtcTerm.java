@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Rhett Sutphin
@@ -36,11 +37,12 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     }
 
     @Transient
-    public List<? extends CodedGrade> getGrades() {
+    public List<CodedGrade> getGrades() {
         if (getContextualGrades() == null || getContextualGrades().size() == 0) {
-            return Arrays.asList(Grade.values());
+            return Arrays.<CodedGrade>asList(Grade.values());
         } else {
-            return getContextualGrades();
+            // this rigamarole is just to change the generic type without creating a new list
+            return Collections.<CodedGrade>unmodifiableList(getContextualGrades());
         }
     }
 

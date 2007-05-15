@@ -29,7 +29,7 @@ public class CtcTermTest extends CaaersTestCase {
         term.setContextualGrades(new ArrayList<CtcGrade>());
         term.getContextualGrades().add(grade);
 
-        assertSame(term.getContextualGrades(), term.getGrades());
+        assertEquals(term.getContextualGrades(), term.getGrades());
     }
 
     public void testGetGradesUsesDefaultsIfZeroContextualGrades() throws Exception {
