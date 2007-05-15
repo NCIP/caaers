@@ -1,20 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.BaseSelectField.collectOptions;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
-import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 
 import java.util.Map;
 import java.util.Arrays;
-
-import sun.management.resources.agent;
 
 /**
  * @author Rhett Sutphin
@@ -50,9 +49,9 @@ public class TreatmentTab<C extends AdverseEventInputCommand> extends AeTab<C> {
             }
         });
 
-        caFields.addField(new CollectionSelectField(
-            "studyAgent", "Study Agent", true, command.getStudy().getStudyAgents(),
-            "id", "agent.name"));
+        caFields.addField(new DefaultSelectField(
+            "studyAgent", "Study Agent", true,
+            collectOptions(command.getStudy().getStudyAgents(), "id", "agent.name")));
         caFields.addField(createDoseField("dose", "Dose", true));
         caFields.addField(new DefaultTextArea(
             "durationAndSchedule", "Duration and schedule", false));
@@ -60,9 +59,9 @@ public class TreatmentTab<C extends AdverseEventInputCommand> extends AeTab<C> {
         caFields.addField(new CompositeField(null,
             new DefaultInputFieldGroup(null, "Administration delay")
                 .addField(new DefaultTextField("administrationDelayAmount", "", false))
-                .addField(new CollectionSelectField(
+                .addField(new DefaultSelectField(
                     "administrationDelayUnits", "", false,
-                    Arrays.asList(DelayUnits.values()), null, "displayName"))
+                    collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName")))
         ));
 
         caFields.addField(createDoseField("modifiedDose", "Modified dose", false));

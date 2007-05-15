@@ -1,26 +1,27 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
-import java.util.Map;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
 public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C> {
-    private static final CollectionSelectField BASE_FIELD = new CollectionSelectField(
-        null, null, true, Arrays.asList(Attribution.values()), "name", null);
+    private static final DefaultSelectField BASE_FIELD = new DefaultSelectField(
+        null, null, true,
+        BaseSelectField.collectOptions(Arrays.asList(Attribution.values()), "name", null));
 
     protected AttributionTab() {
         super("Attribution", "Attribution", "ae/attribution");

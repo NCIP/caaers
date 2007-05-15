@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.BaseSelectField.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.CollectionSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.BooleanSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.LongSelectField;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -45,11 +47,11 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
             "aeReport.detectionDate", "Detection date", true));
 
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
-        mainFieldFactory.addField(new CollectionSelectField("grade", "Grade", true,
-                Arrays.asList(Grade.values()), "name", null));
-        mainFieldFactory.addField(new CollectionSelectField(
+        mainFieldFactory.addField(new LongSelectField("grade", "Grade", true,
+                collectOptions(Arrays.asList(Grade.values()), "name", null)));
+        mainFieldFactory.addField(new DefaultSelectField(
             "hospitalization", "Hospitalization", true,
-                Arrays.asList(Hospitalization.values()), "name", "displayName"));
+                collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
         mainFieldFactory.addField(new BooleanSelectField(
             "expected", "Expected", true));
         mainFieldFactory.addField(new DefaultTextArea(

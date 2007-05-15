@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="ctmsfn" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="size"%>
 <c:choose>
@@ -23,6 +24,17 @@
         <tags:indicator id="${field.propertyName}-indicator"/>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
         <form:hidden path="${field.propertyName}"/>
+    </c:when>
+    <c:when test="${field.categoryName == 'longselect'}">
+        <div class="longselect" id="${field.propertyName}-longselect">
+            <c:forEach items="${field.attributes.options}" var="option" varStatus="stat">
+                <label>
+                    <form:radiobutton path="${field.propertyName}" value="${option.key}"
+                        id="${field.propertyName}-container-${stat.index}" cssClass="longselect-radio"/>
+                    <span id="${field.propertyName}-label-${stat.index}">${ctmsfn:nl2br(option.value)}</span>
+                </label>
+            </c:forEach>
+        </div>
     </c:when>
     <c:otherwise>
         UNIMPLEMENTED FIELD TYPE ${field.categoryName} for ${field.propertyName}

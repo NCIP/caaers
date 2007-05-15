@@ -23,27 +23,6 @@ h2 { font-size: 1.0em; }
 h3, h4 { font-size: 0.9em; }
 
 p { margin: 1em 0; }
-input, label, select, textarea {
-  vertical-align: middle;
-  margin: 0; padding: 0;
-}
-input[type=text], input[type=password], select, textarea {
-  background-color: #f4f4f5;
-  border: 1px inset #ccc;
-  padding: 2px;
-}
-input[disabled], select[disabled], textarea[disabled] {
-  border-color: #ddc;
-  background-color: #ddc;
-}
-input[type=button], input[type=submit], input[type=reset] {
-  color: white;
-  background-color: #3876C1;
-  border: 1px outset #3876C1;
-}
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
-  border-style: inset;
-}
 
 /**** COMMON TEMPLATE ELEMENTS */
 
@@ -321,34 +300,6 @@ div.row div.value {
   font-weight: normal;
   /* default; should be changed whenever .label width is changed */
   margin-left: 11em;
-}
-
-/*
-    Styles for scriptaculous-generated autocompleters
- */
-div.autocomplete {
-    position: absolute;
-    background-color: white;
-    border: 1px solid #888;
-    border-top-width: 0; 
-    margin: 0;
-    padding: 0;
-}
-div.autocomplete ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-div.autocomplete ul li.selected { background-color: #ffb;}
-div.autocomplete ul li {
-    list-style-type: none;
-    display: block;
-    margin: 0;
-    padding: 2px;
-    border-style: solid; 
-    border-color: #888;
-    border-width: 1px 0 0 0;
-    cursor: pointer;
 }
 
 img.indicator {
