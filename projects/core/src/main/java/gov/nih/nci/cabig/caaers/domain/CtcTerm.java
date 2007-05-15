@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Transient;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author Rhett Sutphin
@@ -18,6 +22,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     private Integer ctepCode;
     private CtcCategory category;
     private boolean otherRequired;
+    private List<CtcGrade> contextualGrades;
 
     ////// LOGIC
 
@@ -27,6 +32,15 @@ public class CtcTerm extends AbstractImmutableDomainObject {
             return getTerm();
         } else {
             return getTerm() + " - " + getSelect();
+        }
+    }
+
+    @Transient
+    public List<? extends CodedGrade> getGrades() {
+        if (getContextualGrades() == null || getContextualGrades().size() == 0) {
+            return Arrays.asList(Grade.values());
+        } else {
+            return getContextualGrades();
         }
     }
 
@@ -80,5 +94,15 @@ public class CtcTerm extends AbstractImmutableDomainObject {
 
     public void setOtherRequired(boolean otherRequired) {
         this.otherRequired = otherRequired;
+    }
+
+    @OneToMany(mappedBy = "term")
+    @OrderBy("grade")
+    public List<CtcGrade> getContextualGrades() {
+        return contextualGrades;
+    }
+
+    public void setContextualGrades(List<CtcGrade> contextualGrades) {
+        this.contextualGrades = contextualGrades;
     }
 }

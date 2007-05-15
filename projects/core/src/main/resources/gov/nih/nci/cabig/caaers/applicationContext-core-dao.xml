@@ -41,6 +41,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
@@ -77,7 +78,6 @@
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
-
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>

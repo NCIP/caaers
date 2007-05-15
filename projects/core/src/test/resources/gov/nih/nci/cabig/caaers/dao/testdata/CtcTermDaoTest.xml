@@ -68,6 +68,18 @@
         ctep_code="90030270"
         other_required="0"
         />
+    <ctc_grades
+        id="30103"
+        term_id="3010"
+        grade_code="3"
+        grade_text="Mostly mild"
+        />
+    <ctc_grades
+        id="30104"
+        term_id="3010"
+        grade_code="4"
+        grade_text="On fire"
+        />
 
     <ctc_terms
         id="2001"

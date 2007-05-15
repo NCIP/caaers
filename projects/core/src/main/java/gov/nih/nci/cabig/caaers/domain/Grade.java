@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
 /**
  * @author Rhett Sutphin
  */
-public enum Grade implements CodedEnum {
+public enum Grade implements CodedEnum, CodedGrade {
     NORMAL(0),
     MILD(1),
     MODERATE(2),
