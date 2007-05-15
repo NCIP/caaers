@@ -144,9 +144,6 @@
                 createAE.getTermGrades(ctcTermId, function(grades) {
                     // update text
                     grades.each(function(grade) {
-                        console.log("Updating text for ")
-                        console.log(grade)
-                        console.log(this.aeProperty + ".grade-text-" + grade.code)
                         var text = $(this.aeProperty + ".grade-text-" + grade.code)
                         text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
                     }.bind(this))
