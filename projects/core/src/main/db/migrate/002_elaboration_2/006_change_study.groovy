@@ -14,6 +14,10 @@ class CreateStudy extends edu.northwestern.bioinformatics.bering.Migration {
     }
 
     void down() {
+        addColumn('studies','principal_investigator_code',"string",nullable:false);
+        addColumn('studies','principal_investigator_name',"string",nullable:false);
+        addColumn('studies','primary_sponsor_name',"string",nullable:false);
+        addColumn('studies','review_date',"date",nullable:true);
         removeColumn('studies','blinded_indicator');
     	removeColumn('studies','randomized_indicator');
         removeColumn('studies','precis');
