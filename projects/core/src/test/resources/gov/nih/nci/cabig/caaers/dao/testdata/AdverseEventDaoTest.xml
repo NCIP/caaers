@@ -36,6 +36,7 @@
         ctep_code="10043882"
         other_required="0"
         />
+    <ctc_grades/> <!-- to delete in case of existing refs -->
 
     <participant_assignments
         id="-6"
