@@ -10,6 +10,16 @@
 <head>
     <title>Enter basic AE information</title>
     <tags:stylesheetLink name="ae"/>
+    <style type="text/css">
+        /* This is intended to apply to the grade longselect only */
+        .longselect {
+            width: 20em;
+        }
+        .longselect label {
+            padding-left: 3.0em;
+            text-indent: -2.5em;
+        }
+    </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
@@ -50,13 +60,13 @@
 
                 this.ctcDetailsId = "ctc-details-" + index;
                 this.ctcCategoryId = "ctc-category-" + index
-                var aeProperty = "aeReport.adverseEvents[" + index + "]";
-                this.ctcTermId = aeProperty + ".ctcTerm"
-                this.ctcTermInputId = aeProperty + ".ctcTerm-input"
-                this.ctcTermChoicesId = aeProperty + ".ctcTerm-choices"
-                this.ctcTermIndicatorId = aeProperty + ".ctcTerm-indicator"
-                this.detailsForOtherId = aeProperty + ".detailsForOther"
-                this.detailsForOtherRowId = aeProperty + ".detailsForOther-row"
+                this.aeProperty = "aeReport.adverseEvents[" + index + "]";
+                this.ctcTermId = this.aeProperty + ".ctcTerm"
+                this.ctcTermInputId = this.aeProperty + ".ctcTerm-input"
+                this.ctcTermChoicesId = this.aeProperty + ".ctcTerm-choices"
+                this.ctcTermIndicatorId = this.aeProperty + ".ctcTerm-indicator"
+                this.detailsForOtherId = this.aeProperty + ".detailsForOther"
+                this.detailsForOtherRowId = this.aeProperty + ".detailsForOther-row"
 
                 this.resetTermText()
                 this.ctcVersionChanged(null, true)
@@ -65,7 +75,7 @@
                 Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
 
                 AE.createStandardAutocompleter(
-                    aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
+                    this.aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
                         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             this.selectTerm(selectedChoice)
                         }.bind(this)
@@ -126,6 +136,34 @@
                     AE.slideAndHide(this.detailsForOtherRowId)
                     $(this.detailsForOtherId).value = ""
                 }
+
+                this.updateGrades(newCtcTerm.id)
+            },
+
+            updateGrades: function(ctcTermId) {
+                createAE.getTermGrades(ctcTermId, function(grades) {
+                    // update text
+                    grades.each(function(grade) {
+                        console.log("Updating text for ")
+                        console.log(grade)
+                        console.log(this.aeProperty + ".grade-text-" + grade.code)
+                        var text = $(this.aeProperty + ".grade-text-" + grade.code)
+                        text.update(grade.code + ": " + grade.displayName.gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
+                    }.bind(this))
+
+                    // show & hide
+                    var validCodes = [0].concat(grades.collect(function(g) { return g.code }))
+                    for (var i = 0 ; i <= 5 ; i++) {
+                        var row = $(this.aeProperty + ".grade-row-" + i)
+                        if (validCodes.include(i)) {
+                            row.enableDescendants()
+                            row.show()
+                        } else {
+                            row.hide()
+                            row.disableDescendants()
+                        }
+                    }
+                }.bind(this))
             },
 
             termPopulator: function(autocompleter, text) {

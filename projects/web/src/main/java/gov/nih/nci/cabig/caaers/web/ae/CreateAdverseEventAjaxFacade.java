@@ -1,46 +1,43 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
-import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
-
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.mvc.AbstractFormController;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -58,24 +55,18 @@ public class CreateAdverseEventAjaxFacade {
     private InteroperationService interoperationService;
     private PriorTherapyDao priorTherapyDao;
 
-    
-
     public List<AnatomicSite> matchAnatomicSite(String text) {
-        List<AnatomicSite> anatomicSites = anatomicSiteDao.getBySubnames(extractSubnames(text));
-        
-        return anatomicSites;                
+        return anatomicSiteDao.getBySubnames(extractSubnames(text));
     } 
     
     public List<PriorTherapy> matchPriorTherapies(String text) {
-        List<PriorTherapy> priorTherapies = priorTherapyDao.getBySubnames(extractSubnames(text));
-        return priorTherapies;                
+        return priorTherapyDao.getBySubnames(extractSubnames(text));
     }
 
 
-    public ResearchStaff getResearchStaff(String text) {    	
-    	ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
-    	
-    	return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "maidenName");
+    public ResearchStaff getResearchStaff(String text) {
+        ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
+        return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "maidenName");
     }
     
     public List<Participant> matchParticipants(String text, Integer studyId) {
@@ -146,6 +137,19 @@ public class CreateAdverseEventAjaxFacade {
             category.setTerms(null);
         }
         return categories;
+    }
+    
+    public List<? extends CodedGrade> getTermGrades(int ctcTermId) {
+        List<CodedGrade> list = ctcTermDao.getById(ctcTermId).getGrades();
+        // have to detect whether it's a collection of Grade or CtcGrade;
+        // if the latter, need to call reduce
+        if (list.size() == 0) {
+            return list;
+        } else if (list.get(0) instanceof Grade) {
+            return list;
+        } else {
+            return reduceAll(list, "grade", "text");
+        }
     }
 
     private String[] extractSubnames(String text) {

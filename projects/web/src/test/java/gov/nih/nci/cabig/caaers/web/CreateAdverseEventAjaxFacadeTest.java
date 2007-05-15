@@ -14,6 +14,9 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.CodedGrade;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
 import static org.easymock.classextension.EasyMock.*;
@@ -287,5 +290,35 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         replayMocks();
         assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
         verifyMocks();
+    }
+
+    public void testGetGradesForEnumGrades() throws Exception {
+        CtcTerm term = registerMockFor(CtcTerm.class);
+        expect(ctcTermDao.getById(5)).andReturn(term);
+        expect(term.getGrades()).andReturn(Arrays.<CodedGrade>asList(Grade.SEVERE));
+        replayMocks();
+
+        List<? extends CodedGrade> actual = facade.getTermGrades(5);
+        verifyMocks();
+        assertEquals(1, actual.size());
+        assertEquals(3, actual.get(0).getCode());
+        assertEquals("Severe", actual.get(0).getDisplayName());
+    }
+
+    public void testGetGradesForCtcGrades() throws Exception {
+        CtcTerm term = registerMockFor(CtcTerm.class);
+        expect(ctcTermDao.getById(5)).andReturn(term);
+        CtcGrade grade = new CtcGrade();
+        grade.setText("Oh, so severe");
+        grade.setGrade(Grade.SEVERE);
+        grade.setTerm(term);
+        expect(term.getGrades()).andReturn(Arrays.<CodedGrade>asList(grade));
+        replayMocks();
+
+        List<? extends CodedGrade> actual = facade.getTermGrades(5);
+        verifyMocks();
+        assertEquals(1, actual.size());
+        assertEquals(3, actual.get(0).getCode());
+        assertEquals("Oh, so severe", actual.get(0).getDisplayName());
     }
 }

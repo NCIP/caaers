@@ -28,10 +28,10 @@
     <c:when test="${field.categoryName == 'longselect'}">
         <div class="longselect" id="${field.propertyName}-longselect">
             <c:forEach items="${field.attributes.options}" var="option" varStatus="stat">
-                <label>
+                <label id=${field.propertyName}-row-${stat.index}>
                     <form:radiobutton path="${field.propertyName}" value="${option.key}"
-                        id="${field.propertyName}-container-${stat.index}" cssClass="longselect-radio"/>
-                    <span id="${field.propertyName}-label-${stat.index}">${ctmsfn:nl2br(option.value)}</span>
+                        id="${field.propertyName}-radio-${stat.index}" cssClass="longselect-radio"/>
+                    <span id="${field.propertyName}-text-${stat.index}">${ctmsfn:nl2br(option.value)}</span>
                 </label>
             </c:forEach>
         </div>
