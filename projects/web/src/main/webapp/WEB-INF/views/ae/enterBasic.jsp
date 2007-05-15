@@ -148,7 +148,7 @@
                         console.log(grade)
                         console.log(this.aeProperty + ".grade-text-" + grade.code)
                         var text = $(this.aeProperty + ".grade-text-" + grade.code)
-                        text.update(grade.code + ": " + grade.displayName.gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
+                        text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
                     }.bind(this))
 
                     // show & hide
