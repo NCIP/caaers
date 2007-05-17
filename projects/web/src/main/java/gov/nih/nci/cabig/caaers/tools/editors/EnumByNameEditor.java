@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.beans.PropertyEditorSupport;
 
 /**
@@ -14,7 +16,7 @@ public class EnumByNameEditor<E extends Enum<E>> extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        if (text == null) {
+        if (text == null || StringUtils.isBlank(text)) {
             setValue(null);
         } else {
             setValue(Enum.valueOf(enumClass, text));

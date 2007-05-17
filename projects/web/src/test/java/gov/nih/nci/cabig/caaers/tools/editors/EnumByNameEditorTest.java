@@ -18,6 +18,11 @@ public class EnumByNameEditorTest extends CaaersTestCase {
         assertNull(editor.getValue());
     }
 
+    public void testSetAsTextBlank() throws Exception {
+        editor.setAsText("");
+        assertNull(editor.getValue());
+    }
+
     public void testGetAsText() throws Exception {
         editor.setValue(TestEnum.F3);
         assertEquals("F3", editor.getAsText());

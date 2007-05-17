@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.BooleanSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -17,10 +18,12 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.LongSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 
 import java.util.Map;
 import java.util.Arrays;
 import java.util.ListIterator;
+import java.util.LinkedHashMap;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.BeanWrapper;
@@ -45,6 +48,11 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(new DefaultDateField(
             "aeReport.detectionDate", "Detection date", true));
+        DefaultSelectField attributionField = new DefaultSelectField(
+            "aeReport.attributionSummary", "Attribution to study", false, createAttributionOptions());
+        attributionField.getAttributes().put(InputField.DETAILS,
+            "Indicate the likelihood that the adverse event(s) reported here are attributable to any element of the study protocol.");
+        reportFieldGroup.getFields().add(attributionField);
 
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(new LongSelectField("grade", "Grade", true,
@@ -66,6 +74,14 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 
         ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
         ctcOtherFieldFactory.addField(new DefaultTextArea("detailsForOther", "Other (specify)", false));
+    }
+
+    private Map<Object, Object> createAttributionOptions() {
+        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
+        attributionOptions.put("", "Please select");
+        attributionOptions.putAll(
+            BaseSelectField.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+        return attributionOptions;
     }
 
     @Override
