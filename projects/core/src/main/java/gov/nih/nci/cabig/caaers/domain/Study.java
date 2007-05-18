@@ -3,8 +3,6 @@ package gov.nih.nci.cabig.caaers.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +14,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Where;
 
