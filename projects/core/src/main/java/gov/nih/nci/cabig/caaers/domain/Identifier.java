@@ -78,11 +78,15 @@ public class Identifier extends AbstractMutableDomainObject {
     }
 
     public void setPrimaryIndicator(Boolean primaryIndicator) {
-        this.primaryIndicator = primaryIndicator;
+    	if (primaryIndicator == null)
+		{
+			primaryIndicator = false;
+		}
+		this.primaryIndicator = primaryIndicator;
     }
 
-    @Override
-    public String toString() {
+    @Transient
+    public String getSummary() {
         return new StringBuilder(getClass().getSimpleName())
             .append("[value=").append(getValue())
             .append("; primary? ").append(getPrimaryIndicator())
@@ -90,5 +94,9 @@ public class Identifier extends AbstractMutableDomainObject {
             .append("; source=").append(getSource())
             .append(']').toString()
             ;
+    }
+    
+    public String toString() {
+    	return getValue();
     }
 }
