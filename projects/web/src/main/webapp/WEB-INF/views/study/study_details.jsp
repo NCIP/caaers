@@ -37,20 +37,29 @@
                 <div class="value"><form:textarea path="description" rows="3" cols="50"/> </div>
             </div>
             <div class="row">
-                <div class="label"><span class="red">*</span><em></em>Phase:</div>
-                <div class="value"><form:select path="primarySponsorCode">
-                    <option value="">--please select --</option>
-                    <form:options items="${phaseCodeRefData}" itemLabel="desc"
-                        itemValue="code"/>
-                    </form:select>
-                </div>
-            </div>
-            <div class="row">
                 <div class="label"><span class="red">*</span><em></em>Sponsor:</div>
                 <div class="value"><form:select path="primarySponsorCode">
                     <option value="">--please select --</option>
                     <form:options items="${sponsorCodeRefData}" itemLabel="desc"
-                        itemValue="code"/>
+                        itemValue="desc"/>
+                    </form:select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label"><span class="red">*</span><em></em>Status:</div>
+                <div class="value"><form:select path="status">
+                    <option value="">--please select --</option>
+                    <form:options items="${statusRefData}" itemLabel="desc"
+                        itemValue="desc"/>
+                    </form:select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="label"><span class="red">*</span><em></em>Phase:</div>
+                <div class="value"><form:select path="phaseCode">
+                    <option value="">--please select --</option>
+                    <form:options items="${phaseCodeRefData}" itemLabel="desc"
+                        itemValue="desc"/>
                     </form:select>
                 </div>
             </div>
