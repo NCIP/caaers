@@ -39,7 +39,7 @@ function fireAction(action, selected){
 			<tr>
 				<th scope="col"><span class="red">*</span><em></em>Site:</td>
 				<th scope="col"><span class="red">*</span><em></em>Role:</td>										
-				<th scope="col"><span class="red">*</span><em></em>IRB Approval Date:</td>														
+				<th scope="col">IRB Approval Date:</td>														
 				<th scope="col" class="specalt"></td>
 			</tr>
 	
