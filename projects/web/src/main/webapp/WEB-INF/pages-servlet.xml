@@ -158,11 +158,12 @@
 	</bean>
 	
 	<bean name="/study/view" id="viewStudyController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.ViewStudyController" >
+    	  class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController" >
     </bean>
     
     <bean name="/study/search" id="searchStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.SearchStudyController">
+          class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
+          <property name="sessionForm" value="true"/>
 	</bean>
 	
 	<bean name="/study/edit" id="editStudyController" autowire="byType"
