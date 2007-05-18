@@ -25,11 +25,6 @@ function fireAction(action, selectedSite, selectedPersonnel){
 	document.form._action.value=action;
 	document.form._selectedSite.value=selectedSite;
 	document.form._selectedPersonnel.value=selectedPersonnel;
-//  need to disable validations while submitting
-//  role = 'studySites['+selectedSite+'].studyPersonnels['+selectedPersonnel+'].roleCode';
-//  $(role).className='none';
-//	status = 'studySites['+selectedSite+'].studyPersonnels['+selectedPersonnel+'].statusCode';
-//	$(status).className='none';
 	document.form.submit();
 	fireListeners(selected);
 }
@@ -200,13 +195,6 @@ Event.observe(window, "load", function() {
 						src="<c:url value="/images/checkno.gif"/>" border="0" alt="delete"></a></td>
 			</tr>
 		</c:forEach>
-		<tr>
-		<td class="alt">
-		<p id="personnel-selected" style="display: none">
-			You've selected the study personnel <span id="personnel-selected-name"></span>.
-		</p>
-		</td>
-		</tr>
 	</table>
     </jsp:attribute>
     </tags:tabForm>
