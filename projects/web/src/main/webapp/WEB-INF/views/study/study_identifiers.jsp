@@ -57,7 +57,7 @@ field.value="";
 				<option value="">--please select --</option>					
 				<form:options items="${identifiersSourceRefData}" itemLabel="name"
 					itemValue="name" /></form:select></td>
-			<td class="alt"><form:radiobutton path="identifiers[${status.index}].primaryIndicator"/></td> 
+			<td class="alt"><form:radiobutton path="identifiers[${status.index}].primaryIndicator" value="true"/></td> 
 			<td class="alt"><a href="javascript:fireAction('removeIdentifier',${status.index});"><img
 				src="/caaers/images/checkno.gif" border="0" alt="remove"></a></td>
 		</tr> 
