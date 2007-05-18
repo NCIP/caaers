@@ -51,7 +51,7 @@ public class EditStudyController extends StudyController {
      * @param request - flow the Flow object
      */
     protected void layoutTabs(Flow flow) {
-        flow.addTab(new EmptyStudyTab("Review and Submit", "Review and Submit", "study/study_reviewsummary"));
+        flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
         flow.addTab(new DetailsTab());
         flow.addTab(new IdentifiersTab());
         flow.addTab(new SitesTab());
@@ -76,7 +76,7 @@ public class EditStudyController extends StudyController {
                 studyDao.save(study);
             } catch (RuntimeException e) {
                 log.debug("Unable to update Study");
-                e.printStackTrace();
+                throw e;
             }
         }
     }
@@ -86,6 +86,6 @@ public class EditStudyController extends StudyController {
         HttpServletRequest request, HttpServletResponse response, Object command, BindException errors
     ) throws Exception {
         // Redirect to Search page
-        return new ModelAndView(new RedirectView("searchstudy.do"));
+        return new ModelAndView(new RedirectView("search"));
     }
 }
