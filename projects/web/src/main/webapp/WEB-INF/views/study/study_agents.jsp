@@ -119,9 +119,6 @@
    </script>
 </head>
 <body>
-<p id="instructions">
-   Add Agents by Clicking on the add link 
-</p>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm">
     <jsp:attribute name="singleFields">
