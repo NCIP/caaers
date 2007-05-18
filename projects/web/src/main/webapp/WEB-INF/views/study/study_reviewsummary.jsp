@@ -23,6 +23,10 @@
         <input type="hidden" name="_finish" value="true"/>
         <chrome:division>
             <div class="row">
+                <div class="label">Primary Identifier</div>
+                <div class="value">${command.primaryIdentifier}</div>
+            </div>
+            <div class="row">
                 <div class="label">Short Title</div>
                 <div class="value">${command.shortTitle}</div>
             </div>
@@ -41,10 +45,6 @@
             <div class="row">
                 <div class="label">Status</div>
                 <div class="value">${command.status}</div>
-            </div>
-            <div class="row">
-                <div class="label">Monitor code</div>
-                <div class="value">${command.monitorCode}</div>
             </div>
             <div class="row">
                 <div class="label">Phase code</div>
@@ -146,8 +146,6 @@
 				<td>${studyAgent.agent.nscNumber}</td>
 				<td>${studyAgent.investigationalNewDrugIdentifier}</td>
 				<td>${studyAgent.investigationalNewDrugIndicator}</td>
-				<td><tags:formatDate value="${studyAgent.participation.startDate}"/></td>
-				<td><tags:formatDate value="${studyAgent.participation.endDate}"/></td>
 			</tr>
 		</c:forEach>				
 		</table>
