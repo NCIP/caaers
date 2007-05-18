@@ -3,6 +3,11 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
@@ -84,4 +89,24 @@ public class StudyDao extends GridIdentifiableDao<Study> {
     public Study getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);
     }
+    
+    @Override
+    //TODO - Need to refactor the below into CaaersDao along with identifiers
+    public List<Study> searchByExample(Study study, boolean isWildCard) {
+		Example example = Example.create(study).excludeZeroes().ignoreCase();
+		Criteria studyCriteria = getSession().createCriteria(Study.class);
+	
+		if (isWildCard)
+		{
+			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
+			studyCriteria.add(example);
+			if (study.getIdentifiers().size() > 0) {
+				studyCriteria.createCriteria("identifiers")
+					.add(Restrictions.like("value", study.getIdentifiers().get(0)
+					.getValue()+ "%"));
+			} 
+			return studyCriteria.list();
+		}
+		return studyCriteria.add(example).list();
+	}
 }
