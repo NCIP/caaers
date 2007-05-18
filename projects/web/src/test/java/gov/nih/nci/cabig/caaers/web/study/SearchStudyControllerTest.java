@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.SearchStudyController;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +18,7 @@ public class SearchStudyControllerTest extends WebTestCase {
         super.setUp();
         studyService = registerMockFor(StudyService.class);               
         controller.setStudyService(studyService);
-        controller.setListValues(new ListValues());
+       // controller.setListValues(new ListValues());
     }
     
     public void testViewOnGet() throws Exception {
