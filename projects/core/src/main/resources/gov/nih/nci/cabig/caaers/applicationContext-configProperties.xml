@@ -16,38 +16,24 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         </bean>
                 	</list>
               </entry>     
-              <entry key="monitorCodeRefData">
-                    <list>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Cancer Therapy Evaluation Program" />
-                            <property name="desc" value="Cancer Therapy Evaluation Program" />
-                        </bean>                      
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                        	<property name="code" value="CTEP - Clinical Data Update System Complete" />
-                            <property name="desc" value="CTEP - Clinical Data Update System Complete" />
-                        </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                        	<property name="code" value="CTEP - Clinical Data Update System Abbreviated" />
-                            <property name="desc" value="CTEP - Clinical Data Update System Abbreviated" />
-                        </bean>
-                        </list>
-                </entry>
-                <entry key="diseaseCodeRefData">
-                    <list>
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="AIDS" />
-                            <property name="desc" value="AIDS" />
-                        </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Benign" />
-                            <property name="desc" value="Benign" />
-                        </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Cancer" />
-                            <property name="desc" value="Cancer" />
-                        </bean>
-                     </list>
-                </entry>                 
+              <!-- Search Criteria -->
+               <entry key="studySearchType">
+                   <list>                      	
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                           <property name="code" value="id" />
+                           <property name="desc" value="Primary Identifier" />
+                       </bean>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                           <property name="code" value="shortTitle" />
+                           <property name="desc" value="Short Title" />
+                       </bean>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                           <property name="code" value="status" />
+                           <property name="desc" value="Status" />
+                       </bean>
+                    </list>
+               </entry>   
+                           
                 <entry key="statusRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
