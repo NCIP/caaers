@@ -14,19 +14,17 @@
 <title>Confirmation</title>
 </head>
 <body>
-<p id="instructions">
-   You have successfully created Study
-</p>
-<form:form name="searchDetailsForm" method="post">
-	<tags:tabFields tab="${tab}"/>
-				<div>
-			<chrome:division id="study-details">
-
-	<div><input type="hidden" name="_page" value="1"></div>
-					
-<h3> <font color="green"> You have successfully created study with short title : ${param.studyName} </font></h3>
-		</chrome:division>
-</div>							
+<chrome:box title="Confirmation">
+<form:form>
+<div><input type="hidden" name="_page" value="1"></div>
+     <chrome:division id="single-fields">
+       <div class="content">
+            <div class="row">
+                <div>You have successfully created study with short title : ${param.studyName}</div>
+             </div>
+        </div>
+	</chrome:division>
 </form:form>
+</chrome:box>
 </body>
 </html>
