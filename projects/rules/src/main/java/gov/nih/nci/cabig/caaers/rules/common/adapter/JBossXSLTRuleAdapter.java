@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -52,6 +53,7 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 	public Object adapt(RuleSet ruleSet) {
 		List<String> imports = ruleSet.getImport();
 		
+		System.out.println("Size of imports:"+imports.size());
 		for(String s: imports){
 			System.out.println(s);
 		}
@@ -67,9 +69,12 @@ public class JBossXSLTRuleAdapter implements RuleAdapter {
 		try {
 			//Templates translet = transformerFactory.newTemplates(new StreamSource("C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
 			
-			Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("jboss_rules.xsl")));
-
+			//Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("jboss_rules.xsl")));
 			
+			
+
+			Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("new_jobss_rules.xsl")));
+
 			
 			Transformer transformer = translet.newTransformer();
 			
