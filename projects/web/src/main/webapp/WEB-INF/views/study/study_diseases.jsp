@@ -269,8 +269,8 @@
                         path="diseaseTermIds">
                     </form:select>
             </chrome:division>
-            <chrome:division title="Meddra Terms">
-					Enter one or multiple meddra codes seperated by a comma and press Add
+            <chrome:division title="MedDRA Terms">
+					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
                     <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
                         src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
@@ -317,7 +317,7 @@
                     
                     
             <c:forEach items="${command.meddraStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
-            Meddra<hr>
+            MedDRA<hr>
              <div STYLE="  font-size: 12px; overflow: auto;">
                     <TABLE border="0"  width="100%" id="studyDetails">
                         <tr>
