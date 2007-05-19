@@ -1,10 +1,16 @@
 package gov.nih.nci.cabig.caaers.rules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
+import gov.nih.nci.cabig.caaers.rules.brxml.Column;
+import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
+import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import junit.framework.TestCase;
@@ -168,7 +174,13 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription("package for"+this.rule_set_1_name_for_dream_sponsor+" rules");
-		ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
+		
+		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
+		 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+		//List<String> _imports = new ArrayList<String>();
+		//_imports.add("gov.nih.nci.cabig.caaers.rules.domain.*");
+		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
+		//ruleSet.setImport(_imports);
 		
 		this.ruleAuthoringServiceImpl.createRuleSet(ruleSet);
 	}
@@ -186,6 +198,33 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 		metaData1.getCategory().add(asses_ae_rule_cat);
 		rule1.setMetaData(metaData1);
 		
+		Condition condition = new Condition();
+		condition.getEval().add("adverseEvent.getGrade().getCode() <= Grade.MODERATE.getCode()");
+
+		Column column = new Column();
+		column.setObjectType("AdverseEvent");
+		column.setIdentifier("adverseEvent");
+		
+		
+		
+		
+		condition.getColumn().add(column);	
+		/**
+		 *  Make it or break it
+		 */
+		
+		Column column_fixed = new Column();
+		column_fixed.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
+		column_fixed.setIdentifier("adverseEventEvaluationResult");
+		
+		condition.getColumn().add(column_fixed);
+		
+		rule1.setCondition(condition);
+		
+		Notification action = new Notification();
+		action.setActionId("ROUTINE_AE");
+		rule1.setAction(action);
+		
 		this.ruleAuthoringServiceImpl.createRule(rule1);
 		
 		Rule rule2 = new Rule();
@@ -196,17 +235,30 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 		metaData2.getCategory().add(asses_ae_rule_cat);
 		rule2.setMetaData(metaData2);
 		
+
+		Condition condition2 = new Condition();
+		condition2.getEval().add("adverseEvent.getGrade().getCode() > Grade.MODERATE.getCode()");
+
+		Column column2 = new Column();
+		column2.setObjectType("AdverseEvent");
+		column2.setIdentifier("adverseEvent");
+		
+		
+		
+		
+		condition2.getColumn().add(column2);
+		
+		condition2.getColumn().add(column_fixed);
+		
+		rule2.setCondition(condition2);
+		
+		Notification action2 = new Notification();
+		action2.setActionId("SAE");
+		rule2.setAction(action2);
+		
 		this.ruleAuthoringServiceImpl.createRule(rule2);
 		
-		Rule rule3 = new Rule();
-		MetaData metaData3 = new MetaData();
-		metaData3.setName("Undetermined AE");
-		metaData3.setPackageName(packageName);
-		metaData3.setDescription("Undetermined AE");
-		metaData3.getCategory().add(asses_ae_rule_cat);
-		rule3.setMetaData(metaData3);
 		
-		this.ruleAuthoringServiceImpl.createRule(rule3);
 		
 		
 		
@@ -292,14 +344,15 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 
 	
 	public void testAll() throws Exception{
-		//this.testCreateBaseCategory();
-		//this.testCreateInstitutionCategory();
-		//this.testCreateSponsorCategory();
-		//this.testCreateStudyCategory();
-		//this.testSponsorSpecificCategory_DREAM_SPONSOR();
-		//this.testSponsorSpecificCategory_WORST_SPONSOR();
-		//this.testCreateRuleSet_Asses_AE_Rules();
-		//this.testCreateRulesForAssesAERulesRuleSet();
+		this.testCreateBaseCategory();
+		this.testCreateInstitutionCategory();
+		this.testCreateSponsorCategory();
+		this.testCreateStudyCategory();
+		this.testSponsorSpecificCategory_DREAM_SPONSOR();
+		this.testSponsorSpecificCategory_WORST_SPONSOR();
+		this.testRuleSetCategory_ASSESS_AE_RULES_For_DREAM_SPONSOR();
+		this.testCreateRuleSet_Asses_AE_Rules();
+		this.testCreateRulesForAssesAERulesRuleSet();
 		this.toTree();
 	}
 
@@ -315,5 +368,9 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 		return _str.replace(" ", "_");
 		
 		
+	}
+	
+	private Rule getRule1(){
+		return null;
 	}
 }
