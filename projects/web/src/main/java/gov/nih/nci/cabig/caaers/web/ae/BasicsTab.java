@@ -48,15 +48,15 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(new DefaultDateField(
             "aeReport.detectionDate", "Detection date", true));
-        DefaultSelectField attributionField = new DefaultSelectField(
-            "aeReport.attributionSummary", "Attribution to study", false, createAttributionOptions());
-        attributionField.getAttributes().put(InputField.DETAILS,
-            "Indicate the likelihood that the adverse event(s) reported here are attributable to any element of the study protocol.");
-        reportFieldGroup.getFields().add(attributionField);
 
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(new LongSelectField("grade", "Grade", true,
                 collectOptions(Arrays.asList(Grade.values()), "name", null)));
+        DefaultSelectField attributionField = new DefaultSelectField(
+            "attributionSummary", "Attribution to study", false, createAttributionOptions());
+        attributionField.getAttributes().put(InputField.DETAILS,
+            "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
+        mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(new DefaultSelectField(
             "hospitalization", "Hospitalization", true,
                 collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));

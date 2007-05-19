@@ -1,25 +1,12 @@
 /* TODO: some of these may be moved up to common */
-form.standard .row {
-    font-size: 11px;
-}
-form.standard .disabled {
-    background: transparent;
-    color: #666;
-}
 div.row div.label {
     width: 9em;
-    /*text-align: right; padding: 4px;*/
-    /*font-weight: bold; white-space: nowrap;*/
 }
 
 div.row div.value, div.row div.extra { margin-left: 11em; }
-
-/*
-.repeatedGroup {
-    border-top: 1px dotted #6E81A6;
-    margin: 1em 2em;
+div.row div.extra {
+    padding-top: 0.3em;
 }
-*/
 
 .main-fields {
     float: left;
