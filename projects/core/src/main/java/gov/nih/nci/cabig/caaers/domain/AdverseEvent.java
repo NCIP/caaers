@@ -39,6 +39,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     private Grade grade;
     private Hospitalization hospitalization;
     private Boolean expected = false;
+    private Attribution attributionSummary;
     private String comments;
 
     private AdverseEventReport report;
@@ -149,6 +150,16 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
 
     public void setExpected(Boolean expected) {
         this.expected = expected;
+    }
+
+    @Type(type = "attribution")
+    @Column(name = "attribution_summary_code")
+    public Attribution getAttributionSummary() {
+        return attributionSummary;
+    }
+
+    public void setAttributionSummary(Attribution attributionSummary) {
+        this.attributionSummary = attributionSummary;
     }
 
     public String getComments() {

@@ -38,7 +38,6 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
         assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
         assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
-        assertEquals("Wrong attribution summary", Attribution.POSSIBLE, loaded.getAttributionSummary());
     }
 
     public void testGetLabs() throws Exception {

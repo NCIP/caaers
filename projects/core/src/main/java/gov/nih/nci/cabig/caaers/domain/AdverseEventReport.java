@@ -36,7 +36,6 @@ import java.util.LinkedHashMap;
 public class AdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
-    private Attribution attributionSummary;
     private LazyListHelper lazyListHelper;
 
     private TreatmentInformation treatmentInformation;
@@ -198,15 +197,6 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
 
     public void setDetectionDate(Date detectionDate) {
         this.detectionDate = detectionDate;
-    }
-
-    @Type(type = "attribution")
-    public Attribution getAttributionSummary() {
-        return attributionSummary;
-    }
-
-    public void setAttributionSummary(Attribution attributionSummary) {
-        this.attributionSummary = attributionSummary;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
