@@ -4,7 +4,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 public enum Global {
 
 	RULE_CONTEXT("ruleContext", "", "Contextual Information which is shared across all the Rules being fired."),
-	ACTION_DISPATCHER("actionDispatcher", "", "");
+	ACTION_DISPATCHER("actionDispatcher", "", ""),ADVERSE_EVENT_RESULT("adverseEventEvaluationResult","","");
 
 	private String code;
 	private String displayResourceUri;
