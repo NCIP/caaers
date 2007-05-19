@@ -28,17 +28,17 @@ public class PriorTherapyTab<C extends AdverseEventInputCommand> extends AeTab<C
                 return "Medication " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("priorTherapy", "PriorTherapy", false));
+        fieldFactory.addField(new AutocompleterField("priorTherapy", "Therapy", false));
         fieldFactory.addField(new DefaultTextField("other", "Other", false));
-        fieldFactory.addField(new DefaultDateField("startDate", "startDate", false));
-        fieldFactory.addField(new DefaultDateField("endDate", "endDate", false));
+        fieldFactory.addField(new DefaultDateField("startDate", "Start Date", false));
+        fieldFactory.addField(new DefaultDateField("endDate", "End Date", false));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(C command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
-        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
+        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPriorTherapies().size());
         return groups;
     }
 

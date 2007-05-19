@@ -86,10 +86,9 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="instructions">
-            You are entering prior therapies for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}. If there's
-            an appropriate known therapies, enter that.  Otherwise, enter a description in the other
-            field.
+            If applicable, enter a Prior Therapy for the Primary Disease for ${command.assignment.participant.fullName}
+            on ${command.assignment.studySite.study.shortTitle}. Note: If the therapy you need is not listed, select 
+            Prior Therapy, NOS and enter the therapy in Other .
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">
