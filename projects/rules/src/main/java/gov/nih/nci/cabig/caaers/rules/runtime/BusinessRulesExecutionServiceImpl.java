@@ -54,6 +54,10 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
 			ruleContext.setInputObjects(objects);
 			objects.add(ruleContext);
 			
+			AdverseEventEvaluationResult adverseEventEvaluationResult = new AdverseEventEvaluationResult();
+			
+			objects.add(adverseEventEvaluationResult);
+			
 			Map customProperties = new HashMap();
 			customProperties.put(Global.ACTION_DISPATCHER.getCode(), new ActionDispatcher());
 			customProperties.put(Global.RULE_CONTEXT.getCode(), ruleContext);
