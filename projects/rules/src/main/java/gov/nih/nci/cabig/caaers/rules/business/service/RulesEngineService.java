@@ -101,8 +101,6 @@ public interface RulesEngineService {
 	
 	public List<RuleSet> getAllRuleSets();
 	
-	public void addRuleExecutionSet(final String bindUri,
-			final InputStream resourceAsStream, final Map properties);
 	
 	public void deployRuleSet(RuleSet ruleSet);
 	
