@@ -43,12 +43,22 @@ public interface RulesEngineService {
 	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName);
 	
 	
+	
+	
+	
+	public List<RuleSet> getRuleSetForSponsor(String sponsorName);
+	
+	public List<RuleSet> getRuleSetForInstitution(String institutionName);
+	
+	public List<RuleSet> getRuleSetForStudy(String studyShortTitle);
+	
+	
 	/**
 	 * This will be common for all the entities
 	 *
 	 */
 	
-	public void updateRuleSet();
+	public void updateRuleSet(RuleSet ruleSet);
 	
 	/**
 	 * createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName)
@@ -93,6 +103,10 @@ public interface RulesEngineService {
 	
 	public void addRuleExecutionSet(final String bindUri,
 			final InputStream resourceAsStream, final Map properties);
+	
+	public void deployRuleSet(RuleSet ruleSet);
+	
+	public void unDeployRuleSet(RuleSet set);
 	
 
 }
