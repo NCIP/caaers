@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
@@ -47,14 +48,26 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 	 * First asses the AE for Sponsor
 	 */
 	
-	AdverseEventEvaluationResult evaluationForSponsor = this.getEvaluationObject(ae, study, bindURI_ForSponsorLevelRules);
+	AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
+	try {
+		evaluationForSponsor = this.getEvaluationObject(ae, study, bindURI_ForSponsorLevelRules);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     
 	System.out.println(evaluationForSponsor.getMessage());
 	/**
 	 * Now fire rules for Study
 	 */
 	
-	AdverseEventEvaluationResult evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
+	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
+	try {
+		evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	
 	/**
 	 * Now we can compare both the decisions 
@@ -114,7 +127,7 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 		
 	}
 	
-	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, String bindURI){
+	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, String bindURI) throws Exception{
 		
 		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 		
@@ -132,8 +145,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 			/**
 			 * Don't do anything, it means there are no rules for this package
 			 */
-			//ex.printStackTrace();
-			return evaluationForSponsor;
+			throw new RuleException("There are no rule configured for this sponsor",ex);
+			//return evaluationForSponsor;
 		}
 		
 		
