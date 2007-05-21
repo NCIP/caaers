@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Rhett Sutphin
  */
-public class CategoriesTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class CategoriesTab<C extends CreateAdverseEventCommand> extends AeTab<C> {
     private RepeatingFieldGroupFactory fieldFactory;
     private InputFieldGroup reportFieldGroup;
     private CtcDao ctcDao;
@@ -48,9 +48,9 @@ public class CategoriesTab<C extends AdverseEventInputCommand> extends AeTab<C> 
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(CreateAdverseEventCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
-        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getCtcCategories().size());
+        groups.addRepeatingFieldGroupFactory(fieldFactory,command.getCategories().size());
         return groups;
     }
     
