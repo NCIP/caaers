@@ -123,7 +123,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 	}
 
-	public void createRuleSetForInstitution(String ruleSetName, String institutionName) {
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) {
 		// TODO Auto-generated method stub
 		
 		RuleSet ruleSet = new RuleSet();
@@ -150,9 +150,11 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			e.printStackTrace();
 		}
 		
+		return  ruleSet;
+		
 	}
 
-	public void createRuleSetForSponsor(String ruleSetName, String sponsorName) {
+	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName) {
 		// TODO Auto-generated method stub
 		
 		RuleSet ruleSet = new RuleSet();
@@ -178,10 +180,10 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return ruleSet;
 	}
 
-	public void createRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) {
+	public RuleSet createRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) {
 		// TODO Auto-generated method stub
 		
 		RuleSet ruleSet = new RuleSet();
@@ -207,22 +209,45 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return ruleSet;
 	}
 
 	public void deployRuleSet(RuleSet ruleSet) {
 		// TODO Auto-generated method stub
 		
+		String bindUri = ruleSet.getName();
+		try {
+			ruleDeploymentService.deregisterRuleSet(bindUri);
+			ruleDeploymentService.registerRuleSet(bindUri, bindUri);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public List<RuleSet> getAllRuleSets() {
 		// TODO Auto-generated method stub
-		return null;
+		List<RuleSet> ruleSets = null;
+		try {
+			ruleSets = ruleAuthoringService.getAllRuleSets();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ruleSets;
 	}
 
 	public Rule getRule(String uuID) {
 		// TODO Auto-generated method stub
-		return null;
+		Rule rule = null;
+		try {
+			rule= ruleAuthoringService.getRule(uuID);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rule;
 	}
 
 	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) {
@@ -260,9 +285,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return null;
 	}
 
-	public void unDeployRuleSet(RuleSet set) {
+	public void unDeployRuleSet(RuleSet ruleSet) {
 		// TODO Auto-generated method stub
-		
+		String bindUri = ruleSet.getName();
+		try {
+			ruleDeploymentService.deregisterRuleSet(bindUri);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void updateRule(Rule rule) {
