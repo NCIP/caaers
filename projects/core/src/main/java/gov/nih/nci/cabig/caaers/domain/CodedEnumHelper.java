@@ -9,11 +9,11 @@ import java.util.HashMap;
  *
  * @author Rhett Sutphin
  */
-class CodedEnumHelper extends EnumHelper {
+public class CodedEnumHelper extends EnumHelper {
     private static Map<Class<? extends CodedEnum>, Map<Integer, Object>> byClassAndCode
         = new HashMap<Class<? extends CodedEnum>, Map<Integer, Object>>();
 
-    static <T extends CodedEnum> void register(T instance) {
+    public static <T extends CodedEnum> void register(T instance) {
         Class<? extends CodedEnum> classKey = instance.getClass();
         if (!byClassAndCode.containsKey(classKey)) {
             byClassAndCode.put(classKey, new HashMap<Integer, Object>());
@@ -22,12 +22,12 @@ class CodedEnumHelper extends EnumHelper {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends CodedEnum> T getByClassAndCode(Class<T> clazz, int code) {
+    public static <T extends CodedEnum> T getByClassAndCode(Class<T> clazz, int code) {
         Map<Integer, Object> byCode = byClassAndCode.get(clazz);
         return byCode == null ? null : (T) byCode.get(code);
     }
 
-    static <T extends Enum<T> & CodedEnum> String toStringHelper(T instance) {
+    public static <T extends Enum<T> & CodedEnum> String toStringHelper(T instance) {
         return new StringBuilder()
             .append(instance.getCode()).append(": ")
             .append(instance.getDisplayName()).toString();
