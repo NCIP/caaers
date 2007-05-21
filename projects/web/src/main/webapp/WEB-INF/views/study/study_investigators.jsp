@@ -25,11 +25,6 @@ function fireAction(action, selectedSite, selectedInvestigator){
 	document.form._action.value=action;
 	document.form._selectedSite.value=selectedSite;
 	document.form._selectedInvestigator.value=selectedInvestigator;
-	// need to disable validations while submitting
-//	role = 'studySites['+selectedSite+'].studyInvestigators['+selectedInvestigator+'].roleCode';
-//	$(role).className='none';
-//	status = 'studySites['+selectedSite+'].studyInvestigators['+selectedInvestigator+'].statusCode';
-//	$(status).className='none';
 	document.form.submit();
 	fireListeners(selected);
 }
@@ -123,12 +118,13 @@ Event.observe(window, "load", function() {
 </head>
 <body>
 
+<tags:tabForm tab="${tab}" flow="${flow}" formName="form">    
+<jsp:attribute name="singleFields">
+	      
 <table border="0" id="table1" cellspacing="10" width="100%">
 	<tr>
 		<td width="75%" valign="top">
-	    <tags:tabForm tab="${tab}" flow="${flow}" formName="form">
-        <jsp:attribute name="singleFields">
-	   	<div>
+	    	<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selectedSite" value="">
 			<input type="hidden" name="_selectedInvestigator" value="">
@@ -196,9 +192,7 @@ Event.observe(window, "load", function() {
 		</tr>
 		</c:forEach>
 		</table>					
-	    </jsp:attribute>
-	    </tags:tabForm>
-	  </td>
+	    </td>
 
       <td valign="top" width="25%">
 		<chrome:box id="Summary" title="Summary">
@@ -236,5 +230,9 @@ Event.observe(window, "load", function() {
 	</td>
 	  </tr>
 	</table>
+	
+ </jsp:attribute>	 
+</tags:tabForm>
+	 
 </body>
 </html>
