@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Priyatam
  */
 public class EditStudyController extends StudyController {
-    private static final Log log = LogFactory.getLog(EditStudyController.class);
+	
+	private static final Log log = LogFactory.getLog(EditStudyController.class);
 
     public EditStudyController() {
         setBindOnNewForm(true);
@@ -61,25 +63,22 @@ public class EditStudyController extends StudyController {
         flow.addTab(new DiseaseTab());
     }
 
-    /**
-     * Post processing : Study needs to be saved on every 'update' event
-     */
-    @Override
-    protected void postProcessPage(
-        HttpServletRequest request, Object oCommand, Errors errors, int page
-    ) throws Exception {
-        super.postProcessPage(request, oCommand, errors, page);
-        Study study = (Study) oCommand;
-        if ("update".equals(request.getParameter("_action"))) {
-            try {
-                log.debug("Updating Study");
-                studyDao.save(study);
-            } catch (RuntimeException e) {
-                log.debug("Unable to update Study");
-                throw e;
-            }
-        }
-    }
+//    @Override
+//    protected void postProcessPage(
+//        HttpServletRequest request, Object oCommand, Errors errors, int page
+//    ) throws Exception {
+//        super.postProcessPage(request, oCommand, errors, page);
+//        Study study = (Study) oCommand;
+//        if ("update".equals(request.getParameter("_action"))) {
+//            try {
+//                log.debug("Updating Study");
+//                studyDao.save(study);
+//            } catch (RuntimeException e) {
+//                log.debug("Unable to update Study");
+//                throw e;
+//            }
+//        }
+//    }
 
     @Override
     protected ModelAndView processFinish(
