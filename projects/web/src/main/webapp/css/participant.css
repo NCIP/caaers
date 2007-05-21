@@ -1,0 +1,9 @@
+.leftpane {
+    float: left;
+    padding: 5px;
+}
+.endpanes {
+    width: 1px;
+    z-index: 0;
+    overflow: visible;
+}

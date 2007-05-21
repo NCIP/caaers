@@ -8,18 +8,7 @@
 <html>
 <head>
     <title>Add investigator</title>
-<style type="text/css">
-        div.label {
-            width: 35%;
-        }
-        div.submit {
-            text-align: right;
-        }
-        form {
-            width: 20em;
-        }
-    </style>
-
+	 <tags:stylesheetLink name="participant"/>
 	<script language="JavaScript" type="text/JavaScript">
 
 	function validatePage(){
@@ -54,78 +43,73 @@
 		<input type="hidden" name="_finish" value="true">
 	</div>
     <tags:errors path="*"/>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
-        <tr><td>
-        	
-            <table width="50%" border="0" cellspacing="0" cellpadding="0" class="contentAreaL">
-        	<tr valign="top">
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                    class="heightControl"></td>
-                <td width="75%"><img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
-                    height="1" class="heightControl"></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>First Name:</td>
-                <td><form:input path="firstName" /></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>Last Name:</td>
-                <td><form:input path="lastName" /></td>
-            </tr>
-            <tr valign="top">
-                <td class="label">Maiden Name:</td>
-                <td><form:input path="maidenName" /></td>
-            </tr>
-            <tr>
-                <td class="label">Middle Name:</td>
-                <td><form:input path="middleName" /></td>
-            </tr>
-            <tr>
-                <td class="label">NCI Identifier:</td>
-                <td><form:input path="nciIdentifier" /></td>
-            </tr>
-            
-        </table>
-        </td>
-        	<td><img src="<chrome:imageUrl name="spacer.gif"/>" width="30" height="1"
-                    class="heightControl"></td>
-        <td>
-        <table width="50%" border="0" cellspacing="0" cellpadding="0" class="contentAreaL">
-            <tr valign="top">
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                    class="heightControl"></td>
-                <td width="75%"><img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
-                    height="1" class="heightControl"></td>
-            </tr>
-        	<tr valign="top">
-            
-                <td class="label"><span class="red">*</span>Date of Birth:</td>
-                <td><tags:dateInput path="dateOfBirth"/></td>
-            </tr>
-            <tr valign="top">
-                <td class="label">Ethnicity:</td>
-                <td><form:select path="ethnicity">
-					<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-            <tr valign="top">
-                <td class="label">Race:</td>
-                <td><form:select path="race">
-					<form:options items="${race}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-            <tr valign="top">
-                <td class="label">Gender:</td>
-                <td><form:select path="gender">
-					<form:options items="${genders}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-        </table>
-        </td>
-        </tr>
-        </table>
+    
+     <div class="leftpane">
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>First Name:</div>
+	            <div class="value"><form:input path="firstName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Last Name:</div>
+	            <div class="value"><form:input path="lastName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Maiden Name:</div>
+	            <div class="value"><form:input path="maidenName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Middle Name:</div>
+	            <div class="value"><form:input path="middleName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">NCI Identifier:</div>
+	            <div class="value"><form:input path="nciIdentifier" /></div>
+	        </div>
+	        
+        </div>
         
-		<br><br>
+        <div class="leftpane">
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Date of Birth:</div>
+	            <div class="value"><tags:dateInput path="dateOfBirth"/></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Ethnicity:</div>
+	            <div class="value">
+	            		<form:select path="ethnicity">
+							<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Race:</div>
+	            <div class="value">
+	            		<form:select path="race">
+						<form:options items="${race}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Gender:</div>
+	            <div class="value">
+	            		<form:select path="gender">
+						<form:options items="${genders}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+        </div>
+        
+        <div class="endpanes">&nbsp;</div>
+    
+    
+    
 		
 		<br><br>
 
@@ -169,6 +153,7 @@
 						</c:forEach> 
 																						
 					</table> 
+				
                <input type="submit" value="Save"/>
         </form:form>
     </chrome:box>    

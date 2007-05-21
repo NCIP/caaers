@@ -11,6 +11,7 @@
 
 <html>
 <head>
+<tags:stylesheetLink name="participant"/>
 </head>
 <body>
     <p class="instructions">
@@ -19,73 +20,65 @@
     
     <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="singleFields">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table1">
-        <tr><td>
+        
+        <div class="leftpane">
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>First Name:</div>
+	            <div class="value"><form:input path="firstName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Last Name:</div>
+	            <div class="value"><form:input path="lastName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Maiden Name:</div>
+	            <div class="value"><form:input path="maidenName" /></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Middle Name:</div>
+	            <div class="value"><form:input path="middleName" /></div>
+	        </div>
+        </div>
+        
+        <div class="leftpane">
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Date of Birth:</div>
+	            <div class="value"><tags:dateInput path="dateOfBirth"/></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Ethnicity:</div>
+	            <div class="value">
+	            		<form:select path="ethnicity">
+							<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Race:</div>
+	            <div class="value">
+	            		<form:select path="race">
+						<form:options items="${race}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label"><span class="red">*</span>Gender:</div>
+	            <div class="value">
+	            		<form:select path="gender">
+						<form:options items="${genders}" itemLabel="desc" itemValue="code" />
+					    </form:select>
+				</div>
+	        </div>
+        </div>
+        
+        <div class="endpanes">&nbsp;</div>
 
-            <table width="50%" border="0" cellspacing="0" cellpadding="0" class="contentAreaL">
-        	<tr valign="top">
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                    class="heightControl"></td>
-                <td width="75%"><img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
-                    height="1" class="heightControl"></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>First Name:</td>
-                <td><form:input path="firstName" /></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>Last Name:</td>
-                <td><form:input path="lastName" /></td>
-            </tr>
-            <tr valign="top">
-                <td class="label">Maiden Name:</td>
-                <td><form:input path="maidenName" /></td>
-            </tr>
-            <tr>
-                <td class="label">Middle Name:</td>
-                <td><form:input path="middleName" /></td>
-            </tr>
-            
-        </table>
-        </td>
-        	<td><img src="<chrome:imageUrl name="spacer.gif"/>" width="30" height="1"
-                    class="heightControl"></td>
-        <td>
-        <table width="50%" border="0" cellspacing="0" cellpadding="0" class="contentAreaL">
-            <tr valign="top">
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                    class="heightControl"></td>
-                <td width="75%"><img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
-                    height="1" class="heightControl"></td>
-            </tr>
-        	<tr valign="top">
-            
-                <td class="label"><span class="red">*</span>Date of Birth:</td>
-                <td><tags:dateInput path="dateOfBirth"/></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>Ethnicity:</td>
-                <td><form:select path="ethnicity">
-					<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>Race:</td>
-                <td><form:select path="race">
-					<form:options items="${race}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-            <tr valign="top">
-                <td class="label"><span class="red">*</span>Gender:</td>
-                <td><form:select path="gender">
-					<form:options items="${genders}" itemLabel="desc" itemValue="code" />
-				    </form:select></td>
-            </tr>
-        </table>
-        </td>
-        </tr>
-        </table>
-        <br><br>
 	<table width="700" border="0" cellspacing="0" cellpadding="0"
 		id="table1">
 		<tr>

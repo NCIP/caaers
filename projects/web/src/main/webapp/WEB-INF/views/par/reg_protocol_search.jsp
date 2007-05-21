@@ -71,6 +71,7 @@ Please choose a Study and then press Save & Continue to proceed
                     <ec:table items="command.studies" var="study"
                         action="${pageContext.request.contextPath}/pages/newParticipant"
                         imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+                        filterable="false"
                         showPagination="false" form="command"
                         cellspacing="0" cellpadding="0" border="0" width="80%" style=""
                         styleClass="">
@@ -79,15 +80,14 @@ Please choose a Study and then press Save & Continue to proceed
                                 sortable="false" title=" ">
                                 <form:radiobutton path="studyId" value="${study.id}" />
                             </ec:column>
-                            <ec:column property="shortTitle" width="6" title="Short Title" />
-                            <ec:column property="longTitle" title="Long Title" />
-                            <ec:column property="description" title="Description" />
-                            <ec:column property="principalInvestigatorCode"
-                                title="InvestigatorCode" />
-                            <ec:column property="principalInvestigatorName"
-                                title="InvestigatorName" />
-                            <ec:column property="primarySponsorCode" title="Sponsor Code" />
-                            <ec:column property="primarySponsorName" title="Sponsor Name" />
+                            <ec:column property="shortTitle" title="Short Title" />
+                            <ec:column property="transient1" title="Primary Identifier">	
+                				<c:forEach items="${study.identifiers}" varStatus="status" var="identifier">
+                					<c:if test='${identifier.primaryIndicator == "true" }'>
+                					${identifier.value}
+									</c:if>
+								</c:forEach>	
+                			</ec:column>             
                         </ec:row>
                     </ec:table>
     </jsp:attribute>

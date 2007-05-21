@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 // caaers imports
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -33,6 +34,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
     private StudySiteDao studySiteDao;
     private StudyService studyService;
+    private StudyDao studyDao;
     private ParticipantDao participantDao;
     private ListValues listValues;
     
@@ -68,7 +70,15 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		this.studySiteDao = studySiteDao;
 	}
     
-    public CreateParticipantController() {
+    public StudyDao getStudyDao() {
+		return studyDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+	public CreateParticipantController() {
         setCommandClass(NewParticipantCommand.class);
         setFlow(new Flow<NewParticipantCommand>("Create Participant"));
         getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
@@ -109,13 +119,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
                 refdata.put("searchType", listValues.getStudySearchType());
                 return refdata;
             }
+            /*
             @Override
             public void validate(NewParticipantCommand command, Errors errors) {
                 boolean studySiteArray = command.getStudySiteArray() == null || command.getStudySiteArray().length ==0;
                 if (studySiteArray) errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
             }
             
-            /*
+            
             @Override
             public boolean isAllowDirtyForward() {
                 return false;
@@ -155,6 +166,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     	String searchtext = participantCommand.getSearchText();
     	String type       = participantCommand.getSearchType();
     	List<StudySite> studySites = new ArrayList<StudySite>();
+    	List<Study> studies = null;
     	// This will happen on page #2
     	if (searchtext != null && type != null && !searchtext.equals(""))
     	{
@@ -165,14 +177,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
     			study.setShortTitle(searchtext);
     		else if ("lt".equals(type))
     			study.setLongTitle(searchtext);
-    		else if ("d".equals(type))
-    			study.setDescription(searchtext);
-    		else if ("psc".equals(type))
-    			study.setPrimarySponsorCode(searchtext);
-    		else if ("pc".equals(type))
-    			study.setPhaseCode(searchtext);
+    		else if ("idtf".equals(type)) {
+    			Identifier identifier = new Identifier();
+    			identifier.setValue(searchtext);
+    			study.addIdentifier(identifier);
+    			studies = studyDao.searchByExample(study, true);
+    		}
 
-    		List<Study> studies = studyService.search(study);
+    		if (studies == null ) studies = studyService.search(study);
     		participantCommand.setStudies(studies);
     		participantCommand.setSearchTypeText("");
     		participantCommand.setSearchType("");

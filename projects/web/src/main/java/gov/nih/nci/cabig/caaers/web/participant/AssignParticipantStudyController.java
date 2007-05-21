@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -121,18 +122,19 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
     		log.debug("Search text : " + searchtext + "Type : " + type);
     		Study  study = new Study();
     		apsCommand.setStudies(new ArrayList<Study>());
+    		List<Study> studies = null;
     		if ("st".equals(type))
     			study.setShortTitle(searchtext);
     		else if ("lt".equals(type))
     			study.setLongTitle(searchtext);
-    		else if ("d".equals(type))
-    			study.setDescription(searchtext);
-    		else if ("psc".equals(type))
-    			study.setPrimarySponsorCode(searchtext);
-    		else if ("pc".equals(type))
-    			study.setPhaseCode(searchtext);
+    		else if ("idtf".equals(type)) {
+    			Identifier identifier = new Identifier();
+    			identifier.setValue(searchtext);
+    			study.addIdentifier(identifier);
+    			studies = studyDao.searchByExample(study, true);
+    		}
 
-    		List<Study> studies = studyService.search(study);
+    		if (studies == null ) studies = studyService.search(study);
     		apsCommand.setStudies(studies);
     		apsCommand.setStudyText("");
     	}

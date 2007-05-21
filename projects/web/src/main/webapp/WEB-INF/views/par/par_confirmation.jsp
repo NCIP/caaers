@@ -13,6 +13,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Review and Submit</title>
+<tags:stylesheetLink name="participant"/>
 <script>
 function submitPage(s){
 	document.getElementById("nextView").value=s;
@@ -31,75 +32,61 @@ function submitPage(s){
     <jsp:attribute name="singleFields">
         <input type="hidden" id="_finish" name="_finish"/>
         <br>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
-    	<tr>
-    	<td width="30%" valign="top" class="contentAreaL">
-        <table border="0" cellspacing="0" cellpadding="0"
-               class="table1">
-               <strong>Participant Details</strong>
-            <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-            </tr>
-            <tr>
-                <td class="label">First Name:</td>
-                <td width="75%" valign="top">${command.firstName}</td>
-            </tr>
-            <tr>
-                <td class="label">Last Name:</td>
-                <td width="75%" valign="top">${command.lastName}</td>
-            </tr>
-            <tr>
-                <td class="label">Middle Name:</td>
-                <td>${command.middleName}</td>
-            </tr>
-            <tr>
-                <td class="label"><strong>Maiden Name:</strong>
-                <td valign="top">${command.maidenName}</td>
-            </tr>
-            <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-            </tr>
-            <tr>
-                <td class="label">Birth Date:</td>
-                <td><tags:formatDate value="${command.dateOfBirth}"/></td>
-            </tr>
-            <tr>
-                <td class="label">Ethnicity:</td>
-                <td>${command.ethnicity}</td>
-            </tr>
-            <tr>
-                <td class="label">Race:</td>
-                <td>${command.race}</td>
-            </tr>
-            <tr>
-                <td class="label">Gender:</td>
-                <td>${command.gender}</td>
-            </tr>
-        </table>
-        </td>
         
-        <td width="50%" valign="top" class="contentAreaL">
-        <table border="0" cellspacing="0" cellpadding="0"
-               class="table1">
-               <strong>Assigned to Study</strong>
-               <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-               </tr>
-               <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
-               		<tr><td><strong><c:out value="${status.count}"/>.</strong></td></tr>
-					<tr><td class="label">Study Short Title:</td><td><c:out value="${studySite.study.shortTitle}"/></td></tr>
-					<tr><td class="label">Site:</td><td><c:out value="${studySite.site.name}"/></td></tr>
-					</tr>
+         <div class="leftpane">
+	        <div class="row">
+	            <div class="label">First Name:</div>
+	            <div class="value">${command.firstName}</div>
+	        </div>
+	        
+	         <div class="row">
+	            <div class="label">Last Name:</div>
+	            <div class="value">${command.lastName}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Maiden Name:</div>
+	            <div class="value">${command.maidenName}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Middle Name:</div>
+	            <div class="value">${command.middleName}</div>
+	        </div>
+	        
+	         <div class="row">
+	            <div class="label">Date of Birth:</div>
+	            <div class="value"><tags:formatDate value="${command.dateOfBirth}"/></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Ethnicity:</div>
+	            <div class="value">${command.ethnicity}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Race:</div>
+	            <div class="value">${command.race}</div>
+			</div>
+	        
+	        
+	        <div class="row">
+	            <div class="label">Gender:</div>
+	            <div class="value">${command.gender}</div>
+	        </div>
+	              
+	     </div>
+	     
+	     <div class="leftpane">
+	     
+	     	<div class="row"><div class="label"><strong>Assigned to Study</strong></div></div><br>
+	     	<c:forEach var="studySite" items="${command.studySites}" varStatus="status"> 
+               		 
+					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${studySite.study.shortTitle}"/></div></div>
+					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${studySite.site.name}"/></div></div>
 			   </c:forEach>
-        </table>
-        </td>
-        </tr>
-   </table> 
+			   
+	     </div>   
     </jsp:attribute>
 </tags:tabForm>
 </body>

@@ -16,10 +16,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>View Participant</title>
+<tags:stylesheetLink name="participant"/>
 <script>
 function submitPage(s){
 	document.getElementById("nextView").value=s;
-	document.getElementById("command").submit();
+	document.getElementById("participant").submit();
 }
 
 </script>
@@ -29,6 +30,68 @@ function submitPage(s){
    You have successfully created a new Participant
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
+
+
+  <div class="leftpane">
+	        <div class="row">
+	            <div class="label">First Name:</div>
+	            <div class="value">${participant.firstName}</div>
+	        </div>
+	        
+	         <div class="row">
+	            <div class="label">Last Name:</div>
+	            <div class="value">${participant.lastName}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Maiden Name:</div>
+	            <div class="value">${participant.maidenName}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Middle Name:</div>
+	            <div class="value">${participant.middleName}</div>
+	        </div>
+	        
+	         <div class="row">
+	            <div class="label">Date of Birth:</div>
+	            <div class="value"><tags:formatDate value="${participant.dateOfBirth}"/></div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Ethnicity:</div>
+	            <div class="value">${participant.ethnicity}</div>
+	        </div>
+	        
+	        <div class="row">
+	            <div class="label">Race:</div>
+	            <div class="value">${participant.race}</div>
+			</div>
+	        
+	        
+	        <div class="row">
+	            <div class="label">Gender:</div>
+	            <div class="value">${participant.gender}</div>
+	        </div>
+	              
+	     </div>
+	     
+	     <div class="leftpane">
+	   
+	     	<div class="row"><div class="label"><strong>Assigned to Study</strong></div></div><br>
+	     	<c:forEach var="assignment" items="${participant.assignments}" varStatus="status"> 
+               		 
+					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${assignment.studySite.study.shortTitle}"/></div></div>
+					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.site.name}"/></div></div>
+			   </c:forEach>
+			   
+	     </div>
+	     
+	     <div class="endpanes">&nbsp;</div>   
+
+
+
+<%--
         <br>
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
     	<tr>
@@ -98,6 +161,8 @@ function submitPage(s){
         </table>
         </td>
         </tr>
-   </table>            
+   </table>    
+   
+   --%>        
 </chrome:box>
 </body>

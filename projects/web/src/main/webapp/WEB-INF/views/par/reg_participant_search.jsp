@@ -65,6 +65,7 @@ Please use the form above to search for a Participant and assign it to <b>${comm
         var="participant"
         action="${pageContext.request.contextPath}/pages/home"
         imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+        filterable="false"
         showPagination="false"
         cellspacing="0" cellpadding="0" border="0" width="80%" style="" styleClass="">
         <ec:row highlightRow="true">
