@@ -5,7 +5,7 @@ public class AdverseEventEvaluationResult {
 	private String message;
 	
 	public AdverseEventEvaluationResult(){
-		this.message="XYZ";
+		this.message=null;
 	}
 	
 	public void setMessage(String message){
