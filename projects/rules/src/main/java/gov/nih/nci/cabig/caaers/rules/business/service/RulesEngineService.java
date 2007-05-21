@@ -46,11 +46,11 @@ public interface RulesEngineService {
 	
 	
 	
-	public List<RuleSet> getRuleSetForSponsor(String sponsorName);
+	public List<RuleSet> getAllRuleSetForSponsor(String sponsorName);
 	
-	public List<RuleSet> getRuleSetForInstitution(String institutionName);
+	public List<RuleSet> getAllRuleSetForInstitution(String institutionName);
 	
-	public List<RuleSet> getRuleSetForStudy(String studyShortTitle);
+	public List<RuleSet> getAllRuleSetForStudy(String studyShortTitle, String sponsorName);
 	
 	
 	/**
