@@ -13,6 +13,11 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 
 import java.rmi.RemoteException;
 import java.util.List;
+/**
+ * 
+ * @author vinaykumar
+ *
+ */
 
 public class RulesEngineServiceImpl implements RulesEngineService{
 	
@@ -252,37 +257,83 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) {
 		// TODO Auto-generated method stub
-		return null;
+		RuleSet ruleSet = null;
+		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
+		try {
+			ruleAuthoringService.getRuleSet(packageName);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ruleSet;
 	}
+	/**
+	 * I really have to investigate into this
+	 * We may have to have handle to repositoyr service and do something from there
+	 */
 
-	public List<RuleSet> getRuleSetForInstitution(String institutionName) {
+	public List<RuleSet> getAllRuleSetForInstitution(String institutionName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) {
 		// TODO Auto-generated method stub
-		return null;
+		RuleSet ruleSet = null;
+		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
+		try {
+			ruleAuthoringService.getRuleSet(packageName);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ruleSet;
 	}
+	
+	/**
+	 * I really have to investigate into this
+	 * We may have to have handle to repositoyr service and do something from there
+	 */
 
-	public List<RuleSet> getRuleSetForSponsor(String sponsorName) {
+	public List<RuleSet> getAllRuleSetForSponsor(String sponsorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) {
 		// TODO Auto-generated method stub
-		return null;
+		RuleSet ruleSet = null;
+		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
+		try {
+			ruleAuthoringService.getRuleSet(packageName);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ruleSet;
+		
 	}
+	
+	/**
+	 * I really have to investigate into this
+	 * We may have to have handle to repositoyr service and do something from there
+	 */
 
-	public List<RuleSet> getRuleSetForStudy(String studyShortTitle) {
+	public List<RuleSet> getAllRuleSetForStudy(String studyShortTitle,String sponsorName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public List<Rule> getRulesByCategory(String categoryPath) {
 		// TODO Auto-generated method stub
-		return null;
+		List<Rule> rules =null;
+		try {
+			rules = ruleAuthoringService.getRulesByCategory(categoryPath);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rules;
 	}
 
 	public void unDeployRuleSet(RuleSet ruleSet) {
@@ -298,12 +349,22 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public void updateRule(Rule rule) {
 		// TODO Auto-generated method stub
-		
+		try {
+			ruleAuthoringService.updateRule(rule);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void updateRuleSet(RuleSet ruleSet) {
 		// TODO Auto-generated method stub
-		
+		try {
+			ruleAuthoringService.updateRuleSet(ruleSet);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
