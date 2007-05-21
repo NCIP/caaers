@@ -9,82 +9,35 @@
 <head>
     <title>Add research staff</title>
     <tags:stylesheetLink name="participant"/>
-
 </head>
 <body>
-<p id="instructions">
-        You are creating a new Research Staff
-    </p>
-    
-    <chrome:box title="Research Staff" id="research_staff" autopad="true">
     <form:form method="post" cssClass="standard" name="studySiteForm">
-	<div>		
+    <chrome:box title="Research Staff" id="research_staff" autopad="true">
+   	<div>		
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
 		<input type="hidden" name="_finish" value="true">
 	</div>
+	<p id="instructions">
+        Add a new Research Staff
+    </p>
     <tags:errors path="*"/>
     
-    <div class="leftpane">
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>First Name:</div>
-	            <div class="value"><form:input path="firstName" /></div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>Last Name:</div>
-	            <div class="value"><form:input path="lastName" /></div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label">Maiden Name:</div>
-	            <div class="value"><form:input path="maidenName" /></div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label">Middle Name:</div>
-	            <div class="value"><form:input path="middleName" /></div>
-	        </div>
-        </div>
-        
-        <div class="leftpane">
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>Date of Birth:</div>
-	            <div class="value"><tags:dateInput path="dateOfBirth"/></div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>Ethnicity:</div>
-	            <div class="value">
-	            		<form:select path="ethnicity">
-							<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>Race:</div>
-	            <div class="value">
-	            		<form:select path="race">
-						<form:options items="${race}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><span class="red">*</span>Gender:</div>
-	            <div class="value">
-	            		<form:select path="gender">
-						<form:options items="${genders}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-        </div>
-        
-        <div class="endpanes">&nbsp;</div>
-    
-        <input type="submit" value="Save"/>
-        </form:form>
+    <div class="content">
+       <div class="row">
+           <div class="label"><span class="red">*</span>First Name:</div>
+           <div class="value"><form:input path="firstName" /></div>
+       </div>
+       <div class="row">
+           <div class="label"><span class="red">*</span>Last Name:</div>
+           <div class="value"><form:input path="lastName" /></div>
+       </div>
+    </div>
+    <br>
+    <br>
+    <input type="submit" value="Save"/>
     </chrome:box>    
+    </form:form>
+   
 </body>
 </html>
