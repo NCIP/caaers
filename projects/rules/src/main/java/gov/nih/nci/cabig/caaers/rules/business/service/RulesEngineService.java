@@ -20,11 +20,11 @@ public interface RulesEngineService {
 	 *  For creating RuleSets
 	 *
 	 */
-	public void createRuleSetForSponsor( String ruleSetName,String sponsorName);
+	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName);
 	
-	public void createRuleSetForInstitution(String ruleSetName, String institutionName);
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName);
 	
-	public void createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName);
+	public RuleSet createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName);
 	
 	
 	
