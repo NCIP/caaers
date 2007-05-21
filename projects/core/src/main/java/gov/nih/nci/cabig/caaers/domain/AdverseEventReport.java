@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -44,7 +46,11 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     private Physician physician;
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
-
+    
+    private ReportSchedule reportSchedule;
+  
+    private ReportStatus status;
+    
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
@@ -55,6 +61,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(AdverseEventPriorTherapy.class);
+        status = ReportStatus.PENDING;
     }
 
     private <T extends AdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
@@ -338,4 +345,40 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     public void setParticipantHistory(ParticipantHistory participantHistory) {
         this.participantHistory = participantHistory;
     }
+
+	/**
+	 * @return the reportSchedule
+	 */
+//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
+//    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Transient
+	public ReportSchedule getReportSchedule() {
+		return reportSchedule;
+	}
+
+	/**
+	 * @param reportSchedule the reportSchedule to set
+	 */
+	public void setReportSchedule(ReportSchedule reportSchedule) {
+		this.reportSchedule = reportSchedule;
+	}
+
+	/**
+	 * @return the status
+	 */
+//	@Column(name="status_code")
+//	@Type(type="reportStatus")
+	@Transient
+	public ReportStatus getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(ReportStatus status) {
+		this.status = status;
+	}
+    
+    
 }
