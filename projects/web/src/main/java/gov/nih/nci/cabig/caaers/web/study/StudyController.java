@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This uses AbstractTabbedFlowFormController to implement tabbed workflow
  * @author Priyatam
  */
-public abstract class StudyController<C extends Study> extends AutomaticSaveFlowFormController<C, Study, StudyDao>{
+public abstract class StudyController extends AbstractTabbedFlowFormController<Study>{
     private static final Log log = LogFactory.getLog(StudyController.class);
     protected StudyDao studyDao;
     private SiteDao siteDao;
@@ -46,21 +46,11 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 
     public StudyController() {
         setCommandClass(Study.class);
-        Flow<C> flow = new Flow<C>("Create Study");
+        Flow<Study> flow = new Flow<Study>("Create Study");
         layoutTabs(flow);
         setFlow(flow);
     }
 
-    @Override
-    protected StudyDao getDao() {
-        return studyDao;
-    }
-
-    @Override
-    protected Study getPrimaryDomainObject(C command) {
-        return command;
-    }
-    
     /**
      * Template method to let the subclass decide the order of tab
      */
