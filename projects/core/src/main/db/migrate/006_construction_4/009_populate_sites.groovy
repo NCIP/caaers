@@ -5,9 +5,9 @@ class PopulateSites extends edu.northwestern.bioinformatics.bering.Migration {
     }
 
     void m0() {
-        insert('sites', [ id: 1, name: "National Cancer Institute"], primaryKey: false)
-      	insert('sites', [ id: 2, name: "Wake Forest Comprehensive Cancer Center"], primaryKey: false)
-        insert('sites', [ id: 3, name: "Duke University Comprehensive Cancer Center"], primaryKey: false)
+        insert('sites', [ id: 2, name: "National Cancer Institute"], primaryKey: false)
+      	insert('sites', [ id: 3, name: "Wake Forest Comprehensive Cancer Center"], primaryKey: false)
+        insert('sites', [ id: 4, name: "Duke University Comprehensive Cancer Center"], primaryKey: false)
     }
 
     void down() {
