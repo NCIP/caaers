@@ -17,11 +17,11 @@ public interface AdverseEventEvaluationService {
 	
 	
 	
-	public String assesAdverseEvent(AdverseEvent ae, Study study);
+	public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception;
 	
 	//public String identifyAdverseEventType()
 	
-	public String evaluateSAEReportSchedule(AdverseEventReport aeReport);
+	public String evaluateSAEReportSchedule(AdverseEventReport aeReport) throws Exception;
 	
 	
 	
