@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import org.springframework.web.servlet.ModelAndView;

@@ -1,14 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.DwrFacadeTestCase;
-import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +45,6 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         Investigator investigator = new Investigator();
         investigator.setFirstName("Joe");
         investigator.setLastName("Something");
-        investigator.setGender("DC");
         expectedInvestigator.setInvestigator(investigator);
 
         StudySite studySite = new StudySite();
@@ -61,8 +62,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("id not copied to result", 34, (int) actual.getId());
         assertEquals("First name not copied", "Joe", actual.getInvestigator().getFirstName());
         assertEquals("Last name not copied", "Something", actual.getInvestigator().getLastName());
-        assertNull("Gender incorrectly copied", actual.getInvestigator().getGender());
-    }
+     }
 
     public void testResearchStaffReduced() throws Exception {
         // TODO
