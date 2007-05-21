@@ -149,6 +149,7 @@
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
+    <bean id="ctcCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcCategoryDao"/>
     <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
 
 	<bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
