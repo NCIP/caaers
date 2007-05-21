@@ -3,8 +3,6 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
-import java.util.Date;
-
 /**
  * @author Kulasekaran
  */
@@ -23,11 +21,7 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
         	ResearchStaff researchStaff = new ResearchStaff();
         	researchStaff.setFirstName("Jeff");
         	researchStaff.setLastName("Someone");
-        	researchStaff.setGender("Male");
-        	researchStaff.setDateOfBirth(new Date());
-        	researchStaff.setEthnicity("ethnicity");
-        	researchStaff.setRace("race");
-
+        	
             getDao().save(researchStaff);
             savedId = researchStaff.getId();
             assertNotNull("The saved researchStaff id", savedId);
@@ -40,7 +34,6 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
             assertNotNull("Could not reload researchStaff id " + savedId, loaded);
             assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
             assertEquals("Wrong lastname", "Someone", loaded.getLastName());
-            assertEquals("Wrong gender", "Male", loaded.getGender());
         }
     }
 }
