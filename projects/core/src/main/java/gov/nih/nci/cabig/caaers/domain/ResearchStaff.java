@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,10 +16,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 
 /**
+ * @author Priyatam
  * @author Kulasekaran
  */
 @Entity
@@ -32,20 +32,15 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 public class ResearchStaff extends AbstractMutableDomainObject {
 	
 	private String firstName;
-    private String middleName; 
-    private String maidenName; 
     private String lastName;
-    private Date dateOfBirth;
-    private String gender;
-    private String race;
-    private String ethnicity; 
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
     private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
-    
-    public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
+  
+
+	public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
         getStudyPersonnels().add(studyPersonnel);        
     }
-    
+   
 	
 	@OneToMany
     @JoinColumn(name="staff_id")
@@ -95,7 +90,6 @@ public class ResearchStaff extends AbstractMutableDomainObject {
     
     // bean methods    
     
-	@Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -104,26 +98,7 @@ public class ResearchStaff extends AbstractMutableDomainObject {
         this.firstName = firstName;
     }
     
-    @Column(name = "maiden_name")
-    public String getMaidenName() {
-		return maidenName;
-	}
-
-	public void setMaidenName(String maidenName) {
-		this.maidenName = maidenName;
-	}
-
-	@Column(name = "middle_name")
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-
-	@Column(name = "last_name")
-    public String getLastName() {
+	public String getLastName() {
         return lastName;
     }
 
@@ -131,42 +106,7 @@ public class ResearchStaff extends AbstractMutableDomainObject {
         this.lastName = lastName;
     }
     
-    @Column(name = "birth_date")
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-    
-    @Column(name = "gender")
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    
-    @Column(name = "ethnicity")
-    public String getEthnicity() {
-		return ethnicity;
-	}
-
-	public void setEthnicity(String ethnicity) {
-		this.ethnicity = ethnicity;
-	}
-
-	@Column(name = "race")
-	public String getRace() {
-		return race;
-	}
-
-	public void setRace(String race) {
-		this.race = race;
-	}
-		
+   
 	@OneToMany (mappedBy = "researchStaff", fetch = FetchType.LAZY)    
     @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })	
 	public List<StudyPersonnel> getStudyPersonnels() {
@@ -176,31 +116,39 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 	public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
 		this.studyPersonnels = studyPersonnels;
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = PRIME * result + ((lastName == null) ? 0 : lastName.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final ResearchStaff other = (ResearchStaff) obj;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		return true;
+	}
 					            
-    /*public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        final Participant that = (Participant) o;
-
-        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null)
-            return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null)
-            return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null)
-            return false;
-
-        return true;
-    }
-
-    public int hashCode() {
-        int result;
-        result = (firstName != null ? firstName.hashCode() : 0);
-        result = 29 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 29 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        result = 29 * result + (gender != null ? gender.hashCode() : 0);
-        return result;
-    } */
+   
 }
