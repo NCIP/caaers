@@ -32,7 +32,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
  *  Only fire the rules belonging to "Asses AE Rule Set" for Sponsor
  *  
  */
-public String assesAdverseEvent(AdverseEvent ae, Study study){
+public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
 	String final_result = null;
 	
@@ -53,7 +53,7 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 		evaluationForSponsor = this.getEvaluationObject(ae, study, bindURI_ForSponsorLevelRules);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw new Exception(e.getMessage(),e);
 	}
     
 	System.out.println(evaluationForSponsor.getMessage());
@@ -66,7 +66,10 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 		evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+		//e.printStackTrace();
+		/**
+		 * Don't do anything here
+		 */
 	}
 	
 	/**
@@ -95,14 +98,19 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 	
 	//public String identifyAdverseEventType()
 	
-	public String evaluateSAEReportSchedule(AdverseEventReport aeReport){
+	public String evaluateSAEReportSchedule(AdverseEventReport aeReport) throws Exception{
 		    //ReportSchedule rs = aeReport.getReportSchedule();
 		//aeReport.
 		Study study = aeReport.getStudy();
 		List<AdverseEvent> aes = aeReport.getAdverseEvents();
 		AdverseEvent ae = aes.get(0);
 		
-		return this.assesAdverseEvent(ae, study);
+		try {
+			return this.assesAdverseEvent(ae, study);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw e;
+		}
 		
 		    
 		
