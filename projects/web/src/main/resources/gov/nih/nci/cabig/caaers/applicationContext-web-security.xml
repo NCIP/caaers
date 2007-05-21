@@ -36,6 +36,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========== ADVERSE EVENT REPORT ===========-->
 		<entry key="/pages/ae/create"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />
+		<entry key="/pages/ae/createRoutine"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />	
 		<entry key="/pages/ae/edit"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list"

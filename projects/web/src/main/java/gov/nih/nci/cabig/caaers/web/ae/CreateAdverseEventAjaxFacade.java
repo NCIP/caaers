@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -48,6 +49,7 @@ public class CreateAdverseEventAjaxFacade {
     private StudyDao studyDao;
     private ParticipantDao participantDao;
     private CtcTermDao ctcTermDao;
+    private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
     private AdverseEventReportDao aeReportDao;
     private ResearchStaffDao researchStaffDao;
@@ -126,6 +128,17 @@ public class CreateAdverseEventAjaxFacade {
         }
         while (terms.size() > limit) {
             terms.remove(terms.size() - 1);
+        }
+        return terms;
+    }
+    
+    public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
+        //List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), ctcVersionId, ctcCategoryId);
+        List<CtcTerm> terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        // cut down objects for serialization
+        for (CtcTerm term : terms) {
+            term.getCategory().setTerms(null);
+            term.getCategory().getCtc().setCategories(null);
         }
         return terms;
     }
@@ -345,6 +358,10 @@ public class CreateAdverseEventAjaxFacade {
     @Required
 	public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
 		this.priorTherapyDao = priorTherapyDao;
+	}
+    @Required
+	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+		this.ctcCategoryDao = ctcCategoryDao;
 	}
     
     

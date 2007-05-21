@@ -47,6 +47,11 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     
     private RuleExecutionService ruleExecutionService;
     private Map<String, List<List<Attribution>>> attributionMap;
+    
+    private List<CtcCategory> categories;
+    private String[] ctcCatIds;
+    private String[] cats;
+    private String[] ctcTermIds;
 
     public CreateAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService
@@ -62,13 +67,15 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport.setPhysician(createPhysician());                           
         this.aeReport.setDiseaseHistory(createDiseaseHistory());
         this.aeReport.setParticipantHistory(new ParticipantHistory());
+        
+        this.categories = new ArrayList<CtcCategory>();
+        
                
         
         this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
     }
-
     private DiseaseHistory createDiseaseHistory() {
     	DiseaseHistory diseaseHistory = new DiseaseHistory();    	
     	return diseaseHistory;
@@ -231,5 +238,39 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
 	public void setAeReport(AdverseEventReport aeReport) {
 		this.aeReport = aeReport;
-	}    
+	}
+
+	public List<CtcCategory> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<CtcCategory> categories) {
+		this.categories = categories;
+	}
+
+	public String[] getCtcCatIds() {
+		return ctcCatIds;
+	}
+
+	public void setCtcCatIds(String[] ctcCatIds) {
+		this.ctcCatIds = ctcCatIds;
+	}
+
+	public String[] getCtcTermIds() {
+		return ctcTermIds;
+	}
+
+	public void setCtcTermIds(String[] ctcTermIds) {
+		this.ctcTermIds = ctcTermIds;
+	}
+
+	public String[] getCats() {
+		return cats;
+	}
+
+	public void setCats(String[] cats) {
+		this.cats = cats;
+	}
+	
+	
 }

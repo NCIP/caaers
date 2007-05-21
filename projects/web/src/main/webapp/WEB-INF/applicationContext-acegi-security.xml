@@ -115,6 +115,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list.*"
 			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ" />
+		<entry key="/pages/ae/createRoutine.*"
+			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />	
 
 		<!-- TODO: set up correct default -->
 		<entry key="/pages/.*"

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -49,6 +50,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected AnatomicSiteDao anatomicSiteDao;
     protected RuleExecutionService ruleExecutionService;
     protected PriorTherapyDao priorTherapyDao;
+    protected CtcCategoryDao ctcCategoryDao;
 
     protected AbstractAdverseEventInputController() {
         setFlow(new Flow<C>(getFlowName()));
@@ -82,6 +84,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -184,4 +187,11 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.priorTherapyDao = priorTherapyDao;
     }
 
+	public CtcCategoryDao getCtcCategoryDao() {
+		return ctcCategoryDao;
+	}
+
+	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+		this.ctcCategoryDao = ctcCategoryDao;
+	}
 }

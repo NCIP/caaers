@@ -52,6 +52,8 @@
                                 p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
                             <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
                                 p:displayName="List reports" p:linkName="listAdverseEventsController"/>
+                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                                p:displayName="Enter routine report" p:linkName="createRoutineAdverseEventController"/>
                         </list>
                     </property>
                 </bean>
@@ -172,6 +174,9 @@
 
     <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
+        
+     <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>    
 
     <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
