@@ -120,13 +120,11 @@ Event.observe(window, "load", function() {
 </head>
 <body>
 
+<tags:tabForm tab="${tab}" flow="${flow}" formName="form">
+<jsp:attribute name="singleFields">
 <table border="0" id="table1" cellspacing="10" width="100%">
-	<tr>
-	
+	<tr>	
 	<td width="75%" valign="top">
-    <tags:tabForm tab="${tab}" flow="${flow}" formName="form">
-    <jsp:attribute name="singleFields">
-
 	<div>
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selectedSite" value="">
@@ -196,9 +194,7 @@ Event.observe(window, "load", function() {
 			</tr>
 		</c:forEach>
 	</table>
-    </jsp:attribute>
-    </tags:tabForm>
-	</td>
+   	</td>
 
 	<td valign="top" width="25%">
 		<chrome:box id="Summary" title="Summary">
@@ -234,5 +230,7 @@ Event.observe(window, "load", function() {
 	</td>
 </tr>
 </table>
+</jsp:attribute>
+</tags:tabForm>	
 </body>
 </html>
