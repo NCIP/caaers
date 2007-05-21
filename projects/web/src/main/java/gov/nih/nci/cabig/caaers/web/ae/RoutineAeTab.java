@@ -48,7 +48,7 @@ public class RoutineAeTab<C extends CreateAdverseEventCommand> extends AeTab<C> 
     private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
     public RoutineAeTab() {
-        super("Enter basic AE information", "Basics", "ae/terms");
+        super("Enter basic AE information", "Adverse Events", "ae/terms");
 
     }
     

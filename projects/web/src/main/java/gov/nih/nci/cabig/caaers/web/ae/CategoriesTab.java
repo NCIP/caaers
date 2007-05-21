@@ -27,15 +27,7 @@ public class CategoriesTab<C extends CreateAdverseEventCommand> extends AeTab<C>
     public CategoriesTab() {
         super("Select Ctc Categories", "Categories", "ae/categories");
         
-        fieldFactory = new RepeatingFieldGroupFactory("ctcCategory", "ctcCategories");
-        fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
-            public String createDisplayName(int index) {
-                char c = (char) ('A' + index);
-                return "Lab " + c;
-            }
-        });
-        fieldFactory.addField(new DefaultTextField("name", "Category name", true));
-       
+            
     }
     
     @Override
@@ -49,9 +41,9 @@ public class CategoriesTab<C extends CreateAdverseEventCommand> extends AeTab<C>
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(CreateAdverseEventCommand command) {
-        InputFieldGroupMap groups = new InputFieldGroupMap();
-        groups.addRepeatingFieldGroupFactory(fieldFactory,command.getCategories().size());
-        return groups;
+    	InputFieldGroupMap map = new InputFieldGroupMap();
+        //groups.addRepeatingFieldGroupFactory(fieldFactory,command.getCategories().size());
+        return map;
     }
     
     private List<CtcCategory> getCategories(int ctcVersionId) {
