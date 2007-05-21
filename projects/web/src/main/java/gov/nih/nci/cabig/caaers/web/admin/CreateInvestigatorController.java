@@ -5,16 +5,13 @@ import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,62 +23,44 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
- * @author Kulasekaran
+  * @author Priyatam
  */
-public class CreateInvestigatorController extends AbstractTabbedFlowFormController<Investigator> {
+public class CreateInvestigatorController extends SimpleFormController {
 		    	
 	private InvestigatorDao investigatorDao;
 	private SiteDao siteDao;	
-	private ListValues listValues;
 	private ConfigProperty configurationProperty;
 	
 	public CreateInvestigatorController() {		
-        setCommandClass(Investigator.class);        
-
-        Flow<Investigator> flow = new Flow<Investigator>("Create Investigator");
-                
-        flow.addTab(new Tab<Investigator>("Enter Investigator Information", "New Investigator", "admin/investigator_details") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                Map <String, List<Lov>> configMap = configurationProperty.getMap();
-                
-                refdata.put("sitesRefData", getSites());
-                refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
-    	  		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
-    	  		
-                refdata.put("genders", listValues.getParticipantGender());
-                refdata.put("ethnicity", listValues.getParticipantEthnicity());
-                refdata.put("sources", listValues.getParticipantIdentifierSource());
-                refdata.put("race", listValues.getParticipantRace());
-                refdata.put("action", "New");
-                return refdata;
-            }
-            
-            @Override
-            public void validate(Investigator command, Errors errors) {
-                boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
-                boolean lastName = command.getLastName() == null || command.getLastName().equals("");
-                boolean dateOfBirth = command.getDateOfBirth() == null;
-                boolean gender = command.getGender().equals("---");
-                boolean ethnicity = command.getEthnicity().equals("---");
-                boolean race = command.getRace().equals("---");
-                if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
-                if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
-                if (dateOfBirth) errors.rejectValue("dateOfBirth", "REQUIRED", "Missing Date Of Birth");
-                if (gender) errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
-                if (ethnicity) errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
-                if (race) errors.rejectValue("race", "REQUIRED", "Please specify the Race");
-            }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-                return false;
-            }
-        });
-                                           
-        setFlow(flow);        
+        setCommandClass(Investigator.class);  
+        setFormView("admin/investigator_details");
+		setSuccessView("admin/investigator_details");
+	}
+	
+	 @Override
+	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
+		 Map<String, Object> refdata =  new HashMap<String, Object>();  
+		 return referenceData(refdata);
+    }
+    
+	private Map<String, Object> referenceData(Map<String, Object> refdata) {
+		Map <String, List<Lov>> configMap = configurationProperty.getMap();
+        
+        refdata.put("sitesRefData", getSites());
+        refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
+  		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
+        refdata.put("sources", siteDao.getAll());
+        return refdata;
+	}
+	 
+    public void validate(Investigator command, Errors errors) {
+        boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
+        boolean lastName = command.getLastName() == null || command.getLastName().equals("");
+         if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
+        if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
     }
 	
 	protected void initBinder(HttpServletRequest request,
@@ -93,50 +72,42 @@ public class CreateInvestigatorController extends AbstractTabbedFlowFormControll
 				siteDao));		
 	}
 	
-	/**
-	 * Create a nested object graph that Create Investigator Design needs
-	 * 
-	 * @param request -
-	 *            HttpServletRequest
-	 * @throws ServletException
-	 */
+	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
 		return createInvestigatorWithDesign();		         
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-	 * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, 
-	 * java.lang.Object, org.springframework.validation.BindException)
-	 */
 	@Override
-	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, 
 			Object command, BindException errors) throws Exception {
 		
-		Investigator inv = (Investigator) command;
-		investigatorDao.save(inv);
+		int selected = Integer.parseInt(request.getParameter("_selected"));
+		String action = request.getParameter("_action");
+		Investigator investigator = (Investigator) command;
 		
-		//ModelAndView modelAndView= new ModelAndView("admin/investigator_details");		
-    	//modelAndView.addAllObjects(errors.getModel());
-		//response.sendRedirect("createInvestigator");
-		response.sendRedirect("viewInvestigator?fullName=" + inv.getFullName() + "&type=confirm");
-    	return null;
-	}
-	
-	@Override
-	protected void postProcessPage(HttpServletRequest request, Object command,
-			Errors arg2, int pageNo) throws Exception {
-		
-		switch (pageNo)
+		if ("addSite".equals(action))
+		{	
+			SiteInvestigator siteInvestigator = new SiteInvestigator();						
+			investigator.addSiteInvestigator(siteInvestigator);		
+		}
+		else if ("removeSite".equals(action))
+		{				
+			investigator.getSiteInvestigators().remove(selected);
+		}	
+		else
 		{
-			case 0:
-				handleSiteInvestigatorAction((Investigator)command, request.getParameter("_action"),
-					request.getParameter("_selected"));
-				break;			
-				
-			default:
-				//do nothing						
-		}		
+			Investigator inv = (Investigator) command;
+			investigatorDao.save(inv);
+		}
+		
+		Map map = errors.getModel();	
+		referenceData(map);
+		ModelAndView modelAndView= new ModelAndView(getSuccessView(), map);
+     	
+    	// needed for saving session state
+    	request.getSession().setAttribute(getFormSessionAttributeName(), command);
+    	
+		return modelAndView;
 	}
 	
 	private void handleSiteInvestigatorAction(Investigator investigator, String action, String selected)
@@ -149,8 +120,7 @@ public class CreateInvestigatorController extends AbstractTabbedFlowFormControll
 		else if ("removeSite".equals(action))
 		{				
 			investigator.getSiteInvestigators().remove(Integer.parseInt(selected));
-		}			
-					
+		}							
 	}
 	
 	private Investigator createInvestigatorWithDesign()
@@ -181,14 +151,6 @@ public class CreateInvestigatorController extends AbstractTabbedFlowFormControll
 
 	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
 		this.investigatorDao = investigatorDao;
-	}
-
-	public ListValues getListValues() {
-		return listValues;
-	}
-
-	public void setListValues(ListValues listValues) {
-		this.listValues = listValues;
 	}
 
 	public ConfigProperty getConfigurationProperty() {
