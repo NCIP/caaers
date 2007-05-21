@@ -3,6 +3,11 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
@@ -10,17 +15,15 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  * @author Priyatam
  */
 @Transactional
-public class StudyDao extends GridIdentifiableDao<Study> {
+public class StudyDao extends GridIdentifiableDao<Study> 
+	implements MutableDomainObjectDao<Study>{
+	
     private static final List<String> SUBSTRING_MATCH_PROPERTIES
         = Arrays.asList("shortTitle", "longTitle");
     private static final List<String> EXACT_MATCH_PROPERTIES
