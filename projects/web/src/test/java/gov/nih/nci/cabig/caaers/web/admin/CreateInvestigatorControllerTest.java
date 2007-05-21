@@ -35,7 +35,7 @@ public class CreateInvestigatorControllerTest extends WebTestCase {
         controller.setInvestigatorDao(investigatorDao);
 		controller.setSiteDao(siteDao);
 		controller.setConfigurationProperty(new ConfigProperty());
-		controller.setListValues(new ListValues());
+		//controller.setListValues(new ListValues());
     }
     
     public void testViewOnGet() throws Exception {
