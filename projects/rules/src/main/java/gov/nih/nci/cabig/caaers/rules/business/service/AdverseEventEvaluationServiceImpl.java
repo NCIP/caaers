@@ -83,9 +83,16 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 	//public String identifyAdverseEventType()
 	
 	public String evaluateSAEReportSchedule(AdverseEventReport aeReport){
-		    ReportSchedule rs = aeReport.getReportSchedule();
+		    //ReportSchedule rs = aeReport.getReportSchedule();
+		//aeReport.
+		Study study = aeReport.getStudy();
+		List<AdverseEvent> aes = aeReport.getAdverseEvents();
+		AdverseEvent ae = aes.get(0);
+		
+		return this.assesAdverseEvent(ae, study);
+		
 		    
-		return null;
+		
 	}
 	
 	private String getBindURI(String name, String type, String ruleSetName){
@@ -108,14 +115,28 @@ public String assesAdverseEvent(AdverseEvent ae, Study study){
 	}
 	
 	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, String bindURI){
+		
+		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
+		
 		List<Object> inputObjects = new ArrayList<Object>();
 		inputObjects.add(ae);
 		inputObjects.add(study);
 		//inputObjects.add(new AdverseEventEvaluationResult());
 		
-		List<Object> outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
+		List<Object> outputObjects = null;
+		try{
 		
-		AdverseEventEvaluationResult evaluationForSponsor = null;
+			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
+		
+		}catch(Exception ex){
+			/**
+			 * Don't do anything, it means there are no rules for this package
+			 */
+			//ex.printStackTrace();
+			return evaluationForSponsor;
+		}
+		
+		
 		
 		Iterator<Object> it = outputObjects.iterator();
 		
