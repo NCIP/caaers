@@ -17,6 +17,7 @@
 
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
 <chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
+    <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}">
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">

@@ -131,6 +131,26 @@ ul.tabs li {
   clear: both;
 }
 
+#flash-message {
+  border: 1px solid #999;
+  border-width: 1px 0;
+  text-align: center;
+  background-color: #ccc;
+  margin: 1em auto;
+  width: 75%;
+  padding: 0.5em;
+}
+
+#flash-message.info {
+  border-color: #390;
+  background-color: #aea;
+}
+
+#flash-message.error {
+  border-color: #930;
+  background-color: #ea9;
+}
+
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
    if there's more than one in a page;

@@ -19,6 +19,7 @@
 
 <c:set var="__decorator_title"><decorator:title/></c:set>
 <chrome:body title="${__decorator_title}">
+    <chrome:flashMessage/>
     <decorator:body/>
 </chrome:body>
 
