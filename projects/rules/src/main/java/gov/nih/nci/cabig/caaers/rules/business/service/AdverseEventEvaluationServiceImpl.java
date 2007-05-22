@@ -143,11 +143,11 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		
 		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
 		
-		adverseEventSDO.setExpected(ae.getExpected().toString());
+		//adverseEventSDO.setExpected(ae.getExpected().toString());
 		adverseEventSDO.setGrade(new Integer(ae.getGrade().getCode()));
-		adverseEventSDO.setHospitalization(ae.getHospitalization().getName());
-		adverseEventSDO.setPhase(study.getPhaseCode());
-		adverseEventSDO.setTerm(ae.getCtcTerm().getTerm());
+		//adverseEventSDO.setHospitalization(ae.getHospitalization().getName());
+		//adverseEventSDO.setPhase(study.getPhaseCode());
+		//sadverseEventSDO.setTerm(ae.getCtcTerm().getTerm());
 		
 		StudySDO studySDO = new StudySDO();
 		studySDO.setPrimarySponsorCode(study.getPrimarySponsorCode());

@@ -67,7 +67,7 @@
 	<FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
-		<param name="schema" value="postgres"/>
+		<param name="schema" value="postgresql"/>
 		<param name="user" value="postgres"/>
 		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
@@ -86,7 +86,7 @@
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
 		<!--  <param name="schema" value="postgresql"/> -->
-		<param name="schema" value="postgres"/>
+		<param name="schema" value="postgresql"/>
 		<param name="user" value="postgres"/>
 		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
@@ -183,7 +183,7 @@
 	<FileSystem class="org.apache.jackrabbit.core.fs.db.DbFileSystem">
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
-	    <param name="schema" value="postgres"/>
+	    <param name="schema" value="postgresql"/>
 		<param name="user" value="postgres"/>
 		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>
@@ -206,8 +206,8 @@
 	<PersistenceManager class="org.apache.jackrabbit.core.state.db.SimpleDbPersistenceManager">
 		<param name="driver" value="org.postgresql.Driver"/>
 		<param name="url" value="jdbc:postgresql://localhost/rules_test"/>
-		<!--  <param name="schema" value="postgres"/> -->
-	    <param name="schema" value="postgres"/>
+		<!--  <param name="schema" value="postgresql"/> -->
+	    <param name="schema" value="postgresql"/>
 		<param name="user" value="postgres"/>
 		<param name="password" value="postgres"/>
 		<param name="schemaObjectPrefix" value="rep_"/>

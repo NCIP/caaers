@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.rules;
 
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -21,10 +22,11 @@ import org.codehaus.xfire.service.binding.ObjectServiceFactory;
 import org.codehaus.xfire.service.invoker.ObjectInvoker;
 import org.codehaus.xfire.soap.SoapConstants;
 import org.codehaus.xfire.test.AbstractXFireTest;
+import org.drools.repository.PackageItem;
 import org.jdom.Document;
 
 
-public class RuleExecutionWebServiceTest extends AbstractXFireTest {
+public class RuleRepositoryWebServiceTest extends AbstractXFireTest {
 
 	//private RuleExecutionServiceImpl ruleExecutionService;
 
@@ -45,20 +47,20 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
         Map<String,Object> props = new HashMap<String,Object>();
         props.put(ObjectServiceFactory.SCHEMAS, schemas);
         
-        service = factory.create(RuleAuthoringService.class,
-                                  "RuleAuthoringService",
-                                  "urn:RuleAuthoringService",
+        service = factory.create(RepositoryService.class,
+                                  "RepositoryService",
+                                  "urn:RepositoryService",
                                   props);
 
 		factory = new JaxbServiceFactory();
-		service = factory.create(RuleAuthoringService.class);        
-        service.setProperty(ObjectInvoker.SERVICE_IMPL_CLASS, RuleAuthoringServiceImpl.class);
+		service = factory.create(RepositoryService.class);        
+        service.setProperty(ObjectInvoker.SERVICE_IMPL_CLASS, RepositoryServiceImpl.class);
 		getServiceRegistry().register(service);
 	}
 	
     public void testWsdl() throws Exception
     {
-        Document doc = getWSDLDocument("RuleAuthoringService");
+        Document doc = getWSDLDocument("RepositoryService");
         printNode(doc);
         addNamespace("xsd", SoapConstants.XSD);
         
@@ -82,7 +84,7 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
 		assertEquals(new QName("http://caaers.cabig.nci.nih.gov/rules/brxml",
 				"ruleSet"), info.getName());
 
-		Document response = invokeService("RuleAuthoringService",
+		Document response = invokeService("RepositoryService",
 				"createRuleSet.xml");
 
 		addNamespace("rules", "http://caaers.cabig.nci.nih.gov/rules/brxml");
@@ -93,9 +95,9 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
     
 	public void testExecuteRule() throws Exception {
 
-		RuleAuthoringService client = (RuleAuthoringService) new XFireProxyFactory(
+		RepositoryService client = (RepositoryService) new XFireProxyFactory(
 				getXFire()).create(service,
-				"xfire.local://RuleAuthoringService");
+				"xfire.local://RepositoryService");
 		RuleSet ruleSet = new RuleSet();
 		ruleSet.setName("First RuleSet");
 		ruleSet.setDescription("First RuleSet");
@@ -105,16 +107,28 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
 		
 	}
 	
-	public void testDisplayRepository() throws Exception {
-
-		RuleAuthoringService client = (RuleAuthoringService) new XFireProxyFactory(
+	public void testDisplayRepository() throws Exception 
+	{
+		RepositoryService client = (RepositoryService) new XFireProxyFactory(
 				getXFire()).create(service,
-				"xfire.local://RuleAuthoringService");
+				"xfire.local://RepositoryService");
 		RuleSet ruleSet = new RuleSet();
 		ruleSet.setName("First RuleSet");
 		ruleSet.setDescription("First RuleSet");
 		Rule rule = new Rule();
 		ruleSet.getRule().add(rule);
 	}
-	
+
+	public void testDisplayPackages() throws Exception
+	{
+		RepositoryService client = (RepositoryService) new XFireProxyFactory(getXFire())
+		                                   .create(service, "xfire://http:localhost:8080/RepositoryService");
+		Iterator<PackageItem> packItr= client.getRulesRepository().listPackages();
+		
+		while(packItr.hasNext())
+		{
+			System.out.println(packItr.next().toString());	
+		}	
+		System.out.println();
+	}
 }

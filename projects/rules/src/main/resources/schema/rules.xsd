@@ -41,9 +41,8 @@
 				<xs:element name="status" type="xs:string"/> 
 				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"> 
-				</xs:element>
-				
+				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

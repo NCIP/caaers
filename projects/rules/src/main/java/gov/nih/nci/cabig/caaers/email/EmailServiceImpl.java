@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService {
 	public void send(EmailInfo ei, SmtpConfig smtpConfig) {
 		Session mailSession = getSMTPSession(smtpConfig);
 		MimeMessage mesg = new MimeMessage(mailSession);
-
+		
 		String addr = ei.getFrom();
 		if (addr != null && addr.trim().length() > 0)
 			try {
@@ -53,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
 
 				String body = ei.getContent();
 				if (body != null && body.trim().length() > 0)
-					mesg.setText(body, "UTF-8");
+					mesg.setContent(body,  "text/html");
 
 				mesg.setSentDate(new Date());
 

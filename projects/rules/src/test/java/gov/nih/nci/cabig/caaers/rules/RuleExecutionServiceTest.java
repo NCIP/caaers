@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules;
 
+import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
@@ -18,12 +19,17 @@ public class RuleExecutionServiceTest extends TestCase {
 	}
 	
 	public void testExecuteRule() throws Exception {
-		String bindUri = "URI_1";
-		bindUri = "gov.nih.nci.cabig.caaers.rules";
+		String bindUri = "CAAERS_AE_RULES";
 		List inObjects = new ArrayList();
+		
+		//create the adverse event object
+		AdverseEventSDO adverseEvent = new AdverseEventSDO();
+		//adverseEvent.setGrade("NORMAL");
+		
 		StudySDO study = new StudySDO();
+		study.setShortTitle("Rule Study");
 		study.setPrimarySponsorCode("SC_1");
-		inObjects.add(study);
+		inObjects.add(adverseEvent);
 		this.ruleExecutionServiceImpl.fireRules(bindUri, study, inObjects);
 	}
 }

@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.rules;
 
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
+import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.namespace.QName;
@@ -24,7 +25,7 @@ import org.codehaus.xfire.test.AbstractXFireTest;
 import org.jdom.Document;
 
 
-public class RuleExecutionWebServiceTest extends AbstractXFireTest {
+public class RuleDeploymentWebServiceTest extends AbstractXFireTest {
 
 	//private RuleExecutionServiceImpl ruleExecutionService;
 
@@ -45,20 +46,20 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
         Map<String,Object> props = new HashMap<String,Object>();
         props.put(ObjectServiceFactory.SCHEMAS, schemas);
         
-        service = factory.create(RuleAuthoringService.class,
-                                  "RuleAuthoringService",
-                                  "urn:RuleAuthoringService",
+        service = factory.create(RuleDeploymentService.class,
+                                  "RuleDeploymentService",
+                                  "urn:RuleDeploymentService",
                                   props);
 
 		factory = new JaxbServiceFactory();
-		service = factory.create(RuleAuthoringService.class);        
-        service.setProperty(ObjectInvoker.SERVICE_IMPL_CLASS, RuleAuthoringServiceImpl.class);
+		service = factory.create(RuleDeploymentService.class);        
+        service.setProperty(ObjectInvoker.SERVICE_IMPL_CLASS, RuleDeploymentServiceImpl.class);
 		getServiceRegistry().register(service);
 	}
 	
     public void testWsdl() throws Exception
     {
-        Document doc = getWSDLDocument("RuleAuthoringService");
+        Document doc = getWSDLDocument("RuleDeploymentService");
         printNode(doc);
         addNamespace("xsd", SoapConstants.XSD);
         
@@ -82,7 +83,7 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
 		assertEquals(new QName("http://caaers.cabig.nci.nih.gov/rules/brxml",
 				"ruleSet"), info.getName());
 
-		Document response = invokeService("RuleAuthoringService",
+		Document response = invokeService("RuleDeploymentService",
 				"createRuleSet.xml");
 
 		addNamespace("rules", "http://caaers.cabig.nci.nih.gov/rules/brxml");
@@ -93,28 +94,58 @@ public class RuleExecutionWebServiceTest extends AbstractXFireTest {
     
 	public void testExecuteRule() throws Exception {
 
-		RuleAuthoringService client = (RuleAuthoringService) new XFireProxyFactory(
+		RuleDeploymentService client = (RuleDeploymentService) new XFireProxyFactory(
 				getXFire()).create(service,
-				"xfire.local://RuleAuthoringService");
+				"xfire.local://RuleDeploymentService");
 		RuleSet ruleSet = new RuleSet();
 		ruleSet.setName("First RuleSet");
 		ruleSet.setDescription("First RuleSet");
 		Rule rule = new Rule();
 		ruleSet.getRule().add(rule);
-		client.createRuleSet(ruleSet);		
+		//client.createRuleSet(ruleSet);		
 		
 	}
 	
-	public void testDisplayRepository() throws Exception {
+/*    public void testGetRuleSetByName() throws Exception
+    {
 
-		RuleAuthoringService client = (RuleAuthoringService) new XFireProxyFactory(
+		RuleDeploymentService client = (RuleDeploymentService) new XFireProxyFactory(
 				getXFire()).create(service,
-				"xfire.local://RuleAuthoringService");
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setName("First RuleSet");
-		ruleSet.setDescription("First RuleSet");
-		Rule rule = new Rule();
-		ruleSet.getRule().add(rule);
+				"http://localhost:8080/rules/services/RuleDeploymentService");
+
+        RuleSet rs = client.getRuleSet("gov.nih.nci.cabig.caaers.rule.newsponsor");
+
+        rs.getImport().add("gov.nih.nci.cabig.caaers.rule.domain.*");
+        client.updateRuleSet(rs);        
+
+        if (rs != null)
+        {
+            List<String> imports = rs.getImport();
+
+            for(String str: imports)
+            {
+                System.out.println(str);
+            }
+        }
+        else
+        {
+        	System.out.println("Rule Set did not found");
+        }
+
+      
+    }
+*/
+	public void testRedeployRule() throws Exception
+	{
+		RuleDeploymentService client = (RuleDeploymentService) new XFireProxyFactory(
+				getXFire()).create(service,
+				"http://localhost:8080/rules/services/RuleDeploymentService");
+
+		String bindUri = "URI_1";
+		bindUri = "CAAERS_AE_RULES";
+		String ruleSetName = "gov.nih.nci.cabig.caaers.rule.newsponsor";
+		client.deregisterRuleSet(bindUri);		
+		//client.registerRuleSet(bindUri, ruleSetName);
 	}
-	
+
 }

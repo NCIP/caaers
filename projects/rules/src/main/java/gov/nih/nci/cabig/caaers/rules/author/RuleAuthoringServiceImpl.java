@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
@@ -16,10 +17,13 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
+import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jws.WebService;
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;
@@ -30,6 +34,11 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 
+import org.apache.log4j.Logger;
+import org.drools.repository.AssetItem;
+import org.drools.repository.CategoryItem;
+import org.drools.repository.PackageItem;
+import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
 /**
  * The entry point for Managing Rules.
@@ -44,8 +53,10 @@ import org.drools.repository.RulesRepositoryException;
 @WebService(
         serviceName = "RuleAuthoringService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"
 )
-public class RuleAuthoringServiceImpl implements RuleAuthoringService {
-
+public class RuleAuthoringServiceImpl implements RuleAuthoringService 
+{
+	private static Logger logger = Logger.getLogger(RuleAuthoringServiceImpl.class);
+	
 	private RuleServiceProvider ruleServiceProvider;
 	
 	private RepositoryService repositoryService;
@@ -184,18 +195,26 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 		return this.repositoryService.listRuleSets();
 	}
 	
-	public List<Rule> getRulesByCategory(String categoryPath) throws RemoteException {
+	public List<Rule> getRulesByCategory(String categoryPath) throws RemoteException 
+	{
 		//First check if the category exists
-		try {
+		try 
+		{ 
 			this.repositoryService.getCategory(categoryPath);
-		} catch(RulesRepositoryException rulesRepositoryException) {
-			if(rulesRepositoryException.getCause() instanceof PathNotFoundException) {
+		} 
+		catch(RulesRepositoryException rulesRepositoryException) 
+		{
+			if(rulesRepositoryException.getCause() instanceof PathNotFoundException) 
+			{
 				//Category does not exist
 				return new ArrayList<Rule>();
-			} else {
+			} 
+			else 
+			{
 				throw new RemoteException(rulesRepositoryException.getMessage(), rulesRepositoryException);
 			}
 		}
+		
 		return this.repositoryService.getRulesByCategory(categoryPath);
 	}
 
@@ -213,4 +232,171 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService {
 		return this.repositoryService.getCategory(categoryPath);
 	}
 	
+
+	/*
+	 * REVISIT: THis is added for testing purpose, will be removed
+	 */
+	public void listPackages()
+	{
+		
+		Iterator<PackageItem> packItr= this.repositoryService.getRulesRepository().listPackages();
+		
+		System.out.println("Packages: ");
+
+		while(packItr.hasNext())
+		{
+			//System.out.println(packItr.next().toString());
+			
+			PackageItem packItem = packItr.next();
+			
+			System.out.println("Package Name: " + packItem.getName());
+			System.out.println("Package Description: " + packItem.getDescription());
+			
+			// Display Rules in this package
+			System.out.println("Rules: ");
+			
+			List<Rule> rules = new ArrayList<Rule>();
+			MetaData metaData = null;
+			Rule rule = null;
+
+			Iterator<AssetItem> assetItr = packItem.getAssets();
+
+			int i=0;
+			while(assetItr.hasNext()) 
+			{
+				AssetItem assetItem = assetItr.next();
+				rule = (Rule)XMLUtil.unmarshal(assetItem.getContent());
+				rule.setId(assetItem.getUUID());
+				copyToMetaData(rule.getMetaData(), assetItem);
+				XMLUtil.unmarshal(XMLUtil.marshal(rule));
+				rules.add(rule);
+				
+				System.out.println("Rule " + ++i + " : " + assetItem.getName() + " : " + assetItem.getDescription());
+				
+			}
+
+		}	
+	}
+
+	private void copyToMetaData(MetaData metaData, AssetItem assetItem) 
+	{ 
+		Category category = null;
+		metaData.setName(assetItem.getName());
+		List<CategoryItem> categoryItems = assetItem.getCategories();
+		List<Category> categories = new ArrayList<Category>();
+		for(CategoryItem categoryItem : categoryItems) {
+			category = new Category();
+			try {
+				category.setId(categoryItem.getNode().getUUID());
+				category.setPath(categoryItem.getNode().getPath());
+				MetaData catMetaData = new MetaData();
+				catMetaData.setName(categoryItem.getName());
+				category.setMetaData(catMetaData);
+			} catch (UnsupportedRepositoryOperationException e) {
+				throw new RuleException(e.getMessage(), e);
+			} catch (RepositoryException e) {
+				throw new RuleException(e.getMessage(), e);
+			}
+			metaData.getCategory().add(category);
+		}
+	}
+
+
+	public boolean containsRuleSet(String ruleSetName)
+	{
+		return this.repositoryService.containsRuleSet(ruleSetName);
+	}
+
+	/*
+	 * This method returns a list of RuleSets belonging to the specified sponsor
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService#findRuleSetsForSponsor(java.lang.String)
+	 */
+	public List<RuleSet> findRuleSetsForSponsor(String sponsorName)
+	{
+		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+    	
+		final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.sponsor";
+		
+		String sponsorPackageName = SPONSOR_BASE_PACKAGE + "." + getStringWithoutSpaces(sponsorName);
+		
+		Iterator<PackageItem> packItr= this.repositoryService.getRulesRepository().listPackages();
+		
+		while(packItr.hasNext())
+		{
+			PackageItem packItem = packItr.next();
+			
+			System.out.println("Package Name: " + packItem.getName());
+			System.out.println("Package Description: " + packItem.getDescription());
+			
+			if (packItem.getName().indexOf(sponsorPackageName,	0) != -1)
+			{
+				RuleSet ruleSet = new RuleSet();
+				ruleSet.setId(packItem.getUUID());
+				ruleSet.getImport().add(packItem.getHeader());
+				ruleSet.setDescription(packItem.getDescription());
+				ruleSet.setName(packItem.getName());
+				ruleSets.add(ruleSet);
+			}
+		}	
+
+		
+		if (ruleSets.size() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return ruleSets;
+		}
+	}
+
+	/*
+	 * This method returns a list of RuleSets belonging to the Study
+	 */
+	public List<RuleSet> findRuleSetsForStudy(String sponsorName, String studyName)
+	{
+		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+    	
+		final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.study";
+		
+		String studyPackageName = SPONSOR_BASE_PACKAGE + "." + getStringWithoutSpaces(sponsorName) + "."
+		                          + getStringWithoutSpaces(studyName);
+		
+		Iterator<PackageItem> packItr= this.repositoryService.getRulesRepository().listPackages();
+		
+		while(packItr.hasNext())
+		{
+			PackageItem packItem = packItr.next();
+			
+			System.out.println("Package Name: " + packItem.getName());
+			System.out.println("Package Description: " + packItem.getDescription());
+			
+			if (packItem.getName().indexOf(studyPackageName, 0) != -1)
+			{
+				RuleSet ruleSet = new RuleSet();
+				ruleSet.setId(packItem.getUUID());
+				ruleSet.getImport().add(packItem.getHeader());
+				ruleSet.setDescription(packItem.getDescription());
+				ruleSet.setName(packItem.getName());
+				ruleSets.add(ruleSet);
+			}
+		}	
+
+		
+		if (ruleSets.size() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return ruleSets;
+		}
+	}
+
+	private String getStringWithoutSpaces(String str)
+	{
+		String _str= str.toLowerCase().trim();
+		return _str.replace(" ", "_");
+	}
 }

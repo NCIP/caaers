@@ -19,7 +19,7 @@
 			<xs:attribute name="hospitalization" type="xs:string" use="optional"/>
 			<!--  <xs:attribute name="hospitalizationHrs" type="xs:string" use="optional"/>  -->
 			<xs:attribute name="category" type="xs:string" use="optional"/>
-			<xs:attribute name="grade" type="xs:string" use="optional"/>
+			<xs:attribute name="grade" type="xs:int" use="optional"/>
 			<xs:attribute name="term" type="xs:string" use="optional"/>
 		</xs:complexType>
 	</xs:element>

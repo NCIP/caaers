@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
 
 import gov.nih.nci.cabig.caaers.rules.RuleException;
-import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
@@ -23,6 +22,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
 
+import org.apache.log4j.Logger;
 import org.drools.repository.AssetItem;
 import org.drools.repository.AssetItemIterator;
 import org.drools.repository.CategoryItem;
@@ -49,13 +49,16 @@ import org.springmodules.jcr.support.JcrDaoSupport;
 public class RepositoryServiceImpl extends JcrDaoSupport implements
 		RepositoryService {
 
+	private static Logger logger = Logger.getLogger(RepositoryServiceImpl.class);
+	
 	private RulesRepository rulesRepository;
 
 	private JcrTemplate template;
 
 	private Repository repository;
 
-	public Boolean createCategory(Category category) {
+	public Boolean createCategory(Category category) 
+	{
 		String path = category.getPath();
 		if (path == null || "".equals(path)) {
 			path = "/";
@@ -68,13 +71,21 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return Boolean.TRUE;
 	}
 
-	public String createRule(Rule rule) {
+	/*
+	 * This method creates a rule
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.rules.repository.RepositoryService#createRule(gov.nih.nci.cabig.caaers.rules.brxml.Rule)
+	 */
+	public String createRule(Rule rule) 
+	{
 		MetaData metaData = rule.getMetaData();
-		PackageItem packageItem = getRulesRepository().loadPackage(
-				metaData.getPackageName());
-		Category initialCategory = metaData.getCategory().get(0);
-		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
+		PackageItem packageItem = getRulesRepository().loadPackage(metaData.getPackageName());
+		Category initialCategory = null; //metaData.getCategory().get(0);
+		
+/*		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
 				.getMetaData().getName() : getDefaultCategory();
+*/		
+		String categoryName = null;
 		AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
 				.getDescription(), categoryName, metaData.getFormat());
 		asset.updateContent(XMLUtil.marshal(rule));
@@ -82,39 +93,50 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return asset.getUUID();
 	}
 
-	private String getDefaultCategory() {
+	private String getDefaultCategory() 
+	{
 		return "default";
 	}
 
-	public void updateRule(Rule rule) {
-			AssetItem assetItem = getRulesRepository().loadAssetByUUID(
-					rule.getId());
+	public void updateRule(Rule rule) 
+	{
+			AssetItem assetItem = getRulesRepository().loadAssetByUUID(rule.getId());
 
 			// Check whether the node is updateable
-			try {
-				if (assetItem.getNode().getPrimaryNodeType().getName().equals(
-						"nt:version")) {
+			try 
+			{
+				if (assetItem.getNode().getPrimaryNodeType().getName().equals("nt:version")) 
+				{
 					String message = "Error. Tags can only be added to the head version of a rule node";
 					throw new RulesRepositoryException(message);
 				}
-			} catch (RepositoryException e) {
+			} 
+			catch (RepositoryException e) 
+			{
+				logger.error("Exception: ",	e);
 				throw new RuleException(e.getMessage(), e); 			
 			}
+			
 			MetaData meta = rule.getMetaData();
 			if(meta.getDateEffective() != null)
 				assetItem.updateDateEffective(meta.getDateEffective()
 					.toGregorianCalendar());
+			
 			if(meta.getDateExpired() != null)
 				assetItem.updateDateExpired(meta.getDateExpired()
 					.toGregorianCalendar());
-			List<Category> categoryList = meta.getCategory();
+			
+/*			List<Category> categoryList = meta.getCategory();
 			int numberOfCategories = categoryList.size();
 			String[] categories = new String[numberOfCategories];
-			for (int i = 0; i < numberOfCategories; i++) {
+			
+			for (int i = 0; i < numberOfCategories; i++) 
+			{
 				categories[i] = categoryList.get(i).getPath() + "/"+ categoryList.get(i).getMetaData().getName();
 			}
 			
 			assetItem.updateCategoryList(categories);
+*/			
 			rule.getMetaData().setDateEffective(null);
 			rule.getMetaData().setDateExpired(null);
 			assetItem.updateContent(XMLUtil.marshal(rule));
@@ -123,16 +145,27 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 
 	}
 
-	public String createRuleSet(RuleSet ruleSet) {
-		PackageItem item = getRulesRepository().createPackage(
-				ruleSet.getName(), ruleSet.getDescription());
+	/*
+	 * This method creates a packageitem in the repository and it is equivalent to RuleSet.
+	 * 
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.rules.repository.RepositoryService#createRuleSet(gov.nih.nci.cabig.caaers.rules.brxml.RuleSet)
+	 */
+	public String createRuleSet(RuleSet ruleSet) 
+	{
+		PackageItem item = getRulesRepository().createPackage(ruleSet.getName(), ruleSet.getDescription());
+		
 		List imports = ruleSet.getImport();
 		String header = "";
-		for (int count = 0; count < imports.size(); count++) {
+		
+		for (int count = 0; count < imports.size(); count++) 
+		{
 			header += imports.get(count).toString();
 		}
+		
 		item.updateHeader(header);
 		getRulesRepository().save();
+		
 		return item.getUUID();
 	}
 
@@ -156,28 +189,35 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return ruleSetList;
 	}
 
-	public RuleSet getRuleSet(String name) {
-		
-			PackageItem item = getRulesRepository().loadPackage(name);
-			RuleSet ruleSet = new RuleSet();
-			ruleSet.setId(item.getUUID());
-			ruleSet.getImport().add(item.getHeader());
-			// ruleSet.header = item.getHeader();
-			// ruleSet.externalURI = item.getExternalURI();
-			ruleSet.setDescription(item.getDescription());
-			ruleSet.setName(item.getName());
-			// ruleSet.lastModified = item.getLastModified().getTime();
-			// ruleSet.lasContributor = item.getLastContributor();
-			// ruleSet.state = item.getStateDescription();
+	/*
+	 * This method loads the package aka RuleSet from the repository
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.rules.repository.RepositoryService#getRuleSet(java.lang.String)
+	 */
+	public RuleSet getRuleSet(String name) 
+	{
+		PackageItem item = getRulesRepository().loadPackage(name);
+		RuleSet ruleSet = new RuleSet();
+		ruleSet.setId(item.getUUID());
+		ruleSet.getImport().add(item.getHeader());
+		// ruleSet.header = item.getHeader();
+		// ruleSet.externalURI = item.getExternalURI();
+		ruleSet.setDescription(item.getDescription());
+		ruleSet.setName(item.getName());
+		// ruleSet.lastModified = item.getLastModified().getTime();
+		// ruleSet.lasContributor = item.getLastContributor();
+		// ruleSet.state = item.getStateDescription();
 
-			AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
-			while (iterator.hasNext()) {
-				AssetItem ruleItem = (AssetItem) iterator.next();
-				Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
-				ruleSet.getRule().add(rule);
-			}
-			return ruleSet;
+		AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
+
+		while (iterator.hasNext()) 
+		{
+			AssetItem ruleItem = (AssetItem) iterator.next();
+			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
+			ruleSet.getRule().add(rule);
+		}
 		
+		return ruleSet;
 	}
 
 	public String checkinVersion(Rule rule) {
@@ -223,7 +263,10 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		this.repository = repository;
 	}
 
-	private RulesRepository getRulesRepository() {
+	/*
+	 * REVISIT: Change this to private
+	 */
+	public RulesRepository getRulesRepository() {
 
 		Session session = null;//getSession();
 		if (rulesRepository == null) {
@@ -365,4 +408,13 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		return category;
 	}
 
+	/*
+	 * This method check for the existence of the package aka RuleSet
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.rules.repository.RepositoryService#containsRuleSet(java.lang.String)
+	 */
+	public boolean containsRuleSet(String ruleSetName)
+	{
+		return getRulesRepository().containsPackage(ruleSetName);
+	}
 }

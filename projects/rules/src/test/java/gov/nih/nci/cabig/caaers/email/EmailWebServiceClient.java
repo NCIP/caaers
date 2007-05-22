@@ -14,12 +14,12 @@ import org.codehaus.xfire.service.ServiceFactory;
 public class EmailWebServiceClient {
 
 	private static final String DEFAULT_SERVER = "localhost";
-	private static final String DEFAULT_PORT = "5050";
+	private static final String DEFAULT_PORT = "8080";
 	private static final String DEFAULT_CONTEXT_NAME = "rules";
 	
 	private static final String EMAIL_SERVICE_URL = "http://"
 			+ DEFAULT_SERVER + ":" + DEFAULT_PORT + "/" + DEFAULT_CONTEXT_NAME
-			+ "/services/RuleExecutionServiceImpl";
+			+ "/services/EmailServiceImpl";
 	
 	//private static final String DEFAULT_SMTP_HOST = "localhost"; //"smtp.1and1.com"; //"smtp.east.cox.net";
 	private static final String DEFAULT_SMTP_HOST = "smtp.comcast.net"; //"smtp.east.cox.net";
@@ -36,13 +36,15 @@ public class EmailWebServiceClient {
 		this.emailService = new EmailServiceImpl();
 		smtpConfig = new SmtpConfig();
 		smtpConfig.setHost(DEFAULT_SMTP_HOST);
-		smtpConfig.setUser("sujith.vt@semanticbits.com");
+		
+		smtpConfig.setUser("biju.joseph@semanticbits.com");
 		smtpConfig.setAuth("true");
-
+		smtpConfig.setPassword("biju1234");
+		smtpConfig.setPort("25");
 		EmailInfo emailInfo = new EmailInfo();
 
-		emailInfo.setFrom("sujith.vt@semanticbits.com");
-		emailInfo.getTo().add("sujith.vt@semanticbits.com");
+		emailInfo.setFrom("biju.joseph@semanticbits.com");
+		emailInfo.getTo().add("biju.joseph@semanticbits.com");
 		emailInfo.setSubject("Test Mail");
 		emailInfo.setContent("There is not much content.1111..");
 

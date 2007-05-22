@@ -19,10 +19,10 @@ public class AdverseEventEvaluationServiceTest extends TestCase{
 	
 	public void testRoutineAE() throws Exception{
 		AdverseEvent ae = new AdverseEvent();
-		ae.setGrade(Grade.MILD);
+		ae.setGrade(Grade.SEVERE);
 		Study study = new Study();
-		study.setPrimarySponsorCode("OUR_DREAM_SPONSOR");
-		study.setShortTitle("MY_STUDY");
+		study.setPrimarySponsorCode("National Cancer Institute");
+		study.setShortTitle("Genetic Study");
 		String str = adverseEventEvaluationService.assesAdverseEvent(ae, study);
 		System.out.println(str);
 		

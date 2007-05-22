@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
 import java.util.List;
 
+import org.drools.repository.RulesRepository;
+
 /**
  * 
  * 
@@ -87,5 +89,10 @@ public interface RepositoryService {
 
 
 	public List<Rule> getRulesByCategory(String string);
+	
+	// REVISIT! Remove once the testing is done
+	public RulesRepository getRulesRepository();
+	
+	public boolean containsRuleSet(String ruleSetName);
 
 }

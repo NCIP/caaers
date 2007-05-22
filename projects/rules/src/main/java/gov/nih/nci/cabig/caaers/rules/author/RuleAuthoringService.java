@@ -11,7 +11,9 @@ import java.util.Map;
 
 import javax.jws.WebService;
 
-/**
+import org.drools.repository.RulesRepository;
+
+/** 
  * Remote interface for Rule Provisioning. 
  * This interface can be exposed as a webservice.
  * 
@@ -44,4 +46,13 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 	
 	public void addRuleExecutionSet(final String bindUri,
 				final InputStream resourceAsStream, final Map properties);
+	
+	// REVISIT: Should be removed once testing is done
+	public void listPackages();
+	
+	public boolean containsRuleSet(String ruleSetName);
+	
+	public List<RuleSet> findRuleSetsForSponsor(String sponsorName);
+	
+	public List<RuleSet> findRuleSetsForStudy(String sponsorName, String studyName);
 }

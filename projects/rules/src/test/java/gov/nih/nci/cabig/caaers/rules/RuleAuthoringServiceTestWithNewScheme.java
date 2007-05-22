@@ -1,19 +1,27 @@
 package gov.nih.nci.cabig.caaers.rules;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
-import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
-import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import junit.framework.TestCase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.codehaus.xfire.client.XFireProxyFactory;
+import org.codehaus.xfire.jaxb2.JaxbServiceFactory;
+import org.codehaus.xfire.service.Service;
+import org.codehaus.xfire.service.binding.ObjectServiceFactory;
+import org.codehaus.xfire.service.invoker.ObjectInvoker;
+import org.codehaus.xfire.soap.SoapConstants;
+import org.codehaus.xfire.test.AbstractXFireTest;
 
 /**
  * 
@@ -46,7 +54,8 @@ import junit.framework.TestCase;
  *                                  /RS2 (category path = /Sponsor/SP1/RS2)
  */
 
-public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
+public class RuleAuthoringServiceTestWithNewScheme extends AbstractXFireTest //TestCase
+{
 	
 	private String caaers_rulebase_category = "CAAERS_RULEBASE";
 	
@@ -63,11 +72,41 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 	private String rule_set_1_name_for_dream_sponsor = "Asses AE Rule";
 	private String rule_set_2_name_for_dream_sponsor= "SAE Report Schedule Rule";
 
-	private RuleAuthoringServiceImpl ruleAuthoringServiceImpl;
+	//private RuleAuthoringServiceImpl ruleAuthoringServiceImpl;
+	
+    private Service service;
+    private ObjectServiceFactory factory;
+	private RuleAuthoringService ruleAuthoringServiceImpl;
+    
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.ruleAuthoringServiceImpl = new RuleAuthoringServiceImpl();
+		//this.ruleAuthoringServiceImpl = new RuleAuthoringServiceImpl();
+		//super.setUp();
+
+        factory = new JaxbServiceFactory(getXFire().getTransportManager());
+        factory.setStyle(SoapConstants.STYLE_DOCUMENT);
+        
+        // Set the schemas
+        ArrayList<String> schemas = new ArrayList<String>();
+        //TODO
+        schemas.add(getTestFile("bin/schema/rules.xsd").getAbsolutePath());
+        
+        Map<String,Object> props = new HashMap<String,Object>();
+        props.put(ObjectServiceFactory.SCHEMAS, schemas);
+        
+        service = factory.create(RuleAuthoringService.class,
+                                  "RuleAuthoringService",
+                                  "urn:RuleAuthoringService",
+                                  props);
+
+		factory = new JaxbServiceFactory();
+		service = factory.create(RuleAuthoringService.class);        
+        service.setProperty(ObjectInvoker.SERVICE_IMPL_CLASS, RuleAuthoringServiceImpl.class);
+		getServiceRegistry().register(service);
+		ruleAuthoringServiceImpl = (RuleAuthoringService) new XFireProxyFactory(getXFire())
+        .create(service, "http://localhost:8080/rules/services/RuleAuthoringService");
+
 	}
 	
 	public void testCreateBaseCategory() throws Exception{
@@ -350,7 +389,6 @@ public class RuleAuthoringServiceTestWithNewScheme extends TestCase{
 		this.testCreateStudyCategory();
 		this.testSponsorSpecificCategory_DREAM_SPONSOR();
 		this.testSponsorSpecificCategory_WORST_SPONSOR();
-		this.testRuleSetCategory_ASSESS_AE_RULES_For_DREAM_SPONSOR();
 		this.testCreateRuleSet_Asses_AE_Rules();
 		this.testCreateRulesForAssesAERulesRuleSet();
 		this.toTree();
