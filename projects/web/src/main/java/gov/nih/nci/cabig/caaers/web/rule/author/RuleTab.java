@@ -10,7 +10,8 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
  * */
 public class RuleTab extends DefaultTab 
 {
-	private static Logger logger = Logger.getLogger(RuleTab.class);
+	private static final Log logger = LogFactory.getLog(RuleTab.class);
 	
 	public RuleTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
