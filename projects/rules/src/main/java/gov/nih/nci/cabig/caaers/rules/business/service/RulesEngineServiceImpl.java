@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
@@ -43,6 +44,11 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		String uuid = null;
 		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
 		Category category = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
+		
+		if(rule.getMetaData()==null){
+			rule.setMetaData(new MetaData());
+		}
+		
 		rule.getMetaData().setPackageName(packageName);
 		rule.getMetaData().getCategory().clear();
 		rule.getMetaData().getCategory().add(category);
@@ -72,6 +78,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		String uuid= null;
 		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
+		
+		System.out.println("Path of category:"+category.getPath());
+		System.out.println("Name of category:"+category.getMetaData().getName());
+		
+		System.out.println("PackageName:"+packageName);
+		if(rule.getMetaData()==null){
+			rule.setMetaData(new MetaData());
+		}
+		
 		rule.getMetaData().setPackageName(packageName);
 		rule.getMetaData().getCategory().clear();
 		rule.getMetaData().getCategory().add(category);
@@ -101,6 +116,10 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
+		
+		if(rule.getMetaData()==null){
+			rule.setMetaData(new MetaData());
+		}
 		
 		rule.getMetaData().setPackageName(packageName);
 		rule.getMetaData().getCategory().clear();
@@ -167,7 +186,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 
 		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
-    	//System.out.println(packageName);
+    	System.out.println("PackageName:"+packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription("package for"+ruleSetName+" rules");
@@ -260,7 +279,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
 		try {
-			ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -282,7 +301,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
 		try {
-			ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -305,7 +324,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
 		try {
-			ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -366,5 +385,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }
