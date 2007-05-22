@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 public class RuleUtil {
 	
 	private static final String CAAERS_RULEBASE_CATEGORY_NAME = "CAAERS_RULEBASE";
-	private static final String CAAERS_RULEBASE_CATEGORY_PATH ="/CAAERS_RULEBASE";
+	private static final String CAAERS_RULEBASE_CATEGORY_PATH ="CAAERS_RULEBASE";
 	
 	private static final String INSTITUTION_BASE_CATEGORY_NAME ="INSTITUTION";
 	private static final String INSTITUTION_BASE_CATEGORY_PATH = "/CAAERS_RULEBASE/INSTITUTION";
@@ -59,6 +59,7 @@ public class RuleUtil {
 			MetaData metaData = new MetaData();
 			category.setPath(SPONSOR_BASE_CATEGORY_PATH);
 			metaData.setName(getStringWithoutSpaces(sponsorName));
+			System.out.println("Creating category with path:"+SPONSOR_BASE_CATEGORY_PATH+" and name="+getStringWithoutSpaces(sponsorName));
 			metaData.setDescription(sponsorName+" Rule Base category");
 			category.setMetaData(metaData);
 			try {
@@ -80,6 +81,7 @@ public class RuleUtil {
 			MetaData metaData = new MetaData();
 			category.setPath(sponsorSpecificCatehoryPath);
 			metaData.setName(getStringWithoutSpaces(ruleSetName));
+			System.out.println("Creating category with path:"+sponsorSpecificCatehoryPath+" and name="+getStringWithoutSpaces(ruleSetName));
 			metaData.setDescription(ruleSetName);
 			category.setMetaData(metaData);
 			try {
@@ -325,6 +327,9 @@ public class RuleUtil {
 		}
 		
 		exist = base_cat==null?false:true;
+		if(exist){
+			System.out.println("Path:"+base_cat.getPath());
+		}
 		return exist;
 	}
 	
@@ -333,6 +338,7 @@ public class RuleUtil {
 		MetaData metaData = new MetaData();
 		category.setPath("/");
 		metaData.setName(CAAERS_RULEBASE_CATEGORY_NAME);
+		System.out.println("Creating category with path:"+"/ and name="+CAAERS_RULEBASE_CATEGORY_NAME);
 		metaData.setDescription("caAERS Base Rule Level");
 		category.setMetaData(metaData);
 		try {
@@ -348,6 +354,7 @@ public class RuleUtil {
 		MetaData metaData = new MetaData();
 		category.setPath(CAAERS_RULEBASE_CATEGORY_PATH);
 		metaData.setName(SPONSOR_BASE_CATEGORY_NAME);
+		System.out.println("Creating category with path:"+CAAERS_RULEBASE_CATEGORY_PATH+" and name="+SPONSOR_BASE_CATEGORY_NAME);
 		metaData.setDescription("Sponsor base category");
 		category.setMetaData(metaData);
 		try {
