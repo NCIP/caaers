@@ -22,7 +22,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Command Object holding information for Rule authoring 
@@ -32,7 +33,7 @@ import org.apache.log4j.Logger;
 public class CreateRuleCommand implements RuleInputCommand 
 {
 
-	private static Logger logger = Logger.getLogger(CreateRuleCommand.class);
+	private static final Log logger = LogFactory.getLog(CreateRuleCommand.class);
 	
 	public static final String SPONSOR_LEVEL = "Sponsor";
 	public static final String INSTITUTIONAL_LEVEL = "Institution";
