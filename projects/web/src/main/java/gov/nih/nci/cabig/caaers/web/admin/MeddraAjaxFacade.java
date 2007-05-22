@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.meddra.*;
 
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -27,13 +28,7 @@ public class MeddraAjaxFacade {
     private LowLevelTermDao lltDao;
     private String[] files = {"llt.asc", "pt.asc", "hlt.asc", "hlgt.asc", "soc.asc", "hlt_pt.asc", "hlgt_hlt.asc" , "soc_hlgt.asc" };
     
-    public void test(){ 
-    	
-    	List<LowLevelTerm> lkt = lltDao.getByMeddraCode("10009835");
-    	System.out.println("yahoo : " + lkt.get(0).getMeddraTerm());
-    	
-    }
-     
+       
     public String handleMedDRA(String path, int step)
 	{
     	
@@ -74,15 +69,14 @@ public class MeddraAjaxFacade {
            	  if (loopEnd  == end ) { break;}
              }
         }
+        catch (EOFException ex){
+            System.out.println("EOF Reached");
+          }
         catch (FileNotFoundException ex) {
-          message = "Required files not found in the selected Path";
-          ex.printStackTrace();
-          
+        	throw new RuntimeException("File Not found Exception", ex);
         }
         catch (IOException ex){
-          message = "Required files not found in the selected Path";	
-          ex.printStackTrace();
-         
+        	throw new RuntimeException("IO Exception", ex);
         }
         finally {
           try {
@@ -92,12 +86,8 @@ public class MeddraAjaxFacade {
             }
           }
           catch (IOException ex) {
-            ex.printStackTrace();
+        	  throw new RuntimeException("IO Exception", ex);
           }
-          
-          //log.debug("Hey : "  + command.getParticipants().size());
-          
-          
         }
         return(message);
 	}

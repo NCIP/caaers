@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
+import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -25,6 +26,7 @@ import com.thoughtworks.xstream.converters.basic.DateConverter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.EOFException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -72,7 +74,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             
             @Override
             public boolean isAllowDirtyForward() {
-                return true;
+                return false;
+            }
+            
+            @Override
+            public void validate(ImportCommand command, Errors errors) {
+                boolean participantFile = command.getParticipantFile().isEmpty();
+                boolean studyFile = command.getStudyFile().isEmpty() ;
+                log.debug("Are files empty : " + participantFile + ":" + studyFile);
+                if (participantFile && studyFile) errors.rejectValue("participantFile", "REQUIRED", "Please choose either a stuy or a participant file.");
             }
             
             @Override
@@ -180,7 +190,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             ObjectInputStream in = xstream.createObjectInputStream(input);
         	
           if (type.equals("participant")){
-        	  System.out.println("Yahoo");
         	  while (true)
               {
               Participant participant = (Participant)in.readObject();
@@ -189,7 +198,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
           }
           
           if (type.equals("study")){
-        	  System.out.println("IBM");
         	  while (true)
               {
               Study study = (Study)in.readObject();
@@ -197,14 +205,17 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
               }  
           }
         }
+        catch (EOFException ex){
+            System.out.println("EndOfFile Reached");
+          }
         catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException("Class Not found Exception", ex);
           }
         catch (FileNotFoundException ex) {
-          ex.printStackTrace();
+        	throw new RuntimeException("File Not found Exception", ex);
         }
         catch (IOException ex){
-          ex.printStackTrace();
+        	throw new RuntimeException("IO Exception", ex);
         }
         finally {
           try {
@@ -214,7 +225,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             }
           }
           catch (IOException ex) {
-            ex.printStackTrace();
+        	  throw new RuntimeException("IO Exception", ex);
           }
           
           log.debug("Study List size "  + command.getStudies().size());
