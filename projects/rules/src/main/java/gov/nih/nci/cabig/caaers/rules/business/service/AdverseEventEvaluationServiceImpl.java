@@ -121,10 +121,10 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	private String getBindURI(String sponsorName, String studyName, String type, String ruleSetName){
 		String bindURI = null;
 		if (type.equalsIgnoreCase("SPONSOR")){
-			bindURI = "gov.nih.nci.cabig.caaers.rule.sponsor"+this.getStringWithoutSpaces(sponsorName).toLowerCase()+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
+			bindURI = "gov.nih.nci.cabig.caaers.rule.sponsor."+this.getStringWithoutSpaces(sponsorName).toLowerCase()+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
 		}
 		if(type.equalsIgnoreCase("STUDY")){
-			bindURI = "gov.nih.nci.cabig.caaers.rule.study"+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
+			bindURI = "gov.nih.nci.cabig.caaers.rule.study."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
 		}
 		return bindURI;
 	}
