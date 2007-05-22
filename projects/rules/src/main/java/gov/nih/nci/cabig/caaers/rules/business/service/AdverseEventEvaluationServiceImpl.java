@@ -12,6 +12,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
+import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.Global;
@@ -41,8 +43,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
 	String sponsorName = study.getPrimarySponsorCode();
 	String studyName = study.getShortTitle();
-	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, "SPONSOR", "Asses AE Rule");
-	String bindURI_ForStudyLevelRules = this.getBindURI(studyName,"STUDY", "Asses AE Rule");
+	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "Asses AE Rule");
+	String bindURI_ForStudyLevelRules = this.getBindURI(studyName,studyName,"STUDY", "Asses AE Rule");
 	
 	/**
 	 * First asses the AE for Sponsor
@@ -116,13 +118,13 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		
 	}
 	
-	private String getBindURI(String name, String type, String ruleSetName){
+	private String getBindURI(String sponsorName, String studyName, String type, String ruleSetName){
 		String bindURI = null;
 		if (type.equalsIgnoreCase("SPONSOR")){
-			bindURI = "gov.nih.nci.cabig.caaers.rules."+this.getStringWithoutSpaces(name)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = "gov.nih.nci.cabig.caaers.rule.sponsor"+this.getStringWithoutSpaces(sponsorName).toLowerCase()+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
 		}
 		if(type.equalsIgnoreCase("STUDY")){
-			bindURI = "gov.nih.nci.cabig.caaers.rules."+this.getStringWithoutSpaces(name)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = "gov.nih.nci.cabig.caaers.rule.study"+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
 		}
 		return bindURI;
 	}
@@ -139,9 +141,21 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		
 		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 		
+		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+		
+		adverseEventSDO.setExpected(ae.getExpected().toString());
+		adverseEventSDO.setGrade(new Integer(ae.getGrade().getCode()));
+		adverseEventSDO.setHospitalization(ae.getHospitalization().getName());
+		adverseEventSDO.setPhase(study.getPhaseCode());
+		adverseEventSDO.setTerm(ae.getCtcTerm().getTerm());
+		
+		StudySDO studySDO = new StudySDO();
+		studySDO.setPrimarySponsorCode(study.getPrimarySponsorCode());
+		studySDO.setShortTitle(study.getShortTitle());
+		
 		List<Object> inputObjects = new ArrayList<Object>();
-		inputObjects.add(ae);
-		inputObjects.add(study);
+		inputObjects.add(adverseEventSDO);
+		inputObjects.add(studySDO);
 		//inputObjects.add(new AdverseEventEvaluationResult());
 		
 		List<Object> outputObjects = null;
