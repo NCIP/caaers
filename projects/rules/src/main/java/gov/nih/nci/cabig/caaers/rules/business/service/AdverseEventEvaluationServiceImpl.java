@@ -43,8 +43,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
 	String sponsorName = study.getPrimarySponsorCode();
 	String studyName = study.getShortTitle();
-	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "Asses AE Rule");
-	String bindURI_ForStudyLevelRules = this.getBindURI(studyName,studyName,"STUDY", "Asses AE Rule");
+	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "ae assessment ruleset");
+	String bindURI_ForStudyLevelRules = this.getBindURI(studyName,studyName,"STUDY", "ae assessment ruleset");
 	
 	/**
 	 * First asses the AE for Sponsor
