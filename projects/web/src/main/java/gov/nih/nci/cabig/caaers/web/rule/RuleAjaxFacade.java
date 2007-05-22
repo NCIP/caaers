@@ -23,6 +23,8 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
@@ -47,8 +49,8 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-public class RuleAjaxFacade {
-
+public class RuleAjaxFacade 
+{
 	private StudyDao studyDao;
 	
 	private CtcTermDao ctcTermDao;
@@ -59,13 +61,38 @@ public class RuleAjaxFacade {
 	
 	private RuleDeploymentService ruleDeploymentService;
 	
-    public List<Study> matchStudies(String text, Integer participantId) {
+    private ConfigProperty configurationProperty;
+
+    public ConfigProperty getConfigurationProperty() 
+    {
+        return configurationProperty;
+    }
+
+    public void setConfigurationProperty(ConfigProperty configProperty) 
+    {
+        this.configurationProperty = configProperty;
+    }
+
+	/*
+	 * This method retrieves studies based on the Sponsor Name and Partial Study name
+	 */
+    public List<Study> matchStudies(String text, String sponsorName) 
+	{
         List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
-        if (participantId != null) {
-            for (Iterator<Study> it = studies.iterator(); it.hasNext();) {
-                Study study = it.next();
-                //if (!onStudy(study, participantId)) it.remove();
-            }
+        
+        if (sponsorName == null)
+        {
+        	return null;
+        }
+        
+        for (Iterator<Study> it = studies.iterator(); it.hasNext();) 
+        {
+            Study study = it.next();
+            
+            if (!sponsorName.equals(study.getPrimarySponsorCode()))
+            {
+            	it.remove();
+            }	
         }
         
         // cut down objects for serialization
@@ -185,13 +212,19 @@ public class RuleAjaxFacade {
     	return Arrays.asList(Grade.values());
     }
     
-    public void deployRuleSet(String ruleSetName) throws RemoteException{
-    	String bindUri = "CAAERS_AE_RULES";
-    	try {
+    public void deployRuleSet(String ruleSetName) throws RemoteException
+    {
+    	String bindUri = ruleSetName;
+    	
+    	try 
+    	{
     		getRuleDeploymentService().deregisterRuleSet(bindUri);
-    	} catch (Exception e) {
+    	} 
+    	catch (Exception e) 
+    	{
     		//A hack... for the first time this exception will be there...ignore...
     	}
+    	
     	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
     }
     
@@ -240,7 +273,8 @@ public class RuleAjaxFacade {
 			
 			//GRADE
 			int grade = adverseEvent.getGrade().getCode();
-			adverseEventSDO.setGrade(String.valueOf(grade));
+			//adverseEventSDO.setGrade(String.valueOf(grade));
+			adverseEventSDO.setGrade(new Integer(grade));
 					
 			//CATEGORY
 			CtcCategory category = adverseEvent.getCtcTerm().getCategory();
@@ -261,7 +295,8 @@ public class RuleAjaxFacade {
 
     private AdverseEventSDO getSuccessful() {
     	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-    	adverseEventSDO.setGrade("3");
+    	//adverseEventSDO.setGrade("3");
+    	adverseEventSDO.setGrade(new Integer(3));
     	adverseEventSDO.setHospitalization("No");
     	adverseEventSDO.setAttribution("3");
     	return adverseEventSDO;
@@ -269,13 +304,15 @@ public class RuleAjaxFacade {
 
     private AdverseEventSDO getSuccessfulAgain() {
     	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-    	adverseEventSDO.setGrade("1");
+    	//adverseEventSDO.setGrade("1");
+    	adverseEventSDO.setGrade(new Integer(1));
     	return adverseEventSDO;
     }
     
     private AdverseEventSDO getNonSuccessful() {
     	AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-    	adverseEventSDO.setGrade("0");
+    	//adverseEventSDO.setGrade("0");
+    	adverseEventSDO.setGrade(new Integer(0));
     	return adverseEventSDO;
     }
     
@@ -367,5 +404,42 @@ public class RuleAjaxFacade {
 
 	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
 		this.ruleExecutionService = ruleExecutionService;
+	}
+	
+	/* !REVISIT This method is added to render valid values for the attributes selected on the AdverseEvent object 
+	 * */
+	
+	public String getValidValues(int fieldIndex)
+	{
+		HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+		request.setAttribute("fieldIndex", fieldIndex);
+		return getOutputFromJsp("/pages/rule/createOptions");
+	}
+	
+	/* 
+	 * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to it.
+	 * 
+	 */  
+	public List<String> matchSponsors(String sponsorName)
+	{
+		// REVISIT: Replace this with the SponsorDao.
+		
+		List sponsorCodeRefData = (List) getConfigurationProperty().getMap().get("sponsorCodeRefData");
+		
+		List<String> sponsors = new ArrayList<String>();
+		
+		Iterator sponsorsItr = sponsorCodeRefData.iterator();
+				
+		while (sponsorsItr.hasNext())
+		{
+			Lov sponsor = (Lov) sponsorsItr.next();
+			
+			if (sponsorName != null && sponsor.getDesc().toLowerCase().indexOf(sponsorName, 0) != -1)
+			{
+				sponsors.add(sponsor.getDesc());
+			}
+		}
+		
+		return sponsors;
 	}
 }

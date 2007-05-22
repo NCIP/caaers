@@ -14,6 +14,12 @@
 					</method-call>
 					<input-type>select</input-type>
 				</field-value>
+				<valid-value value="0" display-uri="0: Normal"/>
+				<valid-value value="1" display-uri="1: Mild"/>
+				<valid-value value="2" display-uri="2: Moderate"/>
+				<valid-value value="3" display-uri="3: Severe"/>
+				<valid-value value="4" display-uri="4: Life-threatening or disabling"/>
+				<valid-value value="5" display-uri="5: Death"/>
 			</field>
 			<field name="term" display-uri="Term">
 				<field-value>
@@ -23,6 +29,18 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
+				<valid-value value="FIRST" display-uri="First"/>
+				<valid-value value="SECOND" display-uri="Second"/>
+			</field>
+			<field name="category" display-uri="Category">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchCategory</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+				<valid-value value="FIRST" display-uri="First"/>
 			</field>
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
@@ -32,8 +50,11 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
+				<valid-value value="None" display-uri="None"/>
+				<valid-value value="HOSPITALIZATION" display-uri="Hospitalization"/>
+				<valid-value value="PROLONGED_HOSPITALIZATION" display-uri="Prolonged Hospitalization"/>
 			</field>
-			<field name="hospitalizationHrs" display-uri="Hospitalization Hrs">
+			<field name="expected" display-uri="Expected">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
@@ -41,16 +62,8 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
-			</field>			
-			
-			<field name="expectedness" display-uri="Expectedness">
-				<field-value>
-					<method-call>
-						<bean-name>aeDetails</bean-name>
-						<method-name>fetchTerms</method-name>
-					</method-call>
-					<input-type>autocompleter</input-type>
-				</field-value>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
 			</field>			
 						
 			<field name="attribution" display-uri="Attribution">
@@ -61,6 +74,11 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
+				<valid-value value="UNRELATED" display-uri="Unrelated"/>
+				<valid-value value="UNLIKELY" display-uri="Unlikely"/>
+				<valid-value value="POSSIBLE" display-uri="Possible"/>
+				<valid-value value="PROBABLE" display-uri="Probable"/>
+				<valid-value value="DEFINITE" display-uri="Definite"/>																
 			</field>
 			
 			<field name="phase" display-uri="Phase">
@@ -71,9 +89,14 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
+				<valid-value value="0" display-uri="0"/>
+				<valid-value value="I" display-uri="I"/>
+				<valid-value value="II" display-uri="II"/>
+				<valid-value value="III" display-uri="III"/>
+				<valid-value value="IV" display-uri="IV"/>																
+				<valid-value value="Pilot" display-uri="Pilot"/>
+				<valid-value value="Other" display-uri="Other"/>								
 			</field>
-			
-
 		</domain-object>
 	</condition>
 

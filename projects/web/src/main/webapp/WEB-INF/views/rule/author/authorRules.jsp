@@ -97,7 +97,6 @@
 							columnHolder.innerHTML = columnContent;
 							var newColumn = columnHolder.childNodes[1].cloneNode(true);	
 							columnHolder.innerHTML = "";
-
 							columns.appendChild(newColumn);
 							var brElement = document.createElement("br");
 							brElement.setAttribute("id", newColumn.id + '-br');
@@ -163,20 +162,53 @@
 	
 
 	
-	function handleFieldOnchange(fieldDropDown) {
+	function handleFieldOnchange(fieldDropDown) 
+	{
 		var selectedField = fieldDropDown.options[fieldDropDown.selectedIndex];
-		//alert("field name called " + selectedField.text + " has been selected.");
+		
+		// alert("field name called " + selectedField.text + " has been selected: " + fieldDropDown.id);
 		
 		//Fetch the related operators
-		
-		
+				
 		//Fetch the values based on the type of input field.
-		
+		/*
 		var domainObjectSelectedIndex = document.getElementById("domain-object-template").selectedIndex;
 		var methodCall = document.getElementById(domainObjectSelectedIndex+"_"+selectedField.value+"_fieldValueMethodCall").value;
+		alert(methodCall);
 		try {
 			var returnValue = eval(methodCall);
+			alert(returnValue);
 		} catch(e) {alert(e)}
+		*/
+
+		//alert(fieldDropDown.id);
+		
+		var selectId =  fieldDropDown.id.substring(0,fieldDropDown.id.lastIndexOf(".")); 
+		//alert(selectId);
+		
+		var validValueField = document.getElementById(selectId + '.literalRestriction[0].value');
+		
+		//alert(validValueField.id);
+		
+		//alert(validValueField.innerHTML);
+		
+		//validValueField.innerHTML = html;
+		
+		try 
+		{
+			authorRule.getValidValues(fieldDropDown.selectedIndex, 
+			                     		function (html) 
+			                   			{
+			                   				//alert(html);
+					                   		validValueField.innerHTML = html;
+							   			});
+		
+		}
+		catch(e) 
+		{
+			alert(e);
+		}
+
 
 	}
 
@@ -185,23 +217,39 @@
 </head>
 <body>
     <p id="instructions">
-        You are adding rules for the trigger. You can define any number of Rules for a trigger.
+        Rules can be added by using the Add Rule button. Rules created will belong to the selected RuleSet.
     </p>
 
-    <chrome:division title="Add Rules">
+    <chrome:division>
 
-        <form:form cssClass="standard">
+        <%--<form:form cssClass="standard">--%>
+        <tags:tabForm tab="${tab}" flow="${flow}" >
+	<jsp:attribute name="singleFields">
+
             <tags:errors path="*"/>
     
             <tags:tabFields tab="${tab}"/>
 
+						<%--
 						<div id="createNewss">
 							<!-- <h3 style="position:relative; float:left">Create New Rule</h3> -->
 							<!-- <input type="text" id="newRuleName" size="50"> -->
 							<a href="javascript:addRule();" title="Click to Add a new Rule">
 								<img src="/caaers/images/rule/new_fact.gif" style="" align="absmiddle"/>
 							</a>
+							
 						</div>
+        				--%>
+        				
+        				<div class="row">
+							<div class="label"><label for="ruleSetName">RuleSet Name</label></div>
+				            <div class="value">
+								<form:input path="ruleSetName"/>
+            				</div>
+							<div class="local-buttons">
+								<input type="button" value="Add Rule" align="right" onclick="addRule()"/>
+							</div>	
+        				</div>
 
 
 						<div id="allRules">
@@ -264,8 +312,20 @@
 
 														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
+
 														<span id="rule-${ruleCount}-column-${columnCount}-field-value">
+															<%--
 															<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
+															--%>
+	
+																	<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
+																		<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="selectedField">
+																			<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
+																	              ruleUi.condition[0].domainObject[0].field[selectedField.index].name}">															
+																				<form:options items="${ruleUi.condition[0].domainObject[0].field[selectedField.index].validValue}"  itemLabel="displayUri" itemValue="value"/>
+																			</c:if>
+																		</c:forEach>
+																	</form:select>
 														</span>
 
 														<a href="javascript:fetchCondition(${ruleCount})">
@@ -286,7 +346,11 @@
 												<div id="action-template"  style="margin-left:200px;">
 													<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 													<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
-														<option value=""/>Please Select-- </option>
+														<option value=""/>Please Select </option>
+															<form:option value="ROUTINE_AE">Assign as Routine AE</form:option>														
+															<form:option value="SERIOUS_ADVERSE_EVENT">Assign as Serious AE</form:option>														
+															<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
+															<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
 														<c:forEach items="${notifications}" var="notification">
 														<form:option value="${notification.id}">${notification.name}</form:option>
 														</c:forEach>
@@ -309,7 +373,9 @@
 
 						</div> <!-- closing allRules -->
 
-        </form:form>
+    <%--        </form:form>--%>
+</jsp:attribute>
+</tags:tabForm> 
 		</chrome:division>
 
 </body>

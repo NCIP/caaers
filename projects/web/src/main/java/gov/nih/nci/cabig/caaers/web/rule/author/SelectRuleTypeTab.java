@@ -2,10 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
-import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTextArea;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTextField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +13,18 @@ import java.util.Map;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-public class SelectRueTypeTab extends DefaultTab {
+public class SelectRuleTypeTab extends DefaultTab 
+{
 
     private static final String RULESET_FIELD_GROUP = "ruleset";
     private static final String TRIGGER_LEVEL_FIELD_GROUP = "triggerLevel";
 
-	public SelectRueTypeTab(String longTitle, String shortTitle, String viewName) {
+	public SelectRuleTypeTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 	}
 
-	public SelectRueTypeTab() {
-        super("Select Rule Level", "Rule Level", "rule/author/selectRuleLevel");
+	public SelectRuleTypeTab() {
+        super("Select Rule Level", "Select Rule Level", "rule/author/selectRuleLevel");
 	}
 
     @Override
@@ -36,13 +34,17 @@ public class SelectRueTypeTab extends DefaultTab {
 
 
     @Override
-    public Map<String, Object> referenceData() {
+    public Map<String, Object> referenceData() 
+    {
         Map<String, Object> refdata = super.referenceData();
-
-        refdata.put("ruleLevels", getCategories());
+        
+        // VP: This is commeted out as we do not need categories
+        //refdata.put("ruleLevels", getCategories());
         return refdata;
     }
     
+    //REVISIT! We do not need this method
+    // @deprecated
     private List<Category> getCategories() {
     	List<Category> list = new ArrayList<Category>();
 		Category category = new Category();

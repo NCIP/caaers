@@ -94,7 +94,8 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 		
 		//GRADE
 		int grade = adverseEvent.getGrade().getCode();
-		adverseEventSDO.setGrade(String.valueOf(grade));
+		//adverseEventSDO.setGrade(String.valueOf(grade));
+		adverseEventSDO.setGrade(new Integer(grade));
 				
 		//CATEGORY
 		CtcCategory category = adverseEvent.getCtcTerm().getCategory();

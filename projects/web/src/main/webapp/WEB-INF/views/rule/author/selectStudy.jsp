@@ -67,13 +67,14 @@
   <title>Specify Study Details</title>
 </head>
 <body>
-    <p>Feature in progress.....Creting Rule at Study level....</p>
     <p id="instructions">
         Please select the Study. The rules defined will be applied for the study you select here. </p>
 
     <chrome:division title="Select Study">
 
-        <form:form cssClass="standard">
+        <%--<form:form cssClass="standard">--%>
+    <tags:tabForm tab="${tab}" flow="${flow}" >
+	<jsp:attribute name="singleFields">
 
 
             <tags:errors path="*"/>
@@ -111,7 +112,9 @@
                 </div>
             </div>
             
-        </form:form>
+<%--        </form:form>--%>
+</jsp:attribute>
+</tags:tabForm> 
 
 		</chrome:division>
 

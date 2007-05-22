@@ -257,6 +257,11 @@
         <property name="viewName"><value>rule/author/addRule</value></property>
     </bean>
     
+    <bean name="/rule/createOptions" id="createOptionsController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>rule/author/createOptions</value></property>
+    </bean>
+
     <bean name="/rule/addColumn" id="addRuleConditionController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>rule/author/addColumn</value></property>

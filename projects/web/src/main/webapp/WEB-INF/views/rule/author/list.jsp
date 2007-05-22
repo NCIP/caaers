@@ -67,6 +67,7 @@
 
 <p>
 
+<%--
 <a href="javascript:fireRulesNow('3')">Successful Execution</a>
 
 <br/>
@@ -75,6 +76,7 @@
 </p>
 
 <a href="javascript:fireRulesNow('1')">Successful Execution 2</a>
+--%>
 
 </body>
 </html>

@@ -67,7 +67,7 @@
   <title>Specify Trigger Details</title>
 </head>
 <body>
-    <p>Feature in progress.....Creting Rule at Study level....</p>
+    <p>Feature in progress.....Creating Rule at Study level....</p>
     <p id="instructions">
         Please select the Study. The rules defined will be applied for the study you select here. </p>
 

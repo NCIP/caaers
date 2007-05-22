@@ -66,9 +66,10 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
         return "Author Rule";
     }
     
-    protected void addTabs() {
-    	getFlow().addTab(new SelectRueTypeTab());
-    	getFlow().addTab(new TriggerTab());
+    protected void addTabs() 
+    {
+    	getFlow().addTab(new SelectRuleTypeTab());
+    	getFlow().addTab(new DisplayRuleSetsTab());
         getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
     }    
