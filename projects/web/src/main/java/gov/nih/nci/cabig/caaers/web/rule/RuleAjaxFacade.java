@@ -406,7 +406,9 @@ public class RuleAjaxFacade
 		this.ruleExecutionService = ruleExecutionService;
 	}
 	
-	/* !REVISIT This method is added to render valid values for the attributes selected on the AdverseEvent object 
+	/* 
+	 * !REVISIT This method is added to render valid values for the attributes selected on the AdverseEvent object. 
+	 *  
 	 * */
 	
 	public String getValidValues(int fieldIndex)
