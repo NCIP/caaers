@@ -27,10 +27,12 @@
         id="-99"
         assignment_id="-13"
         detection_date="2004-12-31"
+        created_at="2004-12-31"
         />
     <AE_REPORTS
         id="-100"
         assignment_id="-13"
         detection_date="2004-12-14"
+        created_at="2004-12-31"
         />
 </dataset>

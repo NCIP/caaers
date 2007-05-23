@@ -22,6 +22,7 @@ import java.sql.Timestamp;
 import java.math.BigDecimal;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.*;
+import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import edu.nwu.bioinformatics.commons.DateUtils;
 
 /**
@@ -38,6 +39,10 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
         assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
         assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
+        CoreTestCase.assertDayOfDate("Wrong created at (date)", 2004, Calendar.SEPTEMBER, 4,
+            loaded.getCreatedAt());
+        CoreTestCase.assertTimeOfDate("Wrong created at (time)", 13, 15, 30, 0,
+            loaded.getCreatedAt());
     }
 
     public void testGetLabs() throws Exception {
@@ -262,6 +267,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         report.setAssignment(assignmentDao.getById(-14));
         report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));
+        report.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         return report;
     }
 

@@ -9,9 +9,7 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -24,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.sql.Timestamp;
 
 /**
  * @author Rhett Sutphin
@@ -38,6 +37,7 @@ import java.util.LinkedHashMap;
 public class AdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
+    private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
     private TreatmentInformation treatmentInformation;
@@ -46,11 +46,11 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     private Physician physician;
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
-    
+
     private ReportSchedule reportSchedule;
-  
+
     private ReportStatus status;
-    
+
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
@@ -274,8 +274,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     protected void setOtherCausesInternal(List<OtherCause> otherCausesInternal) {
         lazyListHelper.setInternalList(OtherCause.class, otherCausesInternal);
     }
-    
-    
+
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
@@ -284,15 +283,14 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapiesInternal() {
         return lazyListHelper.getInternalList(AdverseEventPriorTherapy.class);
-	}
+    }
 
-	public void setAdverseEventPriorTherapiesInternal(
-			List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal) {
+    public void setAdverseEventPriorTherapiesInternal(
+        List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal) {
         lazyListHelper.setInternalList(AdverseEventPriorTherapy.class, adverseEventPriorTherapiesInternal);
-	}
-   
+    }
 
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public TreatmentInformation getTreatmentInformation() {
         //if (treatmentInformation == null) treatmentInformation = new TreatmentInformation();
@@ -346,39 +344,45 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         this.participantHistory = participantHistory;
     }
 
-	/**
-	 * @return the reportSchedule
-	 */
+    /**
+     * @return the reportSchedule
+     */
 //    @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
 //    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @Transient
-	public ReportSchedule getReportSchedule() {
-		return reportSchedule;
-	}
+    public ReportSchedule getReportSchedule() {
+        return reportSchedule;
+    }
 
-	/**
-	 * @param reportSchedule the reportSchedule to set
-	 */
-	public void setReportSchedule(ReportSchedule reportSchedule) {
-		this.reportSchedule = reportSchedule;
-	}
+    /**
+     * @param reportSchedule the reportSchedule to set
+     */
+    public void setReportSchedule(ReportSchedule reportSchedule) {
+        this.reportSchedule = reportSchedule;
+    }
 
-	/**
-	 * @return the status
-	 */
+    /**
+     * @return the status
+     */
 //	@Column(name="status_code")
 //	@Type(type="reportStatus")
-	@Transient
-	public ReportStatus getStatus() {
-		return status;
-	}
+    @Transient
+    public ReportStatus getStatus() {
+        return status;
+    }
 
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(ReportStatus status) {
-		this.status = status;
-	}
-    
-    
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(ReportStatus status) {
+        this.status = status;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
 }

@@ -112,6 +112,10 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         }
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
+        // Since there was an exception in a transactional DAO method, we have to get a new
+        // hibernate session
+        interruptSession();
+
         adverseEventReportDao.save(report);
 
         interruptSession();
@@ -132,6 +136,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
         newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+        newReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         return newReport;
     }
 }
