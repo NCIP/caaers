@@ -177,7 +177,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
 
     public void testSummaryIncludesCreatedAt() throws Exception {
         Map<String, String> summary = report.getSummary();
-        assertEquals("2006-05-08 09:08:07", summary.get("Report created at"));
+        assertEquals("2006-05-08 09:08:07.0", summary.get("Report created at"));
     }
 
 /*  It would be nice if this test could pass, but it seems to cause issues with hibernate.
