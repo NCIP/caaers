@@ -1,0 +1,205 @@
+<dataset>
+	<!-- First populate the Report Calendar, then AEReport and then
+		the ReportSchedule
+	-->
+	<!-- Below content is copied from ReportCalendarTemplateDaoTest.xml -->
+	<report_calendar_templates 
+		id="-222"
+		name="RCT-222"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		/>
+	
+	<planned_notifications 
+		id="-222"
+		index_on_time_scale="2"
+		from_addr ="from@from.com"
+		subject="Test Subject Line"
+		dtype="email"
+		rct_id="-222"
+		version="0"
+		/>
+	
+	<recipients
+		id="-222"
+		plnf_id="-222"
+		dtype="role"
+		role_name="Investigator"
+		version="0"
+		/>
+	
+	<!-- Below content is copied from AdverseEventReportDaoTest.xml -->
+<!--
+	 <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="301"
+        name="allergy/immunology"
+        version_id="3"
+        />
+    <ctc_categories
+        id="302"
+        name="auditory/ear"
+        version_id="3"
+        />
+    <ctc_categories
+        id="303"
+        name="blood/bone marrow"
+        version_id="3"
+        />
+    <ctc_terms
+        id="3007"
+        category_id="302"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term="Ear disorder"
+        ctep_code="10014004"
+        other_required="1"
+        />
+    <ctc_terms
+        category_id="302"
+        id="3012"
+        term="Tinnitus"
+        ctep_term="Tinnitus"
+        ctep_code="10043882"
+        other_required="0"
+        />
+ 
+    <agents id="-101"/>
+
+    <PARTICIPANT_ASSIGNMENTS
+        id="-14"
+        study_site_id="-10"
+        participant_id="-5"
+        date_of_enrollment="2006-09-30"
+        />
+    <AE_REPORTS
+        id="-1"
+        assignment_id="-14"
+        detection_date="2004-05-12"
+        />
+    <ADVERSE_EVENTS
+        id="-11"
+        report_id="-1"
+        list_index="1"
+        />
+    <ADVERSE_EVENTS
+        id="-70"
+        report_id="-1"
+        list_index="0"
+        />
+    <AE_LABS
+        id="-20"
+        report_id="-1"
+        list_index="1"
+        name="Extent"
+        units="hectares/liter"
+        baseline_value="3.66"
+        baseline_date="2003-04-17"
+        nadir_value="0.4"
+        nadir_date="2007-03-14"
+        recovery_value="3.54"
+        recovery_date="2007-03-19"
+        />
+    <AE_LABS
+        id="-21"
+        report_id="-1"
+        list_index="0"
+        />
+    <AE_LABS
+        id="-22"
+        report_id="-1"
+        list_index="2"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-30"
+        list_index="1"
+        report_id="-1"
+        agent_id="-101"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-31"
+        list_index="0"
+        report_id="-1"
+        />
+    <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70" cause_id="-31" cause_type="CM" attribution_code="4"/>
+
+    <TREATMENTS
+        id="-10"
+        report_id="-1"
+        first_course_date="2005-06-04"
+        adverse_event_course_date="2006-07-09"
+        adverse_event_course_number="8"
+        />
+    <COURSE_AGENTS
+        id="-20"
+        treatment_id="-10"
+        list_index="1"
+        administration_delay_minutes="240"
+        dose_amount="17.4"
+        dose_units="mg"
+        dose_route="aural"
+        modified_dose_amount="10"
+        modified_dose_units="mg"
+        modified_dose_route="aural"
+        total_dose_this_course="7"
+        duration_and_schedule="8 times every third hour"
+        last_administered_date="2006-07-10"
+        />
+    <COURSE_AGENTS
+        id="-19"
+        treatment_id="-10"
+        list_index="0"
+        dose_amount=".33"
+        dose_units="kg"
+        dose_route="oral"
+        total_dose_this_course=".84"
+        duration_and_schedule="daily"
+        />
+
+    <OTHER_CAUSES
+        id="-82"
+        report_id="-1"
+        list_index="2"
+        cause_text="Tire fire"
+        />
+    <OTHER_CAUSES
+        id="-81"
+        report_id="-1"
+        list_index="0"
+        cause_text="Cuyahoga river"
+        />
+    <OTHER_CAUSES
+        id="-80"
+        report_id="-1"
+        list_index="1"
+        cause_text="Crossed against light"
+        />
+-->
+    <!--
+	
+	report_schedules
+    ================
+	 id serial NOT NULL,
+     name character varying(50) NOT NULL,
+     due_on timestamp without time zone NOT NULL,
+     created_on timestamp without time zone NOT NULL,
+     submitted_on timestamp without time zone NOT NULL,
+     version integer,
+     rprt_clndr_tmpl_id integer,
+     ae_rprt_id integer,
+     grid_id text,
+	-->
+	<report_schedules 
+		id="-223"
+		name="Sample Report"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		version="0"
+		rct_ID="-222"
+		/>
+</dataset>

@@ -1,0 +1,59 @@
+<dataset>
+  <!--
+	   REPORT_CALENDAR_TEMPLATES
+	   =====================
+	  id serial NOT NULL,
+	  name character varying(50) NOT NULL,
+	  description character varying(250),
+	  duration integer NOT NULL,
+	  org_id integer,
+	  time_scale_unit_code integer NOT NULL,
+	  version integer,
+		  
+	  planned_notifications
+	  =====================
+	  id serial NOT NULL,
+	  index_on_time_scale integer NOT NULL,
+	  from_addr character varying(50),
+	  body oid,
+	  subject character varying(550),
+	  dtype character varying(25) NOT NULL,
+	  rct_id integer,
+	  version integer,
+	  
+	  recipients
+	  ==========
+	  id serial NOT NULL,
+	  plnf_id integer,
+	  dtype character varying(25) NOT NULL,
+	  role_name character varying(50),
+	  cnctms_id integer,
+	  version integer,
+	  -->  
+	<report_calendar_templates 
+		id="-222"
+		name="RCT-222"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		/>
+	
+	<planned_notifications 
+		id="-222"
+		index_on_time_scale="2"
+		from_addr ="from@from.com"
+		subject="Test Subject Line"
+		dtype="email"
+		rct_id="-222"
+		version="0"
+		/>
+	
+	<recipients
+		id="-222"
+		plnf_id="-222"
+		dtype="role"
+		role_name="Investigator"
+		version="0"
+		/>
+</dataset>
