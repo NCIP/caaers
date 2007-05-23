@@ -16,7 +16,10 @@
         Element.observe(window, "load", function() {
             new ListEditor("lab", createAE, "Lab", {
                 addParameters: [aeReportId],
-                addFirstAfter: "single-fields"
+                addFirstAfter: "single-fields",
+                addCallback: function(index) {
+                    AE.registerCalendarPopups("lab-" + index)
+                }
             })
         })
     </script>
