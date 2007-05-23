@@ -62,7 +62,6 @@ public class CreateStudyControllerTest extends WebTestCase {
         controller.setResearchStaffDao(researchStaffDao);
         controller.setSiteInvestigatorDao(siteInvestigatorDao);
         controller.setTabConfigurer(tabConfigurer);
-        controller.afterPropertiesSet();
     }
 
     public void testViewOnGet() throws Exception {

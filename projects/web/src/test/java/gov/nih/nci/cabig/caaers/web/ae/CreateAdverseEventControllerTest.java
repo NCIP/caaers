@@ -40,7 +40,6 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setCtepStudyDiseaseDao(ctepStudyDiseaseDao);
         controller.setAnatomicSiteDao(anatomicSiteDao);
         controller.setPriorTherapyDao(priorTherapyDao);
-        controller.afterPropertiesSet();
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
