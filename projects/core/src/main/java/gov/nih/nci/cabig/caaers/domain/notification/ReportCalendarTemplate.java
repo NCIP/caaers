@@ -42,6 +42,9 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 	@Column(name = "NAME")
 	String name;
 	
+	@Column(name="DESCRIPTION")
+	String description;
+	
 	@Column(name = "DURATION")
 	int duration;
 	
@@ -59,6 +62,18 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 		this.name = name;
 	}
 	
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	/**
 	 * @return the duration
 	 */

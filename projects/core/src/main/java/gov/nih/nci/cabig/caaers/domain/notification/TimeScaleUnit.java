@@ -37,7 +37,8 @@ public enum TimeScaleUnit implements CodedEnum{
 		return calendarTypeCode;
 	}
 	public String getDisplayName(){
-		return name();
+		String s =  name().toLowerCase();
+		return ("" + s.charAt(0)).toUpperCase() + s.substring(1);
 	}
 	public String getName(){
 		return name();
