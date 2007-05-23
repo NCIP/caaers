@@ -84,7 +84,7 @@ public class ScheduledNotificationDaoTest extends DaoTestCase<ScheduledNotificat
 	/**
 	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#domainClass()}.
 	 */
-	public void xtestDomainClass() {
+	public void testDomainClass() {
 		System.out.println("domainClass :" + snDao.domainClass().getName());
 		assertEquals(ScheduledNotification.class.getName(), snDao.domainClass().getName());
 	}
@@ -92,19 +92,19 @@ public class ScheduledNotificationDaoTest extends DaoTestCase<ScheduledNotificat
 	/**
 	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate)}.
 	 */
-	public void xtestUpdate() {
+	public void testUpdate() {
 		
 		beginTransaction();
 		ScheduledNotification snf = snDao.getById(-223);
 		assertEquals("GridID is not the same", snf.getGridId(), "AK8282828");
 		snf.setDeliveryStatus(DeliveryStatus.CREATED);
-		commit();
+	//	commit();
 		
 	}
 	public void testExample(){
 		assert(true);
 	}
-	public void xtestUpdateSetCalendarTemplate(){
+	public void testUpdateSetCalendarTemplate(){
 		
 		
 	}

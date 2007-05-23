@@ -81,12 +81,12 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 	/**
 	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#domainClass()}.
 	 */
-	public void xtestDomainClass() {
+	public void testDomainClass() {
 		System.out.println("domainClass :" + rctDao.domainClass().getName());
 		assertEquals(ReportCalendarTemplate.class.getName(), rctDao.domainClass().getName());
 	}
 	
-	public void xtestGetByName(){
+	public void testGetByName(){
 		String name = "RCT-222";
 		ReportCalendarTemplate rct = rctDao.getByName(name);
 		assertEquals("The name is not matching", name, rct.getName());
@@ -95,7 +95,7 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 	/**
 	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate)}.
 	 */
-	public void xtestSave() {
+	public void testSave() {
 		ReportCalendarTemplate rct = new ReportCalendarTemplate();
 		rct.setDuration(5);
 		rct.setGridId("202020202044iiei90");
@@ -135,7 +135,7 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 		
 		beginTransaction();
 		rctDao.save(rct);
-		commit();
+	//	commit();
 		id = rct.getId();
 			
 			
@@ -154,7 +154,7 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 		nf.setIndexOnTimeScale(4);
 		nf.setSubjectLine("New Subject Line");
 		
-		commit();
+	//	commit();
 		
 		
 		System.out.println("============= after save ===============");
