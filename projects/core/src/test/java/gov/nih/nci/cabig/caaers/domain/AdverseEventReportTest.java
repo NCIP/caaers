@@ -2,15 +2,20 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Calendar;
+import java.sql.Timestamp;
 
 /**
  * @author Rhett Sutphin
  */
 public class AdverseEventReportTest extends CaaersTestCase {
+    private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
+
     private AdverseEventReport report;
     private CtcTerm ctcTerm;
     private AdverseEvent adverseEvent;
@@ -19,6 +24,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         report = new AdverseEventReport();
+        report.setCreatedAt(CREATED_AT);
         adverseEvent = new AdverseEvent();
         report.addAdverseEvent(adverseEvent);
         adverseEvent.setGrade(Grade.MODERATE);
@@ -167,6 +173,11 @@ public class AdverseEventReportTest extends CaaersTestCase {
     public void testSummaryIncludesAECount() throws Exception {
         Map<String, String> summary = report.getSummary();
         assertEquals("1", summary.get("Adverse event count"));
+    }
+
+    public void testSummaryIncludesCreatedAt() throws Exception {
+        Map<String, String> summary = report.getSummary();
+        assertEquals("2006-05-08 09:08:07", summary.get("Report created at"));
     }
 
 /*  It would be nice if this test could pass, but it seems to cause issues with hibernate.

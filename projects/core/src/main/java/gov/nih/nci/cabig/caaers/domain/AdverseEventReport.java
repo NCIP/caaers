@@ -111,12 +111,17 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Participant", summaryLine(getParticipant()));
         summary.put("Study", summaryLine(getStudy()));
+        summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getCtcTerm() != null) {
             primaryAeLine = getAdverseEvents().get(0).getCtcTerm().getCtepTerm();
         }
         summary.put("Primary AE", primaryAeLine);
         summary.put("Adverse event count", Integer.toString(getAdverseEvents().size()));
+
+        // TODO: placeholders
+        summary.put("Ticket number", null);
+        summary.put("Next report due", null);
 
         return summary;
     }
