@@ -1,43 +1,250 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.NotificationDao;
-import gov.nih.nci.cabig.caaers.domain.Notification;
+import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.domain.notification.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.notification.NotificationBodyContent;
+import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.notification.Recipient;
+import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
+import gov.nih.nci.cabig.caaers.domain.notification.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
+import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-
+import org.apache.commons.lang.StringUtils;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
+ * Created-on : May 22, 2007
+ * @version     %I%, %G%
+ * @since       1.0
+ */
 public class NotificationCommand implements RuleInputCommand {
-
-	private List<String> allRoles;
 	
-	private Map map;
-	
-	private String type;
-	
-	private NotificationDao notificationDao;
-	
-	public NotificationCommand(List<String> roleList, Map map, NotificationDao notificationDao) {
-		this.allRoles = roleList;
-		this.map = map;
-		setNotificationDao(notificationDao);
-	}
-	
-	private List<String> selectedRoles;
 	
 	private String name;
 	
 	private String to;
 		
-	private String subject;
-	
 	private String message;
+	private String description;
+	//--- mine
+
+	private String pointOnScale = "1"; //will show the point in scale we are now
+	private String lastPointOnScale; 
 	
+	private String timeScaleType;
+	private String duration;
+	
+	private String subjectLine;
+	private String fromAddress;
+	
+	private String notificationType;
+	private ReportCalendarTemplate calendarTemplate;
+	
+	
+	private List<String> roleRecipient = new ArrayList<String>();
+	private List<String> directRecipient = new ArrayList<String>();
+	
+	
+	
+	ReportCalendarTemplateDao calendarTemplateDao;
+	private List<String> allRoles;
+	
+	/**
+	 * @return the calendarTemplateDao
+	 */
+	public ReportCalendarTemplateDao getCalendarTemplateDao() {
+		return calendarTemplateDao;
+	}
+
+	/**
+	 * @param calendarTemplateDao the calendarTemplateDao to set
+	 */
+	public void setCalendarTemplateDao(ReportCalendarTemplateDao calendarTemplateDao) {
+		this.calendarTemplateDao = calendarTemplateDao;
+	}
+
+	public void reset(int index){
+		if(calendarTemplate == null){
+		  System.out.println("NULL calendarTemplate");
+		  return;
+		}
+		updateReportCalendarTemplate();
+		PlannedNotification pn = calendarTemplate.fetchPlannedNotification(index);
+		populate(pn);
+		lastPointOnScale = "" + index;
+	}
+	
+	public void reset(){
+		subjectLine ="";
+		fromAddress = "";
+		roleRecipient.clear();  //= new ArrayList<String>();
+		directRecipient.clear();  //= new ArrayList<String>();
+		message = "";
+	}
+	
+	public void populate(){
+		if(calendarTemplate == null)
+			return;
+		int indexOnScale = Integer.parseInt(pointOnScale);
+		PlannedNotification pn = calendarTemplate.fetchPlannedNotification(indexOnScale);
+		populate(pn);
+		lastPointOnScale = pointOnScale;
+	}
+	
+	
+	
+	public void populate(PlannedNotification pn){
+		if(pn instanceof PlannedEmailNotification){
+			PlannedEmailNotification pen = (PlannedEmailNotification) pn;
+			subjectLine = pen.getSubjectLine();
+			fromAddress = pen.getFromAddress();
+			message = (pen.getNotificationBodyContent() != null) ? pen.getNotificationBodyContent().getBodyAsString() : "";
+			List<Recipient> recipientList = pn.getRecipients();
+			String str;
+			for(Recipient r : recipientList){
+				if(r instanceof RoleBasedRecipient){
+					str = ((RoleBasedRecipient)r).getRoleName();
+					roleRecipient.add(str);
+				}else if(r instanceof ContactMechanismBasedRecipient){
+					str = ((ContactMechanismBasedRecipient)r).getContactName();
+					directRecipient.add(str);
+				}
+			}
+		}else{
+			reset();
+		}
+	}
+	
+	/**
+	 * @return the duration
+	 */
+	public String getDuration() {
+		return duration;
+	}
+
+	/**
+	 * @param duration the duration to set
+	 */
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	public void updateReportCalendarTemplate(){
+		calendarTemplate.setName(name);
+		calendarTemplate.setDescription(description);
+		calendarTemplate.setTimeScaleUnitType(TimeScaleUnit.valueOf(timeScaleType));
+		calendarTemplate.setDuration(Integer.parseInt(duration));
+		//configure planned notification if lastPointOnScale is not empty
+		if(StringUtils.isEmpty(lastPointOnScale))
+			return;
+		Integer lastPoint = Integer.valueOf(lastPointOnScale);
+		if(NotificationType.EMAIL_NOTIFICATION.name().equals(notificationType)){
+			PlannedEmailNotification pen = (PlannedEmailNotification) calendarTemplate.fetchPlannedNotification(lastPoint);
+			if(pen == null){
+				pen = new PlannedEmailNotification();
+				calendarTemplate.addPlannedNotification(pen);
+			}
+			pen.setIndexOnTimeScale(lastPoint);
+			pen.setSubjectLine(subjectLine);
+			pen.setFromAddress(fromAddress);
+			if(StringUtils.isNotEmpty(message)){
+				NotificationBodyContent nfBody = new NotificationBodyContent();
+				nfBody.setBody(message.getBytes());
+				pen.setNotificationBodyContent(nfBody);
+			}
+			List<Recipient> recipientList = new ArrayList<Recipient>();
+			for(String role : roleRecipient){
+				Recipient r = new RoleBasedRecipient(role);
+				recipientList.add(r);
+			}
+			for(String email : directRecipient){
+				Recipient r = new ContactMechanismBasedRecipient(email);
+				recipientList.add(r);
+			}
+			pen.setRecipients(recipientList);
+			roleRecipient.clear();
+			directRecipient.clear();
+		}
+	}
+	
+	/**
+	 * @return the calendarTemplate
+	 */
+	public ReportCalendarTemplate getCalendarTemplate() {
+		return calendarTemplate;
+	}
+
+	/**
+	 * @param calendarTemplate the calendarTemplate to set
+	 */
+	public void setCalendarTemplate(ReportCalendarTemplate calendarTemplate) {
+		this.calendarTemplate = calendarTemplate;
+	}
+
+	/**
+	 * @return the fromAddress
+	 */
+	public String getFromAddress() {
+		return fromAddress;
+	}
+
+	/**
+	 * @param fromAddress the fromAddress to set
+	 */
+	public void setFromAddress(String fromAddress) {
+		this.fromAddress = fromAddress;
+	}
+
+	/**
+	 * @return the subjectLine
+	 */
+	public String getSubjectLine() {
+		return subjectLine;
+	}
+
+	/**
+	 * @param subjectLine the subjectLine to set
+	 */
+	public void setSubjectLine(String subjectLine) {
+		this.subjectLine = subjectLine;
+	}
+
+	/**
+	 * @return the pointOnScale
+	 */
+	public String getPointOnScale() {
+		return pointOnScale;
+	}
+
+	/**
+	 * @param pointOnScale the pointOnScale to set
+	 */
+	public void setPointOnScale(String pointOnScale) {
+		this.pointOnScale = pointOnScale;
+	}
+
+	/**
+	 * @return the timeScaleType
+	 */
+	public String getTimeScaleType() {
+		return timeScaleType;
+	}
+
+	/**
+	 * @param timeScaleType the timeScaleType to set
+	 */
+	public void setTimeScaleType(String timeScaleType) {
+		this.timeScaleType = timeScaleType;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -46,13 +253,6 @@ public class NotificationCommand implements RuleInputCommand {
 		this.message = message;
 	}
 
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
 
 	public String getTo() {
 		return to;
@@ -63,53 +263,11 @@ public class NotificationCommand implements RuleInputCommand {
 	}
 	
 	public void save() {
-		try {
-			this.to = this.to.replace(',', ';');
-			if(!this.to.endsWith(";")) {
-				this.to = this.to + ";";
-			}
-			for(int i = 0; i < selectedRoles.size(); i++) {
-				List<String> emails = (List<String>)map.get(selectedRoles.get(i));
-				for(int j = 0; j < emails.size(); j++) {
-					this.to = this.to + emails.get(j) + ";";
-				}
-			}
-			Notification notification = new Notification();
-			notification.setEmail(this.to);
-			notification.setContent(getMessage());
-			notification.setSubject(getSubject());
-			notification.setName(getName());
-			getNotificationDao().save(notification);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	
+		calendarTemplateDao.save(calendarTemplate);
 	}
 
-	public List<String> getSelectedRoles() {
-		return selectedRoles;
-	}
-
-	public void setSelectedRoles(List<String> roles) {
-		this.selectedRoles = roles;
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public NotificationDao getNotificationDao() {
-		return notificationDao;
-	}
-
-	public void setNotificationDao(NotificationDao notificationDao) {
-		this.notificationDao = notificationDao;
-	}
-
-	public String getName() {
+		public String getName() {
 		return name;
 	}
 
@@ -117,11 +275,99 @@ public class NotificationCommand implements RuleInputCommand {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
+	/**
+	 * @return the notificationType
+	 */
+	public String getNotificationType() {
+		return notificationType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	/**
+	 * @param notificationType the notificationType to set
+	 */
+	public void setNotificationType(String notificationType) {
+		this.notificationType = notificationType;
 	}
-}
+
+	/**
+	 * @return the directRecipient
+	 */
+	public List<String> getDirectRecipient() {
+		return directRecipient;
+	}
+
+	/**
+	 * @param directRecipient the directRecipient to set
+	 */
+	public void setDirectRecipient(List<String> directRecipient) {
+		this.directRecipient = directRecipient;
+	}
+
+	/**
+	 * @return the lastPointOnScale
+	 */
+	public String getLastPointOnScale() {
+		return lastPointOnScale;
+	}
+
+	/**
+	 * @param lastPointOnScale the lastPointOnScale to set
+	 */
+	public void setLastPointOnScale(String lastPointOnScale) {
+		this.lastPointOnScale = lastPointOnScale;
+	}
+
+	/**
+	 * @return the roleRecipient
+	 */
+	public List<String> getRoleRecipient() {
+		return roleRecipient;
+	}
+
+	/**
+	 * @param roleRecipient the roleRecipient to set
+	 */
+	public void setRoleRecipient(List<String> roleRecipient) {
+		this.roleRecipient = roleRecipient;
+	}
+
+	/**
+	 * @return the allRoles
+	 */
+	public List<String> getAllRoles() {
+		return allRoles;
+	}
+
+	/**
+	 * @param allRoles the allRoles to set
+	 */
+	public void setAllRoles(List<String> allRoles) {
+		this.allRoles = allRoles;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	private List<Integer> getConfiguredIndexes(){
+		List<Integer> list = new ArrayList<Integer>();
+		if(calendarTemplate != null){
+			List<PlannedNotification> pnList = calendarTemplate.getPlannedNotifications();
+			for(PlannedNotification pn : pnList){
+			 list.add(pn.getIndexOnTimeScale());	
+			}
+		}
+		return list;
+	}
+	
+	}

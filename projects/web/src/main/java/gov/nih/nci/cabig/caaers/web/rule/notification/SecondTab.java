@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.web.rule.CollectionSelectField;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTextArea;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.validation.Errors;
 
 /***
  * This tab has the details of Email Message.
@@ -34,19 +36,6 @@ public class SecondTab extends DefaultTab {
 		// Specify Recipients
 		//
 
-        addField(NOTIFICATION_DETAILS_FIELD_GROUP, new CollectionSelectField(
-                "selectedRoles", "Roles", true,
-                getAllRoles(), null, null));
-
-        addField(NOTIFICATION_DETAILS_FIELD_GROUP, new DefaultTextField(
-                "to", "Email Address", true));
-        
-        addField(NOTIFICATION_DETAILS_FIELD_GROUP, new DefaultTextField(
-                "subject", "Subject", true));
-        
-        addField(NOTIFICATION_DETAILS_FIELD_GROUP, new DefaultTextArea(
-                "message", "Message", true));
-        
         //Subject ----- show a text field to enter the subject
         //Drop down list of Roles
         
@@ -62,6 +51,43 @@ public class SecondTab extends DefaultTab {
 	public void setAllRoles(List<String> roles) {
 		this.allRoles = roles;
 		initializeFields();
+	}
+	public void postProcess(HttpServletRequest req, RuleInputCommand cmd, Errors errors) {
+		System.out.println("SecondTab: post process is called ");
+		System.out.println("cmd :" + String.valueOf(cmd));
+		System.out.println("errors :" + String.valueOf(errors));
+		System.out.println("___________________________________");
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		//update the report calendar 
+		nfCmd.updateReportCalendarTemplate();
+		super.postProcess(req,cmd,errors);
+	}
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.ctms.web.tabs.Tab#validate(java.lang.Object, org.springframework.validation.Errors)
+	 */
+	@Override
+	public void validate(RuleInputCommand cmd, Errors errors) {
+		System.out.println("Second tab : validate method called....");
+		System.out.println("cmd : " + String.valueOf(cmd));
+		System.out.println("errors :" + String.valueOf(errors));
+		System.out.println("___________________________________");
+		super.validate(cmd,errors);
+	}
+
+	/* (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.web.rule.DefaultTab#referenceData(gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand)
+	 */
+	@Override
+	public Map<String, Object> referenceData(RuleInputCommand cmd) {
+		//populate the command from calendar template
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		nfCmd.populate();
+		// TODO Auto-generated method stub
+		System.out.println("second tab ref data ----------------");
+		Map<String, Object> refData = super.referenceData(cmd);
+		refData.put("allRoles", allRoles);
+		return refData;
 	}
 	
 }

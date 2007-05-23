@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import java.util.List;
-import java.util.Map;
-
-import gov.nih.nci.cabig.caaers.dao.NotificationDao;
+import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,11 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
  * */
 public class NotificationController extends AbstractTabbedFlowFormController<RuleInputCommand> {
 
-	private List<String> allRoles;
-	
-	private Map map;
-	
-	private NotificationDao notificationDao;
+	ReportCalendarTemplateDao reportCalendarTemplateDao;
+	List<String> allRoles;
 	
 	public NotificationController() {
 		initFlow();
@@ -33,52 +31,72 @@ public class NotificationController extends AbstractTabbedFlowFormController<Rul
 
     protected void initFlow() {
         setFlow(new Flow<RuleInputCommand>(getFlowName()));
-        getFlow().addTab(new FirstTab());
-        getFlow().addTab(new SecondTab());
+        FirstTab firstTab = new FirstTab();
+        SecondTab secondTab = new SecondTab();
+        secondTab.setAllRoles(allRoles);
+        ThirdTab thirdTab = new ThirdTab();
+        
+        getFlow().addTab(firstTab);
+        getFlow().addTab(secondTab);
+        getFlow().addTab(thirdTab);
     }
 	
 	protected String getFlowName() {
-		return "Create Notification";
+		return "Create Report Calendar";
 	}
 	
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
-		return new NotificationCommand(allRoles, map, notificationDao);
+		//return new NotificationCommand(allRoles, map, notificationDao);
+		System.out.println("\n\n\n****************Form backing called \n");
+		NotificationCommand cmd = new NotificationCommand();
+		cmd.setCalendarTemplate(new ReportCalendarTemplate());
+		cmd.setCalendarTemplateDao(reportCalendarTemplateDao);
+		cmd.setAllRoles(allRoles);
+		return cmd;
 	}
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object command, BindException arg3) throws Exception {
 		NotificationCommand notificationCommand = (NotificationCommand)command;
+		
 		notificationCommand.save();
         Map<String, Object> model = new ModelMap();
         //model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToNotificationList", model);
 	}
 
-	public List<String> getAllRoles() {
+	/**
+	 * @return the reportCalendarTemplateDao
+	 */
+	public ReportCalendarTemplateDao getReportCalendarTemplateDao() {
+		return reportCalendarTemplateDao;
+	}
+
+	/**
+	 * @param reportCalendarTemplateDao the reportCalendarTemplateDao to set
+	 */
+	public void setReportCalendarTemplateDao(
+			ReportCalendarTemplateDao reportCalendarTemplateDao) {
+		this.reportCalendarTemplateDao = reportCalendarTemplateDao;
+	}
+	
+	public void setAllRoles(List<String> roleList){
+		this.allRoles = roleList;
+	}
+
+	public List<String> getAllRoles(){
 		return allRoles;
 	}
-
-	public void setAllRoles(List<String> roleList) {
-		this.allRoles = roleList;
-		((SecondTab)getFlow().getTab(1)).setAllRoles(roleList);
-	}
-
-	public Map getMap() {
-		return map;
-	}
-
-	public void setMap(Map map) {
-		this.map = map;
-	}
-
-	public NotificationDao getNotificationDao() {
-		return notificationDao;
-	}
-
-	public void setNotificationDao(NotificationDao notificationDao) {
-		this.notificationDao = notificationDao;
-	}
+//
+//	public Map getMap() {
+//		return map;
+//	}
+//
+//	public void setMap(Map map) {
+//		this.map = map;
+//	}
+//
 	
 
 }

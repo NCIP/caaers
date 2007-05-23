@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
+import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  * */
 public class ListNotificationController extends SimpleFormController {
 
-	private NotificationDao notificationDao;
+	private ReportCalendarTemplateDao reportCalendarTemplateDao;
 	
 	public ListNotificationController() {
 		setCommandClass(ListNotificationCommand.class);
@@ -23,14 +24,23 @@ public class ListNotificationController extends SimpleFormController {
 	
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
-		return new ListNotificationCommand(notificationDao);
+		return new ListNotificationCommand(reportCalendarTemplateDao);
 	}
 
-	public NotificationDao getNotificationDao() {
-		return notificationDao;
+	/**
+	 * @return the reportCalendarTemplateDao
+	 */
+	public ReportCalendarTemplateDao getReportCalendarTemplateDao() {
+		return reportCalendarTemplateDao;
 	}
 
-	public void setNotificationDao(NotificationDao notificationDao) {
-		this.notificationDao = notificationDao;
+	/**
+	 * @param reportCalendarTemplateDao the reportCalendarTemplateDao to set
+	 */
+	public void setReportCalendarTemplateDao(
+			ReportCalendarTemplateDao reportCalendarTemplateDao) {
+		this.reportCalendarTemplateDao = reportCalendarTemplateDao;
 	}
+
+	
 }
