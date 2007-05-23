@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-import org.easymock.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -32,11 +31,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract CreateAdverseEventCommand createCommand();
 
     protected final CreateAdverseEventCommand createRealCommand() {
-        return new CreateAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService);
+        return new CreateAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService, nowFactory);
     }
 
     protected final CreateAdverseEventCommand createMockCommand() {
-        return new CreateAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService) {
+        return new CreateAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService, nowFactory) {
             @Override
             public StudyParticipantAssignment getAssignment() {
                 return assignment;

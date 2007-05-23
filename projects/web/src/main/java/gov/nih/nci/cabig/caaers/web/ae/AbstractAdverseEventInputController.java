@@ -19,6 +19,8 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -51,6 +53,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected RuleExecutionService ruleExecutionService;
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
+    protected NowFactory nowFactory;
 
     protected AbstractAdverseEventInputController() {
         setFlow(new Flow<C>(getFlowName()));
@@ -102,6 +105,12 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
             refdata.put("summary", ((C) oCommand).getAeReport().getSummary());
         }
         return refdata;
+    }
+
+    @Override
+    protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
+        return super.shouldSave(request, command, tab)
+            && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
 
     protected boolean displaySummary(int page) {
@@ -194,4 +203,12 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
 		this.ctcCategoryDao = ctcCategoryDao;
 	}
+
+    public NowFactory getNowFactory() {
+        return nowFactory;
+    }
+
+    public void setNowFactory(NowFactory nowFactory) {
+        this.nowFactory = nowFactory;
+    }
 }

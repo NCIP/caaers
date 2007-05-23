@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,60 +45,59 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
     private AdverseEventReportDao reportDao;
     private StudyParticipantAssignmentDao assignmentDao;
-    
+
     private RuleExecutionService ruleExecutionService;
     private Map<String, List<List<Attribution>>> attributionMap;
-    
+
     private List<CtcCategory> categories;
     private String[] ctcCatIds;
     private String[] cats;
     private String[] ctcTermIds;
 
     public CreateAdverseEventCommand(
-        StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService
+        StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao,
+        RuleExecutionService ruleExecutionService, NowFactory nowFactory
     ) {
         this.assignmentDao = assignmentDao;
         this.reportDao = reportDao;
         this.aeReport = new AdverseEventReport();
+        this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
 
         this.aeReport.setTreatmentInformation(new TreatmentInformation());
         this.aeReport.setReporter(createReporter());
-        this.aeReport.setPhysician(createPhysician());                           
+        this.aeReport.setPhysician(createPhysician());
         this.aeReport.setDiseaseHistory(createDiseaseHistory());
         this.aeReport.setParticipantHistory(new ParticipantHistory());
-        
+
         this.categories = new ArrayList<CtcCategory>();
-        
-               
-        
+
         this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
     }
+
     private DiseaseHistory createDiseaseHistory() {
-    	DiseaseHistory diseaseHistory = new DiseaseHistory();    	
-    	return diseaseHistory;
+        return new DiseaseHistory();
     }
-    
-    private Reporter createReporter() {    	    	
-    	Reporter reporter = new Reporter();
-    	
-    	reporter.setContactMechanims(createContactMechanismList());
-    	return reporter;                    	
+
+    private Reporter createReporter() {
+        Reporter reporter = new Reporter();
+
+        reporter.setContactMechanims(createContactMechanismList());
+        return reporter;
     }
-    
-    private Physician createPhysician() {    	    	
-    	Physician physician = new Physician();
-    	
-    	physician.setContactMechanims(createContactMechanismList());
-    	return physician;                    	
+
+    private Physician createPhysician() {
+        Physician physician = new Physician();
+
+        physician.setContactMechanims(createContactMechanismList());
+        return physician;
     }
-    
-    private ArrayList<ContactMechanism> createContactMechanismList()
-    {
-    	ArrayList<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
+
+    private List<ContactMechanism> createContactMechanismList() {
+        List<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
 
         // TODO: this code references undefined fields.
         // Please fix them.  RMS20070422.
@@ -116,7 +116,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
         return contacts;
     }
-    
+
     ////// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
@@ -181,97 +181,97 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     // TODO:
     //   - This only handles the first AE
     public void fireAERules() {
-    	String bindUri = "CAAERS_AE_RULES";
-		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
-		
-		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
-		StudySDO studySDO = new StudySDO();
-		Study study = aeReport.getAssignment().getStudySite().getStudy();
-		studySDO.setShortTitle(study.getShortTitle());
-		
-		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-		
-		// ATTRIBUTION
-		//adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from -- ask Rhett
+        String bindUri = "CAAERS_AE_RULES";
+        ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 
-		//PHASE -- // Where to get this from -- ask Rhett
-		String phase = aeReport.getAssignment().getStudySite().getStudy().getPhaseCode();
-		adverseEventSDO.setPhase(phase);
-		
-		//EXPECTED
-		boolean expected = adverseEvent.getExpected();
-		adverseEventSDO.setExpected((String.valueOf(expected)));
-		
-		//GRADE
-		int grade = adverseEvent.getGrade().getCode();
-		//adverseEventSDO.setGrade(String.valueOf(grade));
-		adverseEventSDO.setGrade(new Integer(grade));
-				
-		//CATEGORY
-		CtcCategory category = adverseEvent.getCtcTerm().getCategory();
-		adverseEventSDO.setCategory(category.getName());
-		
-		//CTC TERM
-		CtcTerm ctcTerm = adverseEvent.getCtcTerm();
-		adverseEventSDO.setTerm(ctcTerm.getFullName());
-		
-		//HOSPITALIZATION
-		int hospitalization = adverseEvent.getHospitalization().getCode();
-		Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
-		
-		adverseEventSDO.setHospitalization(isHospitalization.toString());
-		list.add(adverseEventSDO);
-		try {
-			getRuleExecutionService().fireRules(bindUri, studySDO, list);
-		} catch(Exception e) {
+        AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
+        StudySDO studySDO = new StudySDO();
+        Study study = aeReport.getAssignment().getStudySite().getStudy();
+        studySDO.setShortTitle(study.getShortTitle());
+
+        AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+
+        // ATTRIBUTION
+        //adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from -- ask Rhett
+
+        //PHASE -- // Where to get this from -- ask Rhett
+        String phase = aeReport.getAssignment().getStudySite().getStudy().getPhaseCode();
+        adverseEventSDO.setPhase(phase);
+
+        //EXPECTED
+        boolean expected = adverseEvent.getExpected();
+        adverseEventSDO.setExpected((String.valueOf(expected)));
+
+        //GRADE
+        int grade = adverseEvent.getGrade().getCode();
+        //adverseEventSDO.setGrade(String.valueOf(grade));
+        adverseEventSDO.setGrade(new Integer(grade));
+
+        //CATEGORY
+        CtcCategory category = adverseEvent.getCtcTerm().getCategory();
+        adverseEventSDO.setCategory(category.getName());
+
+        //CTC TERM
+        CtcTerm ctcTerm = adverseEvent.getCtcTerm();
+        adverseEventSDO.setTerm(ctcTerm.getFullName());
+
+        //HOSPITALIZATION
+        int hospitalization = adverseEvent.getHospitalization().getCode();
+        Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
+
+        adverseEventSDO.setHospitalization(isHospitalization.toString());
+        list.add(adverseEventSDO);
+        try {
+            getRuleExecutionService().fireRules(bindUri, studySDO, list);
+        } catch(Exception e) {
             log.error("Exception while firing rules: " + e.getMessage(), e);
             // TODO: why is this exception swallowed?
         }
     }
 
-	public RuleExecutionService getRuleExecutionService() {
-		return ruleExecutionService;
-	}
+    public RuleExecutionService getRuleExecutionService() {
+        return ruleExecutionService;
+    }
 
-	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-		this.ruleExecutionService = ruleExecutionService;
-	}
+    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
+        this.ruleExecutionService = ruleExecutionService;
+    }
 
-	public void setAeReport(AdverseEventReport aeReport) {
-		this.aeReport = aeReport;
-	}
+    public void setAeReport(AdverseEventReport aeReport) {
+        this.aeReport = aeReport;
+    }
 
-	public List<CtcCategory> getCategories() {
-		return categories;
-	}
+    public List<CtcCategory> getCategories() {
+        return categories;
+    }
 
-	public void setCategories(List<CtcCategory> categories) {
-		this.categories = categories;
-	}
+    public void setCategories(List<CtcCategory> categories) {
+        this.categories = categories;
+    }
 
-	public String[] getCtcCatIds() {
-		return ctcCatIds;
-	}
+    public String[] getCtcCatIds() {
+        return ctcCatIds;
+    }
 
-	public void setCtcCatIds(String[] ctcCatIds) {
-		this.ctcCatIds = ctcCatIds;
-	}
+    public void setCtcCatIds(String[] ctcCatIds) {
+        this.ctcCatIds = ctcCatIds;
+    }
 
-	public String[] getCtcTermIds() {
-		return ctcTermIds;
-	}
+    public String[] getCtcTermIds() {
+        return ctcTermIds;
+    }
 
-	public void setCtcTermIds(String[] ctcTermIds) {
-		this.ctcTermIds = ctcTermIds;
-	}
+    public void setCtcTermIds(String[] ctcTermIds) {
+        this.ctcTermIds = ctcTermIds;
+    }
 
-	public String[] getCats() {
-		return cats;
-	}
+    public String[] getCats() {
+        return cats;
+    }
 
-	public void setCats(String[] cats) {
-		this.cats = cats;
-	}
-	
-	
+    public void setCats(String[] cats) {
+        this.cats = cats;
+    }
+
+
 }

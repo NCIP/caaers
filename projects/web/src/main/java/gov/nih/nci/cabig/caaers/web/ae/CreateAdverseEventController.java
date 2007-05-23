@@ -29,7 +29,7 @@ public class CreateAdverseEventController
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new CreateAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService);
+        return new CreateAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService, nowFactory);
     }
 
     @Override

@@ -45,4 +45,8 @@ public class CreateAdverseEventCommandTest extends AeWebTestCase {
         assertNull(command.getAssignment());
         verifyMocks();
     }
+
+    public void testCreatedOnDefaultsToNow() throws Exception {
+        assertEquals(NOW, command.getAeReport().getCreatedAt());
+    }
 }
