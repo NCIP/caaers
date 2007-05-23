@@ -21,7 +21,7 @@ public class PriorTherapyTab<C extends AdverseEventInputCommand> extends AeTab<C
     private RepeatingFieldGroupFactory fieldFactory;
 
     public PriorTherapyTab() {
-        super("Prior Therapies", "Prior Therapies", "ae/priorTherapies");
+        super("Prior Therapies", "Therapies", "ae/priorTherapies");
         fieldFactory = new RepeatingFieldGroupFactory("priorTherapy", "aeReport.adverseEventPriorTherapies");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {

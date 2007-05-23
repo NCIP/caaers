@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class OtherCausesTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     public OtherCausesTab() {
-        super("Other contributing causes", "Other causes", "ae/other");
+        super("Other contributing causes", "Other", "ae/other");
     }
 
     @Override

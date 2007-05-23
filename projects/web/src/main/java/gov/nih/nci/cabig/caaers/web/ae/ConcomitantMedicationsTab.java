@@ -20,7 +20,7 @@ public class ConcomitantMedicationsTab<C extends AdverseEventInputCommand> exten
     private RepeatingFieldGroupFactory fieldFactory;
 
     public ConcomitantMedicationsTab() {
-        super("Concomitant medications", "Concomitant meds", "ae/conMed");
+        super("Concomitant medications", "Con. meds", "ae/conMed");
         fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.concomitantMedications");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {

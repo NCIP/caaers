@@ -43,7 +43,7 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
     public BasicsTab() {
-        super("Enter basic AE information", "Basics", "ae/enterBasic");
+        super("Enter basic AE information", "AEs", "ae/enterBasic");
 
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(new DefaultDateField(
