@@ -34,7 +34,7 @@ public enum Grade implements CodedEnum, CodedGrade {
     }
 
     public String getDisplayName() {
-        return displayName == null ? titleCasedName(this) : displayName;
+        return displayName == null ? sentenceCasedName(this) : displayName;
     }
 
     // for bean-property access

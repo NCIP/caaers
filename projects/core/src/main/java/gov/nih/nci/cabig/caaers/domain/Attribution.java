@@ -27,7 +27,7 @@ public enum Attribution implements CodedEnum {
     }
 
     public String getDisplayName() {
-        return titleCasedName(this);
+        return sentenceCasedName(this);
     }
 
     // for bean-property access

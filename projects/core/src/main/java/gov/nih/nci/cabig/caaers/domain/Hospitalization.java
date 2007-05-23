@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.register;
 import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.getByClassAndCode;
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.titleCasedName;
+import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.sentenceCasedName;
 import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.toStringHelper;
 
 /**
@@ -36,7 +36,7 @@ public enum Hospitalization implements CodedEnum {
 
     public String getDisplayName() {
         if (displayName == null) {
-            return titleCasedName(this);
+            return sentenceCasedName(this);
         } else {
             return displayName;
         }

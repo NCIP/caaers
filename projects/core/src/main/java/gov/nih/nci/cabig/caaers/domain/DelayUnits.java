@@ -19,7 +19,7 @@ public enum DelayUnits {
     }
 
     public String getDisplayName() {
-        return titleCasedName(this);
+        return sentenceCasedName(this);
     }
 
     public BigDecimal toMinutes(BigDecimal unitedValue) {
