@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    TODO: the structure and assumptions implied by this file are no good.  Everything in here
+    should be represented in a different way - either in code, in a lookup table, or in an enum.
+    RMS20070523.
+-->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
     <bean id="configurationProperty" class="gov.nih.nci.cabig.caaers.utils.ConfigProperty">
         <property name="map">
-            <map>       
-            <entry key="yesNo">
+            <map>
+                <entry key="yesNo">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="false" />
@@ -14,26 +20,26 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                             <property name="code" value="true" />
                             <property name="desc" value="Yes" />
                         </bean>
-                	</list>
-              </entry>     
-              <!-- Search Criteria -->
-               <entry key="studySearchType">
-                   <list>                      	
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                           <property name="code" value="id" />
-                           <property name="desc" value="Primary Identifier" />
-                       </bean>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                           <property name="code" value="shortTitle" />
-                           <property name="desc" value="Short Title" />
-                       </bean>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                           <property name="code" value="status" />
-                           <property name="desc" value="Status" />
-                       </bean>
                     </list>
-               </entry>   
-                           
+                </entry>
+                <!-- Search Criteria -->
+                <entry key="studySearchType">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="id" />
+                            <property name="desc" value="Primary Identifier" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="shortTitle" />
+                            <property name="desc" value="Short Title" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="status" />
+                            <property name="desc" value="Status" />
+                        </bean>
+                    </list>
+                </entry>
+
                 <entry key="statusRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
@@ -47,55 +53,55 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Approved - Trial has official CTEP approval" />
                             <property name="desc" value="Approved - Trial has official CTEP approval" />
- 			           </bean>
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Closed to Accrual &amp; Treatment" />
                             <property name="desc" value="Closed to Accrual &amp; Treatment" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                         	 <property name="code" value="Closed to Accrual" />
-                             <property name="desc" value="Closed to Accrual" />
-                         </bean>
+                            <property name="code" value="Closed to Accrual" />
+                            <property name="desc" value="Closed to Accrual" />
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                         	<property name="code" value="Temporarily Closed to Accrual &amp; Treatment" />
+                            <property name="code" value="Temporarily Closed to Accrual &amp; Treatment" />
                             <property name="desc" value="Temporarily Closed to Accrual &amp; Treatment" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                         	<property name="code" value="Temporarily Closed to Accrual" />
+                            <property name="code" value="Temporarily Closed to Accrual" />
                             <property name="desc" value="Temporarily Closed to Accrual" />
                         </bean>
                     </list>
                 </entry>
                 <entry key="phaseCodeRefData">
                     <list>
-                   		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="I" />
                             <property name="desc" value="Phase I Trial" />
                         </bean>
-                   		<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                     		<property name="code" value="I/II" />
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="I/II" />
                             <property name="desc" value="Phase I/II Trial" />
                         </bean>
-                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="II" />
                             <property name="desc" value="Phase II Trial" />
                         </bean>
-                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                             <property name="code" value="III" />
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="III" />
                             <property name="desc" value="Phase III Trial" />
                         </bean>
-                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="IV" />
                             <property name="desc" value="Phase IV Trial " />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                           <property name="code" value="0" />
+                            <property name="code" value="0" />
                             <property name="desc" value="Phase 0 Trial " />
-                        </bean> 
-                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Pilot" />
                             <property name="desc" value="Pilot" />
-                        </bean>                      
+                        </bean>
                     </list>
                 </entry>
                 <entry key="typeRefData">
@@ -103,26 +109,26 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Diagnostic" />
                             <property name="desc" value="Diagnostic" />
-                         </bean>
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Genetic Non-therapeutic" />
                             <property name="desc" value="Genetic Non-therapeutic" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Genetic Therapeutic" />
-                            <property name="desc" value="Genetic Therapeutic" />  
+                            <property name="desc" value="Genetic Therapeutic" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Primary Treatment" />
-                            <property name="desc" value="Primary Treatment" />  
-                         </bean>
+                            <property name="desc" value="Primary Treatment" />
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Supportive" />
-                            <property name="desc" value="Supportive" />  
+                            <property name="desc" value="Supportive" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Preventive" />
-                            <property name="desc" value="Preventive" />  
+                            <property name="desc" value="Preventive" />
                         </bean>
                     </list>
                 </entry>
@@ -130,32 +136,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="NCI" />
-                            <property name="desc" value="National Cancer Institute" />  
+                            <property name="desc" value="National Cancer Institute" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="PFI" />
-                            <property name="desc" value="Pfizer" />  
+                            <property name="desc" value="Pfizer" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="PAG" />
-                            <property name="desc" value="Proctor &amp; Gamble" />  
+                            <property name="desc" value="Proctor &amp; Gamble" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="GLA" />
-                            <property name="desc" value="GLAXO" />  
+                            <property name="desc" value="GLAXO" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="USB" />
-                            <property name="desc" value="US Biosciences" />  
+                            <property name="desc" value="US Biosciences" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="MGI" />
-                            <property name="desc" value="MGI Pharma Inc" />  
+                            <property name="desc" value="MGI Pharma Inc" />
                         </bean>
                     </list>
                 </entry>
-                
-                  <!-- codes for Identifiers -->                                    
+
+                <!-- codes for Identifiers -->
                 <entry key="identifiersType">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
@@ -165,164 +171,165 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.sprin
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Co-ordinating Center Identifier" />
                             <property name="desc" value="Co-ordinating Center Identifier" />
- 			           </bean>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Site Identifier" />
                             <property name="desc" value="Site Identifier" />
-                       </bean>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Site IRB Identifier" />
                             <property name="desc" value="Site IRB Identifier" />
-                       </bean>                        
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="ClinicalTrails.gov Identifier" />
                             <property name="desc" value="ClinicalTrails.gov Identifier" />
-                       </bean>                        
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Grid Identifier" />
                             <property name="desc" value="Grid Identifier" />
-                       </bean>                        
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="C3D Identifier" />
                             <property name="desc" value="C3D Identifier" />
-                       </bean>                        
+                        </bean>
                     </list>
-                </entry>      
-                
+                </entry>
+
                 <!-- codes for Study Site -->
-                
+
                 <entry key="studySiteStatusRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="ACT" />
                             <property name="desc" value="Active" />
-                        </bean>                       
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="INA" />
                             <property name="desc" value="Inactive" />
-                        </bean>                       
+                        </bean>
                     </list>
                 </entry>
                 <entry key="studySiteRoleCodeRefData">
                     <list>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="AFS" />
                             <property name="desc" value="Affiliate Site" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="COS" />
                             <property name="desc" value="Coordinating Site" />
-                        </bean>                                           
-                     </list>
-                </entry>                           
-                
-                 <entry key="invRoleCodeRefData">
+                        </bean>
+                    </list>
+                </entry>
+
+                <entry key="invRoleCodeRefData">
                     <list>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SPI" />
                             <property name="desc" value="Site Principle Investigator" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SI" />
                             <property name="desc" value="Site Investigator" />
-                        </bean>                                           
-                     </list>
-                </entry>                                           
-                
+                        </bean>
+                    </list>
+                </entry>
+
                 <entry key="invStatusCodeRefData">
                     <list>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Active" />
                             <property name="desc" value="Active" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Inactive" />
                             <property name="desc" value="Inactive" />
-                        </bean>                                           
-                     </list>
-                </entry>                                           
-				<!-- Study Investigators -->
-                 <entry key="studyPersonnelRoleRefData">
+                        </bean>
+                    </list>
+                </entry>
+                <!-- Study Investigators -->
+                <entry key="studyPersonnelRoleRefData">
                     <list>
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="REG" />
                             <property name="desc" value="Regsitrar" />
-                        </bean>   
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SC" />
                             <property name="desc" value="Study Coordinator" />
-                        </bean>                      
-               		</list>
-               	</entry>
-               	<entry key="studyPersonnelStatusRefData">
+                        </bean>
+                    </list>
+                </entry>
+                <entry key="studyPersonnelStatusRefData">
                     <list>
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="ACT" />
                             <property name="desc" value="Active" />
-                        </bean>   
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="INA" />
                             <property name="desc" value="Inactive" />
-                        </bean>                      
-               		</list>
-               	</entry>
-               	
+                        </bean>
+                    </list>
+                </entry>
+
                 <entry key="heightUnitsRefData">
                     <list>
-	                    <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Centimeter" />
                             <property name="desc" value="Centimeter" />
                         </bean>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Inch" />
                             <property name="desc" value="Inch" />
-                        </bean>                          	                                           
-                     </list>
-                </entry>                                           
+                        </bean>
+                    </list>
+                </entry>
 
                 <entry key="weightUnitsRefData">
                     <list>
-                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Kilogram" />
                             <property name="desc" value="Kilogram" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Pound" />
                             <property name="desc" value="Pound" />
-                        </bean>                                           
-                     </list>
-                </entry>                                                           
-                
+                        </bean>
+                    </list>
+                </entry>
+
+                <!-- TODO: this is a clear candidate for a CodedEnum -->
                 <entry key="bpsRefData">
                     <list>
-                    	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="please select--" />
                             <property name="desc" value="please select--" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="0 = Normal Activity, asymptomatic" />
                             <property name="desc" value="0 = Normal Activity, asymptomatic" />
-                        </bean>    
-                      	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="1 = Symptomatic, fully ambulatory" />
                             <property name="desc" value="1 = Symptomatic, fully ambulatory" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="2 = Symptomatic, in bed less than 50% of time" />
                             <property name="desc" value="2 = Symptomatic, in bed less than 50% of time" />
-                        </bean>                                           
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="3 = Symptomatic, in bed more than 50% of time" />
                             <property name="desc" value="3 = Symptomatic, in bed more than 50% of time" />
-                        </bean>                                           
+                        </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="4 = 100% bedridden" />
                             <property name="desc" value="4 = 100% bedridden" />
                         </bean>
-                     </list>
-                </entry>                                                           
-                
+                    </list>
+                </entry>
+
             </map>
-        </property>                      
+        </property>
     </bean>
 </beans>
