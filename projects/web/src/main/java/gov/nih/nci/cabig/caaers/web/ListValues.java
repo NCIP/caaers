@@ -120,8 +120,10 @@ public class ListValues {
 		List<ListValues> col = new ArrayList<ListValues>();
 		ListValues lov1 = new ListValues("Duke University Comprehensive Cancer Center", "Duke University Comprehensive Cancer Center");
 		ListValues lov2 = new ListValues("Warren Grant Magnuson Clinical Center", "Warren Grant Magnuson Clinical Center");
+		ListValues lov3 = new ListValues("Wake Forest University Cancer Center", "Wake Forest University Cancer Center");
 		col.add(lov1);
     	col.add(lov2);
+    	col.add(lov3);
     	return col;
 	}
 
