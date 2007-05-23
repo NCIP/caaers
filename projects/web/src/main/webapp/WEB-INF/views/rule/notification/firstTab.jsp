@@ -13,30 +13,21 @@
     </style>
 </head>
 <body>
-    <p>Feature in progress.... Decide the Type of Notification here and name it...</p>
-    
-    <chrome:division title="Create Trigger">
-
-        <form:form cssClass="standard">
-
-
-            <tags:errors path="*"/>
-    
-            <tags:tabFields tab="${tab}"/>
-
+    <chrome:division title="Configure Notification">
+    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
+		<jsp:attribute name="singleFields">
+             <tags:errors path="*"/>
             <div id="ruleset-fields">
                 <c:forEach items="${fieldGroups.ruleset.fields}" var="field">
-                    <ruletags:row field="${field}"/>
+                    <tags:renderRow field="${field}"/>
                 </c:forEach>
+               <input type="hidden" name="lastPointOnScale" value=""/>
+               <input type="hidden" name="notificationType" value="EMAIL_NOTIFICATION" />
             </div>
-
-            <c:if test="${empty tab}">
-						    <tags:tabControls tabNumber="${0}" isLast="${false}"/>
-            </c:if>
-        
-        </form:form>
-
-		</chrome:division>
+            
+		</jsp:attribute>
+	</tags:tabForm> 
+	</chrome:division>
     
 </body>
 

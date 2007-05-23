@@ -1,0 +1,179 @@
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ruletags" tagdir="/WEB-INF/tags/rule"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <tags:stylesheetLink name="ae"/>
+    <title>Not implemented</title>
+     <style>
+    #name {width:300px}
+    .test {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	height: auto;
+	width: auto;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: none;
+	border-left-style: solid;
+	border-top-color: #80A5E7;
+	border-right-color: #003399;
+	border-bottom-color: #80A5E7;
+	border-left-color: #80A5E7;
+	margin: 0px;
+	padding: 0px;
+}
+ .test0{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	height: auto;
+	width: auto;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: solid;
+	border-top-color: #80A5E7;
+	border-right-color: #80A5E7;
+	border-bottom-color: #80A5E7;
+	border-left-color: #003399;
+	padding-left: 3px;
+}
+  .test2 {
+	width: 300px;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #000099;
+	border-right-color: #000099;
+	border-bottom-color: #000099;
+	border-left-color: #000099;
+	background-color: #B9CDFB;
+}
+ .test3 {
+	width: auto;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: solid;
+	border-left-style: none;
+	border-top-color: #000099;
+	border-right-color: #000099;
+	border-bottom-color: #000099;
+	border-left-color: #000099;
+	padding: 3px;
+}
+    .test4 {
+	width: auto;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: none;
+	border-left-style: none;
+	border-top-color: #000099;
+	border-right-color: #000099;
+	border-bottom-color: #000099;
+	border-left-color: #000099;
+	
+}
+    .testfrom {
+	width: auto;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #7B99E1;
+	border-right-color: #0033CC;
+	border-bottom-color: #7B99E1;
+	border-left-color: #7B99E1;
+	padding: 3px;
+}
+    </style>
+</head>
+<body>
+    
+    <chrome:division title="Review Notification(s)">
+    <tags:tabForm tab="${tab}" flow="${flow}" >
+	<jsp:attribute name="singleFields">
+            <tags:errors path="*"/>
+        	<c:forEach var="pen" items="${command.calendarTemplate.plannedNotifications}">
+        	
+        	<div class="test0">
+           
+        	<table border="0" bordercolor="#0033ff" width="100%"  cellpadding="0" cellspacing="0">
+ 				 <tr><td width="20%"> <div align="left" class="test2">Notification for ${command.calendarTemplate.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}</div></td>
+                 <td><div class="test3">&nbsp;</div></td>
+                 </tr>
+                 <tr>
+   				<td width="20%"><div class="test0">From Address</div></td>
+  				<td width="80%"><div class="testfrom">${pen.fromAddress}</div></td>
+ 				</tr>
+ 				<tr>
+   				<td><div  class="test0">Recipients</div></td>
+   					<td>
+   				  	 <div class="testfrom">
+   				  	 <c:forEach var="r" items="${pen.recipients}">
+   				  	 	${r}<br />
+   				  	 </c:forEach>
+   				 	 </div>
+   				</td>
+ 				</tr>
+ 				<tr>
+   				<td><div  class="test0" style="height:100%;">Subject Line</div></td>
+   				<td><div class="testfrom">${pen.subjectLine}</div></td>
+ 				</tr>
+ 				<tr align="left" valign="top">
+ 				<td> 
+                <div  class="test0" style="height:100%;">
+					Message
+                    </div>
+   				</td>
+   				<td> 
+   				<div class="test">
+   					${pen.notificationBodyContent.bodyAsString}
+   				</div></td>
+   				</tr>
+   				<tr>
+   				<td colspan="2">
+   				  <div class="buttons" ></div>
+   				</td>
+   				</tr>
+ 				</table>
+           </div>
+           </c:forEach>
+            <input type="hidden" name="_finish"/>
+            <input type="hidden" name="lastPointOnScale" value="" />
+		</jsp:attribute>
+	</tags:tabForm> 
+	</chrome:division>
+    
+</body>
+
+
+</html>

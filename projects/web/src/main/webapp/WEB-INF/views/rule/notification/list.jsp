@@ -4,9 +4,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-    <title>AEs for ${command.participant.fullName} on ${command.study.shortTitle}</title>
+    <title>List Report Calendars</title>
     <tags:stylesheetLink name="extremecomponents"/>
-    <tags:dwrJavascriptLink objects="createAE"/>
     <style type="text/css">
         .notify-unit.success {
             color: #090;
@@ -16,28 +15,20 @@
             color: #900;
         }
     </style>
-    <script type="text/javascript">
-
-    </script>
 </head>
 <body>
-
-<c:if test="${not empty configuration.map.pscBaseUrl}">
-<p>
-    View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/schedule?assignment=${command.assignment.gridId}" class="sso">study calendar</a>.
-</p>
-</c:if>
-
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
-    items="command.notifications"
-    var="notification" imagePath="${ecImagePath}"
+    items="command.reportCalendarTemplateList"
+    var="rct" imagePath="${ecImagePath}"
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="80%"
     style="" styleClass="">
     <ec:row>
-        <ec:column property="notification.name" title="Name"/>
-        <ec:column property="notification.subject" title="Subject"/>
+        <ec:column property="name" title="Name">${name}</ec:column>
+        <ec:column property="description" title="Description"/>
+        <ec:column property="duration" title="Final Report Due">${rct.duration} ${rct.timeScaleUnitType.displayName}</ec:column>
+        </ec:column>
     </ec:row>
 </ec:table>
 </body>
