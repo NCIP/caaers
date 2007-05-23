@@ -40,6 +40,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
+    private AdverseEventResponseDescription responseDescription;
     private TreatmentInformation treatmentInformation;
 
     private Reporter reporter;
@@ -298,13 +299,23 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public TreatmentInformation getTreatmentInformation() {
-        //if (treatmentInformation == null) treatmentInformation = new TreatmentInformation();
         return treatmentInformation;
     }
 
     public void setTreatmentInformation(TreatmentInformation treatmentInformation) {
         this.treatmentInformation = treatmentInformation;
         if (treatmentInformation != null) treatmentInformation.setReport(this);
+    }
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public AdverseEventResponseDescription getResponseDescription() {
+        return responseDescription;
+    }
+
+    public void setResponseDescription(AdverseEventResponseDescription responseDescription) {
+        this.responseDescription = responseDescription;
+        if (responseDescription != null) responseDescription.setReport(this);
     }
 
     @OneToOne(mappedBy = "report")

@@ -146,4 +146,13 @@
         list_index="1"
         cause_text="Crossed against light"
         />
+
+    <AE_REPORT_DESCRIPTIONS
+        id="-10"
+        report_id="-1"
+        present_status_code="3"
+        event_description="It was real bad"
+        retreated="0"
+        recovery_date="2012-03-04"
+        />
 </dataset>

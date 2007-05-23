@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 import java.util.Calendar;
@@ -59,6 +61,15 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         assertLabValue("Wrong baseline", "3.66", 2003, Calendar.APRIL, 17, l1.getBaseline());
         assertLabValue("Wrong nadir", "0.4", 2007, Calendar.MARCH, 14, l1.getNadir());
         assertLabValue("Wrong nadir", "3.54", 2007, Calendar.MARCH, 19, l1.getRecovery());
+    }
+
+    private static void assertLabValue(
+        String message, String expectedValue, int expectedYear, int expectedMonth, int expectedDay,
+        LabValue actual
+    ) {
+        assertDayOfDate(prependMessage(message) + "wrong date",
+            expectedYear, expectedMonth, expectedDay, actual.getDate());
+        assertEquals(prependMessage(message) + "wrong value", expectedValue, actual.getValue());
     }
 
     public void testGetConcomitantMedications() throws Exception {
@@ -116,13 +127,13 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
             loaded.getOtherCauses().get(1).getText());
     }
 
-    private static void assertLabValue(
-        String message, String expectedValue, int expectedYear, int expectedMonth, int expectedDay,
-        LabValue actual
-    ) {
-        assertDayOfDate(prependMessage(message) + "wrong date",
-            expectedYear, expectedMonth, expectedDay, actual.getDate());
-        assertEquals(prependMessage(message) + "wrong value", expectedValue, actual.getValue());
+    public void testGetResponseDescription() throws Exception {
+        AdverseEventResponseDescription actual = getDao().getById(-1).getResponseDescription();
+        assertEquals("Wrong present status", PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE,
+            actual.getPresentStatus());
+        assertEquals("Wrong event description", "It was real bad", actual.getEventDescription());
+        assertEquals("Wrong retreated flag", Boolean.FALSE, actual.getRetreated());
+        assertDayOfDate("Wrong date removed", 2012, Calendar.MARCH, 4, actual.getRecoveryDate());
     }
 
     public void testSave() throws Exception {
