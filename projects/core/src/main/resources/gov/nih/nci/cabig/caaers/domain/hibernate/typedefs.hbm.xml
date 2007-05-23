@@ -17,4 +17,13 @@
     <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="postAdverseEventStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus</param>
     </typedef>
+	<typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="reportStatus">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReportStatus</param>
+    </typedef>
+	<typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="timeScaleUnit">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit</param>
+    </typedef>
+	<typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="deliveryStatus">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus</param>
+    </typedef>
 </hibernate-mapping>
