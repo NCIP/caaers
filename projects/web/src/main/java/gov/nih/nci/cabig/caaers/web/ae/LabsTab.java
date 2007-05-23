@@ -23,7 +23,7 @@ public class LabsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
                 return "Lab " + c;
             }
         });
-        fieldFactory.addField(new DefaultTextField("name", "Lab name", true));
+        fieldFactory.addField(new DefaultTextField("name", "Lab test name", true));
         fieldFactory.addField(new DefaultTextField("units", "Units", true));
         addLabValueFields("baseline", "Baseline");
         addLabValueFields("nadir", "AE");
