@@ -25,7 +25,12 @@
         <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
             <c:set var="ae" value="${adverseEvents[i]}"/>
             <th class="ae">
-                <div class="index">AE ${i + 1}</div>
+                <div class="index">
+                    <c:choose>
+                        <c:when test="${i == 0}">Primary AE</c:when>
+                        <c:otherwise>AE ${i + 1}</c:otherwise>
+                    </c:choose>
+                </div>
                 <div class="grade">${ae.grade}</div>
                 <div class="term">${ae.ctcTerm.fullName}</div>
             </th>
