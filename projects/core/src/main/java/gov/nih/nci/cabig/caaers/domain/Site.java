@@ -52,6 +52,10 @@ public class Site extends AbstractMutableDomainObject {
         siteInvestigator.setSite(this);
     }
    
+    public void addResearchStaff(ResearchStaff staff) {
+    	getResearchStaffs().add(staff);
+    	staff.setSite(this);
+    }
 
     ////// BEAN PROPERTIES
 
