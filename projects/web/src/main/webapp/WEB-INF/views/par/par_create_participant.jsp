@@ -87,7 +87,7 @@
 			<td align="center"><em></em><B>
 			Value:</td>
 			<td align="center"><em></em><B>
-			Source:</td>
+			Assigning Authority:</td>
 			<td align="center"><B>Is Primary:</td>
 		</tr>
 
