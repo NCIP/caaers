@@ -46,15 +46,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="label"><span class="red">*</span><em></em>Status:</div>
-                <div class="value"><form:select path="status">
-                    <option value="">--please select --</option>
-                    <form:options items="${statusRefData}" itemLabel="desc"
-                        itemValue="desc"/>
-                    </form:select>
-                </div>
-            </div>
-            <div class="row">
                 <div class="label"><span class="red">*</span><em></em>Phase:</div>
                 <div class="value"><form:select path="phaseCode">
                     <option value="">--please select --</option>
