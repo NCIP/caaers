@@ -10,10 +10,21 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RulesRepositoryEx;
+import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.jcr.LoginException;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
+import org.drools.repository.RulesRepository;
 /**
  * 
  * @author vinaykumar
@@ -24,6 +35,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	
 	private RuleAuthoringService ruleAuthoringService;
 	private RuleDeploymentService ruleDeploymentService;
+	private RepositoryService repositoryService;
 	
 	private static final String INSTITUTION_PACKAGE_NAME_PREFIX ="gov.nih.nci.cabig.caaers.rules.institution";
 	
@@ -35,10 +47,12 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RulesEngineServiceImpl(){
 		ruleAuthoringService = new RuleAuthoringServiceImpl();
 		ruleDeploymentService = new RuleDeploymentServiceImpl();
+		
+		this.repositoryService = (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
 	}
 	
 
-	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) {
+	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		
 		String uuid = null;
@@ -63,17 +77,14 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 		condition.getColumn().add(column_fixed);
 		
-		try {
+		
 			uuid=ruleAuthoringService.createRule(rule);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		
 		return uuid;
 	}
 
-	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) {
+	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		String uuid= null;
 		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
@@ -101,17 +112,14 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 		condition.getColumn().add(column_fixed);
 		
-		try {
+		
 			uuid = ruleAuthoringService.createRule(rule);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return uuid;
 	}
 
-	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) {
+	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
@@ -135,19 +143,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 		condition.getColumn().add(column_fixed);
 		
-		try {
+		
 			uuid = ruleAuthoringService.createRule(rule);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return uuid;
 		
 		
 	}
 
-	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) {
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		
 		RuleSet ruleSet = new RuleSet();
@@ -167,19 +172,19 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
 		//ruleSet.setImport(_imports);
 		
-		try {
+		
 			ruleAuthoringService.createRuleSet(ruleSet);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return  ruleSet;
 		
 	}
+	/**
+	 * 
+	 */
 
-	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName) {
-		// TODO Auto-generated method stub
+	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception {
+		// TODO Also create the category for the same rule set as well. 
 		
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
@@ -198,16 +203,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
 		//ruleSet.setImport(_imports);
 		
-		try {
+		
 			ruleAuthoringService.createRuleSet(ruleSet);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSet;
 	}
 
-	public RuleSet createRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) {
+	public RuleSet createRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		
 		RuleSet ruleSet = new RuleSet();
@@ -227,108 +229,140 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
 		//ruleSet.setImport(_imports);
 		
-		try {
+		
 			ruleAuthoringService.createRuleSet(ruleSet);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSet;
 	}
 
-	public void deployRuleSet(RuleSet ruleSet) {
+	public void deployRuleSet(RuleSet ruleSet) throws Exception {
 		// TODO Auto-generated method stub
 		
 		String bindUri = ruleSet.getName();
-		try {
+		
 			ruleDeploymentService.deregisterRuleSet(bindUri);
 			ruleDeploymentService.registerRuleSet(bindUri, bindUri);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 	}
 
-	public List<RuleSet> getAllRuleSets() {
+	public List<RuleSet> getAllRuleSets() throws Exception {
 		// TODO Auto-generated method stub
 		List<RuleSet> ruleSets = null;
-		try {
+		
 			ruleSets = ruleAuthoringService.getAllRuleSets();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSets;
 	}
 
-	public Rule getRule(String uuID) {
+	public Rule getRule(String uuID) throws Exception {
 		// TODO Auto-generated method stub
 		Rule rule = null;
-		try {
+		
 			rule= ruleAuthoringService.getRule(uuID);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return rule;
 	}
 
-	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) {
+	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
-		try {
+		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSet;
 	}
 	/**
 	 * I really have to investigate into this
 	 * We may have to have handle to repositoyr service and do something from there
+	 * @throws Exception 
 	 */
 
-	public List<RuleSet> getAllRuleSetForInstitution(String institutionName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RuleSet> getAllRuleSetsForInstitution(String institutionName) throws Exception {
+		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+		String institutionSpecificCategoryPath = RuleUtil.getInstitutionSpecificPath(institutionName);
+		/**
+		 * First check if there is a entry for this sponsor in the repository 
+		 * If there is no entry then return empty list implying that there are no rules
+		 * for this sponsor
+		 */
+		boolean exist = RuleUtil.categoryExist(ruleAuthoringService, institutionSpecificCategoryPath);
+		if(!exist) {
+			return ruleSets;
+		}
+		
+		/**
+		 * Now for this catgeory we can go ahead and pull all children
+		 */
+		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(institutionSpecificCategoryPath);
+		if(ruleSetNames.size()>0) {
+			return ruleSets;
+		}
+		
+		for(String ruleSetName: ruleSetNames){
+			
+			RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
+			ruleSets.add(ruleSet);
+		}
+		
+		return ruleSets;
 	}
 
-	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) {
+	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
-		try {
+		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSet;
 	}
 	
 	/**
 	 * I really have to investigate into this
 	 * We may have to have handle to repositoyr service and do something from there
+	 * @throws Exception 
 	 */
 
-	public List<RuleSet> getAllRuleSetForSponsor(String sponsorName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RuleSet> getAllRuleSetsForSponsor(String sponsorName) throws Exception {
+		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+		String sponsorSpecificCategoryPath = RuleUtil.getSponsorSpecificPath(sponsorName);
+		/**
+		 * First check if there is a entry for this sponsor in the repository 
+		 * If there is no entry then return empty list implying that there are no rules
+		 * for this sponsor
+		 */
+		boolean exist = RuleUtil.categoryExist(ruleAuthoringService, sponsorSpecificCategoryPath);
+		if(!exist) {
+			return ruleSets;
+		}
+		
+		/**
+		 * Now for this catgeory we can go ahead and pull all children
+		 */
+		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(sponsorSpecificCategoryPath);
+		if(ruleSetNames.size()<1) {
+			return ruleSets;
+		}
+		
+		for(String ruleSetName: ruleSetNames){
+			
+			RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
+			System.out.println(ruleSet.getName());
+			ruleSets.add(ruleSet);
+		}
+		
+		return ruleSets;
 	}
 
-	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) {
+	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
-		try {
+		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return ruleSet;
 		
 	}
@@ -338,53 +372,68 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	 * We may have to have handle to repositoyr service and do something from there
 	 */
 
-	public List<RuleSet> getAllRuleSetForStudy(String studyShortTitle,String sponsorName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RuleSet> getAllRuleSetsForStudy(String studyShortTitle,String sponsorName) throws Exception{
+		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
+		String studySponsorSpecificCategoryPath = RuleUtil.getStudySponsorSpecificPath(studyShortTitle, sponsorName);
+		/**
+		 * First check if there is a entry for this sponsor in the repository 
+		 * If there is no entry then return empty list implying that there are no rules
+		 * for this sponsor
+		 */
+		boolean exist = RuleUtil.categoryExist(ruleAuthoringService, studySponsorSpecificCategoryPath);
+		if(!exist) {
+			return ruleSets;
+		}
+		
+		/**
+		 * Now for this catgeory we can go ahead and pull all children
+		 */
+		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(studySponsorSpecificCategoryPath);
+		if(ruleSetNames.size()>0) {
+			return ruleSets;
+		}
+		
+		for(String ruleSetName: ruleSetNames){
+			
+			RuleSet ruleSet = this.getRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+			ruleSets.add(ruleSet);
+		}
+		
+		return ruleSets;
 	}
 
-	public List<Rule> getRulesByCategory(String categoryPath) {
+	public List<Rule> getRulesByCategory(String categoryPath) throws Exception {
 		// TODO Auto-generated method stub
 		List<Rule> rules =null;
-		try {
+		
 			rules = ruleAuthoringService.getRulesByCategory(categoryPath);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		return rules;
 	}
 
-	public void unDeployRuleSet(RuleSet ruleSet) {
+	public void unDeployRuleSet(RuleSet ruleSet) throws Exception {
 		// TODO Auto-generated method stub
 		String bindUri = ruleSet.getName();
-		try {
+		
 			ruleDeploymentService.deregisterRuleSet(bindUri);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
-	public void updateRule(Rule rule) {
+	public void updateRule(Rule rule) throws Exception{
 		// TODO Auto-generated method stub
-		try {
+		
 			ruleAuthoringService.updateRule(rule);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
-	public void updateRuleSet(RuleSet ruleSet) {
+	public void updateRuleSet(RuleSet ruleSet) throws Exception {
 		// TODO Auto-generated method stub
-		try {
+		
 			ruleAuthoringService.updateRuleSet(ruleSet);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
+	
+	
 	
 	
 
