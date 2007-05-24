@@ -14,7 +14,7 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "attachments")
 @GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name = "sequence", value = "attachments_id_seq")
+        @Parameter(name = "sequence", value = "seq_attachments_id")
     }
 )
 public class NotificationAttachment extends AbstractMutableDomainObject{

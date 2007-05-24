@@ -35,7 +35,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @DiscriminatorValue("dtype")
 @GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name = "sequence", value = "recipients_id_seq")
+        @Parameter(name = "sequence", value = "seq_recipients_id")
     }
 )
 public abstract class Recipient extends AbstractMutableDomainObject {

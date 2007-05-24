@@ -36,7 +36,7 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorValue("dtype")
 @GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name = "sequence", value = "planned_notifications_id_seq")
+        @Parameter(name = "sequence", value = "seq_planned_notifications_id")
     }
 )
 public class PlannedNotification extends AbstractMutableDomainObject implements Serializable{
