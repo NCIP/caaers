@@ -24,7 +24,9 @@ class CreateScheduledNotifications extends edu.northwestern.bioinformatics.berin
 	if (databaseMatches('oracle')) {
 	   execute('alter table scheduled_notifications add (body blob)')
 	}  
-                
+        if(databaseMatches('hsql')){
+	    execute('alter table scheduled_notifications add column body longvarbinary');
+         }    
         
     }
 

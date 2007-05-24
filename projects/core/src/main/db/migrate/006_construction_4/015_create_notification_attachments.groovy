@@ -14,10 +14,12 @@ class CreateNotificationAttachments extends edu.northwestern.bioinformatics.beri
          if (databaseMatches('postgres')) {
         	 execute('alter table attachments  add column content oid')
 	 	}
-	 	if(databaseMatches('oracle')){
+	 if(databaseMatches('oracle')){
 	 		   execute('alter table attachments  add (content blob)')
-	 	}
-	 
+	 }
+	 if(databaseMatches('hsql')){
+	         	   execute('alter table attachments  add column content longvarbinary');
+         }
     }
 
     void down() {

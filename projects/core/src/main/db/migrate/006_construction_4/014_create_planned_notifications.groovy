@@ -20,7 +20,9 @@ class CreatePlannedNotifications extends edu.northwestern.bioinformatics.bering.
 	 	if(databaseMatches('oracle')){
 	 		execute('alter table planned_notifications add  (body blob)')
 	 	}
-        
+        	if(databaseMatches('hsql')){
+        	   execute('alter table planned_notifications add column body longvarbinary');
+        	}
     }
 
     void down() {
