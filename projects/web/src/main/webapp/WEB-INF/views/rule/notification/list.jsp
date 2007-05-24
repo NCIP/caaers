@@ -28,7 +28,7 @@
         <ec:column property="name" title="Name">${name}</ec:column>
         <ec:column property="description" title="Description"/>
         <ec:column property="duration" title="Final Report Due">${rct.duration} ${rct.timeScaleUnitType.displayName}</ec:column>
-        </ec:column>
+  
     </ec:row>
 </ec:table>
 </body>
