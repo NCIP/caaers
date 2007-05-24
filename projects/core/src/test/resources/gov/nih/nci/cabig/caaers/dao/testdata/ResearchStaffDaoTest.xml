@@ -1,7 +1,41 @@
-<dataset>
+<dataset>	   
+    <STUDIES
+        id="-2"
+        multi_institution_indicator="0"
+        short_title="Short Title"
+        long_title="Long Title" 
+        description="Description"
+        primary_sponsor_code="SCODE_100"
+        grid_id="grid id"
+        />
+    
+     <SITES
+        id="-1000"
+        name="New Site"
+        grid_id="gridSite"/>
+        
+    <RESEARCH_STAFFS 
+    	id="-1000" 
+    	version="1" 
+    	first_name="Bill" 
+    	last_name="Gates" 
+    	site_id="-1000"/>
     <RESEARCH_STAFFS
-        id="-100"
-        first_name="Dilbert"
-        last_name="Scott"
-       />
+     	id="-1001" 
+     	version="1" 
+     	first_name="George"
+     	last_name="Bush"
+     	site_id="-1000"/>
+    <RESEARCH_STAFFS 
+    	id="-1002" 
+    	version="1" 
+    	first_name="Benjamin"
+    	last_name="Franklin"
+    	site_id="-1000"/>    
+    <RESEARCH_STAFFS 
+    	id="-1003" 
+    	version="1"
+    	first_name="JF"
+    	last_name="Kennedy"
+    	site_id="-1000"/>         
 </dataset>
