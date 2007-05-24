@@ -53,10 +53,10 @@ public class SecondTab extends DefaultTab {
 		initializeFields();
 	}
 	public void postProcess(HttpServletRequest req, RuleInputCommand cmd, Errors errors) {
-		System.out.println("SecondTab: post process is called ");
-		System.out.println("cmd :" + String.valueOf(cmd));
-		System.out.println("errors :" + String.valueOf(errors));
-		System.out.println("___________________________________");
+		//System.out.println("SecondTab: post process is called ");
+		//System.out.println("cmd :" + String.valueOf(cmd));
+		//System.out.println("errors :" + String.valueOf(errors));
+		//System.out.println("___________________________________");
 		NotificationCommand nfCmd = (NotificationCommand)cmd;
 		//update the report calendar 
 		nfCmd.updateReportCalendarTemplate();
@@ -68,10 +68,10 @@ public class SecondTab extends DefaultTab {
 	 */
 	@Override
 	public void validate(RuleInputCommand cmd, Errors errors) {
-		System.out.println("Second tab : validate method called....");
-		System.out.println("cmd : " + String.valueOf(cmd));
-		System.out.println("errors :" + String.valueOf(errors));
-		System.out.println("___________________________________");
+		//System.out.println("Second tab : validate method called....");
+		//System.out.println("cmd : " + String.valueOf(cmd));
+		//System.out.println("errors :" + String.valueOf(errors));
+		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
 	}
 
@@ -84,7 +84,7 @@ public class SecondTab extends DefaultTab {
 		NotificationCommand nfCmd = (NotificationCommand)cmd;
 		nfCmd.populate();
 		// TODO Auto-generated method stub
-		System.out.println("second tab ref data ----------------");
+		//System.out.println("second tab ref data ----------------");
 		Map<String, Object> refData = super.referenceData(cmd);
 		refData.put("allRoles", allRoles);
 		return refData;

@@ -35,11 +35,11 @@ public class FirstTab extends DefaultTab {
 //                    createMapFromArray(NotificationType.values())));
 //        
         addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultSelectField(
-                "timeScaleType", "Time Scale Unit", true,
+                "timeScaleType", "Time Scale UOM", true,
                    createMapFromArray(TimeScaleUnit.values())));
         
         addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultTextField(
-    			"duration", "Time Still Report Due", true));
+    			"duration", "Time Till Report Due", true));
         
     }
 
@@ -48,10 +48,10 @@ public class FirstTab extends DefaultTab {
 	 */
 	@Override
 	public void postProcess(HttpServletRequest req, RuleInputCommand cmd, Errors errors) {
-		System.out.println("FirstTab: post process is called ");
-		System.out.println("cmd :" + String.valueOf(cmd));
-		System.out.println("errors :" + String.valueOf(errors));
-		System.out.println("___________________________________");
+		//System.out.println("FirstTab: post process is called ");
+		//System.out.println("cmd :" + String.valueOf(cmd));
+		//System.out.println("errors :" + String.valueOf(errors));
+		//System.out.println("___________________________________");
 		
 		NotificationCommand nfCmd = (NotificationCommand)cmd;
 		nfCmd.updateReportCalendarTemplate();
@@ -63,10 +63,10 @@ public class FirstTab extends DefaultTab {
 	 */
 	@Override
 	public void validate(RuleInputCommand cmd, Errors errors) {
-		System.out.println("First tab : validate method called....");
-		System.out.println("cmd : " + String.valueOf(cmd));
-		System.out.println("errors :" + String.valueOf(errors));
-		System.out.println("___________________________________");
+		//System.out.println("First tab : validate method called....");
+		//System.out.println("cmd : " + String.valueOf(cmd));
+		//System.out.println("errors :" + String.valueOf(errors));
+		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
 	}
 

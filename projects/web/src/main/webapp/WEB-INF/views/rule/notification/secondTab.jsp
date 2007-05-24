@@ -69,7 +69,7 @@
 		}
 		
 		function selectTimeScaleUnit(tsu){
-			alert('hello');
+			//alert('hello');
 			var frm = $('command');
 			frm.elements['pointOnScale'].value = tsu;
 			//frm.elements['_page'].value = frm.elements['_page'].value - 1;
