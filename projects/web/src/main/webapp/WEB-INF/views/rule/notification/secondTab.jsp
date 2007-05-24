@@ -131,7 +131,7 @@
     	</div>
 		<!-- hidden direct recipient div -->
 		<div id="div_recipient_direct" style="display: none">
-  			<input type="text" name="directRecipient" id="email"/>
+  			<input type="text" name="directRecipient" id="email" size="40"/>
 			<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
                 		id="remove-action-image" style="border: 0px none ;" 
                         onClick="javascript:{removeRecipient(this.parentNode)}"/>
@@ -148,7 +148,7 @@
 		         	  	<table width="100%" border="1" >
  						 <tr>
    							<td width="15%">From Address</td>
-  							<td width="85%"><form:input path="fromAddress"/></td>
+  							<td width="85%"><form:input path="fromAddress" size="40"/></td>
  						 </tr>
  						 <tr>
    							<td width="15%">Recipients
@@ -163,7 +163,7 @@
    								<c:forEach var="email" items="${command.directRecipient}">
    								<div id="div_recipient">
    								    <div id="div_recipient_direct_x" >
-  									<input type="text" name="directRecipient" id="email" value="${email}"/>
+  									<input type="text" name="directRecipient" id="email" value="${email}" size="40"/>
 									<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
                 						id="remove-action-image" style="border: 0px none ;" 
                        					 onClick="javascript:{removeRecipient(this.parentNode)}"/>
@@ -187,7 +187,7 @@
  						 </tr>
  						 <tr>
    							<td width="15%">Subject Line</td>
-   							<td width="85%"><form:input path="subjectLine" /></td>
+   							<td width="85%"><form:input path="subjectLine" size="100" /></td>
  						 </tr>
  						 <tr>
    							<td colspan="2" align="center"> 
