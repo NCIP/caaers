@@ -24,6 +24,10 @@
            <div class="value"><form:input path="firstName" /></div>
        </div>
        <div class="row">
+            <div class="label">Middle Name:</div>
+            <div class="value"><form:input path="middleName" /></div>
+        </div>
+       <div class="row">
            <div class="label"><span class="red">*</span>Last Name:</div>
            <div class="value"><form:input path="lastName" /></div>
        </div>
