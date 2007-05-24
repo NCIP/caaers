@@ -26,6 +26,13 @@ public class RulesEngineServiceTest extends TestCase{
 				
 	}
 	
+	public void testCreateAnotherRuleSetForSponsor() throws Exception{
+		String ruleSetName = "Report Scheduling Period Rules";
+		String sponsorName = "Our Dream Sponsor";
+		
+		rulesEngineService.createRuleSetForSponsor(ruleSetName, sponsorName);
+	}
+	
 	public void testGetRuleSetForSponsor() throws Exception{
 		String ruleSetName = "Asses AE Rules";
 		String sponsorName = "Our Dream Sponsor";
@@ -74,6 +81,14 @@ public class RulesEngineServiceTest extends TestCase{
 		
 		rulesEngineService.createRuleForSponsor(rule1, ruleSetName, sponsorName);
 		
+		
+	}
+	
+	
+	
+	public void testGetAllRuleSetsForSponsor() throws Exception{
+		String sponsorName = "Our Dream Sponsor";
+		rulesEngineService.getAllRuleSetsForSponsor(sponsorName);
 		
 	}
 	
