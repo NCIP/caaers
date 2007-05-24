@@ -5,13 +5,13 @@ package gov.nih.nci.cabig.caaers.grid;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.api.StudyService;
-import gov.nih.nci.cabig.caaers.domain.MutableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.common.RegistrationConsumer;
 import gov.nih.nci.cabig.ctms.grid.RegistrationType;
+import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cagrid.common.Utils;
 import static org.easymock.EasyMock.expect;
 import org.easymock.IArgumentMatcher;
