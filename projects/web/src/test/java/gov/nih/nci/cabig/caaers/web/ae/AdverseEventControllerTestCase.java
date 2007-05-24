@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 
 /**
  * @author Rhett Sutphin
@@ -24,6 +25,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected ParticipantDao participantDao;
     protected StudyDao studyDao;
     protected CtcDao ctcDao;
+    protected CtcCategoryDao ctcCategoryDao;
     protected CtcTermDao ctcTermDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected AdverseEventReportDao adverseEventReportDao;
@@ -41,6 +43,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         studyDao = registerDaoMockFor(StudyDao.class);
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         ctcDao = registerDaoMockFor(CtcDao.class);
+        ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
         adverseEventReportDao = registerDaoMockFor(AdverseEventReportDao.class);
         ruleExecutionService = registerMockFor(RuleExecutionService.class);
