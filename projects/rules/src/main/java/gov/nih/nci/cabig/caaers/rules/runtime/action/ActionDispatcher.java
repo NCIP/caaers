@@ -3,16 +3,11 @@ package gov.nih.nci.cabig.caaers.rules.runtime.action;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
-import gov.nih.nci.cabig.caaers.rules.notification.MockObjectFactory;
-import gov.nih.nci.cabig.caaers.rules.notification.NotificationCalendarTemplate;
-import gov.nih.nci.cabig.caaers.rules.notification.ReportSchedule;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.codehaus.xfire.jaxb2.JaxbServiceFactory;
-import org.codehaus.xfire.service.binding.ObjectServiceFactory;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -32,7 +27,7 @@ public class ActionDispatcher {
 	public void dispatchAction(String actionId, RuleContext ruleContext) throws Exception{
 		try {
 			//instantiate the Mock-ScheduleReport
-			ReportSchedule schedule = MockObjectFactory.getReportSchedule();
+/*			ReportSchedule schedule = MockObjectFactory.getReportSchedule();
 			NotificationCalendarTemplate template = MockObjectFactory.getNotificationCalendarTemplate();
 			schedule.applyNotificationCalendarTemplate(template);
 			
@@ -40,7 +35,7 @@ public class ActionDispatcher {
 			String endPointOrg = (String.valueOf(System.getenv("OS")).contains("Win")) ?  "http://localhost:8080/scheduler/services/SchedulerService" : "http://10.10.10.2:8031/scheduler/services/SchedulerService";
 			
 			ObjectServiceFactory factory = new JaxbServiceFactory();
-/*			Service serviceModel = factory.create(SchedulerService.class);
+*//*			Service serviceModel = factory.create(SchedulerService.class);
 			SchedulerService service = (SchedulerService) new XFireProxyFactory().create(serviceModel, 
 					endPointOrg);
 			service.scheduleNotification(schedule);
