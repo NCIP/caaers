@@ -20,11 +20,11 @@ public interface RulesEngineService {
 	 *  For creating RuleSets
 	 *
 	 */
-	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName);
+	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName) throws Exception;
 	
-	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName);
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception;
 	
-	public RuleSet createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName);
+	public RuleSet createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName) throws Exception;
 	
 	
 	
@@ -36,21 +36,21 @@ public interface RulesEngineService {
 	 * getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName)
 	 *
 	 */
-	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName);
+	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName) throws Exception;
 	
-	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName);
+	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName) throws Exception;
 	
-	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName);
-	
-	
+	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
 	
 	
 	
-	public List<RuleSet> getAllRuleSetForSponsor(String sponsorName);
 	
-	public List<RuleSet> getAllRuleSetForInstitution(String institutionName);
 	
-	public List<RuleSet> getAllRuleSetForStudy(String studyShortTitle, String sponsorName);
+	public List<RuleSet> getAllRuleSetsForSponsor(String sponsorName) throws Exception;
+	
+	public List<RuleSet> getAllRuleSetsForInstitution(String institutionName) throws Exception;
+	
+	public List<RuleSet> getAllRuleSetsForStudy(String studyShortTitle, String sponsorName) throws Exception;
 	
 	
 	/**
@@ -58,7 +58,7 @@ public interface RulesEngineService {
 	 *
 	 */
 	
-	public void updateRuleSet(RuleSet ruleSet);
+	public void updateRuleSet(RuleSet ruleSet) throws Exception;
 	
 	/**
 	 * createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName)
@@ -70,11 +70,11 @@ public interface RulesEngineService {
 	 *
 	 */
 	
-	public String createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName);
+	public String createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName) throws Exception;
 	
-	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName);
+	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception;
 	
-	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName);
+	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
 	
 	
 	
@@ -83,28 +83,28 @@ public interface RulesEngineService {
 	 *
 	 */
 	
-	public Rule getRule(String uuID);
+	public Rule getRule(String uuID) throws Exception;
 	
 	/**
 	 * Same
 	 *
 	 */
 	
-	public void updateRule(Rule rule);
+	public void updateRule(Rule rule) throws Exception;
 	
 	/**
 	 * By Category path
 	 *
 	 */
 	
-	public List<Rule> getRulesByCategory(String categoryPath);
+	public List<Rule> getRulesByCategory(String categoryPath) throws Exception;
 	
-	public List<RuleSet> getAllRuleSets();
+	public List<RuleSet> getAllRuleSets() throws Exception;
 	
 	
-	public void deployRuleSet(RuleSet ruleSet);
+	public void deployRuleSet(RuleSet ruleSet) throws Exception;
 	
-	public void unDeployRuleSet(RuleSet set);
+	public void unDeployRuleSet(RuleSet set) throws Exception;
 	
 
 }
