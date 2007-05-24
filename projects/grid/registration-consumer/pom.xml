@@ -22,24 +22,24 @@
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers.ext</groupId>
             <artifactId>cagrid-everything</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
             <type>pom</type>
         </dependency>
 
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
             <artifactId>c3pr-registration-consumer-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
             <artifactId>c3pr-registration-consumer-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
             <artifactId>c3pr-registration-consumer-stubs</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0</version>
         </dependency>
 
         <dependency>
@@ -50,43 +50,43 @@
         <dependency>
             <groupId>axis-unofficial</groupId>
             <artifactId>addressing</artifactId>
-            <version>1.0-SNAPSHOT</version> <!-- is this the right version? -->
+            <version>1.0</version> <!-- is this the right version? -->
         </dependency>
 
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-mds-aggregator</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-mds-aggregator-stubs</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-servicegroup</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-servicegroup-stubs</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>wsrf-core</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>wsrf-core-stubs</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>cog-jglobus</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
 
         <dependency>

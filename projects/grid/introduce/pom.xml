@@ -32,78 +32,78 @@
         <dependency>
             <groupId>gov.nih.nci.security</groupId>
             <artifactId>csmapi</artifactId>
-            <version>3.1-SNAPSHOT</version>
+            <version>3.2</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.logging</groupId>
             <artifactId>clm</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>3.2.0-cagrid1.0</version>
         </dependency>
 
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers.ext</groupId>
             <artifactId>cagrid-everything</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0</version>
             <type>pom</type>
         </dependency>
         
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-mds-aggregator</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-mds-aggregator-stubs</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-servicegroup</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>globus-wsrf-servicegroup-stubs</artifactId>
-            <version>4.0-SNAPSHOT</version>
+            <version>4.0-cagrid1.0</version>
         </dependency>
 
         <dependency>
             <groupId>edu.internet2.middleware.grouper</groupId>
             <artifactId>grouper</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0-cagrid1.0</version>
         </dependency>
 
         <dependency>
             <groupId>cryptix</groupId>
             <artifactId>cryptix</artifactId>
-            <version>3.2-SNAPSHOT</version>
+            <version>3.2-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>cryptix</groupId>
             <artifactId>cryptix-impl</artifactId>
-            <version>3.2-SNAPSHOT</version>
+            <version>3.2-cagrid1.0</version>
         </dependency>
         <dependency>
             <groupId>cryptix</groupId>
             <artifactId>cryptix-asn1</artifactId>
-            <version>3.2-SNAPSHOT</version>
+            <version>3.2-cagrid1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>cog-jglobus</artifactId>
-            <version>1.4-SNAPSHOT</version>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>bouncycastle</groupId>
             <artifactId>bouncycastle-jce-jdk13</artifactId>
-            <version>125-SNAPSHOT</version>
+            <version>125-cagrid1.0</version>
         </dependency>
         <dependency>
-            <groupId>com.claymoresystems</groupId>
+            <groupId>org.globus</groupId>
             <artifactId>puretls</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>4.0.3-globus</version>
         </dependency>
 
         <dependency>

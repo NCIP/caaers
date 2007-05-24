@@ -35,6 +35,7 @@
             <plugin>
                 <groupId>gov.nih.nci.cabig.ctms</groupId>
                 <artifactId>catman-maven-plugin</artifactId>
+                <version>0.1</version>
                 <configuration>
                     <!-- Set the manager.* properties in your local settings.xml -->
                     <username>${manager.username}</username>
@@ -93,16 +94,16 @@
     </build>
 
     <dependencies>
-       <dependency>
-    	    <groupId>com.thoughtworks.xstream</groupId>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.2.1</version>
-    	</dependency>
-    	<dependency>
-    	    <groupId>xpp3</groupId>
+        </dependency>
+        <dependency>
+            <groupId>xpp3</groupId>
             <artifactId>xpp3</artifactId>
             <version>1.1.3.4.O</version>
-    	</dependency>
+        </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
@@ -121,17 +122,17 @@
         <dependency>
             <groupId>${groupId}</groupId>
             <artifactId>caaers-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers</groupId>
             <artifactId>caaers-rules-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.4.0</version> <!-- TODO: this should be ${project.version}.  Fix when rules is mavenized. -->
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
             <artifactId>ctms-commons-web</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${ctms-commons.version}</version>
         </dependency>
 
         <dependency>
@@ -265,7 +266,7 @@
         <dependency>
             <groupId>org.globus</groupId>
             <artifactId>cog-axis</artifactId>
-            <version>1.2-SNAPSHOT</version>
+            <version>4.0.3-globus</version>
             <scope>runtime</scope>
         </dependency>
 
