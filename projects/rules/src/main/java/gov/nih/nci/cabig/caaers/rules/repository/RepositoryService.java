@@ -89,10 +89,15 @@ public interface RepositoryService {
 
 
 	public List<Rule> getRulesByCategory(String string);
+
+	
+	public List<String> getAllImmediateChildren(String categoryPath);
+
 	
 	// REVISIT! Remove once the testing is done
 	public RulesRepository getRulesRepository();
 	
 	public boolean containsRuleSet(String ruleSetName);
+
 
 }
