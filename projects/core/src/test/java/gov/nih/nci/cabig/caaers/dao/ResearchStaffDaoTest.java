@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.domain.Site;
  */
 public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
    
+	SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
+			
     public void testGetById() throws Exception {
     	ResearchStaff researchStaff = getDao().getById(-1000);    	
         assertNotNull("ResearchStaff not found", researchStaff);
@@ -23,8 +25,7 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
         	researchStaff.setFirstName("Jeff");
         	researchStaff.setLastName("Someone");
         	
-        	Site site = new Site();
-        	
+        	Site site = siteDao.getById(-1000);
         	researchStaff.setSite(site);
         	
             getDao().save(researchStaff);
