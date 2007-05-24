@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>caaers-core</artifactId>
     <packaging>jar</packaging>
@@ -8,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.4.0</version>
     </parent>
     <repositories>
         <!--
@@ -23,7 +21,7 @@
         -->
     </repositories>
     <properties>
-        <db/>
+        <db />
         <databaseConfigurationName>${db}</databaseConfigurationName>
     </properties>
     <dependencies>
@@ -36,12 +34,12 @@
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
-            <version>${project.version}</version>
+            <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-grid</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 
         <dependency>
@@ -414,14 +412,11 @@
                                 <configuration>
                                     <tasks>
                                         <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
-                                            <classpath refid="maven.plugin.classpath"/>
+                                            <classpath refid="maven.plugin.classpath" />
                                         </taskdef>
                                         <echo>Inserting test CSM users into ${datasource.url}</echo>
 
-                                        <dbunit driver="${datasource.driver}"
-                                                url="${datasource.url}"
-                                                userid="${datasource.username}"
-                                                password="${datasource.password}">
+                                        <dbunit driver="${datasource.driver}" url="${datasource.url}" userid="${datasource.username}" password="${datasource.password}">
                                             <operation type="INSERT" src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" />
                                         </dbunit>
                                     </tasks>

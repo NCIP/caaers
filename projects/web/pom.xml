@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>caaers-web</artifactId>
     <packaging>war</packaging>
@@ -8,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.4.0</version>
     </parent>
     <repositories>
         <!-- It appears that this repo is mirrored a ibiblio now, so we don't need it.
@@ -52,9 +50,9 @@
                         <goals><goal>run</goal></goals>
                         <configuration>
                             <tasks>
-                                <mkdir dir="${basedir}/target/local-tomcat"/>
+                                <mkdir dir="${basedir}/target/local-tomcat" />
                                 <echo file="${basedir}/target/local-tomcat/context.xml"><![CDATA[
-                                    <Context path="/caaers" docBase="${basedir}/src/main/webapp" debug="9"/>
+                                    <Context path="/caaers" docBase="${basedir}/src/main/webapp" debug="9" />
                                 ]]></echo>
                             </tasks>
                         </configuration>
