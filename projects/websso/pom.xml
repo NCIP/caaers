@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gov.nih.nci.cabig.ctms</groupId>
 	<artifactId>ctms-websso</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>CTMS SSO</name>
 	<parent>
 		<!-- TODO: move to CTMS commons -->
 		<groupId>gov.nih.nci.cabig.caaers</groupId>
 		<artifactId>caaers</artifactId>
-		<version>0.4.0</version>
+		<version>0.4.1-SNAPSHOT</version>
 	</parent>
 	<dependencies>
 
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>gov.nih.nci.cabig.caaers</groupId>
 			<artifactId>caaers-core</artifactId>
-			<version>0.4.0</version>
+			<version>0.4.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

@@ -3,7 +3,7 @@
     <parent>
         <artifactId>acegi</artifactId>
         <groupId>gov.nih.nci.security.acegi</groupId>
-        <version>0.1</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>acegi-csm-test</artifactId>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

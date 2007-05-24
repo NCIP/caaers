@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.4.0</version>
+        <version>0.4.1-SNAPSHOT</version>
     </parent>
     <repositories>
         <!--
@@ -34,12 +34,12 @@
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-grid</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

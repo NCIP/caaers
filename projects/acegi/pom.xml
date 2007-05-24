@@ -4,13 +4,13 @@
     <groupId>gov.nih.nci.security.acegi</groupId>
     <!-- inherit version -->
     <artifactId>acegi</artifactId>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CTMS Commons -- Acegi-related submodules</name>
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.4.0</version>
+        <version>0.4.1-SNAPSHOT</version>
     </parent>
     <modules>
         <module>acegi-acl-dao</module>
