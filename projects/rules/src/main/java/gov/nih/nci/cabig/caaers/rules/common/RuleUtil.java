@@ -24,12 +24,14 @@ public class RuleUtil {
 	public static Category getSponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String ruleSetName){
 		Category cat = null;
 		
-		String sponsorSpecificCatehoryPath = SPONSOR_BASE_CATEGORY_PATH+"/"+getStringWithoutSpaces(sponsorName);
+		//String sponsorSpecificCatehoryPath = SPONSOR_BASE_CATEGORY_PATH+"/"+getStringWithoutSpaces(sponsorName);
+		String sponsorSpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(sponsorName);
+		
 		String sponsorSpecificRuleSetCategoryPath = sponsorSpecificCatehoryPath+"/"+getStringWithoutSpaces(ruleSetName);
 		/**
 		 * First check if the caAERS rule base exist
 		 */
-		boolean baseExist = categoryExist(authService, CAAERS_RULEBASE_CATEGORY_PATH);
+		boolean baseExist = categoryExist(authService, CategoryConfiguration.CAAERS_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -40,7 +42,7 @@ public class RuleUtil {
 		 * Now check if the Sponsor base category exist
 		 */
 		
-		boolean sponsorBaseExist=categoryExist(authService,SPONSOR_BASE_CATEGORY_PATH);
+		boolean sponsorBaseExist=categoryExist(authService,CategoryConfiguration.SPONSOR_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -57,9 +59,9 @@ public class RuleUtil {
 		if(!sponsorSpecificCategoryExist){
 			Category category = new Category();
 			MetaData metaData = new MetaData();
-			category.setPath(SPONSOR_BASE_CATEGORY_PATH);
+			category.setPath(CategoryConfiguration.SPONSOR_BASE.getPath());
 			metaData.setName(getStringWithoutSpaces(sponsorName));
-			System.out.println("Creating category with path:"+SPONSOR_BASE_CATEGORY_PATH+" and name="+getStringWithoutSpaces(sponsorName));
+			
 			metaData.setDescription(sponsorName+" Rule Base category");
 			category.setMetaData(metaData);
 			try {
@@ -81,7 +83,7 @@ public class RuleUtil {
 			MetaData metaData = new MetaData();
 			category.setPath(sponsorSpecificCatehoryPath);
 			metaData.setName(getStringWithoutSpaces(ruleSetName));
-			System.out.println("Creating category with path:"+sponsorSpecificCatehoryPath+" and name="+getStringWithoutSpaces(ruleSetName));
+			
 			metaData.setDescription(ruleSetName);
 			category.setMetaData(metaData);
 			try {
@@ -106,12 +108,12 @@ public class RuleUtil {
 	public static Category getInstitutionSpecificCategory(RuleAuthoringService authService, String institutionName, String ruleSetName){
 		Category cat = null;
 		
-		String institutionSpecificCatehoryPath = SPONSOR_BASE_CATEGORY_PATH+"/"+getStringWithoutSpaces(institutionName);
+		String institutionSpecificCatehoryPath = CategoryConfiguration.INSTITUTION_BASE.getPath()+"/"+getStringWithoutSpaces(institutionName);
 		String institutionSpecificRuleSetCategoryPath = institutionSpecificCatehoryPath+"/"+getStringWithoutSpaces(ruleSetName);
 		/**
 		 * First check if the caAERS rule base exist
 		 */
-		boolean baseExist = categoryExist(authService, CAAERS_RULEBASE_CATEGORY_PATH);
+		boolean baseExist = categoryExist(authService, CategoryConfiguration.CAAERS_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -122,7 +124,7 @@ public class RuleUtil {
 		 * Now check if the Sponsor base category exist
 		 */
 		
-		boolean institutionBaseExist=categoryExist(authService,INSTITUTION_BASE_CATEGORY_PATH);
+		boolean institutionBaseExist=categoryExist(authService,CategoryConfiguration.INSTITUTION_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -139,7 +141,7 @@ public class RuleUtil {
 		if(!institutionSpecificCategoryExist){
 			Category category = new Category();
 			MetaData metaData = new MetaData();
-			category.setPath(INSTITUTION_BASE_CATEGORY_PATH);
+			category.setPath(CategoryConfiguration.INSTITUTION_BASE.getPath());
 			metaData.setName(getStringWithoutSpaces(institutionName));
 			metaData.setDescription(institutionName+" Rule Base category");
 			category.setMetaData(metaData);
@@ -202,13 +204,13 @@ public class RuleUtil {
 	public static Category getStudySponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String studyShortTitle, String ruleSetName){
 		Category cat = null;
 		
-		String studySpecificCatehoryPath = SPONSOR_BASE_CATEGORY_PATH+"/"+getStringWithoutSpaces(studyShortTitle);
+		String studySpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
 		String studySponsorSpecificCategoryPath = studySpecificCatehoryPath+"/"+getStringWithoutSpaces(sponsorName);
 		String studySponsorRuleSetSpecificCategoryPath = studySponsorSpecificCategoryPath+"/"+ getStringWithoutSpaces(ruleSetName);
 		/**
 		 * First check if the caAERS rule base exist
 		 */
-		boolean baseExist = categoryExist(authService, CAAERS_RULEBASE_CATEGORY_PATH);
+		boolean baseExist = categoryExist(authService, CategoryConfiguration.CAAERS_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -219,7 +221,7 @@ public class RuleUtil {
 		 * Now check if the Sponsor base category exist
 		 */
 		
-		boolean studyBaseExist=categoryExist(authService,STUDY_BASE_CATEGORY_PATH);
+		boolean studyBaseExist=categoryExist(authService,CategoryConfiguration.STUDY_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
@@ -236,7 +238,7 @@ public class RuleUtil {
 		if(!studySpecificCategoryExist){
 			Category category = new Category();
 			MetaData metaData = new MetaData();
-			category.setPath(STUDY_BASE_CATEGORY_PATH);
+			category.setPath(CategoryConfiguration.STUDY_BASE.getPath());
 			metaData.setName(getStringWithoutSpaces(studyShortTitle));
 			metaData.setDescription(studyShortTitle+" Rule Base category");
 			category.setMetaData(metaData);
@@ -316,7 +318,22 @@ public class RuleUtil {
 		return _str.replace(" ", "_");
 	}
 	
-	private static boolean categoryExist(RuleAuthoringService authService, String path){
+	public static String getSponsorSpecificPath(String sponsorName){
+		String sponsorSpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(sponsorName);
+		return sponsorSpecificCatehoryPath;
+	}
+	
+	public static String getInstitutionSpecificPath(String institutionName){
+		String institutionSpecificCatehoryPath = CategoryConfiguration.INSTITUTION_BASE.getPath()+"/"+getStringWithoutSpaces(institutionName);
+		return institutionSpecificCatehoryPath;
+	}
+	
+	public static String getStudySponsorSpecificPath(String studyShortTitle, String sponsorName){
+		String studySponsorSpecificPath = CategoryConfiguration.STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle)+"/"+getStringWithoutSpaces(sponsorName);
+		return studySponsorSpecificPath;
+	}
+	
+	public static boolean categoryExist(RuleAuthoringService authService, String path){
 		boolean exist = true;
 		Category base_cat = null;
 		try {
@@ -337,7 +354,7 @@ public class RuleUtil {
 		Category category = new Category();
 		MetaData metaData = new MetaData();
 		category.setPath("/");
-		metaData.setName(CAAERS_RULEBASE_CATEGORY_NAME);
+		metaData.setName(CategoryConfiguration.CAAERS_BASE.getName());
 		System.out.println("Creating category with path:"+"/ and name="+CAAERS_RULEBASE_CATEGORY_NAME);
 		metaData.setDescription("caAERS Base Rule Level");
 		category.setMetaData(metaData);
@@ -352,8 +369,8 @@ public class RuleUtil {
 	private static void createSponsorBaseCategory(RuleAuthoringService authService){
 		Category category = new Category();
 		MetaData metaData = new MetaData();
-		category.setPath(CAAERS_RULEBASE_CATEGORY_PATH);
-		metaData.setName(SPONSOR_BASE_CATEGORY_NAME);
+		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
+		metaData.setName(CategoryConfiguration.SPONSOR_BASE.getName());
 		System.out.println("Creating category with path:"+CAAERS_RULEBASE_CATEGORY_PATH+" and name="+SPONSOR_BASE_CATEGORY_NAME);
 		metaData.setDescription("Sponsor base category");
 		category.setMetaData(metaData);
@@ -368,8 +385,8 @@ public class RuleUtil {
 	private static void createInstitutionBaseCategory(RuleAuthoringService authService){
 		Category category = new Category();
 		MetaData metaData = new MetaData();
-		category.setPath(CAAERS_RULEBASE_CATEGORY_PATH);
-		metaData.setName(INSTITUTION_BASE_CATEGORY_NAME);
+		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
+		metaData.setName(CategoryConfiguration.INSTITUTION_BASE.getName());
 		metaData.setDescription("Institution base category");
 		category.setMetaData(metaData);
 		try {
@@ -383,8 +400,8 @@ public class RuleUtil {
 	private static void createStudyBaseCategory(RuleAuthoringService authService){
 		Category category = new Category();
 		MetaData metaData = new MetaData();
-		category.setPath(CAAERS_RULEBASE_CATEGORY_PATH);
-		metaData.setName(STUDY_BASE_CATEGORY_NAME);
+		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
+		metaData.setName(CategoryConfiguration.STUDY_BASE.getName());
 		metaData.setDescription("Study base category");
 		category.setMetaData(metaData);
 		try {
