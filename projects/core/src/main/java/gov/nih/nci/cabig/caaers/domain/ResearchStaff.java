@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.Site;
+
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -35,6 +38,7 @@ public class ResearchStaff extends AbstractMutableDomainObject {
     private String lastName;
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
     private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
+    private Site site;
   
 
 	public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
@@ -117,6 +121,15 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 		this.studyPersonnels = studyPersonnels;
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "site_id")
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
 
 	@Override
 	public int hashCode() {
