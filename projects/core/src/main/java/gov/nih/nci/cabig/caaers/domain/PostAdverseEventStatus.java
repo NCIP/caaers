@@ -11,7 +11,7 @@ public enum PostAdverseEventStatus implements CodedEnum {
     RECOVERED_WITH_SEQUELAE(3),
     RECOVERED_WITHOUT_SEQUELAE(4),
     NOT_RECOVERED(4),
-    DEAD(6)
+    DEAD(5)
     ;
 
     private int code;
