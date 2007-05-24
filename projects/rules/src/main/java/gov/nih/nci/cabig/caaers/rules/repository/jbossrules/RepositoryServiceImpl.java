@@ -407,6 +407,26 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		category.setMetaData(metaData);
 		return category;
 	}
+	
+	public List<String> getAllImmediateChildren(String categoryPath){
+		CategoryItem categoryItem = getRulesRepository().loadCategory(categoryPath);
+		System.out.println(categoryItem.getName());
+		
+		
+		List<CategoryItem> items = categoryItem.getChildTags();
+		
+		List<String> ruleSetNames = new ArrayList<String>();
+		//ruleSetNames.add(arg0);
+		
+		for( CategoryItem s: items){
+			System.out.println(s.getName());
+			System.out.println(s.getFullPath());
+			
+			ruleSetNames.add(s.getName());
+		}
+		
+		return ruleSetNames;
+	}
 
 	/*
 	 * This method check for the existence of the package aka RuleSet
