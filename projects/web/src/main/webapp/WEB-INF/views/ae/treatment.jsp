@@ -49,7 +49,6 @@
         }
 
         function renableModified() {
-            alert("Submit handler invoked")
             var courseAgentCount = $$(".courseAgent").size
             for (var i = 0 ; i < courseAgentCount ; i++) {
                 enableModified(index, true)
