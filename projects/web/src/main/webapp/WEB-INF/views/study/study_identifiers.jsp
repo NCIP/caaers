@@ -40,9 +40,9 @@ field.value="";
 		<table class="tablecontent">
 		<tr align="center">
 			<th scope="col"> Identifier<span class="red">*</span> </th>														
-			<th scope="col"> Type<span class="red">*</span> </b> </th>						
-			<th scope="col"> Source<span class="red">*</span> </b></th>					
-			<th scope="col"> Primary Indicator </b></th>
+			<th scope="col"> Identifier Type<span class="red">*</span> </b> </th>						
+			<th scope="col"> Assigning Authority<span class="red">*</span> </b></th>					
+			<th scope="col"> Primary&nbsp;Indicator </b></th>
 			<th scope="col"></th>
 		</tr>																		
 		<c:forEach items="${command.identifiers}" varStatus="status">
