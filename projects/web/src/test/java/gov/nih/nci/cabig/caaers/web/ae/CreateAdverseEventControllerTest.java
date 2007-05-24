@@ -30,8 +30,10 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     protected void setUp() throws Exception {
         super.setUp();
         controller = new CreateAdverseEventController();
+        controller.setNowFactory(nowFactory);
         controller.setParticipantDao(participantDao);
         controller.setStudyDao(studyDao);
+        controller.setCtcCategoryDao(ctcCategoryDao);
         controller.setCtcTermDao(ctcTermDao);
         controller.setAssignmentDao(assignmentDao);
         controller.setReportDao(adverseEventReportDao);
