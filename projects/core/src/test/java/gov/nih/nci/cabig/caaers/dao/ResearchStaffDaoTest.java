@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Site;
 
 /**
  * @author Kulasekaran
@@ -9,10 +10,10 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
    
     public void testGetById() throws Exception {
-    	ResearchStaff researchStaff = getDao().getById(-100);    	
+    	ResearchStaff researchStaff = getDao().getById(-1000);    	
         assertNotNull("ResearchStaff not found", researchStaff);
-        assertEquals("Wrong last name", "Scott", researchStaff.getLastName());
-        assertEquals("Wrong first name", "Dilbert", researchStaff.getFirstName());        
+        assertEquals("Wrong last name", "Gates", researchStaff.getLastName());
+        assertEquals("Wrong first name", "Bill", researchStaff.getFirstName());        
     }
         
     public void testSaveNewResearchStaff() throws Exception {
@@ -21,6 +22,10 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
         	ResearchStaff researchStaff = new ResearchStaff();
         	researchStaff.setFirstName("Jeff");
         	researchStaff.setLastName("Someone");
+        	
+        	Site site = new Site();
+        	
+        	researchStaff.setSite(site);
         	
             getDao().save(researchStaff);
             savedId = researchStaff.getId();
