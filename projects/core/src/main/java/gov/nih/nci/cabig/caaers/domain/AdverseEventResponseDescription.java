@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -24,8 +25,16 @@ public class AdverseEventResponseDescription extends AbstractAdverseEventReportS
     private PostAdverseEventStatus presentStatus;
     private Date recoveryDate;
     private Boolean retreated;
-    private Boolean removedFromProtocol;
     private Date dateRemovedFromProtocol;
+
+    ////// LOGIC
+
+    @Transient
+    public boolean isRemovedFromProtocol() {
+        return getDateRemovedFromProtocol() != null;
+    }
+
+    ////// BEAN PROPERTIES
 
     public String getEventDescription() {
         return eventDescription;
@@ -59,14 +68,6 @@ public class AdverseEventResponseDescription extends AbstractAdverseEventReportS
 
     public void setRetreated(Boolean retreated) {
         this.retreated = retreated;
-    }
-
-    public Boolean getRemovedFromProtocol() {
-        return removedFromProtocol;
-    }
-
-    public void setRemovedFromProtocol(Boolean removedFromProtocol) {
-        this.removedFromProtocol = removedFromProtocol;
     }
 
     public Date getDateRemovedFromProtocol() {
