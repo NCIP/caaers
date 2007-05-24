@@ -11,13 +11,8 @@
     <tags:stylesheetLink name="participant"/>
 </head>
 <body>
-    <form:form method="post" cssClass="standard" name="studySiteForm">
+ <form:form method="post" cssClass="standard" name="form" id="form">
     <chrome:box title="Research Staff" id="research_staff" autopad="true">
-   	<div>		
-		<input type="hidden" name="_action" value="">
-		<input type="hidden" name="_selected" value="">
-		<input type="hidden" name="_finish" value="true">
-	</div>
 	<p id="instructions">
         Add a new Research Staff
     </p>
@@ -32,12 +27,18 @@
            <div class="label"><span class="red">*</span>Last Name:</div>
            <div class="value"><form:input path="lastName" /></div>
        </div>
+       <div class="row">
+           <div class="label"><span class="red">*</span>Site:</div>
+           <div class="value"><form:select path="site">
+  				<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
+			</form:select> </div>
+       </div>
     </div>
-    <br>
-    <br>
-    <input type="submit" value="Save"/>
-    </chrome:box>    
-    </form:form>
-   
+   <br>
+	<br>
+      <div align = "right">
+      <input type="submit" value="Save"/>
+   </chrome:box>     
+   </form:form>
 </body>
 </html>

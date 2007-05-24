@@ -21,7 +21,7 @@
 
 </head>
 <body>
-    <form:form method="post" name="form" id="form">
+    <form:form method="post" action="createInvestigator" name="form" id="form">
     <div>		
 		<input type="hidden" name="_action" id="_action" value="">
 		<input type="hidden" name="_selected" id="_selected" value="-1">
@@ -31,7 +31,7 @@
         Add a new Investigator
     </p>
     <tags:errors path="*"/>
-    
+      
      <div class="content">
         <div class="row">
             <div class="label"><span class="red">*</span>First Name:</div>
@@ -47,7 +47,7 @@
         </div>   
      </div>
     </chrome:box>
-    <chrome:box title="Associate Site" id="investigator" autopad="true">
+    <chrome:box title="Associate Sites" id="investigator" autopad="true">
       <table class="tablecontent">
 		<tr>
 			<th scope="col"> <b> <span class="red">*</span><em></em>Site:</b> </td>
@@ -79,7 +79,7 @@
 		</table>
 		<br>
 		<br>
-        <div align = "center">
+        <div align = "right">
         <input type="submit" value="Save"/>
         </chrome:box>      
         </form:form>
