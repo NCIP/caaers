@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseDate;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.Errors;
@@ -127,6 +128,14 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         CourseAgent courseAgent1
             = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
         assertNull(courseAgent1.getModifiedDose().getAmount());
+    }
+
+    public void testBindPostAeStatus() throws Exception {
+        request.setParameter("aeReport.responseDescription.presentStatus", "NOT_RECOVERED");
+
+        CreateAdverseEventCommand command = bindAndReturnCommand();
+        assertSame(PostAdverseEventStatus.NOT_RECOVERED,
+            command.getAeReport().getResponseDescription().getPresentStatus());
     }
     
     public void testBindAttributions() throws Exception {

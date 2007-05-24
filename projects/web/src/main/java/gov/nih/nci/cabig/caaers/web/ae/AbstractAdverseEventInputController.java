@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -62,6 +63,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
 
     protected void addTabs(Flow<C> flow) {
         flow.addTab(new BasicsTab<C>());
+        flow.addTab(new DescriptionTab<C>());
         flow.addTab(new MedicalInfoTab<C>());
         flow.addTab(new TreatmentTab<C>());
         flow.addTab(new LabsTab<C>());
@@ -94,6 +96,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
+        ControllerTools.registerEnumEditor(binder, PostAdverseEventStatus.class);
     }
 
     @Override

@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -66,6 +67,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.aeReport.addAdverseEvent(new AdverseEvent());
 
         this.aeReport.setTreatmentInformation(new TreatmentInformation());
+        this.aeReport.setResponseDescription(new AdverseEventResponseDescription());
         this.aeReport.setReporter(createReporter());
         this.aeReport.setPhysician(createPhysician());
         this.aeReport.setDiseaseHistory(createDiseaseHistory());
