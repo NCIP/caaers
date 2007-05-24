@@ -8,6 +8,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,6 +36,7 @@ public class Site extends AbstractMutableDomainObject {
     private String name;
     private List<StudySite> studySites = new ArrayList<StudySite>();
     private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+    private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
     
     
     ////// LOGIC
@@ -82,6 +85,15 @@ public class Site extends AbstractMutableDomainObject {
 		this.siteInvestigators = siteInvestigators;
 	}
 
+	@OneToMany(mappedBy = "site", fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<ResearchStaff> getResearchStaffs() {
+		return researchStaffs;
+	}
+
+	public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
+		this.researchStaffs = researchStaffs;
+	}
     
     public boolean equals(Object o) {
         if (this == o) return true;
