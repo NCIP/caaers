@@ -208,7 +208,7 @@ public class RuleAuthoringServiceTestWithNewScheme extends AbstractXFireTest //T
 	public void testCreateRuleSet_Asses_AE_Rules() throws Exception{
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
-		String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
+		String packageName = "gov.nih.nci.cabig.caaers.rules.sponsor"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
     	System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
@@ -226,7 +226,7 @@ public class RuleAuthoringServiceTestWithNewScheme extends AbstractXFireTest //T
 	
 	public void testCreateRulesForAssesAERulesRuleSet() throws Exception{
 		
-		String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
+		String packageName = "gov.nih.nci.cabig.caaers.rules.sponsor"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 		Category asses_ae_rule_cat = this.ruleAuthoringServiceImpl.getCategory("/CAAERS_RULEBASE/SPONSOR/OUR_DREAM_SPONSOR"+"/"+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor));
 		
 		Rule rule1 = new Rule();
@@ -411,4 +411,6 @@ public class RuleAuthoringServiceTestWithNewScheme extends AbstractXFireTest //T
 	private Rule getRule1(){
 		return null;
 	}
+	
+	
 }
