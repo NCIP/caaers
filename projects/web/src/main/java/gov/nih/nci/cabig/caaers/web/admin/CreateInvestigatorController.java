@@ -24,6 +24,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
   * @author Priyatam
@@ -52,7 +53,6 @@ public class CreateInvestigatorController extends SimpleFormController {
         refdata.put("sitesRefData", getSites());
         refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
   		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
-        refdata.put("sources", siteDao.getAll());
         return refdata;
 	}
 	 
@@ -98,6 +98,8 @@ public class CreateInvestigatorController extends SimpleFormController {
 		{
 			Investigator inv = (Investigator) command;
 			investigatorDao.save(inv);
+			
+			return new ModelAndView(new RedirectView("createInvestigator"));
 		}
 		
 		Map map = errors.getModel();	

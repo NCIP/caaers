@@ -1,15 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -20,106 +19,65 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * @author Kulasekaran
+ * @author Priyatam
  */
-public class CreateResearchStaffController extends AbstractTabbedFlowFormController<ResearchStaff> {
+public class CreateResearchStaffController extends SimpleFormController {
 		    	
 	private ResearchStaffDao researchStaffDao;
-	private ListValues listValues;
-	private ConfigProperty configurationProperty;
+	private SiteDao siteDao;	
 	
-	public CreateResearchStaffController() {		
-        setCommandClass(ResearchStaff.class);        
 
-        Flow<ResearchStaff> flow = new Flow<ResearchStaff>("Create Research Staff");
-                
-        flow.addTab(new Tab<ResearchStaff>("Enter Research Staff Information", "New Research Staff", "admin/research_staff_details") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                                        	
-                refdata.put("sources", listValues.getParticipantIdentifierSource());
-                refdata.put("action", "New");
-                return refdata;
-            }
-            
-            @Override
-            public void validate(ResearchStaff command, Errors errors) {
-                boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
-                boolean lastName = command.getLastName() == null || command.getLastName().equals("");
-                if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
-                if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
-            }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-               return false;
-            }
-        });
-                                           
-        setFlow(flow);        
+	public CreateResearchStaffController() {		
+        setCommandClass(ResearchStaff.class);   
+        setFormView("admin/research_staff_details");
+		setSuccessView("admin/research_staff_details");
+	}
+
+	 @Override
+	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
+		 Map<String, Object> refdata = new HashMap<String, Object>(); 
+		 refdata.put("sitesRefData", siteDao.getAll());
+		 return refdata;
+	 }
+ 
+    public void validate(ResearchStaff command, Errors errors) {
+        boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
+        boolean lastName = command.getLastName() == null || command.getLastName().equals("");
+        if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
+        if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
     }
-	
+            
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(Date.class, ControllerTools
 				.getDateEditor(true));
-				
+		binder.registerCustomEditor(Site.class, new DaoBasedEditor(
+				siteDao));		
 	}
 	
-	/**
-	 * Create a nested object graph that Create Investigator Design needs
-	 * 
-	 * @param request -
-	 *            HttpServletRequest
-	 * @throws ServletException
-	 */
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
 		return new ResearchStaff();		         
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-	 * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, 
-	 * java.lang.Object, org.springframework.validation.BindException)
-	 */
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
+
+	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, 
 			Object command, BindException errors) throws Exception {
 		
-		ResearchStaff researchStaff = (ResearchStaff) command;
-		researchStaffDao.save(researchStaff);
-		
-		//ModelAndView modelAndView= new ModelAndView("admin/investigator_details");		
-    	//modelAndView.addAllObjects(errors.getModel());
-		//response.sendRedirect("createInvestigator");
-		response.sendRedirect("viewResearchStaff?fullName=" + researchStaff.getFullName() + "&type=confirm");
-    	return null;
+		ResearchStaff staff = (ResearchStaff) command;
+		researchStaffDao.save(staff);
+		return new ModelAndView(new RedirectView("createResearchStaff"));
 	}
 	
-	@Override
-	protected void postProcessPage(HttpServletRequest request, Object command,
-			Errors arg2, int pageNo) throws Exception {
-		
-			
-	}
-	
-	public ListValues getListValues() {
-		return listValues;
+	public SiteDao getSiteDao() {
+		return siteDao;
 	}
 
-	public void setListValues(ListValues listValues) {
-		this.listValues = listValues;
-	}
-
-	public ConfigProperty getConfigurationProperty() {
-		return configurationProperty;
-	}
-
-	public void setConfigurationProperty(ConfigProperty configurationProperty) {
-		this.configurationProperty = configurationProperty;
+	public void setSiteDao(SiteDao siteDao) {
+		this.siteDao = siteDao;
 	}
 
 	public ResearchStaffDao getResearchStaffDao() {
