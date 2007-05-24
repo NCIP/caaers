@@ -148,7 +148,7 @@
 			
 			
             new ListEditor("metastatic", createAE, "MetastaticDiseaseSite", {
-                addFirstAfter: "ins",
+                addFirstAfter: "meta",
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterConMed(index);
@@ -278,7 +278,7 @@
                     <div class="label">Date of initial diagnosis</div>
                     <div class="value"> <tags:dateInput path="aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"/> </div>
                 </div>
-
+				<div id="meta" />
             </chrome:division>
 
         <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
