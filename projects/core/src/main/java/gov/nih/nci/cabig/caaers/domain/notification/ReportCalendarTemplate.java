@@ -34,7 +34,7 @@ import org.hibernate.annotations.Type;
 @Table(name="REPORT_CALENDAR_TEMPLATES")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_report_calendar_templa_id")
+        @Parameter(name="sequence", value="seq_report_calendar_templat_id")
     }
 )
 public class ReportCalendarTemplate extends AbstractMutableDomainObject implements Serializable{
