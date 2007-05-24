@@ -1,0 +1,3 @@
+#!/bin/sh
+# Developer shortcut script for redeploy
+mvn -o compile war:inplace catman:redeploy

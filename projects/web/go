@@ -1,0 +1,4 @@
+#!/bin/sh
+# Developer shortcut script to compile and deploy/reload the webapp.
+# May be called as `./go clean` to build clean.
+mvn -o $1 compile war:inplace catman:go

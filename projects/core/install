@@ -1,0 +1,13 @@
+#!/bin/sh
+# Developer shortcut script for doing mvn install in core.  Set up so it can be run from any
+# directory.  E.g.:
+#
+#  web$ ../core/install
+#
+# Requires that the database configuration for your dev deployed system be named "deploy."
+# Ensures that you don't accidentally burn your deploy database (e.g., by running tests in 
+# your IDE) by immediately doing a compile using the hsqldb database configuration if the
+# install succeeds.
+
+cd `dirname $0`
+mvn -o -Ddb=deploy clean install && mvn -o -Ddb=hsqldb clean bering:hsqldb test-compile
