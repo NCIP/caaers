@@ -30,6 +30,7 @@ import org.hibernate.annotations.Parameter;
 public class Investigator extends AbstractMutableDomainObject {
 	
 	private String firstName;
+	private String middleName;
     private String lastName;
     private String nciIdentifier;
     private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>(); 
@@ -134,6 +135,14 @@ public class Investigator extends AbstractMutableDomainObject {
 		} else if (!nciIdentifier.equals(other.nciIdentifier))
 			return false;
 		return true;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 	            
 }

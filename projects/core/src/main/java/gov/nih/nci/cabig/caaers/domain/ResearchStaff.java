@@ -35,6 +35,7 @@ import org.hibernate.annotations.Parameter;
 public class ResearchStaff extends AbstractMutableDomainObject {
 	
 	private String firstName;
+	private String middleName;
     private String lastName;
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
     private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
@@ -161,6 +162,16 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 		} else if (!lastName.equals(other.lastName))
 			return false;
 		return true;
+	}
+
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 					            
    
