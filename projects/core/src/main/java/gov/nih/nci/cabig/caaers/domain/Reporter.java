@@ -24,17 +24,11 @@ import org.hibernate.annotations.Parameter;
     @Parameter(name="sequence", value="seq_reporters_id")
 } )
 public class Reporter extends AdverseEventReportPerson {
-    private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
-
+    @Override
     @OneToMany
     @JoinColumn(name="reporter_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public List<ContactMechanism> getContactMechanims() {
-        return contactMechanims;
+    public List<ContactMechanism> getContactMechanisms() {
+        return super.getContactMechanisms();
     }
-
-    public void setContactMechanims(List<ContactMechanism> contactMechanims) {
-        this.contactMechanims = contactMechanims;
-    }
-
 }

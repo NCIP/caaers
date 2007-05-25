@@ -31,7 +31,7 @@
 			document.getElementsByName('aeReport.reporter.firstName')[0].value=staff.firstName;
 			document.getElementsByName('aeReport.reporter.lastName')[0].value=staff.lastName;
 			document.getElementsByName('aeReport.reporter.middleName')[0].value=staff.middleName;
-			document.getElementsByName('aeReport.reporter.contactMechanims[0].value')[0].value= staff.firstName + '@gmail.com';
+			document.getElementsByName('aeReport.reporter.contactMechanisms[0].value')[0].value= staff.firstName + '@gmail.com';
 
 			if(document.getElementById("option1").checked)
 			{
@@ -59,18 +59,18 @@
 				document.getElementsByName('aeReport.physician.firstName')[0].value=document.getElementsByName('aeReport.reporter.firstName')[0].value;
 				document.getElementsByName('aeReport.physician.lastName')[0].value=document.getElementsByName('aeReport.reporter.lastName')[0].value;
 				document.getElementsByName('aeReport.physician.middleName')[0].value=document.getElementsByName('aeReport.reporter.middleName')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanims[0].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanims[0].value')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanims[1].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanims[1].value')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanims[2].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanims[2].value')[0].value;
+				document.getElementsByName('aeReport.physician.contactMechanisms[0].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[0].value')[0].value;
+				document.getElementsByName('aeReport.physician.contactMechanisms[1].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[1].value')[0].value;
+				document.getElementsByName('aeReport.physician.contactMechanisms[2].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[2].value')[0].value;
 			}
 			else 
 			{
 				document.getElementsByName('aeReport.physician.firstName')[0].value='';
 				document.getElementsByName('aeReport.physician.lastName')[0].value='';
 				document.getElementsByName('aeReport.physician.middleName')[0].value='';	
-				document.getElementsByName('aeReport.physician.contactMechanims[0].value')[0].value='';	
-				document.getElementsByName('aeReport.physician.contactMechanims[1].value')[0].value='';	
-				document.getElementsByName('aeReport.physician.contactMechanims[2].value')[0].value='';	
+				document.getElementsByName('aeReport.physician.contactMechanisms[0].value')[0].value='';
+				document.getElementsByName('aeReport.physician.contactMechanisms[1].value')[0].value='';
+				document.getElementsByName('aeReport.physician.contactMechanisms[2].value')[0].value='';
 			}
 		}
      
@@ -116,17 +116,17 @@
 
         <div class="row">
             <div class="label">Email</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanims[0].value"/></div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[0].value"/></div>
         </div>
 
         <div class="row">
             <div class="label">Fax</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanims[1].value"/></div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[1].value"/></div>
         </div>
 
         <div class="row">
             <div class="label">Phone</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanims[2].value"/></div>
+            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[2].value"/></div>
         </div>
         </chrome:division>
 
@@ -154,17 +154,17 @@
 
         <div class="row">
             <div class="label">Email</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanims[0].value"/></div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanisms[0].value"/></div>
         </div>
 
         <div class="row">
             <div class="label">Fax</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanims[1].value"/></div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanisms[1].value"/></div>
         </div>
 
         <div class="row">
             <div class="label">Phone</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanims[2].value"/></div>
+            <div class="value"><form:input path="aeReport.physician.contactMechanisms[2].value"/></div>
         </div>
     </chrome:division>
     </jsp:attribute>

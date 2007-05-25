@@ -155,4 +155,11 @@
         retreated="0"
         recovery_date="2012-03-04"
         />
+
+    <!-- tables which an AE report will reference, but which are not otherwise
+        in this file.  This is so dbunit will clean them up. -->
+    <REPORTERS/>
+    <PHYSICIANS/>
+    <DISEASE_HISTORY/>
+    <PARTICIPANT_HISTORY/>
 </dataset>

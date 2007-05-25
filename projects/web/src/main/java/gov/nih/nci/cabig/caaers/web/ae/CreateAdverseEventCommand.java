@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
@@ -17,7 +16,6 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
@@ -66,57 +64,11 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
 
-        this.aeReport.setTreatmentInformation(new TreatmentInformation());
-        this.aeReport.setResponseDescription(new AdverseEventResponseDescription());
-        this.aeReport.setReporter(createReporter());
-        this.aeReport.setPhysician(createPhysician());
-        this.aeReport.setDiseaseHistory(createDiseaseHistory());
-        this.aeReport.setParticipantHistory(new ParticipantHistory());
-
         this.categories = new ArrayList<CtcCategory>();
 
         this.attributionMap = new AttributionMap(aeReport);
 
         setRuleExecutionService(ruleExecutionService);
-    }
-
-    private DiseaseHistory createDiseaseHistory() {
-        return new DiseaseHistory();
-    }
-
-    private Reporter createReporter() {
-        Reporter reporter = new Reporter();
-
-        reporter.setContactMechanims(createContactMechanismList());
-        return reporter;
-    }
-
-    private Physician createPhysician() {
-        Physician physician = new Physician();
-
-        physician.setContactMechanims(createContactMechanismList());
-        return physician;
-    }
-
-    private List<ContactMechanism> createContactMechanismList() {
-        List<ContactMechanism> contacts = new ArrayList<ContactMechanism>();
-
-        // TODO: this code references undefined fields.
-        // Please fix them.  RMS20070422.
-        ContactMechanism contact = new ContactMechanism();
-        contact.setType(EMAIL);
-        contacts.add(contact);
-
-        contact = new ContactMechanism();
-        contact.setType(FAX);
-        contacts.add(contact);
-
-        contact = new ContactMechanism();
-        contact.setType(PHONE);
-        contacts.add(contact);
-
-
-        return contacts;
     }
 
     ////// LOGIC

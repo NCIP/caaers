@@ -20,36 +20,29 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class ContactMechanism extends AbstractIdentifiableDomainObject {
+    private String type;
+    private String value;
 
-	private String type;
-	private String value;
-	//private Person person;
-	
-	
-	public String getType() {
-		return type;
-	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	public String getValue() {
-		return value;
-	}
-	
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public ContactMechanism() { }
 
-	/*@ManyToOne
-    @JoinColumn(name = "person_id")
-	public Person getPerson() {
-		return person;
-	}
+    public ContactMechanism(String type) {
+        this.type = type;
+    }
 
-	public void setPerson(Person person) {
-		this.person = person;
-	} */   
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }
  

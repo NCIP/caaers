@@ -35,4 +35,13 @@
         detection_date="2004-12-14"
         created_at="2004-12-31"
         />
+
+    <!-- Report's 1:1 dependent tables.  Ideally this wouldn't be necessary, since
+        a report is never saved in the test, but hibernate's flushing one anyway. -->
+    <REPORTERS/>
+    <PHYSICIANS/>
+    <DISEASE_HISTORY/>
+    <PARTICIPANT_HISTORY/>
+    <AE_REPORT_DESCRIPTIONS/>
+    <TREATMENTS/>
 </dataset>

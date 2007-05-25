@@ -26,17 +26,11 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class Physician extends AdverseEventReportPerson {
-
-    private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
-
+    @Override
     @OneToMany
     @JoinColumn(name="physician_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public List<ContactMechanism> getContactMechanims() {
-        return contactMechanims;
-    }
-
-    public void setContactMechanims(List<ContactMechanism> contactMechanims) {
-        this.contactMechanims = contactMechanims;
+    public List<ContactMechanism> getContactMechanisms() {
+        return super.getContactMechanisms();
     }
 }

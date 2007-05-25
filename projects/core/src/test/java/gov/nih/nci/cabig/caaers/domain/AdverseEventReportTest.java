@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Calendar;
 import java.sql.Timestamp;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 /**
  * @author Rhett Sutphin
  */
@@ -17,6 +20,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
 
     private AdverseEventReport report;
+    private BeanWrapper wrappedReport;
     private CtcTerm ctcTerm;
     private AdverseEvent adverseEvent;
 
@@ -34,6 +38,8 @@ public class AdverseEventReportTest extends CaaersTestCase {
         ctcTerm.setSelect("Select");
         ctcTerm.setOtherRequired(false);
         adverseEvent.setCtcTerm(this.ctcTerm);
+
+        wrappedReport = new BeanWrapperImpl(report);
     }
 
     public void testGetAdverseEventNeverThrowsIndexOutOfBounds() throws Exception {
@@ -180,11 +186,56 @@ public class AdverseEventReportTest extends CaaersTestCase {
         assertEquals("2006-05-08 09:08:07.0", summary.get("Report created at"));
     }
 
-/*  It would be nice if this test could pass, but it seems to cause issues with hibernate.
     public void testTreatmentInformationNeverNull() throws Exception {
-        assertNotNull(report.getTreatmentInformation());
-        report.setTreatmentInformation(null);
-        assertNotNull(report.getTreatmentInformation());
+        assertChildNeverNull("treatmentInformation");
     }
-*/
+
+    public void testReporterNeverNull() throws Exception {
+        assertChildNeverNull("reporter");
+    }
+
+    public void testDefaultReporterContainsBlankContactMechanisms() throws Exception {
+        Reporter actual = report.getReporter();
+        assertEquals(3, actual.getContactMechanisms().size());
+        assertContactMechanism("email", null, actual.getContactMechanisms().get(0));
+        assertContactMechanism("fax", null, actual.getContactMechanisms().get(1));
+        assertContactMechanism("phone", null, actual.getContactMechanisms().get(2));
+    }
+
+    private void assertContactMechanism(String expectedType, String expectedValue, ContactMechanism actual) {
+        assertEquals("Wrong contact mechanism type", expectedType, actual.getType());
+        assertEquals("Wrong contact mechanism value", expectedValue, actual.getValue());
+    }
+
+    public void testPhysicianNeverNull() throws Exception {
+        assertChildNeverNull("physician");
+    }
+
+    public void testDefaultPhysicianContainsBlankContactMechanisms() throws Exception {
+        Physician actual = report.getPhysician();
+        assertEquals(3, actual.getContactMechanisms().size());
+        assertContactMechanism("email", null, actual.getContactMechanisms().get(0));
+        assertContactMechanism("fax", null, actual.getContactMechanisms().get(1));
+        assertContactMechanism("phone", null, actual.getContactMechanisms().get(2));
+    }
+
+    public void testResponseNeverNull() throws Exception {
+        assertChildNeverNull("responseDescription");
+    }
+
+    public void testParticipantHistoryNeverNull() throws Exception {
+        assertChildNeverNull("participantHistory");
+    }
+
+    public void testDiseaseHistoryNeverNull() throws Exception {
+        assertChildNeverNull("diseaseHistory");
+    }
+
+    private void assertChildNeverNull(String childProp) {
+        assertNotNull(childProp + " null initially", wrappedReport.getPropertyValue(childProp));
+        wrappedReport.setPropertyValue(childProp, null);
+        AdverseEventReportChild actual = (AdverseEventReportChild) wrappedReport.getPropertyValue(childProp);
+        assertNotNull(childProp + " not reinited after set null", actual);
+        assertSame("Reverse link not set", report, actual.getReport());
+    }
 }

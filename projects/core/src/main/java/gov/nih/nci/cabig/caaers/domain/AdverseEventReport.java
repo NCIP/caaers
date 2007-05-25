@@ -299,6 +299,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public TreatmentInformation getTreatmentInformation() {
+        if (treatmentInformation == null) setTreatmentInformation(new TreatmentInformation());
         return treatmentInformation;
     }
 
@@ -310,6 +311,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public AdverseEventResponseDescription getResponseDescription() {
+        if (responseDescription == null) setResponseDescription(new AdverseEventResponseDescription());
         return responseDescription;
     }
 
@@ -321,43 +323,49 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Reporter getReporter() {
+        if (reporter == null) setReporter(AdverseEventReportPerson.createEmptyPerson(Reporter.class));
         return reporter;
     }
 
     public void setReporter(Reporter reporter) {
         this.reporter = reporter;
+        if (reporter != null) reporter.setReport(this);
     }
 
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Physician getPhysician() {
+        if (physician == null) setPhysician(AdverseEventReportPerson.createEmptyPerson(Physician.class));
         return physician;
     }
 
     public void setPhysician(Physician physician) {
         this.physician = physician;
+        if (physician != null) physician.setReport(this);
     }
 
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public DiseaseHistory getDiseaseHistory() {
+        if (diseaseHistory == null) setDiseaseHistory(new DiseaseHistory());
         return diseaseHistory;
     }
 
     public void setDiseaseHistory(DiseaseHistory diseaseHistory) {
-        if (diseaseHistory == null) diseaseHistory = new DiseaseHistory();
         this.diseaseHistory = diseaseHistory;
+        if (diseaseHistory != null) diseaseHistory.setReport(this);
     }
 
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public ParticipantHistory getParticipantHistory() {
-        if (participantHistory == null) participantHistory = new ParticipantHistory();
+        if (participantHistory == null) setParticipantHistory(new ParticipantHistory());
         return participantHistory;
     }
 
     public void setParticipantHistory(ParticipantHistory participantHistory) {
         this.participantHistory = participantHistory;
+        if (participantHistory != null) participantHistory.setReport(this);
     }
 
     /**
