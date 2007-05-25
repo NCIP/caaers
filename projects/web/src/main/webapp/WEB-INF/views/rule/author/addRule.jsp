@@ -60,13 +60,13 @@
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this)">
+					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
 						<form:options items="${ruleUi.condition[0].domainObject[0].field}" itemLabel="displayUri" itemValue="name" />
 					</form:select>
 					--%>
 
 					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" 
-						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this)">
+						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
 							${ruleUi.condition[0].domainObject[0].field[optionStatus.index].displayUri}
@@ -103,6 +103,8 @@
 					</form:select>
 					--%>
 
+				<span id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value.span">
+				
 					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
@@ -111,14 +113,16 @@
 							</option>
 						</c:forEach>
 					</select>
-
+				</span>
 
 					<a href="javascript:fetchCondition(${ruleCount})">
 						<img id="add-column-${ruleCount}" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand; border:0px"/>
 					</a>
+				<c:if test="${columnCount > 0}">
 					<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
 						<img id="remove-column-${ruleCount}" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand;  border:0px"/>
 					</a>
+				</c:if>
 				</div>
 
 				<br/>
@@ -141,8 +145,22 @@
 					--%>
 					<select id="ruleSet.rule[${ruleCount}].action.actionId" name="ruleSet.rule[${ruleCount}].action.actionId">
 						<option value=""/>Please Select-- </option>
-						<option value="1">24 Hour, 5 Calendar Days</option>
-						<option value="2">10 Calendar Days</option>
+						<c:choose>
+							<c:when test='${command.ruleSetName == "AE Assessment RuleSet"}'>
+								<option value="ROUTINE_AE">Assess as Routine AE</option>														
+								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
+							</c:when>
+							<c:when test='${command.ruleSetName == "SAE Reporting RuleSet"}'>
+								<option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</option>
+								<option value="10DAY_CALENDAR_REPORT">10 Calendar Days</option>
+							</c:when>
+							<c:otherwise>														
+								<option value="ROUTINE_AE">Assess as Routine AE</option>														
+								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
+								<option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</option>
+								<option value="10DAY_CALENDAR_REPORT">10 Calendar Days</option>
+							</c:otherwise>
+						</c:choose>	
 					</select>
 					
 					<a href="javascript:addAction(${ruleCount})">

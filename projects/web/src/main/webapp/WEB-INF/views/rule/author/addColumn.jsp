@@ -32,7 +32,7 @@
 	--%>
 	
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" 
-			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this)">
+			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
 		<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
 			<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
 				${ruleUi.condition[0].domainObject[0].field[optionStatus.index].displayUri}
@@ -66,6 +66,7 @@
 	<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
 	--%>
 
+<span id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">	
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" 
 			name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
 		<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
@@ -74,7 +75,7 @@
 			</option>
 		</c:forEach>
 	</select>
-	
+</span>	
 	
 	<%--
 	<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">

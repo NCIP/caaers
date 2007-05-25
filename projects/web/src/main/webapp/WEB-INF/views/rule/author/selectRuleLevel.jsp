@@ -5,6 +5,7 @@
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <tags:stylesheetLink name="ae"/>
@@ -83,20 +84,26 @@
 			{
 				if (level.value == 'Sponsor')
 				{
-					document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
-					document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
+					//document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
+					//document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
+					Effect.Appear("sponsor-details");
+					Effect.Fade("study-details");
 				}
 				else
 				{
 					if (level.value == 'Study')
 					{
-						document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
-						document.getElementById("study-details").setAttribute("style", "visibility: visible")					
+						//document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
+						//document.getElementById("study-details").setAttribute("style", "visibility: visible")					
+						Effect.Appear("sponsor-details");
+						Effect.Appear("study-details");
 					}
 					else
 					{
-						document.getElementById("sponsor-details").setAttribute("style", "visibility: hidden")
-						document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
+						//document.getElementById("sponsor-details").setAttribute("style", "visibility: hidden")
+						//document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
+						Effect.Fade("sponsor-details");
+						Effect.Fade("study-details");
 					}
 				}
 			}
@@ -120,7 +127,6 @@
 
             <tags:errors path="*"/>
             
-            <tags:tabFields tab="${tab}"/>
 
             <div class="row">
                 <label><form:radiobutton path="level" value="Sponsor" onchange="displaySponsorOrStudyInput(this)"/>Create Rules at <b>Sponsor</b> Level</label>
@@ -136,16 +142,16 @@
 
 			<c:choose>
 				<c:when test='${command.level eq "Study"}'>
-					<c:set var="sponsorVisibility" value="visibility: visible"/>
-					<c:set var="studyVisibility" value="visibility: visible"/>
+					<c:set var="sponsorVisibility" value=""/>
+					<c:set var="studyVisibility" value=""/>
 				</c:when>
-				<c:when test='${commandlevel eq "Sponsor"}'>
-					<c:set var="sponsorVisibility" value="visibility: visible"/>
-					<c:set var="studyVisibility" value="visibility: hidden"/>
+				<c:when test='${command.level eq "Sponsor"}'>
+					<c:set var="sponsorVisibility" value=""/>
+					<c:set var="studyVisibility" value="display: none"/>
 				</c:when>
 				<c:otherwise>
-					<c:set var="sponsorVisibility" value="visibility: hidden"/>
-					<c:set var="studyVisibility" value="visibility: hidden"/>
+					<c:set var="sponsorVisibility" value="display: none"/>
+					<c:set var="studyVisibility" value="display: none"/>
 				</c:otherwise>
 			</c:choose>
 	<div title="Select Sponsor" id="sponsor-details" style="${sponsorVisibility}"> 
@@ -153,7 +159,7 @@
 				<div class="label"><label for="sponsor-input">Select Sponsor</label></div>
 				<div class="value">
 					<form:hidden path="sponsorName"/>
-					<input type="text" id="sponsor-input" value="${command.sponsorName}"/>
+					<input type="text" id="sponsor-input" value="${command.sponsorName}" size="40"/>
                     			<input type="button" id="sponsor-clear" value="Clear"/>					
 					<tags:indicator id="sponsor-indicator"/>
 				</div>
@@ -166,7 +172,7 @@
 				<div class="label"><label for="study-input">Select Study</label></div>
 				<div class="value">
 					<form:hidden path="categoryIdentifier"/>
-					<input type="text" id="study-input" value="${command.categoryIdentifier}" />
+					<input type="text" id="study-input" value="${command.categoryIdentifier}" size="40"/>
 					<input type="button" id="study-clear" value="Clear"/>
 					<tags:indicator id="study-indicator"/>
 				</div>

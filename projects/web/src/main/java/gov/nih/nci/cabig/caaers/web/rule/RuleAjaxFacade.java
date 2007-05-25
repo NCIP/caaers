@@ -436,7 +436,7 @@ public class RuleAjaxFacade
 		{
 			Lov sponsor = (Lov) sponsorsItr.next();
 			
-			if (sponsorName != null && sponsor.getDesc().toLowerCase().indexOf(sponsorName, 0) != -1)
+			if (sponsorName != null && sponsor.getDesc().toLowerCase().indexOf(sponsorName.toLowerCase(), 0) != -1)
 			{
 				sponsors.add(sponsor.getDesc());
 			}

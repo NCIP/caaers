@@ -19,20 +19,20 @@
     	{
     		if (newRuleSetElement.options[newRuleSetElement.selectedIndex].value =='Other')
     		{
-    			Element.show("otherRuleSetDiv");
+    			Effect.Appear("otherRuleSetDiv");
     		}
     		else
     		{
 	    		$("hiddenRuleSetName").value=newRuleSetElement.options[newRuleSetElement.selectedIndex].value;    		
-	    		Element.hide("otherRuleSetDiv");
+	    		Effect.Fade("otherRuleSetDiv");
 	    	}
 	    	
     	}
     	
 	    function disableCreateRuleSet(radioRuleSetElement)
 	    {
-	    	Element.hide("newRuleSetDiv");
-	    	Element.hide("otherRuleSetDiv");
+	    	Effect.Fade("newRuleSetDiv");
+	    	Effect.Fade("otherRuleSetDiv");
 	    	
 	    	$("hiddenRuleSetName").value=radioRuleSetElement.value;
 	    }
@@ -61,7 +61,7 @@
 		</div>	
             <tags:errors path="*"/>
             
-            <tags:tabFields tab="${tab}"/>
+        <%--    <tags:tabFields tab="${tab}"/> --%>
 
 
 			<c:choose>
@@ -100,7 +100,7 @@
             </div>
         </div>
 	
-	<input type="hidden" id="hiddenRuleSetName" name="ruleSetName" value=""/>
+	<form:hidden id="hiddenRuleSetName" path="ruleSetName"/>
 	</jsp:attribute>
 		
 	</tags:tabForm> 
@@ -110,7 +110,7 @@
     	Event.observe("createRuleSet", "click", 
     		function(e)
     		{
-		    Element.show("newRuleSetDiv");
+		    Effect.Appear("newRuleSetDiv");
 		    document.getElementById("radioRuleSetName1").checked;
     		}
     	

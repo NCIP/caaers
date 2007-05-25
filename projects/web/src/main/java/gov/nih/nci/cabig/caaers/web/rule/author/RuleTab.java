@@ -39,6 +39,12 @@ public class RuleTab extends DefaultTab
     
     	RuleSet ruleSet = createRuleCommand.getRuleSet();
     	
+    	if (ruleSet != null && ruleSet.getDescription() != null && 
+    			ruleSet.getDescription().equals(createRuleCommand.getRuleSetName()))
+    	{
+    		return super.referenceData(command);
+    	}
+    	
     	// Retrieve RuleSet based on the one choosen by the user
 			try 
 			{
