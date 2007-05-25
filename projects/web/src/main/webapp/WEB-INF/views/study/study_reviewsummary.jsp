@@ -55,8 +55,8 @@
 		<chrome:division title="Identifiers">
 		<table class="tablecontent">
 			<tr>
-				<th scope="col">Source</th>
-				<th scope="col">Type</th>
+				<th scope="col">Assigning Authority</th>
+				<th scope="col">Identifier Type</th>
 				<th scope="col">Identifier</th>
 			</tr>
 			<c:forEach items="${command.identifiers}" var="identifier">

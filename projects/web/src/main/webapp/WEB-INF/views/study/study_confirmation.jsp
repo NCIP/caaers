@@ -16,14 +16,30 @@
 <body>
 <chrome:box title="Confirmation">
 <form:form>
-<div><input type="hidden" name="_page" value="1"></div>
-     <chrome:division id="single-fields">
-       <div class="content">
+
+<chrome:division id="single-fields">
+      <div class="content">
+           <div class="row">
+               <div>You have successfully created Study with:- </div>
+           </div>
             <div class="row">
-                <div>You have successfully created study with short title : ${param.studyName}</div>
-             </div>
-        </div>
-	</chrome:division>
+              <div class="label">Short Title:</div>
+              <div class="value">${command.shortTitle}</div>
+           </div>
+           <div class="row">
+              <div class="label">Primary Identifier:</div>
+              <div class="value">${command.primaryIdentifier}</div>
+           </div>
+           <div class="row">
+              <div class="label">Sponsor:</div>
+              <div class="value">${command.primarySponsorCode}</div>
+           </div>
+           <div class="row">
+              <div class="label">Phase:</div>
+              <div class="value">${command.phaseCode}</div>
+           </div>
+       </div>
+</chrome:division>
 </form:form>
 </chrome:box>
 </body>
