@@ -97,6 +97,18 @@
    				   <c:if test="${command.timeScaleType == 'WEEK'}">
    				    6
    				   </c:if>
+   				    <c:if test="${command.timeScaleType == 'HOUR'}">
+   				    23
+   				   </c:if>
+   				    <c:if test="${command.timeScaleType == 'SECOND'}">
+   				    60
+   				   </c:if>
+   				   <c:if test="${command.timeScaleType == 'MINUTE'}">
+   				    60
+   				   </c:if>
+   				    <c:if test="${command.timeScaleType == 'MONTH'}">
+   				    11
+   				   </c:if>
    				</c:set>
    				<!--
    				 loopEnd : ${loopEnd}
@@ -107,7 +119,12 @@
    						<c:forTokens delims="," var="tsUnit" 
    						             items="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28">
    						    <td width="40">
+   						    	<c:if test="${tsUnit eq command.pointOnScale}">
+   						    	<div id="tsu_current">${tsUnit}</div>
+   						    	</c:if>
+   						    	<c:if test="${tsUnit != command.pointOnScale}">
    						    	<div id="tsu" onClick="javascript:{selectTimeScaleUnit(${tsUnit});}" >${tsUnit}</div>
+   						    	</c:if>
    							</td>
    						</c:forTokens>
 					</tr>
@@ -121,6 +138,7 @@
     	<!-- hidden role recipient div -->
 			<div id="div_recipient_role" style="display: none">
 			  <select name="roleRecipient" id="recipient_role">
+			   <option value="">Select a Role</option>
 			  <c:forEach var="role" begin="0" items="${command.allRoles}">
 			  	<option value="${role}">${role}</option>
 			  </c:forEach>
@@ -172,6 +190,7 @@
    								<c:forEach var="selectedRole" items="${command.roleRecipient}">
    									<div id="div_recipient_role_x" >
 			  						<select name="roleRecipient" id="recipient_role">
+			  							<option value="">Select a Role</option>
 			  							<c:forEach var="role" begin="0" items="${command.allRoles}">
 			  							<option value="${role}" ${selectedRole == role}>${role}</option>
 			  						</c:forEach>

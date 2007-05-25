@@ -271,12 +271,12 @@
         class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
 		 <property name="allRoles">
         	<list>
-				<value>Primary Investigator</value>
+				<value>Site Study PI</value>
+				<value>Study Chair</value>
 				<value>Reporter</value>
-				<value>Investigator</value>
-        		<value>Sponsor</value>
-        		<value>IRB</value>
-				<value>SiteAdmin</value>
+				<value>Treating Physician</value>
+				<value>Sponsor</value>
+				<value>IRB</value>
         	</list>
         </property>
     </bean>

@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
-import gov.nih.nci.cabig.caaers.dao.ReportScheduleDao;
 import gov.nih.nci.cabig.caaers.domain.notification.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.notification.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
@@ -14,9 +13,11 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
@@ -57,6 +58,39 @@ public class NotificationCommand implements RuleInputCommand {
 	ReportCalendarTemplateDao calendarTemplateDao;
 	private List<String> allRoles;
 	
+	private boolean validationFailed;
+	
+	private String delete;
+	
+	
+	/**
+	 * @return the delete
+	 */
+	public String getDelete() {
+		return delete;
+	}
+
+	/**
+	 * @param delete the delete to set
+	 */
+	public void setDelete(String delete) {
+		this.delete = delete;
+	}
+
+	/**
+	 * @return the validationFailed
+	 */
+	public boolean isValidationFailed() {
+		return validationFailed;
+	}
+
+	/**
+	 * @param validationFailed the validationFailed to set
+	 */
+	public void setValidationFailed(boolean validationFailed) {
+		this.validationFailed = validationFailed;
+	}
+
 	/**
 	 * @return the calendarTemplateDao
 	 */
@@ -136,8 +170,23 @@ public class NotificationCommand implements RuleInputCommand {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-
+	
+	public void removePlannedNotification(){
+		if(StringUtils.isEmpty(delete))
+			return;
+		int indexToDelete = NumberUtils.toInt(delete);
+		for(Iterator<PlannedNotification> it = calendarTemplate.getPlannedNotifications().iterator(); it.hasNext();){
+			PlannedNotification pen = it.next();
+			if(pen.getIndexOnTimeScale() == indexToDelete){
+				it.remove();
+				break;
+			}
+		}
+	}
 	public void updateReportCalendarTemplate(){
+		if(validationFailed)
+			return; //dont populate invalid values
+		
 		calendarTemplate.setName(name);
 		calendarTemplate.setDescription(description);
 		calendarTemplate.setTimeScaleUnitType(TimeScaleUnit.valueOf(timeScaleType));
@@ -145,6 +194,7 @@ public class NotificationCommand implements RuleInputCommand {
 		//configure planned notification if lastPointOnScale is not empty
 		if(StringUtils.isEmpty(lastPointOnScale))
 			return;
+		
 		Integer lastPoint = Integer.valueOf(lastPointOnScale);
 		if(NotificationType.EMAIL_NOTIFICATION.name().equals(notificationType)){
 			PlannedEmailNotification pen = (PlannedEmailNotification) calendarTemplate.fetchPlannedNotification(lastPoint);

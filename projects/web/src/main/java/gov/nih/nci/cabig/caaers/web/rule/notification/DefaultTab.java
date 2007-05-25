@@ -18,7 +18,7 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 public class DefaultTab extends Tab<RuleInputCommand> {
 	
     private Map<String, InputFieldGroup> fieldGroups = new LinkedHashMap<String, InputFieldGroup>();
-
+    
 	
 	public DefaultTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
@@ -72,7 +72,8 @@ public class DefaultTab extends Tab<RuleInputCommand> {
     }
 	
     protected Map<Object, Object> createMapFromArray(Object[] arr){
-    	Map<Object,Object> map = new HashMap<Object, Object>();
+    	Map<Object,Object> map = new LinkedHashMap<Object, Object>();
+    	map.put(" ", "Select a Value");
     	for(Object o : arr)
     		map.put(o, o);
     	return map;

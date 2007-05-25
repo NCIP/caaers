@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
@@ -10,6 +11,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.validation.Errors;
 
 public class FirstTab extends DefaultTab {
@@ -28,7 +31,7 @@ public class FirstTab extends DefaultTab {
     protected void initFields() {
         addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultTextField(
         			"name", "Name", true));
-        addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultTextField(
+        addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultTextArea(
     			"description", "Description", false));
 //        addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultSelectField(
 //                "notificationType", "Notification Method", true,
@@ -52,10 +55,9 @@ public class FirstTab extends DefaultTab {
 		//System.out.println("cmd :" + String.valueOf(cmd));
 		//System.out.println("errors :" + String.valueOf(errors));
 		//System.out.println("___________________________________");
-		
-		NotificationCommand nfCmd = (NotificationCommand)cmd;
-		nfCmd.updateReportCalendarTemplate();
 		super.postProcess(req,cmd,errors);
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		if(errors.getErrorCount() < 1) nfCmd.updateReportCalendarTemplate();
 	}
 
 	/* (non-Javadoc)
@@ -68,6 +70,13 @@ public class FirstTab extends DefaultTab {
 		//System.out.println("errors :" + String.valueOf(errors));
 		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		if(StringUtils.isEmpty(nfCmd.getName())){
+			errors.rejectValue("name", "REQUIRED", "Missing Name");
+		}
+		if(!NumberUtils.isDigits(nfCmd.getDuration())){
+			errors.rejectValue("duration","REQUIRED", "Invalid Time Till Report Due");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -79,5 +88,9 @@ public class FirstTab extends DefaultTab {
 		return super.referenceData(command);
 	}
 	
+	@Override
+	public boolean isAllowDirtyForward() {
+		return false;
+	}
 	
 }

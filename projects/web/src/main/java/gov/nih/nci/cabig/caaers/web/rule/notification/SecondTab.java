@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
 
 /***
@@ -57,10 +59,14 @@ public class SecondTab extends DefaultTab {
 		//System.out.println("cmd :" + String.valueOf(cmd));
 		//System.out.println("errors :" + String.valueOf(errors));
 		//System.out.println("___________________________________");
+		super.postProcess(req,cmd,errors);
 		NotificationCommand nfCmd = (NotificationCommand)cmd;
 		//update the report calendar 
-		nfCmd.updateReportCalendarTemplate();
-		super.postProcess(req,cmd,errors);
+		if(errors.getErrorCount() < 1)
+			nfCmd.updateReportCalendarTemplate();
+		else
+			nfCmd.setPointOnScale(nfCmd.getLastPointOnScale());
+		
 	}
 
 	/* (non-Javadoc)
@@ -73,6 +79,36 @@ public class SecondTab extends DefaultTab {
 		//System.out.println("errors :" + String.valueOf(errors));
 		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		boolean mustValidate = StringUtils.isNotEmpty(nfCmd.getFromAddress()) ||
+			StringUtils.isNotEmpty(nfCmd.getMessage()) || 
+			CollectionUtils.isNotEmpty(nfCmd.getRoleRecipient())||
+			CollectionUtils.isNotEmpty(nfCmd.getDirectRecipient())||
+			StringUtils.isNotEmpty(nfCmd.getSubjectLine());
+		if(mustValidate){
+			if(StringUtils.isEmpty(nfCmd.getFromAddress()))
+				errors.rejectValue("fromAddress", "REQUIRED","From Address Invalid");
+			if(StringUtils.isEmpty(nfCmd.getMessage()))
+				errors.rejectValue("message", "REQUIRED","Message Invalid");
+			if(StringUtils.isEmpty(nfCmd.getSubjectLine()))
+				errors.rejectValue("subjectLine", "REQUIRED", "Subject Line Invalid");
+			if(CollectionUtils.isNotEmpty(nfCmd.getRoleRecipient())){
+				for(String role : nfCmd.getRoleRecipient()){
+					if(StringUtils.isEmpty(role)){
+						errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
+					}
+				}
+			}
+			if(CollectionUtils.isNotEmpty(nfCmd.getDirectRecipient())){
+				for(String email : nfCmd.getDirectRecipient()){
+					if(StringUtils.isEmpty(email)){
+						errors.rejectValue("directRecipient", "REQUIRED", "Invalid Recipient Information");
+					}
+				}
+			}
+				
+		}
+		nfCmd.setValidationFailed(errors.hasErrors());
 	}
 
 	/* (non-Javadoc)
@@ -89,5 +125,16 @@ public class SecondTab extends DefaultTab {
 		refData.put("allRoles", allRoles);
 		return refData;
 	}
+	
+	@Override
+	public boolean isAllowDirtyBack() {
+		return false;
+	}
+	
+	@Override
+	public boolean isAllowDirtyForward() {
+		return false;
+	}
+	
 	
 }

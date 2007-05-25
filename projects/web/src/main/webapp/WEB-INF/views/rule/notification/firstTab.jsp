@@ -16,7 +16,7 @@
     <chrome:division title="Configure Notification">
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
 		<jsp:attribute name="singleFields">
-             <tags:errors path="*"/>
+           
             <div id="ruleset-fields">
                 <c:forEach items="${fieldGroups.ruleset.fields}" var="field">
                     <tags:renderRow field="${field}"/>

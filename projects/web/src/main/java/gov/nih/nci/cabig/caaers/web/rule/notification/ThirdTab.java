@@ -32,6 +32,10 @@ public class ThirdTab extends DefaultTab{
 		//System.out.println("errors :" + String.valueOf(errors));
 		//System.out.println("___________________________________");
 		super.postProcess(req,cmd,errors);
+		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		nfCmd.setValidationFailed(errors.hasErrors());
+		if(errors.hasErrors()) return;
+		nfCmd.removePlannedNotification();
 	}
 
 	/* (non-Javadoc)
