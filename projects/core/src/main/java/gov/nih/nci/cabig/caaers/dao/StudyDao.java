@@ -13,6 +13,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,6 +43,10 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return (List<Study>) getHibernateTemplate().find("from Study");
     }
 
+    public void reassociate(Study s) {
+       getHibernateTemplate().update(s);
+    }
+
     /**
      //TODO - Refactor this code with Hibernate Detached objects !!!
       
@@ -66,9 +71,10 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return study;
     }
 
-    public void save(Study study) {
-        getHibernateTemplate().saveOrUpdate(study);
-    }
+	public void save(Study study) {
+		getHibernateTemplate().saveOrUpdate(study);
+	}
+	
 
     public void merge(Study study) {
         getHibernateTemplate().merge(study);
