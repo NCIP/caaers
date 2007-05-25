@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Priyatam
  */
-public class CreateStudyController extends StudyController {
+public class CreateStudyController extends StudyController <Study>{
      
 	/**
 	 * Layout Tabs
@@ -32,32 +32,18 @@ public class CreateStudyController extends StudyController {
         flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
     }
 
-    /**
-     * Create a nested object graph that Create Study Design needs
-     *
-     * @param request - HttpServletRequest
-     * @throws ServletException
-     */
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         return createDefaultStudyWithDesign();
     }
 
-    /* (non-Javadoc)
-      * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-      * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
-      * java.lang.Object, org.springframework.validation.BindException)
-      */
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
             Object command, BindException errors) throws Exception {
         Study study = (Study) command;
         studyDao.save(study);
 
-        ModelAndView modelAndView = new ModelAndView("study_confirmation");
-        modelAndView.addAllObjects(errors.getModel());
-        response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
-        return null;
+        return new ModelAndView("forward:view?type=confirm", errors.getModel());
     }
     
 }

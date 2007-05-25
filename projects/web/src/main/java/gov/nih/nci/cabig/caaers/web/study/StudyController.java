@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This uses AbstractTabbedFlowFormController to implement tabbed workflow
  * @author Priyatam
  */
-public abstract class StudyController extends AbstractTabbedFlowFormController<Study>{
+public abstract class StudyController<C extends Study> extends AutomaticSaveFlowFormController<C, Study, StudyDao>{
     private static final Log log = LogFactory.getLog(StudyController.class);
     protected StudyDao studyDao;
     private SiteDao siteDao;
@@ -46,9 +45,19 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
 
     public StudyController() {
         setCommandClass(Study.class);
-        Flow<Study> flow = new Flow<Study>("Create Study");
+        Flow<C> flow = new Flow<C>("Create Study");
         layoutTabs(flow);
         setFlow(flow);
+    }
+
+	@Override
+	protected Study getPrimaryDomainObject(C command) {
+		 return command;
+	}
+    
+    @Override
+    protected StudyDao getDao() {
+        return studyDao;
     }
 
     /**
@@ -101,9 +110,6 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
             }
             refdata.put("summary", summary);
         }
-        if (isUpdate()) {
-            refdata.put("isUpdate", "isUpdate");
-        }
 
         return refdata;
     }
@@ -116,30 +122,7 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
         return false;
     }
 
-    /**
-     * Override this in sub controller if update is needed
-     * @return
-     */
-    protected boolean isUpdate() {
-        return false;
-    }
 
-
-    /**
-     * Hook to imlement this in subclass (depending on create/edit)
-     * @param request - HttpServletRequest
-     * @throws ServletException
-     */
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
-        // implement this in sub class
-        return null;
-    }
-
-    /* (non-Javadoc)
-    * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-    * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
-    * java.lang.Object, org.springframework.validation.BindException)
-    */
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
                                          Object command, BindException errors) throws Exception {
@@ -158,18 +141,6 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
         StudySite studySite = new StudySite();
         study.addStudySite(studySite);
 
-        // adding studyinvestigator.
-        //StudyInvestigator studyInvestigator = new StudyInvestigator();
-        //studySite.addStudyInvestigators(studyInvestigator);
-
-        // adding studypersonnel
-        //StudyPersonnel studyPersonnel = new StudyPersonnel();
-        //studySite.addStudyPersonnel(studyPersonnel);
-
-        //StudyAgent studyAgent = new StudyAgent();
-        //studyAgent.setAgent(new Agent());
-        //study.addStudyAgent(studyAgent);
-
         List<Identifier> identifiers = new ArrayList<Identifier>();
         Identifier id = new Identifier();
         identifiers.add(id);
@@ -177,7 +148,6 @@ public abstract class StudyController extends AbstractTabbedFlowFormController<S
 
         List<Site> sites = siteDao.getAll();
 
-        // XXX: this code doesn't make any sense
         for (Site site : sites) {
             studySite.setSite(site);
         }
