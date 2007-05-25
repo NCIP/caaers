@@ -4,6 +4,6 @@ class ChangeAdverseEventReport extends edu.northwestern.bioinformatics.bering.Mi
     }
 
     void down() {
-        removeColumn('status_code');
+        removeColumn('ae_reports', 'status_code');
     }
 }

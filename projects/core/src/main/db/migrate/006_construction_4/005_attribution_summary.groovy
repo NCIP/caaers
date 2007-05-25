@@ -4,6 +4,6 @@ class AddAttributionSummary extends edu.northwestern.bioinformatics.bering.Migra
     }
 
     void down() {
-        dropColumn("ae_reports", "attribution_summary", "integer")
+        dropColumn("ae_reports", "attribution_summary")
     }
 }
