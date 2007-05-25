@@ -192,7 +192,7 @@
    				</div></td>
    				</tr>
    				<tr>
-   				<td colspan="2">}
+   				<td colspan="2">
    				  <div class="buttons" align="right"><input type="button" name="del" onClick="javascript:deleteNF(${pen.indexOnTimeScale});" value="Delete Notification of ${command.calendarTemplate.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}" /></div>
    				</td>
    				</tr>

@@ -9,17 +9,17 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 /**
  * This class will be removed after the demo
- * 
+ *
  * @author Biju Joseph
  * Created-on : May 23, 2007
  * @version     %I%, %G%
  * @since       1.0
  */
 public class DefaultTab extends Tab<RuleInputCommand> {
-	
+
     private Map<String, InputFieldGroup> fieldGroups = new LinkedHashMap<String, InputFieldGroup>();
-    
-	
+
+
 	public DefaultTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 		initFields();
@@ -31,8 +31,8 @@ public class DefaultTab extends Tab<RuleInputCommand> {
         refdata.put("fieldGroups", createFieldGroups(command));
         return refdata;
     }
-    
-    
+
+
     /**
      * Template method allowing subclasses to generate their own field group maps.  This may be
      * necessary if the fields are dependent on the actual data in the command.  The default
@@ -46,7 +46,7 @@ public class DefaultTab extends Tab<RuleInputCommand> {
     protected Map<String, InputFieldGroup> createFieldGroups(RuleInputCommand command) {
         return getFieldGroups();
     }
-    
+
     /**
      * Callback allowing subclasses to initialize the static fieldGroups collection.
      * @see #createFieldGroups
@@ -70,10 +70,10 @@ public class DefaultTab extends Tab<RuleInputCommand> {
     protected Map<String, InputFieldGroup> getFieldGroups() {
         return fieldGroups;
     }
-	
+
     protected Map<Object, Object> createMapFromArray(Object[] arr){
     	Map<Object,Object> map = new LinkedHashMap<Object, Object>();
-    	map.put(" ", "Select a Value");
+    	map.put("", "Select a Value");
     	for(Object o : arr)
     		map.put(o, o);
     	return map;

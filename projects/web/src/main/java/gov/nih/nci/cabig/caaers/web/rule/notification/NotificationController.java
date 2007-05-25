@@ -48,7 +48,6 @@ public class NotificationController extends AbstractTabbedFlowFormController<Rul
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
 		//return new NotificationCommand(allRoles, map, notificationDao);
-		System.out.println("\n\n\n****************Form backing called \n");
 		NotificationCommand cmd = new NotificationCommand();
 		cmd.setCalendarTemplate(new ReportCalendarTemplate());
 		cmd.setCalendarTemplateDao(reportCalendarTemplateDao);

@@ -77,6 +77,9 @@ public class FirstTab extends DefaultTab {
 		if(!NumberUtils.isDigits(nfCmd.getDuration())){
 			errors.rejectValue("duration","REQUIRED", "Invalid Time Till Report Due");
 		}
+		if(StringUtils.isEmpty(nfCmd.getTimeScaleType())){
+			errors.rejectValue("timeScaleType","REQUIRED","Invalid Time Scale UOM"); 
+		}
 	}
 
 	/* (non-Javadoc)

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 /**
@@ -197,6 +198,14 @@ public class NotificationCommand implements RuleInputCommand {
 		
 		Integer lastPoint = Integer.valueOf(lastPointOnScale);
 		if(NotificationType.EMAIL_NOTIFICATION.name().equals(notificationType)){
+			//only add values if atleast one filed has value.
+			boolean mustAdd = StringUtils.isNotEmpty(fromAddress) ||
+								   StringUtils.isNotEmpty(message) || 
+								   CollectionUtils.isNotEmpty(roleRecipient)||
+								   CollectionUtils.isNotEmpty(directRecipient)||
+								   StringUtils.isNotEmpty(subjectLine);
+			if(!mustAdd)
+				return;
 			PlannedEmailNotification pen = (PlannedEmailNotification) calendarTemplate.fetchPlannedNotification(lastPoint);
 			if(pen == null){
 				pen = new PlannedEmailNotification();
