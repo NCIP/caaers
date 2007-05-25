@@ -22,7 +22,7 @@ import org.hibernate.annotations.Parameter;
 @Table
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_physician_id")
+        @Parameter(name="sequence", value="seq_physicians_id")
     }
 )
 public class Physician extends AdverseEventReportPerson {
