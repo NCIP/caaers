@@ -13,6 +13,7 @@
     <tags:dwrJavascriptLink objects="createAE"/>
 
     <script type="text/javascript">
+      
       Event.observe(window, "load", function() {
 				destroyLineItemSortables();
 				createLineItemSortables();
@@ -33,7 +34,7 @@
 			}
 
 			function createRuleSortable() {
-				Sortable.create('allRules',{tag:'div',only:'section',handle:'handle'});
+				Sortable.create('allRules', {tag:'div',only:'section',handle:'handle'});
 			}
 			
 	</script>
@@ -83,7 +84,8 @@
 						var newRule = columnHolder.childNodes[1].cloneNode(true);
 						columnHolder.innerHTML = "";
 						$('allRules').appendChild(newRule);
-						Effect.Appear('rule-' + (sections.length));
+						//Effect.Appear('rule-' + (sections.length));
+						Effect.Appear(newRule.id);
 						createRuleSortable();
 					});
 
@@ -124,7 +126,7 @@
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
 												
-								var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="40"/>';
+								var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
 								inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
 								$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 								
@@ -335,7 +337,7 @@
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
 				
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="40"/>';
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
 					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 
@@ -403,7 +405,7 @@
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
 				
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="40"/>';
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
 					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 
@@ -605,7 +607,7 @@
 																		
 																		$(spanId).innerHTML="";
 																					
-																		var inputArea = '<input type="text" id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" size="40"/>';
+																		var inputArea = '<input type="text" id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" size="60"/>';
 																		inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
 																		$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 																	
