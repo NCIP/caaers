@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Rhett Sutphin
  */
-public class CategoriesTab<C extends CreateAdverseEventCommand> extends AeTab<C> {
-    private RepeatingFieldGroupFactory fieldFactory;
-    private InputFieldGroup reportFieldGroup;
+public class CategoriesTab<C extends RoutineAdverseEventInputCommand> extends AeRoutTab<C> {
     private CtcDao ctcDao;
     
 
@@ -31,23 +29,23 @@ public class CategoriesTab<C extends CreateAdverseEventCommand> extends AeTab<C>
     }
     
     @Override
-    public Map<String, Object> referenceData() {
+    public Map<String, Object> referenceData(RoutineAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData();
-        refdata.put("ctcCats", getCategories(3));
+        refdata.put("ctcCats" , getCategories(command));
         return refdata;
     }
 
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(CreateAdverseEventCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(RoutineAdverseEventInputCommand command) {
     	InputFieldGroupMap map = new InputFieldGroupMap();
         //groups.addRepeatingFieldGroupFactory(fieldFactory,command.getCategories().size());
         return map;
     }
     
-    private List<CtcCategory> getCategories(int ctcVersionId) {
-        List<CtcCategory> categories = ctcDao.getById(ctcVersionId).getCategories();
+    private List<CtcCategory> getCategories(RoutineAdverseEventInputCommand command) {
+        List<CtcCategory> categories = command.getStudy().getCtcVersion().getCategories();
         // cut down objects for serialization
         for (CtcCategory category : categories) {
             category.setTerms(null);

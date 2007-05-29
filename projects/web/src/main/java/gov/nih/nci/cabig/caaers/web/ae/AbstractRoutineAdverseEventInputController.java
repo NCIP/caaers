@@ -13,10 +13,10 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -38,8 +38,9 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
-    extends AutomaticSaveFlowFormController<C, AdverseEventReport, AdverseEventReportDao>
+public abstract class AbstractRoutineAdverseEventInputController<C extends RoutineAdverseEventInputCommand>
+    extends AutomaticSaveFlowFormController<C, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
+
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -47,36 +48,23 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
-    protected AgentDao agentDao;
     protected AdverseEventReportDao reportDao;
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
-    protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
-    protected AnatomicSiteDao anatomicSiteDao;
     protected RuleExecutionService ruleExecutionService;
-    protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected NowFactory nowFactory;
 
-    protected AbstractAdverseEventInputController() {
+    protected AbstractRoutineAdverseEventInputController() {
         setFlow(new Flow<C>(getFlowName()));
         addTabs(getFlow());
     }
 
     protected void addTabs(Flow<C> flow) {
-        flow.addTab(new BasicsTab<C>());
-        flow.addTab(new DescriptionTab<C>());
-        flow.addTab(new MedicalInfoTab<C>());
-        flow.addTab(new TreatmentTab<C>());
-        flow.addTab(new LabsTab<C>());
-        // TODO: readd this when we have some idea what it should be
-        // flow.addTab(new EmptyAeTab<C>("Outcome information", "Outcome", "ae/notimplemented"));
-        flow.addTab(new PriorTherapyTab<C>());
-        flow.addTab(new ConcomitantMedicationsTab<C>());
-        flow.addTab(new OtherCausesTab<C>());
-        flow.addTab(new AttributionTab<C>());
-        flow.addTab(new ReporterTab<C>());
-        flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
+        flow.addTab(new CategoriesTab<C>());
+        flow.addTab(new RoutineAeTab<C>());
+        //flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
+        
     }
 
     protected abstract String getFlowName();
@@ -87,18 +75,13 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
-        ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
-        ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
-        ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
-        ControllerTools.registerEnumEditor(binder, PostAdverseEventStatus.class);
     }
 
     @Override
@@ -108,7 +91,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     ) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         if (displaySummary(page)) {
-            refdata.put("summary", ((C) oCommand).getAeReport().getSummary());
+            refdata.put("summary", ((C) oCommand).getAeRoutineReport().getSummary());
         }
         return refdata;
     }
@@ -147,13 +130,13 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     }
 
     @Override
-    protected AdverseEventReportDao getDao() {
-        return reportDao;
+    protected RoutineAdverseEventReportDao getDao() {
+        return routineReportDao;
     }
 
     @Override
-    protected AdverseEventReport getPrimaryDomainObject(C command) {
-        return command.getAeReport();
+    protected RoutineAdverseEventReport getPrimaryDomainObject(C command) {
+        return command.getAeRoutineReport();
     }
 
     ////// CONFIGURATION
@@ -174,10 +157,6 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.ctcTermDao = ctcTermDao;
     }
 
-    public void setAgentDao(AgentDao agentDao) {
-        this.agentDao = agentDao;
-    }
-
     public void setReportDao(AdverseEventReportDao reportDao) {
         this.reportDao = reportDao; 
     }
@@ -186,23 +165,11 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.studyAgentDao = studyAgentDao;
     }
 
-    public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
-        this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
-    }
-
-    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
-        this.anatomicSiteDao = anatomicSiteDao;
-    }
-
     public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
         this.ruleExecutionService = ruleExecutionService;
     }
 
-    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-        this.priorTherapyDao = priorTherapyDao;
-    }
-
-	public CtcCategoryDao getCtcCategoryDao() {
+  	public CtcCategoryDao getCtcCategoryDao() {
 		return ctcCategoryDao;
 	}
 

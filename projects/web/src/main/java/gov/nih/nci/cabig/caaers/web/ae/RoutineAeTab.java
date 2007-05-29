@@ -36,7 +36,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-public class RoutineAeTab<C extends CreateAdverseEventCommand> extends AeTab<C> {
+public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeRoutTab<C> {
     private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
@@ -61,11 +61,11 @@ public class RoutineAeTab<C extends CreateAdverseEventCommand> extends AeTab<C> 
     private void handleTermAction(C c, String action, String selected){
     	
     	  if ("addTerm".equals(action)) {
-    		  for (String ctcTermId : c.getCtcTermIds()) {  
+    		  for (String ctcTermId : ((CreateRoutineAdverseEventCommand)c).getCtcTermIds()) {  
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
     		  ae.setCtcTerm(ctcTerm);
-    		  c.getAeReport().addAdverseEvent(ae);
+    		  c.getAeRoutineReport().addAdverseEvent(ae);
     		  }
     	  }
     }

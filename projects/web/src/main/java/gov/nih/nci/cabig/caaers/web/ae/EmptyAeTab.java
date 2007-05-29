@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class EmptyAeTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class EmptyAeTab<C extends AdverseEventInputCommandInterface> extends AeTab<C> {
     public EmptyAeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }

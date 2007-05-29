@@ -129,7 +129,7 @@
     
     <jsp:attribute name="repeatingFields">
     		<p>
-    		<c:if test="${fn:length(command.aeReport.adverseEvents) > 0}" >
+    		<c:if test="${fn:length(command.aeRoutineReport.adverseEvents) > 0}" >
     		<table border="1">
     			<tr>
     				<td><b>Term</b></td>
@@ -138,34 +138,34 @@
     				<td><b>Hospitalization</b></td>
     				<td><b>Expected</b></td>
     				
-            <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="status">
+            <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
             	<tr>
             		<td>${ae.ctcTerm.term}</td>
             		
             		<td>
-            			<form:select path="aeReport.adverseEvents[${status.index}].grade">
+            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
             				<form:options items="${ae.ctcTerm.contextualGrades}" itemValue="grade.name" itemLabel="grade.code"/>
             			</form:select>
             		</td>
             		
             		<td>
-            			<form:select path="aeReport.adverseEvents[${status.index}].attributionSummary" cssClass="cats">
+            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary" cssClass="cats">
             				<form:options items="${attribution}" itemValue="name" itemLabel="displayName"/>
             			</form:select>
             		</td>
             		
             		<td>
-            			<form:select path="aeReport.adverseEvents[${status.index}].hospitalization" cssClass="cats">
+            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization" cssClass="cats">
             				<form:options items="${hospitalization}" itemValue="name" itemLabel="displayName"/>
             			</form:select>
             		</td>
             		
-            		<td><form:select path="aeReport.adverseEvents[${status.index}].expected" >
+            		<td><form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" >
             				<form:option value="true" label="Yes" />
             				<form:option value="false" label="No" />
             			</form:select>	
             		</td>
-            		<%--<td><form:input path="aeReport.adverseEvents[${status.index}].comments" /></td>--%>
+            		<%--<td><form:input path="aeRoutineReport.adverseEvents[${status.index}].comments" /></td>--%>
             	</tr>	 
             </c:forEach>
             </table></p>
