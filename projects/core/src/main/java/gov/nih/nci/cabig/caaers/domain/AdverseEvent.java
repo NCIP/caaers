@@ -33,7 +33,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_adverse_events_id")
     }
 )
-public class AdverseEvent extends AbstractMutableDomainObject implements AdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableDomainObject implements AdverseEventReportChild,RoutineAdverseEventReportChild {
     private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
@@ -43,6 +43,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     private String comments;
 
     private AdverseEventReport report;
+    private RoutineAdverseEventReport routineReport;
     private List<CourseAgentAttribution> courseAgentAttributions;
     private List<ConcomitantMedicationAttribution> concomitantMedicationAttributions;
     private List<OtherCauseAttribution> otherCauseAttributions;
@@ -52,7 +53,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable=false, updatable=false, nullable=false)
+    @JoinColumn(insertable=false, updatable=false, nullable=true)
     public AdverseEventReport getReport() {
         return report;
     }
@@ -60,6 +61,18 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     public void setReport(AdverseEventReport report) {
         this.report = report;
     }
+    
+     //  This is annotated this way so that the IndexColumn in the parent
+    // will work with the bidirectional mapping
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(insertable=false, updatable=false, nullable=true)
+    public RoutineAdverseEventReport getRoutineReport() {
+        return routineReport;
+    }
+
+    public void setRoutineReport(RoutineAdverseEventReport routineReport) {
+        this.routineReport = routineReport;
+    } 
 
     @OneToMany
     @JoinColumn(name="adverse_event_id", nullable=false)

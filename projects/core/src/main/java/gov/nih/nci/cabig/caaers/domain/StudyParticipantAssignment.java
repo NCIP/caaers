@@ -34,6 +34,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private StudySite studySite;
     private Date dateOfEnrollment;
     private List<AdverseEventReport> aeReports;
+    private List<RoutineAdverseEventReport> aeRoutineReports;
 
     /*
      * Constructor
@@ -52,6 +53,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void addReport(AdverseEventReport report) {
         report.setAssignment(this);
         aeReports.add(report);
+    }
+    
+    public void addRoutineReport(RoutineAdverseEventReport routineReport) {
+    	routineReport.setAssignment(this);
+        aeRoutineReports.add(routineReport);
     }
 
     ////// BEAN PROPERTIES
@@ -93,10 +99,21 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setAeReports(List<AdverseEventReport> aeReports) {
         this.aeReports = aeReports;
     }
+    
+    @OneToMany(mappedBy = "assignment")
+    public List<RoutineAdverseEventReport> getAeRoutineReports() {
+		return aeRoutineReports;
+	}
+
+	public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
+		this.aeRoutineReports = aeRoutineReports;
+	}
+    
+    
 
     ////// OBJECT METHODS
 
-    public boolean equals(Object o) {
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

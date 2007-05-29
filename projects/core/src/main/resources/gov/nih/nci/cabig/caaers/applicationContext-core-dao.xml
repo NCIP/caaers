@@ -43,6 +43,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
@@ -148,6 +149,7 @@
 
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
     <bean id="adverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao"/>
+    <bean id="routineAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>

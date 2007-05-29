@@ -224,7 +224,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
-    @JoinColumn(name="report_id", nullable=false)
+    @JoinColumn(name="report_id", nullable=true)
     @IndexColumn(name="list_index")
     @Cascade(value = {
         // Manually-managing PERSIST cascades due to cascade ordering issue
