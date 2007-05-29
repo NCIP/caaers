@@ -78,6 +78,7 @@
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapy(index);
+                    AE.registerCalendarPopups("priorTherapy-" + index);
                 }
             })
         })
