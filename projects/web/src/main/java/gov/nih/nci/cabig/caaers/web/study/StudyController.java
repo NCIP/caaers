@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -42,6 +43,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     private AgentDao agentDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
+    private CtcDao ctcDao;
 
     public StudyController() {
         setCommandClass(Study.class);
@@ -74,6 +76,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctcDao);
     }
 
     /**
@@ -194,5 +197,15 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
+
+	public CtcDao getCtcDao() {
+		return ctcDao;
+	}
+
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
+	}
+    
+    
 
 }

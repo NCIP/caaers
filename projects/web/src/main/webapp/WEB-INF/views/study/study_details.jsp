@@ -54,6 +54,15 @@
                     </form:select>
                 </div>
             </div>
+             <div class="row">
+                <div class="label"><span class="red">*</span><em></em>Ctc Version:</div>
+                <div class="value"><form:select path="ctcVersion">
+                    <option value="">--please select --</option>
+                    <form:options items="${ctcVersion}" itemLabel="name"
+                        itemValue="id"/>
+                    </form:select>
+                </div>
+            </div>
         </div>
 	</jsp:attribute>
 </tags:tabForm>
