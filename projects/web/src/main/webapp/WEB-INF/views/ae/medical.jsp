@@ -231,13 +231,7 @@
                         <select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
                             <option value="">please select--</option>
                             <c:forEach var="studyDisease" varStatus="status" items="${command.study.ctepStudyDiseases}">
-                                    <c:if test="${command.aeReport.diseaseHistory.ctepStudyDisease.id == studyDisease.id }">
-                                        <option value="${studyDisease.id}" selected="true">${studyDisease.term.term} </option>
-                                    </c:if>
-                                    <c:if test="${command.aeReport.diseaseHistory.ctepStudyDisease.id != studyDisease.id }">
-                                        <option value="${studyDisease.id}">${studyDisease.term.term} </option>
-                                    </c:if>
-
+                            	<option value="${studyDisease.id}" ${command.aeReport.diseaseHistory.ctepStudyDisease.id == studyDisease.id  ? 'SELECTED' : ''}>${studyDisease.term.term} </option>
                             </c:forEach>
                         </select>
                     </div>
