@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -32,6 +34,7 @@ import org.hibernate.annotations.Where;
 )
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
+	private Ctc ctcVersion;
     private Boolean blindedIndicator;
     private Boolean multiInstitutionIndicator;
     private Boolean randomizedIndicator;
@@ -117,6 +120,17 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     /// BEAN PROPERTIES
+
+    @OneToOne
+    @JoinColumn(name="ctc_id")
+    public Ctc getCtcVersion() {
+		return ctcVersion;
+	}
+
+	public void setCtcVersion(Ctc ctcVersion) {
+		this.ctcVersion = ctcVersion;
+	}    
+
 
     @Override
     @OneToMany
@@ -286,5 +300,5 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     public void setTargetAccrualNumber(Integer targetAccrualNumber) {
         this.targetAccrualNumber = targetAccrualNumber;
-    }    
+    }
 }
