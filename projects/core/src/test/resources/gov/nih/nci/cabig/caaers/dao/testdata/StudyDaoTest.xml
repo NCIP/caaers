@@ -5,6 +5,7 @@
         short_title="Short Title"
         long_title="Long Title" description="Description"
         primary_sponsor_code="SCODE_100"
+        ctc_id="3"
         grid_id=""
         />
     <STUDIES
@@ -13,6 +14,7 @@
         short_title="Shorter"
         long_title="Lengthy Title" description="Different description"
         grid_id=""
+        ctc_id="3"
         primary_sponsor_code="SCODE_100"/>
 
     <STUDIES
@@ -22,6 +24,7 @@
         short_title="Shortest"
         long_title="Event Lengthier Title" description="Yet another different description"
         primary_sponsor_code="SCODE_100"
+        ctc_id="3"
         />
 
     <!-- the stu_id column really ought to be called study_id -->
