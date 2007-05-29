@@ -34,6 +34,7 @@
     	long_title="Long Title" 
     	description="Description" 
     	primary_sponsor_code="SCODE_101"
+    	ctc_id="3"
     	grid_id="gridStudy"/>
     
     <STUDIES 
@@ -43,6 +44,7 @@
     	long_title="Long Title" 
     	description="Description" 
     	primary_sponsor_code="SCODE_100"
+    	ctc_id="3"
     	grid_id=""/>
     
     <STUDY_SITES
