@@ -7,6 +7,7 @@
         description="Description"
         primary_sponsor_code="SCODE_100"
         grid_id="grid id"
+        ctc_id="3"
         />
     
      <SITES

@@ -38,7 +38,8 @@
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_101"/>
+    	primary_sponsor_code="SCODE_101"
+    	ctc_id="3"/>
     
     <STUDIES 
     	id="-2000" 
@@ -46,7 +47,8 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_100"/>
+    	primary_sponsor_code="SCODE_100"
+    	ctc_id="3"/>
     
     <STUDY_SITES
         id="-3001"

@@ -4,6 +4,7 @@
         short_title="Zeppo"
         long_title="Zeppelin"
         primary_sponsor_code="Z2"
+        ctc_id="3"
         />
     <AGENTS
         id="-3002"
