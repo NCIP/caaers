@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RulesRepositoryEx;
+import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 
@@ -37,11 +38,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	private RuleDeploymentService ruleDeploymentService;
 	private RepositoryService repositoryService;
 	
-	private static final String INSTITUTION_PACKAGE_NAME_PREFIX ="gov.nih.nci.cabig.caaers.rules.institution";
 	
-	private static final String STUDY_PACKAGE_NAME_PREFIX ="gov.nih.nci.cabig.caaers.rules.study";
-	
-	private static final String SPONSOR_PACKAGE_NAME_PREFIX ="gov.nih.nci.cabig.caaers.rules.sponsor";
 	
 	
 	public RulesEngineServiceImpl(){
@@ -56,7 +53,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		// TODO Auto-generated method stub
 		
 		String uuid = null;
-		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		Category category = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
 		
 		if(rule.getMetaData()==null){
@@ -87,7 +84,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		String uuid= null;
-		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
 		
 		System.out.println("Path of category:"+category.getPath());
@@ -122,7 +119,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		String uuid = null;
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
 		
 		if(rule.getMetaData()==null){
@@ -159,7 +156,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 		
-		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
     	//System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
@@ -190,7 +187,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 
-		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
     	System.out.println("PackageName:"+packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
@@ -216,7 +213,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
     	//System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
@@ -267,7 +264,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
-		String packageName = RuleUtil.getPackageName(INSTITUTION_PACKAGE_NAME_PREFIX, institutionName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		
@@ -312,7 +309,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
-		String packageName = RuleUtil.getPackageName(SPONSOR_PACKAGE_NAME_PREFIX, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		
@@ -359,7 +356,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(STUDY_PACKAGE_NAME_PREFIX, studyShortTitle, sponsorName, ruleSetName);
+		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		
