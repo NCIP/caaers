@@ -124,8 +124,8 @@
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers</groupId>
-            <artifactId>caaers-rules-client</artifactId>
-            <version>0.4.0</version> <!-- TODO: this should be ${project.version}.  Fix when rules is mavenized. -->
+            <artifactId>caaers-rules</artifactId>
+            <version>${project.version}</version> <!-- TODO: this should be ${project.version}.  Fix when rules is mavenized. -->
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
@@ -217,8 +217,16 @@
             <version>1.2</version>
         </dependency>        		
         
-        
-
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>ctms-commons-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>ctms-commons-lang</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
   
         <!-- BUILD-ONLY DEPS -->
 
