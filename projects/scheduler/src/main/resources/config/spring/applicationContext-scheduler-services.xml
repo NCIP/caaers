@@ -10,6 +10,14 @@
 	<!--  This bean that implements the service  -->	
 	<bean id="reportSchedulerService" class="gov.nih.nci.cabig.caaers.scheduler.runtime.SchedulerServiceImpl" >
 		<property name="scheduler" ><ref bean="schedulerFactory" /> </property>
+		
+		<!-- The mapping is used to identify the correct job class implementation -->
+		<property name="jobClassMapping">
+			<map>
+				<entry key="gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification"
+					   value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob" />
+			</map>
+		</property>
 	</bean>
 	
 </beans>

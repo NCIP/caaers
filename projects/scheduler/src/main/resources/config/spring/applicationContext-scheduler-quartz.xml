@@ -9,5 +9,6 @@
 		<property name="configLocation"><value>classpath:quartz.properties</value></property>
  	 	<property name="autoStartup"><value>true</value></property>
  	 	<property name="startupDelay"><value>10</value></property>
+		<property name="applicationContextSchedulerContextKey"><value>applicationContext</value></property>
 	</bean>
 </beans>
