@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
 public abstract class AbstractRoutineAdverseEventInputController<C extends RoutineAdverseEventInputCommand>
     extends AutomaticSaveFlowFormController<C, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
@@ -63,7 +63,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     protected void addTabs(Flow<C> flow) {
         flow.addTab(new CategoriesTab<C>());
         flow.addTab(new RoutineAeTab<C>());
-        //flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
+        flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
         
     }
 
@@ -74,6 +74,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
+        ControllerTools.registerDomainObjectEditor(binder, "aeRoutineReport", routineReportDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);

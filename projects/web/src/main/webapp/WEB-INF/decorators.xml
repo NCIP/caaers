@@ -18,6 +18,7 @@
         <pattern>/pages/ae/create</pattern>
         <pattern>/pages/ae/createRoutine</pattern>
         <pattern>/pages/ae/edit</pattern>
+        <pattern>/pages/ae/editRoutine</pattern>
         <pattern>/pages/ae/sample</pattern>
         <pattern>/pages/rule/create</pattern>
         <pattern>/pages/rule/notification/create</pattern>

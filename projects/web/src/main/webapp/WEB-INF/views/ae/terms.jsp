@@ -113,7 +113,7 @@
     	<c:forEach items="${command.categories}" varStatus="status" var="ctcCategory">
     			<span onClick="showTerms('${ctcCategory.name}')" class="cats"><b>${ctcCategory.name} </b>| </span> 
         </c:forEach>
-        --%>
+       
         <br> 
     	<c:forEach items="${command.categories}" varStatus="status" var="ctcCategory">
     			<span id="${ctcCategory.name}" style="display:none;">
@@ -124,6 +124,7 @@
                 </c:forEach>
                 </span> 
         </c:forEach>
+         --%>
        <hr> 
     </jsp:attribute>
     

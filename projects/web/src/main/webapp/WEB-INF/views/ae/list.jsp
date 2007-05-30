@@ -51,6 +51,7 @@
 </p>
 </c:if>
 
+<h2>Expedited Reports</h2>
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
     items="command.assignment.aeReports"
@@ -88,6 +89,34 @@
                 </span>
             </c:if>
         </ec:column>
+    </ec:row>
+</ec:table>
+<br>
+<h2>Routine Reports</h2>
+<ec:table
+    items="command.assignment.aeRoutineReports"
+    var="routineReport" imagePath="${ecImagePath}"
+    showPagination="false"
+    cellspacing="0" cellpadding="0" border="0" width="80%"
+    style="" styleClass=""
+    filterable="false">
+    <ec:row>
+        <ec:column property="adverseEvents[0].ctcTerm" title="CTC term">
+            <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+            <c:choose>
+                <c:when test="${not empty routineReport.adverseEvents[0].ctcTerm}">
+                    ${routineReport.adverseEvents[0].ctcTerm.fullName}
+                </c:when>
+                <c:otherwise>
+                    [Incomplete AE]
+                </c:otherwise>
+            </c:choose>
+            </a>
+        </ec:column>
+        <ec:column property="startDate" title="Start date">
+            <tags:formatDate value="${routineReport.startDate}"/>
+        </ec:column>
+        <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
     </ec:row>
 </ec:table>
 </body>

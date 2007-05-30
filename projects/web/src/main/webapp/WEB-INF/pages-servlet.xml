@@ -180,6 +180,11 @@
 
     <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
+        
+    <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController"/>    
+        
+        
 
     <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>

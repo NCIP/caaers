@@ -61,7 +61,7 @@ public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeR
     private void handleTermAction(C c, String action, String selected){
     	
     	  if ("addTerm".equals(action)) {
-    		  for (String ctcTermId : ((CreateRoutineAdverseEventCommand)c).getCtcTermIds()) {  
+    		  for (String ctcTermId : ((C)c).getCtcTermIds()) {  
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
     		  ae.setCtcTerm(ctcTerm);

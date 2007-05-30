@@ -21,10 +21,11 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+//import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+//import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private StudyParticipantAssignmentDao assignmentDao;
 
     private RuleExecutionService ruleExecutionService;
+    //private AdverseEventEvaluationService adverseEventEvaluationService;
     private Map<String, List<List<Attribution>>> attributionMap;
 
     private List<CtcCategory> categories;
@@ -64,12 +66,10 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     ) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
-        //this.reportDao = reportDao; TODO fix this we will need it 
         this.routineReportDao = routineReportDao;
-        //this.aeRoutineReport = new RoutineAdverseEventReport();
-        //this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-        // ensure there's at least one before the fields are generated
         this.categories = new ArrayList<CtcCategory>();
+        // Activate when rules is ready
+        //this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
 
         setRuleExecutionService(ruleExecutionService);
     }
@@ -95,7 +95,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     public void save() {
         getAssignment().addRoutineReport(getAeRoutineReport());
         routineReportDao.save(getAeRoutineReport());
-        fireAERules();
+        //findExpedited(getAeRoutineReport());
     }
 
     ////// BOUND PROPERTIES
@@ -135,57 +135,22 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         }
         updateReportAssignmentLink();
     }
-
-    // TODO:
-    //   - This only handles the first AE
-    public void fireAERules() {
-        String bindUri = "CAAERS_AE_RULES";
-        ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
-
-        AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
-        StudySDO studySDO = new StudySDO();
-        Study study = aeReport.getAssignment().getStudySite().getStudy();
-        studySDO.setShortTitle(study.getShortTitle());
-
-        AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-
-        // ATTRIBUTION
-        //adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from -- ask Rhett
-
-        //PHASE -- // Where to get this from -- ask Rhett
-        String phase = aeReport.getAssignment().getStudySite().getStudy().getPhaseCode();
-        adverseEventSDO.setPhase(phase);
-
-        //EXPECTED
-        boolean expected = adverseEvent.getExpected();
-        adverseEventSDO.setExpected((String.valueOf(expected)));
-
-        //GRADE
-        int grade = adverseEvent.getGrade().getCode();
-        //adverseEventSDO.setGrade(String.valueOf(grade));
-        adverseEventSDO.setGrade(new Integer(grade));
-
-        //CATEGORY
-        CtcCategory category = adverseEvent.getCtcTerm().getCategory();
-        adverseEventSDO.setCategory(category.getName());
-
-        //CTC TERM
-        CtcTerm ctcTerm = adverseEvent.getCtcTerm();
-        adverseEventSDO.setTerm(ctcTerm.getFullName());
-
-        //HOSPITALIZATION
-        int hospitalization = adverseEvent.getHospitalization().getCode();
-        Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
-
-        adverseEventSDO.setHospitalization(isHospitalization.toString());
-        list.add(adverseEventSDO);
-        try {
-            getRuleExecutionService().fireRules(bindUri, studySDO, list);
-        } catch(Exception e) {
-            log.error("Exception while firing rules: " + e.getMessage(), e);
-            // TODO: why is this exception swallowed?
-        }
+    
+    /*
+    public void findExpedited(RoutineAdverseEventReport raer ){
+    	this.aeReport = new AdverseEventReport();
+    	try {
+    	for(AdverseEvent ae : raer.getAdverseEvents() )
+    	{
+    		String temp = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		System.out.println("result" + temp);
+    	}
+    	}
+    	catch(Exception e){
+    		System.out.println("Exception while firing rules: ");
+    	}
     }
+    */
 
     public RuleExecutionService getRuleExecutionService() {
         return ruleExecutionService;
