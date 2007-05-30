@@ -3,6 +3,9 @@
         id="3"
         name="CTCAE v3.0"
         />
+    <ctc_categories/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <STUDIES
         id="-4"
         short_title="A history of ghosts"
