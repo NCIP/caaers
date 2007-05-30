@@ -1,4 +1,8 @@
 <dataset>
+	<ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
     <STUDIES
         id="-2"
         short_title="Zeppo"
@@ -14,9 +18,5 @@
         id="-11"
         study_id="-2"
         agent_id="-3002"
-        />
-    <ctc_versions
-        id="3"
-        name="CTCAE v3.0"
         />
 </dataset>

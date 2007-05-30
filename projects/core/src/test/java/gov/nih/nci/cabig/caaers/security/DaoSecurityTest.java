@@ -6,8 +6,10 @@ package gov.nih.nci.cabig.caaers.security;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 import org.acegisecurity.AccessDeniedException;
@@ -39,12 +41,17 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		StudyDao dao = (StudyDao) getApplicationContext().getBean("studyDao");
+		//CtcDao ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
+		Ctc ctc = new Ctc();
+		ctc.setName("CTCV3");
 
 		Study study = new Study();
+		//Ctc ctc = new Ctc();
 		study.setShortTitle("short title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		study.setPrimarySponsorCode("SCODE_101");
+		study.setCtcVersion(ctc);
 
 		try {
 			dao.save(study);

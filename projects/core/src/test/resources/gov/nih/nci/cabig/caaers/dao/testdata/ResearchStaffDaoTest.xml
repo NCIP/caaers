@@ -1,4 +1,8 @@
-<dataset>	   
+<dataset>
+   <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />   	   
     <STUDIES
         id="-2"
         multi_institution_indicator="0"
@@ -9,12 +13,6 @@
         grid_id="grid id"
         ctc_id="3"
         />
-     
-     <ctc_versions
-        id="3"
-        name="CTCAE v3.0"
-        />   
-    
      <SITES
         id="-1000"
         name="New Site"
