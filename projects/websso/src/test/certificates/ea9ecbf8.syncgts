@@ -1,9 +1,0 @@
-<ns1:TrustedCA xsi:type="ns1:TrustedCA" xmlns:ns1="http://cagrid.nci.nih.gov/12/SyncGTS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
- <ns1:name xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">O=NIH,OU=NCI,OU=NCICB,OU=caBIG User Group,CN=caBIG User CA</ns1:name>
- <ns1:gts xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">https://cagrid-gts-slave.nci.nih.gov:8443/wsrf/services/cagrid/GTS</ns1:gts>
- <ns1:discovered xsi:type="xsd:long" xmlns:xsd="http://www.w3.org/2001/XMLSchema">1168442283336</ns1:discovered>
- <ns1:expiration xsi:type="xsd:long" xmlns:xsd="http://www.w3.org/2001/XMLSchema">1168445883336</ns1:expiration>
- <ns1:MetadataFile xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">/Users/joshua/.globus/certificates/ea9ecbf8.syncgts</ns1:MetadataFile>
- <ns1:CertificateFile xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">/Users/joshua/.globus/certificates/ea9ecbf8.0</ns1:CertificateFile>
- <ns1:SigningPolicyFile xsi:type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema">/Users/joshua/.globus/certificates/ea9ecbf8.signing_policy</ns1:SigningPolicyFile>
-</ns1:TrustedCA>

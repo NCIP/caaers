@@ -1,3 +1,0 @@
-access_id_CA X509 '/O=NIH/OU=NCI/OU=NCICB/OU=caBIG User Group/CN=caBIG User CA'
-pos_rights globus CA:sign
-cond_subjects globus '"*"'
