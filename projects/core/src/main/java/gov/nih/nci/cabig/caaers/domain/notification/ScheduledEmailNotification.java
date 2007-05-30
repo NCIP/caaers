@@ -114,13 +114,13 @@ public class ScheduledEmailNotification extends ScheduledNotification {
 
 	@Override
 	public  String toString(){
-		StringBuffer sb = new StringBuffer();
-		sb.append("ScheduledNotification{")
+		StringBuilder sb = new StringBuilder();
+		sb.append("ScheduledEmailNotification [")
 		.append("id :").append(String.valueOf(getId()))
 		.append("from:").append(fromAddress)
 		.append("scheduledOn:").append(String.valueOf(scheduledOn))
 		.append("recipients").append(String.valueOf(toAddress));
-		sb.append("}");
+		sb.append("]");
 		return sb.toString();
 	}
 

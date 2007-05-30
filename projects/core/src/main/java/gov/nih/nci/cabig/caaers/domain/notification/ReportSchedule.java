@@ -147,7 +147,22 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+    @Override
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("ReportSchedule [").append("id : ").append(getId())
+    	.append(", name: ").append(name)
+    	.append(", createdOn :").append(String.valueOf(createdOn))
+    	.append(", submittedOn :").append(String.valueOf(submittedOn))
+    	.append(", dueOn :").append(String.valueOf(dueOn));
+    	sb.append("\r\n notifications :");
+    	for(ScheduledNotification sn : notifications){
+    		sb.append("\r\n").append(String.valueOf(sn));
+    	}
+    	sb.append("]");
+    	return sb.toString();
+    }
 	
 //	/**
 //	 * The email notifications will get associated to a ReportScdule when a  ReportCalendarTemplate is applied. 
