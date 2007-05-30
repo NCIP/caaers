@@ -1,17 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.notification;
 
-import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
-import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.util.List;
-
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
 /**
  * 
  * 
@@ -22,7 +13,7 @@ import org.hibernate.annotations.Type;
  */
 
 @Embeddable
-public class NotificationBodyContent extends DomainObject{
+public class NotificationBodyContent {
 	
 	private byte[] body;
 	
