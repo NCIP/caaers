@@ -52,15 +52,14 @@
         <module>core</module>
         <module>web</module>
         <module>websso</module>
-        <module>acegi</module>
-		<module>scheduler</module>
+        <module>scheduler</module>
         <module>grid</module>
         <!--<module>jbi</module>-->
         <!--<module>rules</module>-->
     </modules>
 
     <properties>
-        <ctms-commons.version>0.1</ctms-commons.version>
+        <ctms-commons.version>0.2-SNAPSHOT</ctms-commons.version>
     </properties>
 
     <!-- Specify versions once for commonly-used deps -->
