@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 
@@ -34,13 +35,14 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
     
     public void testSave() throws Exception {
     	CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
+    	Ctc ctc = ctcDao.getCtcaeV3();
     	
     	Integer savedId;
         {
             Study newStudy = new Study();
             newStudy.setShortTitle("Short Title Inserted");
-            newStudy.setLongTitle("Long Title Inserted");
-            newStudy.setCtcVersion(ctcDao.getCtcaeV3());
+            newStudy.setLongTitle("Long Title Inserted"); 
+            newStudy.setCtcVersion(ctc);
            // newStudy.setPrincipalInvestigatorCode("ICODE_101");
            // newStudy.setPrincipalInvestigatorName("Investigator Name Inserted");
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
