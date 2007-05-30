@@ -355,7 +355,7 @@ public class RuleUtil {
 		MetaData metaData = new MetaData();
 		category.setPath("/");
 		metaData.setName(CategoryConfiguration.CAAERS_BASE.getName());
-		System.out.println("Creating category with path:"+"/ and name="+CAAERS_RULEBASE_CATEGORY_NAME);
+		
 		metaData.setDescription("caAERS Base Rule Level");
 		category.setMetaData(metaData);
 		try {
@@ -371,7 +371,7 @@ public class RuleUtil {
 		MetaData metaData = new MetaData();
 		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
 		metaData.setName(CategoryConfiguration.SPONSOR_BASE.getName());
-		System.out.println("Creating category with path:"+CAAERS_RULEBASE_CATEGORY_PATH+" and name="+SPONSOR_BASE_CATEGORY_NAME);
+		
 		metaData.setDescription("Sponsor base category");
 		category.setMetaData(metaData);
 		try {
