@@ -15,4 +15,8 @@
         study_id="-2"
         agent_id="-3002"
         />
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />    
 </dataset>

@@ -9,6 +9,11 @@
         grid_id="grid id"
         ctc_id="3"
         />
+     
+     <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />   
     
      <SITES
         id="-1000"
