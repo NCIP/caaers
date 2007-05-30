@@ -125,7 +125,7 @@
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers</groupId>
             <artifactId>caaers-rules-client</artifactId>
-            <version>${project.version}</version> <!-- TODO: this should be ${project.version}.  Fix when rules is mavenized. -->
+            <version>0.4.0</version> <!-- TODO: this should be ${project.version}.  Fix when rules is mavenized. -->
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
