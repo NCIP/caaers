@@ -8,20 +8,10 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 
 public class RuleUtil {
 	
-	private static final String CAAERS_RULEBASE_CATEGORY_NAME = "CAAERS_RULEBASE";
-	private static final String CAAERS_RULEBASE_CATEGORY_PATH ="CAAERS_RULEBASE";
-	
-	private static final String INSTITUTION_BASE_CATEGORY_NAME ="INSTITUTION";
-	private static final String INSTITUTION_BASE_CATEGORY_PATH = "/CAAERS_RULEBASE/INSTITUTION";
-	
-	private static final String SPONSOR_BASE_CATEGORY_NAME="SPONSOR";
-	private static final String SPONSOR_BASE_CATEGORY_PATH="/CAAERS_RULEBASE/SPONSOR";
-	
-	private static final String STUDY_BASE_CATEGORY_NAME ="STUDY";
-	private static final String STUDY_BASE_CATEGORY_PATH="/CAAERS_RULEBASE/SPONSOR";
 	
 	
-	public static Category getSponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String ruleSetName){
+	
+	public static Category getSponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String ruleSetName) throws Exception{
 		Category cat = null;
 		
 		//String sponsorSpecificCatehoryPath = SPONSOR_BASE_CATEGORY_PATH+"/"+getStringWithoutSpaces(sponsorName);
@@ -36,7 +26,8 @@ public class RuleUtil {
 		 * If does not exist then go ahead and create it
 		 */
 		if(!baseExist){
-			createBaseCategory(authService);
+			//createBaseCategory(authService);
+			createCategory(authService,"/",CategoryConfiguration.CAAERS_BASE.getName(),CategoryConfiguration.CAAERS_BASE.getDescription());
 		}
 		/**
 		 * Now check if the Sponsor base category exist
@@ -47,7 +38,8 @@ public class RuleUtil {
 		 * If does not exist then go ahead and create it
 		 */
 		if(!sponsorBaseExist){
-		  createSponsorBaseCategory(authService);
+		  //createSponsorBaseCategory(authService);
+		  createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.SPONSOR_BASE.getName(),CategoryConfiguration.SPONSOR_BASE.getDescription());
 		}
 		
 		boolean sponsorSpecificCategoryExist = categoryExist(authService,sponsorSpecificCatehoryPath);
@@ -56,20 +48,10 @@ public class RuleUtil {
 		 * If sponsor specific category does not exist then go ahead nd create one
 		 */
 		
+		
 		if(!sponsorSpecificCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(CategoryConfiguration.SPONSOR_BASE.getPath());
-			metaData.setName(getStringWithoutSpaces(sponsorName));
-			
-			metaData.setDescription(sponsorName+" Rule Base category");
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String desc = sponsorName+" Rule Base category";
+			createCategory(authService,CategoryConfiguration.SPONSOR_BASE.getPath(),getStringWithoutSpaces(sponsorName),desc);
 		}
 		
 		boolean sponsorSpecificRuleSetCategoryExist = categoryExist(authService,sponsorSpecificRuleSetCategoryPath);
@@ -78,34 +60,21 @@ public class RuleUtil {
 		 * If it does not exist then go ahead and create it
 		 */
 		
+		
+		
 		if(!sponsorSpecificRuleSetCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(sponsorSpecificCatehoryPath);
-			metaData.setName(getStringWithoutSpaces(ruleSetName));
-			
-			metaData.setDescription(ruleSetName);
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			createCategory(authService,sponsorSpecificCatehoryPath,getStringWithoutSpaces(ruleSetName),ruleSetName);
 		}
 		
-		try {
+		
 			cat = authService.getCategory(sponsorSpecificRuleSetCategoryPath);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return cat;
 	}
 	
 	
-	public static Category getInstitutionSpecificCategory(RuleAuthoringService authService, String institutionName, String ruleSetName){
+	public static Category getInstitutionSpecificCategory(RuleAuthoringService authService, String institutionName, String ruleSetName) throws Exception{
 		Category cat = null;
 		
 		String institutionSpecificCatehoryPath = CategoryConfiguration.INSTITUTION_BASE.getPath()+"/"+getStringWithoutSpaces(institutionName);
@@ -118,7 +87,7 @@ public class RuleUtil {
 		 * If does not exist then go ahead and create it
 		 */
 		if(!baseExist){
-			createBaseCategory(authService);
+			createCategory(authService,"/",CategoryConfiguration.CAAERS_BASE.getName(),CategoryConfiguration.CAAERS_BASE.getDescription());
 		}
 		/**
 		 * Now check if the Sponsor base category exist
@@ -128,8 +97,10 @@ public class RuleUtil {
 		/**
 		 * If does not exist then go ahead and create it
 		 */
+		
 		if(!institutionBaseExist){
-		  createInstitutionBaseCategory(authService);
+		  //createInstitutionBaseCategory(authService);
+			createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.INSTITUTION_BASE.getName(),CategoryConfiguration.INSTITUTION_BASE.getDescription());
 		}
 		
 		boolean institutionSpecificCategoryExist = categoryExist(authService,institutionSpecificCatehoryPath);
@@ -138,19 +109,11 @@ public class RuleUtil {
 		 * If sponsor specific category does not exist then go ahead nd create one
 		 */
 		
+		
+		
 		if(!institutionSpecificCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(CategoryConfiguration.INSTITUTION_BASE.getPath());
-			metaData.setName(getStringWithoutSpaces(institutionName));
-			metaData.setDescription(institutionName+" Rule Base category");
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String desc = institutionName+" Rule Base category";
+			createCategory(authService,CategoryConfiguration.INSTITUTION_BASE.getPath(),getStringWithoutSpaces(institutionName),desc);
 		}
 		
 		boolean institutionSpecificRuleSetCategoryExist = categoryExist(authService,institutionSpecificRuleSetCategoryPath);
@@ -159,27 +122,15 @@ public class RuleUtil {
 		 * If it does not exist then go ahead and create it
 		 */
 		
+		
+		
 		if(!institutionSpecificRuleSetCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(institutionSpecificCatehoryPath);
-			metaData.setName(getStringWithoutSpaces(ruleSetName));
-			metaData.setDescription(ruleSetName);
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			createCategory(authService,institutionSpecificCatehoryPath,getStringWithoutSpaces(ruleSetName),ruleSetName);
 		}
 		
-		try {
+		
 			cat = authService.getCategory(institutionSpecificRuleSetCategoryPath);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return cat;
 	}
@@ -201,7 +152,7 @@ public class RuleUtil {
 	 *                                                               <RULE_SET_NAME>
 	 */
 	
-	public static Category getStudySponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String studyShortTitle, String ruleSetName){
+	public static Category getStudySponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String studyShortTitle, String ruleSetName) throws Exception{
 		Category cat = null;
 		
 		String studySpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
@@ -215,7 +166,7 @@ public class RuleUtil {
 		 * If does not exist then go ahead and create it
 		 */
 		if(!baseExist){
-			createBaseCategory(authService);
+			createCategory(authService,"/",CategoryConfiguration.CAAERS_BASE.getName(),CategoryConfiguration.CAAERS_BASE.getDescription());
 		}
 		/**
 		 * Now check if the Sponsor base category exist
@@ -225,8 +176,9 @@ public class RuleUtil {
 		/**
 		 * If does not exist then go ahead and create it
 		 */
+		
 		if(!studyBaseExist){
-		  createStudyBaseCategory(authService);
+			createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.STUDY_BASE.getName(),CategoryConfiguration.STUDY_BASE.getDescription());
 		}
 		
 		boolean studySpecificCategoryExist = categoryExist(authService,studySpecificCatehoryPath);
@@ -235,19 +187,10 @@ public class RuleUtil {
 		 * If sponsor study specific category does not exist then go ahead nd create one
 		 */
 		
+		
 		if(!studySpecificCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(CategoryConfiguration.STUDY_BASE.getPath());
-			metaData.setName(getStringWithoutSpaces(studyShortTitle));
-			metaData.setDescription(studyShortTitle+" Rule Base category");
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			String desc = studyShortTitle+" Rule Base category";
+			createCategory(authService,CategoryConfiguration.STUDY_BASE.getPath(),getStringWithoutSpaces(studyShortTitle),desc);
 		}
 		
 		boolean studySponsorSpecificCategoryExist = categoryExist(authService, studySponsorSpecificCategoryPath);
@@ -257,18 +200,7 @@ public class RuleUtil {
 		 */
 		
 		if(!studySponsorSpecificCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(studySpecificCatehoryPath);
-			metaData.setName(getStringWithoutSpaces(sponsorName));
-			metaData.setDescription(sponsorName);
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			createCategory(authService,studySpecificCatehoryPath,getStringWithoutSpaces(sponsorName),sponsorName);
 		}
 		
 		boolean studySponsorRuleSetSpecificCategoryExist = categoryExist(authService,studySponsorRuleSetSpecificCategoryPath);
@@ -277,27 +209,14 @@ public class RuleUtil {
 		 * If it does not exist then go ahead and create it
 		 */
 		
+		
 		if(!studySponsorRuleSetSpecificCategoryExist){
-			Category category = new Category();
-			MetaData metaData = new MetaData();
-			category.setPath(studySponsorSpecificCategoryPath);
-			metaData.setName(getStringWithoutSpaces(ruleSetName));
-			metaData.setDescription(ruleSetName);
-			category.setMetaData(metaData);
-			try {
-				authService.createCategory(category);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			createCategory(authService,studySponsorSpecificCategoryPath,getStringWithoutSpaces(ruleSetName),ruleSetName);
 		}
 		
-		try {
+		
 			cat = authService.getCategory(studySponsorRuleSetSpecificCategoryPath);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return cat;
 	}
@@ -350,66 +269,18 @@ public class RuleUtil {
 		return exist;
 	}
 	
-	private static void createBaseCategory(RuleAuthoringService authService){
+	
+	
+	private static void createCategory(RuleAuthoringService authService, String path, String name, String desc) throws Exception{
 		Category category = new Category();
 		MetaData metaData = new MetaData();
-		category.setPath("/");
-		metaData.setName(CategoryConfiguration.CAAERS_BASE.getName());
+		category.setPath(path);
+		metaData.setName(name);
+		metaData.setDescription(desc);
+		category.setMetaData(metaData);
 		
-		metaData.setDescription("caAERS Base Rule Level");
-		category.setMetaData(metaData);
-		try {
-			authService.createCategory(category);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private static void createSponsorBaseCategory(RuleAuthoringService authService){
-		Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
-		metaData.setName(CategoryConfiguration.SPONSOR_BASE.getName());
+		authService.createCategory(category);
 		
-		metaData.setDescription("Sponsor base category");
-		category.setMetaData(metaData);
-		try {
-			authService.createCategory(category);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private static void createInstitutionBaseCategory(RuleAuthoringService authService){
-		Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
-		metaData.setName(CategoryConfiguration.INSTITUTION_BASE.getName());
-		metaData.setDescription("Institution base category");
-		category.setMetaData(metaData);
-		try {
-			authService.createCategory(category);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private static void createStudyBaseCategory(RuleAuthoringService authService){
-		Category category = new Category();
-		MetaData metaData = new MetaData();
-		category.setPath(CategoryConfiguration.CAAERS_BASE.getPath());
-		metaData.setName(CategoryConfiguration.STUDY_BASE.getName());
-		metaData.setDescription("Study base category");
-		category.setMetaData(metaData);
-		try {
-			authService.createCategory(category);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 
