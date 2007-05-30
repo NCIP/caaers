@@ -13,9 +13,16 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 import org.acegisecurity.AccessDeniedException;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import javax.sql.DataSource;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -27,10 +34,30 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 	public String[] getConfigLocations() {
 		return CaaersTestCase.getConfigLocations();
 	}
+	
+	private void loadCtcVersion() throws SQLException, IOException, DatabaseUnitException {
+		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
+		DatabaseDataSourceConnection conn = null;
+        try {
+            conn = new DatabaseDataSourceConnection(dataSource);
+            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/DaoSecurityTest.xml"));
+            DatabaseOperation.CLEAN_INSERT.execute(conn, data);
+        } finally {
+            if (conn != null) conn.close();
+        }
+    }
+	
+	private Ctc getCtc(){
+		CtcDao ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
+		Ctc ctc = ctcDao.getCtcaeV3();
+		return ctc;
+	}
 
 	protected void onSetUpBeforeTransaction() throws Exception {
 		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
 		SecurityTestUtils.insertCSMPolicy(dataSource);
+		loadCtcVersion();
 	}
 	protected void onTearDownAfterTransaction() throws Exception {
 		DataSource dataSource = (DataSource)this.getApplicationContext().getBean("dataSource");
@@ -41,17 +68,13 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
 		StudyDao dao = (StudyDao) getApplicationContext().getBean("studyDao");
-		//CtcDao ctcDao = (CtcDao) getApplicationContext().getBean("ctcDao");
-		Ctc ctc = new Ctc();
-		ctc.setName("CTCV3");
 
 		Study study = new Study();
-		//Ctc ctc = new Ctc();
 		study.setShortTitle("short title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		study.setPrimarySponsorCode("SCODE_101");
-		study.setCtcVersion(ctc);
+		study.setCtcVersion(getCtc());
 
 		try {
 			dao.save(study);
@@ -85,6 +108,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		study.setPrimarySponsorCode("SCODE_101");
+		study.setCtcVersion(getCtc());
 		SecurityTestUtils.switchUser("study_cd1", "ROLE_caaers_study_cd");
 		try {
 			dao.save(study);
@@ -103,6 +127,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		study.setPrimarySponsorCode("SCODE_101");
+		study.setCtcVersion(getCtc());
 		// try {
 		// dao.merge(study);
 		// fail("Should have failed to merge study");
