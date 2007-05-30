@@ -131,13 +131,13 @@
             <artifactId>bering</artifactId>
             <version>0.6</version>
         </dependency>
-
+<!-- 
         <dependency>
             <groupId>gov.nih.nci.cabig.caaers</groupId>
             <artifactId>caaers-rules-client</artifactId>
             <version>0.4.0</version> 
         </dependency>
-
+-->
         <!-- TODO: ESB-specific stuff should be in a different module -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
