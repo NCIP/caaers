@@ -183,6 +183,7 @@
 			<artifactId>jboss-jsr77</artifactId>
 			<version>3.2.3</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>incubator-activemq</groupId>
 			<artifactId>activemq-core</artifactId>
@@ -193,7 +194,7 @@
 			<artifactId>backport-util-concurrent</artifactId>
 			<version>3.0</version>
 		</dependency>
-
+		-->
 		<!-- Rules Dependency -->
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
