@@ -189,7 +189,7 @@
 			<artifactId>activemq-core</artifactId>
 			<version>4.1-SNAPSHOT</version>
 		</dependency>
-		<dependency><!-- This is apparently an activemq dep, but it isn't getting pulled in -->
+		<dependency>
 			<groupId>backport-util-concurrent</groupId>
 			<artifactId>backport-util-concurrent</artifactId>
 			<version>3.0</version>
