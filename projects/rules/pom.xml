@@ -24,9 +24,10 @@
 			<id>maven2-repository.dev.java.net</id>
 			<name>Java.net Maven 2 Repository</name>
 			<url>
-				https://maven2-repository.dev.java.net/nonav/repository
+				http://download.java.net/maven/2/
 			</url>
 		</repository>
+		<!--  
 		<repository>
 			<id>maven-repository.dev.java.net</id>
 			<name>Java.net Maven 1 Repository (legacy)</name>
@@ -35,9 +36,18 @@
 			</url>
 			<layout>legacy</layout>
 		</repository>
+		-->
+		<repository>
+			<id>Drools</id>
+			<name>Drools Repo</name>
+			<url>
+				http://repository.jboss.com/maven2/
+			</url>
+		</repository>
 
 	</repositories>
 	<pluginRepositories>
+<!-- 
 		<pluginRepository>
 			<id>maven2-repository.dev.java.net</id>
 			<url>
@@ -52,6 +62,15 @@
 			</url>
 			<layout>legacy</layout>
 		</pluginRepository>
+-->
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Maven 2 Repository</name>
+			<url>
+				http://download.java.net/maven/2/
+			</url>
+		</pluginRepository>
+	
 	</pluginRepositories>
 
 
