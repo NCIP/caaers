@@ -145,6 +145,9 @@
             		
             		<td>
             			<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
+            				<c:if test="${fn:length(ae.ctcTerm.contextualGrades) == 0}" >
+            					<form:options items="${grade}" itemValue="name" itemLabel="code"/>
+            				</c:if>
             				<form:options items="${ae.ctcTerm.contextualGrades}" itemValue="grade.name" itemLabel="grade.code"/>
             			</form:select>
             		</td>

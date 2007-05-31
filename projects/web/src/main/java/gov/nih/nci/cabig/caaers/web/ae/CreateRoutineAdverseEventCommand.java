@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -54,6 +55,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private RuleExecutionService ruleExecutionService;
     //private AdverseEventEvaluationService adverseEventEvaluationService;
     private Map<String, List<List<Attribution>>> attributionMap;
+    private NowFactory nowFactory;
 
     private List<CtcCategory> categories;
     private String[] ctcCatIds;
@@ -62,14 +64,17 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     public CreateRoutineAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, RoutineAdverseEventReportDao routineReportDao,
-        RuleExecutionService ruleExecutionService, NowFactory nowFactory
+        AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService, NowFactory nowFactory
     ) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
+        this.reportDao = reportDao;
         this.routineReportDao = routineReportDao;
         this.categories = new ArrayList<CtcCategory>();
+        this.nowFactory = nowFactory;
         // Activate when rules is ready
         //this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+        
 
         setRuleExecutionService(ruleExecutionService);
     }
@@ -84,6 +89,16 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             return null;
         }
     }
+    
+    private void prepareExpeditedReport()
+    {
+    	this.aeReport = new AdverseEventReport();
+        aeReport.setDetectionDate(aeRoutineReport.getStartDate());
+        this.aeReport.setAssignment(getAssignment());
+        this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
+        
+    	
+    }
 
     // This method deliberately sets only one side of the bidirectional link.
     // This is so hibernate will not discover the link from the persistent side
@@ -94,8 +109,14 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     public void save() {
         getAssignment().addRoutineReport(getAeRoutineReport());
+        prepareExpeditedReport();
+        boolean isExpedited = findExpedited(getAeRoutineReport());
         routineReportDao.save(getAeRoutineReport());
-        //findExpedited(getAeRoutineReport());
+        
+        if (isExpedited) {
+			reportDao.save(this.aeReport);
+		} 
+        
     }
 
     ////// BOUND PROPERTIES
@@ -134,6 +155,33 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             }
         }
         updateReportAssignmentLink();
+    }
+    
+    public boolean findExpedited(RoutineAdverseEventReport raer ){
+    	boolean isPopulated = false;
+    	try {
+    	for(AdverseEvent ae : raer.getAdverseEvents() )
+    	{
+    		if (ae.getGrade() == Grade.DEATH){
+    			AdverseEvent expeditedAe = new AdverseEvent();
+    			expeditedAe.setCtcTerm(ae.getCtcTerm());
+    			expeditedAe.setGrade(ae.getGrade());
+    			expeditedAe.setHospitalization(ae.getHospitalization());
+    			expeditedAe.setExpected(ae.getExpected());
+    			expeditedAe.setAttributionSummary(ae.getAttributionSummary());
+    			aeReport.addAdverseEvent(expeditedAe);
+    			isPopulated = true;
+    		}
+    	}
+    		return isPopulated;
+    	}
+    	catch(Exception e){
+    		System.out.println("Exception while firing rules: ");
+    		e.printStackTrace();
+    	}
+    	finally {
+    		return isPopulated;
+    	}
     }
     
     /*

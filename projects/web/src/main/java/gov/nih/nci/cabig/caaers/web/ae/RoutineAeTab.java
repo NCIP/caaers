@@ -34,7 +34,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
- * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
 public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeRoutTab<C> {
     private static final String REPORT_FIELD_GROUP = "report";
@@ -88,6 +88,7 @@ public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeR
         refdata.put("ctcVersions", ctcDao.getAll());
         refdata.put("hospitalization", Hospitalization.values());
         refdata.put("attribution", Attribution.values());
+        refdata.put("grade", Grade.values());
         return refdata;
     }
 
