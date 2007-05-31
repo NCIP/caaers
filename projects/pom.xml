@@ -54,7 +54,7 @@
         <module>scheduler</module>
         <module>grid</module>
         <!--<module>jbi</module>-->
-        <!--<module>rules</module>-->
+        <module>rules</module>
     </modules>
 
     <properties>
