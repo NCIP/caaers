@@ -90,6 +90,12 @@ public interface RulesEngineService {
 	 */
 	//public String createRulesForXYZ(RuleSet ruleSet, String entityName) throws Exception;
 	
+	public void saveRulesForSponsor(RuleSet ruleSet, String sponsorName) throws Exception;
+	
+	public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception;
+	
+	public void saveRulesForStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception;
+	
 	/**
 	 * Just pass ruleId
 	 *
