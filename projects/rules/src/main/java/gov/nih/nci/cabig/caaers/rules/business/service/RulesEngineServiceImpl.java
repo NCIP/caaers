@@ -429,6 +429,77 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			ruleAuthoringService.updateRuleSet(ruleSet);
 		
 	}
+
+
+	public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception {
+		// TODO Auto-generated method stub
+		String ruleSetName = ruleSet.getName();
+		if(ruleSetName==null){
+			throw new Exception("Rule name should be set to some  valid value");
+		}
+		RuleSet rs = this.getRuleSetForInstitution(ruleSetName, institutionName);
+		if(rs==null){
+			//create the rule set
+			RuleSet ruleSetTemp = this.createRuleSetForInstitution(ruleSetName, institutionName);
+		}
+		List<Rule> rules = ruleSet.getRule();
+		for(Rule rule: rules){
+			if(rule.getId()==null){
+			this.createRuleForInstitution(rule, ruleSetName, institutionName);
+			}else{
+				this.updateRule(rule);
+			}
+		}
+		
+		
+	}
+
+
+	public void saveRulesForSponsor(RuleSet ruleSet, String sponsorName) throws Exception {
+		// TODO Auto-generated method stub
+		
+		String ruleSetName = ruleSet.getName();
+		if(ruleSetName==null){
+			throw new Exception("Rule name should be set to some  valid value");
+		}
+		RuleSet rs = this.getRuleSetForSponsor(ruleSetName, sponsorName);
+		if(rs==null){
+			//create the rule set
+			RuleSet ruleSetTemp = this.createRuleSetForSponsor(ruleSetName, sponsorName);
+		}
+		List<Rule> rules = ruleSet.getRule();
+		for(Rule rule: rules){
+			if(rule.getId()==null){
+			this.createRuleForSponsor(rule, ruleSetName, sponsorName);
+			}else{
+				this.updateRule(rule);
+			}
+		}
+		
+	}
+
+
+	public void saveRulesForStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception {
+		// TODO Auto-generated method stub
+		String ruleSetName = ruleSet.getName();
+		if(ruleSetName==null){
+			throw new Exception("Rule name should be set to some  valid value");
+		}
+		RuleSet rs = this.getRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+		if(rs==null){
+			//create the rule set
+			RuleSet ruleSetTemp = this.createRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+		}
+		List<Rule> rules = ruleSet.getRule();
+		for(Rule rule: rules){
+			if(rule.getId()==null){
+			this.createRuleForStudy(rule, ruleSetName, studyShortTitle, sponsorName);
+			}else{
+				this.updateRule(rule);
+			}
+		}
+		
+	}
 	
 	
 	
