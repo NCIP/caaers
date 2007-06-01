@@ -9,26 +9,15 @@
 <head>
     <title>${tab.longTitle}</title>
      <style type="text/css">
-    .left-align {
-    padding-right: 1.2em;
-    float: left;
-    width: 20em;
-	}
-	.cats-highlighted {
-		font:10px arial;
-		background-color:#00ff00;
-	}
+   
 	.cats {
 		font:9px arial;
 	}
 	
 	.selects {
+		top-padding:2px;
 		width:90%;
 		font:11px arial;	
-	}
-	
-    .lebanon {
-    display:none;
 	}
 	</style>
     <tags:stylesheetLink name="ae"/>
@@ -94,7 +83,6 @@
     <jsp:attribute name="instructions">
         You are entering routine Adverse Events for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
-        <%--<div class="lebanon"><form:select id="termIds" size="1" path="ctcTermIds"></form:select></div>--%>
         <div>
            <input type="hidden" name="_action" value="">
            <input type="hidden" name="_selected" value="">
@@ -105,39 +93,26 @@
     	<form:select id="cats" path="cats" size="5" cssClass="cats">
     	<form:options items="${command.categories}" itemValue="id" itemLabel="name"/>
     	</form:select>
+    	<br><br>
     	<form:select id="ctcTerms" path="ctcTermIds" size="5" cssClass="selects">
     	</form:select>
     	<a href="javascript:fireAction('addTerm','0');"><img
                         src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
-    	<%--
-    	<c:forEach items="${command.categories}" varStatus="status" var="ctcCategory">
-    			<span onClick="showTerms('${ctcCategory.name}')" class="cats"><b>${ctcCategory.name} </b>| </span> 
-        </c:forEach>
-       
-        <br> 
-    	<c:forEach items="${command.categories}" varStatus="status" var="ctcCategory">
-    			<span id="${ctcCategory.name}" style="display:none;">
-                <c:forEach items="${ctcCategory.terms}" varStatus="st" var="ctcTerm">
-                	
-                	<span id="${ctcTerm.term}" onClick="addAE('${ctcTerm.term}','${ctcTerm.id}')">${ctcTerm.term}</span><br>
-                	
-                </c:forEach>
-                </span> 
-        </c:forEach>
-         --%>
+    	
        <hr> 
     </jsp:attribute>
     
     <jsp:attribute name="repeatingFields">
-    		<p>
+    		<center>
     		<c:if test="${fn:length(command.aeRoutineReport.adverseEvents) > 0}" >
-    		<table border="1">
+    		<table class="tablecontent">
     			<tr>
-    				<td><b>Term</b></td>
-    				<td><b>Grade</b></td>
-    				<td><b>Attribution</b></td>
-    				<td><b>Hospitalization</b></td>
-    				<td><b>Expected</b></td>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Term:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Grade:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Attribution:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Hospitalization:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Expected:</b> </th>
+    			</tr>
     				
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
             	<tr>
@@ -172,8 +147,9 @@
             		<%--<td><form:input path="aeRoutineReport.adverseEvents[${status.index}].comments" /></td>--%>
             	</tr>	 
             </c:forEach>
-            </table></p>
+            </table>
             </c:if>
+            </center>
         </jsp:attribute>
    
 </tags:tabForm>

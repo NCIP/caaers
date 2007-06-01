@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -12,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -59,6 +61,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private SiteDao siteDao;
 	private AgentDao agentDao; 
 	private MedDRADao meddraDao;
+	private CtcDao ctcDao;
 	
 	public ImportController() {		
         setCommandClass(ImportCommand.class);        
@@ -171,9 +174,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	// study specific
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
     	xstream.alias("agent", gov.nih.nci.cabig.caaers.domain.Agent.class);
-    	xstream.alias("studyDisease", gov.nih.nci.cabig.caaers.domain.StudyDisease.class);
+    	xstream.alias("ctepStudyDisease", gov.nih.nci.cabig.caaers.domain.CtepStudyDisease.class);
     	xstream.alias("diseaseTerm", gov.nih.nci.cabig.caaers.domain.DiseaseTerm.class);
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
+    	xstream.alias("ctcVersion" , gov.nih.nci.cabig.caaers.domain.Ctc.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	
@@ -345,6 +349,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		st.setBlindedIndicator(xstreamStudy.getBlindedIndicator());
 		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
 		st.setRandomizedIndicator(xstreamStudy.getRandomizedIndicator());
+		// CtcVersion
+		if (xstreamStudy.getCtcVersion() != null){
+			Ctc ctc = ctcDao.getById(Integer.parseInt(xstreamStudy.getCtcVersion().getName()));
+			st.setCtcVersion(ctc);
+		}
 		// Identifiers
 		if (xstreamStudy.getIdentifiers() != null) {
 			for (int i = 0; i < xstreamStudy.getIdentifiers().size(); i++) {
@@ -453,6 +462,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	public void setMeddraDao(MedDRADao meddraDao) {
 		this.meddraDao = meddraDao;
 	}
+
+	public CtcDao getCtcDao() {
+		return ctcDao;
+	}
+
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
+	}
+	
+	
 	
 	
 	
