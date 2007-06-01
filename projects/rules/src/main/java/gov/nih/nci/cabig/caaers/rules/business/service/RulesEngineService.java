@@ -20,10 +20,19 @@ public interface RulesEngineService {
 	 *  For creating RuleSets
 	 *
 	 */
+	/*
+	 * REVISIT: Make it private
+	 */
 	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName) throws Exception;
 	
+	/*
+	 * REVISIT: Make it private
+	 */
 	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception;
 	
+	/*
+	 * REVISIT: Make it private
+	 */
 	public RuleSet createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName) throws Exception;
 	
 	
@@ -76,7 +85,10 @@ public interface RulesEngineService {
 	
 	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
 	
-	
+	/*
+	 * REVISIT: Add 3 more methods similar to the above methods that take RuleSet as the input parameter
+	 */
+	//public String createRulesForXYZ(RuleSet ruleSet, String entityName) throws Exception;
 	
 	/**
 	 * Just pass ruleId
