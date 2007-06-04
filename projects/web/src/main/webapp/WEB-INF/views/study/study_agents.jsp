@@ -154,7 +154,7 @@
 				<td class="alt"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
 					<tags:hoverText description="Investigational New Drug Indicator"/></td>
 				<td class="alt">
-					<a href="javascript:fireAction('rem>oveStudyAgent',${status.index});">
+					<a href="javascript:fireAction('removeStudyAgent',${status.index});">
 						<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="remove"></a></td>
 			</tr>
 		</c:forEach>
