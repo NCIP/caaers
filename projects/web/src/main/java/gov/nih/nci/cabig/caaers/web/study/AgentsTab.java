@@ -21,6 +21,22 @@ public class AgentsTab extends StudyTab {
         handleStudyAgentAction(command, request.getParameter("_action"),
             request.getParameter("_selected"));
     }
+    
+    @Override
+    public boolean isAllowDirtyForward() {
+        return false;
+    }
+    
+    @Override
+    public void validate(Study command, Errors errors) {
+    	boolean isAgentEmpty = false;
+    	for (StudyAgent studyAgent: command.getStudyAgents()){
+    		isAgentEmpty = studyAgent.getAgent() == null ? true : false;
+    		if (isAgentEmpty) break;
+    	}
+        if (isAgentEmpty) errors.rejectValue("studyAgents", "REQUIRED", "One or more Agents are missing or not in list");
+
+    }
 
     private void handleStudyAgentAction(Study study, String action, String selected) {
         if ("addStudyAgent".equals(action)) {

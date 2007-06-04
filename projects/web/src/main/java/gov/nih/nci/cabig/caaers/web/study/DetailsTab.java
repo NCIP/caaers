@@ -31,7 +31,7 @@ class DetailsTab extends StudyTab {
         boolean longTitle = command.getLongTitle() == null || "".equals(command.getLongTitle());
         boolean ctc = command.getCtcVersion() == null ? true : false;
         if (longTitle) errors.rejectValue("longTitle", "REQUIRED", "Missing Long Title");
-        if (ctc) errors.rejectValue("ctc", "REQUIRED", "Missing CTC Version");
+        if (ctc) errors.rejectValue("ctcVersion", "REQUIRED", "Missing CTC Version");
 
     }
 
