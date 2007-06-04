@@ -25,8 +25,8 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-//import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
-//import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private StudyParticipantAssignmentDao assignmentDao;
 
     private RuleExecutionService ruleExecutionService;
-    //private AdverseEventEvaluationService adverseEventEvaluationService;
+    private AdverseEventEvaluationService adverseEventEvaluationService;
     private Map<String, List<List<Attribution>>> attributionMap;
     private NowFactory nowFactory;
 
@@ -72,8 +72,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.routineReportDao = routineReportDao;
         this.categories = new ArrayList<CtcCategory>();
         this.nowFactory = nowFactory;
-        // Activate when rules is ready
-        //this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+        this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
         
 
         setRuleExecutionService(ruleExecutionService);
@@ -162,7 +161,10 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
-    		if (ae.getGrade() == Grade.DEATH){
+    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		//System.out.println("RESULT : " + temp);
+    		//if (ae.getGrade() == Grade.DEATH){
+    		if (message.equals("SAE")){
     			AdverseEvent expeditedAe = new AdverseEvent();
     			expeditedAe.setCtcTerm(ae.getCtcTerm());
     			expeditedAe.setGrade(ae.getGrade());
@@ -176,8 +178,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     		return isPopulated;
     	}
     	catch(Exception e){
-    		System.out.println("Exception while firing rules: ");
-    		e.printStackTrace();
+    		throw new RuntimeException("Class Not found Exception", e);
     	}
     	finally {
     		return isPopulated;
