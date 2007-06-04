@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
@@ -34,7 +35,7 @@ public class DiseaseTab extends StudyTab {
     }
 
     private void handleStudyDiseaseAction(Study study, String action, String selected) {
-        if ("addMeddraStudyDisease".equals(action)) {
+        if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 ) {
             String diseaseCode = study.getDiseaseLlt();
             MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
             meddraStudyDisease.setMeddraCode(diseaseCode);
