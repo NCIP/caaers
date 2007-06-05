@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification;
@@ -152,9 +153,14 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 		rs.setScheduledNotifications(snfList);
 		
 		//obtain an AE report
-//		AdverseEventReportDao aeDao = (AdverseEventReportDao) getApplicationContext().getBean("adverseEventReportDao");
-//		AdverseEventReport aeReport = aeDao.getById(-1);
-//		aeReport.setReportSchedule(rs);
+		AdverseEventReportDao aeDao = (AdverseEventReportDao) getApplicationContext().getBean("adverseEventReportDao");
+		AdverseEventReport aeReport = aeDao.getById(-1);
+		aeReport.setReportSchedule(rs);
+		aeReport.setStatus(ReportStatus.PENDING);
+		rs.setAeReport(aeReport);
+		
+		//save the reportSchedule
+		rsDao.save(rs);
 		
 	//	commit();
 		int id = rs.getId();
@@ -168,9 +174,35 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 			assertEquals("ScheduledNotification Body is not the same", new String(sn.getBody()), "Hi this is body content");
 		}
 	//	commit();
+		
+		//fetch AE report and see if we can get hold of the report schedule.
+		aeReport = aeDao.getById(-1);
+		ReportSchedule rs3 = aeReport.getReportSchedule();
+		assertNotNull(rs3);
+		assertEquals("ReportSchedule obtained from AEReport is not correct",rs2.getName(), rs3.getName());
+		assertEquals(aeReport.getStatus(), ReportStatus.PENDING);
+		
 	}
-	public void testExample(){
-		assert(true);
+	public void testDeleteByID(){
+		ReportSchedule rs = new ReportSchedule();
+		rs.setAeReport(null);
+		rs.setName("My Sample Report");
+		rs.setCreatedOn(new Date());
+		rs.setDueOn(new Date());
+		rs.setSubmittedOn(new Date());
+		rs.setGridId("ADEDR99393939");
+		
+		beginTransaction();
+		
+		rsDao.save(rs);
+	//	commit();
+		Integer id = rs.getId();
+		boolean deleted = rsDao.deleteById(rs.getId());
+		assertTrue("unable to delete report schedule", deleted);
+		//delete existing object
+		 rs = rsDao.getById(-223);
+		 deleted = rsDao.deleteById(rs.getId());
+		assertTrue("unable to delete report schedule", deleted);
 	}
 
 }

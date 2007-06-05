@@ -9,7 +9,9 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -371,9 +373,9 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     /**
      * @return the reportSchedule
      */
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
-//    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    @Transient
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+//    @Transient
     public ReportSchedule getReportSchedule() {
         return reportSchedule;
     }
@@ -388,9 +390,9 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     /**
      * @return the status
      */
-//	@Column(name="status_code")
-//	@Type(type="reportStatus")
-    @Transient
+	@Column(name="status_code")
+	@Type(type="reportStatus")
+//    @Transient
     public ReportStatus getStatus() {
         return status;
     }

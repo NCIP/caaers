@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -17,13 +16,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -59,9 +53,9 @@ public  class ScheduledNotification extends AbstractMutableDomainObject  impleme
 	@Column(name="SCHEDULED_ON")
 	protected Date scheduledOn;
 	
-	private PlannedNotification planedNotificaiton;
+	protected PlannedNotification planedNotificaiton;
 
-	byte[] body;
+	protected byte[] body;
 	
 	public ScheduledNotification(){
 		deliveryStatus = DeliveryStatus.CREATED;

@@ -5,24 +5,16 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -164,32 +156,7 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
     	return sb.toString();
     }
 	
-//	/**
-//	 * The email notifications will get associated to a ReportScdule when a  ReportCalendarTemplate is applied. 
-//	 * @param template 
-//	 */
-//	public void applyNotificationCalendarTemplate(ReportCalendarTemplate template){
-//		List<PlannedNotification> plannedNotifications = template.getEventList();
-//		Date now = new Date();
-//		Calendar calendar = GregorianCalendar.getInstance();
-//		int i =0;
-//		for(PlannedNotification event: plannedNotifications){
-//			//copy all the necessary attributes from event to email notificatoin
-//			ScheduledNotification nf = new ScheduledNotification();
-//			nf.setId(i++);
-//			nf.setContent(event.getBodyContent().getContent());
-//			nf.setContentType(event.getBodyContent().getContentType());
-//			nf.setSubject(event.getSubjectLine());
-//			nf.setCreatedOn(new Date());
-//			nf.setFromAddress(event.getFromAddress());
-//			nf.setRecipients(event.getRecipients());
-//			//set the scheduled time of notification
-//			calendar.setTime(now);
-//			calendar.add(template.getTimeScaleUnitType().getCalendarTypeCode(), event.getIndexOnTimeScale());
-//			nf.setScheduledOn(calendar.getTime());
-//			addEmailNotification(nf);
-//		}
-//	}
+	
 	
 }
 

@@ -104,8 +104,5 @@ public class ScheduledNotificationDaoTest extends DaoTestCase<ScheduledNotificat
 	public void testExample(){
 		assert(true);
 	}
-	public void testUpdateSetCalendarTemplate(){
-		
-		
-	}
+	
 }

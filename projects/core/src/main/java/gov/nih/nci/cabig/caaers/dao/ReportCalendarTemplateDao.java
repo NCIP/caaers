@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -49,5 +50,18 @@ public class ReportCalendarTemplateDao extends GridIdentifiableDao<ReportCalenda
 						"from ReportCalendarTemplate t where t.name=?", new String[]{name}
 						)
 				);
+	}
+	
+	public boolean deleteById(int id){
+		int count = getHibernateTemplate().bulkUpdate("delete ReportCalendarTemplate t where t.id=?", new Object[]{id});
+		return count >= 1;
+	}
+	
+	public void delete(ReportCalendarTemplate rct){
+		getHibernateTemplate().delete(rct);
+	}
+	
+	public void delete(Collection<ReportCalendarTemplate> c){
+		getHibernateTemplate().deleteAll(c);
 	}
 }

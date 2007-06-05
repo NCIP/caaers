@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -69,4 +70,18 @@ public class ReportScheduleDao extends GridIdentifiableDao<ReportSchedule>{
 		String hsql = "from ReportSchedule s where s." + column + "=?";
 		return getHibernateTemplate().find( hsql, new Object[]{d});
 	}
+	
+	public boolean deleteById(int id){
+		int count = getHibernateTemplate().bulkUpdate("delete ReportSchedule s where s.id=?", new Object[]{id});
+		return count >= 1;
+	}
+	
+	public void delete(ReportSchedule rs){
+		getHibernateTemplate().delete(rs);
+	}
+	
+	public void delete(Collection<ReportSchedule> c){
+		getHibernateTemplate().deleteAll(c);
+	}
+	
 }

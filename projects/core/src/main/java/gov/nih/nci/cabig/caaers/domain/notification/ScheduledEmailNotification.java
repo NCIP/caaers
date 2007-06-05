@@ -6,6 +6,7 @@ package gov.nih.nci.cabig.caaers.domain.notification;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 
 /**
@@ -111,7 +112,14 @@ public class ScheduledEmailNotification extends ScheduledNotification {
 //		this.toDisplayName = toDisplayName;
 //	}
 //
-
+	@Transient
+	public String getSubjectLine(){
+		if(this.planedNotificaiton != null){
+			return ((PlannedEmailNotification)this.planedNotificaiton).getSubjectLine();
+		}
+		return "Not associated to PlannedNotification";
+	}
+	
 	@Override
 	public  String toString(){
 		StringBuilder sb = new StringBuilder();
