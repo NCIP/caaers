@@ -94,7 +94,10 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		System.out.println("========== going to schedule ==================== [reportId :" + reportId +"]");
 		 service.scheduleNotification(reportSchedule);
 		Thread t = new Thread(){
+			int cnt = 0;
 			public void run(){
+				assertTrue( "Thread has ran more than 10 times waiting for the Job to complete",cnt < 10);
+				cnt++;
 				try {
 					Thread.sleep(1000 * 2); //delay 20 seconds, so that the job properly setup in quartz
 					while(true){
