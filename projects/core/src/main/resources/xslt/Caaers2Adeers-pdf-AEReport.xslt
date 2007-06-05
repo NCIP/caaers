@@ -115,7 +115,7 @@
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Reporter Information 
 		  		</fo:block>
-		  		<fo:block> &#160; </fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
 					<fo:table-column column-width="12%"/>
 					<fo:table-column column-width="33%"/>
@@ -171,7 +171,7 @@
       						</fo:table-cell>
 		  			  </fo:table-row>
 		  			  
-		  			  <fo:table-row><fo:table-cell><fo:block> &#160; </fo:block> </fo:table-cell></fo:table-row>
+		  			  <fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			  	
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
@@ -218,7 +218,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>	
-		  			  <fo:table-row><fo:table-cell><fo:block> &#160; </fo:block> </fo:table-cell></fo:table-row>
+		  			  <fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			  	
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
@@ -279,7 +279,7 @@
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Patient Information 
 		  		</fo:block>
-		  		<fo:block> &#160; </fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
 					<fo:table-column column-width="12%"/>
 					<fo:table-column column-width="20%"/>
@@ -379,7 +379,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		
-						<fo:table-row><fo:table-cell><fo:block> &#160; </fo:block> </fo:table-cell></fo:table-row>
+						<fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell number-columns-spanned="4">
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
@@ -459,7 +459,7 @@
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Course Information
 		  		</fo:block>
-		  		<fo:block> &#160; </fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
 					<fo:table-column column-width="30%"/>
 					<fo:table-column column-width="20%"/>
@@ -602,7 +602,7 @@
 		  			Radiation Intervention
 		  		</fo:block>
 		  		
-		  		<fo:block> &#160; </fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
     				
 		  		<fo:table>
 					<fo:table-column column-width="30%"/>
@@ -690,7 +690,7 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			&#160; &#160;  Number of Fractions :
+						  			<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>  Number of Fractions :
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -702,7 +702,7 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			&#160;  &#160; Number of Elaspsed Days :
+						  			<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>  <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> Number of Elaspsed Days :
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
