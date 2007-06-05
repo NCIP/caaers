@@ -63,6 +63,7 @@ public class XsltTransformer {
 		public void toPdf(String inXml,String outPdfFile, String xsltFile) throws Exception{
 		
 			String fo = getFO(inXml,xsltFile);
+			//System.out.println(fo);
 			
 			FopFactory fopFactory = FopFactory.newInstance();
 			
@@ -85,7 +86,7 @@ public class XsltTransformer {
 		            Transformer transformer = factory.newTransformer(); // identity transformer
 		            
 		            // Setup input stream
-		            Source src = new StreamSource(fo);
+		            Source src = new StreamSource(new ByteArrayInputStream(fo.getBytes()));
 
 		            // Resulting SAX events (the generated FO) must be piped through to FOP
 		            Result res = new SAXResult(fop.getDefaultHandler());
@@ -110,7 +111,6 @@ public class XsltTransformer {
 		        } finally {
 		            out.close();
 		        }
-
 		}
 		
 		/**
@@ -141,9 +141,6 @@ public class XsltTransformer {
             //FO to PDF 
 		}
 		
-		//public static void main (String[] args) {
-		//	System.out.println("hello");
-		//}
-		
+
 
 }
