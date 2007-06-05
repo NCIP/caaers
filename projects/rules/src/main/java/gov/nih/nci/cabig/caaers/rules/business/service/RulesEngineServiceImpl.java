@@ -152,6 +152,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		
+		Category cat = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
+		
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
@@ -183,6 +185,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception {
 		// TODO Also create the category for the same rule set as well. 
 		
+		Category cat = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
+		
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
@@ -209,6 +213,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet createRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
 		// TODO Auto-generated method stub
 		
+		Category cat = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName, studyShortTitle, ruleSetName);
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
