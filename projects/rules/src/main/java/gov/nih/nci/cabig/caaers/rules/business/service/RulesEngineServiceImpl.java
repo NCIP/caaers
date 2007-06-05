@@ -162,7 +162,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
     	//System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
-		ruleSet.setDescription("package for"+ruleSetName+" rules");
+		ruleSet.setDescription(ruleSetName);
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -197,7 +197,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
     	System.out.println("PackageName:"+packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
-		ruleSet.setDescription("package for"+ruleSetName+" rules");
+		ruleSet.setDescription(ruleSetName);
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -226,7 +226,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
     	//System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
-		ruleSet.setDescription("package for"+ruleSetName+" rules");
+		ruleSet.setDescription(ruleSetName);
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -304,7 +304,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		 * Now for this catgeory we can go ahead and pull all children
 		 */
 		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(institutionSpecificCategoryPath);
-		if(ruleSetNames.size()>0) {
+		if(ruleSetNames.size()<1) {
 			return ruleSets;
 		}
 		
@@ -397,7 +397,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		 * Now for this catgeory we can go ahead and pull all children
 		 */
 		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(studySponsorSpecificCategoryPath);
-		if(ruleSetNames.size()>0) {
+		if(ruleSetNames.size()<1) {
 			return ruleSets;
 		}
 		
@@ -444,7 +444,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
-		String ruleSetName = ruleSet.getName();
+		String ruleSetName = ruleSet.getDescription();
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
@@ -469,7 +469,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void saveRulesForSponsor(RuleSet ruleSet, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		
-		String ruleSetName = ruleSet.getName();
+		String ruleSetName = ruleSet.getDescription();
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
@@ -492,7 +492,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public void saveRulesForStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
-		String ruleSetName = ruleSet.getName();
+		String ruleSetName = ruleSet.getDescription();
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
