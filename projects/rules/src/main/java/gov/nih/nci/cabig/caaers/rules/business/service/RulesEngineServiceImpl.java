@@ -165,7 +165,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setDescription("package for"+ruleSetName+" rules");
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
+		if(ruleSet.getImport().size()==0){
 		 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+		}
 		//List<String> _imports = new ArrayList<String>();
 		//_imports.add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
@@ -198,7 +200,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setDescription("package for"+ruleSetName+" rules");
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
-		 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+		if(ruleSet.getImport().size()==0){
+			 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+			}
 		//List<String> _imports = new ArrayList<String>();
 		//_imports.add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
@@ -225,7 +229,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setDescription("package for"+ruleSetName+" rules");
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
-		 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+		if(ruleSet.getImport().size()==0){
+			 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
+			}
 		//List<String> _imports = new ArrayList<String>();
 		//_imports.add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		//_imports.add("gov.nih.nci.cabig.caaers.domain.*");
