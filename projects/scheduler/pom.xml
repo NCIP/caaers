@@ -18,7 +18,7 @@
         <!-- direct dependency -->
         <dependency>
             <groupId>opensymphony</groupId>
-            <artifactId>quartz</artifactId>
+            <artifactId>quartz-all</artifactId>
             <version>1.6.0</version>
         </dependency>
 
@@ -26,6 +26,20 @@
             <groupId>${groupId}</groupId>
             <artifactId>caaers-core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+		
+		<!-- Test dependency -->
+		 <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>caaers-core</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+		 <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-mock</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

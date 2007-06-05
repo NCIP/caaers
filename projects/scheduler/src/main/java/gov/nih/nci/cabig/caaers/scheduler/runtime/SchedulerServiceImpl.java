@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
 import gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobDataMap;
@@ -32,6 +32,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	
 	private static final Log logger = LogFactory.getLog(SchedulerServiceImpl.class);
 	private Scheduler scheduler;
+	private ReportScheduleDao reportScheduleDao;
 	private Map<String,String> jobClassMapping;
 	
 	
@@ -49,60 +50,47 @@ public class SchedulerServiceImpl implements SchedulerService {
 			logReportSchedule(reportSchedule);
 		}
 		
-		//TODO: Audit Logging.
-		List<ScheduledNotification> notifications = reportSchedule.getScheduledNotifications();
-		int curIndex = 0, size = notifications.size();
-		List<JobDetail> jobDetailList = new ArrayList<JobDetail>(size);
-		List<Trigger> triggerList = new ArrayList<Trigger>(size);
-		List<Object> nfIdList = new ArrayList<Object>(); //this list will store the id of all the scheduled notifications.
-		
-		//for each notification creat job detail, and associate with the scheduler
-		for(ScheduledNotification nf: notifications){
+		try {
+
+			//TODO: Audit Logging.
+			List<ScheduledNotification> notifications = reportSchedule.getScheduledNotifications();
+			int curIndex = 0;
 			
-			assert nf != null :"reportSchedule must not contain invalid ScheduledNotificaiton objects";
-			assert nf.getId() != null : "reportSchedule must contain ScheduledNotification object, that has valid id";
-			
-			//store the notification id
-			nfIdList.add(nf.getId());
-			
-			//create a trigger
-			Trigger trigger = makeTrigger(nf);
-			triggerList.add(trigger);
-			
-			//create job detail and set the map values
-			String jobName = "J-" +  nf.getId().toString();
-			Class jobClass = findJobClass(nf);
-			logger.debug("jobClass :" + String.valueOf(jobClass));
-			JobDetail jobDetail = new JobDetail(jobName,"JG-" + String.valueOf(reportSchedule.getId()),
-					jobClass);
-			JobDataMap jobDataMap = jobDetail.getJobDataMap();
-			jobDataMap.putAsString("reportSchedule.id", reportSchedule.getId());
-			jobDataMap.putAsString("scheduledNotifiction.id",nf.getId());
-			jobDataMap.putAsString("curIndex", curIndex);
-			jobDetailList.add(jobDetail);
-			
-			curIndex++;
-		}//for each nf
-		
-		//convert the nfIdList, to comma seperated list of strings.
-		String nfIds = StringUtils.join(nfIdList, ',');
-		
-		//schedule all the jobs
-		for(int i = 0; i < size; i++){
-			Trigger trigger = triggerList.get(i);
-			JobDetail jobDetail = jobDetailList.get(i);
-			jobDetail.getJobDataMap().put("scheduleNotification.all.id", nfIds);
-			logger.info("Scheduling the job (jobFullName : "+ jobDetail.getFullName() + ")");
-			try {
+			//for each notification creat job detail, and associate with the scheduler
+			for(ScheduledNotification nf: notifications){
+				
+				assert nf != null :"reportSchedule must not contain invalid ScheduledNotificaiton objects";
+				assert nf.getId() != null : "reportSchedule must contain ScheduledNotification object, that has valid id";
+				
+				
+				//create a trigger
+				Trigger trigger = makeTrigger(nf);
+				
+				//create job detail and set the map values
+				String jobName = "J-" +  nf.getId().toString();
+				Class jobClass = findJobClass(nf);
+				if(logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
+				JobDetail jobDetail = new JobDetail(jobName,"JG-" + String.valueOf(reportSchedule.getId()),
+						jobClass);
+				JobDataMap jobDataMap = jobDetail.getJobDataMap();
+				jobDataMap.put("reportSchedule.id", reportSchedule.getId());
+				jobDataMap.put("scheduledNotifiction.id",nf.getId());
+				jobDataMap.put("curIndex", curIndex);
+				
+				//schedule the jobs
+				logger.info("Scheduling the job (jobFullName : "+ jobDetail.getFullName() + ")");
 				scheduler.scheduleJob(jobDetail, trigger);
-			} catch (SchedulerException e) {
-				logger.warn("Exception while scheduling " +
-						"[jobDetails :" + String.valueOf(jobDetail) +
-						", trigger :" + String.valueOf(trigger) + "]");
-				throw new CaaersSystemException("Exception while scheduling report{"+ String.valueOf(reportSchedule)+"}", e);
-			}
-			
-		}//for i
+
+				//update the delivery status of the ScheduledNotification
+				nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
+				
+				curIndex++;
+			}//for each nf
+			reportScheduleDao.save(reportSchedule);
+		} catch (SchedulerException e) {
+			logger.error("Exception while scheduling " ,e);
+			throw new CaaersSystemException("Exception while scheduling report{"+ String.valueOf(reportSchedule)+"}", e);
+		}
 		
 	}
 	
@@ -116,6 +104,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 		Trigger t = TriggerUtils.makeMinutelyTrigger("T-"+ strId, 1, 0);
 		t.setGroup("TG-" + strId);
 		t.setStartTime(nf.getScheduledOn());
+	
 		return t;
 	}
 	
@@ -146,12 +135,27 @@ public class SchedulerServiceImpl implements SchedulerService {
 	public void setScheduler(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
-	public void setJobClassMapping(Map map){
+	public void setJobClassMapping(Map<String, String> map){
 		this.jobClassMapping = map;
 	}
-	public Map getJobClassMapping(){
+	public Map<String, String> getJobClassMapping(){
 		return jobClassMapping;
 	}
+	
+	/**
+	 * @return the reportScheduleDao
+	 */
+	public ReportScheduleDao getReportScheduleDao() {
+		return reportScheduleDao;
+	}
+
+	/**
+	 * @param reportScheduleDao the reportScheduleDao to set
+	 */
+	public void setReportScheduleDao(ReportScheduleDao reportScheduleDao) {
+		this.reportScheduleDao = reportScheduleDao;
+	}
+
 	public void logReportSchedule(ReportSchedule s){
 		StringBuffer sb = new StringBuffer();
 		sb.append(s.getId()).append("type:").append(String.valueOf(s.getName()));

@@ -90,6 +90,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	 * notifications and sets the ScheduledNotification status as{@link ReportStatus}.RECALL. 
 	 */
 	public final void execute(JobExecutionContext context) throws JobExecutionException {
+		if(logger.isDebugEnabled()) logger.debug("Executing ScheduledNotification Job");
 		try {
 			
 			//init the member variables
@@ -100,8 +101,8 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 			scheduledNotificationIndex = jobDataMap.getInt("curIndex");
-			Integer reportScheduleId = jobDataMap.getIntegerFromString("reportSchedule.id");
-			ReportSchedule reportSchedule = reportScheduleDao.getById(reportScheduleId);
+			Integer reportScheduleId = jobDataMap.getInt("reportSchedule.id");
+			reportSchedule = reportScheduleDao.getById(reportScheduleId);
 			scheduledNotification = reportSchedule.getScheduledNotifications().get(scheduledNotificationIndex);
 			
 			boolean status = verifyAeReportStatus();
