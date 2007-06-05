@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Object Mapping DTD Version 1.0//EN" "http://www.castor.org/mapping.dtd">
+
+<mapping>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventReport" >
+    <map-to xml="AdverseEventReport"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="detectionDate" type="date">
+      <bind-xml name="detectionDate" node="element" />
+    </field>
+    <field name="physician" type="gov.nih.nci.cabig.caaers.domain.Physician">
+      <bind-xml name="Physician"/>
+    </field>
+    <field name="reporter" type="gov.nih.nci.cabig.caaers.domain.Reporter">
+      <bind-xml name="Reporter"/>
+    </field>
+    <field name="diseaseHistory" type="gov.nih.nci.cabig.caaers.domain.DiseaseHistory">
+      <bind-xml name="DiseaseHistory"/>
+    </field>    
+    <field name="participantHistory" type="gov.nih.nci.cabig.caaers.domain.ParticipantHistory">
+      <bind-xml name="ParticipantHistory"/>
+    </field> 
+    <field name="assignment" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
+      <bind-xml name="StudyParticipantAssignment"/>
+    </field> 
+    <field name="concomitantMedications" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" collection="arraylist">
+      <bind-xml name="ConcomitantMedication"/>
+    </field>
+    <field name="adverseEvents" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" collection="arraylist">
+      <bind-xml name="AdverseEvent"/>
+    </field>
+    <field name="labs" type="gov.nih.nci.cabig.caaers.domain.Lab" collection="arraylist">
+      <bind-xml name="Lab"/>
+    </field>
+     <field name="adverseEventPriorTherapiesInternal" type="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy" collection="arraylist">
+      <bind-xml name="AdverseEventPriorTherapy"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy">
+    <map-to xml="AdverseEventPriorTherapy"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="priorTherapy" type="gov.nih.nci.cabig.caaers.domain.PriorTherapy">
+      <bind-xml name="PriorTherapy"/>
+    </field>
+    <field name="other" type="string">
+      <bind-xml name="other" node="element" />
+    </field>
+    <field name="startDate" type="date">
+      <bind-xml name="startDate" node="element" />
+    </field>
+    <field name="endDate" type="date">
+      <bind-xml name="endDate"/>
+    </field>
+  </class>  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.PriorTherapy">
+    <map-to xml="PriorTherapy"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="text" type="string">
+      <bind-xml name="text"/>
+    </field>
+    <field name="meddraTerm" type="string">
+      <bind-xml name="meddraTerm" node="element" />
+    </field>
+    <field name="meddraCode" type="string">
+      <bind-xml name="meddraCode" node="element" />
+    </field>
+  </class>
+    
+  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.Person">
+    <map-to xml="Physician"  />
+  </class>  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.Person">
+    <map-to xml="Reporter"  />
+  </class>  
+    
+  <class name="gov.nih.nci.cabig.caaers.domain.Person">
+    <map-to xml="Person"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="element" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="element" />
+    </field>
+  </class>  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
+    <map-to xml="ConcomitantMedication"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="other" type="string">
+      <bind-xml name="other" node="element" />
+    </field>
+    <field name="agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
+      <bind-xml name="Agent"/>
+    </field> 
+  </class>  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.DiseaseHistory">
+    <map-to xml="DiseaseHistory"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="otherPrimaryDiseaseCode" type="string">
+      <bind-xml name="otherPrimaryDiseaseCode" node="element" />
+    </field>
+    <field name="otherPrimaryDiseaseSiteCode" type="string">
+      <bind-xml name="otherPrimaryDiseaseSiteCode" node="element" />
+    </field>
+    <field name="dateOfInitialPathologicDiagnosis" type="date">
+      <bind-xml name="dateOfInitialPathologicDiagnosis" node="element" />
+    </field>
+    <field name="metastaticDiseaseSite" type="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite" collection="arraylist">
+      <bind-xml name="MetastaticDiseaseSite"/>
+    </field>
+    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
+      <bind-xml name="AnatomicSite"/>
+    </field>
+  </class>  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite">
+    <map-to xml="MetastaticDiseaseSite"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="otherMetastaticDiseaseSite" type="string">
+      <bind-xml name="otherMetastaticDiseaseSite" node="element" />
+    </field>
+    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
+      <bind-xml name="AnatomicSite"/>
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
+    <map-to xml="AnatomicSite"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+    <field name="category" type="string">
+      <bind-xml name="category" node="element" />
+    </field>
+  </class> 
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEvent">
+    <map-to xml="AdverseEvent"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="detailsForOther" type="string">
+      <bind-xml name="detailsForOther" node="element" />
+    </field>
+    <field name="expected" type="boolean">
+      <bind-xml name="expected" node="element" />
+    </field>
+    <field name="comments" type="string">
+      <bind-xml name="comments" node="element" />
+    </field>
+    <field name="concomitantMedicationAttributions" type="gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution" collection="arraylist">
+      <bind-xml name="ConcomitantMedicationAttribution"/>
+    </field>
+    <field name="otherCauseAttributions" type="gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution" collection="arraylist">
+      <bind-xml name="OtherCauseAttribution"/>
+    </field>
+    <field name="courseAgentAttributions" type="gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution" collection="arraylist">
+      <bind-xml name="CourseAgentAttribution"/>
+    </field>
+    <field name="CtcTerm" type="gov.nih.nci.cabig.caaers.domain.CtcTerm">
+      <bind-xml name="CtcTerm"/>
+    </field>
+    <!--
+    <field name="attributionSummary" type="gov.nih.nci.cabig.caaers.domain.Attribution">
+      <bind-xml name="attributionSummary"/>
+    </field>
+    -->
+    <field name="grade" type="gov.nih.nci.cabig.caaers.domain.Grade">
+      <bind-xml name="grade"/>
+    </field>
+    <field name="hospitalization" type="gov.nih.nci.cabig.caaers.domain.Hospitalization">
+      <bind-xml name="hospitalization"/>
+    </field>
+  </class> 
+   
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution" extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+    <map-to xml="ConcomitantMedicationAttribution"  />
+    <field name="cause" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
+      <bind-xml name="ConcomitantMedication"/>
+    </field>    
+  </class>
+   
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution" extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+    <map-to xml="CourseAgentAttribution"  />
+    <field name="cause" type="gov.nih.nci.cabig.caaers.domain.CourseAgent">
+      <bind-xml name="CourseAgent"/>
+    </field>  
+  </class>
+   
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution" extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
+    <map-to xml="OtherCauseAttribution"  />
+    <field name="cause" type="gov.nih.nci.cabig.caaers.domain.OtherCause">
+      <bind-xml name="OtherCause"/>
+    </field>  
+  </class> 
+      
+  <class name="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution" verify-constructable="false">
+    <map-to xml="AdverseEventAttribution"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="attribution" type="gov.nih.nci.cabig.caaers.domain.Attribution">
+      <bind-xml name="attribution" node="element" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.CourseAgent">
+    <map-to xml="CourseAgent"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="lastAdministeredDate" type="date">
+      <bind-xml name="lastAdministeredDate" node="element" />
+    </field>
+    <field name="totalDoseAdministeredThisCourse" type="big-decimal">
+      <bind-xml name="totalDoseAdministeredThisCourse" node="element" />
+    </field>
+    <field name="administrationDelayAmount" type="big-decimal">
+      <bind-xml name="administrationDelayAmount" node="element" />
+    </field>
+    <field name="durationAndSchedule" type="string">
+      <bind-xml name="durationAndSchedule" node="element" />
+    </field>
+    <field name="dose" type="gov.nih.nci.cabig.caaers.domain.Dose">
+      <bind-xml name="Dose"/>
+    </field>
+    <field name="modifiedDose" type="gov.nih.nci.cabig.caaers.domain.Dose">
+      <bind-xml name="ModifiedDose"/>
+    </field>
+    <field name="TreatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
+      <bind-xml name="TreatmentInformation"/>
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Dose">
+    <map-to xml="Dose"  />
+    <field name="amount" type="big-decimal">
+      <bind-xml name="amount" node="element" />
+    </field>
+    <field name="units" type="string">
+      <bind-xml name="units" node="element" />
+    </field>
+    <field name="route" type="string">
+      <bind-xml name="route" node="element" />
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
+    <map-to xml="TreatmentInformation"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="firstCourseDate" type="date">
+      <bind-xml name="firstCourseDate" node="element" />
+    </field>
+    <field name="adverseEventCourse" type="gov.nih.nci.cabig.caaers.domain.CourseDate">
+      <bind-xml name="AdverseEventCourse"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.CourseDate">
+    <map-to xml="CourseDate"  />
+    <field name="number" type="integer">
+      <bind-xml name="number" node="element" />
+    </field>
+    <field name="date" type="date">
+      <bind-xml name="date" node="element" />
+    </field>
+  </class> 
+      
+  <class name="gov.nih.nci.cabig.caaers.domain.Agent">
+    <map-to xml="Agent"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element" />
+    </field>
+    <field name="nscNumber" type="string">
+      <bind-xml name="nscNumber" node="element" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.ParticipantHistory">
+    <map-to xml="ParticipantHistory"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="weight" type="float">
+      <bind-xml name="weight" node="element" />
+    </field>
+    <field name="height" type="float">
+      <bind-xml name="height" node="element" />
+    </field>
+    <field name="baselinePerformanceStatus" type="string">
+      <bind-xml name="baselinePerformanceStatus" node="element" />
+    </field>
+    <field name="heightUnitOfMeasure" type="string">
+      <bind-xml name="heightUnitOfMeasure" node="element" />
+    </field>
+    <field name="weightUnitOfMeasure" type="string">
+      <bind-xml name="weightUnitOfMeasure" node="element" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.CtcTerm">
+    <map-to xml="CtcTerm"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="term" type="string">
+      <bind-xml name="term" node="element" />
+    </field>
+    <field name="select" type="string">
+      <bind-xml name="select" node="element" />
+    </field>
+    <field name="ctepTerm" type="string">
+      <bind-xml name="ctepTerm" node="element" />
+    </field>
+    <field name="ctepCode" type="integer">
+      <bind-xml name="ctepCode" node="element" />
+    </field>
+    <field name="otherRequired" type="boolean">
+      <bind-xml name="otherRequired" node="element" />
+    </field>
+    <field name="category" type="gov.nih.nci.cabig.caaers.domain.CtcCategory">
+      <bind-xml name="CtcCategory"/>
+    </field>
+  </class> 
+
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.CtcCategory">
+    <map-to xml="CtcCategory"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+    <field name="ctc" type="gov.nih.nci.cabig.caaers.domain.Ctc">
+      <bind-xml name="Ctc"/>
+    </field>
+  </class>
+<!--
+  <class name="gov.nih.nci.cabig.caaers.domain.CtcGrade">
+    <map-to xml="CtcGrade"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="text" type="string">
+      <bind-xml name="text" node="element" />
+    </field>
+  </class>
+ --> 
+  <class name="gov.nih.nci.cabig.caaers.domain.Ctc">
+    <map-to xml="Ctc"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Lab">
+    <map-to xml="Lab"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+    <field name="units" type="string">
+      <bind-xml name="units" node="element" />
+    </field>
+    <field name="baseline" type="gov.nih.nci.cabig.caaers.domain.LabValue">
+      <bind-xml name="baseline" />
+    </field>
+    <field name="nadir" type="gov.nih.nci.cabig.caaers.domain.LabValue">
+      <bind-xml name="nadir" />
+    </field>
+    <field name="recovery" type="gov.nih.nci.cabig.caaers.domain.LabValue">
+      <bind-xml name="recovery" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.LabValue">
+    <map-to xml="LabValue"  />
+
+    <field name="value" type="string">
+      <bind-xml name="value" node="element" />
+    </field>
+    <field name="date" type="date">
+      <bind-xml name="date" node="element" />
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
+    <map-to xml="StudyParticipantAssignment"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="dateOfEnrollment" type="date">
+      <bind-xml name="dateOfEnrollment" node="element" />
+    </field>
+    <field name="studySite" type="gov.nih.nci.cabig.caaers.domain.StudySite">
+      <bind-xml name="StudySite" />
+    </field>
+ </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
+    <map-to xml="StudySite"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="irbApprovalDate" type="date">
+      <bind-xml name="irbApprovalDate" node="element" />
+    </field>
+    <field name="roleCode" type="string">
+      <bind-xml name="roleCode" node="element" />
+    </field>
+    <field name="statusCode" type="string">
+      <bind-xml name="statusCode" node="element" />
+    </field>
+    <field name="startDate" type="date">
+      <bind-xml name="startDate" node="element" />
+    </field>
+    <field name="endDate" type="date">
+      <bind-xml name="endDate" node="element" />
+    </field>
+    <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
+      <bind-xml name="Study" />
+    </field>
+    <field name="site" type="gov.nih.nci.cabig.caaers.domain.Site">
+      <bind-xml name="Site" />
+    </field>  
+ </class>   
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Site">
+    <map-to xml="Site"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+ </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Study">
+    <map-to xml="Study"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="blindedIndicator" type="boolean">
+      <bind-xml name="blindedIndicator" node="element" />
+    </field>
+    <field name="multiInstitutionIndicator" type="boolean">
+      <bind-xml name="multiInstitutionIndicator" node="element" />
+    </field>
+    <field name="randomizedIndicator" type="boolean">
+      <bind-xml name="randomizedIndicator" node="element" />
+    </field>
+    <field name="shortTitle" type="string">
+      <bind-xml name="shortTitle" node="element" />
+    </field>
+    <field name="longTitle" type="string">
+      <bind-xml name="longTitle" node="element" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element" />
+    </field>
+    <field name="precis" type="string">
+      <bind-xml name="precis" node="element" />
+    </field>
+    <field name="diseaseCode" type="string">
+      <bind-xml name="diseaseCode" node="element" />
+    </field>
+    <field name="monitorCode" type="string">
+      <bind-xml name="monitorCode" node="element" />
+    </field>
+    <field name="phaseCode" type="string">
+      <bind-xml name="phaseCode" node="element" />
+    </field>
+    <field name="primarySponsorCode" type="string">
+      <bind-xml name="primarySponsorCode" node="element" />
+    </field>
+    <field name="status" type="string">
+      <bind-xml name="status" node="element" />
+    </field>
+    <field name="targetAccrualNumber" type="integer">
+      <bind-xml name="targetAccrualNumber" node="element" />
+    </field>
+   </class> 
+
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.Hospitalization" verify-constructable="false">
+    <map-to xml="Hospitalization" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain" />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Grade" verify-constructable="false">
+    <map-to xml="Grade" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain" />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element" />
+    </field>
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Attribution" verify-constructable="false">
+    <map-to xml="Attribution" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain" />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="attribute" />
+    </field>
+  </class> 
+                            
+</mapping>
