@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://caaers.caBIG/1/AdverseEventReport" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:caaers="http://caaers.caBIG/1/AdverseEventReport" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:complexType name="AdverseEventReport">
+      <xsd:sequence>
+        <xsd:element name="detectionDate" type="xsd:date"/>
+
+         
+        <xsd:element name="Physician" type="caaers:Person"/>
+        <xsd:element name="Reporter" type="caaers:Person"/>
+        <xsd:element name="DiseaseHistory" type="caaers:DiseaseHistory"/>
+        <xsd:element name="ParticipantHistory" type="caaers:ParticipantHistory" />
+        <xsd:element name="StudyParticipantAssignment" type="caaers:StudyParticipantAssignment" />
+        <xsd:element name="ConcomitantMedication" type="caaers:ConcomitantMedication" maxOccurs="unbounded"/>       
+        <xsd:element name="AdverseEvent" type="caaers:AdverseEvent" maxOccurs="unbounded"/>        
+        <xsd:element name="Lab" type="caaers:Lab" maxOccurs="unbounded"/> 
+        <xsd:element name="AdverseEventPriorTherapy" type="caaers:AdverseEventPriorTherapy" maxOccurs="unbounded"/>        
+      </xsd:sequence>
+    </xsd:complexType>
+
+  <xsd:complexType name="AdverseEventPriorTherapy">
+	  <xsd:sequence>
+  		<xsd:element name="PriorTherapy" type="caaers:PriorTherapy"/>
+   		<xsd:element name="other" type="xsd:string"/>
+  		<xsd:element name="startDate" type="xsd:date"/>
+  		<xsd:element name="endDate" type="xsd:date"/>	  </xsd:sequence>
+  </xsd:complexType>	
+
+  <xsd:complexType name="PriorTherapy">
+	  <xsd:sequence>
+  		<xsd:element name="text" type="xsd:string"/>
+  		<xsd:element name="meddraTerm" type="xsd:string"/>
+  		<xsd:element name="meddraCode" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>	
+  
+  <xsd:complexType name="Person">
+	  <xsd:sequence>
+  		<xsd:element name="firstName" type="xsd:string"/>
+  		<xsd:element name="lastName" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ConcomitantMedication">
+	  <xsd:sequence>
+  		<xsd:element name="other" type="xsd:string"/>
+  		<xsd:element name="Agent" type="caaers:Agent"/>
+	  </xsd:sequence>
+  </xsd:complexType>  
+
+  <xsd:complexType name="DiseaseHistory">	  
+	  <xsd:sequence>
+	  	<xsd:element name="otherPrimaryDiseaseCode" type="xsd:string"/>
+	  	<xsd:element name="otherPrimaryDiseaseSiteCode" type="xsd:string"/>
+  		<xsd:element name="dateOfInitialPathologicDiagnosis" type="xsd:date"/>
+		<xsd:element name="MetastaticDiseaseSite" type="caaers:MetastaticDiseaseSite" maxOccurs="unbounded"/>
+		<xsd:element name="AnatomicSite" type="caaers:AnatomicSite"/>
+	  </xsd:sequence>
+  </xsd:complexType>  	
+
+  <xsd:complexType name="MetastaticDiseaseSite">
+	  <xsd:sequence>
+  		<xsd:element name="otherMetastaticDiseaseSite" type="xsd:string"/>
+  		<xsd:element name="AnatomicSite" type="caaers:AnatomicSite"/>
+	  </xsd:sequence>
+  </xsd:complexType>  
+
+  <xsd:complexType name="AnatomicSite">	  
+	  <xsd:sequence>
+	  	<xsd:element name="name" type="xsd:string"/>
+	  	<xsd:element name="category" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="AdverseEvent">
+	  <xsd:sequence>
+  		<xsd:element name="detailsForOther" type="xsd:string"/>
+  		<xsd:element name="expected" type="xsd:boolean"/>
+  		<xsd:element name="comments" type="xsd:string"/>
+  		
+  		<xsd:element name="ConcomitantMedicationAttribution" type="caaers:ConcomitantMedicationAttribution" maxOccurs="unbounded"/>
+  		<xsd:element name="CourseAgentAttribution" type="caaers:CourseAgentAttribution" maxOccurs="unbounded"/>
+  		<xsd:element name="OtherCauseAttribution" type="caaers:OtherCauseAttribution" maxOccurs="unbounded"/>
+  		
+  		<xsd:element name="CtcTerm" type="caaers:CtcTerm" />
+  		<xsd:element name="hospitalization" type="xsd:string" />
+  		<!--<xsd:element name="attributionSummary" type="caaers:Attribution" />-->
+  		<xsd:element name="grade" type="xsd:string" />
+	  </xsd:sequence>
+  </xsd:complexType>  
+<!--
+  <xsd:simpleType name="Hospitalization">
+		<xsd:annotation>
+			<xsd:documentation>Hospitalization enum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0" id="NONE"/>
+			<xsd:enumeration value="1" id="HOSPITALIZATION"/>
+			<xsd:enumeration value="2" id="PROLONGED_HOSPITALIZATION"/>
+		</xsd:restriction>
+  </xsd:simpleType> 
+
+  <xsd:simpleType name="Grade">
+		<xsd:annotation>
+			<xsd:documentation>Grade enum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0" id="NORMAL"/>
+			<xsd:enumeration value="1" id="MILD"/>
+			<xsd:enumeration value="2" id="MODERATE"/>
+			<xsd:enumeration value="3" id="SEVERE"/>
+			<xsd:enumeration value="4" id="LIFE_THREATENING"/>
+			<xsd:enumeration value="5" id="DEATH"/>
+		</xsd:restriction>
+  </xsd:simpleType> 
+ -->   
+  <xsd:complexType name="ConcomitantMedicationAttribution">
+	  <xsd:sequence>
+  		<xsd:element name="attribution" type="xsd:string"/>
+  		<xsd:element name="ConcomitantMedication" type="caaers:ConcomitantMedication"/>
+	  </xsd:sequence>
+  </xsd:complexType> 
+  <xsd:complexType name="CourseAgentAttribution">
+	  <xsd:sequence>
+  		<xsd:element name="attribution" type="xsd:string"/>
+  		<xsd:element name="CourseAgent" type="caaers:CourseAgent"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="OtherCauseAttribution">
+	  <xsd:sequence>
+  		<xsd:element name="attribution" type="xsd:string"/>
+  		<xsd:element name="OtherCause" type="caaers:OtherCause"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="CourseAgent">
+	  <xsd:sequence>
+  		<xsd:element name="lastAdministeredDate" type="xsd:date"/>
+  		<xsd:element name="totalDoseAdministeredThisCourse" type="xsd:decimal"/>
+  		<xsd:element name="administrationDelayAmount" type="xsd:decimal"/>  		
+  		<xsd:element name="durationAndSchedule" type="xsd:string"/>
+  		
+  		<xsd:element name="Dose" type="caaers:Dose"/>
+  		<xsd:element name="ModifiedDose" type="caaers:Dose"/>
+  		<xsd:element name="TreatmentInformation" type="caaers:TreatmentInformation" />
+	  </xsd:sequence>
+  </xsd:complexType> 
+  
+  <xsd:complexType name="Dose">
+	  <xsd:sequence>
+  		<xsd:element name="amount" type="xsd:decimal"/>
+  		<xsd:element name="units" type="xsd:string"/>
+  		<xsd:element name="route" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>  
+
+  <xsd:complexType name="TreatmentInformation">
+	  <xsd:sequence>
+  		<xsd:element name="firstCourseDate" type="xsd:date"/>
+  		<xsd:element name="CourseDate" type="caaers:CourseDate"/>
+	  </xsd:sequence>
+  </xsd:complexType>  
+    
+  <xsd:complexType name="CourseDate">
+	  <xsd:sequence>
+  		<xsd:element name="nubmer" type="xsd:integer"/>
+  		<xsd:element name="date" type="xsd:date"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+    
+  <xsd:complexType name="OtherCause">
+	  <xsd:sequence>
+  		<xsd:element name="text" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+   <!--     
+  <xsd:simpleType name="Attribution">
+		<xsd:annotation>
+			<xsd:documentation>Attribution enum</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1" id="UNRELATED"/>
+			<xsd:enumeration value="2" id="UNLIKELY"/>
+			<xsd:enumeration value="3" id="POSSIBLE"/>
+			<xsd:enumeration value="4" id="PROBABLE"/>
+			<xsd:enumeration value="5" id="DEFINITE"/>
+		</xsd:restriction>
+  </xsd:simpleType>  
+	-->
+  <xsd:complexType name="Agent">
+	  <xsd:sequence>
+  		<xsd:element name="name" type="xsd:string"/>
+  		<xsd:element name="description" type="xsd:string"/>
+  		<xsd:element name="nscNumber" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>	
+
+  <xsd:complexType name="ParticipantHistory">
+	  <xsd:sequence>
+  		<xsd:element name="weight" type="xsd:float"/>
+  		<xsd:element name="height" type="xsd:float"/>
+  		<xsd:element name="baselinePerformanceStatus" type="xsd:string"/>
+  		<xsd:element name="heightUnitOfMeasure" type="xsd:string"/>
+  		<xsd:element name="weightUnitOfMeasure" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="CtcTerm">
+	  <xsd:sequence>
+  		<xsd:element name="term" type="xsd:string"/>
+  		<xsd:element name="select" type="xsd:string"/>
+  		<xsd:element name="ctepTerm" type="xsd:string"/>
+  		<xsd:element name="ctepCode" type="xsd:integer"/>
+  		<xsd:element name="otherRequired" type="xsd:boolean"/>
+  		<xsd:element name="CtcCategory" type="caaers:CtcCategory"/>
+  		<!--<xsd:element name="CtcGrade" type="caaers:CtcGrade" maxOccurs="unbounded"/>-->
+	  </xsd:sequence>
+  </xsd:complexType>
+<!--
+  <xsd:complexType name="CtcGrade">
+	  <xsd:sequence>
+  		<xsd:element name="text" type="xsd:string"/>
+  		<xsd:element name="grade" type="caaers:Grade"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+-->  
+  <xsd:complexType name="CtcCategory">
+	  <xsd:sequence>
+  		<xsd:element name="name" type="xsd:string"/>
+  		<xsd:element name="Ctc" type="caaers:Ctc"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Ctc">
+	  <xsd:sequence>
+  		<xsd:element name="name" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Lab">
+	  <xsd:sequence>
+  		<xsd:element name="name" type="xsd:string"/>
+  		<xsd:element name="units" type="xsd:string"/>
+  		<xsd:element name="baseline" type="caaers:LabValue"/>
+  		<xsd:element name="nadir" type="caaers:LabValue"/>
+  		<xsd:element name="recovery" type="caaers:LabValue"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="LabValue">
+	  <xsd:sequence>
+  		<xsd:element name="value" type="xsd:string"/>
+  		<xsd:element name="date" type="xsd:date"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="StudyParticipantAssignment">
+	  <xsd:sequence>
+  		<xsd:element name="dateOfEnrollment" type="xsd:date"/>
+  		<xsd:element name="StudySite" type="caaers:StudySite"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="StudySite">
+	  <xsd:sequence>
+  		<xsd:element name="irbApprovalDate" type="xsd:date"/>
+  		<xsd:element name="roleCode" type="xsd:string"/>
+  		<xsd:element name="statusCode" type="xsd:string"/>
+  		<xsd:element name="startDate" type="xsd:date"/>
+  		<xsd:element name="endDate" type="xsd:date"/>
+  		
+  		<xsd:element name="Study" type="caaers:Study"/>
+  		<xsd:element name="Site" type="caaers:Site"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="Site">
+	  <xsd:sequence>
+  		<xsd:element name="name" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="Study">
+	  <xsd:sequence>
+  		<xsd:element name="blindedIndicator" type="xsd:boolean"/>
+  		<xsd:element name="multiInstitutionIndicator" type="xsd:boolean"/>
+  		<xsd:element name="randomizedIndicator" type="xsd:boolean"/>
+  		<xsd:element name="shortTitle" type="xsd:string"/>
+  		<xsd:element name="longTitle" type="xsd:string"/>
+  		<xsd:element name="description" type="xsd:string"/>
+  		<xsd:element name="precis" type="xsd:string"/>
+  		<xsd:element name="diseaseCode" type="xsd:string"/>
+  		<xsd:element name="monitorCode" type="xsd:string"/>
+  		<xsd:element name="phaseCode" type="xsd:string"/>
+  		<xsd:element name="primarySponsorCode" type="xsd:string"/>
+  		<xsd:element name="status" type="xsd:string"/>
+  		<xsd:element name="targetAccrualNumber" type="xsd:integer"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+                    
+</xsd:schema>
