@@ -155,7 +155,7 @@ public class RuleUtil {
 	public static Category getStudySponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String studyShortTitle, String ruleSetName) throws Exception{
 		Category cat = null;
 		
-		String studySpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
+		String studySpecificCatehoryPath = CategoryConfiguration.STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
 		String studySponsorSpecificCategoryPath = studySpecificCatehoryPath+"/"+getStringWithoutSpaces(sponsorName);
 		String studySponsorRuleSetSpecificCategoryPath = studySponsorSpecificCategoryPath+"/"+ getStringWithoutSpaces(ruleSetName);
 		/**
