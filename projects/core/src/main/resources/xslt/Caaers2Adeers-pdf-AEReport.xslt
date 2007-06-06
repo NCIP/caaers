@@ -36,8 +36,8 @@
 	    
 		<fo:layout-master-set>
 		  	<fo:simple-page-master master-name="A4" margin-left="2mm" margin-top="2mm" margin-right="0.25in">
-		    	<fo:region-body margin-top="1in"/>
-		    	<fo:region-before extent="1in"/>
+		    	<fo:region-body margin-top="2in"/>
+		    	<fo:region-before extent="2in"/>
 		    	<fo:region-after extent="0.5in"/>
 		  	</fo:simple-page-master>
 
@@ -96,6 +96,51 @@
 					<fo:block space-after="5pt">
 						<fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="2pt"/>
 					</fo:block>
+					
+				<fo:block margin-left="4mm"> 
+					<fo:inline xsl:use-attribute-sets="label" > Protocol Number  :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > AALL0031 </fo:inline>	 
+					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
+					<fo:inline xsl:use-attribute-sets="label" > CTC Version  :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> 2.0 </fo:inline>	
+					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
+					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> Kirk Raymond Schultz </fo:inline>	
+																
+				</fo:block>
+
+				<fo:block margin-left="4mm"> 
+					<fo:inline xsl:use-attribute-sets="label" > Title :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > xx </fo:inline>
+				</fo:block>
+
+				<fo:block margin-left="4mm"> 
+					<fo:inline xsl:use-attribute-sets="label" > Institution :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > Northwestern Memorial Hospital </fo:inline>	 
+					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
+					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> Original </fo:inline>	
+					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
+					<fo:inline xsl:use-attribute-sets="label" > Ticket #:</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> 1111  </fo:inline>	
+					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
+					<fo:inline xsl:use-attribute-sets="label" > Amendment #:</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> 0  </fo:inline>																	
+				</fo:block>
+				
+				<fo:block margin-left="4mm"> 
+					<fo:inline xsl:use-attribute-sets="label" > Created Date :</fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > xx </fo:inline>
+				</fo:block>
+
+  
+
+
+					<fo:block space-after="5pt">
+						<fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="2pt"/>
+					</fo:block>
+									
+									
 		  </fo:static-content>
 		  
 		  <fo:flow flow-name="xsl-region-body">		  	
@@ -725,7 +770,876 @@
 		  			    </fo:table-row>		
 		  					  		  			  	  
 		  			</fo:table-body>
+		  		</fo:table>			
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Surgery Intervention
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+    				
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+										
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Treatment Arm :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Description of Treatment Arm :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Site of Intervention (Category) :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			  
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Site of Intervention :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Date of Intervention :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			</fo:table-body>
+		  		</fo:table>								  		  		
+
+  				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
+		  			Medical Device
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+    				
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+										
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Brand Name :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Common Name :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Device Type :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			  
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Manufacturer Name :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Manufacturer City :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Manufacturer State/Province :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Model Number :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Lot Number :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Catalog Number :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Expiration Date :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Serial Number :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Other Number :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Operator of Device :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Implanted Date :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Explanted Date :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Is this a Single-use Device that was Reprocessed and Reused on a Patient? :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Name of Reprocessor :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Address of Reprocessor :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>		  			    		  			    		  			    		  			    		  			    		  			    		  			    		  			    		  			    		  			    		  			    		  			    
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell >
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Device Available for Evaluation? (Do not send to FDA) :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Returned Date :
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>			  			    
+
+		  			</fo:table-body>
+		  		</fo:table>								  		  		
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Prior Therapies
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+    				
+		  		<fo:table>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+															
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Therapy 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Therapy Start Date 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Therapy End Date 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Comments 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Chemotherapy Agents 
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						      						
+		  			    </fo:table-row>
+
+		  			</fo:table-body>
+		  		</fo:table>	
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Pre-Existing Conditions
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="normal" > Pancreatitis </fo:block>
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Sites of Metastatic Disease
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="normal" > Skin </fo:block>		  		
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+
+  				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
+		  			Protocol Agents
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code : </fo:block>
+
+		  		<fo:table>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+																				
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Agent
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Total Dose Administered this Course
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Last Administered Date
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Comments 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Agent Adjustment
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Agent Delayed
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Delay
+						  		</fo:block>      							
+      						</fo:table-cell> 
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>  
+		  			    </fo:table-row>
+
+		  			</fo:table-body>
+		  		</fo:table>	
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Concomitant Medications
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="normal" > alpha500 </fo:block>
+		  		
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Other Contributing Causes
+		  		</fo:block>
+		  		
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="normal" > test </fo:block>		  		
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+
+
+  				<fo:block  xsl:use-attribute-sets="sub-head" > 
+		  			Adverse Events (CTCAE)
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+
+
+		  		<fo:table>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="15%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+																				
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			CTCAE CATEGORY
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Adverse Event
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			 Grade
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Hospitalization/ Comments Prolongation of Hospitalization 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Start Date of AE
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			End Date of AE
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Is Primary AE?
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Comments
+						  		</fo:block>      							
+      						</fo:table-cell> 
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>  
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell> 
+		  			    </fo:table-row>
+
+		  			</fo:table-body>
+		  		</fo:table>	
+
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+
+  				<fo:block  xsl:use-attribute-sets="sub-head" > 
+		  			Attribution for Adverse Events
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		
+
+
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="30%"/>
+
+																				
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Attribute to 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Gr.3 Lymphatics
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+		  			    </fo:table-row>
+
+		  			</fo:table-body>
 		  		</fo:table>			  		
+		  									  				  		
+
+		  			<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+					
+
+  				<fo:block  xsl:use-attribute-sets="sub-head" > 
+		  			Abnormal and Relevant Normal Lab Results
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+
+
+		  		<fo:table>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+					<fo:table-column column-width="10%"/>
+																				
+		  			<fo:table-body>
+		  	      					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Lab 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Baseline date
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			 Value
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Worst Date 
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Value
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Recovery/Latest Date
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Value	
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Microbiology Site
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Date
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" > 
+						  			Infectious Agent
+						  		</fo:block>      							
+      						</fo:table-cell> 
+		  			    </fo:table-row>
+		  			  
+ 					
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>      						      						      						      						
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell>  
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell> 
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			sample text
+						  		</fo:block>      							
+      						</fo:table-cell> 
+		  			    </fo:table-row>
+
+		  			</fo:table-body>
+		  		</fo:table>			  		
+		  									  				  				  				  		
   	</xsl:template>  
   	
 
