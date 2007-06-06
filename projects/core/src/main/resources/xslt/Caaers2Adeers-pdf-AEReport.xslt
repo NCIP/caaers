@@ -99,24 +99,36 @@
 					
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Protocol Number  :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal" > AALL0031 </fo:inline>	 
+					<fo:inline xsl:use-attribute-sets="normal" > 
+				   		<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/shortTitle"/>
+				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > CTC Version  :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 2.0 </fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal"> Kirk Raymond Schultz </fo:inline>	
-																
+					<fo:inline xsl:use-attribute-sets="normal"> 						 
+						<xsl:value-of select="AdverseEventReport/Physician/firstName"/> 
+						<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+						<xsl:value-of select="AdverseEventReport/Physician/lastName"/>
+					</fo:inline>	
+					
+					
+																				
 				</fo:block>
 
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Title :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal" > xx </fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > 
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/longTitle"/> 
+					</fo:inline>
 				</fo:block>
 
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Institution :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal" > Northwestern Memorial Hospital </fo:inline>	 
+					<fo:inline xsl:use-attribute-sets="normal" > 
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Site/name"/> 
+				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> Original </fo:inline>	
@@ -130,7 +142,9 @@
 				
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Created Date :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal" > xx </fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal" > 
+						<xsl:value-of select="AdverseEventReport/detectionDate"/> 
+					</fo:inline>
 				</fo:block>
 
   
@@ -145,18 +159,7 @@
 		  
 		  <fo:flow flow-name="xsl-region-body">		  	
            		
-           		<xsl:apply-templates select="AdverseEventReport/Reporter"/>
-				<xsl:apply-templates select="AdverseEventReport/Physician"/>
-				<xsl:apply-templates select="AdverseEventReport/AdverseEvent"/>
-  			  	<fo:block id="content_terminator"/>    
-		  </fo:flow>
-		</fo:page-sequence>
-	</fo:root>
-
-  </xsl:template>
-
-
-  	<xsl:template match="Reporter">		  
+   
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Reporter Information 
 		  		</fo:block>
@@ -178,7 +181,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="lastName"/> <xsl:value-of select="firstName"/>
+									<xsl:value-of select="AdverseEventReport/Reporter/firstName"/> 
+									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+									<xsl:value-of select="AdverseEventReport/Reporter/lastName"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       					</fo:table-row>
@@ -191,7 +196,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			phone#
+						  			<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism[@type='phone']/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -201,7 +206,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			fax# 
+						  			<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism[@type='fax']/value"/> 
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -211,7 +216,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			email@
+						  			<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism[@type='email']/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -273,8 +278,10 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			name
-						  		</fo:block>      							
+									<xsl:value-of select="AdverseEventReport/Physician/firstName"/> 
+									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+									<xsl:value-of select="AdverseEventReport/Physician/lastName"/>
+						  		</fo:block>     							
       						</fo:table-cell>
       					</fo:table-row>
       					
@@ -286,7 +293,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			phone#
+						  			<xsl:value-of select="AdverseEventReport/Physician/ContactMechanism[@type='phone']/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -296,7 +303,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			fax# 
+						  			<xsl:value-of select="AdverseEventReport/Physician/ContactMechanism[@type='fax']/value"/> 
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -306,7 +313,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			email@
+						  			<xsl:value-of select="AdverseEventReport/Physician/ContactMechanism[@type='email']/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		  			  
@@ -316,12 +323,8 @@
 				<fo:block>
 					<fo:leader leader-length="95%" leader-pattern="rule"/>
 				</fo:block>			  		
-  	</xsl:template>		
-
-			
-	
-  	<xsl:template match="Physician">		  
-		  		<fo:block xsl:use-attribute-sets="sub-head" > 
+ 
+ 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Patient Information 
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
@@ -497,10 +500,7 @@
 				<fo:block>
 					<fo:leader leader-length="95%" leader-pattern="rule"/>
 				</fo:block>			  		
-  	</xsl:template>
-
-
-  	<xsl:template match="AdverseEvent">		  
+	  
 		  		<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Course Information
 		  		</fo:block>
@@ -1639,9 +1639,11 @@
 
 		  			</fo:table-body>
 		  		</fo:table>			  		
-		  									  				  				  				  		
-  	</xsl:template>  
-  	
+  			  <fo:block id="content_terminator"/>    
+		  </fo:flow>
+		</fo:page-sequence>
+	</fo:root>
 
+  </xsl:template>
 	
 </xsl:stylesheet>
