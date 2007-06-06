@@ -37,10 +37,8 @@
                 <chrome:box title="Summary">
                     <c:forEach items="${summary}" var="summaryEntry">
                     <div class="row">
-                        <div class="value"><b>${summaryEntry.key} :</b></div>
-                    </div>
-                     <div class="row">
-                         <div class="value">${empty summaryEntry.value ? '<em class="none">None</em>' : summaryEntry.value}</div>
+                        <div class="label">${summaryEntry.key}</div>
+                        <div class="value">${empty summaryEntry.value ? '<em class="none">None</em>' : summaryEntry.value}</div>
                     </div>        
                     </c:forEach>
                 </chrome:box>
