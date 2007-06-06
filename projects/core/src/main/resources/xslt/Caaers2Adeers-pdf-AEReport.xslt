@@ -1135,65 +1135,71 @@
 					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="30%"/>
 					<fo:table-column column-width="20%"/>
-															
+								
+						
 		  			<fo:table-body>
-		  	      					
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Therapy 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Therapy Start Date 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Therapy End Date 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Comments 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Chemotherapy Agents 
-						  		</fo:block>      							
-      						</fo:table-cell>      						      						      						
-		  			    </fo:table-row>
-		  			  
+		  			
+		 			  		<fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		     						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Therapy 
+							  		</fo:block>      							
+		     						</fo:table-cell>
+		     						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Therapy Start Date
+							  		</fo:block>      							
+		     						</fo:table-cell>
+		     						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Therapy End Date
+							  		</fo:block>      							
+		     						</fo:table-cell>
+		     						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Comments 
+							  		</fo:block>      							
+		     						</fo:table-cell>
+		     						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Chemotherapy Agents 
+							  		</fo:block>      							
+		     						</fo:table-cell>      						      						      						
+			  			    </fo:table-row> 
+	  			    		  			
+		  	      			<!--  <xsl:apply-templates select="AdverseEventReport/AdverseEventPriorTherapy"/> -->
+		  	      			
+						<xsl:for-each select="AdverseEventReport/AdverseEventPriorTherapy">
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			<xsl:value-of select="PriorTherapy/text"/>
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			<xsl:value-of select="startDate"/> 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			<xsl:value-of select="endDate"/> 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			-
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			-
+							  		</fo:block>      							
+	      						</fo:table-cell>      						      						      						      						
+			  			    </fo:table-row> 
+		  			    </xsl:for-each>  			  
  					
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
-						  		</fo:block>      							
-      						</fo:table-cell>      						      						      						      						
-		  			    </fo:table-row>
+
 
 		  			</fo:table-body>
 		  		</fo:table>	
@@ -1329,7 +1335,12 @@
 		  		</fo:block>
 		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:block xsl:use-attribute-sets="normal" > alpha500 </fo:block>
+		  		
+		  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication/Agent">
+			  			<fo:block xsl:use-attribute-sets="normal" > 
+			  				<xsl:value-of select="name"/>  
+			  			</fo:block>
+			  		</xsl:for-each>
 		  		
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
@@ -1408,50 +1419,50 @@
       						</fo:table-cell> 
 		  			    </fo:table-row>
 		  			  
- 					
+ 					<xsl:for-each select="AdverseEventReport/AdverseEvent"> 
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			<xsl:value-of select="CtcTerm/CtcCategory/name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			-
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			<xsl:value-of select="grade"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			<xsl:value-of select="hospitalization"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			-
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			-
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			-
 						  		</fo:block>      							
       						</fo:table-cell>  
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			-
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
-
+					  </xsl:for-each>
 		  			</fo:table-body>
 		  		</fo:table>	
 
@@ -1643,7 +1654,5 @@
 		  </fo:flow>
 		</fo:page-sequence>
 	</fo:root>
-
-  </xsl:template>
-	
+	</xsl:template>
 </xsl:stylesheet>
