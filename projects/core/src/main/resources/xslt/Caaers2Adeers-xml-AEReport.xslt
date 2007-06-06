@@ -9,33 +9,293 @@
 	</xsl:template>
 	
 	<xsl:template match="AdverseEventReport">
+		<ticket_number>##</ticket_number>
+		<amendment_number>##</amendment_number>
+		<report_type>##</report_type>
+		<report_status>
+			<xsl:value-of select="status"/> 
+		</report_status>
+		<assessment_comments>##</assessment_comments>
+		
+		<is_death_unrelated_to_ae>##</is_death_unrelated_to_ae>
+		<is_sent_to_fda>##</is_sent_to_fda>
+		<is_24_hour_report>##</is_24_hour_report>		
+		
 		<report_created_date>
-			<xsl:apply-templates select="detectionDate"/> 
+			<xsl:value-of select="detectionDate"/> 
 		</report_created_date>	
+		<date_submitted_to_group>##</date_submitted_to_group>
+		<date_submitted_to_nci>##</date_submitted_to_nci>
+		<date_submitted_to_fda>##</date_submitted_to_fda>
+		
 		<xsl:apply-templates select="Physician"/> 	
-		<xsl:apply-templates select="Reporter"/>		
-		<concomitant_medications>
-			<xsl:apply-templates select="ConcomitantMedication"/> 	
-		</concomitant_medications>
-		<xsl:apply-templates select="StudyParticipantAssignment"/>
+		<xsl:apply-templates select="Reporter"/>	
+		
+		<submitter_information>
+			<first_name>##</first_name>
+			<last_name>##</last_name>
+			<phone>##</phone>
+			<fax>##</fax>
+			<email>##</email>
+		</submitter_information>
+
+		<institution_information>
+			<institution_name>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Site/name"/>
+			</institution_name>
+			<ctep_id>##</ctep_id>
+		</institution_information>
+
+		<protocol_information>
+			<nci_protocol_number>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/shortTitle"/><!-- verify--> 
+			</nci_protocol_number>
+			<protocol_title>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/longTitle"/> 
+			</protocol_title>
+			<protocol_phase>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/phaseCode"/> 
+			</protocol_phase>
+			<protocol_status>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/status"/> 
+			</protocol_status>
+			<type_of_study>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/shortTitle"/> <!-- verify-->
+			</type_of_study>
+			<lead_institution>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/primarySponsorCode"/> 
+			</lead_institution>
+			<principal_investigator>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/shortTitle"/> <!-- verify-->
+			</principal_investigator>
+			<lead_drug_monitor>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/monitorCode"/> 
+			</lead_drug_monitor>
+			<ctcae_version>
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/shortTitle"/> <!-- verify-->
+			</ctcae_version>			
+		</protocol_information>	
+		
+		<course_information>
+			<!-- choice -->
+			<other_treatment_assignment>##</other_treatment_assignment>
+			<treatment_assignment_code>##</treatment_assignment_code>
+			<treatment_description>##</treatment_description>
+			<!-- ..choice -->
+			
+			<start_date_of_first_course>
+				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
+			</start_date_of_first_course>
+			<start_date_of_ae_course>
+				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/CourseDate/date"/>			
+			</start_date_of_ae_course>
+			<start_date_of_primary_ae>##</start_date_of_primary_ae>
+			<end_date_of_primary_ae>##</end_date_of_primary_ae>
+			<course_number_of_ae>
+				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/CourseDate/number"/>			
+			</course_number_of_ae>
+			<total_number_of_courses>##</total_number_of_courses>
+		</course_information>
+
+		<description_of_event>
+			<event_description>			
+				<xsl:value-of select="AdverseEventResponseDescription/eventDescription"/>			
+			</event_description>
+			<present_status>
+				<xsl:value-of select="AdverseEventResponseDescription/presentStatus"/>
+			</present_status>
+			<date_of_recovery_or_death>
+				<xsl:value-of select="AdverseEventResponseDescription/recoveryDate"/>
+			</date_of_recovery_or_death>
+			<retreated>
+				<xsl:value-of select="AdverseEventResponseDescription/retreated"/>
+			</retreated>
+			<removed_from_protocol_trt>##</removed_from_protocol_trt>
+			<removed_from_protocol_trt_date>
+				<xsl:value-of select="AdverseEventResponseDescription/dateRemovedFromProtocol"/>
+			</removed_from_protocol_trt_date>
+			<death_date>##</death_date>
+			<autopsy_performed>##</autopsy_performed>
+		</description_of_event>
+
+		<patient_information>
+			<patient_id>
+				<xsl:value-of select="StudyParticipantAssignment/Participant/institutionalPatientNumber"/>
+			</patient_id>
+			<birth_date>
+				<xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth"/>
+			</birth_date>
+			<race>
+				<xsl:value-of select="StudyParticipantAssignment/Participant/race"/>
+			</race>
+			<gender>
+				<xsl:value-of select="StudyParticipantAssignment/Participant/gender"/>
+			</gender>
+			<height>
+				<xsl:value-of select="ParticipantHistory/height"/>
+				<xsl:value-of select="ParticipantHistory/heightUnitOfMeasure"/>
+			</height>
+			<weight>
+				<xsl:value-of select="ParticipantHistory/weight"/>
+				<xsl:value-of select="ParticipantHistory/weightUnitOfMeasure"/>
+			</weight>
+			<baseline_performance_status>
+				<xsl:value-of select="ParticipantHistory/baselinePerformanceStatus"/>
+			</baseline_performance_status>
+			<disease_name>
+				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseCode"/>
+			</disease_name>
+			<disease_category>
+				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseCode"/>
+			</disease_category>
+			<primary_site_of_disease>
+				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseSiteCode"/>
+			</primary_site_of_disease>
+			<date_of_initial_diagnosis>
+				<xsl:value-of select="DiseaseHistory/dateOfInitialPathologicDiagnosis"/>
+			</date_of_initial_diagnosis>
+		</patient_information>
+							
+			<!-- 
+				<xsl:apply-templates select="StudyParticipantAssignment"/>
+			 -->	
 		<prior_therapies>
 			<xsl:apply-templates select="AdverseEventPriorTherapy"/>
 		</prior_therapies>
+		
+		<pre_existing_conditions>
+			<!-- loop -->
+			<pre_existing_condition>
+				<!-- choice -->
+				<condition_name>##</condition_name>
+				<other_condition_name>##</other_condition_name>
+			</pre_existing_condition>		
+		</pre_existing_conditions>		
+
+		<sites_of_metastatic_disease>
+			<xsl:for-each select="DiseaseHistory/MetastaticDiseaseSite">			
+				<site_of_metastatic_disease>
+					<!-- choice -->
+					<other_site_name>
+						<xsl:value-of select="otherMetastaticDiseaseSite"/>
+					</other_site_name>
+					<site_name>
+						<xsl:value-of select="otherMetastaticDiseaseSite"/>
+					</site_name>
+				</site_of_metastatic_disease>
+			</xsl:for-each>		
+		</sites_of_metastatic_disease>	
+
+		<protocol_agents>
+			<xsl:for-each select="AdverseEvent">
+				<xsl:for-each select="CourseAgentAttribution">
+					<protocol_agent>
+						<agent_name>##</agent_name>
+						<nsc_number>##</nsc_number>
+						<total_dose_administered>
+							<xsl:value-of select = "CourseAgent/totalDoseAdministeredThisCourse"/>
+						</total_dose_administered>
+						<last_administered_date>
+							<xsl:value-of select = "CourseAgent/lastAdministeredDate"/>
+						</last_administered_date>
+						<dose_uom>
+							<xsl:value-of select = "CourseAgent/Dose/units"/>
+						</dose_uom>
+						<protocol_agent_comments>##</protocol_agent_comments>
+						<agent_adjustment>##</agent_adjustment>
+						<agent_delayed>##</agent_delayed>
+						<delay>
+							<xsl:value-of select = "CourseAgent/administrationDelayAmount"/>
+						</delay>
+						<delay_uom>
+							<xsl:value-of select = "CourseAgent/administrationDelayUnits"/>
+						</delay_uom>
+					</protocol_agent>
+				</xsl:for-each>	
+			</xsl:for-each>	
+		</protocol_agents>
+
+		<other_contributing_causes>
+			<xsl:for-each select="AdverseEvent">
+				<other_contributing_cause>
+					<other_cause>
+						<xsl:value-of select = "OtherCauseAttribution/OtherCause/text"/>
+					</other_cause>
+					<other_cause_reported_by>##</other_cause_reported_by>	
+				</other_contributing_cause>
+			</xsl:for-each>
+		</other_contributing_causes>
+									
+		<concomitant_medications>
+			<xsl:apply-templates select="ConcomitantMedication"/> 	
+		</concomitant_medications>
+
+		
+
 		<adverse_events_ctc>
-			<xsl:apply-templates select="AdverseEvent"/>
+			<xsl:for-each select="AdverseEvent">
+			<adverse_event_ctc>
+				<category>
+					<xsl:value-of select="CtcTerm/CtcCategory/name"/> 
+				</category>
+				<adverse_event>##</adverse_event>
+				<meddra_code>##</meddra_code>
+				<grade>
+					<xsl:value-of  select="grade"/> 
+				</grade>
+				<ae_term>
+					<xsl:value-of select="CtcTerm/term"/> <!--verify-->
+				</ae_term> 
+			
+				<select_ae>##</select_ae>
+			
+				<latest_ctcae_version_category>
+					<xsl:value-of select="CtcTerm/CtcCategory/name"/> <!--verify-->
+				</latest_ctcae_version_category>
+			
+				<latest_ctcae_version_ae>##</latest_ctcae_version_ae>
+				<latest_ctcae_version_meddra_code>##</latest_ctcae_version_meddra_code>
+				<latest_ctcae_version_grade>##</latest_ctcae_version_grade>
+				<other_adverse_event>
+					<xsl:value-of select="detailsForOther"/>
+				</other_adverse_event>
+	
+				<hospitalization>
+					<xsl:value-of select="hospitalization"/> 
+				</hospitalization>
+				<ae_comments>
+					<xsl:value-of select="comments"/>
+				</ae_comments>
+				
+				<ae_reported_by>##</ae_reported_by>
+	
+				<attributions_for_ae>
+					<xsl:apply-templates select="ConcomitantMedicationAttribution"/> 
+					<xsl:apply-templates select="CourseAgentAttribution"/>
+					<xsl:apply-templates select="OtherCauseAttribution"/>
+				</attributions_for_ae>
+	
+			</adverse_event_ctc>	
+			</xsl:for-each>	
 		</adverse_events_ctc>
 		<lab_results>
 			<xsl:apply-templates select="Lab"/>
 		</lab_results>
+		
+		<additional_info>
+			<!-- loop -->
+			<additional_info_name>##</additional_info_name>		
+		</additional_info>
+				
 	</xsl:template>
 
 	<xsl:template match="Physician">
 		<physician_information>
 			<first_name>
-				<xsl:apply-templates select="firstName"/> 
+				<xsl:value-of select="firstName"/> 
 			</first_name>
 			<last_name>
-				<xsl:apply-templates select="lastName"/> 
+				<xsl:value-of select="lastName"/> 
 			</last_name>
 		</physician_information>		
 	</xsl:template>
@@ -43,10 +303,10 @@
 	<xsl:template match="Reporter">
 		<reporter_information>
 			<first_name>
-				<xsl:apply-templates select="firstName"/> 
+				<xsl:value-of select="firstName"/> 
 			</first_name>
 			<last_name>
-				<xsl:apply-templates select="lastName"/> 
+				<xsl:value-of select="lastName"/> 
 			</last_name>
 		</reporter_information>		
 	</xsl:template>
@@ -108,64 +368,7 @@
 			</therapy_comments>
 		</prior_therapy>		
 	</xsl:template>		
-	<xsl:template match="AdverseEvent"> 
-		<adverse_event_ctc>
-			<category>
-				sample
-			</category>
-			<adverse_event>
-				sample
-			</adverse_event>
-			<meddra_code>
-				sample
-			</meddra_code>
-			<grade>
-				<xsl:apply-templates select="grade"/> 
-			</grade>
-			<ae_term>
-				<xsl:apply-templates select="CtcTerm/term"/> <!--verify-->
-			</ae_term> 
-		
-			<select_ae>
-				sample
-			</select_ae>
-		
-			<latest_ctcae_version_category>
-				<xsl:apply-templates select="CtcTerm/CtcCategory/name"/> <!--verify-->
-			</latest_ctcae_version_category>
-		
-			<latest_ctcae_version_ae>
-				sample
-			</latest_ctcae_version_ae>
-			<latest_ctcae_version_meddra_code>
-				sample
-			</latest_ctcae_version_meddra_code>
-			<latest_ctcae_version_grade>
-				sample
-			</latest_ctcae_version_grade>
-			<other_adverse_event>
-				sample
-			</other_adverse_event>
 
-			<hospitalization>
-				<xsl:apply-templates select="hospitalization"/> 
-			</hospitalization>
-			<ae_comments>
-				<xsl:apply-templates select="comments"/>
-			</ae_comments>
-			
-			<ae_reported_by>
-				sample 
-			</ae_reported_by>
-
-			<attributions_for_ae>
-				<xsl:apply-templates select="ConcomitantMedicationAttribution"/> 
-				<xsl:apply-templates select="CourseAgentAttribution"/>
-				<xsl:apply-templates select="OtherCauseAttribution"/>
-			</attributions_for_ae>
-
-		</adverse_event_ctc>		
-	</xsl:template>
 	
 	<xsl:template match="ConcomitantMedicationAttribution"> 
 		<attribution_for_ae>
@@ -223,14 +426,14 @@
 
 	<xsl:template match="Lab"> 
 		<lab_result>
-			<lab_category>Sample</lab_category>
+			<lab_category>##</lab_category>
 			<lab>
 				<xsl:apply-templates select="name"/> 
 			</lab>
-			<microbiology_site>Sample</microbiology_site>
-			<microbiology_date>Sample</microbiology_date>
-			<infectious_agent>Sample</infectious_agent>
-			<other_lab>Sample</other_lab>
+			<microbiology_site>##</microbiology_site>
+			<microbiology_date>##</microbiology_date>
+			<infectious_agent>##</infectious_agent>
+			<other_lab>##</other_lab>
 			<baseline_date>
 				<xsl:apply-templates select="baseline/date"/> 
 			</baseline_date>
