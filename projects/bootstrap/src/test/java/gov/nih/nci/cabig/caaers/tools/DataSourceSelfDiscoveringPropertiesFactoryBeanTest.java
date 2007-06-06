@@ -100,6 +100,5 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     	return;
     	}
     	
-    	assertTrue("Incorrect quartz db configuration",false);
     }
 }
