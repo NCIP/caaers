@@ -87,8 +87,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
 		
-		System.out.println("Path of category:"+category.getPath());
-		System.out.println("Name of category:"+category.getMetaData().getName());
+		System.out.println("Path of category For Sponsor Rules:"+category.getPath());
+		System.out.println("Name of category For Sponsor Rules:"+category.getMetaData().getName());
 		
 		System.out.println("PackageName:"+packageName);
 		if(rule.getMetaData()==null){
