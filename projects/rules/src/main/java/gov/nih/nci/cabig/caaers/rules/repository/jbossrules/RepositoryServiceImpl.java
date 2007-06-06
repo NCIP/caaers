@@ -80,12 +80,12 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	{
 		MetaData metaData = rule.getMetaData();
 		PackageItem packageItem = getRulesRepository().loadPackage(metaData.getPackageName());
-		Category initialCategory = null; //metaData.getCategory().get(0);
+		Category initialCategory = metaData.getCategory().get(0);
 		
-/*		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
+		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
 				.getMetaData().getName() : getDefaultCategory();
-*/		
-		String categoryName = null;
+		
+		
 		AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
 				.getDescription(), categoryName, metaData.getFormat());
 		asset.updateContent(XMLUtil.marshal(rule));
@@ -288,6 +288,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			repositoryConfigurator.setupRulesRepository(session);
 			rulesRepository = new RulesRepositoryEx(session);
 		}
+		
 		return rulesRepository;
 	}
 
