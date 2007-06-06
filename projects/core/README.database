@@ -31,7 +31,6 @@ configuration:
 - datasource.driver
 - datasource.username
 - datasource.password
-- jdbc.quartz.delegateClassName
 
 N.b.: you no longer need to specify the dialects for hibernate or bering --
 they are automatically determined.  You can specify them if you want to -- use
@@ -105,7 +104,6 @@ datasource.url=jdbc:postgresql:caaers
 datasource.driver=org.postgresql.Driver
 datasource.username=whomever
 datasource.password=whatever
-jdbc.quartz.delegateClassName=org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
 
 Oracle
 ------
@@ -113,7 +111,6 @@ datasource.url=jdbc:oracle:thin:@host:port:service
 datasource.driver=oracle.jdbc.OracleDriver
 datasource.username=whomever
 datasource.password=whatever
-jdbc.quartz.delegateClassName=org.quartz.impl.jdbcjobstore.oracle.OracleDelegate
 
 HSQLDB (for testing)
 ------
@@ -122,4 +119,4 @@ datasource.url=jdbc:hsqldb:file:CAAERS_WC/projects/core/target/hsqldb/test
 datasource.driver=org.hsqldb.jdbcDriver
 datasource.username=sa
 datasource.password=
-jdbc.quartz.delegateClassName=org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+
