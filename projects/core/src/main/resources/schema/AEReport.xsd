@@ -6,8 +6,8 @@
         <xsd:element name="detectionDate" type="xsd:date"/>
 
          
-        <xsd:element name="Physician" type="caaers:Person"/>
-        <xsd:element name="Reporter" type="caaers:Person"/>
+        <xsd:element name="Physician" type="caaers:AdverseEventReportPerson"/>
+        <xsd:element name="Reporter" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="DiseaseHistory" type="caaers:DiseaseHistory"/>
         <xsd:element name="ParticipantHistory" type="caaers:ParticipantHistory" />
         <xsd:element name="StudyParticipantAssignment" type="caaers:StudyParticipantAssignment" />
@@ -33,14 +33,24 @@
   		<xsd:element name="meddraCode" type="xsd:string"/>
 	  </xsd:sequence>
   </xsd:complexType>	
-  
-  <xsd:complexType name="Person">
+
+  <xsd:complexType name="AdverseEventReportPerson">
 	  <xsd:sequence>
   		<xsd:element name="firstName" type="xsd:string"/>
   		<xsd:element name="lastName" type="xsd:string"/>
+  		<xsd:element name="ContactMechanism" type="caaers:ContactMechanism" maxOccurs="unbounded"/>
 	  </xsd:sequence>
   </xsd:complexType>
 
+
+  
+  <xsd:complexType name="ContactMechanism">
+	  <xsd:sequence>
+  		<xsd:element name="type" type="xsd:string"/>
+  		<xsd:element name="value" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType> 
+  
   <xsd:complexType name="ConcomitantMedication">
 	  <xsd:sequence>
   		<xsd:element name="other" type="xsd:string"/>
@@ -278,7 +288,7 @@
 	  <xsd:sequence>
   		<xsd:element name="name" type="xsd:string"/>
 	  </xsd:sequence>
-  </xsd:complexType>
+  </xsd:complexType> 
   
   <xsd:complexType name="Study">
 	  <xsd:sequence>
