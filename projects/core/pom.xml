@@ -20,17 +20,13 @@
         </repository>
         
 
-        <repository>
-		    <id>maven-snapshots</id>
-		    <name>Maven  Snapshots</name>
-		    <url>http://jeuclid.sourceforge.net/m2</url>
-		</repository>
-		-->
+		
 		<repository>
 		    <id>codehaus-snapshots</id>
 		    <name>Maven Codehaus Snapshots</name>
 		    <url>http://snapshots.repository.codehaus.org</url>
 		</repository>
+		-->
 		
     </repositories>
     <properties>
@@ -39,7 +35,7 @@
     </properties>
     <dependencies>
         <!-- BUILD/RUNTIME DEPS -->
-        
+        <!-- 
         <dependency>
 		   <groupId>org.codehaus.castor</groupId>
 		   <artifactId>castor</artifactId>
@@ -51,7 +47,7 @@
 		   <artifactId>fop</artifactId>
 		   <version>0.93</version>
 		</dependency>		
-		
+		-->
         <dependency>
             <groupId>${groupId}</groupId>
             <artifactId>caaers-core-bootstrap</artifactId>
