@@ -4,11 +4,16 @@
     <xsd:complexType name="AdverseEventReport">
       <xsd:sequence>
         <xsd:element name="detectionDate" type="xsd:date"/>
+        <xsd:element name="createdAt" type="xsd:time"/>
+        
+        <xsd:element name="status" type="xsd:string"/>
+        <xsd:element name="AdverseEventResponseDescription" type="caaers:AdverseEventResponseDescription"/>
 
          
         <xsd:element name="Physician" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="Reporter" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="DiseaseHistory" type="caaers:DiseaseHistory"/>
+        
         <xsd:element name="ParticipantHistory" type="caaers:ParticipantHistory" />
         <xsd:element name="StudyParticipantAssignment" type="caaers:StudyParticipantAssignment" />
         <xsd:element name="ConcomitantMedication" type="caaers:ConcomitantMedication" maxOccurs="unbounded"/>       
@@ -18,6 +23,16 @@
       </xsd:sequence>
     </xsd:complexType>
 
+  <xsd:complexType name="AdverseEventResponseDescription">
+	  <xsd:sequence>
+  		<xsd:element name="eventDescription" type="xsd:string"/>
+   		<xsd:element name="presentStatus" type="xsd:string"/>
+  		<xsd:element name="recoveryDate" type="xsd:date"/>
+  		<xsd:element name="retreated" type="xsd:boolean"/>	 
+  		<xsd:element name="dateRemovedFromProtocol" type="xsd:date"/> 
+  	</xsd:sequence>
+  </xsd:complexType>
+  
   <xsd:complexType name="AdverseEventPriorTherapy">
 	  <xsd:sequence>
   		<xsd:element name="PriorTherapy" type="caaers:PriorTherapy"/>
@@ -147,15 +162,26 @@
 	  <xsd:sequence>
   		<xsd:element name="lastAdministeredDate" type="xsd:date"/>
   		<xsd:element name="totalDoseAdministeredThisCourse" type="xsd:decimal"/>
-  		<xsd:element name="administrationDelayAmount" type="xsd:decimal"/>  		
+  		<xsd:element name="administrationDelayAmount" type="xsd:decimal"/>  
+  		<xsd:element name="administrationDelayUnits" type="xsd:string"/> 		
   		<xsd:element name="durationAndSchedule" type="xsd:string"/>
   		
   		<xsd:element name="Dose" type="caaers:Dose"/>
   		<xsd:element name="ModifiedDose" type="caaers:Dose"/>
   		<xsd:element name="TreatmentInformation" type="caaers:TreatmentInformation" />
+  		<!--  <xsd:element name="StudyAgent" type="caaers:StudyAgent" /> -->
 	  </xsd:sequence>
   </xsd:complexType> 
-  
+<!--  
+  <xsd:complexType name="StudyAgent">
+	  <xsd:sequence>
+  		<xsd:element name="investigationalNewDrugIndicator" type="xsd:boolean"/>
+  		<xsd:element name="investigationalNewDrugIdentifier" type="xsd:string"/>
+  		<xsd:element name="agentAsString" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType> 
+-->
+   
   <xsd:complexType name="Dose">
 	  <xsd:sequence>
   		<xsd:element name="amount" type="xsd:decimal"/>
@@ -173,7 +199,7 @@
     
   <xsd:complexType name="CourseDate">
 	  <xsd:sequence>
-  		<xsd:element name="nubmer" type="xsd:integer"/>
+  		<xsd:element name="number" type="xsd:integer"/>
   		<xsd:element name="date" type="xsd:date"/>
 	  </xsd:sequence>
   </xsd:complexType>
@@ -268,9 +294,25 @@
 	  <xsd:sequence>
   		<xsd:element name="dateOfEnrollment" type="xsd:date"/>
   		<xsd:element name="StudySite" type="caaers:StudySite"/>
+  		<xsd:element name="Participant" type="caaers:Participant"/>
 	  </xsd:sequence>
   </xsd:complexType>
 
+  <xsd:complexType name="Participant">
+	  <xsd:sequence>
+  		<xsd:element name="institutionalPatientNumber" type="xsd:string"/>
+  		<xsd:element name="institution" type="xsd:string"/>
+  		<xsd:element name="firstName" type="xsd:string"/>
+  		<xsd:element name="middleName" type="xsd:string"/>
+  		<xsd:element name="maidenName" type="xsd:string"/>
+  		<xsd:element name="lastName" type="xsd:string"/>
+  		<xsd:element name="dateOfBirth" type="xsd:date"/>
+  		<xsd:element name="gender" type="xsd:string"/>
+  		<xsd:element name="race" type="xsd:string"/>
+  		<xsd:element name="ethnicity" type="xsd:string"/>
+	  </xsd:sequence>
+  </xsd:complexType>
+  
   <xsd:complexType name="StudySite">
 	  <xsd:sequence>
   		<xsd:element name="irbApprovalDate" type="xsd:date"/>
