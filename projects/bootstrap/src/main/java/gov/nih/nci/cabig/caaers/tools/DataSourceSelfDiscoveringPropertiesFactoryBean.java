@@ -34,7 +34,7 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     public static final String URL_PROPERTY_NAME = "datasource.url";
     public static final String USERNAME_PROPERTY_NAME = "datasource.username";
     public static final String PASSWORD_PROPERTY_NAME = "datasource.password";
-    
+    public static final String QUARTZ_DELEGATE_PROPERTY_NAME= "jdbc.quartz.delegateClassName";
     public static final String DEFAULT_POSTGRESQL_DIALECT
         = "edu.northwestern.bioinformatics.bering.dialect.hibernate.ImprovedPostgreSQLDialect";
 
@@ -119,8 +119,13 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     private void computeProperties() {
         String dialect = selectHibernateDialect();
         if (dialect != null) properties.setProperty(HIBERNATE_DIALECT_PROPERTY_NAME, dialect);
+        
+        String quartzDelegateClass = selectQuartzDelegateClass();
+        if(quartzDelegateClass != null) properties.setProperty(QUARTZ_DELEGATE_PROPERTY_NAME, quartzDelegateClass);
     }
-
+    
+   
+    
     private String selectHibernateDialect() {
         String explicit = properties.getProperty(HIBERNATE_DIALECT_PROPERTY_NAME);
         if (explicit != null) return explicit;
@@ -157,5 +162,26 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
 
     public void setDefaults(Properties defaults) {
         this.defaults = defaults;
+    }
+    
+    /**
+     * To determin the quartz delegate class to use
+     * @return
+     */
+    private String selectQuartzDelegateClass(){
+    	////hibernate for time being will use default (http://jira.opensymphony.com/browse/QUARTZ-560)
+    	String defaultClass = "org.quartz.impl.jdbcjobstore.StdJDBCDelegate"; 
+    	String postgresClass = "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate";
+    	String oracleClass = "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
+    	String rdbms = properties.getProperty(RDBMS_PROPERTY_NAME);
+    	String driver = properties.getProperty(DRIVER_PROPERTY_NAME);
+    	
+    	String db = (rdbms != null) ? rdbms : driver;
+    	if(db != null){ 
+    		if(db.toLowerCase().contains("postgres")) return postgresClass;
+    		if(db.toLowerCase().contains("oracle")) return oracleClass;
+    	}
+    	return defaultClass;
+    	
     }
 }

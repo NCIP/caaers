@@ -76,4 +76,30 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     private Properties getActualProperties() throws Exception {
         return (Properties) factoryBean.getObject();
     }
+    
+    public void testSelectQuartzDelegateClass() throws Exception{
+    	Properties actual = getActualProperties();
+    	String dbProperty = String.valueOf(actual.getProperty(DRIVER_PROPERTY_NAME)) + String.valueOf(actual.getProperty(RDBMS_PROPERTY_NAME)) ;
+    	String quartzDelegateClass = actual.getProperty(QUARTZ_DELEGATE_PROPERTY_NAME);
+    	assertNotNull("Quartz Delegate class empty", quartzDelegateClass);
+    	System.out.println(dbProperty);
+    	System.out.println(quartzDelegateClass);
+    	if(dbProperty.toLowerCase().contains("oracle")){
+    		assertEquals("Expected org.quartz.impl.jdbcjobstore.oracle.OracleDelegate",
+    				"org.quartz.impl.jdbcjobstore.oracle.OracleDelegate" , quartzDelegateClass);
+    	return;
+    	}
+    	if(dbProperty.toLowerCase().contains("postgres")){
+    		assertEquals("Expected org.quartz.impl.jdbcjobstore.PostgreSQLDelegate",
+    				"org.quartz.impl.jdbcjobstore.PostgreSQLDelegate" , quartzDelegateClass);
+    	return;
+    	}
+    	if(dbProperty.toLowerCase().contains("hsql")){
+    		assertEquals("Expected org.quartz.impl.jdbcjobstore.StdJDBCDelegate(Hibernate)",
+    				"org.quartz.impl.jdbcjobstore.StdJDBCDelegate" , quartzDelegateClass);
+    	return;
+    	}
+    	
+    	assertTrue("Incorrect quartz db configuration",false);
+    }
 }
