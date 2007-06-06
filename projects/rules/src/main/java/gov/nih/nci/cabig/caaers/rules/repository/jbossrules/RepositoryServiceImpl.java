@@ -196,6 +196,11 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	 */
 	public RuleSet getRuleSet(String name) 
 	{
+		if (!getRulesRepository().containsPackage(name))
+		{
+			return null;
+		}
+		
 		PackageItem item = getRulesRepository().loadPackage(name);
 		RuleSet ruleSet = new RuleSet();
 		ruleSet.setId(item.getUUID());
