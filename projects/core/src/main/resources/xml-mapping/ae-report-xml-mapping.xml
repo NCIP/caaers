@@ -75,14 +75,21 @@
     </field>
   </class>
     
-  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.Person">
+  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
     <map-to xml="Physician"  />
+    <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
+      <bind-xml name="ContactMechanism"/>
+    </field> 
   </class>  
 
-  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.Person">
+  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
     <map-to xml="Reporter"  />
+    <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
+      <bind-xml name="ContactMechanism"/>
+    </field> 
   </class>  
-    
+  
+<!--   
   <class name="gov.nih.nci.cabig.caaers.domain.Person">
     <map-to xml="Person"  />
     <field name="id" type="integer">
@@ -93,9 +100,37 @@
     </field>
     <field name="lastName" type="string">
       <bind-xml name="lastName" node="element" />
-    </field>
+    </field>   
   </class>  
+-->
 
+  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
+    <map-to xml="AdverseEventReportPerson"  />
+
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="element" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="element" />
+    </field>  
+  </class>  
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.ContactMechanism">
+    <map-to xml="ContactMechanism"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="attribute" />
+    </field>
+    <field name="type" type="string">
+      <bind-xml name="type" node="attribute"/>
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" />
+    </field> 
+  </class> 
+  
   <class name="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
     <map-to xml="ConcomitantMedication"  />
     <field name="id" type="integer">
