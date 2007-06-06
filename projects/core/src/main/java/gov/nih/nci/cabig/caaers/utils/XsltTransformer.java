@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 
-
+/*
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,6 +23,7 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
+*/
 
 public class XsltTransformer {
 		
@@ -33,6 +34,7 @@ public class XsltTransformer {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 		public String toXml(String inXml,String xsltFile)  throws Exception{
 			Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
 			File xslt = new File(xsltFile);
@@ -50,6 +52,7 @@ public class XsltTransformer {
 			
 			return outStr.toString();
 		}
+		*/
 		
 		/**
 		 * Transforms XML to PDF using provided XSL-FO XSLT  file.
@@ -60,6 +63,7 @@ public class XsltTransformer {
 		 * @param xsltFile
 		 * @throws Exception
 		 */
+	/*
 		public void toPdf(String inXml,String outPdfFile, String xsltFile) throws Exception{
 		
 			String fo = getFO(inXml,xsltFile);
@@ -120,6 +124,7 @@ public class XsltTransformer {
 		 * @return
 		 * @throws Exception
 		 */
+		/*
 		private String getFO (String inXml, String xsltFile)  throws Exception{
         	File xslt = new File(xsltFile);
         	
@@ -140,6 +145,7 @@ public class XsltTransformer {
             
             //FO to PDF 
 		}
+		*/
 		
 
 
