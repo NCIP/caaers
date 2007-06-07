@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers-introduce</artifactId>
-        <version>0.4.1</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
 
     <build>
