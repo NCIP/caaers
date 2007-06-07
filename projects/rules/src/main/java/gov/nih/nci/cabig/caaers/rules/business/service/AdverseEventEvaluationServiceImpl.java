@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
+import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
@@ -43,8 +44,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
 	String sponsorName = study.getPrimarySponsorCode();
 	String studyName = study.getShortTitle();
-	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "ae assessment ruleset");
-	String bindURI_ForStudyLevelRules = this.getBindURI(studyName,studyName,"STUDY", "ae assessment ruleset");
+	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "AE Assessment RuleSet");
+	String bindURI_ForStudyLevelRules = this.getBindURI(sponsorName,studyName,"STUDY", "AE Assessment RuleSet");
 	
 	/**
 	 * First asses the AE for Sponsor
@@ -99,6 +100,10 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 }
 	
 	//public String identifyAdverseEventType()
+  /**
+   * Go through all the Aes and fire the rules against them
+   * and return the collection of reports
+   */
 	
 	public String evaluateSAEReportSchedule(AdverseEventReport aeReport) throws Exception{
 		    //ReportSchedule rs = aeReport.getReportSchedule();
@@ -121,10 +126,10 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	private String getBindURI(String sponsorName, String studyName, String type, String ruleSetName){
 		String bindURI = null;
 		if (type.equalsIgnoreCase("SPONSOR")){
-			bindURI = "gov.nih.nci.cabig.caaers.rule.sponsor."+this.getStringWithoutSpaces(sponsorName).toLowerCase()+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
+			bindURI = CategoryConfiguration.SPONSOR_BASE.getPackagePrefix() + "." +this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		if(type.equalsIgnoreCase("STUDY")){
-			bindURI = "gov.nih.nci.cabig.caaers.rule.study."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName).toLowerCase();
+			bindURI = CategoryConfiguration.STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		return bindURI;
 	}
