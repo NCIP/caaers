@@ -56,12 +56,12 @@
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-csm</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>${ctms-commons.version}</version>
         </dependency>
         <dependency>
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-grid</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>${ctms-commons.version}</version>
         </dependency>
 
         <dependency>

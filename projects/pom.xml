@@ -50,7 +50,7 @@
     <modules>
         <module>bootstrap</module>
         <module>core</module>
-		 <module>scheduler</module>
+        <module>scheduler</module>
         <module>rules</module>
         <module>web</module>
         <module>grid</module>
@@ -58,7 +58,7 @@
     </modules>
 
     <properties>
-        <ctms-commons.version>0.2-SNAPSHOT</ctms-commons.version>
+        <ctms-commons.version>0.2</ctms-commons.version>
     </properties>
 
     <!-- Specify versions once for commonly-used deps -->
