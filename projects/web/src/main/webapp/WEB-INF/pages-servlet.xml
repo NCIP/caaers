@@ -36,87 +36,87 @@
         </property>
     </bean>
     
-    <bean id="urlResolver" class="gov.nih.nci.cabig.caaers.tools.spring.BeanNameControllerUrlResolver">
+    <bean id="urlResolver" class="gov.nih.nci.cabig.ctms.tools.spring.BeanNameControllerUrlResolver">
         <property name="servletName"><value>pages</value></property>
     </bean>
 
-    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
+    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
         <property name="sections">
             <list>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Adverse Events" p:mainController="listAdverseEventsController">
                     <property name="pathMapping"><value>/ae/**</value></property>
                     <property name="tasks">
                         <list>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="List reports" p:linkName="listAdverseEventsController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Enter routine report" p:linkName="createRoutineAdverseEventController"/>
                         </list>
                     </property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Studies" p:mainController="searchStudyController">
                     <property name="pathMapping"><value>/study/**</value></property>
                     <property name="tasks">
                         <list>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Study" p:linkName="createStudyController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Search Studies" p:linkName="searchStudyController"/>
                         </list>
                     </property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Participants" p:mainController="createParticipantController">
                     <property name="pathMapping"><value>/participant/**</value></property>
                     <property name="tasks">
                         <list>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Participant" p:linkName="createParticipantController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
                         </list>
                     </property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Reports" p:mainController="reportsNotImplementedController">
                     <property name="pathMapping"><value>/report/**</value></property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Rules" p:mainController="createRuleController">
                     <property name="pathMapping"><value>/rule/**</value></property>
                     <property name="tasks">
                         <list>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Rule" p:linkName="createRuleController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="List Rules" p:linkName="listRuleController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Report Calendar" p:linkName="createNotificationController"/> 
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="List Report Calendars" p:linkName="listNotificationController"/>                                
                         </list>
                     </property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType"
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Administration" p:mainController="configurationController">
                     <property name="pathMapping"><value>/admin/**</value></property>
                     <property name="tasks">
                         <list>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Configure caAERS" p:linkName="configurationController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Investigator" p:linkName="createInvestigatorController"/>            
-							<bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Research Staff" p:linkName="createResearchStaffController"/>
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import" p:linkName="importController"/> 
-                            <bean class="gov.nih.nci.cabig.caaers.web.chrome.Task" autowire="byType"
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import MedDRA" p:linkName="importMeddraController"/>                                                                               
                         </list>
                     </property>

@@ -4,20 +4,9 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.web.SectionInterceptor;
-import gov.nih.nci.cabig.caaers.web.chrome.Section;
-import gov.nih.nci.cabig.caaers.web.chrome.Task;
-
-import java.io.IOException;
-import java.io.File;
-import java.util.List;
-import java.net.URISyntaxException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
+import gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor;
+import gov.nih.nci.cabig.ctms.web.chrome.Section;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import org.acegisecurity.intercept.web.FilterInvocation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -25,6 +14,13 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

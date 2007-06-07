@@ -27,14 +27,14 @@
         </property>
     </bean>
    
-    <bean id="publicUrlResolver" class="gov.nih.nci.cabig.caaers.tools.spring.BeanNameControllerUrlResolver">
+    <bean id="publicUrlResolver" class="gov.nih.nci.cabig.ctms.tools.spring.BeanNameControllerUrlResolver">
         <property name="servletName"><value>public</value></property>
     </bean>
 
-    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.caaers.web.SectionInterceptor">
+    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
         <property name="sections">
             <list>
-                <bean class="gov.nih.nci.cabig.caaers.web.chrome.Section" autowire="byType">
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType">
                     <property name="displayName"><value>Log in</value></property>
                     <property name="pathMapping"><value>/login</value></property>
                     <property name="mainController"><value>loginController</value></property>
