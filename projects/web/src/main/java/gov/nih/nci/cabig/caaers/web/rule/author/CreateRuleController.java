@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.AbstractRuleInputController;
 
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	private NotificationDao notificationDao;
 	
+	private RulesEngineService rulesEngineService;
+	
     public NotificationDao getNotificationDao() {
 		return notificationDao;
 	}
@@ -44,7 +47,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
 		CreateRuleCommand command = (CreateRuleCommand) oCommand;
         command.save();
-		Map<String, Object> model = new HashMap();
+		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);
 
@@ -52,7 +55,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) {
-		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao);	
+		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService);	
 	}
 
     @Override
@@ -88,5 +91,13 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+
+	public RulesEngineService getRulesEngineService() {
+		return rulesEngineService;
+	}
+
+	public void setRulesEngineService(RulesEngineService rulesEngineService) {
+		this.rulesEngineService = rulesEngineService;
 	}
 }

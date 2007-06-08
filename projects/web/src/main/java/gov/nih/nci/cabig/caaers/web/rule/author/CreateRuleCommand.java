@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -41,6 +42,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
+	private RulesEngineService rulesEngineService;
+	
 	private NotificationDao notificationDao; 
 	
 	private StudyDao studyDao;
@@ -59,11 +62,12 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private String institutionName;
 	
-	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, NotificationDao notificationDao) 
+	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, NotificationDao notificationDao, RulesEngineService rulesEngineService) 
 	{
 		setRuleAuthoringService(ruleAuthoringService);
 		setStudyDao(studyDao);
 		setNotificationDao(notificationDao);
+		setRulesEngineService(rulesEngineService);
 		createCategories();
 		ruleSet = new RuleSet();
 		existingRuleSets = new ArrayList<RuleSet>();
@@ -77,9 +81,11 @@ public class CreateRuleCommand implements RuleInputCommand
 		try 
 		{
 			//Create Package if it does not exist
-			createPackage();
+			//createPackage();
 
 			List<Rule> rules = ruleSet.getRule();
+			
+			ruleSet.setDescription(ruleSetName);
 			
 			//Set the Package name and categoryIdentifier for all rules before saving them.
 			for(Rule rule : rules) 
@@ -94,21 +100,36 @@ public class CreateRuleCommand implements RuleInputCommand
 				
 				//rule.getCondition().getColumn().get(0).setIdentifier("adverseEventSDO");
 				populateCategoryBasedColumns(rule);
-				createAdverseEventEvaluatorCondition(rule);
+				//createAdverseEventEvaluatorCondition(rule);
 				
-				if(rule.getId() == null)
-				{
-					ruleAuthoringService.createRule(rule);
-				}
-				else
-				{
-					ruleAuthoringService.updateRule(rule);
-				}
+//				if(rule.getId() == null)
+//				{
+//					ruleAuthoringService.createRule(rule);
+//				}
+//				else
+//				{
+//					ruleAuthoringService.updateRule(rule);
+//				}
 			}
+		
+	    	if (CreateRuleCommand.SPONSOR_LEVEL.equalsIgnoreCase(this.getLevel()))
+	    	{
+	    		rulesEngineService.saveRulesForSponsor(ruleSet, sponsorName); 
+	    	}
+	    	else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equalsIgnoreCase(this.getLevel()))
+	    	{
+	    		rulesEngineService.saveRulesForInstitution(ruleSet, institutionName);
+	    	}
+	    	else
+	    	{
+	    		rulesEngineService.saveRulesForStudy(ruleSet, categoryIdentifier, sponsorName);
+	    		
+	    	}
+
 		} 
-		catch (RemoteException e) 
+		catch (Exception ex) 
 		{
-			logger.error("Exception while creating Rule:", e);
+			logger.error("Exception while creating Rule:", ex);
 			//e.printStackTrace();
 		}
 	}
@@ -351,14 +372,14 @@ public class CreateRuleCommand implements RuleInputCommand
 		if (STUDY_LEVEL.equals(level))
 		{
 			FieldConstraint sponsorFieldConstraint = new FieldConstraint();
-			fieldConstraint.setFieldName(getFieldNameBasedOnLevel(SPONSOR_LEVEL));
+			sponsorFieldConstraint.setFieldName(getFieldNameBasedOnLevel(SPONSOR_LEVEL));
 			fieldConstraints.add(sponsorFieldConstraint);
 			ArrayList<LiteralRestriction> sponsorLiteralRestrictions = new ArrayList<LiteralRestriction>();
 			LiteralRestriction sponsorLiteralRestriction = new LiteralRestriction();
 			sponsorLiteralRestriction.setEvaluator("==");
-			sponsorLiteralRestriction.setValue(criteriaValue);
+			sponsorLiteralRestriction.setValue(this.getSponsorName());
 			sponsorLiteralRestrictions.add(sponsorLiteralRestriction);
-			fieldConstraint.setLiteralRestriction(sponsorLiteralRestrictions);
+			sponsorFieldConstraint.setLiteralRestriction(sponsorLiteralRestrictions);
 		}
 
 		column.setFieldConstraint(fieldConstraints);
@@ -525,4 +546,12 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 		condition.getColumn().add(column_fixed);
     }
+
+	public RulesEngineService getRulesEngineService() {
+		return rulesEngineService;
+	}
+
+	public void setRulesEngineService(RulesEngineService rulesEngineService) {
+		this.rulesEngineService = rulesEngineService;
+	}
 }

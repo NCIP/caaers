@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -39,6 +39,7 @@ public class RuleTab extends DefaultTab
     
     	RuleSet ruleSet = createRuleCommand.getRuleSet();
     	
+    	// Return if the rules are already retrieved
     	if (ruleSet != null && ruleSet.getDescription() != null && 
     			ruleSet.getDescription().equals(createRuleCommand.getRuleSetName()))
     	{
@@ -48,79 +49,27 @@ public class RuleTab extends DefaultTab
     	// Retrieve RuleSet based on the one choosen by the user
 			try 
 			{
-				RuleAuthoringService ruleAuthoringService = createRuleCommand.getRuleAuthoringService();
+				//RuleAuthoringService ruleAuthoringService = createRuleCommand.getRuleAuthoringService();
+				RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
 				
-/*				List<Rule> ruleIds = ruleAuthoringService.getRulesByCategory(getCategoryPath((CreateRuleCommand) command));
-				
-				//Unfortunately...the version of XFire - Jaxb combination we use has some problem at client side
-				//in serializing the list of values..it doesn't set value for properties when called in a List. 
-				//So for this iteration i am fetching this one by one...hope this will stand for this release as number 
-				//of rules created will be less per study
-				for(Rule ruleId : ruleIds) 
+				if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel()))
 				{
-					Rule rule = ruleAuthoringService.getRule(ruleId.getId());
-					List<Column> columns = rule.getCondition().getColumn();
-					for(int i = 0; i < columns.size(); i++) {
-						if("studySDO".equals(columns.get(i).getIdentifier())) {
-							columns.remove(i);
-						}
-					}
-					ruleSet.getRule().add(rule);
-				}
-*/	
-				// Load the rules based on the package name. If package is found, then load rules from it. Otherwise get the Sponsor level package
-				String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
-				
-				// Check whether this package exists
-				if (ruleAuthoringService.containsRuleSet(packageName))
-				{	
-					ruleSet = ruleAuthoringService.getRuleSet(packageName);
+					// Load the rules based on the package name. If package is found, then load rules from it. Otherwise get the Sponsor level package
+					//String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
+					
+					// Check whether this package exists
+//					if (ruleAuthoringService.containsRuleSet(packageName))
+//					{	
+//						ruleSet = ruleAuthoringService.getRuleSet(packageName);
 
-					if (ruleSet != null && ruleSet.getRule().size() > 0)
-					{	
-						List <Rule> rules = ruleSet.getRule();
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
 						
-						for(Rule rule : rules) 
-						{
-							List<Column> columns = rule.getCondition().getColumn();
-							
-							for(int i = 0; i < columns.size(); i++) 
-							{
-								if("studySDO".equals(columns.get(i).getIdentifier())) 
-								{
-									columns.remove(i);
-									i = -1;
-									continue;
-								}
-								
-								if("adverseEventEvaluationResult".equals(columns.get(i).getIdentifier()))
-								{
-									columns.remove(i);
-									i = -1;
-									continue;
-								}
-							}
-						}
-					}
-				}
-				else if (CreateRuleCommand.STUDY_LEVEL.equals(createRuleCommand.getLevel()))
-				{
-					String sponsorPackageName = createRuleCommand.constructPackageName(CreateRuleCommand.SPONSOR_LEVEL);
-
-					// Load the sponsor level package
-					if (ruleAuthoringService.containsRuleSet(sponsorPackageName))
-					{	
-						ruleSet = ruleAuthoringService.getRuleSet(sponsorPackageName);
-
 						if (ruleSet != null && ruleSet.getRule().size() > 0)
 						{	
-							ruleSet.setName(packageName);
 							List <Rule> rules = ruleSet.getRule();
 							
 							for(Rule rule : rules) 
 							{
-								rule.getMetaData().setPackageName(packageName); 
-								rule.setId(null);
 								List<Column> columns = rule.getCondition().getColumn();
 								
 								for(int i = 0; i < columns.size(); i++) 
@@ -129,7 +78,9 @@ public class RuleTab extends DefaultTab
 									{
 										columns.remove(i);
 										i = -1;
+										continue;
 									}
+									
 									if("adverseEventEvaluationResult".equals(columns.get(i).getIdentifier()))
 									{
 										columns.remove(i);
@@ -139,10 +90,76 @@ public class RuleTab extends DefaultTab
 								}
 							}
 						}
+//					}
+				}
+				else if (CreateRuleCommand.STUDY_LEVEL.equals(createRuleCommand.getLevel()))
+				{
+					
+					
+					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
+					//String sponsorPackageName = createRuleCommand.constructPackageName(CreateRuleCommand.SPONSOR_LEVEL);
+					ruleSet = rulesEngineService.getRuleSetForStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+
+					boolean areSponsorRules = false;
+					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
+					if (ruleSet == null)
+					{
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						areSponsorRules = true;
 					}
 					
+					// Load the sponsor level package
+//					if (ruleAuthoringService.containsRuleSet(sponsorPackageName))
+//					{	
+//						ruleSet = ruleAuthoringService.getRuleSet(sponsorPackageName);
+
+						if (ruleSet != null && ruleSet.getRule().size() > 0)
+						{	
+							//ruleSet.setName(packageName);
+							List <Rule> rules = ruleSet.getRule();
+							
+							for(Rule rule : rules) 
+							{
+								rule.getMetaData().setPackageName(packageName); 
+								//rule.setId(null);
+								List<Column> columns = rule.getCondition().getColumn();
+								
+								for(int i = 0; i < columns.size(); i++) 
+								{
+									if("studySDO".equals(columns.get(i).getIdentifier())) 
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+									if("adverseEventEvaluationResult".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+								}
+								
+								// Remove category from sponsor rules
+                                if (areSponsorRules)
+                                {
+                                	rule.setId(null);
+									if (rule.getMetaData() != null)
+                                    {
+ 										rule.getMetaData().setCategory(null);
+                                    }
+                                }
+
+							}
+						}
+//					}
+					 
 				}
 				
+				if (ruleSet == null)
+				{
+					ruleSet = new RuleSet();
+				}
 				createRuleCommand.setRuleSet(ruleSet);
 				
 			} 
@@ -198,15 +215,5 @@ public class RuleTab extends DefaultTab
     	return categoryPath;
     }
 
-    /*
-     * 
-     */
-	private String getStringWithoutSpaces(String str)
-	{
-		String _str= str.trim();
-		return _str.replace(" ", "_");
-	}
-
-    
 
 }

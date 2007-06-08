@@ -84,8 +84,6 @@
 			{
 				if (level.value == 'Sponsor')
 				{
-					//document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
-					//document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
 					Effect.Appear("sponsor-details");
 					Effect.Fade("study-details");
 				}
@@ -93,21 +91,16 @@
 				{
 					if (level.value == 'Study')
 					{
-						//document.getElementById("sponsor-details").setAttribute("style", "visibility: visible")
-						//document.getElementById("study-details").setAttribute("style", "visibility: visible")					
 						Effect.Appear("sponsor-details");
 						Effect.Appear("study-details");
 					}
 					else
 					{
-						//document.getElementById("sponsor-details").setAttribute("style", "visibility: hidden")
-						//document.getElementById("study-details").setAttribute("style", "visibility: hidden")					
 						Effect.Fade("sponsor-details");
 						Effect.Fade("study-details");
 					}
 				}
 			}
-
             
 
 	</script>
