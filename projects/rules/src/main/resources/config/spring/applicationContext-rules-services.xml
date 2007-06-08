@@ -19,5 +19,8 @@
 	 <bean id="ruleExecutionService" class="gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl"/> 	 
 	 
  	 <bean id="emailService" class="gov.nih.nci.cabig.caaers.email.EmailServiceImpl"/> 	 
+ 	 
+ 	 <bean id="ruleEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/> 	 
+ 	 
 
 </beans>

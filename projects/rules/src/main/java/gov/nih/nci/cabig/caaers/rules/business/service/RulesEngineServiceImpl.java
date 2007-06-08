@@ -247,8 +247,11 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		// TODO Auto-generated method stub
 		
 		String bindUri = ruleSet.getName();
-		
+		   try{
 			ruleDeploymentService.deregisterRuleSet(bindUri);
+		   }catch(Exception ex){
+			   System.out.println("This is first time registration");
+		   }
 			ruleDeploymentService.registerRuleSet(bindUri, bindUri);
 		
 		

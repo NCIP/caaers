@@ -80,11 +80,16 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	{
 		MetaData metaData = rule.getMetaData();
 		PackageItem packageItem = getRulesRepository().loadPackage(metaData.getPackageName());
-		Category initialCategory = metaData.getCategory().get(0);
 		
-		String categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
-				.getMetaData().getName() : getDefaultCategory();
+		String categoryName = null;
 		
+		if (metaData.getCategory() != null && metaData.getCategory().size() > 0)
+		{	
+			Category initialCategory = metaData.getCategory().get(0);
+		
+			categoryName = (initialCategory != null) ? initialCategory.getPath() + "/" + initialCategory
+							.getMetaData().getName() : getDefaultCategory();
+		}
 		
 		AssetItem asset = packageItem.addAsset(metaData.getName(), metaData
 				.getDescription(), categoryName, metaData.getFormat());
@@ -126,7 +131,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 				assetItem.updateDateExpired(meta.getDateExpired()
 					.toGregorianCalendar());
 			
-/*			List<Category> categoryList = meta.getCategory();
+			List<Category> categoryList = meta.getCategory();
 			int numberOfCategories = categoryList.size();
 			String[] categories = new String[numberOfCategories];
 			
@@ -136,7 +141,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			}
 			
 			assetItem.updateCategoryList(categories);
-*/			
+			
 			rule.getMetaData().setDateEffective(null);
 			rule.getMetaData().setDateExpired(null);
 			assetItem.updateContent(XMLUtil.marshal(rule));
