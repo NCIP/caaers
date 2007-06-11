@@ -76,9 +76,9 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     private Properties getActualProperties() throws Exception {
         return (Properties) factoryBean.getObject();
     }
-    
+
     public void testSelectQuartzDelegateClass() throws Exception{
-    	Properties actual = getActualProperties();
+    	Properties actual = factoryBean.getProperties();
     	String dbProperty = String.valueOf(actual.getProperty(DRIVER_PROPERTY_NAME)) + String.valueOf(actual.getProperty(RDBMS_PROPERTY_NAME)) ;
     	String quartzDelegateClass = actual.getProperty(QUARTZ_DELEGATE_PROPERTY_NAME);
     	assertNotNull("Quartz Delegate class empty", quartzDelegateClass);
@@ -99,6 +99,6 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     				"org.quartz.impl.jdbcjobstore.StdJDBCDelegate" , quartzDelegateClass);
     	return;
     	}
-    	
+    	//assertTrue("datasource.properties has wrong configuation", false);
     }
 }
