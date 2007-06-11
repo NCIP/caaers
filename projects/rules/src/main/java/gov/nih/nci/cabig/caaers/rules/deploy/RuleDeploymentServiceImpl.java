@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.deploy;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
@@ -55,9 +56,18 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		//The repository configurations can be passed in AS  PROPERTIES
 		
 		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName);
+		String ruleSetDesc = ruleSet.getDescription();
+		if(ruleSetDesc.equalsIgnoreCase(RuleType.AE_ASSESMENT_RULES.getName())||ruleSetDesc.equalsIgnoreCase(RuleType.REPORT_SCHEDULING_RULES.getName())){
+			
+		}
 
 		try {
-			RuleAdapter ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.JBossXSLTRuleAdapter").newInstance();
+			RuleAdapter ruleAdapter = null;
+			if(ruleSetDesc.equalsIgnoreCase(RuleType.AE_ASSESMENT_RULES.getName())||ruleSetDesc.equalsIgnoreCase(RuleType.REPORT_SCHEDULING_RULES.getName())){
+				ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.CaAERSJBossXSLTRuleAdapter").newInstance();
+			}else{
+			   ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.JBossXSLTRuleAdapter").newInstance();
+			}
 			Object ruleSetObj = ruleAdapter.adapt(ruleSet);
 			//Please note that we can only pass the Package here to the RuleExecution set.
 			//Since we still use drools implementation of LocalRuleExecutionSetProvider
