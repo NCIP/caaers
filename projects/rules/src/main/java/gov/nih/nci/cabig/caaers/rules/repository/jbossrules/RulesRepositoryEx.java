@@ -181,7 +181,7 @@ public class RulesRepositoryEx extends RulesRepository {
             return new CompiledPackageItem(this, rulePackageNode);
         }
         catch(Exception e) {
-            log.log(Level.SEVERE, "Unable to load a compiled rule package. ", e);
+            //log.log(Level.SEVERE, "Unable to load a compiled rule package. ", e); --vinay
             if (e instanceof RuntimeException ) {
                 throw (RuntimeException) e;                
             } else {
