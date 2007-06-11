@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RulesRepositoryEx;
@@ -52,6 +53,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		
+		/**
+		 * First check if the RuleSet has been created or not
+		 * If not then first create the ruleset
+		 */
+		RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
+		if(ruleSet==null){
+			this.createRuleSetForInstitution(ruleSetName, institutionName);
+		}
+		
 		String uuid = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		Category category = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
@@ -64,15 +74,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		rule.getMetaData().getCategory().clear();
 		rule.getMetaData().getCategory().add(category);
 		
-		/**
-		 * This need to be added after discussion 
-		 */
-		Condition condition = rule.getCondition();
-		Column column_fixed = new Column();
-		column_fixed.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
-		column_fixed.setIdentifier("adverseEventEvaluationResult");
 		
-		condition.getColumn().add(column_fixed);
+		
 		
 		
 			uuid=ruleAuthoringService.createRule(rule);
@@ -83,6 +86,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
+		
+		/**
+		 * First check if the RuleSet has been created or not
+		 * If not then first create the ruleset
+		 */
+		RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
+		if(ruleSet==null){
+			this.createRuleSetForSponsor(ruleSetName, sponsorName);
+		}
 		String uuid= null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
@@ -99,15 +111,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		rule.getMetaData().getCategory().clear();
 		rule.getMetaData().getCategory().add(category);
 		
-		/**
-		 * This need to be added after discussion 
-		 */
-		Condition condition = rule.getCondition();
-		Column column_fixed = new Column();
-		column_fixed.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
-		column_fixed.setIdentifier("adverseEventEvaluationResult");
 		
-		condition.getColumn().add(column_fixed);
 		
 		
 			uuid = ruleAuthoringService.createRule(rule);
@@ -118,6 +122,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
+		/**
+		 * First check if the RuleSet has been created or not
+		 * If not then first create the ruleset
+		 */
+		RuleSet ruleSet = this.getRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+		
+		if(ruleSet==null){
+			this.createRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+		}
+		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
@@ -130,15 +144,6 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		rule.getMetaData().getCategory().clear();
 		rule.getMetaData().getCategory().add(category);
 		
-		/**
-		 * This need to be added after discussion 
-		 */
-		Condition condition = rule.getCondition();
-		Column column_fixed = new Column();
-		column_fixed.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
-		column_fixed.setIdentifier("adverseEventEvaluationResult");
-		
-		condition.getColumn().add(column_fixed);
 		
 		
 			uuid = ruleAuthoringService.createRule(rule);
@@ -252,6 +257,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		   }catch(Exception ex){
 			   System.out.println("This is first time registration");
 		   }
+		   
+		   
 			ruleDeploymentService.registerRuleSet(bindUri, bindUri);
 		
 		
@@ -513,6 +520,24 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			}
 		}
 		
+	}
+
+
+	public boolean isDeployed(RuleSet ruleSet) {
+		// TODO Auto-generated method stub
+		boolean found = false;
+		String bindURI = ruleSet.getName();
+		RuleSetInfo[] info = repositoryService.listRegistrations();
+		
+		for(int i=0;i<info.length;i++){
+			RuleSetInfo rsi = (RuleSetInfo)info[i];
+			String bindUri= rsi.getBindUri();
+			if(bindURI.equalsIgnoreCase(bindUri)) {
+				found = true;
+				break;
+			}
+		}
+		return found;
 	}
 	
 	
