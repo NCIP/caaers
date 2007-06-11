@@ -55,8 +55,20 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	 */
 	
 	
+	RuleSet ruleSetForSponsor = rulesEngineService.getRuleSetForSponsor(RuleType.AE_ASSESMENT_RULES.getName(), sponsorName);
+	
+	if(ruleSetForSponsor==null){
+		throw new Exception("There are no rules configured for adverse event assesment for this sponsor!");
+	}
+	
+	boolean rulesDeployedForSponsor = rulesEngineService.isDeployed(ruleSetForSponsor);
+	
+	if(!rulesDeployedForSponsor){
+		throw new Exception("There are no rules deployd for adverse event assesment for this sponsor!");
+	}
 	
 	AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
+	
 	try {
 		evaluationForSponsor = this.getEvaluationObject(ae, study, bindURI_ForSponsorLevelRules);
 	} catch (Exception e) {
@@ -69,20 +81,20 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	 * Now fire rules for Study
 	 */
 	RuleSet ruleSetForStudy = rulesEngineService.getRuleSetForStudy(RuleType.AE_ASSESMENT_RULES.getName(), studyName, sponsorName);
-	
+	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
 	if(ruleSetForStudy!=null){
 			if(rulesEngineService.isDeployed(ruleSetForStudy)){
-				
+				try {
+					evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					
+				}
 			}
 	}
-	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
-	try {
-		evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		
-	}
+	
+	
 	
 	/**
 	 * Now we can compare both the decisions 
@@ -158,19 +170,19 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		
 		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
 		
-		//adverseEventSDO.setExpected(ae.getExpected().toString());
+		adverseEventSDO.setExpected(ae.getExpected().toString());
 		adverseEventSDO.setGrade(new Integer(ae.getGrade().getCode()));
-		//adverseEventSDO.setHospitalization(ae.getHospitalization().getName());
-		//adverseEventSDO.setPhase(study.getPhaseCode());
-		//sadverseEventSDO.setTerm(ae.getCtcTerm().getTerm());
+		adverseEventSDO.setHospitalization(ae.getHospitalization().getName());
+		adverseEventSDO.setPhase(study.getPhaseCode());
+		adverseEventSDO.setTerm(ae.getCtcTerm().getTerm());
 		
 		StudySDO studySDO = new StudySDO();
 		studySDO.setPrimarySponsorCode(study.getPrimarySponsorCode());
 		studySDO.setShortTitle(study.getShortTitle());
 		
 		List<Object> inputObjects = new ArrayList<Object>();
-		//inputObjects.add(adverseEventSDO);
-		inputObjects.add(ae);
+		inputObjects.add(adverseEventSDO);
+		//inputObjects.add(ae);
 		inputObjects.add(studySDO);
 		//inputObjects.add(new AdverseEventEvaluationResult());
 		
