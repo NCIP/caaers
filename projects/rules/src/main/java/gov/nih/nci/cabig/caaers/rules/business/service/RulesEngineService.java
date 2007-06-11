@@ -124,5 +124,8 @@ public interface RulesEngineService {
 	
 	public void unDeployRuleSet(RuleSet set) throws Exception;
 	
+	public boolean isDeployed(RuleSet ruleSet);
+	
+	
 
 }
