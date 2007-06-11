@@ -11,18 +11,21 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.runtime.Global;
+
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
 	//Replace with spring injection
 	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
+	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
 /**
  * This method will asses adverse event and will return one of the
  * following vlue
@@ -44,12 +47,14 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
 	String sponsorName = study.getPrimarySponsorCode();
 	String studyName = study.getShortTitle();
-	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR", "AE Assessment RuleSet");
-	String bindURI_ForStudyLevelRules = this.getBindURI(sponsorName,studyName,"STUDY", "AE Assessment RuleSet");
+	String bindURI_ForSponsorLevelRules = this.getBindURI(sponsorName, studyName,"SPONSOR",RuleType.AE_ASSESMENT_RULES.getName());
+	String bindURI_ForStudyLevelRules = this.getBindURI(sponsorName,studyName,"STUDY", RuleType.AE_ASSESMENT_RULES.getName());
 	
 	/**
 	 * First asses the AE for Sponsor
 	 */
+	
+	
 	
 	AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 	try {
@@ -63,16 +68,20 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	/**
 	 * Now fire rules for Study
 	 */
+	RuleSet ruleSetForStudy = rulesEngineService.getRuleSetForStudy(RuleType.AE_ASSESMENT_RULES.getName(), studyName, sponsorName);
 	
+	if(ruleSetForStudy!=null){
+			if(rulesEngineService.isDeployed(ruleSetForStudy)){
+				
+			}
+	}
 	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
 	try {
 		evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		//e.printStackTrace();
-		/**
-		 * Don't do anything here
-		 */
+		e.printStackTrace();
+		
 	}
 	
 	/**
@@ -97,6 +106,7 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	 }
 	
 	return final_result;
+	
 }
 	
 	//public String identifyAdverseEventType()
@@ -159,7 +169,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		studySDO.setShortTitle(study.getShortTitle());
 		
 		List<Object> inputObjects = new ArrayList<Object>();
-		inputObjects.add(adverseEventSDO);
+		//inputObjects.add(adverseEventSDO);
+		inputObjects.add(ae);
 		inputObjects.add(studySDO);
 		//inputObjects.add(new AdverseEventEvaluationResult());
 		
