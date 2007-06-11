@@ -9,7 +9,7 @@
 	</xsl:template>
 	
 	<xsl:template match="AdverseEventReport">
-		<ticket_number>##</ticket_number>
+		<ticket_number><xsl:value-of select="Summary[@id='Ticket Number']/value"/></ticket_number>
 		<amendment_number>##</amendment_number>
 		<report_type>##</report_type>
 		<report_status>
@@ -72,7 +72,7 @@
 				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/monitorCode"/> 
 			</lead_drug_monitor>
 			<ctcae_version>
-				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/shortTitle"/> <!-- verify-->
+				<xsl:value-of select="StudyParticipantAssignment/StudySite/Study/CtcVersion/name"/> 
 			</ctcae_version>			
 		</protocol_information>	
 		
@@ -146,10 +146,10 @@
 				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseCode"/>
 			</disease_name>
 			<disease_category>
-				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseCode"/>
+				<xsl:value-of select="DiseaseHistory/AnatomicSite/category"/>
 			</disease_category>
 			<primary_site_of_disease>
-				<xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseSiteCode"/>
+				<xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
 			</primary_site_of_disease>
 			<date_of_initial_diagnosis>
 				<xsl:value-of select="DiseaseHistory/dateOfInitialPathologicDiagnosis"/>
@@ -180,7 +180,7 @@
 						<xsl:value-of select="otherMetastaticDiseaseSite"/>
 					</other_site_name>
 					<site_name>
-						<xsl:value-of select="otherMetastaticDiseaseSite"/>
+						<xsl:value-of select="AnatomicSite/name"/>
 					</site_name>
 				</site_of_metastatic_disease>
 			</xsl:for-each>		
@@ -297,6 +297,15 @@
 			<last_name>
 				<xsl:value-of select="lastName"/> 
 			</last_name>
+			<phone>
+				<xsl:value-of select="ContactMechanism[@type='phone']/value"/> 
+			</phone>
+			<emai>
+				<xsl:value-of select="ContactMechanism[@type='email']/value"/> 
+			</emai>
+			<fax>
+				<xsl:value-of select="ContactMechanism[@type='fax']/value"/> 
+			</fax>			
 		</physician_information>		
 	</xsl:template>
 
@@ -308,6 +317,15 @@
 			<last_name>
 				<xsl:value-of select="lastName"/> 
 			</last_name>
+			<phone>
+				<xsl:value-of select="ContactMechanism[@type='phone']/value"/> 
+			</phone>
+			<emai>
+				<xsl:value-of select="ContactMechanism[@type='email']/value"/> 
+			</emai>
+			<fax>
+				<xsl:value-of select="ContactMechanism[@type='fax']/value"/> 
+			</fax>									
 		</reporter_information>		
 	</xsl:template>
 	
@@ -355,7 +373,7 @@
 	<xsl:template match="AdverseEventPriorTherapy"> 
 		<prior_therapy>
 			<therapy_name>
-				<xsl:apply-templates select="PriorTherapy/meddraTerm"/><!-- verify--> 
+				<xsl:apply-templates select="PriorTherapy/text"/><!-- verify--> 
 			</therapy_name>
 			<therapy_start_date>
 				<xsl:apply-templates select="startDate"/> 
@@ -363,9 +381,7 @@
 			<therapy_end_date>
 				<xsl:apply-templates select="endDate"/> 
 			</therapy_end_date>
-			<therapy_comments>
-				<xsl:apply-templates select="other"/> <!--verify-->
-			</therapy_comments>
+			<therapy_comments>##</therapy_comments>
 		</prior_therapy>		
 	</xsl:template>		
 
