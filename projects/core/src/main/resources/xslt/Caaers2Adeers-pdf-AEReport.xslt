@@ -127,7 +127,7 @@
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Institution :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal" > 
-						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Site/name"/> 
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/institution"/> 
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>
@@ -346,7 +346,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/institutionalPatientNumber"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -356,7 +356,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			date
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -366,7 +366,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			gender
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/gender"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -380,7 +380,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			race
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/race"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -390,7 +390,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			eth 
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/ethnicity"/> 
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>	
@@ -398,22 +398,22 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Height(cm) :  
+						  			Height(<xsl:value-of select="AdverseEventReport/ParticipantHistory/heightUnitOfMeasure"/> ) :  
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			ht
+						  			<xsl:value-of select="AdverseEventReport/ParticipantHistory/height"/> 
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Weight(kg) :  
+						  			Weight(<xsl:value-of select="AdverseEventReport/ParticipantHistory/weightUnitOfMeasure"/> ) :  
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			wt 
+						  			<xsl:value-of select="AdverseEventReport/ParticipantHistory/weight"/>  
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -423,7 +423,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			area
+						  			##
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		
@@ -436,7 +436,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			bl
+						  			<xsl:value-of select="AdverseEventReport/ParticipantHistory/baselinePerformanceStatus"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>	  		
@@ -449,7 +449,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			bl
+						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseCode"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -462,7 +462,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			bl
+						  			##
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -475,7 +475,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			bl
+						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/AnatomicSite/name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -488,7 +488,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			bl
+						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/dateOfInitialPathologicDiagnosis"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -533,7 +533,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			##
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -546,7 +546,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			<xsl:value-of select="AdverseEventReport/AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -559,7 +559,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			sample text
+						  			##
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
