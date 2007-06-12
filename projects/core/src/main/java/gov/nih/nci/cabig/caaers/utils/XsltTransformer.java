@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-
-/*
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 
@@ -14,8 +12,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
@@ -23,23 +21,25 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
-*/
+
 
 public class XsltTransformer {
 		
-	/**
-	 * Transforms XML to XML using provided XSLT file
-	 * @param inXml
-	 * @param xsltFile
-	 * @return
-	 * @throws Exception
-	 */
-	/*
+		/**
+		 * 
+		 * @param inXml
+		 * @param xsltFile
+		 * @return
+		 * @throws Exception
+		 */
 		public String toXml(String inXml,String xsltFile)  throws Exception{
-			Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
-			File xslt = new File(xsltFile);
 			
-			Source xsltSource = new StreamSource(xslt);
+			InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xsltFile);
+
+			Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
+			//File xslt = new File(xsltFile);
+			
+			Source xsltSource = new StreamSource(stream);
 
 			StringWriter outStr = new StringWriter();
 			StreamResult result = new StreamResult(outStr);
@@ -52,18 +52,14 @@ public class XsltTransformer {
 			
 			return outStr.toString();
 		}
-		*/
 		
 		/**
-		 * Transforms XML to PDF using provided XSL-FO XSLT  file.
-		 * This is a 2 step process , first generate .fo from getFO method 
-		 * and then generate PDF .
+		 * 
 		 * @param inXml
 		 * @param outPdfFile
 		 * @param xsltFile
 		 * @throws Exception
 		 */
-	/*
 		public void toPdf(String inXml,String outPdfFile, String xsltFile) throws Exception{
 		
 			String fo = getFO(inXml,xsltFile);
@@ -118,18 +114,18 @@ public class XsltTransformer {
 		}
 		
 		/**
-		 * Generates FO document ..
+		 * 
 		 * @param inXml
 		 * @param xsltFile
 		 * @return
 		 * @throws Exception
 		 */
-		/*
 		private String getFO (String inXml, String xsltFile)  throws Exception{
-        	File xslt = new File(xsltFile);
-        	
+        	//File xslt = new File(xsltFile);
+			InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(xsltFile);
+			
             TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer = factory.newTransformer(new StreamSource(xslt));
+            Transformer transformer = factory.newTransformer(new StreamSource(stream));
         
             //Setup input for XSLT transformation
             Source src = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
@@ -145,7 +141,6 @@ public class XsltTransformer {
             
             //FO to PDF 
 		}
-		*/
 		
 
 
