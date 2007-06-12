@@ -192,7 +192,7 @@
 			  						<select name="roleRecipient" id="recipient_role">
 			  							<option value="">Select a Role</option>
 			  							<c:forEach var="role" begin="0" items="${command.allRoles}">
-			  							<option value="${role}" ${selectedRole == role ? 'SELECTED' : ''}">${role}</option>
+			  							<option value="${role}" ${selectedRole == role ? 'SELECTED' : ''}>${role}</option>
 			  						</c:forEach>
       		  						</select>
 	      							<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 

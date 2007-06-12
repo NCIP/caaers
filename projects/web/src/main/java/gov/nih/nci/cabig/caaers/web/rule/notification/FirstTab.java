@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;

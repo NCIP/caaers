@@ -1,14 +1,15 @@
+
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
-import gov.nih.nci.cabig.caaers.domain.notification.ContactMechanismBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.notification.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.Recipient;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
-import gov.nih.nci.cabig.caaers.domain.notification.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
@@ -48,7 +49,7 @@ public class NotificationCommand implements RuleInputCommand {
 	private String fromAddress;
 	
 	private String notificationType;
-	private ReportCalendarTemplate calendarTemplate;
+	private ReportDefinition calendarTemplate;
 	
 	
 	private List<String> roleRecipient = new ArrayList<String>();
@@ -237,14 +238,14 @@ public class NotificationCommand implements RuleInputCommand {
 	/**
 	 * @return the calendarTemplate
 	 */
-	public ReportCalendarTemplate getCalendarTemplate() {
+	public ReportDefinition getCalendarTemplate() {
 		return calendarTemplate;
 	}
 
 	/**
 	 * @param calendarTemplate the calendarTemplate to set
 	 */
-	public void setCalendarTemplate(ReportCalendarTemplate calendarTemplate) {
+	public void setCalendarTemplate(ReportDefinition calendarTemplate) {
 		this.calendarTemplate = calendarTemplate;
 	}
 

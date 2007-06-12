@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
-import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 

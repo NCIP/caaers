@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
+import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -49,7 +49,7 @@ public class NotificationController extends AbstractTabbedFlowFormController<Rul
 	public Object formBackingObject(HttpServletRequest request) {
 		//return new NotificationCommand(allRoles, map, notificationDao);
 		NotificationCommand cmd = new NotificationCommand();
-		cmd.setCalendarTemplate(new ReportCalendarTemplate());
+		cmd.setCalendarTemplate(new ReportDefinition());
 		cmd.setCalendarTemplateDao(reportCalendarTemplateDao);
 		cmd.setAllRoles(allRoles);
 		return cmd;
