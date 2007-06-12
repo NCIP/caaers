@@ -84,15 +84,15 @@
 			<!-- ..choice -->
 			
 			<start_date_of_first_course>
-				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
+				<xsl:value-of select="TreatmentInformation/firstCourseDate"/>
 			</start_date_of_first_course>
 			<start_date_of_ae_course>
-				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/CourseDate/date"/>			
+				<xsl:value-of select="TreatmentInformation/CourseDate/date"/>			
 			</start_date_of_ae_course>
 			<start_date_of_primary_ae>##</start_date_of_primary_ae>
 			<end_date_of_primary_ae>##</end_date_of_primary_ae>
 			<course_number_of_ae>
-				<xsl:value-of select="AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/CourseDate/number"/>			
+				<xsl:value-of select="TreatmentInformation/CourseDate/number"/>			
 			</course_number_of_ae>
 			<total_number_of_courses>##</total_number_of_courses>
 		</course_information>
@@ -202,33 +202,33 @@
 
 		<protocol_agents>
 			
-			<xsl:for-each select="AdverseEvent/CourseAgentAttribution">
+			<xsl:for-each select="TreatmentInformation/CourseAgent">
 					<protocol_agent>
 						<agent_name>
-							<xsl:value-of select = "CourseAgent/StudyAgent/Agent/name"/>
+							<xsl:value-of select = "StudyAgent/Agent/name"/>
 						</agent_name>
 						<nsc_number>
-							<xsl:value-of select = "CourseAgent/StudyAgent/Agent/nscNumber"/>
+							<xsl:value-of select = "StudyAgent/Agent/nscNumber"/>
 						</nsc_number>
 						<total_dose_administered>
-							<xsl:value-of select = "CourseAgent/totalDoseAdministeredThisCourse"/>
+							<xsl:value-of select = "totalDoseAdministeredThisCourse"/>
 						</total_dose_administered>
 						<last_administered_date>
-							<xsl:value-of select = "CourseAgent/lastAdministeredDate"/>
+							<xsl:value-of select = "lastAdministeredDate"/>
 						</last_administered_date>
 						<dose_uom>
-							<xsl:value-of select = "CourseAgent/Dose/units"/>
+							<xsl:value-of select = "Dose/units"/>
 						</dose_uom>
 						<protocol_agent_comments>##</protocol_agent_comments>
 						<agent_adjustment>##</agent_adjustment>
 						
-						<xsl:if test="CourseAgent/administrationDelayAmount">
+						<xsl:if test="administrationDelayAmount">
 							<agent_delayed>Yes</agent_delayed>
 							<delay>
-								<xsl:value-of select = "CourseAgent/administrationDelayAmount"/>
+								<xsl:value-of select = "administrationDelayAmount"/>
 							</delay>
 							<delay_uom>
-								<xsl:value-of select = "CourseAgent/administrationDelayUnits"/>
+								<xsl:value-of select = "administrationDelayUnits"/>
 							</delay_uom>							
 						</xsl:if>
 
@@ -413,55 +413,43 @@
 	
 	<xsl:template match="ConcomitantMedicationAttribution"> 
 		<attribution_for_ae>
-			<type_of_cause>Concomitant Medication</type_of_cause>
+			<type_of_cause>Concomitant medications</type_of_cause>
 			<cause_name>
-				<xsl:apply-templates select="ConcomitantMedication/Agent/description"/> 
-			</cause_name>
-			<cause_added_by>
 				<xsl:apply-templates select="ConcomitantMedication/Agent/name"/> 
-			</cause_added_by>
+			</cause_name>
+			<cause_added_by>##</cause_added_by>
 			<attribution>
 				<xsl:apply-templates select="attribution"/> 
 			</attribution>
-			<attribution_added_by>
-				<xsl:apply-templates select="ConcomitantMedication/Agent/name"/>
-			</attribution_added_by>
+			<attribution_added_by>##</attribution_added_by>
 		</attribution_for_ae>		
 	</xsl:template>		
 
 	<xsl:template match="CourseAgentAttribution"> 
 		<attribution_for_ae>
-			<type_of_cause>Course Agent</type_of_cause>
+			<type_of_cause>Course</type_of_cause>
 			<cause_name>
-				<xsl:apply-templates select="CourseAgent/durationAndSchedule"/> 
+				<xsl:apply-templates select="CourseAgent/StudyAgent/Agent/name"/> 
 			</cause_name>
-			<cause_added_by>
-				<xsl:apply-templates select="CourseAgent/durationAndSchedule"/> 
-			</cause_added_by>
+			<cause_added_by>##</cause_added_by>
 			<attribution>
 				<xsl:apply-templates select="attribution"/> 
 			</attribution>
-			<attribution_added_by>
-				<xsl:apply-templates select="CourseAgent/durationAndSchedule"/>
-			</attribution_added_by>
+			<attribution_added_by>##</attribution_added_by>
 		</attribution_for_ae>		
 	</xsl:template>
 
 	<xsl:template match="OtherCauseAttribution"> 
 		<attribution_for_ae>
-			<type_of_cause>Other</type_of_cause>
+			<type_of_cause>Other causes</type_of_cause>
 			<cause_name>
 				<xsl:apply-templates select="OtherCause/text"/> 
 			</cause_name>
-			<cause_added_by>
-				<xsl:apply-templates select="OtherCause/text"/> 
-			</cause_added_by>
+			<cause_added_by>##</cause_added_by>
 			<attribution>
 				<xsl:apply-templates select="attribution"/> 
 			</attribution>
-			<attribution_added_by>
-				<xsl:apply-templates select="OtherCause/text"/>
-			</attribution_added_by>
+			<attribution_added_by>##</attribution_added_by>
 		</attribution_for_ae>		
 	</xsl:template>
 
