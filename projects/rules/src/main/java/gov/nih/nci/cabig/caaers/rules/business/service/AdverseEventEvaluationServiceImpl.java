@@ -60,13 +60,13 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	if(ruleSetForSponsor==null){
 		throw new Exception("There are no rules configured for adverse event assesment for this sponsor!");
 	}
-	
+	/*
 	boolean rulesDeployedForSponsor = rulesEngineService.isDeployed(ruleSetForSponsor);
 	
 	if(!rulesDeployedForSponsor){
 		throw new Exception("There are no rules deployd for adverse event assesment for this sponsor!");
 	}
-	
+	*/
 	AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 	
 	try {
@@ -82,8 +82,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	 */
 	RuleSet ruleSetForStudy = rulesEngineService.getRuleSetForStudy(RuleType.AE_ASSESMENT_RULES.getName(), studyName, sponsorName);
 	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
-	if(ruleSetForStudy!=null){
-			if(rulesEngineService.isDeployed(ruleSetForStudy)){
+//	if(ruleSetForStudy!=null){
+		//if(rulesEngineService.isDeployed(ruleSetForStudy)){
 				try {
 					evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
 				} catch (Exception e) {
@@ -91,9 +91,9 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 					e.printStackTrace();
 					
 				}
-			}
+/*			}
 	}
-	
+*/	
 	
 	
 	/**
