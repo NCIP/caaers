@@ -8,7 +8,6 @@
         
         <xsd:element name="status" type="xsd:string"/>
         <xsd:element name="AdverseEventResponseDescription" type="caaers:AdverseEventResponseDescription"/>
-
          
         <xsd:element name="Physician" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="Reporter" type="caaers:AdverseEventReportPerson"/>
@@ -169,18 +168,16 @@
   		<xsd:element name="Dose" type="caaers:Dose"/>
   		<xsd:element name="ModifiedDose" type="caaers:Dose"/>
   		<xsd:element name="TreatmentInformation" type="caaers:TreatmentInformation" />
-  		<!--  <xsd:element name="StudyAgent" type="caaers:StudyAgent" /> -->
+  		<xsd:element name="StudyAgent" type="caaers:StudyAgent" />
 	  </xsd:sequence>
   </xsd:complexType> 
-<!--  
+ 
   <xsd:complexType name="StudyAgent">
 	  <xsd:sequence>
-  		<xsd:element name="investigationalNewDrugIndicator" type="xsd:boolean"/>
-  		<xsd:element name="investigationalNewDrugIdentifier" type="xsd:string"/>
-  		<xsd:element name="agentAsString" type="xsd:string"/>
+  		<xsd:element name="Agent" type="caaers:Agent"/>
 	  </xsd:sequence>
   </xsd:complexType> 
--->
+
    
   <xsd:complexType name="Dose">
 	  <xsd:sequence>
