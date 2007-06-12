@@ -176,12 +176,17 @@
 			<xsl:for-each select="DiseaseHistory/MetastaticDiseaseSite">			
 				<site_of_metastatic_disease>
 					<!-- choice -->
-					<other_site_name>
-						<xsl:value-of select="otherMetastaticDiseaseSite"/>
-					</other_site_name>
-					<site_name>
-						<xsl:value-of select="AnatomicSite/name"/>
-					</site_name>
+					<xsl:if test="otherMetastaticDiseaseSite">
+						<other_site_name>
+							<xsl:value-of select="otherMetastaticDiseaseSite"/>
+						</other_site_name>						
+					</xsl:if>
+					
+					<xsl:if test="AnatomicSite/name">
+						<site_name>
+							<xsl:value-of select="AnatomicSite/name"/>
+						</site_name>
+					</xsl:if>
 				</site_of_metastatic_disease>
 			</xsl:for-each>		
 		</sites_of_metastatic_disease>	
@@ -332,7 +337,9 @@
 	<xsl:template match="ConcomitantMedication"> 
 		<concomitant_medication>
 			<concomitant_medication_name>
-				<xsl:apply-templates select="Agent/name"/>  <!-- verify--> 
+				<!--  only one is populated any given time -->
+				<xsl:apply-templates select="Agent/name"/>  
+				<xsl:apply-templates select="other"/>
 			</concomitant_medication_name>
 			<concomitant_medication_reported_by>
 				<xsl:apply-templates select="Agent/description"/>  <!-- verify--> 
@@ -372,8 +379,10 @@
 	</xsl:template>
 	<xsl:template match="AdverseEventPriorTherapy"> 
 		<prior_therapy>
-			<therapy_name>
-				<xsl:apply-templates select="PriorTherapy/text"/><!-- verify--> 
+			<therapy_name>	
+				<!-- only one would be at populated any given point -->			
+				<xsl:apply-templates select="PriorTherapy/text"/>
+				<xsl:apply-templates select="other"/>				 
 			</therapy_name>
 			<therapy_start_date>
 				<xsl:apply-templates select="startDate"/> 
