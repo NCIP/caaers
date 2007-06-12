@@ -1,7 +1,7 @@
 /*
  * Sematicbits Copyright message
  */
-package gov.nih.nci.cabig.caaers.domain.notification;
+package gov.nih.nci.cabig.caaers.domain.report;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;

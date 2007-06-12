@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.dao;
+package gov.nih.nci.cabig.caaers.dao.report;
 
 
 import java.util.Collection;
@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 
-import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
 /**
  * 
  * 

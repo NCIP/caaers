@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.domain.notification;
+package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -42,7 +42,7 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
 	
 	private AdverseEventReport aeReport;
 	
-	private ReportCalendarTemplate rcTemplate;
+	private ReportDefinition rcTemplate;
 	
 	/** The list of notificaiton that are to be scheduled */
 	private List<ScheduledNotification> notifications;
@@ -65,11 +65,11 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="rct_id")
-	public ReportCalendarTemplate getReportCalendarTemplate(){
+	public ReportDefinition getReportCalendarTemplate(){
 		return rcTemplate;
 	}
 	
-	public void setReportCalendarTemplate(ReportCalendarTemplate rcTemplate){
+	public void setReportCalendarTemplate(ReportDefinition rcTemplate){
 		this.rcTemplate = rcTemplate;
 	}
 	

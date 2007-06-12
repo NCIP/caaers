@@ -1,10 +1,11 @@
-package gov.nih.nci.cabig.caaers.dao;
+package gov.nih.nci.cabig.caaers.dao.report;
 
 
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 /**
  * 
  * 

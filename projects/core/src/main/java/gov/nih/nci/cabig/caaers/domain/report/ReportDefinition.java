@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.domain.notification;
+package gov.nih.nci.cabig.caaers.domain.report;
 
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -20,13 +20,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 /**
- * ReportCalendarTemplate represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport. 
- * A ReportCalendarTemplate is applied or used by the ReportSchedule to determine the notifications that are to be send out
+ * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport.
+ * A ReportDefinition is applied or used by the ReportSchedule to determine the notifications that are to be send out
  * on a particular instance of time.
- * 
- * A ReportCalendarTemplate instance to be used, is picked-up by the Rules Engine Component, for a specific kind of report 
+ *
+ * A ReportDefinition instance to be used, is picked-up by the Rules Engine Component, for a specific kind of report
  * based on the <code>name</code>.
- *  
+ *
  * @author Biju Joseph
  *
  */
@@ -37,31 +37,31 @@ import org.hibernate.annotations.Type;
         @Parameter(name="sequence", value="seq_report_calendar_templat_id")
     }
 )
-public class ReportCalendarTemplate extends AbstractMutableDomainObject implements Serializable{
+public class ReportDefinition extends AbstractMutableDomainObject implements Serializable{
 	/** The name of the ReportCalendar */
 	@Column(name = "NAME")
 	String name;
-	
+
 	@Column(name="DESCRIPTION")
 	String description;
-	
+
 	@Column(name = "DURATION")
 	int duration;
-	
+
 	/** Respresnts the type of time scale used (eg:, DAY, MONTH)*/
 	TimeScaleUnit timeScaleUnitType;
-	
-	
+
+
 	List<PlannedNotification> plannedNotifications;
-	
-	
+
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	/**
 	 * @return the description
 	 */
@@ -94,7 +94,7 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 	public void setTimeScaleUnitType(TimeScaleUnit timeScaleUnitType) {
 		this.timeScaleUnitType = timeScaleUnitType;
 	}
-	
+
 	/** A list of notificaiton(templates) */
 	@OneToMany
 	@JoinColumn(name="rct_id", nullable=false)
@@ -105,30 +105,30 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 	public void setPlannedNotifications(List<PlannedNotification> eventList) {
 		this.plannedNotifications = eventList;
 	}
-	
+
 	public PlannedNotification fetchPlannedNotification(int indexOnScale){
 		if(plannedNotifications == null)
 			return null;
-		
+
 		for(PlannedNotification pn : plannedNotifications){
 			if(pn.getIndexOnTimeScale() == indexOnScale){
 				return pn;
 			}
 		}
-		
+
 		return null;
 	}
 
 	public void addPlannedNotification(PlannedNotification pn){
 		if(pn == null)
 			return;
-		
+
 		if(plannedNotifications == null)
 			plannedNotifications = new ArrayList<PlannedNotification>();
-		
+
 		plannedNotifications.add(pn);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
@@ -145,13 +145,13 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final ReportCalendarTemplate other = (ReportCalendarTemplate) obj;
+		final ReportDefinition other = (ReportDefinition) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		
+
 		if (timeScaleUnitType == null) {
 			if (other.timeScaleUnitType != null)
 				return false;
@@ -159,5 +159,5 @@ public class ReportCalendarTemplate extends AbstractMutableDomainObject implemen
 			return false;
 		return true;
 	}
-	
+
 }

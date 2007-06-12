@@ -10,14 +10,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.notification.NotificationAttachment;
-import gov.nih.nci.cabig.caaers.domain.notification.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.Recipient;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
-import gov.nih.nci.cabig.caaers.domain.notification.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
 /**
  * 
@@ -83,20 +84,20 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 	 */
 	public void testDomainClass() {
 		System.out.println("domainClass :" + rctDao.domainClass().getName());
-		assertEquals(ReportCalendarTemplate.class.getName(), rctDao.domainClass().getName());
+		assertEquals(ReportDefinition.class.getName(), rctDao.domainClass().getName());
 	}
 	
 	public void testGetByName(){
 		String name = "RCT-222";
-		ReportCalendarTemplate rct = rctDao.getByName(name);
+		ReportDefinition rct = rctDao.getByName(name);
 		assertEquals("The name is not matching", name, rct.getName());
 	}
 
 	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate)}.
+	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportDefinition)}.
 	 */
 	public void testSave() {
-		ReportCalendarTemplate rct = new ReportCalendarTemplate();
+		ReportDefinition rct = new ReportDefinition();
 		rct.setDuration(5);
 		rct.setGridId("202020202044iiei90");
 		rct.setName("Test-RCT");
@@ -143,7 +144,7 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 
 		beginTransaction();
 		
-		ReportCalendarTemplate rctLoaded = null;
+		ReportDefinition rctLoaded = null;
 		rctLoaded = rctDao.getById(id);
 		
 		System.out.println(rctLoaded.getDuration());

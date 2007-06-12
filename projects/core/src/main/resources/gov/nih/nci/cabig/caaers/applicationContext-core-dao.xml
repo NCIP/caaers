@@ -88,16 +88,16 @@
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
                 <!-- For Rules-Scheduler-Notification 05/10/2007-->
-		<value>gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.NotificationAttachment</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.Recipient</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.RoleBasedRecipient</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.ContactMechanismBasedRecipient</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification</value>
-		<value>gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification</value>	
+		<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.ReportSchedule</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>	
             </list>
         </property>
         <property name="entityInterceptor">
@@ -178,8 +178,8 @@
 	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
 	
 	<!--Rules/Scheduler/Notification DAOs-->
-	<bean id="reportCalendarTemplateDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao" />
-	<bean id="reportScheduleDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReportScheduleDao" />
-	<bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ScheduledNotificationDao" />
+	<bean id="reportCalendarTemplateDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao" />
+	<bean id="reportScheduleDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao" />
+	<bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao" />
 	
 </beans>

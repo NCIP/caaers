@@ -62,5 +62,6 @@
 
     <!-- XXX: may want to put this in a different app context -->
     <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
-
+	
+	<bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportService" />
 </beans>

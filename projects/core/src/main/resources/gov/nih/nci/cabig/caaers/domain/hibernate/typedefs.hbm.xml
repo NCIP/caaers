@@ -21,9 +21,9 @@
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReportStatus</param>
     </typedef>
 	<typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="timeScaleUnit">
-        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit</param>
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit</param>
     </typedef>
 	<typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.CodedEnumType" name="deliveryStatus">
-        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus</param>
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus</param>
     </typedef>
 </hibernate-mapping>

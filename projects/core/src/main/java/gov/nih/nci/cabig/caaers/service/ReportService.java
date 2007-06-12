@@ -1,20 +1,29 @@
-package gov.nih.nci.cabig.caaers.domain.notification;
+package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
+import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
 
 /**
- * This is an helper class, which is used to obtain the correct address (toAddress) of a 
+ * This is an service class, which is used to obtain the correct address (toAddress) of a 
  * recipient. 
  * 
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
@@ -22,11 +31,9 @@ import org.apache.commons.lang.StringUtils;
  * @version     %I%, %G%
  * @since       1.0
  */
-public class NotificationHelper {
-	private Map<String, String> roleEntityMapping;
+public class ReportService {
 	
-	
-	public static List<String> findToAddresses(PlannedNotification pnf, ReportSchedule rs){
+	public  List<String> findToAddresses(PlannedNotification pnf, ReportSchedule rs){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
 		String address = null;
@@ -48,7 +55,7 @@ public class NotificationHelper {
 		return toAddressList;
 	}
 	
-	public static List<ContactMechanism> fetchContactMechanism(String role, AdverseEventReport aeReport){
+	public  List<ContactMechanism> fetchContactMechanism(String role, AdverseEventReport aeReport){
 		//TODO : do runtime expression evaluation using roleEntityMapping.
 		try{
 			if(StringUtils.equals("Reporter", role)){
@@ -62,6 +69,7 @@ public class NotificationHelper {
 			}else if(StringUtils.equals("Sponsor", role)){
 				
 			}else if(StringUtils.equals("IRB", role)){
+
 			}
 		}catch(Exception ignore){
 			
@@ -78,9 +86,9 @@ public class NotificationHelper {
 		return addressList;
 	}
 	
-	public static void applyCalendarTemplate(ReportCalendarTemplate rcTemplate, ReportSchedule rs){
+	public  void applyCalendarTemplate(ReportDefinition rcTemplate, ReportSchedule rs){
 		
-		assert rcTemplate != null : "ReportCalendarTemplate must be not null, inorder to schedule notfications";
+		assert rcTemplate != null : "ReportDefinition must be not null, inorder to schedule notfications";
 		Date now = new Date();
 		Calendar cal = GregorianCalendar.getInstance();
 		

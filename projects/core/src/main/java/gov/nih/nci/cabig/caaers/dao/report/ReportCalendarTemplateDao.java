@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.dao;
+package gov.nih.nci.cabig.caaers.dao.report;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 
-import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 /**
  * 
  * 
@@ -20,17 +21,17 @@ import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
  * @since       1.0
  */
 @Transactional
-public class ReportCalendarTemplateDao extends GridIdentifiableDao<ReportCalendarTemplate>{
+public class ReportCalendarTemplateDao extends GridIdentifiableDao<ReportDefinition>{
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.CaaersDao#domainClass()
 	 */
 	@Override
-	public Class<ReportCalendarTemplate> domainClass() {
-		return ReportCalendarTemplate.class;
+	public Class<ReportDefinition> domainClass() {
+		return ReportDefinition.class;
 	}
 	
-	public void save(ReportCalendarTemplate rc){
+	public void save(ReportDefinition rc){
 		getHibernateTemplate().saveOrUpdate(rc);
 	}
 	
@@ -39,29 +40,29 @@ public class ReportCalendarTemplateDao extends GridIdentifiableDao<ReportCalenda
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ReportCalendarTemplate> getAll(){
-		return getHibernateTemplate().find("from ReportCalendarTemplate");
+	public List<ReportDefinition> getAll(){
+		return getHibernateTemplate().find("from ReportDefinition");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ReportCalendarTemplate getByName(String name){
+	public ReportDefinition getByName(String name){
 		return CollectionUtils.firstElement(
-				(List<ReportCalendarTemplate>) getHibernateTemplate().find(
-						"from ReportCalendarTemplate t where t.name=?", new String[]{name}
+				(List<ReportDefinition>) getHibernateTemplate().find(
+						"from ReportDefinition t where t.name=?", new String[]{name}
 						)
 				);
 	}
 	
 	public boolean deleteById(int id){
-		int count = getHibernateTemplate().bulkUpdate("delete ReportCalendarTemplate t where t.id=?", new Object[]{id});
+		int count = getHibernateTemplate().bulkUpdate("delete ReportDefinition t where t.id=?", new Object[]{id});
 		return count >= 1;
 	}
 	
-	public void delete(ReportCalendarTemplate rct){
+	public void delete(ReportDefinition rct){
 		getHibernateTemplate().delete(rct);
 	}
 	
-	public void delete(Collection<ReportCalendarTemplate> c){
+	public void delete(Collection<ReportDefinition> c){
 		getHibernateTemplate().deleteAll(c);
 	}
 }
