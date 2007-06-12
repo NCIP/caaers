@@ -1,19 +1,17 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-/*
+
 import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.Marshaller;
-*/
+import org.xml.sax.InputSource;
+
 
 public class XmlMarshaller {
-
 	
-    // Override the default by calling setMappingFile
-    private String mappingFile = "caaers-castor-mapping.xml";
+
     
     /**
      * Will serialize a caaers adverse event report domain object
@@ -23,13 +21,12 @@ public class XmlMarshaller {
      * @return XML String
      * @throws XMLUtilityException
      */
-    /*
-    public String toXML(Object beanObject) throws Exception{
-        StringWriter sw = new StringWriter();
-        this.toXML(beanObject, sw);
+    public String toXML(Object beanObject, String mappingFile) throws Exception{
+        Mapping map = getMapping(mappingFile);
+    	StringWriter sw = new StringWriter();
+        this.toXML(beanObject, sw,map);
         return sw.toString();
     }
-    */
     
     /**
      * Will serialize a domain object
@@ -38,41 +35,38 @@ public class XmlMarshaller {
      * @param beanObject
      * @throws XMLUtilityException
      */
-    /*
-    private void toXML(Object beanObject, Writer stream) throws Exception{
+    private void toXML(Object beanObject, Writer stream,Mapping map) throws Exception{
         //set mapping before marshalling
     	
         try {        	  
             // write it out as XML
-        	Mapping map = getMapping();
+
             Marshaller marshaller = new Marshaller(stream);
             marshaller.setMapping(map);
-            marshaller.marshal(beanObject);
+            marshaller.setValidation(true);
+            marshaller.marshal(beanObject);            
 
-            //System.out.println("done");
-                
         } catch (Exception ex) {
             throw new Exception (ex);
         }
 
     }
     
-    public void setMappingFile(String mappingFile) {
-        this.mappingFile = mappingFile;
-    }
     
-    private Mapping getMapping()  throws Exception{
+    private Mapping getMapping(String mappingFile)  throws Exception{
         Mapping map = new Mapping();
         try {
-			map.loadMapping(mappingFile);
-		} catch (IOException e) {
-			throw new Exception ("Error with castor mapping file " + e);
-		} catch (MappingException e) {
+ 		   InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(mappingFile);
+
+        	InputSource mappingSource = new InputSource(stream);
+        	
+        	map.loadMapping(mappingSource);
+        	
+		} catch (Exception e) {
 			throw new Exception ("Error with castor mapping  " + e);
 		}
         
         return map;
     }
-    */
-	
+ 	
 }
