@@ -1,19 +1,20 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.notification.ContactMechanismBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.notification.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.Recipient;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportCalendarTemplate;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
-import gov.nih.nci.cabig.caaers.domain.notification.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,9 +25,9 @@ import java.util.List;
 
 
 public class ReportScheduleDaoStub extends ReportScheduleDao {
-	
+
 	HashMap<Object,ReportSchedule> map = new HashMap<Object, ReportSchedule>();
-	
+
 	public ReportScheduleDaoStub() {
 		init(-444);
 		init(-885);
@@ -45,7 +46,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		logger.debug("ReportScheduleDAOStub : getById(returning NULL )");
 		return null;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#getByName(java.lang.String)
 	 */
@@ -56,18 +57,18 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 	}
 
 	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule)
+	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.helper.ReportSchedule)
 	 */
 	@Override
 	public void save(ReportSchedule rs) {
 		logger.debug("ReportScheduleDaoStub : save()\r\n" + String.valueOf(rs));
 		map.put(rs.getName(), rs);
 	}
-	
+
 
 	public ReportSchedule getDummyReportSchedule(final int reportId){
-		
-		ReportCalendarTemplate rct = null;
+
+		ReportDefinition rct = null;
 		AdverseEventReport aeReport = new AdverseEventReport(){
 			int callCount = 0;
 			public ReportStatus getStatus(){
@@ -79,33 +80,33 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		};
 		aeReport.setStatus(ReportStatus.PENDING);
 		aeReport.setId(reportId);
-		
+
 		ReportSchedule rs = null;
-		
-	
+
+
 		Calendar cal = GregorianCalendar.getInstance();
 		Date now = new Date();
-		
+
 		List<Recipient> rList = new ArrayList<Recipient>();
 		rList.add(new RoleBasedRecipient("Reporter"));
 		rList.add(new ContactMechanismBasedRecipient("biju@gmail.com"));
-		
+
 		NotificationBodyContent content = new NotificationBodyContent();
 		content.setBody("This is my body".getBytes());
-		
+
 		List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
-		
-		
 
-		rct = new ReportCalendarTemplate();
+
+
+		rct = new ReportDefinition();
 		rct.setDescription("a rct description");
 		rct.setDuration(5);
 		rct.setId(-333);
 		rct.setName("An RCT");
 		rct.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
 		rct.setPlannedNotifications(pnfList);
-		
+
 
 		rs = new ReportSchedule();
 		rs.setName("24Hour5Day("+ reportId+")");
@@ -114,8 +115,8 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		rs.setReportCalendarTemplate(rct);
 		rs.setAeReport(aeReport);
 		aeReport.setReportSchedule(rs);
-		rs.setScheduledNotifications(snfList); 
-		
+		rs.setScheduledNotifications(snfList);
+
 		PlannedEmailNotification penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3331);
@@ -124,7 +125,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
 		pnfList.add(penf);
-		
+
 		cal.setTime(now);
 		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
 		ScheduledEmailNotification senf = new ScheduledEmailNotification();
@@ -137,9 +138,9 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
 		snfList.add(senf);
-		
-		
-		
+
+
+
 		penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3332);
@@ -148,7 +149,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
 		pnfList.add(penf);
-		
+
 
 		cal.setTime(now);
 		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
@@ -162,8 +163,8 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
 		snfList.add(senf);
-		
-		
+
+
 		penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3333);
@@ -172,7 +173,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
 		pnfList.add(penf);
-		
+
 
 		cal.setTime(now);
 		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
@@ -186,9 +187,9 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
 		snfList.add(senf);
-		
+
 		return rs;
 	}
-	
-	
+
+
 }

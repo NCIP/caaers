@@ -14,7 +14,7 @@
 		<!-- The mapping is used to identify the correct job class implementation -->
 		<property name="jobClassMapping">
 			<map>
-				<entry key="gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification"
+				<entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
 					   value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob" />
 			</map>
 		</property>

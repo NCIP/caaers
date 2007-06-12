@@ -3,7 +3,7 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+	<bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false"
 		  destroy-method="destroy" >
  	 	<property name="waitForJobsToCompleteOnShutdown"><value>true</value></property>
  	 	<property name="autoStartup"><value>true</value></property>

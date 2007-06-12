@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.ReportScheduleDao;
-import gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import java.util.List;
 import java.util.Map;

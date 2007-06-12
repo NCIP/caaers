@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
-import gov.nih.nci.cabig.caaers.dao.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.notification.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.notification.ReportSchedule;
-import gov.nih.nci.cabig.caaers.domain.notification.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
