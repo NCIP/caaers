@@ -110,10 +110,19 @@
 			<retreated>
 				<xsl:value-of select="AdverseEventResponseDescription/retreated"/>
 			</retreated>
-			<removed_from_protocol_trt>##</removed_from_protocol_trt>
-			<removed_from_protocol_trt_date>
-				<xsl:value-of select="AdverseEventResponseDescription/dateRemovedFromProtocol"/>
-			</removed_from_protocol_trt_date>
+			
+			<xsl:choose>
+				<xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol">
+					<removed_from_protocol_trt_date>
+						<xsl:value-of select="AdverseEventResponseDescription/dateRemovedFromProtocol"/>
+					</removed_from_protocol_trt_date>	
+					<removed_from_protocol_trt>Yes</removed_from_protocol_trt>					
+				</xsl:when>
+				<xsl:otherwise>
+					<removed_from_protocol_trt>No</removed_from_protocol_trt>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 			<death_date>##</death_date>
 			<autopsy_performed>##</autopsy_performed>
 		</description_of_event>
@@ -192,11 +201,15 @@
 		</sites_of_metastatic_disease>	
 
 		<protocol_agents>
-			<xsl:for-each select="AdverseEvent">
-				<xsl:for-each select="CourseAgentAttribution">
+			
+			<xsl:for-each select="AdverseEvent/CourseAgentAttribution">
 					<protocol_agent>
-						<agent_name>##</agent_name>
-						<nsc_number>##</nsc_number>
+						<agent_name>
+							<xsl:value-of select = "CourseAgent/StudyAgent/Agent/name"/>
+						</agent_name>
+						<nsc_number>
+							<xsl:value-of select = "CourseAgent/StudyAgent/Agent/nscNumber"/>
+						</nsc_number>
 						<total_dose_administered>
 							<xsl:value-of select = "CourseAgent/totalDoseAdministeredThisCourse"/>
 						</total_dose_administered>
@@ -208,15 +221,18 @@
 						</dose_uom>
 						<protocol_agent_comments>##</protocol_agent_comments>
 						<agent_adjustment>##</agent_adjustment>
-						<agent_delayed>##</agent_delayed>
-						<delay>
-							<xsl:value-of select = "CourseAgent/administrationDelayAmount"/>
-						</delay>
-						<delay_uom>
-							<xsl:value-of select = "CourseAgent/administrationDelayUnits"/>
-						</delay_uom>
+						
+						<xsl:if test="CourseAgent/administrationDelayAmount">
+							<agent_delayed>Yes</agent_delayed>
+							<delay>
+								<xsl:value-of select = "CourseAgent/administrationDelayAmount"/>
+							</delay>
+							<delay_uom>
+								<xsl:value-of select = "CourseAgent/administrationDelayUnits"/>
+							</delay_uom>							
+						</xsl:if>
+
 					</protocol_agent>
-				</xsl:for-each>	
 			</xsl:for-each>	
 		</protocol_agents>
 
