@@ -6,7 +6,7 @@ import org.springframework.validation.ObjectError;
 /**
  * @author Rhett Sutphin
  */
-public class ConcomitantMedicationsTabTest extends AeTabTestCase<ConcomitantMedicationsTab> {
+public class ConcomitantMedicationsTabTest extends AeTabTestCase {
 
     @Override
     protected ConcomitantMedicationsTab createTab() {

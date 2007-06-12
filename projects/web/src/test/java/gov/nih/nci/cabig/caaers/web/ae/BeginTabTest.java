@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 /**
  * @author Rhett Sutphin
  */
-public class BeginTabTest extends AeTabTestCase<BeginTab> {
+public class BeginTabTest extends AeTabTestCase {
     @Override
     protected BeginTab createTab() {
         return new BeginTab();

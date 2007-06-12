@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public class TreatmentTabTest extends AeTabTestCase<TreatmentTab> {
+public class TreatmentTabTest extends AeTabTestCase {
     @Override
     protected TreatmentTab createTab() {
         return new TreatmentTab();

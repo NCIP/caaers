@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 /**
  * @author Rhett Sutphin
  */
-public class AttributionTabTest extends AeTabTestCase<AttributionTab> {
+public class AttributionTabTest extends AeTabTestCase {
     @Override
     protected AttributionTab createTab() {
         return new AttributionTab();

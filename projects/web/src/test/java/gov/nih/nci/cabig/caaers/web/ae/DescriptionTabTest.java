@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 /**
  * @author Rhett Sutphin
  */
-public class DescriptionTabTest extends AeTabTestCase<DescriptionTab<CreateAdverseEventCommand>> {
+public class DescriptionTabTest extends AeTabTestCase {
     @Override
     protected DescriptionTab<CreateAdverseEventCommand> createTab() {
         return new DescriptionTab<CreateAdverseEventCommand>();

@@ -15,8 +15,9 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AeTabTestCase<T extends AeTab<CreateAdverseEventCommand>> extends AeWebTestCase {
-    private T tab;
+public abstract class AeTabTestCase extends AeWebTestCase {
+    // The testcases don't care about the command's type (TODO: do the tabs?)
+    private AeTab<CreateAdverseEventCommand> tab;
     private Errors errors;
 
     @Override
@@ -38,7 +39,7 @@ public abstract class AeTabTestCase<T extends AeTab<CreateAdverseEventCommand>> 
         errors = new BindException(command, "command");
     }
 
-    protected abstract T createTab();
+    protected abstract AeTab<CreateAdverseEventCommand> createTab();
 
     @Override
     protected CreateAdverseEventCommand createCommand() {
@@ -77,7 +78,7 @@ public abstract class AeTabTestCase<T extends AeTab<CreateAdverseEventCommand>> 
         verifyMocks();
     }
 
-    public T getTab() {
+    public AeTab<CreateAdverseEventCommand> getTab() {
         return tab;
     }
 

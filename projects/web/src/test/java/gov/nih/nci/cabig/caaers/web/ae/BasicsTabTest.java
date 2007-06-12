@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 /**
  * @author Rhett Sutphin
  */
-public class BasicsTabTest extends AeTabTestCase<BasicsTab> {
+public class BasicsTabTest extends AeTabTestCase {
     private AdverseEvent ae0;
 
     @Override

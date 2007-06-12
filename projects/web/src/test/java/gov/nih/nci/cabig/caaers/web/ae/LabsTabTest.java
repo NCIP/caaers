@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public class LabsTabTest extends AeTabTestCase<LabsTab> {
+public class LabsTabTest extends AeTabTestCase {
     @Override protected LabsTab createTab() { return new LabsTab(); }
 
     public void testGroupDisplayNames() throws Exception {
