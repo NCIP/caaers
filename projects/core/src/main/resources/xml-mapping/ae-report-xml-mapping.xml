@@ -354,9 +354,18 @@
     <field name="TreatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
       <bind-xml name="TreatmentInformation"/>
     </field>
-
+    <field name="StudyAgent" type="gov.nih.nci.cabig.caaers.domain.StudyAgent">
+      <bind-xml name="StudyAgent"/>
+    </field>
   </class> 
 
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyAgent">
+    <map-to xml="StudyAgent"  />
+    <field name="Agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
+      <bind-xml name="Agent"/>
+    </field>
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.DelayUnits" verify-constructable="false">
     <map-to xml="DelayUnits" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain" />  
     <field name="displayName" type="string">
