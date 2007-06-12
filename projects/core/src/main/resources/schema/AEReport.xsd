@@ -12,6 +12,7 @@
         <xsd:element name="Physician" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="Reporter" type="caaers:AdverseEventReportPerson"/>
         <xsd:element name="DiseaseHistory" type="caaers:DiseaseHistory"/>
+        <xsd:element name="TreatmentInformation" type="caaers:TreatmentInformation" />
         
         <xsd:element name="ParticipantHistory" type="caaers:ParticipantHistory" />
         <xsd:element name="StudyParticipantAssignment" type="caaers:StudyParticipantAssignment" />
@@ -167,7 +168,7 @@
   		
   		<xsd:element name="Dose" type="caaers:Dose"/>
   		<xsd:element name="ModifiedDose" type="caaers:Dose"/>
-  		<xsd:element name="TreatmentInformation" type="caaers:TreatmentInformation" />
+  		
   		<xsd:element name="StudyAgent" type="caaers:StudyAgent" />
 	  </xsd:sequence>
   </xsd:complexType> 
@@ -191,6 +192,7 @@
 	  <xsd:sequence>
   		<xsd:element name="firstCourseDate" type="xsd:date"/>
   		<xsd:element name="CourseDate" type="caaers:CourseDate"/>
+  		<xsd:element name="CourseAgent" type="caaers:CourseAgent" maxOccurs="unbounded"/>
 	  </xsd:sequence>
   </xsd:complexType>  
     
