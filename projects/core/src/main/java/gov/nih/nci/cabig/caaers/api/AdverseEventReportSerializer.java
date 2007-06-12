@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
@@ -16,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
@@ -108,6 +110,9 @@ public class AdverseEventReportSerializer {
 	    	
 	    	//build StudyParticipantAssignment
 	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
+
+	    	//build treatment info
+	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
 	    	
 	    	//build medications
 	    	List<ConcomitantMedication> conMedList = hibernateAdverseEventReport.getConcomitantMedications();
@@ -140,14 +145,7 @@ public class AdverseEventReportSerializer {
 	    	
 	    	return aer;
 	   }
-	   
-	   /**
-	    * 
-	    * @param rptr
-	    * @return
-	    * @throws Exception
-	    */
-	   private Reporter getReporter(Reporter rptr) throws Exception{	
+	   private Reporter getReporter(Reporter rptr) {
 	    	Reporter reporter = new Reporter();
 	    	reporter.setFirstName(rptr.getFirstName());
 	    	reporter.setLastName(rptr.getLastName());
@@ -157,13 +155,7 @@ public class AdverseEventReportSerializer {
 	    	return reporter;
 	    }
 	    
-	   /**
-	    * 
-	    * @param psn
-	    * @return
-	    * @throws Exception
-	    */
-	    private Physician getPhysician(Physician psn) throws Exception{	
+	    private Physician getPhysician(Physician psn) {
 	    	Physician physician = new Physician();
 	    	physician.setFirstName(psn.getFirstName());
 	    	physician.setLastName(psn.getLastName());
@@ -173,13 +165,7 @@ public class AdverseEventReportSerializer {
 	    	return physician;
 	    }   
 
-	    /**
-	     * 
-	     * @param ph
-	     * @return
-	     * @throws Exception
-	     */
-	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) throws Exception{	
+	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) {
 	    	ParticipantHistory participantHistory = new ParticipantHistory();
 	    	participantHistory.setHeight(ph.getHeight());
 	    	participantHistory.setHeightUnitOfMeasure(ph.getHeightUnitOfMeasure());
@@ -190,13 +176,7 @@ public class AdverseEventReportSerializer {
 	    	return participantHistory;
 	    }  
 	    
-	    /**
-	     * 
-	     * @param aerd
-	     * @return
-	     * @throws Exception
-	     */
-	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd) throws Exception{	
+	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd) {
 	    	AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
 	    	
 	    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
@@ -210,13 +190,7 @@ public class AdverseEventReportSerializer {
 	    	
 	    }
 	    
-	    /**
-	     * 
-	     * @param dh
-	     * @return
-	     * @throws Exception
-	     */
-	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh) throws Exception{	
+	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh) {
 	    	DiseaseHistory diseaseHistory = new DiseaseHistory();
 	    	diseaseHistory.setOtherPrimaryDiseaseCode(dh.getOtherPrimaryDiseaseCode());
 	    	diseaseHistory.setOtherPrimaryDiseaseSiteCode(dh.getOtherPrimaryDiseaseSiteCode());
@@ -230,13 +204,7 @@ public class AdverseEventReportSerializer {
 	    	return diseaseHistory;
 	    }
 	    
-	    /**
-	     * 
-	     * @param spa
-	     * @return
-	     * @throws Exception
-	     */
-	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) throws Exception{	
+	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) {
 	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 	    	studyParticipantAssignment.setParticipant(getParticipant(spa.getParticipant()));
 	    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
@@ -245,14 +213,8 @@ public class AdverseEventReportSerializer {
 	    	
 	    	return studyParticipantAssignment;
 	    }
-	    
-	    /**
-	     * 
-	     * @param p
-	     * @return
-	     * @throws Exception
-	     */
-	    private Participant getParticipant(Participant p) throws Exception{	
+
+	    private Participant getParticipant(Participant p) {
 	    	Participant participant = new Participant();
 	    	participant.setInstitutionalPatientNumber(p.getInstitutionalPatientNumber());
 	    	participant.setInstitution(p.getInstitution());
@@ -268,13 +230,7 @@ public class AdverseEventReportSerializer {
 	    	return participant;
 	    }
 	    
-	    /**
-	     * 
-	     * @param ss
-	     * @return
-	     * @throws Exception
-	     */
-	    private StudySite getStudySite(StudySite ss) throws Exception{	
+	    private StudySite getStudySite(StudySite ss) {
 	    	StudySite studySite = new StudySite();
 	    	studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
 	    	studySite.setRoleCode(ss.getRoleCode());
@@ -288,13 +244,7 @@ public class AdverseEventReportSerializer {
 	    	return studySite;    	
 	    }
 	    
-	    /**
-	     * 
-	     * @param ae
-	     * @return
-	     * @throws Exception
-	     */
-	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) throws Exception{	
+	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
 	    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
 	    	adverseEvent.setExpected(ae.getExpected());
@@ -321,13 +271,7 @@ public class AdverseEventReportSerializer {
 	    	return adverseEvent;
 	    }
 	    
-	    /**
-	     * 
-	     * @param oca
-	     * @return
-	     * @throws Exception
-	     */
-	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) throws Exception{	
+	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
 	    	otherCauseAttribution.setAttribution(oca.getAttribution());
 	    	otherCauseAttribution.setCause(getOtherCause(oca.getCause()));
@@ -335,18 +279,28 @@ public class AdverseEventReportSerializer {
 	    	return otherCauseAttribution;
 	    }
 	    
-	    /**
-	     * 
-	     * @param oc
-	     * @return
-	     * @throws Exception
-	     */
-	    private OtherCause getOtherCause(OtherCause oc) throws Exception{	
+	    
+	    private OtherCause getOtherCause(OtherCause oc) {	
 	    	OtherCause otherCause = new OtherCause();
 	    	otherCause.setText(oc.getText());
 	    	
 	    	return otherCause;
 	    	
+	    }
+	    
+	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf) {
+	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
+	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
+	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
+
+	    	List<CourseAgent> caList = trtInf.getCourseAgents();
+	    	
+	    	for (CourseAgent ca: caList) {
+	    		treatmentInformation.addCourseAgent(ca);
+	    	}
+	    	
+	    	
+	    	return treatmentInformation;
 	    }
 
 		public AdverseEventReportDao getAdverseEventReportDao() {
