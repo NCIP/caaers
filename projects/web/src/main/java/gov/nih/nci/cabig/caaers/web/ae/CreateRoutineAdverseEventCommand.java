@@ -164,7 +164,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
     		//System.out.println("RESULT : " + temp);
     		//if (ae.getGrade() == Grade.DEATH){
-    		if (message.equals("SAE")){
+    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
     			AdverseEvent expeditedAe = new AdverseEvent();
     			expeditedAe.setCtcTerm(ae.getCtcTerm());
     			expeditedAe.setGrade(ae.getGrade());
