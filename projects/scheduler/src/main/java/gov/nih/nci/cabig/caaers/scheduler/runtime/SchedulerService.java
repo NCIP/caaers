@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime;
 
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 /**
  * 
  * 
@@ -11,6 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
  */
 
 public interface SchedulerService {
-	public  void scheduleNotification(ReportSchedule reportSchedule); 
+	public  void scheduleNotification(Report report); 
 	
 }

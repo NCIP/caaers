@@ -23,7 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
@@ -69,7 +69,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		scheduleJobForReport(-444);
 		//verify the deliver status.
 
-		ReportSchedule rs = service.getReportScheduleDao().getById(-444);
+		Report rs = service.getReportScheduleDao().getById(-444);
 		for(ScheduledNotification snf : rs.getScheduledNotifications()){
 			assertEquals("Delivery status should be delivered", snf.getDeliveryStatus(), DeliveryStatus.DELIVERED);
 		}
@@ -77,7 +77,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	public void testScheduleNotificationWithJobDelete() throws Exception{
 		scheduleJobForReport(-885);
 		//verify delivery status
-		ReportSchedule rs = service.getReportScheduleDao().getById(-885);
+		Report rs = service.getReportScheduleDao().getById(-885);
 		int i = 0;
 		for(ScheduledNotification snf : rs.getScheduledNotifications()){
 			if(i == 0)
@@ -90,9 +90,9 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 
 	public void scheduleJobForReport(int reportId) throws Exception{
 		assertNotNull( "SchedulerService is not valid",service);
-		final ReportSchedule reportSchedule = service.getReportScheduleDao().getById(reportId);
+		final Report report = service.getReportScheduleDao().getById(reportId);
 		System.out.println("========== going to schedule ==================== [reportId :" + reportId +"]");
-		 service.scheduleNotification(reportSchedule);
+		 service.scheduleNotification(report);
 		Thread t = new Thread(){
 			int cnt = 0;
 			public void run(){
@@ -102,7 +102,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 					Thread.sleep(1000 * 2); //delay 20 seconds, so that the job properly setup in quartz
 					while(true){
 
-						String[] jobNames = service.getScheduler().getJobNames("JG-" + reportSchedule.getId());
+						String[] jobNames = service.getScheduler().getJobNames("JG-" + report.getId());
 
 						if(jobNames == null || jobNames.length < 1) //if no scheduled jobs, quit!!!!
 							break;

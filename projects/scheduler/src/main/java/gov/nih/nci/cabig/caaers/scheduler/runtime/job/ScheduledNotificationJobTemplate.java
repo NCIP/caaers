@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import org.apache.commons.logging.Log;
@@ -32,10 +32,10 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	protected JobDetail jobDetail;
 	protected JobExecutionContext jobContext;
 	
-	protected ReportSchedule reportSchedule;
+	protected Report report;
 	protected ScheduledNotification scheduledNotification;
 	protected ApplicationContext applicationContext;
-	protected ReportScheduleDao reportScheduleDao;
+	protected ReportDao reportScheduleDao;
 	protected int scheduledNotificationIndex;
 
 	
@@ -51,8 +51,8 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		return jobDetail;
 	}
 
-	public ReportSchedule getReportSchedule() {
-		return reportSchedule;
+	public Report getReportSchedule() {
+		return report;
 	}
 
 	public ScheduledNotification getScheduledNotification() {
@@ -63,7 +63,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		return applicationContext;
 	}
 
-	public ReportScheduleDao getReportScheduleDao() {
+	public ReportDao getReportScheduleDao() {
 		return reportScheduleDao;
 	}
 
@@ -82,7 +82,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	}
 
 	/**
-	 * Will reload the {@link ReportSchedule} identified by <code>reportSchedule.id</code>
+	 * Will reload the {@link Report} identified by <code>report.id</code>
 	 * and {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>, 
 	 * in {@link JobDetail} data map({@link JobDataMap}). 
 	 * This method will then check the present status of the AdverseEventReport, and if found {@link ReportStatus}.PENDING,
@@ -97,13 +97,13 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			scheduler = context.getScheduler();
 			jobDetail = context.getJobDetail();
 			applicationContext = (ApplicationContext)scheduler.getContext().get("applicationContext");
-			reportScheduleDao = (ReportScheduleDao)applicationContext.getBean("reportScheduleDao");
+			reportScheduleDao = (ReportDao)applicationContext.getBean("reportScheduleDao");
 			
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 			scheduledNotificationIndex = jobDataMap.getInt("curIndex");
-			Integer reportScheduleId = jobDataMap.getInt("reportSchedule.id");
-			reportSchedule = reportScheduleDao.getById(reportScheduleId);
-			scheduledNotification = reportSchedule.getScheduledNotifications().get(scheduledNotificationIndex);
+			Integer reportScheduleId = jobDataMap.getInt("report.id");
+			report = reportScheduleDao.getById(reportScheduleId);
+			scheduledNotification = report.getScheduledNotifications().get(scheduledNotificationIndex);
 			
 			boolean status = verifyAeReportStatus();
 			if(status){
@@ -114,7 +114,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 				deleteSubsequentJobs();
 				//mark the status of all jobs from curIndex to RECALLED
 				int index = 0;
-				for(ScheduledNotification nf : reportSchedule.getScheduledNotifications()){
+				for(ScheduledNotification nf : report.getScheduledNotifications()){
 				  if(index >= scheduledNotificationIndex){
 					  nf.setDeliveryStatus(DeliveryStatus.RECALLED);
 					  logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " + 
@@ -125,7 +125,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			}
 			
 			//update the report
-			reportScheduleDao.save(reportSchedule);
+			reportScheduleDao.save(report);
 			
 		} catch (Exception e) {
 			logger.error("execution of job failed",e);
@@ -135,12 +135,12 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 
 	/**
 	 * This method will return true, if the status of the AdverseEventReport is still pending. 
-	 * @return true - when stautus is {@link ReportSchedule}.PENDING
-	 * @see ReportSchedule
+	 * @return true - when stautus is {@link Report}.PENDING
+	 * @see Report
 	 * @see AdverseEventReport
 	 */
 	public boolean verifyAeReportStatus() {
-		 return reportSchedule.getAeReport().getStatus().equals(ReportStatus.PENDING);
+		 return report.getAeReport().getStatus().equals(ReportStatus.PENDING);
 	}
 
 	/**

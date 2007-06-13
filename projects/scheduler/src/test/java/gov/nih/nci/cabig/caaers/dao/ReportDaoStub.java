@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -24,23 +24,23 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class ReportScheduleDaoStub extends ReportScheduleDao {
+public class ReportDaoStub extends ReportDao {
 
-	HashMap<Object,ReportSchedule> map = new HashMap<Object, ReportSchedule>();
+	HashMap<Object,Report> map = new HashMap<Object, Report>();
 
-	public ReportScheduleDaoStub() {
+	public ReportDaoStub() {
 		init(-444);
 		init(-885);
 	}
 	public void init(int reportId){
-		ReportSchedule rs = getDummyReportSchedule(reportId);
+		Report rs = getDummyReportSchedule(reportId);
 		map.put(rs.getName(), rs);
 
 	}
 	@Override
-	public ReportSchedule getById(int id) {
+	public Report getById(int id) {
 		logger.debug("ReportScheduleDAOStub : getById(" + id +")");
-		for(ReportSchedule rs : map.values()){
+		for(Report rs : map.values()){
 			if(rs.getId() == id) return rs;
 		}
 		logger.debug("ReportScheduleDAOStub : getById(returning NULL )");
@@ -51,7 +51,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#getByName(java.lang.String)
 	 */
 	@Override
-	public ReportSchedule getByName(String name) {
+	public Report getByName(String name) {
 		logger.debug("ReportScheduleDAO Stub : getByName(" + name +"), will return " + map.containsKey(name));
 		return map.get(name);
 	}
@@ -60,13 +60,13 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.helper.ReportSchedule)
 	 */
 	@Override
-	public void save(ReportSchedule rs) {
-		logger.debug("ReportScheduleDaoStub : save()\r\n" + String.valueOf(rs));
+	public void save(Report rs) {
+		logger.debug("ReportDaoStub : save()\r\n" + String.valueOf(rs));
 		map.put(rs.getName(), rs);
 	}
 
 
-	public ReportSchedule getDummyReportSchedule(final int reportId){
+	public Report getDummyReportSchedule(final int reportId){
 
 		ReportDefinition rct = null;
 		AdverseEventReport aeReport = new AdverseEventReport(){
@@ -81,7 +81,7 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		aeReport.setStatus(ReportStatus.PENDING);
 		aeReport.setId(reportId);
 
-		ReportSchedule rs = null;
+		Report rs = null;
 
 
 		Calendar cal = GregorianCalendar.getInstance();
@@ -108,11 +108,11 @@ public class ReportScheduleDaoStub extends ReportScheduleDao {
 		rct.setPlannedNotifications(pnfList);
 
 
-		rs = new ReportSchedule();
+		rs = new Report();
 		rs.setName("24Hour5Day("+ reportId+")");
 		rs.setCreatedOn(new Date());
 		rs.setId(reportId);
-		rs.setReportCalendarTemplate(rct);
+		rs.setReportDefinition(rct);
 		rs.setAeReport(aeReport);
 		aeReport.setReportSchedule(rs);
 		rs.setScheduledNotifications(snfList);
