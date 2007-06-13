@@ -27,7 +27,7 @@ public class ActionDispatcher {
 	public void dispatchAction(String actionId, RuleContext ruleContext) throws Exception{
 		try {
 			//instantiate the Mock-ScheduleReport
-/*			ReportSchedule schedule = MockObjectFactory.getReportSchedule();
+/*			Report schedule = MockObjectFactory.getReportSchedule();
 			NotificationCalendarTemplate template = MockObjectFactory.getNotificationCalendarTemplate();
 			schedule.applyNotificationCalendarTemplate(template);
 			
