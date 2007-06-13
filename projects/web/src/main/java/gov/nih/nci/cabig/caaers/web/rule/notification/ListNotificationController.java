@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  * */
 public class ListNotificationController extends SimpleFormController {
 
-	private ReportCalendarTemplateDao reportCalendarTemplateDao;
+	private ReportDefinitionDao rdDao;
 	
 	public ListNotificationController() {
 		setCommandClass(ListNotificationCommand.class);
@@ -24,22 +24,21 @@ public class ListNotificationController extends SimpleFormController {
 	
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
-		return new ListNotificationCommand(reportCalendarTemplateDao);
+		return new ListNotificationCommand(rdDao);
 	}
 
 	/**
 	 * @return the reportCalendarTemplateDao
 	 */
-	public ReportCalendarTemplateDao getReportCalendarTemplateDao() {
-		return reportCalendarTemplateDao;
+	public ReportDefinitionDao getRdDao() {
+		return rdDao;
 	}
 
 	/**
-	 * @param reportCalendarTemplateDao the reportCalendarTemplateDao to set
+	 * @param rdDao the reportCalendarTemplateDao to set
 	 */
-	public void setReportCalendarTemplateDao(
-			ReportCalendarTemplateDao reportCalendarTemplateDao) {
-		this.reportCalendarTemplateDao = reportCalendarTemplateDao;
+	public void setRdDao(ReportDefinitionDao rdDao) {
+		this.rdDao = rdDao;
 	}
 
 	

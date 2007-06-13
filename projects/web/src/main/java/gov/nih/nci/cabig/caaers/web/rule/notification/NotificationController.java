@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * */
 public class NotificationController extends AbstractTabbedFlowFormController<RuleInputCommand> {
 
-	ReportCalendarTemplateDao reportCalendarTemplateDao;
+	ReportDefinitionDao rdDao;
 	List<String> allRoles;
 	
 	public NotificationController() {
@@ -49,8 +49,8 @@ public class NotificationController extends AbstractTabbedFlowFormController<Rul
 	public Object formBackingObject(HttpServletRequest request) {
 		//return new NotificationCommand(allRoles, map, notificationDao);
 		NotificationCommand cmd = new NotificationCommand();
-		cmd.setCalendarTemplate(new ReportDefinition());
-		cmd.setCalendarTemplateDao(reportCalendarTemplateDao);
+		cmd.setReportDefinition(new ReportDefinition());
+		cmd.setReportDefinitionDao(rdDao);
 		cmd.setAllRoles(allRoles);
 		return cmd;
 	}
@@ -68,16 +68,15 @@ public class NotificationController extends AbstractTabbedFlowFormController<Rul
 	/**
 	 * @return the reportCalendarTemplateDao
 	 */
-	public ReportCalendarTemplateDao getReportCalendarTemplateDao() {
-		return reportCalendarTemplateDao;
+	public ReportDefinitionDao getRdDao() {
+		return rdDao;
 	}
 
 	/**
-	 * @param reportCalendarTemplateDao the reportCalendarTemplateDao to set
+	 * @param rdDao the {@link ReportDefinitionDao} to set
 	 */
-	public void setReportCalendarTemplateDao(
-			ReportCalendarTemplateDao reportCalendarTemplateDao) {
-		this.reportCalendarTemplateDao = reportCalendarTemplateDao;
+	public void setRdDao(ReportDefinitionDao rdDao) {
+		this.rdDao = rdDao;
 	}
 	
 	public void setAllRoles(List<String> roleList){

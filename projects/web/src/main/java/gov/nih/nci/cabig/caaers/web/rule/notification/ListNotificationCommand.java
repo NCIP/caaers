@@ -1,17 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.List;
 
 public class ListNotificationCommand {
 
-	private List<ReportDefinition> reportCalendarList;
+	private List<ReportDefinition> reportDefinitionList;
 	
 	
 
-	public ListNotificationCommand(ReportCalendarTemplateDao rctDao) {
+	public ListNotificationCommand(ReportDefinitionDao rctDao) {
 		setReportCalendarTemplateList(rctDao.getAll());
 	}
 
@@ -21,7 +21,7 @@ public class ListNotificationCommand {
 	 * @return the reportCalendarList
 	 */
 	public List<ReportDefinition> getReportCalendarTemplateList() {
-		return reportCalendarList;
+		return reportDefinitionList;
 	}
 
 
@@ -31,7 +31,7 @@ public class ListNotificationCommand {
 	 */
 	public void setReportCalendarTemplateList(
 			List<ReportDefinition> reportCalendarList) {
-		this.reportCalendarList = reportCalendarList;
+		this.reportDefinitionList = reportCalendarList;
 	}
 	
 }

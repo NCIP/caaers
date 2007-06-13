@@ -1,7 +1,7 @@
 
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -49,7 +49,7 @@ public class NotificationCommand implements RuleInputCommand {
 	private String fromAddress;
 	
 	private String notificationType;
-	private ReportDefinition calendarTemplate;
+	private ReportDefinition reportDefinition;
 	
 	
 	private List<String> roleRecipient = new ArrayList<String>();
@@ -57,7 +57,7 @@ public class NotificationCommand implements RuleInputCommand {
 	
 	
 	
-	ReportCalendarTemplateDao calendarTemplateDao;
+	protected ReportDefinitionDao rdDao;
 	private List<String> allRoles;
 	
 	private boolean validationFailed;
@@ -96,24 +96,24 @@ public class NotificationCommand implements RuleInputCommand {
 	/**
 	 * @return the calendarTemplateDao
 	 */
-	public ReportCalendarTemplateDao getCalendarTemplateDao() {
-		return calendarTemplateDao;
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return rdDao;
 	}
 
 	/**
-	 * @param calendarTemplateDao the calendarTemplateDao to set
+	 * @param rdDao the calendarTemplateDao to set
 	 */
-	public void setCalendarTemplateDao(ReportCalendarTemplateDao calendarTemplateDao) {
-		this.calendarTemplateDao = calendarTemplateDao;
+	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
+		this.rdDao = rdDao;
 	}
 
 	public void reset(int index){
-		if(calendarTemplate == null){
+		if(reportDefinition == null){
 		  System.out.println("NULL calendarTemplate");
 		  return;
 		}
 		updateReportCalendarTemplate();
-		PlannedNotification pn = calendarTemplate.fetchPlannedNotification(index);
+		PlannedNotification pn = reportDefinition.fetchPlannedNotification(index);
 		populate(pn);
 		lastPointOnScale = "" + index;
 	}
@@ -127,10 +127,10 @@ public class NotificationCommand implements RuleInputCommand {
 	}
 	
 	public void populate(){
-		if(calendarTemplate == null)
+		if(reportDefinition == null)
 			return;
 		int indexOnScale = Integer.parseInt(pointOnScale);
-		PlannedNotification pn = calendarTemplate.fetchPlannedNotification(indexOnScale);
+		PlannedNotification pn = reportDefinition.fetchPlannedNotification(indexOnScale);
 		populate(pn);
 		lastPointOnScale = pointOnScale;
 	}
@@ -177,7 +177,7 @@ public class NotificationCommand implements RuleInputCommand {
 		if(StringUtils.isEmpty(delete))
 			return;
 		int indexToDelete = NumberUtils.toInt(delete);
-		for(Iterator<PlannedNotification> it = calendarTemplate.getPlannedNotifications().iterator(); it.hasNext();){
+		for(Iterator<PlannedNotification> it = reportDefinition.getPlannedNotifications().iterator(); it.hasNext();){
 			PlannedNotification pen = it.next();
 			if(pen.getIndexOnTimeScale() == indexToDelete){
 				it.remove();
@@ -189,10 +189,10 @@ public class NotificationCommand implements RuleInputCommand {
 		if(validationFailed)
 			return; //dont populate invalid values
 		
-		calendarTemplate.setName(name);
-		calendarTemplate.setDescription(description);
-		calendarTemplate.setTimeScaleUnitType(TimeScaleUnit.valueOf(timeScaleType));
-		calendarTemplate.setDuration(Integer.parseInt(duration));
+		reportDefinition.setName(name);
+		reportDefinition.setDescription(description);
+		reportDefinition.setTimeScaleUnitType(TimeScaleUnit.valueOf(timeScaleType));
+		reportDefinition.setDuration(Integer.parseInt(duration));
 		//configure planned notification if lastPointOnScale is not empty
 		if(StringUtils.isEmpty(lastPointOnScale))
 			return;
@@ -207,10 +207,10 @@ public class NotificationCommand implements RuleInputCommand {
 								   StringUtils.isNotEmpty(subjectLine);
 			if(!mustAdd)
 				return;
-			PlannedEmailNotification pen = (PlannedEmailNotification) calendarTemplate.fetchPlannedNotification(lastPoint);
+			PlannedEmailNotification pen = (PlannedEmailNotification) reportDefinition.fetchPlannedNotification(lastPoint);
 			if(pen == null){
 				pen = new PlannedEmailNotification();
-				calendarTemplate.addPlannedNotification(pen);
+				reportDefinition.addPlannedNotification(pen);
 			}
 			pen.setIndexOnTimeScale(lastPoint);
 			pen.setSubjectLine(subjectLine);
@@ -238,15 +238,15 @@ public class NotificationCommand implements RuleInputCommand {
 	/**
 	 * @return the calendarTemplate
 	 */
-	public ReportDefinition getCalendarTemplate() {
-		return calendarTemplate;
+	public ReportDefinition getReportDefinition() {
+		return reportDefinition;
 	}
 
 	/**
 	 * @param calendarTemplate the calendarTemplate to set
 	 */
-	public void setCalendarTemplate(ReportDefinition calendarTemplate) {
-		this.calendarTemplate = calendarTemplate;
+	public void setReportDefinition(ReportDefinition calendarTemplate) {
+		this.reportDefinition = calendarTemplate;
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class NotificationCommand implements RuleInputCommand {
 	
 	public void save() {
 	
-		calendarTemplateDao.save(calendarTemplate);
+		rdDao.save(reportDefinition);
 	}
 
 		public String getName() {
@@ -421,8 +421,8 @@ public class NotificationCommand implements RuleInputCommand {
 	
 	private List<Integer> getConfiguredIndexes(){
 		List<Integer> list = new ArrayList<Integer>();
-		if(calendarTemplate != null){
-			List<PlannedNotification> pnList = calendarTemplate.getPlannedNotifications();
+		if(reportDefinition != null){
+			List<PlannedNotification> pnList = reportDefinition.getPlannedNotifications();
 			for(PlannedNotification pn : pnList){
 			 list.add(pn.getIndexOnTimeScale());	
 			}
