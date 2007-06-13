@@ -6,11 +6,9 @@ package gov.nih.nci.cabig.caaers.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -27,11 +25,10 @@ import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
  * @version     %I%, %G%
  * @since       1.0
  */
-public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTemplateDao> {
+public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 	
-	Session hibernateSession = null;
-	Transaction hibernateTransaction = null;
-	ReportCalendarTemplateDao rctDao;
+	
+	ReportDefinitionDao rctDao;
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -39,51 +36,24 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 	protected void setUp() throws Exception {
 		super.setUp();
 		rctDao = getDao();
-		loadHibernateSession();
 	}
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception {
-		unloadHibernateSession();
 		rctDao  = null;
 		super.tearDown();
 		
 	}
-	private void loadHibernateSession(){
-		hibernateSession = rctDao.getHibernateSession();
-	}
-	private void unloadHibernateSession(){
-		hibernateSession = null;
-	}
-	private void beginTransaction(){
-		if(hibernateSession == null)
-			loadHibernateSession();
-		hibernateTransaction = hibernateSession.beginTransaction();
-	}
 	
-	private void commit(){
-		if(hibernateTransaction != null)
-			hibernateTransaction.commit();
-	}
-	private void rollback(){
-		if(hibernateTransaction != null)
-			hibernateTransaction.rollback();
-	}
-	
-	@Override
-	protected void interruptSession() {
-		unloadHibernateSession();
-		super.interruptSession();
-		loadHibernateSession();
-	}
+
 	
 	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#domainClass()}.
+	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportDefinitionDao#domainClass()}.
 	 */
 	public void testDomainClass() {
-		System.out.println("domainClass :" + rctDao.domainClass().getName());
+		log.debug("domainClass :" + rctDao.domainClass().getName());
 		assertEquals(ReportDefinition.class.getName(), rctDao.domainClass().getName());
 	}
 	
@@ -94,7 +64,7 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 	}
 
 	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportDefinition)}.
+	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportDefinitionDao#save(gov.nih.nci.cabig.caaers.domain.notification.ReportDefinition)}.
 	 */
 	public void testSave() {
 		ReportDefinition rct = new ReportDefinition();
@@ -133,21 +103,16 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 		rct.setPlannedNotifications(pnlist);
 		Integer id = null;
 
-		
-		beginTransaction();
+		rctDao.getHibernateSession().beginTransaction();
 		rctDao.save(rct);
-	//	commit();
 		id = rct.getId();
-			
-			
 		interruptSession();	
-
-		beginTransaction();
+		rctDao.getHibernateSession().beginTransaction();
 		
 		ReportDefinition rctLoaded = null;
 		rctLoaded = rctDao.getById(id);
 		
-		System.out.println(rctLoaded.getDuration());
+		log.debug(rctLoaded.getDuration());
 		PlannedEmailNotification nf = (PlannedEmailNotification)rctLoaded.getPlannedNotifications().get(0);
 		assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
 		assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBodyAsString() );
@@ -155,10 +120,8 @@ public class ReportCalendarTemplateDaoTest extends DaoTestCase<ReportCalendarTem
 		nf.setIndexOnTimeScale(4);
 		nf.setSubjectLine("New Subject Line");
 		
-	//	commit();
 		
-		
-		System.out.println("============= after save ===============");
+		log.debug("============= after save ===============");
 	}
 	public void testExample(){
 		assert(true);

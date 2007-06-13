@@ -3,28 +3,20 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -33,11 +25,10 @@ import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
  * @version     %I%, %G%
  * @since       1.0
  */
-public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
+public class ReportDaoTest extends DaoTestCase<ReportDao> {
 	
-	Session hibernateSession = null;
-	Transaction hibernateTransaction = null;
-	ReportScheduleDao rsDao;
+	
+	ReportDao rsDao;
 	
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -45,60 +36,33 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		rsDao = getDao();
-		loadHibernateSession();
 	}
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception {
-		unloadHibernateSession();
 		rsDao  = null;
 		super.tearDown();
 		
 	}
-	private void loadHibernateSession(){
-		hibernateSession = rsDao.getHibernateSession();
-	}
-	private void unloadHibernateSession(){
-		hibernateSession = null;
-	}
-	private void beginTransaction(){
-		if(hibernateSession == null)
-			loadHibernateSession();
-		hibernateTransaction = hibernateSession.beginTransaction();
-	}
+
 	
-	private void commit(){
-		if(hibernateTransaction != null)
-			hibernateTransaction.commit();
-	}
-	private void rollback(){
-		if(hibernateTransaction != null)
-			hibernateTransaction.rollback();
-	}
-	
-	@Override
-	protected void interruptSession() {
-		unloadHibernateSession();
-		super.interruptSession();
-		loadHibernateSession();
-	}
 	
 	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao#domainClass()}.
+	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao#domainClass()}.
 	 */
 	public void testDomainClass() {
-		System.out.println("domainClass :" + rsDao.domainClass().getName());
-		assertEquals(ReportSchedule.class.getName(), rsDao.domainClass().getName());
+		log.debug("domainClass :" + rsDao.domainClass().getName());
+		assertEquals(Report.class.getName(), rsDao.domainClass().getName());
 	}
 
 	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao#save(gov.nih.nci.cabig.caaers.helper.ReportDefinition)}.
+	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao#save(gov.nih.nci.cabig.caaers.helper.ReportDefinition)}.
 	 */
 	public void testSave() {
 		
-		ReportSchedule rs = new ReportSchedule();
+		Report rs = new Report();
 		rs.setAeReport(null);
 		rs.setName("My Sample Report");
 		rs.setCreatedOn(new Date());
@@ -106,39 +70,36 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 		rs.setSubmittedOn(new Date());
 		rs.setGridId("ADEDR99393939");
 		
-		beginTransaction();
-		
+		rsDao.getHibernateSession().beginTransaction();
 		rsDao.save(rs);
-	//	commit();
 		Integer id = rs.getId();
 		
-		System.out.println("ReportSchedule ID: [" + id + "]");
+		log.debug("Report ID: [" + id + "]");
 		
 	}
 	
 	public void testGetByName(){
 		String name = "Sample Report";
-		ReportSchedule rs = rsDao.getByName(name);
+		Report rs = rsDao.getByName(name);
 		assertEquals("The name is not matching", name, rs.getName());
 	}
 	
 	public void testGetAllByDueDate(){
-		List<ReportSchedule> list = rsDao.getAllByDueDate(new Date());
-		System.out.println("size::::" + String.valueOf(list));
-		for(ReportSchedule s : list){
-			System.out.println(s.getId());
+		List<Report> list = rsDao.getAllByDueDate(new Date());
+		log.debug("size::::" + String.valueOf(list));
+		for(Report s : list){
+			log.debug(s.getId());
 		}
 	}
 	
 	public void testUpdate(){
-		beginTransaction();
 		
 		//obtain a previously saved report
-		ReportSchedule rs = rsDao.getById(-223);
+		Report rs = rsDao.getById(-223);
 		//obtain a calendar template
-		ReportCalendarTemplateDao rctDao = (ReportCalendarTemplateDao)getApplicationContext().getBean("reportCalendarTemplateDao");
+		ReportDefinitionDao rctDao = (ReportDefinitionDao)getApplicationContext().getBean("reportDefinitionDao");
 		ReportDefinition rc = rctDao.getById(-222);
-		rs.setReportCalendarTemplate(rc);
+		rs.setReportDefinition(rc);
 		
 		//set the scheduled email notification
 		ScheduledEmailNotification sen = new ScheduledEmailNotification();
@@ -161,32 +122,31 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 		aeReport.setStatus(ReportStatus.PENDING);
 		rs.setAeReport(aeReport);
 		
-		//save the reportSchedule
+		rsDao.getHibernateSession().beginTransaction();
+		//save the report
 		rsDao.save(rs);
 		
-	//	commit();
 		int id = rs.getId();
 		interruptSession();
 		
-		beginTransaction();
-		ReportSchedule rs2 = rsDao.getById(id);
-		assertEquals("ReportSchedule Name is not the same", rs.getName(), rs2.getName());
+		rsDao.getHibernateSession().beginTransaction();
+		Report rs2 = rsDao.getById(id);
+		assertEquals("Report Name is not the same", rs.getName(), rs2.getName());
 		if(rs2.getScheduledNotifications() != null && rs2.getScheduledNotifications().size() > 0){
 			ScheduledNotification sn = rs2.getScheduledNotifications().get(0);
 			assertEquals("ScheduledNotification Body is not the same", new String(sn.getBody()), "Hi this is body content");
 		}
-	//	commit();
 		
 		//fetch AE report and see if we can get hold of the report schedule.
 		aeReport = aeDao.getById(-1);
-		ReportSchedule rs3 = aeReport.getReportSchedule();
+		Report rs3 = aeReport.getReportSchedule();
 		assertNotNull(rs3);
-		assertEquals("ReportSchedule obtained from AEReport is not correct",rs2.getName(), rs3.getName());
+		assertEquals("Report obtained from AEReport is not correct",rs2.getName(), rs3.getName());
 		assertEquals(aeReport.getStatus(), ReportStatus.PENDING);
 		
 	}
 	public void testDeleteByID(){
-		ReportSchedule rs = new ReportSchedule();
+		Report rs = new Report();
 		rs.setAeReport(null);
 		rs.setName("My Sample Report");
 		rs.setCreatedOn(new Date());
@@ -194,17 +154,15 @@ public class ReportScheduleDaoTest extends DaoTestCase<ReportScheduleDao> {
 		rs.setSubmittedOn(new Date());
 		rs.setGridId("ADEDR99393939");
 		
-		beginTransaction();
-		
+		rsDao.getHibernateSession().beginTransaction();
 		rsDao.save(rs);
-	//	commit();
 		Integer id = rs.getId();
-		boolean deleted = rsDao.deleteById(rs.getId());
+		boolean deleted = rsDao.deleteById(id);
 		assertTrue("unable to delete report schedule", deleted);
 		//delete existing object
 		 rs = rsDao.getById(-223);
 		 deleted = rsDao.deleteById(rs.getId());
 		assertTrue("unable to delete report schedule", deleted);
 	}
-
+	
 }

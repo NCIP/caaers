@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class ReportServiceTest extends CaaersTestCase {
 	AdverseEventReport mockAEReport;
-	ReportSchedule rs;
+	Report rs;
 	ReportDefinition rct;
 	ReportService service;
 	
@@ -88,11 +88,11 @@ public class ReportServiceTest extends CaaersTestCase {
 		rct.setTimeScaleUnitType(TimeScaleUnit.DAY);
 		rct.setPlannedNotifications(pnfList);
 		
-		rs = new ReportSchedule();
-		rs.setName("ReportSchedule-Name");
+		rs = new Report();
+		rs.setName("Report-Name");
 		rs.setCreatedOn(new Date());
 		rs.setId(9999);
-		rs.setReportCalendarTemplate(rct);
+		rs.setReportDefinition(rct);
 		rs.setAeReport(mockAEReport);
 
 		
@@ -104,7 +104,7 @@ public class ReportServiceTest extends CaaersTestCase {
 	}
 
 	public void testFindToAddresses() {
-		ReportDefinition calendarTemplate = rs.getReportCalendarTemplate();
+		ReportDefinition calendarTemplate = rs.getReportDefinition();
 		PlannedNotification pnf = calendarTemplate.getPlannedNotifications().get(0);
 		List<String> addresses = service.findToAddresses(pnf, rs);
 		System.out.println(addresses);

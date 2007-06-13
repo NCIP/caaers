@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -33,7 +33,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ReportService {
 	
-	public  List<String> findToAddresses(PlannedNotification pnf, ReportSchedule rs){
+	public  List<String> findToAddresses(PlannedNotification pnf, Report rs){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
 		String address = null;
@@ -86,7 +86,7 @@ public class ReportService {
 		return addressList;
 	}
 	
-	public  void applyCalendarTemplate(ReportDefinition rcTemplate, ReportSchedule rs){
+	public  void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs){
 		
 		assert rcTemplate != null : "ReportDefinition must be not null, inorder to schedule notfications";
 		Date now = new Date();

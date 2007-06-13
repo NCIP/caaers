@@ -21,7 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
  * @since       1.0
  */
 @Transactional
-public class ReportCalendarTemplateDao extends GridIdentifiableDao<ReportDefinition>{
+public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.CaaersDao#domainClass()

@@ -194,6 +194,7 @@
     <PHYSICIANS/>
     <DISEASE_HISTORY/>
     <PARTICIPANT_HISTORY/>
+	<ae_prior_therapies />
     <!--
 	
 	report_schedules

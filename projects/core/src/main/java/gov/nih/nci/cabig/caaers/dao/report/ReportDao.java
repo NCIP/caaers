@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 /**
  * 
  * 
@@ -21,17 +21,17 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
  * @since       1.0
  */
 @Transactional
-public class ReportScheduleDao extends GridIdentifiableDao<ReportSchedule>{
+public class ReportDao extends GridIdentifiableDao<Report>{
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.CaaersDao#domainClass()
 	 */
 	@Override
-	public Class<ReportSchedule> domainClass() {
-		return ReportSchedule.class;
+	public Class<Report> domainClass() {
+		return Report.class;
 	}
 	
-	public void save(ReportSchedule rs){
+	public void save(Report rs){
 		getHibernateTemplate().saveOrUpdate(rs);
 	}
 	
@@ -40,48 +40,48 @@ public class ReportScheduleDao extends GridIdentifiableDao<ReportSchedule>{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ReportSchedule> getAll(){
-		return getHibernateTemplate().find("from ReportSchedule");
+	public List<Report> getAll(){
+		return getHibernateTemplate().find("from Report");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ReportSchedule getByName(String name){
+	public Report getByName(String name){
 		return CollectionUtils.firstElement(
-				(List<ReportSchedule>) getHibernateTemplate().find(
-						"from ReportSchedule s where s.name=?", new String[]{name}
+				(List<Report>) getHibernateTemplate().find(
+						"from Report s where s.name=?", new String[]{name}
 						)
 				);
 	}
 	
-	public List<ReportSchedule> getAllByDueDate(Date dueDate){
+	public List<Report> getAllByDueDate(Date dueDate){
 		return getByDate(2, dueDate);
 	}
 	
-	public List<ReportSchedule> getAllByCreatedDate(Date dueDate){
+	public List<Report> getAllByCreatedDate(Date dueDate){
 		return getByDate(3, dueDate);
 	}
 	
-	public List<ReportSchedule> getAllBySubmittedDate(Date dueDate){
+	public List<Report> getAllBySubmittedDate(Date dueDate){
 		return getByDate(1, dueDate);
 	}
 	
 	@SuppressWarnings("unchecked")
-	private List<ReportSchedule> getByDate(int dateType, Date d){
+	private List<Report> getByDate(int dateType, Date d){
 		String column = (dateType == 1)? "submittedOn" : ((dateType == 2)? "dueOn" : "createdOn");
-		String hsql = "from ReportSchedule s where s." + column + "=?";
+		String hsql = "from Report s where s." + column + "=?";
 		return getHibernateTemplate().find( hsql, new Object[]{d});
 	}
 	
 	public boolean deleteById(int id){
-		int count = getHibernateTemplate().bulkUpdate("delete ReportSchedule s where s.id=?", new Object[]{id});
+		int count = getHibernateTemplate().bulkUpdate("delete Report s where s.id=?", new Object[]{id});
 		return count >= 1;
 	}
 	
-	public void delete(ReportSchedule rs){
+	public void delete(Report rs){
 		getHibernateTemplate().delete(rs);
 	}
 	
-	public void delete(Collection<ReportSchedule> c){
+	public void delete(Collection<Report> c){
 		getHibernateTemplate().deleteAll(c);
 	}
 	

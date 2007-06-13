@@ -24,7 +24,7 @@ import org.hibernate.annotations.Parameter;
 /**
  * A report sending schedule for an adverse event. 
  * The RuleExecutionService, evaluates pre-defined set of rules over the attributes of an AdverseEvent,
- * and creates a ReportSchedule.  
+ * and creates a Report.  
  * 
  * @author Biju Joseph
  *
@@ -36,13 +36,13 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name = "sequence", value = "seq_report_schedules_id")
     }
 )
-public class ReportSchedule extends AbstractMutableDomainObject implements Serializable{
+public class Report extends AbstractMutableDomainObject implements Serializable{
 	
 	private String name;
 	
 	private AdverseEventReport aeReport;
 	
-	private ReportDefinition rcTemplate;
+	private ReportDefinition reportDefinition;
 	
 	/** The list of notificaiton that are to be scheduled */
 	private List<ScheduledNotification> notifications;
@@ -65,12 +65,12 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
 	
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="rct_id")
-	public ReportDefinition getReportCalendarTemplate(){
-		return rcTemplate;
+	public ReportDefinition getReportDefinition(){
+		return reportDefinition;
 	}
 	
-	public void setReportCalendarTemplate(ReportDefinition rcTemplate){
-		this.rcTemplate = rcTemplate;
+	public void setReportDefinition(ReportDefinition reportDefinition){
+		this.reportDefinition = reportDefinition;
 	}
 	
 	@OneToMany(fetch=FetchType.LAZY)
@@ -143,7 +143,7 @@ public class ReportSchedule extends AbstractMutableDomainObject implements Seria
     @Override
     public String toString() {
     	StringBuilder sb = new StringBuilder();
-    	sb.append("ReportSchedule [").append("id : ").append(getId())
+    	sb.append("Report [").append("id : ").append(getId())
     	.append(", name: ").append(name)
     	.append(", createdOn :").append(String.valueOf(createdOn))
     	.append(", submittedOn :").append(String.valueOf(submittedOn))

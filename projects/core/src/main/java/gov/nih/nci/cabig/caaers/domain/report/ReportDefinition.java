@@ -21,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 /**
  * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport.
- * A ReportDefinition is applied or used by the ReportSchedule to determine the notifications that are to be send out
+ * A ReportDefinition is applied or used by the Report to determine the notifications that are to be send out
  * on a particular instance of time.
  *
  * A ReportDefinition instance to be used, is picked-up by the Rules Engine Component, for a specific kind of report

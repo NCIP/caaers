@@ -89,7 +89,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
                 <!-- For Rules-Scheduler-Notification 05/10/2007-->
 		<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
-		<value>gov.nih.nci.cabig.caaers.domain.report.ReportSchedule</value>
+		<value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
 		<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
 		<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
 		<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
@@ -178,8 +178,8 @@
 	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
 	
 	<!--Rules/Scheduler/Notification DAOs-->
-	<bean id="reportCalendarTemplateDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportCalendarTemplateDao" />
-	<bean id="reportScheduleDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportScheduleDao" />
+	<bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao" />
+	<bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao" />
 	<bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao" />
 	
 </beans>

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.report.ReportSchedule;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
@@ -50,7 +50,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
 
-    private ReportSchedule reportSchedule;
+    private Report report;
 
     private ReportStatus status;
 
@@ -371,20 +371,20 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     }
 
     /**
-     * @return the reportSchedule
+     * @return the report
      */
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {  CascadeType.DELETE_ORPHAN })
 //    @Transient
-    public ReportSchedule getReportSchedule() {
-        return reportSchedule;
+    public Report getReportSchedule() {
+        return report;
     }
 
     /**
-     * @param reportSchedule the reportSchedule to set
+     * @param report the report to set
      */
-    public void setReportSchedule(ReportSchedule reportSchedule) {
-        this.reportSchedule = reportSchedule;
+    public void setReportSchedule(Report report) {
+        this.report = report;
     }
 
     /**
