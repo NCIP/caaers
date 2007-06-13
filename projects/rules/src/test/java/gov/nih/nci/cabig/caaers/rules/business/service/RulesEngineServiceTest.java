@@ -107,6 +107,7 @@ public class RulesEngineServiceTest extends TestCase{
 		
 		this.deployRuleSet();
 		
+		this.isDeployed();
 		
 		
 		
@@ -379,6 +380,15 @@ private void getAllRuleSetsForStudy() throws Exception{
 		action.setActionId("ROUTINE_AE");
 		rule1.setAction(action);
 		return rule1;
+	}
+	
+	private void isDeployed() throws Exception{
+		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
+		String studyShortTitle = "Our test Study";
+		String sponsorName = "Loudoun Medical Center";
+		RuleSet ruleSet = rulesEngineService.getRuleSetForStudy(ruleSetName, studyShortTitle, sponsorName);
+		boolean isDeployed = rulesEngineService.isDeployed(ruleSet);
+		assertEquals(isDeployed, true);
 	}
 	
 	
