@@ -32,6 +32,7 @@
     <properties>
         <db />
         <databaseConfigurationName>${db}</databaseConfigurationName>
+        <bering.version>0.7-SNAPSHOT</bering.version>
     </properties>
     <dependencies>
         <!-- BUILD/RUNTIME DEPS -->
@@ -152,7 +153,7 @@
         <dependency>
             <groupId>edu.northwestern.bioinformatics</groupId>
             <artifactId>bering</artifactId>
-            <version>0.6</version>
+            <version>${bering.version}</version>
         </dependency>
 <!-- 
         <dependency>
@@ -363,7 +364,7 @@
             <plugin>
                 <groupId>edu.northwestern.bioinformatics</groupId>
                 <artifactId>bering-maven-plugin</artifactId>
-                <version>0.6</version>
+                <version>${bering.version}</version>
                 <configuration>
                     <url>${datasource.url}</url>
                     <dialect>${bering.dialect}</dialect>
