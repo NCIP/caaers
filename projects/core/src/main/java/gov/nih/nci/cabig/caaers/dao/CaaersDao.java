@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
@@ -154,5 +155,14 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                 return criteria.list();
             }
         }) );
+    }
+    
+    /**
+     * This method will reassociate the domain object, this dao is dealing with the session.
+     * @param o - the domain object instance that is to be reassociated
+     */
+    protected void reassociate(T o){
+    	getSession().lock(o, LockMode.NONE);
+    	
     }
 }
