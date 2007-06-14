@@ -342,6 +342,14 @@
 					<groupId>jsr170</groupId>
 					<artifactId>jsr170</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>easymock</groupId>
+					<artifactId>easymock</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>easymock</groupId>
+					<artifactId>easymockclassextension</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
