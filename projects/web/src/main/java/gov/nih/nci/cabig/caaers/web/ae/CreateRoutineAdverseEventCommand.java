@@ -6,24 +6,12 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
-import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
@@ -156,22 +144,17 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         updateReportAssignmentLink();
     }
     
-    public boolean findExpedited(RoutineAdverseEventReport raer ){
+	@SuppressWarnings("finally")
+	public boolean findExpedited(RoutineAdverseEventReport raer ){
+		log.debug("Checking for expedited AEs");
     	boolean isPopulated = false;
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
     		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		//System.out.println("RESULT : " + temp);
-    		//if (ae.getGrade() == Grade.DEATH){
+    		//if (ae.getGrade() == Grade.DEATH){ testing purposes
     		if (message.equals("SERIOUS_ADVERSE_EVENT")){
-    			AdverseEvent expeditedAe = new AdverseEvent();
-    			expeditedAe.setCtcTerm(ae.getCtcTerm());
-    			expeditedAe.setGrade(ae.getGrade());
-    			expeditedAe.setHospitalization(ae.getHospitalization());
-    			expeditedAe.setExpected(ae.getExpected());
-    			expeditedAe.setAttributionSummary(ae.getAttributionSummary());
-    			aeReport.addAdverseEvent(expeditedAe);
+    			aeReport.addAdverseEvent(ae);
     			isPopulated = true;
     		}
     	}
@@ -184,22 +167,6 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     		return isPopulated;
     	}
     }
-    
-    /*
-    public void findExpedited(RoutineAdverseEventReport raer ){
-    	this.aeReport = new AdverseEventReport();
-    	try {
-    	for(AdverseEvent ae : raer.getAdverseEvents() )
-    	{
-    		String temp = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		System.out.println("result" + temp);
-    	}
-    	}
-    	catch(Exception e){
-    		System.out.println("Exception while firing rules: ");
-    	}
-    }
-    */
 
     public RuleExecutionService getRuleExecutionService() {
         return ruleExecutionService;
