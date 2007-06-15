@@ -158,11 +158,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     }
     
     /**
-     * This method will reassociate the domain object, this dao is dealing with the session.
+     * This method will reassociate the domain object to hibernate session.
      * @param o - the domain object instance that is to be reassociated
      */
     protected void reassociate(T o){
-    	getSession().lock(o, LockMode.NONE);
+    	getHibernateTemplate().lock(o, LockMode.NONE);
     	
     }
 }
