@@ -39,9 +39,17 @@
                     <username>${manager.username}</username>
                     <password>${manager.password}</password>
                     <url>${manager.url}</url>
-                    <contextFile>${basedir}/target/local-tomcat/context.xml</contextFile>
+                    <!--<contextFile>${basedir}/target/local-tomcat/context.xml</contextFile>-->
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals><goal>create-context</goal></goals>
+                        <phase>process-resources</phase>
+                    </execution>
+                </executions>
             </plugin>
+            <!-- Provisionally replaced by the create-context mojo of catman.  TODO: Remove if
+                 that mojo solves the windows-incompatibility problem of this chunk.
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -59,6 +67,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <!-- This is needed to "exclude" unit tests from security constraints. -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
