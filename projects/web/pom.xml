@@ -33,7 +33,7 @@
             <plugin>
                 <groupId>gov.nih.nci.cabig.ctms</groupId>
                 <artifactId>catman-maven-plugin</artifactId>
-                <version>0.1</version>
+                <version>0.2-SNAPSHOT</version>
                 <configuration>
                     <!-- Set the manager.* properties in your local settings.xml -->
                     <username>${manager.username}</username>
