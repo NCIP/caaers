@@ -9,8 +9,8 @@
 <xsl:namespace-alias stylesheet-prefix="rules" result-prefix="drools"/>
 
 
-<xsl:template match="rules:ruleSet" xml:space="preserve">
-	<package name="{rules:name}" xmlns="http://drools.org/drools-3.0"
+<xsl:template match="ruleSet" xml:space="preserve">
+	<package name="{name}" xmlns="http://drools.org/drools-3.0"
          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
          xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
 
@@ -18,61 +18,61 @@
 		<global identifier="actionDispatcher" type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" xmlns="http://drools.org/drools-3.0" />
 		
 		
-		<xsl:apply-templates select="rules:import"/>
+		<xsl:apply-templates select="import"/>
 
-		<xsl:apply-templates select="rules:rule"/>
+		<xsl:apply-templates select="rule"/>
 
 	</package>
 </xsl:template>
 
 
-<xsl:template match="rules:import">
+<xsl:template match="import">
 			<import name="{.}" xmlns="http://drools.org/drools-3.0">
 			<xsl:apply-templates/>
 			</import>
 </xsl:template>
 
-<xsl:template match="rules:rule">
-	<rule name="{rules:metaData/@name}" xmlns="http://drools.org/drools-3.0">
+<xsl:template match="rule">
+	<rule name="{metaData/@name}" xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates/>
 	</rule>
 </xsl:template>
 
-<xsl:template match="rules:condition">
+<xsl:template match="condition">
 	<lhs xmlns="http://drools.org/drools-3.0">
-		<xsl:apply-templates select="rules:column"/>
-		<xsl:apply-templates select="rules:eval"/>
+		<xsl:apply-templates select="column"/>
+		<xsl:apply-templates select="eval"/>
 	</lhs>
 </xsl:template>
 
-<xsl:template match="rules:column">
+<xsl:template match="column">
 	<column object-type="{@object-type}" identifier="{@identifier}" xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates/>
 	</column>
 </xsl:template>
 
 
-<xsl:template match="rules:field-binding">
+<xsl:template match="field-binding">
 	<field-binding field-name="{@field-name}" identifier="{@identifier}" xmlns="http://drools.org/drools-3.0"/>
 </xsl:template>
 
-<xsl:template match="rules:field-constraint">
+<xsl:template match="field-constraint">
 	<field-constraint field-name="{@field-name}" xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates/>	
 	</field-constraint>
 </xsl:template>
 
-<xsl:template match="rules:literal-restriction">
+<xsl:template match="literal-restriction">
 	<literal-restriction evaluator="{@evaluator}" value="{@value}" xmlns="http://drools.org/drools-3.0"/>
 </xsl:template>
 
-<xsl:template match="rules:eval">
+<xsl:template match="eval">
 	<eval xmlns="http://drools.org/drools-3.0">
 		<xsl:value-of select="."/>
 	</eval>
 </xsl:template>
 
-<xsl:template match="rules:action">
+<xsl:template match="action">
 	<rhs xmlns="http://drools.org/drools-3.0">
 	    System.out.println("Wow Vinay !!!");
 	    System.out.println("Value Is:"+"<xsl:value-of select="@actionId"/>");
