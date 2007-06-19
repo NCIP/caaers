@@ -41,7 +41,7 @@
 <xsl:template match="condition">
 	<lhs xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates select="column"/>
-		<xsl:apply-templates select="or"/>
+		<xsl:apply-templates select="eval"/>
 	</lhs>
 </xsl:template>
 
