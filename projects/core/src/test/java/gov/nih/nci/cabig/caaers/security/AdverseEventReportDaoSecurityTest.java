@@ -32,7 +32,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
     @Override
     public String getTestDataFileName() {
-        return "../dao/testdata/AdverseEventReportDaoTest.xml";
+        return "../dao/testdata/ExpeditedAdverseEventReportDaoTest.xml";
     }
 
     @Override
@@ -43,7 +43,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         assignmentDao = (StudyParticipantAssignmentDao)
             getApplicationContext().getBean("studyParticipantAssignmentDao");
         adverseEventReportDao = (ExpeditedAdverseEventReportDao)
-            getApplicationContext().getBean("adverseEventReportDao");
+            getApplicationContext().getBean("expeditedAdverseEventReportDao");
     }
 
     @Override
