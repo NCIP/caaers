@@ -41,7 +41,7 @@
 <xsl:template match="condition">
 	<lhs xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates select="column"/>
-		<xsl:apply-templates select="eval"/>
+		<xsl:apply-templates select="or"/>
 	</lhs>
 </xsl:template>
 
@@ -64,6 +64,12 @@
 
 <xsl:template match="literal-restriction">
 	<literal-restriction evaluator="{@evaluator}" value="{@value}" xmlns="http://drools.org/drools-3.0"/>
+</xsl:template>
+
+<xsl:template match="or">
+	<or>
+		<xsl:apply-templates select="eval"/>
+	</or>
 </xsl:template>
 
 <xsl:template match="eval">
