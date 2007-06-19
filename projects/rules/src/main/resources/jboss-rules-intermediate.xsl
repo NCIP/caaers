@@ -79,7 +79,7 @@
 							</xsl:choose>
 							
 							<xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/>
-							<xsl:value-of select="."/>
+							<xsl:if test= "string(number(.))='NaN'">"</xsl:if><xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN'">"</xsl:if>
 						</eval>
 								
 				</xsl:for-each>
