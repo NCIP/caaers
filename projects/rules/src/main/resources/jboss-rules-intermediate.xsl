@@ -5,6 +5,8 @@
 		version="1.0">
 	
 	<xsl:output method="xml" indent="yes"/> 
+	
+	
 	<xsl:key name="x" match="rules:ruleSet/rules:rule/rules:condition/rules:column" use="concat(@object-type,../../@id)"/>
 	<xsl:template match="/"> 
 				<xsl:apply-templates/>
@@ -61,7 +63,7 @@
 	
 	<xsl:template match="rules:condition/rules:column">		
 		<xsl:if test="rules:field-constraint/rules:literal-restriction/rules:value">
-			<!--<or>-->
+			<or>
 				<xsl:for-each select="rules:field-constraint/rules:literal-restriction/rules:value">	
 					
 					<!--<xsl:if test="rules:field-constraint">-->
@@ -81,7 +83,7 @@
 						</eval>
 								
 				</xsl:for-each>
-			<!--</or>-->
+			</or>
 		</xsl:if>		
 	</xsl:template>
 
