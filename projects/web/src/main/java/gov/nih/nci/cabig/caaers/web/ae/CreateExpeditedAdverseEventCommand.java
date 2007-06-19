@@ -27,8 +27,8 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventCommand implements AdverseEventInputCommand {
-    private static final Log log = LogFactory.getLog(CreateAdverseEventCommand.class);
+public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEventInputCommand {
+    private static final Log log = LogFactory.getLog(CreateExpeditedAdverseEventCommand.class);
 
     private ExpeditedAdverseEventReport aeReport;
 
@@ -41,7 +41,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private RuleExecutionService ruleExecutionService;
     private Map<String, List<List<Attribution>>> attributionMap;
 
-    public CreateAdverseEventCommand(
+    public CreateExpeditedAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
         RuleExecutionService ruleExecutionService, NowFactory nowFactory
     ) {

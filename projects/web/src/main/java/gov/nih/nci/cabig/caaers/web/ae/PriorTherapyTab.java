@@ -17,7 +17,7 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 /**
  * @author Rhett Sutphin
  */
-public class PriorTherapyTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class PriorTherapyTab extends AeTab {
     private RepeatingFieldGroupFactory fieldFactory;
 
     public PriorTherapyTab() {
@@ -36,7 +36,7 @@ public class PriorTherapyTab<C extends AdverseEventInputCommand> extends AeTab<C
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPriorTherapies().size());
         return groups;
@@ -49,7 +49,7 @@ public class PriorTherapyTab<C extends AdverseEventInputCommand> extends AeTab<C
 
     @Override
     protected void validate(
-        C command, BeanWrapper commandBean,
+        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         for (ListIterator<AdverseEventPriorTherapy> it = command.getAeReport().getAdverseEventPriorTherapies().listIterator(); it.hasNext();) {

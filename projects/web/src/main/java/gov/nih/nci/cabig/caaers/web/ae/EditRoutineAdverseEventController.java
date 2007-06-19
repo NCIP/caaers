@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.ServletRequestDataBinder;
-
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +12,7 @@ import java.util.Map;
 /**
  * @author Krikor Krumlian
  */
-public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEventInputController<EditRoutineAdverseEventCommand> {
+public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEventInputController {
     public EditRoutineAdverseEventController() {
         setCommandClass(EditRoutineAdverseEventCommand.class);
         setBindOnNewForm(true);
@@ -27,21 +25,21 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new EditRoutineAdverseEventCommand(ruleExecutionService);
+        return new EditRoutineAdverseEventCommand(getDao());
     }
     
     @Override
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
-    	EditRoutineAdverseEventCommand command = (EditRoutineAdverseEventCommand) oCommand;
+        EditRoutineAdverseEventCommand command = (EditRoutineAdverseEventCommand) oCommand;
         
-        //command.fireAERules();
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
     
+    @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,BindException errors,int page)throws Exception {
 
     	// populate categories

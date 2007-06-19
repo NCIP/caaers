@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import org.springframework.validation.Errors;
-import org.springframework.beans.BeanWrapper;
 
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 /**
  * @author Rhett Sutphin
 */
-public class BeginTab<C extends AdverseEventInputCommandInterface> extends EmptyAeTab<C> {
+public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
     public BeginTab() {
         super("Select participant and study", "Begin", "ae/selectAssignment");
     }
@@ -28,9 +27,8 @@ public class BeginTab<C extends AdverseEventInputCommandInterface> extends Empty
     }
 
     @Override
-    protected void validate(
-        C command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
+    public void validate(
+        T command, Errors errors
     ) {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;

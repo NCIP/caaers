@@ -10,13 +10,13 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class OtherCausesTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class OtherCausesTab extends AeTab {
     public OtherCausesTab() {
         super("Other contributing causes", "Other", "ae/other");
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("otherCause",
             "aeReport.otherCauses");
         factory.addField(new DefaultTextArea("text", "Cause", true));

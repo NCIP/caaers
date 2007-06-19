@@ -18,14 +18,11 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Rhett Sutphin
  */
-public class CategoriesTab<C extends RoutineAdverseEventInputCommand> extends AeRoutTab<C> {
+public class CategoriesTab extends AeRoutTab {
     private CtcDao ctcDao;
-    
 
     public CategoriesTab() {
         super("Select Ctc Categories", "Categories", "ae/categories");
-        
-            
     }
     
     @Override

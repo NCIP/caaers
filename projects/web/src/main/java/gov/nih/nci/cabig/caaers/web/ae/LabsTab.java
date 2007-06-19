@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class LabsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class LabsTab extends AeTab {
     private RepeatingFieldGroupFactory fieldFactory;
 
     public LabsTab() {
@@ -37,7 +37,7 @@ public class LabsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(AdverseEventInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;

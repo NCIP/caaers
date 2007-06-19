@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 
 /**
  * @author Krikor Krumlian
@@ -28,13 +29,13 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
     private String[] cats;
     private String[] ctcTermIds;
 
-    private RuleExecutionService ruleExecutionService;
+    private RoutineAdverseEventReportDao routineReportDao;
 
     ////// LOGIC
 
-    public EditRoutineAdverseEventCommand(RuleExecutionService ruleExecutionService) {
-    	this.categories = new ArrayList<CtcCategory>();
-        //setRuleExecutionService(ruleExecutionService);
+    public EditRoutineAdverseEventCommand(RoutineAdverseEventReportDao routineReportDao) {
+        this.categories = new ArrayList<CtcCategory>();
+        this.routineReportDao = routineReportDao;
     }
 
     public StudyParticipantAssignment getAssignment() {
@@ -47,6 +48,10 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 
     public Study getStudy() {
         return getAssignment().getStudySite().getStudy();
+    }
+
+    public void save() {
+        routineReportDao.save(getAeRoutineReport());
     }
 
     ////// BEAN PROPERTIES

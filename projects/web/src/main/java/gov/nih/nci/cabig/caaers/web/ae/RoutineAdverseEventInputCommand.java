@@ -10,10 +10,10 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public interface RoutineAdverseEventInputCommand extends AdverseEventInputCommandInterface{
-     
+public interface RoutineAdverseEventInputCommand extends AdverseEventInputCommand {
+
     ExpeditedAdverseEventReport getAeReport();
-    
+
     RoutineAdverseEventReport getAeRoutineReport();
     
     String[] getCtcTermIds();

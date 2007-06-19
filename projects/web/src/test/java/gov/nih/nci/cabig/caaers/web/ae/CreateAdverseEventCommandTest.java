@@ -10,7 +10,7 @@ import org.easymock.EasyMock;
  */
 public class CreateAdverseEventCommandTest extends AeWebTestCase {
     @Override
-    protected CreateAdverseEventCommand createCommand() {
+    protected CreateExpeditedAdverseEventCommand createCommand() {
         return createRealCommand();
     }
 

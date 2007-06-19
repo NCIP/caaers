@@ -8,16 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventController
-    extends AbstractAdverseEventInputController<CreateAdverseEventCommand>
-{
+public class CreateAdverseEventController extends AbstractAdverseEventInputController {
     public CreateAdverseEventController() {
         super();
-        setCommandClass(CreateAdverseEventCommand.class);
+        setCommandClass(CreateExpeditedAdverseEventCommand.class);
     }
 
     @Override
-    public void addTabs(Flow<CreateAdverseEventCommand> flow) {
+    public void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new BeginTab());
         super.addTabs(flow);
     }
@@ -29,11 +27,11 @@ public class CreateAdverseEventController
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new CreateAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService, nowFactory);
     }
 
     @Override
-    protected void save(CreateAdverseEventCommand command, Errors errors) {
+    protected void save(ExpeditedAdverseEventInputCommand command, Errors errors) {
         command.save();
     }
 

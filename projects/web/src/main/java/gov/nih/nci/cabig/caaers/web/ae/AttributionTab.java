@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class AttributionTab extends AeTab {
     private static final DefaultSelectField BASE_FIELD = new DefaultSelectField(
         null, null, true,
         BaseSelectField.collectOptions(Arrays.asList(Attribution.values()), "name", null));
@@ -28,7 +28,7 @@ public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C>
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         List<AttributionBlock> blocks = createBlocks(command.getAeReport());
         for (AttributionBlock block : blocks) {
@@ -51,7 +51,7 @@ public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C>
     }
 
     @Override
-    public Map<String, Object> referenceData(C command) {
+    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("blocks", createBlocks(command.getAeReport()));
         return refdata;

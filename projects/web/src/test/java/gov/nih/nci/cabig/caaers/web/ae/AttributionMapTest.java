@@ -56,74 +56,74 @@ public class AttributionMapTest extends CaaersTestCase {
     public void testGetExistingStudyAgentAttribution() throws Exception {
         assertAttributionsMatch(
             getAe(0).getCourseAgentAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 0, 0
+            ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 0, 0
         );
     }
 
     public void testGetExistingConMedAttribution() throws Exception {
         assertAttributionsMatch(
             getAe(0).getConcomitantMedicationAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 0, 0
+            ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 0, 0
         );
     }
 
     public void testGetExistingOtherCauseAttribution() throws Exception {
         assertAttributionsMatch(
             getAe(0).getOtherCauseAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY, 0, 0
+            ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY, 0, 0
         );
     }
 
     public void testAddCourseAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(1).add(Attribution.PROBABLE);
         assertAttributionsMatch(
             getAe(1).getCourseAgentAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 1, 0
+            ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY, 1, 0
         );
     }
 
     public void testAddConMedAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
             .get(0).add(Attribution.PROBABLE);
         assertAttributionsMatch(
             getAe(0).getConcomitantMedicationAttributions().get(1).getAttribution(),
-            AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 0, 1
+            ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 0, 1
         );
     }
 
     public void testAddOtherCauseAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
             .get(1).add(Attribution.PROBABLE);
         assertAttributionsMatch(
             getAe(1).getOtherCauseAttributions().get(0).getAttribution(),
-            AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY, 1, 0
+            ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY, 1, 0
         );
     }
 
     public void testSetExistingStudyAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(0).set(0, Attribution.PROBABLE);
         assertEquals(Attribution.PROBABLE,
             getAe(0).getCourseAgentAttributions().get(0).getAttribution());
     }
 
     public void testSetExistingConMedAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
             .get(0).set(0, Attribution.DEFINITE);
         assertEquals(Attribution.DEFINITE,
             getAe(0).getConcomitantMedicationAttributions().get(0).getAttribution());
     }
 
     public void testSetExistingOtherCauseAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
             .get(0).set(0, Attribution.PROBABLE);
         assertEquals(Attribution.PROBABLE,
             getAe(0).getOtherCauseAttributions().get(0).getAttribution());
     }
 
     public void testSetNonExistentConMedAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
             .get(1).set(1, Attribution.DEFINITE);
         ConcomitantMedicationAttribution actualAeAttribution
             = getAe(1).getConcomitantMedicationAttributions().get(1);
@@ -133,7 +133,7 @@ public class AttributionMapTest extends CaaersTestCase {
     }
 
     public void testSetNonExistentCourseAgentAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY)
             .get(1).set(0, Attribution.UNRELATED);
         CourseAgentAttribution actualAeAttribution
             = getAe(1).getCourseAgentAttributions().get(0);
@@ -143,7 +143,7 @@ public class AttributionMapTest extends CaaersTestCase {
     }
 
     public void testSetNonExistentOtherCauseAttribution() throws Exception {
-        map.get(AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
+        map.get(ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY)
             .get(1).set(0, Attribution.POSSIBLE);
         OtherCauseAttribution actualAeAttribution
             = getAe(1).getOtherCauseAttributions().get(0);
@@ -155,14 +155,14 @@ public class AttributionMapTest extends CaaersTestCase {
     public void testGetNonInitializedAttributionIsUnrelated() throws Exception {
         assertAttributionsMatch(
             Attribution.UNRELATED,
-            AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 1, 0
+            ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY, 1, 0
         );
     }
 
     public void testErrorToGetForNonExistentCause() throws Exception {
         try {
             // report only has two concomitant meds
-            map.get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+            map.get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
                 .get(1).get(2);
             fail("Exception not thrown");
         } catch (CaaersSystemException e) {
@@ -175,7 +175,7 @@ public class AttributionMapTest extends CaaersTestCase {
     public void testErrorToSetForNonExistentCause() throws Exception {
         try {
             // report only has two concomitant meds
-            map.get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+            map.get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
                 .get(1).set(2, Attribution.PROBABLE);
             fail("Exception not thrown");
         } catch (CaaersSystemException e) {

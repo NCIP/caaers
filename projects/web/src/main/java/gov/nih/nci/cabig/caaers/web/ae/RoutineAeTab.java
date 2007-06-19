@@ -36,7 +36,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Krikor Krumlian
  */
-public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeRoutTab<C> {
+public class RoutineAeTab extends AeRoutTab {
     private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
@@ -53,15 +53,15 @@ public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeR
     }
     
     @Override
-    public void postProcess(HttpServletRequest request, C command, Errors errors) {
+    public void postProcess(HttpServletRequest request, RoutineAdverseEventInputCommand command, Errors errors) {
     	handleTermAction(command, request.getParameter("_action"),
             request.getParameter("_selected"));
     }
     
-    private void handleTermAction(C c, String action, String selected){
+    private void handleTermAction(RoutineAdverseEventInputCommand c, String action, String selected){
     	
     	  if ("addTerm".equals(action)) {
-    		  for (String ctcTermId : ((C)c).getCtcTermIds()) {  
+    		  for (String ctcTermId : c.getCtcTermIds()) {
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
     		  ae.setCtcTerm(ctcTerm);
@@ -72,7 +72,7 @@ public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeR
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(RoutineAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         //map.addInputFieldGroup(reportFieldGroup);
         //int aeCount = command.getAeReport().getAdverseEvents().size();
@@ -100,7 +100,7 @@ public class RoutineAeTab<C extends RoutineAdverseEventInputCommand> extends AeR
     /*
     @Override
     protected void validate(
-        C command, BeanWrapper commandBean,
+        RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         // TODO: validate that there is at least one AE

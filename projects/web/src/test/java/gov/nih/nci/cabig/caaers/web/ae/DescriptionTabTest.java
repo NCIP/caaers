@@ -5,8 +5,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
  */
 public class DescriptionTabTest extends AeTabTestCase {
     @Override
-    protected DescriptionTab<CreateAdverseEventCommand> createTab() {
-        return new DescriptionTab<CreateAdverseEventCommand>();
+    protected DescriptionTab createTab() {
+        return new DescriptionTab();
     }
 
     public void testFields() throws Exception {

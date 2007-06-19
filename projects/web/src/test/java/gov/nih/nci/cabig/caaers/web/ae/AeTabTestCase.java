@@ -16,34 +16,19 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public abstract class AeTabTestCase extends AeWebTestCase {
-    // The testcases don't care about the command's type (TODO: do the tabs?)
-    private AeTab<CreateAdverseEventCommand> tab;
-    private Errors errors;
+    private AeTab tab;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         tab = createTab();
-
-        // initialize command as minimally valid
-        // BeginTab
-        command.setParticipant(assignment.getParticipant());
-        command.setStudy(assignment.getStudySite().getStudy());
-
-        // BasicsTab
-        AdverseEvent event = command.getAeReport().getAdverseEvents().get(0);
-        event.setGrade(Grade.MODERATE);
-        event.setHospitalization(Hospitalization.NONE);
-        event.setCtcTerm(new CtcTerm());
-
-        errors = new BindException(command, "command");
     }
 
-    protected abstract AeTab<CreateAdverseEventCommand> createTab();
+    protected abstract AeTab createTab();
 
     @Override
-    protected CreateAdverseEventCommand createCommand() {
-        return createMockCommand();
+    protected CreateExpeditedAdverseEventCommand createCommand() {
+        return createMinimallyValidMockCommand();
     }
 
     protected InputFieldGroup getFieldGroup(String fieldGroupName) {
@@ -78,11 +63,8 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         verifyMocks();
     }
 
-    public AeTab<CreateAdverseEventCommand> getTab() {
+    public AeTab getTab() {
         return tab;
     }
 
-    public Errors getErrors() {
-        return errors;
-    }
 }

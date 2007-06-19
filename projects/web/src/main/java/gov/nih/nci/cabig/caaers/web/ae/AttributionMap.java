@@ -21,7 +21,7 @@ import java.util.ListIterator;
  * in a way that's friendly to the form view and the data binder.  It's a map of lists of lists.
  * The keys/indices are
  * <ul>
- *   <li>The attribution key (from the constants in {@link AdverseEventInputCommand})
+ *   <li>The attribution key (from the constants in {@link ExpeditedAdverseEventInputCommand})
  *   <li>The adverse event index (relative to the AE report)
  *   <li>The cause (study agent, concomitant medication, disease, etc.) index within the AE
  * </ul>

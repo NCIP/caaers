@@ -63,7 +63,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     private static class CourseAgentAccessor extends CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
         @Override
         public String getKey() {
-            return AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY;
+            return ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY;
         }
 
         @Override
@@ -93,7 +93,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     private static class ConcomitantMedicationAccessor extends CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> {
         @Override
         public String getKey() {
-            return AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY;
+            return ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY;
         }
 
         @Override
@@ -120,7 +120,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     private static class OtherCauseAccessor extends CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
         @Override
         public String getKey() {
-            return AdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY;
+            return ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY;
         }
 
         @Override

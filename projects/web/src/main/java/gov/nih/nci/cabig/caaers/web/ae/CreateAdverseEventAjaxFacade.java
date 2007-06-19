@@ -225,7 +225,7 @@ public class CreateAdverseEventAjaxFacade {
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
         // TODO: this won't work in the edit flow
         String commandName = CreateAdverseEventController.class.getName()+".FORM.command";
-        CreateAdverseEventCommand createAdverseEventCommand = (CreateAdverseEventCommand)request.getSession().getAttribute(commandName); 
+        CreateExpeditedAdverseEventCommand createAdverseEventCommand = (CreateExpeditedAdverseEventCommand)request.getSession().getAttribute(commandName);
         request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createAdverseEventCommand);
         
         createAdverseEventCommand.getAeReport().getDiseaseHistory().addMetastaticDiseaseSite(new MetastaticDiseaseSite());

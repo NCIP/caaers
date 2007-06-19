@@ -10,9 +10,9 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
 /**
- * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
-public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseEventInputController<CreateRoutineAdverseEventCommand> {
+public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseEventInputController {
 
 	public CreateRoutineAdverseEventController() {
         super();
@@ -20,13 +20,9 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     }
 
     @Override
-    public void addTabs(Flow<CreateRoutineAdverseEventCommand> flow) {
-        flow.addTab(new BeginTab<CreateRoutineAdverseEventCommand>());
-        flow.addTab(new CategoriesTab());
-        flow.addTab(new RoutineAeTab());
-        flow.addTab(new EmptyAeTab<CreateRoutineAdverseEventCommand>("Confirm and save", "Save", "ae/save"));
-
-        //super.addTabs(flow);
+    public void addTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+        flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
+        super.addTabs(flow);
     }
 
     @Override
@@ -62,7 +58,7 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     }
 
     @Override
-    protected void save(CreateRoutineAdverseEventCommand command, Errors errors) {
+    protected void save(RoutineAdverseEventInputCommand command, Errors errors) {
         command.save();
     }
 }

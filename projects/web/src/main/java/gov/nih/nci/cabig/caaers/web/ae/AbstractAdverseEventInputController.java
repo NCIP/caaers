@@ -38,8 +38,8 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
-    extends AutomaticSaveFlowFormController<C, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
+public abstract class AbstractAdverseEventInputController
+    extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -59,24 +59,24 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected NowFactory nowFactory;
 
     protected AbstractAdverseEventInputController() {
-        setFlow(new Flow<C>(getFlowName()));
+        setFlow(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
         addTabs(getFlow());
     }
 
-    protected void addTabs(Flow<C> flow) {
-        flow.addTab(new BasicsTab<C>());
-        flow.addTab(new DescriptionTab<C>());
-        flow.addTab(new MedicalInfoTab<C>());
-        flow.addTab(new TreatmentTab<C>());
-        flow.addTab(new LabsTab<C>());
+    protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+        flow.addTab(new BasicsTab());
+        flow.addTab(new DescriptionTab());
+        flow.addTab(new MedicalInfoTab());
+        flow.addTab(new TreatmentTab());
+        flow.addTab(new LabsTab());
         // TODO: readd this when we have some idea what it should be
-        // flow.addTab(new EmptyAeTab<C>("Outcome information", "Outcome", "ae/notimplemented"));
-        flow.addTab(new PriorTherapyTab<C>());
-        flow.addTab(new ConcomitantMedicationsTab<C>());
-        flow.addTab(new OtherCausesTab<C>());
-        flow.addTab(new AttributionTab<C>());
-        flow.addTab(new ReporterTab<C>());
-        flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
+        // flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
+        flow.addTab(new PriorTherapyTab());
+        flow.addTab(new ConcomitantMedicationsTab());
+        flow.addTab(new OtherCausesTab());
+        flow.addTab(new AttributionTab());
+        flow.addTab(new ReporterTab());
+        flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
     }
 
     protected abstract String getFlowName();
@@ -108,13 +108,16 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     ) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         if (displaySummary(page)) {
-            refdata.put("summary", ((C) oCommand).getAeReport().getSummary());
+            refdata.put("summary", ((ExpeditedAdverseEventInputCommand) oCommand).getAeReport().getSummary());
         }
         return refdata;
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
+    protected boolean shouldSave(
+        HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
+        Tab<ExpeditedAdverseEventInputCommand> tab
+    ) {
         return super.shouldSave(request, command, tab)
             && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
@@ -139,7 +142,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected ModelAndView processFinish(
         HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
     ) throws Exception {
-        C command = (C) oCommand;
+        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
         save(command, errors);
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
@@ -152,7 +155,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     }
 
     @Override
-    protected ExpeditedAdverseEventReport getPrimaryDomainObject(C command) {
+    protected ExpeditedAdverseEventReport getPrimaryDomainObject(ExpeditedAdverseEventInputCommand command) {
         return command.getAeReport();
     }
 
@@ -202,13 +205,13 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.priorTherapyDao = priorTherapyDao;
     }
 
-	public CtcCategoryDao getCtcCategoryDao() {
-		return ctcCategoryDao;
-	}
+    public CtcCategoryDao getCtcCategoryDao() {
+        return ctcCategoryDao;
+    }
 
-	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
-		this.ctcCategoryDao = ctcCategoryDao;
-	}
+    public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+        this.ctcCategoryDao = ctcCategoryDao;
+    }
 
     public NowFactory getNowFactory() {
         return nowFactory;
@@ -218,13 +221,13 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.nowFactory = nowFactory;
     }
 
-	public RoutineAdverseEventReportDao getRoutineReportDao() {
-		return routineReportDao;
-	}
+    public RoutineAdverseEventReportDao getRoutineReportDao() {
+        return routineReportDao;
+    }
 
-	public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
-		this.routineReportDao = routineReportDao;
-	}
+    public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
+        this.routineReportDao = routineReportDao;
+    }
     
     
 }

@@ -18,7 +18,7 @@ import java.util.Arrays;
 /**
  * @author Rhett Sutphin
  */
-public class TreatmentTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class TreatmentTab extends AeTab {
     private InputFieldGroup treatmentFields;
 
     public TreatmentTab() {
@@ -40,7 +40,7 @@ public class TreatmentTab<C extends AdverseEventInputCommand> extends AeTab<C> {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         RepeatingFieldGroupFactory caFields = new RepeatingFieldGroupFactory("courseAgent",
             "aeReport.treatmentInformation.courseAgents");
         caFields.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {

@@ -33,8 +33,8 @@ import java.util.Map;
 /**
  * @author Krikor Krumlian
  */
-public abstract class AbstractRoutineAdverseEventInputController<C extends RoutineAdverseEventInputCommand>
-    extends AutomaticSaveFlowFormController<C, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
+public abstract class AbstractRoutineAdverseEventInputController
+    extends AutomaticSaveFlowFormController<RoutineAdverseEventInputCommand, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
 
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
@@ -51,15 +51,14 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     protected NowFactory nowFactory;
 
     protected AbstractRoutineAdverseEventInputController() {
-        setFlow(new Flow<C>(getFlowName()));
+        setFlow(new Flow<RoutineAdverseEventInputCommand>(getFlowName()));
         addTabs(getFlow());
     }
 
-    protected void addTabs(Flow<C> flow) {
-        flow.addTab(new CategoriesTab<C>());
-        flow.addTab(new RoutineAeTab<C>());
-        flow.addTab(new EmptyAeTab<C>("Confirm and save", "Save", "ae/save"));
-        
+    protected void addTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+        flow.addTab(new CategoriesTab());
+        flow.addTab(new RoutineAeTab());
+        flow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
     }
 
     protected abstract String getFlowName();
@@ -87,13 +86,13 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     ) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         if (displaySummary(page)) {
-            refdata.put("summary", ((C) oCommand).getAeRoutineReport().getSummary());
+            refdata.put("summary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
         }
         return refdata;
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
+    protected boolean shouldSave(HttpServletRequest request, RoutineAdverseEventInputCommand command, Tab<RoutineAdverseEventInputCommand> tab) {
         return super.shouldSave(request, command, tab)
             && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
@@ -118,7 +117,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     protected ModelAndView processFinish(
         HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
     ) throws Exception {
-        C command = (C) oCommand;
+        RoutineAdverseEventInputCommand command = (RoutineAdverseEventInputCommand) oCommand;
         save(command, errors);
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
@@ -131,7 +130,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     }
 
     @Override
-    protected RoutineAdverseEventReport getPrimaryDomainObject(C command) {
+    protected RoutineAdverseEventReport getPrimaryDomainObject(RoutineAdverseEventInputCommand command) {
         return command.getAeRoutineReport();
     }
 

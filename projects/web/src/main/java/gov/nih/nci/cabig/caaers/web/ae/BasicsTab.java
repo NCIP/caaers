@@ -32,7 +32,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class BasicsTab extends AeTab {
     private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
@@ -86,7 +86,7 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();
@@ -110,7 +110,7 @@ public class BasicsTab<C extends AdverseEventInputCommand> extends AeTab<C> {
 
     @Override
     protected void validate(
-        C command, BeanWrapper commandBean,
+        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         // TODO: validate that there is at least one AE

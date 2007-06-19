@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public interface AdverseEventInputCommand extends AdverseEventInputCommandInterface{
+public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputCommand {
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
     String OTHER_CAUSES_ATTRIBUTION_KEY = "other";

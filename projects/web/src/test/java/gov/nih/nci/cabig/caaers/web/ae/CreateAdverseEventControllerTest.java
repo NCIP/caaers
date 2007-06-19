@@ -25,7 +25,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     private StudyParticipantAssignment assignment;
 
     private CreateAdverseEventController controller;
-    private CreateAdverseEventCommand firstCommand;
+    private CreateExpeditedAdverseEventCommand firstCommand;
 
     @Override
     protected void setUp() throws Exception {
@@ -56,7 +56,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
 
     public void testBindDetectionDate() throws Exception {
         request.setParameter("aeReport.detectionDate", "12/30/1999");
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertDayOfDate(1999, Calendar.DECEMBER, 30, command.getAeReport().getDetectionDate());
     }
 
@@ -65,7 +65,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.adverseEvents[2].ctcTerm", "3022");
         expect(ctcTermDao.getById(3022)).andReturn(expectedTerm);
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2).getCtcTerm());
     }
 
@@ -74,7 +74,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.concomitantMedications[2].agent", "30");
         expect(agentDao.getById(30)).andReturn(expectedAgent);
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertSame(expectedAgent,
             command.getAeReport().getConcomitantMedications().get(2).getAgent());
     }
@@ -84,7 +84,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].studyAgent", "332");
         expect(studyAgentDao.getById(332)).andReturn(expected);
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertSame(expected,
             command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getStudyAgent());
     }
@@ -93,7 +93,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.treatmentInformation.adverseEventCourse.date", "7/3/2023");
         request.setParameter("aeReport.treatmentInformation.adverseEventCourse.number", "7");
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         CourseDate aeCourse = command.getAeReport().getTreatmentInformation().getAdverseEventCourse();
 
         assertEquals(7, (int) aeCourse.getNumber());
@@ -106,7 +106,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].administrationDelayAmount", "12");
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount", "");
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         CourseAgent courseAgent1 = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
         assertEquals(new BigDecimal("432.1"), courseAgent1.getDose().getAmount());
         assertEquals(new BigDecimal("9433"), courseAgent1.getTotalDoseAdministeredThisCourse());
@@ -122,7 +122,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter(property, "");
 
         Object[] objects = bindAndReturnCommandAndErrors();
-        CreateAdverseEventCommand command = (CreateAdverseEventCommand) objects[0];
+        CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) objects[0];
         Errors errors = (Errors) objects[1];
         assertFalse("Should not be any errors: " + errors, errors.hasFieldErrors(property));
         CourseAgent courseAgent1
@@ -133,7 +133,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     public void testBindPostAeStatus() throws Exception {
         request.setParameter("aeReport.responseDescription.presentStatus", "NOT_RECOVERED");
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertSame(PostAdverseEventStatus.NOT_RECOVERED,
             command.getAeReport().getResponseDescription().getPresentStatus());
     }
@@ -148,28 +148,28 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("attributionMap[courseAgent][1][1]", Attribution.DEFINITE.name());
         request.setParameter("attributionMap[conMed][0][2]", Attribution.PROBABLE.name());
 
-        CreateAdverseEventCommand command = bindAndReturnCommand();
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertEquals(Attribution.DEFINITE,
-            command.getAttributionMap().get(AdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(1));
+            command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(1));
         assertEquals(Attribution.PROBABLE,
-            command.getAttributionMap().get(AdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
+            command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
     }
 
     private Object[] bindAndReturnCommandAndErrors() throws Exception {
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
-        CreateAdverseEventCommand command = (CreateAdverseEventCommand) mv.getModel().get("command");
+        CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) mv.getModel().get("command");
         Errors errors = (Errors) mv.getModel().get(BindingResult.MODEL_KEY_PREFIX + "command");
         assertNotNull(command);
         return new Object[] { command, errors };
     }
 
-    private CreateAdverseEventCommand bindAndReturnCommand() throws Exception {
+    private CreateExpeditedAdverseEventCommand bindAndReturnCommand() throws Exception {
         Object[] objects = bindAndReturnCommandAndErrors();
         Errors errors = (Errors) objects[1];
         assertFalse("No errors expected: " + errors, errors.hasErrors());
-        return (CreateAdverseEventCommand) objects[0];
+        return (CreateExpeditedAdverseEventCommand) objects[0];
     }
 
     // get the session in place & set study/participant
@@ -177,7 +177,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         request.setParameter("_target0", "");
         replayMocks();
         firstCommand
-            = (CreateAdverseEventCommand) controller.handleRequest(request, response).getModel().get("command");
+            = (CreateExpeditedAdverseEventCommand) controller.handleRequest(request, response).getModel().get("command");
         firstCommand.setParticipant(assignment.getParticipant());
         firstCommand.setStudy(assignment.getStudySite().getStudy());
         resetMocks();

@@ -19,20 +19,23 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 
 /**
  * @author Rhett Sutphin
  */
-public class EditAdverseEventCommand implements AdverseEventInputCommand {
+public class EditExpeditedAdverseEventCommand implements ExpeditedAdverseEventInputCommand {
     private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
 
     private RuleExecutionService ruleExecutionService;
+    private ExpeditedAdverseEventReportDao expeditedAeReportDao;
 
     ////// LOGIC
 
-    public EditAdverseEventCommand(RuleExecutionService ruleExecutionService) {
+    public EditExpeditedAdverseEventCommand(RuleExecutionService ruleExecutionService, ExpeditedAdverseEventReportDao expeditedAeReportDao) {
         setRuleExecutionService(ruleExecutionService);
+        this.expeditedAeReportDao = expeditedAeReportDao;
     }
 
     public StudyParticipantAssignment getAssignment() {
@@ -45,6 +48,10 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 
     public Study getStudy() {
         return getAssignment().getStudySite().getStudy();
+    }
+
+    public void save() {
+        expeditedAeReportDao.save(getAeReport());
     }
 
     ////// BEAN PROPERTIES

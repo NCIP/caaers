@@ -25,7 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
 public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInputCommand  {
     private static final Log log = LogFactory.getLog(CreateRoutineAdverseEventCommand.class);

@@ -3,10 +3,18 @@ package gov.nih.nci.cabig.caaers.web.ae;
 /**
  * @author Rhett Sutphin
  */
-public class BeginTabTest extends AeTabTestCase {
+public class BeginTabTest extends AeWebTestCase {
+    private BeginTab<ExpeditedAdverseEventInputCommand> tab;
+
     @Override
-    protected BeginTab createTab() {
-        return new BeginTab();
+    protected void setUp() throws Exception {
+        super.setUp();
+        tab = new BeginTab<ExpeditedAdverseEventInputCommand>();
+    }
+
+    @Override
+    protected CreateExpeditedAdverseEventCommand createCommand() {
+        return createMinimallyValidMockCommand();
     }
 
     public void testStudyRequired() throws Exception {
@@ -29,5 +37,11 @@ public class BeginTabTest extends AeTabTestCase {
         assertEquals(1, getErrors().getErrorCount());
         assertEquals(1, getErrors().getGlobalErrorCount());
         assertEquals("NO_ASSIGNMENT", getErrors().getGlobalError().getCode());
+    }
+
+    protected void doValidate() {
+        replayMocks();
+        tab.validate(command, errors);
+        verifyMocks();
     }
 }

@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 /**
  * @author Rhett Sutphin
  */
-public class DescriptionTab<C extends AdverseEventInputCommand> extends AeTab<C> {
+public class DescriptionTab extends AeTab {
     private InputFieldGroup allFields;
 
     public DescriptionTab() {
@@ -53,7 +53,7 @@ public class DescriptionTab<C extends AdverseEventInputCommand> extends AeTab<C>
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(C command) {
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         return createFieldGroupMap(Arrays.asList(allFields));
     }
 }
