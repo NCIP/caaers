@@ -67,7 +67,7 @@
 </xsl:template>
 
 <xsl:template match="or">
-	<or>
+	<or xmlns="http://drools.org/drools-3.0">
 		<xsl:apply-templates select="eval"/>
 	</or>
 </xsl:template>
