@@ -63,10 +63,9 @@
 	
 	<xsl:template match="rules:condition/rules:column">		
 		<xsl:if test="rules:field-constraint/rules:literal-restriction/rules:value">
+			<!--
 			<or>
 				<xsl:for-each select="rules:field-constraint/rules:literal-restriction/rules:value">	
-					
-					<!--<xsl:if test="rules:field-constraint">-->
 						
 						<eval>			
 							<xsl:choose>
@@ -84,6 +83,25 @@
 								
 				</xsl:for-each>
 			</or>
+			-->
+			<xsl:variable name="ct" select="count(rules:field-constraint/rules:literal-restriction/rules:value)"/>
+			<eval>
+				<xsl:for-each select="rules:field-constraint/rules:literal-restriction/rules:value">				
+							<xsl:choose>
+								<xsl:when  test="../../../rules:expression">
+									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:expression"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:field-constraint/@field-name"/>
+								</xsl:otherwise>						
+							</xsl:choose>
+							
+							<xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/>
+							<xsl:if test= "string(number(.))='NaN'">"</xsl:if><xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN'">"</xsl:if>
+							<xsl:if test="$ct != position()"> || </xsl:if>
+				</xsl:for-each>
+			</eval>	
+			
 		</xsl:if>		
 	</xsl:template>
 
