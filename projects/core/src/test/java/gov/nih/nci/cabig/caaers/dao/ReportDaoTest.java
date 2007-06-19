@@ -116,7 +116,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		rs.setScheduledNotifications(snfList);
 		
 		//obtain an AE report
-		AdverseEventReportDao aeDao = (AdverseEventReportDao) getApplicationContext().getBean("adverseEventReportDao");
+		ExpeditedAdverseEventReportDao aeDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean("adverseEventReportDao");
 		ExpeditedAdverseEventReport aeReport = aeDao.getById(-1);
 		aeReport.setReportSchedule(rs);
 		aeReport.setStatus(ReportStatus.PENDING);

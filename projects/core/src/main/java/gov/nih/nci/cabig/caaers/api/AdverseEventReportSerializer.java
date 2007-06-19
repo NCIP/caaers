@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class AdverseEventReportSerializer {
 	
-	   private AdverseEventReportDao adverseEventReportDao;
+	   private ExpeditedAdverseEventReportDao adverseEventReportDao;
 	   private ExpeditedAdverseEventReport adverseEventReportDataObject;
 	   
 	   
@@ -303,11 +303,11 @@ public class AdverseEventReportSerializer {
 	    	return treatmentInformation;
 	    }
 
-		public AdverseEventReportDao getAdverseEventReportDao() {
+		public ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
 			return adverseEventReportDao;
 		}
 
-		public void setAdverseEventReportDao(AdverseEventReportDao adverseEventReportDao) {
+		public void setAdverseEventReportDao(ExpeditedAdverseEventReportDao adverseEventReportDao) {
 			this.adverseEventReportDao = adverseEventReportDao;
 		}
 

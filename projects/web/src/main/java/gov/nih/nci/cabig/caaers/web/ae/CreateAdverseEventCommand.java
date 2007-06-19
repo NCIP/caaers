@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -35,14 +35,14 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private Participant participant;
     private Study study;
 
-    private AdverseEventReportDao reportDao;
+    private ExpeditedAdverseEventReportDao reportDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
     private RuleExecutionService ruleExecutionService;
     private Map<String, List<List<Attribution>>> attributionMap;
 
     public CreateAdverseEventCommand(
-        StudyParticipantAssignmentDao assignmentDao, AdverseEventReportDao reportDao,
+        StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
         RuleExecutionService ruleExecutionService, NowFactory nowFactory
     ) {
         this.assignmentDao = assignmentDao;

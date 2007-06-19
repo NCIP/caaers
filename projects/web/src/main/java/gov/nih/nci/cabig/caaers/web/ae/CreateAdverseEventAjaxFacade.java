@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -51,7 +51,7 @@ public class CreateAdverseEventAjaxFacade {
     private CtcTermDao ctcTermDao;
     private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
-    private AdverseEventReportDao aeReportDao;
+    private ExpeditedAdverseEventReportDao aeReportDao;
     private ResearchStaffDao researchStaffDao;
     private AnatomicSiteDao anatomicSiteDao;
     private InteroperationService interoperationService;
@@ -335,7 +335,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     @Required
-    public void setAeReportDao(AdverseEventReportDao aeReportDao) {
+    public void setAeReportDao(ExpeditedAdverseEventReportDao aeReportDao) {
         this.aeReportDao = aeReportDao;
     }
     

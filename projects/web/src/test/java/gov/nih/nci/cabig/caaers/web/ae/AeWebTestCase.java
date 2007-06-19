@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -15,7 +15,7 @@ public abstract class AeWebTestCase extends WebTestCase {
 
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateAdverseEventCommand command;
-    private AdverseEventReportDao reportDao;
+    private ExpeditedAdverseEventReportDao reportDao;
     private RuleExecutionService rulesExecutionService;
 
     @Override
@@ -23,7 +23,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         super.setUp();
         assignment = Fixtures.createAssignment();
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
-        reportDao = registerDaoMockFor(AdverseEventReportDao.class);
+        reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         rulesExecutionService = registerMockFor(RuleExecutionService.class);
         command = createCommand();
     }

@@ -30,7 +30,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 /**
  * @author Rhett Sutphin
  */
-public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao> {
+public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdverseEventReportDao> {
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.AdverseEventService;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.SiteDao;
@@ -27,7 +27,7 @@ public class DefaultAdverseEventService implements AdverseEventService {
     private SiteDao siteDao;
     private ParticipantDao participantDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
-    private AdverseEventReportDao adverseEventReportDao;
+    private ExpeditedAdverseEventReportDao adverseEventReportDao;
     
     public DefaultAdverseEventService() {
     }
@@ -142,11 +142,11 @@ public class DefaultAdverseEventService implements AdverseEventService {
         return studyParticipantAssignmentDao;
     }
 
-	public AdverseEventReportDao getAdverseEventReportDao() {
+	public ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
 		return adverseEventReportDao;
 	}
 
-	public void setAdverseEventReportDao(AdverseEventReportDao adverseEventReportDao) {
+	public void setAdverseEventReportDao(ExpeditedAdverseEventReportDao adverseEventReportDao) {
 		this.adverseEventReportDao = adverseEventReportDao;
 	}
     

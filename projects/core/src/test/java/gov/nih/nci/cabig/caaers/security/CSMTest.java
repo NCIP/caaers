@@ -85,7 +85,7 @@ public class CSMTest extends TestCase {
 			String[] objectIds = new String[] {
 					"gov.nih.nci.cabig.caaers.domain.Study",
 					"gov.nih.nci.cabig.caaers.domain.Participant",
-					"gov.nih.nci.cabig.caaers.domain.AdverseEventReport",
+					"gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport",
 					"gov.nih.nci.cabig.caaers.domain.Rule" };
 
 			verifyPrivilegesForObjectIdsAndGroup(mgr, group, objectIds,
@@ -118,7 +118,7 @@ public class CSMTest extends TestCase {
 			String[] privileges = new String[] { "READ", "CREATE", "UPDATE" };
 			String[] objectIds = new String[] {
 					"gov.nih.nci.cabig.caaers.domain.Participant",
-					"gov.nih.nci.cabig.caaers.domain.AdverseEventReport" };
+					"gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" };
 
 			verifyPrivilegesForObjectIdsAndGroup(mgr, group, objectIds,
 					privileges);

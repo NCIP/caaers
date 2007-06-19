@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
-    extends AutomaticSaveFlowFormController<C, ExpeditedAdverseEventReport, AdverseEventReportDao>
+    extends AutomaticSaveFlowFormController<C, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -48,7 +48,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
     protected AgentDao agentDao;
-    protected AdverseEventReportDao reportDao;
+    protected ExpeditedAdverseEventReportDao reportDao;
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
@@ -147,7 +147,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     }
 
     @Override
-    protected AdverseEventReportDao getDao() {
+    protected ExpeditedAdverseEventReportDao getDao() {
         return reportDao;
     }
 
@@ -178,7 +178,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
         this.agentDao = agentDao;
     }
 
-    public void setReportDao(AdverseEventReportDao reportDao) {
+    public void setReportDao(ExpeditedAdverseEventReportDao reportDao) {
         this.reportDao = reportDao; 
     }
 

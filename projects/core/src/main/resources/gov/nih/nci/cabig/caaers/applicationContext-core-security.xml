@@ -219,8 +219,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
 		<property name="objectDefinitionSource">
 			<value>
-				gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao.*=CSM_AUTHN_CHECK
-				gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
 				gov.nih.nci.cabig.caaers.dao.StudyDao.*=CSM_AUTHN_CHECK
 				gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
 			</value>

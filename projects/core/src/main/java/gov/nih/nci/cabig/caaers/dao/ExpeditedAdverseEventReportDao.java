@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rhett Sutphin
  */
 @Transactional
-public class AdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport>
+public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport>
     implements MutableDomainObjectDao<ExpeditedAdverseEventReport>
 {
     public Class<ExpeditedAdverseEventReport> domainClass() {

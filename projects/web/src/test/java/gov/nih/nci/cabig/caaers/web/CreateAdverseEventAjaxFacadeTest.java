@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -37,7 +37,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private ParticipantDao participantDao;
     private CtcDao ctcDao;
     private CtcTermDao ctcTermDao;
-    private AdverseEventReportDao aeReportDao;
+    private ExpeditedAdverseEventReportDao aeReportDao;
     private InteroperationService interoperationService;
 
     @Override
@@ -47,7 +47,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         participantDao = registerDaoMockFor(ParticipantDao.class);
         ctcDao = registerDaoMockFor(CtcDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
-        aeReportDao = registerDaoMockFor(AdverseEventReportDao.class);
+        aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         interoperationService = registerMockFor(InteroperationService.class);
 
         facade = new CreateAdverseEventAjaxFacade();

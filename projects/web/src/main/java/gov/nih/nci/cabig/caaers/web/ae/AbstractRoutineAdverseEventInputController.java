@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
@@ -43,7 +43,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
     protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
-    protected AdverseEventReportDao reportDao;
+    protected ExpeditedAdverseEventReportDao reportDao;
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
     protected RuleExecutionService ruleExecutionService;
@@ -153,7 +153,7 @@ public abstract class AbstractRoutineAdverseEventInputController<C extends Routi
         this.ctcTermDao = ctcTermDao;
     }
 
-    public void setReportDao(AdverseEventReportDao reportDao) {
+    public void setReportDao(ExpeditedAdverseEventReportDao reportDao) {
         this.reportDao = reportDao; 
     }
 

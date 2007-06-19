@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.security;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -28,7 +28,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
     CtcTermDao ctcTermDao;
     StudyParticipantAssignmentDao assignmentDao;
-    AdverseEventReportDao adverseEventReportDao;
+    ExpeditedAdverseEventReportDao adverseEventReportDao;
 
     @Override
     public String getTestDataFileName() {
@@ -42,7 +42,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
         assignmentDao = (StudyParticipantAssignmentDao)
             getApplicationContext().getBean("studyParticipantAssignmentDao");
-        adverseEventReportDao = (AdverseEventReportDao)
+        adverseEventReportDao = (ExpeditedAdverseEventReportDao)
             getApplicationContext().getBean("adverseEventReportDao");
     }
 

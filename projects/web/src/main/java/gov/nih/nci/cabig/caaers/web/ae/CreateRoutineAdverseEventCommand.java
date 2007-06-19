@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
@@ -36,7 +36,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private Participant participant;
     private Study study;
 
-    private AdverseEventReportDao reportDao;
+    private ExpeditedAdverseEventReportDao reportDao;
     private RoutineAdverseEventReportDao routineReportDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
@@ -52,7 +52,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     public CreateRoutineAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, RoutineAdverseEventReportDao routineReportDao,
-        AdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService, NowFactory nowFactory
+        ExpeditedAdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService, NowFactory nowFactory
     ) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
