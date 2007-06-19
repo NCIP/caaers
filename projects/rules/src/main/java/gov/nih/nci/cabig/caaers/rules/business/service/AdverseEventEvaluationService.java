@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 
@@ -21,7 +21,7 @@ public interface AdverseEventEvaluationService {
 	
 	//public String identifyAdverseEventType()
 	
-	public String evaluateSAEReportSchedule(AdverseEventReport aeReport) throws Exception;
+	public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception;
 	
 	
 	

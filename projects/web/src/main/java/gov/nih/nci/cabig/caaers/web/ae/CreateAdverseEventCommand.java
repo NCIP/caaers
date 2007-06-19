@@ -3,22 +3,15 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -37,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
 public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     private static final Log log = LogFactory.getLog(CreateAdverseEventCommand.class);
 
-    private AdverseEventReport aeReport;
+    private ExpeditedAdverseEventReport aeReport;
 
     private Participant participant;
     private Study study;
@@ -54,7 +47,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
     ) {
         this.assignmentDao = assignmentDao;
         this.reportDao = reportDao;
-        this.aeReport = new AdverseEventReport();
+        this.aeReport = new ExpeditedAdverseEventReport();
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         // ensure there's at least one before the fields are generated
         this.aeReport.addAdverseEvent(new AdverseEvent());
@@ -90,7 +83,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
 
     ////// BOUND PROPERTIES
 
-    public AdverseEventReport getAeReport() {
+    public ExpeditedAdverseEventReport getAeReport() {
         return aeReport;
     }
 
@@ -185,7 +178,7 @@ public class CreateAdverseEventCommand implements AdverseEventInputCommand {
         this.ruleExecutionService = ruleExecutionService;
     }
 
-    public void setAeReport(AdverseEventReport aeReport) {
+    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         this.aeReport = aeReport;
     }
 }

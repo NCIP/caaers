@@ -110,13 +110,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/study/edit.*"
 			value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />
 		<entry key="/pages/ae/create.*"
-			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/edit.*"
-			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:UPDATE" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list.*"
-			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:READ" />
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 		<entry key="/pages/ae/createRoutine.*"
-			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />	
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 
 		<!-- TODO: set up correct default -->
 		<entry key="/pages/.*"

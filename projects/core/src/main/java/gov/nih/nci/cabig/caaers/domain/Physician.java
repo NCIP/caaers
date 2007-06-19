@@ -1,11 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,7 +22,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_physicians_id")
     }
 )
-public class Physician extends AdverseEventReportPerson {
+public class Physician extends ExpeditedReportPerson {
     @Override
     @OneToMany
     @JoinColumn(name="physician_id")

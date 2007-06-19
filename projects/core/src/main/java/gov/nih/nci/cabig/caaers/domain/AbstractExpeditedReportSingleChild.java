@@ -11,16 +11,16 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractAdverseEventReportSingleChild extends AbstractMutableDomainObject implements AdverseEventReportChild {
-    private AdverseEventReport report;
+public class AbstractExpeditedReportSingleChild extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
+    private ExpeditedAdverseEventReport report;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_id")
-    public AdverseEventReport getReport() {
+    public ExpeditedAdverseEventReport getReport() {
         return report;
     }
 
-    public void setReport(AdverseEventReport report) {
+    public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
 }

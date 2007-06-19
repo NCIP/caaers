@@ -26,7 +26,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_disease_history_id")
     }
 )
-public class DiseaseHistory extends AbstractAdverseEventReportSingleChild {
+public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     private String otherPrimaryDiseaseCode;
     private String otherPrimaryDiseaseSiteCode;
     private Date dateOfInitialPathologicDiagnosis;

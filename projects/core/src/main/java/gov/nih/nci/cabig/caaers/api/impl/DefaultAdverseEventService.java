@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -38,7 +38,7 @@ public class DefaultAdverseEventService implements AdverseEventService {
 		StudyParticipantAssignment studyParticipantAssignment = getStudyParticipantAssignmentDao()
 				.getAssignment(loader.participant, loader.study);
 
-		AdverseEventReport adverseEventReport = new AdverseEventReport();
+		ExpeditedAdverseEventReport adverseEventReport = new ExpeditedAdverseEventReport();
 		adverseEventReport.setAssignment(studyParticipantAssignment);
 		adverseEventReport.addAdverseEvent(ae);
 		adverseEventReport.getLabs().addAll(labs);

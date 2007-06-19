@@ -20,7 +20,7 @@ import javax.persistence.Column;
         @Parameter(name="sequence", value="seq_ae_labs_id")
     }
 )
-public class Lab extends AbstractAdverseEventReportCollectionElementChild {
+public class Lab extends AbstractExpeditedReportCollectionElementChild {
     private String name;
     private String units;  // TODO: source this from caDSR
 

@@ -42,7 +42,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
-                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>

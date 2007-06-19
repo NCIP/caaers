@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
@@ -32,7 +32,7 @@ import java.util.List;
  * @since       1.0
  */
 public class ReportServiceTest extends CaaersTestCase {
-	AdverseEventReport mockAEReport;
+	ExpeditedAdverseEventReport mockAEReport;
 	Report rs;
 	ReportDefinition rct;
 	ReportService service;
@@ -49,7 +49,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		Reporter mockReporter = registerMockFor(Reporter.class);
 		expect(mockReporter.getContactMechanisms()).andReturn(cmList).anyTimes();
 		
-		mockAEReport =  registerMockFor(AdverseEventReport.class);
+		mockAEReport =  registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(mockAEReport.getReporter()).andReturn(mockReporter).anyTimes();
 		replayMocks();
 		

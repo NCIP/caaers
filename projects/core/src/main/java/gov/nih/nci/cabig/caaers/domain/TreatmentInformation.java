@@ -31,7 +31,7 @@ import java.util.LinkedList;
         @Parameter(name="sequence", value="seq_treatments_id")
     }
 )
-public class TreatmentInformation extends AbstractAdverseEventReportSingleChild {
+public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     private List<CourseAgent> courseAgentsInternal;
     private List<CourseAgent> courseAgents;
 

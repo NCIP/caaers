@@ -1,32 +1,14 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime;
 
-import static org.easymock.EasyMock.expect;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
-import org.apache.activemq.thread.Scheduler;
-import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
-import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
 public class SchedulerServiceImplTest extends CaaersTestCase {
 

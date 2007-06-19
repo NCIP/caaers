@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.tools.IndexedLazyList;
@@ -29,14 +29,14 @@ import java.util.ListIterator;
  * @author Rhett Sutphin
  */
 public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
-    public AttributionMap(AdverseEventReport aeReport) {
+    public AttributionMap(ExpeditedAdverseEventReport aeReport) {
         super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(aeReport));
     }
 
     private static class AeAttributionListTransformer implements Transformer<String, List<List<Attribution>>> {
-        private AdverseEventReport aeReport;
+        private ExpeditedAdverseEventReport aeReport;
 
-        public AeAttributionListTransformer(AdverseEventReport aeReport) {
+        public AeAttributionListTransformer(ExpeditedAdverseEventReport aeReport) {
             this.aeReport = aeReport;
         }
 
@@ -50,11 +50,11 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
     }
 
     private static class AdverseEventsList extends AbstractListDecorator<List<Attribution>> {
-        private AdverseEventReport adverseEventReport;
+        private ExpeditedAdverseEventReport adverseEventReport;
         private CauseAndAttributionAccessor<?, ?> accessor;
 
         public AdverseEventsList(
-            AdverseEventReport adverseEventReport,
+            ExpeditedAdverseEventReport adverseEventReport,
             CauseAndAttributionAccessor<?, ?> accessor
         ) {
             this.adverseEventReport = adverseEventReport;

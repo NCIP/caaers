@@ -3,10 +3,9 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
@@ -24,13 +23,13 @@ public class AttributionMapTest extends CaaersTestCase {
     private static final ConcomitantMedication CON_MED_1 = new ConcomitantMedication();
     private static final OtherCause OTHER_CAUSE_0 = new OtherCause();
 
-    private AdverseEventReport report;
+    private ExpeditedAdverseEventReport report;
     private AttributionMap map;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        report = new AdverseEventReport();
+        report = new ExpeditedAdverseEventReport();
         report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"), createSite("DC")));
         report.setTreatmentInformation(new TreatmentInformation());
 

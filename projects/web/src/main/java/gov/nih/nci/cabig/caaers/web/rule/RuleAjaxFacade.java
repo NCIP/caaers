@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -245,7 +245,7 @@ public class RuleAjaxFacade
     
     public void fireAERules() throws RemoteException {
     	String bindUri = "CAAERS_AE_RULES";
-    	AdverseEventReport adverseEventReport = null; 
+    	ExpeditedAdverseEventReport adverseEventReport = null;
 		StudySDO studySDO = null;
 		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
 

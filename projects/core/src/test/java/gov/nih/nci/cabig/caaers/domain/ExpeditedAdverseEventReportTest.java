@@ -16,10 +16,10 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
  */
-public class AdverseEventReportTest extends CaaersTestCase {
+public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
 
-    private AdverseEventReport report;
+    private ExpeditedAdverseEventReport report;
     private BeanWrapper wrappedReport;
     private CtcTerm ctcTerm;
     private AdverseEvent adverseEvent;
@@ -27,7 +27,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        report = new AdverseEventReport();
+        report = new ExpeditedAdverseEventReport();
         report.setCreatedAt(CREATED_AT);
         adverseEvent = new AdverseEvent();
         report.addAdverseEvent(adverseEvent);
@@ -234,7 +234,7 @@ public class AdverseEventReportTest extends CaaersTestCase {
     private void assertChildNeverNull(String childProp) {
         assertNotNull(childProp + " null initially", wrappedReport.getPropertyValue(childProp));
         wrappedReport.setPropertyValue(childProp, null);
-        AdverseEventReportChild actual = (AdverseEventReportChild) wrappedReport.getPropertyValue(childProp);
+        ExpeditedAdverseEventReportChild actual = (ExpeditedAdverseEventReportChild) wrappedReport.getPropertyValue(childProp);
         assertNotNull(childProp + " not reinited after set null", actual);
         assertSame("Reverse link not set", report, actual.getReport());
     }

@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -55,7 +55,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
     public void testAdverseEventSave() {
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
-        AdverseEventReport newReport = createReport();
+        ExpeditedAdverseEventReport newReport = createReport();
 
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
@@ -85,7 +85,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
     public void testAdverseEventUpdate() {
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
-        AdverseEventReport newReport = createReport();
+        ExpeditedAdverseEventReport newReport = createReport();
 
         adverseEventReportDao.save(newReport);
 
@@ -96,7 +96,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
-        AdverseEventReport report = adverseEventReportDao.getById(id);
+        ExpeditedAdverseEventReport report = adverseEventReportDao.getById(id);
         assertNotNull("report " + id + " is null", report);
 
         report.getAdverseEvents().get(0).setComments("Yadda");
@@ -124,7 +124,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
             adverseEventReportDao.getById(id).getAdverseEvents().get(0).getComments());
     }
 
-    private AdverseEventReport createReport() {
+    private ExpeditedAdverseEventReport createReport() {
         CtcTerm term = ctcTermDao.getById(3012);
         AdverseEvent newEvent = new AdverseEvent();
         newEvent.setGrade(Grade.MILD);
@@ -132,7 +132,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.setExpected(Boolean.FALSE);
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
-        AdverseEventReport newReport = new AdverseEventReport();
+        ExpeditedAdverseEventReport newReport = new ExpeditedAdverseEventReport();
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
         newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));

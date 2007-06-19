@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -39,7 +39,7 @@ public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C>
         return map;
     }
 
-    private List<AttributionBlock> createBlocks(AdverseEventReport report) {
+    private List<AttributionBlock> createBlocks(ExpeditedAdverseEventReport report) {
         List<AttributionBlock> blocks = new ArrayList<AttributionBlock>();
         blocks.add(new AttributionBlock("Course", "Course",
             createGroups(CauseAndAttributionAccessor.COURSE_AGENT, report)));
@@ -81,7 +81,7 @@ public class AttributionTab<C extends AdverseEventInputCommand> extends AeTab<C>
 
     private static <D extends DomainObject, A extends AdverseEventAttribution<D>>
     List<InputFieldGroup> createGroups(
-        CauseAndAttributionAccessor<D, A> accessor, AdverseEventReport report
+        CauseAndAttributionAccessor<D, A> accessor, ExpeditedAdverseEventReport report
     ) {
         List<InputFieldGroup> groups = new ArrayList<InputFieldGroup>();
         List<D> causes = accessor.getCauseList(report);

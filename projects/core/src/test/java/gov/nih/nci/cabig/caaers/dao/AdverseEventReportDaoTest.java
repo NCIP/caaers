@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -37,7 +37,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
 
     public void testGet() throws Exception {
-        AdverseEventReport loaded = getDao().getById(-1);
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
         assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
         assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
@@ -48,7 +48,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     }
 
     public void testGetLabs() throws Exception {
-        AdverseEventReport loaded = getDao().getById(-1);
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertEquals("Wrong number of labs", 3, loaded.getLabs().size());
         assertEquals("Wrong lab 0", -21, (int) loaded.getLabs().get(0).getId());
         assertEquals("Wrong lab 1", -20, (int) loaded.getLabs().get(1).getId());
@@ -73,7 +73,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     }
 
     public void testGetConcomitantMedications() throws Exception {
-        AdverseEventReport loaded = getDao().getById(-1);
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertEquals("Wrong number of concomitant meds", 2, loaded.getConcomitantMedications().size());
         assertEquals("Wrong con med 0", -31, (int) loaded.getConcomitantMedications().get(0).getId());
         assertEquals("Wrong con med 1", -30, (int) loaded.getConcomitantMedications().get(1).getId());
@@ -85,7 +85,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     }
 
     public void testGetTreatmentInformation() throws Exception {
-        AdverseEventReport loaded = getDao().getById(-1);
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertNotNull("No treatment info", loaded.getTreatmentInformation());
 
         TreatmentInformation actual = loaded.getTreatmentInformation();
@@ -116,7 +116,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     }
 
     public void testGetOtherCauses() throws Exception {
-        AdverseEventReport loaded = getDao().getById(-1);
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
 
         assertEquals("Wrong number of causes", 3, loaded.getOtherCauses().size());
         assertEquals("Wrong cause 0", -81, (int) loaded.getOtherCauses().get(0).getId());
@@ -138,7 +138,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
 
     public void testSave() throws Exception {
         doSaveTest(new SaveTester() {
-            public void setupReport(AdverseEventReport report) {
+            public void setupReport(ExpeditedAdverseEventReport report) {
                 CtcTerm term = ctcTermDao.getById(3012);
                 AdverseEvent event0 = new AdverseEvent();
                 event0.setGrade(Grade.MILD);
@@ -159,7 +159,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
                 report.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
             }
 
-            public void assertCorrect(AdverseEventReport loaded) {
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
                 assertDayOfDate("Wrong day for loaded date", 2004, Calendar.APRIL, 25, loaded.getDetectionDate());
 
@@ -178,7 +178,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     
     public void testSaveNewReportWithConMedWithAttribution() throws Exception {
         doSaveTest(new SaveTester() {
-            public void setupReport(AdverseEventReport report) {
+            public void setupReport(ExpeditedAdverseEventReport report) {
                 ConcomitantMedication conMed = report.getConcomitantMedications().get(0);
                 conMed.setAgent(agentDao.getById(-101));
 
@@ -191,7 +191,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
                 conMedAttrib.setAttribution(Attribution.PROBABLE);
             }
 
-            public void assertCorrect(AdverseEventReport loaded) {
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertNotNull("Report not found", loaded);
 
                 assertEquals(1, loaded.getConcomitantMedications().size());
@@ -209,7 +209,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
 
     public void testSaveNewReportWithTreatment() throws Exception {
         doSaveTest(new SaveTester() {
-            public void setupReport(AdverseEventReport report) {
+            public void setupReport(ExpeditedAdverseEventReport report) {
                 TreatmentInformation ti = new TreatmentInformation();
                 ti.getAdverseEventCourse().setDate(DateUtils.createDate(2006, Calendar.MAY, 4));
                 ti.getAdverseEventCourse().setNumber(4);
@@ -219,7 +219,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
                 report.setTreatmentInformation(ti);
             }
 
-            public void assertCorrect(AdverseEventReport loaded) {
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 TreatmentInformation ti = loaded.getTreatmentInformation();
                 assertNotNull("Should have treatment info", ti);
                 assertDayOfDate("Wrong first course date", 2005, Calendar.JULY, 30,
@@ -239,12 +239,12 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
 
     public void testSaveOtherCauses() throws Exception {
         doSaveTest(new SaveTester() {
-            public void setupReport(AdverseEventReport report) {
+            public void setupReport(ExpeditedAdverseEventReport report) {
                 report.getOtherCauses().get(0).setText("Insomnia");
                 report.getOtherCauses().get(1).setText("Bus");
             }
 
-            public void assertCorrect(AdverseEventReport loaded) {
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals("Wrong number of other causes", 2, loaded.getOtherCauses().size());
                 assertEquals("Wrong cause 0", "Insomnia", loaded.getOtherCauses().get(0).getText());
                 assertEquals("Wrong cause 1", "Bus", loaded.getOtherCauses().get(1).getText());
@@ -255,7 +255,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     private void doSaveTest(SaveTester tester) {
         Integer savedId;
         {
-            AdverseEventReport report = createMinimalAeReport();
+            ExpeditedAdverseEventReport report = createMinimalAeReport();
 
             tester.setupReport(report);
 
@@ -267,14 +267,14 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
         interruptSession();
 
         {
-            AdverseEventReport loaded = getDao().getById(savedId);
+            ExpeditedAdverseEventReport loaded = getDao().getById(savedId);
             assertNotNull("Saved report not found", loaded);
             tester.assertCorrect(loaded);
         }
     }
 
-    private AdverseEventReport createMinimalAeReport() {
-        AdverseEventReport report = new AdverseEventReport();
+    private ExpeditedAdverseEventReport createMinimalAeReport() {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.setAssignment(assignmentDao.getById(-14));
         report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));
@@ -283,7 +283,7 @@ public class AdverseEventReportDaoTest extends DaoTestCase<AdverseEventReportDao
     }
 
     private static interface SaveTester {
-        void setupReport(AdverseEventReport report);
-        void assertCorrect(AdverseEventReport loaded);
+        void setupReport(ExpeditedAdverseEventReport report);
+        void assertCorrect(ExpeditedAdverseEventReport loaded);
     }
 }

@@ -1,18 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;

@@ -20,7 +20,7 @@ import java.util.Date;
         @Parameter(name="sequence", value="seq_ae_report_descriptions_id")
     }
 )
-public class AdverseEventResponseDescription extends AbstractAdverseEventReportSingleChild {
+public class AdverseEventResponseDescription extends AbstractExpeditedReportSingleChild {
     private String eventDescription;
     private PostAdverseEventStatus presentStatus;
     private Date recoveryDate;

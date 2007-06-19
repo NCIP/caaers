@@ -3,13 +3,9 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -17,15 +13,13 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
-import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 
 /**
  * @author Krikor Krumlian
  */
 public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputCommand {
-    private AdverseEventReport aeReport;
+    private ExpeditedAdverseEventReport aeReport;
     private RoutineAdverseEventReport aeRoutineReport;
     private Map<String, List<List<Attribution>>> attributionMap;
     
@@ -57,7 +51,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 
     ////// BEAN PROPERTIES
 
-    public AdverseEventReport getAeReport() {
+    public ExpeditedAdverseEventReport getAeReport() {
         return aeReport;
     }
 
@@ -65,7 +59,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
         return attributionMap;
     }
 
-    public void setAeReport(AdverseEventReport aeReport) {
+    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         this.aeReport = aeReport;
         if (aeReport.getAdverseEvents().size() == 0) {
             aeReport.addAdverseEvent(new AdverseEvent());

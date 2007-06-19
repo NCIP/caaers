@@ -13,16 +13,16 @@ import java.util.ArrayList;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AdverseEventReportPerson extends Person implements AdverseEventReportChild {
+public class ExpeditedReportPerson extends Person implements ExpeditedAdverseEventReportChild {
     private List<ContactMechanism> contactMechanisms = new ArrayList<ContactMechanism>();
 
-    private AdverseEventReport report;
+    private ExpeditedAdverseEventReport report;
 
     private static String EMAIL = "email";
     private static String FAX = "fax";
     private static String PHONE = "phone";
 
-    public static <T extends AdverseEventReportPerson> T createEmptyPerson(Class<T> klass) {
+    public static <T extends ExpeditedReportPerson> T createEmptyPerson(Class<T> klass) {
         try {
             T instance = klass.newInstance();
 
@@ -46,11 +46,11 @@ public class AdverseEventReportPerson extends Person implements AdverseEventRepo
 
     @OneToOne
     @JoinColumn(name="report_id")
-    public AdverseEventReport getReport() {
+    public ExpeditedAdverseEventReport getReport() {
         return report;
     }
 
-    public void setReport(AdverseEventReport report) {
+    public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
 

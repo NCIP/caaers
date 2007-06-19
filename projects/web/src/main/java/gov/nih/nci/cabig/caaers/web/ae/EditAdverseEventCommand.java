@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -24,7 +24,7 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
  * @author Rhett Sutphin
  */
 public class EditAdverseEventCommand implements AdverseEventInputCommand {
-    private AdverseEventReport aeReport;
+    private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
 
     private RuleExecutionService ruleExecutionService;
@@ -49,7 +49,7 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
 
     ////// BEAN PROPERTIES
 
-    public AdverseEventReport getAeReport() {
+    public ExpeditedAdverseEventReport getAeReport() {
         return aeReport;
     }
 
@@ -57,7 +57,7 @@ public class EditAdverseEventCommand implements AdverseEventInputCommand {
         return attributionMap;
     }
 
-    public void setAeReport(AdverseEventReport aeReport) {
+    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         this.aeReport = aeReport;
         if (aeReport.getAdverseEvents().size() == 0) {
             aeReport.addAdverseEvent(new AdverseEvent());

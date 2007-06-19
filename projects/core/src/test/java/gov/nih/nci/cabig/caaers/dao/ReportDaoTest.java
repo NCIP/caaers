@@ -6,7 +6,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -117,7 +117,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		
 		//obtain an AE report
 		AdverseEventReportDao aeDao = (AdverseEventReportDao) getApplicationContext().getBean("adverseEventReportDao");
-		AdverseEventReport aeReport = aeDao.getById(-1);
+		ExpeditedAdverseEventReport aeReport = aeDao.getById(-1);
 		aeReport.setReportSchedule(rs);
 		aeReport.setStatus(ReportStatus.PENDING);
 		rs.setAeReport(aeReport);

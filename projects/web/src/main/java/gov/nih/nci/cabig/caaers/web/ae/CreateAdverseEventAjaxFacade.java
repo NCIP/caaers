@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -170,7 +170,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushAdverseEventToStudyCalendar(int aeReportId) {
-        AdverseEventReport report = aeReportDao.getById(aeReportId);
+        ExpeditedAdverseEventReport report = aeReportDao.getById(aeReportId);
         try {
             interoperationService.pushToStudyCalendar(report);
             return true;

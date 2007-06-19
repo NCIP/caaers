@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -137,8 +137,8 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	 * This method will return true, if the status of the AdverseEventReport is still pending. 
 	 * @return true - when stautus is {@link Report}.PENDING
 	 * @see Report
-	 * @see AdverseEventReport
-	 */
+	 * @see ExpeditedAdverseEventReport
+     */
 	public boolean verifyAeReportStatus() {
 		 return report.getAeReport().getStatus().equals(ReportStatus.PENDING);
 	}

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import com.semanticbits.aenotification.AENotification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
@@ -21,7 +21,7 @@ public class InteroperationServiceImpl implements InteroperationService {
 	
 	private String certificateLocation = "/sample.txt";
 	
-	public void pushToStudyCalendar(AdverseEventReport aeReport) throws CaaersSystemException {
+	public void pushToStudyCalendar(ExpeditedAdverseEventReport aeReport) throws CaaersSystemException {
 		AENotification aeNotification = new AENotification();
 		aeNotification.setRegistrationGridId(
 				aeReport.getAssignment().getGridId());

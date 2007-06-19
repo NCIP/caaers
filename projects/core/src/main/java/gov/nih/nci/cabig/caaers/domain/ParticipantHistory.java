@@ -17,7 +17,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_participant_history_id")
     }
 )
-public class ParticipantHistory extends AbstractAdverseEventReportSingleChild {
+public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     private float height;
     private float weight;
     private String baselinePerformanceStatus;

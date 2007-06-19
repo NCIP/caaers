@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -217,7 +217,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testPushToPsc() throws Exception {
         int expectedId = 510;
-        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        ExpeditedAdverseEventReport report = setId(expectedId, new ExpeditedAdverseEventReport());
         expect(aeReportDao.getById(510)).andReturn(report);
         interoperationService.pushToStudyCalendar(report);
 
@@ -228,7 +228,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testPushToPscAndFail() throws Exception {
         int expectedId = 510;
-        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        ExpeditedAdverseEventReport report = setId(expectedId, new ExpeditedAdverseEventReport());
         expect(aeReportDao.getById(510)).andReturn(report);
         interoperationService.pushToStudyCalendar(report);
         expectLastCall().andThrow(new CaaersSystemException("Turbo bad"));
@@ -240,7 +240,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     
     public void testPushToPscAndFailWithArbitraryException() throws Exception {
         int expectedId = 510;
-        AdverseEventReport report = setId(expectedId, new AdverseEventReport());
+        ExpeditedAdverseEventReport report = setId(expectedId, new ExpeditedAdverseEventReport());
         expect(aeReportDao.getById(510)).andReturn(report);
         interoperationService.pushToStudyCalendar(report);
         expectLastCall().andThrow(new RuntimeException("Turbo bad"));

@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -27,7 +27,7 @@ import java.util.List;
 public class AdverseEventReportSerializer {
 	
 	   private AdverseEventReportDao adverseEventReportDao;
-	   private AdverseEventReport adverseEventReportDataObject;
+	   private ExpeditedAdverseEventReport adverseEventReportDataObject;
 	   
 	   
 	   //TO-DO set in spring config 
@@ -40,7 +40,7 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   public String serialize (AdverseEventReport adverseEventReportDataObject) throws Exception{	
+	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
 		   this.adverseEventReportDataObject = adverseEventReportDataObject;
 		   return serialize();
 	   }
@@ -69,7 +69,7 @@ public class AdverseEventReportSerializer {
 			XmlMarshaller marshaller = new XmlMarshaller();
 
 			try {
-				AdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
+				ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
 				xml = marshaller.toXML(aer,getMappingFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -85,9 +85,9 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   private AdverseEventReport getAdverseEventReport (AdverseEventReport hibernateAdverseEventReport ) throws Exception{	
+	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport ) throws Exception{
 		   
-		    AdverseEventReport aer = new AdverseEventReport();
+		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 	    	aer.setDetectionDate(hibernateAdverseEventReport.getDetectionDate());
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
 	    	aer.setStatus(hibernateAdverseEventReport.getStatus());

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
@@ -55,7 +55,7 @@ public class ReportService {
 		return toAddressList;
 	}
 	
-	public  List<ContactMechanism> fetchContactMechanism(String role, AdverseEventReport aeReport){
+	public  List<ContactMechanism> fetchContactMechanism(String role, ExpeditedAdverseEventReport aeReport){
 		//TODO : do runtime expression evaluation using roleEntityMapping.
 		try{
 			if(StringUtils.equals("Reporter", role)){

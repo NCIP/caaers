@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
@@ -69,7 +69,7 @@ public class ReportDaoStub extends ReportDao {
 	public Report getDummyReportSchedule(final int reportId){
 
 		ReportDefinition rct = null;
-		AdverseEventReport aeReport = new AdverseEventReport(){
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport(){
 			int callCount = 0;
 			public ReportStatus getStatus(){
 				callCount++;

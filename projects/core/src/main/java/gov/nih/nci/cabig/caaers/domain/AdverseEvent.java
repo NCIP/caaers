@@ -33,7 +33,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_adverse_events_id")
     }
 )
-public class AdverseEvent extends AbstractMutableDomainObject implements AdverseEventReportChild,RoutineAdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
     private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
@@ -42,7 +42,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     private Attribution attributionSummary;
     private String comments;
 
-    private AdverseEventReport report;
+    private ExpeditedAdverseEventReport report;
     private RoutineAdverseEventReport routineReport;
     private List<CourseAgentAttribution> courseAgentAttributions;
     private List<ConcomitantMedicationAttribution> concomitantMedicationAttributions;
@@ -54,11 +54,11 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Adverse
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable=false, updatable=false, nullable=true)
-    public AdverseEventReport getReport() {
+    public ExpeditedAdverseEventReport getReport() {
         return report;
     }
 
-    public void setReport(AdverseEventReport report) {
+    public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
     

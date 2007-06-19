@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;

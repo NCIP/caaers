@@ -176,8 +176,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<util:map id="joinPointObjectPrivilegeMap"
 		map-class="java.util.LinkedHashMap">
 		
-		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.AdverseEventReport))"
-			value="gov.nih.nci.cabig.caaers.domain.AdverseEventReport:CREATE" />
+		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 			
 		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Study))"
 			value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />

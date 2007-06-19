@@ -17,7 +17,7 @@ import javax.persistence.Column;
         @Parameter(name="sequence", value="seq_other_causes_id")
     }
 )
-public class OtherCause extends AbstractAdverseEventReportCollectionElementChild {
+public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
     private String text;
 
     @Column(name = "cause_text")

@@ -33,7 +33,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Participant participant;
     private StudySite studySite;
     private Date dateOfEnrollment;
-    private List<AdverseEventReport> aeReports;
+    private List<ExpeditedAdverseEventReport> aeReports;
     private List<RoutineAdverseEventReport> aeRoutineReports;
 
     /*
@@ -50,7 +50,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     ////// LOGIC
 
-    public void addReport(AdverseEventReport report) {
+    public void addReport(ExpeditedAdverseEventReport report) {
         report.setAssignment(this);
         aeReports.add(report);
     }
@@ -92,11 +92,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
 
     @OneToMany(mappedBy = "assignment")
-    public List<AdverseEventReport> getAeReports() {
+    public List<ExpeditedAdverseEventReport> getAeReports() {
         return aeReports;
     }
 
-    public void setAeReports(List<AdverseEventReport> aeReports) {
+    public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
         this.aeReports = aeReports;
     }
     

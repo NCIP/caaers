@@ -3,7 +3,7 @@
 
 <mapping>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventReport" >
+  <class name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" >
     <map-to xml="AdverseEventReport"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
@@ -140,14 +140,14 @@
     </field>
   </class>
     
-  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
+  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
     <map-to xml="Physician"  />
     <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
       <bind-xml name="ContactMechanism"/>
     </field> 
   </class>  
 
-  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
+  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
     <map-to xml="Reporter"  />
     <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
       <bind-xml name="ContactMechanism"/>
@@ -169,7 +169,7 @@
   </class>  
 -->
 
-  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventReportPerson">
+  <class name="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
     <map-to xml="AdverseEventReportPerson"  />
 
     <field name="id" type="integer">

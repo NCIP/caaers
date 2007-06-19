@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -40,7 +40,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable{
 	
 	private String name;
 	
-	private AdverseEventReport aeReport;
+	private ExpeditedAdverseEventReport aeReport;
 	
 	private ReportDefinition reportDefinition;
 	
@@ -89,13 +89,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable{
 	 */
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="report_id")
-	public AdverseEventReport getAeReport() {
+	public ExpeditedAdverseEventReport getAeReport() {
 		return aeReport;
 	}
 	/**
 	 * @param aeReport the aeReport to set
 	 */
-	public void setAeReport(AdverseEventReport aeReport) {
+	public void setAeReport(ExpeditedAdverseEventReport aeReport) {
 		this.aeReport = aeReport;
 	}
 	/**

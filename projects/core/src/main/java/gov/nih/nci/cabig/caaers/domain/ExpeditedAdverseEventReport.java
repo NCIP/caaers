@@ -36,7 +36,7 @@ import java.sql.Timestamp;
         @Parameter(name="sequence", value="seq_ae_reports_id")
     }
 )
-public class AdverseEventReport extends AbstractMutableDomainObject {
+public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
     private Date detectionDate;
     private Timestamp createdAt;
@@ -57,7 +57,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     // TODO
     // private List<MedicalDevice> medicalDevices;
 
-    public AdverseEventReport() {
+    public ExpeditedAdverseEventReport() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(AdverseEvent.class);
         addReportChildLazyList(Lab.class);
@@ -67,9 +67,9 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
         status = ReportStatus.PENDING;
     }
 
-    private <T extends AdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
+    private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass,
-            new AdverseEventReportChildFactory<T>(klass, this));
+            new ExpeditedAdverseEventReportChildFactory<T>(klass, this));
     }
 
     ////// LOGIC
@@ -325,7 +325,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Reporter getReporter() {
-        if (reporter == null) setReporter(AdverseEventReportPerson.createEmptyPerson(Reporter.class));
+        if (reporter == null) setReporter(ExpeditedReportPerson.createEmptyPerson(Reporter.class));
         return reporter;
     }
 
@@ -337,7 +337,7 @@ public class AdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Physician getPhysician() {
-        if (physician == null) setPhysician(AdverseEventReportPerson.createEmptyPerson(Physician.class));
+        if (physician == null) setPhysician(ExpeditedReportPerson.createEmptyPerson(Physician.class));
         return physician;
     }
 

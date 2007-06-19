@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public abstract class AbstractAdverseEventInputController<C extends AdverseEventInputCommand>
-    extends AutomaticSaveFlowFormController<C, AdverseEventReport, AdverseEventReportDao>
+    extends AutomaticSaveFlowFormController<C, ExpeditedAdverseEventReport, AdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -152,7 +152,7 @@ public abstract class AbstractAdverseEventInputController<C extends AdverseEvent
     }
 
     @Override
-    protected AdverseEventReport getPrimaryDomainObject(C command) {
+    protected ExpeditedAdverseEventReport getPrimaryDomainObject(C command) {
         return command.getAeReport();
     }
 

@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -30,7 +30,7 @@ import org.apache.commons.logging.LogFactory;
 public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInputCommand  {
     private static final Log log = LogFactory.getLog(CreateRoutineAdverseEventCommand.class);
 
-    private AdverseEventReport aeReport;
+    private ExpeditedAdverseEventReport aeReport;
     private RoutineAdverseEventReport aeRoutineReport;
 
     private Participant participant;
@@ -79,7 +79,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     
     private void prepareExpeditedReport()
     {
-    	this.aeReport = new AdverseEventReport();
+    	this.aeReport = new ExpeditedAdverseEventReport();
         aeReport.setDetectionDate(aeRoutineReport.getStartDate());
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
@@ -108,7 +108,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     ////// BOUND PROPERTIES
 
-    public AdverseEventReport getAeReport() {
+    public ExpeditedAdverseEventReport getAeReport() {
         return aeReport;
     }
 
@@ -176,7 +176,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.ruleExecutionService = ruleExecutionService;
     }
 
-    public void setAeReport(AdverseEventReport aeReport) {
+    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         this.aeReport = aeReport;
     }
 

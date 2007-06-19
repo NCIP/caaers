@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -42,7 +42,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         return KEY_TO_ACCESSOR.get(key);
     }
 
-    public final C findCause(int i, AdverseEventReport aeReport) {
+    public final C findCause(int i, ExpeditedAdverseEventReport aeReport) {
         List<C> causes = getCauseList(aeReport);
         if (causes.size() <= i) {
             throw new CaaersSystemException(
@@ -53,7 +53,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         return causes.get(i);
     }
 
-    protected abstract List<C> getCauseList(AdverseEventReport aeReport);
+    protected abstract List<C> getCauseList(ExpeditedAdverseEventReport aeReport);
     public abstract A createAttribution();
     public abstract List<A> getAttributionsList(AdverseEvent adverseEvent);
     public abstract String getKey();
@@ -77,7 +77,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
 
         @Override
-        protected List<CourseAgent> getCauseList(AdverseEventReport aeReport) {
+        protected List<CourseAgent> getCauseList(ExpeditedAdverseEventReport aeReport) {
             TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
             return treatmentInformation == null
                 ? Collections.<CourseAgent>emptyList()
@@ -102,7 +102,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
 
         @Override
-        public List<ConcomitantMedication> getCauseList(AdverseEventReport aeReport) {
+        public List<ConcomitantMedication> getCauseList(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getConcomitantMedications();
         }
 
@@ -124,7 +124,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
 
         @Override
-        protected List<OtherCause> getCauseList(AdverseEventReport aeReport) {
+        protected List<OtherCause> getCauseList(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getOtherCauses();
         }
 

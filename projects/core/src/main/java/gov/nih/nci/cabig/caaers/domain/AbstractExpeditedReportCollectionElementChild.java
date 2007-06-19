@@ -13,18 +13,18 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractAdverseEventReportCollectionElementChild extends AbstractMutableDomainObject implements AdverseEventReportChild {
-    private AdverseEventReport report;
+public class AbstractExpeditedReportCollectionElementChild extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
+    private ExpeditedAdverseEventReport report;
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable=false, updatable=false, nullable=false)
-    public AdverseEventReport getReport() {
+    public ExpeditedAdverseEventReport getReport() {
         return report;
     }
 
-    public void setReport(AdverseEventReport report) {
+    public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
 }
