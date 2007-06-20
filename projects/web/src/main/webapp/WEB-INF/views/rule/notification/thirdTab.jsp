@@ -113,6 +113,7 @@
 	border-bottom-color: #7B99E1;
 	border-left-color: #7B99E1;
 	padding: 3px;
+	overflow:auto; width:100%; padding: 20px 0; 
 }
     </style>
     <script language="javascript">
@@ -137,29 +138,29 @@
            <table width="100%" border="0" cellpadding="4" cellspacing="4">
   			<tr>
     		<td width="25%"><div align="right" class="label">Name</div></td>
-    		<td width="75%">${command.calendarTemplate.name}</td>
+    		<td width="75%">${command.reportDefinition.name}</td>
   			</tr>
   			<tr>
     		<td><div align="right" class="label">Description</div></td>
-    		<td>${command.calendarTemplate.description}</td>
+    		<td>${command.reportDefinition.description}</td>
   			</tr>
   			<tr>
     		<td><div align="right" class="label">Time Scale UOM</div></td>
-    		<td>${command.calendarTemplate.timeScaleUnitType}</td>
+    		<td>${command.reportDefinition.timeScaleUnitType}</td>
   			</tr>
   			<tr>
     		<td><div align="right" class="label">Time Till Report Due</div></td>
-    		<td>${command.calendarTemplate.duration}</td>
+    		<td>${command.reportDefinition.duration}</td>
   			</tr>
   			<tr>
     		<td><div align="right"></div></td>
     		<td>&nbsp;</td>
   			</tr>
 		   </table>
-        	<c:forEach var="pen" items="${command.calendarTemplate.plannedNotifications}">
+        	<c:forEach var="pen" items="${command.reportDefinition.plannedNotifications}">
         	<div class="test0">
         	<table border="0" bordercolor="#0033ff" width="100%"  cellpadding="4" cellspacing="0">
- 				 <tr><td width="20%"> <div align="left" class="test2">Notification for ${command.calendarTemplate.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}</div></td>
+ 				 <tr><td width="20%"> <div align="left" class="test2">Notification for ${command.reportDefinition.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}</div></td>
                  <td><div class="test3">&nbsp;</div></td>
                  </tr>
                  <tr>
@@ -187,13 +188,13 @@
                     </div>
    				</td>
    				<td> 
-   				<div class="testfrom">
-   					${pen.notificationBodyContent.bodyAsString}
+   				<div class="testfrom" >
+   					<pre>${pen.notificationBodyContent.bodyAsString}</pre>
    				</div></td>
    				</tr>
    				<tr>
    				<td colspan="2">
-   				  <div class="buttons" align="right"><input type="button" name="del" onClick="javascript:deleteNF(${pen.indexOnTimeScale});" value="Delete Notification of ${command.calendarTemplate.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}" /></div>
+   				  <div class="buttons" align="right"><input type="button" name="del" onClick="javascript:deleteNF(${pen.indexOnTimeScale});" value="Delete Notification of ${command.reportDefinition.timeScaleUnitType.displayName} : ${pen.indexOnTimeScale}" /></div>
    				</td>
    				</tr>
  				</table>

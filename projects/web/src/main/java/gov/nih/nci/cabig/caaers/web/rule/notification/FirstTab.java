@@ -51,13 +51,9 @@ public class FirstTab extends DefaultTab {
 	 */
 	@Override
 	public void postProcess(HttpServletRequest req, RuleInputCommand cmd, Errors errors) {
-		//System.out.println("FirstTab: post process is called ");
-		//System.out.println("cmd :" + String.valueOf(cmd));
-		//System.out.println("errors :" + String.valueOf(errors));
-		//System.out.println("___________________________________");
 		super.postProcess(req,cmd,errors);
-		NotificationCommand nfCmd = (NotificationCommand)cmd;
-		if(errors.getErrorCount() < 1) nfCmd.updateReportCalendarTemplate();
+		ReportDefinitionCommand nfCmd = (ReportDefinitionCommand)cmd;
+		if(!errors.hasErrors()) nfCmd.updateReportCalendarTemplate();
 	}
 
 	/* (non-Javadoc)
@@ -65,12 +61,8 @@ public class FirstTab extends DefaultTab {
 	 */
 	@Override
 	public void validate(RuleInputCommand cmd, Errors errors) {
-		//System.out.println("First tab : validate method called....");
-		//System.out.println("cmd : " + String.valueOf(cmd));
-		//System.out.println("errors :" + String.valueOf(errors));
-		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
-		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		ReportDefinitionCommand nfCmd = (ReportDefinitionCommand)cmd;
 		if(StringUtils.isEmpty(nfCmd.getName())){
 			errors.rejectValue("name", "REQUIRED", "Missing Name");
 		}
@@ -87,7 +79,6 @@ public class FirstTab extends DefaultTab {
 	 */
 	@Override
 	public Map<String, Object> referenceData(RuleInputCommand command) {
-		// TODO Auto-generated method stub
 		return super.referenceData(command);
 	}
 	

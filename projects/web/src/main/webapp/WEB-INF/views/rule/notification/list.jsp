@@ -22,10 +22,13 @@
     items="command.reportCalendarTemplateList"
     var="rct" imagePath="${ecImagePath}"
     showPagination="false"
-    cellspacing="0" cellpadding="0" border="0" width="80%"
-    style="" styleClass="">
+    cellspacing="0" cellpadding="0" border="0" width="90%"
+    style="" styleClass=""
+    filterable="false">
     <ec:row>
-        <ec:column property="name" title="Name">${name}</ec:column>
+        <ec:column property="name" title="Name">
+         <a href="<c:url value="/pages/rule/notification/edit?repDefId=${rct.id}" />">${rct.name}</a>
+        </ec:column>
         <ec:column property="description" title="Description"/>
         <ec:column property="duration" title="Final Report Due">${rct.duration} ${rct.timeScaleUnitType.displayName}</ec:column>
   

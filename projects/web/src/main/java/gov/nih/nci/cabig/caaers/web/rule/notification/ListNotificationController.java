@@ -16,6 +16,7 @@ public class ListNotificationController extends SimpleFormController {
 	private ReportDefinitionDao rdDao;
 	
 	public ListNotificationController() {
+	
 		setCommandClass(ListNotificationCommand.class);
 		setBindOnNewForm(true);
 		setFormView("rule/notification/list");
@@ -24,6 +25,7 @@ public class ListNotificationController extends SimpleFormController {
 	
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
+		System.out.println(this);
 		return new ListNotificationCommand(rdDao);
 	}
 
@@ -35,7 +37,7 @@ public class ListNotificationController extends SimpleFormController {
 	}
 
 	/**
-	 * @param rdDao the reportCalendarTemplateDao to set
+	 * @param rpDefDao the reportCalendarTemplateDao to set
 	 */
 	public void setRdDao(ReportDefinitionDao rdDao) {
 		this.rdDao = rdDao;

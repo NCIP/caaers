@@ -27,12 +27,8 @@ public class ThirdTab extends DefaultTab{
 	 */
 	@Override
 	public void postProcess(HttpServletRequest req, RuleInputCommand cmd, Errors errors) {
-		//System.out.println("ThirdTab: post process is called ");
-		//System.out.println("cmd :" + String.valueOf(cmd));
-		//System.out.println("errors :" + String.valueOf(errors));
-		//System.out.println("___________________________________");
 		super.postProcess(req,cmd,errors);
-		NotificationCommand nfCmd = (NotificationCommand)cmd;
+		ReportDefinitionCommand nfCmd = (ReportDefinitionCommand)cmd;
 		nfCmd.setValidationFailed(errors.hasErrors());
 		if(errors.hasErrors()) return;
 		nfCmd.removePlannedNotification();
@@ -43,10 +39,6 @@ public class ThirdTab extends DefaultTab{
 	 */
 	@Override
 	public void validate(RuleInputCommand cmd, Errors errors) {
-		//System.out.println("Third tab : validate method called....");
-		//System.out.println("cmd : " + String.valueOf(cmd));
-		//System.out.println("errors :" + String.valueOf(errors));
-		//System.out.println("___________________________________");
 		super.validate(cmd,errors);
 	}
 }
