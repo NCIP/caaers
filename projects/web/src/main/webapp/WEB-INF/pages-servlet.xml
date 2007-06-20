@@ -4,10 +4,12 @@
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
-    >
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
     
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
@@ -271,21 +273,26 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>rule/author/addColumn</value></property>
     </bean>    
+	
+	<util:map id="roles" map-class="java.util.LinkedHashMap">
+	  <entry key="Site Study PI" value="Site Study PI" />
+	  <entry key="Study Chair" value="Study Chair" />
+	  <entry key="Reporter" value="Reporter" />
+	  <entry key="Treating Physician" value="Treating Physician" />
+	  <entry key="Sponsor" value="Sponsor" />
+	  <entry key="IRB" value="IRB" />	
+	</util:map>
 
     <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationController">
-		 <property name="allRoles">
-        	<list>
-				<value>Site Study PI</value>
-				<value>Study Chair</value>
-				<value>Reporter</value>
-				<value>Treating Physician</value>
-				<value>Sponsor</value>
-				<value>IRB</value>
-        	</list>
-        </property>
+        class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
+		 <property name="roles" ref="roles" />
     </bean>
-
+	
+	<bean name="/rule/notification/edit" autowire="byType"
+		class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController"> 
+		<property name="roles" ref="roles" />
+	</bean>
+	
     <bean name="/rule/notification/list" id="listNotificationController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController">
     </bean>
