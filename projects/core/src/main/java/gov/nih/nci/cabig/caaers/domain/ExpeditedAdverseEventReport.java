@@ -20,13 +20,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.OrderBy;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ArrayList;
-import java.sql.Timestamp;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -372,32 +372,25 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (participantHistory != null) participantHistory.setReport(this);
     }
 
-    /**
-     * @return the report
-     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
+    @OrderBy("dueOn")
     @Cascade(value = {  CascadeType.DELETE_ORPHAN })
     public List<Report> getReports() {
+        if (reports == null) reports = new ArrayList<Report>();
         return reports;
     }
 
-    /**
-     * @param report the report to set
-     */
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
 
-    public void addReport(Report report){
-    	if(reports == null)	reports = new ArrayList<Report>();
-    	reports.add(report);
+    public void addReport(Report report) {
+        getReports().add(report);
+        report.setAeReport(this);
     }
 
-    /**
-     * @return the status
-     */
-	@Column(name="status_code")
-	@Type(type="reportStatus")
+    @Column(name = "status_code")
+    @Type(type = "reportStatus")
     public ReportStatus getStatus() {
         return status;
     }

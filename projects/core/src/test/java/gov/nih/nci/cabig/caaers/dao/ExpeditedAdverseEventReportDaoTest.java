@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 import java.util.Calendar;
@@ -134,6 +135,20 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong event description", "It was real bad", actual.getEventDescription());
         assertEquals("Wrong retreated flag", Boolean.FALSE, actual.getRetreated());
         assertDayOfDate("Wrong date removed", 2012, Calendar.MARCH, 4, actual.getRecoveryDate());
+    }
+
+    public void testGetReports() throws Exception {
+        List<Report> actual = getDao().getById(-1).getReports();
+        assertNotNull(actual);
+        assertEquals("Wrong number of reports", 2, actual.size());
+        assertEquals("Wrong report 0", -40, (int) actual.get(0).getId());
+
+        Report actualReport1 = actual.get(1);
+        assertNotNull(actualReport1);
+        assertEquals("Wrong report 1", -41, (int) actualReport1.getId());
+        assertEquals("Wrong def for report 1", -30,
+            (int) actualReport1.getReportDefinition().getId());
+        assertDayOfDate("Wrong due date for report 1", 2007, Calendar.MAY, 5, actualReport1.getDueOn());
     }
 
     public void testSave() throws Exception {
