@@ -114,7 +114,7 @@ public class ReportDaoStub extends ReportDao {
 		rs.setId(reportId);
 		rs.setReportDefinition(rct);
 		rs.setAeReport(aeReport);
-		aeReport.setReportSchedule(rs);
+		aeReport.addReport(rs);
 		rs.setScheduledNotifications(snfList);
 
 		PlannedEmailNotification penf = new PlannedEmailNotification();
