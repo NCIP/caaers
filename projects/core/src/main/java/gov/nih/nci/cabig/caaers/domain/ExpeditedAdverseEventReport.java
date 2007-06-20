@@ -24,6 +24,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.Timestamp;
 
 /**
@@ -50,7 +52,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
 
-    private Report report;
+    private List<Report> reports;
 
     private ReportStatus status;
 
@@ -373,18 +375,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     /**
      * @return the report
      */
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "aeReport")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @Cascade(value = {  CascadeType.DELETE_ORPHAN })
-//    @Transient
-    public Report getReportSchedule() {
-        return report;
+    public List<Report> getReports() {
+        return reports;
     }
 
     /**
      * @param report the report to set
      */
-    public void setReportSchedule(Report report) {
-        this.report = report;
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
+    public void addReport(Report report){
+    	if(reports == null)	reports = new ArrayList<Report>();
+    	reports.add(report);
     }
 
     /**
@@ -392,7 +398,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
      */
 	@Column(name="status_code")
 	@Type(type="reportStatus")
-//    @Transient
     public ReportStatus getStatus() {
         return status;
     }

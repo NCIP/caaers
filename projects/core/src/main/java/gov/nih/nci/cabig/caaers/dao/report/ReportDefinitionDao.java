@@ -11,7 +11,10 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 /**
  * 
  * 
@@ -31,12 +34,12 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 		return ReportDefinition.class;
 	}
 	
-	public void save(ReportDefinition rc){
-		getHibernateTemplate().saveOrUpdate(rc);
+	public void save(ReportDefinition rpDef){
+		getHibernateTemplate().saveOrUpdate(rpDef);
 	}
 	
 	public Session getHibernateSession(){
-		return super.getSession();
+		return getSession();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -58,11 +61,32 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 		return count >= 1;
 	}
 	
-	public void delete(ReportDefinition rct){
-		getHibernateTemplate().delete(rct);
+	public void delete(ReportDefinition rpDef){
+		getHibernateTemplate().delete(rpDef);
 	}
 	
 	public void delete(Collection<ReportDefinition> c){
 		getHibernateTemplate().deleteAll(c);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public ReportDefinition getById(int arg0) {
+		//overriden inorder to bring the read under transaction.
+		return super.getById(arg0);
+	}
+	
+	/**
+	 * Willl initialize the Lazy collections inside the passed ReportDefinition
+	 * @param rpDef
+	 */
+	public void initialize(ReportDefinition rpDef){
+		//this method will initialize all the lazy collections
+		// of a report definition
+		super.initialize(rpDef.getPlannedNotifications());
+		for(PlannedNotification nf : rpDef.getPlannedNotifications()){
+			super.initialize(nf.getRecipients());
+			super.initialize(nf.getAttachments());
+		}
 	}
 }

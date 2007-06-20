@@ -10,8 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -51,7 +51,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		
 		mockAEReport =  registerMockFor(ExpeditedAdverseEventReport.class);
 		expect(mockAEReport.getReporter()).andReturn(mockReporter).anyTimes();
-		replayMocks();
+		
 		
 		
 		List<Recipient> rList = new ArrayList<Recipient>();
@@ -94,8 +94,9 @@ public class ReportServiceTest extends CaaersTestCase {
 		rs.setId(9999);
 		rs.setReportDefinition(rct);
 		rs.setAeReport(mockAEReport);
-
 		
+		
+		replayMocks();
 	}
 
 	protected void tearDown() throws Exception {
@@ -157,5 +158,6 @@ public class ReportServiceTest extends CaaersTestCase {
 		}//for each pnf
 		
 	}
-
+	
+	
 }

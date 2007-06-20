@@ -76,9 +76,10 @@ public class StudyDao extends GridIdentifiableDao<Study>
 	}
 	
 
-    public void merge(Study study) {
-        getHibernateTemplate().merge(study);
+    public Study merge(Study study) {
+        return super.merge(study);
     }
+
 
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,

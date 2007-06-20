@@ -14,6 +14,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -159,10 +160,39 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     
     /**
      * This method will reassociate the domain object to hibernate session.
+     * With a lock mode none.
      * @param o - the domain object instance that is to be reassociated
      */
-    protected void reassociate(T o){
+    public void reassociate(T o){
     	getHibernateTemplate().lock(o, LockMode.NONE);
     	
     }
+    
+    /**
+     * This will merge the changes, and returns a new persistant instance.
+     * @param o - The domain object to be merged
+     * @return a updated persistant instance
+     */
+    @SuppressWarnings("unchecked")
+	public T merge(T o){
+    	return (T) getHibernateTemplate().merge(o);
+    }
+    
+    /**
+     * Detaches the passed-in instance (probably a domain object or a collection of domain objects) 
+     * from the sesison.
+     * @param o
+     */
+    public void evict(DomainObject o){
+    	getHibernateTemplate().evict(o);
+    }
+    
+    /**
+     * This will initialize a lazy collection, consisting of domain objects.
+     * @param proxy
+     */
+    public void initialize(Collection<? extends DomainObject> proxy){
+    	getHibernateTemplate().initialize(proxy);
+    }
+   
 }

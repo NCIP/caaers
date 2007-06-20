@@ -118,7 +118,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		//obtain an AE report
 		ExpeditedAdverseEventReportDao aeDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean("expeditedAdverseEventReportDao");
 		ExpeditedAdverseEventReport aeReport = aeDao.getById(-1);
-		aeReport.setReportSchedule(rs);
+		aeReport.addReport(rs);
 		aeReport.setStatus(ReportStatus.PENDING);
 		rs.setAeReport(aeReport);
 		
@@ -139,7 +139,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		
 		//fetch AE report and see if we can get hold of the report schedule.
 		aeReport = aeDao.getById(-1);
-		Report rs3 = aeReport.getReportSchedule();
+		Report rs3 = aeReport.getReports().get(0);
 		assertNotNull(rs3);
 		assertEquals("Report obtained from AEReport is not correct",rs2.getName(), rs3.getName());
 		assertEquals(aeReport.getStatus(), ReportStatus.PENDING);

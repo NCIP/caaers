@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -96,7 +97,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	}
 
 	/** A list of notificaiton(templates) */
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="rct_id", nullable=false)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<PlannedNotification> getPlannedNotifications() {

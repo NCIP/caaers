@@ -3,10 +3,6 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
@@ -17,6 +13,10 @@ import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * 
@@ -46,8 +46,6 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		super.tearDown();
 		
 	}
-	
-
 	
 	/**
 	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.ReportDefinitionDao#domainClass()}.
@@ -102,15 +100,14 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		pnlist.add(pen);
 		rct.setPlannedNotifications(pnlist);
 		Integer id = null;
-
-		rctDao.getHibernateSession().beginTransaction();
 		rctDao.save(rct);
 		id = rct.getId();
 		interruptSession();	
-		rctDao.getHibernateSession().beginTransaction();
 		
 		ReportDefinition rctLoaded = null;
 		rctLoaded = rctDao.getById(id);
+		rctDao.initialize(rctLoaded);
+		rctDao.evict(rctLoaded);
 		
 		log.debug(rctLoaded.getDuration());
 		PlannedEmailNotification nf = (PlannedEmailNotification)rctLoaded.getPlannedNotifications().get(0);
@@ -119,11 +116,11 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		//update the values.
 		nf.setIndexOnTimeScale(4);
 		nf.setSubjectLine("New Subject Line");
-		
-		
+		rctDao.save(rctLoaded);
 		log.debug("============= after save ===============");
 	}
-	public void testExample(){
+	public void xtestExample(){
 		assert(true);
 	}
+	
 }

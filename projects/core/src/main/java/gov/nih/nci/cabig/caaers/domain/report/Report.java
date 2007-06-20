@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -87,7 +88,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable{
 	/**
 	 * @return the aeReport
 	 */
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="report_id")
 	public ExpeditedAdverseEventReport getAeReport() {
 		return aeReport;
