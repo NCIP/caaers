@@ -36,10 +36,6 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 		getHibernateTemplate().saveOrUpdate(rs);
 	}
 	
-	public Session getHibernateSession(){
-		return super.getSession();
-	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Report> getAll(){
 		return getHibernateTemplate().find("from Report");
