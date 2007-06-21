@@ -95,6 +95,7 @@
 				<valid-value value="DEFINITE" display-uri="Definite"/>																
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getAttributionSummary()</expression>
 			</field>
 			
 		</domain-object>
@@ -112,6 +113,7 @@
 				<valid-value value="Pilot" display-uri="Pilot"/>
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getPhaseCode()</expression>
 			</field>
 		</domain-object>
 		<domain-object identifier="studyAgent" class-name="gov.nih.nci.cabig.caaers.domain.StudyAgent" display-uri="StudyAgent">
