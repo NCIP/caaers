@@ -62,7 +62,6 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
-                <value>gov.nih.nci.cabig.caaers.domain.ContactMechanism</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>                
@@ -127,7 +126,7 @@
 
     <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" autowire="byName">
         <property name="singleSession"><value>true</value></property>
-        <property name="flushModeName"><value>FLUSH_AUTO</value></property>
+        <property name="flushModeName"><value>FLUSH_NEVER</value></property>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
