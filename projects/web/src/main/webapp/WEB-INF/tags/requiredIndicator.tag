@@ -1,0 +1,1 @@
+<span class="required-indicator">*</span>
