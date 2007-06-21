@@ -4,7 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -43,10 +43,10 @@ public class ReportServiceImpl  implements ReportService {
 	public  List<String> findToAddresses(PlannedNotification pnf, Report rs){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
-		String address = null;
-		String type = "email";
+		String address;
+		String type = ExpeditedReportPerson.EMAIL;
 		if(pnf instanceof PlannedEmailNotification)
-			type ="email";
+			type = ExpeditedReportPerson.EMAIL;
 
 		for(Recipient r : pnf.getRecipients()){
 			if(r instanceof ContactMechanismBasedRecipient){
@@ -54,43 +54,33 @@ public class ReportServiceImpl  implements ReportService {
 				toAddressList.add(address);
 			}else if(r instanceof RoleBasedRecipient){
 				String roleName = ((RoleBasedRecipient)r).getRoleName();
-				List<ContactMechanism> contactMechanismList = fetchContactMechanism(roleName, rs.getAeReport());
-				toAddressList.addAll(findContactValuesOfType(type, contactMechanismList ));
+				toAddressList.add(findContactMechanismValue(roleName, type, rs.getAeReport()));
 			}
 		}//for each r
 
 		return toAddressList;
 	}
 
-	public  List<ContactMechanism> fetchContactMechanism(String role, ExpeditedAdverseEventReport aeReport){
-		//TODO : do runtime expression evaluation using roleEntityMapping.
-		try{
-			if(StringUtils.equals("Reporter", role)){
-				return aeReport.getReporter().getContactMechanisms();
-			}else if(StringUtils.equals("Site Study PI", role)){
+    // package-level for testing
+    String findContactMechanismValue(
+        String role, String mechanismType, ExpeditedAdverseEventReport aeReport
+    ) {
+		// TODO : do runtime expression evaluation using roleEntityMapping.
+        // TODO: these role names should be defined as constants somewhere
+        if (StringUtils.equals("Reporter", role)) {
+            return aeReport.getReporter().getContactMechanisms().get(mechanismType);
+        } else if (StringUtils.equals("Site Study PI", role)) {
 
-			}else if(StringUtils.equals("Study Chair", role)){
+        } else if (StringUtils.equals("Study Chair", role)) {
 
-			}else if(StringUtils.equals("Treating Physician", role)){
-				return aeReport.getPhysician().getContactMechanisms();
-			}else if(StringUtils.equals("Sponsor", role)){
+        } else if (StringUtils.equals("Treating Physician", role)) {
+            return aeReport.getPhysician().getContactMechanisms().get(mechanismType);
+        } else if (StringUtils.equals("Sponsor", role)) {
 
-			}else if(StringUtils.equals("IRB", role)){
+        } else if (StringUtils.equals("IRB", role)) {
 
-			}
-		}catch(Exception ignore){
-
-		}
-		return null;
-	}
-
-	public  List<String> findContactValuesOfType(String type, List<ContactMechanism> cmList){
-		List<String> addressList = new ArrayList<String>(3);
-		for(ContactMechanism cm : cmList){
-			if(StringUtils.equals(cm.getType(), type) &&
-			   StringUtils.isNotEmpty(cm.getValue())) addressList.add(cm.getValue());
-		}//for each cm
-		return addressList;
+        }
+        return null;
 	}
 
 	public  void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs){

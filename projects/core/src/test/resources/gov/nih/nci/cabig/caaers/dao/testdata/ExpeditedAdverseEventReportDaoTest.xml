@@ -179,10 +179,35 @@
         rct_id="-30"
         />
 
+    <AE_REPORT_PEOPLE
+        id="-100"
+        report_id="-1"
+        role="R"
+        first_name="Joe"
+        last_name="DiMaggio"
+        />
+
+    <CONTACT_MECHANISMS
+        person_id="-100"
+        type="e-mail"
+        value="joltin@joe.com"
+        />
+    <CONTACT_MECHANISMS
+        person_id="-100"
+        type="phone"
+        value="212 555-1212"
+        />
+
+    <AE_REPORT_PEOPLE
+        id="-101"
+        report_id="-1"
+        role="P"
+        first_name="Horatio"
+        last_name="Sandpiper"
+        />
+    
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->
-    <REPORTERS/>
-    <PHYSICIANS/>
     <DISEASE_HISTORY/>
     <PARTICIPANT_HISTORY/>
 </dataset>

@@ -194,29 +194,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         assertChildNeverNull("reporter");
     }
 
-    public void testDefaultReporterContainsBlankContactMechanisms() throws Exception {
-        Reporter actual = report.getReporter();
-        assertEquals(3, actual.getContactMechanisms().size());
-        assertContactMechanism("email", null, actual.getContactMechanisms().get(0));
-        assertContactMechanism("fax", null, actual.getContactMechanisms().get(1));
-        assertContactMechanism("phone", null, actual.getContactMechanisms().get(2));
-    }
-
-    private void assertContactMechanism(String expectedType, String expectedValue, ContactMechanism actual) {
-        assertEquals("Wrong contact mechanism type", expectedType, actual.getType());
-        assertEquals("Wrong contact mechanism value", expectedValue, actual.getValue());
-    }
-
     public void testPhysicianNeverNull() throws Exception {
         assertChildNeverNull("physician");
-    }
-
-    public void testDefaultPhysicianContainsBlankContactMechanisms() throws Exception {
-        Physician actual = report.getPhysician();
-        assertEquals(3, actual.getContactMechanisms().size());
-        assertContactMechanism("email", null, actual.getContactMechanisms().get(0));
-        assertContactMechanism("fax", null, actual.getContactMechanisms().get(1));
-        assertContactMechanism("phone", null, actual.getContactMechanisms().get(2));
     }
 
     public void testResponseNeverNull() throws Exception {

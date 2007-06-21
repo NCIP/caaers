@@ -26,40 +26,19 @@ import java.util.List;
  * @since       1.0
  */
 public class ReportDaoTest extends DaoTestCase<ReportDao> {
-	
-	
 	ReportDao rsDao;
 	
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
+	@Override
+    protected void setUp() throws Exception {
 		super.setUp();
 		rsDao = getDao();
 	}
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		rsDao  = null;
-		super.tearDown();
-		
-	}
-
-	
-	
-	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao#domainClass()}.
-	 */
 	public void testDomainClass() {
 		log.debug("domainClass :" + rsDao.domainClass().getName());
 		assertEquals(Report.class.getName(), rsDao.domainClass().getName());
 	}
 
-	/**
-	 * Test method for {@link gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao#save(gov.nih.nci.cabig.caaers.helper.ReportDefinition)}.
-	 */
 	public void testSave() {
 		
 		Report rs = new Report();

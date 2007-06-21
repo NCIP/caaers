@@ -1,25 +1,22 @@
 <dataset>
-    <REPORTERS
+    <AE_REPORT_PEOPLE
         id="-100"
+        role="R"
         first_name="Dilbert"
         last_name="Scott"
         middle_name="m"
-        maiden_name="m"/>
+        />
 
     <CONTACT_MECHANISMS
-        id="-1"
-        type="email"
+        type="e-mail"
         value="abc@abc.com"
+        person_id="-100"
         />
-    <!-- TODO: this column doesn't exist in the database.  RMS20070422 -->
-    <!-- person_id="-100" -->
 
     <CONTACT_MECHANISMS
-        id="-2"
-        type="email"
-        value="123@abc.com"
+        type="phone"
+        value="332-042-4500"
+        person_id="-100"
         />
-    <!-- TODO: this column doesn't exist in the database.  RMS20070422 -->
-    <!-- person_id="-100" -->
 
 </dataset>

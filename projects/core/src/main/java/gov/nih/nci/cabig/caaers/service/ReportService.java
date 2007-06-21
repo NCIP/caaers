@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -19,12 +17,9 @@ import java.util.List;
  * @since       1.0
  */
 public interface ReportService {
+    List<String> findToAddresses(PlannedNotification pnf, Report rs);
 
-	public  List<String> findToAddresses(PlannedNotification pnf, Report rs);
-	public  List<ContactMechanism> fetchContactMechanism(String role, ExpeditedAdverseEventReport aeReport);
-	public  List<String> findContactValuesOfType(String type, List<ContactMechanism> cmList);
-	public  void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs);
-	public String applyRuntimeReplacements(String rawContent, Report report);
+    void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs);
 
-
+    String applyRuntimeReplacements(String rawContent, Report report);
 }

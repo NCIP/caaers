@@ -38,7 +38,6 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 	private String middleName;
     private String lastName;
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
-    private List<ContactMechanism> contactMechanims = new ArrayList<ContactMechanism>();
     private Site site;
   
 
@@ -46,7 +45,11 @@ public class ResearchStaff extends AbstractMutableDomainObject {
         getStudyPersonnels().add(studyPersonnel);        
     }
    
-	
+	/*
+	// This doesn't work (there's no 'staff_id' column in the assoc. table and there never was).
+	// Fortunately, it's also never used, so there's no problem.  Presumably it will need to be
+	// used at some point -- at that point, it should be fixed, possibly by refactoring this class
+	// to descend from Person.  RMS20070621.
 	@OneToMany
     @JoinColumn(name="staff_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN}) 
@@ -56,7 +59,8 @@ public class ResearchStaff extends AbstractMutableDomainObject {
     
 	public void setContactMechanims(List<ContactMechanism> contactMechanims) {
 		this.contactMechanims = contactMechanims;
-	} 		
+	}
+	//*/
         
 	//	 business methods	   	    
     @Transient

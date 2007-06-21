@@ -15,6 +15,9 @@ import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
@@ -151,6 +154,24 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertDayOfDate("Wrong due date for report 1", 2007, Calendar.MAY, 5, actualReport1.getDueOn());
     }
 
+    public void testGetReporter() throws Exception {
+        Reporter actual = getDao().getById(-1).getReporter();
+        assertNotNull("No reporter", actual);
+        assertEquals("Wrong reporter", -100, (int) actual.getId());
+        assertEquals("DiMaggio", actual.getLastName());
+        assertEquals("Wrong number of contact mechanisms", 2, actual.getContactMechanisms().size());
+        assertEquals("joltin@joe.com", actual.getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
+        assertEquals("212 555-1212", actual.getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+    }
+
+    public void testGetPhysician() throws Exception {
+        Physician actual = getDao().getById(-1).getPhysician();
+        assertNotNull("No physician", actual);
+        assertEquals("Wrong reporter", -101, (int) actual.getId());
+        assertEquals("Sandpiper", actual.getLastName());
+        assertEquals("Wrong number of contact mechanisms", 0, actual.getContactMechanisms().size());
+    }
+
     public void testSave() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
@@ -267,6 +288,51 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         });
     }
 
+    public void testSaveNewContactMechanisms() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getPhysician().getContactMechanisms().put("phone", "312-333-2100");
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals(1, loaded.getPhysician().getContactMechanisms().size());
+                assertEquals("312-333-2100", loaded.getPhysician().getContactMechanisms().get("phone"));
+            }
+        });
+    }
+
+    public void testDeleteContactMechanism() throws Exception {
+        {
+            ExpeditedAdverseEventReport report = getDao().getById(-1);
+            assertEquals(2, report.getReporter().getContactMechanisms().size());
+            report.getReporter().getContactMechanisms().remove("e-mail");
+            assertEquals("Not removed from memory copy", 1, report.getReporter().getContactMechanisms().size());
+            getDao().save(report);
+        }
+
+        interruptSession();
+
+        ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
+        assertEquals("Removal not persisted", 1, reloaded.getReporter().getContactMechanisms().size());
+    }
+
+    public void testUpdateContactMechanism() throws Exception {
+        {
+            ExpeditedAdverseEventReport report = getDao().getById(-1);
+            assertEquals(2, report.getReporter().getContactMechanisms().size());
+            report.getReporter().getContactMechanisms().put("e-mail", "clipper@yankee.com");
+            getDao().save(report);
+        }
+
+        interruptSession();
+
+        ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
+        assertEquals("Wrong number of mechanisms after reload", 2,
+            reloaded.getReporter().getContactMechanisms().size());
+        assertEquals("Change not persisted", "clipper@yankee.com",
+            reloaded.getReporter().getContactMechanisms().get("e-mail"));
+    }
+
     private void doSaveTest(SaveTester tester) {
         Integer savedId;
         {
@@ -294,6 +360,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));
         report.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        report.getReporter().setFirstName("Min");
+        report.getReporter().setLastName("Valid");
+        report.getPhysician().setFirstName("Min");
+        report.getPhysician().setLastName("Valid");
         return report;
     }
 

@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -32,31 +31,27 @@ import java.util.List;
  * @since       1.0
  */
 public class ReportServiceTest extends CaaersTestCase {
-	ExpeditedAdverseEventReport mockAEReport;
-	Report rs;
-	ReportDefinition rct;
-	ReportService service;
-	
-	protected void setUp() throws Exception {
+	ExpeditedAdverseEventReport aeReport;
+	Report report;
+	ReportDefinition reportDef;
+	ReportServiceImpl service;
+    private static final String REPORTER_EMAIL_ADDRESS = "visu.patlolla@semanticbits.com";
+    private static final String CONTACT_MECH_EMAIL_ADDRESS = "biju@gmail.com";
+    private static final String REPORTER_ROLE = "Reporter";
+
+    @Override
+    protected void setUp() throws Exception {
 		super.setUp();
-		service = (ReportService) getDeployedApplicationContext().getBean("reportService");
-		ContactMechanism mockContactMechanism  = registerMockFor(ContactMechanism.class);
-		expect(mockContactMechanism.getType()).andReturn("email").anyTimes();
-		expect(mockContactMechanism.getValue()).andReturn("visu.patlolla@semanticbits.com").anyTimes();
-		List<ContactMechanism> cmList = new ArrayList<ContactMechanism>();
-		cmList.add(mockContactMechanism);
-		
-		Reporter mockReporter = registerMockFor(Reporter.class);
-		expect(mockReporter.getContactMechanisms()).andReturn(cmList).anyTimes();
-		
-		mockAEReport =  registerMockFor(ExpeditedAdverseEventReport.class);
-		expect(mockAEReport.getReporter()).andReturn(mockReporter).anyTimes();
-		
-		
-		
+		service = (ReportServiceImpl) getDeployedApplicationContext().getBean("reportService");
+
+        aeReport = new ExpeditedAdverseEventReport();
+		Reporter reporter = new Reporter();
+        reporter.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, REPORTER_EMAIL_ADDRESS);
+        aeReport.setReporter(reporter);
+
 		List<Recipient> rList = new ArrayList<Recipient>();
-		rList.add(new RoleBasedRecipient("Reporter"));
-		rList.add(new ContactMechanismBasedRecipient("biju@gmail.com"));
+		rList.add(new RoleBasedRecipient(REPORTER_ROLE));
+		rList.add(new ContactMechanismBasedRecipient(CONTACT_MECH_EMAIL_ADDRESS));
 		
 		NotificationBodyContent content = new NotificationBodyContent();
 		content.setBody("This is my body".getBytes());
@@ -80,62 +75,53 @@ public class ReportServiceTest extends CaaersTestCase {
 		penf.setRecipients(rList);
 		pnfList.add(penf);
 		
-		rct = new ReportDefinition();
-		rct.setDescription("a rct description");
-		rct.setDuration(5);
-		rct.setId(333);
-		rct.setName("An RCT");
-		rct.setTimeScaleUnitType(TimeScaleUnit.DAY);
-		rct.setPlannedNotifications(pnfList);
+		reportDef = new ReportDefinition();
+		reportDef.setDescription("a rct description");
+		reportDef.setDuration(5);
+		reportDef.setId(333);
+		reportDef.setName("An RCT");
+		reportDef.setTimeScaleUnitType(TimeScaleUnit.DAY);
+		reportDef.setPlannedNotifications(pnfList);
 		
-		rs = new Report();
-		rs.setName("Report-Name");
-		rs.setCreatedOn(new Date());
-		rs.setId(9999);
-		rs.setReportDefinition(rct);
-		rs.setAeReport(mockAEReport);
-		
-		
-		replayMocks();
-	}
-
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		verifyMocks();
+		report = new Report();
+		report.setName("Report-Name");
+		report.setCreatedOn(new Date());
+		report.setId(9999);
+		report.setReportDefinition(reportDef);
+		report.setAeReport(aeReport);
 	}
 
 	public void testFindToAddresses() {
-		ReportDefinition calendarTemplate = rs.getReportDefinition();
+		ReportDefinition calendarTemplate = report.getReportDefinition();
 		PlannedNotification pnf = calendarTemplate.getPlannedNotifications().get(0);
-		List<String> addresses = service.findToAddresses(pnf, rs);
+		List<String> addresses = service.findToAddresses(pnf, report);
 		System.out.println(addresses);
-		assertTrue("Recipient should be present",addresses.contains("biju@gmail.com"));
-		assertTrue("Recipient should be present", addresses.contains("visu.patlolla@semanticbits.com"));
+		assertTrue("Recipient should be present",addresses.contains(CONTACT_MECH_EMAIL_ADDRESS));
+		assertTrue("Recipient should be present", addresses.contains(REPORTER_EMAIL_ADDRESS));
 	}
 
 	public void testFindContactValueOfType() {
-		
-		List<String> addresses = service.findContactValuesOfType("email", rs.getAeReport().getReporter().getContactMechanisms());
-		assertTrue("email should be same",  addresses.contains("visu.patlolla@semanticbits.com"));
+		String address = service.findContactMechanismValue(REPORTER_ROLE, ExpeditedReportPerson.EMAIL, aeReport);
+		assertEquals("email should be same",  REPORTER_EMAIL_ADDRESS, address);
 	}
 
 	public void testApplyCalendarTemplate() {
 		Date now = new Date();
 		Calendar cal = GregorianCalendar.getInstance();
 		Calendar caltemp = GregorianCalendar.getInstance();
-		service.applyCalendarTemplate(rct, rs);
-		assertNotNull(rs.getScheduledNotifications());
-		assertNotNull("due date should be there", rs.getDueOn());
+		service.applyCalendarTemplate(reportDef, report);
+		assertNotNull(report.getScheduledNotifications());
+		assertNotNull("due date should be there", report.getDueOn());
 		cal.setTime(now);
-		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), rct.getDuration());
-		caltemp.setTime(rs.getDueOn());
+		cal.add(reportDef.getTimeScaleUnitType().getCalendarTypeCode(), reportDef.getDuration());
+		caltemp.setTime(report.getDueOn());
 		
 		assertEquals("due date should match", 
-				caltemp.get(rct.getTimeScaleUnitType().getCalendarTypeCode()), cal.get(rct.getTimeScaleUnitType().getCalendarTypeCode()) );
+				caltemp.get(reportDef.getTimeScaleUnitType().getCalendarTypeCode()), cal.get(reportDef.getTimeScaleUnitType().getCalendarTypeCode()) );
 		
 	
-		for(PlannedNotification pnf : rct.getPlannedNotifications()){
-			for(ScheduledNotification snf : rs.getScheduledNotifications()){
+		for(PlannedNotification pnf : reportDef.getPlannedNotifications()){
+			for(ScheduledNotification snf : report.getScheduledNotifications()){
 				assertNotNull("Planned Notificaiton should be present in Scheduled Notificaiton", snf.getPlanedNotificaiton());
 				if(pnf.getId() == snf.getPlanedNotificaiton().getId()){
 					//this snf is derieved of the pnf (which is in outer context)
@@ -147,10 +133,10 @@ public class ReportServiceTest extends CaaersTestCase {
 						assertEquals("subject line should be same", penf.getSubjectLine(), senf.getSubjectLine());
 						assertNotNull("ToAddress should not be null", senf.getToAddress());
 						cal.setTime(now);
-						cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
+						cal.add(reportDef.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
 						caltemp.setTime(senf.getScheduledOn());
 						assertEquals("The scheduled on date should match",
-								caltemp.get(rct.getTimeScaleUnitType().getCalendarTypeCode()), cal.get(rct.getTimeScaleUnitType().getCalendarTypeCode()));
+								caltemp.get(reportDef.getTimeScaleUnitType().getCalendarTypeCode()), cal.get(reportDef.getTimeScaleUnitType().getCalendarTypeCode()));
 
 					}
 				}

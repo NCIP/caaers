@@ -73,7 +73,8 @@ public class AdverseEventReportSerializer {
 				xml = marshaller.toXML(aer,getMappingFile());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				throw new Exception (e.getMessage(),e);
+                // TODO: this is a pointless rethrow.  Why not just throw e?  Or don't catch it.
+                throw new Exception (e.getMessage(),e);
 			}
 
 			return xml;

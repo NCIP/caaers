@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -132,11 +133,11 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.setExpected(Boolean.FALSE);
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
-        ExpeditedAdverseEventReport newReport = new ExpeditedAdverseEventReport();
+        ExpeditedAdverseEventReport newReport = Fixtures.createSaveableExpeditedReport();
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));
         newReport.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
-        newReport.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+
         return newReport;
     }
 }

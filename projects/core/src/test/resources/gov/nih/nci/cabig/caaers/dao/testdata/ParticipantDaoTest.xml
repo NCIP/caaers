@@ -5,6 +5,7 @@
         />
     <ctc_categories/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <PARTICIPANTS
         id="-100"
         instituitional_patient_number="P001"

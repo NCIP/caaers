@@ -1,48 +1,60 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.MapKey;
 
-import javax.persistence.OneToOne;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.JoinTable;
+import javax.persistence.Column;
+import javax.persistence.AttributeOverride;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
-@MappedSuperclass
+@Entity
+@Table(name = "ae_report_people")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+    name = "role",
+    discriminatorType = DiscriminatorType.STRING
+)
+@DiscriminatorValue("ABSTRACT_BASE") // should be ignored
+@GenericGenerator(name = "id-generator", strategy = "native",
+    parameters = {
+        @Parameter(name = "sequence", value = "seq_ae_report_people_id")
+    }
+)
 public class ExpeditedReportPerson extends Person implements ExpeditedAdverseEventReportChild {
-    private List<ContactMechanism> contactMechanisms = new ArrayList<ContactMechanism>();
+    private Map<String, String> contactMechanisms = new HashMap<String, String>();
 
     private ExpeditedAdverseEventReport report;
 
-    private static String EMAIL = "email";
-    private static String FAX = "fax";
-    private static String PHONE = "phone";
+    // TODO: it may be more appropriate to locate these constants somewhere else
 
-    public static <T extends ExpeditedReportPerson> T createEmptyPerson(Class<T> klass) {
-        try {
-            T instance = klass.newInstance();
+    /** {@link #getContactMechanisms} key for the e-mail address */
+    public static final String EMAIL = "e-mail";
+    /** {@link #getContactMechanisms} key for the fax number */
+    public static final String FAX = "fax";
+    /** {@link #getContactMechanisms} key for the phone number */
+    public static final String PHONE = "phone";
 
-            List<ContactMechanism> contacts = new ArrayList<ContactMechanism>(3);
-            // XXX: this ordering makes little sense, but I'm using it now to limit
-            // the scope of the current refactoring (moved from CreateAdverseEventCommand)
-            // TODO: refactor to use a Map instead of a List since the order isn't important
-            contacts.add(new ContactMechanism(EMAIL));
-            contacts.add(new ContactMechanism(FAX));
-            contacts.add(new ContactMechanism(PHONE));
-
-            instance.setContactMechanisms(contacts);
-            
-            return instance;
-        } catch (InstantiationException e) {
-            throw new CaaersSystemException("Could not instantiate " + klass.getName(), e);
-        } catch (IllegalAccessException e) {
-            throw new CaaersSystemException("Could not instantiate " + klass.getName(), e);
-        }
-    }
+    public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS
+        = Arrays.asList(EMAIL, PHONE, FAX); 
 
     @OneToOne
     @JoinColumn(name="report_id")
@@ -54,13 +66,18 @@ public class ExpeditedReportPerson extends Person implements ExpeditedAdverseEve
         this.report = report;
     }
 
-    // this is only transient here.  Subclasses will need to override it and map it properly.
-    @Transient
-    public List<ContactMechanism> getContactMechanisms() {
+    @CollectionOfElements
+    @JoinTable(
+        name="contact_mechanisms",
+        joinColumns = @JoinColumn(name="person_id")
+    )
+    @MapKey(columns=@Column(name="type"))
+    @Column(name="value")
+    public Map<String, String> getContactMechanisms() {
         return contactMechanisms;
     }
 
-    public void setContactMechanisms(List<ContactMechanism> contactMechanisms) {
+    public void setContactMechanisms(Map<String, String> contactMechanisms) {
         this.contactMechanisms = contactMechanisms;
     }
 }

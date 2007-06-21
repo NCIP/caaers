@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.sql.Timestamp;
+
 /**
  * @author Rhett Sutphin
  */
@@ -57,5 +59,15 @@ public class Fixtures {
         agent.setAgent(new Agent());
         agent.getAgent().setName(agentName);
         return agent;
+    }
+
+    public static ExpeditedAdverseEventReport createSaveableExpeditedReport() {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+        report.setCreatedAt(new Timestamp(103));
+        report.getReporter().setFirstName("Frank");
+        report.getReporter().setLastName("Just Frank");
+        report.getPhysician().setFirstName("Frank");
+        report.getPhysician().setLastName("Just Frank");
+        return report;
     }
 }

@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.ContactMechanism;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Kulasekaran
@@ -17,6 +13,7 @@ public class ReporterDaoTest extends DaoTestCase<ReporterDao> {
         assertNotNull("Reporter not found", reporter);
         assertEquals("Wrong last name", "Scott", reporter.getLastName());
         assertEquals("Wrong first name", "Dilbert", reporter.getFirstName());
+        assertEquals(2, reporter.getContactMechanisms().size());
     }
 
     public void testSaveNewReporter() throws Exception {
@@ -25,16 +22,11 @@ public class ReporterDaoTest extends DaoTestCase<ReporterDao> {
             Reporter reporter = new Reporter();
             reporter.setFirstName("Jeff");
             reporter.setLastName("Someone");
-            ContactMechanism cm = new ContactMechanism();
-            cm.setType("email");
-            cm.setValue("abc1@abc.com");
-            List<ContactMechanism> arr = new ArrayList<ContactMechanism>();
-            arr.add(cm);
-            reporter.setContactMechanisms(arr);
+            reporter.getContactMechanisms().put("e-mail", "abc1@abc.com");
 
             getDao().save(reporter);
             savedId = reporter.getId();
-            assertNotNull("The saved repoter id", savedId);
+            assertNotNull("The saved reporter has no id", savedId);
         }
 
         interruptSession();
@@ -46,10 +38,8 @@ public class ReporterDaoTest extends DaoTestCase<ReporterDao> {
             assertEquals("Wrong lastname", "Someone", loaded.getLastName());
             assertEquals("Wrong number of contact mechanisms", 1,
                 loaded.getContactMechanisms().size());
-            assertEquals("Wrong type for cm[0]", "email",
-                loaded.getContactMechanisms().get(0).getType());
-            assertEquals("Wrong value for cm[0]", "abc1@abc.com",
-                loaded.getContactMechanisms().get(0).getValue());
+            assertEquals("Wrong contact mechanism", "abc1@abc.com",
+                loaded.getContactMechanisms().get("e-mail"));
         }
     }
 }
