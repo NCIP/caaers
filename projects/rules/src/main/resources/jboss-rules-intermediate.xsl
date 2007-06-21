@@ -7,7 +7,7 @@
 	<xsl:output method="xml" indent="yes"/> 
 	
 	
-	<xsl:key name="x" match="rules:ruleSet/rules:rule/rules:condition/rules:column" use="concat(@object-type,../../@id)"/>
+	<xsl:key name="x" match="rules:ruleSet/rules:rule/rules:condition/rules:column" use="concat(@identifier,../../@id)"/>
 	<xsl:template match="/"> 
 				<xsl:apply-templates/>
 	</xsl:template>
@@ -45,7 +45,7 @@
 					<id> <xsl:value-of select="generate-id(.)"/> -  <xsl:value-of select="generate-id(key('x', concat(@object-type,$rId)))"/>
 					</id>
 		-->
-					<xsl:if test="generate-id(.) = generate-id(key('x', concat(@object-type,$rId)))">
+					<xsl:if test="generate-id(.) = generate-id(key('x', concat(@identifier,$rId)))">
 						<column>
 							<xsl:copy-of select="@*"/>			
 						</column>

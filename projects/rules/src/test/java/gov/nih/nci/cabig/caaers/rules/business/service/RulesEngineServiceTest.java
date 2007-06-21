@@ -327,6 +327,7 @@ private void getAllRuleSetsForStudy() throws Exception{
 			
 			assertEquals(ruleId,persistedRule.getId());
 			
+			
 		}
 	
 	private void getRulesByCategory() throws Exception{
