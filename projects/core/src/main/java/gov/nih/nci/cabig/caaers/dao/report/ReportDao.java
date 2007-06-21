@@ -73,15 +73,18 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 		return getHibernateTemplate().find( hsql, new Object[]{d});
 	}
 	
+    @Transactional(readOnly=false)
 	public boolean deleteById(int id){
 		int count = getHibernateTemplate().bulkUpdate("delete Report s where s.id=?", new Object[]{id});
 		return count >= 1;
 	}
 	
+    @Transactional(readOnly=false)
 	public void delete(Report rs){
 		getHibernateTemplate().delete(rs);
 	}
 	
+    @Transactional(readOnly=false)
 	public void delete(Collection<Report> c){
 		getHibernateTemplate().deleteAll(c);
 	}
