@@ -7,10 +7,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 /**
  * @author Rhett Sutphin
  */
+@Transactional(readOnly = true)
 public class ParticipantDao extends GridIdentifiableDao<Participant> {
     // these are for getBySubnames
     private static final List<String> SUBSTRING_MATCH_PROPERTIES
@@ -26,6 +29,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
         return Participant.class;
     }
 
+    @Transactional(readOnly = false)
     public void save(Participant participant) {
         getHibernateTemplate().saveOrUpdate(participant);
     }

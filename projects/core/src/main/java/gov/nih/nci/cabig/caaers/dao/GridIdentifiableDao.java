@@ -4,11 +4,13 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
+@Transactional(readOnly=true)
 public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifiable>
     extends CaaersDao<T>
     implements gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao<T> 

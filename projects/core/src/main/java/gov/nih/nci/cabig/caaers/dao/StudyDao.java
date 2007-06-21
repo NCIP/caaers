@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rhett Sutphin
  * @author Priyatam
  */
-@Transactional
+@Transactional(readOnly=true)
 public class StudyDao extends GridIdentifiableDao<Study> 
 	implements MutableDomainObjectDao<Study>{
 	
@@ -71,15 +71,10 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return study;
     }
 
-	public void save(Study study) {
+    @Transactional(readOnly = false)
+    public void save(Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}
-	
-
-    public Study merge(Study study) {
-        return super.merge(study);
-    }
-
 
     public List<Study> getBySubnames(String[] subnames) {
         return findBySubname(subnames,

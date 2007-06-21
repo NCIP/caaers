@@ -7,11 +7,13 @@ import java.util.List;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Kulasekaran
  * 
  */
+@Transactional(readOnly=true)
 public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
 
 	private static final List<String> SUBSTRING_MATCH_PROPERTIES
@@ -29,6 +31,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
         return ResearchStaff.class;
     }
     
+    @Transactional(readOnly=false)
     public void save(ResearchStaff researchStaff) {
         getHibernateTemplate().saveOrUpdate(researchStaff);                        
     }     
