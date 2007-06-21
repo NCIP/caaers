@@ -48,7 +48,7 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getCtcTerm().getCategory().getId()</expression>		
+				<expression>getCtcTerm().getCategory().getId().intValue()</expression>		
 			</field>
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
