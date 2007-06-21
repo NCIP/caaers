@@ -49,6 +49,6 @@
     <DISEASE_HISTORY/>
     <PARTICIPANT_HISTORY/>
     <AE_REPORT_DESCRIPTIONS/>
-    <AE_REPORT_PEOPLE first_name="FA" last_name="KE" role="R" report_id="-100"/>
+    <AE_REPORT_PEOPLE id="-331" first_name="FA" last_name="KE" role="R" report_id="-100"/>
     <TREATMENTS/>
 </dataset>
