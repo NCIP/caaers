@@ -23,6 +23,9 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
+import gov.nih.nci.cabig.caaers.rules.ui.Field;
+import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
@@ -35,6 +38,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -411,9 +415,10 @@ public class RuleAjaxFacade
 	 *  
 	 * */
 	
-	public String getValidValues(int fieldIndex)
+	public String getValidValues(int domainObjectIndex, int fieldIndex)
 	{
 		HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
+		request.setAttribute("domainObjectIndex", domainObjectIndex);
 		request.setAttribute("fieldIndex", fieldIndex);
 		return getOutputFromJsp("/pages/rule/createOptions");
 	}
@@ -443,5 +448,49 @@ public class RuleAjaxFacade
 		}
 		
 		return sponsors;
+	}
+
+	/*
+	 * This method returns a list of Field names based on the Domain object. This is only used for rules UI
+	 */
+	public List<Field> getFieldNames(int domainObjectIndex)
+	{
+		ServletContext servletContext = WebContextFactory.get().getServletContext();
+		
+		RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 
+			
+		if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0 
+				&& ruleUi.getCondition().get(0).getDomainObject() != null && ruleUi.getCondition().get(0).getDomainObject().size() > 0)
+		{
+			if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex)
+			{	
+				List<Field> fields = ruleUi.getCondition().get(0).getDomainObject().get(domainObjectIndex).getField();
+				return fields;
+			}
+		}
+		
+		return null;
+	}
+	
+	/*
+	 * This method returns a Rule UI domain object based on the index
+	 */
+	public DomainObject getRulesDomainObject(int domainObjectIndex)
+	{
+		ServletContext servletContext = WebContextFactory.get().getServletContext();
+		
+		RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 
+			
+		if (ruleUi != null && ruleUi.getCondition() != null && ruleUi.getCondition().size() > 0 
+				&& ruleUi.getCondition().get(0).getDomainObject() != null && ruleUi.getCondition().get(0).getDomainObject().size() > 0)
+		{
+			if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex)
+			{	
+				DomainObject domainObject = ruleUi.getCondition().get(0).getDomainObject().get(domainObjectIndex);
+				return domainObject;
+			}
+		}
+		
+		return null;
 	}
 }

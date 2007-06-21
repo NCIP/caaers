@@ -46,23 +46,6 @@ public class DisplayRuleSetsTab extends DefaultTab
     	
     	List<RuleSet> ruleSets = createRuleCommand.getExistingRuleSets();
     	
-    	// THis method should retrieve rule sets based on the SponsorName or InstitutionName or Study Name
-    	
-//		RuleAuthoringService ruleAuthoringService = createRuleCommand.getRuleAuthoringService();
-//		
-//		if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel()))
-//		{
-//			ruleSets = ruleAuthoringService.findRuleSetsForSponsor(createRuleCommand.getSponsorName());
-//		}
-//		else if (CreateRuleCommand.STUDY_LEVEL.equals(createRuleCommand.getLevel()))
-//		{
-//			ruleSets = ruleAuthoringService.findRuleSetsForStudy(createRuleCommand.getSponsorName(), createRuleCommand.getCategoryIdentifier());
-//		}
-//		else
-//		{
-//			
-//		}
-
     	// Use RuleEngineService to retrieve all the RuleSets
     	
     	try
@@ -79,7 +62,7 @@ public class DisplayRuleSetsTab extends DefaultTab
     		}
     		else
     		{
-    			
+    			ruleSets = rulesEngineService.getAllRuleSetsForInstitution(createRuleCommand.getInstitutionName());
     		}
     	}
     	catch(Exception ex)
@@ -87,7 +70,6 @@ public class DisplayRuleSetsTab extends DefaultTab
     		logger.error("Exception while retrieving rule sets", ex);
     		// REVISIT: Create meaningful error message
     	}
-    	
     	
     	createRuleCommand.setExistingRuleSets(ruleSets);
     	
@@ -101,7 +83,4 @@ public class DisplayRuleSetsTab extends DefaultTab
 		//CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
 		
 	}
-    
-    
-    
 }

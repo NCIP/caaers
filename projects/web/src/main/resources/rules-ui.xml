@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <rule-ui xmlns="http://caaers.cabig.nci.nih.gov/rules/ui">
 	<condition>
-		<domain-object class-name="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO" display-uri="Adverse Event">
+		<domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
 			<field name="grade" display-uri="Grade">
 				<field-value>
 					<method-call>
@@ -20,6 +20,11 @@
 				<valid-value value="3" display-uri="3: Severe"/>
 				<valid-value value="4" display-uri="4: Life-threatening or disabling"/>
 				<valid-value value="5" display-uri="5: Death"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
+				<operator name="&lt;=" display-uri="Less Than Or Equal To" />
+				<expression>getGrade().getCode()</expression>
 			</field>
 			<field name="term" display-uri="Term">
 				<field-value>
@@ -29,8 +34,9 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
-				<valid-value value="FIRST" display-uri="First"/>
-				<valid-value value="SECOND" display-uri="Second"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getCtcTerm().getTerm()</expression>		
 			</field>
 			<field name="category" display-uri="Category">
 				<field-value>
@@ -38,9 +44,11 @@
 						<bean-name>aeDetails</bean-name>
 						<method-name>fetchCategory</method-name>
 					</method-call>
-					<input-type>autocompleter</input-type>
+					<input-type>select</input-type>
 				</field-value>
-				<valid-value value="FIRST" display-uri="First"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getCtcTerm().getCategory().getId()</expression>		
 			</field>
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
@@ -48,11 +56,14 @@
 						<bean-name>aeDetails</bean-name>
 						<method-name>fetchHospitalization</method-name>
 					</method-call>
-					<input-type>autocompleter</input-type>
+					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="None" display-uri="None"/>
-				<valid-value value="HOSPITALIZATION" display-uri="Hospitalization"/>
-				<valid-value value="PROLONGED_HOSPITALIZATION" display-uri="Prolonged Hospitalization"/>
+				<valid-value value="0" display-uri="None"/>
+				<valid-value value="1" display-uri="Hospitalization"/>
+				<valid-value value="2" display-uri="Prolonged Hospitalization"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getHospitalization().getCode()</expression>		
 			</field>
 			<field name="expected" display-uri="Expected">
 				<field-value>
@@ -60,49 +71,61 @@
 						<bean-name>aeDetails</bean-name>
 						<method-name>fetchTerms</method-name>
 					</method-call>
-					<input-type>autocompleter</input-type>
+					<input-type>select</input-type>
 				</field-value>
 				<valid-value value="true" display-uri="Yes"/>
 				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getExpected().booleanValue()</expression>		
 			</field>			
 						
-			<field name="attribution" display-uri="Attribution">
+			<field name="attributionSummary" display-uri="Attribution">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
 						<method-name>fetchAttribution</method-name>
 					</method-call>
-					<input-type>autocompleter</input-type>
+					<input-type>multiselect</input-type>
 				</field-value>
 				<valid-value value="UNRELATED" display-uri="Unrelated"/>
 				<valid-value value="UNLIKELY" display-uri="Unlikely"/>
 				<valid-value value="POSSIBLE" display-uri="Possible"/>
 				<valid-value value="PROBABLE" display-uri="Probable"/>
 				<valid-value value="DEFINITE" display-uri="Definite"/>																
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
 			</field>
 			
-			<field name="phase" display-uri="Phase">
+		</domain-object>
+		<domain-object identifier="study" class-name="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
+			<field name="phaseCode" display-uri="Phase">
 				<field-value>
-					<method-call>
-						<bean-name>aeDetails</bean-name>
-						<method-name>fetchTerms</method-name>
-					</method-call>
-					<input-type>autocompleter</input-type>
+					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="0" display-uri="0"/>
-				<valid-value value="I" display-uri="I"/>
-				<valid-value value="II" display-uri="II"/>
-				<valid-value value="III" display-uri="III"/>
-				<valid-value value="IV" display-uri="IV"/>																
+				<valid-value value="Phase I Trial" display-uri="Phase I Trial"/>
+				<valid-value value="Phase I/II Trial" display-uri="Phase I/II Trial"/>
+				<valid-value value="Phase II Trial" display-uri="Phase II Trial"/>
+				<valid-value value="Phase III Trial" display-uri="Phase III Trial"/>
+				<valid-value value="Phase IV Trial" display-uri="Phase IV Trial"/>
+				<valid-value value="Phase 0 Trial" display-uri="Phase 0 Trial"/>
 				<valid-value value="Pilot" display-uri="Pilot"/>
-				<valid-value value="Other" display-uri="Other"/>								
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+			</field>
+		</domain-object>
+		<domain-object identifier="studyAgent" class-name="gov.nih.nci.cabig.caaers.domain.StudyAgent" display-uri="StudyAgent">
+			<field name="investigationalNewDrugIndicator" display-uri="Investigational New Drug Indicator">
+				<field-value>
+					<input-type>select</input-type>
+				</field-value>
+				<valid-value value="true" display-uri="Yes"/>
+				<valid-value value="false" display-uri="No"/>
+				<operator name="==" display-uri="Equal To" />
+				<operator name="!=" display-uri="Not Equal To" />
+				<expression>getInvestigationalNewDrugIndicator().booleanValue()</expression>		
 			</field>
 		</domain-object>
 	</condition>
-
-	<operator name="==" display-uri="Equal To" />
-	<operator name="!=" display-uri="Not Equal To" />
-	<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
-	<operator name="&lt;=" display-uri="Less Than Or Equal To" />
 
 </rule-ui>

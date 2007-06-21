@@ -61,9 +61,6 @@
 		</div>	
             <tags:errors path="*"/>
             
-        <%--    <tags:tabFields tab="${tab}"/> --%>
-
-
 			<c:choose>
 				<%-- Check whether RuleSets exist or not --%>
 				<c:when test="${empty command.existingRuleSets}" >
@@ -87,9 +84,9 @@
             <div class="value">
                 <select id="newRuleSetName" onchange="setRuleSetName(this)">
                     <option value="Please select a RuleSet Name">Please select a RuleSet Name </option>
-                    <option value="AE Assessment RuleSet">AE Assessment RuleSet </option>
-                    <option value="SAE Reporting RuleSet">SAE Reporting RuleSet </option>
-                    <option value="Other">Other </option>
+                    <option value="AE Assesment Rules">AE Assesment Rules </option>
+                    <option value="Report Scheduling Rules">Report Scheduling Rules </option>
+                    <!-- <option value="Other">Other </option>-->
                 </select>
             </div>
         </div>
@@ -110,8 +107,12 @@
     	Event.observe("createRuleSet", "click", 
     		function(e)
     		{
-		    Effect.Appear("newRuleSetDiv");
-		    document.getElementById("radioRuleSetName1").checked;
+		    	Effect.Appear("newRuleSetDiv");
+		    	
+		    	if (document.getElementById("radioRuleSetName1") != null)
+		    	{
+		    	 	document.getElementById("radioRuleSetName1").checked=true;
+		    	}
     		}
     	
     	)

@@ -73,6 +73,7 @@
 		var sections = new Array();
 		var callback = false;
 		var newNode = 0;
+		var domainObject = null;
 		
 		function addRule() {
 				try {
@@ -84,7 +85,6 @@
 						var newRule = columnHolder.childNodes[1].cloneNode(true);
 						columnHolder.innerHTML = "";
 						$('allRules').appendChild(newRule);
-						//Effect.Appear('rule-' + (sections.length));
 						Effect.Appear(newRule.id);
 						createRuleSortable();
 					});
@@ -111,13 +111,51 @@
 							
 							if (callback == true)
 							{
+							
+								var domainObjectDropDownID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].objectType'; 
+								var domainObjectIdentifierID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].identifier'; 
+							
+			                              		$(domainObjectDropDownID).value=domainObject.className;
+						      		$(domainObjectIdentifierID).value=domainObject.identifier;
+	
+							
 								var newColumnId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].fieldConstraint[0].fieldName';
+								var expressionID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].expression';
 								//alert(newColumnId);
-								$(newColumnId).value='term';
+
+				 				$(newColumnId).options.length = 0;
+				 				$(newColumnId).options.add(new Option("Please select Field", ""));
 								
+								// Set all the options
+								domainObject.field.each(function(field)
+								 		{
+							 				$(newColumnId).options.add(new Option(field.displayUri, field.name));
+										});
+								
+								$(newColumnId).value='term';
 								
 								var selectId =  newColumnId.substring(0,newColumnId.lastIndexOf(".")); 
 								
+								// Reset the operator
+								
+								domainObject.field.each(function(field)
+										{
+											if(field.name == 'term')
+											{
+												var operatorDropDownID = selectId + '.literalRestriction[0].evaluator';
+												
+												$(operatorDropDownID).options.length = 0;
+												$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+
+												field.operator.each(function(operator)
+													{
+														$(operatorDropDownID).options.add(new Option(operator.displayUri,operator.name));														
+														
+													});
+													
+												$(expressionID).value = field.expression;	
+											}
+										});
 										
 								var validValueField = document.getElementById(selectId + '.literalRestriction[0].value');
 
@@ -127,7 +165,7 @@
 								$(spanId).innerHTML="";
 												
 								var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-								inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
+								inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
 								$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 								
 								
@@ -139,7 +177,7 @@
 												//alert(selectedChoice);
 												$(newId).value=termValueSelector(selectedChoice);
 									                },
-						                indicator: "sponsor-indicator"});
+						                indicator: "term-indicator"});
 													                
 
 							}
@@ -266,39 +304,46 @@
 	{
 		var selectedField = fieldDropDown.options[fieldDropDown.selectedIndex];
 		
-		
-		//alert(selectedField.value);
-		// alert("field name called " + selectedField.text + " has been selected: " + fieldDropDown.id);
-		
-		//Fetch the related operators
-				
-		//Fetch the values based on the type of input field.
-		/*
-		var domainObjectSelectedIndex = document.getElementById("domain-object-template").selectedIndex;
-		var methodCall = document.getElementById(domainObjectSelectedIndex+"_"+selectedField.value+"_fieldValueMethodCall").value;
-		alert(methodCall);
-		try {
-			var returnValue = eval(methodCall);
-			alert(returnValue);
-		} catch(e) {alert(e)}
-		*/
-
-		//alert(fieldDropDown.id);
-		
 		var selectId =  fieldDropDown.id.substring(0,fieldDropDown.id.lastIndexOf(".")); 
-		//alert(selectId);
 		
 		var validValueField = document.getElementById(selectId + '.literalRestriction[0].value');
 		
-		//alert(validValueField);
-		//alert(validValueField.id);
 		
-		//alert(validValueField.innerHTML);
+		// Get the index of Domain Object
+		var domainObjectDropDownID = selectId.substring(0,selectId.lastIndexOf("."))  + '.objectType';
+		var domainObjectSelectedIndex = $(domainObjectDropDownID).selectedIndex;
 		
-		//validValueField.innerHTML = html;
+		var domainObjectIdentifierID = selectId.substring(0,selectId.lastIndexOf("."))  + '.identifier';
+
+		var expressionID = selectId.substring(0,selectId.lastIndexOf("."))  + '.expression';
+
+		// Get the index of Operator
+		var operatorDropDownID = selectId + '.literalRestriction[0].evaluator';
+
+		//var domainObject = null;
 		
 		try 
 		{
+			// Get the domain object
+			
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+		                              {
+		                              		domainObject = object;
+				
+								// Reset the operators
+								$(operatorDropDownID).options.length=0;
+								$(operatorDropDownID).options.add(new Option("Please select Operator", ""));
+			
+								domainObject.field[fieldDropDown.selectedIndex-1].operator.each(function(operator)
+										{
+											$(operatorDropDownID).options.add(new Option(operator.displayUri, operator.name));
+								                })
+
+								// Reset the expression
+								$(expressionID).value=domainObject.field[fieldDropDown.selectedIndex-1].expression;
+		                              })
+		
+			
 			if (selectedField.value == 'term')
 			{
 				// Check whether category exists
@@ -338,7 +383,7 @@
 					$(spanId).innerHTML="";
 				
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
+					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
 					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 
 
@@ -350,7 +395,7 @@
 											//alert(selectedChoice);
 											$(newId).value=termValueSelector(selectedChoice);
 					                },
-					                indicator: "sponsor-indicator"});
+					                indicator: "term-indicator"});
 				}
 				else
 				{
@@ -361,7 +406,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -385,43 +430,14 @@
 					
 					// Add a new column for Term
 					
-					//callback = afterFiveSeconds();
-					
 					newNode = divNodes;
 					callback = true;
 					fetchCondition(ruleCount);
 					
-					//callback=false;
-					//var newColumnId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + divNodes + '].fieldConstraint[0].fieldName';
+					// Reset all the dropdowns for 'term'
 					
-					//setTimeout('afterFiveSeconds(newColumnId)',5000)
+
 					
- 					
-					//$(newColumnId).value='term';
-
-					/*
-					var newId = validValueField.id; 
-					var spanId = newId + '.span';
-					//Element.remove(validValueField);
-					$(spanId).innerHTML="";
-				
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
-					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
-
-
-					new Autocompleter.DWR(newId, newId + '-choices',
-					                termPopulator, {
-					                valueSelector: termValueSelector,
-					                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-					
-											//alert(selectedChoice);
-											$(newId).value=termValueSelector(selectedChoice);
-					                },
-					                indicator: "sponsor-indicator"});
-					                
-					*/                
-				
 				}
 	
 			}
@@ -432,7 +448,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3">';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -457,8 +473,8 @@
 			else
 			{
 				
-				authorRule.getValidValues(fieldDropDown.selectedIndex, 
-			                     		function (html) 
+				authorRule.getValidValues(domainObjectSelectedIndex-1, fieldDropDown.selectedIndex-1, 
+				                     		function (html) 
 			                   			{
 			                   				//alert(html);
 					                   		//validValueField.innerHTML = html;
@@ -466,7 +482,24 @@
 									var newId = validValueField.id; 
 									var spanId = newId + '.span';
 
-									var selectArea = '<select id="' + newId + '" name="' + newId +'">';
+									var isMultiSelect=false;
+									
+									if (domainObject.field[fieldDropDown.selectedIndex-1].fieldValue.inputType == 'multiselect')
+									{
+										isMultiSelect=true;
+									}
+									
+									var selectArea = '';
+									
+									if (isMultiSelect)
+									{
+										selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3">';
+									}
+									else
+									{
+										selectArea = '<select id="' + newId + '" name="' + newId +'" >';
+									}
+									
 									selectArea += html + '</select>';
 						
 
@@ -485,11 +518,68 @@
 
 	}
 
-	function afterFiveSeconds()
+	function handleDomainObjectonChange(domainObjectDropDown, ruleCount)
 	{
-		alert('Hello after 5 seconds: ' + column);
-	}
+		if (domainObjectDropDown.selectedIndex == 0)
+		{
+			// Set all the fields to null
+			return;
+		}
+		
+		var domainObjectDropDownID = domainObjectDropDown.id;
+		
+		var prefixID = domainObjectDropDownID.substring(0,domainObjectDropDownID.lastIndexOf("."));
+		
+		var domainObjectIdentifierID = prefixID + '.identifier'; 
+		
+		var expressionID = prefixID + '.expression';
+		
+		var fieldDropDownID = prefixID + '.fieldConstraint[0].fieldName';
+		
+		var operatorDropDownID = prefixID + '.fieldConstraint[0].literalRestriction[0].evaluator';
 
+		var valueDropDownID = prefixID + '.fieldConstraint[0].literalRestriction[0].value';
+		
+		var valueDropDownSpanID = prefixID + '.fieldConstraint[0].literalRestriction[0].value.span';
+		
+		authorRule.getRulesDomainObject(domainObjectDropDown.selectedIndex - 1, function(domainObject)
+		                              {
+							//alert(domainObject.identifier);		                              
+							
+							// Set the identifier Value
+							$(domainObjectIdentifierID).value = domainObject.identifier;
+						
+							// Reset expression
+							$(expressionID).value='';
+							
+							// Set the fields
+							$(fieldDropDownID).options.length = 0;
+							$(fieldDropDownID).options.add(new Option("Please select Field",""));
+							
+							domainObject.field.each(function(field){
+								$(fieldDropDownID).options.add(new Option(field.displayUri,field.name));
+							})
+							
+							// Reset Operator 
+							$(operatorDropDownID).options.length = 0;
+							$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+							
+							
+							// Reset the value selection span
+
+							var selectArea = '<select id="' + valueDropDownID + '" name="' + valueDropDownID +'">';
+							
+									selectArea += '<option value="">Please select Value</option></select>';
+
+							$(valueDropDownSpanID).innerHTML = selectArea;
+							
+							
+							
+		                              });
+		
+		
+	}
+	
 </script>
 
 </head>
@@ -508,16 +598,6 @@
     
             <%--<tags:tabFields tab="${tab}"/>--%>
 
-						<%--
-						<div id="createNewss">
-							<!-- <h3 style="position:relative; float:left">Create New Rule</h3> -->
-							<!-- <input type="text" id="newRuleName" size="50"> -->
-							<a href="javascript:addRule();" title="Click to Add a new Rule">
-								<img src="/caaers/images/rule/new_fact.gif" style="" align="absmiddle"/>
-							</a>
-							
-						</div>
-        				--%>
         				
         				<div class="row">
 							<div class="label"><label for="ruleSetName">RuleSet Name</label></div>
@@ -571,30 +651,62 @@
 														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 														<span>
-														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType">
+														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
+														        <form:option value="">Please select Domain Object</form:option>
 															<form:options items="${ruleUi.condition[0].domainObject}" itemLabel="displayUri" itemValue="className" />
 														</form:select>
+														<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier"/>
 														</span>
 
 														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
-															<form:options items="${ruleUi.condition[0].domainObject[0].field}" itemLabel="displayUri" itemValue="name" />
+														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" 
+														           onchange="handleFieldOnchange(this, ${ruleCount})">
+															<form:option value="">Please select Field</form:option>
+															
+															<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedField">
+															     <c:set var="selectedIndex" value="${selectedField.index}"/>
+																<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">	
+ 																	<form:options items="${ruleUi.condition[0].domainObject[selectedIndex].field}" itemLabel="displayUri" itemValue="name" />
+																</c:if>
+															</c:forEach>
+															
 														</form:select>
+														
+
+														<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression"/>
 
 														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator">
-															<form:options items="${ruleUi.operator}" itemLabel="displayUri" itemValue="name" />
+														        <form:option value="">Please select operator</form:option>
+														        
+															
+															
+															<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedDomainObject">
+																<c:set var="domainObjectIndex" value="${selectedDomainObject.index}"/>
+																
+																<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+												        		      			ruleUi.condition[0].domainObject[domainObjectIndex].className}">
+ 																	<c:forEach items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}" varStatus="selectedField">
+ 																		<c:set var="fieldIndex" value="${selectedField.index}"/>
+ 																		
+ 																		
+ 																		<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
+												        		      					ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
+												        						<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}" itemLabel="displayUri" itemValue="name" />      					
+												        		      			</c:if>		
+ 																	</c:forEach>
+																</c:if>
+															</c:forEach>
+
 														</form:select>
 
 														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
 
 														<span id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
-															<%--
-															<form:input path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"/>
-															--%>
 															
 															<c:choose>
 																<c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
@@ -608,7 +720,7 @@
 																		$(spanId).innerHTML="";
 																					
 																		var inputArea = '<input type="text" id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" size="60"/>';
-																		inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="sponsor-indicator"/>';
+																		inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
 																		$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 																	
 																	
@@ -620,7 +732,7 @@
 																				//alert(selectedChoice);
 																				$(newId).value=termValueSelector(selectedChoice);
 																		                },
-																		               indicator: "sponsor-indicator"});
+																		               indicator: "term-indicator"});
 
 																	
 																	</script>
@@ -633,7 +745,7 @@
 																			var spanId = newId + '.span';
 																	
 																			var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
-																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '">';
+																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" multiple="multiple" size="3">';
 																			selectArea += '</select>';
 																					
 																			//Element.remove(validValueField);
@@ -664,22 +776,48 @@
 																	</script>
 																</c:when>
 																<c:otherwise>
-																	<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value">
+																	<c:choose>
+																		<c:when test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
+																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
+																			<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="false">
+																				<form:option value="">Please select value</form:option>
+																			</form:select>
+
+																		</c:when>
+																		<c:otherwise>
+																		<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedDomainObject">
+																			<c:set var="domainObjectIndex" value="${selectedDomainObject.index}"/>
+																
+																			<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+												        		      						ruleUi.condition[0].domainObject[domainObjectIndex].className}">
+ 																				<c:forEach items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}" varStatus="selectedField">
+ 																					<c:set var="fieldIndex" value="${selectedField.index}"/>
+ 																		
+ 																		
+ 																					<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
+												        		      							ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
+												        		      							
+												        		      							<c:choose>
+												        		      								<c:when test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
+																								<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="multiple"  size="3">
+												        												<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}" itemLabel="displayUri" itemValue="value" />      					
+												        											</form:select>
+												        										</c:when>
+												        										<c:otherwise>
+												        											<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="false">
+																									<form:option value="">Please select value</form:option>
+																									<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}" itemLabel="displayUri" itemValue="value" />      					
+																								</form:select>
+												        										</c:otherwise>
+												        									</c:choose>
+												        											
+												        		      						</c:if>		
+ 																				</c:forEach>
+																			</c:if>
+																		</c:forEach>
+																		</c:otherwise>
+																	</c:choose>	
 																	
-																		<c:choose>
-																			<c:when test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}">
-																				<form:options items="${ruleUi.condition[0].domainObject[0].field[0].validValue}"  itemLabel="displayUri" itemValue="value"/>
-																			</c:when>
-																			<c:otherwise>
-																				<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="selectedField">
-																					<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
-																	        		      			ruleUi.condition[0].domainObject[0].field[selectedField.index].name}">															
-																						<form:options items="${ruleUi.condition[0].domainObject[0].field[selectedField.index].validValue}"  itemLabel="displayUri" itemValue="value"/>
-																					</c:if>
-																				</c:forEach>
-																			</c:otherwise>
-																		</c:choose>
-																	</form:select>
 																</c:otherwise>		
 															</c:choose>
 														</span>
@@ -705,13 +843,13 @@
 												<div id="action-template"  style="margin-left:200px;">
 													<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 													<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
-														<option value=""/>Please Select </option>
+														<option value=""/>Please Select Action</option>
 														<c:choose>
-															<c:when test='${command.ruleSetName == "AE Assessment RuleSet"}'>
+															<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
 																<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>														
 																<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>														
 															</c:when>
-															<c:when test='${command.ruleSetName == "SAE Reporting RuleSet"}'>
+															<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
 																<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
 																<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
 															</c:when>
@@ -726,13 +864,6 @@
 														<form:option value="${notification.id}">${notification.name}</form:option>
 														</c:forEach>
 													</form:select>
-													<a href="javascript:addAction(${ruleCount})">
-														<img id="add-action-image" onclick="addAction(${ruleCount})" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand"/>
-													</a>
-													
-													<a href="javascript:addAction(${ruleCount})">
-														<img id="remove-action-image" onclick="deleteAction(${ruleCount})" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand"/>											
-													</a>
 												</div>
 												<c:if test="${ruleCount} == 0" >
 												<br/>
@@ -745,7 +876,6 @@
 
 						</div> <!-- closing allRules -->
 
-    <%--        </form:form>--%>
 </jsp:attribute>
 </tags:tabForm> 
 		</chrome:division>

@@ -20,9 +20,6 @@
 
 		<div style="margin-left:50px;">
 			<label class="label" for="ruleSet.rule[${ruleCount+1}].metaData.name">Name</label>
-			<%--
-			<form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px"/>
-			--%>
 			<input id="ruleSet.rule[${ruleCount}].metaData.name" name="ruleSet.rule[${ruleCount}].metaData.name" style="width: 200px;" value="" type="text">
 		</div>
 		<br/>
@@ -43,75 +40,64 @@
 					</c:choose>													
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType">
-						<form:options items="${ruleUi.condition[0].domainObject}" itemLabel="displayUri" itemValue="className" />
-					</form:select>
-					--%>
 
-					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType">
+					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
+					        <option value="">Please select Domain Object</option>
+					        
 						<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[optionStatus.index].className}">
 							${ruleUi.condition[0].domainObject[optionStatus.index].displayUri}
 							</option>
 						</c:forEach>
+						
 					</select>
-
+					<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].identifier" value="${ruleUi.condition[0].domainObject[0].identifier}"/>
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
-						<form:options items="${ruleUi.condition[0].domainObject[0].field}" itemLabel="displayUri" itemValue="name" />
-					</form:select>
-					--%>
 
 					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].fieldName" onchange="handleFieldOnchange(this, ${ruleCount})">
+						<option value="">Please select Field</option>
+						<%--
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[0].field[optionStatus.index].name}">
 							${ruleUi.condition[0].domainObject[0].field[optionStatus.index].displayUri}
 							</option>
 						</c:forEach>
+						--%>
 					</select>
-
+					<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].expression" name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].expression" value="${ruleUi.condition[0].domainObject[0].field[0].expression}"/>
 
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-
-					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].evaluator">
-						<form:options items="${ruleUi.operator}" itemLabel="displayUri" itemValue="name" />
-					</form:select>
-					--%>
 
 					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].evaluator" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].evaluator">
-						<c:forEach items="${ruleUi.operator}" varStatus="optionStatus">
-							<option value="${ruleUi.operator[optionStatus.index].name}">
-							${ruleUi.operator[optionStatus.index].displayUri}
+						<option value="">Please select operator</option>
+						<%--
+						<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].operator}" varStatus="optionStatus">
+							<option value="${ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].name}">
+							${ruleUi.condition[0].domainObject[0].field[0].operator[optionStatus.index].displayUri}
 							</option>
 						</c:forEach>
+						--%>
 					</select>
 
 
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-					<%--
-					<form:input path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value"/>					
-
-					<form:select id="inputField" path="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
-						<form:options items="${ruleUi.condition[0].domainObject[0].field[0].validValue}"  itemLabel="displayUri" itemValue="value"/>
-					</form:select>
-					--%>
 
 				<span id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value.span">
 				
 					<select id="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value" 
 						name="ruleSet.rule[${ruleCount}].condition.column[${conditionStatus.index}].fieldConstraint[0].literalRestriction[0].value">
+						<option value="">Please select Value</option>	
+						<%--
 						<c:forEach items="${ruleUi.condition[0].domainObject[0].field[0].validValue}" varStatus="optionStatus">
 							<option value="${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].value}">
 							${ruleUi.condition[0].domainObject[0].field[0].validValue[optionStatus.index].displayUri}
 							</option>
 						</c:forEach>
+						--%>
 					</select>
 				</span>
 
@@ -134,23 +120,14 @@
 				<br/>
 				<div id="action-template"  style="margin-left:200px;">
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-					<%--
-					<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
-						<option value=""/>Please Select-- </option>
-						<form:option value="1">Pending AE Report 5 day Notification</form:option>
-						<form:option value="2">Pending AE Report 10 day Notification</form:option>
-						<form:option value="3">Send Email to Site IRB</form:option>
-						<form:option value="4">Send Email to Study Research Nurse</form:option>
-					</form:select>
-					--%>
 					<select id="ruleSet.rule[${ruleCount}].action.actionId" name="ruleSet.rule[${ruleCount}].action.actionId">
-						<option value=""/>Please Select-- </option>
+						<option value=""/>Please Select Action</option>
 						<c:choose>
-							<c:when test='${command.ruleSetName == "AE Assessment RuleSet"}'>
+							<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
 								<option value="ROUTINE_AE">Assess as Routine AE</option>														
 								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
 							</c:when>
-							<c:when test='${command.ruleSetName == "SAE Reporting RuleSet"}'>
+							<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
 								<option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</option>
 								<option value="10DAY_CALENDAR_REPORT">10 Calendar Days</option>
 							</c:when>
@@ -162,13 +139,14 @@
 							</c:otherwise>
 						</c:choose>	
 					</select>
-					
+					<%--					
 					<a href="javascript:addAction(${ruleCount})">
 						<img id="add-action-image" onclick="addAction(${ruleCount})" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand"/>
 					</a>
 					<a href="javascript:addAction(${ruleCount})">
 						<img id="remove-action-image" onclick="deleteAction(${ruleCount})" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand"/>											
 					</a>
+					--%>
 				</div>
 			</div>
 		</div>

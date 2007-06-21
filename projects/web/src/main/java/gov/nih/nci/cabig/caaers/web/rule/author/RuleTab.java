@@ -41,26 +41,19 @@ public class RuleTab extends DefaultTab
     	
     	// Return if the rules are already retrieved
     	if (ruleSet != null && ruleSet.getDescription() != null && 
-    			ruleSet.getDescription().equals(createRuleCommand.getRuleSetName()))
+    			ruleSet.getDescription().equals(createRuleCommand.getRuleSetName()) && !createRuleCommand.isDataChanged())
     	{
     		return super.referenceData(command);
     	}
+    	createRuleCommand.setDataChanged(false);
     	
     	// Retrieve RuleSet based on the one choosen by the user
 			try 
 			{
-				//RuleAuthoringService ruleAuthoringService = createRuleCommand.getRuleAuthoringService();
 				RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
 				
 				if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel()))
 				{
-					// Load the rules based on the package name. If package is found, then load rules from it. Otherwise get the Sponsor level package
-					//String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
-					
-					// Check whether this package exists
-//					if (ruleAuthoringService.containsRuleSet(packageName))
-//					{	
-//						ruleSet = ruleAuthoringService.getRuleSet(packageName);
 
 						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
 						
@@ -97,7 +90,7 @@ public class RuleTab extends DefaultTab
 					
 					
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
-					//String sponsorPackageName = createRuleCommand.constructPackageName(CreateRuleCommand.SPONSOR_LEVEL);
+
 					ruleSet = rulesEngineService.getRuleSetForStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
 
 					boolean areSponsorRules = false;
@@ -108,10 +101,6 @@ public class RuleTab extends DefaultTab
 						areSponsorRules = true;
 					}
 					
-					// Load the sponsor level package
-//					if (ruleAuthoringService.containsRuleSet(sponsorPackageName))
-//					{	
-//						ruleSet = ruleAuthoringService.getRuleSet(sponsorPackageName);
 
 						if (ruleSet != null && ruleSet.getRule().size() > 0)
 						{	
@@ -152,8 +141,6 @@ public class RuleTab extends DefaultTab
 
 							}
 						}
-//					}
-					 
 				}
 				
 				if (ruleSet == null)
@@ -168,52 +155,6 @@ public class RuleTab extends DefaultTab
 				logger.error("Exception while retrieving the RuleSet", e);
 			}
     	
-    	// This is commented as we do not need notifications while authoring the rules
-    	//Map refdata = new HashMap();
-    	//refdata.put("notifications", createRuleCommand.getNotificationDao().getAll());
-        
     	return super.referenceData(command);
     }
-    
-    /*
-     * This method construts the category path based on the user selections. It needs Sponsor name, Institution Name or Study Name along with RuleSet Name
-     */
-    private String getCategoryPath(CreateRuleCommand command) 
-    {
-/*		String categoryPath = null;
-		if (CreateRuleCommand.STUDY_LEVEL.equals(command.getLevel())) {
-			String shortTitle = command.getCategoryIdentifier();
-			Study template = new Study();
-			template.setShortTitle(shortTitle);
-			Study study = CollectionUtils.firstElement(command.getStudyDao()
-					.searchByExample(template, false));
-			categoryPath = study.getPrimarySponsorCode() + "/"
-					+ study.getStudySites().get(0).getSite().getName() + "/"
-					+ study.getShortTitle();
-		}
-		return categoryPath;
-*/	
-    	final String SPONSOR_BASE_PATH = "/Sponsor";
-    	final String INSTITUTION_BASE_PATH = "/Institution";
-    	final String STUDY_BASE_PATH = "/Study";
-    	
-    	String categoryPath = null;
-    	
-    	if (CreateRuleCommand.SPONSOR_LEVEL.equalsIgnoreCase(command.getLevel()))
-    	{
-    		categoryPath = SPONSOR_BASE_PATH + "/" + command.getSponsorName() + "/" + command.getRuleSetName(); 
-    	}
-    	else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equalsIgnoreCase(command.getLevel()))
-    	{
-    		categoryPath = INSTITUTION_BASE_PATH + "/" + command.getInstitutionName() + "/" + command.getRuleSetName();
-    	}
-    	else
-    	{
-    		categoryPath = STUDY_BASE_PATH + "/" + command.getSponsorName() + "/" + command.getCategoryIdentifier() + "/" + command.getRuleSetName();
-    	}
-    	
-    	return categoryPath;
-    }
-
-
 }
