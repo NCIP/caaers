@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /*
  * @author kulasekaran
  * 
  */
+@Transactional(readOnly=true)
 public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 	
 	private static final List<String> SUBSTRING_MATCH_PROPERTIES

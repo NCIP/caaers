@@ -30,10 +30,6 @@ public class AgentDao extends GridIdentifiableDao<Agent> {
         return getHibernateTemplate().find("from Agent");
     }    
     
-    public void save(Agent agent) {
-        getHibernateTemplate().saveOrUpdate(agent);
-    }
-    
     public List<Agent> getBySubnames(String[] subnames) {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);

@@ -7,9 +7,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Rhett Sutphin
  */
+@Transactional(readOnly=true)
 public class CtcTermDao extends CaaersDao<CtcTerm> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();

@@ -20,7 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
  * @version     %I%, %G%
  * @since       1.0
  */
-@Transactional
+@Transactional(readOnly=true)
 public class ReportDao extends GridIdentifiableDao<Report>{
 
 	/* (non-Javadoc)
@@ -30,7 +30,8 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 	public Class<Report> domainClass() {
 		return Report.class;
 	}
-	
+
+    @Transactional(readOnly=false)
 	public void save(Report rs){
 		getHibernateTemplate().saveOrUpdate(rs);
 	}

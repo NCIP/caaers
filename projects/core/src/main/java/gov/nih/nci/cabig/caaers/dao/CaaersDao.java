@@ -12,6 +12,7 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
+@Transactional(readOnly=true)
 public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainObjectDao<T> {
     /**
      * A variation of {@link #findBySubname} that does not allow for extra conditions
@@ -183,7 +185,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * from the sesison.
      * @param o
      */
-    public void evict(DomainObject o){
+    public void evict(T o){
     	getHibernateTemplate().evict(o);
     }
     

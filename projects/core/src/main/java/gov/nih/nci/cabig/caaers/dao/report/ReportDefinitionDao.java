@@ -23,7 +23,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
  * @version     %I%, %G%
  * @since       1.0
  */
-@Transactional
+@Transactional(readOnly=true)
 public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 
 	/* (non-Javadoc)
@@ -33,7 +33,8 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 	public Class<ReportDefinition> domainClass() {
 		return ReportDefinition.class;
 	}
-	
+
+    @Transactional(readOnly=false)
 	public void save(ReportDefinition rpDef){
 		getHibernateTemplate().saveOrUpdate(rpDef);
 	}

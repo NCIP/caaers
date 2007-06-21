@@ -4,7 +4,9 @@ import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class StudyServiceImpl implements StudyService {
 	
 	StudyDao studyDao;

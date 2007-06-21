@@ -7,22 +7,15 @@ import java.util.List;
 
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
  * @author Padmaja Vedula
  */
+@Transactional(readOnly=true)
 public class StudySiteDao extends CaaersDao<StudySite> {
     public Class<StudySite> domainClass() {
         return StudySite.class;
     }
-
-    public void save(StudySite studySite) {
-        getHibernateTemplate().saveOrUpdate(studySite);
-    }
-    
-    public List<StudySite> getAll() {
-        return getHibernateTemplate().find("from StudySite");
-    }
-    
 }

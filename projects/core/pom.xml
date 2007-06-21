@@ -255,6 +255,11 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <excludes>
+                    <!-- This log4j config is only for local testing.
+                         Keeping it in the jar causes issues with live reloading in tomcat. -->
+                    <exclude>log4j.xml</exclude>
+                </excludes>
                 <filtering>true</filtering>
             </resource>
         </resources>

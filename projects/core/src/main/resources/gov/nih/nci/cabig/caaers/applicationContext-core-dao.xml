@@ -169,7 +169,6 @@
 	<bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
 	<bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
-	<bean id="physicianDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PhysicianDao"/>
 	<bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
 	<bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
 	<bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>

@@ -14,24 +14,15 @@ import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
  * @version     %I%, %G%
  * @since       1.0
  */
-@Transactional
+@Transactional(readOnly=true)
 public class ScheduledNotificationDao extends GridIdentifiableDao<ScheduledNotification>{
-
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.dao.CaaersDao#domainClass()
-	 */
 	@Override
 	public Class<ScheduledNotification> domainClass() {
 		return ScheduledNotification.class;
 	}
-	
+
+    @Transactional(readOnly=false)
 	public void save(ScheduledNotification rc){
 		getHibernateTemplate().saveOrUpdate(rc);
 	}
-	
-	public Session getHibernateSession(){
-		return super.getSession();
-	}
-	
-	
 }

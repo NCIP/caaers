@@ -6,12 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Rhett Sutphin
  */
-@Transactional
+@Transactional(readOnly=true)
 public class AdverseEventDao extends CaaersDao<AdverseEvent> {
     public Class<AdverseEvent> domainClass() {
         return AdverseEvent.class;
     }
 
+    @Transactional(readOnly=false)
     public void save(AdverseEvent event) {
         getHibernateTemplate().saveOrUpdate(event);
     }

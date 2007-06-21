@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Rhett Sutphin
  */
-@Transactional
+@Transactional(readOnly=true)
 public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport>
     implements MutableDomainObjectDao<ExpeditedAdverseEventReport>
 {
@@ -16,6 +16,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
         return ExpeditedAdverseEventReport.class;
     }
 
+    @Transactional(readOnly=false)
     public void save(ExpeditedAdverseEventReport report) {
         getHibernateTemplate().saveOrUpdate(report);
         for (AdverseEvent ae : report.getAdverseEvents()) {

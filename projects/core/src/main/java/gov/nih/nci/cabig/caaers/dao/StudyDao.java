@@ -71,7 +71,7 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return study;
     }
 
-    @Transactional(readOnly = false)
+    @Transactional(readOnly=false)
     public void save(Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}

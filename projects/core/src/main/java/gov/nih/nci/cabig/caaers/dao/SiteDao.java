@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
  * @author Padmaja Vedula
  * @author Rhett Sutphin
  */
+@Transactional(readOnly=true)
 public class SiteDao extends GridIdentifiableDao<Site> {
     public Class<Site> domainClass() {
         return Site.class;
@@ -32,10 +34,6 @@ public class SiteDao extends GridIdentifiableDao<Site> {
     public List<Site> getAll() {
         return getHibernateTemplate().find("from Site");
     }    
-    
-    public void save(Site site) {
-        getHibernateTemplate().saveOrUpdate(site);
-    }
     
     public Site getByName(String name) {
         List<Site> results = getHibernateTemplate().find("from Site where name= ?", name);

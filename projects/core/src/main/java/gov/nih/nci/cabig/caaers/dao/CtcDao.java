@@ -4,9 +4,12 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * @author Rhett Sutphin
  */
+@Transactional(readOnly=true)
 public class CtcDao extends CaaersDao<Ctc> {
     public Class<Ctc> domainClass() {
         return Ctc.class;
