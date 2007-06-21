@@ -69,16 +69,7 @@ public class ReportDaoStub extends ReportDao {
 	public Report getDummyReportSchedule(final int reportId){
 
 		ReportDefinition rct = null;
-		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport(){
-			int callCount = 0;
-			public ReportStatus getStatus(){
-				callCount++;
-				if(reportId == -885 && callCount > 1)
-					return ReportStatus.COMPLETED;
-				return super.getStatus();
-			}
-		};
-		aeReport.setStatus(ReportStatus.PENDING);
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 		aeReport.setId(reportId);
 
 		Report rs = null;
@@ -108,7 +99,16 @@ public class ReportDaoStub extends ReportDao {
 		rct.setPlannedNotifications(pnfList);
 
 
-		rs = new Report();
+		rs = new Report(){
+			int callCount = 0;
+			public ReportStatus getStatus(){
+				callCount++;
+				if(reportId == -885 && callCount > 1)
+					return ReportStatus.COMPLETED;
+				return super.getStatus();
+			}
+		};
+		rs.setStatus(ReportStatus.PENDING);
 		rs.setName("24Hour5Day("+ reportId+")");
 		rs.setCreatedOn(new Date());
 		rs.setId(reportId);

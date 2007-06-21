@@ -54,7 +54,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private List<Report> reports;
 
-    private ReportStatus status;
 
     // TODO
     // private List<MedicalDevice> medicalDevices;
@@ -66,7 +65,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(AdverseEventPriorTherapy.class);
-        status = ReportStatus.PENDING;
     }
 
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
@@ -389,18 +387,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         report.setAeReport(this);
     }
 
-    @Column(name = "status_code")
-    @Type(type = "reportStatus")
-    public ReportStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(ReportStatus status) {
-        this.status = status;
-    }
+  
 
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -408,5 +395,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+    
+    @Deprecated
+    @Transient
+    public ReportStatus getStatus(){
+    	//TODO: to be removed after compile/runtime 
+    	//dependency is resolved, by respective developer
+    	
+    	//assert false : "Update your code";
+    	return ReportStatus.PENDING;
+    }
+    @Deprecated
+    public void setStatus(ReportStatus status){
+    	//TODO: to be removed after compile/runtime 
+    	//dependency is resolved, by respective developer
+    	
+    	//assert false : "Update your code";
     }
 }

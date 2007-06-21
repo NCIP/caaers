@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 /**
  * A report sending schedule for an adverse event. 
@@ -56,6 +58,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable{
 	
 	@Column(name="SUBMITTED_ON")
 	private Date submittedOn;
+	
+	private ReportStatus status = ReportStatus.PENDING;
 	
 	public Date getCreatedOn() {
 		return createdOn;
@@ -140,7 +144,22 @@ public class Report extends AbstractMutableDomainObject implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	  /**
+     * @return the status
+     */
+	@Column(name="status_code")
+	@Type(type="reportStatus")
+    public ReportStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(ReportStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
     	StringBuilder sb = new StringBuilder();

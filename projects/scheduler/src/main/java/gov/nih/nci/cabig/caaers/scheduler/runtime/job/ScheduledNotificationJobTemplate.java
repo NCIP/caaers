@@ -134,13 +134,12 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	  }
 
 	/**
-	 * This method will return true, if the status of the AdverseEventReport is still pending. 
+	 * This method will return true, if the status of the Report is still pending. 
 	 * @return true - when stautus is {@link Report}.PENDING
 	 * @see Report
-	 * @see ExpeditedAdverseEventReport
      */
 	public boolean verifyAeReportStatus() {
-		 return report.getAeReport().getStatus().equals(ReportStatus.PENDING);
+		 return report.getStatus().equals(ReportStatus.PENDING);
 	}
 
 	/**

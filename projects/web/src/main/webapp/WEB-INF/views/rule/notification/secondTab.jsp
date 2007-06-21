@@ -50,6 +50,7 @@
 		}
 		//removes a recipient
 		function removeRecipient(aDiv){
+			var frm = $('command');
 			aDiv.parentNode.removeChild(aDiv);
 		}
 		
@@ -264,8 +265,6 @@
   	 </tr>
 	</table>
        		
- 
-	
 </body>
 
 </html>

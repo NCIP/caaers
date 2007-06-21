@@ -119,7 +119,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		ExpeditedAdverseEventReportDao aeDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean("expeditedAdverseEventReportDao");
 		ExpeditedAdverseEventReport aeReport = aeDao.getById(-1);
 		aeReport.addReport(rs);
-		aeReport.setStatus(ReportStatus.PENDING);
+		rs.setStatus(ReportStatus.PENDING);
 		rs.setAeReport(aeReport);
 		
 		rsDao.getHibernateSession().beginTransaction();
@@ -142,7 +142,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		Report rs3 = aeReport.getReports().get(0);
 		assertNotNull(rs3);
 		assertEquals("Report obtained from AEReport is not correct",rs2.getName(), rs3.getName());
-		assertEquals(aeReport.getStatus(), ReportStatus.PENDING);
+		assertEquals(rs.getStatus(), ReportStatus.PENDING);
 		
 	}
 	public void testDeleteByID(){
