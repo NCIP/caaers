@@ -29,11 +29,12 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
+import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 public class CaAERSJBossXSLTRuleAdapter implements RuleAdapter{
 
 public Object adapt(RuleSet ruleSet) {
-		
+		 
 		/**
 		    * Add adverseEventEvaluationResult here and remove it
 		    * from everywhere else
@@ -62,8 +63,23 @@ public Object adapt(RuleSet ruleSet) {
 			System.out.println(s);
 		}
 		
-		String xml = XMLUtil.marshal(ruleSet);
-		System.out.println("Marshalled:"+xml);
+		String xml1 = XMLUtil.marshal(ruleSet);
+		System.out.println("Marshalled:" + xml1);
+
+		XsltTransformer xsltTransformer = new XsltTransformer();
+		
+		String xml = ""; 
+			
+		try
+		{
+			xml = xsltTransformer.toXml(xml1, "jboss-rules-intermediate.xsl");
+		} 
+		catch (Exception e)
+		{
+			System.out.println("Exception while transforming to New Scheme: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 		System.setProperty("javax.xml.transform.TransformerFactory",

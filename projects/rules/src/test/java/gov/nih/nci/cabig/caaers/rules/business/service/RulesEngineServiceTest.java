@@ -1,21 +1,25 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
+import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
+import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
-import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
-import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
-import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
-import junit.framework.TestCase;
 
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.TestCase;
 
 public class RulesEngineServiceTest extends TestCase{
 	
@@ -148,21 +152,21 @@ public class RulesEngineServiceTest extends TestCase{
 	 *  
 	 */
 	
-	private void saveRulesForSponsor() throws Exception{
+	public void saveRulesForSponsor() throws Exception{
 		RuleSet ruleSet = new RuleSet();
 		ruleSet.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
 		
 		
 		List<Rule> rules = new ArrayList<Rule>();
 		
-		rules.add(makeRule(1));
-		rules.add(makeRule(2));
 		rules.add(makeRule(3));
+		//rules.add(makeRule(2));
+		//rules.add(makeRule(3));
 		
 		ruleSet.setRule(rules);
 		rulesEngineService.saveRulesForSponsor(ruleSet,"National Cancer Institute");
 		
-		
+		rulesEngineService.deployRuleSet(ruleSet);
 		
 	}
 	
@@ -357,13 +361,67 @@ private void getAllRuleSetsForStudy() throws Exception{
 		
 		
 		Condition condition = new Condition();
-		condition.getEval().add("adverseEvent.getGrade().getCode() <= Grade.MODERATE.getCode()");
+		//condition.getEval().add("adverseEvent.getGrade().getCode() <= Grade.MODERATE.getCode()");
 
-		Column column = new Column();
-		column.setObjectType("AdverseEvent");
-		column.setIdentifier("adverseEvent");	
+		Column column1 = new Column();
+		column1.setObjectType("AdverseEvent");
+		column1.setIdentifier("adverseEvent");	
+		column1.setExpression("getGrade().getCode()");
 		
-		condition.getColumn().add(column);	
+		FieldConstraint fieldConstraint1 = new FieldConstraint();
+		fieldConstraint1.setFieldName("grade");
+		
+		LiteralRestriction literalRestriction1 = new LiteralRestriction();
+		literalRestriction1.setEvaluator("==");
+		List <String> values1 = new ArrayList<String>();
+		
+		values1.add("1");
+		
+		literalRestriction1.setValue(values1);
+		
+		List<LiteralRestriction> lr1 = new ArrayList<LiteralRestriction>();
+		lr1.add(literalRestriction1);
+		
+		fieldConstraint1.setLiteralRestriction(lr1);
+		
+		ArrayList<FieldConstraint> fields1 = new ArrayList<FieldConstraint>();
+		fields1.add(fieldConstraint1);
+		
+		column1.setFieldConstraint(fields1);
+		
+		
+		condition.getColumn().add(column1);	
+		
+		Column column2 = new Column();
+		column2.setObjectType("AdverseEvent");
+		column2.setIdentifier("adverseEvent");	
+		column2.setExpression("getHospitalization().getCode()");
+		
+		FieldConstraint fieldConstraint2 = new FieldConstraint();
+		fieldConstraint2.setFieldName("hospitalization");
+		
+		LiteralRestriction literalRestriction2 = new LiteralRestriction();
+		literalRestriction2.setEvaluator("==");
+		List <String> values2 = new ArrayList<String>();
+		
+		values2.add("1");
+		values2.add("2");
+		
+		literalRestriction2.setValue(values2);
+		
+		List<LiteralRestriction> lr2 = new ArrayList<LiteralRestriction>();
+		lr2.add(literalRestriction2);
+		
+		fieldConstraint2.setLiteralRestriction(lr2);
+		
+		ArrayList<FieldConstraint> fields2 = new ArrayList<FieldConstraint>();
+		fields2.add(fieldConstraint2);
+		
+		column2.setFieldConstraint(fields2);
+
+		condition.getColumn().add(column2);	
+		
+		
 		/**
 		 *  Make it or break it
 		 */
@@ -376,14 +434,22 @@ private void getAllRuleSetsForStudy() throws Exception{
 		
 		rule1.setCondition(condition);
 		
-		Notification action = new Notification();
-		action.setActionId("ROUTINE_AE");
+		//Notification action = new Notification();
+		//action.setActionId("ROUTINE_AE");
+		
+		Action action = new Action();
+		action.setActionId("SERIOUS_ADVERSE_EVENT");
+		
 		rule1.setAction(action);
+		
 		return rule1;
 	}
 	
 	
-	
+	public void testNewRuleScheme()
+	{
+		
+	}
 	
 	
 

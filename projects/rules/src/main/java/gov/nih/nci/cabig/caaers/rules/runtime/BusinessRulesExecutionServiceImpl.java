@@ -4,8 +4,6 @@ import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher;
 
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +14,12 @@ import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
 import javax.rules.StatelessRuleSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecutionService{
+	
+	private static final Log logger = LogFactory.getLog(BusinessRulesExecutionServiceImpl.class);
 	
 	public static final String RULE_SERVICE_PROVIDER = "http://drools.org/";
 
@@ -71,6 +74,7 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
 			statelessRuleSession.release();
 			
 		} catch (Exception e) {
+			//logger.error("Execption while executing Rules", e);
 			System.out.println("We should log this exception or what!");
 			
 		}

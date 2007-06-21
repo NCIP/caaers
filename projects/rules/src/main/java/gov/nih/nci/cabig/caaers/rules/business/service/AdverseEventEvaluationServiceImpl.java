@@ -73,10 +73,11 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		throw new Exception(e.getMessage(),e);
 	}
     
-	System.out.println(evaluationForSponsor.getMessage());
+	System.out.println("Message: " + evaluationForSponsor.getMessage());
 	/**
 	 * Now fire rules for Study
 	 */
+	
 	RuleSet ruleSetForStudy = rulesEngineService.getRuleSetForStudy(RuleType.AE_ASSESMENT_RULES.getName(), studyName, sponsorName);
 	AdverseEventEvaluationResult evaluationForStudy = new AdverseEventEvaluationResult();
 //	if(ruleSetForStudy!=null){
@@ -85,8 +86,8 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 					evaluationForStudy = this.getEvaluationObject(ae, study, bindURI_ForStudyLevelRules);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-					
+					//e.printStackTrace();
+					System.out.println("Exception occured while executing study rules");
 				}
 /*			}
 	}
@@ -165,7 +166,7 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		
 		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 		
-		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
+/*		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
 		
 		adverseEventSDO.setExpected(ae.getExpected().toString());
 		adverseEventSDO.setGrade(new Integer(ae.getGrade().getCode()));
@@ -176,11 +177,11 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		StudySDO studySDO = new StudySDO();
 		studySDO.setPrimarySponsorCode(study.getPrimarySponsorCode());
 		studySDO.setShortTitle(study.getShortTitle());
-		
+*/		
 		List<Object> inputObjects = new ArrayList<Object>();
-		inputObjects.add(adverseEventSDO);
+		inputObjects.add(ae);
 		//inputObjects.add(ae);
-		inputObjects.add(studySDO);
+		inputObjects.add(study);
 		//inputObjects.add(new AdverseEventEvaluationResult());
 		
 		List<Object> outputObjects = null;

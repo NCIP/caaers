@@ -122,6 +122,7 @@
 				<xs:element name="field-binding" type="rules:field-binding" maxOccurs="unbounded" minOccurs="0"/>        
 				<xs:element name="field-constraint" type="rules:field-constraint" maxOccurs="unbounded" minOccurs="0"/>                      
 				<xs:element name="predicate" type="rules:predicate" maxOccurs="unbounded" minOccurs="0"/>                
+				<xs:element name="expression" type="xs:string"/>
 			</xs:sequence>   
 			<xs:attribute name="identifier" type="xs:string" use="optional"/>                
 			<xs:attribute name="object-type" type="xs:string" use="required"/>   
@@ -148,8 +149,10 @@
 
 
 		<xs:complexType name="literal-restriction">
-			<xs:attribute name="evaluator" type="xs:string" use="required"/>      
-			<xs:attribute name="value" type="xs:string" use="required"/>            
+			<xs:sequence>
+				<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>            
+			</xs:sequence>
+			<xs:attribute name="evaluator" type="xs:string" use="required"/> 
 		</xs:complexType>
 
 		<xs:complexType name="variable-restriction">
