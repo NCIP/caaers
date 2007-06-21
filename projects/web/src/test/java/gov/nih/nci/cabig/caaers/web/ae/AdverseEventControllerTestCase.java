@@ -28,7 +28,6 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected CtcTermDao ctcTermDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected ExpeditedAdverseEventReportDao adverseEventReportDao;
-    protected RuleExecutionService ruleExecutionService;
     protected StudyAgentDao studyAgentDao;
     protected AgentDao agentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
@@ -45,7 +44,6 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class);
         ctcTermDao = registerDaoMockFor(CtcTermDao.class);
         adverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
-        ruleExecutionService = registerMockFor(RuleExecutionService.class);
         agentDao = registerDaoMockFor(AgentDao.class);
         studyAgentDao = registerDaoMockFor(StudyAgentDao.class);
         ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class);

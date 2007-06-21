@@ -24,7 +24,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new EditExpeditedAdverseEventCommand(ruleExecutionService, getDao());
+        return new EditExpeditedAdverseEventCommand(getDao());
     }
     
     @Override
@@ -32,7 +32,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
         
-        command.fireAERules();
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());

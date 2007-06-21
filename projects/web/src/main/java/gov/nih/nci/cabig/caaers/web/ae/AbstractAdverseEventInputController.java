@@ -53,7 +53,6 @@ public abstract class AbstractAdverseEventInputController
     protected StudyAgentDao studyAgentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
-    protected RuleExecutionService ruleExecutionService;
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected NowFactory nowFactory;
@@ -65,6 +64,7 @@ public abstract class AbstractAdverseEventInputController
 
     protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new BasicsTab());
+        flow.addTab(new ReporterTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
         flow.addTab(new TreatmentTab());
@@ -75,7 +75,6 @@ public abstract class AbstractAdverseEventInputController
         flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
         flow.addTab(new AttributionTab());
-        flow.addTab(new ReporterTab());
         flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
     }
 
@@ -195,10 +194,6 @@ public abstract class AbstractAdverseEventInputController
 
     public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
         this.anatomicSiteDao = anatomicSiteDao;
-    }
-
-    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-        this.ruleExecutionService = ruleExecutionService;
     }
 
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {

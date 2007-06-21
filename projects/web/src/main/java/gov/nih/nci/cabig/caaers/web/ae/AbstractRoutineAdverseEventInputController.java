@@ -46,7 +46,6 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected ExpeditedAdverseEventReportDao reportDao;
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
-    protected RuleExecutionService ruleExecutionService;
     protected CtcCategoryDao ctcCategoryDao;
     protected NowFactory nowFactory;
 
@@ -160,17 +159,13 @@ public abstract class AbstractRoutineAdverseEventInputController
         this.studyAgentDao = studyAgentDao;
     }
 
-    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-        this.ruleExecutionService = ruleExecutionService;
+    public CtcCategoryDao getCtcCategoryDao() {
+        return ctcCategoryDao;
     }
 
-  	public CtcCategoryDao getCtcCategoryDao() {
-		return ctcCategoryDao;
-	}
-
-	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
-		this.ctcCategoryDao = ctcCategoryDao;
-	}
+    public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+        this.ctcCategoryDao = ctcCategoryDao;
+    }
 
     public NowFactory getNowFactory() {
         return nowFactory;
@@ -180,13 +175,13 @@ public abstract class AbstractRoutineAdverseEventInputController
         this.nowFactory = nowFactory;
     }
 
-	public RoutineAdverseEventReportDao getRoutineReportDao() {
-		return routineReportDao;
-	}
+    public RoutineAdverseEventReportDao getRoutineReportDao() {
+        return routineReportDao;
+    }
 
-	public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
-		this.routineReportDao = routineReportDao;
-	}
+    public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
+        this.routineReportDao = routineReportDao;
+    }
     
     
 }

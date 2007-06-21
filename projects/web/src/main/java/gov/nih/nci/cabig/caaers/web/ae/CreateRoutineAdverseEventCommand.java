@@ -40,7 +40,6 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private RoutineAdverseEventReportDao routineReportDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
-    private RuleExecutionService ruleExecutionService;
     private AdverseEventEvaluationService adverseEventEvaluationService;
     private Map<String, List<List<Attribution>>> attributionMap;
     private NowFactory nowFactory;
@@ -52,7 +51,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     public CreateRoutineAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, RoutineAdverseEventReportDao routineReportDao,
-        ExpeditedAdverseEventReportDao reportDao, RuleExecutionService ruleExecutionService, NowFactory nowFactory
+        ExpeditedAdverseEventReportDao reportDao, NowFactory nowFactory
     ) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
@@ -61,12 +60,8 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.categories = new ArrayList<CtcCategory>();
         this.nowFactory = nowFactory;
         this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
-        
-
-        setRuleExecutionService(ruleExecutionService);
     }
 
-  
     ////// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
@@ -166,14 +161,6 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	finally {
     		return isPopulated;
     	}
-    }
-
-    public RuleExecutionService getRuleExecutionService() {
-        return ruleExecutionService;
-    }
-
-    public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-        this.ruleExecutionService = ruleExecutionService;
     }
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {

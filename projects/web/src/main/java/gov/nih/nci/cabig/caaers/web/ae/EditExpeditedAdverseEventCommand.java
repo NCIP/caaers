@@ -28,13 +28,11 @@ public class EditExpeditedAdverseEventCommand implements ExpeditedAdverseEventIn
     private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
 
-    private RuleExecutionService ruleExecutionService;
     private ExpeditedAdverseEventReportDao expeditedAeReportDao;
 
     ////// LOGIC
 
-    public EditExpeditedAdverseEventCommand(RuleExecutionService ruleExecutionService, ExpeditedAdverseEventReportDao expeditedAeReportDao) {
-        setRuleExecutionService(ruleExecutionService);
+    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao) {
         this.expeditedAeReportDao = expeditedAeReportDao;
     }
 
@@ -74,62 +72,4 @@ public class EditExpeditedAdverseEventCommand implements ExpeditedAdverseEventIn
         }
         this.attributionMap = new AttributionMap(aeReport);
     }
-
-    // TODO: this code is *exactly* the same as in CreateAdverseEventCommand
-    // Put it somewhere shared
-    public void fireAERules() {
-    	String bindUri = "CAAERS_AE_RULES";
-		ArrayList<AdverseEventSDO> list = new ArrayList<AdverseEventSDO>();
-		
-		AdverseEvent adverseEvent = aeReport.getAdverseEvents().get(0);
-		StudySDO studySDO = new StudySDO();
-		Study study = aeReport.getAssignment().getStudySite().getStudy();
-		studySDO.setShortTitle(study.getShortTitle());
-		
-		AdverseEventSDO adverseEventSDO = new AdverseEventSDO();
-		
-		// ATTRIBUTION
-		//adverseEventSDO.setAttribution(adverseEventReport.get); // Where to get this from -- ask Rhett
-
-		//PHASE -- // Where to get this from -- ask Rhett
-		String phase = aeReport.getAssignment().getStudySite().getStudy().getPhaseCode();
-		adverseEventSDO.setPhase(phase);
-		
-		//EXPECTED
-		boolean expected = adverseEvent.getExpected();
-		adverseEventSDO.setExpected((String.valueOf(expected)));
-		
-		//GRADE
-		int grade = adverseEvent.getGrade().getCode();
-		//adverseEventSDO.setGrade(String.valueOf(grade));
-		adverseEventSDO.setGrade(new Integer(grade));
-				
-		//CATEGORY
-		CtcCategory category = adverseEvent.getCtcTerm().getCategory();
-		adverseEventSDO.setCategory(category.getName());
-		
-		//CTC TERM
-		CtcTerm ctcTerm = adverseEvent.getCtcTerm();
-		adverseEventSDO.setTerm(ctcTerm.getFullName());
-		
-		//HOSPITALIZATION
-		int hospitalization = adverseEvent.getHospitalization().getCode();
-		Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE : Boolean.TRUE ;
-		
-		adverseEventSDO.setHospitalization(isHospitalization.toString());
-		try {
-			getRuleExecutionService().fireRules(bindUri, studySDO, list);
-		}catch(Exception e) {
-			Logger.getLogger(this.toString()).info("Exception while firing rules" + e.getMessage());
-			Logger.getLogger(this.toString()).log(Level.FINE, "Exception while firing rules" + e.getMessage());
-		}
-    }
-
-	public RuleExecutionService getRuleExecutionService() {
-		return ruleExecutionService;
-	}
-
-	public void setRuleExecutionService(RuleExecutionService ruleExecutionService) {
-		this.ruleExecutionService = ruleExecutionService;
-	}
 }

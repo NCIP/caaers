@@ -27,7 +27,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, ruleExecutionService, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, nowFactory);
     }
 
     @Override

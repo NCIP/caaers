@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
@@ -22,7 +23,6 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateExpeditedAdverseEventCommand command;
     private ExpeditedAdverseEventReportDao reportDao;
-    private RuleExecutionService rulesExecutionService;
     protected Errors errors;
 
     @Override
@@ -31,7 +31,6 @@ public abstract class AeWebTestCase extends WebTestCase {
         assignment = Fixtures.createAssignment();
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
-        rulesExecutionService = registerMockFor(RuleExecutionService.class);
 
         command = createCommand();
 
@@ -41,11 +40,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract CreateExpeditedAdverseEventCommand createCommand();
 
     protected final CreateExpeditedAdverseEventCommand createRealCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, nowFactory);
     }
 
     protected final CreateExpeditedAdverseEventCommand createMockCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, rulesExecutionService, nowFactory) {
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, nowFactory) {
             @Override
             public StudyParticipantAssignment getAssignment() {
                 return assignment;
@@ -65,6 +64,14 @@ public abstract class AeWebTestCase extends WebTestCase {
         event.setGrade(Grade.MODERATE);
         event.setHospitalization(Hospitalization.NONE);
         event.setCtcTerm(new CtcTerm());
+
+        // ReporterTab
+        c.getAeReport().getReporter().setFirstName("Dan");
+        c.getAeReport().getReporter().setLastName("McReporter");
+        c.getAeReport().getReporter().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "dan@example.com");
+        c.getAeReport().getPhysician().setFirstName("Jim");
+        c.getAeReport().getPhysician().setLastName("O'Physician");
+        c.getAeReport().getPhysician().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "docjim@example.com");
 
         return c;
     }

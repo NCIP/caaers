@@ -32,7 +32,7 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-    	CreateRoutineAdverseEventCommand caec = new CreateRoutineAdverseEventCommand(assignmentDao, routineReportDao, reportDao, ruleExecutionService, nowFactory);
+    	CreateRoutineAdverseEventCommand caec = new CreateRoutineAdverseEventCommand(assignmentDao, routineReportDao, reportDao, nowFactory);
     	//caec.getAeReport().getAdverseEvents().clear();
         return caec;
     }
