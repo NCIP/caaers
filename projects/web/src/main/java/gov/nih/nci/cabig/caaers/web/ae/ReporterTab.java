@@ -1,21 +1,24 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-
-import java.util.List;
-import java.util.Map;
-
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Map;
 
 /**
  * @author Kulasekaran
+ * @author Rhett Sutphin
  */
 public class ReporterTab extends AeTab {
-	private ResearchStaffDao researchStaffDao;
-	
+    private ResearchStaffDao researchStaffDao;
+
     public ReporterTab() {
         super("Reporter info", "Reporter", "ae/reporter");
     }
@@ -23,32 +26,54 @@ public class ReporterTab extends AeTab {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        return new InputFieldGroupMap();
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        map.addInputFieldGroup(createPersonGroup("reporter"));
+        map.addInputFieldGroup(createPersonGroup("physician"));
+        return map;
+    }
+
+    private InputFieldGroup createPersonGroup(String person) {
+        InputFieldGroup group = new DefaultInputFieldGroup(person, StringUtils.capitalize(person) + " details");
+        String base = "aeReport." + person  + '.';
+        group.getFields().add(new DefaultTextField(base + "firstName", "First name", true));
+        group.getFields().add(new DefaultTextField(base + "middleName", "Middle name", false));
+        group.getFields().add(new DefaultTextField(base + "lastName", "Last name", true));
+        group.getFields().add(createContactField(base, ExpeditedReportPerson.EMAIL, "E-mail address", true));
+        group.getFields().add(createContactField(base, ExpeditedReportPerson.PHONE));
+        group.getFields().add(createContactField(base, ExpeditedReportPerson.FAX));
+        return group;
+    }
+
+    private InputField createContactField(String base, String contactType) {
+        return createContactField(base, contactType, StringUtils.capitalize(contactType), false);
+    }
+
+    private InputField createContactField(
+        String base, String contactType, String displayName, boolean required
+    ) {
+        return new DefaultTextField(
+            base + "contactMechanisms[" + contactType + "]", displayName, required);
     }
 
     @Override
     public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();        
-        refdata.put("staffRefData", getStaff());        
+        Map<String, Object> refdata = super.referenceData();
+        // TODO: this probably ought to be limited by Site, at least
+        refdata.put("staffRefData", researchStaffDao.getAll());
         return refdata;
     }
-        
+
     @Override
     public boolean isAllowDirtyForward() {
         return false;
     }
 
-    private List<ResearchStaff> getStaff()
-	{
-		return researchStaffDao.getAll();  	
-	}
-    
-	public ResearchStaffDao getResearchStaffDao() {
-		return researchStaffDao;
-	}
+    public ResearchStaffDao getResearchStaffDao() {
+        return researchStaffDao;
+    }
 
-	@Required
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}       
+    @Required
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+        this.researchStaffDao = researchStaffDao;
+    }
 }

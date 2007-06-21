@@ -11,162 +11,107 @@
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
-		
-		function chooseStaff(){
-				
-				var id = document.getElementById("staff").value;
+        var NAME_FIELDS = [
+            'firstName', 'middleName', 'lastName'
+        ]
+        var PERSON_FIELDS = NAME_FIELDS.concat([
+            'contactMechanisms[e-mail]', 'contactMechanisms[phone]', 'contactMechanisms[fax]'
+        ])
 
-				if(id == -1)
-				{
-					clear();
-				}
-				else {
-					createAE.getResearchStaff(id, fill)
-				}
-				
-		}
+        function chooseStaff() {
+            var id = document.getElementById("staff").value;
+            if (id == -1) {
+                clear();
+            } else {
+                createAE.getResearchStaff(id, updateReporterFromStaff)
+            }
+        }
 
-		function fill(staff)
-		{
-			document.getElementsByName('aeReport.reporter.firstName')[0].value=staff.firstName;
-			document.getElementsByName('aeReport.reporter.lastName')[0].value=staff.lastName;
-			document.getElementsByName('aeReport.reporter.middleName')[0].value=staff.middleName;
-			document.getElementsByName('aeReport.reporter.contactMechanisms[0].value')[0].value= staff.firstName + '@gmail.com';
+        function updateReporterFromStaff(staff) {
+            NAME_FIELDS.each(function(field) {
+                $('aeReport.reporter.' + field).value = staff[field]
+            })
 
-			if(document.getElementById("option1").checked)
-			{
-				selected();
-			}
-			// call selected()
-		}
+            updatePhysicianFromReporterIfSame()
+        }
 
-		function clear()
-		{
-			document.getElementsByName('aeReport.reporter.firstName')[0].value='';
-			document.getElementsByName('aeReport.reporter.lastName')[0].value='';
-			document.getElementsByName('aeReport.reporter.middleName')[0].value='';			
+        function clear(person) {
+            PERSON_FIELDS.each(function (field) {
+                $('aeReport.' + person + '.' + field).value = ''
+            })
+        }
 
-			if(document.getElementById("option1").checked)
-			{
-				selected();
-			}
-			// call selected()
-		}
+        function isPhysicianSame() {
+            return $('physician-same').checked
+        }
 
-		function selected(){
-			if(document.getElementById("option1").checked)
-			{
-				document.getElementsByName('aeReport.physician.firstName')[0].value=document.getElementsByName('aeReport.reporter.firstName')[0].value;
-				document.getElementsByName('aeReport.physician.lastName')[0].value=document.getElementsByName('aeReport.reporter.lastName')[0].value;
-				document.getElementsByName('aeReport.physician.middleName')[0].value=document.getElementsByName('aeReport.reporter.middleName')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanisms[0].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[0].value')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanisms[1].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[1].value')[0].value;
-				document.getElementsByName('aeReport.physician.contactMechanisms[2].value')[0].value=document.getElementsByName('aeReport.reporter.contactMechanisms[2].value')[0].value;
-			}
-			else 
-			{
-				document.getElementsByName('aeReport.physician.firstName')[0].value='';
-				document.getElementsByName('aeReport.physician.lastName')[0].value='';
-				document.getElementsByName('aeReport.physician.middleName')[0].value='';	
-				document.getElementsByName('aeReport.physician.contactMechanisms[0].value')[0].value='';
-				document.getElementsByName('aeReport.physician.contactMechanisms[1].value')[0].value='';
-				document.getElementsByName('aeReport.physician.contactMechanisms[2].value')[0].value='';
-			}
-		}
-     
+        function updatePhysicianSame() {
+            if (isPhysicianSame()) {
+                updatePhysicianFromReporter()
+            } else {
+                clear('physician')
+            }
+        }
+
+        function updatePhysicianFromReporterIfSame() {
+            if (isPhysicianSame()) updatePhysicianFromReporter();
+        }
+
+        function updatePhysicianFromReporter() {
+            PERSON_FIELDS.each(function(field) {
+                $('aeReport.physician.' + field).value = $('aeReport.reporter.' + field).value
+            })
+        }
+
+        Event.observe(window, "load", function() {
+            $('staff').observe("change", chooseStaff)
+            $('physician-same').observe("click", updatePhysicianSame)
+        })
+
     </script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-        You are entering reporter information.  You can select from the existing 
+        <!-- TODO: add note about is SAE/isn't SAE -->
+        You are entering reporter information.  You can select from the existing
         study personnel or you can enter a new one.
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Reporter Details">
-        <div class="row">
-            <p class="instructions">
-            <div class="label">Study Personnel</div>
-            <div class="value">
-                <select id="staff" name="staff" onChange="javascript:chooseStaff();">
-                    <option value=-1>please select--</option>
-                    <c:forEach var="site" varStatus="status" items="${command.study.studySites}">
-                        <c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">
-                            <option value=${personnel.researchStaff.id}>${personnel.researchStaff.firstName}, ${personnel.researchStaff.lastName} </option>
+            <div class="row">
+                <div class="label">Research staff</div>
+                <div class="value">
+                    <select id="staff" name="staff" onChange="javascript:chooseStaff();">
+                        <option value=-1>please select--</option>
+                        <c:forEach var="site" varStatus="status" items="${command.study.studySites}">
+                            <c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">
+                                <option value="${personnel.researchStaff.id}">${personnel.researchStaff.firstName}, ${personnel.researchStaff.lastName} </option>
+                            </c:forEach>
                         </c:forEach>
-                    </c:forEach>
-                </select>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="label">First Name</div>
-            <div class="value"><form:input path="aeReport.reporter.firstName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Last Name</div>
-            <div class="value"><form:input path="aeReport.reporter.lastName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Middle Name</div>
-            <div class="value"><form:input path="aeReport.reporter.middleName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Email</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[0].value"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Fax</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[1].value"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Phone</div>
-            <div class="value"><form:input path="aeReport.reporter.contactMechanisms[2].value"/></div>
-        </div>
+            <c:forEach items="${fieldGroups['reporter'].fields}" var="field">
+                <tags:renderRow field="${field}"/>
+            </c:forEach>
         </chrome:division>
 
-        <chrome:division title="Physician Details">
+        <chrome:division title="Physician details">
+            <div class="row">
+                <div class="value">
+                    <label>
+                        <input type="checkbox" id="physician-same" name="physician-same" />&nbsp;Physician
+                        is same as Reporter
+                    </label>
+                </div>
+            </div>
 
-        <p id="instructions">
-            If the physician is the reporter then check this box.
-
-        <input type="checkbox" id="option1" name="option1" onClick="javascript:selected()"> </p>
-
-        <div class="row">
-            <div class="label">First Name</div>
-            <div class="value"><form:input path="aeReport.physician.firstName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Last Name</div>
-            <div class="value"><form:input path="aeReport.physician.lastName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Middle Name</div>
-            <div class="value"><form:input path="aeReport.physician.middleName"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Email</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanisms[0].value"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Fax</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanisms[1].value"/></div>
-        </div>
-
-        <div class="row">
-            <div class="label">Phone</div>
-            <div class="value"><form:input path="aeReport.physician.contactMechanisms[2].value"/></div>
-        </div>
-    </chrome:division>
+            <c:forEach items="${fieldGroups['physician'].fields}" var="field">
+                <tags:renderRow field="${field}"/>
+            </c:forEach>
+        </chrome:division>
     </jsp:attribute>
 </tags:tabForm>
 </body>
