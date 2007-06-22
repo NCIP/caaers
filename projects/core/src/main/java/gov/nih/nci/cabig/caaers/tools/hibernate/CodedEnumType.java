@@ -1,28 +1,45 @@
 package gov.nih.nci.cabig.caaers.tools.hibernate;
 
-import org.apache.commons.logging.Log;
-import org.hibernate.HibernateException;
-import org.hibernate.usertype.UserType;
-import org.hibernate.usertype.ParameterizedType;
-
-import java.util.Properties;
-import java.sql.Types;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.Serializable;
-
 import edu.nwu.bioinformatics.commons.ComparisonUtils;
 import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import org.apache.commons.logging.Log;
+import org.hibernate.HibernateException;
+import org.hibernate.usertype.ParameterizedType;
+import org.hibernate.usertype.UserType;
+
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
 
 /**
+ * A base Hibernate UserType for instances of {@link gov.nih.nci.cabig.caaers.domain.CodedEnum}.
+ * Required parameter:
+ * <dl>
+ *   <dt><code>enumClass</code></dt>
+ *   <dd>Typesafe enumeration class of which this type instance will load instances</dd>
+ * </dl>
+ * Optional parameters:
+ * <dl>
+ *   <dt><code>factoryMethod</code></dt>
+ *   <dd>The public static method to call to obtain an instance of the class from a database key.
+ *       Default is <kbd>getByCode</kbd>.</dd>
+ *   <dt><code>keyMethod</code></dt>
+ *   <dd>The public method to call on an instance of the class to get the database key under
+ *       which it should be stored.  Default is <kbd>getCode</kbd>.</dd>
+ * </dl>
+ * <p>
+ * A subclass of this type will be necessary for each code type (integer, string, etc.) you want to
+ * support.
+ * </p>
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC (ControlledVocabularyObjectType).  Refactor into a shared library. */
-public class CodedEnumType implements UserType, ParameterizedType {
+public abstract class CodedEnumType implements UserType, ParameterizedType {
     protected static final String ENUM_CLASS_PARAM_KEY = "enumClass";
     protected static final String FACTORY_METHOD_PARAM_KEY = "factoryMethod";
     protected static final String KEY_METHOD_PARAM_KEY = "keyMethod";
@@ -63,8 +80,21 @@ public class CodedEnumType implements UserType, ParameterizedType {
 
     ////// IMPLEMENTATION OF UserType
 
+    /**
+     * The JDBC typecode for the column in which the enum's code is stored.  E.g., if the
+     * database column is an integer, this method should return {@link java.sql.Types#INTEGER}.
+     * @return
+     */
+    protected abstract int codeSqlType();
+
+    /**
+     * The java type of the parameter to the factory method.  E.g., if the factory method is
+     * getByCode(int code), this method should return {@link Integer#TYPE}.
+     */
+    protected abstract Class codeJavaType();
+
     public final int[] sqlTypes() {
-        return new int[] { Types.INTEGER };
+        return new int[] { codeSqlType() };
     }
 
     public Class returnedClass() {
@@ -87,7 +117,7 @@ public class CodedEnumType implements UserType, ParameterizedType {
     }
 
     private Method getFactoryMethod() {
-        return getParameterNamedMethod(FACTORY_METHOD_PARAM_KEY, new Class[] { Integer.TYPE });
+        return getParameterNamedMethod(FACTORY_METHOD_PARAM_KEY, new Class[] { codeJavaType() });
     }
 
     private Method getKeyMethod() {
@@ -145,7 +175,7 @@ public class CodedEnumType implements UserType, ParameterizedType {
             throw new CaaersSystemException("Invocation of " + keyMethod + " failed", e);
         }
         HibernateTypeUtils.logBind(log, index, key);
-        st.setObject(index, key, Types.INTEGER);
+        st.setObject(index, key, codeSqlType());
     }
 
     public Object deepCopy(Object value) throws HibernateException {
