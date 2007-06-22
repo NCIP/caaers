@@ -8,7 +8,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.toStringHelper;
 /**
  * @author Rhett Sutphin
  */
-public enum Hospitalization implements CodedEnum {
+public enum Hospitalization implements CodedEnum<Integer> {
     NONE(0),
     HOSPITALIZATION(1),
     PROLONGED_HOSPITALIZATION(2, "Prolonged hospitalization");
@@ -30,7 +30,7 @@ public enum Hospitalization implements CodedEnum {
         return getByClassAndCode(Hospitalization.class, code);
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

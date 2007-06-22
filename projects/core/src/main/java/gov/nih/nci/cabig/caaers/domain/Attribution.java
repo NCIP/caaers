@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
 /**
  * @author Rhett Sutphin
  */
-public enum Attribution implements CodedEnum {
+public enum Attribution implements CodedEnum<Integer> {
     UNRELATED(1),
     UNLIKELY(2),
     POSSIBLE(3),
@@ -22,7 +22,7 @@ public enum Attribution implements CodedEnum {
         return getByClassAndCode(Attribution.class, code);
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

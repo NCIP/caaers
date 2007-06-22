@@ -4,26 +4,27 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Common implementations for CodedEnum instances.  Not for public use; this is a workaround
+ * Common implementations for CodedEnum instances.  This is a workaround
  * for the fact that you can't have an abstract base class for enums.
  *
  * @author Rhett Sutphin
  */
+@SuppressWarnings("RawUseOfParameterizedType") // can't be avoided in this class
 public class CodedEnumHelper extends EnumHelper {
-    private static Map<Class<? extends CodedEnum>, Map<Integer, Object>> byClassAndCode
-        = new HashMap<Class<? extends CodedEnum>, Map<Integer, Object>>();
+    private static Map<Class<? extends CodedEnum>, Map<Object, Object>> byClassAndCode
+        = new HashMap<Class<? extends CodedEnum>, Map<Object, Object>>();
 
-    public static <T extends CodedEnum> void register(T instance) {
+    public static <C, T extends CodedEnum<C>> void register(T instance) {
         Class<? extends CodedEnum> classKey = instance.getClass();
         if (!byClassAndCode.containsKey(classKey)) {
-            byClassAndCode.put(classKey, new HashMap<Integer, Object>());
+            byClassAndCode.put(classKey, new HashMap<Object, Object>());
         }
         byClassAndCode.get(classKey).put(instance.getCode(), instance);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends CodedEnum> T getByClassAndCode(Class<T> clazz, int code) {
-        Map<Integer, Object> byCode = byClassAndCode.get(clazz);
+    public static <C, T extends CodedEnum<C>> T getByClassAndCode(Class<T> clazz, C code) {
+        Map<Object, Object> byCode = byClassAndCode.get(clazz);
         return byCode == null ? null : (T) byCode.get(code);
     }
 

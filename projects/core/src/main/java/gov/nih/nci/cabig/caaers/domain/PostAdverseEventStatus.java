@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
 /**
  * @author Rhett Sutphin
  */
-public enum PostAdverseEventStatus implements CodedEnum {
+public enum PostAdverseEventStatus implements CodedEnum<Integer> {
     INTERVENTION_CONTINUES(1, "Intervention for AE continues"),
     RECOVERING(2),
     RECOVERED_WITH_SEQUELAE(3),
@@ -31,7 +31,7 @@ public enum PostAdverseEventStatus implements CodedEnum {
         return getByClassAndCode(PostAdverseEventStatus.class, code);
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

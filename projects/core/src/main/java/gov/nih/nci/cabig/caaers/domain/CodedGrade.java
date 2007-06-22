@@ -6,6 +6,6 @@ package gov.nih.nci.cabig.caaers.domain;
  * @author Rhett Sutphin
  */
 public interface CodedGrade {
-    int getCode();
+    Integer getCode();
     String getDisplayName();
 }

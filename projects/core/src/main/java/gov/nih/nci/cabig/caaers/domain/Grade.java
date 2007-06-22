@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
 /**
  * @author Rhett Sutphin
  */
-public enum Grade implements CodedEnum, CodedGrade {
+public enum Grade implements CodedEnum<Integer>, CodedGrade {
     NORMAL(0),
     MILD(1),
     MODERATE(2),
@@ -29,7 +29,7 @@ public enum Grade implements CodedEnum, CodedGrade {
         return getByClassAndCode(Grade.class, code);
     }
 
-    public int getCode() {
+    public Integer getCode() {
         return code;
     }
 

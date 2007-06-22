@@ -20,7 +20,7 @@ public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrad
     ////// LOGIC
 
     @Transient
-    public int getCode() {
+    public Integer getCode() {
         return getGrade().getCode();
     }
 
