@@ -298,7 +298,49 @@
 					return term.fullName;
 				}
 
+	function isFieldExists(ruleCount, domainObjectName, fieldName)
+	{
 
+				var columns = $('rule-'+(ruleCount + 1)+'-columns');
+				
+				var divNodes = 0;
+
+				// Filter all div nodes				
+				for(var i=0; i < columns.childNodes.length; i++)
+				{
+					if (columns.childNodes[i].nodeName == 'DIV')
+					{
+						divNodes++;
+					}
+				}
+							
+				var fieldExist = false;
+				
+				var sameFields = 0;
+				
+				for (var i=0; i < divNodes; i++)
+				{
+					var fieldId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].fieldName';
+					var domainObjectId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].objectType';
+					
+					if($(fieldId).value == fieldName && $(domainObjectId).value == domainObjectName)
+					{
+						sameFields++;
+						
+					}
+				}
+			
+				if (sameFields > 1)
+				{
+					fieldExist = true;
+				}
+				
+			return fieldExist;
+	}
+	
+	function resetDropDowns()
+	{
+	}
 	
 	function handleFieldOnchange(fieldDropDown, ruleCount) 
 	{
@@ -321,6 +363,32 @@
 		var operatorDropDownID = selectId + '.literalRestriction[0].evaluator';
 
 		//var domainObject = null;
+		
+		// check whether the field already exists
+		if (isFieldExists(ruleCount, $(domainObjectDropDownID).value, selectedField.value))
+		{
+			alert('Field already exisits');
+			
+			// Reset Fields, operators and values
+			fieldDropDown.value = '';	
+			$(expressionID).value='';	
+			
+			// Reset Operator 
+			$(operatorDropDownID).options.length = 0;
+			$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+							
+							
+			// Reset the value selection span
+
+			var selectArea = '<select id="' + validValueField.id + '" name="' + validValueField.id +'">';
+							
+			selectArea += '<option value="">Please select Value</option></select>';
+
+			$(validValueField.id+'.span').innerHTML = selectArea;
+			
+			
+			return;
+		}
 		
 		try 
 		{
@@ -406,7 +474,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'">';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -448,7 +516,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" >';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -520,11 +588,6 @@
 
 	function handleDomainObjectonChange(domainObjectDropDown, ruleCount)
 	{
-		if (domainObjectDropDown.selectedIndex == 0)
-		{
-			// Set all the fields to null
-			return;
-		}
 		
 		var domainObjectDropDownID = domainObjectDropDown.id;
 		
@@ -542,6 +605,35 @@
 		
 		var valueDropDownSpanID = prefixID + '.fieldConstraint[0].literalRestriction[0].value.span';
 		
+		if (domainObjectDropDown.selectedIndex == 0)
+		{
+			// Set all the fields to null
+							$(domainObjectIdentifierID).value = '';
+						
+							// Reset expression
+							$(expressionID).value='';
+							
+							// Set the fields
+							$(fieldDropDownID).options.length = 0;
+							$(fieldDropDownID).options.add(new Option("Please select Field",""));
+							
+							
+							// Reset Operator 
+							$(operatorDropDownID).options.length = 0;
+							$(operatorDropDownID).options.add(new Option("Please select Operator",""));
+							
+							
+							// Reset the value selection span
+
+							var selectArea = '<select id="' + valueDropDownID + '" name="' + valueDropDownID +'">';
+							
+									selectArea += '<option value="">Please select Value</option></select>';
+
+							$(valueDropDownSpanID).innerHTML = selectArea;
+
+			return;
+		}
+
 		authorRule.getRulesDomainObject(domainObjectDropDown.selectedIndex - 1, function(domainObject)
 		                              {
 							//alert(domainObject.identifier);		                              
@@ -745,7 +837,7 @@
 																			var spanId = newId + '.span';
 																	
 																			var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
-																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" multiple="multiple" size="3">';
+																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '">';
 																			selectArea += '</select>';
 																					
 																			//Element.remove(validValueField);
