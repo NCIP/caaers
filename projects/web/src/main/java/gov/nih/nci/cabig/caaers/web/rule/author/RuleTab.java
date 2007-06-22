@@ -146,6 +146,7 @@ public class RuleTab extends DefaultTab
 				if (ruleSet == null)
 				{
 					ruleSet = new RuleSet();
+					ruleSet.setDescription(createRuleCommand.getRuleSetName());
 				}
 				createRuleCommand.setRuleSet(ruleSet);
 				

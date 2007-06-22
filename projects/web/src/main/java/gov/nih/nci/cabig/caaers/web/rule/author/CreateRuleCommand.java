@@ -245,6 +245,11 @@ public class CreateRuleCommand implements RuleInputCommand
 			isDataChanged = true;
 		}
 
+		if (ruleSet != null)
+		{
+			this.ruleSet.setDescription(ruleSetName);
+		}
+		
 		this.ruleSetName = ruleSetName;
 	}
 
