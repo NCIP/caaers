@@ -301,7 +301,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         List<? extends CodedGrade> actual = facade.getTermGrades(5);
         verifyMocks();
         assertEquals(1, actual.size());
-        assertEquals(3, actual.get(0).getCode());
+        assertEquals(3, (int) actual.get(0).getCode());
         assertEquals("Severe", actual.get(0).getDisplayName());
     }
 
@@ -318,7 +318,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         List<? extends CodedGrade> actual = facade.getTermGrades(5);
         verifyMocks();
         assertEquals(1, actual.size());
-        assertEquals(3, actual.get(0).getCode());
+        assertEquals(3, (int) actual.get(0).getCode());
         assertEquals("Oh, so severe", actual.get(0).getDisplayName());
     }
 }
