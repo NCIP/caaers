@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification.enums;
 
-import gov.nih.nci.cabig.caaers.domain.CodedEnum;
-import gov.nih.nci.cabig.caaers.domain.EnumHelper;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
 /**
  * @author Sujith Vellat Thayyilthodi
