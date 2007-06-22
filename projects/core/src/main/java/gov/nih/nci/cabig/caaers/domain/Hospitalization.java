@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.register;
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.getByClassAndCode;
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.sentenceCasedName;
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.toStringHelper;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.sentenceCasedName;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.toStringHelper;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * @author Rhett Sutphin

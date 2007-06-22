@@ -5,25 +5,25 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="grade">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="grade">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Grade</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="attribution">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="attribution">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Attribution</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="hospitalization">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="hospitalization">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Hospitalization</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="postAdverseEventStatus">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="postAdverseEventStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="reportStatus">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="reportStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.ReportStatus</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="timeScaleUnit">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="timeScaleUnit">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit</param>
     </typedef>
-    <typedef class="gov.nih.nci.cabig.caaers.tools.hibernate.IntegerCodedEnumType" name="deliveryStatus">
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="deliveryStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus</param>
     </typedef>
 </hibernate-mapping>

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.domain.EnumHelper.*;
+import static gov.nih.nci.cabig.ctms.domain.EnumHelper.*;
 
 import java.math.BigDecimal;
 

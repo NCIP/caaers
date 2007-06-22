@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import gov.nih.nci.cabig.caaers.domain.CodedEnum;
-import static gov.nih.nci.cabig.caaers.domain.CodedEnumHelper.*;
+import gov.nih.nci.cabig.ctms.domain.CodedEnum;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.*;
 
 /**
  * This enumeration represents the status of an EmailNotificaiton.
