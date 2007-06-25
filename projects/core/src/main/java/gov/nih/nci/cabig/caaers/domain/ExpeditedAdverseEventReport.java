@@ -9,18 +9,16 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.OrderBy;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,6 +105,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public Study getStudy() {
         StudySite ss = getAssignment() == null ? null : getAssignment().getStudySite();
         return ss == null ? null : ss.getStudy();
+    }
+
+    @Transient
+    public boolean isExpeditedReportingRequired() {
+        for (Report report : getReports()) {
+            if (report.isRequired()) return true;
+        }
+        return false;
     }
 
     @Transient

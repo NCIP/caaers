@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.util.Arrays;
@@ -216,5 +217,23 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         ExpeditedAdverseEventReportChild actual = (ExpeditedAdverseEventReportChild) wrappedReport.getPropertyValue(childProp);
         assertNotNull(childProp + " not reinited after set null", actual);
         assertSame("Reverse link not set", report, actual.getReport());
+    }
+
+    public void testExpeditedRequiredReportWhenReqd() throws Exception {
+        report.addReport(new Report());
+        report.addReport(new Report());
+        Report reqd = new Report();
+        reqd.setRequired(true);
+        report.addReport(reqd);
+
+        assertTrue(report.isExpeditedReportingRequired());
+    }
+
+    public void testExpeditedRequiredReportWhenNotReqd() throws Exception {
+        report.addReport(new Report());
+        report.addReport(new Report());
+        report.addReport(new Report());
+
+        assertFalse(report.isExpeditedReportingRequired());
     }
 }
