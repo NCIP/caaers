@@ -12,7 +12,7 @@
 				<xsl:apply-templates/>
 	</xsl:template>
 	
-	
+	<!--  test -->
 	<xsl:template match="rules:ruleSet">
 	
 	 	<ruleSet> 
@@ -95,12 +95,14 @@
 									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:field-constraint/@field-name"/>
 								</xsl:otherwise>						
 							</xsl:choose>
+							
+							
 							<xsl:choose>
-								<xsl:when  test="string(number(.))='NaN'">.equals(</xsl:when>
+								<xsl:when  test="string(number(.))='NaN' and (.!='true' or .!='false')" >.equals("</xsl:when>
 								<xsl:otherwise><xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/></xsl:otherwise>							
 							</xsl:choose>
 							
-							<xsl:if test= "string(number(.))='NaN'">"</xsl:if><xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN'">")</xsl:if>
+							<xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN' and (.!='true' or .!='false')">")</xsl:if>
 							<xsl:if test="$ct != position()"> || </xsl:if>
 				</xsl:for-each>
 			</eval>	
