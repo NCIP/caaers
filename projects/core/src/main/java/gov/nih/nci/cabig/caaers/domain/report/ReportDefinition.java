@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,130 +36,118 @@ import org.hibernate.annotations.Type;
 @Table(name="REPORT_CALENDAR_TEMPLATES")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_report_calendar_templat_id")
-    }
+    @Parameter(name="sequence", value="seq_report_calendar_templat_id")
+        }
 )
 public class ReportDefinition extends AbstractMutableDomainObject implements Serializable{
-	/** The name of the ReportCalendar */
-	@Column(name = "NAME")
-	String name;
+    private String name;
+    private String description;
+    private int duration;
+    private TimeScaleUnit timeScaleUnitType;
+    private List<PlannedNotification> plannedNotifications;
 
-	@Column(name="DESCRIPTION")
-	String description;
+    ////// LOGIC
 
-	@Column(name = "DURATION")
-	int duration;
+    public Report createReport() {
+        Report report = new Report();
+        report.setReportDefinition(this);
+        report.setStatus(ReportStatus.PENDING);
+        return report;
+    }
 
-	/** Respresnts the type of time scale used (eg:, DAY, MONTH)*/
-	TimeScaleUnit timeScaleUnitType;
+    public PlannedNotification fetchPlannedNotification(int indexOnScale) {
+        if (plannedNotifications == null) return null;
 
+        for (PlannedNotification pn : plannedNotifications) {
+            if (pn.getIndexOnTimeScale() == indexOnScale) return pn;
+        }
 
-	List<PlannedNotification> plannedNotifications;
+        return null;
+    }
 
+    public void addPlannedNotification(PlannedNotification pn) {
+        if (pn == null) return;
 
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+        if (plannedNotifications == null) {
+            plannedNotifications = new ArrayList<PlannedNotification>();
+        }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	/**
-	 * @return the duration
-	 */
-	public int getDuration() {
-		return duration;
-	}
-	/**
-	 * @param duration the duration to set
-	 */
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-	@Type(type = "timeScaleUnit")
+        plannedNotifications.add(pn);
+    }
+
+    ////// BEAN PROPERTIES
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    @Type(type = "timeScaleUnit")
     @Column(name = "TIME_SCALE_UNIT_CODE")
-	public TimeScaleUnit getTimeScaleUnitType() {
-		return timeScaleUnitType;
-	}
-	public void setTimeScaleUnitType(TimeScaleUnit timeScaleUnitType) {
-		this.timeScaleUnitType = timeScaleUnitType;
-	}
+    public TimeScaleUnit getTimeScaleUnitType() {
+        return timeScaleUnitType;
+    }
+    public void setTimeScaleUnitType(TimeScaleUnit timeScaleUnitType) {
+        this.timeScaleUnitType = timeScaleUnitType;
+    }
 
-	/** A list of notificaiton(templates) */
-	@OneToMany(fetch=FetchType.EAGER)
-	@JoinColumn(name="rct_id", nullable=false)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<PlannedNotification> getPlannedNotifications() {
-		return plannedNotifications;
-	}
-	public void setPlannedNotifications(List<PlannedNotification> eventList) {
-		this.plannedNotifications = eventList;
-	}
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name="rct_id", nullable=false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<PlannedNotification> getPlannedNotifications() {
+        return plannedNotifications;
+    }
+    public void setPlannedNotifications(List<PlannedNotification> eventList) {
+        this.plannedNotifications = eventList;
+    }
 
-	public PlannedNotification fetchPlannedNotification(int indexOnScale){
-		if(plannedNotifications == null)
-			return null;
+    ////// OBJECT METHODS
 
-		for(PlannedNotification pn : plannedNotifications){
-			if(pn.getIndexOnTimeScale() == indexOnScale){
-				return pn;
-			}
-		}
+    @Override
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+        result = PRIME * result + ((timeScaleUnitType == null) ? 0 : timeScaleUnitType.hashCode());
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final ReportDefinition other = (ReportDefinition) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
 
-		return null;
-	}
-
-	public void addPlannedNotification(PlannedNotification pn){
-		if(pn == null)
-			return;
-
-		if(plannedNotifications == null)
-			plannedNotifications = new ArrayList<PlannedNotification>();
-
-		plannedNotifications.add(pn);
-	}
-
-	@Override
-	public int hashCode() {
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-		result = PRIME * result + ((timeScaleUnitType == null) ? 0 : timeScaleUnitType.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final ReportDefinition other = (ReportDefinition) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-
-		if (timeScaleUnitType == null) {
-			if (other.timeScaleUnitType != null)
-				return false;
-		} else if (!timeScaleUnitType.equals(other.timeScaleUnitType))
-			return false;
-		return true;
-	}
+        if (timeScaleUnitType == null) {
+            if (other.timeScaleUnitType != null)
+                return false;
+        } else if (!timeScaleUnitType.equals(other.timeScaleUnitType))
+            return false;
+        return true;
+    }
 
 }
