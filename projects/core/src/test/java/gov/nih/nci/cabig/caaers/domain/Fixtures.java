@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.sql.Timestamp;
 
@@ -69,5 +70,11 @@ public class Fixtures {
         report.getPhysician().setFirstName("Frank");
         report.getPhysician().setLastName("Just Frank");
         return report;
+    }
+
+    public static ReportDefinition createReportDefinition(String name) {
+        ReportDefinition def = new ReportDefinition();
+        def.setName(name);
+        return def;
     }
 }
