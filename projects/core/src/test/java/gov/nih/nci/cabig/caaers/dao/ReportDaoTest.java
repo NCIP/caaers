@@ -1,8 +1,6 @@
-/*
- * Sematicbits Copyright message
- */
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -13,23 +11,20 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-
 /**
- * 
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- * Created-on : May 13, 2007
- * @version     %I%, %G%
- * @since       1.0
+ * @author Rhett Sutphin
  */
 public class ReportDaoTest extends DaoTestCase<ReportDao> {
 	private ReportDao rsDao;
@@ -53,7 +48,16 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		assertEquals(Report.class.getName(), rsDao.domainClass().getName());
 	}
 
-	public void testSave() {
+    public void testGetById() throws Exception {
+        Report actual = getDao().getById(-223);
+        assertEquals("Wrong name", "Sample Report", actual.getName());
+        assertDayOfDate("Wrong created on", 2007, Calendar.MAY, 15, actual.getCreatedOn());
+        assertDayOfDate("Wrong due on", 2007, Calendar.MAY, 16, actual.getDueOn());
+        assertTrue("Should be required", actual.isRequired());
+        assertEquals("Wrong def", -222, (int) actual.getReportDefinition().getId());
+    }
+
+    public void testSave() {
 		
 		Report rs = new Report();
 		rs.setAeReport(null);
