@@ -24,7 +24,7 @@
 				<operator name="!=" display-uri="Not Equal To" />
 				<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
 				<operator name="&lt;=" display-uri="Less Than Or Equal To" />
-				<expression>getGrade().getCode()</expression>
+				<expression>getGrade().getCode().intValue()</expression>
 			</field>
 			<field name="term" display-uri="Term">
 				<field-value>
@@ -63,7 +63,7 @@
 				<valid-value value="2" display-uri="Prolonged Hospitalization"/>
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getHospitalization().getCode()</expression>		
+				<expression>getHospitalization().getCode().intValue()</expression>		
 			</field>
 			<field name="expected" display-uri="Expected">
 				<field-value>
