@@ -70,13 +70,6 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 		getHibernateTemplate().deleteAll(c);
 	}
 	
-	@Override
-	@Transactional(readOnly=true)
-	public ReportDefinition getById(int arg0) {
-		//overriden inorder to bring the read under transaction.
-		return super.getById(arg0);
-	}
-	
 	/**
 	 * Willl initialize the Lazy collections inside the passed ReportDefinition
 	 * @param rpDef
