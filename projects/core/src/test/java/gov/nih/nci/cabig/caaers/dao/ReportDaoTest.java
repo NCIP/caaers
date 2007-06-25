@@ -36,10 +36,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		super.setUp();
 		rsDao = getDao();
 
-        // If this is needed in another test, add a transactionTemplate bean to the application context
-        // instead
-        transactionTemplate
-            = new TransactionTemplate((PlatformTransactionManager) getApplicationContext().getBean("transactionManager"));
+        transactionTemplate = (TransactionTemplate) getApplicationContext().getBean("transactionTemplate");
         aeDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean("expeditedAdverseEventReportDao");
     }
 

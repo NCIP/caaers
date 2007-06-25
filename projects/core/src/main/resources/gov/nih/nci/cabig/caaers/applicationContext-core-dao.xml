@@ -88,16 +88,16 @@
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
                 <!-- For Rules-Scheduler-Notification 05/10/2007-->
-				<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>	
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
             </list>
         </property>
         <property name="entityInterceptor">
@@ -130,6 +130,8 @@
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" autowire="byType"/>
 
     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
         <property name="checkWriteOperations"><value>true</value></property>
