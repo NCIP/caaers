@@ -18,7 +18,10 @@
             <div class="label"><label for="ctc-category-${index}">CTC category</label></div>
             <div class="value">
                 <select id="ctc-category-${index}">
-                    <option>Please select CTC version first</option>
+                    <option value="">Any</option>
+                    <c:forEach items="${ctcCategories}" var="cat">
+                        <option value="${cat.id}">${cat.name}</option>
+                    </c:forEach>
                 </select>
             </div>
         </div>

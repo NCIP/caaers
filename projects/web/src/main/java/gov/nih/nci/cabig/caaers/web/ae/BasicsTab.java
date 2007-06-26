@@ -102,9 +102,9 @@ public class BasicsTab extends AeTab {
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
-        refdata.put("ctcVersions", ctcDao.getAll());
+    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+        Map<String, Object> refdata = super.referenceData(command);
+        refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy().getCtcVersion().getCategories());
         return refdata;
     }
 

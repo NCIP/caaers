@@ -24,6 +24,7 @@
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+        var ctcVersion = ${command.assignment.studySite.study.ctcVersion.id}
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
             <c:if test="${not empty ae.ctcTerm}">
@@ -44,7 +45,7 @@
         var AESections = [ ]
 
         function ctcVersion() {
-            return $F("ctc-version");
+            return ctcVersion;
         }
 
         function termValueSelector(term) {
@@ -69,9 +70,7 @@
                 this.detailsForOtherRowId = this.aeProperty + ".detailsForOther-row"
 
                 this.resetTermText()
-                this.ctcVersionChanged(null, true)
 
-                Event.observe("ctc-version", "change", this.ctcVersionChanged.bindAsEventListener(this, false))
                 Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
 
                 AE.createStandardAutocompleter(
@@ -97,25 +96,6 @@
                 $(this.ctcTermId).value = ""
                 $(this.detailsForOtherId).value = ""
                 AE.slideAndHide(this.detailsForOtherRowId)
-            },
-
-            // TODO: for performance, we should probably embed these in the page
-            // since there are only a few dozen of them.
-            updateCategories: function() {
-                createAE.getCategories(ctcVersion(), function(categories) {
-                    var sel = $(this.ctcCategoryId)
-                    sel.options.length = 0
-                    sel.options.add(new Option("Any", ""))
-                    categories.each(function(cat) {
-                        var name = cat.name
-                        if (name.length > 45) name = name.substring(0, 45) + "..."
-                        var opt = new Option(name, cat.id)
-                        sel.options.add(opt)
-                        if (this.initialCtcTerm && this.initialCtcTerm.category.id == opt.value) {
-                            opt.selected = true;
-                        }
-                    }.bind(this))
-                }.bind(this))
             },
 
             selectTerm: function(newCtcTerm) {
@@ -164,35 +144,11 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, ctcVersion(), $F(this.ctcCategoryId), 10, function(values) {
+                createAE.matchTerms(text, ctcVersion, $F(this.ctcCategoryId), 10, function(values) {
                     autocompleter.setChoices(values)
                 })
-            },
-
-            ctcVersionChanged: function(evt, atLoad) {
-                if (ctcVersion()) {
-                    this.updateCategories()
-                    if (!atLoad) {
-                        this.clearSelectedTerm()
-                    }
-                    $(this.ctcDetailsId).enableDescendants()
-                } else {
-                    $(this.ctcDetailsId).disableDescendants()
-                }
             }
         })
-
-        function updateCtcVersion() {
-            if (initialCtcTerm) {
-                $A($("ctc-version").options).each(function(opt) {
-                    initialCtcTerm.each(function(term) {
-                        if (term && term.category && opt.value == term.category.ctc.id) {
-                            opt.selected = true
-                        }
-                    })
-                })
-            }
-        }
 
         function postReset() {
             AESections.each(function(ae) {
@@ -202,7 +158,6 @@
 
         Event.observe(window, "load", function() {
             // do this before any of the behaviors are applied to avoid their onChange side effects
-            updateCtcVersion()
             Event.observe("command", "reset", function() {
                 // onReset fires _before_ the reset; delay action so it happens afterward
                 setTimeout(postReset, 150)
@@ -231,14 +186,9 @@
                     <tags:renderRow field="${field}"/>
                 </c:forEach>
                 <div class="row">
-                    <div class="label"><label for="ctc-version">CTC version</label></div>
+                    <div class="label">CTC version</div>
                     <div class="value">
-                        <select id="ctc-version">
-                            <option value="">Please select --</option>
-                            <c:forEach items="${ctcVersions}" var="ctc">
-                                <option value="${ctc.id}" <c:if test="${command.aeReport.adverseEvents[0].ctcTerm.category.ctc.id == ctc.id}">selected</c:if>>${ctc.name}</option>
-                            </c:forEach>
-                        </select>
+                        ${command.assignment.studySite.study.ctcVersion.name}
                     </div>
                 </div>
             </div>
