@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,15 +37,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private List<ExpeditedAdverseEventReport> aeReports;
     private List<RoutineAdverseEventReport> aeRoutineReports;
 
-    /*
-     * Constructor
-     */
-    public StudyParticipantAssignment(Participant participant,
-			StudySite studySite) {
-		this.participant = participant;
-		this.studySite = studySite;
-		this.dateOfEnrollment = new Date();
-	}
+    public StudyParticipantAssignment(Participant participant, StudySite studySite) {
+        this.participant = participant;
+        this.studySite = studySite;
+        this.dateOfEnrollment = new Date();
+    }
     
     public StudyParticipantAssignment() { }
 
@@ -52,12 +49,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     public void addReport(ExpeditedAdverseEventReport report) {
         report.setAssignment(this);
-        aeReports.add(report);
+        getAeReports().add(report);
     }
     
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
-    	routineReport.setAssignment(this);
-        aeRoutineReports.add(routineReport);
+        routineReport.setAssignment(this);
+        getAeRoutineReports().add(routineReport);
     }
 
     ////// BEAN PROPERTIES
@@ -93,6 +90,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     public List<ExpeditedAdverseEventReport> getAeReports() {
+        if (aeReports == null) aeReports = new ArrayList<ExpeditedAdverseEventReport>();
         return aeReports;
     }
 
@@ -102,15 +100,14 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     @OneToMany(mappedBy = "assignment")
     public List<RoutineAdverseEventReport> getAeRoutineReports() {
-		return aeRoutineReports;
-	}
+        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
+        return aeRoutineReports;
+    }
 
-	public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
-		this.aeRoutineReports = aeRoutineReports;
-	}
+    public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
+        this.aeRoutineReports = aeRoutineReports;
+    }
     
-    
-
     ////// OBJECT METHODS
 
 	public boolean equals(Object o) {
