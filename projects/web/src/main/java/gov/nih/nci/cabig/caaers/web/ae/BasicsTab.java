@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.LongSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -28,6 +29,8 @@ import java.util.LinkedHashMap;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
@@ -39,6 +42,8 @@ public class BasicsTab extends AeTab {
     private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
 
     private CtcDao ctcDao;
+    private EvaluationService evaluationService;
+
     private InputFieldGroup reportFieldGroup;
     private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
@@ -128,6 +133,16 @@ public class BasicsTab extends AeTab {
         }
     }
 
+    @Override
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        boolean severe = false;
+        for (AdverseEvent event : command.getAeReport().getAdverseEvents()) {
+            severe |= evaluationService.isSevere(command.getAssignment(), event);
+        }
+        request.setAttribute("oneOrMoreSevere", severe);
+    }
+
     ////// CONFIGURATION
 
     @Required
@@ -138,5 +153,10 @@ public class BasicsTab extends AeTab {
     // for testing
     CtcDao getCtcDao() {
         return ctcDao;
+    }
+
+    @Required
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
     }
 }

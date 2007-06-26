@@ -27,15 +27,15 @@ public class TreatmentTab extends AeTab {
         treatmentFields = new DefaultInputFieldGroup("treatmentInfo");
         treatmentFields.getFields().add(new DefaultDateField(
             "aeReport.treatmentInformation.firstCourseDate",
-            "First course start date", true
+            "First course start date", false
         ));
         treatmentFields.getFields().add(new DefaultTextField(
             "aeReport.treatmentInformation.adverseEventCourse.number",
-            "Adverse event course number", true
+            "Adverse event course number", false
         ));
         treatmentFields.getFields().add(new DefaultDateField(
             "aeReport.treatmentInformation.adverseEventCourse.date",
-            "Adverse event course start date", true
+            "Adverse event course start date", false
         ));
     }
 

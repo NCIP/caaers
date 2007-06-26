@@ -73,16 +73,32 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-        <!-- TODO: add note about is SAE/isn't SAE -->
-        You are entering reporter information.  You can select from the existing
-        study personnel or you can enter a new one.
+        <c:choose>
+            <c:when test="${oneOrMoreSevere || aeReport.isExpeditedReportingRequired}">
+                <p>
+                    One or more of the adverse events you entered <strong>requires expedited
+                    reporting</strong> under the rules in efect for this study and participant.
+                    Please enter your contact information and that for the treating physician.
+                    Then proceed to the next page for details about the required expedited
+                    report(s).
+                </p>
+            </c:when>
+            <c:otherwise>
+                <p>
+                    None of the adverse events you entered requires expedited reporting under the
+                    rules in effect for this study and participant.  If you would like to prepare
+                    and submit one or more expedited reports anyway, please start by entering your
+                    contact information and that for the treating physician.
+                </p>
+            </c:otherwise>
+        </c:choose>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Reporter Details">
             <div class="row">
                 <div class="label">Research staff</div>
                 <div class="value">
-                    <select id="staff" name="staff" onChange="javascript:chooseStaff();">
+                    <select id="staff" name="staff">
                         <option value=-1>please select--</option>
                         <c:forEach var="site" varStatus="status" items="${command.study.studySites}">
                             <c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     /* attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs
      * in AdverseEventReport and AdverseEvent */
     Map<String, List<List<Attribution>>> getAttributionMap();
+
+    Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap();
+
+    void setOptionalReportDefinitions(List<ReportDefinition> defs);
 }

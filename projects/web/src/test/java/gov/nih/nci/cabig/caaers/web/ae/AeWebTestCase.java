@@ -22,7 +22,7 @@ public abstract class AeWebTestCase extends WebTestCase {
 
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateExpeditedAdverseEventCommand command;
-    private ExpeditedAdverseEventReportDao reportDao;
+    protected ExpeditedAdverseEventReportDao reportDao;
     protected Errors errors;
 
     @Override

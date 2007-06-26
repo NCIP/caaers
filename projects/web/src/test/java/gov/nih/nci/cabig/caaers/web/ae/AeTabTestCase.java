@@ -49,7 +49,9 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
 
     protected void assertFieldProperties(String fieldGroupName, String... expectedProperties) {
-        List<InputField> actualFields = getFieldGroup(fieldGroupName).getFields();
+        InputFieldGroup actualGroup = getFieldGroup(fieldGroupName);
+        assertNotNull("There's no group named " + fieldGroupName, actualGroup);
+        List<InputField> actualFields = actualGroup.getFields();
         assertEquals("Wrong number of fields in " + fieldGroupName,
             expectedProperties.length, actualFields.size());
         for (int i = 0; i < expectedProperties.length; i++) {

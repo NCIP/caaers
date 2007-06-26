@@ -27,35 +27,27 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Rhett Sutphin
  */
-public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEventInputCommand {
+public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private static final Log log = LogFactory.getLog(CreateExpeditedAdverseEventCommand.class);
-
-    private ExpeditedAdverseEventReport aeReport;
 
     private Participant participant;
     private Study study;
 
-    private ExpeditedAdverseEventReportDao reportDao;
     private StudyParticipantAssignmentDao assignmentDao;
-
-    private Map<String, List<List<Attribution>>> attributionMap;
 
     public CreateExpeditedAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
         NowFactory nowFactory
     ) {
+        super(reportDao);
         this.assignmentDao = assignmentDao;
-        this.reportDao = reportDao;
-        this.aeReport = new ExpeditedAdverseEventReport();
-        this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-        // ensure there's at least one before the fields are generated
-        this.aeReport.addAdverseEvent(new AdverseEvent());
-
-        this.attributionMap = new AttributionMap(aeReport);
+        setAeReport(new ExpeditedAdverseEventReport());
+        getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
     }
 
     ////// LOGIC
 
+    @Override
     public StudyParticipantAssignment getAssignment() {
         if (getParticipant() != null && getStudy() != null) {
             return assignmentDao.getAssignment(getParticipant(), getStudy());
@@ -71,6 +63,7 @@ public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEvent
         getAeReport().setAssignment(getAssignment());
     }
 
+    @Override
     public void save() {
         getAssignment().addReport(getAeReport());
         reportDao.save(getAeReport());
@@ -78,14 +71,7 @@ public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEvent
 
     ////// BOUND PROPERTIES
 
-    public ExpeditedAdverseEventReport getAeReport() {
-        return aeReport;
-    }
-
-    public Map<String, List<List<Attribution>>> getAttributionMap() {
-        return attributionMap;
-    }
-
+    @Override
     public Participant getParticipant() {
         return participant;
     }
@@ -95,6 +81,7 @@ public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEvent
         updateReportAssignmentLink();
     }
 
+    @Override
     public Study getStudy() {
         return study;
     }
@@ -112,9 +99,5 @@ public class CreateExpeditedAdverseEventCommand implements ExpeditedAdverseEvent
             }
         }
         updateReportAssignmentLink();
-    }
-
-    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        this.aeReport = aeReport;
     }
 }

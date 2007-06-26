@@ -9,13 +9,21 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseDate;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindingResult;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.math.BigDecimal;
 
 /**
@@ -43,6 +51,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setCtepStudyDiseaseDao(ctepStudyDiseaseDao);
         controller.setAnatomicSiteDao(anatomicSiteDao);
         controller.setPriorTherapyDao(priorTherapyDao);
+        controller.setReportDefinitionDao(reportDefinitionDao);
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
@@ -137,6 +146,16 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         assertSame(PostAdverseEventStatus.NOT_RECOVERED,
             command.getAeReport().getResponseDescription().getPresentStatus());
     }
+
+    public void testBindReportDefinitionKey() throws Exception {
+        ReportDefinition expectedReportDefinition = new ReportDefinition();
+        request.setParameter("optionalReportDefinitionsMap[45]", "true");
+        expect(reportDefinitionDao.getById(45)).andReturn(expectedReportDefinition);
+
+        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
+        assertEquals(1, command.getOptionalReportDefinitionsMap().size());
+        assertTrue(command.getOptionalReportDefinitionsMap().get(expectedReportDefinition));
+    }
     
     public void testBindAttributions() throws Exception {
         firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
@@ -153,6 +172,31 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
             command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(1));
         assertEquals(Attribution.PROBABLE,
             command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
+    }
+
+    public void testNoAlwaysVisibleFieldsPastReporterAreAbsolutelyRequired() throws Exception {
+        Flow<ExpeditedAdverseEventInputCommand> flow = controller.getFlow();
+        List<Tab<ExpeditedAdverseEventInputCommand>> tabs = flow.getTabs();
+        assertTrue("Test expectation violation: tab 0 not begin", tabs.get(0) instanceof BeginTab);
+        assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof BasicsTab);
+        assertTrue("Test expectation violation: tab 2 not reporter", tabs.get(2) instanceof ReporterTab);
+        assertTrue("Test expectation violation: tab 3 not checkpoint", tabs.get(3) instanceof CheckpointTab);
+        for (int i = 4; i < tabs.size(); i++) {
+            if (!(tabs.get(i) instanceof TabWithFields)) continue;
+            TabWithFields<ExpeditedAdverseEventInputCommand> tab
+                = (TabWithFields<ExpeditedAdverseEventInputCommand>) tabs.get(i);
+            Map<String, InputFieldGroup> groups = tab.createFieldGroups(firstCommand);
+            for (String groupName : groups.keySet()) {
+                InputFieldGroup group = groups.get(groupName);
+                for (InputField field : group.getFields()) {
+                    assertFalse(
+                        field.getDisplayName() + " in group " + groupName +
+                        " on tab " + tab.getShortTitle() + " (" + tab.getNumber() +
+                        ") is absolutely required",
+                        field.isRequired());
+                }
+            }
+        }
     }
 
     private Object[] bindAndReturnCommandAndErrors() throws Exception {

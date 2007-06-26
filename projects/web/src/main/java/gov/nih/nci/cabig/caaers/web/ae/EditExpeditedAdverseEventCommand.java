@@ -24,52 +24,31 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 /**
  * @author Rhett Sutphin
  */
-public class EditExpeditedAdverseEventCommand implements ExpeditedAdverseEventInputCommand {
-    private ExpeditedAdverseEventReport aeReport;
-    private Map<String, List<List<Attribution>>> attributionMap;
-
-    private ExpeditedAdverseEventReportDao expeditedAeReportDao;
+public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
 
     ////// LOGIC
 
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao) {
-        this.expeditedAeReportDao = expeditedAeReportDao;
+        super(expeditedAeReportDao);
     }
 
+    @Override
     public StudyParticipantAssignment getAssignment() {
-        return aeReport.getAssignment();
+        return getAeReport().getAssignment();
     }
 
+    @Override
     public Participant getParticipant() {
         return getAssignment().getParticipant();
     }
 
+    @Override
     public Study getStudy() {
         return getAssignment().getStudySite().getStudy();
     }
 
+    @Override
     public void save() {
-        expeditedAeReportDao.save(getAeReport());
-    }
-
-    ////// BEAN PROPERTIES
-
-    public ExpeditedAdverseEventReport getAeReport() {
-        return aeReport;
-    }
-
-    public Map<String, List<List<Attribution>>> getAttributionMap() {
-        return attributionMap;
-    }
-
-    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        this.aeReport = aeReport;
-        if (aeReport.getAdverseEvents().size() == 0) {
-            aeReport.addAdverseEvent(new AdverseEvent());
-        }
-        if (aeReport.getTreatmentInformation() == null) {
-            aeReport.setTreatmentInformation(new TreatmentInformation());
-        }
-        this.attributionMap = new AttributionMap(aeReport);
+        reportDao.save(getAeReport());
     }
 }

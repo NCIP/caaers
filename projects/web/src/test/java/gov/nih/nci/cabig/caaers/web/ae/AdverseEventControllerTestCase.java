@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 
 /**
  * @author Rhett Sutphin
@@ -33,6 +34,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
+    protected ReportDefinitionDao reportDefinitionDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -49,5 +51,6 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class);
         anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class);
         priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class);
+        reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
     }
 }

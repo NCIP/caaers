@@ -28,7 +28,7 @@ public class DescriptionTab extends AeTab {
         String baseProp = "aeReport.responseDescription";
 
         DefaultTextArea desc = new DefaultTextArea(baseProp + ".eventDescription",
-            "Description", true);
+            "Description", false);
         desc.getAttributes().put(InputField.DETAILS,
             "Describe the adverse event(s) and any action prompted by them");
         allFields.getFields().add(desc);

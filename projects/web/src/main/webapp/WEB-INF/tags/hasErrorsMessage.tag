@@ -6,5 +6,10 @@
             There are problems with your submission.
             Please correct them before proceeding.
         </p>
+        <ul class="errors">
+            <c:forEach items="${messages}" var="msg">
+                <li>${msg}</li>
+            </c:forEach>
+        </ul>
     </c:if>
 </form:errors>

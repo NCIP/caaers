@@ -1,28 +1,31 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -34,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -56,6 +60,8 @@ public abstract class AbstractAdverseEventInputController
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected NowFactory nowFactory;
+    protected EvaluationService evaluationService;
+    protected ReportDefinitionDao reportDefinitionDao;
 
     protected AbstractAdverseEventInputController() {
         setFlow(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
@@ -65,6 +71,7 @@ public abstract class AbstractAdverseEventInputController
     protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new BasicsTab());
         flow.addTab(new ReporterTab());
+        flow.addTab(new CheckpointTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
         flow.addTab(new TreatmentTab());
@@ -92,6 +99,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
+        ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -101,7 +109,7 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "RawUseOfParameterizedType" })
     protected Map referenceData(
         HttpServletRequest request, Object oCommand, Errors errors, int page
     ) throws Exception {
@@ -125,7 +133,9 @@ public abstract class AbstractAdverseEventInputController
         return true;
     }
 
-    /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */
+    /**
+     * Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller.
+     */
     @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
         String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
@@ -134,6 +144,28 @@ public abstract class AbstractAdverseEventInputController
         } else {
             return super.getViewName(request, command, page);
         }
+    }
+
+    @Override
+    protected void postProcessPage(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
+        super.postProcessPage(request, oCommand, errors, page);
+        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
+
+        // "pre-process" checkpoint tab TODO: add a general hook for this in the base class & Tab
+        if (getTab(command, getTargetPage(request, page)) instanceof CheckpointTab) {
+            getEvaluationService().addRequiredReports(command.getAeReport());
+            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+        }
+    }
+
+    private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
+        List<ReportDefinition> all = getEvaluationService().applicableReportDefinitions(command.getAssignment());
+        for (Report report : command.getAeReport().getReports()) {
+            if (report.isRequired()) {
+                all.remove(report.getReportDefinition());
+            }
+        }
+        return all;
     }
 
     @Override
@@ -181,7 +213,7 @@ public abstract class AbstractAdverseEventInputController
     }
 
     public void setReportDao(ExpeditedAdverseEventReportDao reportDao) {
-        this.reportDao = reportDao; 
+        this.reportDao = reportDao;
     }
 
     public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
@@ -223,6 +255,20 @@ public abstract class AbstractAdverseEventInputController
     public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
         this.routineReportDao = routineReportDao;
     }
-    
-    
+
+    public EvaluationService getEvaluationService() {
+        return evaluationService;
+    }
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
+    public ReportDefinitionDao getReportDefinitionDao() {
+        return reportDefinitionDao;
+    }
+
+    public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+        this.reportDefinitionDao = reportDefinitionDao;
+    }
 }
