@@ -95,14 +95,14 @@
 									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:field-constraint/@field-name"/>
 								</xsl:otherwise>						
 							</xsl:choose>
-							
+
 							
 							<xsl:choose>
-								<xsl:when  test="string(number(.))='NaN' and (.!='true') and  (.!='false')" >.equals("</xsl:when>
+								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (.!='true') and  (.!='false')" >.equals("</xsl:when>
 								<xsl:otherwise><xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/></xsl:otherwise>							
 							</xsl:choose>
 							
-							<xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN' and (.!='true') and (.!='false')">")</xsl:if>
+							<xsl:value-of select="."/><xsl:if test= "(contains(../../../rules:expression,'intValue()') = false)  and (.!='true') and (.!='false')">")</xsl:if>
 							<xsl:if test="$ct != position()"> || </xsl:if>
 				</xsl:for-each>
 			</eval>	
