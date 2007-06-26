@@ -116,6 +116,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     @Transient
+    public int getRequiredReportCount() {
+        int count = 0;
+        for (Report report : getReports()) {
+            if (report.isRequired()) count++;
+        }
+        return count;
+    }
+
+    @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Participant", summaryLine(getParticipant()));

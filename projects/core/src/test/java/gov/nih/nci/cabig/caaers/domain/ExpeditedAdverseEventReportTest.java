@@ -236,4 +236,14 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 
         assertFalse(report.isExpeditedReportingRequired());
     }
+
+    public void testRequiredReportCount() throws Exception {
+        report.addReport(new Report());
+        report.addReport(new Report());
+        Report reqd = new Report();
+        reqd.setRequired(true);
+        report.addReport(reqd);
+
+        assertEquals(1, report.getRequiredReportCount());
+    }
 }
