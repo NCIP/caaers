@@ -98,11 +98,11 @@
 							
 							
 							<xsl:choose>
-								<xsl:when  test="string(number(.))='NaN' and (.!='true' or .!='false')" >.equals("</xsl:when>
+								<xsl:when  test="string(number(.))='NaN' and (.!='true') and  (.!='false')" >.equals("</xsl:when>
 								<xsl:otherwise><xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/></xsl:otherwise>							
 							</xsl:choose>
 							
-							<xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN' and (.!='true' or .!='false')">")</xsl:if>
+							<xsl:value-of select="."/><xsl:if test= "string(number(.))='NaN' and (.!='true') and (.!='false')">")</xsl:if>
 							<xsl:if test="$ct != position()"> || </xsl:if>
 				</xsl:for-each>
 			</eval>	
