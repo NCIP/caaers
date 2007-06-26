@@ -66,8 +66,10 @@ public class Fixtures {
     public static ExpeditedAdverseEventReport createSaveableExpeditedReport() {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.setCreatedAt(new Timestamp(103));
+        report.setReporter(new Reporter());
         report.getReporter().setFirstName("Frank");
         report.getReporter().setLastName("Just Frank");
+        report.setPhysician(new Physician());
         report.getPhysician().setFirstName("Frank");
         report.getPhysician().setLastName("Just Frank");
         return report;

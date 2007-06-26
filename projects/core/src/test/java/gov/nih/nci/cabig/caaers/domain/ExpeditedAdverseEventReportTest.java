@@ -191,14 +191,6 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         assertChildNeverNull("treatmentInformation");
     }
 
-    public void testReporterNeverNull() throws Exception {
-        assertChildNeverNull("reporter");
-    }
-
-    public void testPhysicianNeverNull() throws Exception {
-        assertChildNeverNull("physician");
-    }
-
     public void testResponseNeverNull() throws Exception {
         assertChildNeverNull("responseDescription");
     }

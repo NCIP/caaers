@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
@@ -355,15 +356,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     }
 
     private ExpeditedAdverseEventReport createMinimalAeReport() {
-        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+        ExpeditedAdverseEventReport report = Fixtures.createSaveableExpeditedReport();
         report.setAssignment(assignmentDao.getById(-14));
         report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));
-        report.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        report.getReporter().setFirstName("Min");
-        report.getReporter().setLastName("Valid");
-        report.getPhysician().setFirstName("Min");
-        report.getPhysician().setLastName("Valid");
         return report;
     }
 
