@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * @author Rhett Sutphin
@@ -76,5 +77,22 @@ public class Fixtures {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
         return def;
+    }
+
+    public static Ctc createCtcaeV3() {
+        Ctc v3 = setId(3, new Ctc());
+        // this is only partial, of course
+        v3.setCategories(new ArrayList<CtcCategory>());
+        v3.getCategories().add(createCtcCategory(v3, "ALLERGY/IMMUNOLOGY"));
+        v3.getCategories().add(createCtcCategory(v3, "AUDITORY/EAR"));
+        v3.getCategories().add(createCtcCategory(v3, "BLOOD/BONE MARROW"));
+        return v3;
+    }
+
+    private static CtcCategory createCtcCategory(Ctc ctc, String name) {
+        CtcCategory category = new CtcCategory();
+        category.setName(name);
+        category.setCtc(ctc);
+        return category;
     }
 }
