@@ -147,8 +147,7 @@
 					<c:set var="studyVisibility" value="display: none"/>
 				</c:otherwise>
 			</c:choose>
-	<div>		
-	<div title="Select Sponsor" id="sponsor-details" style="${sponsorVisibility}" class="pane"> 
+	<div title="Select Sponsor" id="sponsor-details" style="${sponsorVisibility}"> 
 			<div class="row">
 				<div class="label"><label for="sponsor-input">Select Sponsor</label></div>
 				<div class="value">
@@ -161,7 +160,7 @@
 			<div id="sponsor-choices" class="autocomplete"></div>
 	</div>	
 
-	<div title="Select Study" id="study-details" style="${studyVisibility}" class="pane">
+	<div title="Select Study" id="study-details" style="${studyVisibility}">
 			<div class="row">
 				<div class="label"><label for="study-input">Select Study</label></div>
 				<div class="value">
@@ -173,7 +172,7 @@
 			</div>
 			<div id="study-choices" class="autocomplete"></div>
 	</div>
-	</div>
+
 	</jsp:attribute>
 
 
