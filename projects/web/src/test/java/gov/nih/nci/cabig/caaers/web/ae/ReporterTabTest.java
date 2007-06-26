@@ -83,4 +83,25 @@ public class ReporterTabTest extends AeTabTestCase {
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]", "E-mail address");
     }
+
+    public void testPreProcessAddsReporterIfNotPresent() throws Exception {
+        command.getAeReport().setReporter(null);
+        assertNull("Test setup failure: existing reporter", command.getAeReport().getReporter());
+        getTab().preProcess(request, command);
+
+        assertNotNull("Reporter not added",command.getAeReport().getReporter());
+    }
+    
+    public void testPreProcessAddsPhysicianIfNotPresent() throws Exception {
+        command.getAeReport().setPhysician(null);
+        assertNull("Test setup failure: existing physician", command.getAeReport().getPhysician());
+        getTab().preProcess(request, command);
+
+        assertNotNull("Physician not added",command.getAeReport().getPhysician());
+    }
+
+    public void testDirtyMoves() throws Exception {
+        assertFalse(getTab().isAllowDirtyBack());
+        assertFalse(getTab().isAllowDirtyForward());
+    }
 }

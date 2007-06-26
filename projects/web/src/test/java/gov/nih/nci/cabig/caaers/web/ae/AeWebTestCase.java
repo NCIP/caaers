@@ -1,18 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
-import org.springframework.validation.Errors;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -66,9 +67,11 @@ public abstract class AeWebTestCase extends WebTestCase {
         event.setCtcTerm(new CtcTerm());
 
         // ReporterTab
+        c.getAeReport().setReporter(new Reporter());
         c.getAeReport().getReporter().setFirstName("Dan");
         c.getAeReport().getReporter().setLastName("McReporter");
         c.getAeReport().getReporter().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "dan@example.com");
+        c.getAeReport().setPhysician(new Physician());
         c.getAeReport().getPhysician().setFirstName("Jim");
         c.getAeReport().getPhysician().setLastName("O'Physician");
         c.getAeReport().getPhysician().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "docjim@example.com");

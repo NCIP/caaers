@@ -7,9 +7,12 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -21,6 +24,16 @@ public class ReporterTab extends AeTab {
 
     public ReporterTab() {
         super("Reporter info", "Reporter", "ae/reporter");
+    }
+
+    @Override
+    public void preProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+        if (command.getAeReport().getReporter() == null) {
+            command.getAeReport().setReporter(new Reporter());
+        }
+        if (command.getAeReport().getPhysician() == null) {
+            command.getAeReport().setPhysician(new Physician());
+        }
     }
 
     @Override
@@ -52,7 +65,7 @@ public class ReporterTab extends AeTab {
         String base, String contactType, String displayName, boolean required
     ) {
         return new DefaultTextField(
-            base + "contactMechanisms[" + contactType + "]", displayName, required);
+            base + "contactMechanisms[" + contactType + ']', displayName, required);
     }
 
     @Override
@@ -65,6 +78,11 @@ public class ReporterTab extends AeTab {
 
     @Override
     public boolean isAllowDirtyForward() {
+        return false;
+    }
+
+    @Override
+    public boolean isAllowDirtyBack() {
         return false;
     }
 
