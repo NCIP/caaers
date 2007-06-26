@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
@@ -112,7 +113,9 @@ public class RuleAuthoringServiceTest extends TestCase {
 		fieldConstraint.setFieldName("primarySponsorCode");
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.setValue("SC_1");
+		List<String> values = new ArrayList<String>();
+		values.add("SC_1");
+		literalRestriction.setValue(values);
 		fieldConstraint.getLiteralRestriction().add(literalRestriction);
 		column.getFieldConstraint().add(fieldConstraint);
 		
