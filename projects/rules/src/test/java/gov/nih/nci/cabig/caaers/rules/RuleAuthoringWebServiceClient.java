@@ -110,7 +110,9 @@ public class RuleAuthoringWebServiceClient {
 		fieldConstraint.setFieldName("grade");
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.setValue("2");
+		List<String> values = new ArrayList<String>();
+		values.add("2");
+		literalRestriction.setValue(values);
 		fieldConstraint.getLiteralRestriction().add(literalRestriction);
 		column.getFieldConstraint().add(fieldConstraint);
 		condition.getColumn().add(column);
@@ -122,7 +124,9 @@ public class RuleAuthoringWebServiceClient {
 		fieldConstraint.setFieldName("term");
 		literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.setValue("Term One");
+		List<String> values2 = new ArrayList<String>();
+		values.add("Term One");
+		literalRestriction.setValue(values2);
 		fieldConstraint.getLiteralRestriction().add(literalRestriction);
 		column.getFieldConstraint().add(fieldConstraint);
 		condition.getColumn().add(column);
@@ -142,7 +146,9 @@ public class RuleAuthoringWebServiceClient {
 		fieldConstraint.setFieldName("term");
 		literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.setValue("Sample Term");
+		List<String> values1 = new ArrayList<String>();
+		values.add("Sample Term");
+		literalRestriction.setValue(values1);
 		fieldConstraint.getLiteralRestriction().add(literalRestriction);
 		column.getFieldConstraint().add(fieldConstraint);
 		condition.getColumn().add(column);
