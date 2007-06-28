@@ -71,6 +71,10 @@ public class CreateRuleCommand implements RuleInputCommand
 	 */
 	public void save() 
 	{
+		System.out.println("level " + getLevel());
+		System.out.println("site " + institutionName);
+		System.out.println("spnsr " + sponsorName);
+		
 		try 
 		{
 			List<Rule> rules = ruleSet.getRule();
@@ -155,9 +159,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		{
 			rule.getCondition().getColumn().add(createCriteriaForSponsor(getSponsorName()));
 		}
-		else
+		else if (INSTITUTIONAL_LEVEL.equals(getLevel()))
 		{
-			
+			rule.getCondition().getColumn().add(createCriteriaForInstitute(getInstitutionName()));
 		}
 	}
 
@@ -174,7 +178,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		} 
 		else if (INSTITUTIONAL_LEVEL.equals(level)) 
 		{
-			fieldName = "";
+			fieldName = "name";
 		}
 		else
 		{
@@ -349,7 +353,33 @@ public class CreateRuleCommand implements RuleInputCommand
 		return column;
 		
 	}
-	
+	/*
+	 * This method creates criteria column with institute name  as the criteria
+	 */
+	private Column createCriteriaForInstitute(String criteriaValue)
+	{
+		Column column = BRXMLHelper.newColumn();
+		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Site");
+		column.setIdentifier("siteSDO");
+		column.setExpression("getName()");
+		
+		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
+		
+		FieldConstraint fieldConstraint = new FieldConstraint();
+		fieldConstraint.setFieldName(getFieldNameBasedOnLevel(CreateRuleCommand.INSTITUTIONAL_LEVEL));
+		fieldConstraints.add(fieldConstraint);
+		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
+		LiteralRestriction literalRestriction = new LiteralRestriction();
+		literalRestriction.setEvaluator("==");
+		literalRestriction.getValue().add(criteriaValue);
+		literalRestrictions.add(literalRestriction);
+		fieldConstraint.setLiteralRestriction(literalRestrictions);
+
+		column.setFieldConstraint(fieldConstraints);
+		
+		return column;
+		
+	}
 	/*
 	 * THis method is used to create criteria for sponsor based on the sponsor name
 	 */
