@@ -189,9 +189,9 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 	public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception{
 		    //Report rs = aeReport.getReportSchedule();
 		//aeReport.
-		String institutionName = aeReport.getStudy().getPrimarySponsorCode();
+		String institutionName = aeReport.getAssignment().getStudySite().getSite().getName();
 		String bindURI_ForInstitutionLevelRules = this.getBindURI("", institutionName,"INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
-		Study study = aeReport.getStudy();
+		//Study study = aeReport.getStudy();
 		List<AdverseEvent> aes = aeReport.getAdverseEvents();
 		AdverseEvent ae = aes.get(0);
 		
@@ -204,7 +204,7 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
 		
 		try {
-			evaluationForInstitution = this.getEvaluationObject(ae, study, bindURI_ForInstitutionLevelRules);
+			evaluationForInstitution = this.getEvaluationObject(ae, aeReport.getAssignment().getStudySite().getSite(), bindURI_ForInstitutionLevelRules);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new Exception(e.getMessage(),e);
