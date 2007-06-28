@@ -2,14 +2,18 @@ package gov.nih.nci.cabig.caaers.web.rule;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.SiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -59,13 +63,17 @@ public class RuleAjaxFacade
 	
 	private CtcTermDao ctcTermDao;
 	
-	private RuleAuthoringService ruleAuthoringService;
+	private RuleAuthoringService ruleAuthoringService; 
 	
 	private RuleExecutionService ruleExecutionService;
 	
 	private RuleDeploymentService ruleDeploymentService;
 	
     private ConfigProperty configurationProperty;
+    
+    private SiteDao siteDao;
+    
+    private ReportDefinitionDao reportDefinitionDao;
 
     public ConfigProperty getConfigurationProperty() 
     {
@@ -142,8 +150,25 @@ public class RuleAjaxFacade
     	
     	ruleSet.getRule().add(newRule);
     	
+    	//get report defnitions
+    	List<ReportDefinition> reportDefinitions = reportDefinitionDao.getAll();
+    	
+        // cut down objects for serialization
+        List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
+        for (ReportDefinition reportDefinition : reportDefinitions) {
+        	
+        	reportDefinition.setPlannedNotifications(null);
+        	reportDefinition.setTimeScaleUnitType(null);
+        	reducedReportDefinitions.add(reportDefinition);
+        	//reportDefinitions.add(
+              //  buildReduced(reportDefinition, Arrays.asList("id","name"))
+            //);
+        }
+        //System.out.println("in add rule " + reducedReportDefinitions.size());
+    	
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
     	request.setAttribute("ruleCount", ruleSet.getRule().size()-1);
+    	request.setAttribute("reportDefinitions", reducedReportDefinitions);
     	request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createRuleCommand);
     	
     	return getOutputFromJsp("/pages/rule/addRule");
@@ -154,11 +179,23 @@ public class RuleAjaxFacade
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
     	Rule rule = ruleSet.getRule().get(ruleCount);
     	Column column = newColumn();
+    	/*
+    	Random r = new Random();
+    	int id = r.nextInt();
+    	column.setId(id);
+    	*/
     	rule.getCondition().getColumn().add(column);
 
+    	
+    	
+    	
+    	
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
     	request.setAttribute("ruleCount", ruleCount);
     	request.setAttribute("columnCount", rule.getCondition().getColumn().size()-1);
+    	
+    //	System.out.println("sending .. " );
+    	
     	return getOutputFromJsp("/pages/rule/addColumn");
     }
     
@@ -187,6 +224,17 @@ public class RuleAjaxFacade
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
     	Rule rule = ruleSet.getRule().get(ruleCount);
+    	/*
+    	Column c= null;
+      	
+      	for (Column col:rule.getCondition().getColumn()) {
+      		if (columnCount == col.getId()) {
+      			c = col;
+      			break;
+      		}
+      	}
+    	return rule.getCondition().getColumn().remove(c);
+    	*/
     	return rule.getCondition().getColumn().remove(columnCount) != null;
     }
     
@@ -450,6 +498,26 @@ public class RuleAjaxFacade
 		return sponsors;
 	}
 
+	/* 
+	 * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to it.
+	 * 
+	 */  
+	public List<Site> matchSites(String text) 
+	{
+        System.out.println("in match sites...");
+		List<Site> sites = siteDao.getBySubnames(extractSubnames(text));
+
+        
+        // cut down objects for serialization
+        List<Site> reducedStudies = new ArrayList<Site>(sites.size());
+        for (Site site : sites) {
+            reducedStudies.add(
+                buildReduced(site, Arrays.asList("name"))
+            );
+        }
+        return reducedStudies;
+    }
+	
 	/*
 	 * This method returns a list of Field names based on the Domain object. This is only used for rules UI
 	 */
@@ -492,5 +560,21 @@ public class RuleAjaxFacade
 		}
 		
 		return null;
+	}
+
+	public SiteDao getSiteDao() {
+		return siteDao;
+	}
+
+	public void setSiteDao(SiteDao siteDao) {
+		this.siteDao = siteDao;
+	}
+
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
 	}
 }
