@@ -213,7 +213,7 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 			bindURI = CategoryConfiguration.STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		if(type.equalsIgnoreCase("INSTITUTION")){
-			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		return bindURI;
 	}
