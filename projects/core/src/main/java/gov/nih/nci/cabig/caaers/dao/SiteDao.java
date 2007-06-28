@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,6 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class SiteDao extends GridIdentifiableDao<Site> {
+	
+	private static final List<String> SUBSTRING_MATCH_PROPERTIES
+    = Arrays.asList("name");
+	private static final List<String> EXACT_MATCH_PROPERTIES
+    = Collections.emptyList();
+
     public Class<Site> domainClass() {
         return Site.class;
     }
@@ -39,5 +47,11 @@ public class SiteDao extends GridIdentifiableDao<Site> {
         List<Site> results = getHibernateTemplate().find("from Site where name= ?", name);
         return results.size() > 0 ? results.get(0) : null;
     }
+    
+    public List<Site> getBySubnames(String[] subnames) {
+        return findBySubname(subnames,
+            SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
     
 }
