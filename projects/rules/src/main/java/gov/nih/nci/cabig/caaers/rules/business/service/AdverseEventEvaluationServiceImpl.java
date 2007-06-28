@@ -1,22 +1,20 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Site;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
-import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
-import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
@@ -118,7 +116,70 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	return final_result;
 	
 }
+
+
+public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 	
+	String final_result = null;
+	
+	String institution_level_evaluation = null;
+
+	
+	String institutionName = site.getName();
+	String bindURI_ForInstitutionLevelRules = this.getBindURI("", institutionName,"INSTITUTION",RuleType.AE_ASSESMENT_RULES.getName());
+	
+	/**
+	 * First asses the AE for Sponsor
+	 */
+	
+	
+	RuleSet ruleSetForInstitution = rulesEngineService.getRuleSetForInstitution(RuleType.AE_ASSESMENT_RULES.getName(), institutionName);
+	
+	if(ruleSetForInstitution==null){
+		throw new Exception("There are no rules configured for adverse event assesment for this site!");
+	}
+	/*
+	boolean rulesDeployedForSponsor = rulesEngineService.isDeployed(ruleSetForSponsor);
+	
+	if(!rulesDeployedForSponsor){
+		throw new Exception("There are no rules deployd for adverse event assesment for this sponsor!");
+	}
+	*/
+	AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
+	
+	try {
+		evaluationForInstitution = this.getEvaluationObject(ae, site, bindURI_ForInstitutionLevelRules);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		throw new Exception(e.getMessage(),e);
+	}
+    
+	System.out.println("Message: " + evaluationForInstitution.getMessage());
+
+
+	
+	
+	/**
+	 * Now we can compare both the decisions 
+	 * If the evaluation is same then just return that evaluation
+	 * but if they are not same then Study evaluation overrides
+	 */
+	institution_level_evaluation = evaluationForInstitution.getMessage();
+	
+
+	 if((institution_level_evaluation==null)){
+		 final_result = "CAN_NOT_DETERMINED";
+	 }
+
+	 if((institution_level_evaluation!=null)){
+		 final_result = institution_level_evaluation;
+	 }
+	
+	return final_result;
+	
+}
+
+
 	//public String identifyAdverseEventType()
   /**
    * Go through all the Aes and fire the rules against them
@@ -150,6 +211,9 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		}
 		if(type.equalsIgnoreCase("STUDY")){
 			bindURI = CategoryConfiguration.STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
+		}
+		if(type.equalsIgnoreCase("INSTITUTION")){
+			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		return bindURI;
 	}
@@ -215,4 +279,42 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 		return evaluationForSponsor;
 	}
 
+	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Site site, String bindURI) throws Exception{
+		
+		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
+		
+		List<Object> inputObjects = new ArrayList<Object>();
+		inputObjects.add(ae);
+		inputObjects.add(site);
+		
+		List<Object> outputObjects = null;
+		try{
+		
+			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
+		
+		}catch(Exception ex){
+			/**
+			 * Don't do anything, it means there are no rules for this package
+			 */
+			throw new RuleException("There are no rule configured for this institution",ex);
+			//return evaluationForSponsor;
+		}
+		
+		
+		
+		Iterator<Object> it = outputObjects.iterator();
+		
+		while(it.hasNext()){
+			Object obj = it.next();
+			
+			if(obj instanceof AdverseEventEvaluationResult) {
+				evaluationForInstitution = (AdverseEventEvaluationResult)obj;
+				break;
+			}
+			
+			
+		}
+		
+		return evaluationForInstitution;
+	}
 }
