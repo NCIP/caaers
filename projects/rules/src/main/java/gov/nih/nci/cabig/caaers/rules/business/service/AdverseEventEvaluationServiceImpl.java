@@ -189,16 +189,30 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 	public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception{
 		    //Report rs = aeReport.getReportSchedule();
 		//aeReport.
+		String institutionName = aeReport.getStudy().getPrimarySponsorCode();
+		String bindURI_ForInstitutionLevelRules = this.getBindURI("", institutionName,"INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
 		Study study = aeReport.getStudy();
 		List<AdverseEvent> aes = aeReport.getAdverseEvents();
 		AdverseEvent ae = aes.get(0);
 		
+		RuleSet ruleSetForInstitution = rulesEngineService.getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), institutionName);
+		
+		if(ruleSetForInstitution==null){
+			throw new Exception("There are no rules configured for adverse event assesment for this site!");
+		}
+		
+		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
+		
 		try {
-			return this.assesAdverseEvent(ae, study);
+			evaluationForInstitution = this.getEvaluationObject(ae, study, bindURI_ForInstitutionLevelRules);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw e;
+			throw new Exception(e.getMessage(),e);
 		}
+	    
+		System.out.println("Message: " + evaluationForInstitution.getMessage());
+		
+		return evaluationForInstitution.getMessage();
 		
 		    
 		
