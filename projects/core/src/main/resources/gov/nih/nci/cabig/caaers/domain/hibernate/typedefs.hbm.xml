@@ -26,4 +26,13 @@
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="deliveryStatus">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus</param>
     </typedef>
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="radiationAdministration">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.RadiationAdministration</param>
+    </typedef>
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="deviceOperator">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.DeviceOperator</param>
+    </typedef>
+     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="availability">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Availability</param>
+    </typedef>
 </hibernate-mapping>

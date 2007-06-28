@@ -123,6 +123,24 @@
                         </list>
                     </property>
                 </bean>
+                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+                    p:displayName="Search" p:mainController="studyController">
+                    <property name="pathMapping"><value>/search/**</value></property>
+                    <property name="tasks">
+                        <list>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Study search" p:linkName="studyController"/> 
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Participant search" p:linkName="participantController"/>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="AE search" p:linkName="adverseEventController"/>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Expedited Report search" p:linkName="reportController"/>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Routine Report search" p:linkName="reportController"/>                                                                                                        
+                        </list>
+                    </property>
+                </bean>
             </list>
         </property>
     </bean>
@@ -218,7 +236,19 @@
     	  class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
     </bean>
     
-
+    
+    <bean name="/search/study" id="studyController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
+          
+    <bean name="/search/participant" id="participantController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
+          
+    <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 
+          
+    <bean name="/search/report" id="reportController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>                   
+    
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>standardNotImplemented</value></property>

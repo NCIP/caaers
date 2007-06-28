@@ -1,0 +1,10 @@
+<dataset>
+	<pre_existing_conditions
+        id="3001"
+        version="0"
+        condition_text="Anemia"
+        meddra_llt_code="10002034"
+        meddra_llt="haemoltic"
+        meddra_hlgt="Anemias non-haemoltic..."
+        />
+</dataset>

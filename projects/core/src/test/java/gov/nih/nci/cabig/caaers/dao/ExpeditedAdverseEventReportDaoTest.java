@@ -333,6 +333,43 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Change not persisted", "clipper@yankee.com",
             reloaded.getReporter().getContactMechanisms().get("e-mail"));
     }
+    
+    public void testSaveNewAdditionalInformation() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+            	report.getAdditionalInformation().setConsults(Boolean.TRUE);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals(Boolean.TRUE, loaded.getAdditionalInformation().getConsults());
+            }
+        });
+    }
+    
+    public void testSaveNewMedicalDevice() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+            	report.getMedicalDevice().setBrandName("IBM");
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals("IBM", loaded.getMedicalDevice().getBrandName());
+            }
+        });
+    }
+    
+    public void testSaveNewRadiationIntervention() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+            	report.getRadiationIntervention().setTreatmentArm("ARM:");
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals("ARM:", loaded.getRadiationIntervention().getTreatmentArm());
+            }
+        });
+    }
+    
 
     private void doSaveTest(SaveTester tester) {
         Integer savedId;

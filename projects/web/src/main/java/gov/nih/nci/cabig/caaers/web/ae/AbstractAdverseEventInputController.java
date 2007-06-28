@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -59,6 +60,8 @@ public abstract class AbstractAdverseEventInputController
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
+    protected PreExistingConditionDao preExistingConditionDao;
+    
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
     protected ReportDefinitionDao reportDefinitionDao;
@@ -70,18 +73,23 @@ public abstract class AbstractAdverseEventInputController
 
     protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new BasicsTab());
-        flow.addTab(new ReporterTab());
+        flow.addTab(new ReporterTab());	
         flow.addTab(new CheckpointTab());
-        flow.addTab(new DescriptionTab());
+        flow.addTab(new RadiationInterventionTab());
+        flow.addTab(new SurgeryInterventionTab());
+        flow.addTab(new MedicalDeviceTab());
+		flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
         flow.addTab(new TreatmentTab());
         flow.addTab(new LabsTab());
         // TODO: readd this when we have some idea what it should be
         // flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
         flow.addTab(new PriorTherapyTab());
+        flow.addTab(new PreExistingConditionsTab());
         flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
         flow.addTab(new AttributionTab());
+        flow.addTab(new AdditionalInformationTab());
         flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
     }
 
@@ -98,6 +106,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
@@ -255,6 +264,15 @@ public abstract class AbstractAdverseEventInputController
     public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
         this.routineReportDao = routineReportDao;
     }
+
+	public PreExistingConditionDao getPreExistingConditionDao() {
+		return preExistingConditionDao;
+	}
+
+	public void setPreExistingConditionDao(
+			PreExistingConditionDao preExistingConditionDao) {
+		this.preExistingConditionDao = preExistingConditionDao;
+	}
 
     public EvaluationService getEvaluationService() {
         return evaluationService;

@@ -44,6 +44,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private AdverseEventResponseDescription responseDescription;
     private TreatmentInformation treatmentInformation;
+    private SurgeryIntervention surgeryIntervention;
+    private RadiationIntervention radiationIntervention;
+    private AdditionalInformation additionalInformation;
+    private MedicalDevice medicalDevice;
+
 
     private Reporter reporter;
     private Physician physician;
@@ -63,6 +68,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(AdverseEventPriorTherapy.class);
+        addReportChildLazyList(AdverseEventPreExistingCond.class);
     }
 
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
@@ -197,6 +203,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         return lazyListHelper.getLazyList(ConcomitantMedication.class);
     }
 
+    public void addAdverseEventPreExistingCond(AdverseEventPreExistingCond adverseEventPreExistingCond) {
+        getAdverseEventPreExistingCondsInternal().add(adverseEventPreExistingCond);
+        if (adverseEventPreExistingCond != null) adverseEventPreExistingCond.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<AdverseEventPreExistingCond> getAdverseEventPreExistingConds() {
+        return lazyListHelper.getLazyList(AdverseEventPreExistingCond.class);
+    }
+    
     public void addAdverseEventPriorTherapies(AdverseEventPriorTherapy adverseEventPriorTherapy) {
         getAdverseEventPriorTherapiesInternal().add(adverseEventPriorTherapy);
         if (adverseEventPriorTherapy != null) adverseEventPriorTherapy.setReport(this);
@@ -283,6 +300,20 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
         lazyListHelper.setInternalList(ConcomitantMedication.class, concomitantMedicationsInternal);
     }
+    
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<AdverseEventPreExistingCond> getAdverseEventPreExistingCondsInternal() {
+        return lazyListHelper.getInternalList(AdverseEventPreExistingCond.class);
+    }
+
+    protected void setAdverseEventPreExistingCondsInternal(List<AdverseEventPreExistingCond> adverseEventPreExistingCondsInternal) {
+        lazyListHelper.setInternalList(AdverseEventPreExistingCond.class, adverseEventPreExistingCondsInternal);
+    }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
@@ -324,8 +355,32 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.treatmentInformation = treatmentInformation;
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
-
+    
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public SurgeryIntervention getSurgeryIntervention() {
+		if (surgeryIntervention == null) setSurgeryIntervention(new SurgeryIntervention());
+		return surgeryIntervention;
+	}
+
+	public void setSurgeryIntervention(SurgeryIntervention surgeryIntervention) {
+		this.surgeryIntervention = surgeryIntervention;
+		if (surgeryIntervention != null) surgeryIntervention.setReport(this);
+	}
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public AdditionalInformation getAdditionalInformation() {
+		if (additionalInformation == null) setAdditionalInformation(new AdditionalInformation());
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation(AdditionalInformation additionalInformation) {
+		this.additionalInformation = additionalInformation;
+		if (additionalInformation != null) additionalInformation.setReport(this);
+	}
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public AdverseEventResponseDescription getResponseDescription() {
         if (responseDescription == null) setResponseDescription(new AdverseEventResponseDescription());
@@ -336,8 +391,33 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.responseDescription = responseDescription;
         if (responseDescription != null) responseDescription.setReport(this);
     }
+    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public RadiationIntervention getRadiationIntervention() {
+    	if (radiationIntervention == null) setRadiationIntervention(new RadiationIntervention());
+		return radiationIntervention;
+	}
 
-    @OneToOne(mappedBy = "report")
+	public void setRadiationIntervention(RadiationIntervention radiationIntervention) {
+		this.radiationIntervention = radiationIntervention;
+		if (radiationIntervention != null) radiationIntervention.setReport(this);
+	}
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public MedicalDevice getMedicalDevice() {
+		if (medicalDevice == null) setMedicalDevice(new MedicalDevice());
+		return medicalDevice;
+	}
+
+	public void setMedicalDevice(MedicalDevice medicalDevice) {
+		
+		this.medicalDevice = medicalDevice;
+		if (medicalDevice != null) medicalDevice.setReport(this);
+	}
+
+	@OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL })
     public Reporter getReporter() {
         return reporter;
@@ -410,7 +490,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.createdAt = createdAt;
     }
     
-    @Deprecated
+
+	@Deprecated
     @Transient
     public ReportStatus getStatus(){
     	//TODO: to be removed after compile/runtime 

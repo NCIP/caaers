@@ -1,0 +1,31 @@
+package gov.nih.nci.cabig.caaers.dao;
+
+import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+
+import java.util.List;
+
+/**
+ * @author Krikor Krumlian
+ */
+public class PreExistingConditionDaoTest extends DaoTestCase<PreExistingConditionDao> {
+    public void testGetById() throws Exception {
+    	PreExistingCondition loaded = getDao().getById(3001);
+        assertNotNull(loaded);
+        assertEquals("Correct id", 3001, (int) loaded.getId());
+    }
+
+    
+    public void testGetBySubnamesText() throws Exception {
+        List<PreExistingCondition> matches = getDao().getBySubnames(new String[] { "anem" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", 3001, (int) matches.get(0).getId());
+    }
+    
+    public void testGetBySubnamesMeddraLlt() throws Exception {
+        List<PreExistingCondition> matches = getDao().getBySubnames(new String[] { "haemoltic" });
+        assertEquals("Wrong number of matches", 1, matches.size());
+        assertEquals("Wrong match", 3001, (int) matches.get(0).getId());
+    }
+
+}

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -23,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
@@ -56,6 +58,7 @@ public class CreateAdverseEventAjaxFacade {
     private AnatomicSiteDao anatomicSiteDao;
     private InteroperationService interoperationService;
     private PriorTherapyDao priorTherapyDao;
+    private PreExistingConditionDao preExistingConditionDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -63,6 +66,10 @@ public class CreateAdverseEventAjaxFacade {
     
     public List<PriorTherapy> matchPriorTherapies(String text) {
         return priorTherapyDao.getBySubnames(extractSubnames(text));
+    }
+    
+    public List<PreExistingCondition> matchPreExistingConds(String text) {
+        return preExistingConditionDao.getBySubnames(extractSubnames(text));
     }
 
 
@@ -222,6 +229,16 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     /**
+     * Returns the HTML for the section of the concomitant medications form for
+     * the concomitant medication with the given index
+     * @param index
+     * @return
+     */
+    public String addPreExistingCond(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("preExistingCondFormSection", index, aeReportId);
+    }
+    
+    /**
      * Returns the HTML for the section of the metastatic disease site form for
      * the metastatic disease with the given index
      * @param index
@@ -371,6 +388,12 @@ public class CreateAdverseEventAjaxFacade {
 	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
 		this.ctcCategoryDao = ctcCategoryDao;
 	}
+
+	public void setPreExistingConditionDao(
+			PreExistingConditionDao preExistingConditionDao) {
+		this.preExistingConditionDao = preExistingConditionDao;
+	}
+    
     
     
     

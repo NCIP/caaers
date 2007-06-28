@@ -52,6 +52,8 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setAnatomicSiteDao(anatomicSiteDao);
         controller.setPriorTherapyDao(priorTherapyDao);
         controller.setReportDefinitionDao(reportDefinitionDao);
+        controller.setPreExistingConditionDao(preExistingConditionDao);
+        
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded

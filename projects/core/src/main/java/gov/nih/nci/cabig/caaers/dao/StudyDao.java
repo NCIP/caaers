@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -15,6 +17,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  * @author Sujith Vellat Thayyilthodi
@@ -33,6 +36,9 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		= Arrays.asList("longTitle");
     private static final List<String> EMPTY_PROPERTIES
 		= Collections.emptyList();
+    private static final String JOINS 
+    	= "join o.identifiers as identifier " + 
+		"join o.studySites as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
     
     public Class<Study> domainClass() {
         return Study.class;
@@ -80,6 +86,13 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    
+    public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
+    {
+    	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
+    }
+    
     
     /**
      * @param subnames a set of substrings to match

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +25,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     	= Arrays.asList("firstName","lastName");
     private static final List<String> EMPTY_PROPERTIES
 		= Collections.emptyList();
+    private static final String JOINS 
+	= "join o.identifiers as identifier " + 
+	"join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
 
     public Class<Participant> domainClass() {
         return Participant.class;
@@ -47,6 +51,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     @SuppressWarnings("unchecked")
     public List<Participant> getBySubnames(String[] subnames) {
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
+    
+    public List<Participant> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
+    {
+    	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
     }
     
     /**

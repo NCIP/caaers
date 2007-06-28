@@ -140,7 +140,7 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
     	xstream.alias("diseaseTerm", gov.nih.nci.cabig.caaers.domain.DiseaseTerm.class);
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
 		
-    	System.out.println("Here the text : " + command.getFileName() );
+    	//System.out.println("Here the text : " + command.getFileName() );
     	File xmlFile = new File(command.getFileName());
     	
     	
@@ -160,10 +160,10 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
           
           
           //System.out.println(studyy.getStudySites().size());
-          System.out.println(studyy.getShortTitle());
-  		  System.out.println(studyy.getIdentifiers().get(0).getSource());
-  		  System.out.println("Size : " + studyy.getIdentifiers().size());
-  		  System.out.println(studyy.getShortTitle());
+          //System.out.println(studyy.getShortTitle());
+  		  //System.out.println(studyy.getIdentifiers().get(0).getSource());
+  		  //System.out.println("Size : " + studyy.getIdentifiers().size());
+  		  //System.out.println(studyy.getShortTitle());
           
           }
        
@@ -188,7 +188,7 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
             ex.printStackTrace();
           }
           
-          System.out.println("Hey : "  + command.getStudies().size());
+          //System.out.println("Hey : "  + command.getStudies().size());
           
         }
 		

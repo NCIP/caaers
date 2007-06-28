@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -35,6 +36,7 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
     protected ReportDefinitionDao reportDefinitionDao;
+    protected PreExistingConditionDao preExistingConditionDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -52,5 +54,6 @@ public abstract class AdverseEventControllerTestCase extends WebTestCase {
         anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class);
         priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class);
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
+        preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class);
     }
 }

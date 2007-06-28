@@ -34,6 +34,48 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     ) {
         return findBySubname(subnames, null, null, substringMatchProperties, exactMatchProperties);
     }
+    
+    
+    /**
+     * @see findBySubname
+     */
+    @SuppressWarnings("unchecked")
+    protected List<T> findBySubname(
+        String[] subnames, String extraConditions, List<Object> extraParameters,
+        List<String> substringMatchProperties, List<String> exactMatchProperties,
+        String joins) 
+        {
+        if (subnames == null || subnames.length == 0) return Collections.emptyList();
+
+        StringBuilder query = new StringBuilder(" select distinct o from ")
+            .append(domainClass().getName()).append(" o ");
+        if (joins !=null) query.append(joins).append(" where ");
+        if (extraConditions != null) query.append(extraConditions).append(" and ");
+        List<Object> params = new LinkedList<Object>();
+        if (extraParameters != null) params.addAll(extraParameters);
+
+        for (int i = 0; i < subnames.length; i++) {
+            buildSubQuery(subnames[i], query, params,
+                substringMatchProperties.get(i));
+            if (i < subnames.length - 1) query.append(" and ");
+        }
+        log.debug("query::" + query.toString());
+        return getHibernateTemplate().find(query.toString(), params.toArray());
+    }
+    
+    
+    private void buildSubQuery(
+            String subname, StringBuilder query, List<Object> params,
+            String substringMatchProperties
+        ) {
+            query.append('(');
+                    String prop = substringMatchProperties;
+                    query.append("LOWER(").append(prop).append(") LIKE ?");
+                    params.add('%' + subname.toLowerCase() + '%');    
+            query.append(')');
+        }
+    
+    
 
     /**
      * A query builder for use by subclass DAOs.  It makes it easy to match a fragment of a name

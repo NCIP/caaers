@@ -78,6 +78,11 @@
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
                 <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
@@ -176,6 +181,7 @@
 	<bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
 	
 	<bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
+	<bean id="preExistingConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
 	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
 	
 	<!--Rules/Scheduler/Notification DAOs-->

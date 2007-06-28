@@ -102,6 +102,19 @@
         adverse_event_course_date="2006-07-09"
         adverse_event_course_number="8"
         />
+        
+    <SURGERY_INTERVENTIONS
+        id="-110"
+        report_id="-1"
+        />
+    
+    <ADDITIONAL_INFORMATION
+    	id="-100"
+    	report_id="-1"
+    	other_information="Hello"
+    	/>    
+   
+        
     <COURSE_AGENTS
         id="-20"
         treatment_id="-10"
