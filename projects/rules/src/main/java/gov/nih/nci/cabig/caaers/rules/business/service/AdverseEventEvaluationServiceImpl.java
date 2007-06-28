@@ -204,16 +204,16 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 		
 	}
 	
-	private String getBindURI(String sponsorName, String studyName, String type, String ruleSetName){
+	private String getBindURI(String sponsorName, String studyOrSiteName, String type, String ruleSetName){
 		String bindURI = null;
 		if (type.equalsIgnoreCase("SPONSOR")){
 			bindURI = CategoryConfiguration.SPONSOR_BASE.getPackagePrefix() + "." +this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		if(type.equalsIgnoreCase("STUDY")){
-			bindURI = CategoryConfiguration.STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyOrSiteName)+"."+this.getStringWithoutSpaces(sponsorName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		if(type.equalsIgnoreCase("INSTITUTION")){
-			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyOrSiteName)+"."+this.getStringWithoutSpaces(ruleSetName);
 		}
 		return bindURI;
 	}
