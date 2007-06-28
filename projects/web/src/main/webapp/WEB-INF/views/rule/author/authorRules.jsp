@@ -1,18 +1,18 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
-    <tags:dwrJavascriptLink objects="authorRule"/>
-    <tags:dwrJavascriptLink objects="createAE"/>
+<tags:stylesheetLink name="ae" />
+<tags:includeScriptaculous />
+<tags:dwrJavascriptLink objects="authorRule" />
+<tags:dwrJavascriptLink objects="createAE" />
 
-    <script type="text/javascript">
+<script type="text/javascript">
       
       Event.observe(window, "load", function() {
 				destroyLineItemSortables();
@@ -39,7 +39,7 @@
 			
 	</script>
 
-  <title>Specify Rules for Trigger</title>
+<title>Specify Rules for Trigger</title>
 
 <style>
 
@@ -163,7 +163,31 @@
 								var spanId = newId + '.span';
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
-												
+								
+								createAE.getTermsByCategory(0, function(terms) {
+						                   
+
+							
+										var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
+													selectArea += '</select>';
+				
+							
+										$(spanId).innerHTML = selectArea;
+
+										var sel = $(newId);	
+				        		        
+				                	    sel.options.length = 0
+				                    
+				                    
+				                    	terms.each(function(term) {
+
+				                        	var opt = new Option(term.select, term.id)
+				                        	sel.options.add(opt)
+				                    	})
+				                })
+								
+								
+								/*				
 								var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
 								inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
 								$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
@@ -178,6 +202,8 @@
 												$(newId).value=termValueSelector(selectedChoice);
 									                },
 						                indicator: "term-indicator"});
+								*/
+								
 													                
 
 							}
@@ -431,6 +457,7 @@
 				}
 							
 				var categoryExist = false;
+				var categoryValueID;
 				
 				for (var i=0; i < divNodes; i++)
 				{
@@ -439,6 +466,7 @@
 					if($(columnId).value == 'category')
 					{
 						categoryExist = true;
+						categoryValueID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].literalRestriction[0].value';
 						break;
 					}
 				}
@@ -449,7 +477,37 @@
 					var spanId = newId + '.span';
 					//Element.remove(validValueField);
 					$(spanId).innerHTML="";
+					
+					createAE.getTermsByCategory($(categoryValueID).value, function(terms) {
+						                   
+
+							var newId = validValueField.id; 
+							var spanId = newId + '.span';
+
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
+										selectArea += '</select>';
 				
+							//Element.remove(validValueField);
+
+							
+							$(spanId).innerHTML = selectArea;
+
+							var sel = $(newId);	
+				                
+				                    sel.options.length = 0
+				                    
+				                    
+				                    terms.each(function(term) {
+
+				                        var opt = new Option(term.select, term.id)
+				                        sel.options.add(opt)
+				                    })
+				                })
+					
+					
+					
+					
+				 /**
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
 					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
@@ -464,6 +522,9 @@
 											$(newId).value=termValueSelector(selectedChoice);
 					                },
 					                indicator: "term-indicator"});
+					**/
+					
+					
 				}
 				else
 				{
@@ -474,7 +535,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" >';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -516,7 +577,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" >';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this,' + ruleCount + ')">';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -584,6 +645,54 @@
 		}
 
 
+	}
+	
+	function getCategoryValue(ruleCount)
+	{
+				
+				// Check whether category exists
+				var columns = $('rule-'+(ruleCount + 1)+'-columns');
+				
+				//alert(columns.childNodes.length);
+				
+				
+				var divNodes = 0;
+				
+				for(var i=0; i < columns.childNodes.length; i++)
+				{
+					if (columns.childNodes[i].nodeName == 'DIV')
+					{
+						divNodes++;
+					}
+				}
+							
+
+				var categoryValueID;
+				
+				for (var i=0; i < divNodes; i++)
+				{
+					var columnId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].fieldName';
+					
+					if($(columnId).value == 'category')
+					{
+
+						categoryValueID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].literalRestriction[0].value';
+						break;
+					}
+				}
+				
+				//for (var i=0; i< 100000 ; i ++ ) {
+					//var a=10;
+				//}
+				
+				//var  ret = $(categoryValueID).value;
+				var ret = document.getElementById(categoryValueID).value;
+				if (ret == '') {
+					ret = 0;
+				}
+				
+				//alert (ret);
+				return ret;
 	}
 
 	function handleDomainObjectonChange(domainObjectDropDown, ruleCount)
@@ -672,172 +781,235 @@
 		
 	}
 	
+	function onCategoryChange(category, ruleCount)
+	{
+		//alert('on cat change');
+		
+				// Check whether category exists
+				var columns = $('rule-'+(ruleCount + 1)+'-columns');
+				
+				
+				
+				var divNodes = 0;
+				
+				for(var i=0; i < columns.childNodes.length; i++)
+				{
+					if (columns.childNodes[i].nodeName == 'DIV')
+					{
+						divNodes++;
+					}
+				}
+							
+				var termExists = false;
+				var termValueID;
+				
+				for (var i=0; i < divNodes; i++)
+				{
+					var columnId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].fieldName';
+					
+					if($(columnId).value == 'term')
+					{
+						termExists = true;
+						termValueID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].literalRestriction[0].value';
+						break;
+					}
+				}
+				
+				if (termExists)
+				{
+					
+					var catVal = category.value;
+					if (category.value == ''){
+						catVal = 0;
+					}
+					//alert(catVal);
+					
+					createAE.getTermsByCategory(catVal, function(terms) {
+						        
+						     $(termValueID).value='';   
+
+							var sel = $(termValueID);	
+				                
+				                
+				                    sel.options.length = 0
+				                    
+				                    
+				                    terms.each(function(term) {
+
+				                        var opt = new Option(term.select, term.id)
+				                        sel.options.add(opt)
+				                    })
+				                })
+					
+					
+				}
+	}
+	
+	
 </script>
 
 </head>
 <body>
-    <p id="instructions">
-        Rules can be added by using the Add Rule button. Rules created will belong to the selected RuleSet.
-    </p>
+<p id="instructions">Rules can be added by using the Add Rule
+button. Rules created will belong to the selected RuleSet.</p>
 
-    <chrome:division>
+<chrome:division>
 
-        <%--<form:form cssClass="standard">--%>
-        <tags:tabForm tab="${tab}" flow="${flow}" >
-	<jsp:attribute name="singleFields">
+	<%--<form:form cssClass="standard">--%>
+	<tags:tabForm tab="${tab}" flow="${flow}">
+		<jsp:attribute name="singleFields">
 
-            <tags:errors path="*"/>
-    
-            <%--<tags:tabFields tab="${tab}"/>--%>
+			<tags:errors path="*" />
 
-        				
-        				<div class="row">
-							<div class="label"><label for="ruleSetName">RuleSet Name</label></div>
-				            <div class="value">
-								<form:input path="ruleSetName" size="40"/>
-            				</div>
-							<div class="local-buttons">
-								<input type="button" value="Add Rule" align="right" onclick="addRule()"/>
-							</div>	
-        				</div>
+			<%--<tags:tabFields tab="${tab}"/>--%>
 
 
-						<div id="allRules">
+			<div class="row">
+			<div class="label"><label for="ruleSetName">RuleSet
+			Name</label></div>
+			<div class="value"><form:input path="ruleSetName" size="40" />
+			</div>
+			<div class="local-buttons"><input type="button"
+				value="Add Rule" align="right" onclick="addRule()" /></div>
+			</div>
 
-							<c:forEach varStatus="ruleStatus" items="${command.ruleSet.rule}">
 
-								<c:set var="ruleCount" value="${ruleStatus.index}" />
-								<div id="rule-${ruleCount + 1}" class="section">
-										<h3 style="position:relative; float:left" class="handle"">
-										<span style="position:relative; float:left">Rule - (${ruleCount+1})</span>
-										<a href="javascript:deleteRule(${ruleCount + 1})">
-											<img id="close-image" src="/caaers/images/rule/window-close.gif"  align="absmiddle"  style="position:relative; float:right; height:18px; border:0px"/>
-										</a>
-										<img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" />
-										<a href="javascript:toggle(${ruleCount + 1})">
-											<img id="toggle-image-${ruleCount + 1}" onclick="" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle"  style="position:relative; float:right; height:18px; border:0px"/>
-										</a>
-										</h3>
-										<div style="margin-left:50px;">
-											<label class="label" for="condition">Name</label>
-											<form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px"/>
-										</div>	
-										<br/>
-										<div id="rule-condition-action-container-${ruleCount + 1}">
-											<div style="margin-left:50px;">
-												<label class="label" for="condition">Condition(s)</label>
-											</div>
-											<div class="row" value="${command.ruleSet.rule[ruleCount]}" id="rule-${ruleCount + 1}-columns">
-												<br/>
+			<div id="allRules"><c:forEach varStatus="ruleStatus"
+				items="${command.ruleSet.rule}">
 
-												<c:forEach varStatus="columnStatus" begin="0" items="${command.ruleSet.rule[ruleCount].condition.column}">
-													<c:set var="columnCount" value="${columnStatus.index}"/>
-													<div id="rule-${ruleCount}-column-${columnCount}" style="margin-left:200px;" class="lineitem">
-														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-														<c:choose>
-															<c:when test="${columnCount == 0}">
-															<label for="IF">IF</label><img src="/caaers/images/chrome/spacer.gif" style="width:15px;height:1px" align="absmiddle" />
-															</c:when>
-															<c:otherwise><label for="AND">AND</label></c:otherwise>
-														</c:choose>													
-														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+				<c:set var="ruleCount" value="${ruleStatus.index}" />
+				<div id="rule-${ruleCount + 1}" class="section">
+				<h3 style="position:relative; float:left" class="handle""><span
+					style="position:relative; float:left">Rule -
+				(${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})">
+				<img id="close-image" src="/caaers/images/rule/window-close.gif"
+					align="absmiddle"
+					style="position:relative; float:right; height:18px; border:0px" />
+				</a> <img src="/caaers/images/chrome/spacer.gif"
+					style="position:relative; float:right;width:5px;height:10px"
+					align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})">
+				<img id="toggle-image-${ruleCount + 1}" onclick=""
+					src="/caaers/images/rule/window-minimize.gif" valign="top"
+					align="absmiddle"
+					style="position:relative; float:right; height:18px; border:0px" />
+				</a></h3>
+				<div style="margin-left:50px;"><label class="label"
+					for="condition">Name</label> <form:input
+					path="ruleSet.rule[${ruleCount}].metaData.name"
+					cssStyle="width:200px" /></div>
+				<br />
+				<div id="rule-condition-action-container-${ruleCount + 1}">
+				<div style="margin-left:50px;"><label class="label"
+					for="condition">Condition(s)</label></div>
+				<div class="row" value="${command.ruleSet.rule[ruleCount]}"
+					id="rule-${ruleCount + 1}-columns"><br />
 
-														<span>
-														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">
-														        <form:option value="">Please select Domain Object</form:option>
-															<form:options items="${ruleUi.condition[0].domainObject}" itemLabel="displayUri" itemValue="className" />
-														</form:select>
-														<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier"/>
-														</span>
+				<c:forEach varStatus="columnStatus" begin="0"
+					items="${command.ruleSet.rule[ruleCount].condition.column}">
+					<c:set var="columnCount" value="${columnStatus.index}" />
+					<div id="rule-${ruleCount}-column-${columnCount}"
+						style="margin-left:200px;" class="lineitem"><img
+						src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" /> <c:choose>
+						<c:when test="${columnCount == 0}">
+							<label for="IF">IF</label>
+							<img src="/caaers/images/chrome/spacer.gif"
+								style="width:15px;height:1px" align="absmiddle" />
+						</c:when>
+						<c:otherwise>
+							<label for="AND">AND</label>
+						</c:otherwise>
+					</c:choose> <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" /> <span>
+					<form:select
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
+						onchange="handleDomainObjectonChange(this, ${ruleCount})">
+						<form:option value="">Please select Domain Object</form:option>
+						<form:options items="${ruleUi.condition[0].domainObject}"
+							itemLabel="displayUri" itemValue="className" />
+					</form:select> <form:hidden
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
+					</span> <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" /> <form:select
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
+						onchange="handleFieldOnchange(this, ${ruleCount})">
+						<form:option value="">Please select Field</form:option>
 
-														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+						<c:forEach items="${ruleUi.condition[0].domainObject}"
+							varStatus="selectedField">
+							<c:set var="selectedIndex" value="${selectedField.index}" />
+							<c:if
+								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">
+								<form:options
+									items="${ruleUi.condition[0].domainObject[selectedIndex].field}"
+									itemLabel="displayUri" itemValue="name" />
+							</c:if>
+						</c:forEach>
 
-														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" 
-														           onchange="handleFieldOnchange(this, ${ruleCount})">
-															<form:option value="">Please select Field</form:option>
-															
-															<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedField">
-															     <c:set var="selectedIndex" value="${selectedField.index}"/>
-																<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
-												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">	
- 																	<form:options items="${ruleUi.condition[0].domainObject[selectedIndex].field}" itemLabel="displayUri" itemValue="name" />
-																</c:if>
-															</c:forEach>
-															
-														</form:select>
-														
+					</form:select> <form:hidden
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
 
-														<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression"/>
+					<img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" /> <form:select
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator">
+						<form:option value="">Please select operator</form:option>
 
-														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
 
-														<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator">
-														        <form:option value="">Please select operator</form:option>
-														        
-															
-															
-															<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedDomainObject">
-																<c:set var="domainObjectIndex" value="${selectedDomainObject.index}"/>
-																
-																<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+
+						<c:forEach items="${ruleUi.condition[0].domainObject}"
+							varStatus="selectedDomainObject">
+							<c:set var="domainObjectIndex"
+								value="${selectedDomainObject.index}" />
+
+							<c:if
+								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      			ruleUi.condition[0].domainObject[domainObjectIndex].className}">
- 																	<c:forEach items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}" varStatus="selectedField">
- 																		<c:set var="fieldIndex" value="${selectedField.index}"/>
- 																		
- 																		
- 																		<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
+								<c:forEach
+									items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
+									varStatus="selectedField">
+									<c:set var="fieldIndex" value="${selectedField.index}" />
+
+
+									<c:if
+										test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
 												        		      					ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
-												        						<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}" itemLabel="displayUri" itemValue="name" />      					
-												        		      			</c:if>		
- 																	</c:forEach>
-																</c:if>
-															</c:forEach>
+										<form:options
+											items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}"
+											itemLabel="displayUri" itemValue="name" />
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
 
-														</form:select>
+					</form:select> <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" /> <span
+						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
 
-														<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+					<c:choose>
+						<c:when
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
 
 
-														<span id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
-															
-															<c:choose>
-																<c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
-																	
-																	
-																	<script type="text/javascript">
-																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
-																		var spanId = newId + '.span';
-																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
-																		
-																		$(spanId).innerHTML="";
-																					
-																		var inputArea = '<input type="text" id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" size="60"/>';
-																		inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
-																		$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
-																	
-																	
-																		new Autocompleter.DWR(newId, newId + '-choices',
-																		               termPopulator, {
-																		                valueSelector: termValueSelector,
-																		                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-																				
-																				//alert(selectedChoice);
-																				$(newId).value=termValueSelector(selectedChoice);
-																		                },
-																		               indicator: "term-indicator"});
+							<script type="text/javascript">
+																		//alert ("calling cats....");
+																		function wait(delay){
+																				string="pauseforalert("+delay+");";
+																				setTimeout(string,delay);
+																		}
+																		function pauseforalert(delay){
+																				alert("Ok "+delay/1000+" seconds have elapsed");
+																		}
 
-																	
-																	</script>
-																</c:when>
-																<c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
-																	<script type="text/javascript">
+																		var fieldValue;
 																		createAE.getCategories(3, function(categories) {
 																	
 																			var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 																			var spanId = newId + '.span';
 																	
-																			var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
-																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '">';
+																		 fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
+																			//alert (fieldValue);
+																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
 																			selectArea += '</select>';
 																					
 																			//Element.remove(validValueField);
@@ -857,120 +1029,202 @@
 																					    var opt = new Option(name, cat.id)
 																					    sel.options.add(opt)
 																					    index++;
+																					    
 																					    if (cat.id == fieldValue)
 																					    {
 																					    	sel.options[index].selected=true;
 																					    }
+																					    
 																		               })
 																		        
 																	           })
+																	      //give some delay ...
+																	  //    wait(2000);
+																	     //alert('ss');
 
 																	</script>
-																</c:when>
-																<c:otherwise>
-																	<c:choose>
-																		<c:when test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
-																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
-																			<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="false">
-																				<form:option value="">Please select value</form:option>
-																			</form:select>
 
-																		</c:when>
-																		<c:otherwise>
-																		<c:forEach items="${ruleUi.condition[0].domainObject}" varStatus="selectedDomainObject">
-																			<c:set var="domainObjectIndex" value="${selectedDomainObject.index}"/>
-																
-																			<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
-												        		      						ruleUi.condition[0].domainObject[domainObjectIndex].className}">
- 																				<c:forEach items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}" varStatus="selectedField">
- 																					<c:set var="fieldIndex" value="${selectedField.index}"/>
- 																		
- 																		
- 																					<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
-												        		      							ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
-												        		      							
-												        		      							<c:choose>
-												        		      								<c:when test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
-																								<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="multiple"  size="3">
-												        												<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}" itemLabel="displayUri" itemValue="value" />      					
-												        											</form:select>
-												        										</c:when>
-												        										<c:otherwise>
-												        											<form:select path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value" multiple="false">
-																									<form:option value="">Please select value</form:option>
-																									<form:options items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}" itemLabel="displayUri" itemValue="value" />      					
-																								</form:select>
-												        										</c:otherwise>
-												        									</c:choose>
-												        											
-												        		      						</c:if>		
- 																				</c:forEach>
-																			</c:if>
-																		</c:forEach>
-																		</c:otherwise>
-																	</c:choose>	
+
+						</c:when>
+					
+						<c:when
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
+
+
+
+							<script type="text/javascript">
+												// force 1sec delay for ajax to make sure categories are loaded.. this is just  TEMP FIX 
+											   setTimeout("loadTermsBasedOnCategory()",1000);	
+
+
+												function loadTermsBasedOnCategory() {
+
+																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+																		var spanId = newId + '.span';
+																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
+																		
+																		$(spanId).innerHTML="";
+																		
+																		// Check whether category exists
+																	//	alert (categoryValue);
+																		var categoryValue = getCategoryValue(${ruleCount});
+																	//	alert (categoryValue);
 																	
-																</c:otherwise>		
-															</c:choose>
-														</span>
+																		createAE.getTermsByCategory(categoryValue, function(terms) {
+						                   
 
-														<a href="javascript:fetchCondition(${ruleCount})">
-															<img id="add-column-${ruleCount}" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand; border:0px"/>
-														</a>
-														
-														<c:if test="${columnCount > 0}">
-														<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
-															<img id="remove-column-${ruleCount}" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand;  border:0px"/>
-														</a>
-														</c:if>
-													</div>
 
-													<br id="rule-${ruleCount}-column-${columnCount}-br"/>
-												</c:forEach>
-											</div>
+																				var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
+																				selectArea += '</select>';
+				
+							
+																				$(spanId).innerHTML = selectArea;
 
-											<div class="row">
-												<div  style="margin-left:50px;"><label for="action" class="label">Action(s)</label></div>
-												<br/>
-												<div id="action-template"  style="margin-left:200px;">
-													<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-													<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
-														<option value=""/>Please Select Action</option>
-														<c:choose>
-															<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
-																<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>														
-																<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>														
-															</c:when>
-															<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
-																<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
-																<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
-															</c:when>
-															<c:otherwise>														
-																<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>														
-																<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>														
-																<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
-																<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
-															</c:otherwise>
-														</c:choose>	
-														<c:forEach items="${notifications}" var="notification">
-														<form:option value="${notification.id}">${notification.name}</form:option>
-														</c:forEach>
-													</form:select>
-												</div>
-												<c:if test="${ruleCount} == 0" >
-												<br/>
+																				var sel = $(newId);	
+				                
+														                    sel.options.length = 0
+				                    
+				                    											var index = 0;	
+															                    terms.each(function(term) {
+
+													                        		var opt = new Option(term.select, term.id)
+				                    									    			sel.options.add(opt)
+				                    									    		   
+				                    									    		    		if (fieldValue.indexOf(term.id) != -1)
+																					    		{
+																					    			sel.options[index].selected=true;
+																					    		}
+																					    	index++;
+																					    
+				                    											})
+				                										})
+					
+	
+	
+												}											
+
+															
+							</script>
+
+						</c:when>
+
+						<c:otherwise>
+							<c:choose>
+								<c:when
+									test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
+																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
+									<form:select
+										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+										multiple="false">
+										<form:option value="">Please select value</form:option>
+									</form:select>
+
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${ruleUi.condition[0].domainObject}"
+										varStatus="selectedDomainObject">
+										<c:set var="domainObjectIndex"
+											value="${selectedDomainObject.index}" />
+
+										<c:if
+											test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
+												        		      						ruleUi.condition[0].domainObject[domainObjectIndex].className}">
+											<c:forEach
+												items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
+												varStatus="selectedField">
+												<c:set var="fieldIndex" value="${selectedField.index}" />
+
+
+												<c:if
+													test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
+												        		      							ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
+
+													<c:choose>
+														<c:when
+															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
+															<form:select
+																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+																multiple="multiple" size="3">
+																<form:options
+																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
+																	itemLabel="displayUri" itemValue="value" />
+															</form:select>
+														</c:when>
+														<c:otherwise>
+															<form:select
+																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
+																multiple="false">
+																<form:option value="">Please select value</form:option>
+																<form:options
+																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
+																	itemLabel="displayUri" itemValue="value" />
+															</form:select>
+														</c:otherwise>
+													</c:choose>
+
 												</c:if>
-											</div>
-										</div>											
-									</div>								
+											</c:forEach>
+										</c:if>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 
-								</c:forEach>
+						</c:otherwise>
+					</c:choose> </span> <a href="javascript:fetchCondition(${ruleCount})"> <img
+						id="add-column-${ruleCount}"
+						src="/caaers/images/rule/add_condition.gif" align="absmiddle"
+						style="cursor:hand; border:0px" /> </a> <c:if
+						test="${columnCount > 0}">
+						<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
+						<img id="remove-column-${ruleCount}"
+							src="/caaers/images/rule/remove_condition.gif" align="absmiddle"
+							style="cursor:hand;  border:0px" /> </a>
+					</c:if></div>
 
-						</div> <!-- closing allRules -->
+					<br id="rule-${ruleCount}-column-${columnCount}-br" />
+				</c:forEach></div>
 
-</jsp:attribute>
-</tags:tabForm> 
-		</chrome:division>
+				<div class="row">
+				<div style="margin-left:50px;"><label for="action"
+					class="label">Action(s)</label></div>
+				<br />
+				<div id="action-template" style="margin-left:200px;"><img
+					src="/caaers/images/chrome/spacer.gif"
+					style="width:10px;height:10px" align="absmiddle" /> <form:select
+					path="ruleSet.rule[${ruleCount}].action.actionId">
+					<option value="" />Please Select Action</option>
+					<c:choose>
+						<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
+							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
+							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
+						</c:when>
+						<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
+							<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
+							<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
+						</c:when>
+						<c:otherwise>
+							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
+							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
+							<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
+							<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach items="${notifications}" var="notification">
+						<form:option value="${notification.id}">${notification.name}</form:option>
+					</c:forEach>
+				</form:select></div>
+				<c:if test="${ruleCount} == 0">
+					<br />
+				</c:if></div>
+				</div>
+				</div>
+
+			</c:forEach></div>
+			<!-- closing allRules -->
+
+		</jsp:attribute>
+	</tags:tabForm>
+</chrome:division>
 
 </body>
 </html>
