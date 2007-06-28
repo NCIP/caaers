@@ -134,7 +134,15 @@ public class CreateAdverseEventAjaxFacade {
     
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
         //List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), ctcVersionId, ctcCategoryId);
-        List<CtcTerm> terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+    	
+    	//System.out.println("cat id is  " + ctcCategoryId);
+    	
+    	List<CtcTerm> terms = null;
+    	if (ctcCategoryId == 0) {
+        	terms = ctcTermDao.getAll();
+        } else {
+        	terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        }
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
