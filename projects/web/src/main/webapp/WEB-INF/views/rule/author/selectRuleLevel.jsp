@@ -45,6 +45,23 @@
 		                $("sponsor-input").value = ""
 		            })				
 			});
+			
+      Event.observe(window, "load", function(){
+				new Autocompleter.DWR("institution-input", "institution-choices",
+                institutionPopulator, {
+                valueSelector: institutionValueSelector,
+                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+									setInstitution(selectedChoice)
+                },
+                indicator: "institution-indicator"});
+
+				Event.observe("institution-clear", "click", function() {
+		                $("institutionName").value = ""
+		                $("institution-input").value = ""
+		            })				
+			});			
+	
+	// ....
 	
 			function postSelect(selectedChoice) 
 			{
@@ -55,6 +72,15 @@
 			function setSponsor(selectedChoice) 
 			{
 				$("sponsorName").value = selectedChoice;
+				
+				
+			}
+			
+			function setInstitution(selectedChoice) 
+			{
+				
+				$("institutionName").value = selectedChoice.name;
+
 			}
 
 			function studyValueSelector(study) {
@@ -75,31 +101,51 @@
 					})
 			}
 
+			function institutionPopulator(autocompleter, text) 
+			{
+					authorRule.matchSites(text, function(values) {
+							autocompleter.setChoices(values)
+					})
+			}
+			
 			function sponsorValueSelector(sponsor) 
 			{
 				return sponsor;
 			}
 
-			function displaySponsorOrStudyInput(level)
+			function institutionValueSelector(site) 
+			{
+				
+				return site.name;
+			}
+			
+			function displayRuleTypeInput(level)
 			{
 				if (level.value == 'Sponsor')
 				{
 					Effect.Appear("sponsor-details");
 					Effect.Fade("study-details");
+					Effect.Fade("institution-details");
 				}
-				else
-				{
+				
+
 					if (level.value == 'Study')
 					{
 						Effect.Appear("sponsor-details");
 						Effect.Appear("study-details");
+						Effect.Fade("institution-details");
 					}
-					else
-					{
-						Effect.Fade("sponsor-details");
-						Effect.Fade("study-details");
-					}
-				}
+
+						if (level.value == 'Institution')
+						{
+							
+							Effect.Appear("institution-details");
+							Effect.Fade("study-details");
+							Effect.Fade("sponsor-details");
+							
+						}
+
+
 			}
             
 
@@ -122,15 +168,15 @@
             
 
             <div class="row">
-                <label><form:radiobutton path="level" value="Sponsor" onchange="displaySponsorOrStudyInput(this)"/>Create Rules at <b>Sponsor</b> Level</label>
+                <label><form:radiobutton path="level" value="Sponsor" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Sponsor</b> Level</label>
             </div>
 
             <div class="row">
-                <label><form:radiobutton path="level" value="Institution" onchange="displaySponsorOrStudyInput(this)"/>Create Rules at <b>Institution</b> Level</label>
+                <label><form:radiobutton path="level" value="Institution" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Institution</b> Level</label>
             </div>
             
             <div class="row">
-                <label><form:radiobutton path="level" value="Study" onchange="displaySponsorOrStudyInput(this)"/>Create Rules at <b>Study</b> Level</label>
+                <label><form:radiobutton path="level" value="Study" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Study</b> Level</label>
             </div>            
 
 			<c:choose>
@@ -147,7 +193,8 @@
 					<c:set var="studyVisibility" value="display: none"/>
 				</c:otherwise>
 			</c:choose>
-	<div title="Select Sponsor" id="sponsor-details" style="${sponsorVisibility}"> 
+	<div>		
+	<div title="Select Sponsor" id="sponsor-details" style="${sponsorVisibility}" class="pane"> 
 			<div class="row">
 				<div class="label"><label for="sponsor-input">Select Sponsor</label></div>
 				<div class="value">
@@ -160,7 +207,22 @@
 			<div id="sponsor-choices" class="autocomplete"></div>
 	</div>	
 
-	<div title="Select Study" id="study-details" style="${studyVisibility}">
+
+
+	<div title="Select Institution" id="institution-details" style="${studyVisibility}" class="pane">
+			<div class="row">
+				<div class="label"><label for="institution-input">Select Instiution</label></div>
+				<div class="value">
+					<form:hidden path="institutionName"/>
+					<input type="text" id="institution-input" value="${command.institutionName}" size="40"/>
+					<input type="button" id="institution-clear" value="Clear"/>
+					<tags:indicator id="institution-indicator"/>
+				</div>
+			</div>
+			<div id="institution-choices" class="autocomplete"></div>
+	</div>
+
+	<div title="Select Study" id="study-details" style="${studyVisibility}" class="pane">
 			<div class="row">
 				<div class="label"><label for="study-input">Select Study</label></div>
 				<div class="value">
@@ -172,7 +234,8 @@
 			</div>
 			<div id="study-choices" class="autocomplete"></div>
 	</div>
-
+	
+	</div>
 	</jsp:attribute>
 
 
