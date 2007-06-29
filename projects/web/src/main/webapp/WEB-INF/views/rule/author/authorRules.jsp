@@ -1190,8 +1190,8 @@ button. Rules created will belong to the selected RuleSet.</p>
 				<br />
 				<div id="action-template" style="margin-left:200px;"><img
 					src="/caaers/images/chrome/spacer.gif"
-					style="width:10px;height:10px" align="absmiddle" /> <form:select
-					path="ruleSet.rule[${ruleCount}].action.actionId">
+					style="width:10px;height:10px" align="absmiddle" /> 
+				<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
 					<option value="" />Please Select Action</option>
 					<c:choose>
 						<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
@@ -1199,14 +1199,16 @@ button. Rules created will belong to the selected RuleSet.</p>
 							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
 						</c:when>
 						<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
-							<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
-							<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
+								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
+									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
+								</c:forEach>	
 						</c:when>
 						<c:otherwise>
 							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
 							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
-							<form:option value="24HR_NOTIFICATION_5DAY_CALENDAR_REPORT">24 Hour, 5 Calendar Days</form:option>
-							<form:option value="10DAY_CALENDAR_REPORT">10 Calendar Days</form:option>
+								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
+									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
+								</c:forEach>	
 						</c:otherwise>
 					</c:choose>
 					<c:forEach items="${notifications}" var="notification">

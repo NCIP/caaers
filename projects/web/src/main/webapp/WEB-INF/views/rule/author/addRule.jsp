@@ -129,14 +129,14 @@
 							</c:when>
 							<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">
-									<option value="<c:out value="${reportDefinition.name}"/>"><c:out value="${reportDefinition.name}"/></option>
+									<option value="${reportDefinition.name}">${reportDefinition.name}</option>
 								</c:forEach>								
 							</c:when>
 							<c:otherwise>														
 								<option value="ROUTINE_AE">Assess as Routine AE</option>														
 								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">
-									<option value="<c:out value="${reportDefinition.name}"/>"><c:out value="${reportDefinition.name}"/></option>
+									<option value="${reportDefinition.name}">${reportDefinition.name}</option>
 								</c:forEach>
 							</c:otherwise>
 						</c:choose>	
