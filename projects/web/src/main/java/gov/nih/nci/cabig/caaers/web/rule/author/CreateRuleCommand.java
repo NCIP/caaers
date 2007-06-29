@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -38,6 +40,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private NotificationDao notificationDao; 
 	
+	private ReportDefinitionDao reportDefinitionDao;
+	
 	private StudyDao studyDao;
 	
 	private RuleSet ruleSet;
@@ -56,7 +60,28 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private boolean isDataChanged;
 	
-	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, NotificationDao notificationDao, RulesEngineService rulesEngineService) 
+	
+	
+	private List<ReportDefinition> reportDefinitions;
+	
+
+	
+	public List<ReportDefinition> getReportDefinitions() {
+		
+
+		return reportDefinitions;
+	}
+
+	public void setReportDefinitions(List<ReportDefinition> reportDefinitions) {
+		
+		this.reportDefinitions = reportDefinitions;
+		
+	}
+	
+
+	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, 
+			NotificationDao notificationDao, RulesEngineService rulesEngineService,
+			ReportDefinitionDao reportDefinitionDao) 
 	{
 		setRuleAuthoringService(ruleAuthoringService);
 		setStudyDao(studyDao);
@@ -64,6 +89,8 @@ public class CreateRuleCommand implements RuleInputCommand
 		setRulesEngineService(rulesEngineService);
 		ruleSet = new RuleSet();
 		existingRuleSets = new ArrayList<RuleSet>();
+		setReportDefinitionDao(reportDefinitionDao);
+		//reportDefinitions = reportDefinitionDao.getAll();
 	}
 
 	/*
@@ -406,6 +433,14 @@ public class CreateRuleCommand implements RuleInputCommand
 		
 		return column;
 		
+	}
+
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
 	}
 
 	
