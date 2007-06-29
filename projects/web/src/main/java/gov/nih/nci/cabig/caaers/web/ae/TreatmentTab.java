@@ -37,6 +37,10 @@ public class TreatmentTab extends AeTab {
             "aeReport.treatmentInformation.adverseEventCourse.date",
             "Adverse event course start date", false
         ));
+        treatmentFields.getFields().add(new DefaultTextField(
+            "aeReport.treatmentInformation.treatmentAssignmentCode",
+            "Assignment code", false
+        ));
     }
 
     @Override

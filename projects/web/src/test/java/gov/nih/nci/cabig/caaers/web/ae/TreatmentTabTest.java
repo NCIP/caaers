@@ -21,7 +21,8 @@ public class TreatmentTabTest extends AeTabTestCase {
         assertFieldProperties("treatmentInfo",
             "aeReport.treatmentInformation.firstCourseDate",
             "aeReport.treatmentInformation.adverseEventCourse.number",
-            "aeReport.treatmentInformation.adverseEventCourse.date"
+            "aeReport.treatmentInformation.adverseEventCourse.date",
+            "aeReport.treatmentInformation.treatmentAssignmentCode"
         );
     }
 

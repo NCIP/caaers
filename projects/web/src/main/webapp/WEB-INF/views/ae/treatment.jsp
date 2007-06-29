@@ -94,6 +94,7 @@
             ${command.assignment.studySite.study.shortTitle}.
         </jsp:attribute>
         <jsp:attribute name="singleFields">
+            <tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
             <div class="row">
                 <div class="label">
                     <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
