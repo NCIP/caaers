@@ -20,14 +20,14 @@ public class PreExistingConditionsTab extends AeTab {
     private RepeatingFieldGroupFactory fieldFactory;
 
     public PreExistingConditionsTab() {
-        super("Pre-Existing Conditions", "Pre-Existing Conds", "ae/preExistingConds");
+        super("Pre-Existing Conditions", "Pre-Existing Conditions", "ae/preExistingConds");
         fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.adverseEventPreExistingConds");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 return "Pre-Existing Condition " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("preExistingCondition", "Pre Existing Conds", false));
+        fieldFactory.addField(new AutocompleterField("preExistingCondition", "Pre Existing Condition", false));
         fieldFactory.addField(new DefaultTextField("other", "Other", false));
     }
 

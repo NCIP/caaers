@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.LongSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 
@@ -42,7 +42,7 @@ public class MedicalDeviceTab extends AeTab {
         allFields.getFields().add(new DefaultTextField(baseProp + ".serialNumber", "Serial Number", false));
         allFields.getFields().add(new DefaultTextField(baseProp + ".otherNumber", "Other Number", false));
         
-        allFields.getFields().add(new LongSelectField(baseProp + ".deviceOperator", "Device Operator", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceOperator", "Device Operator", false,
                 collectOptions(Arrays.asList(DeviceOperator.values()), null, "displayName")));
         
         allFields.getFields().add(new DefaultTextField(baseProp + ".otherDeviceOperator", "Other Device Operator", false));
@@ -52,13 +52,13 @@ public class MedicalDeviceTab extends AeTab {
         allFields.getFields().add(new DefaultDateField(
                 baseProp + ".explantedDate", "IF Explanted Give a Date",  false));
         
-        allFields.getFields().add(new LongSelectField(baseProp + ".deviceReprocessed", "Device Reprocessed", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceReprocessed", "Device Reprocessed", false,
                 collectOptions(Arrays.asList(Availability.values()), null, "displayName")));
         
         allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorName", " Reprocessor Name", false));
         allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorAddress", " Reprocessor Address", false));
         
-        allFields.getFields().add(new LongSelectField(baseProp + ".evaluationAvailability", "Evaluation Availability", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".evaluationAvailability", "Evaluation Availability", false,
                 collectOptions(Arrays.asList(Availability.values()), null, "displayName")));
         
         allFields.getFields().add(new DefaultDateField(

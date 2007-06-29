@@ -7,6 +7,7 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
+    <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
         .longselect {
@@ -16,15 +17,17 @@
             padding-left: 3.0em;
             text-indent: -2.5em;
         }
+        
+      	div.row div.label { width: 13em; }
+    	div.row div.value { margin-left: 14em;}
     </style>
-    <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
      <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
     
     	
     	function showOther(otherTextId,otherSelectId){
-    			if ($(otherSelectId).checked){
+    			if ($(otherSelectId).options[2].selected){
     				$(otherTextId).disabled=false
     			}
     			else{
@@ -36,11 +39,11 @@
     	
     	Event.observe(window, "load", function() {
     		var otherTextId= "aeReport.medicalDevice.otherDeviceOperator"
-    		var otherSelectId= "aeReport.medicalDevice.deviceOperator-radio-2"
+    		var otherSelectId= "aeReport.medicalDevice.deviceOperator"
     	    showOther(otherTextId,otherSelectId);
-           Event.observe("aeReport.medicalDevice.deviceOperator-radio-0", "change", function() { showOther(otherTextId,otherSelectId) })
-           Event.observe("aeReport.medicalDevice.deviceOperator-radio-1", "change", function() { showOther(otherTextId,otherSelectId) })
-           Event.observe("aeReport.medicalDevice.deviceOperator-radio-2", "change", function() { showOther(otherTextId,otherSelectId) })
+           Event.observe("aeReport.medicalDevice.deviceOperator", "change", function() { showOther(otherTextId,otherSelectId) })
+           //Event.observe("aeReport.medicalDevice.deviceOperator-radio-1", "change", function() { showOther(otherTextId,otherSelectId) })
+           //Event.observe("aeReport.medicalDevice.deviceOperator-radio-2", "change", function() { showOther(otherTextId,otherSelectId) })
         })
     
     </script>
@@ -54,7 +57,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            If applicable, enter Surgery Intervention Information for ${command.assignment.participant.fullName}
+            If applicable, enter Medical Device Information for ${command.assignment.participant.fullName}
             on ${command.assignment.studySite.study.shortTitle}.
         </jsp:attribute>
     <jsp:attribute name="singleFields">

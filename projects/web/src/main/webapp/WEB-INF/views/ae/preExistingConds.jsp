@@ -10,6 +10,19 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
+    <style type="text/css">
+        /* This is intended to apply to the grade longselect only */
+        .longselect {
+            width: 20em;
+        }
+        .longselect label {
+            padding-left: 3.0em;
+            text-indent: -2.5em;
+        }
+        
+      	div.row div.label { width: 13em; }
+    	div.row div.value { margin-left: 14em;}
+    </style>
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 

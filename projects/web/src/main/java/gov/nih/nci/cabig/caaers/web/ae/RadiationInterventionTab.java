@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
@@ -20,13 +21,13 @@ public class RadiationInterventionTab extends AeTab {
     private InputFieldGroup allFields;
     
     public RadiationInterventionTab() {
-        super("Radiation Intervention", "Radiation Intervention", "ae/surgeryIntervention");
+        super("Radiation Intervention", "Radiation Intervention", "ae/radiationIntervention");
         allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.radiationIntervention";
 
         
         allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment Arm", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".description", "Treatment Arm Description", false));
+        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment Arm Description", false));
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(BaseSelectField.collectOptions(

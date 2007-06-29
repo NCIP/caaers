@@ -10,6 +10,18 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
      <tags:dwrJavascriptLink objects="createAE"/>
+     
+     <style type="text/css">
+    	div.row div.label { width: 15em; }
+    	div.row div.value { margin-left: 16em;}
+    	
+    	 textarea {
+            width: 20em;
+            height: 5em;
+        }
+    	
+    </style>
+    
     <script type="text/javascript">
     	
          var anatomicAutocompleterProps = {
@@ -61,12 +73,6 @@
         })
     
     </script>
-    <style type="text/css">
-        textarea {
-            width: 30em;
-            height: 12em;
-        }
-    </style>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">

@@ -21,6 +21,8 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
+import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -115,6 +117,9 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
         ControllerTools.registerEnumEditor(binder, PostAdverseEventStatus.class);
+        ControllerTools.registerEnumEditor(binder, RadiationAdministration.class);
+        ControllerTools.registerEnumEditor(binder, Availability.class);
+        
     }
 
     @Override

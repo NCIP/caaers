@@ -14,17 +14,20 @@
     
     </script>
     <style type="text/css">
+    	div.row div.label { width: 16em; }
+    	div.row div.value { margin-left: 17em;}
+
         textarea {
-            width: 30em;
-            height: 12em;
+            width: 20em;
+            height: 5em;
         }
     </style>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            If applicable, enter Surgery Intervention Information for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}.
+            If applicable, enter Radiation Intervention Information for ${command.assignment.participant.fullName}
+            on ${command.assignment.studySite.study.shortTitle}. YES
         </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">
