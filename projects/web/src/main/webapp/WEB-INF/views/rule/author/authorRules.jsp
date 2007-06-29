@@ -166,11 +166,12 @@
 								
 								createAE.getTermsByCategory(0, function(terms) {
 						                   
-
+										
 							
 										var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
 													selectArea += '</select>';
-				
+										//			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
+										//									selectArea += '</select>';
 							
 										$(spanId).innerHTML = selectArea;
 
@@ -535,7 +536,7 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" >';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this, '+ruleCount+')">';
 										selectArea += '</select>';
 				
 							//Element.remove(validValueField);
@@ -1068,7 +1069,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 																		// Check whether category exists
 																	//	alert (categoryValue);
 																		var categoryValue = getCategoryValue(${ruleCount});
-																	//	alert (categoryValue);
+																		//alert (categoryValue);
 																	
 																		createAE.getTermsByCategory(categoryValue, function(terms) {
 						                   
@@ -1188,7 +1189,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 				<div style="margin-left:50px;"><label for="action"
 					class="label">Action(s)</label></div>
 				<br />
-				<div id="action-template" style="margin-left:200px;"><img
+					<div id="action-template" style="margin-left:200px;"><img
 					src="/caaers/images/chrome/spacer.gif"
 					style="width:10px;height:10px" align="absmiddle" /> 
 				<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
