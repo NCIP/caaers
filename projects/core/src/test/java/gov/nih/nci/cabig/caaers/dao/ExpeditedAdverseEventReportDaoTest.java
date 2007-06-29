@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.util.Calendar;
 import java.util.List;
@@ -250,9 +251,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 TreatmentInformation ti = new TreatmentInformation();
                 ti.getAdverseEventCourse().setDate(DateUtils.createDate(2006, Calendar.MAY, 4));
                 ti.getAdverseEventCourse().setNumber(4);
-                ti.setFirstCourseDate(DateUtils.createDate(2005, Calendar.JULY, 30));
+                ti.setFirstCourseDate(DateTools.createDate(2005, Calendar.JULY, 30));
                 ti.getCourseAgents().get(0).setAdministrationDelay(new BigDecimal(480));
                 ti.getCourseAgents().get(0).getDose().setAmount(new BigDecimal("45.2"));
+                ti.setTreatmentAssignmentCode("WAC TAC");
                 report.setTreatmentInformation(ti);
             }
 
@@ -265,6 +267,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                     (int) ti.getAdverseEventCourse().getNumber());
                 assertDayOfDate("Wrong AE course date", 2006, Calendar.MAY, 4,
                     ti.getAdverseEventCourse().getDate());
+                assertEquals("Wrong TAC", "WAC TAC", ti.getTreatmentAssignmentCode());
 
                 assertEquals("Wrong number of course agents", 1, ti.getCourseAgents().size());
                 CourseAgent ca = ti.getCourseAgents().get(0);

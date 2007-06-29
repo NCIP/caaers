@@ -37,6 +37,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
     private Date firstCourseDate;
     private CourseDate adverseEventCourse;
+    private String treatmentAssignmentCode;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -71,6 +72,14 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     }
 
     ////// BEAN PROPERTIES
+
+    public String getTreatmentAssignmentCode() {
+        return treatmentAssignmentCode;
+    }
+
+    public void setTreatmentAssignmentCode(String treatmentAssignmentCode) {
+        this.treatmentAssignmentCode = treatmentAssignmentCode;
+    }
 
     public Date getFirstCourseDate() {
         return firstCourseDate;
