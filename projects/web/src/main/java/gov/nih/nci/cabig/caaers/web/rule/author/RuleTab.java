@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -7,6 +8,7 @@ import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,9 @@ public class RuleTab extends DefaultTab
     public Map<String, Object> referenceData(RuleInputCommand command) 
     {
     	CreateRuleCommand createRuleCommand = ((CreateRuleCommand)command);
+    	
+    	
+    	createRuleCommand.setReportDefinitions(createRuleCommand.getReportDefinitionDao().getAll());
     
     	RuleSet ruleSet = createRuleCommand.getRuleSet();
     	
@@ -141,6 +146,51 @@ public class RuleTab extends DefaultTab
 
 							}
 						}
+				} else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equals(createRuleCommand.getLevel())) {
+
+					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
+
+					ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
+
+					//boolean areSponsorRules = false;
+					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
+					if (ruleSet == null)
+					{
+						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
+						//areSponsorRules = true;
+					}
+					
+					
+						if (ruleSet != null && ruleSet.getRule().size() > 0)
+						{	
+							//ruleSet.setName(packageName);
+							List <Rule> rules = ruleSet.getRule();
+							
+							for(Rule rule : rules) 
+							{
+								rule.getMetaData().setPackageName(packageName); 
+								//rule.setId(null);
+								List<Column> columns = rule.getCondition().getColumn();
+								
+								//System.out.println("size ..." + columns.size());
+								
+								for(int i = 0; i < columns.size(); i++) 
+								{
+									if("siteSDO".equals(columns.get(i).getIdentifier())) 
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+									if("adverseEventEvaluationResult".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+								}
+							}
+						}					
 				}
 				
 				if (ruleSet == null)
