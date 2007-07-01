@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,15 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private int duration;
     private TimeScaleUnit timeScaleUnitType;
     private List<PlannedNotification> plannedNotifications;
-
+    private LazyListHelper lazyListHelper;
+    
+    
+    public ReportDefinition(){
+    	lazyListHelper = new LazyListHelper();
+    	lazyListHelper.add(ReportDeliveryDefinition.class, 
+    			new MutableDomainObjectInstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
+    }
+    
     ////// LOGIC
 
     public Report createReport() {
@@ -74,10 +83,25 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
         plannedNotifications.add(pn);
     }
+	
+    
+	public void addReportDeliveryDefinition(ReportDeliveryDefinition rdd){
+		if(rdd == null) return;
+		getDeliveryDefinitionsInternal().add(rdd);
+	}
+	
+	@Transient
+	public List<ReportDeliveryDefinition> getDeliveryDefinitions() {
+		return lazyListHelper.getLazyList(ReportDeliveryDefinition.class);
+	}
 
+	
+    
     ////// BEAN PROPERTIES
 
-    public String getName() {
+  
+
+	public String getName() {
         return name;
     }
     public void setName(String name) {
@@ -108,7 +132,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
 
     @OneToMany(fetch=FetchType.EAGER)
-    @JoinColumn(name="rct_id", nullable=false)
+    @JoinColumn(name="rct_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<PlannedNotification> getPlannedNotifications() {
         return plannedNotifications;
@@ -116,7 +140,20 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public void setPlannedNotifications(List<PlannedNotification> eventList) {
         this.plannedNotifications = eventList;
     }
+    
+    
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="rct_id")
+	@Cascade(value = { CascadeType.ALL})
+	public List<ReportDeliveryDefinition> getDeliveryDefinitionsInternal() {
+		return lazyListHelper.getInternalList(ReportDeliveryDefinition.class);
+	}
+	public void setDeliveryDefinitionsInternal(
+			List<ReportDeliveryDefinition> deliveryDefinitions) {
+		lazyListHelper.setInternalList(ReportDeliveryDefinition.class, deliveryDefinitions);
+	}
 
+	
     ////// OBJECT METHODS
 
     @Override

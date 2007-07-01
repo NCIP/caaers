@@ -1,0 +1,12 @@
+<dataset>
+	<report_delivery_defs
+		id = "-222"
+		format = "1"
+		entity_name = "RDD-222"
+		entity_description ="Some entity desc"
+		end_point = "www.biju.com"
+		end_point_type = "Url" 
+		entity_type = "1"
+		version = "0"
+		grid_id ="abcd282828"/>
+</dataset>

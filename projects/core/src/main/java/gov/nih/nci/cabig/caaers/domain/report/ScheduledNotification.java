@@ -42,7 +42,7 @@ import org.hibernate.annotations.Type;
         @Parameter(name = "sequence", value = "seq_scheduled_notifications_id")
     }
 )
-public  class ScheduledNotification extends AbstractMutableDomainObject  implements Serializable{
+public  abstract class ScheduledNotification extends AbstractMutableDomainObject  implements Serializable{
 	
 	
 	protected DeliveryStatus deliveryStatus;

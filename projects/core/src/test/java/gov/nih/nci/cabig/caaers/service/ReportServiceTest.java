@@ -95,7 +95,6 @@ public class ReportServiceTest extends CaaersTestCase {
 		ReportDefinition calendarTemplate = report.getReportDefinition();
 		PlannedNotification pnf = calendarTemplate.getPlannedNotifications().get(0);
 		List<String> addresses = service.findToAddresses(pnf, report);
-		System.out.println(addresses);
 		assertTrue("Recipient should be present",addresses.contains(CONTACT_MECH_EMAIL_ADDRESS));
 		assertTrue("Recipient should be present", addresses.contains(REPORTER_EMAIL_ADDRESS));
 	}
@@ -104,7 +103,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		String address = service.findContactMechanismValue(REPORTER_ROLE, ExpeditedReportPerson.EMAIL, aeReport);
 		assertEquals("email should be same",  REPORTER_EMAIL_ADDRESS, address);
 	}
-
+/*
 	public void testApplyCalendarTemplate() {
 		Date now = new Date();
 		Calendar cal = GregorianCalendar.getInstance();
@@ -145,5 +144,5 @@ public class ReportServiceTest extends CaaersTestCase {
 		
 	}
 	
-	
+*/	
 }

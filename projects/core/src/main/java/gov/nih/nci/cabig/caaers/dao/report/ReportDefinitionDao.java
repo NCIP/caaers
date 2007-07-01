@@ -70,6 +70,12 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 		getHibernateTemplate().deleteAll(c);
 	}
 	
+	@Override
+	//overriden inorder to bring under transaction
+	public ReportDefinition getById(int id) {
+		return super.getById(id);
+	}
+
 	/**
 	 * Willl initialize the Lazy collections inside the passed ReportDefinition
 	 * @param rpDef
@@ -78,6 +84,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 		//this method will initialize all the lazy collections
 		// of a report definition
 		super.initialize(rpDef.getPlannedNotifications());
+		super.initialize(rpDef.getDeliveryDefinitionsInternal());
 		for(PlannedNotification nf : rpDef.getPlannedNotifications()){
 			super.initialize(nf.getRecipients());
 			super.initialize(nf.getAttachments());

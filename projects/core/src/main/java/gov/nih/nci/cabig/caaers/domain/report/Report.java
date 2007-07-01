@@ -55,12 +55,19 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private ReportStatus status = ReportStatus.PENDING;
 
+	private List<ReportDelivery> deliveries;
+	
     ////// LOGIC
 
     public void addScheduledNotification(ScheduledNotification nf) {
         if (notifications == null) notifications = new ArrayList<ScheduledNotification>();
         notifications.add(nf);
     }
+
+	public void addReportDelivery(ReportDelivery rd){
+		if(this.deliveries == null) deliveries = new ArrayList<ReportDelivery>();
+		deliveries.add(rd);
+	}
 
     ////// BEAN PROPERTIES
 
@@ -144,8 +151,19 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setRequired(boolean required) {
         this.required = required;
     }
+    
+    @OneToMany(fetch=FetchType.LAZY,mappedBy="report")
+	@Cascade(value = { CascadeType.ALL })
+	public List<ReportDelivery> getReportDeliveries() {
+		return deliveries;
+	}
+    
+	public void setReportDeliveries(List<ReportDelivery> deliveries) {
+		this.deliveries = deliveries;
+	}
+	
 
-    ////// OBJECT METHODS
+	////// OBJECT METHODS
 
     @Override
     public String toString() {

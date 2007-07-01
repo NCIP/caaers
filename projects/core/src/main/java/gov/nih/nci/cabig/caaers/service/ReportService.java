@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -17,9 +18,18 @@ import java.util.List;
  * @since       1.0
  */
 public interface ReportService {
-    List<String> findToAddresses(PlannedNotification pnf, Report rs);
+	
 
-    void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs);
-
-    String applyRuntimeReplacements(String rawContent, Report report);
+    /**
+     * Applies runtime variable replacements, with the values availabe in report.
+     * Note: Uses freemarker based text replacements 
+     */
+    public String applyRuntimeReplacements(String rawContent, Report report);
+    
+   /**
+    * Creates a report from the given definition and associates it with the
+    * given aeReport.  Initiates all notifications for the report.
+    */
+   Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
+    
 }

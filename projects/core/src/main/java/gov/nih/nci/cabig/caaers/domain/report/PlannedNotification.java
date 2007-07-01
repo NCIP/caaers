@@ -40,7 +40,7 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name = "sequence", value = "seq_planned_notifications_id")
     }
 )
-public class PlannedNotification extends AbstractMutableDomainObject implements Serializable{
+public abstract class PlannedNotification extends AbstractMutableDomainObject implements Serializable{
 
 	/** The actual mark selected on the time scale*/
 	@Column(name="index_on_time_scale")

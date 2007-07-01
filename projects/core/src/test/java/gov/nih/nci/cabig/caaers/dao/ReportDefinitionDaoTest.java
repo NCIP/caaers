@@ -11,6 +11,8 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
@@ -23,7 +25,7 @@ import org.springframework.transaction.TransactionStatus;
 
 
 /**
- * 
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 13, 2007
  * @version     %I%, %G%
@@ -86,9 +88,20 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 
         pnlist.add(pen);
         rct.setPlannedNotifications(pnlist);
+       
+		final ReportDeliveryDefinition rdd = new ReportDeliveryDefinition();
+		rdd.setEndPoint("abcd");
+		rdd.setEndPointType(rdd.ENDPOINT_TYPE_EMAIL);
+		rdd.setFormat(ReportFormat.PDF);
+		rdd.setEntityDescription("Joel");
+		rdd.setEntityName("Manju");
+		rdd.setEntityType(rdd.ENTITY_TYPE_ROLE);
+		
+		rct.addReportDeliveryDefinition(rdd);
+		
         rctDao.save(rct);
         final Integer id = rct.getId();
-        
+
         interruptSession();
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -101,6 +114,9 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 PlannedEmailNotification nf = (PlannedEmailNotification) rctLoaded.getPlannedNotifications().get(0);
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
                 assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBodyAsString());
+                
+                ReportDeliveryDefinition rdd2 = rctLoaded.getDeliveryDefinitionsInternal().get(0);
+                assertEquals("Report delivery definiton name must be same" , rdd2.getEndPoint() , rdd.getEndPoint());
                 //update the values.
                 nf.setIndexOnTimeScale(4);
                 nf.setSubjectLine("New Subject Line");

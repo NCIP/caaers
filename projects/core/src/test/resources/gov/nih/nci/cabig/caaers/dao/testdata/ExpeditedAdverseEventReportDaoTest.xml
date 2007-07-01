@@ -223,4 +223,7 @@
         in this file.  This is so dbunit will clean them up. -->
     <DISEASE_HISTORY/>
     <PARTICIPANT_HISTORY/>
+	<!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
+	<SCHEDULED_NOTIFICATIONS />
+	<PLANNED_NOTIFICATIONS />
 </dataset>

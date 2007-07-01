@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -12,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -63,8 +66,7 @@ public class ReportServiceImpl  implements ReportService {
 
     // package-level for testing
     String findContactMechanismValue(
-        String role, String mechanismType, ExpeditedAdverseEventReport aeReport
-    ) {
+        String role, String mechanismType, ExpeditedAdverseEventReport aeReport) {
 		// TODO : do runtime expression evaluation using roleEntityMapping.
         // TODO: these role names should be defined as constants somewhere
         if (StringUtils.equals("Reporter", role)) {
@@ -83,50 +85,7 @@ public class ReportServiceImpl  implements ReportService {
         return null;
 	}
 
-	public  void applyCalendarTemplate(ReportDefinition rcTemplate, Report rs){
-
-		assert rcTemplate != null : "ReportDefinition must be not null, inorder to schedule notfications";
-		Date now = new Date();
-		Calendar cal = GregorianCalendar.getInstance();
-
-		//set the due date
-		cal.setTime(now);
-		cal.add(rcTemplate.getTimeScaleUnitType().getCalendarTypeCode(), rcTemplate.getDuration());
-		rs.setDueOn(cal.getTime());
-
-		//populate scheduled notifications
-		List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
-		List<PlannedNotification> pnfList = rcTemplate.getPlannedNotifications();
-
-		for(PlannedNotification pnf : pnfList){
-			//obtain the toAddress to use.
-			List<String> toAddressList = findToAddresses(pnf, rs);
-
-			for(String to : toAddressList){
-				ScheduledNotification snf = null;
-				if(pnf instanceof PlannedEmailNotification){
-					PlannedEmailNotification penf = (PlannedEmailNotification)pnf;
-					ScheduledEmailNotification senf = new ScheduledEmailNotification();
-					snf = senf;
-					//set the values specific to email
-					senf.setFromAddress(penf.getFromAddress());
-					senf.setToAddress(to);
-				}
-				assert snf != null : "ScheduledNotification (snf) must be initiailized";
-				snf.setBody(pnf.getNotificationBodyContent().getBody());
-				snf.setCreatedOn(now);
-				snf.setDeliveryStatus(DeliveryStatus.CREATED);
-				snf.setPlanedNotificaiton(pnf);
-				cal.setTime(now);
-				cal.add(rcTemplate.getTimeScaleUnitType().getCalendarTypeCode(), pnf.getIndexOnTimeScale());
-				snf.setScheduledOn(cal.getTime());
-
-				snfList.add(snf);
-			}//for each to
-		}//for each pnf
-		//set the scheduled notificaitons
-		rs.setScheduledNotifications(snfList);
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.service.ReportService#applyRuntimeReplacements(java.lang.String, gov.nih.nci.cabig.caaers.domain.report.Report)
@@ -135,7 +94,7 @@ public class ReportServiceImpl  implements ReportService {
 		Configuration cfg = new Configuration();
 		try {
 			Template t = new Template("message", new StringReader(rawText),cfg);
-			Map<String, Object> map = getContextVariables(report);
+			Map<Object, Object> map = getContextVariables(report);
 			StringWriter writer = new StringWriter();
 			t.process(map, writer);
 			return writer.toString();
@@ -144,8 +103,105 @@ public class ReportServiceImpl  implements ReportService {
 		}
 	}
 
-	public Map<String,Object> getContextVariables(Report report){
-		return new HashMap<String, Object>();
+	public Map<Object,Object> getContextVariables(Report report){
+		//TODO : properly populate the following....
+		//
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		map.put("nCIProtocolNumber", report.getAeReport().getStudy().getPrimaryIdentifier().getValue());
+		map.put("reportId", report.getAeReport().getId());
+		
+		return map;
 	}
 
+  /**
+    * Creates a report from the given definition and associates it with the
+    * given aeReport.  Initiates all notifications for the report.
+    */
+	public Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport) {
+		assert repDef != null : "ReportDefinition must be not null. Unable to create a Report";
+		assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
+		
+		//TODO: must use NowFactory
+		Date now = new Date();
+		Calendar cal = GregorianCalendar.getInstance();
+		
+		Report report = new Report();
+		report.setName(repDef.getName());
+		report.setRequired(false);
+		report.setStatus(ReportStatus.PENDING);
+		
+		//attach the aeReport to report
+		report.setAeReport(aeReport);
+		aeReport.addReport(report);
+		
+		//set the due date
+		cal.setTime(now);
+		cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), repDef.getDuration());
+		report.setDueOn(cal.getTime());
+		
+		
+		//populate the delivery definitions
+		if(repDef.getDeliveryDefinitions() != null){
+			for(ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()){
+				ReportDelivery rd = new ReportDelivery();
+				rd.setDeliveryStatus(DeliveryStatus.CREATED);
+				rd.setReportDeliveryDefinition(rdd);
+				//fetch the contact mechanism for role based entities.
+				if(rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE)
+					findContactMechanismValue(rdd.getEndPoint(), rdd.getEndPointType(), aeReport);
+				else
+					rd.setEndPoint(rdd.getEndPoint());
+				report.addReportDelivery(rd);
+				rd.setReport(report);
+			}//~for rdd
+		}//~if 
+		
+		//populate the scheduled notifications.
+		//Note:- ScheduledNotification is per Recipient. A PlannedNotificaiton has many recipients.
+		if(repDef.getPlannedNotifications() != null){
+			
+			String subjectLine = null;
+			String bodyContent = null;
+			
+			for(PlannedNotification pnf : repDef.getPlannedNotifications()){
+				
+				//obtain all valid recipient address
+				List<String> toAddressList = findToAddresses(pnf, report);
+				// for each recipient(address) create a ScheduledNotification.
+				for(String to : toAddressList){
+					
+					ScheduledNotification snf = null;
+					if(pnf instanceof PlannedEmailNotification){
+						PlannedEmailNotification penf = (PlannedEmailNotification)pnf;
+						ScheduledEmailNotification senf = new ScheduledEmailNotification();
+						snf = senf;
+						//set the values specific to email
+						senf.setFromAddress(penf.getFromAddress());
+						senf.setToAddress(to);
+						if(subjectLine == null){
+							subjectLine = applyRuntimeReplacements(penf.getSubjectLine(), report);
+						}
+						//senf.setSubjectLine(subjectLine);
+					}
+					
+					if(bodyContent == null){ 
+						bodyContent = applyRuntimeReplacements(pnf.getNotificationBodyContent().getBodyAsString(), report);
+					}
+					snf.setBody(bodyContent.getBytes());
+					
+					
+					snf.setCreatedOn(now);
+					snf.setDeliveryStatus(DeliveryStatus.CREATED);
+					cal.setTime(now);
+					cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), pnf.getIndexOnTimeScale());
+					snf.setScheduledOn(cal.getTime());
+
+					report.addScheduledNotification(snf);
+			
+				}//for each to
+			}//for each pnf
+		}//~if
+		return report;
+	}
+	
 }

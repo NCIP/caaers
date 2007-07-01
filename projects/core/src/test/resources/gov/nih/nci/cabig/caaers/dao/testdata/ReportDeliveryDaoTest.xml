@@ -1,0 +1,31 @@
+<dataset>
+		<report_calendar_templates 
+		id="-222"
+		name="RCT-222"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		/>
+	    <report_schedules 
+		id="-223"
+		name="Sample Report"
+		due_on="2007-05-16"
+		created_on="2007-05-15"
+		submitted_on="2007-05-18"
+		version="0"
+		rct_ID="-222"
+		/>
+		<report_delivery_defs
+		id = "-222"
+		format = "1"
+		entity_name = "RDD-222"
+		entity_description ="Some entity desc"
+		end_point = "www.biju.com"
+		end_point_type = "Url" 
+		entity_type = "1"
+		version = "0"
+		rct_id="-222"
+		grid_id ="abcd282828"/>
+	
+</dataset>
