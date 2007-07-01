@@ -82,8 +82,6 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBeanTest extends TestCase
     	String dbProperty = String.valueOf(actual.getProperty(DRIVER_PROPERTY_NAME)) + String.valueOf(actual.getProperty(RDBMS_PROPERTY_NAME)) ;
     	String quartzDelegateClass = actual.getProperty(QUARTZ_DELEGATE_PROPERTY_NAME);
     	assertNotNull("Quartz Delegate class empty", quartzDelegateClass);
-    	System.out.println(dbProperty);
-    	System.out.println(quartzDelegateClass);
     	if(dbProperty.toLowerCase().contains("oracle")){
     		assertEquals("Expected org.quartz.impl.jdbcjobstore.oracle.OracleDelegate",
     				"org.quartz.impl.jdbcjobstore.oracle.OracleDelegate" , quartzDelegateClass);
