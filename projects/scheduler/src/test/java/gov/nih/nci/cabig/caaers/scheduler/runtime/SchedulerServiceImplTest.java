@@ -45,7 +45,6 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 
 	public void testGetReportScheduleDao() {
 		assertNotNull("ReportScheduleDao should not be null", service.getReportScheduleDao());
-		System.out.println(service.getReportScheduleDao().getClass().getName());
 	}
 	public void testScheduleNotification() throws Exception{
 		scheduleJobForReport(-444);
