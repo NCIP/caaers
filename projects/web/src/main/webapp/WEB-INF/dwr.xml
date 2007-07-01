@@ -30,7 +30,9 @@
         <create creator="spring" javascript="importMeddra">
             <param name="beanName" value="meddraAjaxFacade"/>
         </create>
-                
+       <create creator="spring" javascript="reportDef">
+            <param name="beanName" value="reportAjaxFacade"/>
+        </create>         
         <create creator="new" javascript="date">
             <param name="class" value="java.util.Date"/>
         </create>

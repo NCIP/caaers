@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 /**
  * This class will be removed after the demo
@@ -71,11 +72,5 @@ public class DefaultTab extends Tab<RuleInputCommand> {
         return fieldGroups;
     }
 
-    protected Map<Object, Object> createMapFromArray(Object[] arr){
-    	Map<Object,Object> map = new LinkedHashMap<Object, Object>();
-    	map.put("", "Select a Value");
-    	for(Object o : arr)
-    		map.put(o, o);
-    	return map;
-    }
+
 }

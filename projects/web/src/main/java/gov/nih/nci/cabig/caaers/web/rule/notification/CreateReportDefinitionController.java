@@ -2,7 +2,8 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
+import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -11,25 +12,31 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Sujith Vellat Thayyilthodi
  * */
-public class CreateReportDefinitionController extends AbstractTabbedFlowFormController<RuleInputCommand> {
-
+public class CreateReportDefinitionController extends AbstractTabbedFlowFormController<ReportDefinitionCommand> {
+	
+	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
+	
 	private ReportDefinitionDao rpDefDao;
 	private Map<String, String> roles;
 	
 	public CreateReportDefinitionController() {
 		initFlow();
-		//setCommandClass(NotificationCommand.class);
 	}
-
+	
+	//initializes the flow
     protected void initFlow() {
-        setFlow(new Flow<RuleInputCommand>(getFlowName()));
+        setFlow(new Flow<ReportDefinitionCommand>(getFlowName()));
         FirstTab firstTab = new FirstTab();
         ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
         SecondTab secondTab = new SecondTab();
@@ -39,23 +46,35 @@ public class CreateReportDefinitionController extends AbstractTabbedFlowFormCont
         getFlow().addTab(deliveryDefTab);
         getFlow().addTab(secondTab);
         getFlow().addTab(thirdTab);
+       // getFlow().addTab(new FirstTab());
     }
 	
 	protected String getFlowName() {
-		return "Create Report Calendar";
+		return "Create Report Definition";
 	}
 	
+	/**
+	 * In the create flow of report definiton, we should make sure that
+	 * there exists at least one ReportDeliveryDefinition.
+	 */
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
-		System.out.println(this);
-		//return new NotificationCommand(allRoles, map, notificationDao);
+		//return new NotificationCommand(roles, rpDefDao);
+		ReportDefinition rpDef = new ReportDefinition();
 		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand();
-		rpDefCmd.setReportDefinition(new ReportDefinition());
+		rpDefCmd.setReportDefinition(rpDef);
 		rpDefCmd.setReportDefinitionDao(rpDefDao);
 		rpDefCmd.setRoles(roles);
 		return rpDefCmd;
 	}
 
+	@Override
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+		super.initBinder(request, binder);
+		 binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+		ControllerTools.registerEnumEditor(binder, ReportFormat.class);
+	}
+	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res, Object cmd, BindException arg3) throws Exception {
 		ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand)cmd;
@@ -64,17 +83,35 @@ public class CreateReportDefinitionController extends AbstractTabbedFlowFormCont
         //model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToNotificationList", model);
 	}
+	
+	@Override
+	protected String getViewName(HttpServletRequest request, Object command, int page) {
+        Object subviewName = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+        if (subviewName != null) {
+            return "rule/notification/ajax/" + subviewName;
+        } else {
+            return super.getViewName(request, command, page);
+        }
+    }
+	
+    private Object findInRequest(HttpServletRequest request, String attributName){
+   
+    	Object attr = request.getParameter(attributName);
+    	if(attr == null) attr = request.getAttribute(attributName);
+    	return attr;
+    }
 
-	/**
-	 * @return the reportCalendarTemplateDao
-	 */
+	@Override
+	protected boolean suppressValidation(HttpServletRequest request, Object command) {
+		Object isAjax = findInRequest(request, AJAX_REQUEST_PARAMETER);
+		if(isAjax != null) return true;
+		return super.suppressValidation(request, command);
+	}
+	
 	public ReportDefinitionDao getRpDefDao() {
 		return rpDefDao;
 	}
 
-	/**
-	 * @param rpDefDao the {@link ReportDefinitionDao} to set
-	 */
 	public void setRpDefDao(ReportDefinitionDao rdDao) {
 		this.rpDefDao = rdDao;
 	}
@@ -86,15 +123,4 @@ public class CreateReportDefinitionController extends AbstractTabbedFlowFormCont
 	public Map<String,String> getAllRoles(){
 		return roles;
 	}
-//
-//	public Map getMap() {
-//		return map;
-//	}
-//
-//	public void setMap(Map map) {
-//		this.map = map;
-//	}
-//
-	
-
 }

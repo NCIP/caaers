@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
-import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
 import java.util.ArrayList;
@@ -29,8 +28,7 @@ import org.apache.commons.lang.math.NumberUtils;
  * @version %I%, %G%
  * @since 1.0
  */
-public class ReportDefinitionCommand implements
-		RuleInputCommand {
+public class ReportDefinitionCommand  {
 
 	// page - 1
 	private String name;
@@ -39,7 +37,7 @@ public class ReportDefinitionCommand implements
 	private String duration;
 	private String notificationType;
 
-	// page -2
+	// page -3
 	private String to;
 	private String message;
 	private String pointOnScale = "1"; // the selected point in the time scale
@@ -58,259 +56,7 @@ public class ReportDefinitionCommand implements
 	private boolean validationFailed;
 	private String delete;
 	
-	
-	/**
-	 * @return the delete
-	 */
-	public String getDelete() {
-		return delete;
-	}
-
-	/**
-	 * @param delete
-	 *            the delete to set
-	 */
-	public void setDelete(String delete) {
-		this.delete = delete;
-	}
-
-	/**
-	 * @return the validationFailed
-	 */
-	public boolean isValidationFailed() {
-		return validationFailed;
-	}
-
-	/**
-	 * @param validationFailed
-	 *            the validationFailed to set
-	 */
-	public void setValidationFailed(boolean validationFailed) {
-		this.validationFailed = validationFailed;
-	}
-	
-	/**
-	 * @return the calendarTemplateDao
-	 */
-	public ReportDefinitionDao getReportDefinitionDao() {
-		return rpDefDao;
-	}
-
-	/**
-	 * @param rpDefDao
-	 *            the calendarTemplateDao to set
-	 */
-	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
-		this.rpDefDao = rdDao;
-	}
-
-	/**
-	 * @return the duration
-	 */
-	public String getDuration() {
-		return duration;
-	}
-
-	/**
-	 * @param duration
-	 *            the duration to set
-	 */
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	/**
-	 * @return the calendarTemplate
-	 */
-	public ReportDefinition getReportDefinition() {
-		return rpDef;
-	}
-
-	/**
-	 * @param calendarTemplate
-	 *            the calendarTemplate to set
-	 */
-	public void setReportDefinition(ReportDefinition calendarTemplate) {
-		this.rpDef = calendarTemplate;
-	}
-
-	/**
-	 * @return the fromAddress
-	 */
-	public String getFromAddress() {
-		return fromAddress;
-	}
-
-	/**
-	 * @param fromAddress
-	 *            the fromAddress to set
-	 */
-	public void setFromAddress(String fromAddress) {
-		this.fromAddress = fromAddress;
-	}
-
-	/**
-	 * @return the subjectLine
-	 */
-	public String getSubjectLine() {
-		return subjectLine;
-	}
-
-	/**
-	 * @param subjectLine
-	 *            the subjectLine to set
-	 */
-	public void setSubjectLine(String subjectLine) {
-		this.subjectLine = subjectLine;
-	}
-
-	/**
-	 * @return the pointOnScale
-	 */
-	public String getPointOnScale() {
-		return pointOnScale;
-	}
-
-	/**
-	 * @param pointOnScale
-	 *            the pointOnScale to set
-	 */
-	public void setPointOnScale(String pointOnScale) {
-		this.pointOnScale = pointOnScale;
-	}
-
-	/**
-	 * @return the timeScaleType
-	 */
-	public String getTimeScaleType() {
-		return timeScaleType;
-	}
-
-	/**
-	 * @param timeScaleType
-	 *            the timeScaleType to set
-	 */
-	public void setTimeScaleType(String timeScaleType) {
-		this.timeScaleType = timeScaleType;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the notificationType
-	 */
-	public String getNotificationType() {
-		return notificationType;
-	}
-
-	/**
-	 * @param notificationType
-	 *            the notificationType to set
-	 */
-	public void setNotificationType(String notificationType) {
-		this.notificationType = notificationType;
-	}
-
-	/**
-	 * @return the directRecipient
-	 */
-	public List<String> getDirectRecipient() {
-		return directRecipient;
-	}
-
-	/**
-	 * @param directRecipient
-	 *            the directRecipient to set
-	 */
-	public void setDirectRecipient(List<String> directRecipient) {
-		this.directRecipient = directRecipient;
-	}
-
-	/**
-	 * @return the lastPointOnScale
-	 */
-	public String getLastPointOnScale() {
-		return lastPointOnScale;
-	}
-
-	/**
-	 * @param lastPointOnScale
-	 *            the lastPointOnScale to set
-	 */
-	public void setLastPointOnScale(String lastPointOnScale) {
-		this.lastPointOnScale = lastPointOnScale;
-	}
-
-	/**
-	 * @return the roleRecipient
-	 */
-	public List<String> getRoleRecipient() {
-		return roleRecipient;
-	}
-
-	/**
-	 * @param roleRecipient
-	 *            the roleRecipient to set
-	 */
-	public void setRoleRecipient(List<String> roleRecipient) {
-		this.roleRecipient = roleRecipient;
-	}
-
-	/**
-	 * @return the allRoles
-	 */
-	public Map<String, String> getRoles() {
-		return roles;
-	}
-
-	/**
-	 * @param allRoles
-	 *            the allRoles to set
-	 */
-	public void setRoles(Map<String, String> roles) {
-		this.roles = roles;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	
+	///LOGIC
 	public void reset() {
 		subjectLine = "";
 		fromAddress = "";
@@ -429,8 +175,184 @@ public class ReportDefinitionCommand implements
 		reset();
 	}
 	
+	///BEAN PROPERTIES
 	
-	private List<Integer> getConfiguredIndexes() {
+	/**
+	 * Will tell the index of the PlannedNotification to be deleted.
+	 */
+	public String getDelete() {
+		return delete;
+	}
+
+	public void setDelete(String delete) {
+		this.delete = delete;
+	}
+
+	/**
+	 * True if the validation, of the previous request failed.
+	 */
+	public boolean isValidationFailed() {
+		return validationFailed;
+	}
+
+	public void setValidationFailed(boolean validationFailed) {
+		this.validationFailed = validationFailed;
+	}
+	
+
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return rpDefDao;
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
+		this.rpDefDao = rdDao;
+	}
+
+	public String getDuration() {
+		return duration;
+	}
+
+	public void setDuration(String duration) {
+		this.duration = duration;
+	}
+
+	/**
+	 * The underlying domain object, used by this command object
+	 * @return
+	 */
+	public ReportDefinition getReportDefinition() {
+		return rpDef;
+	}
+
+	
+	public void setReportDefinition(ReportDefinition calendarTemplate) {
+		this.rpDef = calendarTemplate;
+	}
+
+	
+	public String getFromAddress() {
+		return fromAddress;
+	}
+
+	
+	public void setFromAddress(String fromAddress) {
+		this.fromAddress = fromAddress;
+	}
+
+	public String getSubjectLine() {
+		return subjectLine;
+	}
+
+	public void setSubjectLine(String subjectLine) {
+		this.subjectLine = subjectLine;
+	}
+
+	
+	public String getPointOnScale() {
+		return pointOnScale;
+	}
+
+	public void setPointOnScale(String pointOnScale) {
+		this.pointOnScale = pointOnScale;
+	}
+
+	public String getTimeScaleType() {
+		return timeScaleType;
+	}
+
+	public void setTimeScaleType(String timeScaleType) {
+		this.timeScaleType = timeScaleType;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNotificationType() {
+		return notificationType;
+	}
+
+	public void setNotificationType(String notificationType) {
+		this.notificationType = notificationType;
+	}
+
+	
+	public List<String> getDirectRecipient() {
+		return directRecipient;
+	}
+
+	
+	public void setDirectRecipient(List<String> directRecipient) {
+		this.directRecipient = directRecipient;
+	}
+	public String getLastPointOnScale() {
+		return lastPointOnScale;
+	}
+
+	public void setLastPointOnScale(String lastPointOnScale) {
+		this.lastPointOnScale = lastPointOnScale;
+	}
+
+	public List<String> getRoleRecipient() {
+		return roleRecipient;
+	}
+
+	public void setRoleRecipient(List<String> roleRecipient) {
+		this.roleRecipient = roleRecipient;
+	}
+
+	public Map<String, String> getRoles() {
+		return roles;
+	}
+	/**
+	 * The roles, a map injected from spring config file, consits of the 
+	 * roles to which notification can be sent.
+	 * @param roles
+	 */
+	public void setRoles(Map<String, String> roles) {
+		this.roles = roles;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
+
+	
+	
+	/*private List<Integer> getConfiguredIndexes() {
 		List<Integer> list = new ArrayList<Integer>();
 		if (rpDef != null) {
 			List<PlannedNotification> pnList = rpDef
@@ -440,7 +362,7 @@ public class ReportDefinitionCommand implements
 			}
 		}
 		return list;
-	}
+	}*/
 	
 	
 }

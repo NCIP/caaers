@@ -331,5 +331,10 @@
         class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
     </bean>
     
+	 <bean name="/rule/notification/addReportDefinitionSection" id="addReportDeliveryDefinition" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>rule/notification/ajax/addReportDefinitionSection</value></property>
+    </bean>    
+	
      
 </beans>

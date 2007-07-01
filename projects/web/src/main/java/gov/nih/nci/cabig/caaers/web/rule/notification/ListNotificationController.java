@@ -25,7 +25,6 @@ public class ListNotificationController extends SimpleFormController {
 	
 	@Override
 	public Object formBackingObject(HttpServletRequest request) {
-		System.out.println(this);
 		return new ListNotificationCommand(rdDao);
 	}
 
