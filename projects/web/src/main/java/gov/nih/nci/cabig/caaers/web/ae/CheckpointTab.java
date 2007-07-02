@@ -1,20 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 import java.util.Collections;
-
-import org.springframework.validation.Errors;
-import org.springframework.beans.BeanWrapper;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -37,6 +36,22 @@ public class CheckpointTab extends AeTab {
         }
 
         return Collections.singletonMap(optional.getName(), optional);
+    }
+
+    @Override
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+        evaluationService.addRequiredReports(command.getAeReport());
+        command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+    }
+
+    private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
+        List<ReportDefinition> all = evaluationService.applicableReportDefinitions(command.getAssignment());
+        for (Report report : command.getAeReport().getReports()) {
+            if (report.isRequired()) {
+                all.remove(report.getReportDefinition());
+            }
+        }
+        return all;
     }
 
     @Override

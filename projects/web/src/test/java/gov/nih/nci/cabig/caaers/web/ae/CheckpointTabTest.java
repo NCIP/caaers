@@ -3,10 +3,17 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
+import java.util.Map;
+import java.util.ArrayList;
+
+import org.easymock.classextension.EasyMock;
+import static org.easymock.classextension.EasyMock.*;
 
 /**
  * @author Rhett Sutphin
@@ -52,9 +59,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     }
 
     public void testPostProcessDoesNotInterfereWithExistingRequiredReports() throws Exception {
-        Report reqd = r1.createReport();
-        reqd.setRequired(true);
-        command.getAeReport().getReports().add(reqd);
+        command.getAeReport().getReports().add(createRequiredReport(r1));
 
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.TRUE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.FALSE);
@@ -71,9 +76,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     }
 
     public void testPostProcessRemovesDeselectedOptionalReports() throws Exception {
-        Report reqd = r1.createReport();
-        reqd.setRequired(true);
-        command.getAeReport().getReports().add(reqd);
+        command.getAeReport().getReports().add(createRequiredReport(r1));
         command.getAeReport().getReports().add(r2.createReport());
 
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
@@ -89,9 +92,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     }
 
     public void testPostProcessDoesNotRemoveRequiredReportsEver() throws Exception {
-        Report reqd = r1.createReport();
-        reqd.setRequired(true);
-        command.getAeReport().getReports().add(reqd);
+        command.getAeReport().getReports().add(createRequiredReport(r1));
 
         // other code should prevent this situation from occurring, but just in case:
         command.getOptionalReportDefinitionsMap().put(r1, Boolean.FALSE);
@@ -107,8 +108,14 @@ public class CheckpointTabTest extends AeTabTestCase {
         assertTrue(actualReports.get(0).isRequired());
     }
 
+    private Report createRequiredReport(ReportDefinition def) {
+        Report reqd = def.createReport();
+        reqd.setRequired(true);
+        return reqd;
+    }
+
     public void testPostProcessSavesWhenThereAreAnyReports() throws Exception {
-        command.getAeReport().getReports().add(r1.createReport());
+        command.getAeReport().getReports().add(createRequiredReport(r2));
         reportDao.save(command.getAeReport());
 
         replayMocks();
@@ -122,6 +129,36 @@ public class CheckpointTabTest extends AeTabTestCase {
         replayMocks();
         getTab().postProcess(request, command, errors);
         verifyMocks();
+    }
+    
+    public void testPreProcessEvaluates() throws Exception {
+        evaluationService.addRequiredReports(command.getAeReport());
+        expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
+            .andReturn(Collections.<ReportDefinition>emptyList());
+
+        replayMocks();
+        getTab().onDisplay(request, command);
+        verifyMocks();
+    }
+
+    public void testPreProcessSetsUpOptionalDefList() throws Exception {
+        command.getAeReport().getReports().clear();
+        command.getAeReport().addReport(r1.createReport());
+        command.getAeReport().addReport(createRequiredReport(r2));
+
+        evaluationService.addRequiredReports(command.getAeReport());
+        expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
+            .andReturn(new ArrayList<ReportDefinition>(Arrays.asList(r1, r2, r3)));
+
+        replayMocks();
+        getTab().onDisplay(request, command);
+        verifyMocks();
+
+        Map<ReportDefinition,Boolean> map = command.getOptionalReportDefinitionsMap();
+        
+        assertEquals("Wrong number of optional defs", 2, map.size());
+        assertTrue("Optional defs does not include r1", map.containsKey(r1));
+        assertTrue("Optional defs does not include r3", map.containsKey(r3));
     }
 
     public void testFieldsPresentForOptionalReports() throws Exception {

@@ -27,7 +27,7 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    public void preProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         if (command.getAeReport().getReporter() == null) {
             command.getAeReport().setReporter(new Reporter());
         }

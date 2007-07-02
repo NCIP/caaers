@@ -87,7 +87,7 @@ public class ReporterTabTest extends AeTabTestCase {
     public void testPreProcessAddsReporterIfNotPresent() throws Exception {
         command.getAeReport().setReporter(null);
         assertNull("Test setup failure: existing reporter", command.getAeReport().getReporter());
-        getTab().preProcess(request, command);
+        getTab().onDisplay(request, command);
 
         assertNotNull("Reporter not added",command.getAeReport().getReporter());
     }
@@ -95,7 +95,7 @@ public class ReporterTabTest extends AeTabTestCase {
     public void testPreProcessAddsPhysicianIfNotPresent() throws Exception {
         command.getAeReport().setPhysician(null);
         assertNull("Test setup failure: existing physician", command.getAeReport().getPhysician());
-        getTab().preProcess(request, command);
+        getTab().onDisplay(request, command);
 
         assertNotNull("Physician not added",command.getAeReport().getPhysician());
     }

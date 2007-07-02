@@ -154,32 +154,13 @@ public abstract class AbstractAdverseEventInputController
     protected String getViewName(HttpServletRequest request, Object command, int page) {
         String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
+            // for side-effects:
+            super.getViewName(request, command, page);
+            
             return "ae/ajax/" + subviewName;
         } else {
             return super.getViewName(request, command, page);
         }
-    }
-
-    @Override
-    protected void postProcessPage(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
-        super.postProcessPage(request, oCommand, errors, page);
-        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
-
-        // "pre-process" checkpoint tab TODO: add a general hook for this in the base class & Tab
-        if (getTab(command, getTargetPage(request, page)) instanceof CheckpointTab) {
-            getEvaluationService().addRequiredReports(command.getAeReport());
-            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
-        }
-    }
-
-    private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
-        List<ReportDefinition> all = getEvaluationService().applicableReportDefinitions(command.getAssignment());
-        for (Report report : command.getAeReport().getReports()) {
-            if (report.isRequired()) {
-                all.remove(report.getReportDefinition());
-            }
-        }
-        return all;
     }
 
     @Override
