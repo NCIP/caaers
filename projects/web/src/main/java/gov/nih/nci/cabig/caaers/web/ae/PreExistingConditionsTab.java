@@ -27,7 +27,7 @@ public class PreExistingConditionsTab extends AeTab {
                 return "Pre-Existing Condition " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("preExistingCondition", "Pre Existing Condition", false));
+        fieldFactory.addField(new AutocompleterField("preExistingCondition", "Pre-Existing condition", false));
         fieldFactory.addField(new DefaultTextField("other", "Other", false));
     }
 

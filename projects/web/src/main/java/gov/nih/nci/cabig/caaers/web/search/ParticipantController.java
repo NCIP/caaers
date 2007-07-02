@@ -31,11 +31,13 @@ public class ParticipantController extends SearchController {
 		setSuccessView("search/participant_search");
 	}
 	
+	/*
     protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
     	Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("studySearchType", getConfigurationProperty().getMap().get("studySearchType"));               
 	  	return refdata;
     }
+    */
 		
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {

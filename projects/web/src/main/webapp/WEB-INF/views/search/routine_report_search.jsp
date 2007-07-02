@@ -36,7 +36,7 @@ function buildTable(form) {
 		}
 	}
 	var parameterMap = getParameterMap(form);
-	search.getExpeditedReportTable(parameterMap, type, text, showTable);		
+	search.getRoutineReportTable(parameterMap, type, text, showTable);		
 }
 
 function showTable(table) {
@@ -60,8 +60,8 @@ function fireAction(action, selected){
 			<input type="hidden" name="_action" id="_action" value="">
 		</div>
 		 <p class="instructions">
-        	Search for Expedited AE reports by choosing any of the listed Criteria. The result set will only show 
-        	the primary AE's Ctc Term which is associated with the Expedited Report , it's grade, attribution and the detection date.
+        	Search for Routine AE reports by choosing any of the listed Criteria. The result set will only show 
+        	the primary AE's Ctc term which is associated with the Routine Report , it's grade, attribution and the report's observation period.
     	</p>
     	
         <div class="content">

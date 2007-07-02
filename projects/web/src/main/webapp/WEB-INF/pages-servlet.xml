@@ -137,7 +137,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Expedited Report search" p:linkName="reportController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Routine Report search" p:linkName="reportController"/>                                                                                                        
+                                p:displayName="Routine Report search" p:linkName="routineReportController"/>                                                                                                        
                         </list>
                     </property>
                 </bean>
@@ -247,7 +247,10 @@
           class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 
           
     <bean name="/search/report" id="reportController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>                   
+          class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
+          
+     <bean name="/search/routineReport" id="routineReportController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
     
     <bean name="/help" id="helpController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">

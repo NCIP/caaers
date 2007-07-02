@@ -25,44 +25,44 @@ public class MedicalDeviceTab extends AeTab {
         allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.medicalDevice";
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".brandName", "Brand Name", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".commonName", "Common Name", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".deviceType", "Device Type", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".brandName", "Brand name", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".commonName", "Common name", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".deviceType", "Device type", false));
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerName", "Manufacturer Name", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerCity", "Manufacturer City", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerState", "Manufacturer State", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerName", "Manufacturer name", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerCity", "Manufacturer city", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".manufacturerState", "Manufacturer state", false));
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".modelNumber", "Model Number", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".lotNumber", "Lot Number", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".catalogNumber", "Catalog Number", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".modelNumber", "Model number", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".lotNumber", "Lot number", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".catalogNumber", "Catalog number", false));
         
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".expirationDate", "Expiration Date",  false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".serialNumber", "Serial Number", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".otherNumber", "Other Number", false));
+                baseProp + ".expirationDate", "Expiration date",  false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".serialNumber", "Serial number", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".otherNumber", "Other number", false));
         
-        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceOperator", "Device Operator", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceOperator", "Device operator", false,
                 collectOptions(Arrays.asList(DeviceOperator.values()), null, "displayName")));
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".otherDeviceOperator", "Other Device Operator", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".otherDeviceOperator", "Other device operator", false));
         
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".implantedDate", "If Implanted Give a Date",  false));
+                baseProp + ".implantedDate", "If implanted give a date",  false));
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".explantedDate", "IF Explanted Give a Date",  false));
+                baseProp + ".explantedDate", "IF explanted give a date",  false));
         
-        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceReprocessed", "Device Reprocessed", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".deviceReprocessed", "Device reprocessed", false,
                 collectOptions(Arrays.asList(Availability.values()), null, "displayName")));
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorName", " Reprocessor Name", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorAddress", " Reprocessor Address", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorName", " Reprocessor name", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".reprocessorAddress", " Reprocessor address", false));
         
-        allFields.getFields().add(new DefaultSelectField(baseProp + ".evaluationAvailability", "Evaluation Availability", false,
+        allFields.getFields().add(new DefaultSelectField(baseProp + ".evaluationAvailability", "Evaluation availability", false,
                 collectOptions(Arrays.asList(Availability.values()), null, "displayName")));
         
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".returnedDate", "Returned Date",  false));
+                baseProp + ".returnedDate", "Returned date",  false));
 
     }
 

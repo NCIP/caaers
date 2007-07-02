@@ -4,9 +4,12 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
@@ -73,5 +76,75 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     public Participant getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);
     }
+    
+    @SuppressWarnings("deprecation")
+	public List<Participant> searchParticipant(Map props) {
+
+		List<Object> params = new ArrayList<Object>();
+		boolean firstClause = true;
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
+         .append(domainClass().getName()).append(" o ").append(JOINS);
+		
+		if (props.get("studyIdentifier") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("sIdentifier.value").append(") LIKE ?");
+			String p = (String)props.get("studyIdentifier");
+			params.add('%' + p.toLowerCase() + '%');
+			firstClause = false;
+		}
+		if (props.get("studyShortTitle") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("s.shortTitle").append(") LIKE ?");
+			String p = (String)props.get("studyShortTitle");
+			params.add('%' + p.toLowerCase() + '%');
+			firstClause = false;
+		}
+		if (props.get("participantIdentifier") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ?");
+			String p = (String)props.get("participantIdentifier");
+			params.add('%' + p.toLowerCase() + '%');
+			firstClause = false;
+		}
+		if (props.get("participantFirstName") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("o.firstName").append(") LIKE ?");
+			String p = (String)props.get("participantFirstName");
+			params.add('%' + p.toLowerCase() + '%');
+			firstClause = false;
+		}
+		if (props.get("participantLastName") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("o.lastName").append(") LIKE ?");
+			String p = (String)props.get("participantLastName");
+			params.add('%' + p.toLowerCase() + '%');
+			firstClause = false;
+		}
+		if (props.get("participantEthnicity") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("o.ethnicity").append(") LIKE ?");
+			String p = (String)props.get("participantEthnicity");
+			params.add( p.toLowerCase() );
+			firstClause = false;
+		}
+		if (props.get("participantGender") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("o.gender").append(") LIKE ?");
+			String p = (String)props.get("participantGender");
+			params.add( p.toLowerCase() );
+			firstClause = false;
+		}
+		
+		if (props.get("participantDateOfBirth") != null) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("LOWER(").append("o.dateOfBirth").append(") = ?");
+			String p = (String)props.get("participantDateOfBirth");
+			params.add(new Date(p));
+			firstClause = false;
+		}
+		log.debug("::: " + queryBuf.toString() );
+		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+    }
+    
 }
 

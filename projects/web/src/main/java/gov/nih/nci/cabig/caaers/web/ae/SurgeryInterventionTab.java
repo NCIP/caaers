@@ -23,11 +23,11 @@ public class SurgeryInterventionTab extends AeTab {
         String baseProp = "aeReport.surgeryIntervention";
 
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment Arm", false));
-        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment Arm Description", false));
-        allFields.getFields().add(new AutocompleterField(baseProp + ".anatomicSite", "Intervention Site", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment arm", false));
+        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment arm description", false));
+        allFields.getFields().add(new AutocompleterField(baseProp + ".anatomicSite", "Intervention site", false));
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".interventionDate", "Date of Intervention",  false));
+                baseProp + ".interventionDate", "Date of intervention",  false));
     }
 
     @Override

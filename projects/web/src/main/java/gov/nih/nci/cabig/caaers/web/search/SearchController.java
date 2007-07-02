@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.search;
 
 
 import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.study.SearchCommand;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
@@ -32,13 +33,21 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public abstract class SearchController extends SimpleFormController {
 		    	
 	private StudyService studyService;
-	private ConfigProperty configurationProperty;	
+	private ConfigProperty configurationProperty;
+	private ListValues listValues;
 	
 	public SearchController() {		             
 		setCommandClass(SearchStudyCommand.class);    
 		setFormView("search/study_search");
 		setSuccessView("search/study_search");
 	}
+	
+	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
+	    	Map<String, Object> refdata = new HashMap<String, Object>();
+	        refdata.put("genders", listValues.getParticipantGender());
+	        refdata.put("ethnicity", listValues.getParticipantEthnicity());
+		  	return refdata;
+	    }
 	
 	/*
     protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
@@ -78,6 +87,9 @@ public abstract class SearchController extends SimpleFormController {
 		            case 3:  
 		            	viewData = studyFacade.buildExpeditedReport(model, new ArrayList()); 
 		            	break;	
+		            case 4:  
+		            	viewData = studyFacade.buildRoutineReport(model, new ArrayList()); 
+		            	break;		
 		            default: 
 		            	viewData = studyFacade.build(model, new ArrayList());
 				        break; 
@@ -154,5 +166,13 @@ public abstract class SearchController extends SimpleFormController {
 	public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
-    
+	
+	public ListValues getListValues() {
+		return listValues;
+	}
+
+	public void setListValues(ListValues listValues) {
+		this.listValues = listValues;
+	}
+
 }

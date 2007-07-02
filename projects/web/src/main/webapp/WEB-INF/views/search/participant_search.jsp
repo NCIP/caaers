@@ -23,12 +23,23 @@
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>
+
+function copyValues(select,prop){
+	
+	var selectArray = $(select).options;
+	 for ( i=0; i < selectArray.length; i++){
+	 	if (selectArray[i].selected  ) {
+	 		$(prop).value=selectArray[i].value == "---" ? "" : selectArray[i].value
+	 	}
+	 }
+	
+}
    
 function buildTable(form) {	
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < 7; x++) {
+	for(var x=0; x < 8; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -60,16 +71,10 @@ function fireAction(action, selected){
 			<input type="hidden" name="_action" id="_action" value="">
 		</div>
 		 <p class="instructions">
-        	Search for Participants by choosing study, participant criteria or both. 
+        	Search for Participants by choosing any of the listed criteria.
     	</p>
         <div class="content">
-        	<%--
-   			 <div class="row" align="center">
-   			 
-               <div class="label">Search By Study: <a href="javascript:fireAction('addCriteria',-1);"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></div>
-		      </div>
-		      --%>
+        	
 		    <div class="pane"> 
 		    
 		    <div class="row">
@@ -83,52 +88,15 @@ function fireAction(action, selected){
 		    </div>
 		    
 		   
-		    
-		    <%--
-		    <div class="row">
-		    	<div class="label"> Study Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop3" type="text" name="studyIdentifier"/></div>
-		    </div>
-		    
-		    
-        	<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
-            	<div class="label">Search By Study:</div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="10"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
-			</div>
-			</c:forEach>
-			
-			<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
-            	<div class="label">Search By Study:</div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="10"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
-			</div>
-			</c:forEach>
-			--%>
+	
 			</div>
 			
 			<div class="pane">
 		 	
-		 	<%--
-		 	<div class="row" align="center">
-   			 
-               <div class="label">Search By Participant: <a href="javascript:fireAction('addCriteria',-1);"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></div>
-		    </div>
-		    --%>
+		 
 		    
 		     <div class="row">
-		    	<div class="label"> Participant ID :&nbsp; </div>
+		    	<div class="label"> Participant Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="text" name="longTitle"/></div>
 		    </div>
 		    
@@ -142,14 +110,33 @@ function fireAction(action, selected){
 		    	<div class="value"><input id="prop4" type="text" name="lastName"/></div>
 		    </div>
 		    
-		    <div class="row">
+		       <div class="row">
 		    	<div class="label"> Participant Ethnicity :&nbsp; </div>
-		    	<div class="value"><input id="prop5" type="text" name="ethnicity"/></div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop5_select','prop5')" id="prop5_select">
+		    		<c:forEach items="${ethnicity}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop5" type="hidden" name="gender"/>
+		    	</div>
 		    </div>
 		    
 		    <div class="row">
 		    	<div class="label"> Participant Gender :&nbsp; </div>
-		    	<div class="value"><input id="prop6" type="text" name="gender"/></div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop6_select','prop6')" id="prop6_select">
+		    		<c:forEach items="${genders}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop6" type="hidden" name="gender"/>
+		    	</div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Participant Birth Date :&nbsp; </div>
+		    	<div class="value"><input id="prop7" type="text" name="dateOfBirth"/></div>
 		    </div>
 		 	
 		 	<%--

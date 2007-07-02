@@ -26,22 +26,22 @@ public class RadiationInterventionTab extends AeTab {
         String baseProp = "aeReport.radiationIntervention";
 
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment Arm", false));
-        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment Arm Description", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment arm", false));
+        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment arm description", false));
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(BaseSelectField.collectOptions(
             Arrays.asList(RadiationAdministration.values()), null, "displayName"));
         allFields.getFields().add(new DefaultSelectField(
-            baseProp + ".administration", "Type of Radiation Administration", false,
+            baseProp + ".administration", "Type of radiation administration", false,
             statusOpts));
         
         allFields.getFields().add(new DefaultTextField(baseProp + ".dosage", "Dosage", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".dosageUnit", "Dosage Unit", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".dosageUnit", "Dosage unit", false));
         allFields.getFields().add(new DefaultDateField(
-                baseProp + ".lastTreatmentDate", "Date of Last Treatment",  false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".fractionNumber", "Schedule Number of Fractions", false));
-        allFields.getFields().add(new DefaultTextField(baseProp + ".daysElapsed", " Number of Elapsed Days", false));
+                baseProp + ".lastTreatmentDate", "Date of last treatment",  false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".fractionNumber", "Schedule number of fractions", false));
+        allFields.getFields().add(new DefaultTextField(baseProp + ".daysElapsed", " Number of elapsed days", false));
         allFields.getFields().add(new DefaultTextField(baseProp + ".adjustment", "Adjustment", false));
     }
 

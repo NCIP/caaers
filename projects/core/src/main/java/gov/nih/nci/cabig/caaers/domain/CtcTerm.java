@@ -20,7 +20,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     private String term;
     private String select;
     private String ctepTerm;
-    private Integer ctepCode;
+    private String ctepCode;
     private CtcCategory category;
     private boolean otherRequired;
     private List<CtcGrade> contextualGrades;
@@ -73,11 +73,11 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         this.ctepTerm = ctepTerm;
     }
 
-    public Integer getCtepCode() {
+    public String getCtepCode() {
         return ctepCode;
     }
 
-    public void setCtepCode(Integer ctepCode) {
+    public void setCtepCode(String ctepCode) {
         this.ctepCode = ctepCode;
     }
 

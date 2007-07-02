@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
@@ -41,6 +43,7 @@ public class SearchStudyAjaxFacade {
 	private ParticipantDao participantDao;
 	private AdverseEventDao adverseEventDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
     public Object build(TableModel model, Collection studies) throws Exception 
     {
@@ -115,7 +118,7 @@ public class SearchStudyAjaxFacade {
         
         Column columnPrimaryIdentifier = model.getColumnInstance();        
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
-        columnPrimaryIdentifier.setTitle("Participant ID");
+        columnPrimaryIdentifier.setTitle("Primary ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
         model.addColumn(columnPrimaryIdentifier);
         
@@ -301,54 +304,117 @@ public class SearchStudyAjaxFacade {
         aeDetectionDate.setCell(TableConstants.DATE);
         aeDetectionDate.setFormat("MM/dd/yyyy");
         model.addColumn(aeDetectionDate);
+        /*
+        Column columnPrimaryIdentifier = model.getColumnInstance();        
+        columnPrimaryIdentifier.setProperty("status.displayName");
+        columnPrimaryIdentifier.setTitle("Status");
+        //columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
+        model.addColumn(columnPrimaryIdentifier);
+        */                
+        return model.assemble();
+    }
+    
+    public Object buildRoutineReport(TableModel model, Collection expeditedReports) throws Exception 
+    {
+        Table table = model.getTableInstance();
+        table.setTableId("assembler");
+        table.setItems(expeditedReports);
+        table.setAction(model.getContext().getContextPath() + "/pages/search/report");
+        table.setTitle("");
+        table.setShowPagination(false);
+        table.setOnInvokeAction("buildTable('assembler')");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setFilterable(false);
+        table.setSortable(true);
+        model.addTable(table);
+        
+        Row row = model.getRowInstance();
+        row.setHighlightRow(Boolean.TRUE);        
+        model.addRow(row);
+        
+        /*
+        Column columnPrimaryIdentifier = model.getColumnInstance();        
+        columnPrimaryIdentifier.setProperty("primaryIdentifier");
+        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
+        model.addColumn(columnPrimaryIdentifier);
+        */
+        
+        
+        Column columnPrimaryAeTerm = model.getColumnInstance();        
+        columnPrimaryAeTerm.setProperty("adverseEvents[0].ctcTerm.term");
+        columnPrimaryAeTerm.setTitle("Primary Ctc term");
+        //columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
+        model.addColumn(columnPrimaryAeTerm);
+        /*
+        Column medDRACode = model.getColumnInstance();        
+        medDRACode.setProperty("ctcTerm.ctepCode");
+        medDRACode.setTitle("MedDRA Code");      
+        model.addColumn(medDRACode);
+        */
+        
+        Column ctcGrade = model.getColumnInstance();        
+        ctcGrade.setProperty("adverseEvents[0].grade.code");
+        ctcGrade.setTitle("Grade");      
+        model.addColumn(ctcGrade);
+        
+        Column attributionCode = model.getColumnInstance();        
+        attributionCode.setProperty("adverseEvents[0].attributionSummary.displayName");
+        attributionCode.setTitle("Attribution");      
+        model.addColumn(attributionCode);
+        
+        Column columnObservationDate = model.getColumnInstance();        
+        columnObservationDate.setProperty("adverseEvents[0].ctcTerm.term");
+        columnObservationDate.setTitle("Observation Dates");
+        columnObservationDate.setCell("gov.nih.nci.cabig.caaers.web.search.ObservationDateDisplayCell");        
+        model.addColumn(columnObservationDate);
+        
+        /*
+        Column aeDetectionDate = model.getColumnInstance();        
+        aeDetectionDate.setProperty("detectionDate");
+        aeDetectionDate.setTitle("Detection Date");
+        aeDetectionDate.setCell(TableConstants.DATE);
+        aeDetectionDate.setFormat("MM/dd/yyyy");
+        model.addColumn(aeDetectionDate);
         
         Column columnPrimaryIdentifier = model.getColumnInstance();        
         columnPrimaryIdentifier.setProperty("status.displayName");
         columnPrimaryIdentifier.setTitle("Status");
         //columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
         model.addColumn(columnPrimaryIdentifier);
-                        
+        */                
         return model.assemble();
     }
     
    
    private List<Study> constructExecuteStudyQuery(String type, String text)
    {
-	   
-	   
 	   StringTokenizer typeToken = new StringTokenizer(type, ",");
 	   StringTokenizer textToken = new StringTokenizer(text, ",");
 	   log.debug("type :: " + type);
 	   log.debug("text :: " + text);
 	   String sType, sText;
-	   List<String> props = new ArrayList<String>();
-	   List<String> values = new ArrayList<String>();
-	   String[] theValues = new String[0];
-	   
-	   
+	   Map<String,String> propValue = new HashMap<String,String>();
+	    
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"identifier.value");
-	   m.put("prop1", "o.shortTitle");
-	   m.put("prop2", "pIdentifier.value");
-	   m.put("prop3", "p.firstName");
-	   m.put("prop4", "p.lastName");
-	   m.put("prop5", "p.ethnicity");
-	   m.put("prop6", "p.gender");
-	   
-	   
-	   
+	   m.put("prop0" ,"studyIdentifier");
+	   m.put("prop1", "studyShortTitle");
+	   m.put("prop2", "participantIdentifier");
+	   m.put("prop3", "participantFirstName");
+	   m.put("prop4", "participantLastName");
+	   m.put("prop5", "participantEthnicity");
+	   m.put("prop6", "participantGender");
+	   m.put("prop7", "participantDateOfBirth");
+	    
 	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
 	   {
    		sType = typeToken.nextToken();
    		sText = textToken.nextToken();
-   		
-   		props.add(m.get(sType));
-   		values.add(sText);
-	   
+   		// Create a map  of property key ,and search criteria 
+   		propValue.put(m.get(sType),sText);
 	   }
-	   
-	   return studyDao.getByCriteria(values.toArray(theValues), props);
+
+	   return studyDao.searchStudy(propValue);
    }
    
    private List<Participant> constructExecuteParticipantQuery(String type, String text)
@@ -359,34 +425,29 @@ public class SearchStudyAjaxFacade {
 	   log.debug("type :: " + type);
 	   log.debug("text :: " + text);
 	   String sType, sText;
-	   List<String> props = new ArrayList<String>();
-	   List<String> values = new ArrayList<String>();
-	   String[] theValues = new String[0];
-	   
+	   Map<String,String> propValue = new HashMap<String,String>();
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"sIdentifier.value");
-	   m.put("prop1", "s.shortTitle");
-	   m.put("prop2" ,"identifier.value");
-	   m.put("prop3", "o.firstName");
-	   m.put("prop4", "o.lastName");
-	   m.put("prop5", "o.ethnicity");
-	   m.put("prop6", "o.gender");
-	   
+	   m.put("prop0" ,"studyIdentifier");
+	   m.put("prop1", "studyShortTitle");
+	   m.put("prop2", "participantIdentifier");
+	   m.put("prop3", "participantFirstName");
+	   m.put("prop4", "participantLastName");
+	   m.put("prop5", "participantEthnicity");
+	   m.put("prop6", "participantGender");
+	   m.put("prop7", "participantDateOfBirth");
 	   
 	   
 	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
 	   {
    		sType = typeToken.nextToken();
    		sText = textToken.nextToken();
-   		
-   		props.add(m.get(sType));
-   		values.add(sText);
-	   
+   		// Create a map  of property key ,and search criteria 
+   		propValue.put(m.get(sType),sText);
 	   }
-	   
-	   return participantDao.getByCriteria(values.toArray(theValues), props);
+
+	   return participantDao.searchParticipant(propValue);
    }
    
    
@@ -439,29 +500,54 @@ public class SearchStudyAjaxFacade {
 	   log.debug("type :: " + type);
 	   log.debug("text :: " + text);
 	   String sType, sText;
-	   List<String> props = new ArrayList<String>();
-	   List<String> values = new ArrayList<String>();
-	   String[] theValues = new String[0];
+	   Map<String,String> propValue = new HashMap<String,String>();
 	   
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"ctcTerm.term");
-	   m.put("prop1", "status_code");
-	   m.put("prop2", "ctcTerm.ctepCode");
+	   m.put("prop0" ,"ctcTerm");
+	   m.put("prop1" ,"ctcCategory");
+	   m.put("prop2", "ctcCtepCode");
 	   
 	   
 	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
 	   {
    		sType = typeToken.nextToken();
    		sText = textToken.nextToken();
-   		
-   		props.add(m.get(sType));
-   		values.add(sText);
-	   
+   		// Create a map  of property key ,and search criteria 
+   		propValue.put(m.get(sType),sText);
 	   }
+
+	   return expeditedAdverseEventReportDao.searchExpeditedReports(propValue);
+   }
+   
+   private List<RoutineAdverseEventReport> constructExecuteRoutineReportQuery(String type, String text)
+   {
 	   
-	   return expeditedAdverseEventReportDao.getByCriteria(values.toArray(theValues), props);
+	   StringTokenizer typeToken = new StringTokenizer(type, ",");
+	   StringTokenizer textToken = new StringTokenizer(text, ",");
+	   log.debug("type :: " + type);
+	   log.debug("text :: " + text);
+	   String sType, sText;
+	   Map<String,String> propValue = new HashMap<String,String>();
+	   
+	   
+	   // map the html properties to the model properties
+	   Map<String,String> m = new HashMap<String,String>();
+	   m.put("prop0" ,"ctcTerm");
+	   m.put("prop1" ,"ctcCategory");
+	   m.put("prop2", "ctcCtepCode");
+	   
+	   
+	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
+	   {
+   		sType = typeToken.nextToken();
+   		sText = textToken.nextToken();
+   		// Create a map  of property key ,and search criteria 
+   		propValue.put(m.get(sType),sText);
+	   }
+
+	   return routineAdverseEventReportDao.searchRoutineReports(propValue);
    }
     
    /*
@@ -470,8 +556,6 @@ public class SearchStudyAjaxFacade {
     */ 
    public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) 
    {
-	   
-	   System.out.println("HUGO");
        if(parameterMap != null)
        {
        	//String a = parameterMap.get("assembler_p").toString();
@@ -609,6 +693,45 @@ public class SearchStudyAjaxFacade {
        return "";
    }
    
+   /*
+    * 
+    * Ajax Call hits this method to generate table
+    */ 
+   public String getRoutineReportTable(Map parameterMap, String type, String text, HttpServletRequest request) 
+   {
+	   
+	   log.debug("Ajax Call to construct expedited report table");
+       if(parameterMap != null)
+       {
+    	  for (String pk: (Set<String>)parameterMap.keySet()){
+    		  log.debug(pk);
+    	  }
+       	//String a = parameterMap.get("assembler_p").toString();
+       }
+       
+   		
+		List<RoutineAdverseEventReport> routineReports = null;
+		routineReports = constructExecuteRoutineReportQuery(type, text);
+		log.debug("AdverseEvents :: " + routineReports.size());
+	
+		
+       Context context = null;
+       if (parameterMap == null) {
+         context = new HttpServletRequestContext(request);
+       } else {
+         context = new HttpServletRequestContext(request, parameterMap);
+       }
+
+       TableModel model = new TableModelImpl(context);
+       try {
+         return buildRoutineReport(model, routineReports).toString();
+       } catch (Exception e) {
+         e.printStackTrace();
+       }
+
+       return "";
+   }
+   
    
    
 	public StudyService getStudyService() {
@@ -654,6 +777,19 @@ public class SearchStudyAjaxFacade {
 			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
 		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}
+
+
+	public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
+		return routineAdverseEventReportDao;
+	}
+
+
+	public void setRoutineAdverseEventReportDao(
+			RoutineAdverseEventReportDao routineAdverseEventReportDao) {
+		this.routineAdverseEventReportDao = routineAdverseEventReportDao;
+	}
+	
+	
 	
 	
 	
