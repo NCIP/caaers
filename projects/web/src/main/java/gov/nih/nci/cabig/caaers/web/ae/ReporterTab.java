@@ -27,16 +27,6 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        if (command.getAeReport().getReporter() == null) {
-            command.getAeReport().setReporter(new Reporter());
-        }
-        if (command.getAeReport().getPhysician() == null) {
-            command.getAeReport().setPhysician(new Physician());
-        }
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
