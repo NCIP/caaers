@@ -86,12 +86,15 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
     public void testAdverseEventUpdate() {
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
-        ExpeditedAdverseEventReport newReport = createReport();
+        Integer id;
+        {
+            ExpeditedAdverseEventReport newReport = createReport();
 
-        adverseEventReportDao.save(newReport);
+            adverseEventReportDao.save(newReport);
 
-        Integer id = newReport.getId();
-        assertNotNull("Report id is null", id);
+            id = newReport.getId();
+            assertNotNull("Report id is null", id);
+        }
 
         interruptSession();
 
@@ -99,6 +102,11 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
         ExpeditedAdverseEventReport report = adverseEventReportDao.getById(id);
         assertNotNull("report " + id + " is null", report);
+
+        // TODO: not sure this is the right way to handle this (i.e., may be hiding a bug) - RMS20070702
+        // (since UPDATE doesn't cascade to reporter/physician, have to load everything before disconnecting the session)
+        report.getReporter().getContactMechanisms().size();
+        report.getPhysician().getContactMechanisms().size();
 
         report.getAdverseEvents().get(0).setComments("Yadda");
         try {
