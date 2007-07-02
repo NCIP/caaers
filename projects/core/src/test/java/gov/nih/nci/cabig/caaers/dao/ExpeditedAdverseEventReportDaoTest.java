@@ -299,7 +299,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals(1, loaded.getPhysician().getContactMechanisms().size());
+                assertEquals(2, loaded.getPhysician().getContactMechanisms().size());
                 assertEquals("312-333-2100", loaded.getPhysician().getContactMechanisms().get("phone"));
             }
         });
@@ -340,7 +340,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewAdditionalInformation() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-            	report.getAdditionalInformation().setConsults(Boolean.TRUE);
+                report.getAdditionalInformation().setConsults(Boolean.TRUE);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
@@ -364,7 +364,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewRadiationIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-            	report.getRadiationIntervention().setTreatmentArm("ARM:");
+                report.getRadiationIntervention().setTreatmentArm("ARM:");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
@@ -372,7 +372,78 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             }
         });
     }
-    
+
+    public void testSaveSkipsPhysicianWhenNotSavable() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getPhysician().setLastName(null);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertNull(loaded.getPhysician().getFirstName());
+                assertNull(loaded.getPhysician().getLastName());
+            }
+        });
+    }
+
+    public void testSaveSkipsReporterWhenNotSavable() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getReporter().setFirstName(null);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertNull(loaded.getReporter().getFirstName());
+                assertNull(loaded.getReporter().getLastName());
+            }
+        });
+    }
+
+    public void testSaveSavesReporterWhenSavable() throws Exception {
+        doSaveTest(new SaveTester() {
+            private static final String FIRST_NAME = "Joe";
+            private static final String LAST_NAME = "Arimathea";
+            private static final String ADDRESS = "joe@arimatheaonline.net";
+            private static final String PHONE = "312-HY-GRAIL";
+
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getReporter().setFirstName(FIRST_NAME);
+                report.getReporter().setLastName(LAST_NAME);
+                report.getReporter().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, ADDRESS);
+                report.getReporter().getContactMechanisms().put(ExpeditedReportPerson.PHONE, PHONE);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals(FIRST_NAME, loaded.getReporter().getFirstName());
+                assertEquals(LAST_NAME, loaded.getReporter().getLastName());
+                assertEquals(ADDRESS, loaded.getReporter().getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getReporter().getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+            }
+        });
+    }
+
+    public void testSaveSavesPhysicianWhenSavable() throws Exception {
+        doSaveTest(new SaveTester() {
+            private static final String FIRST_NAME = "Henry";
+            private static final String LAST_NAME = "Jones";
+            private static final String ADDRESS = "jonessr@indianaonline.net";
+            private static final String PHONE = "773-LOST-BOK";
+
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getPhysician().setFirstName(FIRST_NAME);
+                report.getPhysician().setLastName(LAST_NAME);
+                report.getPhysician().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, ADDRESS);
+                report.getPhysician().getContactMechanisms().put(ExpeditedReportPerson.PHONE, PHONE);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals(FIRST_NAME, loaded.getPhysician().getFirstName());
+                assertEquals(LAST_NAME, loaded.getPhysician().getLastName());
+                assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+            }
+        });
+    }
 
     private void doSaveTest(SaveTester tester) {
         Integer savedId;
@@ -396,7 +467,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     }
 
     private ExpeditedAdverseEventReport createMinimalAeReport() {
-        ExpeditedAdverseEventReport report = Fixtures.createSaveableExpeditedReport();
+        ExpeditedAdverseEventReport report = Fixtures.createSavableExpeditedReport();
         report.setAssignment(assignmentDao.getById(-14));
         report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));

@@ -63,16 +63,19 @@ public class Fixtures {
         return agent;
     }
 
-    public static ExpeditedAdverseEventReport createSaveableExpeditedReport() {
+    public static ExpeditedAdverseEventReport createSavableExpeditedReport() {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.setCreatedAt(new Timestamp(103));
-        report.setReporter(new Reporter());
-        report.getReporter().setFirstName("Frank");
-        report.getReporter().setLastName("Just Frank");
-        report.setPhysician(new Physician());
-        report.getPhysician().setFirstName("Frank");
-        report.getPhysician().setLastName("Just Frank");
+        report.setReporter(makeExpeditedReportPersonSavable(new Reporter()));
+        report.setPhysician(makeExpeditedReportPersonSavable(new Physician()));
         return report;
+    }
+
+    private static <T extends ExpeditedReportPerson> T makeExpeditedReportPersonSavable(T person) {
+        person.setFirstName("Frank");
+        person.setLastName("Just Frank");
+        person.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "just@frank.net");
+        return person;
     }
 
     public static ReportDefinition createReportDefinition(String name) {

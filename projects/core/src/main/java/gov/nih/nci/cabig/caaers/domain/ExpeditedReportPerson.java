@@ -39,7 +39,7 @@ import java.util.Map;
         @Parameter(name = "sequence", value = "seq_ae_report_people_id")
     }
 )
-public class ExpeditedReportPerson extends Person implements ExpeditedAdverseEventReportChild {
+public abstract class ExpeditedReportPerson extends Person implements ExpeditedAdverseEventReportChild {
     private Map<String, String> contactMechanisms = new HashMap<String, String>();
 
     private ExpeditedAdverseEventReport report;
@@ -55,6 +55,16 @@ public class ExpeditedReportPerson extends Person implements ExpeditedAdverseEve
 
     public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS
         = Arrays.asList(EMAIL, PHONE, FAX); 
+
+    ////// LOGIC
+
+    @Transient
+    public boolean isSavable() {
+        return getFirstName() != null && getLastName() != null
+            && getContactMechanisms().get(EMAIL) != null;
+    }
+
+    ////// BOUND PROPERTIES
 
     @OneToOne
     @JoinColumn(name="report_id")

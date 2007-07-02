@@ -15,16 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport>
     implements MutableDomainObjectDao<ExpeditedAdverseEventReport>
 {
-	 private static final String JOINS 
-		= " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm ";
-	
+    private static final String JOINS
+        = " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm ";
+
     public Class<ExpeditedAdverseEventReport> domainClass() {
         return ExpeditedAdverseEventReport.class;
     }
-    
-    public List<ExpeditedAdverseEventReport> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
-    {
-    	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
+
+    public List<ExpeditedAdverseEventReport> getByCriteria(
+        String[] subnames, List<String> substringMatchProperties
+    ) {
+        return findBySubname(subnames, null, null, substringMatchProperties, null, JOINS);
     }
 
     @Transactional(readOnly=false)
@@ -32,6 +33,16 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
         getHibernateTemplate().saveOrUpdate(report);
         for (AdverseEvent ae : report.getAdverseEvents()) {
             getHibernateTemplate().saveOrUpdate(ae);
+        }
+        if (report.getReporter().isSavable()) {
+            getHibernateTemplate().saveOrUpdate(report.getReporter());
+        } else {
+            log.debug("Reporter not savable; skipping cascade");
+        }
+        if (report.getPhysician().isSavable()) {
+            getHibernateTemplate().saveOrUpdate(report.getPhysician());
+        } else {
+            log.debug("Physican not savable; skipping cascade");
         }
     }
 }

@@ -417,9 +417,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		if (medicalDevice != null) medicalDevice.setReport(this);
 	}
 
-	@OneToOne(mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL })
+    // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
+    @OneToOne(mappedBy = "report")
+    @Cascade(value = { CascadeType.MERGE, CascadeType.LOCK, CascadeType.EVICT })
     public Reporter getReporter() {
+        if (reporter == null) setReporter(new Reporter());
         return reporter;
     }
 
@@ -428,9 +430,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (reporter != null) reporter.setReport(this);
     }
 
+    // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
     @OneToOne(mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = { CascadeType.MERGE, CascadeType.LOCK, CascadeType.EVICT })
     public Physician getPhysician() {
+        if (physician == null) setPhysician(new Physician());
         return physician;
     }
 
