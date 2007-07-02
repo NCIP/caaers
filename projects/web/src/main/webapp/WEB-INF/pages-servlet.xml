@@ -99,9 +99,9 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Report Calendar" p:linkName="createNotificationController"/> 
+                                p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="List Report Calendars" p:linkName="listNotificationController"/>                                
+                                p:displayName="List Report Definitions" p:linkName="listNotificationController"/>                                
                         </list>
                     </property>
                 </bean>
