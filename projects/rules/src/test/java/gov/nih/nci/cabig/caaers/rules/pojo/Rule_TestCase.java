@@ -28,9 +28,9 @@ import junit.framework.TestCase;
 public class Rule_TestCase extends TestCase {
 
 	private RuleExecutionService ruleExecutionService;
-	
+
 	private RuleAuthoringServiceImpl ruleAuthoringServiceImpl;
-	
+
 	private static BufferedReader reader = new BufferedReader(new
 			java.io.InputStreamReader(System.in));
 
@@ -39,16 +39,16 @@ public class Rule_TestCase extends TestCase {
 		this.ruleAuthoringServiceImpl = new RuleAuthoringServiceImpl();
 		this.ruleExecutionService = new RuleExecutionServiceImpl();
 	}
-    
-    
+
+
     protected void assertContains(final List expected, final Object object) {
 		if (expected.contains(object)) {
 			return;
 		}
 		fail(object + " not in " + expected);
-	}    
-    
-    
+	}
+
+
     public void testCreate_AE_Grade_Rule_JiBX() throws Exception {
 
     	RuleSet ruleSet = new RuleSet();
@@ -62,32 +62,32 @@ public class Rule_TestCase extends TestCase {
 		MetaData ruleMetaData = new MetaData();
 		ruleMetaData.setName("Decide AE Type");
 		rule.setMetaData(ruleMetaData);
-		
+
 		Action action = new Action();
 //		action.setContent("System.out.println(\"Found a SAE with Grade Greater Than Or Equal To Moderate\");");
 //		action.setType("AE");
 		rule.setAction(action);
-		
-		
+
+
 		Condition condition = new Condition();
 		condition.getEval().add("adverseEvent.getGrade().getCode() >= Grade.MODERATE.getCode()");
-		
-		
+
+
 		Column column = new Column();
 		column.setObjectType("AdverseEvent");
 		column.setIdentifier("adverseEvent");
 		condition.getColumn().add(column);
-		rule.setCondition(condition);    	
+		rule.setCondition(condition);
     	this.ruleAuthoringServiceImpl.createRuleSet(ruleSet);
-    	
+
     	if(ruleSet.getId() != null) {
     		System.out.println("RuleSet created successfully : " + ruleSet.getId());
     	}
 
-    
-    }
 
-    public void testExecute_AE_Grade_Rule_JiBX() throws Exception {
+    }
+    //TODO - Refactor the below test case, remove the reading values from input.
+    public void xtestExecute_AE_Grade_Rule_JiBX() throws Exception {
 		System.out.println("Please enter the RuleSet Id to Execute");
     	String ruleSetId = reader.readLine();
     	final Map properties1 = new HashMap();
@@ -99,19 +99,19 @@ public class Rule_TestCase extends TestCase {
 		final AdverseEvent adverseEvent = getAdverseEvent();
 		adverseEvent.setGrade(Grade.MODERATE);
 		inObjects.add(adverseEvent);
-		
+
 		// execute the rules
-		
-/*		
+
+/*
 TO DOO
-		
+
 		final List outList = new RuleExecutionServiceImpl().fireRules(ruleSetId, inObjects);
 
-    
-*/    }
-    
 
-    
+*/    }
+
+
+
     private StudySDO getStudy() {
         final StudySDO study = new StudySDO();
         StudySite studySite = new StudySite();
@@ -127,6 +127,6 @@ TO DOO
     	adverseEvent.setCtcTerm(ctcTerm);
     	return adverseEvent;
     }
-	
-    
+
+
 }
