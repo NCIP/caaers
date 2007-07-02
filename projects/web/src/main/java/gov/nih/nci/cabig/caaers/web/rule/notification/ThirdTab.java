@@ -45,7 +45,7 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		super.postProcess(req,nfCmd,errors);
 		nfCmd.setValidationFailed(errors.hasErrors());
 		if(errors.hasErrors()) return;
-		nfCmd.removePlannedNotification();
+		nfCmd.removeEntities();
 	}
 
 	/* (non-Javadoc)

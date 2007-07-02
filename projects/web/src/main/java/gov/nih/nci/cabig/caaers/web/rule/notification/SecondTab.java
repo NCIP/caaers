@@ -69,7 +69,7 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 	protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
 		NotificationType nfType = NotificationType.valueOf(command.getNotificationType());
-		
+		EmailValidator emailValidator = EmailValidator.getInstance();
 		switch(nfType){
 		
 			case EMAIL_NOTIFICATION:
@@ -80,8 +80,11 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 									   CollectionUtils.isNotEmpty(command.getDirectRecipient())||
 									   StringUtils.isNotEmpty(command.getSubjectLine());
 				if(!mustValidate) break;
-				if(StringUtils.isEmpty(command.getFromAddress()))
+				if(StringUtils.isEmpty(command.getFromAddress())){
 					errors.rejectValue("fromAddress", "REQUIRED","From Address Invalid");
+				}else if(!emailValidator.isValid(command.getFromAddress())){
+					errors.rejectValue("fromAddress", "REQUIRED","From Address Invalid");
+				}
 				if(StringUtils.isEmpty(command.getMessage()))
 					errors.rejectValue("message", "REQUIRED","Message Invalid");
 				if(StringUtils.isEmpty(command.getSubjectLine()))
@@ -89,23 +92,24 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 				if(CollectionUtils.isEmpty(command.getRoleRecipient()) && 
 				   CollectionUtils.isEmpty(command.getDirectRecipient())){
 					errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
-				}
+				}else{
 				
-				if(CollectionUtils.isNotEmpty(command.getRoleRecipient())){
-					for(String role : command.getRoleRecipient()){
-						if(StringUtils.isEmpty(role)){
-							errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
-							break;
+					if(CollectionUtils.isNotEmpty(command.getRoleRecipient())){
+						for(String role : command.getRoleRecipient()){
+							if(StringUtils.isEmpty(role)){
+								errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
+								break;
+							}
 						}
 					}
-				}
 				
-				EmailValidator emailValidator = EmailValidator.getInstance();
-				if(CollectionUtils.isNotEmpty(command.getDirectRecipient())){
-					for(String email : command.getDirectRecipient()){
-						if(!emailValidator.isValid(email)){
-							errors.rejectValue("directRecipient", "REQUIRED", "Invalid Recipient Information");
-							break;
+					
+					if(CollectionUtils.isNotEmpty(command.getDirectRecipient())){
+						for(String email : command.getDirectRecipient()){
+							if(!emailValidator.isValid(email)){
+								errors.rejectValue("directRecipient", "REQUIRED", "Invalid Recipient Information");
+								break;
+							}
 						}
 					}
 				}
@@ -139,4 +143,6 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 	public boolean isAllowDirtyForward() {
 		return false;
 	}
+	
+	
 }

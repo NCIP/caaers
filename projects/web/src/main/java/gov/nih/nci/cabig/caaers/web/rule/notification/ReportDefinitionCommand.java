@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
@@ -54,7 +55,8 @@ public class ReportDefinitionCommand  {
 
 	//flow support variables
 	private boolean validationFailed;
-	private String delete;
+	private String delete; //index in the list to be deleted
+	private String entity; //entity to be deleted
 	
 	///LOGIC
 	public void reset() {
@@ -103,20 +105,37 @@ public class ReportDefinitionCommand  {
 		}
 		
 	}
-
-	public void removePlannedNotification() {
-		if (StringUtils.isEmpty(delete))
+	/**
+	 * <p>
+	 * This method will remove <code>PlannedNotification</code> object
+	 * or <code>ReportDeliveryDefinition</code> from the internal <code>ReportDenfinition</code>
+	 * identified by <code>rpDef</code>.
+	 *<br/>
+	 * The property <code>entity</code> signifies whether it is a {@link PlannedNotification} or {@link ReportDeliveryDefinition}.
+	 * The property <code>delete</code> references the index of the item to be deleted:-
+	 * <br />In the case of <code>PlannedNotification</code> it is the <code>indexOnTimeScale</code>
+	 * <br />In the case of <code>ReportDeliverydeifnition</code>, it is the index in the lazy list returned by <code>getReportDeliveryDefinitions</code>.
+	 *</p>
+	 */
+	public void removeEntities(){
+		if (StringUtils.isEmpty(delete)  || StringUtils.isEmpty(entity))
 			return;
 		int indexToDelete = NumberUtils.toInt(delete);
-		for (Iterator<PlannedNotification> it = rpDef
-				.getPlannedNotifications().iterator(); it.hasNext();) {
-			PlannedNotification pen = it.next();
-			if (pen.getIndexOnTimeScale() == indexToDelete) {
-				it.remove();
-				break;
+		if(StringUtils.equals(entity, "notification")){
+			for (Iterator<PlannedNotification> it = rpDef
+					.getPlannedNotifications().iterator(); it.hasNext();) {
+				PlannedNotification pen = it.next();
+				if (pen.getIndexOnTimeScale() == indexToDelete) {
+					it.remove();
+					break;
+				}
 			}
+		}else{
+			//reportdeliverydefinitions
+			rpDef.getDeliveryDefinitions().remove(indexToDelete);
 		}
 	}
+	
 
 	public void updateReportCalendarTemplate() {
 		
@@ -348,8 +367,24 @@ public class ReportDefinitionCommand  {
 		this.description = description;
 	}
 
-	
+	/**
+	 * The entity to delete, it could be <code>notification</code> or <code>reportdefinition</code>.
+	 * @return the entity
+	 */
+	public String getEntity() {
+		return entity;
+	}
 
+	/**
+	 * The entity to delete, it could be <code>notification</code> or <code>reportdefinition</code>.
+	 * @param entity the entity to set
+	 */
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	
+	
 	
 	
 	/*private List<Integer> getConfiguredIndexes() {
