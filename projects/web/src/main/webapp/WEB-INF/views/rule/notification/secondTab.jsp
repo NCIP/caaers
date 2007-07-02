@@ -107,7 +107,7 @@
   	 <tr>
     	<td>
     	  	<!-- This box contains the Scale -->
-    		<chrome:box title="Time Scale"  style="width:98%" id="timescale" cssClass="paired" autopad="true">
+    		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
    				<p>Choose the ${command.timeScaleType},and configure the notification(s)<br /></p>
    				
    				<table  border="0" cellpadding="0" cellspacing="0" bordercolor="#0066CC" width="98%">
@@ -173,7 +173,7 @@
    							<tr>
    								<td width="49%">
    									<div cssStyle="width:100%">
-   										Click to add an email <a href="javascript:{insertRecipient('direct')}" >
+   										  Click to add an email <a href="javascript:{insertRecipient('direct')}" >
    										<img align="add-role-image" style="border: 0px none ;" src="/caaers/images/rule/add_condition.gif" />
    										</a>
    									</div>

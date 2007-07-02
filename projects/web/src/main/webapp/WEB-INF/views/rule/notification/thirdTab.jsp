@@ -10,10 +10,10 @@
     <title>Not implemented</title>
   
     <script language="javascript">
-    	function deleteNF(iots){
+    	function deleteEntity(iots, entity){
     		var frm = $('command');
 			frm.elements['delete'].value = iots;
-			frm.elements['entity'].value = 'notification';
+			frm.elements['entity'].value = entity;
 			var target = $('_target');
 			target.name = '_target3';
 			var finish = $('markFinish');
@@ -50,7 +50,7 @@
 			    </c:forEach>
 			     <div class="content buttons autoclear">
     				<div class="local-buttons">
-			    		<input type="button" name="delRdd" onClick="javascript:void(0);" value="Delete Delivery Definition : ${status.index + 1}" />
+			    		<input type="button" name="delRdd" onClick="javascript:deleteEntity(${status.index},'reportdeliverydefinition');" value="Delete Delivery Definition : ${status.index + 1}" />
 			    	</div>
 			    </div>
 		    </chrome:division>
@@ -66,7 +66,7 @@
 			    </c:forEach>
 			    <div class="content buttons autoclear">
     				<div class="local-buttons">
-			    		<input type="button" name="del" onClick="javascript:deleteNF(${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale});" value="Delete Notification of ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}" />
+			    		<input type="button" name="del" onClick="javascript:deleteEntity(${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale},'notification');" value="Delete Notification of ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}" />
 			    	</div>
 			    </div>
 		    </chrome:division>
@@ -75,6 +75,7 @@
         <input id="markFinish" type="hidden" name="_finish"/>
         <input type="hidden" name="lastPointOnScale" value="" />
         <input type="hidden" name="delete" value="" /> 
+        <input type="hidden" name="entity" value="" />
 	</jsp:attribute>
 </tags:tabForm> 
 </chrome:division>
