@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 public class Sponsor_Level_Rule_TestCase extends TestCase {
 
 	private RuleExecutionService ruleExecutionService;
-	
+
 	private RuleAuthoringServiceImpl ruleAuthoringServiceImpl;
 
 	private static BufferedReader reader = new BufferedReader(new
@@ -41,15 +41,15 @@ public class Sponsor_Level_Rule_TestCase extends TestCase {
 		this.ruleAuthoringServiceImpl = new RuleAuthoringServiceImpl();
 		this.ruleExecutionService = new RuleExecutionServiceImpl();
 	}
-	    
+
     protected void assertContains(final List expected, final Object object) {
 		if (expected.contains(object)) {
 			return;
 		}
 		fail(object + " not in " + expected);
-	}    
-    
-    
+	}
+
+
     public void testCreate_AE_Grade_Rule_Eval_JiBX() throws Exception {
 
     	RuleSet ruleSet = new RuleSet();
@@ -61,35 +61,35 @@ public class Sponsor_Level_Rule_TestCase extends TestCase {
 		ruleSet.setStatus("DEV");
 		ruleSet.getRule().add(rule);
     	ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
-    	
+
 		rule.getMetaData().setName("Decide AE Type");
-		
+
 		Action action = new Action();
 //		action.setContent("System.out.println(\"Found a SEVERE ADVERSE EVENT with Grade Greater Than Or Equal To Moderate. \nPlease send a mail to" +
 //				" regulatory groups immediately.. \");");
 //		action.setType("AE");
 		rule.setAction(action);
-		
-		
+
+
 		Condition condition = new Condition();
 		condition.getEval().add("adverseEvent.getGrade().getCode() >= Grade.MODERATE.getCode()");
-		
-		
+
+
 		Column column = new Column();
 		column.setObjectType("AdverseEvent");
 		column.setIdentifier("adverseEvent");
 		condition.getColumn().add(column);
-		rule.setCondition(condition);    	
+		rule.setCondition(condition);
     	this.ruleAuthoringServiceImpl.createRuleSet(ruleSet);
-    	
+
     	if(ruleSet.getId() != null) {
     		System.out.println("RuleSet created successfully : " + ruleSet.getId());
     	}
 
-    
-    }
 
-	public void testExecute_AE_Grade_Rule_JiBX() throws Exception {
+    }
+    //TODO - Refactor the below test case, remove the reading values from input.
+	public void xtestExecute_AE_Grade_Rule_JiBX() throws Exception {
 		System.out.println("Please enter the RuleSet Id to Execute");
     	String ruleSetId = reader.readLine();
     	final Map properties1 = new HashMap();
@@ -99,7 +99,7 @@ public class Sponsor_Level_Rule_TestCase extends TestCase {
 		final AdverseEvent adverseEvent = getAdverseEvent();
 		adverseEvent.setGrade(Grade.MODERATE);
 		inObjects.add(adverseEvent);
-		
+
 		// execute the rules
 /*
 TO DOO
@@ -120,33 +120,33 @@ TO DOO
     	ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
 
     	rule.getMetaData().setName("Decide AE Type");
-		
+
 		Action action = new Action();
 //		action.setContent("System.out.println(\"Found a SEVERE ADVERSE EVENT with Grade Greater Than Or Equal To Moderate. \nPlease send a mail to" +
 //				" regulatory groups immediately.. \");");
 //		action.setType("AE");
 		rule.setAction(action);
-		
-		
+
+
 		Condition condition = new Condition();
 		//condition.addEval("adverseEvent.getGrade().getCode() >= Grade.MODERATE.getCode()");
-		
-		
+
+
 		Column column = new Column();
 		column.setObjectType("AdverseEvent");
 		column.setIdentifier("adverseEvent");
 		condition.getColumn().add(column);
-		rule.setCondition(condition);    	
+		rule.setCondition(condition);
     	this.ruleAuthoringServiceImpl.createRuleSet(ruleSet);
-    	
+
     	if(ruleSet.getId() != null) {
     		System.out.println("RuleSet created successfully : " + ruleSet.getId());
     	}
 
-    
+
     }
-	
-	
+
+
     private StudySDO getStudy() {
         final StudySDO study = new StudySDO();
         StudySite studySite = new StudySite();
@@ -162,6 +162,6 @@ TO DOO
     	adverseEvent.setCtcTerm(ctcTerm);
     	return adverseEvent;
     }
-	
-    
+
+
 }
