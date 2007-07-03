@@ -469,7 +469,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @OrderBy("dueOn")
-    @Cascade(value = {  CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.ALL })
     public List<Report> getReports() {
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
@@ -483,8 +483,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         getReports().add(report);
         report.setAeReport(this);
     }
-
-  
 
     public Timestamp getCreatedAt() {
         return createdAt;

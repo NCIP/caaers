@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
@@ -41,6 +42,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
     private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
+    private ReportDefinitionDao reportDefinitionDao
+        = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
 
     public void testGet() throws Exception {
         ExpeditedAdverseEventReport loaded = getDao().getById(-1);
@@ -441,6 +444,25 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 assertEquals(LAST_NAME, loaded.getPhysician().getLastName());
                 assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
                 assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+            }
+        });
+    }
+
+    public void testSaveSavesSubmittableReports() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                Report submittable = new Report();
+                submittable.setDueOn(new Date());
+                submittable.setCreatedOn(new Date());
+                submittable.setName("What is this field for?");
+                submittable.setReportDefinition(reportDefinitionDao.getById(-30));
+                report.addReport(submittable);
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals("Report not saved", 1, loaded.getReports().size());
+                assertEquals("Report has wrong definition",
+                    -30, (int) loaded.getReports().get(0).getReportDefinition().getId());
             }
         });
     }
