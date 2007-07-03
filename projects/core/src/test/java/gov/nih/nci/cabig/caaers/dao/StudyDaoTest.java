@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
@@ -284,5 +286,62 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         }
         return ids;
     }
-
+	
+	
+	   public void testSearchStudyByStudyShortTitle() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("studyShortTitle", "Short Title");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
+	    
+	    
+	    public void testSearchStudyByStudyIdentifier() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("studyIdentifier", "1138-43");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
+	    
+	    public void testSearchStudyByParticipantFirstName() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("participantFirstName", "Dilbert");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
+	    
+	    public void testSearchStudyByParticipantLastName() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("participantLastName", "Scott");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
+	    
+	    public void testSearchStudyByParticipantIdentifier() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("participantIdentifier", "13js77");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
+	    
+	    public void testSearchStudyByMultipleCriterias() throws Exception {
+	    	List<Study> results;
+	    	Map<String,String> m = new HashMap<String,String>();
+	    	m.put("participantFirstName", "Dilbert");
+	    	m.put("participantGender", "Female");
+	    	m.put("participantDateOfBirth", "01/02/2006");
+	    	results = getDao().searchStudy(m);
+	    	assertEquals("Wrong number of results", 1, results.size());
+	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
+	    }
 }

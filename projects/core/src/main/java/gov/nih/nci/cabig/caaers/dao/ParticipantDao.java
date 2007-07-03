@@ -2,17 +2,15 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 
 /**
  * @author Rhett Sutphin
@@ -77,8 +75,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
         return findByIdentifier(identifier);
     }
     
-    @SuppressWarnings("deprecation")
-	public List<Participant> searchParticipant(Map props) {
+    @SuppressWarnings({ "deprecation", "unchecked" })
+	public List<Participant> searchParticipant(Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
@@ -137,11 +135,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
 		
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
-			queryBuf.append("LOWER(").append("o.dateOfBirth").append(") = ?");
+			queryBuf.append(" o.dateOfBirth").append(" = ? ");
 			String p = (String)props.get("participantDateOfBirth");
-			params.add(new Date(p));
+			params.add(stringToDate(p));
 			firstClause = false;
 		}
+		
 		log.debug("::: " + queryBuf.toString() );
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
     }

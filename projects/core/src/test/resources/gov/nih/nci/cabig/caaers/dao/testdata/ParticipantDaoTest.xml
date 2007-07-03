@@ -56,6 +56,14 @@
     	description="Description" 
     	primary_sponsor_code="SCODE_100"
     	ctc_id="3"/>
+    	
+     <IDENTIFIERS
+        id="-201"
+        stu_id="-2000"
+        value="nci_test"
+        source="Hosp"
+        primary_indicator="true"
+        type="MRN"/>	
     
     <STUDY_ORGANIZATIONS
         id="-3001"

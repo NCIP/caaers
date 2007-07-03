@@ -54,6 +54,52 @@
         type="uniqueness"
         />
         
+     <IDENTIFIERS
+        id="-18"
+        stu_id="-4"
+        value="1138-421"
+        source="The man"
+        type="uniqueness"
+        />    
+        
+    <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_date="2006-01-02"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
+    <IDENTIFIERS
+        id="-200"
+        participant_id="-100"
+        value="13js77"
+        source="Hosp"
+        type="MRN"/>
+        <!--
+    <ORGANIZATIONS
+        id="-1050"
+         name="National Cancer Institute" 
+        description_text="National Cancer Institute"  
+        nci_institute_code="code"/>
+    
+    <STUDY_ORGANIZATIONS
+        id="-3000"
+        site_id="-1050"
+        study_id="-2"
+        type="SST"
+        />  
+       -->   
+    <PARTICIPANT_ASSIGNMENTS
+        id="-10"
+        date_of_enrollment="2006-12-12"
+        participant_id="-100"
+        study_site_id="-1000"/>    
+        
     <ORGANIZATIONS 
         id="-1001" 
         version="1" 

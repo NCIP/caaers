@@ -15,8 +15,11 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -237,6 +240,17 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      */
     public void initialize(Collection<? extends DomainObject> proxy){
     	getHibernateTemplate().initialize(proxy);
+    }
+    
+    /**
+     * 
+     * @param date
+     * @return
+     * @throws ParseException
+     */
+    public Date stringToDate(String date) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        return dateFormat.parse(date);
     }
    
 }

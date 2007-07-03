@@ -386,6 +386,7 @@ public class SearchStudyAjaxFacade {
     }
     
    
+   @SuppressWarnings("finally")
    private List<Study> constructExecuteStudyQuery(String type, String text)
    {
 	   StringTokenizer typeToken = new StringTokenizer(type, ",");
@@ -394,6 +395,7 @@ public class SearchStudyAjaxFacade {
 	   log.debug("text :: " + text);
 	   String sType, sText;
 	   Map<String,String> propValue = new HashMap<String,String>();
+	   List<Study> studies = new ArrayList<Study>(); 
 	    
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
@@ -413,10 +415,18 @@ public class SearchStudyAjaxFacade {
    		// Create a map  of property key ,and search criteria 
    		propValue.put(m.get(sType),sText);
 	   }
-
-	   return studyDao.searchStudy(propValue);
+	   
+	   try {
+		studies = studyDao.searchStudy(propValue);
+	   } catch (Exception e) {
+		   throw new RuntimeException("Formatting Error", e);
+	   }
+	   finally{
+		   return studies;
+	   }
    }
    
+   @SuppressWarnings("finally")
    private List<Participant> constructExecuteParticipantQuery(String type, String text)
    {
 	   
@@ -426,6 +436,7 @@ public class SearchStudyAjaxFacade {
 	   log.debug("text :: " + text);
 	   String sType, sText;
 	   Map<String,String> propValue = new HashMap<String,String>();
+	   List<Participant> participants = new ArrayList<Participant>(); 
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
@@ -447,7 +458,14 @@ public class SearchStudyAjaxFacade {
    		propValue.put(m.get(sType),sText);
 	   }
 
-	   return participantDao.searchParticipant(propValue);
+	   try {
+			participants = participantDao.searchParticipant(propValue);
+		   } catch (Exception e) {
+			   throw new RuntimeException("Formatting Error", e);
+		   }
+		   finally{
+			   return participants;
+		   }
    }
    
    

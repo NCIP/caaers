@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Krikor Krumlian
@@ -136,4 +138,111 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
+    
+    public void testSearchParticipantPropertyExistance() throws Exception {
+    	Class participant = gov.nih.nci.cabig.caaers.domain.Participant.class;
+    	assertNotNull(participant.getDeclaredField("firstName"));
+    	assertNotNull(participant.getDeclaredField("lastName"));
+    	assertNotNull(participant.getDeclaredField("gender"));
+    	assertNotNull(participant.getDeclaredField("ethnicity"));
+    	
+    	Class study = gov.nih.nci.cabig.caaers.domain.Study.class;
+    	assertNotNull(study.getDeclaredField("shortTitle"));
+    	
+    	Class identifier = gov.nih.nci.cabig.caaers.domain.Identifier.class;
+    	assertNotNull(identifier.getDeclaredField("value"));
+    }
+    
+    public void testSearchParticipantByStudyFirstName() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("studyShortTitle", "sh");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByStudyIdentifier() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("studyIdentifier", "nci_test");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByParticipantFirstName() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantFirstName", "Dilbert");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByParticipantLastName() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantLastName", "Scott");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByParticipantEthnicity() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantEthnicity", "ethnicity");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByParticipantEthnicityPartial() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantEthnicity", "ethn");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 0, results.size());
+    }
+    
+    public void testSearchParticipantByParticipantGender() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantGender", "Female");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByParticipantGenderPartial() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantGender", "Fema");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 0, results.size());
+    }
+    
+    public void testSearchParticipantByParticipantDateOfBirth() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantDateOfBirth", "01/02/2006");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testSearchParticipantByMultipleCriterias() throws Exception {
+    	List<Participant> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantFirstName", "Dilbert");
+    	m.put("participantGender", "Female");
+    	m.put("participantDateOfBirth", "01/02/2006");
+    	results = getDao().searchParticipant(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    
+    
 }

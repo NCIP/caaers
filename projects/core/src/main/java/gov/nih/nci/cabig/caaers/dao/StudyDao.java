@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -42,7 +44,7 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		= Collections.emptyList();
     private static final String JOINS 
     	= "join o.identifiers as identifier " + 
-		"join o.studySites as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
+		"join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
     
     public Class<Study> domainClass() {
         return Study.class;
@@ -97,13 +99,19 @@ public class StudyDao extends GridIdentifiableDao<Study>
     	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
     }
     
-    @SuppressWarnings("deprecation")
-	public List<Study> searchStudy(Map props) {
+	public List<Study> searchStudy(Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
          .append(domainClass().getName()).append(" o ").append(JOINS);
+		
+		/*
+		if (true) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append(" ss.class = StudySite ");
+			firstClause = false;
+		}*/
 		
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
@@ -157,9 +165,9 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
-			queryBuf.append("LOWER(").append("p.dateOfBirth").append(") = ?");
+			queryBuf.append(" p.dateOfBirth").append(" = ? ");
 			String p = (String)props.get("participantDateOfBirth");
-			params.add(new Date(p));
+			params.add(stringToDate(p));
 			firstClause = false;
 		}
 		log.debug("::: " + queryBuf.toString() );
