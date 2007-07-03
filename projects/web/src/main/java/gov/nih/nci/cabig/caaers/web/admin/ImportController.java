@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -58,7 +58,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
-	private SiteDao siteDao;
+	private OrganizationDao organizationDao;
 	private AgentDao agentDao; 
 	private MedDRADao meddraDao;
 	private CtcDao ctcDao;
@@ -167,7 +167,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	// common
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
-    	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Site.class);
+    	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
     	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
@@ -366,14 +366,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		if (xstreamStudy.getStudySites() != null) {
 			for (int i = 0; i < xstreamStudy.getStudySites().size(); i++) {
 				StudySite studySite = xstreamStudy.getStudySites().get(i);
-				Site site = siteDao.getByName(studySite.getSite().getName());
-				st.addStudySite(createStudySite(site));
+				Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
+				st.addStudySite(createStudyOrganization(organization));
 				
 			}
 		}
 		else
 		{
-			st.addStudySite(createStudySite(null));
+			st.addStudySite(createStudyOrganization(null));
 		}
 		
 		// StudyAgents
@@ -401,11 +401,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		
 	}
 	
-	private StudySite createStudySite(Site site){
+	private StudySite createStudyOrganization(Organization organization){
 		
 		StudySite studySite = new StudySite();
 		studySite.setRoleCode("Site");
-		studySite.setSite(site == null ? siteDao.getDefaultSite() : site );
+		studySite.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studySite;
 	}
 	
@@ -431,12 +431,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		this.studyDao = studyDao;
 	}
 
-	public SiteDao getSiteDao() {
-		return siteDao;
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public AgentDao getAgentDao() {

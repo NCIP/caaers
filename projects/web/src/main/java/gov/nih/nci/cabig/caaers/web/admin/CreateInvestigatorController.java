@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -32,7 +32,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class CreateInvestigatorController extends SimpleFormController {
 		    	
 	private InvestigatorDao investigatorDao;
-	private SiteDao siteDao;	
+	private OrganizationDao organizationDao;	
 	private ConfigProperty configurationProperty;
 	
 	public CreateInvestigatorController() {		
@@ -50,7 +50,7 @@ public class CreateInvestigatorController extends SimpleFormController {
 	private Map<String, Object> referenceData(Map<String, Object> refdata) {
 		Map <String, List<Lov>> configMap = configurationProperty.getMap();
         
-        refdata.put("sitesRefData", getSites());
+        refdata.put("sitesRefData", getOrganizations());
         refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
   		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
         return refdata;
@@ -68,8 +68,8 @@ public class CreateInvestigatorController extends SimpleFormController {
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(Date.class, ControllerTools
 				.getDateEditor(true));
-		binder.registerCustomEditor(Site.class, new DaoBasedEditor(
-				siteDao));		
+		binder.registerCustomEditor(Organization.class, new DaoBasedEditor(
+				organizationDao));		
 	}
 	
 	@Override
@@ -134,17 +134,17 @@ public class CreateInvestigatorController extends SimpleFormController {
 		return investigator;
 	} 
 		
-	public SiteDao getSiteDao() {
-		return siteDao;
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}		
 	
-	private List<Site> getSites()
+	private List<Organization> getOrganizations()
 	{
-		return siteDao.getAll();  	
+		return organizationDao.getAll();  	
 	}
 					
 	public InvestigatorDao getInvestigatorDao() {

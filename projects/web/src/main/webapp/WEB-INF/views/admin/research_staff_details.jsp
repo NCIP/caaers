@@ -33,7 +33,7 @@
        </div>
        <div class="row">
            <div class="label"><span class="red">*</span>Site:</div>
-           <div class="value"><form:select path="site">
+           <div class="value"><form:select path="organization">
   				<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 			</form:select> </div>
        </div>

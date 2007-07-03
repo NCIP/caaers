@@ -94,7 +94,7 @@ function submitPage(s){
                <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
 					<tr><td class="label">Study Short Title:</td><td><c:out value="${studySite.study.shortTitle}"/></td></tr>
 					<tr><td class="label">Study Long Title:</td><td><c:out value="${studySite.study.longTitle}"/></td></tr>
-					<tr><td class="label">Site:</td><td><c:out value="${studySite.site.name}"/></td></tr>
+					<tr><td class="label">Site:</td><td><c:out value="${studySite.organization.name}"/></td></tr>
 					</tr>
 			   </c:forEach>
         </table>

@@ -28,10 +28,10 @@ public class Fixtures {
         return s;
     }
 
-    public static Site createSite(String name) {
-        Site site = new Site();
-        site.setName(name);
-        return site;
+    public static Organization createOrganization(String name) {
+        Organization organization = new Organization();
+        organization.setName(name);
+        return organization;
     }
 
     /** Creates an assignment and the associated Study, Participant, StudySite, and Site objs */
@@ -39,15 +39,15 @@ public class Fixtures {
         return assignParticipant(
             createParticipant("D", "C"),
             createStudy("DC"),
-            createSite("N/A")
+            createOrganization("N/A")
         );
     }
 
-    public static StudyParticipantAssignment assignParticipant(Participant p, Study study, Site site) {
+    public static StudyParticipantAssignment assignParticipant(Participant p, Study study, Organization organization) {
         StudySite ss = new StudySite();
-        ss.setSite(site);
+        ss.setOrganization(organization);
         study.addStudySite(ss);
-        site.addStudySite(ss);
+        organization.addStudySite(ss);
 
         StudyParticipantAssignment assignment = new StudyParticipantAssignment();
         ss.addAssignment(assignment);

@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
@@ -33,12 +33,12 @@ public class CreateStudyAjaxFacade {
     private DiseaseTermDao diseaseTermDao;
     private SiteInvestigatorDao siteInvestigatorDao;	
     private ResearchStaffDao researchStaffDao;
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
     
     public List<SiteInvestigator> matchSiteInvestigator(String text, int indexId) {
     	String[] arr = new String[] { text };
     	Study study = getStudyCommand();
-    	int siteId = study.getStudySites().get(indexId).getSite().getId();
+    	int siteId = study.getStudySites().get(indexId).getOrganization().getId();
     	List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
 
         return ObjectTools.reduceAll(siteInvestigators,
@@ -128,12 +128,12 @@ public class CreateStudyAjaxFacade {
 		this.researchStaffDao = researchStaffDao;
 	}
 
-	public SiteDao getSiteDao() {
-		return siteDao;
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public SiteInvestigatorDao getSiteInvestigatorDao() {

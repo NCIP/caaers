@@ -56,11 +56,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private String   diseaseCategoryAsText;
     private String   diseaseLlt;
 
-    private List<StudySite> studySites = new ArrayList<StudySite>();
     private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
     //private List<StudyDisease> studyDiseases = new ArrayList<StudyDisease>();
     private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
     private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
+	private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
 
     /// LOGIC
 
@@ -93,10 +93,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		this.diseaseLlt = diseaseLlt;
 	}
 
-    public void addStudySite(StudySite studySite) {
-        studySites.add(studySite);
-        studySite.setStudy(this);
-    }
+	public void addStudySite(StudySite studySite) {
+		studyOrganizations.add(studySite);
+		studySite.setStudy(this);
+	}
+
+	public void removeStudySite(StudySite studySite) {
+		studyOrganizations.remove(studySite);
+	}
 
     public void addStudyAgent(StudyAgent studyAgent) {
         studyAgents.add(studyAgent);
@@ -140,15 +144,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         return super.getIdentifiers();
     }
 
-    @OneToMany (mappedBy="study", fetch=FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public List<StudySite> getStudySites() {
-        return studySites;
-    }
-
-    public void setStudySites(List<StudySite> studySites) {
-        this.studySites = studySites;
-    }
 
     @OneToMany (mappedBy="study", fetch=FetchType.LAZY)
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -301,4 +296,56 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void setTargetAccrualNumber(Integer targetAccrualNumber) {
         this.targetAccrualNumber = targetAccrualNumber;
     }
+    
+    @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<StudyOrganization> getStudyOrganizations() {
+		return studyOrganizations ;
+	}
+	
+	public void addStudyOrganization(StudyOrganization so){
+		this.getStudyOrganizations().add(so);
+		so.setStudy(this);
+	}
+	
+	public void removeStudyOrganization(StudyOrganization so){
+		this.getStudyOrganizations().remove(so);
+	}
+	
+	public void setStudyOrganizations(List<StudyOrganization> studyOrganizations) {
+		this.studyOrganizations = studyOrganizations;
+	}
+	
+	@Transient
+	public List<StudySite> getStudySites() {
+		List<StudySite> sites = new ArrayList<StudySite>();
+		for(StudyOrganization studyOrg: this.getStudyOrganizations()){
+			if (studyOrg instanceof StudySite){
+				sites.add((StudySite)studyOrg);
+			}
+		}
+		return sites;
+	}
+	
+	@Transient
+	public List<StudyFundingSponsor> getStudyFundingSponsors() {
+		List<StudyFundingSponsor> sites = new ArrayList<StudyFundingSponsor>();
+		for(StudyOrganization studyOrg: this.getStudyOrganizations()){
+			if (studyOrg instanceof StudyFundingSponsor){
+				sites.add((StudyFundingSponsor)studyOrg);
+			}
+		}
+		return sites;
+	}
+	
+	@Transient
+	public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
+		List<StudyCoordinatingCenter> centers = new ArrayList<StudyCoordinatingCenter>();
+		for(StudyOrganization studyOrg: this.getStudyOrganizations()){
+			if (studyOrg instanceof StudyCoordinatingCenter){
+				centers.add((StudyCoordinatingCenter)studyOrg);
+			}
+		}
+		return centers;
+	}
 }

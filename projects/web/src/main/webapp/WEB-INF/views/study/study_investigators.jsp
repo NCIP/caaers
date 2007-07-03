@@ -144,10 +144,10 @@ Event.observe(window, "load", function() {
 					<select id="site" name="site" onchange="javascript:chooseSites();">
 						<c:forEach  items="${command.studySites}" var="studySite" varStatus="status">
 							<c:if test="${selected_site == status.index }">
-								<option selected="true" value=${status.index}>${studySite.site.name}</option>
+								<option selected="true" value=${status.index}>${studySite.organization.name}</option>
 							</c:if>
 							<c:if test="${selected_site != status.index }">
-								<option value=${status.index}>${studySite.site.name}</option>
+								<option value=${status.index}>${studySite.organization.name}</option>
 							</c:if>
 						</c:forEach>
 					</select>									                   		 
@@ -203,7 +203,7 @@ Event.observe(window, "load", function() {
 			<tr>
 				<td> 
 					<a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
-					title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.site.name} </b> </font> </a>
+					title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
 				</td>																									     
 			</tr>
 			<tr>

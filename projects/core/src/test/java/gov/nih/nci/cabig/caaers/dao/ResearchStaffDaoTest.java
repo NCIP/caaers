@@ -2,14 +2,14 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 
 /**
  * @author Kulasekaran
  */
 public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
    
-	SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
+	OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 			
     public void testGetById() throws Exception {
     	ResearchStaff researchStaff = getDao().getById(-1000);    	
@@ -25,8 +25,8 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao>{
         	researchStaff.setFirstName("Jeff");
         	researchStaff.setLastName("Someone");
         	
-        	Site site = siteDao.getById(-1000);
-        	researchStaff.setSite(site);
+        	Organization organization = organizationDao.getById(-1000);
+        	researchStaff.setOrganization(organization);
         	
             getDao().save(researchStaff);
             savedId = researchStaff.getId();

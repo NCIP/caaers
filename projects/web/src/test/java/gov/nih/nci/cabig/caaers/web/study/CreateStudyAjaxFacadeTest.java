@@ -6,7 +6,7 @@ import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -48,7 +48,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         expectedInvestigator.setInvestigator(investigator);
 
         StudySite studySite = new StudySite();
-        studySite.setSite(setId(6, new Site()));
+        studySite.setOrganization(setId(6, new Organization()));
         command.addStudySite(studySite);
         
         expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6)))

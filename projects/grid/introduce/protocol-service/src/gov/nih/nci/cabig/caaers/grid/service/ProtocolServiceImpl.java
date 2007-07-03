@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.grid.service;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -54,8 +54,8 @@ public class ProtocolServiceImpl extends ProtocolServiceImplBase {
             a.setDateOfEnrollment(new Date());
 
             // TODO: locate the site based on input
-            SiteDao sDao = (SiteDao) this.ctx.getBean("siteDao");
-            StudySite s = sDao.getDefaultSite().getStudySites().get(0);
+            OrganizationDao sDao = (OrganizationDao) this.ctx.getBean("organizationDao");
+            StudySite s = sDao.getDefaultOrganization().getStudySites().get(0);
 
             RegisterParticipantCommand cmd = (RegisterParticipantCommand) this.ctx
                             .getBean("registerParticipantCommand");

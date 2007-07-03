@@ -83,7 +83,7 @@ function submitPage(s){
 	     	<c:forEach var="studySite" items="${command.studySites}" varStatus="status"> 
                		 
 					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${studySite.study.shortTitle}"/></div></div>
-					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${studySite.site.name}"/></div></div>
+					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${studySite.organization.name}"/></div></div>
 			   </c:forEach>
 			   
 	     </div>   

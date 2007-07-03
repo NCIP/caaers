@@ -4,34 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * @author Krikor Krumlian
  * @author Kulasekaran
  */
 @Entity
-@Table (name = "study_sites")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_study_sites_id")
-    }
-)
-public class StudySite extends AbstractMutableDomainObject {
-	private Site site;
-    private Study study;    
+@DiscriminatorValue(value = "SST")
+public class StudySite extends StudyOrganization {    
 	private Date irbApprovalDate;
     private String roleCode;
     private String statusCode;
@@ -66,31 +54,11 @@ public class StudySite extends AbstractMutableDomainObject {
 
     @Transient
     public String getSiteStudyNames() {
-        return study.getShortTitle() + " : " + site.getName();
+        return getStudy().getShortTitle() + " : " + getOrganization().getName();
     }
     
     /// BEAN PROPERTIES
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "site_id")
-    public Site getSite() {
-        return site;
-    }
-        
-    public void setStudy(Study study) {
-        this.study = study;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "study_id")
-    public Study getStudy() {
-        return study;
-    }
-
+    
     public void setStudyParticipantAssignments(List<StudyParticipantAssignment> studyParticipantAssignments) {
         this.studyParticipantAssignments = studyParticipantAssignments;
     }

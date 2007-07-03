@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -38,7 +38,7 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 	private String middleName;
     private String lastName;
     private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
-    private Site site;
+    private Organization organization;
   
 
 	public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
@@ -128,12 +128,12 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 
 	@ManyToOne
 	@JoinColumn(name = "site_id")
-	public Site getSite() {
-		return site;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setSite(Site site) {
-		this.site = site;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	@Override

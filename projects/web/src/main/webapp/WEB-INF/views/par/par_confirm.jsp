@@ -82,7 +82,7 @@ function submitPage(s){
 	     	<c:forEach var="assignment" items="${participant.assignments}" varStatus="status"> 
                		 
 					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${assignment.studySite.study.shortTitle}"/></div></div>
-					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.site.name}"/></div></div>
+					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.organization.name}"/></div></div>
 			   </c:forEach>
 			   
 	     </div>
@@ -155,7 +155,7 @@ function submitPage(s){
                <c:forEach var="assignments" items="${participant.assignments}" varStatus="status">
                		<tr><td><strong><c:out value="${status.count}"/>.</strong></td></tr>
 					<tr><td class="label">Study Short Title:</td><td><c:out value="${assignments.studySite.study.shortTitle}"/></td></tr>
-					<tr><td class="label">Site:</td><td><c:out value="${assignments.studySite.site.name}"/></td></tr>
+					<tr><td class="label">Site:</td><td><c:out value="${assignments.studySite.organization.name}"/></td></tr>
 					</tr>
 			   </c:forEach>
         </table>

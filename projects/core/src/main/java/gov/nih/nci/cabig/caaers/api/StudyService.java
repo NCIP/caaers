@@ -4,7 +4,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
@@ -20,9 +20,9 @@ public interface StudyService {
      * 
      * @param study
      * @param participant
-     * @param site
+     * @param organization
      * @return StudyParticipantAssignment for the Participant
      */
-    StudyParticipantAssignment assignParticipant(Study study, Participant participant, Site site, String registrationGridId);
+    StudyParticipantAssignment assignParticipant(Study study, Participant participant, Organization organization, String registrationGridId);
 
 }

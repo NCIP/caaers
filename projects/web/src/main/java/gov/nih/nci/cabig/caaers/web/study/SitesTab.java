@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
@@ -13,7 +13,7 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
 */
 class SitesTab extends StudyTab {
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
 
     public SitesTab() {
         super("Study Sites", "Sites", "study/study_sites");
@@ -23,7 +23,7 @@ class SitesTab extends StudyTab {
     public Map<String, Object> referenceData() {
         Map<String, Object> refdata = super.referenceData();
 
-        refdata.put("sitesRefData", siteDao.getAll());
+        refdata.put("sitesRefData", organizationDao.getAll());
         addConfigMapToRefdata(refdata, "studySiteStatusRefData");
         addConfigMapToRefdata(refdata, "studySiteRoleCodeRefData");
         return refdata;
@@ -39,7 +39,7 @@ class SitesTab extends StudyTab {
         }
     }
 
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 }

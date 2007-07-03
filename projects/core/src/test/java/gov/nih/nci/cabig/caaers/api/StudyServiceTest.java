@@ -7,9 +7,9 @@ import java.util.Date;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -20,7 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
  */
 public class StudyServiceTest extends CaaersDbTestCase {
 
-    private SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
     private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
 
     public String getTestDataFileName() {
@@ -35,8 +35,8 @@ public class StudyServiceTest extends CaaersDbTestCase {
             String siteGridId = "gridSite";
             Integer participantId = null;
             {
-                Site site = siteDao.getByGridId(siteGridId);
-                StudySite studySite = site.getStudySites().get(0);
+                Organization organization = organizationDao.getByGridId(siteGridId);
+                StudySite studySite = organization.getStudySites().get(0);
                 assertEquals("Wrong study site found in test setup", studySiteId, studySite.getId().intValue());
                 Study study = studySite.getStudy();
 
@@ -52,7 +52,7 @@ public class StudyServiceTest extends CaaersDbTestCase {
                 StudyService svc = (StudyService) getApplicationContext()
                                 .getBean("studyServiceAPI");
                 StudyParticipantAssignment assignment = svc.assignParticipant(study, participant,
-                                site, "gridRegistration");
+                                organization, "gridRegistration");
                 assertNotNull("Assignment is null", assignment);
                 assertNotNull("Assignment not flushed", assignment.getId());
                 assertNotNull("Assignment gridId is null", assignment.getGridId());

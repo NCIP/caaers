@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class CreateResearchStaffController extends SimpleFormController {
 		    	
 	private ResearchStaffDao researchStaffDao;
-	private SiteDao siteDao;	
+	private OrganizationDao organizationDao;	
 	
 
 	public CreateResearchStaffController() {		
@@ -40,7 +40,7 @@ public class CreateResearchStaffController extends SimpleFormController {
 	 @Override
 	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
 		 Map<String, Object> refdata = new HashMap<String, Object>(); 
-		 refdata.put("sitesRefData", siteDao.getAll());
+		 refdata.put("sitesRefData", organizationDao.getAll());
 		 return refdata;
 	 }
  
@@ -56,8 +56,8 @@ public class CreateResearchStaffController extends SimpleFormController {
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(Date.class, ControllerTools
 				.getDateEditor(true));
-		binder.registerCustomEditor(Site.class, new DaoBasedEditor(
-				siteDao));		
+		binder.registerCustomEditor(Organization.class, new DaoBasedEditor(
+				organizationDao));		
 	}
 	
 	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
@@ -72,12 +72,12 @@ public class CreateResearchStaffController extends SimpleFormController {
 		return new ModelAndView(new RedirectView("createResearchStaff"));
 	}
 	
-	public SiteDao getSiteDao() {
-		return siteDao;
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public ResearchStaffDao getResearchStaffDao() {

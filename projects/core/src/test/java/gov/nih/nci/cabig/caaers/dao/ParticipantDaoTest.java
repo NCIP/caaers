@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
-    private SiteDao siteDao = (SiteDao) getApplicationContext().getBean("siteDao");
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
@@ -43,8 +43,8 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
 
     public void testSaveAssignment() throws Exception {
         {
-            Site site = siteDao.getById(-1001);
-            StudySite studySite = site.getStudySites().get(0);
+            Organization organization = organizationDao.getById(-1001);
+            StudySite studySite = organization.getStudySites().get(0);
             assertEquals("Wrong study site found in test setup", -3001, (int) studySite.getId());
             Participant participant = getDao().getById(-100);
             assertEquals("Participant should already have one assignment", 1, participant.getAssignments().size());

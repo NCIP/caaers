@@ -27,7 +27,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 )
 public class SiteInvestigator extends AbstractMutableDomainObject {
 
-	private Site site;
+	private Organization organization;
     private Investigator investigator;    	
     private String statusCode;
     private String emailAddress;
@@ -56,12 +56,12 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 	
 	@ManyToOne
     @JoinColumn(name = "site_id")
-	public Site getSite() {
-		return site;
+	public Organization getOrganization() {
+		return organization;
 	} 
 	
-	public void setSite(Site site) {
-		this.site = site;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	} 
 	
 	@Column(name = "status_code")

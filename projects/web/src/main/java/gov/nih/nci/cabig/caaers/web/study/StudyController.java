@@ -2,12 +2,12 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class StudyController<C extends Study> extends AutomaticSaveFlowFormController<C, Study, StudyDao>{
     private static final Log log = LogFactory.getLog(StudyController.class);
     protected StudyDao studyDao;
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
     private AgentDao agentDao;
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
@@ -72,7 +72,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
-        ControllerTools.registerDomainObjectEditor(binder, siteDao);
+        ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
@@ -149,10 +149,10 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         identifiers.add(id);
         study.setIdentifiers(identifiers);
 
-        List<Site> sites = siteDao.getAll();
+        List<Organization> organizations = organizationDao.getAll();
 
-        for (Site site : sites) {
-            studySite.setSite(site);
+        for (Organization organization : organizations) {
+            studySite.setOrganization(organization);
         }
 
         return study;
@@ -174,12 +174,12 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         this.researchStaffDao = researchStaffDao;
     }
 
-    public SiteDao getSiteDao() {
-        return siteDao;
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
     }
 
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 
     public SiteInvestigatorDao getSiteInvestigatorDao() {

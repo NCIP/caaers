@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -31,7 +31,7 @@ import static org.easymock.classextension.EasyMock.*;
 public class CreateStudyControllerTest extends WebTestCase {
     private CreateStudyController controller;
     private StudyDao studyDao;
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
     private AgentDao agentDao;
     private ResearchStaffDao researchStaffDao;
     private SiteInvestigatorDao siteInvestigatorDao;
@@ -47,22 +47,22 @@ public class CreateStudyControllerTest extends WebTestCase {
         ctcDao = registerDaoMockFor(CtcDao.class);
         researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
         siteInvestigatorDao = registerDaoMockFor(SiteInvestigatorDao.class);
-        siteDao = new SiteDao() {
+        organizationDao = new OrganizationDao() {
             @Override
-            public List<Site> getAll() {
-                return new ArrayList<Site>();
+            public List<Organization> getAll() {
+                return new ArrayList<Organization>();
             }
         };
         configProperty = registerMockFor(ConfigProperty.class);
         expect(configProperty.getMap()).andReturn(Collections.emptyMap()).anyTimes();
 
         StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
-            ctcDao, siteDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
+            ctcDao, organizationDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
         tabConfigurer.addBean("configurationProperty", configProperty);
 
         controller = new CreateStudyController();
         controller.setStudyDao(studyDao);
-        controller.setSiteDao(siteDao);
+        controller.setOrganizationDao(organizationDao);
         controller.setAgentDao(agentDao);
         controller.setResearchStaffDao(researchStaffDao);
         controller.setSiteInvestigatorDao(siteInvestigatorDao);

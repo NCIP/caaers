@@ -10,7 +10,7 @@ import java.util.List;
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.common.RegistrationConsumer;
@@ -56,13 +56,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
         Participant participant = createParticipant(registration);
 
-        Site site = new Site();
-        site.setGridId(registration.getHealthCareSiteGridId());
+        Organization organization = new Organization();
+        organization.setGridId(registration.getHealthCareSiteGridId());
 
         String registrationGridId = registration.getStudyParticipantIdentifier();
 
         StudyService svc = (StudyService) getApplicationContext().getBean(STUDY_SERVICE_BEAN_NAME);
-        StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site, registrationGridId);
+        StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, organization, registrationGridId);
         logger.debug("Created assignment " + assignment.getGridId());
     }
 

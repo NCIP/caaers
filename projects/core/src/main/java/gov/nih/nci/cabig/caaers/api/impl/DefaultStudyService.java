@@ -11,13 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -31,7 +31,7 @@ public class DefaultStudyService implements StudyService {
     
     private ParticipantDao participantDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
     private StudyDao studyDao;
     private SessionFactory sessionFactory;
     
@@ -49,7 +49,7 @@ public class DefaultStudyService implements StudyService {
      * @see gov.nih.nci.cabig.caaers.api.StudyService#assignParticipant(gov.nih.nci.cabig.caaers.domain.Study, gov.nih.nci.cabig.caaers.domain.Participant, gov.nih.nci.cabig.caaers.domain.Site)
      */
     public StudyParticipantAssignment assignParticipant(Study study, Participant participant,
-                    Site site, String registrationGridId) {
+                    Organization organization, String registrationGridId) {
 
         
         
@@ -57,7 +57,7 @@ public class DefaultStudyService implements StudyService {
         if (registrationGridId != null){
             newAssignment.setGridId(registrationGridId);
         }
-        ParameterLoader loader = new ParameterLoader(study, site);
+        ParameterLoader loader = new ParameterLoader(study, organization);
 
         Participant loadedParticipant = load(participant, getParticipantDao(), false);
         if (loadedParticipant == null) {
@@ -111,28 +111,28 @@ public class DefaultStudyService implements StudyService {
     
     private class ParameterLoader{
         private Study study;
-        private Site site;
+        private Organization organization;
         
-        public ParameterLoader(Study study, Site site){
+        public ParameterLoader(Study study, Organization organization){
             loadStudy(study);
-            loadSite(site);
+            loadOrganization(organization);
         }
 
         public StudySite validateSiteInStudy() {
             StudySite studySite = null;
             for (StudySite aStudySite : getStudy().getStudySites()) {
-                if (aStudySite.getSite().equals(getSite())) {
+                if (aStudySite.getOrganization().equals(getOrganization())) {
                     studySite = aStudySite;
                 }
             }
             if(studySite == null){
-                throw new IllegalArgumentException("Site " + getSite().getId() + " not associated with study " + getStudy().getId());
+                throw new IllegalArgumentException("Site " + getOrganization().getId() + " not associated with study " + getStudy().getId());
             }
             return studySite;
         }
 
-        private void loadSite(Site param) {
-            this.site = load(param, getSiteDao(), true);
+        private void loadOrganization(Organization param) {
+            this.organization = load(param, getOrganizationDao(), true);
         }
 
         private void loadStudy(Study param) {
@@ -147,12 +147,12 @@ public class DefaultStudyService implements StudyService {
             this.study = study;
         }
 
-        public Site getSite() {
-            return site;
+        public Organization getOrganization() {
+            return organization;
         }
 
-        public void setSite(Site site) {
-            this.site = site;
+        public void setOrganization(Organization organization) {
+            this.organization = organization;
         }
     }
 
@@ -178,14 +178,14 @@ public class DefaultStudyService implements StudyService {
 
 
 
-    public SiteDao getSiteDao() {
-        return siteDao;
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
     }
 
 
 
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 
 

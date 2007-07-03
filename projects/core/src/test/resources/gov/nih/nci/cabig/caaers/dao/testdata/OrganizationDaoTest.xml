@@ -1,0 +1,13 @@
+<dataset>
+    <ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"
+    />
+    
+    <ORGANIZATIONS
+        id="-1002"
+        name="Another Site"
+        grid_id="anotherGridSite"
+    />
+</dataset>

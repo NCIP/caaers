@@ -66,7 +66,7 @@
 		<c:forEach varStatus="status" items="${command.siteInvestigators}">					
 		<tr>
 			<td class="alt">  
-				<form:select path="siteInvestigators[${status.index}].site">
+				<form:select path="siteInvestigators[${status.index}].organization">
    					<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 				</form:select> </td>	
 			<td class="alt"> 					

@@ -240,7 +240,7 @@ public class AdverseEventReportSerializer {
 	    	studySite.setEndDate(ss.getEndDate());
 	    	
 	    	studySite.setStudy(ss.getStudy());
-	    	studySite.setSite(ss.getSite());
+	    	studySite.setOrganization(ss.getOrganization());
 	    	
 	    	return studySite;    	
 	    }

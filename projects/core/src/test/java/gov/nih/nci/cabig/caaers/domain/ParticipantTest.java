@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ParticipantTest extends CaaersTestCase {
     private Participant participant;
-    private static final Site SITE = Fixtures.createSite("Round abouts here");
+    private static final Organization SITE = Fixtures.createOrganization("Round abouts here");
 
     @Override
     protected void setUp() throws Exception {

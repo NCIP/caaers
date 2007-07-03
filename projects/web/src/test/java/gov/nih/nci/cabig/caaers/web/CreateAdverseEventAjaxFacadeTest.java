@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -95,7 +95,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         expectedList.add(createParticipant("Joe", "One"));
         expectedList.add(createParticipant("Joe", "Two"));
         Study study = setId(4, new Study());
-        assignParticipant(expectedList.get(1), study, new Site());
+        assignParticipant(expectedList.get(1), study, new Organization());
 
         expect(participantDao.getBySubnames(aryEq(new String[] { "joe" })))
             .andReturn(expectedList);
@@ -153,7 +153,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         expectedList.add(createStudy("Happy"));
         expectedList.add(createStudy("Joyful"));
         Participant p = setId(7, createParticipant("Sad", "Man"));
-        assignParticipant(p, expectedList.get(1), new Site());
+        assignParticipant(p, expectedList.get(1), new Organization());
 
         expect(studyDao.getBySubnames(aryEq(new String[] { "y" })))
             .andReturn(expectedList);

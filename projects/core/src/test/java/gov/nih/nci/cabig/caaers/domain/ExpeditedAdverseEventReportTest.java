@@ -139,7 +139,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     public void testSummaryIncludesStudy() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Site()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("El Study", summary.get("Study"));
     }
@@ -149,7 +149,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         Study study = Fixtures.createStudy("El Study");
         study.addIdentifier(Identifier.createTemplate("1845"));
         study.getIdentifiers().get(0).setPrimaryIndicator(true);
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Site()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("El Study (1845)", summary.get("Study"));
     }
@@ -157,7 +157,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     public void testSummaryIncludesParticipant() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Site()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("Joe Shabadoo", summary.get("Participant"));
     }
@@ -167,7 +167,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         participant.addIdentifier(Identifier.createTemplate("MRN1138"));
         participant.getIdentifiers().get(0).setPrimaryIndicator(true);
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Site()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
         Map<String, String> summary = report.getSummary();
         assertEquals("Joe Shabadoo (MRN1138)", summary.get("Participant"));
     }

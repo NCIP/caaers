@@ -80,7 +80,7 @@
 				</tr>
 				<c:forEach items="${command.studySites}" var="studySite">
 				<tr class="results">
-					<td>${studySite.site.name}</td>
+					<td>${studySite.organization.name}</td>
 					<td>${studySite.statusCode}</td>
 					<td>${studySite.roleCode}</td>
 					<td>${studySite.startDate}</td>

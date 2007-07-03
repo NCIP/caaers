@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -71,7 +71,9 @@ public class RuleAjaxFacade
 	
     private ConfigProperty configurationProperty;
     
-    private SiteDao siteDao;
+    //private SiteDao siteDao;
+    
+    private OrganizationDao organizationDao;
     
     private ReportDefinitionDao reportDefinitionDao;
 
@@ -502,15 +504,15 @@ public class RuleAjaxFacade
 	 * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to it.
 	 * 
 	 */  
-	public List<Site> matchSites(String text) 
+	public List<Organization> matchSites(String text) 
 	{
         System.out.println("in match sites...");
-		List<Site> sites = siteDao.getBySubnames(extractSubnames(text));
+		List<Organization> sites = organizationDao.getBySubnames(extractSubnames(text));
 
         
         // cut down objects for serialization
-        List<Site> reducedStudies = new ArrayList<Site>(sites.size());
-        for (Site site : sites) {
+        List<Organization> reducedStudies = new ArrayList<Organization>(sites.size());
+        for (Organization site : sites) {
             reducedStudies.add(
                 buildReduced(site, Arrays.asList("name"))
             );
@@ -562,19 +564,19 @@ public class RuleAjaxFacade
 		return null;
 	}
 
-	public SiteDao getSiteDao() {
-		return siteDao;
-	}
-
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
-	}
-
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return reportDefinitionDao;
 	}
 
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 }

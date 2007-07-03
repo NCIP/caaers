@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -15,7 +15,7 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
 */
 class IdentifiersTab extends StudyTab {
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
 
     public IdentifiersTab() {
         super("Study Identifiers", "Identifiers", "study/study_identifiers");
@@ -26,7 +26,7 @@ class IdentifiersTab extends StudyTab {
         Map<String, Object> refdata = super.referenceData();
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
 
-        refdata.put("identifiersSourceRefData", siteDao.getAll());
+        refdata.put("identifiersSourceRefData", organizationDao.getAll());
         refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));
         return refdata;
     }
@@ -47,7 +47,7 @@ class IdentifiersTab extends StudyTab {
         }
     }
     
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 }

@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -19,21 +19,21 @@ public class CreateInvestigatorControllerTest extends WebTestCase {
 	
 	private CreateInvestigatorController controller = new CreateInvestigatorController();
     private InvestigatorDao investigatorDao;
-	private SiteDao siteDao;
+	private OrganizationDao organizationDao;
     	
     protected void setUp() throws Exception {
         super.setUp();
         investigatorDao = registerDaoMockFor(InvestigatorDao.class);        
         // siteDao = registerDaoMockFor(SiteDao.class);
-        siteDao = new SiteDao() {
+        organizationDao = new OrganizationDao() {
         	@Override
-        	public List<Site> getAll() {        		        		
-        		List<Site> sites = new ArrayList<Site>();
-        		return sites;
+        	public List<Organization> getAll() {        		        		
+        		List<Organization> organizations = new ArrayList<Organization>();
+        		return organizations;
         	}
         };
         controller.setInvestigatorDao(investigatorDao);
-		controller.setSiteDao(siteDao);
+		controller.setOrganizationDao(organizationDao);
 		controller.setConfigurationProperty(new ConfigProperty());
 		//controller.setListValues(new ListValues());
     }

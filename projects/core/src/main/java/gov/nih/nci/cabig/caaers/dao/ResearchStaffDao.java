@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import org.springframework.transaction.annotation.Transactional;
 

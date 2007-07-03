@@ -12,14 +12,15 @@
         primary_sponsor_code="553"
         ctc_id="3"
         />
-    <SITES
+    <ORGANIZATIONS
         id="-1"
         name="Manse"
         />
-    <STUDY_SITES
+    <STUDY_ORGANIZATIONS
         id="-10"
         study_id="-4"
         site_id="-1"
+        type="SST"
         />
     <PARTICIPANTS
         id="-5"

@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.api.AdverseEventService;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -59,7 +59,7 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 		subject.setIdentifiers(identifiers);
 		
 		//Create Site
-		Site site = null;
+		Organization site = null;
 		
 		gov.nih.nci.caaers.grid.beans.Activity[] activities = studySubject.getActivity();
 		gov.nih.nci.caaers.grid.beans.Activity firstActivity = activities[0];
@@ -84,7 +84,7 @@ public class CreateCandidateAdverseEventServiceImpl extends CreateCandidateAdver
 			
 		}
 		AdverseEvent ae = new AdverseEvent();
-		ae.setDetectionDate(firstActivity.getEndDateTime().getTime());
+		//ae.setDetectionDate(firstActivity.getEndDateTime().getTime());
 		
 		return aeService.createCandidateAdverseEvent(caaersStudy, subject, site, ae, labs);
 	}

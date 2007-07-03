@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.api.AdverseEventService;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -14,7 +14,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class DefaultAdverseEventService implements AdverseEventService {
     private StudyDao studyDao;
-    private SiteDao siteDao;
+    private OrganizationDao organizationDao;
     private ParticipantDao participantDao;
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
     private ExpeditedAdverseEventReportDao adverseEventReportDao;
@@ -33,8 +33,8 @@ public class DefaultAdverseEventService implements AdverseEventService {
     }
 
     public String createCandidateAdverseEvent(Study study,
-			Participant participant, Site site, AdverseEvent ae, List<Lab> labs) {
-		ParameterLoader loader = new ParameterLoader(study, site, participant);
+			Participant participant, Organization organization, AdverseEvent ae, List<Lab> labs) {
+		ParameterLoader loader = new ParameterLoader(study, organization, participant);
 		StudyParticipantAssignment studyParticipantAssignment = getStudyParticipantAssignmentDao()
 				.getAssignment(loader.participant, loader.study);
 
@@ -54,12 +54,12 @@ public class DefaultAdverseEventService implements AdverseEventService {
         return studyDao;
     }
 
-    public void setSiteDao(SiteDao siteDao) {
-        this.siteDao = siteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 
-    public SiteDao getSiteDao() {
-        return siteDao;
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
     }
 
     public void setParticipantDao(ParticipantDao participantDao) {
@@ -152,40 +152,40 @@ public class DefaultAdverseEventService implements AdverseEventService {
     
     private class ParameterLoader{
         private Study study;
-        private Site site;
+        private Organization organization;
 		private Participant participant;
         
-        public ParameterLoader(Study study, Site site){
+        public ParameterLoader(Study study, Organization organization){
             loadStudy(study);
-            loadSite(site);
+            loadOrganization(organization);
         }
 
-        public ParameterLoader(Study study, Site site, Participant participant){
-            this(study,site);
+        public ParameterLoader(Study study, Organization organization, Participant participant){
+            this(study,organization);
             loadParticipant(participant);
         }        
         
         public StudySite validateSiteInStudy() {
             StudySite studySite = null;
             for (StudySite aStudySite : getStudy().getStudySites()) {
-                if (aStudySite.getSite().equals(getSite())) {
+                if (aStudySite.getOrganization().equals(getOrganization())) {
                     studySite = aStudySite;
                 }
             }
             if(studySite == null){
-                throw new IllegalArgumentException("Site " + getSite().getId() + " not associated with study " + getStudy().getId());
+                throw new IllegalArgumentException("Site " + getOrganization().getId() + " not associated with study " + getStudy().getId());
             }
             return studySite;
         }
 
-        private void loadSite(Site param) {
+        private void loadOrganization(Organization param) {
             if(param == null) {
-            	this.site = getSiteDao().getDefaultSite();
+            	this.organization = getOrganizationDao().getDefaultOrganization();
             } else {
-	        	this.site = load(param, getSiteDao(), true);
-	            if(this.site == null) {
-	                if(this.site == null) {
-	                	this.site = getSiteDao().getDefaultSite();
+	        	this.organization = load(param, getOrganizationDao(), true);
+	            if(this.organization == null) {
+	                if(this.organization == null) {
+	                	this.organization = getOrganizationDao().getDefaultOrganization();
 	                }
 	            }
             }
@@ -207,12 +207,12 @@ public class DefaultAdverseEventService implements AdverseEventService {
             this.study = study;
         }
 
-        public Site getSite() {
-            return site;
+        public Organization getOrganization() {
+            return organization;
         }
 
-        public void setSite(Site site) {
-            this.site = site;
+        public void setOrganization(Organization organization) {
+            this.organization = organization;
         }
 
 		public Participant getParticipant() {

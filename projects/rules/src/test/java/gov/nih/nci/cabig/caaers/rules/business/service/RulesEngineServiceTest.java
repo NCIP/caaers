@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -145,14 +145,14 @@ public class RulesEngineServiceTest extends TestCase {
 
 		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
 
-		Site s = new Site();
+		Organization s = new Organization();
 		s.setName("Wake Forest Comprehensive Cancer Center");
 		
 		ExpeditedAdverseEventReport exaer = new ExpeditedAdverseEventReport();
 		exaer.addAdverseEvent(ae1);
 		StudyParticipantAssignment spa = new StudyParticipantAssignment();
 		StudySite ss = new StudySite();
-		ss.setSite(s);
+		ss.setOrganization(s);
 		spa.setStudySite(ss);
 		
 		exaer.setAssignment(spa);
@@ -279,7 +279,7 @@ public class RulesEngineServiceTest extends TestCase {
 		ae1.setGrade(Grade.MILD);
 		ae1.setHospitalization(Hospitalization.NONE);
 
-		Site s = new Site();
+		Organization s = new Organization();
 		s.setName("Wake Forest Comprehensive Cancer Center");
 
 		AdverseEventEvaluationServiceImpl aees = new AdverseEventEvaluationServiceImpl();
@@ -298,7 +298,7 @@ public class RulesEngineServiceTest extends TestCase {
 
 		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
 
-		Site s = new Site();
+		Organization s = new Organization();
 		s.setName("Wake Forest Comprehensive Cancer Center");
 
 		AdverseEventEvaluationServiceImpl aees = new AdverseEventEvaluationServiceImpl();
@@ -384,7 +384,7 @@ public class RulesEngineServiceTest extends TestCase {
 	 */
 	private Column createCriteriaForInstitute(String criteriaValue) {
 		Column column = BRXMLHelper.newColumn();
-		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Site");
+		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Organization");
 		column.setIdentifier("siteSDO");
 		column.setExpression("getName()");
 		

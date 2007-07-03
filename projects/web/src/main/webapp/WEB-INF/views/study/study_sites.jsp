@@ -46,7 +46,7 @@ function fireAction(action, selected){
 			<c:forEach varStatus="status" items="${command.studySites}">					
 				<tr>
 					<td class="alt">
-						<form:select path="studySites[${status.index}].site">
+						<form:select path="studySites[${status.index}].organization">
 							<option value="">--please select --</option>
      						<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 						</form:select> </td>									

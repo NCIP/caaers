@@ -6,7 +6,7 @@ package gov.nih.nci.cabig.caaers.grid;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.common.RegistrationConsumer;
@@ -57,7 +57,7 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     }
 
     public void testCreateRegistrationLocal() throws Exception {
-        expect(studyService.assignParticipant(studyMatcher(), participantMatcher(), siteMatcher(), eq("studyParticipantIdentifier0")))
+        expect(studyService.assignParticipant(studyMatcher(), participantMatcher(), organizationMatcher(), eq("studyParticipantIdentifier0")))
             .andReturn(new StudyParticipantAssignment());
 
         RegistrationType reg = getRegistration();
@@ -96,8 +96,8 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
         return null;
     }
 
-    private static Site siteMatcher() {
-        reportMatcher(new TestRegistrationMatcher<Site>("site", "gridSite"));
+    private static Organization organizationMatcher() {
+        reportMatcher(new TestRegistrationMatcher<Organization>("site", "gridSite"));
         return null;
     }
 

@@ -36,8 +36,10 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Participant</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
-                <value>gov.nih.nci.cabig.caaers.domain.Site</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
@@ -162,7 +164,7 @@
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
-    <bean id="siteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteDao"/>
+    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>

@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.SiteDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -40,7 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class MigrateStudiesController extends AbstractTabbedFlowFormController<MigrateStudiesCommand> {
 		    	
 	private StudyDao studyDao;
-	private SiteDao siteDao;
+	private OrganizationDao organizationDao;
 	private AgentDao agentDao; 
 	
 	public MigrateStudiesController() {		
@@ -132,7 +132,7 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
     	//xstream.alias("studies", Studies.class);
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
-    	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Site.class);
+    	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
     	xstream.alias("agent", gov.nih.nci.cabig.caaers.domain.Agent.class);
@@ -225,14 +225,14 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
 		if (xstreamStudy.getStudySites() != null) {
 			for (int i = 0; i < xstreamStudy.getStudySites().size(); i++) {
 				StudySite studySite = xstreamStudy.getStudySites().get(i);
-				Site site = siteDao.getByName(studySite.getSite().getName());
-				st.addStudySite(createStudySite(site));
+				Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
+				st.addStudySite(createStudyOrganization(organization));
 				
 			}
 		}
 		else
 		{
-			st.addStudySite(createStudySite(null));
+			st.addStudySite(createStudyOrganization(null));
 		}
 		
 		// StudyAgents
@@ -258,11 +258,11 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
 		
 	}
 	
-	private StudySite createStudySite(Site site){
+	private StudySite createStudyOrganization(Organization organization){
 		
 		StudySite studySite = new StudySite();
 		studySite.setRoleCode("Site");
-		studySite.setSite(site == null ? siteDao.getDefaultSite() : site );
+		studySite.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studySite;
 	}
 	
@@ -289,12 +289,12 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
 		this.studyDao = studyDao;
 	}
 
-	public SiteDao getSiteDao() {
-		return siteDao;
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
 
-	public void setSiteDao(SiteDao siteDao) {
-		this.siteDao = siteDao;
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public AgentDao getAgentDao() {

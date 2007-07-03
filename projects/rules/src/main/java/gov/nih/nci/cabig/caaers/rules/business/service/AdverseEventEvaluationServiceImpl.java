@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -118,7 +118,7 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 }
 
 
-public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
+public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Exception{
 	
 	String final_result = null;
 	
@@ -189,7 +189,7 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 	public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception{
 		    //Report rs = aeReport.getReportSchedule();
 		//aeReport.
-		String institutionName = aeReport.getAssignment().getStudySite().getSite().getName();
+		String institutionName = aeReport.getAssignment().getStudySite().getOrganization().getName();
 		String bindURI_ForInstitutionLevelRules = this.getBindURI("", institutionName,"INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
 		//Study study = aeReport.getStudy();
 		List<AdverseEvent> aes = aeReport.getAdverseEvents();
@@ -204,7 +204,7 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
 		
 		try {
-			evaluationForInstitution = this.getEvaluationObject(ae, aeReport.getAssignment().getStudySite().getSite(), bindURI_ForInstitutionLevelRules);
+			evaluationForInstitution = this.getEvaluationObject(ae, aeReport.getAssignment().getStudySite().getOrganization(), bindURI_ForInstitutionLevelRules);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			throw new Exception(e.getMessage(),e);
@@ -293,7 +293,7 @@ public String assesAdverseEvent(AdverseEvent ae, Site site) throws Exception{
 		return evaluationForSponsor;
 	}
 
-	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Site site, String bindURI) throws Exception{
+	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Organization site, String bindURI) throws Exception{
 		
 		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
 		

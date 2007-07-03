@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.grid.service;
 
 import gov.nih.nci.cabig.caaers.api.StudyService;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
@@ -50,7 +50,7 @@ public class StudyServiceImpl extends StudyServiceImplBase {
 
             Study study = new Study();
             study.setId(studyId.intValue());
-            Site site = new Site();
+            Organization site = new Organization();
             site.setId(siteId.intValue());
 
             BigInteger participantId = participantBean.getId();
@@ -72,7 +72,7 @@ public class StudyServiceImpl extends StudyServiceImplBase {
 
             StudyService svc = (StudyService) this.ctx.getBean(STUDY_SERVICE_BEAN_NAME);
 
-            StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site);
+            StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, site,"");
 
             //TODO: Switch to using grid id when that is reader
             assignmentBean.setId(BigInteger.valueOf(assignment.getId().longValue()));

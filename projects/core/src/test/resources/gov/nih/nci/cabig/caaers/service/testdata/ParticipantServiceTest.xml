@@ -27,7 +27,7 @@
         race="race"
         middle_name="m"
         maiden_name="m"/>
-    <SITES
+    <ORGANIZATIONS
         id="-1001"
         name="New Site"
         grid_id="gridSite"/>
@@ -51,15 +51,17 @@
     	ctc_id="3"
     	grid_id=""/>
     
-    <STUDY_SITES
+    <STUDY_ORGANIZATIONS
         id="-3001"
         site_id="-1001"
         study_id="-2001"
+        type="SST"
         />
-    <STUDY_SITES
+    <STUDY_ORGANIZATIONS
         id="-3000"
         site_id="-1001"
         study_id="-2000"
+        type="SST"
         />
     <PARTICIPANT_ASSIGNMENTS
         id="-10"

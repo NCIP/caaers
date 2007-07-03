@@ -53,6 +53,118 @@
         source="The man"
         type="uniqueness"
         />
+        
+    <ORGANIZATIONS 
+        id="-1001" 
+        version="1" 
+        name="National Cancer Institute" 
+        description_text="National Cancer Institute"  
+        nci_institute_code="code" 
+    />
+    <ORGANIZATIONS 
+    	id="-1002" 
+    	version="1" 
+    	name="CALGB" 
+    	description_text="CALGB"
+    	nci_institute_code="CALGB code" 
+    />
+    
+    <ORGANIZATIONS 
+    	id="-1003" 
+    	version="1" 
+    	name="Northwestern Univ Cancer Center" 
+    	description_text="Northwestern Univ Cancer Center" 
+    	nci_institute_code="NU code" />
+<!-- 
+    <ADDRESSES 
+    	id="-100" 
+    	version="1" 
+    	street_address="12359 sunrise valley drive" 
+    	city="Reston" 
+    	state_code="VA" 
+    	postal_code="20191" 
+    	country_code="USA" />
+    
+    <ADDRESSES 
+    	id="-101" 
+    	version="1" 
+    	street_address="Coppermine Dr" 
+    	city="Herndon" 
+    	state_code="VA" 
+    	postal_code="20171" 
+    	country_code="USA" />
+-->    	
+    <STUDY_ORGANIZATIONS 
+    	id="-1000" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role" 
+    	status_code="active" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-2"
+    	site_id="-1003" 
+    	type="SST"/>
+    
+    <STUDY_ORGANIZATIONS 
+    	id="-1001" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role2" 
+    	status_code="inactive" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-2"
+    	site_id="-1001" 
+    	type="SFS"
+    />
+    <STUDY_ORGANIZATIONS 
+    	id="-1004" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role2" 
+    	status_code="inactive" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-2"
+    	site_id="-1002" 
+    	type="SCC"
+    />
+    <STUDY_ORGANIZATIONS 
+    	id="-1002" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role" 
+    	status_code="active" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-3"
+    	site_id="-1003" 
+    	type="SST"/>
+    
+    <STUDY_ORGANIZATIONS 
+    	id="-1003" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role2" 
+    	status_code="inactive" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-3"
+    	site_id="-1001" 
+    	type="SFS"
+    />
+    <STUDY_ORGANIZATIONS 
+    	id="-1005" 
+    	version="1" 
+    	irb_approval_date="01-01-2000" 
+    	role_code="role2" 
+    	status_code="inactive" 
+    	start_date="01-01-2001" 
+    	end_date="01-01-2002" 
+    	study_id="-3"
+    	site_id="-1002" 
+    	type="SCC"/>
 
 
 </dataset>

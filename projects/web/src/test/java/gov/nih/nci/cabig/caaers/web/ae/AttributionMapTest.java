@@ -30,7 +30,7 @@ public class AttributionMapTest extends CaaersTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         report = new ExpeditedAdverseEventReport();
-        report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"), createSite("DC")));
+        report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"), createOrganization("DC")));
         report.setTreatmentInformation(new TreatmentInformation());
 
         report.getConcomitantMedications().add(CON_MED_0);

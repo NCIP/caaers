@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Site;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 
 import java.util.Arrays;
@@ -26,20 +26,20 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     } 
     
 	@SuppressWarnings("unchecked")
-    public SiteInvestigator getSiteInvestigator(Site site, Investigator investigator) {
+    public SiteInvestigator getOrganizationInvestigator(Organization organization, Investigator investigator) {
         return CollectionUtils.firstElement(
             (List<SiteInvestigator>) getHibernateTemplate().find(
                 "from SiteInvestigator a where a.Site = ? and a.investigator = ?",
-                new Object[] { site, investigator })
+                new Object[] { organization, investigator })
         );
     }
 	
 	@SuppressWarnings("unchecked")
-    public List<SiteInvestigator> getSiteInvestigators(Site site) {
+    public List<SiteInvestigator> getOrganizationInvestigators(Organization organization) {
         return 
             (List<SiteInvestigator>) getHibernateTemplate().find(
                 "from SiteInvestigator a where a.site = ?",
-                new Object[] { site }
+                new Object[] { organization }
         ); 		
     }
 	

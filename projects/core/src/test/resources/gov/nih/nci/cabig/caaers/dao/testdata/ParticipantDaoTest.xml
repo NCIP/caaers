@@ -36,7 +36,7 @@
         value="13js77"
         source="Hosp"
         type="MRN"/>
-    <SITES
+    <ORGANIZATIONS
         id="-1001"
         name="New Site"/>
     <STUDIES 
@@ -57,15 +57,17 @@
     	primary_sponsor_code="SCODE_100"
     	ctc_id="3"/>
     
-    <STUDY_SITES
+    <STUDY_ORGANIZATIONS
         id="-3001"
         site_id="-1001"
         study_id="-2001"
+        type="SST"
         />
-    <STUDY_SITES
+    <STUDY_ORGANIZATIONS
         id="-3000"
         site_id="-1001"
         study_id="-2000"
+        type="SST"
         />
     <PARTICIPANT_ASSIGNMENTS
         id="-10"
