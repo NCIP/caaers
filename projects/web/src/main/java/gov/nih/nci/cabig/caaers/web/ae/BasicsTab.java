@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.LinkedHashMap;
+import java.util.Collection;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.BeanWrapper;
@@ -41,6 +43,12 @@ public class BasicsTab extends AeTab {
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
     private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
 
+    private static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
+    static {
+        EXPEDITED_GRADES.addAll(Arrays.asList(Grade.values()));
+        EXPEDITED_GRADES.remove(Grade.NORMAL);
+    }
+
     private CtcDao ctcDao;
     private EvaluationService evaluationService;
 
@@ -56,7 +64,7 @@ public class BasicsTab extends AeTab {
 
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(new LongSelectField("grade", "Grade", true,
-                collectOptions(Arrays.asList(Grade.values()), "name", null)));
+                collectOptions(EXPEDITED_GRADES, "name", null)));
         DefaultSelectField attributionField = new DefaultSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
         attributionField.getAttributes().put(InputField.DETAILS,

@@ -4,11 +4,15 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import org.easymock.classextension.EasyMock;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -111,5 +115,27 @@ public class BasicsTabTest extends AeTabTestCase {
         verifyMocks();
 
         assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    public void testGradeFieldOptions() throws Exception {
+        InputFieldGroup main = getFieldGroup("main0");
+        InputField gradeField = main.getFields().get(0);
+        assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField.getPropertyName());
+        Map<Object, Object> options = (Map<Object, Object>) gradeField.getAttributes().get(InputField.OPTIONS);
+        assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL.getName()));
+        assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL.toString()));
+        assertEquals("Wrong number of options", 5, options.size());
+
+        assertGradeOptionPresent(options, Grade.MILD);
+        assertGradeOptionPresent(options, Grade.MODERATE);
+        assertGradeOptionPresent(options, Grade.SEVERE);
+        assertGradeOptionPresent(options, Grade.LIFE_THREATENING);
+        assertGradeOptionPresent(options, Grade.DEATH);
+    }
+
+    private void assertGradeOptionPresent(Map<Object, Object> options, Grade grade) {
+        assertTrue("Missing key for " + grade, options.containsKey(grade.getName()));
+        assertEquals("Wrong value for " + grade, grade.toString(), options.get(grade.getName()));
     }
 }
