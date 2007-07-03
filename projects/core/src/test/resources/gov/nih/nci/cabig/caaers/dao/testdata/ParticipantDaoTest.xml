@@ -62,7 +62,6 @@
         stu_id="-2000"
         value="nci_test"
         source="Hosp"
-        primary_indicator="true"
         type="MRN"/>	
     
     <STUDY_ORGANIZATIONS
