@@ -359,7 +359,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	private Column createCriteriaForStudy(String criteriaValue)
 	{
 		Column column = BRXMLHelper.newColumn();
-		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Study");
+		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
 		column.setExpression("getShortTitle()");
 		
@@ -386,8 +386,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	private Column createCriteriaForInstitute(String criteriaValue)
 	{
 		Column column = BRXMLHelper.newColumn();
-		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Site");
-		column.setIdentifier("siteSDO");
+		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Organization.class.getName());
+		column.setIdentifier("organizationSDO");
 		column.setExpression("getName()");
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
@@ -413,7 +413,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	private Column createCriteriaForSponsor(String criteriaValue)
 	{
 		Column column = BRXMLHelper.newColumn();
-		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Study");
+		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
 		column.setExpression("getPrimarySponsorCode()");
 		
