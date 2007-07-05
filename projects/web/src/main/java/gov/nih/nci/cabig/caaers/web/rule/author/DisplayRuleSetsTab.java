@@ -50,20 +50,26 @@ public class DisplayRuleSetsTab extends DefaultTab
     	
     	try
     	{
-        	RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
+        	
+    		RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
 
         	if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel()))
     		{
     			ruleSets = rulesEngineService.getAllRuleSetsForSponsor(createRuleCommand.getSponsorName());
     		}
-    		else if (CreateRuleCommand.STUDY_LEVEL.equals(createRuleCommand.getLevel()))
+    		else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel()))
     		{
-    			ruleSets = rulesEngineService.getAllRuleSetsForStudy(createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+    			ruleSets = rulesEngineService.getAllRuleSetsForSponsorDefinedStudy(createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
     		}
-    		else
+    		else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equals(createRuleCommand.getLevel()))
     		{
     			ruleSets = rulesEngineService.getAllRuleSetsForInstitution(createRuleCommand.getInstitutionName());
     		}
+    		else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel()))
+    		{
+    			ruleSets = rulesEngineService.getAllRuleSetsForInstitutionDefinedStudy(createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
+    		}
+        	
     	}
     	catch(Exception ex)
     	{
