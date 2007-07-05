@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -16,22 +14,10 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
-import gov.nih.nci.cabig.caaers.service.ReportService;
-import gov.nih.nci.cabig.caaers.service.ReportServiceImpl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
@@ -40,14 +26,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
 	
 	
-    private static RuntimeException acLoadFailure = null;
-
-    private static ApplicationContext applicationContext = null;
-
-    protected Set<Object> mocks = new HashSet<Object>();
-    private boolean authorizationOnByDefault;
-    
-    private static Log log = LogFactory.getLog(AdverseEventEvaluationServiceImpl.class);
+   
     
 /**
  * This method will asses adverse event and will return one of the
@@ -243,14 +222,14 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 	    
 		System.out.println("Message: " + evaluationForInstitution.getMessage());
 		
-		
+		/*
 		ApplicationContext ac = AdverseEventEvaluationServiceImpl.getDeployedApplicationContext();
 		
 		ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao)ac.getBean("reportDefinitionDao");
 		ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
 		reportDefinitionDao.initialize(reportDefinition);
 		System.out.println(reportDefinition.getDescription());
-		
+		*/
 		//ReportService reportService = new ReportServiceImpl();
 		//Report r = reportService.createReport(reportDefinition, aeReport);
 		
@@ -422,7 +401,7 @@ public String evaluateSAEReportSchedule(RoutineAdverseEventReport aeReport) thro
 		
 		return evaluationForInstitution;
 	}
-	
+	/*
 	public static String[] getConfigLocations() {
         return new String[] {
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
@@ -432,7 +411,7 @@ public String evaluateSAEReportSchedule(RoutineAdverseEventReport aeReport) thro
         		
         };
     }
-	
+	/*
 	public synchronized static ApplicationContext getDeployedApplicationContext() {
         if (acLoadFailure == null && applicationContext == null) {
             // This might not be the right place for this
@@ -456,17 +435,7 @@ public String evaluateSAEReportSchedule(RoutineAdverseEventReport aeReport) thro
         }
         return applicationContext;
     }
+	*/
 	
-	public static void main (String[] args) {
-		//AdverseEventEvaluationServiceImpl a = new AdverseEventEvaluationServiceImpl();
-		ApplicationContext ac = AdverseEventEvaluationServiceImpl.getDeployedApplicationContext();
-		
-		ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao)ac.getBean("reportDefinitionDao");
-		ReportDefinition rd = reportDefinitionDao.getByName("24 Hour, 5 Calendar Days");
-		
-		System.out.println(rd.getDescription());
-		
-		System.out.println("done");
-	}
 	
 }
