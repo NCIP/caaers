@@ -89,9 +89,21 @@
 
 			function studyPopulator(autocompleter, text) 
 			{
-					authorRule.matchStudies(text, $('sponsor-input').value, function(values) {
+					
+					var institutionInput =  $('institution-input').value;
+					if(institutionInput != '') {
+						authorRule.matchStudiesByInstitution(text, $('institution-input').value, function(values) {
 							autocompleter.setChoices(values)
-					})
+						})
+					}
+					
+					var sponsorInput =  $('sponsor-input').value;
+					if(sponsorInput != '') {
+						
+						authorRule.matchStudies(text, $('sponsor-input').value, function(values) {
+							autocompleter.setChoices(values)
+						})
+					}
 			}
 			
 			function sponsorPopulator(autocompleter, text) 
@@ -121,6 +133,11 @@
 			
 			function displayRuleTypeInput(level)
 			{
+					 $('sponsor-input').value = '';
+					 $('institution-input').value = '';
+					 $('study-input').value	 = '';
+				
+				
 				if (level.value == 'Sponsor')
 				{
 					Effect.Appear("sponsor-details");
@@ -129,22 +146,30 @@
 				}
 				
 
-					if (level.value == 'Study')
+				if (level.value == 'SponsorDefinedStudy')
 					{
 						Effect.Appear("sponsor-details");
 						Effect.Appear("study-details");
 						Effect.Fade("institution-details");
-					}
+				}
 
-						if (level.value == 'Institution')
+				if (level.value == 'Institution')
 						{
 							
 							Effect.Appear("institution-details");
 							Effect.Fade("study-details");
 							Effect.Fade("sponsor-details");
 							
-						}
+				}
 
+				if (level.value == 'InstitutionDefinedStudy')
+						{
+							
+							Effect.Appear("institution-details");
+							Effect.Appear("study-details");
+							Effect.Fade("sponsor-details");
+							
+				}
 
 			}
             
@@ -176,9 +201,13 @@
             </div>
             
             <div class="row">
-                <label><form:radiobutton path="level" value="Study" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Study</b> Level</label>
+                <label><form:radiobutton path="level" value="SponsorDefinedStudy" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Sponsor Defined Study</b> Level</label>
             </div>            
 
+            <div class="row">
+                <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Instituition Defined Study</b> Level</label>
+            </div>  
+            
 			<c:choose>
 				<c:when test='${command.level eq "Study"}'>
 					<c:set var="sponsorVisibility" value=""/>
