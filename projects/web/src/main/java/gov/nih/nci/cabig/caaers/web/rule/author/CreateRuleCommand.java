@@ -34,6 +34,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	public static final String INSTITUTIONAL_LEVEL = "Institution";
 	public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
 	public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
+	public static final String STUDY_LEVEL="StudyLevel";
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
