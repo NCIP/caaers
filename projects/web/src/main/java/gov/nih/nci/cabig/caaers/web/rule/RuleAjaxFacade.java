@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
@@ -112,6 +113,51 @@ public class RuleAjaxFacade
         // cut down objects for serialization
         List<Study> reducedStudies = new ArrayList<Study>(studies.size());
         for (Study study : studies) {
+            reducedStudies.add(
+                buildReduced(study, Arrays.asList("id", "shortTitle"))
+            );
+        }
+        return reducedStudies;
+    }
+
+	/*
+	 * This method retrieves studies based on the Site Name and Partial Study name
+	 */
+    
+    public List<Study> matchStudiesByInstitution(String text, String institutionName) 
+	{
+        List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
+        
+        if (institutionName == null)
+        {
+        	return null;
+        }
+        List<Study> newStudyList = new ArrayList<Study>();
+        
+        for (Iterator<Study> it = studies.iterator(); it.hasNext();) 
+        {
+            Study study = it.next();
+            
+            List<StudySite> studySites = study.getStudySites();
+            
+            //loop thru each study site and get Site .
+            //if site name = institutionName
+            // add this study to new list 
+            
+            for (Iterator<StudySite> ssit =studySites.iterator(); ssit.hasNext();) {
+            	StudySite studySite = ssit.next();
+            	Organization org = studySite.getOrganization();
+            	if (institutionName.equals(org.getName())) {
+            		newStudyList.add(study);
+            		break;
+            	}
+            }
+	
+        }
+        
+        // cut down objects for serialization
+        List<Study> reducedStudies = new ArrayList<Study>(newStudyList.size());
+        for (Study study : newStudyList) {
             reducedStudies.add(
                 buildReduced(study, Arrays.asList("id", "shortTitle"))
             );
@@ -238,6 +284,7 @@ public class RuleAjaxFacade
     	return rule.getCondition().getColumn().remove(c);
     	*/
     	return rule.getCondition().getColumn().remove(columnCount) != null;
+    	
     }
     
     private CreateRuleCommand getAuthorRuleCommand() {
@@ -506,7 +553,7 @@ public class RuleAjaxFacade
 	 */  
 	public List<Organization> matchSites(String text) 
 	{
-        System.out.println("in match sites...");
+      //  System.out.println("in match sites...");
 		List<Organization> sites = organizationDao.getBySubnames(extractSubnames(text));
 
         
