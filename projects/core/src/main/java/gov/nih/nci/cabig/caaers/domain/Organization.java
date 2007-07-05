@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,36 +41,15 @@ public class Organization extends AbstractMutableDomainObject {
     private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
     private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
     private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
-    
+    private List<ReportDefinition> reportDefinitions;
     
     ////// LOGIC
-
-    public String getDescriptionText() {
-		return descriptionText;
-	}
-
-
-	public void setDescriptionText(String description) {
-		this.descriptionText = description;
-	}
-
-
-	public String getNciInstituteCode() {
-		return nciInstituteCode;
-	}
-
-
-	public void setNciInstituteCode(String nciInstituteCode) {
-		this.nciInstituteCode = nciInstituteCode;
-	}
-
 
 	public void addStudySite(StudyOrganization studyOrg) {
     	this.getStudyOrganizations().add(studyOrg);
     	studyOrg.setOrganization(this);
         
     }
-    
    
     public void addSiteInvestigator(SiteInvestigator siteInvestigator) {
         getSiteInvestigators().add(siteInvestigator);
@@ -80,7 +60,13 @@ public class Organization extends AbstractMutableDomainObject {
     	getResearchStaffs().add(staff);
     	staff.setOrganization(this);
     }
-
+    
+    public void addReportDefinition(ReportDefinition  reportDefinition){
+    	if(reportDefinitions == null) reportDefinitions = new ArrayList<ReportDefinition>();
+    	reportDefinitions.add(reportDefinition);
+    	reportDefinition.setOrganization(this);
+    }
+    
     ////// BEAN PROPERTIES
 
     @Column(name = "name")
@@ -93,7 +79,7 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     
-    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyOrganization> getStudyOrganizations() {
@@ -136,12 +122,41 @@ public class Organization extends AbstractMutableDomainObject {
 	public List<ResearchStaff> getResearchStaffs() {
 		return researchStaffs;
 	}
-
+	
 	public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
 		this.researchStaffs = researchStaffs;
 	}
     
-    public boolean equals(Object o) {
+    @OneToMany(mappedBy="organization", fetch=FetchType.LAZY)
+    @Cascade(value={CascadeType.ALL ,CascadeType.DELETE_ORPHAN})
+	public List<ReportDefinition> getReportDefinitions() {
+		return reportDefinitions;
+	}
+
+	public void setReportDefinitions(List<ReportDefinition> reportDefinitions) {
+		this.reportDefinitions = reportDefinitions;
+	}
+
+    public String getDescriptionText() {
+		return descriptionText;
+	}
+
+
+	public void setDescriptionText(String description) {
+		this.descriptionText = description;
+	}
+
+
+	public String getNciInstituteCode() {
+		return nciInstituteCode;
+	}
+
+
+	public void setNciInstituteCode(String nciInstituteCode) {
+		this.nciInstituteCode = nciInstituteCode;
+	}
+
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

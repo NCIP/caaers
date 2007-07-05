@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -13,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,7 +49,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private TimeScaleUnit timeScaleUnitType;
     private List<PlannedNotification> plannedNotifications;
     private LazyListHelper lazyListHelper;
-    
+    private Organization organization;
     
     public ReportDefinition(){
     	lazyListHelper = new LazyListHelper();
@@ -153,10 +155,19 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		lazyListHelper.setInternalList(ReportDeliveryDefinition.class, deliveryDefinitions);
 	}
 
-	
-    ////// OBJECT METHODS
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
+	@JoinColumn(name="org_id")
+	public Organization getOrganization() {
+		return organization;
+	}
 
-    @Override
+	
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+	
+	////// OBJECT METHODS
+	@Override
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;

@@ -5,6 +5,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -34,12 +35,14 @@ import org.springframework.transaction.TransactionStatus;
 public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     ReportDefinitionDao rctDao;
     private TransactionTemplate transactionTemplate;
+    OrganizationDao orgDao;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         rctDao = getDao();
         transactionTemplate = (TransactionTemplate) getApplicationContext().getBean("transactionTemplate");
+        orgDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
     }
 
     public void testDomainClass() {
@@ -99,18 +102,24 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		
 		rct.addReportDeliveryDefinition(rdd);
 		
-        rctDao.save(rct);
+		Organization org  = orgDao.getById(-1001);
+		org.addReportDefinition(rct);
+		rctDao.save(rct);
         final Integer id = rct.getId();
 
         interruptSession();
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             protected void doInTransactionWithoutResult(TransactionStatus status) {
-                ReportDefinition rctLoaded = rctDao.getById(id);
+               // ReportDefinition rctLoaded = rctDao.getById(id);
+            	ReportDefinition rctLoaded = rctDao.getByName("Test-RCT");
                 rctDao.initialize(rctLoaded);
-                rctDao.evict(rctLoaded);
 
                 log.debug(rctLoaded.getDuration());
+                
+                Organization org = rctLoaded.getOrganization();
+                assertNotNull("Organization should not be null", org);
+                assertEquals("Organization must be associated to ReportDefinition", org.getReportDefinitions().size() , 2);
                 PlannedEmailNotification nf = (PlannedEmailNotification) rctLoaded.getPlannedNotifications().get(0);
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
                 assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBodyAsString());
@@ -122,6 +131,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 nf.setSubjectLine("New Subject Line");
                 rctDao.save(rctLoaded);
                 log.debug("============= after save ===============");
+                
+                
             }
         });
     }

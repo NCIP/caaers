@@ -3,6 +3,11 @@
 		the ReportSchedule
 	-->
 	<!-- Below content is copied from ReportCalendarTemplateDaoTest.xml -->
+	<ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"
+    />
 	<report_calendar_templates 
 		id="-222"
 		name="RCT-222"
@@ -10,6 +15,7 @@
 		duration="4"
 		time_scale_unit_code="2"
 		version="0"
+		org_id="-1001"
 		/>
 	
 	<planned_notifications 
