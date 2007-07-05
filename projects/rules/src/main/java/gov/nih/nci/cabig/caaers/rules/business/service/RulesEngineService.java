@@ -33,8 +33,12 @@ public interface RulesEngineService {
 	/*
 	 * REVISIT: Make it private
 	 */
-	public RuleSet createRuleSetForStudy(String ruleSetName,String studyShortTitle, String sponsorName) throws Exception;
+	public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName,String studyShortTitle, String sponsorName) throws Exception;
 	
+	/*
+	 * REVISIT: Make it private
+	 */
+	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,String studyShortTitle, String institutionName) throws Exception;
 	
 	
 	/**
@@ -49,7 +53,9 @@ public interface RulesEngineService {
 	
 	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName) throws Exception;
 	
-	public RuleSet getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
+	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
+	
+	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception;
 	
 	
 	
@@ -59,7 +65,9 @@ public interface RulesEngineService {
 	
 	public List<RuleSet> getAllRuleSetsForInstitution(String institutionName) throws Exception;
 	
-	public List<RuleSet> getAllRuleSetsForStudy(String studyShortTitle, String sponsorName) throws Exception;
+	public List<RuleSet> getAllRuleSetsForSponsorDefinedStudy(String studyShortTitle, String sponsorName) throws Exception;
+	
+	public List<RuleSet> getAllRuleSetsForInstitutionDefinedStudy(String studyShortTitle, String institutionName) throws Exception;
 	
 	
 	/**
@@ -83,7 +91,9 @@ public interface RulesEngineService {
 	
 	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception;
 	
-	public String createRuleForStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
+	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
+	
+	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName) throws Exception;
 	
 	/*
 	 * REVISIT: Add 3 more methods similar to the above methods that take RuleSet as the input parameter
@@ -94,7 +104,9 @@ public interface RulesEngineService {
 	
 	public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception;
 	
-	public void saveRulesForStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception;
+	public void saveRulesForSponsorDefinedStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception;
+	
+	public void saveRulesForInstitutionDefinedStudy(RuleSet ruleSet, String studyShortTitle, String institutionName) throws Exception;
 	
 	/**
 	 * Just pass ruleId
