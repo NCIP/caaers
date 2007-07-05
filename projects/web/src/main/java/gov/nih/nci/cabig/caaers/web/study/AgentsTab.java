@@ -23,11 +23,6 @@ public class AgentsTab extends StudyTab {
     }
     
     @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
-    
-    @Override
     public void validate(Study command, Errors errors) {
     	boolean isAgentEmpty = false;
     	for (StudyAgent studyAgent: command.getStudyAgents()){

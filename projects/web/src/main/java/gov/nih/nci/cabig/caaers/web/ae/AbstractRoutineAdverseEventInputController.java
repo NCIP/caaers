@@ -50,6 +50,8 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected NowFactory nowFactory;
 
     protected AbstractRoutineAdverseEventInputController() {
+        setAllowDirtyForward(false);
+        setAllowDirtyBack(false);
         setFlow(new Flow<RoutineAdverseEventInputCommand>(getFlowName()));
         addTabs(getFlow());
     }

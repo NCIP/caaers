@@ -69,6 +69,8 @@ public abstract class AbstractAdverseEventInputController
     protected ReportDefinitionDao reportDefinitionDao;
 
     protected AbstractAdverseEventInputController() {
+        setAllowDirtyBack(false);
+        setAllowDirtyForward(false);
         setFlow(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
         addTabs(getFlow());
     }
@@ -80,7 +82,7 @@ public abstract class AbstractAdverseEventInputController
         flow.addTab(new RadiationInterventionTab());
         flow.addTab(new SurgeryInterventionTab());
         flow.addTab(new MedicalDeviceTab());
-		flow.addTab(new DescriptionTab());
+        flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
         flow.addTab(new TreatmentTab());
         flow.addTab(new LabsTab());

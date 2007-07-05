@@ -31,6 +31,8 @@ public class EditReportDefinitionController  extends AbstractTabbedFlowFormContr
 	private ReportDefinitionDao rpDefDao;
 	private Map<String, String> roles;
 	public EditReportDefinitionController(){
+        setAllowDirtyForward(false);
+        setAllowDirtyBack(false);
 		initFlow();
 	}
 	protected void initFlow() {
@@ -88,7 +90,6 @@ public class EditReportDefinitionController  extends AbstractTabbedFlowFormContr
 	}
 	
 
-	
 	public void setRoles(Map<String,String> roles){
 		this.roles = roles;
 	}

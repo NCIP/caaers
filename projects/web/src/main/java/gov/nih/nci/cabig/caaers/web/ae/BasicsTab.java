@@ -117,11 +117,6 @@ public class BasicsTab extends AeTab {
     }
 
     @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
-
-    @Override
     protected void validate(
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors

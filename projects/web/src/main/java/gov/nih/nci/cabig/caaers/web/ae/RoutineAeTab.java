@@ -92,11 +92,6 @@ public class RoutineAeTab extends AeRoutTab {
         return refdata;
     }
 
-    @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
-
     /*
     @Override
     protected void validate(

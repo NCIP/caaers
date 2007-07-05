@@ -80,6 +80,8 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 
 	public CreateParticipantController() {
         setCommandClass(NewParticipantCommand.class);
+        setAllowDirtyBack(false);
+        setAllowDirtyForward(false);
         setFlow(new Flow<NewParticipantCommand>("Create Participant"));
         getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
             public Map<String, Object> referenceData() {
@@ -106,11 +108,6 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
                 if (gender) errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
                 if (ethnicity) errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
                 if (race) errors.rejectValue("race", "REQUIRED", "Please specify the Race");
-            }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-                return false;
             }
         });
         getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {

@@ -49,11 +49,6 @@ public class MedicalInfoTab extends AeTab {
         return refdata;
     }
 
-    @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
-
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }

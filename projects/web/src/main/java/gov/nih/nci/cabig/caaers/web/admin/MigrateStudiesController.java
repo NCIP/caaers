@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Krikor Krumlian
  */
+// TODO: this flow only has one tab, so it probably shouldn't be a flow
 public class MigrateStudiesController extends AbstractTabbedFlowFormController<MigrateStudiesCommand> {
 		    	
 	private StudyDao studyDao;
@@ -44,7 +45,8 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
 	private AgentDao agentDao; 
 	
 	public MigrateStudiesController() {		
-        setCommandClass(MigrateStudiesCommand.class);        
+        setCommandClass(MigrateStudiesCommand.class);
+        setAllowDirtyForward(false);
 
         Flow<MigrateStudiesCommand> flow = new Flow<MigrateStudiesCommand>("Create Studies");
         
@@ -54,12 +56,6 @@ public class MigrateStudiesController extends AbstractTabbedFlowFormController<M
                 refdata.put("action", "New");
                 return refdata;
             }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-                return false;
-            }
-            
         });
                                            
         setFlow(flow);        

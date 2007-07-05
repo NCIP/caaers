@@ -64,7 +64,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private CtcDao ctcDao;
 	
 	public ImportController() {		
-        setCommandClass(ImportCommand.class);        
+        setCommandClass(ImportCommand.class);
+        setAllowDirtyForward(false);
+        setAllowDirtyBack(false);
 
         Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");       
         
@@ -73,11 +75,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 Map<String, Object> refdata = super.referenceData();
                 refdata.put("action", "New");
                 return refdata;
-            }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-                return false;
             }
             
             @Override
@@ -106,12 +103,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 //refdata.put("action", "New");
                 return refdata;
             }
-            
-            @Override
-            public boolean isAllowDirtyForward() {
-                return false;
-            }
-            
         });
                                            
         setFlow(flow);        

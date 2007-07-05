@@ -133,16 +133,4 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		Map<String, Object> refData = super.referenceData(command);
 		return refData;
 	}
-	
-	@Override
-	public boolean isAllowDirtyBack() {
-		return false;
-	}
-	
-	@Override
-	public boolean isAllowDirtyForward() {
-		return false;
-	}
-	
-	
 }

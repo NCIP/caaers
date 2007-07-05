@@ -83,9 +83,4 @@ public class ReporterTabTest extends AeTabTestCase {
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]", "E-mail address");
     }
-
-    public void testDirtyMoves() throws Exception {
-        assertFalse(getTab().isAllowDirtyBack());
-        assertFalse(getTab().isAllowDirtyForward());
-    }
 }

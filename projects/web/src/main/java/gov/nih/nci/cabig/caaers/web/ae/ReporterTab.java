@@ -66,16 +66,6 @@ public class ReporterTab extends AeTab {
         return refdata;
     }
 
-    @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
-
-    @Override
-    public boolean isAllowDirtyBack() {
-        return false;
-    }
-
     public ResearchStaffDao getResearchStaffDao() {
         return researchStaffDao;
     }

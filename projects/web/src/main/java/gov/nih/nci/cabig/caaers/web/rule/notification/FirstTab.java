@@ -9,20 +9,14 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
-import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.enums.EnumUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 
@@ -75,11 +69,6 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 			nfCmd.updateReportCalendarTemplate();
 	}
 
-	@Override
-	public boolean isAllowDirtyForward() {
-		return false;
-	}
-
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.web.fields.TabWithFields#validate(java.lang.Object, org.springframework.beans.BeanWrapper, java.util.Map, org.springframework.validation.Errors)
 	 */
@@ -100,5 +89,4 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 					"Invalid Time Till Report Due");
 		}
 	}
-	
 }

@@ -31,7 +31,9 @@ public class CreateReportDefinitionController extends AbstractTabbedFlowFormCont
 	private Map<String, String> roles;
 	
 	public CreateReportDefinitionController() {
-		initFlow();
+        setAllowDirtyForward(false);
+        setAllowDirtyBack(false);
+        initFlow();
 	}
 	
 	//initializes the flow

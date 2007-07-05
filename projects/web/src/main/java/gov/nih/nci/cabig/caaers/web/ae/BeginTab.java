@@ -38,9 +38,4 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
             errors.reject("NO_ASSIGNMENT", "The selected ");
         }
     }
-
-    @Override
-    public boolean isAllowDirtyForward() {
-        return false;
-    }
 }

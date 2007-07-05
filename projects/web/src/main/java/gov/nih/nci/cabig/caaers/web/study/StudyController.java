@@ -50,6 +50,8 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         Flow<C> flow = new Flow<C>("Create Study");
         layoutTabs(flow);
         setFlow(flow);
+        setAllowDirtyBack(false);
+        setAllowDirtyForward(false);
     }
 
 	@Override

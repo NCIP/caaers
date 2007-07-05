@@ -10,9 +10,8 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
 */
 class DetailsTab extends StudyTab {
-	
-	private CtcDao ctcDao;
-	
+    private CtcDao ctcDao;
+
     public DetailsTab() {
         super("Study Details", "Details", "study/study_details");
     }
@@ -35,18 +34,11 @@ class DetailsTab extends StudyTab {
 
     }
 
-    @Override
-    public boolean isAllowDirtyForward() {
-        return false;
+    public CtcDao getCtcDao() {
+        return ctcDao;
     }
 
-	public CtcDao getCtcDao() {
-		return ctcDao;
-	}
-
-	public void setCtcDao(CtcDao ctcDao) {
-		this.ctcDao = ctcDao;
-	}
-    
-    
+    public void setCtcDao(CtcDao ctcDao) {
+        this.ctcDao = ctcDao;
+    }
 }
