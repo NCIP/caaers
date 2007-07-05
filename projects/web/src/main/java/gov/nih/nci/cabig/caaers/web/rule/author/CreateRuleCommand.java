@@ -34,7 +34,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	public static final String INSTITUTIONAL_LEVEL = "Institution";
 	public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
 	public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
-	public static final String STUDY_LEVEL="StudyLevel";
+	//public static final String STUDY_LEVEL="StudyLevel";
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
@@ -129,12 +129,12 @@ public class CreateRuleCommand implements RuleInputCommand
 	    	}
 	    	else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this.getLevel()))
 	    	{
-	    		rulesEngineService.saveRulesForStudy(ruleSet, categoryIdentifier, sponsorName);
+	    		rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, categoryIdentifier, sponsorName);
 	    		
 	    	}
 	    	else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this.getLevel()))
 	    	{
-	    		rulesEngineService.saveRulesForStudy(ruleSet, categoryIdentifier, institutionName);
+	    		rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, categoryIdentifier, institutionName);
 	    		
 	    	}
 		} 
