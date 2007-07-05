@@ -32,7 +32,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	public static final String SPONSOR_LEVEL = "Sponsor";
 	public static final String INSTITUTIONAL_LEVEL = "Institution";
-	public static final String STUDY_LEVEL = "Study";
+	public static final String SPONSOR_DEFINED_STUDY_LEVEL = "SponsorDefinedStudy";
+	public static final String INSTITUTION_DEFINED_STUDY_LEVEL = "InstitutionDefinedStudy";
 	
 	private RuleAuthoringService ruleAuthoringService;
 	
@@ -125,12 +126,16 @@ public class CreateRuleCommand implements RuleInputCommand
 	    	{
 	    		rulesEngineService.saveRulesForInstitution(ruleSet, institutionName);
 	    	}
-	    	else
+	    	else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this.getLevel()))
 	    	{
 	    		rulesEngineService.saveRulesForStudy(ruleSet, categoryIdentifier, sponsorName);
 	    		
 	    	}
-
+	    	else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this.getLevel()))
+	    	{
+	    		rulesEngineService.saveRulesForStudy(ruleSet, categoryIdentifier, institutionName);
+	    		
+	    	}
 		} 
 		catch (Exception ex) 
 		{
@@ -177,10 +182,10 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private void populateCategoryBasedColumns(Rule rule) 
 	{
-		if(STUDY_LEVEL.equals(getLevel())) 
+		if(SPONSOR_DEFINED_STUDY_LEVEL.equals(getLevel())) 
 		{
 			rule.getCondition().getColumn().add(createCriteriaForSponsor(getSponsorName()));
-			rule.getCondition().getColumn().add(createCriteriaForStudy(getCategoryIdentifier()));
+			rule.getCondition().getColumn().add(createCriteriaForStudy(getCategoryIdentifier(),SPONSOR_DEFINED_STUDY_LEVEL));
 		} 
 		else if(SPONSOR_LEVEL.equals(getLevel())) 
 		{
@@ -189,6 +194,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		else if (INSTITUTIONAL_LEVEL.equals(getLevel()))
 		{
 			rule.getCondition().getColumn().add(createCriteriaForInstitute(getInstitutionName()));
+		} else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(getLevel())) {
+			rule.getCondition().getColumn().add(createCriteriaForInstitute(getInstitutionName()));
+			rule.getCondition().getColumn().add(createCriteriaForStudy(getCategoryIdentifier(),INSTITUTION_DEFINED_STUDY_LEVEL));
 		}
 	}
 
@@ -207,10 +215,14 @@ public class CreateRuleCommand implements RuleInputCommand
 		{
 			fieldName = "name";
 		}
-		else
+		else if (SPONSOR_DEFINED_STUDY_LEVEL.equals(level))
 		{
 			fieldName = "shortTitle";
 		}
+		else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(level))
+		{
+			fieldName = "shortTitle";
+		}		
 		
 		return fieldName;
 	}
@@ -307,7 +319,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	{
     	final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.sponsor";
     	final String INSTITUTION_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.institution";
-    	final String STUDY_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.study";
+    	
 
     	String packageName = null;
     	
@@ -319,12 +331,18 @@ public class CreateRuleCommand implements RuleInputCommand
     	{
     		packageName = INSTITUTION_BASE_PACKAGE + "." + getStringWithoutSpaces(getInstitutionName()) + "." + getStringWithoutSpaces(getRuleSetName());
     	}
-    	else
+    	else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level))
     	{
-    		packageName = STUDY_BASE_PACKAGE + "." + getStringWithoutSpaces(getSponsorName()) + "." 
+    		packageName = SPONSOR_BASE_PACKAGE + ".study." + getStringWithoutSpaces(getSponsorName()) + "." 
+    		              + getStringWithoutSpaces(getCategoryIdentifier()) + "." + getStringWithoutSpaces(getRuleSetName());
+    	}
+    	else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level))
+    	{
+    		packageName = INSTITUTION_BASE_PACKAGE + ".study." + getStringWithoutSpaces(getInstitutionName()) + "." 
     		              + getStringWithoutSpaces(getCategoryIdentifier()) + "." + getStringWithoutSpaces(getRuleSetName());
     	}
     	
+    	//System.out.println("Package name is : " + packageName);
     	return packageName;
 
 	}
@@ -356,7 +374,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	/*
 	 * This method creates criteria column with study short title as the criteria
 	 */
-	private Column createCriteriaForStudy(String criteriaValue)
+	private Column createCriteriaForStudy(String criteriaValue, String level)
 	{
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
@@ -366,7 +384,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
 		FieldConstraint fieldConstraint = new FieldConstraint();
-		fieldConstraint.setFieldName(getFieldNameBasedOnLevel(CreateRuleCommand.STUDY_LEVEL));
+		fieldConstraint.setFieldName(getFieldNameBasedOnLevel(level));
 		fieldConstraints.add(fieldConstraint);
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
