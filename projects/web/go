@@ -1,4 +1,7 @@
 #!/bin/sh
 # Developer shortcut script to compile and deploy/reload the webapp.
 # May be called as `./go clean` to build clean.
-mvn -o $1 compile war:inplace catman:go
+mvn -o $1 compile 
+# for some reason, running compile and war:inplace in the same maven session
+# sometimes results in not all the libs getting into the lib directory
+mvn -o war:inplace catman:go
