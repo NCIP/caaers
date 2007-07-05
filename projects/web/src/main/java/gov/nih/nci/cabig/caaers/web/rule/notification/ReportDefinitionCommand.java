@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -37,7 +38,8 @@ public class ReportDefinitionCommand  {
 	private String timeScaleType;
 	private String duration;
 	private String notificationType;
-
+	private Organization organization;
+	
 	// page -3
 	private String to;
 	private String message;
@@ -52,11 +54,13 @@ public class ReportDefinitionCommand  {
 	// supporting domain objects
 	protected ReportDefinition rpDef;
 	protected ReportDefinitionDao rpDefDao;
-
+	
 	//flow support variables
 	private boolean validationFailed;
 	private String delete; //index in the list to be deleted
 	private String entity; //entity to be deleted
+	
+	
 	
 	///LOGIC
 	public void reset() {
@@ -68,6 +72,7 @@ public class ReportDefinitionCommand  {
 	}
 
 	public void populate() {
+		if(rpDef.getOrganization() != null) this.organization = rpDef.getOrganization();
 		this.name = rpDef.getName();
 		this.description = rpDef.getDescription();
 		this.duration = String.valueOf(rpDef.getDuration());
@@ -139,6 +144,7 @@ public class ReportDefinitionCommand  {
 
 	public void updateReportCalendarTemplate() {
 		
+		rpDef.setOrganization(organization);
 		rpDef.setName(name);
 		rpDef.setDescription(description);
 		rpDef.setTimeScaleUnitType(TimeScaleUnit
@@ -193,6 +199,7 @@ public class ReportDefinitionCommand  {
 		// reset the command(form) now
 		reset();
 	}
+	
 	
 	///BEAN PROPERTIES
 	
@@ -383,21 +390,12 @@ public class ReportDefinitionCommand  {
 		this.entity = entity;
 	}
 
-	
-	
-	
-	
-	/*private List<Integer> getConfiguredIndexes() {
-		List<Integer> list = new ArrayList<Integer>();
-		if (rpDef != null) {
-			List<PlannedNotification> pnList = rpDef
-					.getPlannedNotifications();
-			for (PlannedNotification pn : pnList) {
-				list.add(pn.getIndexOnTimeScale());
-			}
-		}
-		return list;
-	}*/
-	
-	
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
+
 }

@@ -62,9 +62,6 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		return map;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.web.fields.TabWithFields#validate(java.lang.Object, org.springframework.beans.BeanWrapper, java.util.Map, org.springframework.validation.Errors)
-	 */
 	@Override
 	protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
@@ -121,12 +118,8 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		command.setValidationFailed(errors.hasErrors());
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.web.rule.DefaultTab#referenceData(gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand)
-	 */
 	@Override
 	public Map<String, Object> referenceData(ReportDefinitionCommand command) {
-		
 		//show the previously keyed-in values, if validation failed.
 		if(!command.isValidationFailed()) command.populate();
 		

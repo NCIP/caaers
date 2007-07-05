@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,8 +22,9 @@ public class ReportDefinitionAjaxFacade {
 	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
 	private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
 	
+	private OrganizationDao orgDao;
 
-	
+	///LOGIC
 	public String addReportDeliveryDefinition(int index, int type){
 		WebContext webCtx = WebContextFactory.get();
 		HttpServletRequest request = webCtx.getHttpServletRequest();
@@ -37,19 +38,12 @@ public class ReportDefinitionAjaxFacade {
 		
 		return getOutputFromJsp(url);
 	}
-	public int getActualIndex(int index , int type, ReportDefinitionCommand cmd){
-		int relativeIndex = index;
-		List<ReportDeliveryDefinition> rddList = cmd.getReportDefinition().getDeliveryDefinitions();
-		int i = index;
-		if(rddList != null){
-			int size = rddList.size();
-			for( i = 0; (i < size) && (i <= relativeIndex); i++){
-				ReportDeliveryDefinition rdd = rddList.get(i);
-				if(rdd.getEntityType() != type)  relativeIndex += 1;	
-			}
-		}
-		return i;
+	
+	public List<Organization> matchOrganization(String text){
+		return orgDao.getBySubnames(text.split("\\s+"));
 	}
+	
+	/// HELPER METHODS
 	public ReportDefinitionCommand getCommand(HttpServletRequest request){
 		
 		String commandName = CreateReportDefinitionController.class.getName() +".FORM.command";
@@ -84,5 +78,11 @@ public class ReportDefinitionAjaxFacade {
         }
     }
 	
-	
+	///BEAN PROPERTIES
+	public void setOrganizationDao(OrganizationDao orgDao){
+		this.orgDao = orgDao;
+	}
+	public OrganizationDao getOrganizationDao(){
+		return orgDao;
+	}
 }

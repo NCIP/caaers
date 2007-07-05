@@ -91,8 +91,11 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		//basic details tab fields 
 		TabWithFields<ReportDefinitionCommand> tab = (TabWithFields<ReportDefinitionCommand>)getFlow().getTab(0) ;
 		Map<String, InputFieldGroup> fieldGroupMap = tab.createFieldGroups(command);
-		InputFieldGroup fieldGroup = fieldGroupMap.get("ruleset"); //the name of the fieldgroup
-		map.put(tab.getShortTitle(), fetchFieldValues(fieldGroup, wrappedCommand));
+		InputFieldGroup fieldGroup = fieldGroupMap.get("reportDefinitionOrganization");
+		List<Pair> fieldList = fetchFieldValues(fieldGroup,wrappedCommand);
+		fieldGroup = fieldGroupMap.get("reportDefinitionFieldGroup"); //the name of the fieldgroup
+		fieldList.addAll(fetchFieldValues(fieldGroup, wrappedCommand));
+		map.put(tab.getShortTitle(), fieldList);
 		
 		//report definition tab
 		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(1);

@@ -36,7 +36,7 @@ public class ListNotificationController extends SimpleFormController {
 	}
 
 	/**
-	 * @param rpDefDao the reportCalendarTemplateDao to set
+	 * @param reportDefinitionDao the reportCalendarTemplateDao to set
 	 */
 	public void setRdDao(ReportDefinitionDao rdDao) {
 		this.rdDao = rdDao;
