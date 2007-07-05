@@ -155,7 +155,7 @@ public class RuleUtil {
 	public static Category getStudySponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String studyShortTitle, String ruleSetName) throws Exception{
 		Category cat = null;
 		
-		String studySpecificCatehoryPath = CategoryConfiguration.STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
+		String studySpecificCatehoryPath = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
 		String studySponsorSpecificCategoryPath = studySpecificCatehoryPath+"/"+getStringWithoutSpaces(sponsorName);
 		String studySponsorRuleSetSpecificCategoryPath = studySponsorSpecificCategoryPath+"/"+ getStringWithoutSpaces(ruleSetName);
 		/**
@@ -172,13 +172,13 @@ public class RuleUtil {
 		 * Now check if the Sponsor base category exist
 		 */
 		
-		boolean studyBaseExist=categoryExist(authService,CategoryConfiguration.STUDY_BASE.getPath());
+		boolean studyBaseExist=categoryExist(authService,CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPath());
 		/**
 		 * If does not exist then go ahead and create it
 		 */
 		
 		if(!studyBaseExist){
-			createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.STUDY_BASE.getName(),CategoryConfiguration.STUDY_BASE.getDescription());
+			createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName(),CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getDescription());
 		}
 		
 		boolean studySpecificCategoryExist = categoryExist(authService,studySpecificCatehoryPath);
@@ -190,7 +190,7 @@ public class RuleUtil {
 		
 		if(!studySpecificCategoryExist){
 			String desc = studyShortTitle+" Rule Base category";
-			createCategory(authService,CategoryConfiguration.STUDY_BASE.getPath(),getStringWithoutSpaces(studyShortTitle),desc);
+			createCategory(authService,CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPath(),getStringWithoutSpaces(studyShortTitle),desc);
 		}
 		
 		boolean studySponsorSpecificCategoryExist = categoryExist(authService, studySponsorSpecificCategoryPath);
@@ -248,7 +248,7 @@ public class RuleUtil {
 	}
 	
 	public static String getStudySponsorSpecificPath(String studyShortTitle, String sponsorName){
-		String studySponsorSpecificPath = CategoryConfiguration.STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle)+"/"+getStringWithoutSpaces(sponsorName);
+		String studySponsorSpecificPath = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle)+"/"+getStringWithoutSpaces(sponsorName);
 		return studySponsorSpecificPath;
 	}
 	
