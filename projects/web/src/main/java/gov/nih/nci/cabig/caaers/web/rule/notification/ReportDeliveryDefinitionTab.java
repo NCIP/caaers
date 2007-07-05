@@ -54,15 +54,4 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
 		options.putAll(BaseSelectField.collectOptions(Arrays.asList(items), nameProperty, valueProperty));
 		return options;
 	}
-	
-	
-	@Override
-	public boolean isAllowDirtyBack() {
-		return false;
-	}
-	
-	@Override
-	public boolean isAllowDirtyForward() {
-		return false;
-	}
 }
