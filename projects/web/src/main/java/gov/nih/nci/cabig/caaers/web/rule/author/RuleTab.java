@@ -90,13 +90,13 @@ public class RuleTab extends DefaultTab
 						}
 //					}
 				}
-				else if (CreateRuleCommand.STUDY_LEVEL.equals(createRuleCommand.getLevel()))
+				else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel()))
 				{
 					
 					
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
-					ruleSet = rulesEngineService.getRuleSetForStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+					ruleSet = rulesEngineService.getRuleSetForSponsorDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
 
 					boolean areSponsorRules = false;
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
@@ -191,6 +191,61 @@ public class RuleTab extends DefaultTab
 								}
 							}
 						}					
+				}
+				
+				else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
+					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
+
+					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+
+					boolean areSponsorRules = false;
+					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
+					if (ruleSet == null)
+					{
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						areSponsorRules = true;
+					}
+					
+
+						if (ruleSet != null && ruleSet.getRule().size() > 0)
+						{	
+							//ruleSet.setName(packageName);
+							List <Rule> rules = ruleSet.getRule();
+							
+							for(Rule rule : rules) 
+							{
+								rule.getMetaData().setPackageName(packageName); 
+								//rule.setId(null);
+								List<Column> columns = rule.getCondition().getColumn();
+								
+								for(int i = 0; i < columns.size(); i++) 
+								{
+									if("studySDO".equals(columns.get(i).getIdentifier())) 
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+									if("adverseEventEvaluationResult".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+								}
+								
+								// Remove category from sponsor rules
+                                if (areSponsorRules)
+                                {
+                                	rule.setId(null);
+									if (rule.getMetaData() != null)
+                                    {
+ 										rule.getMetaData().setCategory(null);
+                                    }
+                                }
+
+							}
+						}
 				}
 				
 				if (ruleSet == null)
