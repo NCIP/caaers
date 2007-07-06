@@ -211,8 +211,8 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * @param o - the domain object instance that is to be reassociated
      */
     public void reassociate(T o){
-    	getHibernateTemplate().lock(o, LockMode.NONE);
-    	
+//      getHibernateTemplate().lock(o, LockMode.NONE);
+        getHibernateTemplate().update(o);
     }
     
     /**
