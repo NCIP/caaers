@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -26,13 +28,33 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.naming.NamingException;
 
 import junit.framework.TestCase;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 public class RulesEngineServiceTest extends TestCase {
 
 	private RulesEngineService rulesEngineService;
+	
+    private static Log log = LogFactory.getLog(RulesEngineServiceTest.class);
+    private static RuntimeException acLoadFailure = null;
+
+    private static ApplicationContext applicationContext = null;
+
+    protected Set<Object> mocks = new HashSet<Object>();
+
+    
+    
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -96,6 +118,21 @@ public class RulesEngineServiceTest extends TestCase {
 		this.rulesEngineService = new RulesEngineServiceImpl();
 	}
 
+	public void atestInstitutionDefinedStudyLevelRuleFlow() throws Exception {
+		RuleSet rs = this.createRuleForInstitutionDefinedStudy(101);
+		RulesEngineService res = new RulesEngineServiceImpl();
+		res.saveRulesForInstitutionDefinedStudy(rs, "test study","National Cancer Institute");
+
+		rs = res.getRuleSetForSponsor(rs.getDescription(),
+				"National Cancer Institute");
+		
+
+		// deploy rules...
+		res.deployRuleSet(rs);
+		createAdverseEvent1();
+		createAdverseEvent2();
+	}
+	
 	public void atestSponserRuleFlow() throws Exception {
 		RuleSet rs = this.createRulesForSponsor(1);
 		RulesEngineService res = new RulesEngineServiceImpl();
@@ -161,7 +198,8 @@ public class RulesEngineServiceTest extends TestCase {
 		//System.out.println(exaer.get);
 		
 
-		AdverseEventEvaluationServiceImpl aees = new AdverseEventEvaluationServiceImpl();
+		AdverseEventEvaluationServiceImpl aees = 
+			(AdverseEventEvaluationServiceImpl)getDeployedApplicationContext().getBean("adverseEventEvaluationService");
 		String msg = aees.evaluateSAEReportSchedule(exaer);
 
 		System.out.println(msg);
@@ -786,7 +824,62 @@ public class RulesEngineServiceTest extends TestCase {
 
 		return rule1;
 	}
+	
 
+	
+	private RuleSet createRuleForInstitutionDefinedStudy(int id) {
+
+		RuleSet rs = new RuleSet();
+		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
+
+		Rule r = makeRule(id);
+		// sponser based rules
+		// need to add sponser name in the crieteria.
+		r.getCondition().getColumn().add(this.createCriteriaForInstitute("National Cancer Institute"));
+		//r.getCondition().getColumn().add(this.c)
+
+		rs.getRule().add(r);
+		return rs;
+	}
+
+	
+	public static String[] getConfigLocations() {
+        return new String[] {
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml",
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+            "classpath*:config/spring/applicationContext-rules-services.xml"
+        		
+        };
+    }
+	
+	public synchronized static ApplicationContext getDeployedApplicationContext() {
+        if (acLoadFailure == null && applicationContext == null) {
+            // This might not be the right place for this
+            try {
+                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            } catch (NamingException e) {
+                throw new RuntimeException("", e);
+            }
+
+            try {
+            	log.debug("Initializing test version of deployed application context");
+                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+            } catch (RuntimeException e) {
+                acLoadFailure = e;
+                throw e;
+            }
+        } else if (acLoadFailure != null) {
+            throw new CaaersSystemException(
+                "Application context loading already failed.  Will not retry.  " +
+                    "Original cause attached.", acLoadFailure);
+        }
+        return applicationContext;
+    }
+	
+
+	
 	public void atestNewRuleScheme() {
 
 	}
