@@ -13,6 +13,8 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Isolation;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -210,6 +212,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * With a lock mode none.
      * @param o - the domain object instance that is to be reassociated
      */
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void reassociate(T o){
 //      getHibernateTemplate().lock(o, LockMode.NONE);
         getHibernateTemplate().update(o);

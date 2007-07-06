@@ -55,10 +55,6 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return (List<Study>) getHibernateTemplate().find("from Study");
     }
 
-    public void reassociate(Study s) {
-       getHibernateTemplate().update(s);
-    }
-
     /**
      //TODO - Refactor this code with Hibernate Detached objects !!!
       

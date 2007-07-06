@@ -5,7 +5,9 @@ import java.util.List;
 
 
 import org.hibernate.Session;
+import org.hibernate.LockMode;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 
@@ -80,14 +82,16 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 	public void delete(Collection<ReportDefinition> c){
 		getHibernateTemplate().deleteAll(c);
 	}
-	
-	@Override
-	//overriden inorder to bring under transaction
-	public ReportDefinition getById(int id) {
-		return super.getById(id);
-	}
 
-	/**
+    // because PlannedNotifications require a transaction, we have reassociate using
+    // lock.
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void reassociate(ReportDefinition o) {
+        getHibernateTemplate().lock(o, LockMode.NONE);
+    }
+
+    /**
 	 * Willl initialize the Lazy collections inside the passed ReportDefinition
 	 * @param rpDef
 	 */

@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 import org.hibernate.LockMode;
 
 /**
@@ -51,6 +52,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void reassociate(ExpeditedAdverseEventReport report) {
         super.reassociate(report);
         if (report.getReporter().isTransient()) {
