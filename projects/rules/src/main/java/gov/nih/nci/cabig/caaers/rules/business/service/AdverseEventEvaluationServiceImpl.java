@@ -27,7 +27,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
 	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
 	private ReportDefinitionDao reportDefinitionDao;
-	private ReportServiceImpl reportServiceImpl;
+	private ReportServiceImpl reportService;
 	
 	
    
@@ -223,10 +223,10 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 			//reportDefinitionDao.initialize(reportDefinition);
 			System.out.println("desc: " + reportDefinition.getDescription());	
 			
-			reportServiceImpl = this.getReportServiceImpl();
+			reportService = this.getReportService();
 			
 			//System.out.println(reportServiceImpl.toString());
-			Report r = reportServiceImpl.createReport(reportDefinition, aeReport);
+			Report r = reportService.createReport(reportDefinition, aeReport);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -426,13 +426,15 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 	}
 
 
-	public ReportServiceImpl getReportServiceImpl() {
-		return reportServiceImpl;
+
+
+	public ReportServiceImpl getReportService() {
+		return reportService;
 	}
 
 
-	public void setReportServiceImpl(ReportServiceImpl reportServiceImpl) {
-		this.reportServiceImpl = reportServiceImpl;
+	public void setReportService(ReportServiceImpl reportService) {
+		this.reportService = reportService;
 	}
 	
 	
