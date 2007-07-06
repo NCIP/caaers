@@ -158,7 +158,7 @@
     <tx:annotation-driven proxy-target-class="true"/>
 
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
-    <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao"/>
+    <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byType"/>
     <bean id="routineAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
