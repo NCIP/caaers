@@ -454,7 +454,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 Report submittable = new Report();
                 submittable.setDueOn(new Date());
                 submittable.setCreatedOn(new Date());
-                submittable.setName("What is this field for?");
+              //  submittable.setName("What is this field for?");
                 submittable.setReportDefinition(reportDefinitionDao.getById(-30));
                 report.addReport(submittable);
             }

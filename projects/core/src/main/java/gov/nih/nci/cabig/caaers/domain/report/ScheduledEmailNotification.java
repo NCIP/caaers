@@ -20,104 +20,33 @@ import javax.persistence.Transient;
 @DiscriminatorValue("email")
 public class ScheduledEmailNotification extends ScheduledNotification {
 	
-	
 	String fromAddress;
-//	@Column(name="")
-//	String fromDisplayName;
-	
 	String toAddress;
-//	@Column(name="")
-//	String toDisplayName;
-//	@Column(name="")
-//	String replyToAddress;
-	
-	/**
-	 * @return the fromAddress
-	 */
+	String subjectLine;
+
 	@Column(name="FROM_ADDR")
 	public String getFromAddress() {
 		return fromAddress;
 	}
 
-
-
-	/**
-	 * @param fromAddress the fromAddress to set
-	 */
 	public void setFromAddress(String fromAddress) {
 		this.fromAddress = fromAddress;
 	}
-
-//	/**
-//	 * @return the fromDisplayName
-//	 */
-//	public String getFromDisplayName() {
-//		return fromDisplayName;
-//	}
-
-//	/**
-//	 * @param fromDisplayName the fromDisplayName to set
-//	 */
-//	public void setFromDisplayName(String fromDisplayName) {
-//		this.fromDisplayName = fromDisplayName;
-//	}
-//
-//
-//	/**
-//	 * @return the replyToAddress
-//	 */
-//	public String getReplyToAddress() {
-//		return replyToAddress;
-//	}
-//
-//
-//
-//	/**
-//	 * @param replyToAddress the replyToAddress to set
-//	 */
-//	public void setReplyToAddress(String replyToAddress) {
-//		this.replyToAddress = replyToAddress;
-//	}
-//
-
-	/**
-	 * @return the toAddress
-	 */
+	
+	@Column(name="SUBJECT")
+	public String getSubjectLine(){
+		return subjectLine;
+	}
+	public void setSubjectLine(String subjectLine){
+		this.subjectLine = subjectLine;
+	}
 	@Column(name="TO_ADDR")
 	public String getToAddress() {
 		return toAddress;
 	}
 
-	/**
-	 * @param toAddress the toAddress to set
-	 */
 	public void setToAddress(String toAddress) {
 		this.toAddress = toAddress;
-	}
-
-
-//	/**
-//	 * @return the toDisplayName
-//	 */
-//	public String getToDisplayName() {
-//		return toDisplayName;
-//	}
-//
-//
-//
-//	/**
-//	 * @param toDisplayName the toDisplayName to set
-//	 */
-//	public void setToDisplayName(String toDisplayName) {
-//		this.toDisplayName = toDisplayName;
-//	}
-//
-	@Transient
-	public String getSubjectLine(){
-		if(this.planedNotificaiton != null){
-			return ((PlannedEmailNotification)this.planedNotificaiton).getSubjectLine();
-		}
-		return "Not associated to PlannedNotification";
 	}
 	
 	@Override
@@ -130,6 +59,25 @@ public class ScheduledEmailNotification extends ScheduledNotification {
 		.append("recipients").append(String.valueOf(toAddress));
 		sb.append("]");
 		return sb.toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass())return false;
+		final ScheduledEmailNotification other = (ScheduledEmailNotification) obj;
+		if(other.getId() != null && getId() != null && other.getId().equals(getId()))  return true;
+		if (fromAddress == null) {
+			if (other.fromAddress != null)return false;
+		} else if (!fromAddress.equals(other.fromAddress))	return false;
+		if (subjectLine == null) {
+			if (other.subjectLine != null)	return false;
+		} else if (!subjectLine.equals(other.subjectLine))return false;
+		if (toAddress == null) {
+			if (other.toAddress != null)return false;
+		} else if (!toAddress.equals(other.toAddress))	return false;
+		return true;
 	}
 
 }

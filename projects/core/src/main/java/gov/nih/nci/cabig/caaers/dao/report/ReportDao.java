@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
@@ -39,15 +38,6 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 	@SuppressWarnings("unchecked")
 	public List<Report> getAll(){
 		return getHibernateTemplate().find("from Report");
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Report getByName(String name){
-		return CollectionUtils.firstElement(
-				(List<Report>) getHibernateTemplate().find(
-						"from Report s where s.name=?", new String[]{name}
-						)
-				);
 	}
 	
 	public List<Report> getAllByDueDate(Date dueDate){

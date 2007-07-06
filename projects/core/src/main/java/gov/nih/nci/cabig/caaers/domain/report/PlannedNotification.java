@@ -11,7 +11,6 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -54,7 +53,7 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 	private List<NotificationAttachment> attachments;
 
     // TODO: this signature may be insufficient
-    public abstract ScheduledNotification createScheduledNotification(String to);
+    public abstract ScheduledNotification createScheduledNotification(Object obj);
 
     @Embedded
 	public NotificationBodyContent getNotificationBodyContent(){

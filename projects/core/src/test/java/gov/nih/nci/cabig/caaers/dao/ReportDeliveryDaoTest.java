@@ -35,7 +35,6 @@ public class ReportDeliveryDaoTest extends DaoTestCase<ReportDeliveryDao>{
 		Report r2 = rd2.getReport();
 		assertEquals("end point should be equal", rd.getEndPoint(), rd2.getEndPoint());
 		assertEquals("ReportDeliveryDef name should be same", rdd2.getEntityName(), "RDD-222");
-		assertEquals("Report name should be available", r2.getName(), "Sample Report");
 	}
 	
 }

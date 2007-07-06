@@ -6,14 +6,13 @@ import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
@@ -21,9 +20,9 @@ import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -176,12 +175,13 @@ public class ReportServiceImpl  implements ReportService {
                     ScheduledNotification snf = null;
                     // TODO: instanceof indicates an abstraction failure.  Could this be domain logic?
                     if (pnf instanceof PlannedEmailNotification) {
-                        PlannedEmailNotification penf = (PlannedEmailNotification) pnf;
-                        snf = pnf.createScheduledNotification(to);
-                        if (subjectLine == null) {
+                    	PlannedEmailNotification penf = (PlannedEmailNotification) pnf;
+                    	ScheduledEmailNotification senf  = penf.createScheduledNotification(to);
+                        snf = senf;
+                    	if (subjectLine == null) {
                             subjectLine = applyRuntimeReplacements(penf.getSubjectLine(), report);
                         }
-                        //senf.setSubjectLine(subjectLine);
+                        senf.setSubjectLine(subjectLine);
                     }
 
                     if (bodyContent == null) {

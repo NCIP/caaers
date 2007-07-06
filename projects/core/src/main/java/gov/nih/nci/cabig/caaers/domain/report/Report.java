@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -40,7 +41,6 @@ import org.hibernate.annotations.Type;
     }
 )
 public class Report extends AbstractMutableDomainObject implements Serializable {
-    private String name;
     private boolean required;
 
     private ExpeditedAdverseEventReport aeReport;
@@ -125,13 +125,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setSubmittedOn(Date submittedOn) {
         this.submittedOn = submittedOn;
     }
-
+    @Transient
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return reportDefinition.getName();
     }
 
     @Column(name = "status_code")
@@ -169,7 +165,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Report [").append("id : ").append(getId())
-            .append(", name: ").append(name)
             .append(", createdOn :").append(String.valueOf(createdOn))
             .append(", submittedOn :").append(String.valueOf(submittedOn))
             .append(", dueOn :").append(String.valueOf(dueOn));

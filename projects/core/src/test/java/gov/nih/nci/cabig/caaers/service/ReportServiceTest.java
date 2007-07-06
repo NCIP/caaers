@@ -84,7 +84,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		reportDef.setPlannedNotifications(pnfList);
 		
 		report = new Report();
-		report.setName("Report-Name");
+	//	report.setName("Report-Name");
 		report.setCreatedOn(new Date());
 		report.setId(9999);
 		report.setReportDefinition(reportDef);
@@ -103,6 +103,24 @@ public class ReportServiceTest extends CaaersTestCase {
 		String address = service.findContactMechanismValue(REPORTER_ROLE, ExpeditedReportPerson.EMAIL, aeReport);
 		assertEquals("email should be same",  REPORTER_EMAIL_ADDRESS, address);
 	}
+	public void testApplyRuntimeReplacements(){
+		String rawText = "This is a raw text";
+		String s = service.applyRuntimeReplacements(rawText, report);
+		assertNotNull("The runtime replacement result should not be null", s);
+	}
+	public void testCreateReportDefinition(){
+		Report report = service.createReport(reportDef, aeReport);
+		assertNotNull("AE report should not be null",report.getAeReport());
+		assertNotNull("Report Definition should not be null", report.getReportDefinition());
+		assertEquals("Size of ScheduledNotification Size must be 4 ", report.getScheduledNotifications().size(),4);
+		for(ScheduledNotification snf : report.getScheduledNotifications()){
+			assertNotNull("Planned Notification must not be null in scheduled notification",snf.getPlanedNotificaiton() );
+		}
+		PlannedNotification pnf = report.getReportDefinition().getPlannedNotifications().get(0);
+		ScheduledNotification snf = report.getScheduledNotifications().get(0);
+		assertEquals("The body of ScheduledNotificaiton should be same", new String(snf.getBody()), "This is my body");
+	}
+	
 /*
 	public void testApplyCalendarTemplate() {
 		Date now = new Date();

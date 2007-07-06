@@ -64,7 +64,6 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public Report createReport() {
         Report report = new Report();
         report.setReportDefinition(this);
-        report.setName(getName()); // TODO: drop this property from Report
         report.setStatus(ReportStatus.PENDING);
         return report;
     }
@@ -168,37 +167,42 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
-	
+
 	////// OBJECT METHODS
+	
 	@Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-        result = PRIME * result + ((timeScaleUnitType == null) ? 0 : timeScaleUnitType.hashCode());
-        return result;
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final ReportDefinition other = (ReportDefinition) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((description == null) ? 0 : description.hashCode());
+		result = PRIME * result + duration;
+		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
+		result = PRIME * result + ((organization == null) ? 0 : organization.hashCode());
+		result = PRIME * result + ((timeScaleUnitType == null) ? 0 : timeScaleUnitType.hashCode());
+		return result;
+	}
 
-        if (timeScaleUnitType == null) {
-            if (other.timeScaleUnitType != null)
-                return false;
-        } else if (!timeScaleUnitType.equals(other.timeScaleUnitType))
-            return false;
-        return true;
-    }
-
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		final ReportDefinition other = (ReportDefinition) obj;
+		if(other.getId() != null && getId() != null && other.getId().equals(getId()))  return true;
+		if (description == null) {
+			if (other.description != null)	return false;
+		} else if (!description.equals(other.description))	return false;
+		if (duration != other.duration)	return false;
+		if (name == null) {
+			if (other.name != null)	return false;
+		} else if (!name.equals(other.name))return false;
+		if (organization == null) {
+			if (other.organization != null)	return false;
+		} else if (!organization.equals(other.organization))return false;
+		if (timeScaleUnitType == null) {
+			if (other.timeScaleUnitType != null)return false;
+		} else if (!timeScaleUnitType.equals(other.timeScaleUnitType)) return false;
+		return true;
+	}
 }

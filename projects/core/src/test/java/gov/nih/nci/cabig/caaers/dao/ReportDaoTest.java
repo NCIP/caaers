@@ -47,7 +47,6 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 
     public void testGetById() throws Exception {
         Report actual = getDao().getById(-223);
-        assertEquals("Wrong name", "Sample Report", actual.getName());
         assertDayOfDate("Wrong created on", 2007, Calendar.MAY, 15, actual.getCreatedOn());
         assertDayOfDate("Wrong due on", 2007, Calendar.MAY, 16, actual.getDueOn());
         assertTrue("Should be required", actual.isRequired());
@@ -58,7 +57,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		
 		Report rs = new Report();
 		rs.setAeReport(null);
-		rs.setName("My Sample Report");
+	//	rs.setName("My Sample Report");
 		rs.setCreatedOn(new Date());
 		rs.setDueOn(new Date());
 		rs.setSubmittedOn(new Date());
@@ -72,11 +71,6 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
         // TODO: this has no assertions
     }
 	
-	public void testGetByName(){
-		String name = "Sample Report";
-		Report rs = rsDao.getByName(name);
-		assertEquals("The name is not matching", name, rs.getName());
-	}
 	
 	public void testGetAllByDueDate(){
 		List<Report> list = rsDao.getAllByDueDate(new Date());
@@ -105,6 +99,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
             sen.setGridId("ggg9d9d9d9d");
             sen.setScheduledOn(new Date());
             sen.setToAddress("to@to.com");
+            sen.setSubjectLine("This is my subject");
             sen.setPlanedNotificaiton(rc.getPlannedNotifications().get(0));
             List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
             snfList.add(sen);
@@ -132,10 +127,10 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus status) {
                 Report reloaded = rsDao.getById(id);
-                assertEquals("Report Name is not the same", "Sample Report", reloaded.getName());
                 if(reloaded.getScheduledNotifications() != null && reloaded.getScheduledNotifications().size() > 0){
                     ScheduledNotification sn = reloaded.getScheduledNotifications().get(0);
                     assertEquals("ScheduledNotification Body is not the same", new String(sn.getBody()), "Hi this is body content");
+                    assertEquals("Subject should be same", "This is my subject", ((ScheduledEmailNotification)sn).getSubjectLine());
                 }
 
                 // fetch AE report and see if we can get hold of the report schedule.
@@ -151,7 +146,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     public void testDeleteByID(){
 		Report rs = new Report();
 		rs.setAeReport(null);
-		rs.setName("My Sample Report");
+		//rs.setName("My Sample Report");
 		rs.setCreatedOn(new Date());
 		rs.setDueOn(new Date());
 		rs.setSubmittedOn(new Date());
