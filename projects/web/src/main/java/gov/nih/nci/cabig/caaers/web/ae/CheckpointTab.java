@@ -85,7 +85,6 @@ public class CheckpointTab extends AeTab {
     }
 
     private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
-        // TODO: this only creates the report object -- need a unified way to set up the notifications, etc.
         if (findReportWithDefinition(aeReport, def) == null) {
             reportService.createReport(def, aeReport);
         }
