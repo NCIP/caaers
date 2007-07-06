@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -65,6 +67,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_site_id")
+    @Cascade(CascadeType.LOCK)
     public StudySite getStudySite() {
         return studySite;
     }
@@ -75,6 +78,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
+    @Cascade(CascadeType.LOCK)
     public Participant getParticipant() {
         return participant;
     }
