@@ -123,14 +123,16 @@ public class ReportServiceImpl  implements ReportService {
         assert repDef != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
 
+        Date now = nowFactory.getNow();
+        Calendar cal = GregorianCalendar.getInstance();
+        
         Report report = repDef.createReport();
+        report.setCreatedOn(now);
 
         //attach the aeReport to report
         aeReport.addReport(report);
 
         //set the due date
-        Date now = nowFactory.getNow();
-        Calendar cal = GregorianCalendar.getInstance();
         cal.setTime(now);
         cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), repDef.getDuration());
         report.setDueOn(cal.getTime());
