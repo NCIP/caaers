@@ -53,15 +53,15 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
     @Override
     public void reassociate(ExpeditedAdverseEventReport report) {
         super.reassociate(report);
-        if (report.getReporter().isSavable()) {
-            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
+        if (report.getReporter().isTransient()) {
+            log.debug("Reporter unsaved; skipping reassociate cascade");
         } else {
-            log.debug("Reporter not savable; skipping reassociate cascade");
+            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
         }
-        if (report.getPhysician().isSavable()) {
-            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
+        if (report.getPhysician().isTransient()) {
+            log.debug("Physican unsaved; skipping reassociate cascade");
         } else {
-            log.debug("Physican not savable; skipping reassociate cascade");
+            getHibernateTemplate().lock(report.getPhysician(), LockMode.NONE);
         }
     }
 

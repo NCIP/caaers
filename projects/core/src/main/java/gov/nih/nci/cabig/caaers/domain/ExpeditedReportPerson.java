@@ -59,6 +59,11 @@ public abstract class ExpeditedReportPerson extends Person implements ExpeditedA
     ////// LOGIC
 
     @Transient
+    public boolean isTransient() { // TODO: this should go in one of the base classes
+        return getId() == null;
+    }
+
+    @Transient
     public boolean isSavable() {
         return getFirstName() != null && getLastName() != null
             && getContactMechanisms().get(EMAIL) != null;
