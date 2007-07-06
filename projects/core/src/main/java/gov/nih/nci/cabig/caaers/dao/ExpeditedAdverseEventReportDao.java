@@ -8,6 +8,9 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,6 +25,8 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 {
     private static final String JOINS
         = " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm ";
+
+    private ReportDao reportDao;
 
     public Class<ExpeditedAdverseEventReport> domainClass() {
         return ExpeditedAdverseEventReport.class;
@@ -49,6 +54,10 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
         } else {
             log.debug("Physican not savable; skipping cascade");
         }
+        // since we can't cascade SAVE_UPDATE, we have to do this instead
+        for (Report r : report.getReports()) {
+            reportDao.save(r);
+        }
     }
 
     @Override
@@ -64,6 +73,10 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
             log.debug("Physican unsaved; skipping reassociate cascade");
         } else {
             getHibernateTemplate().lock(report.getPhysician(), LockMode.NONE);
+        }
+        // delegate to ReportDao to reassociate reports so that it can control transactionality
+        for (Report r : report.getReports()) {
+            reportDao.reassociate(r);
         }
     }
 
@@ -99,5 +112,9 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 	
 		log.debug("::: " + queryBuf.toString() );
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+    }
+
+    public void setReportDao(ReportDao reportDao) {
+        this.reportDao = reportDao;
     }
 }

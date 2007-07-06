@@ -469,7 +469,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @OrderBy("dueOn")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = { CascadeType.EVICT, CascadeType.LOCK  }) // Manually manage update-style reassociates and saves
     public List<Report> getReports() {
         if (reports == null) reports = new ArrayList<Report>();
         return reports;

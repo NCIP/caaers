@@ -1,16 +1,16 @@
 package gov.nih.nci.cabig.caaers.dao.report;
 
 
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import org.hibernate.LockMode;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
-import edu.nwu.bioinformatics.commons.CollectionUtils;
-
-import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 /**
  * 
  * 
@@ -71,5 +71,11 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 	public void delete(Collection<Report> c){
 		getHibernateTemplate().deleteAll(c);
 	}
-	
+
+    // because ScheduledNotifications require a transaction, we have reassociate using lock.
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void reassociate(Report report) {
+        getHibernateTemplate().lock(report, LockMode.NONE);
+    }
 }
