@@ -102,7 +102,7 @@ public class RuleTab extends DefaultTab
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						ruleSet = rulesEngineService.createRuleSetForSponsorDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
 						areSponsorRules = true;
 					}
 					
@@ -176,7 +176,7 @@ public class RuleTab extends DefaultTab
 								
 								for(int i = 0; i < columns.size(); i++) 
 								{
-									if("siteSDO".equals(columns.get(i).getIdentifier())) 
+									if("organizationSDO".equals(columns.get(i).getIdentifier())) 
 									{
 										columns.remove(i);
 										i = -1;
@@ -202,7 +202,7 @@ public class RuleTab extends DefaultTab
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
 						areSponsorRules = true;
 					}
 					
@@ -221,6 +221,12 @@ public class RuleTab extends DefaultTab
 								for(int i = 0; i < columns.size(); i++) 
 								{
 									if("studySDO".equals(columns.get(i).getIdentifier())) 
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
+									if("organizationSDO".equals(columns.get(i).getIdentifier())) 
 									{
 										columns.remove(i);
 										i = -1;
