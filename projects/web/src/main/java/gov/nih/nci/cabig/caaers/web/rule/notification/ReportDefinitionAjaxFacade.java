@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 
@@ -40,7 +41,7 @@ public class ReportDefinitionAjaxFacade {
 	}
 	
 	public List<Organization> matchOrganization(String text){
-		return orgDao.getBySubnames(text.split("\\s+"));
+		return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name");
 	}
 	
 	/// HELPER METHODS
