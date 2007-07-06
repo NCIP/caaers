@@ -3,30 +3,20 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
-import gov.nih.nci.cabig.caaers.rules.brxml.Column;
-import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
+import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RulesRepositoryEx;
-import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
-import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.jcr.LoginException;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-
-import org.drools.repository.RulesRepository;
 /**
  * 
  * @author vinaykumar
@@ -629,6 +619,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void saveRulesForInstitutionDefinedStudy(RuleSet ruleSet, String studyShortTitle, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		String ruleSetName = ruleSet.getDescription();
+		//System.out.println("package name before savinf : " + ruleSet.getMetaData().getPackageName());
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
