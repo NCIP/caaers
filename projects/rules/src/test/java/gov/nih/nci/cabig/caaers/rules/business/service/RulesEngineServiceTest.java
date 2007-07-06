@@ -849,6 +849,7 @@ public class RulesEngineServiceTest extends TestCase {
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml",
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
             "classpath*:config/spring/applicationContext-rules-services.xml"
         		
         };
