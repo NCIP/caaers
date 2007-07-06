@@ -3,17 +3,15 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportService;
+import static org.easymock.classextension.EasyMock.expect;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Collections;
-import java.util.Map;
 import java.util.ArrayList;
-
-import org.easymock.classextension.EasyMock;
-import static org.easymock.classextension.EasyMock.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -22,10 +20,12 @@ public class CheckpointTabTest extends AeTabTestCase {
     private ReportDefinition r1, r2, r3;
 
     private EvaluationService evaluationService;
+    private ReportService reportService;
 
     @Override
     protected void setUp() throws Exception {
         evaluationService = registerMockFor(EvaluationService.class);
+        reportService = registerMockFor(ReportService.class);
         super.setUp();
 
         r1 = setId(1, createReportDefinition("R1"));
@@ -37,6 +37,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     protected AeTab createTab() {
         CheckpointTab tab = new CheckpointTab();
         tab.setEvaluationService(evaluationService);
+        tab.setReportService(reportService);
         return tab;
     }
 
@@ -47,15 +48,12 @@ public class CheckpointTabTest extends AeTabTestCase {
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.TRUE);
 
-        // TODO: there will probably be a call to a service in here somewhere
-        getTab().postProcess(request, command, errors);
+        expect(reportService.createReport(r1, command.getAeReport())).andReturn(null); // DC
+        expect(reportService.createReport(r3, command.getAeReport())).andReturn(null); // DC
+        replayMocks();
 
-        List<Report> actualReports = command.getAeReport().getReports();
-        assertEquals(2, actualReports.size());
-        assertEquals(r1, actualReports.get(0).getReportDefinition());
-        assertEquals(r3, actualReports.get(1).getReportDefinition());
-        assertFalse(actualReports.get(0).isRequired());
-        assertFalse(actualReports.get(1).isRequired());
+        getTab().postProcess(request, command, errors);
+        verifyMocks();
     }
 
     public void testPostProcessDoesNotInterfereWithExistingRequiredReports() throws Exception {
@@ -64,15 +62,15 @@ public class CheckpointTabTest extends AeTabTestCase {
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.TRUE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.FALSE);
 
-        // TODO: there will probably be a call to a service in here somewhere
+        expect(reportService.createReport(r2, command.getAeReport())).andReturn(null); // DC
         getTab().postProcess(request, command, errors);
 
         List<Report> actualReports = command.getAeReport().getReports();
-        assertEquals(2, actualReports.size());
+        // note that IRL, this would be 2, but we mocked out the add of the optional 
+        // and are only testing that the required report wasn't touched
+        assertEquals(1, actualReports.size());
         assertEquals(r1, actualReports.get(0).getReportDefinition());
-        assertEquals(r2, actualReports.get(1).getReportDefinition());
         assertTrue(actualReports.get(0).isRequired());
-        assertFalse(actualReports.get(1).isRequired());
     }
 
     public void testPostProcessRemovesDeselectedOptionalReports() throws Exception {

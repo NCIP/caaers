@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -20,6 +21,7 @@ import java.util.Map;
  */
 public class CheckpointTab extends AeTab {
     private EvaluationService evaluationService;
+    private ReportService reportService;
 
     public CheckpointTab() {
         super("Is expedited reporting necessary?", "SAE?", "ae/checkpoint");
@@ -85,7 +87,7 @@ public class CheckpointTab extends AeTab {
     private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
         // TODO: this only creates the report object -- need a unified way to set up the notifications, etc.
         if (findReportWithDefinition(aeReport, def) == null) {
-            aeReport.addReport(def.createReport());
+            reportService.createReport(def, aeReport);
         }
     }
 
@@ -107,5 +109,9 @@ public class CheckpointTab extends AeTab {
 
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
+    }
+
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
     }
 }
