@@ -3,8 +3,8 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import java.util.Map;
 import java.util.TreeMap;
 
-import gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 /**
  * @author Rhett Sutphin
@@ -16,7 +16,7 @@ public class ConfigurationCommand {
     public ConfigurationCommand(Configuration configuration) {
         this.configuration = configuration;
         conf = new TreeMap<String, BoundProperty<?>>();
-        for (ConfigurationProperty<?> property : ConfigurationProperty.values()) {
+        for (ConfigurationProperty<?> property : configuration.getProperties().getAll()) {
             conf.put(property.getKey(), new BoundProperty(property));
         }
     }
@@ -45,7 +45,7 @@ public class ConfigurationCommand {
         }
 
         public V getDefault() {
-            return configuration.getDefault(property);
+            return property.getDefault();
         }
     }
 }

@@ -85,7 +85,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
-                <value>gov.nih.nci.cabig.caaers.tools.configuration.ConfigurationEntry</value>
+                <value>gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
@@ -94,19 +94,18 @@
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
-                <!-- For Rules-Scheduler-Notification 05/10/2007-->
-				<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
-				<value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>	
-				<value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
             </list>
         </property>
         <property name="entityInterceptor">
