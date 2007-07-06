@@ -8,9 +8,9 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="instructions">
-            Please review your entered report by clicking on the tabs along the top
-            of the form.  When you have entered as much data as you would like, please
-            click save (below) to store the new report.
+            Your expedited report has been saved as you moved from page to page in this
+            flow.  To exit the flow and return the list of all adverse event collection
+            data for this patient and study, please continue.
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <input type="hidden" name="_finish"/>
