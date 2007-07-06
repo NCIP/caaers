@@ -34,7 +34,7 @@ public class ReportDaoStub extends ReportDao {
 	}
 	public void init(int reportId){
 		Report rs = getDummyReportSchedule(reportId);
-		map.put(rs.getName(), rs);
+		map.put(rs.getName() + reportId, rs);
 
 	}
 	@Override
@@ -47,14 +47,7 @@ public class ReportDaoStub extends ReportDao {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#getByName(java.lang.String)
-	 */
-	@Override
-	public Report getByName(String name) {
-		logger.debug("ReportScheduleDAO Stub : getByName(" + name +"), will return " + map.containsKey(name));
-		return map.get(name);
-	}
+
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.helper.ReportSchedule)
@@ -94,7 +87,7 @@ public class ReportDaoStub extends ReportDao {
 		rct.setDescription("a rct description");
 		rct.setDuration(5);
 		rct.setId(-333);
-		rct.setName("An RCT");
+		rct.setName("24 Hr 5Day report");
 		rct.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
 		rct.setPlannedNotifications(pnfList);
 
@@ -109,7 +102,7 @@ public class ReportDaoStub extends ReportDao {
 			}
 		};
 		rs.setStatus(ReportStatus.PENDING);
-		rs.setName("24Hour5Day("+ reportId+")");
+		//rs.setName("24Hour5Day("+ reportId+")");
 		rs.setCreatedOn(new Date());
 		rs.setId(reportId);
 		rs.setReportDefinition(rct);
