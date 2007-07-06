@@ -134,7 +134,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	    	}
 	    	else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(this.getLevel()))
 	    	{
-	    		rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, categoryIdentifier, institutionName);
+	    		rulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, categoryIdentifier, institutionName);
 	    		
 	    	}
 		} 
