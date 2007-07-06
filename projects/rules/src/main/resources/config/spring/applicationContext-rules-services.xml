@@ -22,5 +22,9 @@
  	 
  	 <bean id="ruleEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/> 	 
  	 
+ 	 <bean id="adverseEventEvaluationService" 
+ 	 		class="gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl"
+ 	 		autowire="byType"/> 	 
+ 	 
 
 </beans>
