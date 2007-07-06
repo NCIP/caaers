@@ -24,6 +24,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	//Replace with spring injection
 	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
 	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
+	private ReportDefinitionDao reportDefinitionDao;
 	
 	
    
@@ -195,7 +196,7 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 	
 	public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception{
 		    //Report rs = aeReport.getReportSchedule();
-		//aeReport.
+		System.out.println("firing ... : :");
 		String institutionName = aeReport.getAssignment().getStudySite().getOrganization().getName();
 		String bindURI_ForInstitutionLevelRules = this.getBindURI(institutionName, "","INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
 		//Study study = aeReport.getStudy();
@@ -220,7 +221,12 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 			throw new Exception(e.getMessage(),e);
 		}
 	    
-		System.out.println("Message: " + evaluationForInstitution.getMessage());
+		System.out.println("Message: :" + evaluationForInstitution.getMessage());
+		
+		reportDefinitionDao = getReportDefinitionDao();
+		ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
+		
+		System.out.println("desc: " + reportDefinition.getDescription());
 		
 		/*
 		ApplicationContext ac = AdverseEventEvaluationServiceImpl.getDeployedApplicationContext();
@@ -238,46 +244,7 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 		return evaluationForInstitution.getMessage();
 	}
 
-public String evaluateSAEReportSchedule(RoutineAdverseEventReport aeReport) throws Exception{
-	    //Report rs = aeReport.getReportSchedule();
-	//aeReport.
-	String institutionName = aeReport.getAssignment().getStudySite().getOrganization().getName();
-	String bindURI_ForInstitutionLevelRules = this.getBindURI(institutionName, "","INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
-	//Study study = aeReport.getStudy();
-	List<AdverseEvent> aes = aeReport.getAdverseEvents();
-	AdverseEvent ae = aes.get(0);
-	
-	RuleSet ruleSetForInstitution = rulesEngineService.getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), institutionName);
-	
-	if(ruleSetForInstitution==null){
-		throw new Exception("There are no rules configured for adverse event assesment for this site!");
-	}
-	
-	AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
-	
-	try {
-		evaluationForInstitution = this.getEvaluationObject(ae, aeReport.getAssignment().getStudySite().getOrganization(), bindURI_ForInstitutionLevelRules);
-		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		throw new Exception(e.getMessage(),e);
-	}
-    
-	System.out.println("Message: " + evaluationForInstitution.getMessage());
-	
-	
-	
-	ReportDefinitionDao reportDefinitionDao = new ReportDefinitionDao();
-	ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
-	
-	System.out.println(" report def name  "+ reportDefinition.getName());
-	
-	//reportdefdao... instance ..
-	//getbyname.. reportdefnition
-	
-	
-	return evaluationForInstitution.getMessage();
-}
+
 	
 	private String getBindURI(String sponsorOrInstitutionName, String studyName, String type, String ruleSetName){
 		String bindURI = null;
@@ -436,6 +403,16 @@ public String evaluateSAEReportSchedule(RoutineAdverseEventReport aeReport) thro
         return applicationContext;
     }
 	*/
+
+
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
+	}
 	
 	
 }
