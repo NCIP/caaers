@@ -102,7 +102,7 @@ public class RuleTab extends DefaultTab
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.createRuleSetForSponsorDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
 						areSponsorRules = true;
 					}
 					
@@ -199,10 +199,10 @@ public class RuleTab extends DefaultTab
 					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
 
 					boolean areSponsorRules = false;
-					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
+					// Check whether ruleset exists? Otherwise retrieve inst ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
+						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
 						areSponsorRules = true;
 					}
 					
