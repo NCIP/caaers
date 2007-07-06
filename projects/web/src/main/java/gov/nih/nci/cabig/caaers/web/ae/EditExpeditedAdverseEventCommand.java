@@ -20,16 +20,24 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 
 /**
  * @author Rhett Sutphin
  */
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
+    private StudyParticipantAssignmentDao assignmentDao;
 
     ////// LOGIC
 
-    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao) {
-        super(expeditedAeReportDao);
+    public EditExpeditedAdverseEventCommand(
+        ExpeditedAdverseEventReportDao expeditedAeReportDao,
+        ReportDefinitionDao reportDefinitionDao,
+        StudyParticipantAssignmentDao assignmentDao
+    ) {
+        super(expeditedAeReportDao, reportDefinitionDao);
+        this.assignmentDao = assignmentDao;
     }
 
     @Override
@@ -50,5 +58,11 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     @Override
     public void save() {
         reportDao.save(getAeReport());
+    }
+
+    @Override
+    public void reassociate() {
+        super.reassociate();
+        assignmentDao.reassociate(getAssignment());
     }
 }

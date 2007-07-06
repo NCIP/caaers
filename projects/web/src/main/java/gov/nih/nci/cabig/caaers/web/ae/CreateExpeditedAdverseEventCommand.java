@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -37,9 +38,9 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
     public CreateExpeditedAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
-        NowFactory nowFactory
+        ReportDefinitionDao reportDefinitionDao, NowFactory nowFactory
     ) {
-        super(reportDao);
+        super(reportDao, reportDefinitionDao);
         this.assignmentDao = assignmentDao;
         setAeReport(new ExpeditedAdverseEventReport());
         getAeReport().setCreatedAt(nowFactory.getNowTimestamp());

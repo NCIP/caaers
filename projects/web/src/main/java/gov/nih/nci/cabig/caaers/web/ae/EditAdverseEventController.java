@@ -24,7 +24,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new EditExpeditedAdverseEventCommand(getDao());
+        return new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
     }
     
     @Override

@@ -24,4 +24,6 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap();
 
     void setOptionalReportDefinitions(List<ReportDefinition> defs);
+
+    void reassociate();
 }

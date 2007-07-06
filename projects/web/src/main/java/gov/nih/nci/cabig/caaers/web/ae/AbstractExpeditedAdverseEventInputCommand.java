@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
 
     protected ExpeditedAdverseEventReportDao reportDao;
+    private ReportDefinitionDao reportDefinitionDao;
 
-    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao) {
+    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
         this.reportDao = reportDao;
+        this.reportDefinitionDao = reportDefinitionDao;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
     }
 
@@ -39,6 +42,15 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public abstract Study getStudy();
 
     public abstract void save();
+
+    public void reassociate() {
+        for (ReportDefinition definition : getOptionalReportDefinitionsMap().keySet()) {
+            reportDefinitionDao.reassociate(definition);
+        }
+        if (getAeReport().getId() != null) {
+            reportDao.reassociate(getAeReport());
+        }
+    }
 
     public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
         for (ReportDefinition def : defs) {
