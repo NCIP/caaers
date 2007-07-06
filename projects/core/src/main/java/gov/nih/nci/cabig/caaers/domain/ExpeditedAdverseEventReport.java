@@ -141,7 +141,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
             primaryAeLine = getAdverseEvents().get(0).getCtcTerm().getCtepTerm();
         }
         summary.put("Primary AE", primaryAeLine);
-        summary.put("Adverse event count", Integer.toString(getAdverseEvents().size()));
+        summary.put("AE count", Integer.toString(getAdverseEvents().size()));
 
         // TODO: placeholders
         summary.put("Ticket number", null);

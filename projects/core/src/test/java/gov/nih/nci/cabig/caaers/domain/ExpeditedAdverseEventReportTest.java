@@ -179,7 +179,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 
     public void testSummaryIncludesAECount() throws Exception {
         Map<String, String> summary = report.getSummary();
-        assertEquals("1", summary.get("Adverse event count"));
+        assertEquals("1", summary.get("AE count"));
     }
 
     public void testSummaryIncludesCreatedAt() throws Exception {
