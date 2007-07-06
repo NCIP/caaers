@@ -24,6 +24,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.apache.commons.collections15.functors.InstantiateFactory;
+
 /**
  * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport.
  * A ReportDefinition is applied or used by the Report to determine the notifications that are to be send out
@@ -52,9 +54,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private Organization organization;
     
     public ReportDefinition(){
-    	lazyListHelper = new LazyListHelper();
-    	lazyListHelper.add(ReportDeliveryDefinition.class, 
-    			new MutableDomainObjectInstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
+        lazyListHelper = new LazyListHelper();
+        lazyListHelper.add(ReportDeliveryDefinition.class,
+            new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
     }
     
     ////// LOGIC
@@ -62,6 +64,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public Report createReport() {
         Report report = new Report();
         report.setReportDefinition(this);
+        report.setName(getName()); // TODO: drop this property from Report
         report.setStatus(ReportStatus.PENDING);
         return report;
     }
