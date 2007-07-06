@@ -33,6 +33,8 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +48,7 @@ public abstract class AbstractAdverseEventInputController
     extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+    private static final Log log = LogFactory.getLog(AbstractAdverseEventInputController.class);
 
     protected ParticipantDao participantDao;
     protected StudyDao studyDao;

@@ -18,10 +18,15 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.HashSet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author Rhett Sutphin
  */
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
+    private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
+    
     private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
@@ -80,15 +85,20 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
 
     private void updateOptionalReportDefinitionsMapFromAeReport() {
-        Set<ReportDefinition> defs = new HashSet<ReportDefinition>();
+        Set<ReportDefinition> defsInAeReport = new HashSet<ReportDefinition>();
         for (Report report : this.getAeReport().getReports()) {
+            log.debug("Found Report in new aeReport: "
+                + report.getReportDefinition().getName() + " " + report.getId());
+            log.debug("Report def hashCode is " + Integer.toHexString(report.getReportDefinition().hashCode()));
             if (!report.isRequired()) {
-                defs.add(report.getReportDefinition());
+                defsInAeReport.add(report.getReportDefinition());
                 optionalReportDefinitionsMap.put(report.getReportDefinition(), true);
+                log.debug("Report is not required, so added to optional reports map: " + optionalReportDefinitionsMap);
             }
         }
+        // deselect any definitions which were already in the map but not in the aeReport
         for (ReportDefinition inMap : optionalReportDefinitionsMap.keySet()) {
-            if (!defs.contains(inMap)) optionalReportDefinitionsMap.put(inMap, false);
+            if (!defsInAeReport.contains(inMap)) optionalReportDefinitionsMap.put(inMap, false);
         }
     }
 
