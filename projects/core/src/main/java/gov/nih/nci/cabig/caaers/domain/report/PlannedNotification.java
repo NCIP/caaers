@@ -52,8 +52,11 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 	private NotificationBodyContent bodyContent;
 	
 	private List<NotificationAttachment> attachments;
-	
-	@Embedded
+
+    // TODO: this signature may be insufficient
+    public abstract ScheduledNotification createScheduledNotification(String to);
+
+    @Embedded
 	public NotificationBodyContent getNotificationBodyContent(){
 		return bodyContent;
 	}

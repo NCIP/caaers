@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
@@ -22,6 +23,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,23 +96,25 @@ public class ReportServiceImpl  implements ReportService {
 	 */
 	public String applyRuntimeReplacements(String rawText, Report report) {
 		Configuration cfg = new Configuration();
-		try {
-			Template t = new Template("message", new StringReader(rawText),cfg);
-			Map<Object, Object> map = getContextVariables(report);
-			StringWriter writer = new StringWriter();
-			t.process(map, writer);
-			return writer.toString();
-		} catch (Exception e) {
-			throw new CaaersSystemException("Error while applying freemarker template[PlannedNotificaiton.body]", e);
-		}
+        try {
+            Template t = new Template("message", new StringReader(rawText),cfg);
+            Map<Object, Object> map = getContextVariables(report);
+            StringWriter writer = new StringWriter();
+            t.process(map, writer);
+            return writer.toString();
+        } catch (TemplateException e) {
+            throw new CaaersSystemException("Error while applying freemarker template [PlannedNotificatiton.body]", e);
+        } catch (IOException e) {
+            throw new CaaersSystemException("Error while applying freemarker template [PlannedNotificatiton.body]", e);
+        }
 	}
 
 	public Map<Object,Object> getContextVariables(Report report){
 		//TODO : properly populate the following....
-		//
+		//TODO: add appropriate null-checks
 		Map<Object, Object> map = new HashMap<Object, Object>();
-		map.put("nCIProtocolNumber", report.getAeReport().getStudy().getPrimaryIdentifier().getValue());
-		map.put("reportId", report.getAeReport().getId());
+		// map.put("nCIProtocolNumber", report.getAeReport().getStudy().getPrimaryIdentifier().getValue());
+		// map.put("reportId", report.getAeReport().getId());
 		
 		return map;
 	}
@@ -142,6 +146,7 @@ public class ReportServiceImpl  implements ReportService {
             for (ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()) {
                 ReportDelivery rd = new ReportDelivery();
                 rd.setDeliveryStatus(DeliveryStatus.CREATED);
+                rd.setEndPoint(""); // TODO: this field is required, but I'm not clear what it is for
                 rd.setReportDeliveryDefinition(rdd);
                 //fetch the contact mechanism for role based entities.
                 if (rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE) {
@@ -172,11 +177,7 @@ public class ReportServiceImpl  implements ReportService {
                     // TODO: instanceof indicates an abstraction failure.  Could this be domain logic?
                     if (pnf instanceof PlannedEmailNotification) {
                         PlannedEmailNotification penf = (PlannedEmailNotification) pnf;
-                        ScheduledEmailNotification senf = new ScheduledEmailNotification();
-                        snf = senf;
-                        //set the values specific to email
-                        senf.setFromAddress(penf.getFromAddress());
-                        senf.setToAddress(to);
+                        snf = pnf.createScheduledNotification(to);
                         if (subjectLine == null) {
                             subjectLine = applyRuntimeReplacements(penf.getSubjectLine(), report);
                         }
@@ -188,7 +189,7 @@ public class ReportServiceImpl  implements ReportService {
                     }
                     snf.setBody(bodyContent.getBytes());
 
-
+                    // TODO: consider some or all of this domain logic, too
                     snf.setCreatedOn(now);
                     snf.setDeliveryStatus(DeliveryStatus.CREATED);
                     cal.setTime(now);

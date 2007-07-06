@@ -16,7 +16,18 @@ import javax.persistence.Entity;
 @DiscriminatorValue("email")
 public class PlannedEmailNotification extends PlannedNotification {
 
-	/** The subject line of the email */
+    ////// LOGIC
+
+    @Override
+    public ScheduledNotification createScheduledNotification(String to) {
+        ScheduledEmailNotification notification = new ScheduledEmailNotification();
+        notification.setPlanedNotificaiton(this);
+        notification.setFromAddress(getFromAddress());
+        notification.setToAddress(to);
+        return notification;
+    }
+
+    /** The subject line of the email */
 	private String subjectLine;
 	/** The from address */
 	private String fromAddress;
