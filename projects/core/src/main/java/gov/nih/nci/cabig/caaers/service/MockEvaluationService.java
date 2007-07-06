@@ -26,6 +26,7 @@ public class MockEvaluationService implements EvaluationService {
 
     private ReportDefinitionDao reportDefinitionDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    private ReportService reportService;
 
     /**
      * Mock implementation returns true for all grade 5 AEs.
@@ -48,8 +49,7 @@ public class MockEvaluationService implements EvaluationService {
         ReportDefinition def = allDefs.get(0);
         Report report = existingReportWithDef(expeditedData, def);
         if (report == null) {
-            report = def.createReport();
-            expeditedData.addReport(report);
+            report = reportService.createReport(def, expeditedData);
         }
         report.setRequired(true);
 
@@ -82,5 +82,9 @@ public class MockEvaluationService implements EvaluationService {
 
     public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
+
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
     }
 }
