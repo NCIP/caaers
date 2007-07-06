@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.springframework.transaction.annotation.Transactional;
+import org.hibernate.LockMode;
 
 /**
  * @author Rhett Sutphin
@@ -48,8 +49,23 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
             log.debug("Physican not savable; skipping cascade");
         }
     }
-    
-	public List<ExpeditedAdverseEventReport> searchExpeditedReports(Map props) {
+
+    @Override
+    public void reassociate(ExpeditedAdverseEventReport report) {
+        super.reassociate(report);
+        if (report.getReporter().isSavable()) {
+            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
+        } else {
+            log.debug("Reporter not savable; skipping reassociate cascade");
+        }
+        if (report.getPhysician().isSavable()) {
+            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
+        } else {
+            log.debug("Physican not savable; skipping reassociate cascade");
+        }
+    }
+
+    public List<ExpeditedAdverseEventReport> searchExpeditedReports(Map props) {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
