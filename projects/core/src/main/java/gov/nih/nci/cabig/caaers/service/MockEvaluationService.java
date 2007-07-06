@@ -58,9 +58,7 @@ public class MockEvaluationService implements EvaluationService {
 
     private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
         for (Report report : expeditedData.getReports()) {
-            // both objects would be loaded from the same hibernate session,
-            // so object equality will work
-            if (report.getReportDefinition() == def) {
+            if (report.getReportDefinition().equals(def)) {
                 return report;
             }
         }
