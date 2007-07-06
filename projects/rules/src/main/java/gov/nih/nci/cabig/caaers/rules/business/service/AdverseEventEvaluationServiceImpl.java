@@ -4,8 +4,8 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -14,6 +14,8 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
+import gov.nih.nci.cabig.caaers.service.ReportService;
+import gov.nih.nci.cabig.caaers.service.ReportServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,6 +27,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
 	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
 	private ReportDefinitionDao reportDefinitionDao;
+	private ReportServiceImpl reportServiceImpl;
 	
 	
    
@@ -215,18 +218,24 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 		
 		try {
 			evaluationForInstitution = this.getEvaluationObject(ae, aeReport.getAssignment().getStudySite().getOrganization(), bindURI_ForInstitutionLevelRules);
+			reportDefinitionDao = getReportDefinitionDao();
+			ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
+			//reportDefinitionDao.initialize(reportDefinition);
+			System.out.println("desc: " + reportDefinition.getDescription());	
 			
+			reportServiceImpl = this.getReportServiceImpl();
+			
+			//System.out.println(reportServiceImpl.toString());
+			Report r = reportServiceImpl.createReport(reportDefinition, aeReport);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new Exception(e.getMessage(),e);
 		}
 	    
 		System.out.println("Message: :" + evaluationForInstitution.getMessage());
 		
-		reportDefinitionDao = getReportDefinitionDao();
-		ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
-		
-		System.out.println("desc: " + reportDefinition.getDescription());
+
 		
 		/*
 		ApplicationContext ac = AdverseEventEvaluationServiceImpl.getDeployedApplicationContext();
@@ -236,8 +245,10 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 		reportDefinitionDao.initialize(reportDefinition);
 		System.out.println(reportDefinition.getDescription());
 		*/
-		//ReportService reportService = new ReportServiceImpl();
-		//Report r = reportService.createReport(reportDefinition, aeReport);
+		//reportServiceImpl = this.getReportServiceImpl();
+		
+		//System.out.println(reportServiceImpl.toString());
+		//Report r = reportServiceImpl.createReport(reportDefinition, aeReport);
 		
 		// report .. aer and rd 
 		
@@ -412,6 +423,16 @@ public String assesAdverseEvent(AdverseEvent ae, Organization site) throws Excep
 
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+
+	public ReportServiceImpl getReportServiceImpl() {
+		return reportServiceImpl;
+	}
+
+
+	public void setReportServiceImpl(ReportServiceImpl reportServiceImpl) {
+		this.reportServiceImpl = reportServiceImpl;
 	}
 	
 	
