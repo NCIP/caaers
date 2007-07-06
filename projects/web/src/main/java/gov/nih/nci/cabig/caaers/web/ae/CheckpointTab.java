@@ -100,7 +100,7 @@ public class CheckpointTab extends AeTab {
 
     private Report findReportWithDefinition(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
         for (Report report : aeReport.getReports()) {
-            if (report.getReportDefinition() == def) return report;
+            if (report.getReportDefinition().equals(def)) return report;
         }
         return null;
     }
