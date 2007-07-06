@@ -152,13 +152,7 @@ public class RuleTab extends DefaultTab
 
 					ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
 
-					//boolean areSponsorRules = false;
-					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
-					if (ruleSet == null)
-					{
-						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
-						//areSponsorRules = true;
-					}
+					
 					
 					
 						if (ruleSet != null && ruleSet.getRule().size() > 0)
