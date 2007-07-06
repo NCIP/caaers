@@ -201,6 +201,24 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         }
     }
 
+    public void testCurrentFormObjectReassociatesIfEAERIsSaved() throws Exception {
+        firstCommand.getAeReport().setId(17);
+        
+        adverseEventReportDao.reassociate(firstCommand.getAeReport());
+
+        replayMocks();
+        assertSame(firstCommand, controller.currentFormObject(request, firstCommand));
+        verifyMocks();
+    }
+    
+    public void testCurrentFormObjectDoesNothingIfEAERIsNotSaved() throws Exception {
+        firstCommand.getAeReport().setId(null);
+
+        replayMocks();
+        assertSame(firstCommand, controller.currentFormObject(request, firstCommand));
+        verifyMocks();
+    }
+
     private Object[] bindAndReturnCommandAndErrors() throws Exception {
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);

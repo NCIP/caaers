@@ -166,6 +166,16 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+        oCommand = super.currentFormObject(request, oCommand);
+        ExpeditedAdverseEventReport aeReport = ((ExpeditedAdverseEventInputCommand) oCommand).getAeReport();
+        if (aeReport.getId() != null) {
+            reportDao.reassociate(aeReport);
+        }
+        return oCommand;
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(
         HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
