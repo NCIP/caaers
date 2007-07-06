@@ -58,10 +58,17 @@ public class MockEvaluationService implements EvaluationService {
 
     private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
         for (Report report : expeditedData.getReports()) {
+            log.debug("Examining Report with def "+ report.getReportDefinition().getName()
+                + " (id: " + report.getReportDefinition().getId() + "; hash: "
+                + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
             if (report.getReportDefinition().equals(def)) {
+                log.debug("Matched");
                 return report;
             }
         }
+        log.debug("No Report with def matching " + def.getName()
+            + " (id: " + def.getId() + "; hash: "
+            + Integer.toHexString(def.hashCode()) + ") found in EAER " + expeditedData.getId());
         return null;
     }
 
