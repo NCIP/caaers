@@ -76,9 +76,21 @@
 		var domainObject = null;
 		
 		function addRule() {
+				
+				var organization = '';
+				
+				//alert ('${command.level}');
+				if ('${command.level}' == 'Sponsor' || '${command.level}' == 'SponsorDefinedStudy') {
+					organization = '${command.sponsorName}';
+				} else {				
+					organization = '${command.institutionName}';
+				}
+				
+				//alert (organization);
+				
 				try {
-
-					authorRule.addRule(name, function (html) {
+					
+					authorRule.addRule(name, organization, function (html) {
 						sections.push('rule-' + (sections.length + 1));
 						var columnHolder = getElementHolderDiv();
 						columnHolder.innerHTML = html;
