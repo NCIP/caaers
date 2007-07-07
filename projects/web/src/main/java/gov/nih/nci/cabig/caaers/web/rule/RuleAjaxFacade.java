@@ -182,7 +182,7 @@ public class RuleAjaxFacade
      * Then will forward to a jsp to get the html for that condition and will return that.
      * 
      * */
-    public String addRule(String name) {
+    public String addRule(String name, String organizationName) {
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
     	Rule newRule = new Rule();
@@ -201,16 +201,19 @@ public class RuleAjaxFacade
     	//get report defnitions
     	List<ReportDefinition> reportDefinitions = reportDefinitionDao.getAll();
     	
+
+    	
+    	
         // cut down objects for serialization
         List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
         for (ReportDefinition reportDefinition : reportDefinitions) {
         	
-        	reportDefinition.setPlannedNotifications(null);
-        	reportDefinition.setTimeScaleUnitType(null);
-        	reducedReportDefinitions.add(reportDefinition);
-        	//reportDefinitions.add(
-              //  buildReduced(reportDefinition, Arrays.asList("id","name"))
-            //);
+    		if (organizationName.equals(reportDefinition.getOrganization().getName())) {
+            	reportDefinition.setPlannedNotifications(null);
+            	reportDefinition.setTimeScaleUnitType(null);
+            	reducedReportDefinitions.add(reportDefinition);  			
+    		}
+
         }
         //System.out.println("in add rule " + reducedReportDefinitions.size());
     	
