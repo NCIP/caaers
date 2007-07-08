@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -138,15 +139,15 @@ public class RuleAjaxFacade
         {
             Study study = it.next();
             
-            List<StudySite> studySites = study.getStudySites();
+            List<StudyOrganization> studyOrgs = study.getStudyOrganizations();
             
             //loop thru each study site and get Site .
             //if site name = institutionName
             // add this study to new list 
             
-            for (Iterator<StudySite> ssit =studySites.iterator(); ssit.hasNext();) {
-            	StudySite studySite = ssit.next();
-            	Organization org = studySite.getOrganization();
+            for (Iterator<StudyOrganization> ssit =studyOrgs.iterator(); ssit.hasNext();) {
+            	StudyOrganization studyOrganization = ssit.next();
+            	Organization org = studyOrganization.getOrganization();
             	if (institutionName.equals(org.getName())) {
             		newStudyList.add(study);
             		break;
