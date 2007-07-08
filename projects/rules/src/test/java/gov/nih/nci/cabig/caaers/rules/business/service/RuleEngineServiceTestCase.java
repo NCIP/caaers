@@ -230,9 +230,9 @@ public class RuleEngineServiceTestCase extends CaaersDbTestCase {
 		
 
 		
-		String msg = aees.evaluateSAEReportSchedule(exaer);
+		//String msg = aees.evaluateSAEReportSchedule(exaer);
 
-		System.out.println(msg);
+		//System.out.println(msg);
 		//assertEquals(msg, "SERIOUS_ADVERSE_EVENT");
 
 	}
