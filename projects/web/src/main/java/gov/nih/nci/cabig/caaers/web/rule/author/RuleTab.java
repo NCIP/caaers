@@ -190,7 +190,7 @@ public class RuleTab extends DefaultTab
 				else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
-					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
 
 					boolean areSponsorRules = false;
 					// Check whether ruleset exists? Otherwise retrieve inst ruleset
