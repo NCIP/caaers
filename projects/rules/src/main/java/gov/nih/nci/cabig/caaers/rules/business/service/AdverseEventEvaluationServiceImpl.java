@@ -83,7 +83,7 @@ public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) thro
 	for(AdverseEvent ae : aes )
 	{
 		String message = evaluateSponsorReportSchedule(ae,aeReport.getStudy());
-		if (message.equals(AdverseEventEvaluationServiceImpl.CAN_NOT_DETERMINED)) {
+		if (!message.equals(CAN_NOT_DETERMINED)) {
 			reportDefinitions.add(message);
 			break;
 		}
@@ -92,11 +92,13 @@ public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) thro
 	
 	Study study = aeReport.getStudy();
 	
+	//TO-DO get orgs like FDA, CALGB and add to this list
+	
 	for(StudyOrganization so : study.getStudyOrganizations() )
 	{
 		for(AdverseEvent ae : aes ) {
 			String message = evaluateInstitutionReportSchedule(ae, study, so.getOrganization());
-			if (message.equals(AdverseEventEvaluationServiceImpl.CAN_NOT_DETERMINED)) {
+			if (!message.equals(CAN_NOT_DETERMINED)) {
 				reportDefinitions.add(message);
 				break;
 			}
