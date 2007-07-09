@@ -194,7 +194,7 @@
 				                    
 				                    	terms.each(function(term) {
 
-				                        	var opt = new Option(term.select, term.id)
+				                        	var opt = new Option(term.term + '-' + term.select, term.id)
 				                        	sel.options.add(opt)
 				                    	})
 				                })
@@ -512,7 +512,7 @@
 				                    
 				                    terms.each(function(term) {
 
-				                        var opt = new Option(term.select, term.id)
+				                        var opt = new Option(term.term + '-' + term.select, term.id)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -849,7 +849,7 @@
 				                    
 				                    terms.each(function(term) {
 
-				                        var opt = new Option(term.select, term.id)
+				                        var opt = new Option(term.term + '-' + term.select, term.id)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1100,7 +1100,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 				                    											var index = 0;	
 															                    terms.each(function(term) {
 
-													                        		var opt = new Option(term.select, term.id)
+													                        		var opt = new Option(term.term + '-' + term.select, term.id)
 				                    									    			sel.options.add(opt)
 				                    									    		   
 				                    									    		    		if (fieldValue.indexOf(term.id) != -1)
