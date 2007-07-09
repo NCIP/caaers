@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +23,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     private static final Log log = LogFactory.getLog(EvaluationServiceImpl.class);
 
     private ReportDefinitionDao reportDefinitionDao;
-    //private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-    //private ReportService reportService;
+    private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    private ReportService reportService;
 	
 	/**
      * @return true if the given adverse event is severe in the context of the provided
@@ -58,8 +61,47 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @return the report definitions which the evaluation indicated were required.
      */
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
+    	try {
+			List reportDefinitionNames = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
+			
+	        
+	        for(int i=0;i<reportDefinitionNames.size();i++ ) {
+	        	ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionNames.get(i).toString());
+	        	Report report = existingReportWithDef(expeditedData, def);
+	        	
+		        if (report == null) {
+		            report = reportService.createReport(def, expeditedData);		            
+		        }
+		        report.setRequired(true);
+		        
+		    }
+	        
+	        expeditedAdverseEventReportDao.save(expeditedData);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			log.error(e);
+		}
+    	
     }
 
+    private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
+        for (Report report : expeditedData.getReports()) {
+            log.debug("Examining Report with def "+ report.getReportDefinition().getName()
+                + " (id: " + report.getReportDefinition().getId() + "; hash: "
+                + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
+            if (report.getReportDefinition().equals(def)) {
+                log.debug("Matched");
+                return report;
+            }
+        }
+        log.debug("No Report with def matching " + def.getName()
+            + " (id: " + def.getId() + "; hash: "
+            + Integer.toHexString(def.hashCode()) + ") found in EAER " + expeditedData.getId());
+        return null;
+    }
+    
 
     
     /**
@@ -69,33 +111,18 @@ public class EvaluationServiceImpl implements EvaluationService {
      // TODO: it might more sense for this to go in ReportService
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
     	
-    	
-    	List reportDefinitionNames = new ArrayList();
     	List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
-    	
-    	//ExpeditedAdverseEventReport expeditedAdverseEventReport = ((ExpeditedAdverseEventReport)assignment.getAeReports().get(0));
     	
     	try {
     		
-    		for (ExpeditedAdverseEventReport expeditedAdverseEventReport : assignment.getAeReports()) {
-    			List rds = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedAdverseEventReport);
-    			for (int i=0; i<rds.size(); i++) {
-    				if (!reportDefinitionNames.contains(rds.get(i))) {
-    					reportDefinitionNames.add(rds.get(i));
-    				}
-    			}
-    			
+    		for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
+    			reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
     		}
+    		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			log.error(e);
 		}
-    	
-		for(int i=0;i<reportDefinitionNames.size();i++ ) {
-			ReportDefinition rd = reportDefinitionDao.getByName(reportDefinitionNames.get(i).toString());
-			reportDefinitions.add(rd);
-		}
-    	
     	
     	return reportDefinitions;
     }
@@ -105,6 +132,15 @@ public class EvaluationServiceImpl implements EvaluationService {
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
         this.reportDefinitionDao = reportDefinitionDao;
     }
+
+	public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+
+	public void setReportService(ReportService reportService) {
+		this.reportService = reportService;
+	}
 
 
 }
