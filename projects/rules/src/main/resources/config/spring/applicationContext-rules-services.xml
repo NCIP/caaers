@@ -21,10 +21,10 @@
  	 <bean id="emailService" class="gov.nih.nci.cabig.caaers.email.EmailServiceImpl"/> 	 
  	 
  	 <bean id="ruleEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/> 	 
- 	 
+ 	 <!-- 
  	 <bean id="evaluationServiceImpl" 
  	 		class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"
  	 		autowire="byType"/> 	 
- 	 
+ 	 -->
 
 </beans>
