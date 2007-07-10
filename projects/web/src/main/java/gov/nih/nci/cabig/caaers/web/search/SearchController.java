@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.search;
 
 
 import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.study.SearchCommand;
@@ -35,6 +36,7 @@ public abstract class SearchController extends SimpleFormController {
 	private StudyService studyService;
 	private ConfigProperty configurationProperty;
 	private ListValues listValues;
+	private CtcCategoryDao ctcCategoryDao;
 	
 	public SearchController() {		             
 		setCommandClass(SearchStudyCommand.class);    
@@ -46,6 +48,7 @@ public abstract class SearchController extends SimpleFormController {
 	    	Map<String, Object> refdata = new HashMap<String, Object>();
 	        refdata.put("genders", listValues.getParticipantGender());
 	        refdata.put("ethnicity", listValues.getParticipantEthnicity());
+	        refdata.put("ctcCategories", ctcCategoryDao.getAll());
 		  	return refdata;
 	    }
 	
@@ -67,7 +70,7 @@ public abstract class SearchController extends SimpleFormController {
 	// TODO: I really do not like the way I am implementing this I need to find a better way  
 	protected void buildSearchResultTable(HttpServletRequest request, int x)throws Exception{
 		
-			SearchStudyAjaxFacade studyFacade = new SearchStudyAjaxFacade();
+			SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade();
 			Context context = null;
 			context = new HttpServletRequestContext(request);
         
@@ -76,22 +79,23 @@ public abstract class SearchController extends SimpleFormController {
 			try {
 				 switch (x) {
 				 	case 0:
-				 		viewData = studyFacade.build(model, new ArrayList());
+				 		//viewData = searchFacade.build(model, new ArrayList());
+				 		viewData = searchFacade.getTable(null, "prop0,", "n,", request);
 				        break; 
 		            case 1:  
-		            	viewData = studyFacade.buildParticipant(model, new ArrayList()); 
+		            	viewData = searchFacade.buildParticipant(model, new ArrayList()); 
 		            	break;
 		            case 2:  
-		            	viewData = studyFacade.buildAdverseEvent(model, new ArrayList()); 
+		            	viewData = searchFacade.buildAdverseEvent(model, new ArrayList()); 
 		            	break;
 		            case 3:  
-		            	viewData = studyFacade.buildExpeditedReport(model, new ArrayList()); 
+		            	viewData = searchFacade.buildExpeditedReport(model, new ArrayList()); 
 		            	break;	
 		            case 4:  
-		            	viewData = studyFacade.buildRoutineReport(model, new ArrayList()); 
+		            	viewData = searchFacade.buildRoutineReport(model, new ArrayList()); 
 		            	break;		
 		            default: 
-		            	viewData = studyFacade.build(model, new ArrayList());
+		            	viewData = searchFacade.build(model, new ArrayList());
 				        break; 
 				 }
 			} catch (Exception e) {
@@ -174,5 +178,15 @@ public abstract class SearchController extends SimpleFormController {
 	public void setListValues(ListValues listValues) {
 		this.listValues = listValues;
 	}
+
+	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+		this.ctcCategoryDao = ctcCategoryDao;
+	}
+
+	public CtcCategoryDao getCtcCategoryDao() {
+		return ctcCategoryDao;
+	}
+	
+	
 
 }

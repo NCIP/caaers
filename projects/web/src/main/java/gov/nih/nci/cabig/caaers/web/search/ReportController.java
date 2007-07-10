@@ -25,11 +25,12 @@ public class ReportController extends SearchController {
 		setSuccessView("search/report_search");
 	}
 	
+	/*
     protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
     	Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("studySearchType", getConfigurationProperty().getMap().get("studySearchType"));               
 	  	return refdata;
-    }
+    }*/
 		
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {

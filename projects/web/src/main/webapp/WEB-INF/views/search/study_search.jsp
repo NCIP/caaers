@@ -17,7 +17,8 @@
 
 <style type="text/css">
         /* Override default lable length */
-        div.row div.label { width: 13em; }
+         div.row div.label { width: 6em; } 
+         div.row div.value { margin-left: 7em; } 
 </style>
 <title>${tab.longTitle}</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
@@ -25,88 +26,63 @@
 
 <script>
 
-function copyValues(select,prop){
-	
-	var selectArray = $(select).options;
-	 for ( i=0; i < selectArray.length; i++){
-	 	if (selectArray[i].selected  ) {
-	 		$(prop).value=selectArray[i].value == "---" ? "" : selectArray[i].value
-	 	}
-	 }
-	
-}
-   
-function buildTable(form) {	
+function buildTable(form,size) {
+	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < 8; x++) {
+	for(var x=0; x < size; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
 			type = type +  'prop'+x+',';
 		}
 	}
-	search.getTable(null, type, text, showTable,0);		
+	var parameterMap = getParameterMap(form);		
+	search.getTable(parameterMap,type,text,showTable);
 }
 
-function showTable(table) {
-	document.getElementById('tableDiv').innerHTML=table;
-}
- 
-function fireAction(action, selected){	
-	document.getElementById("_action").value=action;	
-	document.getElementById("_selected").value=selected;
-	document.searchForm.submit();	
-} 
 
 </script>
 </head>
 <body>
 
-<chrome:box title="Study search">
-    <form:form name="searchForm" id="searchForm" method="post">
-       <div>			
-			<input type="hidden" name="_selected" id="_selected" value="">
-			<input type="hidden" name="_action" id="_action" value="">
-		</div>
-		 <p class="instructions">
-        	Search for studies by choosing any study / participant criteria.
-    	</p>
-        <div class="content">
-        	
-		    <div class="pane"> 
-		    
+<form:form name="searchForm" id="searchForm" method="post">
+  Search for Studies by choosing any of the listed Criteria. The result set will show a list of Studies. 
+The Study primary identifier , short title , sponsor, phase and status will be 
+shown on the screen. 
+<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
 		    <div class="row">
-		    	<div class="label"> Study Identifier :&nbsp; </div>
+		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Study Short Title :&nbsp; </div>
+		    	<div class="label"> Short Title :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="shortTitle"/></div>
 		    </div>
-		</div>
-			
-			<div class="pane">
+</chrome:box>
+
+<chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
 		     <div class="row">
-		    	<div class="label"> Participant Identifier :&nbsp; </div>
+		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="firstName"/></div>
 		    </div>
 		    
 		    
 		     <div class="row">
-		    	<div class="label"> Participant First Name :&nbsp; </div>
+		    	<div class="label"> First Name :&nbsp; </div>
 		    	<div class="value"><input id="prop3" type="firstName"/></div>
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Participant Last Name :&nbsp; </div>
+		    	<div class="label"> Last Name :&nbsp; </div>
 		    	<div class="value"><input id="prop4" type="text" name="lastName"/></div>
 		    </div>
 		    
+		    
 		    <div class="row">
-		    	<div class="label"> Participant Ethnicity :&nbsp; </div>
+		    	<div class="label"> Ethnicity :&nbsp; </div>
 		    	<div class="value">
 		    	<select onChange="copyValues('prop5_select','prop5')" id="prop5_select">
 		    		<c:forEach items="${ethnicity}" varStatus="status" var="field">
@@ -118,7 +94,7 @@ function fireAction(action, selected){
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Participant Gender :&nbsp; </div>
+		    	<div class="label"> Gender :&nbsp; </div>
 		    	<div class="value">
 		    	<select onChange="copyValues('prop6_select','prop6')" id="prop6_select">
 		    		<c:forEach items="${genders}" varStatus="status" var="field">
@@ -130,27 +106,30 @@ function fireAction(action, selected){
 		    </div>
 		 	
 		 	<div class="row">
-		    	<div class="label"> Participant Birth Date :&nbsp; </div>
+		    	<div class="label"> Birth Date :&nbsp; </div>
 		    	<div class="value"><input id="prop7" type="text" name="dateOfBirth"/></div>
 		    </div>
-		 	</div>
-		 	
-		 	<div class="endpanes" />
-			<div class="row">
-			     <div class="labl"><input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
-			</div>
-        </div>
-    </form:form>
 </chrome:box>
+
+<div class="endpanes" />
+<div class="row" style="float:right;">
+	<input class='ibutton' type='button' onclick="buildTable('assembler',8);" value='Search'  title='Search Study'/>
+	<tags:indicator id="indicator" />
+</div>
+<div class="endpanes" />
+
+
+ </form:form>
 <br>
-<chrome:box title="Results">
-<form:form>
+<form:form id="assembler" >
+<chrome:box title="Study Search Results">
+	
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
 		</div>
 	</chrome:division>
-</form:form>
 </chrome:box>
+</form:form>
 </body>
 </html>

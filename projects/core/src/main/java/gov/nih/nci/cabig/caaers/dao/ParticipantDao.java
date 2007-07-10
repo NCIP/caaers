@@ -75,7 +75,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
         return findByIdentifier(identifier);
     }
     
-    @SuppressWarnings({ "deprecation", "unchecked" })
+    @SuppressWarnings({ "unchecked" })
 	public List<Participant> searchParticipant(Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();

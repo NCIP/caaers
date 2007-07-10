@@ -34,7 +34,7 @@ import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.bean.Export;
-
+import org.extremecomponents.table.view.CsvView;
 public class SearchStudyAjaxFacade {
 	private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
@@ -49,21 +49,38 @@ public class SearchStudyAjaxFacade {
     {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(studies);
         table.setAction(model.getContext().getContextPath() + "/pages/search/study");
         table.setTitle("");
         table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
+        table.setFilterable(true);
         table.setSortable(true);
+        //table.setRowsDisplayed(10);
+        //table.setShowPagination(true);
+        //table.setShowExports(true);
+        //table.setShowStatusBar(true);
         model.addTable(table);
+        
+       /* 
+        Export export = model.getExportInstance();
+        export.setView(TableConstants.VIEW_CSV);
+        export.setViewResolver(TableConstants.VIEW_CSV);
+        export.setImageName(TableConstants.VIEW_CSV);
+        export.setText(TableConstants.VIEW_CSV);
+        export.addAttribute(CsvView.DELIMITER, "|");
+        export.setFileName("caaers.txt");
+        model.addExport(export);
+       */
         
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);        
         model.addRow(row);
           
-        Column columnPrimaryIdentifier = model.getColumnInstance();        
+        Column columnPrimaryIdentifier = model.getColumnInstance();
+        columnPrimaryIdentifier.setSortable(false);
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
         columnPrimaryIdentifier.setTitle("Primary ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
@@ -101,7 +118,7 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
+        table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
         
@@ -116,7 +133,8 @@ public class SearchStudyAjaxFacade {
         model.addColumn(columnPrimaryIdentifier);
         */
         
-        Column columnPrimaryIdentifier = model.getColumnInstance();        
+        Column columnPrimaryIdentifier = model.getColumnInstance();
+        columnPrimaryIdentifier.setSortable(false);
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
         columnPrimaryIdentifier.setTitle("Primary ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
@@ -148,6 +166,7 @@ public class SearchStudyAjaxFacade {
         
         Column columnStudyPrimaryIdentifier = model.getColumnInstance();        
         columnStudyPrimaryIdentifier.setProperty("test");
+        columnStudyPrimaryIdentifier.setSortable(false);
         columnStudyPrimaryIdentifier.setTitle("Associated Study ID(s)");
         columnStudyPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantStudyLinkDisplayCell");        
         model.addColumn(columnStudyPrimaryIdentifier);
@@ -166,7 +185,7 @@ public class SearchStudyAjaxFacade {
         table.setShowExports(true);
         table.setOnInvokeAction("buildTable('searchForm')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
+        table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
         
@@ -179,7 +198,6 @@ public class SearchStudyAjaxFacade {
         export.setFileName("caaers.txt");
         model.addExport(export);
         */
-        
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
@@ -231,11 +249,12 @@ public class SearchStudyAjaxFacade {
         aeStartDate.setTitle("Detection Date");      
         model.addColumn(aeStartDate);
         
+        /*
         Column primary = model.getColumnInstance();        
         primary.setProperty("test");
         primary.setTitle("Primary");      
         model.addColumn(primary);
-        /*
+        
         Column columnAssociatedReportTicketNum = model.getColumnInstance();        
         columnAssociatedReportTicketNum.setProperty("test");
         columnAssociatedReportTicketNum.setTitle("Associated Report Ticket #");      
@@ -260,7 +279,7 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
+        table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
         
@@ -274,7 +293,6 @@ public class SearchStudyAjaxFacade {
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
         model.addColumn(columnPrimaryIdentifier);
         */
-        
         
         Column columnPrimaryAeTerm = model.getColumnInstance();        
         columnPrimaryAeTerm.setProperty("adverseEvents[0].ctcTerm.term");
@@ -304,6 +322,25 @@ public class SearchStudyAjaxFacade {
         aeDetectionDate.setCell(TableConstants.DATE);
         aeDetectionDate.setFormat("MM/dd/yyyy");
         model.addColumn(aeDetectionDate);
+        
+        
+        Column columnstudyIdentifier = model.getColumnInstance();        
+        columnstudyIdentifier.setProperty("test");
+        columnstudyIdentifier.setTitle("Study ID");
+        columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCellExpedited");        
+        model.addColumn(columnstudyIdentifier);
+        
+        Column columnParticipantIdentifier = model.getColumnInstance();
+        columnParticipantIdentifier.setSortable(false);
+        columnParticipantIdentifier.setProperty("primaryIdentifier");
+        columnParticipantIdentifier.setTitle("Participant ID");
+        columnParticipantIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCellExpedited");        
+        model.addColumn(columnParticipantIdentifier);
+        
+        
+        
+        
+        
         /*
         Column columnPrimaryIdentifier = model.getColumnInstance();        
         columnPrimaryIdentifier.setProperty("status.displayName");
@@ -324,7 +361,7 @@ public class SearchStudyAjaxFacade {
         table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
+        table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
         
@@ -367,6 +404,20 @@ public class SearchStudyAjaxFacade {
         columnObservationDate.setTitle("Observation Dates");
         columnObservationDate.setCell("gov.nih.nci.cabig.caaers.web.search.ObservationDateDisplayCell");        
         model.addColumn(columnObservationDate);
+        
+        Column columnstudyIdentifier = model.getColumnInstance();   
+        columnstudyIdentifier.setSortable(false);
+        columnstudyIdentifier.setProperty("test");
+        columnstudyIdentifier.setTitle("Study ID");
+        columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCellRoutine");        
+        model.addColumn(columnstudyIdentifier);
+        
+        Column columnParticipantIdentifier = model.getColumnInstance();
+        columnParticipantIdentifier.setSortable(false);
+        columnParticipantIdentifier.setProperty("primaryIdentifier");
+        columnParticipantIdentifier.setTitle("Participant ID");
+        columnParticipantIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCellRoutine");        
+        model.addColumn(columnParticipantIdentifier);
         
         /*
         Column aeDetectionDate = model.getColumnInstance();        
@@ -419,6 +470,7 @@ public class SearchStudyAjaxFacade {
 	   try {
 		studies = studyDao.searchStudy(propValue);
 	   } catch (Exception e) {
+		   log.debug("EXCEPTION ::" + e.getMessage());
 		   throw new RuntimeException("Formatting Error", e);
 	   }
 	   finally{
@@ -477,37 +529,43 @@ public class SearchStudyAjaxFacade {
 	   log.debug("type :: " + type);
 	   log.debug("text :: " + text);
 	   String sType, sText;
-	   List<String> props = new ArrayList<String>();
-	   List<String> values = new ArrayList<String>();
-	   String[] theValues = new String[0];
+	   Map<String,String> propValue = new HashMap<String,String>();
+	   List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>(); 
 	   
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"notimplemented");
-	   m.put("prop1" ,"notimplemented");
-	   m.put("prop2" ,"identifier.value");
-	   m.put("prop3" ,"notimplemented");
-	   m.put("prop4" ,"study.shortTitle");
-	   m.put("prop5" ,"ctcCategory.name");
-	   m.put("prop6" ,"ctcTerm.term");
-	   m.put("prop7" ,"ctcTerm.ctepCode");
-	   m.put("prop8" ,"grade_code");
-	   m.put("prop9" ,"notimplemented");
-	   m.put("prop10" ,"notimplemented");
+	   m.put("prop0" ,"ctcCategory");
+   	   m.put("prop1" ,"ctcTerm");
+   	   m.put("prop2" ,"ctcMeddra");
+   	   m.put("prop3" ,"grade");
+   	   m.put("prop4" ,"studyIdentifier");
+	   m.put("prop5", "studyShortTitle");
+	   m.put("prop6", "participantIdentifier");
+	   m.put("prop7", "participantFirstName");
+	   m.put("prop8", "participantLastName");
+	   m.put("prop9", "participantEthnicity");
+	   m.put("prop10", "participantGender");
+	   m.put("prop11", "participantDateOfBirth");
 	   
 	   
-	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
+	   
+   	 while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
 	   {
-   		sType = typeToken.nextToken();
-   		sText = textToken.nextToken();
-   		
-   		props.add(m.get(sType));
-   		values.add(sText);
-	   
+ 		sType = typeToken.nextToken();
+ 		sText = textToken.nextToken();
+ 		// Create a map  of property key ,and search criteria 
+ 		propValue.put(m.get(sType),sText);
 	   }
-	   
-	   return adverseEventDao.getByCriteria(values.toArray(theValues), props);
+
+	   try {
+		   adverseEvents = adverseEventDao.searchAdverseEvents(propValue);
+		   } catch (Exception e) {
+			   throw new RuntimeException("Formatting Error", e);
+		   }
+		   finally{
+			   return adverseEvents;
+		   }
    }
    
    private List<ExpeditedAdverseEventReport> constructExecuteExpeditedReportQuery(String type, String text)
@@ -519,13 +577,23 @@ public class SearchStudyAjaxFacade {
 	   log.debug("text :: " + text);
 	   String sType, sText;
 	   Map<String,String> propValue = new HashMap<String,String>();
+	   List<ExpeditedAdverseEventReport> expeditedReports = new ArrayList<ExpeditedAdverseEventReport>(); 
 	   
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"ctcTerm");
-	   m.put("prop1" ,"ctcCategory");
-	   m.put("prop2", "ctcCtepCode");
+	   m.put("prop0" ,"expeditedDate");
+	   m.put("prop1" ,"ctcTerm");
+	   m.put("prop2" ,"ctcCategory");
+	   m.put("prop3", "ctcCtepCode");
+	   m.put("prop4" ,"studyIdentifier");
+	   m.put("prop5", "studyShortTitle");
+	   m.put("prop6", "participantIdentifier");
+	   m.put("prop7", "participantFirstName");
+	   m.put("prop8", "participantLastName");
+	   m.put("prop9", "participantEthnicity");
+	   m.put("prop10", "participantGender");
+	   m.put("prop11", "participantDateOfBirth");
 	   
 	   
 	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
@@ -535,8 +603,16 @@ public class SearchStudyAjaxFacade {
    		// Create a map  of property key ,and search criteria 
    		propValue.put(m.get(sType),sText);
 	   }
+	   
+	   try {
+		   expeditedReports = expeditedAdverseEventReportDao.searchExpeditedReports(propValue);
+		   } catch (Exception e) {
+			   throw new RuntimeException("Formatting Error", e);
+		   }
+		   finally{
+			   return expeditedReports;
+		   }
 
-	   return expeditedAdverseEventReportDao.searchExpeditedReports(propValue);
    }
    
    private List<RoutineAdverseEventReport> constructExecuteRoutineReportQuery(String type, String text)
@@ -548,13 +624,23 @@ public class SearchStudyAjaxFacade {
 	   log.debug("text :: " + text);
 	   String sType, sText;
 	   Map<String,String> propValue = new HashMap<String,String>();
+	   List<RoutineAdverseEventReport> routineReports = new ArrayList<RoutineAdverseEventReport>(); 
 	   
 	   
 	   // map the html properties to the model properties
 	   Map<String,String> m = new HashMap<String,String>();
-	   m.put("prop0" ,"ctcTerm");
-	   m.put("prop1" ,"ctcCategory");
-	   m.put("prop2", "ctcCtepCode");
+	   m.put("prop0" ,"date");
+	   m.put("prop1" ,"ctcTerm");
+	   m.put("prop2" ,"ctcCategory");
+	   m.put("prop3", "ctcCtepCode");
+	   m.put("prop4" ,"studyIdentifier");
+	   m.put("prop5", "studyShortTitle");
+	   m.put("prop6", "participantIdentifier");
+	   m.put("prop7", "participantFirstName");
+	   m.put("prop8", "participantLastName");
+	   m.put("prop9", "participantEthnicity");
+	   m.put("prop10", "participantGender");
+	   m.put("prop11", "participantDateOfBirth");
 	   
 	   
 	   while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
@@ -564,8 +650,16 @@ public class SearchStudyAjaxFacade {
    		// Create a map  of property key ,and search criteria 
    		propValue.put(m.get(sType),sText);
 	   }
-
-	   return routineAdverseEventReportDao.searchRoutineReports(propValue);
+	   
+	   
+	   try {
+		   routineReports = routineAdverseEventReportDao.searchRoutineReports(propValue);
+		   } catch (Exception e) {
+			   throw new RuntimeException("Formatting Error", e);
+		   }
+		   finally{
+			   return routineReports;
+		   }
    }
     
    /*
@@ -576,7 +670,13 @@ public class SearchStudyAjaxFacade {
    {
        if(parameterMap != null)
        {
+    	
        	//String a = parameterMap.get("assembler_p").toString();
+       	for(Object key : parameterMap.keySet())
+       	{
+       		log.debug( key.toString() + " ----- " + parameterMap.get(key).getClass().getName() + "--" + parameterMap.get(key));
+       		
+       	}
        }
        
    		

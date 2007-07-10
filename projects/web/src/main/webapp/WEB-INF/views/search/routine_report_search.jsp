@@ -16,7 +16,10 @@
 
 <style type="text/css">
         /* Override default lable length */
-        div.row div.label { width: 13em; }
+        div.row div.label { width: 9em; } 
+        div.row div.value { margin-left: 10em; }
+        input { width:8em; }
+        .box.paired { width: 30%; }
 </style>
 <title>${tab.longTitle}</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
@@ -24,11 +27,12 @@
 
 <script>
    
-function buildTable(form) {	
+function buildTable(form,size) {
+	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < 3; x++) {
+	for(var x=0; x < size; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -39,67 +43,122 @@ function buildTable(form) {
 	search.getRoutineReportTable(parameterMap, type, text, showTable);		
 }
 
-function showTable(table) {
-	document.getElementById('tableDiv').innerHTML=table;
-}
- 
-function fireAction(action, selected){	
-	document.getElementById("_action").value=action;	
-	document.getElementById("_selected").value=selected;
-	document.searchForm.submit();	
-} 
-
 </script>
 </head>
 <body>
 
-<chrome:box title=" Expedited Report search">
-    <form:form name="searchForm" id="searchForm" method="post">
-       <div>			
-			<input type="hidden" name="_selected" id="_selected" value="">
-			<input type="hidden" name="_action" id="_action" value="">
-		</div>
-		 <p class="instructions">
-        	Search for Routine AE reports by choosing any of the listed Criteria. The result set will only show 
-        	the primary AE's Ctc term which is associated with the Routine Report , it's grade, attribution and the report's observation period.
-    	</p>
-    	
-        <div class="content">
-        
-		    <div class="pane"> 
-		    
-		    <div class="row">
-		    	<div class="label"> Ctc Term :&nbsp; </div>
+<form:form name="searchForm" id="searchForm" method="post">
+Search for Routine AE reports by choosing any of the listed Criteria. The result set will only show 
+the primary AE's Ctc Term which is associated with the Expedited Report , it's grade, attribution and the detection date.
+<chrome:box title="Routine Report Criteria" cssClass="paired" autopad="true">
+
+			<div class="row">
+		    	<div class="label"> Observation Date :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>
 		    </div>
-		    
+				
 		    <div class="row">
-		    	<div class="label"> Ctc Category :&nbsp; </div>
+		    	<div class="label"> Ctc Term :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text"/></div>
+		    </div>
+		    
+		   <div class="row">
+		    	<div class="label"> Ctc Category :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop2_select','prop2')" style="width:150px" id="prop2_select">
+		    			<option>---</option>
+		    		<c:forEach items="${ctcCategories}" varStatus="status" var="field">
+		    			<option>${field.name}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop2" type="hidden" name="gender"/>
+		    	</div>
 		    </div>
 
 		     <div class="row">
 		    	<div class="label"> MedDRA Code :&nbsp; </div>
-		    	<div class="value"><input id="prop2" type="text"/></div>
+		    	<div class="value"><input id="prop3" type="text"/></div>
 		    </div>
-		
-			</div>
-		
-		 	
-		 	<div class="endpanes" />
-			<div class="row">
-			     <div class="labl"><input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
-			</div>
-        </div>
-    </form:form>
 </chrome:box>
+
+<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+		    <div class="row">
+		    	<div class="label"> Identifier :&nbsp; </div>
+		    	<div class="value"><input id="prop4" type="text"/></div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Short Title :&nbsp; </div>
+		    	<div class="value"><input id="prop5" type="text" name="shortTitle"/></div>
+		    </div>
+</chrome:box>
+
+<chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
+		     <div class="row">
+		    	<div class="label"> Identifier :&nbsp; </div>
+		    	<div class="value"><input id="prop6" type="firstName"/></div>
+		    </div>
+		    
+		    
+		     <div class="row">
+		    	<div class="label"> First Name :&nbsp; </div>
+		    	<div class="value"><input id="prop7" type="firstName"/></div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Last Name :&nbsp; </div>
+		    	<div class="value"><input id="prop8" type="text" name="lastName"/></div>
+		    </div>
+		    
+		    
+		    <div class="row">
+		    	<div class="label"> Ethnicity :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop9_select','prop9')" style="width:150px" id="prop9_select">
+		    		<c:forEach items="${ethnicity}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop9" type="hidden" name="gender"/>
+		    	</div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Gender :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop10_select','prop10')" id="prop10_select">
+		    		<c:forEach items="${genders}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop10" type="hidden" name="gender"/>
+		    	</div>
+		    </div>
+		 	
+		 	<div class="row">
+		    	<div class="label"> Birth Date :&nbsp; </div>
+		    	<div class="value"><input id="prop11" type="text" name="dateOfBirth"/></div>
+		    </div>
+</chrome:box>
+
+<div class="endpanes" />
+<div class="row" style="float:right;">
+	<input class='ibutton' type='button' onclick="buildTable('assembler',12);" value='Search'  title='Search Routine Report'/>
+	<tags:indicator id="indicator" />
+</div>
+<div class="endpanes" />
+ </form:form>
 <br>
-<chrome:box title="Results">
+
+
+<form:form id="assembler" >
+<chrome:box title="Routine Report Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
 		</div>
 	</chrome:division>
 </chrome:box>
+</form:form>
 </body>
 </html>

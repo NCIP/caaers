@@ -155,3 +155,21 @@ Object.extend(ListEditor.prototype, {
     }
 
 })
+
+
+//////// SEARCH helpers
+
+function showTable(table) {
+	$('indicator').className='indicator'
+	document.getElementById('tableDiv').innerHTML=table;
+}
+
+function copyValues(select,prop){
+	
+	var selectArray = $(select).options;
+	 for ( i=0; i < selectArray.length; i++){
+	 	if (selectArray[i].selected  ) {
+	 		$(prop).value=selectArray[i].value == "---" ? "" : selectArray[i].value
+	 	}
+	 }
+}

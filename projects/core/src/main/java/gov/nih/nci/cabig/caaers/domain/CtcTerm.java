@@ -35,6 +35,15 @@ public class CtcTerm extends AbstractImmutableDomainObject {
             return getTerm() + " - " + getSelect();
         }
     }
+    
+    @Transient
+    public String getFullNameWithMedDRA() {
+        if (select == null) {
+            return getTerm() + " - " + getCtepCode();
+        } else {
+            return getTerm() + " - " + getSelect() + " - " + getCtepCode();
+        }
+    }
 
     @Transient
     public List<CodedGrade> getGrades() {

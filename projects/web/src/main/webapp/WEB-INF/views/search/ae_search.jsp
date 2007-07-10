@@ -16,7 +16,10 @@
 
 <style type="text/css">
         /* Override default lable length */
-        div.row div.label { width: 13em; }
+         div.row div.label { width: 8em; } 
+         div.row div.value { margin-left: 9em; }
+         input { width:8em; }
+         .box.paired { width: 30%; }
 </style>
 <title>${tab.longTitle}</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
@@ -24,11 +27,12 @@
 
 <script>
    
-function buildTable(form) {	
+function buildTable(form,size) {
+	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < 11; x++) {
+	for(var x=0; x < size; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -36,171 +40,138 @@ function buildTable(form) {
 		}
 	}
 	var parameterMap = getParameterMap(form);
-	search.getAdverseEventTable(parameterMap, type, text, showTable,2);		
+	search.getAdverseEventTable(null, type, text, showTable);		
 }
-
-function showTable(table) {
-	document.getElementById('tableDiv').innerHTML=table;
-}
- 
-function fireAction(action, selected){	
-	document.getElementById("_action").value=action;	
-	document.getElementById("_selected").value=selected;
-	document.searchForm.submit();	
-} 
 
 </script>
 </head>
 <body>
 
-<chrome:box title="Adverse Event search">
-    <form:form name="searchForm" id="searchForm" method="post">
-       <div>			
-			<input type="hidden" name="_selected" id="_selected" value="">
-			<input type="hidden" name="_action" id="_action" value="">
-		</div>
-		 <p class="instructions">
-        	Search for Adverse Events by choosing any of the criteria. 
-    	</p>
-    	
-    	 <div class="row">
-		    	<!--<div class="label"> Date Range :&nbsp;</div>-->
-		    	<div class="value"><input id="prop0" type="hidden"/></div>
-		    
-		    	<!--<div class="label"> To :&nbsp; </div>-->
-		    	<div class="value"><input id="prop1" type="hidden" name="shortTitle"/></div>
+
+<form:form name="searchForm" id="searchForm" method="post">
+Search for Adverse Events by choosing any of the listed Criteria. The result set will only show 
+the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc Term , category , grade, medDRA code and Detection Date
+
+
+<chrome:box title="AE Criteria" cssClass="paired" autopad="true">
+		     <div class="row">
+		    	<div class="label"> Ctc Category :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop0_select','prop0')" style="width:150px" id="prop0_select">
+		    			<option>---</option>
+		    		<c:forEach items="${ctcCategories}" varStatus="status" var="field">
+		    			<option>${field.name}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop0" type="hidden" name="gender"/>
+		    	</div>
 		    </div>
-        <div class="content">
-        	<%--
-   			 <div class="row" align="center">
-   			 
-               <div class="label">Search By Study: <a href="javascript:fireAction('addCriteria',-1);"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></div>
-		      </div>
-		      --%>
-		    <div class="pane"> 
-		    
-		    <div class="row">
-		    	<div class="label"> Study ID :&nbsp;</div>
-		    	<div class="value"><input id="prop2" type="text"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label"> Sponsor :&nbsp; </div>
-		    	<div class="value"><input id="prop3" type="text" name="shortTitle"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label"> Study Short Title :&nbsp; </div>
-		    	<div class="value"><input id="prop4" type="text" name="longTitle"/></div>
-		    </div>
-		    
-		    <%--
-		    <div class="row">
-		    	<div class="label"> Study Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop3" type="text" name="studyIdentifier"/></div>
-		    </div>
-		    
-		    
-        	<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
-            	<div class="label">Search By Study:</div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="10"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
-			</div>
-			</c:forEach>
-			
-			<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
-            	<div class="label">Search By Study:</div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="10"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
-			</div>
-			</c:forEach>
-			--%>
-			</div>
-			
-			<div class="pane">
-		      
-		      <div class="row">
-		    	<div class="label"> CTC Category :&nbsp; </div>
-		    	<div class="value"><input id="prop5" type="firstName"/></div>
-		      </div>
 		      
 		       <div class="row">
 		    	<div class="label"> CTC Term :&nbsp; </div>
-		    	<div class="value"><input id="prop6" type="firstName"/></div>
+		    	<div class="value"><input  class="ae" id="prop1" type="firstName"/></div>
 		      </div>
 		      
 		       <div class="row">
 		    	<div class="label"> MedDRA Code :&nbsp; </div>
-		    	<div class="value"><input id="prop7" type="firstName"/></div>
+		    	<div class="value"><input   class="ae" id="prop2" type="firstName"/></div>
 		      </div>
 		      
 		       <div class="row">
 		    	<div class="label"> Grade :&nbsp; </div>
-		    	<div class="value"><input id="prop8" type="firstName"/></div>
+		    	<div class="value"><input  class="ae"  id="prop3" type="firstName"/></div>
 		      </div>
 			
-			</div>
-			
-			<div class="pane">
-		 	
-		 	<%--
-		 	<div class="row" align="center">
-   			 
-               <div class="label">Search By Participant: <a href="javascript:fireAction('addCriteria',-1);"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></div>
-		    </div>
-		    --%>
+</chrome:box>
+
+
+<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+		    
 		     <div class="row">
-		    	<div class="label"> Associated Report # :&nbsp; </div>
-		    	<div class="value"><input id="prop9" type="firstName"/></div>
+		    	<div class="label"> Identifier :&nbsp;</div>
+		    	<div class="value"><input class="ae" id="prop4" type="text"/></div>
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Associated Report Type :&nbsp; </div>
-		    	<div class="value"><input id="prop10" type="text" name="lastName"/></div>
+		    	<div class="label"> Sponsor :&nbsp; </div>
+		    	<div class="value"><input  class="ae" id="prop5" type="text" name="shortTitle"/></div>
 		    </div>
 		    
-		 	
-		 	<%--
-		 	<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
-            	<div class="label">Search By Participant:</div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="10"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
-			</div>
-		 	</c:forEach>
-		 	--%>
-		 	</div>
-		 	
-		 	<div class="endpanes" />
-			<div class="row">
-			     <div class="labl"><input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
-			</div>
-        </div>
-    </form:form>
+		    <div class="row">
+		    	<div class="label"> Short Title :&nbsp; </div>
+		    	<div class="value"><input  class="ae" id="prop6" type="text" name="longTitle"/></div>
+		    </div>
+		   
 </chrome:box>
-<br>
-<chrome:box title="Results">
+
+
+<chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
+		        <div class="row">
+		    	<div class="label"> Identifier :&nbsp; </div>
+		    	<div class="value"><input id="prop7" type="firstName"/></div>
+		    </div>
+		    
+		    
+		     <div class="row">
+		    	<div class="label"> First Name :&nbsp; </div>
+		    	<div class="value"><input id="prop8" type="firstName"/></div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Last Name :&nbsp; </div>
+		    	<div class="value"><input id="prop9" type="text" name="lastName"/></div>
+		    </div>
+		    
+		    
+		    <div class="row">
+		    	<div class="label"> Ethnicity :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop10_select','prop9')" style="width:150px" id="prop10_select">
+		    		<c:forEach items="${ethnicity}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop10" type="hidden" name="gender"/>
+		    	</div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Gender :&nbsp; </div>
+		    	<div class="value">
+		    	<select onChange="copyValues('prop11_select','prop11')" id="prop11_select">
+		    		<c:forEach items="${genders}" varStatus="status" var="field">
+		    			<option>${field.code}</option>
+		    		</c:forEach>
+		    	</select>
+		    	<input id="prop11" type="hidden" name="gender"/>
+		    	</div>
+		    </div>
+		 	
+		 	<div class="row">
+		    	<div class="label"> Birth Date :&nbsp; </div>
+		    	<div class="value"><input id="prop12" type="text" name="dateOfBirth"/></div>
+		    </div>
+		    
+			
+</chrome:box>
+
+<div class="endpanes" />
+<div class="row" style="float:right;">
+	<input class='ibutton' type='button' onclick="buildTable('assembler',13);" value='Search'  title='Search Study'/>
+	<tags:indicator id="indicator" />
+</div>
+<div class="endpanes" />
+ </form:form>
+<br>			
+
+<form:form id="assembler" >
+<chrome:box title="Adverse Event Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
 		</div>
 	</chrome:division>
 </chrome:box>
+</form:form>
 </body>
 </html>

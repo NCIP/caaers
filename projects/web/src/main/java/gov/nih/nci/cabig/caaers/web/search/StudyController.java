@@ -34,10 +34,11 @@ public class StudyController extends SearchController {
 		System.out.println("I am in onSubmit ");
 		Enumeration en=request.getParameterNames();
 		
-		if(request.getMethod().equals(METHOD_GET))
-		{
+		//if(request.getMethod().equals(METHOD_GET))
+		//{
+			System.out.println("I am in onSubmit 2 ");
 			super.buildSearchResultTable(request,0);
-		}
+		//}
 	}
 	
 	@Override
@@ -47,6 +48,7 @@ public class StudyController extends SearchController {
 		return sCommand;
 	}	
 
+	/*
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand,
 			BindException errors) throws Exception
@@ -73,6 +75,7 @@ public class StudyController extends SearchController {
     	request.getSession().setAttribute(getFormSessionAttributeName(), oCommand);
     	
     	return modelAndView;
-	}	
+	}
+	*/	
 	
 }

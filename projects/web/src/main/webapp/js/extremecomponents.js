@@ -12,7 +12,7 @@ function getParameterMap(form) {
         if (curVal) { // more than one field so append value to array
         	curVal[curVal.length] = val;
         } else { // add field and value
-        	map[key]= [val];
+        	map[key]= val;
         }
     }
     return map;

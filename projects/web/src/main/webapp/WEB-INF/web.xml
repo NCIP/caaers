@@ -106,6 +106,24 @@
         <filter-name>BeansInRequestFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <filter>
+  		<filter-name>eXtremeExport</filter-name>
+  		<filter-class>org.extremecomponents.table.filter.ExportFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>eXtremeExport</filter-name>
+  		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+  		<filter-name>Sitemesh</filter-name>
+  		<filter-class>org.extremecomponents.table.filter.SitemeshPageFilter</filter-class>
+	</filter>
+	<filter-mapping>
+  		<filter-name>Sitemesh</filter-name>
+  		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 
 
