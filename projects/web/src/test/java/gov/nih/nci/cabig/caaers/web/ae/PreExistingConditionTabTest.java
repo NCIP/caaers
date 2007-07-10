@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
 import org.springframework.validation.ObjectError;
 
 /**
@@ -11,6 +12,10 @@ public class PreExistingConditionTabTest extends AeTabTestCase {
     @Override
     protected PreExistingConditionsTab createTab() {
         return new PreExistingConditionsTab();
+    }
+
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+        cmd.getAeReport().addAdverseEventPreExistingCond(new AdverseEventPreExistingCond());
     }
 
     public void testFieldProperties() throws Exception {

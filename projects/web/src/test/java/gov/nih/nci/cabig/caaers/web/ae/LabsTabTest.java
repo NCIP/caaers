@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.Lab;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,11 @@ import java.util.List;
  */
 public class LabsTabTest extends AeTabTestCase {
     @Override protected LabsTab createTab() { return new LabsTab(); }
+
+    @Override
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+        cmd.getAeReport().addLab(new Lab());
+    }
 
     public void testGroupDisplayNames() throws Exception {
         assertDisplayNameForFieldGroup("Lab A", "lab0");

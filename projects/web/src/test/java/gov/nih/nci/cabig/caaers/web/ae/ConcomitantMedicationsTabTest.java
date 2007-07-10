@@ -1,16 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import org.springframework.validation.ObjectError;
 
 /**
  * @author Rhett Sutphin
  */
 public class ConcomitantMedicationsTabTest extends AeTabTestCase {
-
     @Override
     protected ConcomitantMedicationsTab createTab() {
         return new ConcomitantMedicationsTab();
+    }
+
+    @Override
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+        cmd.getAeReport().addConcomitantMedication(new ConcomitantMedication());
     }
 
     public void testFieldProperties() throws Exception {

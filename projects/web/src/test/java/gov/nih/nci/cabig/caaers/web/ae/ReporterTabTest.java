@@ -12,6 +12,14 @@ public class ReporterTabTest extends AeTabTestCase {
         return new ReporterTab();
     }
 
+    @Override
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+        cmd.getAeReport().getReporter().getContactMechanisms().put("phone", "foo");
+        cmd.getAeReport().getReporter().getContactMechanisms().put("fax", "foo");
+        cmd.getAeReport().getPhysician().getContactMechanisms().put("phone", "foo");
+        cmd.getAeReport().getPhysician().getContactMechanisms().put("fax", "foo");
+    }
+
     public void testGroupsIncludesReporter() throws Exception {
         InputFieldGroup actual = getTab().createFieldGroups(command).get("reporter");
         assertNotNull("No reporter group", actual);

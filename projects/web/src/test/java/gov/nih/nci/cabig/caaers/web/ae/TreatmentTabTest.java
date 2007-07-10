@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -15,6 +16,11 @@ public class TreatmentTabTest extends AeTabTestCase {
     @Override
     protected TreatmentTab createTab() {
         return new TreatmentTab();
+    }
+
+    @Override
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+        cmd.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
     }
 
     public void testTreatmentInfoFields() throws Exception {

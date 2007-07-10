@@ -1,21 +1,22 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.InvalidPropertyException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
 public abstract class AeTabTestCase extends AeWebTestCase {
+    private static final Log log = LogFactory.getLog(AeTabTestCase.class);
     private AeTab tab;
 
     @Override
@@ -25,6 +26,22 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
 
     protected abstract AeTab createTab();
+
+    /**
+     * Subclasses should override this to initialize all the components
+     * of the command they might use.  E.g., if the tab being tested
+     * generates fields for a collection, put an object in that collection.
+     *
+     * Subclasses need not repeat things which are added as part of the minimally
+     * valid command.
+     */
+    protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
+    }
+
+    public void testFieldPropertiesExist() {
+        fillInUsedProperties(command);
+        assertAllFieldPropertiesExist();
+    }
 
     @Override
     protected CreateExpeditedAdverseEventCommand createCommand() {
@@ -56,6 +73,23 @@ public abstract class AeTabTestCase extends AeWebTestCase {
             expectedProperties.length, actualFields.size());
         for (int i = 0; i < expectedProperties.length; i++) {
             assertEquals("Wrong property " + i, expectedProperties[i], actualFields.get(i).getPropertyName());
+        }
+    }
+
+    protected void assertAllFieldPropertiesExist() {
+        Map<String, InputFieldGroup> groups = getTab().createFieldGroups(command);
+        BeanWrapper wrappedCommand = new BeanWrapperImpl(command);
+        for (String name : groups.keySet()) {
+            for (InputField field : groups.get(name).getFields()) {
+                String msg = "The property " + field.getPropertyName() + " (group " + name
+                    + ") is not present in the command.  Either the command was not properly initialized (override fillInUsedProperties), or one of the tab's field groups is wrong.";
+                try {
+                    assertNotNull(msg, wrappedCommand.getPropertyType(field.getPropertyName()));
+                } catch (InvalidPropertyException ipe) {
+                    log.debug("Property not found exception", ipe);
+                    fail(msg);
+                }
+            }
         }
     }
 
