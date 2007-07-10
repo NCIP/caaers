@@ -124,7 +124,7 @@
                     </property>
                 </bean>
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Search" p:mainController="studyController">
+                    p:displayName="Advanced Search" p:mainController="studyController">
                     <property name="pathMapping"><value>/search/**</value></property>
                     <property name="tasks">
                         <list>
