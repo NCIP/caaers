@@ -70,13 +70,16 @@
                 <value>gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite</value>                
                 <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
-                <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
-                <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>

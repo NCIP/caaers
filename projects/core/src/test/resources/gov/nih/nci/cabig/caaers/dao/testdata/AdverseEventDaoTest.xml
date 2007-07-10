@@ -144,4 +144,44 @@
         adverse_event_id="-2"
         list_index="1"
         />
+
+    <!-- TODO: this table should be named disease_histories -->
+    <DISEASE_HISTORY
+        id="-88"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-17"
+        cause_id="-88"
+        cause_type="DH"
+        attribution_code="5"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <SURGERY_INTERVENTIONS
+        id="-34"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-18"
+        cause_id="-34"
+        cause_type="SI"
+        attribution_code="3"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <RADIATION_INTERVENTIONS
+        id="-37"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-19"
+        cause_id="-37"
+        cause_type="RI"
+        attribution_code="4"
+        adverse_event_id="-2"
+        list_index="0"
+        />
 </dataset>

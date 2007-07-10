@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -47,6 +50,9 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private List<CourseAgentAttribution> courseAgentAttributions;
     private List<ConcomitantMedicationAttribution> concomitantMedicationAttributions;
     private List<OtherCauseAttribution> otherCauseAttributions;
+    private List<DiseaseAttribution> diseaseAttributions;
+    private List<SurgeryAttribution> surgeryAttributions;
+    private List<RadiationAttribution> radiationAttributions;
 
     ////// BOUND PROPERTIES
 
@@ -118,6 +124,54 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     public void setOtherCauseAttributions(List<OtherCauseAttribution> otherCauseAttributions) {
         this.otherCauseAttributions = otherCauseAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="adverse_event_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "cause_type = 'DH'") // it is pretty lame that this is necessary
+    public List<DiseaseAttribution> getDiseaseAttributions() {
+        if (diseaseAttributions == null) {
+            diseaseAttributions = new ArrayList<DiseaseAttribution>();
+        }
+        return diseaseAttributions;
+    }
+
+    public void setDiseaseAttributions(List<DiseaseAttribution> diseaseAttributions) {
+        this.diseaseAttributions = diseaseAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="adverse_event_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "cause_type = 'SI'") // it is pretty lame that this is necessary
+    public List<SurgeryAttribution> getSurgeryAttributions() {
+        if (surgeryAttributions == null) {
+            surgeryAttributions = new ArrayList<SurgeryAttribution>();
+        }
+        return surgeryAttributions;
+    }
+
+    public void setSurgeryAttributions(List<SurgeryAttribution> surgeryAttributions) {
+        this.surgeryAttributions = surgeryAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="adverse_event_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "cause_type = 'RI'") // it is pretty lame that this is necessary
+    public List<RadiationAttribution> getRadiationAttributions() {
+        if (radiationAttributions == null) {
+            radiationAttributions = new ArrayList<RadiationAttribution>();
+        }
+        return radiationAttributions;
+    }
+
+    public void setRadiationAttributions(List<RadiationAttribution> radiationAttributions) {
+        this.radiationAttributions = radiationAttributions;
     }
 
     @ManyToOne
