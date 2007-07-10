@@ -12,7 +12,6 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
-import gov.nih.nci.cabig.caaers.service.ReportServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,7 +23,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
 	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
 	//private ReportDefinitionDao reportDefinitionDao;
-	private ReportServiceImpl reportService;
+	//private ReportServiceImpl reportService;
 	
 	public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
 	
