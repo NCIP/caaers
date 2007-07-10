@@ -9,6 +9,9 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -99,6 +102,72 @@ public class AttributionTabTest extends AeTabTestCase {
         assertNotNull(actualGroup1);
         assertEquals(1, actualGroup1.getFields().size());
         assertEquals("attributionMap[other][0][1]", actualGroup1.getFields().get(0).getPropertyName());
+    }
+
+    public void testDiseaseFieldsIncluded() throws Exception {
+        DiseaseHistory dh = new DiseaseHistory();
+        dh.setCtepStudyDisease(new CtepStudyDisease());
+        dh.getCtepStudyDisease().setTerm(new DiseaseTerm());
+        dh.getCtepStudyDisease().getTerm().setTerm("Something");
+        command.getAeReport().setDiseaseHistory(dh);
+        ensureAeCount(2);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of disease groups", 1, map.size());
+        assertTrue("Map doesn't contain expected repeating group key. Actual keys: " +  map.keySet(),
+            map.containsKey("disease0"));
+
+        InputFieldGroup actualGroup0 = map.get("disease0");
+        assertNotNull(actualGroup0);
+        assertEquals(2, actualGroup0.getFields().size());
+        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    }
+
+    public void testSurgeryFieldsIncluded() throws Exception {
+        command.getAeReport().getSurgeryIntervention().setDescription("Something");
+        ensureAeCount(2);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of surgery groups", 1, map.size());
+
+        InputFieldGroup actualGroup0 = map.get("surgery0");
+        assertNotNull(actualGroup0);
+        assertEquals(2, actualGroup0.getFields().size());
+        assertEquals("attributionMap[surgery][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[surgery][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    }
+
+    public void testRadiationFieldsIncluded() throws Exception {
+        command.getAeReport().getRadiationIntervention().setDescription("Something");
+        ensureAeCount(2);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of radiation groups", 1, map.size());
+
+        InputFieldGroup actualGroup0 = map.get("radiation0");
+        assertNotNull(actualGroup0);
+        assertEquals(2, actualGroup0.getFields().size());
+        assertEquals("attributionMap[radiation][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[radiation][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    }
+
+    public void testNoDiseaseFieldsWhenDiseaseBlank() throws Exception {
+        ensureAeCount(2);
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of disease groups", 0, map.size());
+    }
+
+    public void testNoSurgeryFieldsWhenSurgeryBlank() throws Exception {
+        ensureAeCount(2);
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of surgery groups", 0, map.size());
+    }
+
+    public void testNoRadiationFieldsWhenRadiationBlank() throws Exception {
+        ensureAeCount(2);
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of radiation groups", 0, map.size());
     }
 
     public void testCreateStudyAgentBlock() throws Exception {
