@@ -67,7 +67,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_site_id")
-    @Cascade(CascadeType.LOCK)
+    @Cascade({ CascadeType.LOCK, CascadeType.SAVE_UPDATE })
     public StudySite getStudySite() {
         return studySite;
     }
@@ -78,7 +78,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
-    @Cascade(CascadeType.LOCK)
+    @Cascade({ CascadeType.LOCK, CascadeType.SAVE_UPDATE })
     public Participant getParticipant() {
         return participant;
     }
