@@ -174,7 +174,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureCourseAgentCount(1);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(0);
+        AttributionTab.AttributionBlock block = getBlocks().get(1);
         assertEquals(1, block.getRows().size());
         assertEquals("Course", block.getDisplayName());
     }
@@ -183,7 +183,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureCourseAgentCount(2);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(0);
+        AttributionTab.AttributionBlock block = getBlocks().get(1);
         assertEquals(2, block.getRows().size());
         assertEquals("Course", block.getDisplayName());
     }
@@ -192,7 +192,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(1);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(1);
+        AttributionTab.AttributionBlock block = getBlocks().get(4);
         assertEquals(1, block.getRows().size());
         assertEquals("Concomitant medication", block.getDisplayName());
     }
@@ -201,7 +201,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(2);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(1);
+        AttributionTab.AttributionBlock block = getBlocks().get(4);
         assertEquals(2, block.getRows().size());
         assertEquals("Concomitant medications", block.getDisplayName());
     }
