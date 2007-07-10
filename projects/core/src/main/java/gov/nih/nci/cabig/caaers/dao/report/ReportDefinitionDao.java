@@ -52,7 +52,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 	
 	@SuppressWarnings("unchecked")
 	public List<ReportDefinition> getAll(int orgId){
-		return getHibernateTemplate().find("from ReportDefinition t where t.org_id=?", new Object[]{orgId});
+		return getHibernateTemplate().find("from ReportDefinition t where t.organization.id=?", new Object[]{orgId});
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -63,10 +63,10 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 						)
 				);
 	}
-	
+	 
 	@SuppressWarnings("unchecked")
 	public ReportDefinition getByName(String name, int orgId){
-		return CollectionUtils.firstElement((List<ReportDefinition>)getHibernateTemplate().find("from ReportDefinition t where t.org_id=? and t.name=?", 
+		return CollectionUtils.firstElement((List<ReportDefinition>)getHibernateTemplate().find("from ReportDefinition t where t.organization.id=? and t.name=?", 
 				new Object[]{ orgId, name}));
 	}
 	
