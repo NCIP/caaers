@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
 
@@ -54,7 +55,7 @@ public class CreateStudyControllerTest extends WebTestCase {
             }
         };
         configProperty = registerMockFor(ConfigProperty.class);
-        expect(configProperty.getMap()).andReturn(Collections.emptyMap()).anyTimes();
+        expect(configProperty.getMap()).andReturn(Collections.<String, List<Lov>>emptyMap()).anyTimes();
 
         StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
             ctcDao, organizationDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
