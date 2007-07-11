@@ -12,6 +12,12 @@
 <html>
 <head>
 <tags:stylesheetLink name="participant"/>
+<script src="/caaers/js/Spry/SpryEffects.js" type="text/javascript"></script>
+<style type="text/css">
+.hideInitially{
+	display: none;
+}
+</style>
 </head>
 <body>
     <p class="instructions">
@@ -24,25 +30,29 @@
         <div class="leftpane">
 	        <div class="row">
 	            <div class="label"><span class="red">*</span>First Name:</div>
-	            <div class="value"><form:input path="firstName" /></div>
+	            <div class="value"><form:input path="firstName" /><a onClick="firsthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="First Help">
+                  <h3> Enter participant’s first name. Required field. </h3></div>
 	        </div>
 	        
 	        <div class="row">
 	            <div class="label"><span class="red">*</span>Last Name:</div>
-	            <div class="value"><form:input path="lastName" /></div>
+	            <div class="value"><form:input path="lastName" /><a onClick="lasthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div> <div class="hideInitially" id="Last Help">
+                  <h3> Enter the participant’s surname.  Required field.  </h3></div>
 	        </div>
 	        
 	        <div class="row">
 	            <div class="label">Maiden Name:</div>
-	            <div class="value"><form:input path="maidenName" /></div>
+	            <div class="value"><form:input path="maidenName" /><a onClick="maidenhelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="Maiden Help">
+                  <h3>Enter the participant’s pre-marital name.  Optional field. </h3></div>
 	        </div>
 	        
 	        <div class="row">
 	            <div class="label">Middle Name:</div>
-	            <div class="value"><form:input path="middleName" /></div>
+	            <div class="value"><form:input path="middleName" /><a onClick="middlehelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="Middle Help">
+                  <h3> Enter participant’s middle name.  Optional field. </h3></div>
 	        </div>
         </div>
-        
+       </div>
         <div class="leftpane">
 	        <div class="row">
 	            <div class="label"><span class="red">*</span>Date of Birth:</div>
@@ -108,7 +118,13 @@
 
 		</c:forEach>
 
-	</table>
+	</table>		
+	<script type="text/javascript">
+var firsthelp = new Spry.Effect.Slide('First Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var lasthelp = new Spry.Effect.Slide('Last Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var maidenhelp = new Spry.Effect.Slide('Maiden Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var middlehelp = new Spry.Effect.Slide('Middle Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+</script>
         </jsp:attribute>
     </tags:tabForm>    
 </body>
