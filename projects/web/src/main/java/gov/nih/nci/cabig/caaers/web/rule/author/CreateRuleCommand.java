@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
+import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.util.ArrayList;
@@ -326,21 +327,21 @@ public class CreateRuleCommand implements RuleInputCommand
     	
     	if (SPONSOR_LEVEL.equalsIgnoreCase(level))
     	{
-    		packageName = SPONSOR_BASE_PACKAGE + "." + getStringWithoutSpaces(getSponsorName()) + "." + getStringWithoutSpaces(getRuleSetName()); 
+    		packageName = SPONSOR_BASE_PACKAGE + "." + RuleUtil.getStringWithoutSpaces(getSponsorName()) + "." + RuleUtil.getStringWithoutSpaces(getRuleSetName()); 
     	}
     	else if (INSTITUTIONAL_LEVEL.equalsIgnoreCase(level))
     	{
-    		packageName = INSTITUTION_BASE_PACKAGE + "." + getStringWithoutSpaces(getInstitutionName()) + "." + getStringWithoutSpaces(getRuleSetName());
+    		packageName = INSTITUTION_BASE_PACKAGE + "." + RuleUtil.getStringWithoutSpaces(getInstitutionName()) + "." + RuleUtil.getStringWithoutSpaces(getRuleSetName());
     	}
     	else if (SPONSOR_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level))
     	{
-    		packageName = SPONSOR_BASE_PACKAGE + ".study." + getStringWithoutSpaces(getSponsorName()) + "." 
-    		              + getStringWithoutSpaces(getCategoryIdentifier()) + "." + getStringWithoutSpaces(getRuleSetName());
+    		packageName = SPONSOR_BASE_PACKAGE + ".study." + RuleUtil.getStringWithoutSpaces(getSponsorName()) + "." 
+    		              + RuleUtil.getStringWithoutSpaces(getCategoryIdentifier()) + "." + RuleUtil.getStringWithoutSpaces(getRuleSetName());
     	}
     	else if (INSTITUTION_DEFINED_STUDY_LEVEL.equalsIgnoreCase(level))
     	{
-    		packageName = INSTITUTION_BASE_PACKAGE + ".study." + getStringWithoutSpaces(getInstitutionName()) + "." 
-    		              + getStringWithoutSpaces(getCategoryIdentifier()) + "." + getStringWithoutSpaces(getRuleSetName());
+    		packageName = INSTITUTION_BASE_PACKAGE + ".study." + RuleUtil.getStringWithoutSpaces(getInstitutionName()) + "." 
+    		              + RuleUtil.getStringWithoutSpaces(getCategoryIdentifier()) + "." + RuleUtil.getStringWithoutSpaces(getRuleSetName());
     	}
     	
     	//System.out.println("Package name is : " + packageName);
@@ -348,11 +349,7 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	}
 	
-	private String getStringWithoutSpaces(String str)
-	{
-		String _str= str.toLowerCase().trim();
-		return _str.replace(" ", "_");
-	}
+
 
 	public RulesEngineService getRulesEngineService() {
 		return rulesEngineService;
