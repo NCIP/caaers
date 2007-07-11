@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
@@ -84,7 +85,7 @@ public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) thro
 		String message = evaluateSponsorReportSchedule(ae,aeReport.getStudy());
 		if (!message.equals(CAN_NOT_DETERMINED)) {
 			reportDefinitions.add(message);
-			break;
+			//break;
 		}
 
 	}
@@ -99,7 +100,7 @@ public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) thro
 			String message = evaluateInstitutionReportSchedule(ae, study, so.getOrganization());
 			if (!message.equals(CAN_NOT_DETERMINED)) {
 				reportDefinitions.add(message);
-				break;
+				//break;
 			}
 		}
 	}
@@ -348,33 +349,27 @@ private String institutionLevelSchedulingRules(AdverseEvent ae,  Organization or
 private String getBindURI(String sponsorOrInstitutionName, String studyName, String type, String ruleSetName){
 		String bindURI = null;
 		if (type.equalsIgnoreCase("SPONSOR")){
-			bindURI = CategoryConfiguration.SPONSOR_BASE.getPackagePrefix() + "." +this.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.SPONSOR_BASE.getPackagePrefix() + "." +RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
 		}
 		
 		if(type.equalsIgnoreCase("INSTITUTION")){
-			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
 		}
 		
 		if(type.equalsIgnoreCase("SPONSOR_DEFINED_STUDY")){
-			bindURI = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(studyName)+"."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
 		}
 		
 		
 		if(type.equalsIgnoreCase("INSTITUTION_DEFINED_STUDY")){
-			bindURI = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix() + "."+this.getStringWithoutSpaces(studyName)+"."+this.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+this.getStringWithoutSpaces(ruleSetName);
+			bindURI = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(studyName)+"."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
 		}
 		
 		
 		return bindURI;
 	}
 	
-	private String getStringWithoutSpaces(String str){
-		
-		String _str= str.trim();
-		return _str.replace(" ", "_");
-		
-		
-	}
+
 	
 	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, Organization organization, String bindURI) throws Exception{
 		
