@@ -234,7 +234,7 @@ public class RuleUtil {
 	
 
 	
-	private static String getStringWithoutSpaces(String str)
+	public static String getStringWithoutSpaces(String str)
 	{
 		String _str= str.toLowerCase().trim();
 		
