@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>${tab.longTitle}</title>
+    <title>${tab.longTitle}<a href=  "/caaers/NetHelp/caaersSource_full.htm#section10attributionforadverseevents.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <style type="text/css">

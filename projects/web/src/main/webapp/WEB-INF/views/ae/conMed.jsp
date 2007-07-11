@@ -6,7 +6,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${tab.longTitle}</title>
+    <title>${tab.longTitle}<a href="/caaers/NetHelp/caaersSource_full.htm#section8concomitantmedications.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
     <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         div.row div.label { width: 14em; }

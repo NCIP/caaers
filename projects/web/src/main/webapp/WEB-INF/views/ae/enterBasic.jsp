@@ -8,7 +8,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <title>Enter basic AE information</title>
+    <title>Enter basic AE information<a href="/caaers/NetHelp/caaersSource_full.htm#section2enterbasicaeinformation.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
     <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
