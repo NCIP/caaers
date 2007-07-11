@@ -10,13 +10,15 @@
 <%@attribute name="enctype"%>
 <%@attribute name="boxId"%>
 <%@attribute name="boxClass" %>
+<%@attribute name="pageHelpAnchor"%>
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="singleFields" fragment="true" %>
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
 
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
-<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
+<c:if test="${not empty pageHelpAnchor}"><c:set var="pageHelp"><tags:pageHelp anchor="${pageHelpAnchor}"/></c:set></c:if>
+<chrome:box title="${pageHelp}${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
     <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}">
         <tags:tabFields tab="${tab}"/>

@@ -8,7 +8,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <title>Enter basic AE information<a href="/caaers/NetHelp/caaersSource_full.htm#section2enterbasicaeinformation.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
+    <title>Enter basic AE information</title>
     <tags:stylesheetLink name="ae"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
@@ -177,7 +177,7 @@
     </script>
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}">
+    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
             You are entering an adverse event report for ${command.assignment.participant.fullName} on
             ${command.assignment.studySite.study.shortTitle}.

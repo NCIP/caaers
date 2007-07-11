@@ -353,3 +353,12 @@ table.tablecontent {
     border-color: #888 #ddd;
     background-color: #fff;
 }
+
+a.help {
+    display: block;
+    float: right;
+    color: #fff;
+}
+a.help img {
+    border: none;
+}
