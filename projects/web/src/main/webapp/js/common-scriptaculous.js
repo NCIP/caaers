@@ -22,9 +22,9 @@ AE.slideAndShow = function(element, options) {
         [
             new Effect.BlindDown(e, {sync:true}),
             new Effect.Appear(e, {sync:true})
-        ], $H({
+        ], $H(options).merge({
             duration: 1.0
-        }).merge(options)
+        })
     );
 }
 
@@ -129,3 +129,30 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
         opts
     )
 }
+
+////// INLINE HELP
+
+AE.helpToggle = function(field) {
+    var content = $(field + "-help-content")
+    if (content.hasClassName("changing")) return;
+    content.addClassName("changing")
+    var after = function() {
+        console.log("Finished")
+        content.removeClassName("changing")
+    }
+    if (content.visible()) {
+        AE.slideAndHide(content, { afterFinish: after })
+    } else {
+        AE.slideAndShow(content, { afterFinish: after })
+    }
+}
+
+Event.observe(window, "load", function() {
+    $$(".inline-help-control").each(function(control) {
+        var id = control.id
+        var field = id.substr(0, id.length - 13)
+        control.observe("click", function() {
+            AE.helpToggle(field)
+        })
+    })
+});

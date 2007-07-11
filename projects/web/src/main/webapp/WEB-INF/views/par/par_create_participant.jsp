@@ -11,13 +11,11 @@
 
 <html>
 <head>
-<tags:stylesheetLink name="participant"/>
-<script src="/caaers/js/Spry/SpryEffects.js" type="text/javascript"></script>
-<style type="text/css">
-.hideInitially{
-	display: none;
-}
-</style>
+    <tags:includeScriptaculous/>
+    <tags:stylesheetLink name="participant"/>
+    <style type="text/css">
+        .leftpane { width: 32em }
+    </style>
 </head>
 <body>
     <p class="instructions">
@@ -29,38 +27,54 @@
         
         <div class="leftpane">
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>First Name:</div>
-	            <div class="value"><form:input path="firstName" /><a onClick="firsthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="First Help">
-                  <h3> Enter participant’s first name. Required field. </h3></div>
+	            <div class="label"><tags:requiredIndicator/>First Name:</div>
+	            <div class="value">
+                    <form:input path="firstName" />
+                    <tags:inlineHelp path="firstName">
+                        Enter participant's first name. Required field.
+                    </tags:inlineHelp>
+                </div>
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>Last Name:</div>
-	            <div class="value"><form:input path="lastName" /><a onClick="lasthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div> <div class="hideInitially" id="Last Help">
-                  <h3> Enter the participant’s surname.  Required field.  </h3></div>
+	            <div class="label"><tags:requiredIndicator/>Last Name:</div>
+	            <div class="value">
+                    <form:input path="lastName" />
+                    <tags:inlineHelp path="lastName">
+                        Enter the participant's surname.  Required field.
+                    </tags:inlineHelp>
+                </div>
 	        </div>
 	        
 	        <div class="row">
 	            <div class="label">Maiden Name:</div>
-	            <div class="value"><form:input path="maidenName" /><a onClick="maidenhelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="Maiden Help">
-                  <h3>Enter the participant’s pre-marital name.  Optional field. </h3></div>
+	            <div class="value">
+                    <form:input path="maidenName" />
+                    <tags:inlineHelp path="maidenName">
+                        Enter the participant's pre-marital name.  Optional field.
+                    </tags:inlineHelp>
+                </div>
 	        </div>
 	        
 	        <div class="row">
 	            <div class="label">Middle Name:</div>
-	            <div class="value"><form:input path="middleName" /><a onClick="middlehelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div><div class="hideInitially" id="Middle Help">
-                  <h3> Enter participant’s middle name.  Optional field. </h3></div>
+	            <div class="value">
+                    <form:input path="middleName" />
+                    <tags:inlineHelp path="middleName">
+                        Enter participant's middle name.  Optional field.
+                    </tags:inlineHelp>
+                </div>
 	        </div>
         </div>
-       </div>
+
         <div class="leftpane">
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>Date of Birth:</div>
+	            <div class="label"><tags:requiredIndicator/>Date of Birth:</div>
 	            <div class="value"><tags:dateInput path="dateOfBirth"/></div>
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>Ethnicity:</div>
+	            <div class="label"><tags:requiredIndicator/>Ethnicity:</div>
 	            <div class="value">
 	            		<form:select path="ethnicity">
 							<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
@@ -69,7 +83,7 @@
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>Race:</div>
+	            <div class="label"><tags:requiredIndicator/>Race:</div>
 	            <div class="value">
 	            		<form:select path="race">
 						<form:options items="${race}" itemLabel="desc" itemValue="code" />
@@ -78,7 +92,7 @@
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label"><span class="red">*</span>Gender:</div>
+	            <div class="label"><tags:requiredIndicator/>Gender:</div>
 	            <div class="value">
 	            		<form:select path="gender">
 						<form:options items="${genders}" itemLabel="desc" itemValue="code" />
@@ -119,12 +133,6 @@
 		</c:forEach>
 
 	</table>		
-	<script type="text/javascript">
-var firsthelp = new Spry.Effect.Slide('First Help', {duration: 500, from: '0%', to:'100%', toggle:true});
-var lasthelp = new Spry.Effect.Slide('Last Help', {duration: 500, from: '0%', to:'100%', toggle:true});
-var maidenhelp = new Spry.Effect.Slide('Maiden Help', {duration: 500, from: '0%', to:'100%', toggle:true});
-var middlehelp = new Spry.Effect.Slide('Middle Help', {duration: 500, from: '0%', to:'100%', toggle:true});
-</script>
         </jsp:attribute>
     </tags:tabForm>    
 </body>
