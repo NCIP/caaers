@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
@@ -38,7 +39,6 @@ import org.apache.log4j.Logger;
 import org.drools.repository.AssetItem;
 import org.drools.repository.CategoryItem;
 import org.drools.repository.PackageItem;
-import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
 /**
  * The entry point for Managing Rules.
@@ -318,7 +318,7 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService
     	
 		final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.sponsor";
 		
-		String sponsorPackageName = SPONSOR_BASE_PACKAGE + "." + getStringWithoutSpaces(sponsorName);
+		String sponsorPackageName = SPONSOR_BASE_PACKAGE + "." + RuleUtil.getStringWithoutSpaces(sponsorName);
 		
 		Iterator<PackageItem> packItr= this.repositoryService.getRulesRepository().listPackages();
 		
@@ -360,8 +360,8 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService
     	
 		final String SPONSOR_BASE_PACKAGE = "gov.nih.nci.cabig.caaers.rule.study";
 		
-		String studyPackageName = SPONSOR_BASE_PACKAGE + "." + getStringWithoutSpaces(sponsorName) + "."
-		                          + getStringWithoutSpaces(studyName);
+		String studyPackageName = SPONSOR_BASE_PACKAGE + "." + RuleUtil.getStringWithoutSpaces(sponsorName) + "."
+		                          + RuleUtil.getStringWithoutSpaces(studyName);
 		
 		Iterator<PackageItem> packItr= this.repositoryService.getRulesRepository().listPackages();
 		
@@ -394,9 +394,5 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService
 		}
 	}
 
-	private String getStringWithoutSpaces(String str)
-	{
-		String _str= str.toLowerCase().trim();
-		return _str.replace(" ", "_");
-	}
+
 }
