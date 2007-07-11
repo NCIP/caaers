@@ -232,10 +232,19 @@ public class RuleUtil {
 		return str;
 	}
 	
-	public static String getStringWithoutSpaces(String str){
-		String _str= str.trim();
-		return _str.replace(" ", "_");
+
+	
+	private static String getStringWithoutSpaces(String str)
+	{
+		String _str= str.toLowerCase().trim();
+		
+		_str = _str.replace("-", "_");
+		_str = _str.replace("&", "and");
+		_str = _str.replace(" ", "_");
+		
+		return _str;
 	}
+	
 	
 	public static String getSponsorSpecificPath(String sponsorName){
 		String sponsorSpecificCatehoryPath = CategoryConfiguration.SPONSOR_BASE.getPath()+"/"+getStringWithoutSpaces(sponsorName);
