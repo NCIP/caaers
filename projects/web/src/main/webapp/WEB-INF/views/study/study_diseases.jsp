@@ -231,6 +231,12 @@
        })
 
     </script>
+ <script src="/caaers/js/Spry/SpryEffects.js" type="text/javascript"></script>
+<style type="text/css">
+.hideInitially{
+	display: none;
+}
+</style>   
 </head>
 <body>
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
@@ -244,24 +250,27 @@
             </div>
             <chrome:division title="CTEP Disease Terms" id="disease">
                     Search for a Disease Category<br>
+                    <div class="hideInitially" id="SearchDisease Help"><h3> Enter Protocol title intended for the public. Required field.</h3></div>
                     <input:hidden id="disease" />
                     <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
                     <tags:indicator id="disease-indicator" />
-                    <div id="disease-choices" class="autocomplete"></div>
+                    <div id="disease-choices" class="autocomplete"><a onclick="searchdiseasehelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div>
                     <input type="button" id="disease-clear" value="Clear" />
                     <p id="disease-selected" style="display: none"></p>
 
                     <br><br>Select a Sub Category<br>
-                    <select multiple size="1" onmouseover="javascript:hover()" style="width:400px" id="disease-sub-category">
+                   <div class="hideInitially" id="SelectSubCat Help"><h3> Enter Protocol title intended for the public. Required field.</h3></div> <select multiple size="1" onmouseover="javascript:hover()" style="width:400px" id="disease-sub-category">
                         <option value="">Please select a Category first</option>
-                    </select>
+                    </select><a onclick="searchdiseasehelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></div>
 
                     <br><br>Diseases<br>
-                    <select multiple size="1" style="width:400px" id="disease-term">
+                    <div class="hideInitially" id="Disease Help">
+                  <h3> Enter Protocol title intended for the public. Required field.</h3></div><select multiple size="1" style="width:400px" id="disease-term">
                         <option value="">Please select a Category first</option>
-                    </select> <span id="disease-selected-name"></span> <a
-                        href="javascript:fireAction('addStudyDisease','0');"><img
-                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a> <br>
+                    </select> <span id="disease-selected-name"></span><a onclick="diseasehelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a>
+                     <a href="javascript:fireAction('addStudyDisease','0');"> <img
+                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"> </a> 
+                        <br>
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
@@ -345,5 +354,11 @@
 
             </chrome:box>
     </form:form>
+    <script type="text/javascript">
+var searchdiseasehelp = new Spry.Effect.Slide('SearchDisease Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var selectsubcathelp = new Spry.Effect.Slide('SelectSubCat Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var diseasehelp = new Spry.Effect.Slide('Disease Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var meddrahelp = new Spry.Effect.Slide('MedDRA Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+</script>
 </body>
 </html>

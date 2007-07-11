@@ -23,7 +23,15 @@ field.value="";
 }
 
 </script>
-</head>
+<script language="javascript">
+  function toggleDiv(divid){
+    if(document.getElementById(divid).style.display == 'none'){
+      document.getElementById(divid).style.display = 'block';
+    }else{
+      document.getElementById(divid).style.display = 'none';
+    }
+  }
+</script> </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm">
     <jsp:attribute name="singleFields">
@@ -34,15 +42,24 @@ field.value="";
 		<p id="instructions">
 			Add Identifiers associated with the Study
 			<a href="javascript:fireAction('addIdentifier','0');"><img
-				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><br>
+				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add" title="Add"></a><br>
 		</p>
-		
+        
+        
+        
 		<table class="tablecontent">
-		<tr align="center">
-			<th scope="col"> Identifier<span class="red">*</span> </th>														
-			<th scope="col"> Identifier Type<span class="red">*</span> </b> </th>						
-			<th scope="col"> Assigning Authority<span class="red">*</span> </b></th>					
-			<th scope="col"> Primary&nbsp;Indicator </b></th>
+				<tr><td colspan="5" style="border-width: 0px; padding: 0px;">
+                <div id="Identdiv" style="display:none"><h3>Enter Official name of the protocol provided by the study principal investigator or sponsor. Required Field. </h3></div>
+                <div id="IdentTypediv" style="display:none"><h3>Select the category of the study specific identifier. Required field.</h3></div>
+                <div id="AssignAuthdiv" style="display:none"><h3>Select institution assigning the study identifier. Required field.</h3></div>
+                <div id="PrimInddiv" style="display:none"><h3>Is this the primary identifier for this study protocol ? Only one identifier can be selected as the primary indicator.</h3></div>
+                </td></tr>
+		
+                <tr align="center">
+			<th scope="col"> Identifier<span class="red">*</span> <a href="javascript:;" onMouseDown="toggleDiv('Identdiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>														
+		  <th scope="col"> Identifier Type<span class="red">*</span> </b> <a href="javascript:;" onMouseDown="toggleDiv('IdentTypediv');"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>						
+			<th scope="col"> Assigning Authority<span class="red">*</span> </b><a href="javascript:;" onMouseDown="toggleDiv('AssignAuthdiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>					
+			<th scope="col"> Primary&nbsp;Indicator </b><a href="javascript:;" onMouseDown="toggleDiv('PrimInddiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
 			<th scope="col"></th>
 		</tr>																		
 		<c:forEach items="${command.identifiers}" varStatus="status">
@@ -59,12 +76,11 @@ field.value="";
 					itemValue="name" /></form:select></td>
 			<td class="alt"><form:radiobutton path="identifiers[${status.index}].primaryIndicator" value="true"/></td> 
 			<td class="alt"><a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-				src="/caaers/images/checkno.gif" border="0" alt="remove"></a></td>
+				src="/caaers/images/checkno.gif" border="0" alt="remove" title="Remove"></a></td>
 		</tr> 
-
 		</c:forEach> 
 	</table>
-    </jsp:attribute>
+  </jsp:attribute>
 </tags:tabForm>
 </body>
 </html>

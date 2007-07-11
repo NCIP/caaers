@@ -1,0 +1,1168 @@
+
+
+
+	
+
+
+
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>caAERS || Create expedited report || Enter basic AE information</title>
+    
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/debug.css"/>
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/common.css"/>
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/fields.css"/>
+
+<!--[if IE]>
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/ie.css"/>
+<![endif]-->
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/calendar/calendar-blue.css"/>
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/common-search.css"/>
+
+
+<script type="text/javascript" src="/caaers/js/calendar.js"></script>
+
+<script type="text/javascript" src="/caaers/js/prototype.js"></script>
+
+<script type="text/javascript" src="/caaers/js/common.js"></script>
+
+    
+
+<link rel="stylesheet" type="text/css" href="/caaers/css/tabbedflow.css"/>
+    
+<script type="text/javascript" src="/caaers/js/tabbedflow.js"></script>
+    <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css"/>
+    <style type="text/css">
+        /* This is intended to apply to the grade longselect only */
+        .longselect {
+            width: 20em;
+        }
+        .longselect label {
+            padding-left: 3.0em;
+            text-indent: -2.5em;
+        }
+    </style>
+    
+
+<script type="text/javascript" src="/caaers/js/scriptaculous/effects.js"></script>
+
+<script type="text/javascript" src="/caaers/js/scriptaculous/builder.js"></script>
+
+<script type="text/javascript" src="/caaers/js/scriptaculous/controls.js"></script>
+
+<script type="text/javascript" src="/caaers/js/scriptaculous/dragdrop.js"></script>
+
+<script type="text/javascript" src="/caaers/js/scriptaculous/slider.js"></script>
+
+<script type="text/javascript" src="/caaers/js/common-scriptaculous.js"></script>
+    
+<script type='text/javascript' src='/caaers/dwr/engine.js'></script>
+<script type='text/javascript' src='/caaers/dwr/util.js'></script>
+<script type='text/javascript' src='/caaers/dwr/interface/createAE.js'></script>
+
+    <script type="text/javascript">
+        var aeReportId = null
+        var initialCtcTerm = [ ]
+        
+            
+        
+
+        var AESections = [ ]
+
+        function ctcVersion() {
+            return $F("ctc-version");
+        }
+
+        function termValueSelector(term) {
+            return term.fullName;
+        }
+
+        var AESection = Class.create();
+        Object.extend(AESection.prototype, {
+            initialize: function(index, ctcTerm) {
+                AESections[index] = this;
+                this.index = index
+                this.initialCtcTerm = ctcTerm;
+
+                this.ctcDetailsId = "ctc-details-" + index;
+                this.ctcCategoryId = "ctc-category-" + index
+                this.aeProperty = "aeReport.adverseEvents[" + index + "]";
+                this.ctcTermId = this.aeProperty + ".ctcTerm"
+                this.ctcTermInputId = this.aeProperty + ".ctcTerm-input"
+                this.ctcTermChoicesId = this.aeProperty + ".ctcTerm-choices"
+                this.ctcTermIndicatorId = this.aeProperty + ".ctcTerm-indicator"
+                this.detailsForOtherId = this.aeProperty + ".detailsForOther"
+                this.detailsForOtherRowId = this.aeProperty + ".detailsForOther-row"
+
+                this.resetTermText()
+                this.ctcVersionChanged(null, true)
+
+                Event.observe("ctc-version", "change", this.ctcVersionChanged.bindAsEventListener(this, false))
+                Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
+
+                AE.createStandardAutocompleter(
+                    this.aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
+                        afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                            this.selectTerm(selectedChoice)
+                        }.bind(this)
+                    }
+                )
+            },
+
+            resetTermText: function() {
+                if (this.initialCtcTerm) {
+                    // select term first to work around a bug in showing the "other" row when the
+                    // element is only partially visible
+                    this.selectTerm(this.initialCtcTerm)
+                    $(this.ctcTermInputId).value = termValueSelector(this.initialCtcTerm)
+                }
+            },
+
+            clearSelectedTerm: function() {
+                $(this.ctcTermInputId).value = ""
+                $(this.ctcTermId).value = ""
+                $(this.detailsForOtherId).value = ""
+                AE.slideAndHide(this.detailsForOtherRowId)
+            },
+
+            // TODO: for performance, we should probably embed these in the page
+            // since there are only a few dozen of them.
+            updateCategories: function() {
+                createAE.getCategories(ctcVersion(), function(categories) {
+                    var sel = $(this.ctcCategoryId)
+                    sel.options.length = 0
+                    sel.options.add(new Option("Any", ""))
+                    categories.each(function(cat) {
+                        var name = cat.name
+                        if (name.length > 45) name = name.substring(0, 45) + "..."
+                        var opt = new Option(name, cat.id)
+                        sel.options.add(opt)
+                        if (this.initialCtcTerm && this.initialCtcTerm.category.id == opt.value) {
+                            opt.selected = true;
+                        }
+                    }.bind(this))
+                }.bind(this))
+            },
+
+            selectTerm: function(newCtcTerm) {
+                $A($(this.ctcCategoryId).options).each(function(opt) {
+                    if (opt.value == newCtcTerm.category.id) {
+                        opt.selected = true
+                    }
+                })
+
+                $(this.ctcTermId).value = newCtcTerm.id
+                if (newCtcTerm.otherRequired) {
+                    if ($(this.ctcDetailsId).visible()) {
+                        AE.slideAndShow(this.detailsForOtherRowId)
+                    } else {
+                        $(this.detailsForOtherRowId).show()
+                    }
+                } else {
+                    AE.slideAndHide(this.detailsForOtherRowId)
+                    $(this.detailsForOtherId).value = ""
+                }
+
+                this.updateGrades(newCtcTerm.id)
+            },
+
+            updateGrades: function(ctcTermId) {
+                createAE.getTermGrades(ctcTermId, function(grades) {
+                    // update text
+                    grades.each(function(grade) {
+                        var text = $(this.aeProperty + ".grade-text-" + grade.code)
+                        text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
+                    }.bind(this))
+
+                    // show & hide
+                    var validCodes = [0].concat(grades.collect(function(g) { return g.code }))
+                    for (var i = 0 ; i <= 5 ; i++) {
+                        var row = $(this.aeProperty + ".grade-row-" + i)
+                        if (validCodes.include(i)) {
+                            row.enableDescendants()
+                            row.show()
+                        } else {
+                            row.hide()
+                            row.disableDescendants()
+                        }
+                    }
+                }.bind(this))
+            },
+
+            termPopulator: function(autocompleter, text) {
+                createAE.matchTerms(text, ctcVersion(), $F(this.ctcCategoryId), 10, function(values) {
+                    autocompleter.setChoices(values)
+                })
+            },
+
+            ctcVersionChanged: function(evt, atLoad) {
+                if (ctcVersion()) {
+                    this.updateCategories()
+                    if (!atLoad) {
+                        this.clearSelectedTerm()
+                    }
+                    $(this.ctcDetailsId).enableDescendants()
+                } else {
+                    $(this.ctcDetailsId).disableDescendants()
+                }
+            }
+        })
+
+        function updateCtcVersion() {
+            if (initialCtcTerm) {
+                $A($("ctc-version").options).each(function(opt) {
+                    initialCtcTerm.each(function(term) {
+                        if (term && term.category && opt.value == term.category.ctc.id) {
+                            opt.selected = true
+                        }
+                    })
+                })
+            }
+        }
+
+        function postReset() {
+            AESections.each(function(ae) {
+                ae.resetTermText()
+            })
+        }
+
+        Event.observe(window, "load", function() {
+            // do this before any of the behaviors are applied to avoid their onChange side effects
+            updateCtcVersion()
+            Event.observe("command", "reset", function() {
+                // onReset fires _before_ the reset; delay action so it happens afterward
+                setTimeout(postReset, 150)
+            })
+            
+            new AESection(0, initialCtcTerm[0])
+            
+            new ListEditor("ae-section", createAE, "AdverseEvent", {
+                addParameters: [aeReportId],
+                addCallback: function(nextIndex) {
+                    new AESection(nextIndex);
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+
+
+
+<div id="header">
+    <div class="background-R">
+        <img src="/caaers/images/chrome/caAERSlogo.gif" alt="caAERS" id="logo">
+        <img src="/caaers/images/chrome/caAERS.gif" alt="cancer Adverse Event Reporting System" id="tagline">
+
+        <div id="login-action">
+
+          <a href="/caaers/j_acegi_logout">Log out</a>
+        </div>
+
+        <ul id="sections" class="tabs">
+        
+            
+            <li class="selected"><div>
+                <a href="/caaers/pages/ae/list">Adverse Events</a>
+            </div></li>
+            
+        
+            
+            <li class=""><div>
+
+                <a href="/caaers/pages/study/search">Studies</a>
+            </div></li>
+            
+        
+            
+            <li class=""><div>
+                <a href="/caaers/pages/participant/create">Participants</a>
+            </div></li>
+            
+        
+            
+            <li class=""><div>
+                <a href="/caaers/pages/report/notImplemented">Reports</a>
+
+            </div></li>
+            
+        
+            
+            <li class=""><div>
+                <a href="/caaers/pages/rule/create">Rules</a>
+            </div></li>
+            
+        
+            
+            <li class=""><div>
+                <a href="/caaers/pages/admin/configure">Administration</a>
+            </div></li>
+            
+        
+        </ul>
+
+        <div id="taskbar">
+            
+                Tasks:
+                
+                    
+                        <a href="/caaers/pages/ae/create">Enter expedited report</a>
+                    
+                
+                    
+                        <a href="/caaers/pages/ae/list">List reports</a>
+                    
+                
+                    
+                        <a href="/caaers/pages/ae/createRoutine">Enter routine report</a>
+                    
+                
+            
+        </div>
+    </div>
+
+</div>
+<!-- end header -->
+
+<div class="tabpane">
+    
+
+
+
+<ul id="workflow-tabs" class="tabs autoclear">
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab0">1. Begin</a>
+    </div></li>
+
+    
+    <li class="tab selected "><div>
+
+        <a href="#" class="tab1">2. AEs</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab2">3. Description</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab3">4. Medical</a>
+
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab4">5. Treatment</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab5">6. Labs</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab6">7. Therapies</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab7">8. Con. meds</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab8">9. Other</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+        <a href="#" class="tab9">10. Attribution</a>
+    </div></li>
+
+    
+    <li class="tab  "><div>
+
+        <a href="#" class="tab10">11. Reporter</a>
+    </div></li>
+
+    
+    <li class="tab  last"><div>
+        <a href="#" class="tab11">12. Save</a>
+    </div></li>
+
+</ul>
+
+
+    
+
+<div id="main">
+    <h1>Create expedited report: Enter basic AE information</h1>
+    
+        
+        <!-- TODO: Summary should be disabled for Overview Pages, need a better logic than this -->
+        
+            <div id="summary-pane" class="pane">
+                
+
+
+
+
+
+
+
+
+<div class="box "
+     >
+
+    <!-- header -->
+    <div class="header"><div class="background-L"><div class="background-R">
+      <h2>Summary</h2>
+
+    </div></div></div>
+    <!-- end header -->
+
+    <!-- inner border -->
+    <div class="border-T"><div class="border-L"><div class="border-R"><div class="border-B"><div class="border-TL"><div class="border-TR"><div class="border-BL"><div class="border-BR">
+        <div class="interior">
+            
+            
+                    
+                    <div class="row">
+                        <div class="label">Participant</div>
+                        <div class="value">Rachel Bunny</div>
+
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Study</div>
+                        <div class="value">test of import (50502)</div>
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Report created at</div>
+                        <div class="value">2007-06-23 00:24:02.278</div>
+
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Primary AE</div>
+                        <div class="value"><em class="none">None</em></div>
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Adverse event count</div>
+                        <div class="value">1</div>
+
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Ticket number</div>
+                        <div class="value"><em class="none">None</em></div>
+                    </div>        
+                    
+                    <div class="row">
+                        <div class="label">Next report due</div>
+                        <div class="value"><em class="none">None</em></div>
+
+                    </div>        
+                    
+                
+            
+        </div>
+    </div></div></div></div></div></div></div></div>
+    <!-- end inner border -->
+</div>
+<!-- end box -->
+            </div>
+        
+
+        <div id="main-pane" class="pane">
+            <div class="box "
+     >
+
+    <!-- header -->
+
+    <div class="header"><div class="background-L"><div class="background-R">
+      <h2>AEs</h2>
+    </div></div></div>
+    <!-- end header -->
+
+    <!-- inner border -->
+    <div class="border-T"><div class="border-L"><div class="border-R"><div class="border-B"><div class="border-TL"><div class="border-TR"><div class="border-BL"><div class="border-BR">
+        <div class="interior">
+            
+            
+    
+
+    <form id="command" method="post" action="/caaers/pages/ae/create">
+
+        
+<input type="hidden" name="_target2" id="_target"/>
+<input type="hidden" name="_page" value="1" id="_page"/>
+
+        
+
+
+
+
+
+
+<div class="division "
+    id="single-fields" >
+    
+    <div class="content">
+        
+            <p class="instructions">You are entering an adverse event report for Rachel Bunny on
+            test of import.</p>
+            
+
+
+            <div class="report-fields">
+                
+                    
+
+
+
+
+
+
+<div class="row " id="aeReport.detectionDate-row" >
+    <div class="label">
+
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.detectionDate">Detection date</label>
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+
+
+<input id="aeReport.detectionDate" name="aeReport.detectionDate" class="date" type="text" value=""/>
+<a href="#" id="aeReport.detectionDate-calbutton">
+    <img src="/caaers/images/chrome/b-calendar.gif" alt="Calendar" width="17" height="16" border="0" align="absmiddle" />
+
+</a>
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+                
+                <div class="row">
+                    <div class="label"><label for="ctc-version">CTC version</label></div>
+                    <div class="value">
+                        <span class=C1HKeywordLink d2hml="keyword=New Keyword">
+                        <select id="ctc-version">
+                          <option value="">Please select --</option>
+                          <option value="2" >CTC v2.0</option>
+                          <option value="3" >CTCAE v3.0</option>
+                        </select>
+                        </span> </div>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+        
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="division ae-section"
+    id="ae-section-0" >
+    
+        <!-- TODO: delete controls -->
+        <h3>Primary adverse event</h3>
+    
+    <div class="content">
+        
+    <div id="ctc-details-0" class="ctc-details">
+        <div class="row">
+            <div class="label"><label for="ctc-category-0">CTC category</label></div>
+
+            <div class="value">
+                <select id="ctc-category-0">
+                    <option>Please select CTC version first</option>
+                </select>
+            </div>
+        </div>
+        
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].ctcTerm-row" >
+    <div class="label">
+
+        
+            
+            
+
+
+
+    
+        <label for="aeReport.adverseEvents[0].ctcTerm-input">CTC term</label>
+    
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+        <input size="50" type="text" id="aeReport.adverseEvents[0].ctcTerm-input"/>
+        
+
+<img id="aeReport.adverseEvents[0].ctcTerm-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+
+        <div id="aeReport.adverseEvents[0].ctcTerm-choices" class="autocomplete" style="display: none"></div>
+        <input id="aeReport.adverseEvents[0].ctcTerm" name="aeReport.adverseEvents[0].ctcTerm" type="hidden" value=""/>
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+        <div class="extra">Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.</div>
+    
+</div>
+
+        
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].detailsForOther-row" style="display: none">
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].detailsForOther">Other (specify)</label>
+
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    <textarea id="aeReport.adverseEvents[0].detailsForOther" name="aeReport.adverseEvents[0].detailsForOther"></textarea>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+    </div>
+
+    <div id="main-fields-0" class="main-fields">
+        
+            
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].grade-row" >
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].grade">Grade</label>
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+        <div class="longselect" id="aeReport.adverseEvents[0].grade-longselect">
+            
+                <label id=aeReport.adverseEvents[0].grade-row-0>
+                    <input id="aeReport.adverseEvents[0].grade-radio-0" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="NORMAL"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-0">0: Normal</span>
+                </label>
+
+            
+                <label id=aeReport.adverseEvents[0].grade-row-1>
+                    <input id="aeReport.adverseEvents[0].grade-radio-1" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="MILD"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-1">1: Mild</span>
+                </label>
+            
+                <label id=aeReport.adverseEvents[0].grade-row-2>
+                    <input id="aeReport.adverseEvents[0].grade-radio-2" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="MODERATE"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-2">2: Moderate</span>
+                </label>
+
+            
+                <label id=aeReport.adverseEvents[0].grade-row-3>
+                    <input id="aeReport.adverseEvents[0].grade-radio-3" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="SEVERE"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-3">3: Severe</span>
+                </label>
+            
+                <label id=aeReport.adverseEvents[0].grade-row-4>
+                    <input id="aeReport.adverseEvents[0].grade-radio-4" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="LIFE_THREATENING"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-4">4: Life-threatening or disabling</span>
+                </label>
+
+            
+                <label id=aeReport.adverseEvents[0].grade-row-5>
+                    <input id="aeReport.adverseEvents[0].grade-radio-5" name="aeReport.adverseEvents[0].grade" class="longselect-radio" type="radio" value="DEATH"/>
+                    <span id="aeReport.adverseEvents[0].grade-text-5">5: Death</span>
+                </label>
+            
+        </div>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+        
+            
+
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].attributionSummary-row" >
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].attributionSummary">Attribution to study</label>
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    
+    
+        <select id="aeReport.adverseEvents[0].attributionSummary" name="aeReport.adverseEvents[0].attributionSummary"><option value="">Please select</option><option value="UNRELATED">1: Unrelated</option><option value="UNLIKELY">2: Unlikely</option><option value="POSSIBLE">3: Possible</option><option value="PROBABLE">4: Probable</option><option value="DEFINITE">5: Definite</option></select>
+
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+        <div class="extra">Indicate the likelihood that this adverse event is attributable to any element of the study protocol.</div>
+    
+</div>
+
+        
+            
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].hospitalization-row" >
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].hospitalization">Hospitalization</label>
+    
+
+
+        
+    </div>
+
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    
+    
+        <select id="aeReport.adverseEvents[0].hospitalization" name="aeReport.adverseEvents[0].hospitalization"><option value="NONE">None</option><option value="HOSPITALIZATION">Hospitalization</option><option value="PROLONGED_HOSPITALIZATION">Prolonged hospitalization</option></select>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+        
+            
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].expected-row" >
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].expected">Expected</label>
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+    
+    
+    
+    
+        <select id="aeReport.adverseEvents[0].expected" name="aeReport.adverseEvents[0].expected"><option value="true">Yes</option><option value="false" selected="selected">No</option></select>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+        
+            
+
+
+
+
+
+
+<div class="row " id="aeReport.adverseEvents[0].comments-row" >
+    <div class="label">
+        
+            
+            
+
+
+
+    
+    
+        <label for="aeReport.adverseEvents[0].comments">Comments</label>
+
+    
+
+
+        
+    </div>
+    <div class="value">
+
+
+
+
+
+
+    
+    
+    <textarea id="aeReport.adverseEvents[0].comments" name="aeReport.adverseEvents[0].comments"></textarea>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+</div>
+
+        
+    </div>
+
+    </div>
+</div>
+
+
+            
+        
+
+
+
+
+
+
+
+
+
+<div class="content buttons autoclear">
+    <div class="local-buttons">
+        
+
+
+
+
+<img id="add-ae-section-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
+<input type="button" value="Add another AE" id="add-ae-section-button"/>
+
+    </div>
+    <div class="flow-buttons">
+        <span class="prev">
+            
+                <input type="submit" id="flow-prev" class="tab0" value="&laquo; Back"/>
+            
+        </span>
+        <span class="next">
+            <input type="reset" value="Reset tab"/>
+
+            
+                <input type="submit" id="flow-update" class="tab1" value="Update"/>
+
+            
+
+            
+            
+            
+                
+            
+            <input type="submit" id="flow-next" value="Continue &raquo;"/>
+        </span>
+    </div>
+</div>
+
+    </form>
+
+            
+        </div>
+    </div></div></div></div></div></div></div></div>
+    <!-- end inner border -->
+
+</div>
+<!-- end box -->
+        </div>
+    
+</div>
+</div>
+
+<div id="footer"></div>
+<form action="#" id="sso-form" target="_blank" method="post">
+    <input type="hidden" name="gridProxy" value=""/>
+</form>
+
+
+
+
+
+
+
+</body>
+</html>

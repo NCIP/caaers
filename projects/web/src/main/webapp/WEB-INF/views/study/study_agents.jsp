@@ -117,7 +117,12 @@
       })
      
    </script>
-</head>
+<script src="/caaers/js/Spry/SpryEffects.js" type="text/javascript"></script>
+<style type="text/css">
+.hideInitially{
+	display: none;
+}
+</style> </head>
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm">
@@ -127,15 +132,20 @@
 			<input type="hidden" name="_selected" value="">
 		</div>	
 		<p id="instructions">
-			Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
+			Add a Study Agent <a href="javascript:fireAction('addStudyAgent','0');">
 			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
 		</p>
-		
+		 <div class="hideInitially" id="Agent Help"><h3>Enter Protocol title intended for the public. Required field</h3></div>
+               <div class="hideInitially" id="INDIndent Help"><h3>Investigational New Drug identification code assigned by the FDA. Required field. 
+</h3></div>
+               <div class="hideInitially" id="INDIndicat Help"><h3>Investigational New Drug measurement in a subject or biological sample to assess the safety, efficacy, or other objective of the agent. Required field. </h3></div>
 		<table class="tablecontent">
-		<tr>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Agent:</b> </th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Identifier:</b> </th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Indicator:</b> </th>
+		<tr><td colspan="4" style="border-width: 0px; padding: 0px;">
+               
+                </td></tr><tr>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Agent:</b> <a onclick="agenthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Identifier:</b> <a onclick="indindent.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
+			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Indicator:</b> <a onclick="indindicat.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
 			<th scope="col" align="left" class="specalt"></th>
 		</tr>
 
@@ -150,15 +160,19 @@
                  	<input type="button" id="agent${status.index}-clear" value="Clear"/>			
 				</td>
 				<td class="alt"><form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" />
-					<tags:hoverText description="Investigational New Drug Identifier"/></td>
+					</td>
 				<td class="alt"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
-					<tags:hoverText description="Investigational New Drug Indicator"/></td>
+					</td>
 				<td class="alt">
 					<a href="javascript:fireAction('removeStudyAgent',${status.index});">
 						<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="remove"></a></td>
 			</tr>
 		</c:forEach>
 	</table>
+    <script type="text/javascript">
+var agenthelp = new Spry.Effect.Slide('Agent Help', {duration: 500, from: '0%', to:'100%', toggle:true});
+var indindent = new Spry.Effect.Slide('INDIndicat Help', {duration: 500, from: '0%', to:'100%', toggle:true}); 
+var indindicat = new Spry.Effect.Slide('INDIndent Help', {duration: 500, from: '0%', to:'100%', toggle:true}); </script>
     </jsp:attribute>
 </tags:tabForm>
 </body>
