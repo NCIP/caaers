@@ -14,22 +14,59 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindingResult;
 import static org.easymock.classextension.EasyMock.*;
+import org.apache.commons.collections15.map.LazyMap;
+import org.apache.commons.collections15.functors.InstantiateFactory;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 import java.math.BigDecimal;
 
 /**
  * @author Rhett Sutphin
  */
-public class CreateAdverseEventControllerTest extends AdverseEventControllerTestCase {
+public class CreateAdverseEventControllerTest extends WebTestCase {
+    protected ParticipantDao participantDao;
+    protected StudyDao studyDao;
+    protected CtcDao ctcDao;
+    protected CtcCategoryDao ctcCategoryDao;
+    protected CtcTermDao ctcTermDao;
+    protected StudyParticipantAssignmentDao assignmentDao;
+    protected ExpeditedAdverseEventReportDao adverseEventReportDao;
+    protected StudyAgentDao studyAgentDao;
+    protected AgentDao agentDao;
+    protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+    protected AnatomicSiteDao anatomicSiteDao;
+    protected PriorTherapyDao priorTherapyDao;
+    protected ReportDefinitionDao reportDefinitionDao;
+    protected PreExistingConditionDao preExistingConditionDao;
+
     private StudyParticipantAssignment assignment;
 
     private CreateAdverseEventController controller;
@@ -38,6 +75,26 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
+            adverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class),
+            agentDao = registerDaoMockFor(AgentDao.class),
+            anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class),
+            assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class),
+            ctcDao = registerDaoMockFor(CtcDao.class),
+            ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class),
+            ctcTermDao = registerDaoMockFor(CtcTermDao.class),
+            ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class),
+            participantDao = registerDaoMockFor(ParticipantDao.class),
+            priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class),
+            preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class),
+            reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class),
+            studyDao = registerDaoMockFor(StudyDao.class),
+            studyAgentDao = registerDaoMockFor(StudyAgentDao.class)
+        );
+        ConfigProperty configProperty = new ConfigProperty();
+        configProperty.setMap(LazyMap.decorate(new HashMap<String, List<Lov>>(), new InstantiateFactory(ArrayList.class)));
+        tabConfigurer.addBean("configurationProperty", configProperty);
+
         controller = new CreateAdverseEventController();
         controller.setNowFactory(nowFactory);
         controller.setParticipantDao(participantDao);
@@ -53,7 +110,7 @@ public class CreateAdverseEventControllerTest extends AdverseEventControllerTest
         controller.setPriorTherapyDao(priorTherapyDao);
         controller.setReportDefinitionDao(reportDefinitionDao);
         controller.setPreExistingConditionDao(preExistingConditionDao);
-        
+        controller.setTabConfigurer(tabConfigurer);
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
