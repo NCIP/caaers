@@ -39,9 +39,10 @@ public abstract class BaseSelectField extends AbstractInputField {
      *
      */
     public static Map<Object, Object> collectOptions(
-        Collection<?> items, String itemValueProperty, String itemLabelProperty
+        Collection<?> items, String itemValueProperty, String itemLabelProperty, String blankValue
     ) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        if (blankValue != null) options.put("", blankValue);
         for (Object item : items) {
             BeanWrapper wrappedItem = new BeanWrapperImpl(item);
             Object value = extractProperty(wrappedItem, itemValueProperty);
@@ -49,6 +50,12 @@ public abstract class BaseSelectField extends AbstractInputField {
             options.put(value, label);
         }
         return options;
+    }
+
+    public static Map<Object, Object> collectOptions(
+        Collection<?> items, String itemValueProperty, String itemLabelProperty
+    ) {
+        return collectOptions(items, itemValueProperty, itemLabelProperty, null);
     }
 
     private static Object extractProperty(BeanWrapper wrappedItem, String propertyName) {

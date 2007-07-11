@@ -195,6 +195,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         protected boolean considerEmpty(DiseaseHistory cause) {
+            // TODO: other disease should also be considered
             return cause.getCtepStudyDisease() == null;
         }
 
@@ -210,6 +211,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(DiseaseHistory diseaseHistory) {
+            // TODO: other disease should also be considered
             return diseaseHistory.getCtepStudyDisease().getTerm().getTerm();
         }
     }

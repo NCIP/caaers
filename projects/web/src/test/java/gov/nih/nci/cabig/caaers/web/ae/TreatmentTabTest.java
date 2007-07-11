@@ -123,21 +123,6 @@ public class TreatmentTabTest extends AeTabTestCase {
     }
 
     @SuppressWarnings({ "unchecked" })
-    private Map<Object, Object> getActualSelectFieldOptions(List<InputField> fields, String propertyName) {
-        InputField field = null;
-        for (InputField candidate : fields) {
-            if (candidate.getPropertyName().equals(propertyName)) {
-                field = candidate;
-                break;
-            }
-        }
-        assertNotNull("No field for " + propertyName + ": " + fields, field);
-        Map<Object, Object> options = (Map<Object, Object>) field.getAttributes().get(InputField.OPTIONS);
-        assertNotNull("Field for " + propertyName + " is not a select", options);
-        return options;
-    }
-
-    @SuppressWarnings({ "unchecked" })
     public void testDelayUnitsInField() throws Exception {
         InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(3);
 

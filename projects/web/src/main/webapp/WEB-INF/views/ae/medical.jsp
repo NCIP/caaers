@@ -11,150 +11,121 @@
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <style type="text/css">
-        .instructions { margin-left: 17.5em; }
         div.row div.label {
             width: 16em;
         }
-        div.row div.value {
+
+        div.row div.value, div.row div.extra {
             margin-left: 17em;
         }
     </style>
 
     <script type="text/javascript">
-		
-		function chooseDisease(){
-				var term = document.getElementById('aeReport.diseaseHistory.studyDisease').value;
-				if(term == -1)
-				{
-					document.getElementById('aeReport.diseaseHistory.otherPrimaryDiseaseCode').disabled=false;
-				}
-				else {
-					document.getElementById('aeReport.diseaseHistory.otherPrimaryDiseaseCode').disabled=true;
-				}
-				
-		}
+    var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+    var initialAnatomicSite = {
+        <c:if test="${not empty command.aeReport.diseaseHistory.anatomicSite}">
+        id: ${command.aeReport.diseaseHistory.anatomicSite.id},
+        name: '${command.aeReport.diseaseHistory.anatomicSite.name}'
+        </c:if>
+    }
 
-        var anatomicAutocompleterProps = {
-            basename: "aeReport.diseaseHistory.anatomicSite",
-            populator: function(autocompleter, text) {
+    function chooseDiseaseOrOther() {
+        var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
+        $('aeReport.diseaseHistory.otherPrimaryDiseaseCode').disabled = (term != "");
+    }
+
+    var EnterDiseaseSite = Class.create()
+    Object.extend(EnterDiseaseSite.prototype, {
+        initialize: function(index, anatomicSiteName) {
+            this.index = index
+            var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSite[" + index + "]";
+            this.anatomicSiteProperty = cmProperty + ".anatomicSite"
+            this.otherProperty = cmProperty + ".otherMetastaticDiseaseSite"
+
+            if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
+            $("select-anatomicSite-" + this.index)
+                .observe("click", this.updateAnatomicOrOther.bind(this))
+            $("select-otherMetastaticDiseaseSite-" + this.index)
+                .observe("click", this.updateAnatomicOrOther.bind(this))
+
+            AE.createStandardAutocompleter(
+                this.anatomicSiteProperty, this.termPopulator.bind(this),
+                function(anatomicSite) {
+                    return anatomicSite.name
+                })
+
+            this.initializeAnatomicOrOther()
+        },
+
+        termPopulator: function(autocompleter, text) {
+            createAE.matchAnatomicSite(text, function(values) {
+                autocompleter.setChoices(values)
+            })
+        },
+
+        updateAnatomicOrOther: function() {
+            var isAnatomicSite = $("select-anatomicSite-" + this.index).checked
+            var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
+            var otherRow = $(this.otherProperty + "-row")
+            if (isAnatomicSite) {
+                anatomicSiteRow.removeClassName("disabled")
+                otherRow.addClassName("disabled")
+                anatomicSiteRow.getElementsByClassName("value")[0].enableDescendants()
+                otherRow.getElementsByClassName("value")[0].disableDescendants()
+            } else {
+                otherRow.removeClassName("disabled")
+                anatomicSiteRow.addClassName("disabled")
+                otherRow.getElementsByClassName("value")[0].enableDescendants()
+                anatomicSiteRow.getElementsByClassName("value")[0].disableDescendants()
+            }
+        },
+
+        initializeAnatomicOrOther: function() {
+            var otherValue = $(this.otherProperty).value
+            if (otherValue.length == 0) {
+                $("select-anatomicSite-" + this.index).click()
+            } else {
+                $("select-otherMetastaticDiseaseSite-" + this.index).click()
+            }
+        }
+    })
+
+    function primarySiteValueSelector(obj) {
+        return obj.name;
+    }
+
+    Event.observe(window, "load", function() {
+        AE.createStandardAutocompleter("aeReport.diseaseHistory.anatomicSite",
+            function(autocompleter, text) {
                 createAE.matchAnatomicSite(text, function(values) {
                     autocompleter.setChoices(values)
                 })
             },
-            valueSelector: function(obj) {
-                return obj.name
+            primarySiteValueSelector, {
+                initialInputValue: initialAnatomicSite.name
             }
-        }
+        )
+    })
 
-        function acPostSelect(mode, selectedChoice) {
-            Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
-            $(mode.basename).value = selectedChoice.id;
-            $(mode.basename + '-selected').show()
-            new Effect.Highlight(mode.basename + "-selected")
-			document.getElementById('aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode').disabled=true;
-        }
+    Element.observe(window, "load", function() {
+        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status" var="site">
+            new EnterDiseaseSite(${status.index}, '${site.anatomicSite.name}')
+        </c:forEach>
 
-        function updateSelectedDisplay(mode) {
-            if ($(mode.basename).value) {
-                Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-                $(mode.basename + '-selected').show()
-            } 
-			
-        }
-
-        function acCreate(mode) {
-            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-                mode.populator, {
-                valueSelector: mode.valueSelector,
-                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                    acPostSelect(mode, selectedChoice)
-                },
-                indicator: mode.basename + "-indicator"
-            })
-            Event.observe(mode.basename + "-clear", "click", function() {
-                $(mode.basename + "-selected").hide()
-                $(mode.basename).value = ""
-                $(mode.basename + "-input").value = ""
-				document.getElementById('aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode').disabled=false;
-            })
-        }
-
-        Event.observe(window, "load", function() {
-            acCreate(anatomicAutocompleterProps)
-            updateSelectedDisplay(anatomicAutocompleterProps)
-        })
-
-        var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
-
-        var EnterConMed = Class.create()
-        Object.extend(EnterConMed.prototype, {
-            initialize: function(index, anatomicSiteName) {				
-                this.index = index
-                var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSite[" + index + "]";
-                this.anatomicSiteProperty = cmProperty + ".anatomicSite"
-                this.otherProperty = cmProperty + ".otherMetastaticDiseaseSite"
-
-                if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
-                $("select-anatomicSite-" + this.index)
-                    .observe("click", this.updateAnatomicOrOther.bind(this))
-                $("select-otherMetastaticDiseaseSite-" + this.index)
-                    .observe("click", this.updateAnatomicOrOther.bind(this))
-
-                AE.createStandardAutocompleter(
-                    this.anatomicSiteProperty, this.termPopulator.bind(this),
-                    function(anatomicSite) { return anatomicSite.name })
-
-                this.initializeAnatomicOrOther()
-            },
-
-            termPopulator: function(autocompleter, text) {
-	                createAE.matchAnatomicSite(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-
-            updateAnatomicOrOther: function() {
-                var isAnatomicSite = $("select-anatomicSite-" + this.index).checked
-                var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
-                var otherRow = $(this.otherProperty + "-row")
-                if (isAnatomicSite) {
-                    anatomicSiteRow.removeClassName("disabled")
-                    otherRow.addClassName("disabled")
-                    anatomicSiteRow.getElementsByClassName("value")[0].enableDescendants()
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
-                } else {
-                    otherRow.removeClassName("disabled")
-                    anatomicSiteRow.addClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].enableDescendants()
-                    anatomicSiteRow.getElementsByClassName("value")[0].disableDescendants()
-                }
-            },
-
-            initializeAnatomicOrOther: function() {
-                var otherValue = $(this.otherProperty).value
-                if (otherValue.length == 0) {
-                    $("select-anatomicSite-" + this.index).click()
-                } else {
-                    $("select-otherMetastaticDiseaseSite-" + this.index).click()
-                }
+        new ListEditor("metastatic", createAE, "MetastaticDiseaseSite", {
+            addFirstAfter: "diseaseInfo",
+            addParameters: [aeReportId],
+            addCallback: function(index) {
+                new EnterDiseaseSite(index);
             }
         })
 
-        Element.observe(window, "load", function() {
-
-            <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status" var="site">
-            new EnterConMed(${status.index}, '${site.anatomicSite.name}')
-            </c:forEach>
-			
-			
-            new ListEditor("metastatic", createAE, "MetastaticDiseaseSite", {
-                addFirstAfter: "meta",
-                addParameters: [aeReportId],
-                addCallback: function(index) {
-                    new EnterConMed(index);
-                }
-            })
+        $('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
+            chooseDiseaseOrOther();
         })
+
+        chooseDiseaseOrOther()
+    })
 
     </script>
 </head>
@@ -189,41 +160,14 @@
         <div class="value">${command.participant.gender}</div>
     </div>
 
-    <div class="row">
-        <div class="label">Height</div>
-        <div class="value"> <input id= "aeReport.participantHistory.height" name="aeReport.participantHistory.height" value= "${command.aeReport.participantHistory.height == 0.0 ? '' : command.aeReport.participantHistory.height}" type="text" /> &nbsp;
-
-            <form:select path="aeReport.participantHistory.heightUnitOfMeasure">
-                <form:options items="${heightUnitsRefData}" itemLabel="desc"
-                        itemValue="code"/>
-            </form:select>
-            </div>
-    </div>
-
-    <div class="row">
-        <div class="label">Weight</div>
-        <div class="value"> <input id= "aeReport.participantHistory.weight" name="aeReport.participantHistory.weight" value= "${command.aeReport.participantHistory.weight == 0.0 ? '' : command.aeReport.participantHistory.weight}" type="text" /> &nbsp;
-            <form:select path="aeReport.participantHistory.weightUnitOfMeasure">
-                <form:options items="${weightUnitsRefData}" itemLabel="desc"
-                        itemValue="code"/>
-            </form:select>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="label">Baseline performance status</div>
-        <div class="value">
-            <form:select path="aeReport.participantHistory.baselinePerformanceStatus">
-                <form:options items="${bpsRefData}" itemLabel="desc"
-                    itemValue="code"/>
-            </form:select>
-        </div>
-
-    </div>
+    <c:forEach items="${fieldGroups['participant'].fields}" var="field">
+        <tags:renderRow field="${field}"/>
+    </c:forEach>
 
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
-        <chrome:division title="Patient Disease Information">
+        <chrome:division title="Disease information" id="diseaseInfo">
+            <%--
                 <div class="row">
                     <div class="label">Disease Name</div>
                     <div class="value">
@@ -237,7 +181,7 @@
                     </div>
                 </div>
 
-                <p id="instructions" class="instructions">
+                <p class="instructions">
                     If appropriate Disease Name is not on the list above, provide appropriate Disease Name in the "Disease Name Not Listed" field.</p>
                 <div class="row">
                     <div class="label">Disease Name Not Listed</div>
@@ -272,8 +216,11 @@
                     <div class="label">Date of initial diagnosis</div>
                     <div class="value"> <tags:dateInput path="aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"/> </div>
                 </div>
-				<div id="meta" />
-            </chrome:division>
+                --%>
+            <c:forEach items="${fieldGroups['disease'].fields}" var="field">
+                <tags:renderRow field="${field}"/>
+            </c:forEach>
+        </chrome:division>
 
         <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
              <ae:oneMetastatic index="${status.index}"/>

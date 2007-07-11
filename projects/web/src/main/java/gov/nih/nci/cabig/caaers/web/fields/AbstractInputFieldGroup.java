@@ -33,4 +33,12 @@ public abstract class AbstractInputFieldGroup implements InputFieldGroup {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append("[name=").append(getName())
+            .append("; displayName=").append(getDisplayName())
+            .append("; fields=").append(getFields()).toString();
+    }
 }

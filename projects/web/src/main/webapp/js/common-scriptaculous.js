@@ -108,6 +108,7 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
 
 // Creates an autocompleter matching the field names created by tag:renderInputs
 AE.createStandardAutocompleter = function(propertyName, populator, valueSelector, options) {
+    if (!$(propertyName)) alert("No element with id " + propertyName);
     var opts = Object.extend({
         indicator: propertyName + "-indicator",
         valueSelector: valueSelector,
@@ -116,6 +117,10 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
             $(propertyName).value = selectedChoice.id
         }
     }, options || { })
+
+    if (opts.initialInputValue) {
+        $(propertyName + "-input").value = opts.initialInputValue;
+    }
 
     return new Autocompleter.DWR(
         propertyName + "-input",
