@@ -25,12 +25,12 @@
 
 <script>
    
-function buildTable(form,size) {
+function buildTable(form) {
 	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < size; x++) {
+	for(var x=0; x < 8; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -114,7 +114,7 @@ shown on the screen.
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler',8);" value='Search'  title='Search Participant'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Participant'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />

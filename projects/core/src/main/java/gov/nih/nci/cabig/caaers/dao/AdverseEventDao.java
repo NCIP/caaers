@@ -76,7 +76,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		if (props.get("ctcTerm") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("ctcTerm.term").append(") LIKE ?");
-			String p = (String)props.get("ctcTerm.term");
+			String p = (String)props.get("ctcTerm");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}

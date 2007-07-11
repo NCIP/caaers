@@ -19,12 +19,14 @@ public class ParticipantStudyLinkDisplayCell extends AbstractCell {
         Participant participant = (Participant) model.getCurrentRowBean();
         
         String cellValue = column.getValueAsString();
-        String link = model.getContext().getContextPath() + "/pages/study/view?studyId=";
+        String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
         
         for (StudyParticipantAssignment assignment : participant.getAssignments()){
         	Study study = assignment.getStudySite().getStudy();
-        	cellValue=  cellValue + " <a href=\"" + link + study.getId().toString() + "&type=confirm\">" 
-        	+ study.getPrimaryIdentifier().getValue() + "</a><br>";
+        	String identifier = study.getPrimaryIdentifier() == null ? study.getIdentifiers().get(0).getValue() : study.getPrimaryIdentifier().getValue();
+        	
+        	 cellValue = "<a href=\"" + link + study.getId().toString() + "\">"
+             + identifier + "</a><br>";
         	
         }
 

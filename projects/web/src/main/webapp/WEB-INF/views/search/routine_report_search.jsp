@@ -27,12 +27,12 @@
 
 <script>
    
-function buildTable(form,size) {
+function buildTable(form) {
 	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < size; x++) {
+	for(var x=0; x < 12; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -143,7 +143,7 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler',12);" value='Search'  title='Search Routine Report'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Routine Report'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />

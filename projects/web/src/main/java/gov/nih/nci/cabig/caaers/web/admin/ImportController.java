@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -160,6 +161,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
     	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
+    	xstream.alias("studyOrganization", gov.nih.nci.cabig.caaers.domain.StudyOrganization.class);
+    	xstream.alias("organization", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
     	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
     	// study specific
@@ -241,6 +244,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		participant.setGender(xstreamParticipant.getGender());
 		participant.setRace(xstreamParticipant.getRace());
 		participant.setEthnicity(xstreamParticipant.getRace());
+		
+		// Identifiers
+		if (xstreamParticipant.getIdentifiers() != null) {
+			for (int i = 0; i < xstreamParticipant.getIdentifiers().size(); i++) {
+				Identifier identifier = (Identifier) xstreamParticipant
+						.getIdentifiers().get(i);
+				participant.getIdentifiers().add(identifier);
+			}
+		}
 		
 		// Check for study and site association
 		if (xstreamParticipant.getAssignments() != null) {
@@ -353,13 +365,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 				st.getIdentifiers().add(identifier);
 			}
 		}
-		// StudySites
-		if (xstreamStudy.getStudySites() != null) {
-			for (int i = 0; i < xstreamStudy.getStudySites().size(); i++) {
+		
+		if (xstreamStudy.getStudyOrganizations() != null) {
+			for (int i = 0; i < xstreamStudy.getStudyOrganizations().size(); i++) {
 				StudySite studySite = xstreamStudy.getStudySites().get(i);
 				Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
 				st.addStudySite(createStudyOrganization(organization));
-				
 			}
 		}
 		else

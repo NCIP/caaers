@@ -9,16 +9,15 @@ import org.extremecomponents.table.core.TableModel;
 
 public class StudyLinkDisplayCellExpedited extends AbstractCell {
 
-    private static final String LINK = "edit?studyId=";
-
     @Override
     protected String getCellValue(TableModel model, Column column) {
         ExpeditedAdverseEventReport expeditedAe = (ExpeditedAdverseEventReport) model.getCurrentRowBean();
         Study study = expeditedAe.getStudy();
         String cellValue = study.getPrimaryIdentifier().getValue();
+        String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
 
         if (study != null) {
-            cellValue = "<a href=\"" + LINK + study.getId().toString() + "\">"
+            cellValue = "<a href=\"" + link + study.getId().toString() + "\">"
                 + cellValue + "</a>";
         }
 

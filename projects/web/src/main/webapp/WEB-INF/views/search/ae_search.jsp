@@ -40,7 +40,7 @@ function buildTable(form,size) {
 		}
 	}
 	var parameterMap = getParameterMap(form);
-	search.getAdverseEventTable(null, type, text, showTable);		
+	search.getAdverseEventTable(parameterMap, type, text, showTable);		
 }
 
 </script>
@@ -93,13 +93,8 @@ the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Sponsor :&nbsp; </div>
-		    	<div class="value"><input  class="ae" id="prop5" type="text" name="shortTitle"/></div>
-		    </div>
-		    
-		    <div class="row">
 		    	<div class="label"> Short Title :&nbsp; </div>
-		    	<div class="value"><input  class="ae" id="prop6" type="text" name="longTitle"/></div>
+		    	<div class="value"><input  class="ae" id="prop5" type="text" name="longTitle"/></div>
 		    </div>
 		   
 </chrome:box>
@@ -108,48 +103,48 @@ the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc
 <chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
 		        <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop7" type="firstName"/></div>
+		    	<div class="value"><input id="prop6" type="firstName"/></div>
 		    </div>
 		    
 		    
 		     <div class="row">
 		    	<div class="label"> First Name :&nbsp; </div>
-		    	<div class="value"><input id="prop8" type="firstName"/></div>
+		    	<div class="value"><input id="prop7" type="firstName"/></div>
 		    </div>
 		    
 		    <div class="row">
 		    	<div class="label"> Last Name :&nbsp; </div>
-		    	<div class="value"><input id="prop9" type="text" name="lastName"/></div>
+		    	<div class="value"><input id="prop8" type="text" name="lastName"/></div>
 		    </div>
 		    
 		    
 		    <div class="row">
 		    	<div class="label"> Ethnicity :&nbsp; </div>
 		    	<div class="value">
-		    	<select onChange="copyValues('prop10_select','prop9')" style="width:150px" id="prop10_select">
+		    	<select onChange="copyValues('prop9_select','prop9')" style="width:150px" id="prop9_select">
 		    		<c:forEach items="${ethnicity}" varStatus="status" var="field">
 		    			<option>${field.code}</option>
 		    		</c:forEach>
 		    	</select>
-		    	<input id="prop10" type="hidden" name="gender"/>
+		    	<input id="prop9" type="hidden" name="gender"/>
 		    	</div>
 		    </div>
 		    
 		    <div class="row">
 		    	<div class="label"> Gender :&nbsp; </div>
 		    	<div class="value">
-		    	<select onChange="copyValues('prop11_select','prop11')" id="prop11_select">
+		    	<select onChange="copyValues('prop10_select','prop10')" id="prop10_select">
 		    		<c:forEach items="${genders}" varStatus="status" var="field">
 		    			<option>${field.code}</option>
 		    		</c:forEach>
 		    	</select>
-		    	<input id="prop11" type="hidden" name="gender"/>
+		    	<input id="prop10" type="hidden" name="gender"/>
 		    	</div>
 		    </div>
 		 	
 		 	<div class="row">
 		    	<div class="label"> Birth Date :&nbsp; </div>
-		    	<div class="value"><input id="prop12" type="text" name="dateOfBirth"/></div>
+		    	<div class="value"><input id="prop11" type="text" name="dateOfBirth"/></div>
 		    </div>
 		    
 			
@@ -157,7 +152,7 @@ the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler',13);" value='Search'  title='Search Study'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler',12);" value='Search'  title='Search Study'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
