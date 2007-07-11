@@ -27,7 +27,7 @@
 		function deployRule(name) {
 			try {
 				authorRule.deployRuleSet(name, function(values) {
-							alert("deploy success");
+							alert("Successfully Deployed");
 					});
 			} catch(e) {alert(e)}
 		}
