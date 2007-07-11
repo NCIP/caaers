@@ -29,7 +29,7 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     public SiteInvestigator getOrganizationInvestigator(Organization organization, Investigator investigator) {
         return CollectionUtils.firstElement(
             (List<SiteInvestigator>) getHibernateTemplate().find(
-                "from SiteInvestigator a where a.Site = ? and a.investigator = ?",
+                "from SiteInvestigator a where a.organization = ? and a.investigator = ?",
                 new Object[] { organization, investigator })
         );
     }
@@ -38,13 +38,13 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     public List<SiteInvestigator> getOrganizationInvestigators(Organization organization) {
         return 
             (List<SiteInvestigator>) getHibernateTemplate().find(
-                "from SiteInvestigator a where a.site = ?",
+                "from SiteInvestigator a where a.organization = ?",
                 new Object[] { organization }
         ); 		
     }
 	
 	public List<SiteInvestigator> getBySubnames(String[] subnames, int site) {
-        return findBySubname(subnames,"o.site.id = '"+site+"'",EXTRA_PARAMS,
+        return findBySubname(subnames,"o.organization.id = '"+site+"'",EXTRA_PARAMS,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}	
 }
