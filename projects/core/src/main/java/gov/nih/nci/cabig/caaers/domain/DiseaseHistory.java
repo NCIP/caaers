@@ -27,10 +27,12 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
+    // TODO: these aren't codes, they're just strings
     private String otherPrimaryDiseaseCode;
     private String otherPrimaryDiseaseSiteCode;
     private Date dateOfInitialPathologicDiagnosis;
     private CtepStudyDisease ctepStudyDisease;
+    // TODO: rename to primaryDiseaseSite
     private AnatomicSite anatomicSite;
     private List<MetastaticDiseaseSite> metastaticDiseaseSite = new ArrayList<MetastaticDiseaseSite>();
 

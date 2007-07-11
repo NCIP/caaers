@@ -18,6 +18,7 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
+    // TODO: switch to BigDecimals, put measure & unit in a component
     private float height;
     private float weight;
     private String baselinePerformanceStatus;

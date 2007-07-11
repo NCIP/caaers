@@ -21,10 +21,11 @@ import org.hibernate.annotations.Parameter;
         @Parameter(name="sequence", value="seq_metastatic_disease_site_id")
     }
 )
-public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject
-{			
-	private String otherMetastaticDiseaseSite;	
-	private AnatomicSite anatomicSite;
+public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
+    // TODO: these properties should be renamed to be less redundant
+    private String otherMetastaticDiseaseSite;
+    // TODO: and more specific.  And consistent.
+    private AnatomicSite anatomicSite;
 	
 	public String getOtherMetastaticDiseaseSite() {
 		return otherMetastaticDiseaseSite;
