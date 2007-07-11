@@ -145,8 +145,7 @@
         list_index="1"
         />
 
-    <!-- TODO: this table should be named disease_histories -->
-    <DISEASE_HISTORY
+    <DISEASE_HISTORIES
         id="-88"
         report_id="-17"
         />
