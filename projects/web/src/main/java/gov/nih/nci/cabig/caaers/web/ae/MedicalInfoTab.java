@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 /**
  * @author Kulasekaran
@@ -64,31 +63,31 @@ public class MedicalInfoTab extends AeTab {
             ctepStudyDiseaseOptions);
         ctepStudyDisease.getAttributes().put(InputField.DETAILS,
             "If the correct disease isn't listed above, enter it in other.");
-        AutocompleterField diseaseSite = new AutocompleterField("anatomicSite", "Primary disease site", false);
+        AutocompleterField diseaseSite = new AutocompleterField("codedPrimaryDiseaseSite", "Primary disease site", false);
         diseaseSite.getAttributes().put(InputField.DETAILS,
             "If the correct site isn't in the autocompleter above, please enter it in other.");
         disease
             .addField(ctepStudyDisease)
-            .addField(new DefaultTextField("otherPrimaryDiseaseCode", "Other disease"))
+            .addField(new DefaultTextField("otherPrimaryDisease", "Other disease"))
             .addField(diseaseSite)
-            .addField(new DefaultTextField("otherPrimaryDiseaseSiteCode", "Other primary disease site"))
-            .addField(new DefaultDateField("dateOfInitialPathologicDiagnosis", "Diagnosis date", false))
+            .addField(new DefaultTextField("otherPrimaryDiseaseSite", "Other primary disease site"))
+            .addField(new DefaultDateField("diagnosisDate", "Diagnosis date", false))
             ;
 
-        RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSite");
+        RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSites");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 return "Metastatic disease site " + index;
             }
         });
-        fieldFactory.addField(new AutocompleterField("anatomicSite", "Site Name", false));
-        fieldFactory.addField(new DefaultTextField("otherMetastaticDiseaseSite", "Other Site", false));
+        fieldFactory.addField(new AutocompleterField("codedSite", "Site Name", false));
+        fieldFactory.addField(new DefaultTextField("otherSite", "Other Site", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(participant);
         map.addInputFieldGroup(disease);
         map.addRepeatingFieldGroupFactory(fieldFactory,
-            command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSite().size());
+            command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites().size());
         return map;
     }
 

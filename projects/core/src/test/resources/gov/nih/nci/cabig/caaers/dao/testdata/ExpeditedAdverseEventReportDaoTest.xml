@@ -216,10 +216,40 @@
         first_name="Horatio"
         last_name="Sandpiper"
         />
-    
+
+    <ANATOMIC_SITES
+        id="-1"
+        name="Ear"
+        category="Head parts"
+        />
+
+    <STUDIES
+        id="-1"
+        primary_sponsor_code="eleventeen"
+        ctc_id="3"
+        short_title="That one"
+        />
+
+    <STUDY_DISEASES
+        id="-4"
+        study_id="-1"
+        />
+
+    <DISEASE_HISTORIES
+        id="-53"
+        report_id="-1"
+        coded_primary_disease_site_id="-1"
+        study_disease_id="-4"
+        diagnosis_date="2007-01-04"
+        />
+
+    <METASTATIC_DISEASE_SITES
+        id="-5"
+        disease_history_id="-53"
+        />
+
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->
-    <DISEASE_HISTORY/>
     <PARTICIPANT_HISTORY/>
 	<!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
 	<SCHEDULED_NOTIFICATIONS />

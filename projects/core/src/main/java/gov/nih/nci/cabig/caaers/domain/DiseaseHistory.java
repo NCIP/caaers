@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,73 +9,79 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 /**
  * @author Kulasekaran
+ * @author Rhett Sutphin
  */
 @Entity
-@Table (name="disease_history")
+@Table (name="disease_histories")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
         @Parameter(name="sequence", value="seq_disease_history_id")
     }
 )
 public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
-    // TODO: these aren't codes, they're just strings
-    private String otherPrimaryDiseaseCode;
-    private String otherPrimaryDiseaseSiteCode;
-    private Date dateOfInitialPathologicDiagnosis;
+    private String otherPrimaryDisease;
+    private String otherPrimaryDiseaseSite;
+    private Date diagnosisDate;
     private CtepStudyDisease ctepStudyDisease;
-    // TODO: rename to primaryDiseaseSite
-    private AnatomicSite anatomicSite;
-    private List<MetastaticDiseaseSite> metastaticDiseaseSite = new ArrayList<MetastaticDiseaseSite>();
+    private AnatomicSite codedPrimaryDiseaseSite;
+    private LazyListHelper listHelper = new LazyListHelper();
+
+    public DiseaseHistory() {
+        listHelper = new LazyListHelper();
+        listHelper.add(MetastaticDiseaseSite.class);
+    }
 
     public void addMetastaticDiseaseSite(MetastaticDiseaseSite site) {
-        getMetastaticDiseaseSite().add(site);
+        getMetastaticDiseaseSites().add(site);
     }
 
     @OneToOne
-    @JoinColumn(name="anatomic_site_id")
+    @JoinColumn(name="coded_primary_disease_site_id")
     @Cascade(value = { CascadeType.ALL })
-    public AnatomicSite getAnatomicSite() {
-        return anatomicSite;
+    public AnatomicSite getCodedPrimaryDiseaseSite() {
+        return codedPrimaryDiseaseSite;
     }
 
-    public void setAnatomicSite(AnatomicSite anatomicSite) {
-        this.anatomicSite = anatomicSite;
+    public void setCodedPrimaryDiseaseSite(AnatomicSite codedPrimaryDiseaseSite) {
+        this.codedPrimaryDiseaseSite = codedPrimaryDiseaseSite;
     }
 
     @Column(name = "diagnosis_date")
-    public Date getDateOfInitialPathologicDiagnosis() {
-        return dateOfInitialPathologicDiagnosis;
+    public Date getDiagnosisDate() {
+        return diagnosisDate;
     }
 
-    public void setDateOfInitialPathologicDiagnosis(
-        Date dateOfInitialPathologicDiagnosis) {
-        this.dateOfInitialPathologicDiagnosis = dateOfInitialPathologicDiagnosis;
+    public void setDiagnosisDate(
+        Date diagnosisDate) {
+        this.diagnosisDate = diagnosisDate;
     }
 
-    @Column(name = "other_disease_code")
-    public String getOtherPrimaryDiseaseCode() {
-        return otherPrimaryDiseaseCode;
+    @Column(name = "other_primary_disease")
+    public String getOtherPrimaryDisease() {
+        return otherPrimaryDisease;
     }
 
-    public void setOtherPrimaryDiseaseCode(String otherPrimaryDiseaseCode) {
-        this.otherPrimaryDiseaseCode = otherPrimaryDiseaseCode;
+    public void setOtherPrimaryDisease(String otherPrimaryDisease) {
+        this.otherPrimaryDisease = otherPrimaryDisease;
     }
 
-    @Column(name = "other_disease_site_code")
-    public String getOtherPrimaryDiseaseSiteCode() {
-        return otherPrimaryDiseaseSiteCode;
+    @Column(name = "other_primary_disease_site")
+    public String getOtherPrimaryDiseaseSite() {
+        return otherPrimaryDiseaseSite;
     }
 
-    public void setOtherPrimaryDiseaseSiteCode(String otherPrimaryDiseaseSiteCode) {
-        this.otherPrimaryDiseaseSiteCode = otherPrimaryDiseaseSiteCode;
+    public void setOtherPrimaryDiseaseSite(String otherPrimaryDiseaseSite) {
+        this.otherPrimaryDiseaseSite = otherPrimaryDiseaseSite;
     }
 
     @OneToOne
@@ -90,15 +95,20 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         this.ctepStudyDisease = ctepStudyDisease;
     }
 
-    @OneToMany
-    @JoinColumn(name="disease_history_id")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public List<MetastaticDiseaseSite> getMetastaticDiseaseSite() {
-        return metastaticDiseaseSite;
+    @Transient
+    public List<MetastaticDiseaseSite> getMetastaticDiseaseSites() {
+        return listHelper.getLazyList(MetastaticDiseaseSite.class);
     }
 
-    public void setMetastaticDiseaseSite(List<MetastaticDiseaseSite> metastaticDiseaseSite) {
-        this.metastaticDiseaseSite = metastaticDiseaseSite;
+    @OneToMany
+    @JoinColumn(name="disease_history_id")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
+        return listHelper.getInternalList(MetastaticDiseaseSite.class);
+    }
+
+    public void setMetastaticDiseaseSitesInternal(List<MetastaticDiseaseSite> metastaticDiseaseSite) {
+        listHelper.setInternalList(MetastaticDiseaseSite.class, metastaticDiseaseSite);
     }
 }
 

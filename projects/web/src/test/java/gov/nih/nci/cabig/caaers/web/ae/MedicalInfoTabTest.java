@@ -64,17 +64,17 @@ public class MedicalInfoTabTest extends AeTabTestCase {
     public void testStaticDiseaseFieldsPresent() throws Exception {
         assertFieldProperties("disease",
             "aeReport.diseaseHistory.ctepStudyDisease",
-            "aeReport.diseaseHistory.otherPrimaryDiseaseCode",
-            "aeReport.diseaseHistory.anatomicSite",
-            "aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode",
-            "aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"
+            "aeReport.diseaseHistory.otherPrimaryDisease",
+            "aeReport.diseaseHistory.codedPrimaryDiseaseSite",
+            "aeReport.diseaseHistory.otherPrimaryDiseaseSite",
+            "aeReport.diseaseHistory.diagnosisDate"
         );
     }
 
     public void testMetastaticDiseaseFieldsPresent() throws Exception {
         assertFieldProperties("metastatic3",
-            "aeReport.diseaseHistory.metastaticDiseaseSite[3].anatomicSite",
-            "aeReport.diseaseHistory.metastaticDiseaseSite[3].otherMetastaticDiseaseSite"
+            "aeReport.diseaseHistory.metastaticDiseaseSites[3].codedSite",
+            "aeReport.diseaseHistory.metastaticDiseaseSites[3].otherSite"
         );
     }
 

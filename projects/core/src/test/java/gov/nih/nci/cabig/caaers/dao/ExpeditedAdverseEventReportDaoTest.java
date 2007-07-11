@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
@@ -177,7 +178,18 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong number of contact mechanisms", 0, actual.getContactMechanisms().size());
     }
 
-    public void testSave() throws Exception {
+    public void testGetDiseaseHistory() throws Exception {
+        DiseaseHistory actual = getDao().getById(-1).getDiseaseHistory();
+        assertNotNull("No disease history", actual);
+        assertEquals("Wrong history", -53, (int) actual.getId());
+        assertEquals("Wrong primary disease site", -1, (int) actual.getCodedPrimaryDiseaseSite().getId());
+        assertEquals("Wrong disease from study", -4, (int) actual.getCtepStudyDisease().getId());
+        assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual.getDiagnosisDate());
+        assertEquals("Wrong number of metastatic disease sites", 1, actual.getMetastaticDiseaseSites().size());
+        assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites().get(0).getId());
+    }
+
+    public void testSaveBasics() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
                 CtcTerm term = ctcTermDao.getById(3012);

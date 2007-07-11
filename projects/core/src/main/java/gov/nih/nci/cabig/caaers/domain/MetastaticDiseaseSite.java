@@ -12,38 +12,37 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * @author Kulasekaran
- * @version 1.0
+ * @author Rhett Sutphin
  */
 @Entity
-@Table (name="metastatic_disease_site")
-@GenericGenerator(name="id-generator", strategy = "native",
+@Table(name = "metastatic_disease_sites")
+@GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_metastatic_disease_site_id")
+        @Parameter(name = "sequence", value = "seq_metastatic_disease_sites_id")
     }
 )
+// TODO: this sort of class might be better as a component rather than another domain object
 public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
-    // TODO: these properties should be renamed to be less redundant
-    private String otherMetastaticDiseaseSite;
-    // TODO: and more specific.  And consistent.
-    private AnatomicSite anatomicSite;
-	
-	public String getOtherMetastaticDiseaseSite() {
-		return otherMetastaticDiseaseSite;
-	}
+    private String otherSite;
+    private AnatomicSite codedSite;
 
-	public void setOtherMetastaticDiseaseSite(String otherMetastaticDiseaseSite) {
-		this.otherMetastaticDiseaseSite = otherMetastaticDiseaseSite;
-	}
+    public String getOtherSite() {
+        return otherSite;
+    }
 
-	@OneToOne
-	@JoinColumn(name="anatomic_site_id")
-	@Cascade(value = { CascadeType.ALL })
-	public AnatomicSite getAnatomicSite() {
-		return anatomicSite;
-	}
+    public void setOtherSite(String otherSite) {
+        this.otherSite = otherSite;
+    }
 
-	public void setAnatomicSite(AnatomicSite anatomicSite) {
-		this.anatomicSite = anatomicSite;
-	}
+    @OneToOne
+    @JoinColumn(name = "coded_site_id")
+    @Cascade(value = { CascadeType.ALL })
+    public AnatomicSite getCodedSite() {
+        return codedSite;
+    }
+
+    public void setCodedSite(AnatomicSite codedSite) {
+        this.codedSite = codedSite;
+    }
 }
 
