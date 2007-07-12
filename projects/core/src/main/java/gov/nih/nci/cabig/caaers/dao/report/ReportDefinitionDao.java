@@ -90,8 +90,14 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
     public void reassociate(ReportDefinition o) {
         getHibernateTemplate().lock(o, LockMode.NONE);
     }
+    
+    
+	@Override
+	public ReportDefinition getById(int arg0) {
+		return super.getById(arg0); //to bring under @Transaction (readonly)
+	}
 
-    /**
+	/**
 	 * Willl initialize the Lazy collections inside the passed ReportDefinition
 	 * @param rpDef
 	 */
@@ -105,4 +111,6 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 			super.initialize(nf.getAttachments());
 		}
 	}
+	
+	
 }
