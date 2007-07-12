@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -27,9 +25,6 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
-    private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
-   // private ReportDefinitionDao reportDefinitionDao
-   //     = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
 
     public void testGet() throws Exception {
         RoutineAdverseEventReport loaded = getDao().getById(-1);
