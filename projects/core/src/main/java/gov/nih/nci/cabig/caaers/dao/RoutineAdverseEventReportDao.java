@@ -20,9 +20,9 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 {
 	
 	 private static final String JOINS 
-		= " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm " + 
-		" join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier " + 
-        " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
+		= " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm "  + 
+		  " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier " + 
+          " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
 	
     public Class<RoutineAdverseEventReport> domainClass() {
         return RoutineAdverseEventReport.class;

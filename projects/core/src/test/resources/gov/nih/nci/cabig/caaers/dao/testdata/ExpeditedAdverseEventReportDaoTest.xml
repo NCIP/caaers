@@ -36,11 +36,22 @@
         />
     <ctc_grades/> <!-- to delete in case of existing refs -->
     <agents id="-101"/>
+    
+     <STUDY_ORGANIZATIONS
+        id="-10"
+        site_id="-1001"
+        study_id="-1"
+        type="SST"
+        />
+        
+    <ORGANIZATIONS
+        id="-1001"
+        name="New Site"/>    
 
     <PARTICIPANT_ASSIGNMENTS
         id="-14"
         study_site_id="-10"
-        participant_id="-5"
+        participant_id="-101"
         date_of_enrollment="2006-09-30"
         />
     <AE_REPORTS
@@ -51,11 +62,13 @@
         />
     <ADVERSE_EVENTS
         id="-11"
+        ctc_term_id="3007"
         report_id="-1"
         list_index="1"
         />
     <ADVERSE_EVENTS
         id="-70"
+        ctc_term_id="3007"
         report_id="-1"
         list_index="0"
         />
@@ -229,6 +242,32 @@
         ctc_id="3"
         short_title="That one"
         />
+        
+    <IDENTIFIERS
+        id="-201"
+        stu_id="-1"
+        value="nci_test"
+        source="Hosp"
+        type="MRN"/>  
+
+	 <PARTICIPANTS
+        id="-101"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+        birth_date="2006-01-02"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"/>
+    <IDENTIFIERS
+        id="-200"
+        participant_id="-101"
+        value="13js77"
+        source="Hosp"
+        type="MRN"/> 
 
     <STUDY_DISEASES
         id="-4"

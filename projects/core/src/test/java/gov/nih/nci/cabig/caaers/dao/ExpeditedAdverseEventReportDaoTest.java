@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
@@ -27,8 +28,10 @@ import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribut
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
@@ -489,6 +492,38 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                     -30, (int) loaded.getReports().get(0).getReportDefinition().getId());
             }
         });
+    }
+    
+    public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
+    	List<ExpeditedAdverseEventReport> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("ctcTerm", "Auditory/Ear");
+    	results = getDao().searchExpeditedReports(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    }
+    
+    public void testSearchExpeditedReportByDetectionDate() throws Exception {
+    	List<ExpeditedAdverseEventReport> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("expeditedDate", "05/12/2004");
+    	results = getDao().searchExpeditedReports(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    }
+    
+    public void testSearchExpeditedReportByParticipantFirstName() throws Exception {
+    	List<ExpeditedAdverseEventReport> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("participantFirstName", "Michael");
+    	results = getDao().searchExpeditedReports(m);
+    	assertEquals("Wrong number of results", 1, results.size());
+    }
+    
+    public void testSearchExpeditedReportByStudyShortTitle() throws Exception {
+    	List<ExpeditedAdverseEventReport> results;
+    	Map<String,String> m = new HashMap<String,String>();
+    	m.put("studyShortTitle", "That");
+    	results = getDao().searchExpeditedReports(m);
+    	assertEquals("Wrong number of results", 1, results.size());
     }
 
     private void doSaveTest(SaveTester tester) {
