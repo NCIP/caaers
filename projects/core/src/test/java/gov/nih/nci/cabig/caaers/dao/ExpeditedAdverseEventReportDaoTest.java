@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
@@ -187,6 +188,17 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual.getDiagnosisDate());
         assertEquals("Wrong number of metastatic disease sites", 1, actual.getMetastaticDiseaseSites().size());
         assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites().get(0).getId());
+    }
+
+    public void testGetParticipantHistory() throws Exception {
+        ParticipantHistory actual = getDao().getById(-1).getParticipantHistory();
+        assertNotNull("No participant history", actual);
+        assertEquals("Wrong history", -57, (int) actual.getId());
+        assertEquals("Wrong height", new BigDecimal("134.3"), actual.getHeight().getQuantity());
+        assertEquals("Wrong height unit", "cm", actual.getHeight().getUnit());
+        assertEquals("Wrong weight", new BigDecimal("54.2"), actual.getWeight().getQuantity());
+        assertEquals("Wrong weight unit", "kg", actual.getWeight().getUnit());
+        assertEquals("Wrong baseline", "About here", actual.getBaselinePerformanceStatus());
     }
 
     public void testSaveBasics() throws Exception {

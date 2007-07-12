@@ -44,11 +44,11 @@ public class MedicalInfoTab extends AeTab {
         BasePropertyInputFieldGroup participant
             = new BasePropertyInputFieldGroup("participant", "aeReport.participantHistory");
         participant
-            .addField(new DefaultTextField("height", "Height"))
-            .addField(new DefaultSelectField("heightUnitOfMeasure", "Height units", false,
+            .addField(new DefaultTextField("height.quantity", "Height"))
+            .addField(new DefaultSelectField("height.unit", "Height units", false,
                 optionsFromConfigurationProperty("heightUnitsRefData")))
-            .addField(new DefaultTextField("weight", "Weight"))
-            .addField(new DefaultSelectField("weightUnitOfMeasure", "Weight units", false,
+            .addField(new DefaultTextField("weight.quantity", "Weight"))
+            .addField(new DefaultSelectField("weight.unit", "Weight units", false,
                 optionsFromConfigurationProperty("weightUnitsRefData")))
             .addField(new DefaultSelectField("baselinePerformanceStatus", "Baseline performance", false,
                 optionsFromConfigurationProperty("bpsRefData", "Please select")))

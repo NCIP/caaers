@@ -53,10 +53,10 @@ public class MedicalInfoTabTest extends AeTabTestCase {
 
     public void testParticipantFieldsPresent() throws Exception {
         assertFieldProperties("participant",
-            "aeReport.participantHistory.height",
-            "aeReport.participantHistory.heightUnitOfMeasure",
-            "aeReport.participantHistory.weight",
-            "aeReport.participantHistory.weightUnitOfMeasure",
+            "aeReport.participantHistory.height.quantity",
+            "aeReport.participantHistory.height.unit",
+            "aeReport.participantHistory.weight.quantity",
+            "aeReport.participantHistory.weight.unit",
             "aeReport.participantHistory.baselinePerformanceStatus"
         );
     }
@@ -100,7 +100,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
 
     public void testHeightOptions() throws Exception {
         Map<Object,Object> actualOptions = getActualSelectFieldOptions(
-            "participant", "aeReport.participantHistory.heightUnitOfMeasure");
+            "participant", "aeReport.participantHistory.height.unit");
         assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
         Iterator<Map.Entry<Object, Object>> iterator = actualOptions.entrySet().iterator();
         Map.Entry<Object, Object> entry = iterator.next();
@@ -114,7 +114,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
 
     public void testWeightOptions() throws Exception {
         Map<Object,Object> actualOptions = getActualSelectFieldOptions(
-            "participant", "aeReport.participantHistory.weightUnitOfMeasure");
+            "participant", "aeReport.participantHistory.weight.unit");
         assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
         Iterator<Map.Entry<Object, Object>> iterator = actualOptions.entrySet().iterator();
         Map.Entry<Object, Object> entry = iterator.next();

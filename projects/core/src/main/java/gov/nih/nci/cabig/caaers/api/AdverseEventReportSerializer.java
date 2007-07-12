@@ -168,10 +168,10 @@ public class AdverseEventReportSerializer {
 
 	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) {
 	    	ParticipantHistory participantHistory = new ParticipantHistory();
-	    	participantHistory.setHeight(ph.getHeight());
-	    	participantHistory.setHeightUnitOfMeasure(ph.getHeightUnitOfMeasure());
-	    	participantHistory.setWeight(ph.getWeight());
-	    	participantHistory.setWeightUnitOfMeasure(ph.getWeightUnitOfMeasure());
+	    	participantHistory.getHeight().setQuantity(ph.getHeight().getQuantity());
+	    	participantHistory.getHeight().setUnit(ph.getHeight().getUnit());
+	    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
+	    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
 	    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
 	    	
 	    	return participantHistory;

@@ -248,9 +248,18 @@
         disease_history_id="-53"
         />
 
+    <PARTICIPANT_HISTORIES
+        id="-57"
+        report_id="-1"
+        height="134.3"
+        height_unit="cm"
+        weight="54.2"
+        weight_unit="kg"
+        baseline_performance_status="About here"
+        />
+
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->
-    <PARTICIPANT_HISTORY/>
 	<!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
 	<SCHEDULED_NOTIFICATIONS />
 	<PLANNED_NOTIFICATIONS />
