@@ -38,7 +38,7 @@ import org.apache.commons.lang.StringUtils;
  * This is an service class, which is used to obtain the correct address (toAddress) of a
  * recipient.
  *
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
+ * @author <a href="mailto:biju.joseph@semanticbits.com","xxxxxx");//Biju Joseph</a>
  * Created-on : May 31, 2007
  * @version     %I%, %G%
  * @since       1.0
@@ -114,7 +114,12 @@ public class ReportServiceImpl  implements ReportService {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		// map.put("nCIProtocolNumber", report.getAeReport().getStudy().getPrimaryIdentifier().getValue());
 		// map.put("reportId", report.getAeReport().getId());
-		
+		map.put("nCIProtocolNumber","xxxxxx");//NCI Protocol Number
+		map.put("ticketNumber","xxxxxx");//Ticket Number
+		map.put("patientId","xxxxxx");//Patient ID
+		map.put("amendmentNumber","xxxxxx");//Amendment Number
+		map.put("reportId","xxxxxx");//Report ID
+		map.put("reportURL","xxxxxx");//URL To Report
 		return map;
 	}
 
