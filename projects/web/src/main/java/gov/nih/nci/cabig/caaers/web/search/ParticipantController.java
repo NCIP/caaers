@@ -30,14 +30,6 @@ public class ParticipantController extends SearchController {
 		setFormView("search/participant_search");
 		setSuccessView("search/participant_search");
 	}
-	
-	/*
-    protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
-    	Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("studySearchType", getConfigurationProperty().getMap().get("studySearchType"));               
-	  	return refdata;
-    }
-    */
 		
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {
@@ -58,6 +50,7 @@ public class ParticipantController extends SearchController {
 		return sCommand;
 	}	
 
+	/*
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand,
 			BindException errors) throws Exception
@@ -84,6 +77,7 @@ public class ParticipantController extends SearchController {
     	request.getSession().setAttribute(getFormSessionAttributeName(), oCommand);
     	
     	return modelAndView;
-	}			
+	}	
+	*/		
 	
 }
