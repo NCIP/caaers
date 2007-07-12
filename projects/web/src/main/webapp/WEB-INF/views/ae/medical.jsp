@@ -23,29 +23,29 @@
     <script type="text/javascript">
     var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
     var initialAnatomicSite = {
-        <c:if test="${not empty command.aeReport.diseaseHistory.anatomicSite}">
-        id: ${command.aeReport.diseaseHistory.anatomicSite.id},
-        name: '${command.aeReport.diseaseHistory.anatomicSite.name}'
+        <c:if test="${not empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite}">
+        id: ${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id},
+        name: '${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}'
         </c:if>
     }
 
     function chooseDiseaseOrOther() {
         var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
-        $('aeReport.diseaseHistory.otherPrimaryDiseaseCode').disabled = (term != "");
+        $('aeReport.diseaseHistory.otherPrimaryDisease').disabled = (term != "");
     }
 
     var EnterDiseaseSite = Class.create()
     Object.extend(EnterDiseaseSite.prototype, {
         initialize: function(index, anatomicSiteName) {
             this.index = index
-            var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSite[" + index + "]";
-            this.anatomicSiteProperty = cmProperty + ".anatomicSite"
-            this.otherProperty = cmProperty + ".otherMetastaticDiseaseSite"
+            var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSites[" + index + "]";
+            this.anatomicSiteProperty = cmProperty + ".codedSite"
+            this.otherProperty = cmProperty + ".otherSite"
 
             if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
-            $("select-anatomicSite-" + this.index)
+            $("select-codedSite-" + this.index)
                 .observe("click", this.updateAnatomicOrOther.bind(this))
-            $("select-otherMetastaticDiseaseSite-" + this.index)
+            $("select-otherSite-" + this.index)
                 .observe("click", this.updateAnatomicOrOther.bind(this))
 
             AE.createStandardAutocompleter(
@@ -64,7 +64,7 @@
         },
 
         updateAnatomicOrOther: function() {
-            var isAnatomicSite = $("select-anatomicSite-" + this.index).checked
+            var isAnatomicSite = $("select-codedSite-" + this.index).checked
             var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
             var otherRow = $(this.otherProperty + "-row")
             if (isAnatomicSite) {
@@ -83,9 +83,9 @@
         initializeAnatomicOrOther: function() {
             var otherValue = $(this.otherProperty).value
             if (otherValue.length == 0) {
-                $("select-anatomicSite-" + this.index).click()
+                $("select-codedSite-" + this.index).click()
             } else {
-                $("select-otherMetastaticDiseaseSite-" + this.index).click()
+                $("select-otherSite-" + this.index).click()
             }
         }
     })
@@ -95,7 +95,7 @@
     }
 
     Event.observe(window, "load", function() {
-        AE.createStandardAutocompleter("aeReport.diseaseHistory.anatomicSite",
+        AE.createStandardAutocompleter("aeReport.diseaseHistory.codedPrimaryDiseaseSite",
             function(autocompleter, text) {
                 createAE.matchAnatomicSite(text, function(values) {
                     autocompleter.setChoices(values)
@@ -108,8 +108,8 @@
     })
 
     Element.observe(window, "load", function() {
-        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status" var="site">
-            new EnterDiseaseSite(${status.index}, '${site.anatomicSite.name}')
+        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" varStatus="status" var="site">
+            new EnterDiseaseSite(${status.index}, '${site.codedSite.name}')
         </c:forEach>
 
         new ListEditor("metastatic", createAE, "MetastaticDiseaseSite", {
@@ -222,12 +222,12 @@
             </c:forEach>
         </chrome:division>
 
-        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSite}" varStatus="status">
+        <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" varStatus="status">
              <ae:oneMetastatic index="${status.index}"/>
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="metastatic" label="Add a metastatic disease site"/>
+        <tags:listEditorAddButton divisionClass="metastatic" label="Add a metastatic site"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

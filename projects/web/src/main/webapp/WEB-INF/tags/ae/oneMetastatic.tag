@@ -7,11 +7,11 @@
 <%@attribute name="style"%>
 
 <ae:fieldGroupDivision fieldGroupFactoryName="metastatic" index="${index}" style="${style}">
-    <tags:errors path="aeReport.diseaseHistory.metastaticDiseaseSite[${index}]"/>
+    <tags:errors path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]"/>
     <tags:renderRow field="${fieldGroup.fields[0]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-anatomicSite-${index}" name="anatomicOrOther${index}" type="radio"/>
+                <input id="select-codedSite-${index}" name="anatomicOrOther${index}" type="radio"/>
                 ${fieldGroup.fields[0].displayName}
             </label>
         </jsp:attribute>
@@ -19,7 +19,7 @@
     <tags:renderRow field="${fieldGroup.fields[1]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-otherMetastaticDiseaseSite-${index}" name="anatomicOrOther${index}" type="radio"/>
+                <input id="select-otherSite-${index}" name="anatomicOrOther${index}" type="radio"/>
                 ${fieldGroup.fields[1].displayName}
             </label>
         </jsp:attribute>

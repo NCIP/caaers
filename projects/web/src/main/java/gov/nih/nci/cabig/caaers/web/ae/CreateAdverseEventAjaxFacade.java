@@ -140,15 +140,11 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
-        //List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), ctcVersionId, ctcCategoryId);
-    	
-    	//System.out.println("cat id is  " + ctcCategoryId);
-    	
-    	List<CtcTerm> terms = null;
-    	if (ctcCategoryId == 0) {
-        	terms = ctcTermDao.getAll();
+        List<CtcTerm> terms;
+        if (ctcCategoryId == 0) {
+            terms = ctcTermDao.getAll();
         } else {
-        	terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+            terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         }
         // cut down objects for serialization
         for (CtcTerm term : terms) {
@@ -244,16 +240,7 @@ public class CreateAdverseEventAjaxFacade {
      * @param index
      * @return
      */
-    // TODO: use the same methods for this as for everything else
-    public String addMetastaticDiseaseSite(int index, Integer aeReportId) {    	    	
-        
-    	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
-        // TODO: this won't work in the edit flow
-        String commandName = CreateAdverseEventController.class.getName()+".FORM.command";
-        CreateExpeditedAdverseEventCommand createAdverseEventCommand = (CreateExpeditedAdverseEventCommand)request.getSession().getAttribute(commandName);
-        request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, createAdverseEventCommand);
-        
-        createAdverseEventCommand.getAeReport().getDiseaseHistory().addMetastaticDiseaseSite(new MetastaticDiseaseSite());
+    public String addMetastaticDiseaseSite(int index, Integer aeReportId) {
         return renderIndexedAjaxView("metastaticFormSection", index, aeReportId);
     }
 
