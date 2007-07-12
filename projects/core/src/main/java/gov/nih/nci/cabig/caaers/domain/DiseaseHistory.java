@@ -25,7 +25,7 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 @Table (name="disease_histories")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_disease_history_id")
+        @Parameter(name="sequence", value="seq_disease_histories_id")
     }
 )
 public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
