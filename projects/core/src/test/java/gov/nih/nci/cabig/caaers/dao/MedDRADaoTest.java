@@ -17,8 +17,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] lowLevelTerm = {"122","122","322","122"};
     	List<String[]> llts = new ArrayList<String[]>();
     	llts.add(lowLevelTerm);
-    	int[] result = getDao().insertLowLevelTerms(llts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertLowLevelTerms(llts, 0);
         
     }
     
@@ -27,8 +26,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] preferredTerm = {"122","122","322","122"};
     	List<String[]> pts = new ArrayList<String[]>();
     	pts.add(preferredTerm);
-    	int[] result = getDao().insertPreferredTerms(pts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertPreferredTerms(pts, 0);
         
     }
     
@@ -37,8 +35,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] highLevelTerm = {"122","122","322"};
     	List<String[]> hlts = new ArrayList<String[]>();
     	hlts.add(highLevelTerm);
-    	int[] result = getDao().insertHighLevelTerms(hlts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertHighLevelTerms(hlts, 0);
         
     }
     
@@ -47,8 +44,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] hlgt = {"122","122","322"};
     	List<String[]> hlgts = new ArrayList<String[]>();
     	hlgts.add(hlgt);
-    	int[] result = getDao().insertHighLevelGroupTerms(hlgts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertHighLevelGroupTerms(hlgts, 0);
         
     }
     
@@ -57,8 +53,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] soc = {"122","122","322"};
     	List<String[]> socs = new ArrayList<String[]>();
     	socs.add(soc);
-    	int[] result = getDao().insertSystemOrganClasses(socs, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertSystemOrganClasses(socs, 0);
         
     }
     
@@ -67,8 +62,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] hltpt = {"122","122","322"};
     	List<String[]> hltpts = new ArrayList<String[]>();
     	hltpts.add(hltpt);
-    	int[] result = getDao().insertHLTxPT(hltpts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertHLTxPT(hltpts, 0);
         
     }
     
@@ -77,8 +71,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] hlgthlt = {"122","122","322"};
     	List<String[]> hlgtlts = new ArrayList<String[]>();
     	hlgtlts.add(hlgthlt);
-    	int[] result = getDao().insertHLGTxHLT(hlgtlts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertHLGTxHLT(hlgtlts, 0);
         
     }
     public void testInsertSOCxHLGT() throws Exception {
@@ -86,8 +79,7 @@ public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
     	String[] sochlgt = {"122","122","322"};
     	List<String[]> sochlgts = new ArrayList<String[]>();
     	sochlgts.add(sochlgt);
-    	int[] result = getDao().insertSOCxHLGT(sochlgts, 0);
-    	assertEquals("Wrong Result Set", 1, result[0]);
+    	getDao().insertSOCxHLGT(sochlgts, 0);
         
     }
 }
