@@ -199,7 +199,7 @@
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->
     <DISEASE_HISTORIES/>
-    <PARTICIPANT_HISTORY/>
+    <PARTICIPANT_HISTORIES/>
 	<ae_prior_therapies />
     <!--
 	

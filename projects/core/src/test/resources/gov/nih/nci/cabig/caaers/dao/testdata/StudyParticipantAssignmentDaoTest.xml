@@ -48,7 +48,7 @@
     <!-- Report's 1:1 dependent tables.  Ideally this wouldn't be necessary, since
         a report is never saved in the test, but hibernate's flushing one anyway. -->
     <DISEASE_HISTORIES/>
-    <PARTICIPANT_HISTORY/>
+    <PARTICIPANT_HISTORIES/>
     <AE_REPORT_DESCRIPTIONS/>
     <AE_REPORT_PEOPLE id="-331" first_name="FA" last_name="KE" role="R" report_id="-100"/>
     <TREATMENTS/>
