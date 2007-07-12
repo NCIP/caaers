@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,32 +19,30 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class EvaluationServiceImpl implements EvaluationService {
-	
-	private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+    private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
     private static final Log log = LogFactory.getLog(EvaluationServiceImpl.class);
 
     private ReportDefinitionDao reportDefinitionDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private ReportService reportService;
-	
-	/**
+
+    /**
      * @return true if the given adverse event is severe in the context of the provided
      *  study, site, and participant
      */
     public boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent) {
-    	boolean isSevere = false;
-    	
-    	try {
-			String msg = adverseEventEvaluationService.assesAdverseEvent(adverseEvent, assignment.getStudySite().getStudy());
-			if ("SERIOUS_ADVERSE_EVENT".equals(msg)) {
-				isSevere = true;
-			}
-		} catch (Exception e) {
-			log.error(e);
-		}
-		
-		
-    	return isSevere;
+        boolean isSevere = false;
+
+        try {
+            String msg = adverseEventEvaluationService.assesAdverseEvent(adverseEvent, assignment.getStudySite().getStudy());
+            if ("SERIOUS_ADVERSE_EVENT".equals(msg)) {
+                isSevere = true;
+            }
+        } catch (Exception e) {
+            throw new CaaersSystemException("Could not assess the given AE", e);
+        }
+
+        return isSevere;
     }
 
     /**
@@ -61,29 +60,26 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @return the report definitions which the evaluation indicated were required.
      */
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
-    	try {
-			List reportDefinitionNames = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
-			
-	        
-	        for(int i=0;i<reportDefinitionNames.size();i++ ) {
-	        	ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionNames.get(i).toString());
-	        	Report report = existingReportWithDef(expeditedData, def);
-	        	
-		        if (report == null) {
-		            report = reportService.createReport(def, expeditedData);		            
-		        }
-		        report.setRequired(true);
-		        
-		    }
-	        
-	        expeditedAdverseEventReportDao.save(expeditedData);
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.error(e);
-		}
-    	
+        List reportDefinitionNames;
+        try {
+            reportDefinitionNames = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
+        } catch (Exception e) {
+            throw new CaaersSystemException(
+                "Could not determine the reports necessary for the given expedited adverse event data", e);
+        }
+
+        for (Object reportDefinitionName : reportDefinitionNames) {
+            ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
+            Report report = existingReportWithDef(expeditedData, def);
+
+            if (report == null) {
+                report = reportService.createReport(def, expeditedData);
+            }
+            report.setRequired(true);
+
+        }
+
+        expeditedAdverseEventReportDao.save(expeditedData);
     }
 
     private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
@@ -102,29 +98,19 @@ public class EvaluationServiceImpl implements EvaluationService {
         return null;
     }
     
-
-    
     /**
      * @return All the report definitions which might apply to the given
      *  study, site, and participant
      */
      // TODO: it might more sense for this to go in ReportService
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
-    	
-    	List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
-    	
-    	try {
-    		
-    		for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
-    			reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
-    		}
-    		
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.error(e);
-		}
-    	
-    	return reportDefinitions;
+        List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
+
+        for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
+            reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
+        }
+
+        return reportDefinitions;
     }
     
     ////// CONFIGURATION
@@ -133,14 +119,13 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.reportDefinitionDao = reportDefinitionDao;
     }
 
-	public void setExpeditedAdverseEventReportDao(
-			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-	}
+    public void setExpeditedAdverseEventReportDao(
+        ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao
+    ) {
+        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
 
-	public void setReportService(ReportService reportService) {
-		this.reportService = reportService;
-	}
-
-
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
+    }
 }
