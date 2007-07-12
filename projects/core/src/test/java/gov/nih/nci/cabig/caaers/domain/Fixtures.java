@@ -62,6 +62,13 @@ public class Fixtures {
         agent.getAgent().setName(agentName);
         return agent;
     }
+    
+    public static RoutineAdverseEventReport createSavableRoutineReport() {
+        RoutineAdverseEventReport report = new RoutineAdverseEventReport();
+        report.setStartDate(new Timestamp(103));
+        report.setEndDate(new Timestamp(106));
+        return report;
+    }
 
     public static ExpeditedAdverseEventReport createSavableExpeditedReport() {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();

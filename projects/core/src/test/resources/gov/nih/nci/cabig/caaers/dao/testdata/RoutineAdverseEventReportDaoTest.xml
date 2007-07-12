@@ -1,0 +1,64 @@
+<dataset>
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="301"
+        name="allergy/immunology"
+        version_id="3"
+        />
+    <ctc_categories
+        id="302"
+        name="auditory/ear"
+        version_id="3"
+        />
+    <ctc_categories
+        id="303"
+        name="blood/bone marrow"
+        version_id="3"
+        />
+    <ctc_terms
+        id="3007"
+        category_id="302"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term="Ear disorder"
+        ctep_code="10014004"
+        other_required="1"
+        />
+    <ctc_terms
+        category_id="302"
+        id="3012"
+        term="Tinnitus"
+        ctep_term="Tinnitus"
+        ctep_code="10043882"
+        other_required="0"
+        />
+    <ctc_grades/> <!-- to delete in case of existing refs -->
+    <agents id="-101"/>
+
+    <PARTICIPANT_ASSIGNMENTS
+        id="-14"
+        study_site_id="-10"
+        participant_id="-5"
+        date_of_enrollment="2006-09-30"
+        />
+        
+    <AE_ROUTINE_REPORTS
+        id="-1"
+        assignment_id="-14"
+        start_date="2004-05-12"
+        end_date="2004-08-12"
+        />
+     <ADVERSE_EVENTS
+        id="-70"
+        routine_report_id="-1"
+        routine_list_index="0"
+        />
+        
+    <ADVERSE_EVENTS
+        id="-11"
+        routine_report_id="-1"
+        routine_list_index="1"
+        />       
+</dataset>
