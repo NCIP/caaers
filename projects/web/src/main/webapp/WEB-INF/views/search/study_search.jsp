@@ -17,8 +17,8 @@
 
 <style type="text/css">
         /* Override default lable length */
-         div.row div.label { width: 6em; } 
-         div.row div.value { margin-left: 7em; } 
+         div.row div.label { width: 9em; } 
+        div.row div.value { margin-left: 10em; }
 </style>
 <title>${tab.longTitle}</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>

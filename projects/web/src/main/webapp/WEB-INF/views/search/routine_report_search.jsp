@@ -16,8 +16,8 @@
 
 <style type="text/css">
         /* Override default lable length */
-        div.row div.label { width: 9em; } 
-        div.row div.value { margin-left: 10em; }
+        div.row div.label { width: 10em; } 
+        div.row div.value { margin-left: 11em; }
         input { width:8em; }
         .box.paired { width: 30%; }
 </style>

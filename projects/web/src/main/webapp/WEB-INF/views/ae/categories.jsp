@@ -52,8 +52,8 @@
     </jsp:attribute>
     <jsp:attribute name="singleFields">
    <b>Periods of Observation </b><br>
-   <b>From:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.startDate"/>
-   <b>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
+   <b><tags:requiredIndicator/>From:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.startDate"/>
+   <b><tags:requiredIndicator/>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
     <c:forEach items="${ctcCats}" varStatus="status" var="category">
     		<c:if test='${status.index % 10 == 0}'>
     		    </div>
