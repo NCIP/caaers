@@ -18,7 +18,7 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "metastatic_disease_sites")
 @GenericGenerator(name = "id-generator", strategy = "native",
     parameters = {
-        @Parameter(name = "sequence", value = "seq_metastatic_disease_sites_id")
+        @Parameter(name = "sequence", value = "seq_metastatic_disease_site_id")
     }
 )
 // TODO: this sort of class might be better as a component rather than another domain object
