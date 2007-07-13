@@ -114,6 +114,7 @@
 							var columnHolder = getElementHolderDiv();
 							columnHolder.innerHTML = columnContent;
 							var newColumn = columnHolder.childNodes[1].cloneNode(true);	
+							
 							columnHolder.innerHTML = "";
 							columns.appendChild(newColumn);
 							var brElement = document.createElement("br");
@@ -230,13 +231,17 @@
 		}
 		
 		function removeCondition(ruleCount, columnCount) {
+				
 				try {
 					authorRule.removeCondition(ruleCount, columnCount, function(deleteStatus) {
 							if(deleteStatus) {
 								var columns = $('rule-'+(ruleCount+1)+'-columns');
 								var column = $('rule-'+(ruleCount)+'-column-'+(columnCount));
-								columns.removeChild($(column.id + '-br'));
-								columns.removeChild(column);
+								column.style.visibility = "hidden";
+								
+								//columns.removeChild($(column.id + '-br'));
+								//columns.removeChild(column);
+								
 							} else {
 								alert("Delete failed on server " + values)
 							}
@@ -343,28 +348,29 @@
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
 				
 				var divNodes = 0;
+				var sameFields = 0;
+				var fieldExist = false;
 
 				// Filter all div nodes				
 				for(var i=0; i < columns.childNodes.length; i++)
 				{
 					if (columns.childNodes[i].nodeName == 'DIV')
 					{
-						divNodes++;
-					}
-				}
+
+						if (columns.childNodes[i].style.visibility != 'hidden') {							
 							
-				var fieldExist = false;
-				
-				var sameFields = 0;
-				
-				for (var i=0; i < divNodes; i++)
-				{
-					var fieldId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].fieldConstraint[0].fieldName';
-					var domainObjectId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + i + '].objectType';
+							var fieldId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + divNodes + '].fieldConstraint[0].fieldName';
+							var domainObjectId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + divNodes + '].objectType';
 					
-					if($(fieldId).value == fieldName && $(domainObjectId).value == domainObjectName)
-					{
-						sameFields++;
+							if($(fieldId).value == fieldName && $(domainObjectId).value == domainObjectName)
+							{
+								sameFields++;
+						
+							}
+						}
+					
+							divNodes++;
+							
 						
 					}
 				}
@@ -404,6 +410,7 @@
 		//var domainObject = null;
 		
 		// check whether the field already exists
+		
 		if (isFieldExists(ruleCount, $(domainObjectDropDownID).value, selectedField.value))
 		{
 			alert('Field already exisits');
@@ -920,8 +927,15 @@ button. Rules created will belong to the selected RuleSet.</p>
 				<c:forEach varStatus="columnStatus" begin="0"
 					items="${command.ruleSet.rule[ruleCount].condition.column}">
 					<c:set var="columnCount" value="${columnStatus.index}" />
+
 					<div id="rule-${ruleCount}-column-${columnCount}"
-						style="margin-left:200px;" class="lineitem"><img
+						style="margin-left:200px; 
+						
+						<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}">
+							visibility:hidden
+						</c:if>"
+						
+						 class="lineitem"><img
 						src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <c:choose>
 						<c:when test="${columnCount == 0}">
