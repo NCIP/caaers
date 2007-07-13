@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<topics>
+    <topic id="0" tId="174" url="caaersSource_full.htm#administrationdelay.htm" target="right"><![CDATA[Administration Delay:]]><contextids /></topic>
+    <topic id="1" tId="166" url="caaersSource_full.htm#adverseeventcoursestartdate.htm" target="right"><![CDATA[Adverse event course start date:]]><contextids /></topic>
+    <topic id="2" tId="223" url="caaersSource_full.htm#adverseevents.htm" target="right"><![CDATA[Adverse Events]]><contextids /></topic>
+    <topic id="3" tId="132" url="caaersSource_full.htm#adverseeventscreateexpeditedreport.htm" target="right"><![CDATA[Adverse Events: Create Expedited Report]]><contextids /></topic>
+    <topic id="4" tId="185" url="caaersSource_full.htm#aevaluedate.htm" target="right"><![CDATA[AE Value/Date:]]><contextids /></topic>
+    <topic id="5" tId="200" url="caaersSource_full.htm#attribution.htm" target="right"><![CDATA[Attribution]]><contextids /></topic>
+    <topic id="6" tId="157" url="caaersSource_full.htm#baselineperformancestatus.htm" target="right"><![CDATA[Baseline Performance Status:]]><contextids /></topic>
+    <topic id="7" tId="184" url="caaersSource_full.htm#baselinevaluedate.htm" target="right"><![CDATA[Baseline Value/Date:]]><contextids /></topic>
+    <topic id="8" tId="198" url="caaersSource_full.htm#cause.htm" target="right"><![CDATA[Cause:]]><contextids /></topic>
+    <topic id="9" tId="193" url="caaersSource_full.htm#conmeds.htm" target="right"><![CDATA[Con. Meds]]><contextids /></topic>
+    <topic id="10" tId="202" url="caaersSource_full.htm#concomitantmedication.htm" target="right"><![CDATA[Concomitant medication:]]><contextids /></topic>
+    <topic id="11" tId="168" url="caaersSource_full.htm#courseagent.htm" target="right"><![CDATA[Course Agent]]><contextids /></topic>
+    <topic id="12" tId="167" url="caaersSource_full.htm#coursenumberonwhichtheeventoccurred.htm" target="right"><![CDATA[Course number on which the event occurred:]]><contextids /></topic>
+    <topic id="13" tId="201" url="caaersSource_full.htm#course.htm" target="right"><![CDATA[Course:]]><contextids /></topic>
+    <topic id="14" tId="179" url="caaersSource_full.htm#datelastadministeredmmddyyyy.htm" target="right"><![CDATA[Date Last Administered (MM/DD/YYYY):]]><contextids /></topic>
+    <topic id="15" tId="148" url="caaersSource_full.htm#description.htm" target="right"><![CDATA[Description]]><contextids /></topic>
+    <topic id="16" tId="159" url="caaersSource_full.htm#diseasename.htm" target="right"><![CDATA[Disease Name:]]><contextids /></topic>
+    <topic id="17" tId="170" url="caaersSource_full.htm#dose.htm" target="right"><![CDATA[Dose:]]><contextids /></topic>
+    <topic id="18" tId="173" url="caaersSource_full.htm#durationandschedule.htm" target="right"><![CDATA[Duration and schedule:]]><contextids /></topic>
+    <topic id="19" tId="191" url="caaersSource_full.htm#enddatemmddyyyy.htm" target="right"><![CDATA[End Date (MM/DD/YYYY):]]><contextids /></topic>
+    <topic id="20" tId="165" url="caaersSource_full.htm#firstcoursestartdate.htm" target="right"><![CDATA[First course start date:]]><contextids /></topic>
+    <topic id="21" tId="155" url="caaersSource_full.htm#heightcminch.htm" target="right"><![CDATA[Height (cm/inch):]]><contextids /></topic>
+    <topic id="22" tId="194" url="caaersSource_full.htm#knownmedication.htm" target="right"><![CDATA[Known medication:]]><contextids /></topic>
+    <topic id="23" tId="182" url="caaersSource_full.htm#labtestname.htm" target="right"><![CDATA[Lab Test name:]]><contextids /></topic>
+    <topic id="24" tId="181" url="caaersSource_full.htm#labs.htm" target="right"><![CDATA[Labs]]><contextids /></topic>
+    <topic id="25" tId="154" url="caaersSource_full.htm#medical.htm" target="right"><![CDATA[Medical]]><contextids /></topic>
+    <topic id="26" tId="175" url="caaersSource_full.htm#modifieddose.htm" target="right"><![CDATA[Modified Dose:]]><contextids /></topic>
+    <topic id="27" tId="210" url="caaersSource_full.htm#navigationmenu.htm" target="right"><![CDATA[Navigation Menu:]]><contextids /></topic>
+    <topic id="28" tId="197" url="caaersSource_full.htm#other1.htm" target="right"><![CDATA[Other]]><contextids /></topic>
+    <topic id="29" tId="143" url="caaersSource_full.htm#otheradverseevent.htm" target="right"><![CDATA[Other Adverse Event:]]><contextids /></topic>
+    <topic id="30" tId="203" url="caaersSource_full.htm#othercause.htm" target="right"><![CDATA[Other cause:]]><contextids /></topic>
+    <topic id="31" tId="162" url="caaersSource_full.htm#othersite.htm" target="right"><![CDATA[Other Site:]]><contextids /></topic>
+    <topic id="32" tId="195" url="caaersSource_full.htm#other.htm" target="right"><![CDATA[Other:]]><contextids /></topic>
+    <topic id="33" tId="158" url="caaersSource_full.htm#patientdiseaseinformation.htm" target="right"><![CDATA[Patient Disease Information]]><contextids /></topic>
+    <topic id="34" tId="207" url="caaersSource_full.htm#physiciandetails.htm" target="right"><![CDATA[Physician Details:]]><contextids /></topic>
+    <topic id="35" tId="141" url="caaersSource_full.htm#primaryadverseevent.htm" target="right"><![CDATA[Primary Adverse Event:]]><contextids /></topic>
+    <topic id="36" tId="160" url="caaersSource_full.htm#primarysiteofdisease.htm" target="right"><![CDATA[Primary Site Of Disease:]]><contextids /></topic>
+    <topic id="37" tId="186" url="caaersSource_full.htm#recoveryvaluedate.htm" target="right"><![CDATA[Recovery Value/Date:]]><contextids /></topic>
+    <topic id="38" tId="205" url="caaersSource_full.htm#reporter.htm" target="right"><![CDATA[Reporter]]><contextids /></topic>
+    <topic id="39" tId="206" url="caaersSource_full.htm#reporterdetails.htm" target="right"><![CDATA[Reporter Details:]]><contextids /></topic>
+    <topic id="40" tId="172" url="caaersSource_full.htm#route.htm" target="right"><![CDATA[Route:]]><contextids /></topic>
+    <topic id="41" tId="177" url="caaersSource_full.htm#route1.htm" target="right"><![CDATA[Route:]]><contextids /></topic>
+    <topic id="42" tId="209" url="caaersSource_full.htm#save.htm" target="right"><![CDATA[Save]]><contextids /></topic>
+    <topic id="43" tId="147" url="caaersSource_full.htm#section3eventandresponsedescription.htm" target="right"><![CDATA[Section # 3: Event and response description]]><contextids /></topic>
+    <topic id="44" tId="153" url="caaersSource_full.htm#section4medicalinformation.htm" target="right"><![CDATA[Section # 4: Medical Information]]><contextids /></topic>
+    <topic id="45" tId="163" url="caaersSource_full.htm#section5treatmentinformation.htm" target="right"><![CDATA[Section # 5: Treatment Information]]><contextids /></topic>
+    <topic id="46" tId="187" url="caaersSource_full.htm#section7priortherapies.htm" target="right"><![CDATA[Section # 7: Prior Therapies]]><contextids /></topic>
+    <topic id="47" tId="199" url="caaersSource_full.htm#section10attributionforadverseevents.htm" target="right"><![CDATA[Section #10: Attribution for Adverse Events]]><contextids /></topic>
+    <topic id="48" tId="204" url="caaersSource_full.htm#section11reporterinformation.htm" target="right"><![CDATA[Section #11: Reporter Information]]><contextids /></topic>
+    <topic id="49" tId="208" url="caaersSource_full.htm#section12confirmandsave.htm" target="right"><![CDATA[Section #12: Confirm and Save]]><contextids /></topic>
+    <topic id="50" tId="133" url="caaersSource_full.htm#section1begin.htm" target="right" default="1"><![CDATA[Section #1: Begin]]><contextids /></topic>
+    <topic id="51" tId="222" url="caaersSource_full.htm#section2enterbasicaeinformation.htm" target="right"><![CDATA[Section #2: Enter basic AE information]]><contextids /></topic>
+    <topic id="52" tId="180" url="caaersSource_full.htm#section6diagnostictestandlabresults.htm" target="right"><![CDATA[Section #6: Diagnostic test and lab results]]><contextids /></topic>
+    <topic id="53" tId="192" url="caaersSource_full.htm#section8concomitantmedications.htm" target="right"><![CDATA[Section #8: Concomitant Medications]]><contextids /></topic>
+    <topic id="54" tId="196" url="caaersSource_full.htm#section9othercontributingcauses.htm" target="right"><![CDATA[Section #9: Other Contributing Causes]]><contextids /></topic>
+    <topic id="55" tId="134" url="caaersSource_full.htm#selectparticipant.htm" target="right"><![CDATA[Select Participant:]]><contextids /></topic>
+    <topic id="56" tId="136" url="caaersSource_full.htm#selectstudy.htm" target="right"><![CDATA[Select Study:]]><contextids /></topic>
+    <topic id="57" tId="161" url="caaersSource_full.htm#siteofmetastaticdisease.htm" target="right"><![CDATA[Site of Metastatic Disease]]><contextids /></topic>
+    <topic id="58" tId="190" url="caaersSource_full.htm#startdatemmddyyyy.htm" target="right"><![CDATA[Start Date (MM/DD/YYYY):]]><contextids /></topic>
+    <topic id="59" tId="169" url="caaersSource_full.htm#studyagent.htm" target="right"><![CDATA[Study Agent:]]><contextids /></topic>
+    <topic id="60" tId="137" url="caaersSource_full.htm#summarybox.htm" target="right"><![CDATA[Summary Box:]]><contextids /></topic>
+    <topic id="61" tId="188" url="caaersSource_full.htm#therapies.htm" target="right"><![CDATA[Therapies]]><contextids /></topic>
+    <topic id="62" tId="189" url="caaersSource_full.htm#therapy.htm" target="right"><![CDATA[Therapy:]]><contextids /></topic>
+    <topic id="63" tId="178" url="caaersSource_full.htm#totaldoseadministeredthiscourse.htm" target="right"><![CDATA[Total Dose Administered this course:]]><contextids /></topic>
+    <topic id="64" tId="164" url="caaersSource_full.htm#treatment.htm" target="right"><![CDATA[Treatment]]><contextids /></topic>
+    <topic id="65" tId="176" url="caaersSource_full.htm#units1.htm" target="right"><![CDATA[Units:]]><contextids /></topic>
+    <topic id="66" tId="171" url="caaersSource_full.htm#units.htm" target="right"><![CDATA[Units:]]><contextids /></topic>
+    <topic id="67" tId="183" url="caaersSource_full.htm#units2.htm" target="right"><![CDATA[Units:]]><contextids /></topic>
+    <topic id="68" tId="156" url="caaersSource_full.htm#weightkglbs.htm" target="right"><![CDATA[Weight (kg/lbs):]]><contextids /></topic>
+</topics>

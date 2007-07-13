@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<indexes>
+    <item name="Adverse Events" id="300">
+        <topics>
+            <topic url="caaersSource_full.htm#adverseevents.htm" window="right">Adverse Events</topic>
+        </topics>
+    </item>
+    <item name="Attribution" id="323">
+        <topics>
+            <topic url="caaersSource_full.htm#attribution.htm" window="right">Attribution</topic>
+        </topics>
+    </item>
+    <item name="Con. Meds" id="319">
+        <topics>
+            <topic url="caaersSource_full.htm#conmeds.htm" window="right">Con. Meds</topic>
+        </topics>
+    </item>
+    <item name="Concomitant medication:" id="325">
+        <topics>
+            <topic url="caaersSource_full.htm#concomitantmedication.htm" window="right">Concomitant medication:</topic>
+        </topics>
+    </item>
+    <item name="Course Agent" id="313">
+        <topics>
+            <topic url="caaersSource_full.htm#courseagent.htm" window="right">Course Agent</topic>
+        </topics>
+    </item>
+    <item name="Course number on which the event occurred:" id="312">
+        <topics>
+            <topic url="caaersSource_full.htm#coursenumberonwhichtheeventoccurred.htm" window="right">Course number on which the event occurred:</topic>
+        </topics>
+    </item>
+    <item name="Course:" id="324">
+        <topics>
+            <topic url="caaersSource_full.htm#course.htm" window="right">Course:</topic>
+        </topics>
+    </item>
+    <item name="Description" id="304">
+        <topics>
+            <topic url="caaersSource_full.htm#description.htm" window="right">Description</topic>
+        </topics>
+    </item>
+    <item name="Disease Name:" id="308">
+        <topics>
+            <topic url="caaersSource_full.htm#diseasename.htm" window="right">Disease Name:</topic>
+        </topics>
+    </item>
+    <item name="Labs" id="315">
+        <topics>
+            <topic url="caaersSource_full.htm#labs.htm" window="right">Labs</topic>
+        </topics>
+    </item>
+    <item name="Medical" id="306">
+        <topics>
+            <topic url="caaersSource_full.htm#medical.htm" window="right">Medical</topic>
+        </topics>
+    </item>
+    <item name="Other" id="321">
+        <topics>
+            <topic url="caaersSource_full.htm#other1.htm" window="right">Other</topic>
+        </topics>
+    </item>
+    <item name="Other Adverse Event:" id="302">
+        <topics>
+            <topic url="caaersSource_full.htm#otheradverseevent.htm" window="right">Other Adverse Event:</topic>
+        </topics>
+    </item>
+    <item name="Other cause:" id="326">
+        <topics>
+            <topic url="caaersSource_full.htm#othercause.htm" window="right">Other cause:</topic>
+        </topics>
+    </item>
+    <item name="Patient Disease Information" id="307">
+        <topics>
+            <topic url="caaersSource_full.htm#patientdiseaseinformation.htm" window="right">Patient Disease Information</topic>
+        </topics>
+    </item>
+    <item name="Primary Adverse Event:" id="301">
+        <topics>
+            <topic url="caaersSource_full.htm#primaryadverseevent.htm" window="right">Primary Adverse Event:</topic>
+        </topics>
+    </item>
+    <item name="Reporter" id="328">
+        <topics>
+            <topic url="caaersSource_full.htm#reporter.htm" window="right">Reporter</topic>
+        </topics>
+    </item>
+    <item name="Save" id="330">
+        <topics>
+            <topic url="caaersSource_full.htm#save.htm" window="right">Save</topic>
+        </topics>
+    </item>
+    <item name="Section # 3: Event and response description" id="303">
+        <topics>
+            <topic url="caaersSource_full.htm#section3eventandresponsedescription.htm" window="right">Section # 3: Event and response description</topic>
+        </topics>
+    </item>
+    <item name="Section # 4: Medical Information" id="305">
+        <topics>
+            <topic url="caaersSource_full.htm#section4medicalinformation.htm" window="right">Section # 4: Medical Information</topic>
+        </topics>
+    </item>
+    <item name="Section # 5: Treatment Information" id="310">
+        <topics>
+            <topic url="caaersSource_full.htm#section5treatmentinformation.htm" window="right">Section # 5: Treatment Information</topic>
+        </topics>
+    </item>
+    <item name="Section # 7: Prior Therapies" id="316">
+        <topics>
+            <topic url="caaersSource_full.htm#section7priortherapies.htm" window="right">Section # 7: Prior Therapies</topic>
+        </topics>
+    </item>
+    <item name="Section #1: Begin" id="295">
+        <topics>
+            <topic url="caaersSource_full.htm#section1begin.htm" window="right">Section #1: Begin</topic>
+        </topics>
+    </item>
+    <item name="Section #10: Attribution for Adverse Events" id="322">
+        <topics>
+            <topic url="caaersSource_full.htm#section10attributionforadverseevents.htm" window="right">Section #10: Attribution for Adverse Events</topic>
+        </topics>
+    </item>
+    <item name="Section #11: Reporter Information" id="327">
+        <topics>
+            <topic url="caaersSource_full.htm#section11reporterinformation.htm" window="right">Section #11: Reporter Information</topic>
+        </topics>
+    </item>
+    <item name="Section #12: Confirm and Save" id="329">
+        <topics>
+            <topic url="caaersSource_full.htm#section12confirmandsave.htm" window="right">Section #12: Confirm and Save</topic>
+        </topics>
+    </item>
+    <item name="Section #2: Enter basic AE information" id="298">
+        <topics>
+            <topic url="caaersSource_full.htm#section2enterbasicaeinformation.htm" window="right">Section #2: Enter basic AE information</topic>
+        </topics>
+    </item>
+    <item name="Section #6: Diagnostic test and lab results" id="314">
+        <topics>
+            <topic url="caaersSource_full.htm#section6diagnostictestandlabresults.htm" window="right">Section #6: Diagnostic test and lab results</topic>
+        </topics>
+    </item>
+    <item name="Section #8: Concomitant Medications" id="318">
+        <topics>
+            <topic url="caaersSource_full.htm#section8concomitantmedications.htm" window="right">Section #8: Concomitant Medications</topic>
+        </topics>
+    </item>
+    <item name="Section #9: Other Contributing Causes" id="320">
+        <topics>
+            <topic url="caaersSource_full.htm#section9othercontributingcauses.htm" window="right">Section #9: Other Contributing Causes</topic>
+        </topics>
+    </item>
+    <item name="Select Participant:" id="296">
+        <topics>
+            <topic url="caaersSource_full.htm#selectparticipant.htm" window="right">Select Participant:</topic>
+        </topics>
+    </item>
+    <item name="Select Study:" id="297">
+        <topics>
+            <topic url="caaersSource_full.htm#selectstudy.htm" window="right">Select Study:</topic>
+        </topics>
+    </item>
+    <item name="Site of Metastatic Disease" id="309">
+        <topics>
+            <topic url="caaersSource_full.htm#siteofmetastaticdisease.htm" window="right">Site of Metastatic Disease</topic>
+        </topics>
+    </item>
+    <item name="Summary Box:" id="299">
+        <topics>
+            <topic url="caaersSource_full.htm#summarybox.htm" window="right">Summary Box:</topic>
+        </topics>
+    </item>
+    <item name="Therapies" id="317">
+        <topics>
+            <topic url="caaersSource_full.htm#therapies.htm" window="right">Therapies</topic>
+        </topics>
+    </item>
+    <item name="Treatment" id="311">
+        <topics>
+            <topic url="caaersSource_full.htm#treatment.htm" window="right">Treatment</topic>
+        </topics>
+    </item>
+</indexes>
