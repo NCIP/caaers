@@ -205,7 +205,7 @@
             </div>            
 
             <div class="row">
-                <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>Rules for <b>Instituition Defined Study</b></label>
+                <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>Rules for <b>Institution Defined Study</b></label>
             </div>  
             
 			<c:choose>
