@@ -193,19 +193,19 @@
             
 
             <div class="row">
-                <label><form:radiobutton path="level" value="Sponsor" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Sponsor</b> Level</label>
+                <label><form:radiobutton path="level" value="Sponsor" onchange="displayRuleTypeInput(this)"/>Rules for <b>Sponsor</b></label>
             </div>
 
             <div class="row">
-                <label><form:radiobutton path="level" value="Institution" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Institution</b> Level</label>
+                <label><form:radiobutton path="level" value="Institution" onchange="displayRuleTypeInput(this)"/>Rules for <b>Institution</b></label>
             </div>
             
             <div class="row">
-                <label><form:radiobutton path="level" value="SponsorDefinedStudy" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Sponsor Defined Study</b> Level</label>
+                <label><form:radiobutton path="level" value="SponsorDefinedStudy" onchange="displayRuleTypeInput(this)"/>Rules for <b>Sponsor Defined Study</b></label>
             </div>            
 
             <div class="row">
-                <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>Create Rules at <b>Instituition Defined Study</b> Level</label>
+                <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>Rules for <b>Instituition Defined Study</b></label>
             </div>  
             
 			<c:choose>
