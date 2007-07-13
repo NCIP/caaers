@@ -23,8 +23,9 @@
 			<input id="ruleSet.rule[${ruleCount}].metaData.name" name="ruleSet.rule[${ruleCount}].metaData.name" style="width: 200px;" value="" type="text">
 		</div>
 		<br/>
+		<div id="rule-condition-action-container-${ruleCount + 1}">
 		<div style="margin-left:50px;">
-			<label class="label" for="condition">Condition</label>
+			<label class="label" for="condition">Condition(s)</label>
 		</div>
 		
 		<div class="row" id="rule-${ruleCount + 1}-columns">
