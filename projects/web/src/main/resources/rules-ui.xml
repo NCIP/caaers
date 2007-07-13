@@ -95,7 +95,7 @@
 				<valid-value value="DEFINITE" display-uri="Definite"/>																
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getAttributionSummary()</expression>
+				<expression>getAttributionSummary().getName()</expression>
 			</field>
 			
 		</domain-object>
