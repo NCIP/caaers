@@ -276,18 +276,12 @@ public class RuleAjaxFacade
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
     	Rule rule = ruleSet.getRule().get(ruleCount);
-    	/*
-    	Column c= null;
-      	
-      	for (Column col:rule.getCondition().getColumn()) {
-      		if (columnCount == col.getId()) {
-      			c = col;
-      			break;
-      		}
-      	}
-    	return rule.getCondition().getColumn().remove(c);
-    	*/
-    	return rule.getCondition().getColumn().remove(columnCount) != null;
+
+    	rule.getCondition().getColumn().get(columnCount).setMarkedDelete(true);
+    	
+    	return rule.getCondition().getColumn().get(columnCount) != null;
+    	
+    	//return rule.getCondition().getColumn().remove(columnCount) != null;
     	
     }
     
