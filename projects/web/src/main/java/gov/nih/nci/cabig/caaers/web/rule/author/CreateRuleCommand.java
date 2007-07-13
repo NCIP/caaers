@@ -101,13 +101,28 @@ public class CreateRuleCommand implements RuleInputCommand
 	 */
 	public void save() 
 	{
-		System.out.println("level " + getLevel());
-		System.out.println("site " + institutionName);
-		System.out.println("spnsr " + sponsorName);
+		
+		
+		
 		
 		try 
 		{
 			List<Rule> rules = ruleSet.getRule();
+			
+			// delete columns which are marked as delete . 
+			for (Rule rule:rules) {
+				List<Column> cols = new ArrayList<Column>();
+				for (Column col:rule.getCondition().getColumn()) {
+					if (col.isMarkedDelete()) {
+						System.out.println("is marked delete .. " + col.getIdentifier());
+						cols.add(col);
+					}					
+				}
+				for (Column col:cols) {					
+					rule.getCondition().getColumn().remove(col);
+				}
+				
+			}
 			
 			ruleSet.setDescription(ruleSetName);
 			
