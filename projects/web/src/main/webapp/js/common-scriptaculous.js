@@ -137,7 +137,6 @@ AE.helpToggle = function(field) {
     if (content.hasClassName("changing")) return;
     content.addClassName("changing")
     var after = function() {
-        console.log("Finished")
         content.removeClassName("changing")
     }
     if (content.visible()) {

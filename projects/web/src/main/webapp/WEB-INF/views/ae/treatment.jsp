@@ -70,7 +70,6 @@
                     AE.registerCalendarPopups("courseAgent-" + index)
                 }
             })
-            console.log($("command"))
             Event.observe("command", "submit", renableModified)
             $$('.dose-mod-checkbox').each(function(elt) {
                 var index = elt.id.substring(18)
