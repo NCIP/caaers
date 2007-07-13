@@ -246,7 +246,7 @@ public class SearchStudyAjaxFacade {
         
         Column columnSponsorId = model.getColumnInstance();        
         columnSponsorId.setProperty("test");
-        columnSponsorId.setTitle("Sponsor ID");
+        columnSponsorId.setTitle("Sponsor");
         columnSponsorId.setCell("gov.nih.nci.cabig.caaers.web.search.SponsorLinkDisplayCell");        
         model.addColumn(columnSponsorId);
         
