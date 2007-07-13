@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<root>
+    <keywords>
+        <keyword name="Adverse Events">
+            <topics>
+                <topic url="caaersSource_full.htm#adverseevents.htm" window="right"><![CDATA[Adverse Events]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Attribution">
+            <topics>
+                <topic url="caaersSource_full.htm#attribution.htm" window="right"><![CDATA[Attribution]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Con. Meds">
+            <topics>
+                <topic url="caaersSource_full.htm#conmeds.htm" window="right"><![CDATA[Con. Meds]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Concomitant medication:">
+            <topics>
+                <topic url="caaersSource_full.htm#concomitantmedication.htm" window="right"><![CDATA[Concomitant medication:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Course Agent">
+            <topics>
+                <topic url="caaersSource_full.htm#courseagent.htm" window="right"><![CDATA[Course Agent]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Course number on which the event occurred:">
+            <topics>
+                <topic url="caaersSource_full.htm#coursenumberonwhichtheeventoccurred.htm" window="right"><![CDATA[Course number on which the event occurred:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Course:">
+            <topics>
+                <topic url="caaersSource_full.htm#course.htm" window="right"><![CDATA[Course:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Description">
+            <topics>
+                <topic url="caaersSource_full.htm#description.htm" window="right"><![CDATA[Description]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Disease Name:">
+            <topics>
+                <topic url="caaersSource_full.htm#diseasename.htm" window="right"><![CDATA[Disease Name:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Labs">
+            <topics>
+                <topic url="caaersSource_full.htm#labs.htm" window="right"><![CDATA[Labs]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Medical">
+            <topics>
+                <topic url="caaersSource_full.htm#medical.htm" window="right"><![CDATA[Medical]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Other">
+            <topics>
+                <topic url="caaersSource_full.htm#other1.htm" window="right"><![CDATA[Other]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Other Adverse Event:">
+            <topics>
+                <topic url="caaersSource_full.htm#otheradverseevent.htm" window="right"><![CDATA[Other Adverse Event:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Other cause:">
+            <topics>
+                <topic url="caaersSource_full.htm#othercause.htm" window="right"><![CDATA[Other cause:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Patient Disease Information">
+            <topics>
+                <topic url="caaersSource_full.htm#patientdiseaseinformation.htm" window="right"><![CDATA[Patient Disease Information]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Primary Adverse Event:">
+            <topics>
+                <topic url="caaersSource_full.htm#primaryadverseevent.htm" window="right"><![CDATA[Primary Adverse Event:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Reporter">
+            <topics>
+                <topic url="caaersSource_full.htm#reporter.htm" window="right"><![CDATA[Reporter]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Save">
+            <topics>
+                <topic url="caaersSource_full.htm#save.htm" window="right"><![CDATA[Save]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section # 3: Event and response description">
+            <topics>
+                <topic url="caaersSource_full.htm#section3eventandresponsedescription.htm" window="right"><![CDATA[Section # 3: Event and response description]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section # 4: Medical Information">
+            <topics>
+                <topic url="caaersSource_full.htm#section4medicalinformation.htm" window="right"><![CDATA[Section # 4: Medical Information]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section # 5: Treatment Information">
+            <topics>
+                <topic url="caaersSource_full.htm#section5treatmentinformation.htm" window="right"><![CDATA[Section # 5: Treatment Information]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section # 7: Prior Therapies">
+            <topics>
+                <topic url="caaersSource_full.htm#section7priortherapies.htm" window="right"><![CDATA[Section # 7: Prior Therapies]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #10: Attribution for Adverse Events">
+            <topics>
+                <topic url="caaersSource_full.htm#section10attributionforadverseevents.htm" window="right"><![CDATA[Section #10: Attribution for Adverse Events]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #11: Reporter Information">
+            <topics>
+                <topic url="caaersSource_full.htm#section11reporterinformation.htm" window="right"><![CDATA[Section #11: Reporter Information]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #12: Confirm and Save">
+            <topics>
+                <topic url="caaersSource_full.htm#section12confirmandsave.htm" window="right"><![CDATA[Section #12: Confirm and Save]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #1: Begin">
+            <topics>
+                <topic url="caaersSource_full.htm#section1begin.htm" window="right"><![CDATA[Section #1: Begin]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #2: Enter basic AE information">
+            <topics>
+                <topic url="caaersSource_full.htm#section2enterbasicaeinformation.htm" window="right"><![CDATA[Section #2: Enter basic AE information]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #6: Diagnostic test and lab results">
+            <topics>
+                <topic url="caaersSource_full.htm#section6diagnostictestandlabresults.htm" window="right"><![CDATA[Section #6: Diagnostic test and lab results]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #8: Concomitant Medications">
+            <topics>
+                <topic url="caaersSource_full.htm#section8concomitantmedications.htm" window="right"><![CDATA[Section #8: Concomitant Medications]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Section #9: Other Contributing Causes">
+            <topics>
+                <topic url="caaersSource_full.htm#section9othercontributingcauses.htm" window="right"><![CDATA[Section #9: Other Contributing Causes]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Select Participant:">
+            <topics>
+                <topic url="caaersSource_full.htm#selectparticipant.htm" window="right"><![CDATA[Select Participant:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Select Study:">
+            <topics>
+                <topic url="caaersSource_full.htm#selectstudy.htm" window="right"><![CDATA[Select Study:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Site of Metastatic Disease">
+            <topics>
+                <topic url="caaersSource_full.htm#siteofmetastaticdisease.htm" window="right"><![CDATA[Site of Metastatic Disease]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Summary Box:">
+            <topics>
+                <topic url="caaersSource_full.htm#summarybox.htm" window="right"><![CDATA[Summary Box:]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Therapies">
+            <topics>
+                <topic url="caaersSource_full.htm#therapies.htm" window="right"><![CDATA[Therapies]]></topic>
+            </topics>
+        </keyword>
+        <keyword name="Treatment">
+            <topics>
+                <topic url="caaersSource_full.htm#treatment.htm" window="right"><![CDATA[Treatment]]></topic>
+            </topics>
+        </keyword>
+    </keywords>
+    <groups />
+    <links />
+</root>
