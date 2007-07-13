@@ -125,7 +125,8 @@
 				<xs:element name="expression" type="xs:string"/>
 			</xs:sequence>   
 			<xs:attribute name="identifier" type="xs:string" use="optional"/>                
-			<xs:attribute name="object-type" type="xs:string" use="required"/>   
+			<xs:attribute name="object-type" type="xs:string" use="required"/>  
+			<xs:attribute name="marked-delete" type="xs:boolean" use="optional" default="false"/> 
 		</xs:complexType>
 
 
