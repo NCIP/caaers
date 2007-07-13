@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import static gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory.*;
 
 /**
  * @author Rhett Sutphin
@@ -30,14 +29,14 @@ public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
     }
 
     public void testLongerMatchUsedIfAvailable() throws Exception {
-        RepeatingFieldGroup actual = transform("three4");
+        RepeatingFieldGroupFactory.RepeatingFieldGroup actual = transform("three4");
         assertEquals(4, actual.getIndex());
         assertEquals("three4", actual.getName());
         assertEquals(FACTORY_2_FIELD_0_CATEGORY, actual.getFields().get(0).getCategory());
     }
 
     public void testShortMatchUsedIfAppropriate() throws Exception {
-        RepeatingFieldGroup actual = transform("th8");
+        RepeatingFieldGroupFactory.RepeatingFieldGroup actual = transform("th8");
         assertEquals(8, actual.getIndex());
         assertEquals("th8", actual.getName());
         assertEquals(FACTORY_1_FIELD_0_CATEGORY, actual.getFields().get(0).getCategory());
@@ -61,7 +60,7 @@ public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
         }
     }
 
-    private RepeatingFieldGroup transform(String input) {
-        return (RepeatingFieldGroup) transformer.transform(input);
+    private RepeatingFieldGroupFactory.RepeatingFieldGroup transform(String input) {
+        return (RepeatingFieldGroupFactory.RepeatingFieldGroup) transformer.transform(input);
     }
 }
