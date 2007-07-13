@@ -109,6 +109,13 @@ public abstract class AeTabTestCase extends AeWebTestCase {
 
     @SuppressWarnings({ "unchecked" })
     protected Map<Object, Object> getActualSelectFieldOptions(List<InputField> fields, String propertyName) {
+        InputField field = findField(fields, propertyName);
+        Map<Object, Object> options = (Map<Object, Object>) field.getAttributes().get(InputField.OPTIONS);
+        assertNotNull("Field for " + propertyName + " is not a select", options);
+        return options;
+    }
+
+    protected InputField findField(List<InputField> fields, String propertyName) {
         InputField field = null;
         for (InputField candidate : fields) {
             if (candidate.getPropertyName().equals(propertyName)) {
@@ -117,8 +124,6 @@ public abstract class AeTabTestCase extends AeWebTestCase {
             }
         }
         assertNotNull("No field for " + propertyName + ": " + fields, field);
-        Map<Object, Object> options = (Map<Object, Object>) field.getAttributes().get(InputField.OPTIONS);
-        assertNotNull("Field for " + propertyName + " is not a select", options);
-        return options;
+        return field;
     }
 }

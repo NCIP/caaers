@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 
 import java.util.Map;
 import java.util.Iterator;
@@ -53,10 +54,8 @@ public class MedicalInfoTabTest extends AeTabTestCase {
 
     public void testParticipantFieldsPresent() throws Exception {
         assertFieldProperties("participant",
-            "aeReport.participantHistory.height.quantity",
-            "aeReport.participantHistory.height.unit",
-            "aeReport.participantHistory.weight.quantity",
-            "aeReport.participantHistory.weight.unit",
+            "aeReport.participantHistory.height",
+            "aeReport.participantHistory.weight",
             "aeReport.participantHistory.baselinePerformanceStatus"
         );
     }
@@ -99,8 +98,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
     }
 
     public void testHeightOptions() throws Exception {
-        Map<Object,Object> actualOptions = getActualSelectFieldOptions(
-            "participant", "aeReport.participantHistory.height.unit");
+        Map<Object,Object> actualOptions = getMeasureUnitFieldOptions("height");
         assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
         Iterator<Map.Entry<Object, Object>> iterator = actualOptions.entrySet().iterator();
         Map.Entry<Object, Object> entry = iterator.next();
@@ -113,8 +111,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
     }
 
     public void testWeightOptions() throws Exception {
-        Map<Object,Object> actualOptions = getActualSelectFieldOptions(
-            "participant", "aeReport.participantHistory.weight.unit");
+        Map<Object,Object> actualOptions = getMeasureUnitFieldOptions("weight");
         assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
         Iterator<Map.Entry<Object, Object>> iterator = actualOptions.entrySet().iterator();
         Map.Entry<Object, Object> entry = iterator.next();
@@ -124,6 +121,15 @@ public class MedicalInfoTabTest extends AeTabTestCase {
         assertKeyAndValue("Wrong 1st option",
             "Kilogram", "Kilogram", entry);
         assertFalse(iterator.hasNext());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    private Map<Object, Object> getMeasureUnitFieldOptions(String measure) {
+        InputField measureField = findField(getFieldGroup("participant").getFields(),
+            "aeReport.participantHistory." + measure);
+        InputField unitField = findField(CompositeField.getSubfields(measureField),
+            "aeReport.participantHistory." + measure + ".unit");
+        return (Map<Object, Object>) unitField.getAttributes().get(InputField.OPTIONS);
     }
 
     private static <K, V> void assertKeyAndValue(String message, K expectedKey, V expectedValue, Map.Entry<K, V> actual) {

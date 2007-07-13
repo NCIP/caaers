@@ -12,6 +12,8 @@ import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.List;
@@ -44,11 +46,9 @@ public class MedicalInfoTab extends AeTab {
         BasePropertyInputFieldGroup participant
             = new BasePropertyInputFieldGroup("participant", "aeReport.participantHistory");
         participant
-            .addField(new DefaultTextField("height.quantity", "Height"))
-            .addField(new DefaultSelectField("height.unit", "Height units", false,
+            .addField(createParticipantMeasureField("height", "Height",
                 optionsFromConfigurationProperty("heightUnitsRefData")))
-            .addField(new DefaultTextField("weight.quantity", "Weight"))
-            .addField(new DefaultSelectField("weight.unit", "Weight units", false,
+            .addField(createParticipantMeasureField("weight", "Weight",
                 optionsFromConfigurationProperty("weightUnitsRefData")))
             .addField(new DefaultSelectField("baselinePerformanceStatus", "Baseline performance", false,
                 optionsFromConfigurationProperty("bpsRefData", "Please select")))
@@ -89,6 +89,14 @@ public class MedicalInfoTab extends AeTab {
         map.addRepeatingFieldGroupFactory(fieldFactory,
             command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites().size());
         return map;
+    }
+
+    private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
+        return new CompositeField(baseName,
+            new DefaultInputFieldGroup(null, baseDisplayName)
+                .addField(new DefaultTextField("quantity", ""))
+                .addField(new DefaultSelectField("unit", "units", false, unitOptions))
+        );
     }
 
     public ConfigProperty getConfigurationProperty() {
