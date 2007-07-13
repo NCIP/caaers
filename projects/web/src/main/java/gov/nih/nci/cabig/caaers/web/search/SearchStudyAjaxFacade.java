@@ -44,6 +44,21 @@ public class SearchStudyAjaxFacade {
 	private AdverseEventDao adverseEventDao;
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private RoutineAdverseEventReportDao routineAdverseEventReportDao;
+	
+	
+	public SearchStudyAjaxFacade() {
+	}
+	
+	public SearchStudyAjaxFacade(StudyDao studyDao,
+			ParticipantDao participantDoa, AdverseEventDao adverseEventDao,
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao,
+			RoutineAdverseEventReportDao routineAdverseEventReportDao) {
+		this.studyDao = studyDao;
+		this.participantDao = participantDoa;
+		this.adverseEventDao = adverseEventDao;
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+		this.routineAdverseEventReportDao = routineAdverseEventReportDao;
+	}
 
     public Object build(TableModel model, Collection studies) throws Exception 
     {
@@ -64,16 +79,16 @@ public class SearchStudyAjaxFacade {
         //table.setShowStatusBar(true);
         model.addTable(table);
         
-       /* 
+       
         Export export = model.getExportInstance();
         export.setView(TableConstants.VIEW_CSV);
         export.setViewResolver(TableConstants.VIEW_CSV);
         export.setImageName(TableConstants.VIEW_CSV);
         export.setText(TableConstants.VIEW_CSV);
         export.addAttribute(CsvView.DELIMITER, "|");
-        export.setFileName("caaers.txt");
+        export.setFileName("caaers_studies.txt");
         model.addExport(export);
-       */
+      
         
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);        
@@ -109,9 +124,10 @@ public class SearchStudyAjaxFacade {
     
     
     public Object buildParticipant(TableModel model, Collection participants) throws Exception 
-    {
+    {	
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(participants);
         table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
         table.setTitle("");
@@ -121,6 +137,15 @@ public class SearchStudyAjaxFacade {
         table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
+        
+        Export export = model.getExportInstance();
+        export.setView(TableConstants.VIEW_CSV);
+        export.setViewResolver(TableConstants.VIEW_CSV);
+        export.setImageName(TableConstants.VIEW_CSV);
+        export.setText(TableConstants.VIEW_CSV);
+        export.addAttribute(CsvView.DELIMITER, "|");
+        export.setFileName("caaers_participants.txt");
+        model.addExport(export);
         
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);        
@@ -178,6 +203,7 @@ public class SearchStudyAjaxFacade {
     {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(adverseEvents);
         table.setAction(model.getContext().getContextPath() + "/pages/search/adverseEvent");
         table.setTitle("");
@@ -188,6 +214,15 @@ public class SearchStudyAjaxFacade {
         table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
+        
+        Export export = model.getExportInstance();
+        export.setView(TableConstants.VIEW_CSV);
+        export.setViewResolver(TableConstants.VIEW_CSV);
+        export.setImageName(TableConstants.VIEW_CSV);
+        export.setText(TableConstants.VIEW_CSV);
+        export.addAttribute(CsvView.DELIMITER, "|");
+        export.setFileName("caaers_aes.txt");
+        model.addExport(export);
         
         /*
         Export export = model.getExportInstance();
@@ -273,6 +308,7 @@ public class SearchStudyAjaxFacade {
     {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(expeditedReports);
         table.setAction(model.getContext().getContextPath() + "/pages/search/report");
         table.setTitle("");
@@ -282,6 +318,15 @@ public class SearchStudyAjaxFacade {
         table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
+        
+        Export export = model.getExportInstance();
+        export.setView(TableConstants.VIEW_CSV);
+        export.setViewResolver(TableConstants.VIEW_CSV);
+        export.setImageName(TableConstants.VIEW_CSV);
+        export.setText(TableConstants.VIEW_CSV);
+        export.addAttribute(CsvView.DELIMITER, "|");
+        export.setFileName("caaers_expedited_reports.txt");
+        model.addExport(export);
         
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);        
@@ -355,6 +400,7 @@ public class SearchStudyAjaxFacade {
     {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(expeditedReports);
         table.setAction(model.getContext().getContextPath() + "/pages/search/report");
         table.setTitle("");
@@ -364,6 +410,15 @@ public class SearchStudyAjaxFacade {
         table.setFilterable(true);
         table.setSortable(true);
         model.addTable(table);
+        
+        Export export = model.getExportInstance();
+        export.setView(TableConstants.VIEW_CSV);
+        export.setViewResolver(TableConstants.VIEW_CSV);
+        export.setImageName(TableConstants.VIEW_CSV);
+        export.setText(TableConstants.VIEW_CSV);
+        export.addAttribute(CsvView.DELIMITER, "|");
+        export.setFileName("caaers_routine_reports.txt");
+        model.addExport(export);
         
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);        
@@ -668,20 +723,19 @@ public class SearchStudyAjaxFacade {
     */ 
    public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) 
    {
-       if(parameterMap != null)
-       {
-    	
-       	//String a = parameterMap.get("assembler_p").toString();
-       	for(Object key : parameterMap.keySet())
-       	{
-       		log.debug( key.toString() + " ----- " + parameterMap.get(key).getClass().getName() + "--" + parameterMap.get(key));
-       		
-       	}
-       }
        
+	   // Use this code to view the contents of parameterMap
+	   if (parameterMap != null) {
+
+			for (Object key : parameterMap.keySet()) {
+				log.debug(key.toString() + " -- " + parameterMap.get(key));
+			}
+		}
    		
-		List<Study> studies = null;
-		studies = constructExecuteStudyQuery(type,text);
+		List<Study> studies = new ArrayList<Study>();
+		if(type != null && text !=null){
+			studies = constructExecuteStudyQuery(type,text);
+		}
 		log.debug("Studies:?: " + studies.size());
 	
 		
@@ -708,14 +762,11 @@ public class SearchStudyAjaxFacade {
     */ 
    public String getParticipantTable(Map parameterMap, String type, String text, HttpServletRequest request) 
    {
-       if(parameterMap != null)
-       {
-       	//String a = parameterMap.get("assembler_p").toString();
-       }
        
-   		
-		List<Participant> participants = null;
-		participants = constructExecuteParticipantQuery(type,text);
+		List<Participant> participants = new ArrayList<Participant>();
+		if(type != null && text !=null){
+			participants = constructExecuteParticipantQuery(type,text);
+		}
 		log.debug("Participants :: " + participants.size());
 	
 		
@@ -743,15 +794,11 @@ public class SearchStudyAjaxFacade {
    public String getAdverseEventTable(Map parameterMap, String type, String text, HttpServletRequest request) 
    {
 	   
-	   //System.out.println("AdverseEventTable");
-       if(parameterMap != null)
-       {
-       	//String a = parameterMap.get("assembler_p").toString();
-       }
-       
-   		
-		List<AdverseEvent> adverseEvents = null;
-		adverseEvents = constructExecuteAdverseEventQuery(type,text);
+	  
+		List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+		if(type != null && text !=null){
+			adverseEvents = constructExecuteAdverseEventQuery(type,text);
+		}
 		log.debug("AdverseEvents :: " + adverseEvents.size());
 	
 		
@@ -777,20 +824,11 @@ public class SearchStudyAjaxFacade {
     * Ajax Call hits this method to generate table
     */ 
    public String getExpeditedReportTable(Map parameterMap, String type, String text, HttpServletRequest request) 
-   {
-	   
-	   log.debug("Ajax Call to construct expedited report table");
-       if(parameterMap != null)
-       {
-    	  for (String pk: (Set<String>)parameterMap.keySet()){
-    		  log.debug(pk);
-    	  }
-       	//String a = parameterMap.get("assembler_p").toString();
-       }
-       
-   		
-		List<ExpeditedAdverseEventReport> expeditedReports = null;
-		expeditedReports = constructExecuteExpeditedReportQuery(type, text);
+   {	
+		List<ExpeditedAdverseEventReport> expeditedReports = new ArrayList<ExpeditedAdverseEventReport>();
+		if(type != null && text !=null){
+			expeditedReports = constructExecuteExpeditedReportQuery(type, text);
+		}
 		log.debug("AdverseEvents :: " + expeditedReports.size());
 	
 		
@@ -818,20 +856,12 @@ public class SearchStudyAjaxFacade {
    public String getRoutineReportTable(Map parameterMap, String type, String text, HttpServletRequest request) 
    {
 	   
-	   log.debug("Ajax Call to construct expedited report table");
-       if(parameterMap != null)
-       {
-    	  for (String pk: (Set<String>)parameterMap.keySet()){
-    		  log.debug(pk);
-    	  }
-       	//String a = parameterMap.get("assembler_p").toString();
-       }
-       
-   		
-		List<RoutineAdverseEventReport> routineReports = null;
-		routineReports = constructExecuteRoutineReportQuery(type, text);
+		List<RoutineAdverseEventReport> routineReports = new ArrayList<RoutineAdverseEventReport>();
+		if(type != null && text !=null){
+			routineReports = constructExecuteRoutineReportQuery(type, text);
+		}
 		log.debug("AdverseEvents :: " + routineReports.size());
-	
+
 		
        Context context = null;
        if (parameterMap == null) {

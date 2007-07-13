@@ -39,6 +39,10 @@ function buildTable(form,size) {
 			type = type +  'prop'+x+',';
 		}
 	}
+	
+	$('prop').value=type
+	$('value').value=text
+	
 	var parameterMap = getParameterMap(form);
 	search.getAdverseEventTable(parameterMap, type, text, showTable);		
 }
@@ -160,6 +164,14 @@ the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc
 <br>			
 
 <form:form id="assembler" >
+
+
+<div>			
+	<input type="hidden" name="_prop" id="prop" >
+	<input type="hidden" name="_value" id="value"  >
+</div>
+
+
 <chrome:box title="Adverse Event Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">

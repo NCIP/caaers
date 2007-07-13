@@ -38,6 +38,10 @@ function buildTable(form) {
 			type = type +  'prop'+x+',';
 		}
 	}
+	
+	$('prop').value=type
+	$('value').value=text
+	
 	var parameterMap = getParameterMap(form);		
 	search.getTable(parameterMap,type,text,showTable);
 }
@@ -122,6 +126,14 @@ shown on the screen.
  </form:form>
 <br>
 <form:form id="assembler" >
+
+
+<div>			
+	<input type="hidden" name="_prop" id="prop" >
+	<input type="hidden" name="_value" id="value"  >
+</div>
+
+
 <chrome:box title="Study Search Results">
 	
      <chrome:division id="single-fields">

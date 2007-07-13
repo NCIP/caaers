@@ -3,10 +3,6 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-
 
 import java.util.Collection;
 import java.util.List;
@@ -68,27 +64,10 @@ public class SearchStudyAjaxFacade {
                         
         return model.assemble();
     }
-    
-   private Study createStudy(){
-	   
-	   System.out.println("I am in");
-	   Participant participant= new Participant();
-	   participant.setFirstName("krikor");
-	   
-	   Study study = new Study();
-	   study.getStudySites().add(new StudySite());
-	   study.getStudySites().get(0).addAssignment(new StudyParticipantAssignment());
-	   study.getStudySites().get(0).getStudyParticipantAssignments().get(0).setParticipant(participant);
-	   
-	   return study;
-   }
-    
-    
             	
     public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) 
     {
-    	//Study study = new Study();
-    	Study study = createStudy();
+    	Study study = new Study();
     	StringTokenizer typeToken = new StringTokenizer(type, ",");
     	StringTokenizer textToken = new StringTokenizer(text, ",");
     	String sType = null;

@@ -39,6 +39,10 @@ function buildTable(form) {
 			type = type +  'prop'+x+',';
 		}
 	}
+	
+	$('prop').value=type
+	$('value').value=text
+	
 	var parameterMap = getParameterMap(form);
 	search.getExpeditedReportTable(parameterMap, type, text, showTable);		
 }
@@ -151,6 +155,14 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 <br>
 
 <form:form id="assembler" >
+
+
+<div>			
+	<input type="hidden" name="_prop" id="prop" >
+	<input type="hidden" name="_value" id="value"  >
+</div>
+
+
 <chrome:box title="Expedited Report Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">

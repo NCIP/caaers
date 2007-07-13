@@ -37,6 +37,10 @@ function buildTable(form) {
 			type = type +  'prop'+x+',';
 		}
 	}
+	
+	$('prop').value=type
+	$('value').value=text
+	
 	var parameterMap = getParameterMap(form);
 	search.getParticipantTable(parameterMap, type, text, showTable);		
 }
@@ -123,6 +127,14 @@ shown on the screen.
 
 <br>
 <form:form id="assembler" >
+
+
+<div>			
+	<input type="hidden" name="_prop" id="prop" >
+	<input type="hidden" name="_value" id="value"  >
+</div>
+
+
 <chrome:box title="Participant Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
