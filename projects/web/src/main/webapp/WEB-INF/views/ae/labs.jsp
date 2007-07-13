@@ -6,7 +6,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${tab.longTitle}<a href="/caaers/Help/caaersSource_full.htm#section6diagnostictestandlabresults.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
+    <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
@@ -25,7 +25,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section6diagnostictestandlabresults">
     <jsp:attribute name="instructions">
         You are entering labs for ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.

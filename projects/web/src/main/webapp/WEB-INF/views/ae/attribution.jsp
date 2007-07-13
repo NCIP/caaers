@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>${tab.longTitle}<a href=  "/caaers/Help/caaersSource_full.htm#section10attributionforadverseevents.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
+    <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <style type="text/css">
@@ -101,7 +101,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10attributionforadverseevents">
     <jsp:attribute name="instructions">
         You are attributing adverse events to causes for
         ${command.assignment.participant.fullName} on

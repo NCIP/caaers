@@ -6,7 +6,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${tab.longTitle}<a href=  "/caaers/Help/caaersSource_full.htm#section4medicalinformation.htm" target="_blank"><img align="right" src="/caaers/images/book.gif" border="0" alt="HelpIndex" title="Help Index"></a></title>
+    <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
@@ -130,7 +130,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section4medicalinformation">
     <jsp:attribute name="singleFields">
     <%-- The database identifier shouldn't be here.
          TODO: it should probably be the primary assigned id
