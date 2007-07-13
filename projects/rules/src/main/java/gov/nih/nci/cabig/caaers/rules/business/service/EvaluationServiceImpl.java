@@ -1,16 +1,18 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     private ReportDefinitionDao reportDefinitionDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private ReportService reportService;
+    private OrganizationDao  organizationDao;
 
     /**
      * @return true if the given adverse event is severe in the context of the provided
@@ -107,7 +110,16 @@ public class EvaluationServiceImpl implements EvaluationService {
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
 
         for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
+        	//System.out.println(" ORGS : " + studyOrganization.getOrganization().getName());
             reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
+        }
+        
+        // get organaization of sponsor .
+        // all sponsors are not in orgs table as of 07/13/2007
+        Organization organization = organizationDao.getByName(assignment.getStudySite().getStudy().getPrimarySponsorCode());
+        
+        if (organization != null) {
+        	reportDefinitions.addAll(reportDefinitionDao.getAll(organization.getId()));
         }
 
         return reportDefinitions;
@@ -128,4 +140,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     public void setReportService(ReportService reportService) {
         this.reportService = reportService;
     }
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
 }
