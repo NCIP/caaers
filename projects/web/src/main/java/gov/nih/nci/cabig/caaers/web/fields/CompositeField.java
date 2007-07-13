@@ -27,6 +27,11 @@ public class CompositeField extends AbstractInputField {
         getAttributes().put(SUBFIELDS, createSubfields());
     }
 
+    @SuppressWarnings({ "unchecked" })
+    public static List<InputField> getSubfields(InputField compositeField) {
+        return (List<InputField>) compositeField.getAttributes().get(SUBFIELDS);
+    }
+
     @Override
     public Category getCategory() {
         return Category.COMPOSITE;
@@ -73,6 +78,11 @@ public class CompositeField extends AbstractInputField {
                     .append('.');
             }
             return qual.append(propertyName).toString();
+        }
+
+        @Override
+        protected InputField qualifySubfield(InputField subfield) {
+            return new InputFieldWrapper(subfield);
         }
     }
 }

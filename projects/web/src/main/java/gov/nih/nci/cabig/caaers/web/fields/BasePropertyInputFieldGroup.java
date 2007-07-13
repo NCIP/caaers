@@ -31,7 +31,7 @@ public class BasePropertyInputFieldGroup extends AbstractInputFieldGroup {
         return Collections.unmodifiableList(fields);
     }
 
-    private class InputFieldWrapper extends QualifiedPropertyNameInputField {
+    public class InputFieldWrapper extends QualifiedPropertyNameInputField {
         public InputFieldWrapper(InputField src) {
             super(src);
         }
@@ -39,6 +39,11 @@ public class BasePropertyInputFieldGroup extends AbstractInputFieldGroup {
         @Override
         protected String qualifyPropertyName(String propertyName) {
             return new StringBuilder(baseProperty).append('.').append(propertyName).toString();
+        }
+
+        @Override
+        protected InputField qualifySubfield(InputField subfield) {
+            return new InputFieldWrapper(subfield);
         }
     }
 }

@@ -23,17 +23,8 @@ public class RepeatingFieldGroupFactory {
 
     public InputFieldGroup createGroup(int index) {
         RepeatingFieldGroup group = new RepeatingFieldGroup(createName(index), index);
-        group.setFields(createWrappedFields(group));
         if (displayNameCreator != null) group.setDisplayName(displayNameCreator.createDisplayName(index));
         return group;
-    }
-
-    private List<InputField> createWrappedFields(RepeatingFieldGroup group) {
-        List<InputField> wrappedFields = new LinkedList<InputField>();
-        for (InputField field : baseFields) {
-            wrappedFields.add(new InputFieldWrapper(field, group));
-        }
-        return wrappedFields;
     }
 
     private String createName(int index) {
@@ -52,55 +43,44 @@ public class RepeatingFieldGroupFactory {
         return basename;
     }
 
-    public static class RepeatingFieldGroup extends DefaultInputFieldGroup {
+    public class RepeatingFieldGroup extends DefaultInputFieldGroup {
         private int index;
 
         public RepeatingFieldGroup(String name, int index) {
             super(name);
             this.index = index;
+            createWrappedFields();
+        }
+
+        private void createWrappedFields() {
+            for (InputField field : baseFields) {
+                addField(new InputFieldWrapper(field));
+            }
         }
 
         public int getIndex() {
             return index;
         }
-    }
 
-    private class InputFieldWrapper extends QualifiedPropertyNameInputField {
-        private RepeatingFieldGroup group;
-        private Map<String, Object> attributes;
-
-        public InputFieldWrapper(InputField src, RepeatingFieldGroup group) {
-            super(src);
-            this.group = group;
-            setAttributes(getSourceField().getAttributes());
-        }
-
-        @Override
-        protected String qualifyPropertyName(String propertyName) {
-            StringBuilder qual = new StringBuilder(listPropertyName)
-                .append('[').append(group.getIndex()).append(']');
-            if (propertyName != null) {
-                qual.append('.').append(propertyName);
+        public class InputFieldWrapper extends QualifiedPropertyNameInputField {
+            public InputFieldWrapper(InputField src) {
+                super(src);
             }
-            return qual.toString();
-        }
 
-        @SuppressWarnings("unchecked")
-        public void setAttributes(Map<String, Object> attributes) {
-            this.attributes = new LinkedHashMap<String, Object>(attributes);
-            if (attributes.containsKey(SUBFIELDS)) {
-                List<InputField> subfields = (List<InputField>) attributes.get(SUBFIELDS);
-                List<InputField> newSubfields = new ArrayList<InputField>(subfields.size());
-                for (InputField subfield : subfields) {
-                    newSubfields.add(new InputFieldWrapper(subfield, group));
+            @Override
+            protected String qualifyPropertyName(String propertyName) {
+                StringBuilder qual = new StringBuilder(listPropertyName)
+                    .append('[').append(RepeatingFieldGroup.this.getIndex()).append(']');
+                if (propertyName != null) {
+                    qual.append('.').append(propertyName);
                 }
-                this.attributes.put(SUBFIELDS, newSubfields);
+                return qual.toString();
             }
-        }
 
-        @Override
-        public Map<String, Object> getAttributes() {
-            return attributes;
+            @Override
+            protected InputField qualifySubfield(InputField subfield) {
+                return new InputFieldWrapper(subfield);
+            }
         }
     }
 
