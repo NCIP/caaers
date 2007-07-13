@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -66,6 +65,7 @@ public class SearchStudyAjaxFacade {
         table.setTableId("assembler");
         table.setForm("assembler");
         table.setItems(studies);
+        table.setVar("study");
         table.setAction(model.getContext().getContextPath() + "/pages/search/study");
         table.setTitle("");
         table.setShowPagination(false);
@@ -151,13 +151,6 @@ public class SearchStudyAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);        
         model.addRow(row);
         
-        /*
-        Column columnPrimaryIdentifier = model.getColumnInstance();        
-        columnPrimaryIdentifier.setProperty("primaryIdentifier");
-        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
-        model.addColumn(columnPrimaryIdentifier);
-        */
-        
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setSortable(false);
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
@@ -172,11 +165,7 @@ public class SearchStudyAjaxFacade {
         Column columnLastName = model.getColumnInstance();
         columnLastName.setProperty("lastName");
         model.addColumn(columnLastName);
-        /*
-        Column colummDateOfBirth = model.getColumnInstance();
-        colummDateOfBirth.setProperty("dateOfBirth");
-        model.addColumn(colummDateOfBirth);
-        */
+    
         Column colummGender = model.getColumnInstance();
         colummGender.setProperty("gender");
         model.addColumn(colummGender);
@@ -224,15 +213,6 @@ public class SearchStudyAjaxFacade {
         export.setFileName("caaers_aes.txt");
         model.addExport(export);
         
-        /*
-        Export export = model.getExportInstance();
-        export.setView(TableConstants.VIEW_CSV);
-        export.setViewResolver(TableConstants.VIEW_CSV);
-        export.setImageName(TableConstants.VIEW_CSV);
-        export.setText(TableConstants.VIEW_CSV);
-        export.setFileName("caaers.txt");
-        model.addExport(export);
-        */
         Row row = model.getRowInstance();
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
@@ -241,12 +221,14 @@ public class SearchStudyAjaxFacade {
         Column columnstudyIdentifier = model.getColumnInstance();        
         columnstudyIdentifier.setProperty("test");
         columnstudyIdentifier.setTitle("Study ID");
+        columnstudyIdentifier.setSortable(false);
         columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCell");        
         model.addColumn(columnstudyIdentifier);
         
         Column columnSponsorId = model.getColumnInstance();        
         columnSponsorId.setProperty("test");
         columnSponsorId.setTitle("Sponsor");
+        columnSponsorId.setSortable(false);
         columnSponsorId.setCell("gov.nih.nci.cabig.caaers.web.search.SponsorLinkDisplayCell");        
         model.addColumn(columnSponsorId);
         
@@ -254,52 +236,42 @@ public class SearchStudyAjaxFacade {
         columnAeType.setProperty("test");
         columnAeType.setTitle("AE Type");
         columnAeType.setStyle("width:8px");
+        columnAeType.setSortable(false);
         columnAeType.setCell("gov.nih.nci.cabig.caaers.web.search.AeTypeDisplayCell");        
         model.addColumn(columnAeType);
         
         Column columnCtcCategory = model.getColumnInstance();
         columnCtcCategory.setTitle("CTC Category");
+        columnCtcCategory.setAlias("category");
         columnCtcCategory.setProperty("ctcTerm.category.name");
         model.addColumn(columnCtcCategory);
         
         Column columnCtcTerm = model.getColumnInstance();
         columnCtcTerm.setTitle("CTC Term");
+        columnCtcTerm.setAlias("ctcTerm");
         columnCtcTerm.setProperty("ctcTerm.term");
         model.addColumn(columnCtcTerm);
         
         Column columnGrade = model.getColumnInstance();
         columnGrade.setTitle("Grade");
         columnGrade.setStyle("width:6px");
+        columnGrade.setAlias("grade");
         columnGrade.setProperty("grade.code");
         model.addColumn(columnGrade);
         
         Column medDRACode = model.getColumnInstance();        
         medDRACode.setProperty("ctcTerm.ctepCode");
+        medDRACode.setAlias("ctepCode");
         medDRACode.setTitle("MedDRA Code");      
         model.addColumn(medDRACode);
         
         Column aeStartDate = model.getColumnInstance();        
         aeStartDate.setProperty("test");
+        aeStartDate.setSortable(false);
         aeStartDate.setCell("gov.nih.nci.cabig.caaers.web.search.AeDetectionDateDisplayCell");
         aeStartDate.setTitle("Detection Date");      
         model.addColumn(aeStartDate);
         
-        /*
-        Column primary = model.getColumnInstance();        
-        primary.setProperty("test");
-        primary.setTitle("Primary");      
-        model.addColumn(primary);
-        
-        Column columnAssociatedReportTicketNum = model.getColumnInstance();        
-        columnAssociatedReportTicketNum.setProperty("test");
-        columnAssociatedReportTicketNum.setTitle("Associated Report Ticket #");      
-        model.addColumn(columnAssociatedReportTicketNum);
-        
-        Column columnAssociatedReportType = model.getColumnInstance();        
-        columnAssociatedReportType.setProperty("test");
-        columnAssociatedReportType.setTitle("Associated Report Type");      
-        model.addColumn(columnAssociatedReportType);
-        */                
         return model.assemble();
     }
     
@@ -332,33 +304,22 @@ public class SearchStudyAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);        
         model.addRow(row);
         
-        /*
-        Column columnPrimaryIdentifier = model.getColumnInstance();        
-        columnPrimaryIdentifier.setProperty("primaryIdentifier");
-        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
-        model.addColumn(columnPrimaryIdentifier);
-        */
-        
         Column columnPrimaryAeTerm = model.getColumnInstance();        
         columnPrimaryAeTerm.setProperty("adverseEvents[0].ctcTerm.term");
         columnPrimaryAeTerm.setTitle("Primary Ctc term");
-        //columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
+        columnPrimaryAeTerm.setAlias("term");        
         model.addColumn(columnPrimaryAeTerm);
-        /*
-        Column medDRACode = model.getColumnInstance();        
-        medDRACode.setProperty("ctcTerm.ctepCode");
-        medDRACode.setTitle("MedDRA Code");      
-        model.addColumn(medDRACode);
-        */
         
         Column ctcGrade = model.getColumnInstance();        
         ctcGrade.setProperty("adverseEvents[0].grade.code");
+        ctcGrade.setAlias("grade");
         ctcGrade.setTitle("Grade");      
         model.addColumn(ctcGrade);
         
         Column attributionCode = model.getColumnInstance();        
         attributionCode.setProperty("adverseEvents[0].attributionSummary.displayName");
-        attributionCode.setTitle("Attribution");      
+        attributionCode.setTitle("Attribution");
+        attributionCode.setAlias("attribution");
         model.addColumn(attributionCode);
         
         Column aeDetectionDate = model.getColumnInstance();        
@@ -371,6 +332,7 @@ public class SearchStudyAjaxFacade {
         
         Column columnstudyIdentifier = model.getColumnInstance();        
         columnstudyIdentifier.setProperty("test");
+        columnstudyIdentifier.setSortable(false);
         columnstudyIdentifier.setTitle("Study ID");
         columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCellExpedited");        
         model.addColumn(columnstudyIdentifier);
@@ -435,6 +397,7 @@ public class SearchStudyAjaxFacade {
         Column columnPrimaryAeTerm = model.getColumnInstance();        
         columnPrimaryAeTerm.setProperty("adverseEvents[0].ctcTerm.term");
         columnPrimaryAeTerm.setTitle("Primary Ctc term");
+        columnPrimaryAeTerm.setAlias("term");
         //columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");        
         model.addColumn(columnPrimaryAeTerm);
         /*
@@ -446,16 +409,19 @@ public class SearchStudyAjaxFacade {
         
         Column ctcGrade = model.getColumnInstance();        
         ctcGrade.setProperty("adverseEvents[0].grade.code");
-        ctcGrade.setTitle("Grade");      
+        ctcGrade.setTitle("Grade");  
+        ctcGrade.setAlias("grade");
         model.addColumn(ctcGrade);
         
         Column attributionCode = model.getColumnInstance();        
         attributionCode.setProperty("adverseEvents[0].attributionSummary.displayName");
-        attributionCode.setTitle("Attribution");      
+        attributionCode.setTitle("Attribution"); 
+        attributionCode.setAlias("attribution");
         model.addColumn(attributionCode);
         
         Column columnObservationDate = model.getColumnInstance();        
         columnObservationDate.setProperty("adverseEvents[0].ctcTerm.term");
+        columnObservationDate.setSortable(false);
         columnObservationDate.setTitle("Observation Dates");
         columnObservationDate.setCell("gov.nih.nci.cabig.caaers.web.search.ObservationDateDisplayCell");        
         model.addColumn(columnObservationDate);
@@ -576,6 +542,7 @@ public class SearchStudyAjaxFacade {
    }
    
    
+   @SuppressWarnings("finally")
    private List<AdverseEvent> constructExecuteAdverseEventQuery(String type, String text)
    {
 	   
@@ -623,6 +590,7 @@ public class SearchStudyAjaxFacade {
 		   }
    }
    
+   @SuppressWarnings("finally")
    private List<ExpeditedAdverseEventReport> constructExecuteExpeditedReportQuery(String type, String text)
    {
 	   
@@ -670,6 +638,7 @@ public class SearchStudyAjaxFacade {
 
    }
    
+   @SuppressWarnings("finally")
    private List<RoutineAdverseEventReport> constructExecuteRoutineReportQuery(String type, String text)
    {
 	   

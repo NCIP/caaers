@@ -27,12 +27,12 @@
 
 <script>
    
-function buildTable(form,size) {
+function buildTable(form) {
 	$('indicator').className=''
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < size; x++) {
+	for(var x=0; x < 12; x++) {
 	
 		if ( $('prop'+x).value.length > 0 ){
 			text = text +  $('prop'+x).value + ",";
@@ -156,7 +156,7 @@ the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler',12);" value='Search'  title='Search Study'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Study'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
