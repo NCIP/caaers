@@ -77,7 +77,7 @@ public class MedicalInfoTab extends AeTab {
         RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSites");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
-                return "Metastatic disease site " + index;
+                return "Metastatic disease site " + (index + 1);
             }
         });
         fieldFactory.addField(new AutocompleterField("codedSite", "Site Name", false));
