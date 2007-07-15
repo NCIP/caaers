@@ -96,6 +96,14 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
             
             @Override
             public void validate(NewParticipantCommand command, Errors errors) {
+            	boolean isIdentifier = true;
+            	for (Identifier identifier: command.getIdentifiers())
+            	{
+            		if (identifier.getValue() != "" && identifier.getType() != ""  & identifier.isPrimary()){
+            			isIdentifier = false;
+            		}
+            	}
+            	
                 boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
                 boolean lastName = command.getLastName() == null || command.getLastName().equals("");
                 boolean dateOfBirth = command.getDateOfBirth() == null;
@@ -108,6 +116,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
                 if (gender) errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
                 if (ethnicity) errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
                 if (race) errors.rejectValue("race", "REQUIRED", "Please specify the Race");
+                if (isIdentifier) errors.rejectValue("identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
             }
         });
         getFlow().addTab(new Tab("Choose Study", "Choose Study", "par/par_choose_study") {

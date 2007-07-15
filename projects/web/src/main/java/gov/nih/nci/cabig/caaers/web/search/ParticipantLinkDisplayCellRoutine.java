@@ -16,7 +16,7 @@ public class ParticipantLinkDisplayCellRoutine extends AbstractCell {
     protected String getCellValue(TableModel model, Column column) {
     	RoutineAdverseEventReport routineReport = (RoutineAdverseEventReport) model.getCurrentRowBean();
     	Participant participant = routineReport.getParticipant();
-    	String cellValue = participant.getPrimaryIdentifier().getValue();
+    	String cellValue = participant.getPrimaryIdentifier() != null ? participant.getPrimaryIdentifier().getValue() : "n/a";
         String link = model.getContext().getContextPath() + "/pages/participant/view?participantId=";
         
 

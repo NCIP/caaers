@@ -14,7 +14,7 @@ public class ParticipantLinkDisplayCell extends AbstractCell {
     @Override
     protected String getCellValue(TableModel model, Column column) {
         Participant participant = (Participant) model.getCurrentRowBean();
-        String cellValue = column.getValueAsString();
+        String cellValue = participant.getPrimaryIdentifier() != null ? participant.getPrimaryIdentifier().getValue() : "n/a";
         String link = model.getContext().getContextPath() + "/pages/participant/view?participantId=";
         
 

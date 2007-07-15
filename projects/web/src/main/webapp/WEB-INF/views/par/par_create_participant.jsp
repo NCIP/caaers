@@ -126,7 +126,7 @@
 					  						<form:options items="${sources}" itemLabel="desc" itemValue="code" />
 				    					</form:select></td>
 
-				<td align="center"><form:radiobutton
+				<td align="center"><form:checkbox
 					path="identifiers[${index}].primaryIndicator" /></td>
 			</tr>
 

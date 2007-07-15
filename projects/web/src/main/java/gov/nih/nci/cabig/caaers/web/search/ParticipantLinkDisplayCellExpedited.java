@@ -17,7 +17,7 @@ public class ParticipantLinkDisplayCellExpedited extends AbstractCell {
     	System.out.println("jj " + model.getCurrentRowBean().getClass().getName());
     	ExpeditedAdverseEventReport expeditedReport = (ExpeditedAdverseEventReport) model.getCurrentRowBean();
     	Participant participant = expeditedReport.getParticipant();
-    	String cellValue = participant.getPrimaryIdentifier().getValue();
+    	String cellValue = participant.getPrimaryIdentifier() != null ? participant.getPrimaryIdentifier().getValue() : "n/a";
         String link = model.getContext().getContextPath() + "/pages/participant/view?participantId=";
         
 
