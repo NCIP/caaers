@@ -25,7 +25,18 @@
             <artifactId>caaers-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-		
+		<!-- TODO : remove mail and activatio dependency after 
+			integration with Notification service -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+		</dependency>
+		<dependency>
+             <groupId>javax.activation</groupId>
+             <artifactId>activation</artifactId>
+             <version>1.1</version>
+		</dependency>
 		<!-- Test dependency -->
 		 <dependency>
             <groupId>${project.groupId}</groupId>
