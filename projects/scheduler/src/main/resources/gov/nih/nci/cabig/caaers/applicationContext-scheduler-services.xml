@@ -20,5 +20,12 @@
 		</property>
 		<property name="reportScheduleDao"><ref bean="reportScheduleDao" />	</property>
 	</bean>
-	
+	<!-- TODO: Remove the below mail settings after demo -->
+	<bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="s[smtp.host]"/>
+		<property name="port" value="s[smtp.port]"/>
+		<property name="username" value="s[smtp.username]"/>
+		<property name="password" value="s[smtp.password]"/>
+	</bean>
+
 </beans>
