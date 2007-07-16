@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface BusinessRulesExecutionService {
  
-	public List<Object> fireRules(String bindingURI, List<Object> objects);
+	public List<Object> fireRules(String bindingURI, List<Object> objects) throws Exception;
 }
