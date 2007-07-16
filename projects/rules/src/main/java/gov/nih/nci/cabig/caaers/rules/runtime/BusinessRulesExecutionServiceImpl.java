@@ -47,7 +47,7 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
 		}
 	}
 	
-	public List<Object> fireRules(String bindingURI, List<Object> objects) {
+	public List<Object> fireRules(String bindingURI, List<Object> objects) throws Exception {
 		
 		List<Object> outputObjects = null;
 		try {
@@ -67,26 +67,22 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
 			//customProperties.put(Global.ADVERSE_EVENT_RESULT.getCode(), new AdverseEventEvaluationResult());
 			
 			
-			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(
-					bindingURI, customProperties);
-			outputObjects = (List
-					) statelessRuleSession.executeRules(objects);
+			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindingURI, customProperties);
+			outputObjects = (List) statelessRuleSession.executeRules(objects);
 			statelessRuleSession.release();
 			
 		} catch (Exception e) {
-			//logger.error("Execption while executing Rules", e);
-			System.out.println("We should log this exception or what!");
+			throw new Exception ("Execption while executing Rules", e);
+			//System.out.println("We should log this exception or what!");
 			
 		}
 		
 		return outputObjects;
 	}
 	
-	private StatelessRuleSession getStatelessRuleSession(final String key,
-			final java.util.Map properties) throws Exception {
+	private StatelessRuleSession getStatelessRuleSession(final String key,final java.util.Map properties) throws Exception {
 		RuleRuntime ruleRuntime = this.ruleServiceProvider.getRuleRuntime();
-		return (StatelessRuleSession) ruleRuntime.createRuleSession(key,
-				properties, RuleRuntime.STATELESS_SESSION_TYPE);
+		return (StatelessRuleSession) ruleRuntime.createRuleSession(key,properties, RuleRuntime.STATELESS_SESSION_TYPE);
 	}
 
 }
