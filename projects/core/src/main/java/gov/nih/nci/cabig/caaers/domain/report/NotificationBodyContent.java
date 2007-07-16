@@ -14,11 +14,8 @@ import javax.persistence.Transient;
 
 @Embeddable
 public class NotificationBodyContent {
-	
-	private byte[] body;
-	
-	
-	
+	private String body;
+
 	private String contentType;
 	
 	public NotificationBodyContent(){
@@ -27,12 +24,11 @@ public class NotificationBodyContent {
 	}
 	
 	
-	@Lob
-	public byte[] getBody() {
+	public String getBody() {
 		return body;
 	}
 
-	public void setBody(byte[] content) {
+	public void setBody(String content) {
 		this.body = content;
 	}
 	@Transient
@@ -43,10 +39,6 @@ public class NotificationBodyContent {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-	@Transient
-	public String getBodyAsString(){
-		return new String(body);
-	}
-	
-	
+
+
 }

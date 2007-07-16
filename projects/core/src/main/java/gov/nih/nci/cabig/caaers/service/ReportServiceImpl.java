@@ -190,9 +190,9 @@ public class ReportServiceImpl  implements ReportService {
                     }
 
                     if (bodyContent == null) {
-                        bodyContent = applyRuntimeReplacements(pnf.getNotificationBodyContent().getBodyAsString(), report);
+                        bodyContent = applyRuntimeReplacements(pnf.getNotificationBodyContent().getBody(), report);
                     }
-                    snf.setBody(bodyContent.getBytes());
+                    snf.setBody(bodyContent);
 
                     // TODO: consider some or all of this domain logic, too
                     snf.setCreatedOn(now);

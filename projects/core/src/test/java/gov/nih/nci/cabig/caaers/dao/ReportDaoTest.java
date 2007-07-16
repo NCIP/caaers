@@ -92,7 +92,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 
             //set the scheduled email notification
             ScheduledEmailNotification sen = new ScheduledEmailNotification();
-            sen.setBody("Hi this is body content".getBytes());
+            sen.setBody("Hi this is body content");
             sen.setCreatedOn(new Date());
             sen.setDeliveryStatus(DeliveryStatus.ERROR);
             sen.setFromAddress("from@from.com");
@@ -129,7 +129,7 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
                 Report reloaded = rsDao.getById(id);
                 if(reloaded.getScheduledNotifications() != null && reloaded.getScheduledNotifications().size() > 0){
                     ScheduledNotification sn = reloaded.getScheduledNotifications().get(0);
-                    assertEquals("ScheduledNotification Body is not the same", new String(sn.getBody()), "Hi this is body content");
+                    assertEquals("ScheduledNotification Body is not the same", sn.getBody(), "Hi this is body content");
                     assertEquals("Subject should be same", "This is my subject", ((ScheduledEmailNotification)sn).getSubjectLine());
                 }
 

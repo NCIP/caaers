@@ -55,7 +55,7 @@ public  abstract class ScheduledNotification extends AbstractMutableDomainObject
 	
 	protected PlannedNotification planedNotificaiton;
 
-	protected byte[] body;
+	protected String body;
 	
 	public ScheduledNotification(){
 		deliveryStatus = DeliveryStatus.CREATED;
@@ -101,15 +101,14 @@ public  abstract class ScheduledNotification extends AbstractMutableDomainObject
 	/**
 	 * @return the bodyContent
 	 */
-	@Lob
-	public byte[] getBody() {
+	public String getBody() {
 		return body;
 	}
 
 	/**
 	 * @param bodyContent the bodyContent to set
 	 */
-	public void setBody(byte[] bodyContent) {
+	public void setBody(String bodyContent) {
 		this.body = bodyContent;
 	}
 	

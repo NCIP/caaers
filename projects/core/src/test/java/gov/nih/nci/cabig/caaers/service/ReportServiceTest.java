@@ -12,14 +12,11 @@ import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
-import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -54,7 +51,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		rList.add(new ContactMechanismBasedRecipient(CONTACT_MECH_EMAIL_ADDRESS));
 		
 		NotificationBodyContent content = new NotificationBodyContent();
-		content.setBody("This is my body".getBytes());
+		content.setBody("This is my body");
 		
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
 		PlannedEmailNotification penf = new PlannedEmailNotification();
@@ -109,16 +106,16 @@ public class ReportServiceTest extends CaaersTestCase {
 		assertNotNull("The runtime replacement result should not be null", s);
 	}
 	public void testCreateReportDefinition(){
-		Report report = service.createReport(reportDef, aeReport);
-		assertNotNull("AE report should not be null",report.getAeReport());
-		assertNotNull("Report Definition should not be null", report.getReportDefinition());
-		assertEquals("Size of ScheduledNotification Size must be 4 ", report.getScheduledNotifications().size(),4);
-		for(ScheduledNotification snf : report.getScheduledNotifications()){
+		Report actual = service.createReport(reportDef, aeReport);
+		assertNotNull("AE actual should not be null", actual.getAeReport());
+		assertNotNull("Report Definition should not be null", actual.getReportDefinition());
+		assertEquals("Size of ScheduledNotification Size must be 4 ", actual.getScheduledNotifications().size(),4);
+		for(ScheduledNotification snf : actual.getScheduledNotifications()){
 			assertNotNull("Planned Notification must not be null in scheduled notification",snf.getPlanedNotificaiton() );
 		}
-		PlannedNotification pnf = report.getReportDefinition().getPlannedNotifications().get(0);
-		ScheduledNotification snf = report.getScheduledNotifications().get(0);
-		assertEquals("The body of ScheduledNotificaiton should be same", new String(snf.getBody()), "This is my body");
+		PlannedNotification pnf = actual.getReportDefinition().getPlannedNotifications().get(0);
+		ScheduledNotification snf = actual.getScheduledNotifications().get(0);
+		assertEquals("The body of ScheduledNotificaiton should be same", snf.getBody(), "This is my body");
 	}
 	
 /*

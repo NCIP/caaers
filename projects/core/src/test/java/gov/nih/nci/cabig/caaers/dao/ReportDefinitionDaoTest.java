@@ -67,7 +67,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         PlannedEmailNotification pen = new PlannedEmailNotification();
         //create notification body
         NotificationBodyContent nbc = new NotificationBodyContent();
-        nbc.setBody("This is my body".getBytes());
+        nbc.setBody("This is my body");
         pen.setNotificationBodyContent(nbc);
         pen.setFromAddress("biju@semanticbits.com");
         pen.setGridId("90890d99dke");
@@ -122,7 +122,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 assertEquals("Organization must be associated to ReportDefinition", org.getReportDefinitions().size() , 2);
                 PlannedEmailNotification nf = (PlannedEmailNotification) rctLoaded.getPlannedNotifications().get(0);
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
-                assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBodyAsString());
+                assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBody());
                 
                 ReportDeliveryDefinition rdd2 = rctLoaded.getDeliveryDefinitionsInternal().get(0);
                 assertEquals("Report delivery definiton name must be same" , rdd2.getEndPoint() , rdd.getEndPoint());
