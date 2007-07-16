@@ -8,7 +8,7 @@ class RegularCharFieldsForNotifications extends edu.northwestern.bioinformatics.
             if (databaseMatches('postgres')) {
                 // note that this will not fully copy the body if there is more than
                 // one page in the blob.
-                execute("UPDATE ${t}_notifications SET body_text=encode((SELECT data FROM pg_catalog.pg_largeobject WHERE loid=body), 'escape')");
+                execute("UPDATE ${t}_notifications SET body_text=encode((SELECT data FROM pg_catalog.pg_largeobject WHERE loid=body AND pageno=0), 'escape')");
             }
 
             dropColumn("${t}_notifications", 'body')
