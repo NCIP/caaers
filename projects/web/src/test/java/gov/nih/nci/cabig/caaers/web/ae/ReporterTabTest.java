@@ -2,14 +2,32 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.same;
 
 /**
  * @author Rhett Sutphin
  */
 public class ReporterTabTest extends AeTabTestCase {
+    private EvaluationService evaluationService;
+    private AdverseEvent ae0;
+
+    @Override
+    protected void setUp() throws Exception {
+        evaluationService = registerMockFor(EvaluationService.class);
+        super.setUp();
+        ae0 = command.getAeReport().getAdverseEvents().get(0);
+        assertEquals("Test setup failure -- only expected 1 AE initially", 1,
+            command.getAeReport().getAdverseEvents().size());
+    }
+
     @Override
     protected AeTab createTab() {
-        return new ReporterTab();
+        ReporterTab tab = new ReporterTab();
+        tab.setEvaluationService(evaluationService);
+        return tab;
     }
 
     @Override
@@ -91,4 +109,46 @@ public class ReporterTabTest extends AeTabTestCase {
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]", "E-mail address");
     }
+
+    public void testOnDisplayEvaluates() throws Exception {
+        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(true);
+        replayMocks();
+
+        getTab().onDisplay(request, command);
+        verifyMocks();
+
+        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
+    }
+
+    public void testOnDisplayWhenNotSevere() throws Exception {
+        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
+        replayMocks();
+
+        getTab().onDisplay(request, command);
+        verifyMocks();
+
+        assertEquals(Boolean.FALSE, request.getAttribute("oneOrMoreSevere"));
+    }
+
+    private AdverseEvent addAEToCommand() {
+        AdverseEvent ae = new AdverseEvent();
+        command.getAeReport().addAdverseEvent(ae);
+        return ae;
+    }
+
+    public void testOnDisplayWithMultipleAEs() throws Exception {
+        AdverseEvent ae1 = addAEToCommand();
+        AdverseEvent ae2 = addAEToCommand();
+
+        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
+        expect(evaluationService.isSevere(same(assignment), same(ae1))).andReturn(false);
+        expect(evaluationService.isSevere(same(assignment), same(ae2))).andReturn(true);
+        replayMocks();
+
+        getTab().onDisplay(request, command);
+        verifyMocks();
+
+        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
+    }
+
 }

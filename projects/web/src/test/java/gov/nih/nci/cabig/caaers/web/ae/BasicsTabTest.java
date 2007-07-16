@@ -19,12 +19,10 @@ import java.util.Map;
  */
 public class BasicsTabTest extends AeTabTestCase {
     private AdverseEvent ae0;
-    private EvaluationService evaluationService;
     private Ctc ctcae3;
 
     @Override
     protected void setUp() throws Exception {
-        evaluationService = registerMockFor(EvaluationService.class);
         super.setUp();
 
         ctcae3 = Fixtures.createCtcaeV3();
@@ -36,9 +34,7 @@ public class BasicsTabTest extends AeTabTestCase {
 
     @Override
     protected BasicsTab createTab() {
-        BasicsTab tab = new BasicsTab();
-        tab.setEvaluationService(evaluationService);
-        return tab;
+        return new BasicsTab();
     }
 
     @SuppressWarnings("unchecked")
@@ -78,43 +74,6 @@ public class BasicsTabTest extends AeTabTestCase {
         ae0.getCtcTerm().setOtherRequired(true);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (specify)");
-    }
-
-    public void testPostProcessEvaluates() throws Exception {
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(true);
-        replayMocks();
-
-        getTab().postProcess(request, command, errors);
-        verifyMocks();
-
-        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
-    }
-
-    public void testPostProcessWhenNotSevere() throws Exception {
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
-        replayMocks();
-
-        getTab().postProcess(request, command, errors);
-        verifyMocks();
-
-        assertEquals(Boolean.FALSE, request.getAttribute("oneOrMoreSevere"));
-    }
-
-    public void testPostProcessWithMultipleAEs() throws Exception {
-        AdverseEvent ae1 = new AdverseEvent();
-        AdverseEvent ae2 = new AdverseEvent();
-        command.getAeReport().addAdverseEvent(ae1);
-        command.getAeReport().addAdverseEvent(ae2);
-
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
-        expect(evaluationService.isSevere(same(assignment), same(ae1))).andReturn(false);
-        expect(evaluationService.isSevere(same(assignment), same(ae2))).andReturn(true);
-        replayMocks();
-
-        getTab().postProcess(request, command, errors);
-        verifyMocks();
-
-        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
     }
 
     @SuppressWarnings({ "unchecked" })
