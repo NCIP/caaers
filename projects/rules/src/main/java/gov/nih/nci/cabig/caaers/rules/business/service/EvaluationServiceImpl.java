@@ -15,7 +15,11 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,12 +67,24 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @return the report definitions which the evaluation indicated were required.
      */
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
-        List reportDefinitionNames;
+    	Map<String,List<String>> map;
+        List<String> reportDefinitionNames = new ArrayList<String>();
         try {
-            reportDefinitionNames = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
+            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
         } catch (Exception e) {
             throw new CaaersSystemException(
                 "Could not determine the reports necessary for the given expedited adverse event data", e);
+        }
+        
+        Set<String> keys = map.keySet();
+        Iterator<String> it = keys.iterator();
+        while(it.hasNext()){
+        	String key = it.next();
+        	List<String> reportDefNames = map.get(key);
+        	if ( reportDefNames.size() != 0 ) { 
+        		String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
+        		reportDefinitionNames.add(reportDefName);
+        	}
         }
 
         for (Object reportDefinitionName : reportDefinitionNames) {
@@ -123,6 +139,28 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         return reportDefinitions;
+    }
+    
+    private String extractTopPriorityReportDefintionName(List<String> list){
+    	//System.out.println("list sixe ... " + list.size());
+    	
+    	List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+    	Iterator<String> it = list.iterator();
+    	while(it.hasNext()){
+    		String reportDefName = it.next();
+    		ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
+    		if(rd!=null){
+    			reportDefs.add(rd);
+    		}
+    	}
+    	//System.out.println("rep defs sixe ... " + reportDefs.size());
+    	
+    	Comparator<ReportDefinition> c = new ReportDefinitionComparator();
+    	ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
+    	java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
+    		
+    	ReportDefinition reportDefinition = reportDefArray[reportDefArray.length-1];
+    	return reportDefinition.getName();
     }
     
     ////// CONFIGURATION
