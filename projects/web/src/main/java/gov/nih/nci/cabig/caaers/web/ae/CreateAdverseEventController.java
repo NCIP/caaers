@@ -33,8 +33,9 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     }
 
     @Override
-    protected void save(ExpeditedAdverseEventInputCommand command, Errors errors) {
+    protected ExpeditedAdverseEventInputCommand save(ExpeditedAdverseEventInputCommand command, Errors errors) {
         command.save();
+        return null;
     }
 
     @Override

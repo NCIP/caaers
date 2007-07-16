@@ -58,7 +58,8 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     }
 
     @Override
-    protected void save(RoutineAdverseEventInputCommand command, Errors errors) {
+    protected RoutineAdverseEventInputCommand save(RoutineAdverseEventInputCommand command, Errors errors) {
         command.save();
+        return null;
     }
 }
