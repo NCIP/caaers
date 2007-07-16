@@ -99,6 +99,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public void removeStudySite(StudySite studySite) {
 		getStudySites().remove(studySite);
 	}
+	
+	public void addStudyFundingSponsor(StudyFundingSponsor studyFundingSponsor) {
+		getStudyFundingSponsors().add(studyFundingSponsor);
+		studyFundingSponsor.setStudy(this);
+	}
 
 	@Transient
 	public List<StudyFundingSponsor> getStudyFundingSponsors() {

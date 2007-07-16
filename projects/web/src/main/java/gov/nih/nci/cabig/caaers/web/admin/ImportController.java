@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -26,6 +27,8 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -155,12 +158,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private void handleLoad(ImportCommand command, String type){
 		
 		XStream xstream = new XStream();
+		xstream.registerConverter(new JavaBeanConverter(xstream.getMapper(),"class"),-20);
     	
     	// common
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
     	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
+    	xstream.alias("studyFundingSponsor", gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor.class);
     	xstream.alias("studyOrganization", gov.nih.nci.cabig.caaers.domain.StudyOrganization.class);
     	xstream.alias("organization", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
@@ -344,7 +349,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		st.setDiseaseCode(xstreamStudy.getDiseaseCode());
 		st.setMonitorCode(xstreamStudy.getMonitorCode());
 		st.setPhaseCode(xstreamStudy.getPhaseCode());
-		st.setPrimarySponsorCode(xstreamStudy.getPrimarySponsorCode());
+		//st.setPrimarySponsorCode(xstreamStudy.getPrimarySponsorCode());
 		st.setStatus(xstreamStudy.getStatus());
 		// Integer
 		st.setTargetAccrualNumber(xstreamStudy.getTargetAccrualNumber());
@@ -368,9 +373,18 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		
 		if (xstreamStudy.getStudyOrganizations() != null) {
 			for (int i = 0; i < xstreamStudy.getStudyOrganizations().size(); i++) {
-				StudySite studySite = xstreamStudy.getStudySites().get(i);
-				Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
-				st.addStudySite(createStudyOrganization(organization));
+				StudyOrganization studyOrganization = xstreamStudy.getStudyOrganizations().get(i);
+				if (studyOrganization instanceof StudySite) {
+					StudySite studySite = (StudySite) studyOrganization;
+					Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
+					st.addStudySite(createStudyOrganization(organization));	
+				} 
+				if (studyOrganization instanceof StudyFundingSponsor) {
+					StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
+					Organization organization = organizationDao.getByName(studyFundingSponsor.getOrganization().getName());
+					st.addStudyFundingSponsor(createStudyFundingSponsor(organization));	
+				} 
+				
 			}
 		}
 		else
@@ -409,6 +423,13 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		studySite.setRoleCode("Site");
 		studySite.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studySite;
+	}
+	
+	private StudyFundingSponsor createStudyFundingSponsor(Organization organization){
+		
+		StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
+		studyFundingSponsor.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
+		return studyFundingSponsor;
 	}
 	
 	private StudyAgent createStudyAgent(Agent agent){
