@@ -76,7 +76,7 @@ public class ReportDaoStub extends ReportDao {
 		rList.add(new ContactMechanismBasedRecipient("biju@gmail.com"));
 
 		NotificationBodyContent content = new NotificationBodyContent();
-		content.setBody("This is my body".getBytes());
+		content.setBody("This is my body");
 
 		List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
