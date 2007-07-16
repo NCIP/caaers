@@ -74,8 +74,8 @@ public class StudyDao extends GridIdentifiableDao<Study>
 			studySite.getStudyPersonnels().size();		
 		}
         study.getMeddraStudyDiseases().size();
-        study.getStudyAgents().size();
-       
+        study.getStudyAgentsInternal().size();
+        
         return study;
     }
 
