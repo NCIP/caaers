@@ -2,6 +2,14 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 
@@ -16,9 +24,11 @@ import org.springframework.validation.Errors;
 */
 class IdentifiersTab extends StudyTab {
     private OrganizationDao organizationDao;
-
+	private RepeatingFieldGroupFactory rfgFactory;
+	
     public IdentifiersTab() {
         super("Study Identifiers", "Identifiers", "study/study_identifiers");
+        setAutoPopulateHelpKey(true);
     }
 
     @Override
@@ -32,22 +42,36 @@ class IdentifiersTab extends StudyTab {
     }
 
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
-        handleIdentifierAction((Study) command,
-            request.getParameter("_action"),
-            request.getParameter("_selected"));
+            String action = request.getParameter("_action");
+            String selected = request.getParameter("_selected");
+            if ("removeIdentifier".equals(action)) {
+            	Study study = (Study) command;
+                study.getIdentifiersLazy().remove(Integer.parseInt(selected));
+            }
     }
 
-    private void handleIdentifierAction(Study study, String action, String selected) {
-        if ("addIdentifier".equals(action)) {
-            Identifier id = new Identifier();
-            id.setValue("<enter value>");
-            study.addIdentifier(id);
-        } else if ("removeIdentifier".equals(action)) {
-            study.getIdentifiers().remove(Integer.parseInt(selected));
-        }
-    }
     
-    public void setOrganizationDao(OrganizationDao organizationDao) {
+	@Override
+	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+		 if(rfgFactory == null){
+			 rfgFactory = new RepeatingFieldGroupFactory("main", "identifiersLazy");
+			 rfgFactory.addField(new DefaultTextField("value","Identifier", true));
+			 rfgFactory.addField(new DefaultSelectField("type", "Identifier Type", true, 
+				collectOptionsFromConfig("identifiersType", "desc","desc")));
+			 //AutocompleterField sourceField = new AutocompleterField("source", "Assigning Authority", true);
+			 //sourceField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
+			 //rfgFactory.addField(sourceField);
+			 rfgFactory.addField(new DefaultSelectField("source", "Assigning Authority", true,
+					 collectOptions(organizationDao.getAll(), "name", "name")));
+			 rfgFactory.addField(new DefaultCheckboxField("primaryIndicator","Primary Indicator"));
+		 }
+		 Study study = (Study)command;
+		 InputFieldGroupMap map = new InputFieldGroupMap();
+		 map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());
+		 return map;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
 }

@@ -1,10 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
+import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +22,9 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
 */
 class InvestigatorsTab extends StudyTab {
+	
+	private List<InputField> fields;
+	
     public InvestigatorsTab() {
         super("Study Investigators", "Investigators", "study/study_investigators");
     }
@@ -28,39 +38,46 @@ class InvestigatorsTab extends StudyTab {
     }
 
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
-    	if("siteChange".equals(request.getParameter("_action")))
-		{
-			request.getSession().setAttribute("selectedSite", request.getParameter("_selectedSite"));
-			
-			StudySite studySite = ((Study)command).getStudySites().get(Integer.parseInt(request.getParameter("_selectedSite")));
-			if(studySite.getStudyInvestigators().size() == 0 )
-			{						
-				StudyInvestigator studyInvestigator = new StudyInvestigator();	
-				studyInvestigator.setSiteInvestigator(new SiteInvestigator());
-				studySite.addStudyInvestigators(studyInvestigator);
-			}
-		}
-		else {
-			handleStudyInvestigatorAction((Study)command, request);
-		}
-    }
-
-    private void handleStudyInvestigatorAction(Study study, HttpServletRequest request)
-	{				
 		String action =request.getParameter("_action");
-		String selectedSite = request.getParameter("_selectedSite"); 
 		String selectedInvestigator = request.getParameter("_selectedInvestigator");
-		
-		if ("addInv".equals(action))
-		{				
-			StudyInvestigator studyInvestigator = new StudyInvestigator();
-			StudySite studySite = study.getStudySites().get(Integer.parseInt(selectedSite));			
-			studySite.addStudyInvestigators(studyInvestigator);														
-		}
-		else if ("removeInv".equals(action))
-		{	
-			study.getStudySites().get(Integer.parseInt(selectedSite)).getStudyInvestigators()
+		Study study = (Study) command;
+		int selectedIndex = study.getStudySiteIndex();
+		if ("removeInv".equals(action) && selectedIndex >=0 ){	
+			study.getStudySites().get(selectedIndex).getStudyInvestigators()
 				.remove(Integer.parseInt(selectedInvestigator));
 		}										
+    }
+
+	@Override
+	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+		InputFieldGroupMap map = new InputFieldGroupMap();
+		InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
+		siteFieldGroup.getFields().add(new DefaultSelectField("studySiteIndex", "Site", true, 
+				BaseSelectField.collectOptions(collectStudySiteDropdown(command), "code", "desc")));
+		map.addInputFieldGroup(siteFieldGroup);
+		
+		if(fields == null){
+			fields = new ArrayList<InputField>();
+			AutocompleterField investigatorField = new AutocompleterField("siteInvestigator", "Investigator", true);
+			//sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the investigator name you are looking for");
+			fields.add(investigatorField);
+			fields.add(new DefaultSelectField("roleCode", "Role", true, 
+					collectOptionsFromConfig("invRoleCodeRefData", "desc","desc")));
+			fields.add(new DefaultSelectField("statusCode", "Status", true, 
+					collectOptionsFromConfig("invStatusCodeRefData", "desc","desc")));
+		}
+		
+		int ssIndex = command.getStudySiteIndex();
+		if(ssIndex >= 0){
+			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studySites[" + ssIndex +"].studyInvestigators");
+			
+			for(InputField f : fields){
+				rfgFactory.addField(f);
+			}
+			 map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyInvestigators().size());
+		}
+		return map;
 	}	
+    
+	
 }

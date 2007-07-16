@@ -21,6 +21,9 @@ public interface InputField {
     String DETAILS = "details";
     String OPTIONS = "options";
     String SUBFIELDS = "subfields";
+    String HELP = "help"; //refers to the help text key in messages.properties
+    String SIZE = "size"; //size of the field (applied only for AutoCompleters)
+    String ENABLE_CLEAR = "enableClear"; //enables the clear button (only for AutoCompleters)
 
     Category getCategory();
 

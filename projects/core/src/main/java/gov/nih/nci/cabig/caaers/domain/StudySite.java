@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,13 +28,27 @@ public class StudySite extends StudyOrganization {
     private Date startDate;
     private Date endDate;
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
-    private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
-    private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    private LazyListHelper lazyListHelper;
+    
+    //TODO : remove the below commented properties
+    //private List<StudyInvestigator> studyInvestigators = new ArrayList<StudyInvestigator>();
+    //private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    
     
     //////LOGIC
-
+    
+    public StudySite(){
+    	lazyListHelper = new LazyListHelper();
+    	lazyListHelper.add(StudyInvestigator.class, new StudySiteChildInstantiateFactory<StudyInvestigator>( this, StudyInvestigator.class));
+    	lazyListHelper.add(StudyPersonnel.class, new StudySiteChildInstantiateFactory<StudyPersonnel>(this, StudyPersonnel.class) );
+    	
+    	//set the studyInvestigators and studyPersonals
+    	setStudyPersonnelsInternal(new ArrayList<StudyPersonnel>());
+    	setStudyInvestigatorsInternal(new ArrayList<StudyInvestigator>());
+    	
+    }
     public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
-        studyPersonnels.add(studyPersonnel);
+        getStudyPersonnels().add(studyPersonnel);
         studyPersonnel.setStudySite(this);
     }
     
@@ -68,16 +84,15 @@ public class StudySite extends StudyOrganization {
     public List<StudyParticipantAssignment> getStudyParticipantAssignments() {
         return studyParticipantAssignments;
     }    
-
     
     @OneToMany (mappedBy = "studySite")
     @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<StudyInvestigator> getStudyInvestigators() {
-		return studyInvestigators;
+    public List<StudyInvestigator> getStudyInvestigatorsInternal() {
+		return lazyListHelper.getInternalList(StudyInvestigator.class);
 	}
 
-	public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
-		this.studyInvestigators = studyInvestigators;
+	public void setStudyInvestigatorsInternal(List<StudyInvestigator> studyInvestigators) {
+		lazyListHelper.setInternalList(StudyInvestigator.class, studyInvestigators);
 	}	
 	
     public void setIrbApprovalDate(Date irbApprovalDate) {
@@ -122,16 +137,31 @@ public class StudySite extends StudyOrganization {
 
 	@OneToMany (mappedBy = "studySite", fetch=FetchType.LAZY)
     @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })    
+	public List<StudyPersonnel> getStudyPersonnelsInternal() {
+		return lazyListHelper.getInternalList(StudyPersonnel.class);
+	}
+
+	public void setStudyPersonnelsInternal(List<StudyPersonnel> studyPersonnels) {
+		lazyListHelper.setInternalList(StudyPersonnel.class, studyPersonnels);
+	}
+	
+	@Transient
 	public List<StudyPersonnel> getStudyPersonnels() {
-		return studyPersonnels;
+		return lazyListHelper.getLazyList(StudyPersonnel.class);
 	}
 
 	public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
-		this.studyPersonnels = studyPersonnels;
+		setStudyPersonnelsInternal(studyPersonnels);
+	}
+	@Transient
+	public List<StudyInvestigator> getStudyInvestigators() {
+		return lazyListHelper.getLazyList(StudyInvestigator.class);
 	}
 
+	public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
+		setStudyInvestigatorsInternal(studyInvestigators);
+	}
 	
-
 	//////OBJECT METHODS
 
    /* public boolean equals(Object obj) {

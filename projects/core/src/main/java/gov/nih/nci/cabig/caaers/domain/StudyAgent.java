@@ -24,7 +24,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
         @Parameter(name="sequence", value="seq_study_agents_id")
     }
 )
-public class StudyAgent extends AbstractMutableDomainObject {
+public class StudyAgent extends AbstractMutableDomainObject implements StudyChild{
 	
 	private Boolean investigationalNewDrugIndicator;
 	private String investigationalNewDrugIdentifier;

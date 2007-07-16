@@ -25,7 +25,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="type")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_organizations_id") })
-public abstract class StudyOrganization extends AbstractMutableDomainObject {
+public abstract class StudyOrganization extends AbstractMutableDomainObject implements StudyChild{
 
 	private Study study;
 	private Organization organization;

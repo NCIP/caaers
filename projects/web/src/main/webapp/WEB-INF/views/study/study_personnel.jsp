@@ -3,234 +3,133 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>${tab.longTitle}</title>
-<style type="text/css">
-        .label { width: 12em; text-align: right; padding: 4px; }
-</style>
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>${tab.longTitle}</title>
+   <tags:includeScriptaculous/>
+   <tags:dwrJavascriptLink objects="createStudy"/>
+   <script language="JavaScript" type="text/JavaScript">
+     var siteListEditor;
+     var personnelListEditor;
 
-<tags:includeScriptaculous/>
-<tags:dwrJavascriptLink objects="createStudy"/>
+     function fireAction(action, selectedPersonnel){
+	    if(action == 'addStudyPersonnel'){
+		   personnelListEditor = new ListEditor('ssi-section',createStudy, "StudyPersonnel",{
+      		 addButton: "xxx",
+             addIndicator: "ssi-add-indicator",
+             addParameters: [],
+             addFirstAfter: "ssi-bookmark",
+             addCallback: function(nextIndex) {
+          	   new jsPersonnel(nextIndex);
+             }
+         
+    	   });  
+		   personnelListEditor.add.bind(personnelListEditor)();
+	    }else{
+		   var form = document.getElementById('command')
+		   form._target.name='_noname';
+		   form._action.value=action;
+		   form._selectedPersonnel.value=selectedPersonnel;
+		   form.submit();
+	    }
+     }
 
-<script language="JavaScript" type="text/JavaScript">
-function fireAction(action, selectedSite, selectedPersonnel){
-	document.getElementById('command')._target.name='_noname';
-	document.form._action.value=action;
-	document.form._selectedSite.value=selectedSite;
-	document.form._selectedPersonnel.value=selectedPersonnel;
-	document.form.submit();
-	fireListeners(selected);
-}
+     var jsPersonnel = Class.create();
+     Object.extend(jsPersonnel.prototype, {
+           initialize: function(index, sitePersonnelName) {
+            	this.index = index;
+            	this.siteIndex = $F('studySiteIndex');
+            	this.sitePersonnelName = sitePersonnelName;
+            	this.sitePersonnelPropertyName = "studySites["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
+            	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
+            	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
+            	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
+            		this.sitePersonnelPopulator.bind(this),
+            		this.sitePersonnelSelector.bind(this)
+            	);
+            },            
+            sitePersonnelPopulator: function(autocompleter, text) {
+         		createStudy.matchResearch(text, function(values) {
+         			autocompleter.setChoices(values)
+         		})
+        	},
+        	
+        	sitePersonnelSelector: function(sPersonnel) { 
+        		return sPersonnel.fullName
+        	}
+        	
+     });
 
-function chooseSites(){
-	document.getElementById('command')._target.name='_noname';
-	document.form._action.value="siteChange";
-	document.form._selectedSite.value=document.getElementById('site').value;
-	document.form.submit();
-}
-
-function chooseSitesfromSummary(_selectedSite){
-	document.getElementById('command')._target.name='_noname';
-	document.form._action.value="siteChange";
-	document.form._selectedSite.value=_selectedSite;
-	document.form.submit();
-}
-
-/// AJAX
-
-var personnelAutocompleterProps = {
-	basename: "personnel",
-    populator: function(autocompleter, text) {
-    createStudy.matchResearch(text, function(values) {
-	    autocompleter.setChoices(values)
-	})
-    },
-    valueSelector: function(obj) {
-	return obj.fullName
-    }
-}
-
-
-function acPostSelect(mode, selectedChoice) {
-	$(mode.basename).value = selectedChoice.id;
-}
-
-function updateSelectedDisplay(mode) {
-
-    if ($(mode.basename).value) {
-	Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-	$(mode.basename + '-selected').show()
-    }
-}
-
-function acCreate(mode) {
-    new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-	mode.populator, {
-	valueSelector: mode.valueSelector,
-	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-	    acPostSelect(mode, selectedChoice)
-	},
-	indicator: mode.basename + "-indicator"
-    })
-    Event.observe(mode.basename + "-clear", "click", function() {
-	//$(mode.basename + "-selected").hide()
-	$(mode.basename).value = ""
-	$(mode.basename + "-input").value = ""
-    })
-}
-
-function fireListeners(count)
-{
-	index = 0;
-	autoCompleteId = 'personnel' + index ;
-	for (i=0;i<count;i++)
-	{
-	 // change the basename property to agent0 ,agent1 ...
-	 personnelAutocompleterProps.basename=autoCompleteId
-	 acCreate(personnelAutocompleterProps)
-	 index++
-	 autoCompleteId= 'personnel' + index  ;
-	}
-
-	personnelAutocompleterProps.basename='personnel' + count ;
-	acCreate(personnelAutocompleterProps);
-}
-
-Event.observe(window, "load", function() {
-	index = 0;
-	autoCompleteId = 'personnel' + index ;
-	while( $(autoCompleteId)  )
-	{
-	 // change the basename property to personnel0 ,personnel1 ...
-	 personnelAutocompleterProps.basename=autoCompleteId
-	 acCreate(personnelAutocompleterProps)
-	 index++
-	 autoCompleteId= 'personnel' + index  ;
-	}
-})
-
+     Event.observe(window, "load", function() {
+	
+	    siteListEditor = new ListEditor('ss-section',createStudy, "ChooseStudySite",{
+      		 addButton: "xxx",
+             addIndicator: "ss-chg-indicator",
+             addParameters: [],
+             addFirstAfter: "ss-bookmark",
+             addCallback: function(nextIndex) {
+          	   
+             }
+        });
+	
+                  
+	    //observe on the change event on study site dropdown.
+	    Event.observe('studySiteIndex',"change", function(event){
+		  var ssi = $('ss-section-0');
+		  if(ssi){
+			 //Effect.Fade('ss-section-0');
+			 ssi.parentNode.removeChild(ssi);
+		  }
+		  selIndex = $F('studySiteIndex');
+		  siteListEditor.options.addParameters = [selIndex,'Personnel'];
+		  siteListEditor.add.bind(siteListEditor)();
+	    });
+     })
 </script>
 </head>
+
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="form">
-<jsp:attribute name="singleFields">
-<table border="0" id="table1" cellspacing="10" width="100%">
-	<tr>	
-	<td width="75%" valign="top">
-	<div>
-		<input type="hidden" name="_action" value="">
-		<input type="hidden" name="_selectedSite" value="">
-		<input type="hidden" name="_selectedPersonnel" value="">
-	</div>
-	<p id="instructions">
-		Please choose a study site and link Research staff to that study site
-	</p>
-	<c:set var="selected_site" value="0"/>
-	<c:if test="${not empty selectedSite}">
-		<c:set var="selected_site" value="${selectedSite}"/>
-	</c:if>
-
-	<table border="0" id="table1" cellspacing="0">
-	   <tr>
-			<td align="left"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-			<td align="left">
-				<select id="site" name="site" onchange="javascript:chooseSites();">
-					<c:forEach  items="${command.studySites}" var="studySite" varStatus="status">
-						<c:if test="${selected_site == status.index }">
-							<option selected="true" value=${status.index}>${studySite.organization.name}</option>
-						</c:if>
-						<c:if test="${selected_site != status.index }">
-							<option value=${status.index}>${studySite.organization.name}</option>
-						</c:if>
-					</c:forEach>
-				</select>
-			</td>
-	   </tr>
+  <jsp:attribute name="singleFields">
+	<input type="hidden" name="_action" value="">
+	<input type="hidden" name="_selectedPersonnel" value="">
+	
+	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
+	<tr>
+		<td width="70%" valign="top" >
+			<p id="instructions">Please choose a study site and link Research staff to that study site</p>
+			<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
+			<br />
+			<hr>
+			<div id="content-section">
+				<c:if test="${command.studySiteIndex > -1 }">
+					<study:oneStudySitePersonnel index="${command.studySiteIndex}"/>
+				</c:if>
+				<span id="ss-bookmark" />
+			</div>
+	    </td>
+      	<td valign="top" width="25%">
+			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
+ 				<c:forEach var="studySite" varStatus="status" items="${command.studySites}">
+ 					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
+						title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
+ 					</div>
+ 					<div class="">Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
+ 					</div>
+ 				
+ 				</c:forEach>
+ 				<div>
+ 				   <img src="/caaers/images/chrome/spacer.gif" width="1" height="150" />
+ 				</div>
+ 			</chrome:box>
+		</td>
+	  </tr>
 	</table>
-
-	<br>
-	<hr>
-	<p id="instructions">
-		Add Research Staff <a href="javascript:fireAction('addStudyPersonnel',${selected_site}, '0');"><img
-			src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add Research Staff"></a></a>
-	</p>
-	<table class="tablecontent">
-		<tr>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Name:</b> </th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Role:</b> </th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Status:</b> </th>
-			<th scope="col" align="left" class="specalt"></th>
-		</tr>
-
-		<c:forEach varStatus="status" items="${command.studySites[selected_site].studyPersonnels}">
-			<tr>
-				<td class="alt">
-					<form:hidden id="personnel${status.index}" path="studySites[${selected_site}].studyPersonnels[${status.index}].researchStaff"/>
-					<input type="text" class="validate-notEmpty" id="personnel${status.index}-input" size="30" value="${command.studySites[selected_site].studyPersonnels[status.index].researchStaff.fullName}"/>
-					<input type="button" id="personnel${status.index}-clear" value="Clear"/>
-					<tags:indicator id="personnel${status.index}-indicator"/>
-					<div id="personnel${status.index}-choices" class="autocomplete"></div></td>
-				<td class="alt">
-					<form:select path="studySites[${selected_site}].studyPersonnels[${status.index}].roleCode" cssClass="validate-notEmpty">
-						<option value="">--Please Select--</option>
-						<form:options items="${studyPersonnelRoleRefData}" itemLabel="desc" itemValue="desc"/>
-					</form:select></td>
-				<td class="alt">
-					<form:select path="studySites[${selected_site}].studyPersonnels[${status.index}].statusCode" cssClass="validate-notEmpty">
-						<option value="">--Please Select--</option>
-						<form:options items="${studyPersonnelStatusRefData}" itemLabel="desc" itemValue="desc" />
-					</form:select></td>
-				<td class="alt">
-					<a href="javascript:fireAction('removeStudyPersonnel',${selected_site}, ${status.index});"><img
-						src="<c:url value="/images/checkno.gif"/>" border="0" alt="delete"></a></td>
-			</tr>
-		</c:forEach>
-	</table>
-   	</td>
-
-	<td valign="top" width="25%">
-		<chrome:box id="Summary" title="Summary">
-		<font size="2"><b> Study Sites </b> </font>
-		<br><br>
-		<table border="0" id="table1" cellspacing="0" cellpadding="0" width="100%">
-		<c:forEach var="studySite" varStatus="status" items="${command.studySites}">					
-			<tr>
-				<td> 
-					<a onclick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit person assigned to a study"> <font size="2"> <b> ${studySite.organization.name} </b> </font> </a>
-				</td>																									            
-			</tr>
-			<tr>
-				<td> 
-					Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
-				</td>																									            
-			</tr>
-			<tr>
-				<td> 
-					<br>	
-				</td>																									            
-			</tr>
-		</c:forEach>
-		<c:forEach begin="1" end="15">					
-		<tr>
-			<td> 
-				<br>	
-			</td>																						
-		</tr>	
-		</c:forEach>
-		</table>				
-		</chrome:box>
-	</td>
-</tr>
-</table>
-</jsp:attribute>
-</tags:tabForm>	
+ </jsp:attribute>	 
+</tags:tabForm>
 </body>
 </html>

@@ -73,7 +73,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setShortTitle("short title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
-		study.setPrimarySponsorCode("SCODE_101");
+		//study.setPrimarySponsorCode("SCODE_101"); -- we should set the primaryfundinsponsor (Object)
 		study.setCtcVersion(getCtc());
 
 		try {
@@ -107,7 +107,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setShortTitle("short title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
-		study.setPrimarySponsorCode("SCODE_101");
+		//study.setPrimarySponsorCode("SCODE_101");
 		study.setCtcVersion(getCtc());
 		SecurityTestUtils.switchUser("study_cd1", "ROLE_caaers_study_cd");
 		try {
@@ -126,7 +126,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setShortTitle("some other title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
-		study.setPrimarySponsorCode("SCODE_101");
+		//study.setPrimarySponsorCode("SCODE_101");
 		study.setCtcVersion(getCtc());
 		// try {
 		// dao.merge(study);

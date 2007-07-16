@@ -37,7 +37,6 @@
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_101"
     	ctc_id="3"
     	grid_id="gridStudy"/>
     
@@ -47,7 +46,6 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	primary_sponsor_code="SCODE_100"
     	ctc_id="3"
     	grid_id=""/>
     

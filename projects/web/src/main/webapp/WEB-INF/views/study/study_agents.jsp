@@ -7,7 +7,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -17,162 +17,87 @@
         td#linkPosition a img { position:absolute; right: 30px; }
         
 </style>
+<tags:javascriptLink name="hover-display" />
 <tags:includeScriptaculous/>
-    <tags:dwrJavascriptLink objects="createStudy"/>
-    <script type="text/javascript">
-			
+<tags:dwrJavascriptLink objects="createStudy"/>
+<script type="text/javascript">
+	
+	var agentListEditor;
+	
 	function fireAction(action, selected){
-		document.getElementById('command')._target.name='_noname';
-		document.studyAgentsForm._action.value=action;
-		document.studyAgentsForm._selected.value=selected;		
-		document.studyAgentsForm.submit();
+		if(action == 'removeStudyAgent' ){
+			document.getElementById('command')._target.name='_noname';
+			document.studyAgentsForm._action.value=action;
+			document.studyAgentsForm._selected.value=selected;		
+			document.studyAgentsForm.submit();
+		}else{
+			agentListEditor.add.bind(agentListEditor)();
+		}
 	}
 
-	function clearField(field){
-         field.value="";
-    }
-          
-    function hover(index)
-    {
-      var formID = 'agent' + index + '-input'; 
-      if ($(formID).value.length > 4)
-      {
-   		$(formID).title=$(formID).value;
-   	  }
-   	  else 
-   	  {
-    	$(formID).title="";   
-   	   }
-     }   
-         
-      /*
-       * Used to check the INDIndicator checkbox if 
-       * INDIdentifier contains text
-       */
-         
-      function checkIndicator(index)
-      {
-    	var indIndicator ='studyAgents[' + index + '].investigationalNewDrugIndicator1'
-    	var indIdentifier = 'studyAgents[' + index + '].investigationalNewDrugIdentifier'
-    	if ( $(indIdentifier).value.length > 0 )
-    		{
-    			$(indIndicator).checked=true;
-    		} 
-      } 
- 
-      var agentAutocompleterProps = {
-          basename: "agent",
-          populator: function(autocompleter, text) {
-              createStudy.matchAgents(text, function(values) {
-                  autocompleter.setChoices(values)
-              })
-          },
-          valueSelector: function(obj) {
-              return obj.nscNumber + "<b> ::</b> " + obj.name
-          }
-      }
-      
-            
-      function acPostSelect(mode, selectedChoice) {
-          //Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
-          $(mode.basename).value = selectedChoice.id;
-          //$(mode.basename + '-selected').show()
-          //new Effect.Highlight(mode.basename + "-selected")
-      }
-
-      function updateSelectedDisplay(mode) {
-          if ($(mode.basename).value) {
-              Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-              $(mode.basename + '-selected').show()
-          }
-      }
-
-      function acCreate(mode) {
-          new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-              mode.populator, {
-              valueSelector: mode.valueSelector,
-              afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                  acPostSelect(mode, selectedChoice)
-              },
-              indicator: mode.basename + "-indicator"
-          })
-          Event.observe(mode.basename + "-clear", "click", function() {
-              //$(mode.basename + "-selected").hide()
-              $(mode.basename).value = ""
-              $(mode.basename + "-input").value = ""
-          })
-      }
-
-      Event.observe(window, "load", function() {
-       index = 0;
-       autoCompleteId = 'agent' + index ;
-       while( $(autoCompleteId)  )
-       { 
-     // change the basename property to agent0 ,agent1 ...
-        agentAutocompleterProps.basename=autoCompleteId
-           acCreate(agentAutocompleterProps)
-           index++
-           autoCompleteId= 'agent' + index  ; 
-          }           
+	  
+	var jsStudyAgent = Class.create();
+	Object.extend(jsStudyAgent.prototype, {
+            initialize: function(index, agentName) {
+            	this.index = index;
+            	this.agentName = agentName;
+            	this.agentPropertyName = "studyAgents["  + index + "].agent";
+            	this.agentInputId = this.agentPropertyName + "-input";
+            	if(agentName) $(this.agentInputId).value = agentName;
+            	AE.createStandardAutocompleter(this.agentPropertyName, 
+            		this.agentPopulator.bind(this),
+            		this.agentSelector.bind(this)
+            	);
+            },            
+            agentPopulator: function(autocompleter, text) {
+         		createStudy.matchAgents(text, function(values) {
+         			autocompleter.setChoices(values)
+         		})
+        	},
+        	
+        	agentSelector: function(agent) { 
+        		return agent.nscNumber + "<b> ::</b> " + agent.name 
+        	}
+        	
+    });
+	  
+    Event.observe(window, "load", function() {
+   
+        <c:forEach varStatus="status" items="${command.studyAgents}" var="sa">
+      		new jsStudyAgent(${status.index}, '${sa.agent.nscNumber}::${sa.agent.name}');
+      	</c:forEach>
+        agentListEditor = new ListEditor('sa-section',createStudy, "StudyAgent",{
+      		 addButton: "xxx",
+             addIndicator: "sa-add-indicator",
+             addFirstAfter: "agentbookmark",
+             addCallback: function(nextIndex) {
+                	//initilze auto completer and calendar
+          			new jsStudyAgent(nextIndex);
+             }
+      	});  
+                 
       })
      
-   </script>
-<script src="/caaers/js/Spry/SpryEffects.js" type="text/javascript"></script>
-<style type="text/css">
-.hideInitially{
-	display: none;
-}
-</style> </head>
+</script>
+
+</head>
 <body>
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
     <jsp:attribute name="singleFields">
 		<div>		
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>	
 		<p id="instructions">
-			Add a Study Agent <a href="javascript:fireAction('addStudyAgent','0');">
-			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
+			Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
+			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="sa-add-indicator"/>
 		</p>
-		 <div class="hideInitially" id="Agent Help"><h3>Enter Protocol title intended for the public. Required field</h3></div>
-               <div class="hideInitially" id="INDIndent Help"><h3>Investigational New Drug identification code assigned by the FDA. Required field. 
-</h3></div>
-               <div class="hideInitially" id="INDIndicat Help"><h3>Investigational New Drug measurement in a subject or biological sample to assess the safety, efficacy, or other objective of the agent. Required field. </h3></div>
-		<table class="tablecontent">
-		<tr><td colspan="4" style="border-width: 0px; padding: 0px;">
-               
-                </td></tr><tr>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>Agent:</b> <a onclick="agenthelp.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Identifier:</b> <a onclick="indindent.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
-			<th scope="col" align="left"><b> <span class="red">*</span><em></em>IND&nbsp;Indicator:</b> <a onclick="indindicat.start(); return false;" href="#"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
-			<th scope="col" align="left" class="specalt"></th>
-		</tr>
-
-		<c:forEach  items="${command.studyAgents}" varStatus="status">		
-			<tr>
-				<td class="alt" id="linkPosition" rowspan="1">				
-					<form:hidden id="agent${status.index}" path="studyAgents[${status.index}].agent"/>
-                 	<form:input size="50" id="agent${status.index}-input" onmouseover="javascript:hover(${status.index})" 
-                 		path="studyAgents[${status.index}].agentAsString"/>
-                 	<tags:indicator id="agent${status.index}-indicator"/>
-                 	<div id="agent${status.index}-choices" class="autocomplete"></div>
-                 	<input type="button" id="agent${status.index}-clear" value="Clear"/>			
-				</td>
-				<td class="alt"><form:input  onchange="checkIndicator(${status.index})" path="studyAgents[${status.index}].investigationalNewDrugIdentifier" />
-					</td>
-				<td class="alt"><form:checkbox path="studyAgents[${status.index}].investigationalNewDrugIndicator"/>
-					</td>
-				<td class="alt">
-					<a href="javascript:fireAction('removeStudyAgent',${status.index});">
-						<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="remove"></a></td>
-			</tr>
+		<c:forEach varStatus="status" items="${command.studyAgents}">	
+  			<study:aStudyChild title="Study Agent ${status.index + 1}" enableDelete="true"
+			sectionClass="sa-section" removeButtonAction="removeStudyAgent" index="${status.index}" />
 		</c:forEach>
-	</table>
-    <script type="text/javascript">
-var agenthelp = new Spry.Effect.Slide('Agent Help', {duration: 500, from: '0%', to:'100%', toggle:true});
-var indindent = new Spry.Effect.Slide('INDIndicat Help', {duration: 500, from: '0%', to:'100%', toggle:true}); 
-var indindicat = new Spry.Effect.Slide('INDIndent Help', {duration: 500, from: '0%', to:'100%', toggle:true}); </script>
+		<span id="agentbookmark" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

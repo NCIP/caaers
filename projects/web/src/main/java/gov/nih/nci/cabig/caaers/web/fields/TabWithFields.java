@@ -20,6 +20,8 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public abstract class TabWithFields<C> extends Tab<C> {
+	private boolean autoPopulateHelpKey;
+	
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
@@ -36,7 +38,9 @@ public abstract class TabWithFields<C> extends Tab<C> {
     @Override
     public Map<String, Object> referenceData(C command) {
         Map<String, Object> refdata = referenceData();
-        refdata.put("fieldGroups", createFieldGroups(command));
+        Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
+        if(isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); //to populate the help keys
+        refdata.put("fieldGroups", groupMap); 
         return refdata;
     }
 
@@ -68,4 +72,33 @@ public abstract class TabWithFields<C> extends Tab<C> {
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
     }
+    
+    /**
+     * This functions sets the HELP key in the attribute map associated to an InputField.
+     * The default logic of deriving HELP key is "viewName" + "." + propertyName, where
+     * <code>/</code> character in viewName is replaced with <code>. (dot) </code> and 
+     * array notations<code>[x]</code> in propertyName removed .  
+     */
+    protected void populateHelpAttributeOnFields(Map<String, InputFieldGroup> groupMap){
+    	String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
+    	if(groupMap == null || groupMap.isEmpty()) return;
+    	for(InputFieldGroup group : groupMap.values()){
+    		for(InputField field : group.getFields()){
+    			field.getAttributes().put(InputField.HELP, 
+    					helpKeyPrefix + "." + field.getPropertyName().replaceAll("(\\[\\d+\\])",""));
+    		}
+    	}
+    }
+    
+    ///BEAN PROPERTIES
+    
+	public boolean isAutoPopulateHelpKey() {
+		return autoPopulateHelpKey;
+	}
+
+	public void setAutoPopulateHelpKey(boolean autoPopulateHelpKey) {
+		this.autoPopulateHelpKey = autoPopulateHelpKey;
+	}
+
+    
 }

@@ -20,7 +20,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
         @Parameter(name="sequence", value="seq_study_investigators_id")
     }
 )
-public class StudyInvestigator extends AbstractMutableDomainObject {
+public class StudyInvestigator extends AbstractMutableDomainObject implements StudySiteChild{
 	
 	private String signatureText;
 	private String roleCode;

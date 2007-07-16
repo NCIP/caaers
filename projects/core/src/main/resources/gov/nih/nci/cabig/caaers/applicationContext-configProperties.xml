@@ -132,6 +132,7 @@
                         </bean>
                     </list>
                 </entry>
+				<!-- sponsorCodeRefData to be removed -->
                 <entry key="sponsorCodeRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -53,7 +54,8 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
     }
-
+    
+    ///LOGIC
 	@Override
 	protected Study getPrimaryDomainObject(C command) {
 		 return command;
@@ -67,13 +69,14 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     /**
      * Template method to let the subclass decide the order of tab
      */
-    protected abstract void layoutTabs(Flow flow);
+    protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
         throws Exception {
         super.initBinder(request, binder);
-        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
+    	binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
@@ -81,14 +84,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
     }
 
-    /**
-     * Template method for individual controllers
-     * @param request
-     * @param command
-     * @param errors
-     * @param page
-     * @return
-     */
+   
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(
@@ -127,7 +123,6 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         return false;
     }
 
-
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
                                          Object command, BindException errors) throws Exception {
@@ -139,28 +134,42 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
         return null;
     }
-
-    protected Study createDefaultStudyWithDesign() {
-        Study study = new Study();
-
-        StudySite studySite = new StudySite();
-        study.addStudySite(studySite);
-
-        List<Identifier> identifiers = new ArrayList<Identifier>();
-        Identifier id = new Identifier();
-        identifiers.add(id);
-        study.setIdentifiers(identifiers);
-
-        List<Organization> organizations = organizationDao.getAll();
-
-        for (Organization organization : organizations) {
-            studySite.setOrganization(organization);
+    
+	@Override
+	protected String getViewName(HttpServletRequest request, Object command, int page) {
+		Object subviewName = findInRequest(request, "_subview");
+		if (subviewName != null) {
+            return "study/ajax/" + subviewName;
+        } else {
+            return super.getViewName(request, command, page);
         }
-
-        return study;
-    }
-
-    public AgentDao getAgentDao() {
+	}
+	
+	/**
+	 *  Returns the value associated with the <code>attributeName</code>, if present in 
+	 *  HttpRequest parameter, if not available, will check in HttpRequest attribute map.  
+	 */
+	private Object findInRequest(HttpServletRequest request, String attributName){
+		   
+	  	Object attr = request.getParameter(attributName);
+	  	if(attr == null) attr = request.getAttribute(attributName);
+	   	return attr;
+	}
+	
+	
+	@Override
+	protected boolean suppressValidation(HttpServletRequest request, Object command) {
+		//supress for ajax and delete requests
+		Object isAjax = findInRequest(request, "_isAjax");
+		if(isAjax != null) return true;
+		Object action = findInRequest(request, "_action");
+		if(action != null) return true;
+		return super.suppressValidation(request, command);
+	}
+	
+	///BEAN PROPERTIES
+	
+	public AgentDao getAgentDao() {
         return agentDao;
     }
 

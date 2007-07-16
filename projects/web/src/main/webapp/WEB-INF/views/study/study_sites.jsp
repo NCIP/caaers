@@ -7,62 +7,93 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
+ <tags:includeScriptaculous/>
+  <tags:dwrJavascriptLink objects="createStudy"/>
 <script language="JavaScript" type="text/JavaScript">
+	var addSiteEditor;
+	function fireAction(action, selected){
+		if(action == 'addSite'){
+			addSiteEditor.add.bind(addSiteEditor)();
+		}else {
+			//addSiteEditor.delete.bind(addSiteEditor)();
+			var ssfrm = $('command');
+			ssfrm._target.name='_noname';
+			ssfrm._action.value=action;
+			ssfrm._selected.value=selected;		
+			ssfrm.submit();
+		}
+	}
 
-function fireAction(action, selected){
-	document.getElementById('command')._target.name='_noname';
-	document.studySiteForm._action.value=action;
-	document.studySiteForm._selected.value=selected;		
-	document.studySiteForm.submit();
-}
+	var jsStudySite = Class.create();
+	Object.extend(jsStudySite.prototype, {
+            initialize: function(index, orgName) {
+            	this.index = index;
+            	this.orgName = orgName;
+            	this.sitePropertyName = "studySites["  + index + "].organization";
+            	this.irbApprovalInputId = "studySites["  + index + "].irbApprovalDate";
+            	this.irbApprovalButtonId = "studySites["  + index + "].irbApprovalDate-calbutton";
+            	this.siteInputId = this.sitePropertyName + "-input";
+            	if(orgName) $(this.siteInputId).value = orgName;
+            	AE.createStandardAutocompleter(this.sitePropertyName, 
+            		this.sitePopulator.bind(this),
+            		this.siteSelector.bind(this)
+            	);
+            	Calendar.setup({inputField:this.irbApprovalInputId,ifFormat:"%m/%d/%Y",button:this.irbApprovalButtonId});
+            },            
+            sitePopulator: function(autocompleter, text) {
+         		createStudy.matchOrganization(text, function(values) {
+         			autocompleter.setChoices(values)
+         		})
+        	},
+        	
+        	siteSelector: function(organization) { 
+        		return organization.name 
+        	}
+        	
+    });
+    
+    Event.observe(window, "load", function() {
+    	<c:forEach varStatus="status" items="${command.studySites}" var="ss">
+      		new jsStudySite(${status.index}, '${ss.organization.name}');
+      	</c:forEach>
+      	addSiteEditor = new ListEditor('ss-section',createStudy, "StudySite",{
+      		 addButton: "xxx",
+             addIndicator: "ss-add-indicator",
+             addFirstAfter: "sitebookmark",
+             addCallback: function(nextIndex) {
+                	//initilze auto completer and calendar
+                	new jsStudySite(nextIndex);
+             }
+      	});
+      	
+    });
+
 </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="true">
     <jsp:attribute name="singleFields">
-    <div>
-		<input type="hidden" name="_action" value="">
-		<input type="hidden" name="_selected" value="">
-	</div>
-		
+   	
 		<p id="instructions">
 			Add StudySites associated with the Study
 			<a href="javascript:fireAction('addSite','0');"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><br>
+					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><tags:indicator id="ss-add-indicator"/>
+			<br>
 		</p>
-		<table class="tablecontent">
-			<tr>
-				<th scope="col"><span class="red">*</span><em></em>Site:</td>
-				<th scope="col"><span class="red">*</span><em></em>Role:</td>										
-				<th scope="col">IRB Approval Date:</td>														
-				<th scope="col" class="specalt"></td>
-			</tr>
-	
-			<c:forEach varStatus="status" items="${command.studySites}">					
-				<tr>
-					<td class="alt">
-						<form:select path="studySites[${status.index}].organization">
-							<option value="">--please select --</option>
-     						<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
-						</form:select> </td>									
-					<td class="alt">
-						<form:select path="studySites[${status.index}].roleCode">
-							<option value="">--please select --</option>										
-						 	<form:options items="${studySiteRoleCodeRefData}" itemLabel="desc" itemValue="code" />
-						</form:select></td>																		   
-    				 <td class="alt">
-    				    	<tags:dateInput path="studySites[${status.index}].irbApprovalDate"/></td>   
-    				<td class="alt">
-						<a href="javascript:fireAction('removeSite',${status.index});"><img
-						src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
-				</tr>
-			</c:forEach>
-																			
+		<div>
+			<input type="hidden" name="_action" value="">
+			<input type="hidden" name="_selected" value="">
+		</div>
+		<c:forEach varStatus="status" items="${command.studySites}">	
+			<study:aStudyChild title="Study Site ${status.index + 1}" enableDelete="${status.index > 0}"
+			    sectionClass="ss-section" removeButtonAction="removeSite" index="${status.index}" />
+		</c:forEach>
+			<span id="sitebookmark"></span>
 		</table>
     </jsp:attribute>
 </tags:tabForm>

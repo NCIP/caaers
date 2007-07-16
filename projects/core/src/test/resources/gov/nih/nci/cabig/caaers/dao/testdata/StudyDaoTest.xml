@@ -8,7 +8,6 @@
         multi_institution_indicator="0"
         short_title="Short Title"
         long_title="Long Title" description="Description"
-        primary_sponsor_code="SCODE_100"
         ctc_id="3"
         grid_id=""
         />
@@ -19,7 +18,7 @@
         long_title="Lengthy Title" description="Different description"
         grid_id=""
         ctc_id="3"
-        primary_sponsor_code="SCODE_100"/>
+        />
 
     <STUDIES
         grid_id="gridStudy"
@@ -27,7 +26,6 @@
         multi_institution_indicator="0"
         short_title="Shortest"
         long_title="Event Lengthier Title" description="Yet another different description"
-        primary_sponsor_code="SCODE_100"
         ctc_id="3"
         />
 
@@ -211,6 +209,9 @@
     	study_id="-3"
     	site_id="-1002" 
     	type="SCC"/>
-
-
+    	
+     <!--  due to FK references -->
+     <ctc_categories />
+     <ctc_terms />
+      <ctc_grades/>
 </dataset>

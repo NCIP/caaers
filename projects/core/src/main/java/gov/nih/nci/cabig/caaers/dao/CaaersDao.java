@@ -224,6 +224,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * @return a updated persistant instance
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly=false)
 	public T merge(T o){
     	return (T) getHibernateTemplate().merge(o);
     }

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * @author Priyatam
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public class EditStudyController extends StudyController<Study> {
 	
@@ -25,11 +26,11 @@ public class EditStudyController extends StudyController<Study> {
 		setBindOnNewForm(true);
 	}
 	
+	///LOGIC
+	
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
-        if (study != null) {
-            log.debug("Retrieving Study Details for Id: " + study.getId());
-        }
+        if(log.isDebugEnabled()) log.debug("Retrieved Study :" + String.valueOf(study));
         return study;
     }    
     
@@ -44,7 +45,6 @@ public class EditStudyController extends StudyController<Study> {
 		if (sessionFormObject != null) {
 			getDao().reassociate((Study) sessionFormObject);
 		}
-		
 		return sessionFormObject;
 	}
 
@@ -52,7 +52,7 @@ public class EditStudyController extends StudyController<Study> {
         return true;
     }
 
-    protected void layoutTabs(Flow flow) {
+	protected void layoutTabs(Flow<Study> flow) {
         flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
         flow.addTab(new DetailsTab());
         flow.addTab(new IdentifiersTab());
@@ -64,11 +64,8 @@ public class EditStudyController extends StudyController<Study> {
     }
 
     @Override
-    protected ModelAndView processFinish(
-        HttpServletRequest request, HttpServletResponse response, Object command, BindException errors
-    ) throws Exception {
-    	Study study = (Study) command;
-
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
+    		Object command, BindException errors) throws Exception {
         return new ModelAndView(new RedirectView("search"));
     }
 

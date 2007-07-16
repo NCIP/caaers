@@ -7,7 +7,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -24,7 +24,7 @@
         <chrome:division>
             <div class="row">
                 <div class="label">Primary Identifier</div>
-                <div class="value">${command.primaryIdentifier}</div>
+                <div class="value">${command.primaryIdentifier.value}</div>
             </div>
             <div class="row">
                 <div class="label">Short Title</div>
@@ -51,9 +51,9 @@
                 <div class="value">${command.phaseCode}</div>
             </div>
        </chrome:division>
-
-		<chrome:division title="Identifiers">
-		<table class="tablecontent">
+		<c:if test="${not empty command.identifiers}">
+			<chrome:division title="Identifiers">
+			<table class="tablecontent">
 			<tr>
 				<th scope="col">Assigning Authority</th>
 				<th scope="col">Identifier Type</th>
@@ -65,41 +65,40 @@
 				<td>${identifier.type}</td>
 				<td>${identifier.value}</td>
 			</tr>
-		</c:forEach>
-		</table>
-		<br>
-		</chrome:division>
-        <chrome:division title="Sites">
-       <table class="tablecontent">
+			</c:forEach>
+			</table>
+			<br>
+			</chrome:division>
+		</c:if>
+		<c:if test="${not empty command.studySites}">       
+       		<chrome:division title="Sites">
+       		<table class="tablecontent">
 				<tr>
 					<th scope="col">Study Site</th>
-					<th scope="col">Status</th>
 					<th scope="col">Role</th>
-					<th scope="col">Start Date</th>
 					<th scope="col">IRB Approval Date</th>
 				</tr>
 				<c:forEach items="${command.studySites}" var="studySite">
 				<tr class="results">
 					<td>${studySite.organization.name}</td>
-					<td>${studySite.statusCode}</td>
 					<td>${studySite.roleCode}</td>
-					<td>${studySite.startDate}</td>
-					<td>${studySite.irbApprovalDate}</td>
+					<td><tags:formatDate value="${studySite.irbApprovalDate}" /></td>
 				</tr>
 				</c:forEach>
 			</table>	
-	  <br>
-	</chrome:division>
-
-    <chrome:division title="Investigators">
+	  		<br>
+			</chrome:division>
+	</c:if>
+	<c:if test="${not empty command.studySites}">    
+    	<chrome:division title="Investigators">
         <table class="tablecontent">
             <tr>
                 <th scope="col">Investigator</th>
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studySites}" var="studySite" varStatus="status">
-                <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" varStatus="status">
+            <c:forEach items="${command.studySites}" var="studySite" >
+                <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
                         <td>${studyInvestigator.roleCode}</td>
@@ -108,8 +107,9 @@
                 </c:forEach>
             </c:forEach>
         </table>
-    </chrome:division>
-    
+    	</chrome:division>
+    </c:if>
+    <c:if test="${not empty command.studySites}">
     <chrome:division title="Personnel">
         <table class="tablecontent">
             <tr>
@@ -117,8 +117,8 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studySites}" var="studySite" varStatus="status">
-                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel" varStatus="status">
+            <c:forEach items="${command.studySites}" var="studySite" >
+                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
                     <tr class="results">
                         <td>${studyPersonnel.researchStaff.fullName}</td>
                         <td>${studyPersonnel.roleCode}</td>
@@ -128,16 +128,15 @@
             </c:forEach>
         </table>
     </chrome:division>
-    
+    </c:if>
+    <c:if test="${not empty command.studyAgents}">
     <chrome:division title="Agents">
 		<table class="tablecontent">
 		<tr >						
 			<th scope="col">Agent Name</th>
-			<th scope="col">Agent NSC Number</th>
+			<th scope="col">Agent NSC<br />Number</th>
 			<th scope="col">IND Identifier</th>
-			<th scope="col">IND Indicator</th>	
-			<th scope="col">Start Date</th>
-			<th scope="col">End Date</th>														
+			<th scope="col">Investigational New <br /> Drug?</th>	
 		</tr>																			
 	 	    
 		<c:forEach items="${command.studyAgents}" var="studyAgent">
@@ -145,12 +144,13 @@
 				<td>${studyAgent.agent.name}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
 				<td>${studyAgent.investigationalNewDrugIdentifier}</td>
-				<td>${studyAgent.investigationalNewDrugIndicator}</td>
+				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
 			</tr>
 		</c:forEach>				
 		</table>
     </chrome:division>
-
+	</c:if>
+	<c:if test="${not empty command.ctepStudyDiseases}">
     <chrome:division title="Diseases">
         <table class="tablecontent">
             <br>
@@ -168,6 +168,7 @@
         </table>
         <br>
     </chrome:division>
+    </c:if>
     </jsp:attribute>
 </tags:tabForm>
 

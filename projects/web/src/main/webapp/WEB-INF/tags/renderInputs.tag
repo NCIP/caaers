@@ -1,3 +1,4 @@
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="ctmsfn" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
@@ -21,8 +22,9 @@
         </c:forEach>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="${empty size ? '50' : size}" type="text" id="${field.propertyName}-input"/>
+        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text" id="${field.propertyName}-input"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
+        <c:if test="${field.attributes.enableClear}"><input type="button" id="${field.propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${field.propertyName}-input').clear();$('${field.propertyName}').clear();" /></c:if>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
         <form:hidden path="${field.propertyName}"/>
     </c:when>
@@ -41,5 +43,8 @@
         UNIMPLEMENTED FIELD TYPE ${field.categoryName} for ${field.propertyName}
     </c:otherwise>
 </c:choose>
+ 	<c:if test="${not empty field.attributes.help}">
+ 		<tags:inlineHelp path="${field.propertyName}"><spring:message code="${field.attributes.help}" text="No help available" /></tags:inlineHelp>
+    </c:if>
 <tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>

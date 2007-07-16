@@ -27,32 +27,31 @@ import java.util.Set;
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 	private CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
-    
+
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
         assertNotNull("Study not found", loaded);
         assertEquals("Short Title", loaded.getShortTitle());
     }
-    
+
     public void testGetByGridId() throws Exception{
         Study study = getDao().getByGridId("gridStudy");
         assertNotNull("Study not found", study);
-    }    
-    
+    }
+
     public void testSave() throws Exception {
-    	
+
     	Ctc ctc = ctcDao.getCtcaeV3();
-    	
+
     	Integer savedId;
         {
             Study newStudy = new Study();
             newStudy.setShortTitle("Short Title Inserted");
-            newStudy.setLongTitle("Long Title Inserted"); 
+            newStudy.setLongTitle("Long Title Inserted");
             newStudy.setCtcVersion(ctc);
            // newStudy.setPrincipalInvestigatorCode("ICODE_101");
            // newStudy.setPrincipalInvestigatorName("Investigator Name Inserted");
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-            newStudy.setPrimarySponsorCode("SCODE_101");
           //  newStudy.setPrimarySponsorName("Sponsor Name Inserted");
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
@@ -66,7 +65,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
             assertNotNull("Saved Study not found", reloaded);
            // assertEquals("ICODE_101", reloaded.getPrincipalInvestigatorCode());
            // assertEquals("Investigator Name Inserted", reloaded.getPrincipalInvestigatorName());
-            assertEquals("SCODE_101", reloaded.getPrimarySponsorCode());
           //  assertEquals("Sponsor Name Inserted", reloaded.getPrimarySponsorName());
         }
     }
@@ -82,7 +80,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         assertEquals("Wrong number of matches", 1, actual.size());
         assertEquals("Wrong match", -2, (int) actual.get(0).getId());
     }
-    
+
     public void testGetBySubnameMatchesIntersectionOfSubnames() throws Exception {
         List<Study> actual = getDao().getBySubnames(new String[] { "long", "title" });
         assertEquals("Wrong number of matches", 1, actual.size());
@@ -93,12 +91,12 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         List<Study> actual = getDao().getBySubnames(null);
         assertEquals(0, actual.size());
     }
-    
+
     public void testGetBySubnameWithNoSubnamesReturnsNothing() throws Exception {
         List<Study> actual = getDao().getBySubnames(new String[] { });
         assertEquals(0, actual.size());
     }
-    
+
     public void testSearchByExactExample() throws Exception {
         Study example = new Study();
         example.setDescription("Description");
@@ -126,10 +124,10 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         assertNotNull("No matches found", match);
         assertEquals("Wrong study matched", -3, (int) match.getId());
     }
-    
+
     /**
 	 * Test for retrieving all study sites associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudySites() throws Exception {
@@ -140,10 +138,10 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 
 		assertContains("Missing expected study site", ids, -1000);
 	}
-	
+
 	/**
 	 * Test for retrieving all study funding sponsors associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudyFundingSponsors() throws Exception {
@@ -155,10 +153,10 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 
 		assertContains("Missing expected study funding sponsor", ids, -1001);
 	}
-	
+
 	/**
 	 * Test for retrieving all study coordinating centers associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudyCoordinatingCenters() throws Exception {
@@ -169,16 +167,16 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 
 		assertContains("Missing expected study funding sponsor", ids, -1004);
 	}
-	
+
 	public void testSaveNewStudyWithFundingSponsor() throws Exception {
 		Integer savedId;
 		{
 			Organization sponsor = sitedao.getById(-1001);
 			Organization organization = sitedao.getById(-1003);
-			
+
 			Ctc ctc = ctcDao.getCtcaeV3();
-			
-			
+
+
 			Study study = new Study();
 			study.setShortTitle("ShortTitleText");
 			study.setLongTitle("LongTitleText");
@@ -187,25 +185,24 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			study.setTargetAccrualNumber(150);
 			//study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setPrimarySponsorCode("NCI");
 			study.setCtcVersion(ctc);
-			
-			
+
+
 			// Study Site
 			StudySite studySite = new StudySite();
 			studySite.setOrganization(organization);
 			studySite.setRoleCode("role");
 			studySite.setStatusCode("active");
-			
+
 			study.addStudySite(studySite);
-			
+
 			// Study funding sponsor
 			StudyFundingSponsor fundingSponsor = new StudyFundingSponsor();
 			fundingSponsor.setOrganization(sponsor);
 			study.addStudyOrganization(fundingSponsor);
-			
+
 			getDao().save(study);
-			
+
 			savedId = study.getId();
 			assertNotNull("The saved study didn't get an id", savedId);
 		}
@@ -219,17 +216,17 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			assertEquals("Wrong study funding sponsor", "National Cancer Institute", loaded.getStudyFundingSponsors().get(0).getOrganization().getName());
 		}
 	}
-	
+
 	public void testSaveNewStudyWithCoordinatingCenter() throws Exception {
 		Integer savedId;
 		{
 			Organization sponsor = sitedao.getById(-1001);
 			Organization organization = sitedao.getById(-1003);
 			Organization center = sitedao.getById(-1002);
-			
+
 			Ctc ctc = ctcDao.getCtcaeV3();
-			
-			
+
+
 			Study study = new Study();
 			study.setShortTitle("ShortTitleText");
 			study.setLongTitle("LongTitleText");
@@ -238,30 +235,29 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			study.setTargetAccrualNumber(150);
 			//study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setPrimarySponsorCode("NCI");
 			study.setCtcVersion(ctc);
-			
-			
+
+
 			// Study Site
 			StudySite studySite = new StudySite();
 			studySite.setOrganization(organization);
 			studySite.setRoleCode("role");
 			studySite.setStatusCode("active");
-			
+
 			study.addStudySite(studySite);
-			
+
 			// Study funding sponsor
 			StudyFundingSponsor fundingSponsor = new StudyFundingSponsor();
 			fundingSponsor.setOrganization(sponsor);
 			study.addStudyOrganization(fundingSponsor);
-			
+
 			// Study coordinating center
 			StudyCoordinatingCenter coCenter = new StudyCoordinatingCenter();
 			coCenter.setOrganization(center);
 			study.addStudyOrganization(coCenter);
-			
+
 			getDao().save(study);
-			
+
 			savedId = study.getId();
 			assertNotNull("The saved study didn't get an id", savedId);
 		}
@@ -276,7 +272,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			assertEquals("Wrong study coordinating center", "CALGB", loaded.getStudyCoordinatingCenters().get(0).getOrganization().getName());
 		}
 	}
-	
+
 	private List<Integer> collectIds(List<? extends DomainObject> actual) {
         List<Integer> ids = new ArrayList<Integer>(actual.size());
         for (DomainObject object : actual) {
@@ -284,8 +280,8 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         }
         return ids;
     }
-	
-	
+
+
 	   public void testSearchStudyByStudyShortTitle() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();
@@ -294,8 +290,8 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
-	    
-	    
+
+
 	    public void testSearchStudyByStudyIdentifier() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();
@@ -304,7 +300,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
-	    
+
 	    public void testSearchStudyByParticipantFirstName() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();
@@ -313,7 +309,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
-	    
+
 	    public void testSearchStudyByParticipantLastName() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();
@@ -322,7 +318,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
-	    
+
 	    public void testSearchStudyByParticipantIdentifier() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();
@@ -331,7 +327,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
-	    
+
 	    public void testSearchStudyByMultipleCriterias() throws Exception {
 	    	List<Study> results;
 	    	Map<String,String> m = new HashMap<String,String>();

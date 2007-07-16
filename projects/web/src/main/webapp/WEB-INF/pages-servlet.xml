@@ -10,7 +10,11 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
-    
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename"><value>help</value></property>
+    </bean>
+
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
     <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
@@ -333,11 +337,6 @@
     <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
     </bean>
-    
-	 <bean name="/rule/notification/addReportDefinitionSection" id="addReportDeliveryDefinition" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>rule/notification/ajax/addReportDefinitionSection</value></property>
-    </bean>    
-	
+  
      
 </beans>

@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -5,35 +7,65 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
+ <tags:includeScriptaculous/>
+  <tags:dwrJavascriptLink objects="createStudy"/>
 <script language="JavaScript" type="text/JavaScript">
-
-function fireAction(action, selected){
-	document.getElementById('command')._target.name='_noname';
-	document.studyIdentifiersForm._action.value=action;
-	document.studyIdentifiersForm._selected.value=selected;		
-	document.studyIdentifiersForm.submit();
-}
-function clearField(field){
-field.value="";
-}
-
+	var si = [];
+	var addIdentifierEditor;
+	var jsIdentifier = Class.create();;
+	Object.extend(jsIdentifier.prototype, {
+            initialize: function(index) {
+            	this.index = index;
+            	si[index] = this;
+            	this.indicator = "identifiers["  + index + "].primaryIndicator1";
+            	 Event.observe(this.indicator, "click", function() {
+            	 	for(i = 0; i < si.length; i++){
+            	 		if(i == this.index) continue;
+            	 		$(si[i].indicator).checked = false;
+            	 	}
+            	 }.bind(this));
+            }            
+        	
+    });
+	function fireAction(action, selected){
+		if(action == 'addIdentifier'){
+			addIdentifierEditor.add.bind(addIdentifierEditor)();
+		}else{
+			document.getElementById('command')._target.name='_noname';
+			document.studyIdentifiersForm._action.value=action;
+			document.studyIdentifiersForm._selected.value=selected;		
+			document.studyIdentifiersForm.submit();
+		}
+	}
+	
+	function clearField(field){
+		field.value="";
+	}
+	  
+    Event.observe(window, "load", function() {
+    	<c:forEach varStatus="status" items="${command.studySites}" var="si">
+      		new jsIdentifier(${status.index});
+      	</c:forEach>
+      	addIdentifierEditor = new ListEditor('si-section',createStudy, "Identifier",{
+      		 addButton: "xxx",
+             addIndicator: "si-add-indicator",
+             addFirstAfter: "identifierbookmark",
+             addCallback: function(nextIndex) {
+             	new jsIdentifier(nextIndex);
+             }
+      	});
+      	
+    });
+	
 </script>
-<script language="javascript">
-  function toggleDiv(divid){
-    if(document.getElementById(divid).style.display == 'none'){
-      document.getElementById(divid).style.display = 'block';
-    }else{
-      document.getElementById(divid).style.display = 'none';
-    }
-  }
-</script> </head>
+</head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">
     <jsp:attribute name="singleFields">
 		<div>
 			<input type="hidden" name="_action" value="">
@@ -42,45 +74,14 @@ field.value="";
 		<p id="instructions">
 			Add Identifiers associated with the Study
 			<a href="javascript:fireAction('addIdentifier','0');"><img
-				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add" title="Add"></a><br>
+				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="si-add-indicator"/><br>
 		</p>
-        
-        
-        
-		<table class="tablecontent">
-				<tr><td colspan="5" style="border-width: 0px; padding: 0px;">
-                <div id="Identdiv" style="display:none"><h3>Enter Official name of the protocol provided by the study principal investigator or sponsor. Required Field. </h3></div>
-                <div id="IdentTypediv" style="display:none"><h3>Select the category of the study specific identifier. Required field.</h3></div>
-                <div id="AssignAuthdiv" style="display:none"><h3>Select institution assigning the study identifier. Required field.</h3></div>
-                <div id="PrimInddiv" style="display:none"><h3>Is this the primary identifier for this study protocol ? Only one identifier can be selected as the primary indicator.</h3></div>
-                </td></tr>
-		
-                <tr align="center">
-			<th scope="col"> Identifier<span class="red">*</span> <a href="javascript:;" onMouseDown="toggleDiv('Identdiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>														
-		  <th scope="col"> Identifier Type<span class="red">*</span> </b> <a href="javascript:;" onMouseDown="toggleDiv('IdentTypediv');"><img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>						
-			<th scope="col"> Assigning Authority<span class="red">*</span> </b><a href="javascript:;" onMouseDown="toggleDiv('AssignAuthdiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>					
-			<th scope="col"> Primary&nbsp;Indicator </b><a href="javascript:;" onMouseDown="toggleDiv('PrimInddiv');"> <img src="/caaers/images/q.gif" border="0" alt="Help" title="Help"></a></th>
-			<th scope="col"></th>
-		</tr>																		
-		<c:forEach items="${command.identifiers}" varStatus="status">
-		<tr align="center" class="results">
-			<td class="alt"> <form:input path="identifiers[${status.index}].value" onclick="javascript:clearField(this)();"/> </td>
-			<td class="alt"><form:select path="identifiers[${status.index}].type">
-				<option value="">--please select --</option>								
-				<form:options items="${identifiersTypeRefData}" itemLabel="desc"
-					itemValue="code" /></form:select></td>	
-			<td class="alt">
-			    <form:select path="identifiers[${status.index}].source">
-				<option value="">--please select --</option>					
-				<form:options items="${identifiersSourceRefData}" itemLabel="name"
-					itemValue="name" /></form:select></td>
-			<td class="alt"><form:radiobutton path="identifiers[${status.index}].primaryIndicator" value="true"/></td> 
-			<td class="alt"><a href="javascript:fireAction('removeIdentifier',${status.index});"><img
-				src="/caaers/images/checkno.gif" border="0" alt="remove" title="Remove"></a></td>
-		</tr> 
-		</c:forEach> 
-	</table>
-  </jsp:attribute>
+		<c:forEach varStatus="status" items="${command.identifiers}">	
+		  <study:aStudyChild title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+			sectionClass="si-section" removeButtonAction="removeIdentifier" index="${status.index}" />
+		</c:forEach>	
+		<span id="identifierbookmark"></span>
+    </jsp:attribute>
 </tags:tabForm>
 </body>
 </html>

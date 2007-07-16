@@ -46,7 +46,7 @@
         />
     <agents id="-101"/>
     <agents id="-102"/>
-    <studies id="-100" short_title="Min" primary_sponsor_code="?" ctc_id="3"/>
+    <studies id="-100" short_title="Min" ctc_id="3"/>
 
     <AE_REPORTS
         id="-17"
