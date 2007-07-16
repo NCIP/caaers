@@ -94,8 +94,8 @@ public class ReportDefinitionCommand  {
 			PlannedEmailNotification pen = (PlannedEmailNotification) pn;
 			subjectLine = pen.getSubjectLine();
 			fromAddress = pen.getFromAddress();
-			message = (pen.getNotificationBodyContent() != null) ? pen
-					.getNotificationBodyContent().getBodyAsString() : "";
+            message = (pen.getNotificationBodyContent() != null) ? pen
+                .getNotificationBodyContent().getBody() : "";
 			List<Recipient> recipientList = pn.getRecipients();
 			String str;
 			for (Recipient r : recipientList) {
@@ -175,7 +175,7 @@ public class ReportDefinitionCommand  {
 			pen.setFromAddress(fromAddress);
 			if (StringUtils.isNotEmpty(message)) {
 				NotificationBodyContent nfBody = new NotificationBodyContent();
-				nfBody.setBody(message.getBytes());
+				nfBody.setBody(message);
 				pen.setNotificationBodyContent(nfBody);
 			}
 			List<Recipient> recipientList = pen.getRecipients();
