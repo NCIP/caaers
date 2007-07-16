@@ -79,7 +79,7 @@
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
 	<input type="hidden" name="_selectedPersonnel" value="">
-	
+	 <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
 	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td width="70%" valign="top" >

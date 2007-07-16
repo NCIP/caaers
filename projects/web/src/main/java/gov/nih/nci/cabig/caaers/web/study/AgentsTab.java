@@ -55,11 +55,9 @@ public class AgentsTab extends StudyTab {
 			 agentField.getAttributes().put(InputField.ENABLE_CLEAR , true);
 			 //agentField.getAttributes().put(InputField.DETAILS, "Enter a portion of the agent name you are looking for");
 			 rfgFactory.addField(agentField);
-			 DefaultTextField indField = new DefaultTextField("investigationalNewDrugIdentifier","IND Identifier", true);
-			 indField.getAttributes().put(InputField.HELP, "Investigational new drug identifier");
+			 DefaultTextField indField = new DefaultTextField("investigationalNewDrugIdentifier","IND Identifier", false);
 			 rfgFactory.addField(indField);
 			 DefaultCheckboxField indIndicator = new DefaultCheckboxField("investigationalNewDrugIndicator","IND Indicator");
-			 indIndicator.getAttributes().put(InputField.HELP, "Investigational new drug indicator");
 			 rfgFactory.addField(indIndicator);
 		 }
 		 Study study = (Study)command;

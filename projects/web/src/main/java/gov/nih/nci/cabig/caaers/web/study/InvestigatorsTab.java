@@ -40,12 +40,15 @@ class InvestigatorsTab extends StudyTab {
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
 		String action =request.getParameter("_action");
 		String selectedInvestigator = request.getParameter("_selectedInvestigator");
+		String prevSiteIndex = request.getParameter("_prevSite");
 		Study study = (Study) command;
 		int selectedIndex = study.getStudySiteIndex();
 		if ("removeInv".equals(action) && selectedIndex >=0 ){	
 			study.getStudySites().get(selectedIndex).getStudyInvestigators()
 				.remove(Integer.parseInt(selectedInvestigator));
-		}										
+		}else if ("changeSite".equals(action) && errors.hasErrors()){
+			study.setStudySiteIndex(Integer.parseInt(prevSiteIndex));
+		}
     }
 
 	@Override

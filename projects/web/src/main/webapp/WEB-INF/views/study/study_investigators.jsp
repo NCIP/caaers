@@ -85,7 +85,7 @@ Event.observe(window, "load", function() {
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true">    
 <jsp:attribute name="singleFields">
  <input type="hidden" name="_action" value="">
- <input type="hidden" name="_selectedSite" value="">
+ <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
  <input type="hidden" name="_selectedInvestigator" value="">
 
  <table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">

@@ -36,11 +36,14 @@ class PersonnelTab extends StudyTab {
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
     	String action = request.getParameter("_action");
 		String selectedPersonnel = request.getParameter("_selectedPersonnel");
+		String prevSiteIndex = request.getParameter("_prevSite");
 		Study study = (Study) command;
 		int selectedIndex = study.getStudySiteIndex();
 		if ("removeStudyPersonnel".equals(action) &&  selectedIndex >=0){	
 			study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels()
 				.remove(Integer.parseInt(selectedPersonnel));
+		}else if ("changeSite".equals(action) && errors.hasErrors()){
+			study.setStudySiteIndex(Integer.parseInt(prevSiteIndex));
 		}	
     }
 

@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -33,12 +33,12 @@ public class EditStudyController extends StudyController<Study> {
         if(log.isDebugEnabled()) log.debug("Retrieved Study :" + String.valueOf(study));
         return study;
     }    
-    
-    @Override
-    protected boolean shouldSave(HttpServletRequest request, Study command, Tab<Study> tab) {
-    	return false;
-        /*return super.shouldSave(request, command, tab)
-            && (request.getParameter("_action") == null || "".equals(request.getParameter("_action")));*/
+
+    protected Study save(Study study, Errors errors) {
+    	if( errors.hasErrors()) return study;
+    	Study mergedStudy = getDao().merge(study);
+    	getDao().save(mergedStudy);
+    	return mergedStudy;
     }
     
 //    @Override

@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -165,6 +166,13 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		Object action = findInRequest(request, "_action");
 		if(action != null) return true;
 		return super.suppressValidation(request, command);
+	}
+	
+	@Override
+	protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
+		return super.shouldSave(request, command, tab) && 
+		 (findInRequest(request, "_isAjax") == null) && 
+		 (findInRequest(request, "_action") == null);
 	}
 	
 	///BEAN PROPERTIES
