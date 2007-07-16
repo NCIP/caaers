@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 
@@ -24,6 +26,6 @@ public interface AdverseEventEvaluationService {
 	
 	//public String identifyAdverseEventType()
 	
-	public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception;
+	public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception;
 
 }
