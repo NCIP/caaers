@@ -12,7 +12,6 @@
    <tags:includeScriptaculous/>
    <tags:dwrJavascriptLink objects="createStudy"/>
    <script language="JavaScript" type="text/JavaScript">
-     var siteListEditor;
      var personnelListEditor;
 
      function fireAction(action, selectedPersonnel){
@@ -64,28 +63,11 @@
      });
 
      Event.observe(window, "load", function() {
-	
-	    siteListEditor = new ListEditor('ss-section',createStudy, "ChooseStudySite",{
-      		 addButton: "xxx",
-             addIndicator: "ss-chg-indicator",
-             addParameters: [],
-             addFirstAfter: "ss-bookmark",
-             addCallback: function(nextIndex) {
-          	   
-             }
-        });
-	
                   
 	    //observe on the change event on study site dropdown.
 	    Event.observe('studySiteIndex',"change", function(event){
-		  var ssi = $('ss-section-0');
-		  if(ssi){
-			 //Effect.Fade('ss-section-0');
-			 ssi.parentNode.removeChild(ssi);
-		  }
-		  selIndex = $F('studySiteIndex');
-		  siteListEditor.options.addParameters = [selIndex,'Personnel'];
-		  siteListEditor.add.bind(siteListEditor)();
+   	      selIndex = $F('studySiteIndex');
+		  fireAction('changeSite', selIndex);
 	    });
      })
 </script>

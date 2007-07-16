@@ -21,7 +21,6 @@
 
 <script language="JavaScript" type="text/JavaScript">
 
-var siteListEditor;
 var invListEditor;
 function fireAction(action, selectedInvestigator){
 	if(action == 'addInv'){
@@ -72,28 +71,11 @@ Object.extend(jsInvestigator.prototype, {
 });
 
 Event.observe(window, "load", function() {
-	lastSelIndex = $F('studySiteIndex'); //init the last index
-	siteListEditor = new ListEditor('ss-section',createStudy, "ChooseStudySite",{
-      		 addButton: "xxx",
-             addIndicator: "ss-chg-indicator",
-             addParameters: [],
-             addFirstAfter: "ss-bookmark",
-             addCallback: function(nextIndex) {
-          	  
-             }
-    });
-	
                   
 	//observe on the change event on study site dropdown.
 	Event.observe('studySiteIndex',"change", function(event){
-		var ssi = $('ss-section-0');
-		  if(ssi){
-			 //Effect.Fade('ss-section-0');
-			 ssi.parentNode.removeChild(ssi);
-		  }
-		  selIndex = $F('studySiteIndex');
-		siteListEditor.options.addParameters = [selIndex,'Investigator'];
-		siteListEditor.add.bind(siteListEditor)();
+   	    selIndex = $F('studySiteIndex');
+		fireAction('changeSite', selIndex);
 	 });
 })
 
