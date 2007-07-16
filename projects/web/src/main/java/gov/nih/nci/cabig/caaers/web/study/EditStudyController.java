@@ -36,17 +36,18 @@ public class EditStudyController extends StudyController<Study> {
     
     @Override
     protected boolean shouldSave(HttpServletRequest request, Study command, Tab<Study> tab) {
-        return super.shouldSave(request, command, tab)
-            && (request.getParameter("_action") == null || "".equals(request.getParameter("_action")));
+    	return false;
+        /*return super.shouldSave(request, command, tab)
+            && (request.getParameter("_action") == null || "".equals(request.getParameter("_action")));*/
     }
     
-    @Override
-	protected Object currentFormObject(HttpServletRequest request, Object sessionFormObject) throws Exception {
-		if (sessionFormObject != null) {
-			getDao().reassociate((Study) sessionFormObject);
-		}
-		return sessionFormObject;
-	}
+//    @Override
+//	protected Object currentFormObject(HttpServletRequest request, Object sessionFormObject) throws Exception {
+//		if (sessionFormObject != null) {
+//			getDao().reassociate((Study) sessionFormObject);
+//		}
+//		return sessionFormObject;
+//	}
 
 	protected boolean isSummaryEnabled() {
         return true;
@@ -66,6 +67,8 @@ public class EditStudyController extends StudyController<Study> {
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
     		Object command, BindException errors) throws Exception {
+    	 Study study = (Study) command;
+    	 studyDao.merge(study);
         return new ModelAndView(new RedirectView("search"));
     }
 

@@ -88,7 +88,7 @@ public class CreateStudyAjaxFacade {
     }
     public List<Organization> matchOrganization(String text){
     	List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
-    	return ObjectTools.reduceAll(orgs, "id","nciInstituteCode","descriptionText");
+    	return ObjectTools.reduceAll(orgs, "id","name");
 	}
 	
     private String[] extractSubnames(String text) {
