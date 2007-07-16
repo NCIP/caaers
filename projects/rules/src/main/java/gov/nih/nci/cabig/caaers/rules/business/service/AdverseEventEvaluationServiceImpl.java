@@ -15,8 +15,10 @@ import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
@@ -75,20 +77,24 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	return final_result;	
 }
 
-public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception {
+public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception {
 	
-	List reportDefinitions = new ArrayList();
+	Map<String,List<String>> map = new HashMap<String,List<String>>();
+	
+	
+	
 	List<AdverseEvent> aes = aeReport.getAdverseEvents();
-	
+	List<String> reportDefinitionsForSponsor = new ArrayList<String>();
 	for(AdverseEvent ae : aes )
 	{
 		String message = evaluateSponsorReportSchedule(ae,aeReport.getStudy());
 		if (!message.equals(CAN_NOT_DETERMINED)) {
-			reportDefinitions.add(message);
+			reportDefinitionsForSponsor.add(message);
 			//break;
 		}
 
 	}
+	map.put(aeReport.getStudy().getPrimarySponsorCode(), reportDefinitionsForSponsor);
 	
 	Study study = aeReport.getStudy();
 	
@@ -96,17 +102,20 @@ public List evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) thro
 	
 	for(StudyOrganization so : study.getStudyOrganizations() )
 	{
+		List<String> reportDefinitionsForInstitution = new ArrayList<String>();
+		
 		for(AdverseEvent ae : aes ) {
 			String message = evaluateInstitutionReportSchedule(ae, study, so.getOrganization());
 			if (!message.equals(CAN_NOT_DETERMINED)) {
-				reportDefinitions.add(message);
+				reportDefinitionsForInstitution.add(message);
 				//break;
 			}
 		}
+		map.put(so.getOrganization().getName(), reportDefinitionsForInstitution);
 	}
 	
 	
-	return reportDefinitions;
+	return map;
 }
 /**
  *  fire the rules at sponsor defined defined study level..
