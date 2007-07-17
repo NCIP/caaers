@@ -5,10 +5,12 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +20,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.apache.commons.collections15.functors.InstantiateFactory;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport.
@@ -169,7 +167,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	}
 
 	////// OBJECT METHODS
-	
+
 	@Override
 	public int hashCode() {
 		final int PRIME = 31;
@@ -182,14 +180,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		return result;
 	}
 
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 		final ReportDefinition other = (ReportDefinition) obj;
-		if(other.getId() != null && getId() != null && other.getId().equals(getId()))  return true;
+
 		if (description == null) {
 			if (other.description != null)	return false;
 		} else if (!description.equals(other.description))	return false;
