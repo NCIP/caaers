@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertContains;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -23,7 +25,7 @@ import java.util.Set;
  * @author Rhett Sutphin
  * @author Ram Chilukuri
  */
-// @CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
+@CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 	private CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
