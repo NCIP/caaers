@@ -446,7 +446,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
-		column.setExpression("getPrimarySponsorCode()");
+		column.setExpression("getPrimaryFundingSponsorOrganization().getName()");
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
