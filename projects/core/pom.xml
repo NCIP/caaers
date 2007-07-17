@@ -19,13 +19,6 @@
             </snapshots>
         </repository>
         
-
-		
-		<repository>
-		    <id>codehaus-snapshots</id>
-		    <name>Maven Codehaus Snapshots</name>
-		    <url>http://snapshots.repository.codehaus.org</url>
-		</repository>
 		-->
 		
     </repositories>
