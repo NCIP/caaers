@@ -38,6 +38,9 @@ public class EvaluationServiceImpl implements EvaluationService {
      *  study, site, and participant
      */
     public boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent) {
+    	
+    	
+    	
         boolean isSevere = false;
 
         try {
@@ -80,6 +83,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         Iterator<String> it = keys.iterator();
         while(it.hasNext()){
         	String key = it.next();
+        	//System.out.println("KEY IS : " + key);
         	List<String> reportDefNames = map.get(key);
         	if ( reportDefNames.size() != 0 ) { 
         		String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
@@ -132,7 +136,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         
         // get organaization of sponsor .
         // all sponsors are not in orgs table as of 07/13/2007
-        Organization organization = organizationDao.getByName(assignment.getStudySite().getStudy().getPrimarySponsorCode());
+        Organization organization = organizationDao.getByName(assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization().getName());
         
         if (organization != null) {
         	reportDefinitions.addAll(reportDefinitionDao.getAll(organization.getId()));
