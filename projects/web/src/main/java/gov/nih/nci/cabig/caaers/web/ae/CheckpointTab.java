@@ -63,7 +63,7 @@ public class CheckpointTab extends AeTab {
     ) {
         boolean anyReports = command.getAeReport().getReports().size() > 0;
         for (Boolean selected : command.getOptionalReportDefinitionsMap().values()) {
-            anyReports |= selected;
+            anyReports |= (selected == null ? false : selected);
         }
         if (!anyReports) {
             errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
