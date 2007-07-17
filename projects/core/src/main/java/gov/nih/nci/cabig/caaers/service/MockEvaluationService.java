@@ -61,7 +61,7 @@ public class MockEvaluationService implements EvaluationService {
             log.debug("Examining Report with def "+ report.getReportDefinition().getName()
                 + " (id: " + report.getReportDefinition().getId() + "; hash: "
                 + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
-            if (report.getReportDefinition().equals(def)) {
+            if (report.getReportDefinition().getId().equals(def.getId())) {
                 log.debug("Matched");
                 return report;
             }
