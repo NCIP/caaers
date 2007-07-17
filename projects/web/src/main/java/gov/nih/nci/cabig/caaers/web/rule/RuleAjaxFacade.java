@@ -284,6 +284,12 @@ public class RuleAjaxFacade
     	//return rule.getCondition().getColumn().remove(columnCount) != null;
     	
     }
+
+    public Boolean removeRule(int ruleCount) {
+    	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
+    	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
+    	return ruleSet.getRule().remove(ruleCount) != null;
+    }
     
     private CreateRuleCommand getAuthorRuleCommand() {
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
