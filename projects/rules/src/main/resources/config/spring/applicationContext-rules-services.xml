@@ -22,9 +22,11 @@
  	 
  	 <bean id="ruleEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/> 	 
 
- 	 <bean id="evaluationService" 
- 	 		class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"
- 	 		autowire="byType"/> 	 
-
-
+    <bean id="evaluationService" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"/>
+    <!--
+    <bean id="evaluationService" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.service.MockEvaluationService"/>
+        />
+    -->
 </beans>

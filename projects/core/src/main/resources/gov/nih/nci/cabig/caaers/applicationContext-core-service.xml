@@ -22,11 +22,6 @@
           class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl"/>
     <bean id="interoperationService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
-    <!-- TODO: replace this with the real implementation -->
-    <!-- 
-    <bean id="evaluationService" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.service.MockEvaluationService"/>
-    -->
 	<bean id="connectionFactory"
 		class="org.apache.activemq.ActiveMQConnectionFactory">
 		<property name="brokerURL" value="tcp://10.10.10.2:61616" />
