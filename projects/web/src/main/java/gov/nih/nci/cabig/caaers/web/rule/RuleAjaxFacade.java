@@ -14,7 +14,6 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
@@ -32,6 +31,7 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
@@ -532,6 +532,15 @@ public class RuleAjaxFacade
 	{
 		// REVISIT: Replace this with the SponsorDao.
 		
+		System.out.println("getting from new method ....");
+		
+		List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(sponsorName));
+		List<String> sponsors = new ArrayList<String>();
+		for (Organization org:orgs) {
+			sponsors.add(org.getName());
+		}
+		
+    	/*
 		List sponsorCodeRefData = (List) getConfigurationProperty().getMap().get("sponsorCodeRefData");
 		
 		List<String> sponsors = new ArrayList<String>();
@@ -547,7 +556,7 @@ public class RuleAjaxFacade
 				sponsors.add(sponsor.getDesc());
 			}
 		}
-		
+		*/
 		return sponsors;
 	}
 
