@@ -22,7 +22,7 @@
             initialize: function(index) {
             	this.index = index;
             	si[index] = this;
-            	this.indicator = "identifiers["  + index + "].primaryIndicator1";
+            	this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
             	 		if(i == this.index) continue;
