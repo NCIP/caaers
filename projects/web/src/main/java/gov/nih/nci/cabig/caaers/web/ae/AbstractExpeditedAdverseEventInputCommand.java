@@ -64,7 +64,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             }
         }
         // Deliberately not removing entries from the map that aren't in defs.
-        // This is so that the use may still remove Reports whose ReportDefinitions
+        // This is so that the user may still remove Reports whose ReportDefinitions
         // are no longer associated with the study.
     }
 
