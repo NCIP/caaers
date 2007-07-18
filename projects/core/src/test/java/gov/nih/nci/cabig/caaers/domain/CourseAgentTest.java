@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.math.BigDecimal;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({CREATE_EXPEDITED_REPORT })
 public class CourseAgentTest extends CaaersTestCase {
     private CourseAgent courseAgent = new CourseAgent();
 

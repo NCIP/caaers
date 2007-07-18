@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -17,6 +19,7 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({ CREATE_ROUTINE_REPORT})
 public class RoutineAdverseEventReportTest extends CaaersTestCase {
     private static final Timestamp START_DATE = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
     private static final Timestamp END_DATE = DateTools.createTimestamp(2006, Calendar.JULY, 8, 9, 8, 7);

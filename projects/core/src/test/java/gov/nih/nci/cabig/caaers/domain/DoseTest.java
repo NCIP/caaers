@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 /**
  * @author Rhett Sutphin
  */
+
 public class DoseTest extends CaaersTestCase {
     private Dose dose;
 

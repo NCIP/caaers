@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
 public class HospitalizationTest extends CaaersTestCase {
     public void testToString() throws Exception {
         assertEquals("0: None", Hospitalization.NONE.toString());

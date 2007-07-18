@@ -7,6 +7,10 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
+
+@CaaersUseCases({ CREATE_PARTICIPANT})
 public class ParticipantTest extends CaaersTestCase {
     private Participant participant;
     private static final Organization SITE = Fixtures.createOrganization("Round abouts here");

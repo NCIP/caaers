@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.Date;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({CREATE_EXPEDITED_REPORT })
 public class AdverseEventResponseDescriptionTest extends CaaersTestCase {
     private AdverseEventResponseDescription description;
 

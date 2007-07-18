@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 /**
  * @author Rhett Sutphin
  */
+
 public class DelayUnitsTest extends CaaersTestCase {
     public void testMinutesToMinutes() throws Exception {
         assertEquals(new BigDecimal(34), MINUTES.toMinutes(new BigDecimal(34)));

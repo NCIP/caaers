@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Arrays;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({MAPPING_VOCAB })
 public class CtcTermTest extends CaaersTestCase {
     private CtcTerm term = new CtcTerm();
 

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 /**
  * @author Rhett Sutphin
  */
+
 public class IdentifierTest extends CaaersTestCase {
     private Identifier identifier;
 
