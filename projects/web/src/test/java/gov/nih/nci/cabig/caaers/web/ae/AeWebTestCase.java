@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -20,6 +22,7 @@ import com.sun.xml.bind.v2.TODO;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignment assignment;
 

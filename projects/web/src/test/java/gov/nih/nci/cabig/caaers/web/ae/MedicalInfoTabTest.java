@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class MedicalInfoTabTest extends AeTabTestCase {
     private ConfigProperty configurationProperty;
 

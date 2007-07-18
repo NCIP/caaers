@@ -1,8 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
+
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class AdditionalInformationTabTest extends AeTabTestCase {
     @Override
     protected AdditionalInformationTab createTab() {

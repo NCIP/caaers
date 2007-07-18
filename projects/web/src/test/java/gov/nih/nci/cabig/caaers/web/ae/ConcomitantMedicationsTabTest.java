@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import org.springframework.validation.ObjectError;
@@ -7,6 +9,7 @@ import org.springframework.validation.ObjectError;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class ConcomitantMedicationsTabTest extends AeTabTestCase {
     @Override
     protected ConcomitantMedicationsTab createTab() {

@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -17,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class AttributionMapTest extends CaaersTestCase {
     private static final CourseAgent COURSE_AGENT_0 = new CourseAgent();
     private static final ConcomitantMedication CON_MED_0 = new ConcomitantMedication();

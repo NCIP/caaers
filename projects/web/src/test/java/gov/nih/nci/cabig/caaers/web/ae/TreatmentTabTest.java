@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class TreatmentTabTest extends AeTabTestCase {
     @Override
     protected TreatmentTab createTab() {

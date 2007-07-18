@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -16,6 +19,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class CheckpointTabTest extends AeTabTestCase {
     private ReportDefinition r1, r2, r3;
 

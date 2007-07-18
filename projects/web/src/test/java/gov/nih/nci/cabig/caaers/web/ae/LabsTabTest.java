@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class LabsTabTest extends AeTabTestCase {
     @Override protected LabsTab createTab() { return new LabsTab(); }
 
