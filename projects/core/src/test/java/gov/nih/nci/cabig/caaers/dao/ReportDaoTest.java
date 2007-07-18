@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -26,6 +28,7 @@ import java.util.List;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_REPORT_FORMAT})
 public class ReportDaoTest extends DaoTestCase<ReportDao> {
 	private ReportDao rsDao;
     private TransactionTemplate transactionTemplate;

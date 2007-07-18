@@ -1,11 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_STUDY })
 public class StudyAgentDaoTest extends DaoTestCase<StudyAgentDao> {
     public void testGetById() throws Exception {
         StudyAgent loaded = getDao().getById(-11);

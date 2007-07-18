@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -15,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testGet() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);

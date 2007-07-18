@@ -1,4 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
+
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao;
@@ -7,6 +10,8 @@ import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+
+@CaaersUseCases({ GENERATE_REPORT_FORM})
 public class ReportDeliveryDaoTest extends DaoTestCase<ReportDeliveryDao>{
 	/**
 	 */

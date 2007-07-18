@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.JdbcDaoTestCase;
 
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.ArrayList;
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
-// @CaaersUseCases({ })
+@CaaersUseCases({ MAPPING_VOCAB})
 public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao>{
 
     public void testInsertLowLevelTerms() throws Exception {

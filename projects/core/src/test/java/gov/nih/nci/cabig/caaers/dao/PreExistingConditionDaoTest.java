@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 
@@ -8,6 +11,7 @@ import java.util.List;
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({CREATE_EXPEDITED_REPORT })
 public class PreExistingConditionDaoTest extends DaoTestCase<PreExistingConditionDao> {
     public void testGetById() throws Exception {
     	PreExistingCondition loaded = getDao().getById(3001);

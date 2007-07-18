@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -42,6 +45,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_EXPEDITED_REPORT})
 public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdverseEventReportDao> {
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao

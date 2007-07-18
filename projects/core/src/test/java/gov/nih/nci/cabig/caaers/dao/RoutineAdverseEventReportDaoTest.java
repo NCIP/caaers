@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -14,13 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.sql.Timestamp;
 
-import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.*;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import edu.nwu.bioinformatics.commons.DateUtils;
 
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({CREATE_ROUTINE_REPORT })
 public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverseEventReportDao> {
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao

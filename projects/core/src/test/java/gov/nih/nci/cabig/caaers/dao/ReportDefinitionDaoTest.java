@@ -3,6 +3,9 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -32,6 +35,7 @@ import org.springframework.transaction.TransactionStatus;
  * @version     %I%, %G%
  * @since       1.0
  */
+@CaaersUseCases({CREATE_REPORT_FORMAT })
 public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     ReportDefinitionDao rctDao;
     private TransactionTemplate transactionTemplate;

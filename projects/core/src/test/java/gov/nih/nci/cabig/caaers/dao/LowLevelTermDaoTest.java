@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -17,7 +20,7 @@ import java.util.Map;
  * @author Krikor Krumlian
  * 
  */
-// @CaaersUseCases({ })
+@CaaersUseCases({MAPPING_VOCAB })
 public class LowLevelTermDaoTest extends DaoTestCase<LowLevelTermDao>{
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
