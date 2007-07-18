@@ -1,11 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_REPORT_FORMAT  })
 public class ReportDefinitionTest extends CaaersTestCase {
     private ReportDefinition def;
 
