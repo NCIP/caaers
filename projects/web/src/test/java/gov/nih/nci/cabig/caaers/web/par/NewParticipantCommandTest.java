@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.par;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
 import junit.framework.TestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
@@ -10,6 +12,7 @@ import java.util.Date;
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({ CREATE_PARTICIPANT })
 public class NewParticipantCommandTest extends TestCase {
     private NewParticipantCommand command = new NewParticipantCommand();
 

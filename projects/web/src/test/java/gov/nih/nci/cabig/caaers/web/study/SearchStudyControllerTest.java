@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -9,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Kulasekaran
  */
+@CaaersUseCases({ CREATE_STUDY })
 public class SearchStudyControllerTest extends WebTestCase {
 	
 	private SearchStudyController controller = new SearchStudyController();

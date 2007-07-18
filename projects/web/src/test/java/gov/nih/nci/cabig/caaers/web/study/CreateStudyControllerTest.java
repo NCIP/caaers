@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -29,6 +31,7 @@ import static org.easymock.classextension.EasyMock.*;
  * @author Kulasekaran
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_STUDY })
 public class CreateStudyControllerTest extends WebTestCase {
     private CreateStudyController controller;
     private StudyDao studyDao;

@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.par;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.easymock.classextension.EasyMock;
+
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Date;
@@ -11,6 +13,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -22,6 +25,7 @@ import gov.nih.nci.cabig.caaers.web.WebTestCase;
 /**
  * @author Krikor Krumlian
  */
+@CaaersUseCases({ ASSIGN_PARTICIPANT })
 public class AssignStudyControllerTest extends WebTestCase {
     private AssignParticipantController controller = new AssignParticipantController();
     private ParticipantDao participantDao;

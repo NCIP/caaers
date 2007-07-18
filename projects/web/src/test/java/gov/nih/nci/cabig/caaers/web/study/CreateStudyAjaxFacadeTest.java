@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.eq;
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
+@CaaersUseCases({ CREATE_STUDY })
 public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private CreateStudyAjaxFacade facade;
     protected Study command;
