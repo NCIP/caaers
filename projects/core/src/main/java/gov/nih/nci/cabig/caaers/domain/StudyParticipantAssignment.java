@@ -18,7 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
 
 
 /**
@@ -114,7 +114,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     ////// OBJECT METHODS
 
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -125,11 +126,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         if (studySite != null ? !studySite.equals(that.studySite) : that.studySite != null)
             return false;
         // Participant#equals calls this method, so we can't use it here
-        if (!AbstractMutableDomainObject.equalById(participant, that.participant)) return false;
+        if (!DomainObjectTools.equalById(participant, that.participant)) return false;
 
         return true;
     }
 
+    @Override
     public int hashCode() {
         int result;
         result = (studySite != null ? studySite.hashCode() : 0);
