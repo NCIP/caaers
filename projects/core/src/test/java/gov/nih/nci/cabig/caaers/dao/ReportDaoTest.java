@@ -28,7 +28,7 @@ import java.util.List;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_REPORT_FORMAT})
+@CaaersUseCases({CREATE_NOTIFICATION_RULES, CREATE_REPORT_FORMAT,GENERATE_REPORT_FORM})
 public class ReportDaoTest extends DaoTestCase<ReportDao> {
 	private ReportDao rsDao;
     private TransactionTemplate transactionTemplate;

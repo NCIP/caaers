@@ -35,7 +35,7 @@ import org.springframework.transaction.TransactionStatus;
  * @version     %I%, %G%
  * @since       1.0
  */
-@CaaersUseCases({CREATE_REPORT_FORMAT })
+@CaaersUseCases({CREATE_NOTIFICATION_RULES, CREATE_REPORT_FORMAT })
 public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     ReportDefinitionDao rctDao;
     private TransactionTemplate transactionTemplate;
