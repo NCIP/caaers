@@ -1,15 +1,19 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_NOTIFICATION_RULES;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
+
 import java.util.Arrays;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
-
+@CaaersUseCases({CREATE_NOTIFICATION_RULES, CREATE_REPORT_FORMAT })
 public class SchedulerServiceImplTest extends CaaersTestCase {
 
 	SchedulerServiceImpl service;
