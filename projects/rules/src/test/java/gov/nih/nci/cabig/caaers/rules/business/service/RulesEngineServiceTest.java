@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.io.File;
 import java.sql.Connection;
@@ -53,7 +54,7 @@ public class RulesEngineServiceTest extends TestCase {
 
     protected Set<Object> mocks = new HashSet<Object>();
 
-    private AdverseEventEvaluationServiceImpl aees;
+    private EvaluationService aees;
     
     
 
@@ -118,9 +119,23 @@ public class RulesEngineServiceTest extends TestCase {
 
 		this.rulesEngineService = new RulesEngineServiceImpl();
 		
-		aees = (AdverseEventEvaluationServiceImpl)getDeployedApplicationContext().getBean("adverseEventEvaluationService");
+		aees = (EvaluationServiceImpl)getDeployedApplicationContext().getBean("evaluationService");
 	}
 
+	public void testcreateRuleSet() throws Exception {
+		RuleSet rs = this.createRulesForSponsor(1);
+		RulesEngineService res = new RulesEngineServiceImpl();
+		res.saveRulesForSponsor(rs, "National Cancer Institute");
+
+		rs = res.getRuleSetForSponsor(rs.getDescription(),	"National Cancer Institute");
+		
+
+		// deploy rules...
+		res.deployRuleSet(rs);
+		
+		System.out.print(rs.getName());
+	}
+	
 	public void atestInstitutionDefinedStudyLevelRuleFlow() throws Exception {
 		RuleSet rs = this.createRuleForInstitutionDefinedStudy(101);
 		RulesEngineService res = new RulesEngineServiceImpl();
@@ -163,7 +178,7 @@ public class RulesEngineServiceTest extends TestCase {
 		createAdverseEvent4();
 	}
 	
-	public void testInstitutionRuleFlowOnReportSchedulingRules() throws Exception {
+	public void atestInstitutionRuleFlowOnReportSchedulingRules() throws Exception {
 		RuleSet rs = this.createRulesForInstitute(3,RuleType.REPORT_SCHEDULING_RULES.getName());
 		RulesEngineService res = new RulesEngineServiceImpl();
 		//RulesEngineService res = new RulesEngineServiceImpl();
