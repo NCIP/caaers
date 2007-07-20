@@ -179,7 +179,7 @@ public class RulesEngineServiceTest extends TestCase {
 		// deploy rules...
 		res.deployRuleSet(rs);
 		createAdverseEvent1();
-		//createAdverseEvent2();
+		createAdverseEvent2();
 	}
 	
 	private void createAdverseEvent1() throws Exception {
@@ -202,7 +202,26 @@ public class RulesEngineServiceTest extends TestCase {
 		assertEquals(msg, "CAN_NOT_DETERMINED");
 
 	}
+	private void createAdverseEvent2() throws Exception {
+		// execute rules...
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setGrade(Grade.MILD);
 
+		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
+
+		Study s = new Study();
+		Organization org = new Organization();
+		org.setName("National Cancer Institute");
+		s.setPrimaryFundingSponsorOrganization(org);
+		s.setShortTitle("my study");
+
+		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
+		String msg = aees.assesAdverseEvent(ae1, s);
+
+		System.out.println(msg);
+		assertEquals(msg, "SERIOUS_ADVERSE_EVENT");
+
+	}
 
 	
 	private void createRuleSetForSponsor(String sponsorName, String ruleSetName) throws Exception {
@@ -275,7 +294,7 @@ public class RulesEngineServiceTest extends TestCase {
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Study");
 		column.setIdentifier("studySDO");
-		column.setExpression("getPrimarySponsorCode()");
+		column.setExpression("getPrimaryFundingSponsorOrganization().getName()");
 
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 
