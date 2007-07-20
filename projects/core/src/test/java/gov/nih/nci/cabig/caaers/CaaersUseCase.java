@@ -28,7 +28,24 @@ public enum CaaersUseCase /* implements UseCase */ {
 
     PUSH_AE_TO_PSC(5, 1, "Push AE Notifications to Patient Study Calendar"),
     RECIEVE_RESULTS_FROM_LABVIEWER(5, 2, "Create Expedited Report with Data from CTOM Lab Viewer"),
+    
+    CREATE_SPONSOR_RULESET(1, 1, "Create Rule Set for Sponsor"),
+    CREATE_INSTITUTION_RULESET(1, 1, "Create Rule Set for Institution"),
+    CREATE_SPONSOR_DEFINED_STUDY_RULESET(1, 1, "Create Rule Set for Sponsor defined Study"),
+    CREATE_INSTITUTION_DEFINED_STUDY_RULESET(1, 1, "Create Rule Set for Institution defined Study"),
+    SAVE_SPONSOR_RULES(1, 1, "Save Rules For Sponsor"),
+    SAVE_INSTITUTION_RULES(1, 1, "Save Rules For Institution"),
+    SAVE_SPONSOR_DEFINED_STUDY_RULES(1, 1, "Save Rules For Sponsor defined Study"),
+    SAVE_INSTITUTION_DEFINED_STUDY_RULES(1, 1, "Save Rules For Institution defined Study"),
+    
+    DELPLOY_RULESET(1, 1, "Deploy Rule Set"),
+    
+    EVALUATE_AE_ASSESMENT_RULES(1, 1, "Evaluate Serious Adverse Event"),
+    EVALUATE_SAE_REPORTING_RULES(1, 1, "Evaluate SAE Reporting Schedule")
     ;
+    
+    
+    
     private int major;
     private int minor;
     private String title;
