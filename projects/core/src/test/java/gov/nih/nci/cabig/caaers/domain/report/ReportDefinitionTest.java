@@ -24,4 +24,12 @@ public class ReportDefinitionTest extends CaaersTestCase {
         assertSame(def, created.getReportDefinition());
         assertEquals(ReportStatus.PENDING, created.getStatus());
     }
+
+    // hibernate uses dynamic proxies for items in collections
+    public void testEqualsIfOneIsSubclass() throws Exception {
+        ReportDefinition def1 = new ReportDefinition();
+        ReportDefinition def2 = new ReportDefinition() { }; // anonymous subclass
+
+        assertEquals(def1, def2);
+    }
 }

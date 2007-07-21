@@ -17,7 +17,6 @@
         td#linkPosition a img { position:absolute; right: 30px; }
         
 </style>
-<tags:javascriptLink name="hover-display" />
 <tags:includeScriptaculous/>
 <tags:dwrJavascriptLink objects="createStudy"/>
 <script type="text/javascript">
@@ -64,7 +63,7 @@
     Event.observe(window, "load", function() {
    
         <c:forEach varStatus="status" items="${command.studyAgents}" var="sa">
-      		new jsStudyAgent(${status.index}, '${sa.agent.nscNumber}::${sa.agent.name}');
+      		new jsStudyAgent(${status.index}, "${sa.agent.nscNumber}::${sa.agent.name}");
       	</c:forEach>
         agentListEditor = new ListEditor('sa-section',createStudy, "StudyAgent",{
       		 addButton: "xxx",

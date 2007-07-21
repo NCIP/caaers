@@ -42,10 +42,18 @@ class DetailsTab extends StudyTab {
 			//set up the fields
 	        fieldGroup  = new DefaultInputFieldGroup("studyDetails");
 			List<InputField> fields = fieldGroup.getFields();
-			fields.add(new DefaultTextField("shortTitle","Short title", true));
-			fields.add(new DefaultTextArea("longTitle", "Long title", true));
-			fields.add(new DefaultTextArea("precis", "Precis", false));
-			fields.add(new DefaultTextArea("description", "Description", false));
+			DefaultTextField shortTitleField = new DefaultTextField("shortTitle","Short title", true);
+			shortTitleField.setSize(50);
+			fields.add(shortTitleField);
+			DefaultTextArea longTitleField = new DefaultTextArea("longTitle", "Long title", true);
+			longTitleField.setColumns(50);
+			fields.add(longTitleField);
+			DefaultTextArea precisField = new DefaultTextArea("precis", "Precis", false);
+			precisField.setColumns(50);
+			fields.add(precisField);
+			DefaultTextArea descField = new DefaultTextArea("description", "Description", false);
+			descField.setColumns(50);
+			fields.add(descField);
 			AutocompleterField sponsorField = new AutocompleterField("primaryFundingSponsorOrganization", "Primary sponsor", true);
 			//sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor name you are looking for");
 			fields.add(sponsorField);

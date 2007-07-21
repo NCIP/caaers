@@ -7,7 +7,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
-	<p id="instructions" align="left">Add research staffs to this stydy <a href="javascript:fireAction('addStudyPersonnel', '0');"><img
+	<p id="instructions" align="left">Add research staff to study <a href="javascript:fireAction('addStudyPersonnel', '0');"><img
 				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="ssi-add-indicator"/>
 	</p>
 	  <c:forEach var="sp" items="${command.studySites[index].studyPersonnels}" varStatus="status">

@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
@@ -63,8 +64,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     @Override
     public void reassociate() {
         // Don't need to reassoc aeReport in edit mode, because it is rebound fresh every time
-        // TODO: this brings up some possibly unpleasant ordering issues that need to be addressed
         // super.reassociate();
+        for (ReportDefinition definition : getOptionalReportDefinitionsMap().keySet()) {
+            reportDefinitionDao.reassociate(definition);
+        }
         assignmentDao.reassociate(getAssignment());
     }
 }

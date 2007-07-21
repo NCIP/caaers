@@ -22,7 +22,6 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
 */
 class InvestigatorsTab extends StudyTab {
-	
 	private List<InputField> fields;
 	
     public InvestigatorsTab() {
@@ -47,7 +46,11 @@ class InvestigatorsTab extends StudyTab {
 			study.getStudySites().get(selectedIndex).getStudyInvestigators()
 				.remove(Integer.parseInt(selectedInvestigator));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
-			study.setStudySiteIndex(Integer.parseInt(prevSiteIndex));
+			int siteIndex = Integer.parseInt(prevSiteIndex);
+			study.setStudySiteIndex(siteIndex);
+			if(siteIndex >= 0){
+				study.getStudySites().get(siteIndex).getStudyInvestigators().get(0);
+			}
 		}
     }
 
@@ -73,11 +76,10 @@ class InvestigatorsTab extends StudyTab {
 		int ssIndex = command.getStudySiteIndex();
 		if(ssIndex >= 0){
 			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studySites[" + ssIndex +"].studyInvestigators");
-			
 			for(InputField f : fields){
 				rfgFactory.addField(f);
 			}
-			 map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyInvestigators().size());
+			map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyInvestigators().size());
 		}
 		return map;
 	}	

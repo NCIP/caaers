@@ -14,4 +14,12 @@ public class DefaultTextArea extends AbstractInputField {
     public Category getCategory() {
         return Category.TEXTAREA;
     }
+    
+    public void setColumns(int cols){
+    	getAttributes().put(InputField.COLS, cols);
+    }
+    public int getColumns(){
+    	Integer i = (Integer)getAttributes().get(InputField.COLS);
+    	return (i == null) ? 0 : i.intValue();
+    }
 }

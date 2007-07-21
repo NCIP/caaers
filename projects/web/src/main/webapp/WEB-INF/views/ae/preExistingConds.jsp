@@ -83,7 +83,7 @@
 
         Element.observe(window, "load", function() {
             <c:forEach items="${command.aeReport.adverseEventPreExistingConds}" varStatus="status" var="aePreExistingCond">
-            new EnterPriorTherapy(${status.index}, '${PreExistingCond.preExistingCondition.text}')
+            new EnterPriorTherapy(${status.index}, '${aePreExistingCond.preExistingCondition.text}')
             </c:forEach>
 
             new ListEditor("conmed", createAE, "PreExistingCond", {

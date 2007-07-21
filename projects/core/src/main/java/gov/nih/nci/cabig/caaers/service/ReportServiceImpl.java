@@ -6,6 +6,9 @@ import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -116,10 +119,15 @@ public class ReportServiceImpl  implements ReportService {
 		// map.put("reportId", report.getAeReport().getId());
 		map.put("nCIProtocolNumber","xxxxxx");//NCI Protocol Number
 		map.put("ticketNumber","xxxxxx");//Ticket Number
-		map.put("patientId","xxxxxx");//Patient ID
+		StudyParticipantAssignment a = report.getAeReport().getAssignment();
+		Participant p = (a != null)? a.getParticipant() : null;
+		Identifier patientId = (p != null) ? p.getPrimaryIdentifier() : null;
+		map.put("patientId", ((patientId != null))? patientId.getValue() : "xxxxx");//Patient ID
 		map.put("amendmentNumber","xxxxxx");//Amendment Number
 		map.put("reportId","xxxxxx");//Report ID
 		map.put("reportURL","xxxxxx");//URL To Report
+		map.put("report", report);
+		map.put("study", report.getAeReport().getStudy());
 		return map;
 	}
 
@@ -198,7 +206,7 @@ public class ReportServiceImpl  implements ReportService {
                     snf.setCreatedOn(now);
                     snf.setDeliveryStatus(DeliveryStatus.CREATED);
                     cal.setTime(now);
-                    cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), pnf.getIndexOnTimeScale());
+                    cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), (pnf.getIndexOnTimeScale() - 1));
                     snf.setScheduledOn(cal.getTime());
 
                     report.addScheduledNotification(snf);

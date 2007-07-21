@@ -5,8 +5,6 @@ import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sun.xml.bind.v2.TODO;
-
 /**
  * @author Rhett Sutphin
  */
@@ -29,7 +27,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory);
     }
 
     @Override

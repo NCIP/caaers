@@ -26,6 +26,7 @@ public class AgentsTab extends StudyTab {
 	private RepeatingFieldGroupFactory rfgFactory;
     public AgentsTab() {
         super("Study Agents", "Agents", "study/study_agents");
+        setAutoPopulateHelpKey(true);
     }
 
     @Override
@@ -51,8 +52,8 @@ public class AgentsTab extends StudyTab {
 		 if(rfgFactory == null){
 			 rfgFactory = new RepeatingFieldGroupFactory("main", "studyAgents");
 			 AutocompleterField agentField = new AutocompleterField("agent", "Agent", true);
-			 agentField.getAttributes().put(InputField.SIZE, 70);
-			 agentField.getAttributes().put(InputField.ENABLE_CLEAR , true);
+			 agentField.setSize(70);
+			 agentField.setEnableClearButton(true);
 			 //agentField.getAttributes().put(InputField.DETAILS, "Enter a portion of the agent name you are looking for");
 			 rfgFactory.addField(agentField);
 			 DefaultTextField indField = new DefaultTextField("investigationalNewDrugIdentifier","IND Identifier", false);

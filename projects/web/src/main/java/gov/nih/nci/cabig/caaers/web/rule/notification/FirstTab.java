@@ -39,8 +39,12 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 		//setup the fileds
 		InputFieldGroup fieldGroup  = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
 		List<InputField> fields = fieldGroup.getFields();
-		fields.add(new DefaultTextField("name","Name", true));
-		fields.add(new DefaultTextArea("description", "Description", false));
+		DefaultTextField nameField = new DefaultTextField("name","Name", true);
+		nameField.setSize(50);
+		fields.add(nameField);
+		DefaultTextArea descField = new DefaultTextArea("description", "Description", false);
+		descField.setColumns(50);
+		fields.add(descField);
 		fields.add(new DefaultSelectField("timeScaleType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
 		fields.add(new DefaultTextField("duration", "Time Till Report Due", true));

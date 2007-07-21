@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -190,7 +191,7 @@ private String evaluateInstitutionReportSchedule(AdverseEvent ae, Study study , 
 	
 	// if study level rules not found , then get to sponsor rules..
 	} else 	if (institution_define_study_level_evaluation.equals("no_rules_found")) {
-		institution_level_evaluation = institutionLevelSchedulingRules(ae, organization);
+		institution_level_evaluation = institutionLevelSchedulingRules(ae, study, organization);
 		final_result = institution_level_evaluation;
 		
 	// if study level rules exist and returned a message.. 
@@ -343,12 +344,16 @@ private String institutionDefinedStudyLevelSchedulingRules(AdverseEvent ae, Stud
 	
 }
 
-private String institutionLevelSchedulingRules(AdverseEvent ae,  Organization organization) throws Exception{
+private String institutionLevelSchedulingRules(AdverseEvent ae,  Study study, Organization organization) throws Exception{
 	String message = null;
 	
 	String organizationName = organization.getName();
 	
+	System.out.println("org name : " + organizationName);
+	
 	String bindURI = getBindURI(organizationName, "","INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
+	
+	System.out.println("url " + bindURI);
 	
 	RuleSet ruleSetForInstiution = rulesEngineService.getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), organizationName);
 	
@@ -360,13 +365,15 @@ private String institutionLevelSchedulingRules(AdverseEvent ae,  Organization or
 	AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
 	
 	try {
-		evaluationForInstitution = this.getEvaluationObject(ae, null, organization,bindURI);
+		evaluationForInstitution = this.getEvaluationObject(ae, study, organization,bindURI);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		throw new Exception(e.getMessage(),e);
 	}
 	
 	message = evaluationForInstitution.getMessage();
+	
+	System.out.println("message " + message);
 	
 	return message;
 }	
@@ -405,6 +412,14 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		inputObjects.add(ae);
 		if (study != null ) {
 			inputObjects.add(study);
+			//TO-DO need to send study agents also ..
+			/*
+			List<StudyAgent> agents = study.getStudyAgents();
+			
+			for (StudyAgent agent:agents) {
+				inputObjects.add(agent);
+			}
+			*/
 		}
 		if (organization != null) {
 			inputObjects.add(organization);

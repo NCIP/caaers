@@ -79,6 +79,11 @@ Event.observe(window, "load", function() {
 	 });
 })
 
+function chooseSitesfromSummary(indx){
+	var siteSelBox = $('studySiteIndex')
+	siteSelBox.selectedIndex = indx + 1;
+	fireAction('changeSite', indx);
+}
 </script>
 </head>
 <body>

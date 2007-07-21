@@ -253,7 +253,7 @@
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="REG" />
-                            <property name="desc" value="Regsitrar" />
+                            <property name="desc" value="Registar" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SC" />

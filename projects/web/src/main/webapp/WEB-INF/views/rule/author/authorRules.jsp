@@ -194,8 +194,11 @@
 				                    
 				                    
 				                    	terms.each(function(term) {
-
-				                        	var opt = new Option(term.term + '-' + term.select, term.id)
+											var tempT='';
+											if (term.select != null) {
+												tempT='-' + term.select
+											}
+				                        	var opt = new Option(term.term + tempT, term.id)
 				                        	sel.options.add(opt)
 				                    	})
 				                })
@@ -518,8 +521,13 @@
 				                    
 				                    
 				                    terms.each(function(term) {
-
-				                        var opt = new Option(term.term + '-' + term.select, term.id)
+										
+										var tempT='';
+											if (term.select != null) {
+												tempT='-' + term.select
+											}
+											
+				                        var opt = new Option(term.term + tempT, term.id)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -855,8 +863,12 @@
 				                    
 				                    
 				                    terms.each(function(term) {
-
-				                        var opt = new Option(term.term + '-' + term.select, term.id)
+										var tempT='';
+											if (term.select != null) {
+												tempT='-' + term.select
+											}
+											
+				                        var opt = new Option(term.term + tempT, term.id)
 				                        sel.options.add(opt)
 				                    })
 				                })
@@ -1113,8 +1125,11 @@ button. Rules created will belong to the selected RuleSet.</p>
 				                    
 				                    											var index = 0;	
 															                    terms.each(function(term) {
-
-													                        		var opt = new Option(term.term + '-' + term.select, term.id)
+																				var tempT='';
+																					if (term.select != null) {
+																						tempT='-' + term.select
+																					}
+													                        		var opt = new Option(term.term + tempT, term.id)
 				                    									    			sel.options.add(opt)
 				                    									    		   
 				                    									    		    		if (fieldValue.indexOf(term.id) != -1)

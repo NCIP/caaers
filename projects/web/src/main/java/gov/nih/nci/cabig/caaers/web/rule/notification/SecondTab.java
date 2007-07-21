@@ -35,7 +35,7 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		rfgFactory.addField(new DefaultTextField("fromAddress","From Address", false));
 		rfgFactory.addField(new DefaultTextField("recipients","Recipients", false));
 		rfgFactory.addField(new DefaultTextField("subjectLine","Subject Line", false));
-		rfgFactory.addField(new DefaultTextField("notificationBodyContent.bodyAsString","Message", false));
+		rfgFactory.addField(new DefaultTextField("notificationBodyContent.body","Message", false));
 	}
 	
 	public SecondTab() {

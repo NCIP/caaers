@@ -37,10 +37,13 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
     public void doFilter(
         ServletRequest request, ServletResponse response, FilterChain chain
     ) throws IOException, ServletException {
-        log.debug("Opening session for request");
+        HttpServletRequest httpReq = ((HttpServletRequest) request);
+        if (log.isDebugEnabled()) {
+            log.debug("Opening session for request " + httpReq.getMethod() + ' ' + httpReq.getRequestURI());
+        }
         OpenSessionInViewInterceptor interceptor
             = (OpenSessionInViewInterceptor) getApplicationContext().getBean(getInterceptorBeanName());
-        WebRequest webRequest = new ServletWebRequest((HttpServletRequest) request);
+        WebRequest webRequest = new ServletWebRequest(httpReq);
         interceptor.preHandle(webRequest);
         try {
             chain.doFilter(request, response);

@@ -20,7 +20,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
-        <input type="hidden" name="_finish" value="true"/>
+       <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
         <chrome:division>
             <div class="row">
                 <div class="label">Primary Identifier</div>
@@ -43,9 +43,10 @@
                 <div class="value">${command.description}</div>
             </div>
             <div class="row">
-                <div class="label">Status</div>
-                <div class="value">${command.status}</div>
+                <div class="label">Primary Sponsor</div>
+                <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
             </div>
+
             <div class="row">
                 <div class="label">Phase code</div>
                 <div class="value">${command.phaseCode}</div>

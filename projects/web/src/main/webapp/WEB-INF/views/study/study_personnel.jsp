@@ -70,6 +70,12 @@
 		  fireAction('changeSite', selIndex);
 	    });
      })
+     
+ function chooseSitesfromSummary(indx){
+	var siteSelBox = $('studySiteIndex')
+	siteSelBox.selectedIndex = indx + 1;
+	fireAction('changeSite', indx);
+ }
 </script>
 </head>
 
@@ -83,7 +89,7 @@
 	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td width="70%" valign="top" >
-			<p id="instructions">Please choose a study site and link Research staff to that study site</p>
+			<p id="instructions">Please choose a study site and link research staff to that study site</p>
 			<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
 			<br />
 			<hr>
@@ -98,7 +104,7 @@
 			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.studySites}">
  					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
-						title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
+						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>
  					<div class="">Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
  					</div>

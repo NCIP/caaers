@@ -48,6 +48,7 @@ public class SearchStudyAjaxFacade {
         
         Column columnShortTitle = model.getColumnInstance();
         columnShortTitle.setProperty("shortTitle");
+        columnShortTitle.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnShortTitle);
         
         Column columnSponsorCode = model.getColumnInstance();

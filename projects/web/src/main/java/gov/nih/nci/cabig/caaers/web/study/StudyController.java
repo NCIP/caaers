@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -110,7 +111,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
             if (study.getPhaseCode() != null) {
                 summary.put("Phase", study.getPhaseCode().toString());
             }
-            refdata.put("summary", summary);
+            if(page != 7) refdata.put("summary", summary);
         }
 
         return refdata;
@@ -119,7 +120,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     /**
      * Override this in sub controller if summary is needed
      * @return
-     */
+     */ 
     protected boolean isSummaryEnabled() {
         return false;
     }
@@ -163,16 +164,15 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		//supress for ajax and delete requests
 		Object isAjax = findInRequest(request, "_isAjax");
 		if(isAjax != null) return true;
-		Object action = findInRequest(request, "_action");
-		if(action != null) return true;
+		String action = (String)findInRequest(request, "_action");
+		if(StringUtils.isNotEmpty(action)) return true;
 		return super.suppressValidation(request, command);
 	}
 	
 	@Override
 	protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
 		return super.shouldSave(request, command, tab) && 
-		 (findInRequest(request, "_isAjax") == null) && 
-		 (findInRequest(request, "_action") == null);
+		 (findInRequest(request, "_isAjax") == null);
 	}
 	
 	///BEAN PROPERTIES

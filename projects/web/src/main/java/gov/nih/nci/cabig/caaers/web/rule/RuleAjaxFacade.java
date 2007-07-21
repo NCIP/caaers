@@ -105,7 +105,7 @@ public class RuleAjaxFacade
         {
             Study study = it.next();
             
-            if (!sponsorName.equals(study.getPrimarySponsorCode()))
+            if (!sponsorName.equals(study.getPrimaryFundingSponsorOrganization().getName()))
             {
             	it.remove();
             }	
@@ -199,24 +199,21 @@ public class RuleAjaxFacade
     	
     	ruleSet.getRule().add(newRule);
     	
+    	Organization org = organizationDao.getByName(organizationName);
+    	
+    	//System.out.println("getting report definitions ....");
     	//get report defnitions
-    	List<ReportDefinition> reportDefinitions = reportDefinitionDao.getAll();
-    	
-
-    	
+    	List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
     	
         // cut down objects for serialization
         List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
         for (ReportDefinition reportDefinition : reportDefinitions) {
-        	
-    		if (organizationName.equals(reportDefinition.getOrganization().getName())) {
             	reportDefinition.setPlannedNotifications(null);
             	reportDefinition.setTimeScaleUnitType(null);
             	reducedReportDefinitions.add(reportDefinition);  			
-    		}
-
         }
-        //System.out.println("in add rule " + reducedReportDefinitions.size());
+        
+        //System.out.println("add rule create successfully ....");
     	
     	HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
     	request.setAttribute("ruleCount", ruleSet.getRule().size()-1);

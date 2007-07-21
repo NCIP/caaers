@@ -5,7 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,6 +46,8 @@ import java.util.List;
         }
 )
 public class ReportDefinition extends AbstractMutableDomainObject implements Serializable{
+    private static final Log log = LogFactory.getLog(ReportDefinition.class);
+
     private String name;
     private String description;
     private int duration;
@@ -172,35 +177,56 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
-		result = PRIME * result + ((description == null) ? 0 : description.hashCode());
-		result = PRIME * result + duration;
-		result = PRIME * result + ((name == null) ? 0 : name.hashCode());
-		result = PRIME * result + ((organization == null) ? 0 : organization.hashCode());
-		result = PRIME * result + ((timeScaleUnitType == null) ? 0 : timeScaleUnitType.hashCode());
+		result = PRIME * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+		result = PRIME * result + getDuration();
+		result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
+		result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
+		result = PRIME * result + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
 		return result;
 	}
 
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		final ReportDefinition other = (ReportDefinition) obj;
+        return equals(obj, false);
+    }
 
-		if (description == null) {
-			if (other.description != null)	return false;
-		} else if (!description.equals(other.description))	return false;
-		if (duration != other.duration)	return false;
-		if (name == null) {
-			if (other.name != null)	return false;
-		} else if (!name.equals(other.name))return false;
-		if (organization == null) {
-			if (other.organization != null)	return false;
-		} else if (!organization.equals(other.organization))return false;
-		if (timeScaleUnitType == null) {
-			if (other.timeScaleUnitType != null)return false;
-		} else if (!timeScaleUnitType.equals(other.timeScaleUnitType)) return false;
-		return true;
-	}
+    public boolean equals(Object obj, boolean trace) {
+        if (this == obj) {
+            if (trace) log.debug("== same object");
+            return true;
+        }
+        if (obj == null) {
+            if (trace) log.debug("!= other is null");
+            return false;
+        }
+        if (!(obj instanceof ReportDefinition)) {
+            if (trace) log.debug("!= other is not ReportDefinition: " + obj.getClass().getName());
+            return false;
+        }
+        final ReportDefinition other = (ReportDefinition) obj;
+
+        if (!ComparisonTools.nullSafeEquals(getDescription(), other.getDescription())) {
+            if (trace) log.debug("!= descriptions");
+            return false;
+        }
+        if (getDuration() != other.getDuration()) {
+            if (trace) log.debug("!= durations");
+            return false;
+        }
+        if (!ComparisonTools.nullSafeEquals(getName(), other.getName())) {
+            if (trace) log.debug("!= names");
+            return false;
+        }
+        if (!ComparisonTools.nullSafeEquals(getOrganization(), other.getOrganization())) {
+            if (trace) log.debug("!= organizations");
+            return false;
+        }
+        if (!ComparisonTools.nullSafeEquals(getTimeScaleUnitType(), other.getTimeScaleUnitType())) {
+            if (trace) log.debug("!= time scale units");
+            return false;
+        }
+        if (trace) log.debug("== by properties");
+        return true;
+    }
 }

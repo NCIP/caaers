@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.5-SNAPSHOT</version>
+        <version>0.6-SNAPSHOT</version>
     </parent>
     <repositories>
         <!--
@@ -25,7 +25,7 @@
     <properties>
         <db />
         <databaseConfigurationName>${db}</databaseConfigurationName>
-        <bering.version>0.7-SNAPSHOT</bering.version>
+        <bering.version>0.6.1</bering.version>
     </properties>
     <dependencies>
         <!-- BUILD/RUNTIME DEPS -->

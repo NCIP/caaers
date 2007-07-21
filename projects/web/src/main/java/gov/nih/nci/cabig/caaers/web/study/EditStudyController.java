@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class EditStudyController extends StudyController<Study> {
 	///LOGIC
 	
     protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+    	request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
         if(log.isDebugEnabled()) log.debug("Retrieved Study :" + String.valueOf(study));
         return study;
@@ -37,17 +39,12 @@ public class EditStudyController extends StudyController<Study> {
     protected Study save(Study study, Errors errors) {
     	if( errors.hasErrors()) return study;
     	Study mergedStudy = getDao().merge(study);
+    	mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
+    	getDao().initialize(mergedStudy);
     	getDao().save(mergedStudy);
     	return mergedStudy;
     }
-    
-//    @Override
-//	protected Object currentFormObject(HttpServletRequest request, Object sessionFormObject) throws Exception {
-//		if (sessionFormObject != null) {
-//			getDao().reassociate((Study) sessionFormObject);
-//		}
-//		return sessionFormObject;
-//	}
+
 
 	protected boolean isSummaryEnabled() {
         return true;
@@ -72,4 +69,11 @@ public class EditStudyController extends StudyController<Study> {
         return new ModelAndView(new RedirectView("search"));
     }
 
+	@Override
+	protected boolean shouldSave(HttpServletRequest request, Study command, Tab<Study> tab) {
+		return super.shouldSave(request, command, tab) &&
+		tab.getNumber() != 0; //dont save if it is overview page
+	}
+    
+    
 }

@@ -100,10 +100,10 @@
                 <div class="value">
                     <select id="staff" name="staff">
                         <option value=-1>please select--</option>
-                        <c:forEach var="site" varStatus="status" items="${command.study.studySites}">
-                            <c:forEach var="personnel" varStatus="status1" items="${site.studyPersonnels}">
-                                <option value="${personnel.researchStaff.id}">${personnel.researchStaff.firstName}, ${personnel.researchStaff.lastName} </option>
-                            </c:forEach>
+                        <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
+                            <option value="${person.id}">
+                                ${person.firstName} ${person.lastName}
+                            </option>
                         </c:forEach>
                     </select>
                 </div>

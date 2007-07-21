@@ -14,4 +14,19 @@ public class AutocompleterField extends AbstractInputField {
     public Category getCategory() {
         return Category.AUTOCOMPLETER;
     }
+    
+    public void setSize(int size){
+    	getAttributes().put(InputField.SIZE, size);
+    }
+    public int getSize(){
+    	Integer i = (Integer)getAttributes().get(InputField.SIZE);
+    	return (i == null) ? 0 : i.intValue();
+    }
+    public void setEnableClearButton(boolean b){
+    	getAttributes().put(InputField.ENABLE_CLEAR , b);
+    }
+    public boolean isEnableClearButton(){
+    	Boolean b = (Boolean)getAttributes().get(InputField.ENABLE_CLEAR);
+    	return (b == null)? false : b.booleanValue();
+    }
 }

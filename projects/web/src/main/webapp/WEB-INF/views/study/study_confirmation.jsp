@@ -20,7 +20,7 @@
 <chrome:division id="single-fields">
       <div class="content">
            <div class="row">
-               <div>You have successfully created Study with:- </div>
+               <div>The following study is saved successfully</div>
            </div>
             <div class="row">
               <div class="label">Short Title:</div>
@@ -38,6 +38,9 @@
               <div class="label">Phase:</div>
               <div class="value">${command.phaseCode}</div>
            </div>
+           <div>
+ 			<img src="/caaers/images/chrome/spacer.gif" width="400" height="1" />
+ 		  </div>
        </div>
 </chrome:division>
 </form:form>

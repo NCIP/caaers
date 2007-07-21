@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -16,6 +17,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin, Priyatam
@@ -75,4 +78,17 @@ public abstract class StudyTab extends TabWithFields<Study> {
 		return list;  
 	}
 	
+	public String fieldValuesAsString(List<InputField> fields, BeanWrapper bean){
+		StringBuilder sb = new StringBuilder();
+		for(InputField field : fields){
+			sb.append(String.valueOf(bean.getPropertyValue(field.getPropertyName())));
+		}
+		return sb.toString();
+	}
+	public void rejectFields(List<InputField> fields, Errors errors, String errorMessage){
+		for(InputField field : fields){
+			errors.rejectValue(field.getPropertyName(), "REQUIRED",errorMessage +" " + field.getDisplayName());
+		}
+	}
+
 }

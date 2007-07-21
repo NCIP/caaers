@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseDate;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -118,9 +121,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
         assignment = createAssignment();
-
-        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
-            .andReturn(assignment).anyTimes();
+        assignment.getStudySite().getStudy().setId(4);
 
         passFirstPage();
     }
@@ -218,7 +219,11 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         assertEquals(1, command.getOptionalReportDefinitionsMap().size());
         assertTrue(command.getOptionalReportDefinitionsMap().get(expectedReportDefinition));
     }
-    
+
+    /*
+        TODO: an NPE in org.apache.commons.collections15.collection.AbstractCollectionDecorator
+        is causing this test to fail.  Fix it.
+    */
     public void testBindAttributions() throws Exception {
         firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
         firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
@@ -261,13 +266,16 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         }
     }
 
-    public void testCurrentFormObjectReassociatesIfEAERIsSaved() throws Exception {
+    public void testCurrentFormObjectMergesIfEAERIsSaved() throws Exception {
         firstCommand.getAeReport().setId(17);
-        
-        adverseEventReportDao.reassociate(firstCommand.getAeReport());
+
+        ExpeditedAdverseEventReport expectedEAER = new ExpeditedAdverseEventReport();
+        expect(adverseEventReportDao.merge(firstCommand.getAeReport()))
+            .andReturn(expectedEAER);
 
         replayMocks();
         assertSame(firstCommand, controller.currentFormObject(request, firstCommand));
+        assertSame("merge result not pushed into command", expectedEAER, firstCommand.getAeReport());
         verifyMocks();
     }
     
@@ -298,6 +306,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     // get the session in place & set study/participant
     private void passFirstPage() throws Exception {
+        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
+            .andReturn(assignment).anyTimes();
         request.setParameter("_target0", "");
         replayMocks();
         firstCommand
@@ -308,5 +318,9 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
         expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
             .andReturn(assignment).anyTimes();
+        expect(studyDao.getById(assignment.getStudySite().getStudy().getId()))
+            .andReturn(assignment.getStudySite().getStudy()).anyTimes();
+        participantDao.reassociate((Participant) notNull());
+        expectLastCall().anyTimes();
     }
 }

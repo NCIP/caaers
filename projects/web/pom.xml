@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.5-SNAPSHOT</version>
+        <version>0.6-SNAPSHOT</version>
     </parent>
     <repositories>
         <!-- It appears that this repo is mirrored a ibiblio now, so we don't need it.
@@ -33,7 +33,7 @@
             <plugin>
                 <groupId>gov.nih.nci.cabig.ctms</groupId>
                 <artifactId>catman-maven-plugin</artifactId>
-                <version>0.2-SNAPSHOT</version>
+                <version>0.2</version>
                 <configuration>
                     <!-- Set the manager.* properties in your local settings.xml -->
                     <username>${manager.username}</username>

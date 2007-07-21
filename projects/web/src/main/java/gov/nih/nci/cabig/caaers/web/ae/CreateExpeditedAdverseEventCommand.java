@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -34,14 +36,19 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     private Participant participant;
     private Study study;
 
+    private ParticipantDao participantDao;
+    private StudyDao studyDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
     public CreateExpeditedAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
-        ReportDefinitionDao reportDefinitionDao, NowFactory nowFactory
+        ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ParticipantDao participantDao,
+        NowFactory nowFactory
     ) {
         super(reportDao, reportDefinitionDao);
         this.assignmentDao = assignmentDao;
+        this.studyDao = studyDao;
+        this.participantDao = participantDao;
         setAeReport(new ExpeditedAdverseEventReport());
         getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
     }
@@ -70,6 +77,17 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         reportDao.save(getAeReport());
     }
 
+    @Override
+    public void reassociate() {
+        super.reassociate();
+        if (getStudy() != null) {
+            // full reload instead of reassoc. to work around problem when
+            // multiple copies of the same Organization are loaded
+            setStudy(studyDao.getById(getStudy().getId()));
+        }
+        if (getParticipant() != null) participantDao.reassociate(getParticipant());
+    }
+
     ////// BOUND PROPERTIES
 
     @Override
@@ -89,16 +107,16 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
     public void setStudy(Study study) {
         this.study = study;
-        // TODO: this is temporary -- need a cleaner way to force this to load
-        // in same session as study is loaded and/or reassociate study with hib session later
-        if (study != null) {
-            this.study.getStudyAgents().size();
-            this.study.getCtepStudyDiseases().size();
-            this.study.getStudySites().size();
-            for(StudySite site : study.getStudySites()){
-                site.getStudyPersonnels().size();
-            }
-        }
+//        // TODO: this is temporary -- need a cleaner way to force this to load
+//        // in same session as study is loaded and/or reassociate study with hib session later
+//        if (study != null) {
+//            this.study.getStudyAgents().size();
+//            this.study.getCtepStudyDiseases().size();
+//            this.study.getStudySites().size();
+//            for(StudySite site : study.getStudySites()){
+//                site.getStudyPersonnels().size();
+//            }
+//        }
         updateReportAssignmentLink();
     }
 }

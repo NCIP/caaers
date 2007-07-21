@@ -32,16 +32,21 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
 	public ReportDeliveryDefinitionTab(){
 		super("Report Delivery Details", "Report Delivery Configuration","rule/notification/reportDeliveryTab");
 		rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.deliveryDefinitions");
-		rfgFactory.addField(new DefaultTextField("entityName","Name", true));
-		rfgFactory.addField(new DefaultTextArea("entityDescription", "Description", false));
+		DefaultTextField eNameField = new DefaultTextField("entityName","Name", true);
+		eNameField.setSize(50);
+		rfgFactory.addField(eNameField);
+		DefaultTextArea descField = new DefaultTextArea("entityDescription", "Description", false);
+		descField.setColumns(50);
+		rfgFactory.addField(descField);
 		rfgFactory.addField(new DefaultSelectField("format", "Report Format", true,
 				collectSelectOptions(ReportFormat.values(), null, "displayName")));
-		rfgFactory.addField(new DefaultTextField("endPoint","Address", true));
+		DefaultTextField addressField = new DefaultTextField("endPoint","Address", true);
+		addressField.setSize(50);
+		rfgFactory.addField(addressField);
 		rfgFactory.addField(new DefaultSelectField("endPoint", "Role", true, 
 				collectSelectOptions(new String[]{"Sponsor", "Study PI"}, null, null)));
 		rfgFactory.addField(new DefaultSelectField("endPointType", "Address Type", true, 
 				collectSelectOptions(new String[]{"e-mail", "phone", "fax", "url"}, null, null)));
-		
 	}
 	
 	@Override

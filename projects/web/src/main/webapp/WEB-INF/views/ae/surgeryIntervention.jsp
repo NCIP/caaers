@@ -44,9 +44,9 @@
       }
 
       function updateSelectedDisplay(mode) {
+      	 
           if ($(mode.basename).value) {
-              Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
-              $(mode.basename + '-selected').show()
+              	$(mode.basename + '-input').value = '${command.aeReport.surgeryIntervention.anatomicSite.name}'
           }
       }
 
@@ -59,17 +59,14 @@
               },
               indicator: mode.basename + "-indicator"
           })
-          Event.observe(mode.basename + "-clear", "click", function() {
-              //$(mode.basename + "-selected").hide()
-              $(mode.basename).value = ""
-              $(mode.basename + "-input").value = ""
-          })
+         
       }
 
 
         Event.observe(window, "load", function() {
             acCreate(anatomicAutocompleterProps)
             updateSelectedDisplay(anatomicAutocompleterProps)
+            
         })
     
     </script>

@@ -22,6 +22,7 @@ import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateSystemException;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -67,18 +68,23 @@ public class StudyDao extends GridIdentifiableDao<Study>
 	 */
 	public Study getStudyDesignById(int id) {				
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
-        study.getIdentifiers().size();
-        study.getStudySites().size();
-        for (StudySite studySite : study.getStudySites()) {
-			studySite.getStudyInvestigators().size();
-			studySite.getStudyPersonnels().size();		
-		}
-        study.getMeddraStudyDiseases().size();
-        study.getStudyAgentsInternal().size();
-        
-        return study;
+        return initialize(study);
     }
-
+	
+	public Study initialize(Study s){
+		HibernateTemplate ht = getHibernateTemplate();
+		ht.initialize(s.getIdentifiers());
+		ht.initialize(s.getStudyOrganizations());
+		for (StudySite ss : s.getStudySites()) {
+			if(ss == null) continue;
+			ht.initialize(ss.getStudyInvestigatorsInternal());
+			ht.initialize(ss.getStudyPersonnelsInternal());
+		}
+		ht.initialize(s.getMeddraStudyDiseases());
+		ht.initialize(s.getCtepStudyDiseases());
+		return s;
+	}
+	
     @Transactional(readOnly=false)
     public void save(Study study) {
 		getHibernateTemplate().saveOrUpdate(study);

@@ -23,10 +23,15 @@
 <script type="text/javascript">
 
     function fireAction(action, selected){
+        if(action == 'addMeddraStudyDisease'){
+           if(!$F('disease-meddra-input')) return;
+        }
+		
         addDiseasesToCart()
       	document.getElementById('command')._target.name='_noname';
         document.studyDiseasesForm._action.value=action;
         document.studyDiseasesForm._selected.value=selected;
+        if($('_finish'))$('_finish').name='_fx';
         document.studyDiseasesForm.submit();
     }
 
@@ -241,6 +246,7 @@
             <div>
                  <input type="hidden" name="_action" value="">
                  <input type="hidden" name="_selected" value="">
+                 <c:if test="${(not empty command.id) and ( command.id gt 0) }"><input type="hidden" id="_finish" name="_finish" value="true"/></c:if>
             </div>
             <chrome:division title="CTEP Disease Terms" id="disease">
                     Search for a Disease Category<br>

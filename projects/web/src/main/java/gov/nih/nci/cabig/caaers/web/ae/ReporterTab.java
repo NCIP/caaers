@@ -1,16 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -22,7 +19,6 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class ReporterTab extends AeTab {
-    private ResearchStaffDao researchStaffDao;
     private EvaluationService evaluationService;
 
     public ReporterTab() {
@@ -69,23 +65,6 @@ public class ReporterTab extends AeTab {
             severe |= evaluationService.isSevere(command.getAssignment(), event);
         }
         request.setAttribute("oneOrMoreSevere", severe);
-    }
-
-    @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
-        // TODO: this probably ought to be limited by Site, at least
-        refdata.put("staffRefData", researchStaffDao.getAll());
-        return refdata;
-    }
-
-    public ResearchStaffDao getResearchStaffDao() {
-        return researchStaffDao;
-    }
-
-    @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-        this.researchStaffDao = researchStaffDao;
     }
 
     @Required

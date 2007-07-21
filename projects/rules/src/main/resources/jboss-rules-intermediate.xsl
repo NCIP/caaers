@@ -64,7 +64,15 @@
 	<xsl:template match="rules:condition/rules:column">		
 		<xsl:if test="rules:field-constraint/rules:literal-restriction/rules:value">
 			<xsl:variable name="ct" select="count(rules:field-constraint/rules:literal-restriction/rules:value)"/>
+			
 			<eval>
+				<!-- for otional field , TO-DO mantain opional list and get from there ... -->
+				<xsl:if test="rules:field-constraint/@field-name = 'attributionSummary'">adverseEvent.getAttributionSummary() != null &amp;&amp; </xsl:if>
+				
+				<!--  this is commenetd because if no attribution is selected no rules will get fired .  
+				<xsl:if test="rules:field-constraint/@field-name = 'attributionSummary'"><xsl:choose><xsl:when test="../../../rules:field-constraint/rules:literal-restriction/@evaluator = '=='">adverseEvent.getAttributionSummary() != null &amp;&amp; </xsl:when><xsl:otherwise>adverseEvent.getAttributionSummary() != null || </xsl:otherwise></xsl:choose></xsl:if>
+				-->
+				
 				<xsl:for-each select="rules:field-constraint/rules:literal-restriction/rules:value">				
 							<xsl:choose>
 								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (.!='true') and  (.!='false') and (../../../rules:field-constraint/rules:literal-restriction/@evaluator = '!=')" >!</xsl:when>
@@ -92,7 +100,7 @@
 							</xsl:choose>
 							
 							<xsl:if test= "(contains(../../../rules:expression,'intValue()') = false)  and (.!='true') and (.!='false')">")</xsl:if>
-							<xsl:if test="$ct != position()"> || </xsl:if>
+							<xsl:if test="$ct != position()"> <xsl:choose> <xsl:when test="../../../rules:field-constraint/rules:literal-restriction/@evaluator = '=='"> || </xsl:when><xsl:otherwise> &amp;&amp; </xsl:otherwise></xsl:choose></xsl:if>
 				</xsl:for-each>
 			</eval>	
 			

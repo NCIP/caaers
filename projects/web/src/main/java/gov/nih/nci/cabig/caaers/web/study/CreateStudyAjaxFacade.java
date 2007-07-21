@@ -84,7 +84,7 @@ public class CreateStudyAjaxFacade {
 
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
-        return ObjectTools.reduceAll(agents, "name", "nscNumber","description");
+        return ObjectTools.reduceAll(agents,"id", "name", "nscNumber","description");
     }
     public List<Organization> matchOrganization(String text){
     	List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));

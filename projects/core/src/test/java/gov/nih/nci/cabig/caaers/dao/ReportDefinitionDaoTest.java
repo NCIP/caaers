@@ -140,4 +140,10 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
             }
         });
     }
+
+    public void testGetAll() throws Exception {
+        List<ReportDefinition> actual = getDao().getAll();
+        assertEquals("Wrong number found", 1, actual.size());
+        assertEquals("Wrong one", -222, (int) actual.get(0).getId());
+    }
 }

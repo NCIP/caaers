@@ -36,7 +36,7 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" />
 				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getCtcTerm().getTerm()</expression>		
+				<expression>getCtcTerm().getId().intValue()</expression>		
 			</field>
 			<field name="category" display-uri="Category">
 				<field-value>
@@ -116,6 +116,7 @@
 				<expression>getPhaseCode()</expression>
 			</field>
 		</domain-object>
+		<!-- commneted for iteration 5
 		<domain-object identifier="studyAgent" class-name="gov.nih.nci.cabig.caaers.domain.StudyAgent" display-uri="StudyAgent">
 			<field name="investigationalNewDrugIndicator" display-uri="Investigational New Drug Indicator">
 				<field-value>
@@ -128,6 +129,7 @@
 				<expression>getInvestigationalNewDrugIndicator().booleanValue()</expression>		
 			</field>
 		</domain-object>
+		-->
 	</condition>
 
 </rule-ui>

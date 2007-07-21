@@ -32,7 +32,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
 
     protected ExpeditedAdverseEventReportDao reportDao;
-    private ReportDefinitionDao reportDefinitionDao;
+    protected ReportDefinitionDao reportDefinitionDao;
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
         this.reportDao = reportDao;
@@ -53,7 +53,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             reportDefinitionDao.reassociate(definition);
         }
         if (getAeReport().getId() != null) {
-            reportDao.reassociate(getAeReport());
+            ExpeditedAdverseEventReport merged = reportDao.merge(getAeReport());
+            setAeReport(merged);
         }
     }
 
@@ -112,5 +113,15 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     public void setAttributionMap(AttributionMap attributionMap) {
         this.attributionMap = attributionMap;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getName())
+            .append("[\n    aeReport: ").append(getAeReport())
+            .append("\n    optionalReportDefinitionsMap: ").append(getOptionalReportDefinitionsMap())
+            // TODO: This line is throwing an NPE sometimes.  Figure out why.
+            // .append("\n    attributionMap: ").append(getAttributionMap())
+            .append("\n]").toString();
     }
 }

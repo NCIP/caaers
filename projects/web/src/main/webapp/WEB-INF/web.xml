@@ -87,11 +87,18 @@
 
     <filter-mapping>
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/pages/*</url-pattern>
     </filter-mapping>
 
+    <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/public/*</url-pattern>
+    </filter-mapping>
 
-
+    <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/dwr/*</url-pattern>
+    </filter-mapping>
 
     <filter>
         <filter-name>BeansInRequestFilter</filter-name>
@@ -125,8 +132,6 @@
   		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-
-
     <servlet>
         <servlet-name>pages</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -138,7 +143,7 @@
         <url-pattern>/pages/*</url-pattern>
     </servlet-mapping>
 
-	<servlet>
+    <servlet>
         <servlet-name>public</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>3</load-on-startup>

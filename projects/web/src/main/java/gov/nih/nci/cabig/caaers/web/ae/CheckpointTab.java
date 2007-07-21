@@ -10,16 +10,21 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * @author Rhett Sutphin
  */
 public class CheckpointTab extends AeTab {
+    private static final Log log = LogFactory.getLog(CheckpointTab.class);
+
     private EvaluationService evaluationService;
     private ReportService reportService;
 
@@ -48,10 +53,25 @@ public class CheckpointTab extends AeTab {
 
     private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
         List<ReportDefinition> all = evaluationService.applicableReportDefinitions(command.getAssignment());
+        if (log.isDebugEnabled()) {
+            log.debug("Applicable report defs: " + all);
+        }
         for (Report report : command.getAeReport().getReports()) {
             if (report.isRequired()) {
-                all.remove(report.getReportDefinition());
+                boolean removed = all.remove(report.getReportDefinition());
+                if (log.isDebugEnabled()) {
+                    if (removed) {
+                        log.debug("  Removed " + report.getReportDefinition() + " from optional list because it is required");
+                    } else {
+                        log.debug("  Report def " + report.getReportDefinition()
+                            + " is in the EAER, but is not applicable according to "
+                            + evaluationService.getClass().getName());
+                    }
+                }
             }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Optional report defs: " + all);
         }
         return all;
     }
@@ -62,8 +82,8 @@ public class CheckpointTab extends AeTab {
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
         boolean anyReports = command.getAeReport().getReports().size() > 0;
-        for (Boolean selected : command.getOptionalReportDefinitionsMap().values()) {
-            anyReports |= (selected == null ? false : selected);
+        for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
+            anyReports |= optionalReportSelected(command, def);
         }
         if (!anyReports) {
             errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
@@ -73,7 +93,7 @@ public class CheckpointTab extends AeTab {
     @Override
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
         for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
-            if (command.getOptionalReportDefinitionsMap().get(def)) {
+            if (optionalReportSelected(command, def)) {
                 addOptionalReport(command.getAeReport(), def);
             } else {
                 removeOptionalReport(command.getAeReport(), def);
@@ -84,6 +104,11 @@ public class CheckpointTab extends AeTab {
         }
     }
 
+    private boolean optionalReportSelected(ExpeditedAdverseEventInputCommand command, ReportDefinition def) {
+        Boolean val = command.getOptionalReportDefinitionsMap().get(def);
+        return val == null ? false : val;
+    }
+
     private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
         if (findReportWithDefinition(aeReport, def) == null) {
             reportService.createReport(def, aeReport);
@@ -91,6 +116,7 @@ public class CheckpointTab extends AeTab {
     }
 
     private void removeOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
+        // TODO: we're going to need a service method for this, too
         Report existing = findReportWithDefinition(aeReport, def);
         if (existing != null && !existing.isRequired()) {
             aeReport.getReports().remove(existing);

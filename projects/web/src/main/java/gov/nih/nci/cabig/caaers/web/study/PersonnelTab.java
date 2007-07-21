@@ -43,7 +43,12 @@ class PersonnelTab extends StudyTab {
 			study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels()
 				.remove(Integer.parseInt(selectedPersonnel));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
-			study.setStudySiteIndex(Integer.parseInt(prevSiteIndex));
+			int siteIndex = Integer.parseInt(prevSiteIndex);
+			study.setStudySiteIndex(siteIndex);
+			if(siteIndex >=0){
+				study.getStudySites().get(siteIndex).getStudyPersonnels().get(0);
+			}
+				
 		}	
     }
 

@@ -20,7 +20,7 @@
 
 		<div style="margin-left:50px;">
 			<label class="label" for="ruleSet.rule[${ruleCount+1}].metaData.name">Name</label>
-			<input id="ruleSet.rule[${ruleCount}].metaData.name" name="ruleSet.rule[${ruleCount}].metaData.name" style="width: 200px;" value="" type="text">
+			<input id="ruleSet.rule[${ruleCount}].metaData.name" name="ruleSet.rule[${ruleCount}].metaData.name" style="width: 200px;" value="Rule-${ruleCount+1}" type="text" readonly="readonly" >
 		</div>
 		<br/>
 		<div id="rule-condition-action-container-${ruleCount + 1}">

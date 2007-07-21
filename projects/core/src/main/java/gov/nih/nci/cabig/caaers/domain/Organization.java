@@ -20,6 +20,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 /**
  * @author Krikor Krumlian
@@ -42,31 +43,31 @@ public class Organization extends AbstractMutableDomainObject {
     private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
     private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
     private List<ReportDefinition> reportDefinitions;
-    
+
     ////// LOGIC
 
 	public void addStudySite(StudyOrganization studyOrg) {
     	this.getStudyOrganizations().add(studyOrg);
     	studyOrg.setOrganization(this);
-        
+
     }
-   
+
     public void addSiteInvestigator(SiteInvestigator siteInvestigator) {
         getSiteInvestigators().add(siteInvestigator);
         siteInvestigator.setOrganization(this);
     }
-   
+
     public void addResearchStaff(ResearchStaff staff) {
     	getResearchStaffs().add(staff);
     	staff.setOrganization(this);
     }
-    
+
     public void addReportDefinition(ReportDefinition  reportDefinition){
     	if(reportDefinitions == null) reportDefinitions = new ArrayList<ReportDefinition>();
     	reportDefinitions.add(reportDefinition);
     	reportDefinition.setOrganization(this);
     }
-    
+
     ////// BEAN PROPERTIES
 
     @Column(name = "name")
@@ -78,7 +79,7 @@ public class Organization extends AbstractMutableDomainObject {
         this.name = name;
     }
 
-    
+
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -89,12 +90,12 @@ public class Organization extends AbstractMutableDomainObject {
 	public void setStudyOrganizations(List<StudyOrganization> studyOrganizations) {
 		this.studyOrganizations = studyOrganizations;
 	}
-	
+
 	public void addStudySite(StudySite studySite) {
 		studyOrganizations.add(studySite);
 		studySite.setOrganization(this);
 	}
-	
+
 	@Transient
 	public List<StudySite> getStudySites() {
 		List<StudySite> sites = new ArrayList<StudySite>();
@@ -107,7 +108,7 @@ public class Organization extends AbstractMutableDomainObject {
 	}
 
 
-    @OneToMany (mappedBy = "organization", fetch = FetchType.LAZY)    
+    @OneToMany (mappedBy = "organization", fetch = FetchType.LAZY)
     @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<SiteInvestigator> getSiteInvestigators() {
 		return siteInvestigators;
@@ -122,11 +123,11 @@ public class Organization extends AbstractMutableDomainObject {
 	public List<ResearchStaff> getResearchStaffs() {
 		return researchStaffs;
 	}
-	
+
 	public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
 		this.researchStaffs = researchStaffs;
 	}
-    
+
     @OneToMany(mappedBy="organization", fetch=FetchType.LAZY)
     @Cascade(value={CascadeType.ALL ,CascadeType.DELETE_ORPHAN})
 	public List<ReportDefinition> getReportDefinitions() {
@@ -158,17 +159,22 @@ public class Organization extends AbstractMutableDomainObject {
 
 	public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Organization)) return false;
 
         Organization organization = (Organization) o;
 
-        if (name != null ? !name.equals(organization.name) : organization.name != null) return false;
+        if (!ComparisonTools.nullSafeEquals(getName(), organization.getName())) return false;
 
         return true;
     }
 
     public int hashCode() {
-        return (name != null ? name.hashCode() : 0);
+        return (getName() != null ? getName().hashCode() : 0);
+    }
+
+    @Override
+    public String toString() {
+    	return name;
     }
 }
 

@@ -48,7 +48,7 @@
 	}
 	  
     Event.observe(window, "load", function() {
-    	<c:forEach varStatus="status" items="${command.studySites}" var="si">
+    	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
       		new jsIdentifier(${status.index});
       	</c:forEach>
       	addIdentifierEditor = new ListEditor('si-section',createStudy, "Identifier",{

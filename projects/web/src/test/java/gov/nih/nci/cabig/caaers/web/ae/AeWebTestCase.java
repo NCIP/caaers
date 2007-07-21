@@ -4,6 +4,8 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -17,7 +19,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-import com.sun.xml.bind.v2.TODO;
 
 /**
  * @author Rhett Sutphin
@@ -30,6 +31,8 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected CreateExpeditedAdverseEventCommand command;
     protected ExpeditedAdverseEventReportDao reportDao;
     private ReportDefinitionDao reportDefinitionDao;
+    private StudyDao studyDao;
+    private ParticipantDao participantDao;
     protected Errors errors;
 
     @Override
@@ -39,6 +42,8 @@ public abstract class AeWebTestCase extends WebTestCase {
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
         reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+        studyDao = registerMockFor(StudyDao.class);
+        participantDao = registerMockFor(ParticipantDao.class);
 
         command = createCommand();
 
@@ -48,11 +53,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract CreateExpeditedAdverseEventCommand createCommand();
 
     protected final CreateExpeditedAdverseEventCommand createRealCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory);
     }
 
     protected final CreateExpeditedAdverseEventCommand createMockCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, nowFactory) {
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory) {
             @Override
             public StudyParticipantAssignment getAssignment() {
                 return assignment;

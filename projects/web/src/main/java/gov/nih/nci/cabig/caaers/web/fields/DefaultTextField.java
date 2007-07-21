@@ -19,4 +19,12 @@ public class DefaultTextField extends AbstractInputField {
     public Category getCategory() {
         return Category.TEXT;
     }
+    
+    public void setSize(int size){
+    	getAttributes().put(InputField.SIZE, size);
+    }
+    public int getSize(){
+    	Integer i = (Integer)getAttributes().get(InputField.SIZE);
+    	return (i == null) ? 0 : i.intValue();
+    }
 }

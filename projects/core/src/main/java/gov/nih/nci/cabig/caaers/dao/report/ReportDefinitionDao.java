@@ -47,7 +47,7 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
 	
 	@SuppressWarnings("unchecked")
 	public List<ReportDefinition> getAll(){
-		return getHibernateTemplate().find("from ReportDefinition");
+		return getHibernateTemplate().find("from ReportDefinition rd order by rd.id");
 	}
 	
 	@SuppressWarnings("unchecked")

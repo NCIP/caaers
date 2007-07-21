@@ -89,8 +89,7 @@ public class SearchStudyController extends SimpleFormController {
 			e.printStackTrace();
 		} 			
 		request.setAttribute("assembler", viewData);
-	
-		int index = Integer.parseInt(request.getParameter("_selected"));
+		
 		String action = request.getParameter("_action");
 		
 		if("addCriteria".equals(action))
@@ -99,6 +98,7 @@ public class SearchStudyController extends SimpleFormController {
 		}
 		else if ("removeCriteria".equals(action))
 		{
+			int index = Integer.parseInt(request.getParameter("_selected"));
 			((SearchStudyCommand)oCommand).getSearchCriteria().remove(index);
 		}		
 		

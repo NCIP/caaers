@@ -22,9 +22,10 @@ public interface InputField {
     String OPTIONS = "options";
     String SUBFIELDS = "subfields";
     String HELP = "help"; //refers to the help text key in messages.properties
-    String SIZE = "size"; //size of the field (applied only for AutoCompleters)
+    String SIZE = "size"; //size of the field (applied only for Text fields/AutoCompleters)
     String ENABLE_CLEAR = "enableClear"; //enables the clear button (only for AutoCompleters)
-
+    String COLS = "cols";
+    
     Category getCategory();
 
     /** @return the lowercased name of the value returned by {@link #getCategory} */

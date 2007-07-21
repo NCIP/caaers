@@ -2,16 +2,18 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
@@ -68,6 +70,15 @@ class SitesTab extends StudyTab {
 	@Override
 	protected void validate(Study command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
+		//check if there are duplicate sites.
+		HashSet<String> set = new HashSet<String>();
+		int size = command.getStudySites().size();
+		for(int i = 0; i < size ; i++){
+			List<InputField> fields = fieldGroups.get("main"+i).getFields();
+			if(!set.add(fieldValuesAsString(fields, commandBean))){
+				rejectFields(fields, errors, "Duplicate");
+			}
+		}
 	}
 
 	public void setOrganizationDao(OrganizationDao organizationDao) {

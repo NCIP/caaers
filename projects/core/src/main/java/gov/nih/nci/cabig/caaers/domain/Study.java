@@ -126,14 +126,17 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	
 	@Transient
 	public void setPrimaryFundingSponsorOrganization(Organization org){
-		//remove existing primary sponsor.
-		//add the new organization as the last entry in sponsors list
-		List<StudyFundingSponsor> sponsors = getStudyFundingSponsors();
+		//if already a primary funding sponsor exist, replace that sponor's organization
 		StudyFundingSponsor xprimarySponsor = getPrimaryFundingSponsor();
-		if(xprimarySponsor != null) sponsors.remove(xprimarySponsor);
-		int size = sponsors.size();
-		StudyFundingSponsor primarySponsor = sponsors.get(size);
-		primarySponsor.setOrganization(org);
+		if(xprimarySponsor != null){ 
+			xprimarySponsor.setOrganization(org);
+		}else{
+			//no primary funding sponsor yet exist, so create one
+			List<StudyFundingSponsor> sponsors = getStudyFundingSponsors();
+			int size = sponsors.size();
+			StudyFundingSponsor primarySponsor = sponsors.get(size);
+			primarySponsor.setOrganization(org);
+		}
 	}
 
 	public void addStudyAgent(StudyAgent studyAgent) {

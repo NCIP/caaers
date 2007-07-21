@@ -2,8 +2,13 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -40,18 +45,41 @@ public class ReportServiceTest extends CaaersTestCase {
     protected void setUp() throws Exception {
 		super.setUp();
 		service = (ReportServiceImpl) getDeployedApplicationContext().getBean("reportService");
-
+		
+		Identifier id = new Identifier();
+		id.setSource("NCI");
+		id.setPrimaryIndicator(true);
+		id.setValue("123ST903");
+		
+		Study study = new Study();
+		study.setShortTitle("Headache");
+		study.addIdentifier(id);
+		
         aeReport = new ExpeditedAdverseEventReport();
 		Reporter reporter = new Reporter();
         reporter.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, REPORTER_EMAIL_ADDRESS);
         aeReport.setReporter(reporter);
-
+        
+        Participant p = new Participant();
+        Identifier idp = new Identifier();
+        idp.setValue("12345");
+        idp.setPrimaryIndicator(true);
+        
+        p.addIdentifier(idp);
+        StudyParticipantAssignment spa = new StudyParticipantAssignment();
+        spa.setParticipant(p);
+        
+        StudySite ss = new StudySite();
+        ss.setStudy(study);
+		aeReport.setAssignment(spa);
+		spa.setStudySite(ss);
+		
 		List<Recipient> rList = new ArrayList<Recipient>();
 		rList.add(new RoleBasedRecipient(REPORTER_ROLE));
 		rList.add(new ContactMechanismBasedRecipient(CONTACT_MECH_EMAIL_ADDRESS));
 		
 		NotificationBodyContent content = new NotificationBodyContent();
-		content.setBody("This is my body");
+		content.setBody("The study : ${study.shortTitle}, identified by ${study.primaryIdentifier.value}, has a patient with id :${patientId}");
 		
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
 		PlannedEmailNotification penf = new PlannedEmailNotification();
@@ -115,7 +143,8 @@ public class ReportServiceTest extends CaaersTestCase {
 		}
 		PlannedNotification pnf = actual.getReportDefinition().getPlannedNotifications().get(0);
 		ScheduledNotification snf = actual.getScheduledNotifications().get(0);
-		assertEquals("The body of ScheduledNotificaiton should be same", snf.getBody(), "This is my body");
+		System.out.println(snf.getBody());
+		assertEquals("The body of ScheduledNotificaiton should be same", snf.getBody(), "The study : Headache, identified by 123ST903, has a patient with id :12345");
 	}
 	
 /*
