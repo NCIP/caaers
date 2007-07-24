@@ -50,7 +50,6 @@
     <modules>
         <module>bootstrap</module>
         <module>core</module>
-        <module>scheduler</module>
         <module>rules</module>
         <module>web</module>
         <!--<module>grid</module>-->
