@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_INSTITUTION_SAE_REPORTING_RULES;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_SPONSOR_SAE_REPORTING_RULES;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY_SAE_REPORTING_RULES;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
@@ -42,7 +42,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
+@CaaersUseCases({ CREATE_INSTITUTION_SAE_REPORTING_RULES, CREATE_SPONSOR_SAE_REPORTING_RULES, CREATE_STUDY_SAE_REPORTING_RULES })
 public class RulesEngineServiceTest extends TestCase {
 
 	private RulesEngineService rulesEngineService;
@@ -56,7 +56,7 @@ public class RulesEngineServiceTest extends TestCase {
 
     private EvaluationService aees;
     
-    
+    private static String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -126,12 +126,18 @@ public class RulesEngineServiceTest extends TestCase {
 	public void testRulesEngineService() throws Exception {
 		String sponsorName = "National Cancer Institute";
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
+		String studyName = "cgems";
 		
-		//Create and deploy sponsor level AE assesment Rules
-		//createRuleSetForSponsor(sponsorName,ruleSetType);
-		//saveRulesForSponsor(sponsorName,ruleSetType,1);
-		sponserRuleFlow();
 		
+		
+
+		sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);		
+		sponsorDefinedStudyAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);
+		
+		ruleSetType = RuleType.REPORT_SCHEDULING_RULES.getName();
+		institutionSAEReportingRuleFlow(sponsorName,ruleSetType,studyName);
+		
+		createAdverseEvents(studyName,sponsorName);
 		//Create and deploy sponsor defined study level AE assesment Rules.
 		
 		
@@ -166,9 +172,8 @@ public class RulesEngineServiceTest extends TestCase {
 
 	}
 	
-	private void sponserRuleFlow() throws Exception {
-		String sponsorName = "National Cancer Institute";
-		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
+	private void sponserAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
+
 		RuleSet rs = this.createRulesForSponsor(1, sponsorName);
 		RulesEngineService res = new RulesEngineServiceImpl();
 		res.saveRulesForSponsor(rs, sponsorName);
@@ -178,51 +183,38 @@ public class RulesEngineServiceTest extends TestCase {
 
 		// deploy rules...
 		res.deployRuleSet(rs);
-		createAdverseEvent1();
-		createAdverseEvent2();
+
+	}
+
+	
+	private void sponsorDefinedStudyAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
+
+		RuleSet rs = this.createRulesForSponsorDefinedStudy(3, sponsorName, studyName);
+		RulesEngineService res = new RulesEngineServiceImpl();
+		res.saveRulesForSponsorDefinedStudy(rs, studyName, sponsorName);
+
+		rs = res.getRuleSetForSponsorDefinedStudy(rs.getDescription(),studyName,sponsorName);
+		
+
+		// deploy rules...
+		res.deployRuleSet(rs);
+
 	}
 	
-	private void createAdverseEvent1() throws Exception {
 
-		// execute rules...
-		AdverseEvent ae1 = new AdverseEvent();
-		ae1.setGrade(Grade.MILD);
-		ae1.setHospitalization(Hospitalization.NONE);
+	private void institutionSAEReportingRuleFlow(String institutionName,String ruleSetType, String studyName) throws Exception {
 
-		Study s = new Study();
-		Organization org = new Organization();
-		org.setName("National Cancer Institute");
-		s.setPrimaryFundingSponsorOrganization(org);
-		s.setShortTitle("my study");
+		RuleSet rs = this.createRulesForInstitution(2, institutionName);
+		RulesEngineService res = new RulesEngineServiceImpl();
+		res.saveRulesForInstitution(rs, institutionName);
 
-		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
-		String msg = aees.assesAdverseEvent(ae1, s);
+		rs = res.getRuleSetForInstitution(rs.getDescription(),institutionName);
+		
 
-		System.out.println(msg);
-		assertEquals(msg, "CAN_NOT_DETERMINED");
+		// deploy rules...
+		res.deployRuleSet(rs);
 
 	}
-	private void createAdverseEvent2() throws Exception {
-		// execute rules...
-		AdverseEvent ae1 = new AdverseEvent();
-		ae1.setGrade(Grade.MILD);
-
-		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
-
-		Study s = new Study();
-		Organization org = new Organization();
-		org.setName("National Cancer Institute");
-		s.setPrimaryFundingSponsorOrganization(org);
-		s.setShortTitle("my study");
-
-		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
-		String msg = aees.assesAdverseEvent(ae1, s);
-
-		System.out.println(msg);
-		assertEquals(msg, "SERIOUS_ADVERSE_EVENT");
-
-	}
-
 	
 	private void createRuleSetForSponsor(String sponsorName, String ruleSetName) throws Exception {
 		rulesEngineService.createRuleSetForSponsor(ruleSetName, sponsorName);
@@ -233,7 +225,7 @@ public class RulesEngineServiceTest extends TestCase {
 		RuleSet rs = new RuleSet();
 		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
 
-		Rule r = makeSAEAssementRule(id);
+		Rule r = makeRule(id,SERIOUS_ADVERSE_EVENT);
 		// sponser based rules
 		// need to add sponser name in the crieteria.
 		r.getCondition().getColumn().add(this.createCriteriaForSponsor(sponsorName));
@@ -241,13 +233,91 @@ public class RulesEngineServiceTest extends TestCase {
 		rs.getRule().add(r);
 		return rs;
 	}
+	
+	private RuleSet createRulesForInstitution(int id, String institutionName) throws Exception {
+		RuleSet rs = new RuleSet();
+		rs.setDescription(RuleType.REPORT_SCHEDULING_RULES.getName());
 
+		Rule r = makeRule(id,"10 Day Report");
+		// sponser based rules
+		// need to add sponser name in the crieteria.
+		r.getCondition().getColumn().add(this.createCriteriaForInstitute(institutionName));
+
+		rs.getRule().add(r);
+		return rs;
+	}
+	
+	private RuleSet createRulesForSponsorDefinedStudy(int id, String sponsorName,String studyName) {
+
+		RuleSet rs = new RuleSet();
+		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
+
+		Rule r = makeRule(id,SERIOUS_ADVERSE_EVENT);
+		// sponser based rules
+		// need to add sponser name in the crieteria.
+		r.getCondition().getColumn().add(this.createCriteriaForSponsor(sponsorName));
+		r.getCondition().getColumn().add(this.createCriteriaForStudy(studyName));
+
+		rs.getRule().add(r);
+		return rs;
+	}
+	
+	private void createAdverseEvents(String studyName, String orgName) throws Exception {
+		createAdverseEvent1( studyName,  orgName);
+		createAdverseEvent2( studyName,  orgName);
+	
+	}
+	
+	private void createAdverseEvent1(String studyName, String orgName) throws Exception {
+
+		// execute rules...
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setGrade(Grade.MILD);
+		ae1.setHospitalization(Hospitalization.NONE);
+
+		Study s = new Study();
+		Organization org = new Organization();
+		org.setName(orgName);
+		s.setPrimaryFundingSponsorOrganization(org);
+		s.setShortTitle(studyName);
+
+		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
+		String msg = aees.assesAdverseEvent(ae1, s);
+
+		System.out.println(msg);
+		assertEquals(msg, "CAN_NOT_DETERMINED");
+
+	}
+	private void createAdverseEvent2(String studyName, String orgName) throws Exception {
+		// execute rules...
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setGrade(Grade.MILD);
+
+		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
+
+		Study s = new Study();
+		Organization org = new Organization();
+		org.setName(orgName);
+		s.setPrimaryFundingSponsorOrganization(org);
+		s.setShortTitle(studyName);
+
+		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
+		String msg = aees.assesAdverseEvent(ae1, s);
+
+		System.out.println(msg);
+		assertEquals(msg, "SERIOUS_ADVERSE_EVENT");
+
+	}
+
+
+	
+	
 	private RuleSet createRulesForInstitute(int id) {
 
 		RuleSet rs = new RuleSet();
 		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
 
-		Rule r = makeSAEAssementRule(id);
+		Rule r = makeRule(id,"");
 		// inst based rules
 		// need to add inst name in the crieteria.
 		r.getCondition().getColumn().add(
@@ -314,97 +384,30 @@ public class RulesEngineServiceTest extends TestCase {
 
 	}
 
+	private Column createCriteriaForStudy(String criteriaValue) {
+		Column column = BRXMLHelper.newColumn();
+		column.setObjectType("gov.nih.nci.cabig.caaers.domain.Study");
+		column.setIdentifier("studySDO");
+		column.setExpression("getShortTitle()");
 
-	private Rule makeRule(int i,String actionStr) {
-		Rule rule1 = new Rule();
-		rule1.setMetaData(new MetaData());
-		rule1.getMetaData().setName("Rule" + i);
-		rule1.getMetaData().setDescription("Our test rule" + i);
+		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 
-		Condition condition = new Condition();
-		// condition.getEval().add("adverseEvent.getGrade().getCode() <=
-		// Grade.MODERATE.getCode()");
+		FieldConstraint fieldConstraint = new FieldConstraint();
+		fieldConstraint.setFieldName("primarySponsorCode");
+		fieldConstraints.add(fieldConstraint);
+		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
+		LiteralRestriction literalRestriction = new LiteralRestriction();
+		literalRestriction.setEvaluator("==");
+		literalRestriction.getValue().add(criteriaValue);
+		literalRestrictions.add(literalRestriction);
+		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
-		Column column1 = new Column();
-		column1.setObjectType("AdverseEvent");
-		column1.setIdentifier("adverseEvent");
-		column1.setExpression("getGrade().getCode().intValue()");
+		column.setFieldConstraint(fieldConstraints);
 
-		FieldConstraint fieldConstraint1 = new FieldConstraint();
-		fieldConstraint1.setFieldName("grade");
+		return column;
 
-		LiteralRestriction literalRestriction1 = new LiteralRestriction();
-		literalRestriction1.setEvaluator("==");
-		List<String> values1 = new ArrayList<String>();
-
-		values1.add("1");
-
-		literalRestriction1.setValue(values1);
-
-		List<LiteralRestriction> lr1 = new ArrayList<LiteralRestriction>();
-		lr1.add(literalRestriction1);
-
-		fieldConstraint1.setLiteralRestriction(lr1);
-
-		ArrayList<FieldConstraint> fields1 = new ArrayList<FieldConstraint>();
-		fields1.add(fieldConstraint1);
-
-		column1.setFieldConstraint(fields1);
-
-		condition.getColumn().add(column1);
-
-		Column column2 = new Column();
-		column2.setObjectType("AdverseEvent");
-		column2.setIdentifier("adverseEvent");
-		column2.setExpression("getHospitalization().getCode().intValue()");
-
-		FieldConstraint fieldConstraint2 = new FieldConstraint();
-		fieldConstraint2.setFieldName("hospitalization");
-
-		LiteralRestriction literalRestriction2 = new LiteralRestriction();
-		literalRestriction2.setEvaluator("==");
-		List<String> values2 = new ArrayList<String>();
-
-		values2.add("1");
-		values2.add("2");
-
-		literalRestriction2.setValue(values2);
-
-		List<LiteralRestriction> lr2 = new ArrayList<LiteralRestriction>();
-		lr2.add(literalRestriction2);
-
-		fieldConstraint2.setLiteralRestriction(lr2);
-
-		ArrayList<FieldConstraint> fields2 = new ArrayList<FieldConstraint>();
-		fields2.add(fieldConstraint2);
-
-		column2.setFieldConstraint(fields2);
-
-		condition.getColumn().add(column2);
-		
-		
-
-		/**
-		 * Make it or break it
-		 */
-
-		// Column column_fixed = new Column();
-		// column_fixed.setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
-		// column_fixed.setIdentifier("adverseEventEvaluationResult");
-		// condition.getColumn().add(column_fixed);
-		rule1.setCondition(condition);
-
-		// Notification action = new Notification();
-		// action.setActionId("ROUTINE_AE");
-
-		Action action = new Action();
-		action.setActionId(actionStr);
-
-		rule1.setAction(action);
-
-		return rule1;
 	}
-	
+
 	private boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
@@ -420,27 +423,7 @@ public class RulesEngineServiceTest extends TestCase {
 		return dir.delete();
 	}
 
-	/**
-	 * All the tests are to run in a particular order for that first let us make
-	 * all the corresponding methods private and then call from one place
-	 * 
-	 */
 
-	public void saveRulesForSponsor(String sponsorName, String ruleSetType, int ruleId) throws Exception {
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setDescription(ruleSetType);
-
-		List<Rule> rules = new ArrayList<Rule>();
-
-		rules.add(makeSAEAssementRule(ruleId));
-
-		ruleSet.setRule(rules);
-		rulesEngineService.saveRulesForSponsor(ruleSet,sponsorName);
-		ruleSet = getRuleSetForSponsor(sponsorName);
-		
-		rulesEngineService.deployRuleSet(ruleSet);
-
-	}
 
 
 
@@ -473,12 +456,7 @@ public class RulesEngineServiceTest extends TestCase {
 
 	}
 
-	private void createRuleSetForInstitution() throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		String institutionName = "Duke Medical Center";
-		rulesEngineService.createRuleSetForInstitution(ruleSetName,
-				institutionName);
-	}
+
 
 	private void getRuleSetForInstitution() throws Exception {
 		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
@@ -491,19 +469,6 @@ public class RulesEngineServiceTest extends TestCase {
 		assertEquals(packageName, ruleSet.getName());
 	}
 
-	private void saveRulesForInstitution() throws Exception {
-		String institutionName = "Duke Medical Center";
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
-
-		List<Rule> rules = new ArrayList<Rule>();
-
-		rules.add(makeSAEAssementRule(1));
-		rules.add(makeSAEAssementRule(2));
-		rules.add(makeSAEAssementRule(3));
-		ruleSet.setRule(rules);
-		rulesEngineService.saveRulesForInstitution(ruleSet, institutionName);
-	}
 
 	private void createRuleSetForStudy() throws Exception {
 		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
@@ -525,47 +490,8 @@ public class RulesEngineServiceTest extends TestCase {
 		assertEquals(packageName, ruleSet.getName());
 	}
 
-	private void saveRulesForStudy() throws Exception {
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setDescription(RuleType.REPORT_SCHEDULING_RULES.getName());
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
 
-		List<Rule> rules = new ArrayList<Rule>();
 
-		rules.add(makeSAEAssementRule(1));
-		rules.add(makeSAEAssementRule(2));
-		rules.add(makeSAEAssementRule(3));
-		ruleSet.setRule(rules);
-		rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, studyShortTitle,
-				sponsorName);
-	}
-
-	private void createRuleForSponsor() throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		String sponsorName = "National Cancer Institute";
-		Rule rule = makeSAEAssementRule(71);
-		rulesEngineService.createRuleForSponsor(rule, ruleSetName, sponsorName);
-
-	}
-
-	private void createRuleForStudy() throws Exception {
-		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
-		Rule rule = makeSAEAssementRule(72);
-
-		rulesEngineService.createRuleForSponsorDefinedStudy(rule, ruleSetName,
-				studyShortTitle, sponsorName);
-	}
-
-	private void createRuleForInstitution() throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		String institutionName = "Duke Medical Center";
-		Rule rule = makeSAEAssementRule(73);
-		rulesEngineService.createRuleForInstitution(rule, ruleSetName,
-				institutionName);
-	}
 
 	private void getAllRuleSetsForSponsor() throws Exception {
 
@@ -591,19 +517,6 @@ public class RulesEngineServiceTest extends TestCase {
 		List<RuleSet> ruleSets = rulesEngineService
 				.getAllRuleSetsForInstitution(institutionName);
 		assertEquals(1, ruleSets.size());
-
-	}
-
-	private void getRule() throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		String institutionName = "Duke Medical Center";
-		Rule rule = makeSAEAssementRule(99);
-		String ruleId = rulesEngineService.createRuleForInstitution(rule,
-				ruleSetName, institutionName);
-
-		Rule persistedRule = rulesEngineService.getRule(ruleId);
-
-		assertEquals(ruleId, persistedRule.getId());
 
 	}
 
@@ -633,7 +546,7 @@ public class RulesEngineServiceTest extends TestCase {
 		rulesEngineService.deployRuleSet(ruleSet);
 	}
 
-	private Rule makeSAEAssementRule(int i) {
+	private Rule makeRule(int i, String actionStr) {
 		Rule rule1 = new Rule();
 		rule1.setMetaData(new MetaData());
 		rule1.getMetaData().setName("Rule" + i);
@@ -714,7 +627,7 @@ public class RulesEngineServiceTest extends TestCase {
 		// action.setActionId("ROUTINE_AE");
 
 		Action action = new Action();
-		action.setActionId("SERIOUS_ADVERSE_EVENT");
+		action.setActionId(actionStr);
 
 		rule1.setAction(action);
 
@@ -723,20 +636,7 @@ public class RulesEngineServiceTest extends TestCase {
 	
 
 	
-	private RuleSet createRuleForInstitutionDefinedStudy(int id) {
 
-		RuleSet rs = new RuleSet();
-		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
-
-		Rule r = makeSAEAssementRule(id);
-		// sponser based rules
-		// need to add sponser name in the crieteria.
-		r.getCondition().getColumn().add(this.createCriteriaForInstitute("National Cancer Institute"));
-		//r.getCondition().getColumn().add(this.c)
-
-		rs.getRule().add(r);
-		return rs;
-	}
 
 	
 	public static String[] getConfigLocations() {
