@@ -37,6 +37,7 @@
                     }
                 },
                 fullName: '${ae.ctcTerm.fullName}',
+                fullNameWithMedDRA : '${ae.ctcTerm.fullNameWithMedDRA}',
                 otherRequired: ${ae.ctcTerm.otherRequired}
             }
             </c:if>
@@ -49,7 +50,7 @@
         }
 
         function termValueSelector(term) {
-            return term.fullName;
+            return term.fullNameWithMedDRA;
         }
 
         var AESection = Class.create();

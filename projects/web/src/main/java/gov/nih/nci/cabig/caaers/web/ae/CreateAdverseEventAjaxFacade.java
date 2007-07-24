@@ -11,6 +11,8 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -26,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +62,7 @@ public class CreateAdverseEventAjaxFacade {
     private InteroperationService interoperationService;
     private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
+    private AgentDao agentDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -70,6 +74,11 @@ public class CreateAdverseEventAjaxFacade {
     
     public List<PreExistingCondition> matchPreExistingConds(String text) {
         return preExistingConditionDao.getBySubnames(extractSubnames(text));
+    }
+    
+    public List<Agent> matchAgents(String text) {
+        List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
+        return ObjectTools.reduceAll(agents,"id", "name", "nscNumber","description");
     }
 
 
@@ -273,6 +282,23 @@ public class CreateAdverseEventAjaxFacade {
     public String addPriorTherapy(int index, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyFormSection", index, aeReportId);
     }
+    
+    /**
+     * Returns the HTML for the section of the other causes form for
+     * the other cause with the given index
+     * @param index
+     * @return
+     */
+    public String addPriorTherapyAgent(int index,int parentIndex, Integer aeReportId) {
+        return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
+    }
+    
+    private String renderIndexedAjaxView(String viewName, int index, int parentIndex, Integer aeReportId) {
+        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+        params.put("index", Integer.toString(index));
+        params.put("parentIndex", Integer.toString(parentIndex));
+        return renderAjaxView(viewName, aeReportId, params);
+    }
 
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
@@ -380,6 +406,12 @@ public class CreateAdverseEventAjaxFacade {
 			PreExistingConditionDao preExistingConditionDao) {
 		this.preExistingConditionDao = preExistingConditionDao;
 	}
+	@Required
+	public void setAgentDao(AgentDao agentDao) {
+		this.agentDao = agentDao;
+	}
+	
+	
     
     
     

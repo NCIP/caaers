@@ -26,4 +26,8 @@
     </tags:renderRow>
     <tags:renderRow field="${fieldGroup.fields[2]}"/>
      <tags:renderRow field="${fieldGroup.fields[3]}"/>
+     
+     <div id="pptAgent${index}" style="display: none">
+     <tags:listEditorAddButton divisionClass="ptAgent${index}" label="Add an Agent"/>
+     </div>
 </ae:fieldGroupDivision>

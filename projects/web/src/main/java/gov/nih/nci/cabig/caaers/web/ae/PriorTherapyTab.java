@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
  */
 public class PriorTherapyTab extends AeTab {
     private RepeatingFieldGroupFactory fieldFactory;
+    private RepeatingFieldGroupFactory agentFactory;
 
     public PriorTherapyTab() {
         super("Prior Therapies", "Therapies", "ae/priorTherapies");
@@ -32,13 +33,21 @@ public class PriorTherapyTab extends AeTab {
         fieldFactory.addField(new DefaultTextField("other", "Other", false));
         fieldFactory.addField(new DefaultDateField("startDate", "Start Date", false));
         fieldFactory.addField(new DefaultDateField("endDate", "End Date", false));
+        fieldFactory.addField(new AutocompleterField("priorTherapyAgents.agent", "Agent", false));
+        
+        agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
+        //agentFactory.addField(new AutocompleterField("agent", "Agent", false));
+        
+        
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPriorTherapies().size());
+        groups.addRepeatingFieldGroupFactory(agentFactory);
         return groups;
     }
 

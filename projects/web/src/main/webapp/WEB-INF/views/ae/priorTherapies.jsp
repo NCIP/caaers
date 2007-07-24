@@ -30,8 +30,14 @@
 
                 AE.createStandardAutocompleter(
                     this.priorTherapyProperty, this.termPopulator.bind(this),
-                    function(priorTherapy) { return priorTherapy.text })
-
+                    function(priorTherapy) {  return priorTherapy.text }, {
+                        afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                        	 $(this.priorTherapyProperty).value = selectedChoice.id
+                            this.showAddAgent(selectedChoice,index)
+                        }.bind(this)
+                    })
+                    
+				this.showAddAgent( { id: $(this.priorTherapyProperty).value },index) 
                 this.initializePriorTherapyOrOther()
             },
 
@@ -57,6 +63,22 @@
                     priorTherapyRow.getElementsByClassName("value")[0].disableDescendants()
                 }
             },
+            
+             showAddAgent: function(selectedChoice,index) {
+             	//console.debug(selectedChoice)
+             	//console.debug(index)
+             	var id = selectedChoice.id;
+             	var addAgentsTo=new Array("3","4","5","7","8","11")
+                if (addAgentsTo.indexOf(id) !=  -1){
+                	// show Add agents button
+                	$('pptAgent'+index).style.display="";
+                }
+                else{
+                	// hide Add agents button
+                	$('pptAgent'+index).style.display="none";
+                }
+               
+            },
 
             initializePriorTherapyOrOther: function() {
                 var otherValue = $(this.otherProperty).value
@@ -67,20 +89,66 @@
                 }
             }
         })
+        
+        
+         var EnterPriorTherapyAgent = Class.create()
+        Object.extend(EnterPriorTherapyAgent.prototype, {
+            initialize: function(index, parentIndex, priorTherapyName) {
+                this.index = index
+                this.parentIndex = parentIndex
+                var cmProperty = "aeReport.adverseEventPriorTherapies[" + parentIndex + "].priorTherapyAgents[" + index + "]";
+                this.priorTherapyProperty = cmProperty + ".agent"
+
+                if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
+
+                AE.createStandardAutocompleter(
+                    this.priorTherapyProperty, this.termPopulator.bind(this),
+                    function(agent) { return agent.name })
+            },
+
+            termPopulator: function(autocompleter, text) {
+                createAE.matchAgents(text, function(values) {
+                    autocompleter.setChoices(values)
+                })
+            },
+
+          
+        })
+        
+        
+        function hello(id, parentIndex){
+        	new ListEditor(id, createAE, "PriorTherapyAgent", {
+                addFirstAfter: "priorTherapy-"+parentIndex,
+                addParameters: [parentIndex , aeReportId],
+                addCallback: function(index) {
+                    new EnterPriorTherapyAgent(index,parentIndex)	
+                }
+            })
+        
+        }
 
         Element.observe(window, "load", function() {
             <c:forEach items="${command.aeReport.adverseEventPriorTherapies}" varStatus="status" var="aePriorTherapy">
             new EnterPriorTherapy(${status.index}, '${aePriorTherapy.priorTherapy.text}')
+            hello("ptAgent${status.index}",${status.index})
+            	<c:forEach items="${aePriorTherapy.priorTherapyAgents}" varStatus="s" var="priorTherapyAgent">
+            		new EnterPriorTherapyAgent(${s.index},${status.index},'${priorTherapyAgent.agent.name}')	
+            	</c:forEach>
             </c:forEach>
 
-            new ListEditor("priorTherapy", createAE, "PriorTherapy", {
+            new PriorTherapyListEditor("priorTherapy", createAE, "PriorTherapy", {
                 addFirstAfter: "single-fields",
+                addAfter: "ptAgent" ,
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapy(index);
                     AE.registerCalendarPopups("priorTherapy-" + index);
+                    hello("ptAgent"+index,index);
+                    
                 }
             })
+            
+            
         })
     </script>
 </head>
@@ -93,8 +161,14 @@
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">
-        <c:forEach items="${command.aeReport.adverseEventPriorTherapies}" varStatus="status">
+        <c:forEach items="${command.aeReport.adverseEventPriorTherapies}" varStatus="status" var="aePriorTherapy">
             <ae:onePriorTherapy index="${status.index}"/>
+            
+            <c:forEach items="${aePriorTherapy.priorTherapyAgents}" varStatus="s" var="priorTherapyAgent">
+            	<ae:onePriorTherapyAgent index="${s.index}" parentIndex="${status.index}"/>
+            </c:forEach>
+            
+                    
         </c:forEach>    
         </jsp:attribute>
         
