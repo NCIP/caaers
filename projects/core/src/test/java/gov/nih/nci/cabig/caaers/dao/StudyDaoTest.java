@@ -25,7 +25,7 @@ import java.util.Set;
  * @author Rhett Sutphin
  * @author Ram Chilukuri
  */
-@CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
+@CaaersUseCases({ CREATE_INSTITUTION_SAE_REPORTING_RULES, CREATE_SPONSOR_SAE_REPORTING_RULES, CREATE_STUDY_SAE_REPORTING_RULES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 	private CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
