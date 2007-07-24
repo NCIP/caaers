@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers;
 
+import gov.nih.nci.cabig.ctms.maven.uctrace.UseCase;
+
 /**
  * @author Rhett Sutphin
  */
-public enum CaaersUseCase /* implements UseCase */ {
+public enum CaaersUseCase implements UseCase {
     CREATE_STUDY(1, 1, "Create Study for AE Data Entry"),
     CREATE_PARTICIPANT(1, 2, "Create Subject"),
     ASSIGN_PARTICIPANT(1, 3, "Assign Subject to a Study"),
@@ -29,9 +31,9 @@ public enum CaaersUseCase /* implements UseCase */ {
     PUSH_AE_TO_PSC(5, 1, "Push AE Notifications to Patient Study Calendar"),
     RECIEVE_RESULTS_FROM_LABVIEWER(5, 2, "Create Expedited Report with Data from CTOM Lab Viewer"),
     
-    CREATE_INSTITUTION_SAE_REPORTING_RULES(1, 9, "Configure Institution AE Notification Triggers"),
-    CREATE_SPONSOR_SAE_REPORTING_RULES(1, 10, "Configure Sponsor Level AE Notification Triggers"),
-    CREATE_STUDY_SAE_REPORTING_RULES(1, 11, "Configure Study Level AE Notification Triggers"),
+    CREATE_INSTITUTION_SAE_REPORTING_RULES(0, 9, "Configure Institution AE Notification Triggers"),
+    CREATE_SPONSOR_SAE_REPORTING_RULES(0, 10, "Configure Sponsor Level AE Notification Triggers"),
+    CREATE_STUDY_SAE_REPORTING_RULES(0, 11, "Configure Study Level AE Notification Triggers"),
     
     ;
     
