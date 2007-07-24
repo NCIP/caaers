@@ -299,6 +299,12 @@
             <artifactId>spring-mock</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+            <groupId>gov.nih.nci.cabig.ctms</groupId>
+            <artifactId>uctrace-maven-plugin</artifactId>
+            <version>0.3-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 </project>
