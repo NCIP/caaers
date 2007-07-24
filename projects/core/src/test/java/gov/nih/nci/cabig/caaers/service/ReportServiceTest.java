@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,12 +121,23 @@ public class ReportServiceTest extends CaaersTestCase {
 		report.setReportDefinition(reportDef);
 		report.setAeReport(aeReport);
 	}
+    
+    @Override
+    protected void tearDown() throws Exception {
+    	// TODO Auto-generated method stub
+    	super.tearDown();
+    	
+    	try{System.gc();Thread.sleep(5000);	}catch(Exception exp){}
+    }
     public static ApplicationContext getApplicationContext(){
 		String[] locations = new String[] {
 				"classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
 	            "classpath*:gov/nih/nci/cabig/caaers/testApplicationContext-reportservice.xml"
 	        };
-		return new ClassPathXmlApplicationContext(locations);
+		ApplicationContext appctx = new ClassPathXmlApplicationContext(locations);
+		SecurityTestUtils.enableAuthorization(false, appctx);
+		SecurityTestUtils.switchToSuperuser();
+		return appctx;
 	}
 	public void testFindToAddresses() {
 		ReportDefinition calendarTemplate = report.getReportDefinition();
