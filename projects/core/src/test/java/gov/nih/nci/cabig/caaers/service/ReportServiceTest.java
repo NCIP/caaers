@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * 
  * 
@@ -44,7 +47,7 @@ public class ReportServiceTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
 		super.setUp();
-		service = (ReportServiceImpl) getDeployedApplicationContext().getBean("reportService");
+		service = (ReportServiceImpl) getApplicationContext().getBean("reportService");
 		
 		Identifier id = new Identifier();
 		id.setSource("NCI");
@@ -84,7 +87,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
 		PlannedEmailNotification penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
-		penf.setId(2999);
+		penf.setId(2998);
 		penf.setIndexOnTimeScale(2);
 		penf.setSubjectLine("Subject Line for day 2");
 		penf.setNotificationBodyContent(content);
@@ -93,7 +96,7 @@ public class ReportServiceTest extends CaaersTestCase {
 		
 		penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
-		penf.setId(2999);
+		penf.setId(3999);
 		penf.setIndexOnTimeScale(4);
 		penf.setSubjectLine("Subject Line for day 4");
 		penf.setNotificationBodyContent(content);
@@ -115,7 +118,13 @@ public class ReportServiceTest extends CaaersTestCase {
 		report.setReportDefinition(reportDef);
 		report.setAeReport(aeReport);
 	}
-
+    public static ApplicationContext getApplicationContext(){
+		String[] locations = new String[] {
+				"classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
+	            "classpath*:gov/nih/nci/cabig/caaers/testApplicationContext-reportservice.xml"
+	        };
+		return new ClassPathXmlApplicationContext(locations);
+	}
 	public void testFindToAddresses() {
 		ReportDefinition calendarTemplate = report.getReportDefinition();
 		PlannedNotification pnf = calendarTemplate.getPlannedNotifications().get(0);
