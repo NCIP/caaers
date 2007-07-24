@@ -21,9 +21,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Sujith Vellat Thayyilthodi
- * @author Rhett Sutphin
- * @author Ram Chilukuri
+ * @author Srini Akkala
+ * @author Vinay Kumar
  */
 @CaaersUseCases({ CREATE_INSTITUTION_SAE_REPORTING_RULES, CREATE_SPONSOR_SAE_REPORTING_RULES, CREATE_STUDY_SAE_REPORTING_RULES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
