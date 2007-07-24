@@ -70,11 +70,13 @@ public class ReportServiceTest extends CaaersTestCase {
         
         p.addIdentifier(idp);
         StudyParticipantAssignment spa = new StudyParticipantAssignment();
+        spa.setParticipant(p);
         p.addAssignment(spa);
-        
+      
         StudySite ss = new StudySite();
         ss.setStudy(study);
 		aeReport.setAssignment(spa);
+		ss.addAssignment(spa);
 		spa.setStudySite(ss);
 		
 		List<Recipient> rList = new ArrayList<Recipient>();
