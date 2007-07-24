@@ -70,7 +70,7 @@ public class ReportServiceTest extends CaaersTestCase {
         
         p.addIdentifier(idp);
         StudyParticipantAssignment spa = new StudyParticipantAssignment();
-        spa.setParticipant(p);
+        //spa.setParticipant(p);
         p.addAssignment(spa);
       
         StudySite ss = new StudySite();
