@@ -21,10 +21,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author Srini Akkala
- * @author Vinay Kumar
+ * @author Sujith Vellat Thayyilthodi
+ * @author Rhett Sutphin
+ * @author Ram Chilukuri
  */
-@CaaersUseCases({ CREATE_INSTITUTION_SAE_REPORTING_RULES, CREATE_SPONSOR_SAE_REPORTING_RULES, CREATE_STUDY_SAE_REPORTING_RULES })
+@CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 	private CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
