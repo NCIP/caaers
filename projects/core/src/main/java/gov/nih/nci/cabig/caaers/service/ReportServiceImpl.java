@@ -4,6 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -21,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.scheduler.runtime.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.IOException;
@@ -48,7 +50,9 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ReportServiceImpl  implements ReportService {
     private NowFactory nowFactory;
-
+    private SchedulerService schedulerService;
+    private ReportDao reportDao;
+    
     public  List<String> findToAddresses(PlannedNotification pnf, Report rs){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
@@ -130,7 +134,9 @@ public class ReportServiceImpl  implements ReportService {
 		map.put("study", report.getAeReport().getStudy());
 		return map;
 	}
-
+	
+	
+	
     /**
      * Creates a report from the given definition and associates it with the
      * given aeReport.  Initiates all notifications for the report.
@@ -214,10 +220,36 @@ public class ReportServiceImpl  implements ReportService {
                 }//for each to
             }//for each pnf
         }//~if
+        
+        //save the report
+        reportDao.save(report);
+        
+        //schedule the report. 
+        schedulerService.scheduleNotification(report);
+        
         return report;
     }
 
-    public void setNowFactory(NowFactory nowFactory) {
+	public void deleteReport(Report report) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setNowFactory(NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
+
+	public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
+
+
+	/**
+	 * @param reportDao the reportDao to set
+	 */
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
+    
+    
 }

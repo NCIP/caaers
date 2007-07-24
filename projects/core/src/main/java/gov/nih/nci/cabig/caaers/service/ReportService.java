@@ -28,8 +28,16 @@ public interface ReportService {
     
    /**
     * Creates a report from the given definition and associates it with the
-    * given aeReport.  Initiates all notifications for the report.
+    * given aeReport and saves it in the database.
+    * 
+    * Also it will schedule the report. 
     */
-   Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
-    
+   public Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
+   
+   /**
+    * Will mark the report as deleted. 
+    * At present it will unschedule the pending scheduled notifications present in the scheduler, by 
+    * delegating the call to SchedulerService.
+    */
+   public void deleteReport(Report report);
 }
