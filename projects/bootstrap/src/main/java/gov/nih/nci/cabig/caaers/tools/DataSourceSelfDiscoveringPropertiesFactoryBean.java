@@ -37,6 +37,7 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     public static final String QUARTZ_DELEGATE_PROPERTY_NAME= "jdbc.quartz.delegateClassName";
     public static final String DEFAULT_POSTGRESQL_DIALECT
         = "edu.northwestern.bioinformatics.bering.dialect.hibernate.ImprovedPostgreSQLDialect";
+    public static final String SCHEMA_PROPERTY_NAME = "datasource.schema";
 
     private Properties properties;
     private Properties defaults;
@@ -122,6 +123,8 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
         
         String quartzDelegateClass = selectQuartzDelegateClass();
         if(quartzDelegateClass != null) properties.setProperty(QUARTZ_DELEGATE_PROPERTY_NAME, quartzDelegateClass);
+        String schema = selectSchema();
+        if(schema != null) properties.setProperty(SCHEMA_PROPERTY_NAME, schema);
     }
     
    
@@ -182,6 +185,22 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     		if(db.toLowerCase().contains("oracle")) return oracleClass;
     	}
     	return defaultClass;
+    	
+    }
+    /**
+     * Jackrabbit calls database vendor as schema , jackrabbit needs this variable
+     * @return
+     */
+    private String selectSchema() {
+    	String rdbms = properties.getProperty(RDBMS_PROPERTY_NAME);
+    	String driver = properties.getProperty(DRIVER_PROPERTY_NAME);
+    	
+    	String db = (rdbms != null) ? rdbms : driver;
+    	if(db != null){ 
+    		if(db.toLowerCase().contains("postgres")) return "postgresql";
+    		if(db.toLowerCase().contains("oracle")) return "oracle";
+    	}
+    	return db;   	
     	
     }
 }
