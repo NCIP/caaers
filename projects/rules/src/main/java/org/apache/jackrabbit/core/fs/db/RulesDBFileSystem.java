@@ -1,20 +1,24 @@
-package gov.nih.nci.cabig.caaers.rules.db;
+package org.apache.jackrabbit.core.fs.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+
 import java.util.Properties;
 
+import org.apache.jackrabbit.core.fs.db.DbFileSystem;
 
-public class RulesDBFileSystem extends org.apache.jackrabbit.core.fs.db.DbFileSystem{
+
+public class RulesDBFileSystem extends DbFileSystem{
 	
 
 
 	public RulesDBFileSystem() {
 		
-		
-		Properties props = DbPropertyConfigurator.getProperties();
 
+		DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+		
+		Properties props = b.getProperties();
+		//props.list(System.out);
+		
 		this.driver = props.getProperty("datasource.driver");
 		this.password = props.getProperty( "datasource.password");
 		this.user = props.getProperty( "datasource.username");

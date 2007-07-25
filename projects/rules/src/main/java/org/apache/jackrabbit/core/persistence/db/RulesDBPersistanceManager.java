@@ -1,19 +1,25 @@
-package gov.nih.nci.cabig.caaers.rules.db;
+package org.apache.jackrabbit.core.persistence.db;
 
-import java.util.Properties;
 
 import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 
-import org.apache.jackrabbit.core.state.db.SimpleDbPersistenceManager;
+import java.util.Properties;
 
-@SuppressWarnings("deprecation")
+import org.apache.jackrabbit.core.persistence.db.SimpleDbPersistenceManager;
+
+
 public class RulesDBPersistanceManager extends SimpleDbPersistenceManager {
 
 
 	
 	public RulesDBPersistanceManager() {
+		
 
-		Properties props = DbPropertyConfigurator.getProperties();
+
+DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+		
+		Properties props = b.getProperties();
+		
 
 		this.driver = props.getProperty("datasource.driver");
 		this.password = props.getProperty( "datasource.password");
