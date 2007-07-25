@@ -17,7 +17,6 @@ public class RulesDBFileSystem extends DbFileSystem{
 		DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
-		//props.list(System.out);
 		
 		this.driver = props.getProperty("datasource.driver");
 		this.password = props.getProperty( "datasource.password");
