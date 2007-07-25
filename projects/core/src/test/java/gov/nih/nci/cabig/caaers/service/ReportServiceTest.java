@@ -37,6 +37,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @since       1.0
  */
 public class ReportServiceTest extends CaaersTestCase {
+	static ApplicationContext appCtx;
 	ExpeditedAdverseEventReport aeReport;
 	Report report;
 	ReportDefinition reportDef;
@@ -134,10 +135,12 @@ public class ReportServiceTest extends CaaersTestCase {
 				"classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
 	            "classpath*:gov/nih/nci/cabig/caaers/testApplicationContext-reportservice.xml"
 	        };
-		ApplicationContext appctx = new ClassPathXmlApplicationContext(locations);
-		SecurityTestUtils.enableAuthorization(false, appctx);
-		SecurityTestUtils.switchToSuperuser();
-		return appctx;
+		if(appCtx == null){
+			appCtx = new ClassPathXmlApplicationContext(locations);
+			SecurityTestUtils.enableAuthorization(false, appCtx);
+			SecurityTestUtils.switchToSuperuser();
+		}
+		return appCtx;
 	}
 	public void testFindToAddresses() {
 		ReportDefinition calendarTemplate = report.getReportDefinition();
