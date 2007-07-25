@@ -13,6 +13,19 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-autowire="no">
 
 	<tx:annotation-driven proxy-target-class="true"/>
+ 
+    <bean id="rulesPropertyConfigurer" class="gov.nih.nci.cabig.caaers.tools.spring.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <bean class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
+            </bean>
+        </property>
+        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
+             at build time -->
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
 
 	<bean id="jcrSessionFactory" class="org.springmodules.jcr.JcrSessionFactory" autowire="byType">
 		<property name="repository" ref="repository"/>
@@ -33,7 +46,7 @@
 	
 	<bean id="repository" class="org.springmodules.jcr.jackrabbit.TransientRepositoryFactoryBean">
 		<property name="configuration" value="classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-postgresql.xml"/>
-		<property name="homeDir" value="file://c:/rules_repo/testrepo"/>
+		<property name="homeDir" value="s[rules.repository]"/>
 	</bean>
 
 
@@ -80,5 +93,5 @@
 	<bean id="jcrService" class="gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl" autowire="byType">
 		<property name="template" ref="jcrTemplate"/>
 	</bean>
-	
+		
 </beans>
