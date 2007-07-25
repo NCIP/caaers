@@ -1,11 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -23,10 +20,10 @@ public class SurgeryInterventionTab extends AeTab {
         String baseProp = "aeReport.surgeryIntervention";
 
         
-        allFields.getFields().add(new DefaultTextField(baseProp + ".treatmentArm", "Treatment arm", false));
-        allFields.getFields().add(new DefaultTextArea(baseProp + ".description", "Treatment arm description", false));
-        allFields.getFields().add(new AutocompleterField(baseProp + ".anatomicSite", "Intervention site", false));
-        allFields.getFields().add(new DefaultDateField(
+        allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".treatmentArm", "Treatment arm", false));
+        allFields.getFields().add(InputFieldFactory.createTextArea(baseProp + ".description", "Treatment arm description", false));
+        allFields.getFields().add(InputFieldFactory.createAutocompleterField(baseProp + ".anatomicSite", "Intervention site", false));
+        allFields.getFields().add(InputFieldFactory.createDateField(
                 baseProp + ".interventionDate", "Date of intervention",  false));
     }
 

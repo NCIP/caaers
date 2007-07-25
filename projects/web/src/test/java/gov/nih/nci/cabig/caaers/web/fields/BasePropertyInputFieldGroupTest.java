@@ -17,7 +17,7 @@ public class BasePropertyInputFieldGroupTest extends CaaersTestCase {
     }
 
     public void testAddedFieldsWrapped() throws Exception {
-        group.addField(new DefaultTextField("name", "Name"));
+        group.addField(InputFieldFactory.createTextField("name", "Name"));
         assertEquals("Wrong number of fields added", 1, group.getFields().size());
         assertEquals("Wrong wrapped property name", "base.prop.name",
             group.getFields().get(0).getPropertyName());
@@ -25,7 +25,7 @@ public class BasePropertyInputFieldGroupTest extends CaaersTestCase {
 
     public void testCompositeFieldSubfieldsWrapped() throws Exception {
         group.addField(new CompositeField("amount",
-            new DefaultInputFieldGroup().addField(new DefaultTextField("currency", ""))));
+            new DefaultInputFieldGroup().addField(InputFieldFactory.createTextField("currency", ""))));
         assertEquals("Wrong number of fields added", 1, group.getFields().size());
         InputField actual = group.getFields().get(0);
         assertEquals("Wrong wrapped property name", "base.prop.amount", actual.getPropertyName());
@@ -38,7 +38,7 @@ public class BasePropertyInputFieldGroupTest extends CaaersTestCase {
     
     public void testFieldsNotDirectlyModifiable() throws Exception {
         try {
-            group.getFields().add(new DefaultTextField("no", "No"));
+            group.getFields().add(InputFieldFactory.createTextField("no", "No"));
             fail("Exception not thrown");
         } catch (UnsupportedOperationException uoe) {
             // expected

@@ -3,14 +3,12 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
 import java.util.Map;
 
@@ -51,14 +49,14 @@ public class AgentsTab extends StudyTab {
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		 if(rfgFactory == null){
 			 rfgFactory = new RepeatingFieldGroupFactory("main", "studyAgents");
-			 AutocompleterField agentField = new AutocompleterField("agent", "Agent", true);
-			 agentField.setSize(70);
-			 agentField.setEnableClearButton(true);
-			 //agentField.getAttributes().put(InputField.DETAILS, "Enter a portion of the agent name you are looking for");
+			 InputField agentField = InputFieldFactory.createAutocompleterField("agent", "Agent", true);
+             InputFieldAttributes.setSize(agentField, 50);
+             agentField.getAttributes().put(InputField.ENABLE_CLEAR , true);
+             //agentField.getAttributes().put(InputField.DETAILS, "Enter a portion of the agent name you are looking for");
 			 rfgFactory.addField(agentField);
-			 DefaultTextField indField = new DefaultTextField("investigationalNewDrugIdentifier","IND Identifier", false);
+			 InputField indField = InputFieldFactory.createTextField("investigationalNewDrugIdentifier","IND Identifier", false);
 			 rfgFactory.addField(indField);
-			 DefaultCheckboxField indIndicator = new DefaultCheckboxField("investigationalNewDrugIndicator","IND Indicator");
+			 InputField indIndicator = InputFieldFactory.createCheckboxField("investigationalNewDrugIndicator","IND Indicator");
 			 rfgFactory.addField(indIndicator);
 		 }
 		 Study study = (Study)command;

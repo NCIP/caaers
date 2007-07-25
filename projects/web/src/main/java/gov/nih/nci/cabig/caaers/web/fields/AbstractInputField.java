@@ -87,7 +87,8 @@ public abstract class AbstractInputField implements InputField {
 
     public String toString() {
         return new StringBuilder(getClass().getSimpleName())
-            .append("[propertyName=").append(getPropertyName()).append(']')
+            .append("[propertyName=").append(getPropertyName())
+            .append("; category=").append(getCategoryName()).append(']')
             .toString();
     }
 }

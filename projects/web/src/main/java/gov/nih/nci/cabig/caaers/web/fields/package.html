@@ -1,0 +1,30 @@
+<html>
+<body>
+
+<h2>Goal</h2>
+
+Provides an object model for HTML form fields.  Fields are aggregated into tab definitions
+using the {@link TabWithFields} {@link Tab} subclass.  Modeling & aggregating form fields this
+way makes it easy to a) move fields between tabs by making changes in a single place and b) avoid
+boilerplate HTML in the tabs' views.
+
+The base interface is {@link InputField}.
+
+<h2>Design</h2>
+<p>
+    InputFields are divided into categories.  The implementation of aggregation (see
+    {@link RepeatingFieldGroupFactory} and {@link CompositeField}) involves several
+    wrapper classes.  For this reason, there is not one implementation per category,
+    with specialized behavior in each category-implementing class.  (If it were implemented
+    so, there would need to be a new subclass for each category for each distinct
+    type of wrapping.)
+</p><p>
+    Instead, there is a main class {@link DefaultInputField} and a factory
+    {@link InputFieldFactory}.  Specialized per-category properties are stored in
+    the {@link InputField#getAttributes attributes} map for the field.  Known keys
+    for the attributes are defined in {@link InputField} itself.
+    {@link InputFieldAttributes} provides type-safe helpers for setting the known attributes.
+</p>
+
+</body>
+</html>

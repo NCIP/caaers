@@ -7,11 +7,10 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
  * @author Rhett Sutphin
@@ -27,8 +26,8 @@ public class ConcomitantMedicationsTab extends AeTab {
                 return "Medication " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("agent", "Known medication", false));
-        fieldFactory.addField(new DefaultTextField("other", "Other", false));
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("agent", "Known medication", false));
+        fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
     }
 
     @Override

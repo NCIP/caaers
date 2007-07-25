@@ -7,12 +7,10 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
  * @author Rhett Sutphin
@@ -29,11 +27,11 @@ public class PriorTherapyTab extends AeTab {
                 return "Medication " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("priorTherapy", "Therapy", false));
-        fieldFactory.addField(new DefaultTextField("other", "Other", false));
-        fieldFactory.addField(new DefaultDateField("startDate", "Start Date", false));
-        fieldFactory.addField(new DefaultDateField("endDate", "End Date", false));
-        fieldFactory.addField(new AutocompleterField("priorTherapyAgents.agent", "Agent", false));
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapy", "Therapy", false));
+        fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
+        fieldFactory.addField(InputFieldFactory.createDateField("startDate", "Start Date", false));
+        fieldFactory.addField(InputFieldFactory.createDateField("endDate", "End Date", false));
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapyAgents.agent", "Agent", false));
         
         agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
         //agentFactory.addField(new AutocompleterField("agent", "Agent", false));

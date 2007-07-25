@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,18 +55,18 @@ class PersonnelTab extends StudyTab {
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
-		siteFieldGroup.getFields().add(new DefaultSelectField("studySiteIndex", "Site", true, 
-				BaseSelectField.collectOptions(collectStudySiteDropdown(command), "code", "desc")));
+		siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("studySiteIndex", "Site", true,
+				InputFieldFactory.collectOptions(collectStudySiteDropdown(command), "code", "desc")));
 		map.addInputFieldGroup(siteFieldGroup);
 		
 		if(fields == null){
 			fields = new ArrayList<InputField>();
-			AutocompleterField investigatorField = new AutocompleterField("researchStaff", "Research Staff", true);
+			InputField investigatorField = InputFieldFactory.createAutocompleterField("researchStaff", "Research Staff", true);
 			//sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the investigator name you are looking for");
 			fields.add(investigatorField);
-			fields.add(new DefaultSelectField("roleCode", "Role", true, 
+			fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true,
 					collectOptionsFromConfig("studyPersonnelRoleRefData", "desc","desc")));
-			fields.add(new DefaultSelectField("statusCode", "Status", true, 
+			fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true, 
 					collectOptionsFromConfig("studyPersonnelStatusRefData", "desc","desc")));
 		}
 		

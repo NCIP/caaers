@@ -13,7 +13,7 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
     private RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("start", "root.list");
 
     public void testRegularFieldsWrapped() throws Exception {
-        factory.addField(new DefaultTextField("textField", "DC", false));
+        factory.addField(InputFieldFactory.createTextField("textField", "DC", false));
         InputFieldGroup actualGroup = factory.createGroup(3);
         assertEquals("Wrong number of fields", 1, actualGroup.getFields().size());
         InputField actualField = actualGroup.getFields().get(0);
@@ -25,7 +25,7 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
 
     @SuppressWarnings("unchecked")
     public void testSelectFieldsWrapped() throws Exception {
-        factory.addField(new DefaultSelectField("selectField", "DC", false,
+        factory.addField(InputFieldFactory.createSelectField("selectField", "DC", false,
             Collections.<Object, Object>singletonMap("k", "V")));
         InputFieldGroup actualGroup = factory.createGroup(7);
         assertEquals("Wrong number of fields", 1, actualGroup.getFields().size());
@@ -34,8 +34,7 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
             "root.list[7].selectField", actualField.getPropertyName());
         assertEquals("Category not preserved",
             InputField.Category.SELECT, actualField.getCategory());
-        Map<Object,Object> actualOptions =
-            (Map<Object,Object>) actualField.getAttributes().get(InputField.OPTIONS);
+        Map<Object,Object> actualOptions = InputFieldAttributes.getOptions(actualField);
         assertNotNull(actualOptions);
         assertEquals("Wrong number of options", 1, actualOptions.size());
         assertEquals("Wrong option", "V", actualOptions.get("k"));
@@ -44,10 +43,10 @@ public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
     @SuppressWarnings("unchecked")
     public void testCompositeFieldsWrapped() throws Exception {
         DefaultInputFieldGroup group = new DefaultInputFieldGroup("dc");
-        group.setFields(Collections.<InputField>singletonList(new DefaultTextField("subfield", "DC", true)));
+        group.setFields(Collections.<InputField>singletonList(InputFieldFactory.createTextField("subfield", "DC", true)));
         factory.addField(new CompositeField("compositeField", group));
 
-        // create other groups to make sure share state isn't being mutated
+        // create other groups to make sure shared state isn't being mutated
         for (int i = 0 ; i <= 3 ; i++) factory.createGroup(i);
 
         InputFieldGroup actualGroup = factory.createGroup(4);

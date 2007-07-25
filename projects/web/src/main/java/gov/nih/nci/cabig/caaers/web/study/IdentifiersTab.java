@@ -2,16 +2,11 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -55,15 +50,15 @@ class IdentifiersTab extends StudyTab {
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		 if(rfgFactory == null){
 			 rfgFactory = new RepeatingFieldGroupFactory("main", "identifiersLazy");
-			 rfgFactory.addField(new DefaultTextField("value","Identifier", true));
-			 rfgFactory.addField(new DefaultSelectField("type", "Identifier Type", true, 
+			 rfgFactory.addField(InputFieldFactory.createTextField("value","Identifier", true));
+			 rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
 				collectOptionsFromConfig("identifiersType", "desc","desc")));
-			 //AutocompleterField sourceField = new AutocompleterField("source", "Assigning Authority", true);
+			 //InputField sourceField = InputFieldFactory.createAutocompleterField("source", "Assigning Authority", true);
 			 //sourceField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
 			 //rfgFactory.addField(sourceField);
-			 rfgFactory.addField(new DefaultSelectField("source", "Assigning Authority", true,
+			 rfgFactory.addField(InputFieldFactory.createSelectField("source", "Assigning Authority", true,
 					 collectOptions(organizationDao.getAll(), "name", "name")));
-			 rfgFactory.addField(new DefaultCheckboxField("primaryIndicator","Primary Indicator"));
+			 rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator","Primary Indicator"));
 		 }
 		 Study study = (Study)command;
 		 InputFieldGroupMap map = new InputFieldGroupMap();

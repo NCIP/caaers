@@ -1,38 +1,28 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.web.fields.BaseSelectField.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.BooleanSelectField;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.LongSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-
-import java.util.Map;
-import java.util.Arrays;
-import java.util.ListIterator;
-import java.util.LinkedHashMap;
-import java.util.Collection;
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Required;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -58,41 +48,40 @@ public class BasicsTab extends AeTab {
         super("Enter basic AE information", "AEs", "ae/enterBasic");
 
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
-        reportFieldGroup.getFields().add(new DefaultDateField(
+        reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
             "aeReport.detectionDate", "Detection date", true));
 
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
-        mainFieldFactory.addField(new LongSelectField("grade", "Grade", true,
-                collectOptions(EXPEDITED_GRADES, "name", null)));
-        DefaultSelectField attributionField = new DefaultSelectField(
+        mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
+                InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
+        InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
-        attributionField.getAttributes().put(InputField.DETAILS,
+        InputFieldAttributes.setDetails(attributionField,
             "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
         mainFieldFactory.addField(attributionField);
-        mainFieldFactory.addField(new DefaultSelectField(
+        mainFieldFactory.addField(InputFieldFactory.createSelectField(
             "hospitalization", "Hospitalization", true,
-                collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
-        mainFieldFactory.addField(new BooleanSelectField(
+                InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
+        mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
             "expected", "Expected", true));
-        mainFieldFactory.addField(new DefaultTextArea(
+        mainFieldFactory.addField(InputFieldFactory.createTextArea(
             "comments", "Comments", false));
 
         ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
-        AutocompleterField ctcTermField = new AutocompleterField("ctcTerm", "CTC term", true);
-        ctcTermField.getAttributes().put(InputField.DETAILS,
-            "Type a portion of the CTC term you are looking for.  " +
-            "If you select a category, only terms in that category will be shown.");
+        InputField ctcTermField = InputFieldFactory.createAutocompleterField("ctcTerm", "CTC term", true);
+        InputFieldAttributes.setDetails(ctcTermField,
+            "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
         ctcTermFieldFactory.addField(ctcTermField);
 
         ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
-        ctcOtherFieldFactory.addField(new DefaultTextArea("detailsForOther", "Other (specify)", false));
+        ctcOtherFieldFactory.addField(InputFieldFactory.createTextArea("detailsForOther", "Other (specify)", false));
     }
 
     private Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
         attributionOptions.putAll(
-            BaseSelectField.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+            InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
         return attributionOptions;
     }
 

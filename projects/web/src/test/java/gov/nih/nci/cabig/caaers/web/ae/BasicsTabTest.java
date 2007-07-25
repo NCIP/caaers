@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import org.easymock.classextension.EasyMock;
 import static org.easymock.classextension.EasyMock.*;
 
@@ -84,7 +85,7 @@ public class BasicsTabTest extends AeTabTestCase {
         InputFieldGroup main = getFieldGroup("main0");
         InputField gradeField = main.getFields().get(0);
         assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField.getPropertyName());
-        Map<Object, Object> options = (Map<Object, Object>) gradeField.getAttributes().get(InputField.OPTIONS);
+        Map<Object, Object> options = InputFieldAttributes.getOptions(gradeField);
         assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL.getName()));
         assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL.toString()));
         assertEquals("Wrong number of options", 5, options.size());

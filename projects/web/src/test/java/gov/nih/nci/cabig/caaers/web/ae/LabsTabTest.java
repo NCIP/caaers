@@ -4,8 +4,6 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 
-import java.util.List;
-
 /**
  * @author Rhett Sutphin
  */

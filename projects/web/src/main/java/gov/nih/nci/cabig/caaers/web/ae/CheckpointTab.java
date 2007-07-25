@@ -5,9 +5,9 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultCheckboxField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.apache.commons.logging.Log;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 /**
  * @author Rhett Sutphin
@@ -36,7 +35,7 @@ public class CheckpointTab extends AeTab {
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
         for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
-            optional.getFields().add(new DefaultCheckboxField(
+            optional.getFields().add(InputFieldFactory.createCheckboxField(
                 "optionalReportDefinitionsMap[" + reportDefinition.getId() + ']',
                 reportDefinition.getName()
             ));

@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.Map;
 
@@ -23,16 +22,16 @@ public class LabsTab extends AeTab {
                 return "Lab " + c;
             }
         });
-        fieldFactory.addField(new DefaultTextField("name", "Lab test name", true));
-        fieldFactory.addField(new DefaultTextField("units", "Units", true));
+        fieldFactory.addField(InputFieldFactory.createTextField("name", "Lab test name", true));
+        fieldFactory.addField(InputFieldFactory.createTextField("units", "Units", true));
         addLabValueFields("baseline", "Baseline");
         addLabValueFields("nadir", "Worst");
         addLabValueFields("recovery", "Recovery");
     }
 
     private void addLabValueFields(String propName, String displayName) {
-        fieldFactory.addField(new DefaultTextField(propName + ".value", displayName + " value", false));
-        fieldFactory.addField(new DefaultDateField(propName + ".date", displayName + " date", false));
+        fieldFactory.addField(InputFieldFactory.createTextField(propName + ".value", displayName + " value", false));
+        fieldFactory.addField(InputFieldFactory.createDateField(propName + ".date", displayName + " date", false));
     }
 
     @Override

@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
-import gov.nih.nci.cabig.caaers.web.rule.DefaultTextArea;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -26,7 +26,7 @@ public class CompositeFieldTest extends CaaersTestCase {
 
     public void testSubfieldPropertyNames() throws Exception {
         group.setFields(
-            Collections.<InputField>singletonList(new DefaultTextField("field", "DC", true)));
+            Collections.<InputField>singletonList(InputFieldFactory.createTextField("field", "DC", true)));
 
         List<InputField> subfields = field.createSubfields();
         assertEquals("Wrong number of subfields", 1, subfields.size());
@@ -35,7 +35,7 @@ public class CompositeFieldTest extends CaaersTestCase {
 
     public void testSubfieldPropertyNamesWhenPropertyNameIsNull() throws Exception {
         group.setFields(
-            Collections.<InputField>singletonList(new DefaultTextField("field", "DC", true)));
+            Collections.<InputField>singletonList(InputFieldFactory.createTextField("field", "DC", true)));
         field.setPropertyName(null);
 
         List<InputField> subfields = field.createSubfields();

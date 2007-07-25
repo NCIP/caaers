@@ -1,15 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,23 +29,23 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 		super(longTitle, shortTitle, viewName);
 		map = new InputFieldGroupMap();
 		InputFieldGroup orgFieldGroup = new DefaultInputFieldGroup("reportDefinitionOrganization");
-		AutocompleterField orgField = new AutocompleterField("organization", "Organization", true);
-		orgField.getAttributes().put(InputField.DETAILS,"Enter a portion of the organization name that you are looking");
+		InputField orgField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
+		InputFieldAttributes.setDetails(orgField, "Enter a portion of the organization name that you are looking");
 		orgFieldGroup.getFields().add(orgField);
 		map.addInputFieldGroup(orgFieldGroup);
 		
 		//setup the fileds
 		InputFieldGroup fieldGroup  = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
 		List<InputField> fields = fieldGroup.getFields();
-		DefaultTextField nameField = new DefaultTextField("name","Name", true);
-		nameField.setSize(50);
-		fields.add(nameField);
-		DefaultTextArea descField = new DefaultTextArea("description", "Description", false);
-		descField.setColumns(50);
+		InputField nameField = InputFieldFactory.createTextField("name","Name", true);
+        InputFieldAttributes.setSize(nameField, 50);
+        fields.add(nameField);
+		InputField descField = InputFieldFactory.createTextArea("description", "Description", false);
+		InputFieldAttributes.setColumns(descField, 50);
 		fields.add(descField);
-		fields.add(new DefaultSelectField("timeScaleType", "Time Scale UOM", true,
+		fields.add(InputFieldFactory.createSelectField("timeScaleType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
-		fields.add(new DefaultTextField("duration", "Time Till Report Due", true));
+		fields.add(InputFieldFactory.createTextField("duration", "Time Till Report Due", true));
 		
 		map.addInputFieldGroup(fieldGroup);
 		

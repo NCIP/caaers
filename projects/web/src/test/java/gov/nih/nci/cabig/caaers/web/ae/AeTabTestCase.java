@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import org.springframework.validation.ObjectError;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -110,7 +111,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     @SuppressWarnings({ "unchecked" })
     protected Map<Object, Object> getActualSelectFieldOptions(List<InputField> fields, String propertyName) {
         InputField field = findField(fields, propertyName);
-        Map<Object, Object> options = (Map<Object, Object>) field.getAttributes().get(InputField.OPTIONS);
+        Map<Object, Object> options = InputFieldAttributes.getOptions(field);
         assertNotNull("Field for " + propertyName + " is not a select", options);
         return options;
     }

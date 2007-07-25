@@ -4,10 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -37,9 +37,9 @@ public class ReporterTab extends AeTab {
     private InputFieldGroup createPersonGroup(String person) {
         InputFieldGroup group = new DefaultInputFieldGroup(person, StringUtils.capitalize(person) + " details");
         String base = "aeReport." + person  + '.';
-        group.getFields().add(new DefaultTextField(base + "firstName", "First name", true));
-        group.getFields().add(new DefaultTextField(base + "middleName", "Middle name", false));
-        group.getFields().add(new DefaultTextField(base + "lastName", "Last name", true));
+        group.getFields().add(InputFieldFactory.createTextField(base + "firstName", "First name", true));
+        group.getFields().add(InputFieldFactory.createTextField(base + "middleName", "Middle name", false));
+        group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));
         group.getFields().add(createContactField(base, ExpeditedReportPerson.EMAIL, "E-mail address", true));
         group.getFields().add(createContactField(base, ExpeditedReportPerson.PHONE));
         group.getFields().add(createContactField(base, ExpeditedReportPerson.FAX));
@@ -53,7 +53,7 @@ public class ReporterTab extends AeTab {
     private InputField createContactField(
         String base, String contactType, String displayName, boolean required
     ) {
-        return new DefaultTextField(
+        return InputFieldFactory.createTextField(
             base + "contactMechanisms[" + contactType + ']', displayName, required);
     }
 

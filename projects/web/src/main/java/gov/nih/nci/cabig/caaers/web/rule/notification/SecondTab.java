@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
 import java.util.List;
@@ -32,10 +32,10 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 	public SecondTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 		rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.plannedNotifications");
-		rfgFactory.addField(new DefaultTextField("fromAddress","From Address", false));
-		rfgFactory.addField(new DefaultTextField("recipients","Recipients", false));
-		rfgFactory.addField(new DefaultTextField("subjectLine","Subject Line", false));
-		rfgFactory.addField(new DefaultTextField("notificationBodyContent.body","Message", false));
+		rfgFactory.addField(InputFieldFactory.createTextField("fromAddress","From Address", false));
+		rfgFactory.addField(InputFieldFactory.createTextField("recipients","Recipients", false));
+		rfgFactory.addField(InputFieldFactory.createTextField("subjectLine","Subject Line", false));
+		rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body","Message", false));
 	}
 	
 	public SecondTab() {

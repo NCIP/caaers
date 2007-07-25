@@ -4,10 +4,10 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -19,9 +19,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class AttributionTab extends AeTab {
-    private static final DefaultSelectField BASE_FIELD = new DefaultSelectField(
-        null, null, true,
-        BaseSelectField.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+    private static final Map<Object,Object> ATTRIBUTION_OPTIONS = InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null);
 
     protected AttributionTab() {
         super("Attribution", "Attribution", "ae/attribution");
@@ -97,24 +95,18 @@ public class AttributionTab extends AeTab {
             newGroup.setDisplayName(accessor.getDisplayName(causes.get(c)));
             for (int a = 0; a < report.getAdverseEvents().size(); a++) {
                 newGroup.getFields().add(
-                    new AttributionField(accessor.getKey(), a, c));
+                    createAttributionField(accessor.getKey(), a, c));
             }
             groups.add(newGroup);
         }
         return groups;
     }
 
-    private static class AttributionField extends DefaultSelectField {
-        public AttributionField(String groupKey, int aeIndex, int causeIndex) {
-            super(null, null, BASE_FIELD.isRequired(), BASE_FIELD.getOptions());
-            setPropertyName(createPropertyName(groupKey, aeIndex, causeIndex));
-        }
-
-        private String createPropertyName(String groupKey, int aeIndex, int causeIndex) {
-            return new StringBuilder()
+    private static InputField createAttributionField(String groupKey, int aeIndex, int causeIndex) {
+        String propertyName = new StringBuilder()
                 .append("attributionMap[").append(groupKey).append("][")
                 .append(aeIndex).append("][")
                 .append(causeIndex).append(']').toString();
-        }
+        return InputFieldFactory.createSelectField(propertyName, null, true, ATTRIBUTION_OPTIONS);
     }
 }

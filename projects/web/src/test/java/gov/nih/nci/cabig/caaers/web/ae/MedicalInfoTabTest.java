@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
 import java.util.Map;
 import java.util.Iterator;
@@ -132,7 +133,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
             "aeReport.participantHistory." + measure);
         InputField unitField = findField(CompositeField.getSubfields(measureField),
             "aeReport.participantHistory." + measure + ".unit");
-        return (Map<Object, Object>) unitField.getAttributes().get(InputField.OPTIONS);
+        return InputFieldAttributes.getOptions(unitField);
     }
 
     private static <K, V> void assertKeyAndValue(String message, K expectedKey, V expectedValue, Map.Entry<K, V> actual) {

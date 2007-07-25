@@ -2,18 +2,15 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.List;
@@ -38,7 +35,7 @@ public class MedicalInfoTab extends AeTab {
     private Map<Object, Object> optionsFromConfigurationProperty(String propName, String blankValue) {
         List<Lov> lov = configurationProperty.getMap().get(propName);
         if (lov == null) throw new CaaersSystemException("No LOV for " + propName);
-        return BaseSelectField.collectOptions(lov, "code", "desc", blankValue);
+        return InputFieldFactory.collectOptions(lov, "code", "desc", blankValue);
     }
 
     @Override
@@ -50,28 +47,26 @@ public class MedicalInfoTab extends AeTab {
                 optionsFromConfigurationProperty("heightUnitsRefData")))
             .addField(createParticipantMeasureField("weight", "Weight",
                 optionsFromConfigurationProperty("weightUnitsRefData")))
-            .addField(new DefaultSelectField("baselinePerformanceStatus", "Baseline performance", false,
+            .addField(InputFieldFactory.createSelectField("baselinePerformanceStatus", "Baseline performance", false,
                 optionsFromConfigurationProperty("bpsRefData", "Please select")))
             ;
 
         BasePropertyInputFieldGroup disease
             = new BasePropertyInputFieldGroup("disease", "aeReport.diseaseHistory");
-        Map<Object, Object> ctepStudyDiseaseOptions = BaseSelectField.collectOptions(
+        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
             command.getStudy().getCtepStudyDiseases(), "id", "term.term", ""
         );
-        DefaultSelectField ctepStudyDisease = new DefaultSelectField("ctepStudyDisease", "Disease from study", false,
+        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease from study", false,
             ctepStudyDiseaseOptions);
-        ctepStudyDisease.getAttributes().put(InputField.DETAILS,
-            "If the correct disease isn't listed above, enter it in other.");
-        AutocompleterField diseaseSite = new AutocompleterField("codedPrimaryDiseaseSite", "Primary disease site", false);
-        diseaseSite.getAttributes().put(InputField.DETAILS,
-            "If the correct site isn't in the autocompleter above, please enter it in other.");
+        InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease isn't listed above, enter it in other.");
+        InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary disease site", false);
+        InputFieldAttributes.setDetails(diseaseSite, "If the correct site isn't in the autocompleter above, please enter it in other.");
         disease
             .addField(ctepStudyDisease)
-            .addField(new DefaultTextField("otherPrimaryDisease", "Other disease"))
+            .addField(InputFieldFactory.createTextField("otherPrimaryDisease", "Other disease"))
             .addField(diseaseSite)
-            .addField(new DefaultTextField("otherPrimaryDiseaseSite", "Other primary disease site"))
-            .addField(new DefaultDateField("diagnosisDate", "Diagnosis date", false))
+            .addField(InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other primary disease site"))
+            .addField(InputFieldFactory.createDateField("diagnosisDate", "Diagnosis date", false))
             ;
 
         RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSites");
@@ -80,8 +75,8 @@ public class MedicalInfoTab extends AeTab {
                 return "Metastatic disease site " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("codedSite", "Site Name", false));
-        fieldFactory.addField(new DefaultTextField("otherSite", "Other Site", false));
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false));
+        fieldFactory.addField(InputFieldFactory.createTextField("otherSite", "Other Site", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(participant);
@@ -94,8 +89,8 @@ public class MedicalInfoTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(new DefaultTextField("quantity", ""))
-                .addField(new DefaultSelectField("unit", "units", false, unitOptions))
+                .addField(InputFieldFactory.createTextField("quantity", ""))
+                .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }
 

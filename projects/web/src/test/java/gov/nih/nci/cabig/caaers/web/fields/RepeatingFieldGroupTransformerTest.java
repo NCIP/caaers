@@ -16,11 +16,11 @@ public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         RepeatingFieldGroupFactory factory0 = new RepeatingFieldGroupFactory("one", "list");
-        factory0.addField(new DefaultTextField());
+        factory0.addField(InputFieldFactory.createInputField(InputField.Category.TEXT));
         RepeatingFieldGroupFactory factory1 = new RepeatingFieldGroupFactory("th", "zedz");
-        factory1.addField(new DefaultDateField());
+        factory1.addField(InputFieldFactory.createInputField(InputField.Category.DATE));
         RepeatingFieldGroupFactory factory2 = new RepeatingFieldGroupFactory("three", "alignments");
-        factory2.addField(new DefaultTextArea());
+        factory2.addField(InputFieldFactory.createInputField(InputField.Category.TEXTAREA));
 
         transformer = new RepeatingFieldGroupTransformer();
         transformer.addFactory(factory0);

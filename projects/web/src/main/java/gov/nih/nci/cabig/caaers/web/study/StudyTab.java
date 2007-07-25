@@ -4,11 +4,11 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.BaseSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -49,7 +49,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
     		String nameProperty, String valueProperty){
     	Map<Object, Object> options = new LinkedHashMap<Object, Object>();
     	options.put("" , "Please select");
-    	options.putAll(BaseSelectField.collectOptions(list,nameProperty, valueProperty));
+    	options.putAll(InputFieldFactory.collectOptions(list,nameProperty, valueProperty));
     	return options;
     }
     protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName,

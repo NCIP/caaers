@@ -2,13 +2,11 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,12 +52,12 @@ class SitesTab extends StudyTab {
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		 if(rfgFactory == null){
 			 rfgFactory = new RepeatingFieldGroupFactory("main", "studySites");
-			 AutocompleterField siteField = new AutocompleterField("organization", "Site", true);
+			 InputField siteField = InputFieldFactory.createAutocompleterField("organization", "Site", true);
 			 //siteField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
 			 rfgFactory.addField(siteField);
-			 rfgFactory.addField(new DefaultSelectField("roleCode", "Role", true, 
+			 rfgFactory.addField(InputFieldFactory.createSelectField("roleCode", "Role", true, 
 						collectOptionsFromConfig("studySiteRoleCodeRefData", "desc","desc")));
-			 rfgFactory.addField(new DefaultDateField("irbApprovalDate","IRB Approval Date", false));
+			 rfgFactory.addField(InputFieldFactory.createDateField("irbApprovalDate","IRB Approval Date", false));
 		 }
 		 InputFieldGroupMap map = new InputFieldGroupMap();
 		 Study study = (Study)command;

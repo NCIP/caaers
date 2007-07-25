@@ -7,11 +7,10 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.AutocompleterField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
  * @author Krikor Krumlian
@@ -27,8 +26,8 @@ public class PreExistingConditionsTab extends AeTab {
                 return "Pre-Existing Condition " + (index + 1);
             }
         });
-        fieldFactory.addField(new AutocompleterField("preExistingCondition", "Pre-Existing condition", false));
-        fieldFactory.addField(new DefaultTextField("other", "Other", false));
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false));
+        fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
     }
 
     @Override

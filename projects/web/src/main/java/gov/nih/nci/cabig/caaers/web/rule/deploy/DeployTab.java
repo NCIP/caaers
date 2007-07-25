@@ -14,7 +14,7 @@ public class DeployTab extends DefaultTab {
 
 	@Override
     protected void initFields() {
-/*        addField(NOTIFICATION_TYPE_FIELD_GROUP, new DefaultTextField(
+/*        addField(NOTIFICATION_TYPE_FIELD_GROUP, InputFieldFactory.createTextField(
                 "name", "Name", true));
         //ArrayList list = new ArrayList();
         //list.add("Default Email Notification");

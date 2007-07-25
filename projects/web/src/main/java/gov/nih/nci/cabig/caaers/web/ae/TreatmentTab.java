@@ -1,15 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.web.fields.BaseSelectField.collectOptions;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultDateField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultTextArea;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 
 import java.util.Map;
@@ -25,19 +21,19 @@ public class TreatmentTab extends AeTab {
         super("Treatment Information", "Treatment", "ae/treatment");
 
         treatmentFields = new DefaultInputFieldGroup("treatmentInfo");
-        treatmentFields.getFields().add(new DefaultDateField(
+        treatmentFields.getFields().add(InputFieldFactory.createDateField(
             "aeReport.treatmentInformation.firstCourseDate",
             "First course start date", false
         ));
-        treatmentFields.getFields().add(new DefaultTextField(
+        treatmentFields.getFields().add(InputFieldFactory.createTextField(
             "aeReport.treatmentInformation.adverseEventCourse.number",
             "Adverse event course number", false
         ));
-        treatmentFields.getFields().add(new DefaultDateField(
+        treatmentFields.getFields().add(InputFieldFactory.createDateField(
             "aeReport.treatmentInformation.adverseEventCourse.date",
             "Adverse event course start date", false
         ));
-        treatmentFields.getFields().add(new DefaultTextField(
+        treatmentFields.getFields().add(InputFieldFactory.createTextField(
             "aeReport.treatmentInformation.treatmentAssignmentCode",
             "Assignment code", false
         ));
@@ -53,26 +49,26 @@ public class TreatmentTab extends AeTab {
             }
         });
 
-        caFields.addField(new DefaultSelectField(
+        caFields.addField(InputFieldFactory.createSelectField(
             "studyAgent", "Study Agent", true,
-            collectOptions(command.getStudy().getStudyAgents(), "id", "agent.name")));
+            InputFieldFactory.collectOptions(command.getStudy().getStudyAgents(), "id", "agent.name")));
         caFields.addField(createDoseField("dose", "Dose", true));
-        caFields.addField(new DefaultTextArea(
+        caFields.addField(InputFieldFactory.createTextArea(
             "durationAndSchedule", "Duration and schedule", false));
 
         caFields.addField(new CompositeField(null,
             new DefaultInputFieldGroup(null, "Administration delay")
-                .addField(new DefaultTextField("administrationDelayAmount", "", false))
-                .addField(new DefaultSelectField(
+                .addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false))
+                .addField(InputFieldFactory.createSelectField(
                     "administrationDelayUnits", "", false,
-                    collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName")))
+                    InputFieldFactory.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName")))
         ));
 
         caFields.addField(createDoseField("modifiedDose", "Modified dose", false));
 
-        caFields.addField(new DefaultTextField(
+        caFields.addField(InputFieldFactory.createTextField(
             "totalDoseAdministeredThisCourse", "Total dose administered this course", false));
-        caFields.addField(new DefaultDateField(
+        caFields.addField(InputFieldFactory.createDateField(
             "lastAdministeredDate", "Date last administered", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -85,9 +81,9 @@ public class TreatmentTab extends AeTab {
 
     private CompositeField createDoseField(String doseProperty, String displayName, boolean required) {
         InputFieldGroup group = new DefaultInputFieldGroup(null, displayName)
-            .addField(new DefaultTextField("amount", "", required))
-            .addField(new DefaultTextField("units", "units", required))
-            .addField(new DefaultTextField("route", "route", false /* never required */));
+            .addField(InputFieldFactory.createTextField("amount", "", required))
+            .addField(InputFieldFactory.createTextField("units", "units", required))
+            .addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
         return new CompositeField(doseProperty, group);
     }
 }

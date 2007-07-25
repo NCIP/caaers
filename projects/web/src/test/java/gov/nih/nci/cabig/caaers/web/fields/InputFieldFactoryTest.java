@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import static gov.nih.nci.cabig.caaers.web.fields.DefaultSelectField.collectOptions;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
 import java.util.HashMap;
@@ -14,29 +13,16 @@ import java.util.LinkedList;
 /**
  * @author Rhett Sutphin
  */
-public class BaseSelectFieldTest extends CaaersTestCase {
+public class InputFieldFactoryTest extends CaaersTestCase {
     public void testOptionsStoredAsAttribute() throws Exception {
         Map<Object, Object> expectedOptions = new HashMap<Object, Object>();
-        DefaultSelectField field = new DefaultSelectField("pn", "P N", false, expectedOptions);
-        assertSame(expectedOptions, field.getAttributes().get(InputField.OPTIONS));
+        InputField field = InputFieldFactory.createSelectField("pn", "P N", false, expectedOptions);
+        assertSame(expectedOptions, InputFieldAttributes.getOptions(field));
     }
 
-    public void testOptionsAvailableAsProperty() throws Exception {
-        Map<Object, Object> expectedOptions = new HashMap<Object, Object>();
-        DefaultSelectField field = new DefaultSelectField("pn", "P N", false, expectedOptions);
-        assertSame(expectedOptions, field.getOptions());
-    }
-
-    public void testOptionsSetAsAttributeVisibleAsProperty() throws Exception {
-        Map<Object, Object> expectedOptions = new HashMap<Object, Object>();
-        DefaultSelectField field = new DefaultSelectField();
-        field.getAttributes().put(InputField.OPTIONS, expectedOptions);
-        assertSame(expectedOptions, field.getOptions());
-    }
-
-    public void testBuiltOptions() throws Exception {
+    public void testCollectedOptions() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = collectOptions(items, "code", "name");
+        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", "name");
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
@@ -44,9 +30,9 @@ public class BaseSelectFieldTest extends CaaersTestCase {
         }
     }
 
-    public void testBuiltOptionsMaintainsOrder() throws Exception {
+    public void testCollectedOptionsMaintainsOrder() throws Exception {
         List<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = collectOptions(items, "code", "name");
+        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", "name");
 
         List<Object> actualKeys = new LinkedList<Object>(actual.keySet());
         assertEquals("Wrong number of options", items.size(), actualKeys.size());
@@ -55,9 +41,9 @@ public class BaseSelectFieldTest extends CaaersTestCase {
         }
     }
 
-    public void testBuiltOptionsNullValuePropNameUsesToString() throws Exception {
+    public void testCollectedOptionsNullValuePropNameUsesToString() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = collectOptions(items, null, "name");
+        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, null, "name");
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
@@ -65,9 +51,9 @@ public class BaseSelectFieldTest extends CaaersTestCase {
         }
     }
 
-    public void testBuiltOptionsNullLabelPropNameUsesToString() throws Exception {
+    public void testCollectedOptionsNullLabelPropNameUsesToString() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = collectOptions(items, "code", null);
+        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", null);
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
