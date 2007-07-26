@@ -17,7 +17,7 @@
     <bean id="rulesPropertyConfigurer" class="gov.nih.nci.cabig.caaers.tools.spring.PropertyPlaceholderConfigurer">
         <property name="properties">
             <bean class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
-                <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
+                <property name="databaseConfigurationName"><value>datasource</value></property>
             </bean>
         </property>
         <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
