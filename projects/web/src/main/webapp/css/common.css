@@ -2,7 +2,7 @@
 
 body {
   margin: 0; padding: 0;
-  background: url(../images/chrome/caBIG_footer.gif) no-repeat bottom right #F4F4F5;
+  background: url(../images/chrome/caBIG_footer.gif) no-repeat bottom right #eee;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 10pt;
   color: #000000;
@@ -108,8 +108,8 @@ ul.tabs li {
 #taskbar {
   background: url(../images/chrome/taskbar_BG.gif) repeat-x top;
   font-weight: bold;
-  padding: 0 20px 0 12px;
-  height: 24px;
+  padding: 6px 20px 0 12px;
+  height: 22px;
   font-size: .85em;
 }
 
@@ -125,7 +125,6 @@ ul.tabs li {
 /**** PAGE CONTENT BOXES */
 
 #main {
-  background: url(../images/chrome/main_BG.gif) repeat-x top;
   margin: 0;
   padding: 12px 18px 20px 18px;
   clear: both;
@@ -203,7 +202,7 @@ ul.tabs li {
 .box h3 {
   position: relative;
   border-top: solid 1px #000;
-  background-color: #D7E7ED;
+  background: url(../images/chrome/boxsubhead_BG.png) repeat-x bottom #c9e3eb;
   padding: 4px 8px;
 }
 

@@ -8,6 +8,7 @@
   background: #A2A2A2 url(../images/chrome/workflow-tab_R.gif) no-repeat center left;
   padding-right: 12px;
   min-height: 18px; font-size: .85em;
+  border-bottom: 1px solid #001779;
 }
 
 #workflow-tabs li {
