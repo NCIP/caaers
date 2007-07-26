@@ -1,0 +1,39 @@
+
+package org.apache.jackrabbit.core.persistence.db;
+
+
+import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+
+import java.util.Properties;
+
+import org.apache.jackrabbit.core.persistence.db.SimpleDbPersistenceManager;
+
+
+public class RulesVersioningDBPersistanceManager extends SimpleDbPersistenceManager {
+
+
+	
+	public RulesVersioningDBPersistanceManager() {
+		
+
+
+DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+		
+		Properties props = b.getProperties();
+		
+
+		this.driver = props.getProperty("datasource.driver");
+		this.password = props.getProperty( "datasource.password");
+		this.user = props.getProperty( "datasource.username");
+		this.schema = props.getProperty( "datasource.schema");
+		this.schemaObjectPrefix = "rep_ver_";
+		this.url = props.getProperty( "datasource.url");
+		this.externalBLOBs = false;
+	}
+
+
+	
+	
+	
+	
+}
