@@ -49,6 +49,8 @@ public interface RulesEngineService {
 	 * getRuleSetForStudy(String ruleSetName, String studyShortTitle, String sponsorName)
 	 *
 	 */
+	
+	public RuleSet getRuleSet(String packageName) throws Exception;
 	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName) throws Exception;
 	
 	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName) throws Exception;

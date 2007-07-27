@@ -656,6 +656,12 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		}
 		return found;
 	}
+
+
+	public RuleSet getRuleSet(String packageName) throws Exception {
+		// TODO Auto-generated method stub
+		return ruleAuthoringService.getRuleSet(packageName);
+	}
 	
 	
 	
