@@ -35,9 +35,15 @@ public interface ReportService {
    public Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
    
    /**
-    * Will mark the report as deleted. 
+    * Will mark the report as deleted (ReportStatus = WITHDRAWN). 
     * At present it will unschedule the pending scheduled notifications present in the scheduler, by 
     * delegating the call to SchedulerService.
     */
    public void deleteReport(Report report);
+   
+   /**
+    * Vaidates the report against the predefined set of mandatory fields available in ReportDefinition.
+    */
+   //TODO: need to identify the return type 
+   public Object validate(Report report);
 }

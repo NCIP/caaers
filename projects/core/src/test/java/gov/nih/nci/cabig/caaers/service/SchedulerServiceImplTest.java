@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.scheduler.runtime;
+package gov.nih.nci.cabig.caaers.service;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_NOTIFICATION_RULES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl;
 @CaaersUseCases({CREATE_NOTIFICATION_RULES, CREATE_REPORT_FORMAT })
 public class SchedulerServiceImplTest extends CaaersTestCase {
 	static ApplicationContext appCtx;
@@ -117,5 +118,11 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		t.join();
 	}
 
-
+	public void testUnscheduleNotification() throws Exception{
+		final Report report = service.getReportScheduleDao().getById(-444);
+		service.scheduleNotification(report);
+		service.unScheduleNotification(report);
+		for(ScheduledNotification snf : report.getScheduledNotifications())
+			assertEquals("Status of the scheduled notifications is wrong", snf.getDeliveryStatus(), DeliveryStatus.RECALLED);
+	}
 }

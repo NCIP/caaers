@@ -63,4 +63,26 @@
     <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
 	
 	<bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType" />
+	
+	<!--  This bean that implements the service  -->	
+	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl" >
+		<property name="scheduler" ><ref bean="schedulerFactory" /> </property>
+		
+		<!-- The mapping is used to identify the correct job class implementation -->
+		<property name="jobClassMapping">
+			<map>
+				<entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
+					   value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob" />
+			</map>
+		</property>
+		<property name="reportScheduleDao"><ref bean="reportDao" />	</property>
+	</bean>
+	<!-- TODO: Remove the below mail settings after demo -->
+	<bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="s[smtp.host]"/>
+		<property name="port" value="s[smtp.port]"/>
+		<property name="username" value="s[smtp.username]"/>
+		<property name="password" value="s[smtp.password]"/>
+	</bean>
+
 </beans>

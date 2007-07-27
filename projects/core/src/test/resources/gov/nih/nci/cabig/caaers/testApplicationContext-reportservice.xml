@@ -4,5 +4,5 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<bean id="reportDao" parent="daoTemplate"  class="gov.nih.nci.cabig.caaers.dao.ReportDaoStub" />
-	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.scheduler.runtime.SchedulerServiceStub" />
+	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceStub" />
 </beans>

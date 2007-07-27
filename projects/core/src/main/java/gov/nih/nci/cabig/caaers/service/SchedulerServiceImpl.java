@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.scheduler.runtime;
+package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
@@ -94,9 +94,30 @@ public class SchedulerServiceImpl implements SchedulerService {
 		
 	}
 	
+	/**
+	 * Will unschedule a scheduled notification
+	 */
 	 public void unScheduleNotification(Report report) {
-		// TODO Auto-generated method stub
-		
+		 assert report != null : "report should not be null";
+		 assert report.getId() != null : "report must have a valid id";
+		 
+		 try {
+			//delete all the jobs configured for ScheduledNotificaiton
+			 String jobName;
+			 String groupName = "JG-" + String.valueOf(report.getId());
+			 boolean status = false;
+			 for(ScheduledNotification nf: report.getScheduledNotifications()){
+				assert nf != null :"report must not contain invalid ScheduledNotificaiton objects";
+				assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
+				jobName = "J-" +  nf.getId().toString();
+				status = scheduler.deleteJob(jobName,groupName);
+				if(status) nf.setDeliveryStatus(DeliveryStatus.RECALLED);
+				logger.info("Deleted job[jobName : " + jobName +", groupName :" + groupName + "], sucessful? = " + status);
+			 }
+		} catch (SchedulerException e) {
+			logger.error("Exception while unscheduling " ,e);
+			throw new CaaersSystemException("Exception while unscheduling report{"+ String.valueOf(report)+"}", e);
+		}
 	}
 	
 	/**

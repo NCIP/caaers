@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
@@ -22,7 +23,6 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
-import gov.nih.nci.cabig.caaers.scheduler.runtime.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.IOException;
@@ -229,12 +229,23 @@ public class ReportServiceImpl  implements ReportService {
         
         return report;
     }
-
+    
+    /**
+     * Will mark the report as deleted:-
+     *   <br />Unschedules all scheduled notifications. 
+     *   <br />Sets the status of the Report as {@link ReportStatus#WITHDRAWN}
+     */
 	public void deleteReport(Report report) {
-		// TODO Auto-generated method stub
-		
+		assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
+		schedulerService.unScheduleNotification(report);
+		report.setStatus(ReportStatus.WITHDRAWN);
+		reportDao.save(report);
 	}
-
+	
+	public Object validate(Report report) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	public void setNowFactory(NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
@@ -243,13 +254,9 @@ public class ReportServiceImpl  implements ReportService {
 		this.schedulerService = schedulerService;
 	}
 
-
-	/**
-	 * @param reportDao the reportDao to set
-	 */
 	public void setReportDao(ReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
-    
+	
     
 }
