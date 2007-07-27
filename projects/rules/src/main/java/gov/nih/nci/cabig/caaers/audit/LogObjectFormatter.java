@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LogObjectFormatter {
 	
-	public String toTextTable(DecisionContext dc){
+	public String toTextTable(DecisionContext dc) throws Exception{
 		String offSet ="\t\t\t";
 		StringBuilder builder = new StringBuilder();
 		int headerWidth = this.getTableWidth(dc);
@@ -602,7 +602,7 @@ public class LogObjectFormatter {
 		 
 	 }
 
-	public void drawRuleExecutionSummary(StringBuilder builder,String offSet,int headerWidth,DecisionContext dc){
+	public void drawRuleExecutionSummary(StringBuilder builder,String offSet,int headerWidth,DecisionContext dc) throws Exception{
 		 int k = "Exeution Summary".length();
 			int x = (headerWidth-k)/2;
 
@@ -736,7 +736,7 @@ public class LogObjectFormatter {
 		   /**
 		    * Build Fired RuleSetInfo Object
 		    */
-		   FiredRuleSetInfo firedRuleSetInfo = new FiredRuleSetInfo();
+		   FiredRuleSetInfo firedRuleSetInfo = new FiredRuleSetInfo("XYZ");
 		   firedRuleSetInfo.setOrganizationName("Duke Cancer Center");
 		   firedRuleSetInfo.setRole("Sponsor");
 		   firedRuleSetInfo.setRuleSetName("Asses AE Rules");
@@ -794,7 +794,12 @@ public class LogObjectFormatter {
 		   
 		   
 		   
-		   System.out.println(lof.toTextTable(dc));
+		   try {
+			System.out.println(lof.toTextTable(dc));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	   }
 
 }

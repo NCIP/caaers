@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DecisionContext {
   private FiredRuleSetInfo firedRuleSetInfo;
-  private List<String> firedRuleNames;
+  private List<String> firedRuleNames= new ArrayList<String>();
   private List<Object> assertedObjects;
   private List<RuleExecutionStatus> executionSummary;
   
@@ -37,7 +37,7 @@ public void setAssertedObjects(List<Object> assertedObjects) {
 	this.assertedObjects = assertedObjects;
 }
 
-	public void buildExecutionSummary(){
+	public void buildExecutionSummary() throws Exception{
 		executionSummary = new ArrayList<RuleExecutionStatus>();
 	     List<String> ruleNames = this.getFiredRuleSetInfo().getRuleNames();
 	     for(int i=0;i<ruleNames.size();i++){

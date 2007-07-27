@@ -1,6 +1,12 @@
 package gov.nih.nci.cabig.caaers.audit;
 
 
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
+import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class FiredRuleSetInfo {
@@ -10,8 +16,24 @@ public class FiredRuleSetInfo {
 	private String studyName;
 	private String ruleSetName;
 	private List<String> ruleNames;
+	private String bindUri;
 	
-	public List<String> getRuleNames() {
+	public FiredRuleSetInfo(String bindUri){
+		this.bindUri =bindUri;
+	}
+	
+	public List<String> getRuleNames() throws Exception{
+		if(ruleNames==null){
+			ruleNames = new ArrayList<String>();
+			RulesEngineService res = new RulesEngineServiceImpl();
+			RuleSet rs= res.getRuleSet(bindUri);
+			List<Rule> rules = rs.getRule();
+			for(int i=0; i<rules.size();i++){
+				Rule rule = (Rule)rules.get(i);
+				ruleNames.add(rule.getMetaData().getName());
+			}
+			
+		}
 		return ruleNames;
 	}
 	public void setRuleNames(List<String> ruleNames) {

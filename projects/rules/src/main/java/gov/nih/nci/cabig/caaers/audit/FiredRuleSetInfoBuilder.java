@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 public class FiredRuleSetInfoBuilder {
 	
 	public FiredRuleSetInfo build(String bindUri){
-		FiredRuleSetInfo firedRuleSetInfo = new FiredRuleSetInfo();
+		FiredRuleSetInfo firedRuleSetInfo = new FiredRuleSetInfo(bindUri);
 		
 		String baseString = CategoryConfiguration.CAAERS_BASE.getPackagePrefix();
 		String str1 = bindUri.substring(baseString.length()+1, bindUri.length());

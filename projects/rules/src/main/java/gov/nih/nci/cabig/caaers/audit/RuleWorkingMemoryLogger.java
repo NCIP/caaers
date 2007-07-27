@@ -62,6 +62,10 @@ AgendaEventListener {
 	private final List filters = new ArrayList();
 
 	private WorkingMemory workingMemory;
+	
+	private DecisionContext dc;
+	
+	private String bindUri;
 
 	/**
 	 * 
@@ -73,13 +77,17 @@ AgendaEventListener {
 	 * 
 	 */
 
-	public RuleWorkingMemoryLogger(final WorkingMemory workingMemory) throws Exception{
+	public RuleWorkingMemoryLogger(final WorkingMemory workingMemory,String bindUri) throws Exception{
 
 		this.workingMemory = workingMemory;
 
 		workingMemory.addEventListener((WorkingMemoryEventListener) this);
 
 		workingMemory.addEventListener((AgendaEventListener) this);
+		
+		 dc = new DecisionContext();
+		 
+		 this.bindUri=bindUri;
 		
 		try {
 			logger = RuleLogger.getInstance();
@@ -415,14 +423,26 @@ AgendaEventListener {
 		logger.logMessage("Activation created with working memory");
 	}
 
-	public void afterActivationFired(AfterActivationFiredEvent arg0, WorkingMemory arg1) {
+	public void afterActivationFired(AfterActivationFiredEvent event, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
 		logger.logMessage("After Activation fired with working memory");
+		dc.getFiredRuleNames().add(event.getActivation().getRule().getName());
 	}
 
 	public void beforeActivationFired(BeforeActivationFiredEvent arg0, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
 		logger.logMessage("Before Activation fired with working memory");
+	}
+	
+	public void logExecutionSummary() throws Exception{
+		FiredRuleSetInfoBuilder fsb = new FiredRuleSetInfoBuilder();
+		FiredRuleSetInfo firedRuleSetInfo = fsb.build(bindUri);
+		dc.setFiredRuleSetInfo(firedRuleSetInfo);
+		dc.buildExecutionSummary();
+		LogObjectFormatter lof = new LogObjectFormatter();
+		String logRecord = lof.toTextTable(dc);
+		logger.logMessage(logRecord);
+		
 	}
 
 }
