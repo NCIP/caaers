@@ -18,6 +18,8 @@ import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -58,7 +60,8 @@ public class RulesEngineServiceTest extends TestCase {
     
     private static String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 
-	protected void setUp() throws Exception {
+protected void setUp() throws Exception {
+		
 		super.setUp();
 
 		Connection db; // A connection to the database
@@ -66,7 +69,7 @@ public class RulesEngineServiceTest extends TestCase {
 
 		Class.forName("org.postgresql.Driver");
 		db = DriverManager.getConnection(
-				"jdbc:postgresql://localhost/rules_unit_test", "postgres",
+				"jdbc:postgresql://localhost/caaers", "postgres",
 				"postgres");
 
 		sql = db.createStatement();
@@ -75,6 +78,13 @@ public class RulesEngineServiceTest extends TestCase {
 		String sqlText_3 = "drop table rep_node";
 		String sqlText_4 = "drop table rep_prop";
 		String sqlText_5 = "drop table rep_refs";
+
+		String sqlText_6 = "drop table rep_ver_binval";
+		String sqlText_7 = "drop table rep_ver_fsentry";
+		String sqlText_8 = "drop table rep_ver_node";
+		String sqlText_9 = "drop table rep_ver_prop";
+		String sqlText_0 = "drop table rep_ver_refs";
+		
 		try {
 			sql.executeUpdate(sqlText_1);
 			System.out.println(sqlText_1 + " successfully executed");
@@ -111,10 +121,45 @@ public class RulesEngineServiceTest extends TestCase {
 				throw pe;
 		}
 
+		try {
+			sql.executeUpdate(sqlText_6);
+			System.out.println(sqlText_6 + " successfully executed");
+		} catch (org.postgresql.util.PSQLException pe) {
+			if (pe.getErrorCode() != 0)
+				throw pe;
+		}
+		try {
+			sql.executeUpdate(sqlText_7);
+			System.out.println(sqlText_7 + " successfully executed");
+		} catch (org.postgresql.util.PSQLException pe) {
+			if (pe.getErrorCode() != 0)
+				throw pe;
+		}
+		try {
+			sql.executeUpdate(sqlText_8);
+			System.out.println(sqlText_8 + " successfully executed");
+		} catch (org.postgresql.util.PSQLException pe) {
+			if (pe.getErrorCode() != 0)
+				throw pe;
+		}
+		try {
+			sql.executeUpdate(sqlText_9);
+			System.out.println(sqlText_9 + " successfully executed");
+		} catch (org.postgresql.util.PSQLException pe) {
+			if (pe.getErrorCode() != 0)
+				throw pe;
+		}
+		try {
+			sql.executeUpdate(sqlText_0);
+			System.out.println(sqlText_0 + " successfully executed");
+		} catch (org.postgresql.util.PSQLException pe) {
+			if (pe.getErrorCode() != 0)
+				throw pe;
+		}
 		db.close();
 
-		deleteDir(new File("/tmp/testrepo"));
-		File f = new File("/tmp/testrepo");
+		deleteDir(new File("/tmp/rules_repo/repo"));
+		File f = new File("/tmp/rules_repo/repo");
 		f.mkdir();
 
 		this.rulesEngineService = new RulesEngineServiceImpl();
