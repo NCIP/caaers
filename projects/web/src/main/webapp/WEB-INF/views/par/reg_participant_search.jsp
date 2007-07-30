@@ -25,7 +25,7 @@ function doNothing(){
 </script>
 </head>
 <body>
-<chrome:search title="">
+<chrome:box autopad="true">
     <form:form id="searchForm" method="post" cssClass="standard">
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
@@ -52,7 +52,7 @@ function doNothing(){
             </tr>
         </table>
     </form:form>
-</chrome:search>
+</chrome:box>
 
 
 <p id="instructions">

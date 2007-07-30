@@ -53,7 +53,7 @@ function fireAction(action, selected){
 </head>
 <body>
 
-<chrome:search title="Search">
+<chrome:box title="Search" autopad="true">
     <form:form name="searchForm" id="searchForm" method="post">
        <div>			
 			<input type="hidden" name="_selected" id="_selected" value="">
@@ -80,7 +80,7 @@ function fireAction(action, selected){
 			</div>
         </div>
     </form:form>
-</chrome:search>
+</chrome:box>
 <br>
 <chrome:box title="Results">
 <form:form>

@@ -33,7 +33,7 @@ function updateTargetPage(s){
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<chrome:search title="">
+<chrome:box autopad="true">
     <form:form id="searchForm" method="post" cssClass="standard">
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
@@ -60,7 +60,7 @@ function updateTargetPage(s){
             </tr>
         </table>
     </form:form>
-</chrome:search>
+</chrome:box>
 
 <p id="instructions">
 Please choose a Study and then press Save & Continue to proceed 
