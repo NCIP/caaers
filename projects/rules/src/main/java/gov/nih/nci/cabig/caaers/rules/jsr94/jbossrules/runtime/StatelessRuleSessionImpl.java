@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime;
 
+import gov.nih.nci.cabig.caaers.audit.RuleWorkingMemoryLogger;
 import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository.RuleExecutionSetRepository;
 
 import java.util.Iterator;
@@ -23,6 +24,8 @@ import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
  * */
 public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
 		StatelessRuleSession {
+	
+	private String bindUri;
 
     /**
      * Gets the <code>RuleExecutionSet</code> for this URI and associates it
@@ -50,6 +53,7 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
         }
 
         this.setRuleExecutionSet( ruleSet );
+        this.bindUri=bindUri;
     }
 	
     /**
@@ -107,6 +111,15 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
     public List executeRules(final List objects,
                              final ObjectFilter filter) throws InvalidRuleSessionException {
         final WorkingMemory workingMemory = this.newWorkingMemory();
+        RuleWorkingMemoryLogger ruleLogger;
+        
+        try {
+		  ruleLogger = new RuleWorkingMemoryLogger(workingMemory,bindUri);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new InvalidRuleSessionException( e.getMessage(),
+                    e );
+		}
 
         try {
             for ( final Iterator objectIter = objects.iterator(); objectIter.hasNext(); ) {
@@ -123,7 +136,15 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
 
         this.applyFilter( results,
                           filter );
-
+        
+        
+        try {
+			ruleLogger.logExecutionSummary(objects);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new InvalidRuleSessionException( e.getMessage(),
+                    e );
+		}
         return results;
     }
 
