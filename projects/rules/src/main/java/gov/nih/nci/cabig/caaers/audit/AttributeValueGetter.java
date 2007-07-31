@@ -9,33 +9,57 @@ public class AttributeValueGetter {
 	
 
 	public static String getGradeFromAdverseEvent(AdverseEvent ae){
+		if(ae.getGrade()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getGrade().getDisplayName())==true?"null":ae.getGrade().getDisplayName();
 		return str;
 	}
 	
 	public static String getTermFromAdverseEvent(AdverseEvent ae){
+		if(ae.getCtcTerm()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getCtcTerm().getTerm())==true?"null":ae.getCtcTerm().getTerm();
 		return str;
 	}
 	public static String getCategoryFromAdverseEvent(AdverseEvent ae){
+		if(ae.getCtcTerm()==null){
+			return "null";
+		}
+		if(ae.getCtcTerm().getCategory()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getCtcTerm().getCategory().getName())==true?"null":ae.getCtcTerm().getCategory().getName();
 		return str;
 	}
 	public static String getHospitalizationFromAdverseEvent(AdverseEvent ae){
+		if(ae.getHospitalization()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getHospitalization().getDisplayName())==true?"null":ae.getHospitalization().getDisplayName();
 		return str;
 	}
 	public static String getExpectedFromAdverseEvent(AdverseEvent ae){
+		if(ae.getExpected()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getExpected().toString())==true?"null":ae.getExpected().toString();
 		return str;
 	}
 	
 	public static String getAttributionFromAdverseEvent(AdverseEvent ae){
+		if(ae.getAttributionSummary()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getAttributionSummary().getDisplayName())==true?"null":ae.getAttributionSummary().getDisplayName();
 		return str;
 	}
 	
 	public static String getIdFromAdverseEvent(AdverseEvent ae){
+		if(ae.getId()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(ae.getId().toString())==true?"null":ae.getId().toString();
 		return str;
 	}
@@ -46,6 +70,9 @@ public class AttributeValueGetter {
 	}
 	
 	public static String getIdFromStudy(Study study){
+		if(study.getId()==null){
+			return "null";
+		}
 		String str = AuditStringUtils.isEmpty(study.getId().toString())==true?"null":study.getId().toString();
 		return str;
 	}
@@ -57,6 +84,9 @@ public class AttributeValueGetter {
 	}
 	public static String getIdFromStudyAgent(StudyAgent studyAgent){
 		String str ="null";
+		if(studyAgent.getId()==null){
+			return str;
+		}
 		if(studyAgent.getId()!=null){
 		str = AuditStringUtils.isEmpty(studyAgent.getId().toString())==true?"null":studyAgent.getId().toString();
 		}
