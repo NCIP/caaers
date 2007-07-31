@@ -197,7 +197,7 @@ AgendaEventListener {
 
 		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_ASSERTED, ((InternalFactHandle) event.getFactHandle()).getId(),event.getObject().toString()));
 		
-		logger.logMessage("Object is asserted:"+event.toString());
+		//logger.logMessage("Object is asserted:"+event.toString());
 		
 		
 		
@@ -212,7 +212,7 @@ AgendaEventListener {
 	public void objectModified(final ObjectModifiedEvent event) {
 
 		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_MODIFIED,((InternalFactHandle) event.getFactHandle()).getId(),event.getObject().toString()));
-		logger.logMessage("Object is modified");
+		//logger.logMessage("Object is modified");
 
 	}
 
@@ -225,7 +225,7 @@ AgendaEventListener {
 	public void objectRetracted(final ObjectRetractedEvent event) {
 
 		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_RETRACTED,	((InternalFactHandle) event.getFactHandle()).getId(),event.getOldObject().toString()));
-		logger.logMessage("Object is retracted:"+event.toString());
+		//logger.logMessage("Object is retracted:"+event.toString());
 		
 	}
 
@@ -238,7 +238,7 @@ AgendaEventListener {
 	public void activationCreated(final ActivationCreatedEvent event) {
 
 		//filterLogEvent(new ActivationLogEvent(LogEvent.ACTIVATION_CREATED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		logger.logMessage("Object is created");
+		//logger.logMessage("Object is created");
 	}
 
 	/**
@@ -250,7 +250,7 @@ AgendaEventListener {
 	public void activationCancelled(final ActivationCancelledEvent event) {
 
 		//filterLogEvent(new ActivationLogEvent(LogEvent.ACTIVATION_CANCELLED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		logger.logMessage("activation is cancelled");
+		//logger.logMessage("activation is cancelled");
 	}
 
 	/**
@@ -262,7 +262,7 @@ AgendaEventListener {
 	public void beforeActivationFired(final BeforeActivationFiredEvent event) {
 
 		//filterLogEvent(new ActivationLogEvent(LogEvent.BEFORE_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		logger.logMessage("Before activation is fired");
+		//logger.logMessage("Before activation is fired");
 	}
 
 	/**
@@ -274,7 +274,7 @@ AgendaEventListener {
 	public void afterActivationFired(final AfterActivationFiredEvent event) {
 
 		//filterLogEvent(new ActivationLogEvent(LogEvent.AFTER_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		logger.logMessage("after tthe action fired");
+		//logger.logMessage("after tthe action fired");
 	}
 
 	/**
@@ -415,29 +415,30 @@ AgendaEventListener {
 
 	public void activationCancelled(ActivationCancelledEvent arg0, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
-		logger.logMessage("Activation cancelled with working memory");
+		//logger.logMessage("Activation cancelled with working memory");
 	}
 
 	public void activationCreated(ActivationCreatedEvent arg0, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
-		logger.logMessage("Activation created with working memory");
+		//logger.logMessage("Activation created with working memory");
 	}
 
 	public void afterActivationFired(AfterActivationFiredEvent event, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
-		logger.logMessage("After Activation fired with working memory");
+		//logger.logMessage("After Activation fired with working memory");
 		dc.getFiredRuleNames().add(event.getActivation().getRule().getName());
 	}
 
 	public void beforeActivationFired(BeforeActivationFiredEvent arg0, WorkingMemory arg1) {
 		// TODO Auto-generated method stub
-		logger.logMessage("Before Activation fired with working memory");
+		//logger.logMessage("Before Activation fired with working memory");
 	}
 	
-	public void logExecutionSummary() throws Exception{
+	public void logExecutionSummary(List<Object> assertedObjects) throws Exception{
 		FiredRuleSetInfoBuilder fsb = new FiredRuleSetInfoBuilder();
 		FiredRuleSetInfo firedRuleSetInfo = fsb.build(bindUri);
 		dc.setFiredRuleSetInfo(firedRuleSetInfo);
+		dc.setAssertedObjects(assertedObjects);
 		dc.buildExecutionSummary();
 		LogObjectFormatter lof = new LogObjectFormatter();
 		String logRecord = lof.toTextTable(dc);
