@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_INSTITUTION_SAE_REPORTING_RULES;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_SPONSOR_SAE_REPORTING_RULES;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY_SAE_REPORTING_RULES;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -16,10 +12,10 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -27,6 +23,7 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -44,7 +41,13 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-@CaaersUseCases({ CREATE_INSTITUTION_SAE_REPORTING_RULES, CREATE_SPONSOR_SAE_REPORTING_RULES, CREATE_STUDY_SAE_REPORTING_RULES })
+
+
+
+
+
+
+
 public class RulesEngineServiceTest extends TestCase {
 
 	private RulesEngineService rulesEngineService;
@@ -60,7 +63,7 @@ public class RulesEngineServiceTest extends TestCase {
     
     private static String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 
-protected void setUp() throws Exception {
+	protected void setUp() throws Exception {
 		
 		super.setUp();
 
@@ -173,10 +176,11 @@ protected void setUp() throws Exception {
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
 		String studyName = "cgems";
 		
-		
-		
 
-		sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);		
+		   //rulePreview(sponsorName,ruleSetType,studyName);	
+		
+		   sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
+		/*
 		sponsorDefinedStudyAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);
 		
 		ruleSetType = RuleType.REPORT_SCHEDULING_RULES.getName();
@@ -216,6 +220,40 @@ protected void setUp() throws Exception {
 		// unDeployRuleSet(RuleSet set) throws Exception;
 
 	}
+
+	
+	private String readableColumn(Column column) {
+		StringBuilder builder = new StringBuilder();
+		
+		FieldConstraint fc = column.getFieldConstraint().get(0);
+		LiteralRestriction lr = fc.getLiteralRestriction().get(0);
+		
+		builder.append(" ");
+		//set domain-object display-uri to column
+		builder.append(column.getDisplayUri());
+		
+		//set grammer prefix to column
+		builder.append(fc.getGrammerPrefix());
+		
+		//set filed display-uri to fc
+		builder.append(fc.getDisplayUri());
+		builder.append(" ");
+		
+		//set operator display-uri to lr
+		builder.append(lr.getDisplayUri());
+		builder.append(" ");
+		
+		List values = lr.getValue();
+		for (int i=0;i<values.size();i++) {
+			Value v = (Value)values.get(i);
+			builder.append("'" + v.getDisplayUri() + "' ");
+			if (i != values.size()-1 && values.size() > 1) {
+				builder.append(" or ");
+			}
+		}
+	
+		return builder.toString();
+	}
 	
 	private void sponserAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
 
@@ -224,6 +262,16 @@ protected void setUp() throws Exception {
 		res.saveRulesForSponsor(rs, sponsorName);
 
 		rs = res.getRuleSetForSponsor(rs.getDescription(),sponsorName);
+		
+		
+		// display readable info 
+		
+		ReadableRule readable = rs.getRule().get(0).getReadableRule();
+		System.out.println("    ");
+		for (String line:readable.getLine()) {
+			System.out.println(line);			
+		}	
+		
 		
 
 		// deploy rules...
@@ -269,6 +317,9 @@ protected void setUp() throws Exception {
 
 		RuleSet rs = new RuleSet();
 		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
+		
+		
+
 
 		Rule r = makeRule(id,SERIOUS_ADVERSE_EVENT);
 		// sponser based rules
@@ -391,7 +442,12 @@ protected void setUp() throws Exception {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -419,7 +475,11 @@ protected void setUp() throws Exception {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -443,7 +503,11 @@ protected void setUp() throws Exception {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -605,15 +669,32 @@ protected void setUp() throws Exception {
 		column1.setObjectType("AdverseEvent");
 		column1.setIdentifier("adverseEvent");
 		column1.setExpression("getGrade().getCode().intValue()");
+		// 1
+		column1.setDisplayUri("Adverse Event");
 
 		FieldConstraint fieldConstraint1 = new FieldConstraint();
 		fieldConstraint1.setFieldName("grade");
+		// 2 
+		fieldConstraint1.setGrammerPrefix(" has a ");
+		
+		// 3
+		fieldConstraint1.setDisplayUri("Grade");
 
 		LiteralRestriction literalRestriction1 = new LiteralRestriction();
 		literalRestriction1.setEvaluator("==");
-		List<String> values1 = new ArrayList<String>();
+		
+		// 4 
+		literalRestriction1.setDisplayUri("Equal To");
+		
+		// 5 
+		
+		List<Value> values1 = new ArrayList<Value>();
 
-		values1.add("1");
+		Value v = new Value();
+		v.setDisplayUri("1: Mild");
+		v.setStoredValue("1");
+		
+		values1.add(v);
 
 		literalRestriction1.setValue(values1);
 
@@ -633,16 +714,29 @@ protected void setUp() throws Exception {
 		column2.setObjectType("AdverseEvent");
 		column2.setIdentifier("adverseEvent");
 		column2.setExpression("getHospitalization().getCode().intValue()");
+		column2.setDisplayUri("Adverse Event");
 
 		FieldConstraint fieldConstraint2 = new FieldConstraint();
 		fieldConstraint2.setFieldName("hospitalization");
+		fieldConstraint2.setGrammerPrefix(" has a ");
+		
+		fieldConstraint2.setDisplayUri("Hospitalization");
 
 		LiteralRestriction literalRestriction2 = new LiteralRestriction();
 		literalRestriction2.setEvaluator("==");
-		List<String> values2 = new ArrayList<String>();
+		literalRestriction2.setDisplayUri("Equal To");
+		List<Value> values2 = new ArrayList<Value>();
+		
+		Value v1 = new Value();
+		v1.setDisplayUri("none");
+		v1.setStoredValue("1");
 
-		values2.add("1");
-		values2.add("2");
+		Value v2 = new Value();
+		v2.setDisplayUri("hospitalization");
+		v2.setStoredValue("2");
+		
+		values2.add(v1);
+		values2.add(v2);
 
 		literalRestriction2.setValue(values2);
 
@@ -675,6 +769,28 @@ protected void setUp() throws Exception {
 		action.setActionId(actionStr);
 
 		rule1.setAction(action);
+		
+		
+
+			ReadableRule readable = new ReadableRule();
+			List<String> line = new ArrayList<String>();
+			
+			// add lines..
+			line.add("If");
+			for (Column column:rule1.getCondition().getColumn()) {
+				
+				// skip rule type filters
+				if (!column.getExpression().equals("getPrimaryFundingSponsorOrganization().getName()")) {
+					line.add(readableColumn(column));
+					line.add("AND");					
+				}
+				
+
+			}
+			line.remove(line.size()-1);
+			readable.setLine(line);
+			rule1.setReadableRule(readable);			
+
 
 		return rule1;
 	}
