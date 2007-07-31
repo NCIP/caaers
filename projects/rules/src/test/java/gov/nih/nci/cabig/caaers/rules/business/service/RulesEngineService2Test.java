@@ -12,9 +12,10 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
-
+import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -46,7 +47,7 @@ public class RulesEngineService2Test extends TestCase {
 
 	private RulesEngineService rulesEngineService;
 	
-    private static Log log = LogFactory.getLog(RulesEngineServiceTest.class);
+    private static Log log = LogFactory.getLog(RulesEngineService2Test.class);
     private static RuntimeException acLoadFailure = null;
 
     private static ApplicationContext applicationContext = null;
@@ -170,14 +171,27 @@ public class RulesEngineService2Test extends TestCase {
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
 		String studyName = "cgems";
 
-		sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
+		RuleSet rs = sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
 		createAdverseEvent2(studyName,sponsorName);
-	
-
+		
+		
+		System.out.println(" --------  RULE SET INFO ----------");
+		
+		
+		
+		for (Rule rule:rs.getRule()) {
+			ReadableRule readable = rule.getReadableRule();
+			System.out.println("    ");
+			
+			for (String line:readable.getLine()) {
+				System.out.println(line);			
+			}			
+			
+		}
 	}
 
 	
-	private void sponserAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
+	private RuleSet sponserAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
 
 		RuleSet rs = this.createRulesForSponsor(1, sponsorName);
 		RulesEngineService res = new RulesEngineServiceImpl();
@@ -188,48 +202,19 @@ public class RulesEngineService2Test extends TestCase {
 
 		// deploy rules...
 		res.deployRuleSet(rs);
-
-	}
-
-	
-	private void sponsorDefinedStudyAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
-
-		RuleSet rs = this.createRulesForSponsorDefinedStudy(3, sponsorName, studyName);
-		RulesEngineService res = new RulesEngineServiceImpl();
-		res.saveRulesForSponsorDefinedStudy(rs, studyName, sponsorName);
-
-		rs = res.getRuleSetForSponsorDefinedStudy(rs.getDescription(),studyName,sponsorName);
 		
-
-		// deploy rules...
-		res.deployRuleSet(rs);
+		return rs;
 
 	}
-	
 
-	private void institutionSAEReportingRuleFlow(String institutionName,String ruleSetType, String studyName) throws Exception {
-
-		RuleSet rs = this.createRulesForInstitution(2, institutionName);
-		RulesEngineService res = new RulesEngineServiceImpl();
-		res.saveRulesForInstitution(rs, institutionName);
-
-		rs = res.getRuleSetForInstitution(rs.getDescription(),institutionName);
-		
-
-		// deploy rules...
-		res.deployRuleSet(rs);
-
-	}
-	
-	private void createRuleSetForSponsor(String sponsorName, String ruleSetName) throws Exception {
-		rulesEngineService.createRuleSetForSponsor(ruleSetName, sponsorName);
-	}
 	
 	private RuleSet createRulesForSponsor(int id, String sponsorName) {
 
 		RuleSet rs = new RuleSet();
 		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
 
+
+		
 		Rule r = makeRule(id,SERIOUS_ADVERSE_EVENT);
 		// sponser based rules
 		// need to add sponser name in the crieteria.
@@ -248,61 +233,8 @@ public class RulesEngineService2Test extends TestCase {
 		rs.getRule().add(r2);
 		return rs;
 	}
+
 	
-	private RuleSet createRulesForInstitution(int id, String institutionName) throws Exception {
-		RuleSet rs = new RuleSet();
-		rs.setDescription(RuleType.REPORT_SCHEDULING_RULES.getName());
-
-		Rule r = makeRule(id,"10 Day Report");
-		// sponser based rules
-		// need to add sponser name in the crieteria.
-		r.getCondition().getColumn().add(this.createCriteriaForInstitute(institutionName));
-
-		rs.getRule().add(r);
-		return rs;
-	}
-	
-	private RuleSet createRulesForSponsorDefinedStudy(int id, String sponsorName,String studyName) {
-
-		RuleSet rs = new RuleSet();
-		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
-
-		Rule r = makeRule(id,SERIOUS_ADVERSE_EVENT);
-		// sponser based rules
-		// need to add sponser name in the crieteria.
-		r.getCondition().getColumn().add(this.createCriteriaForSponsor(sponsorName));
-		r.getCondition().getColumn().add(this.createCriteriaForStudy(studyName));
-
-		rs.getRule().add(r);
-		return rs;
-	}
-	
-	private void createAdverseEvents(String studyName, String orgName) throws Exception {
-		createAdverseEvent1( studyName,  orgName);
-		createAdverseEvent2( studyName,  orgName);
-	
-	}
-	
-	private void createAdverseEvent1(String studyName, String orgName) throws Exception {
-
-		// execute rules...
-		AdverseEvent ae1 = new AdverseEvent();
-		ae1.setGrade(Grade.MILD);
-		ae1.setHospitalization(Hospitalization.NONE);
-
-		Study s = new Study();
-		Organization org = new Organization();
-		org.setName(orgName);
-		s.setPrimaryFundingSponsorOrganization(org);
-		s.setShortTitle(studyName);
-
-		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
-		String msg = aees.assesAdverseEvent(ae1, s);
-
-		System.out.println(msg);
-		//assertEquals(msg, "CAN_NOT_DETERMINED");
-
-	}
 	private void createAdverseEvent2(String studyName, String orgName) throws Exception {
 		// execute rules...
 		AdverseEvent ae1 = new AdverseEvent();
@@ -324,24 +256,6 @@ public class RulesEngineService2Test extends TestCase {
 
 	}
 
-
-	
-	
-	private RuleSet createRulesForInstitute(int id) {
-
-		RuleSet rs = new RuleSet();
-		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
-
-		Rule r = makeRule(id,"");
-		// inst based rules
-		// need to add inst name in the crieteria.
-		r.getCondition().getColumn().add(
-				this.createCriteriaForInstitute("Wake Forest Comprehensive Cancer Center"));
-
-		rs.getRule().add(r);
-		return rs;
-	
-	}
 	
 	/*
 	 * THis method is used to create criteria for institute 
@@ -361,7 +275,11 @@ public class RulesEngineService2Test extends TestCase {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -389,7 +307,12 @@ public class RulesEngineService2Test extends TestCase {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -413,7 +336,11 @@ public class RulesEngineService2Test extends TestCase {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -442,124 +369,9 @@ public class RulesEngineService2Test extends TestCase {
 
 
 
-	private RuleSet getRuleSetForSponsor(String sponsorName) throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		RuleSet ruleSet = rulesEngineService.getRuleSetForSponsor(ruleSetName,
-				sponsorName);
-		return ruleSet;
-		
-		/*
-		System.out.println("***********************************************");
-		System.out
-				.println("***************Now some real test*****************");
-		System.out.println("***********************************************");
-		List<Rule> rules = ruleSet.getRule();
-		for (Rule r : rules) {
-			System.out.println("the id:" + r.getId());
-			System.out.println("the Name:" + r.getMetaData().getName());
-			System.out.println("The category Path:"
-					+ r.getMetaData().getCategory().get(0).getPath());
-
-		}
-		System.out.println(ruleSet.getName());
-		String packageName = RuleUtil.getPackageName(
-				CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(),
-				sponsorName, ruleSetName);
-		System.out.println(packageName);
-		assertEquals(packageName, ruleSet.getName());
-		*/
-
-	}
 
 
 
-	private void getRuleSetForInstitution() throws Exception {
-		String ruleSetName = RuleType.AE_ASSESMENT_RULES.getName();
-		String institutionName = "Duke Medical Center";
-		RuleSet ruleSet = rulesEngineService.getRuleSetForInstitution(
-				ruleSetName, institutionName);
-		String packageName = RuleUtil.getPackageName(
-				CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(),
-				institutionName, ruleSetName);
-		assertEquals(packageName, ruleSet.getName());
-	}
-
-
-	private void createRuleSetForStudy() throws Exception {
-		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
-		rulesEngineService.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle,
-				sponsorName);
-	}
-
-	private void getRuleSetForStudy() throws Exception {
-		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
-		RuleSet ruleSet = rulesEngineService.createRuleSetForSponsorDefinedStudy(ruleSetName,
-				studyShortTitle, sponsorName);
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(
-				CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(),
-				studyShortTitle, sponsorName, ruleSetName);
-		assertEquals(packageName, ruleSet.getName());
-	}
-
-
-
-
-	private void getAllRuleSetsForSponsor() throws Exception {
-
-		String sponsorName = "National Cancer Institute";
-		List<RuleSet> ruleSets = rulesEngineService
-				.getAllRuleSetsForSponsor(sponsorName);
-		assertEquals(1, ruleSets.size());
-
-	}
-
-	private void getAllRuleSetsForStudy() throws Exception {
-
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
-		List<RuleSet> ruleSets = rulesEngineService.getAllRuleSetsForSponsorDefinedStudy(
-				studyShortTitle, sponsorName);
-		assertEquals(1, ruleSets.size());
-	}
-
-	private void getAllRuleSetsForInstitution() throws Exception {
-
-		String institutionName = "Duke Medical Center";
-		List<RuleSet> ruleSets = rulesEngineService
-				.getAllRuleSetsForInstitution(institutionName);
-		assertEquals(1, ruleSets.size());
-
-	}
-
-	private void getRulesByCategory() throws Exception {
-
-		String catPath = "/CAAERS_BASE/SPONSOR/National_Cancer_Institute/AE_Assesment_Rules";
-
-		List<Rule> rules = rulesEngineService.getRulesByCategory(catPath);
-		assertEquals(4, rules.size());
-	}
-
-	private void getAllRuleSets() throws Exception {
-		List<RuleSet> ruleSets = rulesEngineService.getAllRuleSets();
-		for (RuleSet rs : ruleSets) {
-			System.out.println("Rule Set Name:" + rs.getDescription());
-		}
-		assertEquals(4, ruleSets.size());
-	}
-
-	private void deployRuleSet() throws Exception {
-		String ruleSetName = RuleType.REPORT_SCHEDULING_RULES.getName();
-		String studyShortTitle = "Our test Study";
-		String sponsorName = "Loudoun Medical Center";
-		RuleSet ruleSet = rulesEngineService.getRuleSetForSponsorDefinedStudy(ruleSetName,
-				studyShortTitle, sponsorName);
-
-		rulesEngineService.deployRuleSet(ruleSet);
-	}
 
 	private Rule makeRule(int i, String actionStr) {
 		Rule rule1 = new Rule();
@@ -575,15 +387,32 @@ public class RulesEngineService2Test extends TestCase {
 		column1.setObjectType("AdverseEvent");
 		column1.setIdentifier("adverseEvent");
 		column1.setExpression("getGrade().getCode().intValue()");
+		
+//		 1
+		column1.setDisplayUri("Adverse Event");
 
 		FieldConstraint fieldConstraint1 = new FieldConstraint();
 		fieldConstraint1.setFieldName("grade");
+//		 2 
+		fieldConstraint1.setGrammerPrefix(" has a ");
+		
+//		 3
+		fieldConstraint1.setDisplayUri("Grade");
 
 		LiteralRestriction literalRestriction1 = new LiteralRestriction();
 		literalRestriction1.setEvaluator(">=");
-		List<String> values1 = new ArrayList<String>();
+		
+//		 4 
+		literalRestriction1.setDisplayUri("Greater Than or Equal To");
+		
+		List<Value> values1 = new ArrayList<Value>();
+		
+		Value v = new Value();
+		v.setDisplayUri("3: Severe");
+		v.setStoredValue("3");
+		
 
-		values1.add("3");
+		values1.add(v);
 
 		literalRestriction1.setValue(values1);
 
@@ -612,6 +441,25 @@ public class RulesEngineService2Test extends TestCase {
 		action.setActionId(actionStr);
 
 		rule1.setAction(action);
+		
+		ReadableRule readable = new ReadableRule();
+		List<String> line = new ArrayList<String>();
+		
+		// add lines..
+		line.add("If");
+		for (Column column:rule1.getCondition().getColumn()) {
+			
+			// skip rule type filters
+			if (!column.getExpression().equals("getPrimaryFundingSponsorOrganization().getName()")) {
+				line.add(RuleUtil.readableColumn(column));
+				line.add("AND");					
+			}
+			
+
+		}
+		line.remove(line.size()-1);
+		readable.setLine(line);
+		rule1.setReadableRule(readable);
 
 		return rule1;
 	}
@@ -633,16 +481,40 @@ public class RulesEngineService2Test extends TestCase {
 		column2.setObjectType("AdverseEvent");
 		column2.setIdentifier("adverseEvent");
 		column2.setExpression("getHospitalization().getCode().intValue()");
+		
+//		 1
+		column2.setDisplayUri("Adverse Event");
 
 		FieldConstraint fieldConstraint2 = new FieldConstraint();
 		fieldConstraint2.setFieldName("hospitalization");
+		
+//		 2 
+		fieldConstraint2.setGrammerPrefix(" has a ");
+		
+//		 3
+		fieldConstraint2.setDisplayUri("Hospitalization");
 
 		LiteralRestriction literalRestriction2 = new LiteralRestriction();
 		literalRestriction2.setEvaluator("==");
-		List<String> values2 = new ArrayList<String>();
+		
+//		 4 
+		literalRestriction2.setDisplayUri("Equal To");
+		
+		
+	    List<Value> values2 = new ArrayList<Value>();
+		
+		Value v = new Value();
+		v.setDisplayUri("1: None");
+		v.setStoredValue("1");
+		
+		Value v1 = new Value();
+		v1.setDisplayUri("2: Hospitalization");
+		v1.setStoredValue("2");
+		
+		
 
-		values2.add("1");
-		values2.add("2");
+		values2.add(v);
+		values2.add(v1);
 
 		literalRestriction2.setValue(values2);
 
@@ -676,6 +548,25 @@ public class RulesEngineService2Test extends TestCase {
 
 		rule1.setAction(action);
 
+		
+		ReadableRule readable = new ReadableRule();
+		List<String> line = new ArrayList<String>();
+		
+		// add lines..
+		line.add("If");
+		for (Column column:rule1.getCondition().getColumn()) {
+			
+			// skip rule type filters
+			if (!column.getExpression().equals("getPrimaryFundingSponsorOrganization().getName()")) {
+				line.add(RuleUtil.readableColumn(column));
+				line.add("AND");					
+			}
+			
+
+		}
+		line.remove(line.size()-1);
+		readable.setLine(line);
+		rule1.setReadableRule(readable);
 		return rule1;
 	}
 	
@@ -685,25 +576,94 @@ public class RulesEngineService2Test extends TestCase {
 		rule1.getMetaData().setName("Rule" + i);
 		rule1.getMetaData().setDescription("Our test rule" + i);
 
+		
 		Condition condition = new Condition();
 		// condition.getEval().add("adverseEvent.getGrade().getCode() <=
 		// Grade.MODERATE.getCode()");
 
-	
+		Column column1 = new Column();
+		column1.setObjectType("AdverseEvent");
+		column1.setIdentifier("adverseEvent");
+		column1.setExpression("getGrade().getCode().intValue()");
+		// 1
+		column1.setDisplayUri("Adverse Event");
+
+		FieldConstraint fieldConstraint1 = new FieldConstraint();
+		fieldConstraint1.setFieldName("grade");
+		// 2 
+		fieldConstraint1.setGrammerPrefix(" has a ");
+		
+		// 3
+		fieldConstraint1.setDisplayUri("Grade");
+
+		LiteralRestriction literalRestriction1 = new LiteralRestriction();
+		literalRestriction1.setEvaluator("==");
+		
+		// 4 
+		literalRestriction1.setDisplayUri("Equal To");
+		
+		// 5 
+		
+		List<Value> values1 = new ArrayList<Value>();
+
+		Value v = new Value();
+		v.setDisplayUri("1: Mild");
+		v.setStoredValue("1");
+		
+		values1.add(v);
+
+		literalRestriction1.setValue(values1);
+
+		List<LiteralRestriction> lr1 = new ArrayList<LiteralRestriction>();
+		lr1.add(literalRestriction1);
+
+		fieldConstraint1.setLiteralRestriction(lr1);
+
+		ArrayList<FieldConstraint> fields1 = new ArrayList<FieldConstraint>();
+		fields1.add(fieldConstraint1);
+
+		column1.setFieldConstraint(fields1);
+
+		condition.getColumn().add(column1);
+		
+		
+
+		// condition.getEval().add("adverseEvent.getGrade().getCode() <=
+		// Grade.MODERATE.getCode()");
+
 
 		Column column2 = new Column();
 		column2.setObjectType("AdverseEvent");
 		column2.setIdentifier("adverseEvent");
 		column2.setExpression("getExpected().booleanValue()");
+		
+//		 1
+		column2.setDisplayUri("Adverse Event");
 
 		FieldConstraint fieldConstraint2 = new FieldConstraint();
 		fieldConstraint2.setFieldName("expected");
+		
+//		 2 
+		fieldConstraint2.setGrammerPrefix(" has a ");
 
 		LiteralRestriction literalRestriction2 = new LiteralRestriction();
 		literalRestriction2.setEvaluator("==");
-		List<String> values2 = new ArrayList<String>();
+		
+//		 3
+		fieldConstraint2.setDisplayUri("expected");
+		
+//		 4 
+		literalRestriction2.setDisplayUri("Equal To");
+		
+		
+		Value v2 = new Value();
+		v2.setDisplayUri("1: Yes");
+		v2.setStoredValue("true");
+		
+		
+		List<Value> values2 = new ArrayList<Value>();
 
-		values2.add("true");
+		values2.add(v2);
 
 
 		literalRestriction2.setValue(values2);
@@ -738,6 +698,25 @@ public class RulesEngineService2Test extends TestCase {
 
 		rule1.setAction(action);
 
+		ReadableRule readable = new ReadableRule();
+		List<String> line = new ArrayList<String>();
+		
+		// add lines..
+		line.add("If");
+		for (Column column:rule1.getCondition().getColumn()) {
+			
+			// skip rule type filters
+			if (!column.getExpression().equals("getPrimaryFundingSponsorOrganization().getName()")) {
+				line.add(RuleUtil.readableColumn(column));
+				line.add("AND");					
+			}
+			
+
+		}
+		line.remove(line.size()-1);
+		readable.setLine(line);
+		rule1.setReadableRule(readable);
+		
 		return rule1;
 	}
 
