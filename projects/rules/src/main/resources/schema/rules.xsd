@@ -37,12 +37,22 @@
 				<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="description" minOccurs="0" type="xs:string"/>
+				
+				<!-- 
+				<xs:element name="type" type="xs:string" /> ae assesement or report schedule 
+				<xs:element name="level" type="xs:string" /> sponsor define, .... etc  
+				<xs:element name="organization-name" type="xs:string" /> 
+				<xs:element name="organization-role" type="xs:string" /> inst or sponsor 
+				<xs:element name="study-name" type="xs:string" /> inst or sponsor
+			-->
+			
+			
 				<!-- DEV, PROD, APPROVED Etc.-->
 				<xs:element name="status" type="xs:string"/> 
 				<xs:element name="import" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="global" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="rules:rule" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
+				<xs:element name="metaData" type="rules:metaData" minOccurs="0" />				
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -54,6 +64,7 @@
 			<xs:element name="condition" type="rules:condition" minOccurs="0"/>
 			<xs:element name="action" type="rules:action" minOccurs="0"/>
 			<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
+			<xs:element name="readableRule" type="rules:readableRule" minOccurs="0" />
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string"/>
 	</xs:complexType>
@@ -125,7 +136,8 @@
 				<xs:element name="expression" type="xs:string"/>
 			</xs:sequence>   
 			<xs:attribute name="identifier" type="xs:string" use="optional"/>                
-			<xs:attribute name="object-type" type="xs:string" use="required"/>  
+			<xs:attribute name="object-type" type="xs:string" use="required"/> 
+			<xs:attribute name="display-uri" type="xs:string" use="required"/>  
 			<xs:attribute name="marked-delete" type="xs:boolean" use="optional" default="false"/> 
 		</xs:complexType>
 
@@ -138,7 +150,10 @@
 				<xs:element name="variable-restriction" type="rules:variable-restriction" maxOccurs="unbounded" minOccurs="0"/>               
 				<xs:element name="return-value-restriction" type="rules:return-value-restriction" maxOccurs="unbounded" minOccurs="0"/>            
 			</xs:sequence>
-			<xs:attribute name="field-name" type="xs:string" use="required"/>                
+			<xs:attribute name="field-name" type="xs:string" use="required"/>         
+			<xs:attribute name="display-uri" type="xs:string" use="required"/>  
+			<xs:attribute name="grammer-prefix" type="xs:string" use="required"/> 
+			<xs:attribute name="grammer-postfix" type="xs:string" use="optional"/>            
 		</xs:complexType>
 
 
@@ -151,11 +166,17 @@
 
 		<xs:complexType name="literal-restriction">
 			<xs:sequence>
-				<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>            
+				<xs:element name="value" type="rules:value" minOccurs="0" maxOccurs="unbounded"/>            
 			</xs:sequence>
 			<xs:attribute name="evaluator" type="xs:string" use="required"/> 
+			<xs:attribute name="display-uri" type="xs:string" use="required"/>         
 		</xs:complexType>
 
+		<xs:complexType name="value">
+			<xs:attribute name="display-uri" type="xs:string" use="required"/>      
+			<xs:attribute name="stored-value" type="xs:string" use="required"/>            
+		</xs:complexType>
+		
 		<xs:complexType name="variable-restriction">
 			<xs:attribute name="evaluator" type="xs:string" use="required"/>      
 			<xs:attribute name="identifier" type="xs:string" use="required"/>            
@@ -207,6 +228,11 @@
 			<xs:attribute name="dirty" type="xs:boolean" />    	
 		</xs:complexType>    	
 
+		<xs:complexType name="readableRule">
+			<xs:sequence>
+				<xs:element name="line" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType> 
 
 
 	<xs:complexType name="action">
