@@ -34,6 +34,7 @@
 			<xs:element name="field-value" type="ui:field-value" />
 			<xs:element name="valid-value" minOccurs="0" maxOccurs="unbounded" type="ui:valid-value"/>
 			<xs:element name="expression" type="xs:string"/>
+			<xs:element name="grammer" type="ui:grammer"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string"/>
 		<xs:attribute name="display-uri" type="xs:string"/>
@@ -71,4 +72,9 @@
 		<xs:attribute name="display-uri" type="xs:string" use="optional"/>		
 	</xs:complexType>
 
+	<xs:complexType name="grammer">
+		<xs:attribute name="prefix" type="xs:string"/>
+		<xs:attribute name="postfix" type="xs:string" use="optional"/>		
+	</xs:complexType>
+	
 </xs:schema>
