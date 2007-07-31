@@ -87,7 +87,7 @@
                         </list>
                     </property>
                 </bean>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Reports" p:mainController="reportsNotImplementedController">
                     <property name="pathMapping"><value>/report/**</value></property>
                 </bean>
@@ -124,6 +124,9 @@
                                 p:displayName="Import" p:linkName="importController"/> 
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import MedDRA" p:linkName="importMeddraController"/>                                                                               
+                        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Create Organization" p:linkName="createOrganizationController"/>                                                                               
+                        
                         </list>
                     </property>
                 </bean>
@@ -218,6 +221,12 @@
 
 	<bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
+           <property name="sessionForm"><value>true</value></property>
+     </bean>
+     
+     
+	<bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
            <property name="sessionForm"><value>true</value></property>
      </bean>
           
@@ -338,5 +347,7 @@
         class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
     </bean>
   
+	
+		
      
 </beans>
