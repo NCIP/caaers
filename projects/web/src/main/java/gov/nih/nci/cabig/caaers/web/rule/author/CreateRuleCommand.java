@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
@@ -402,7 +403,11 @@ public class CreateRuleCommand implements RuleInputCommand
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -429,7 +434,11 @@ public class CreateRuleCommand implements RuleInputCommand
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -456,7 +465,11 @@ public class CreateRuleCommand implements RuleInputCommand
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		literalRestriction.getValue().add(criteriaValue);
+		
+		Value v = new Value();
+		v.setStoredValue(criteriaValue);
+		
+		literalRestriction.getValue().add(v);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
