@@ -25,6 +25,7 @@
 				<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
 				<operator name="&lt;=" display-uri="Less Than Or Equal To" />
 				<expression>getGrade().getCode().intValue()</expression>
+				<grammer prefix=" has a " postfix=""/>
 			</field>
 			<field name="term" display-uri="Term">
 				<field-value>
