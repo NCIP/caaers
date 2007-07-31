@@ -1,10 +1,15 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
+import gov.nih.nci.cabig.caaers.rules.brxml.Column;
+import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
+import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 
 public class RuleUtil {
 	
@@ -290,6 +295,39 @@ public class RuleUtil {
 		
 		authService.createCategory(category);
 		
+	}
+	
+	public static String readableColumn(Column column) {
+		StringBuilder builder = new StringBuilder();
+		
+		FieldConstraint fc = column.getFieldConstraint().get(0);
+		LiteralRestriction lr = fc.getLiteralRestriction().get(0);
+		
+		builder.append(" ");
+		//set domain-object display-uri to column
+		builder.append(column.getDisplayUri());
+		
+		//set grammer prefix to column
+		builder.append(fc.getGrammerPrefix());
+		
+		//set filed display-uri to fc
+		builder.append(fc.getDisplayUri());
+		builder.append(" ");
+		
+		//set operator display-uri to lr
+		builder.append(lr.getDisplayUri());
+		builder.append(" ");
+		
+		List values = lr.getValue();
+		for (int i=0;i<values.size();i++) {
+			Value v = (Value)values.get(i);
+			builder.append("'" + v.getDisplayUri() + "' ");
+			if (i != values.size()-1 && values.size() > 1) {
+				builder.append(" or ");
+			}
+		}
+	
+		return builder.toString();
 	}
 	
 
