@@ -88,7 +88,7 @@
 
 							
 							<xsl:choose>
-								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (.!='true') and  (.!='false')" >.equals("</xsl:when>
+								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (@stored-value != 'true') and  (@stored-value != 'false')" >.equals("</xsl:when>
 								
 								<xsl:when test="../../../rules:expression = 'getCtcTerm().getCategory().getId().intValue()'"> > 0 </xsl:when>
 								<xsl:otherwise><xsl:value-of select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/></xsl:otherwise>							
@@ -96,10 +96,10 @@
 							
 							<xsl:choose>
 								<xsl:when test="../../../rules:expression = 'getCtcTerm().getCategory().getId().intValue()'"></xsl:when>
-								<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+								<xsl:otherwise><xsl:value-of select="@stored-value"/></xsl:otherwise>
 							</xsl:choose>
 							
-							<xsl:if test= "(contains(../../../rules:expression,'intValue()') = false)  and (.!='true') and (.!='false')">")</xsl:if>
+							<xsl:if test= "(contains(../../../rules:expression,'intValue()') = false)  and ( @stored-value != 'true') and (@stored-value != 'false')">")</xsl:if>
 							<xsl:if test="$ct != position()"> <xsl:choose> <xsl:when test="../../../rules:field-constraint/rules:literal-restriction/@evaluator = '=='"> || </xsl:when><xsl:otherwise> &amp;&amp; </xsl:otherwise></xsl:choose></xsl:if>
 				</xsl:for-each>
 			</eval>	
