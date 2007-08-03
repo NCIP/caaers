@@ -15,7 +15,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.brxml.Value;
+
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -276,10 +276,9 @@ public class RulesEngineService2Test extends TestCase {
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -308,11 +307,9 @@ public class RulesEngineService2Test extends TestCase {
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
+
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
-		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -337,10 +334,9 @@ public class RulesEngineService2Test extends TestCase {
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -405,14 +401,12 @@ public class RulesEngineService2Test extends TestCase {
 //		 4 
 		literalRestriction1.setDisplayUri("Greater Than or Equal To");
 		
-		List<Value> values1 = new ArrayList<Value>();
-		
-		Value v = new Value();
-		v.setDisplayUri("3: Severe");
-		v.setStoredValue("3");
+		List<String> values1 = new ArrayList<String>();
 		
 
-		values1.add(v);
+		
+
+		values1.add("3");
 
 		literalRestriction1.setValue(values1);
 
@@ -501,20 +495,14 @@ public class RulesEngineService2Test extends TestCase {
 		literalRestriction2.setDisplayUri("Equal To");
 		
 		
-	    List<Value> values2 = new ArrayList<Value>();
+	    List<String> values2 = new ArrayList<String>();
 		
-		Value v = new Value();
-		v.setDisplayUri("1: None");
-		v.setStoredValue("1");
-		
-		Value v1 = new Value();
-		v1.setDisplayUri("2: Hospitalization");
-		v1.setStoredValue("2");
+
 		
 		
 
-		values2.add(v);
-		values2.add(v1);
+		values2.add("1");
+		values2.add("2");
 
 		literalRestriction2.setValue(values2);
 
@@ -604,13 +592,11 @@ public class RulesEngineService2Test extends TestCase {
 		
 		// 5 
 		
-		List<Value> values1 = new ArrayList<Value>();
+		List<String> values1 = new ArrayList<String>();
 
-		Value v = new Value();
-		v.setDisplayUri("1: Mild");
-		v.setStoredValue("1");
+
 		
-		values1.add(v);
+		values1.add("3");
 
 		literalRestriction1.setValue(values1);
 
@@ -656,14 +642,10 @@ public class RulesEngineService2Test extends TestCase {
 		literalRestriction2.setDisplayUri("Equal To");
 		
 		
-		Value v2 = new Value();
-		v2.setDisplayUri("1: Yes");
-		v2.setStoredValue("true");
 		
-		
-		List<Value> values2 = new ArrayList<Value>();
+		List<String> values2 = new ArrayList<String>();
 
-		values2.add(v2);
+		values2.add("true");
 
 
 		literalRestriction2.setValue(values2);
