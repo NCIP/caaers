@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers;
 
-import gov.nih.nci.cabig.ctms.maven.uctrace.UseCase;
+import gov.nih.nci.cabig.ctms.testing.uctrace.UseCase;
 
 /**
  * @author Rhett Sutphin
