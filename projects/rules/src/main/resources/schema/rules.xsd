@@ -67,6 +67,7 @@
 			<xs:element name="readableRule" type="rules:readableRule" minOccurs="0" />
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:string"/>
+		<xs:attribute name="marked-delete" type="xs:boolean" use="optional" default="false"/>
 	</xs:complexType>
 	</xs:element>
 	
@@ -166,17 +167,21 @@
 
 		<xs:complexType name="literal-restriction">
 			<xs:sequence>
-				<xs:element name="value" type="rules:value" minOccurs="0" maxOccurs="unbounded"/>            
+				<xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>       
+				<xs:element name="readable-value" type="xs:string"/>      
 			</xs:sequence>
 			<xs:attribute name="evaluator" type="xs:string" use="required"/> 
 			<xs:attribute name="display-uri" type="xs:string" use="required"/>         
 		</xs:complexType>
-
+<!-- 
 		<xs:complexType name="value">
-			<xs:attribute name="display-uri" type="xs:string" use="required"/>      
-			<xs:attribute name="stored-value" type="xs:string" use="required"/>            
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="display-uri" type="xs:string" use="required" />  
+				</xs:extension>
+			</xs:simpleContent>          
 		</xs:complexType>
-		
+-->	
 		<xs:complexType name="variable-restriction">
 			<xs:attribute name="evaluator" type="xs:string" use="required"/>      
 			<xs:attribute name="identifier" type="xs:string" use="required"/>            
@@ -186,7 +191,7 @@
 		<xs:complexType name="return-value-restriction">
 			<xs:simpleContent>
 				<xs:extension base="xs:string">
-					<xs:attribute name="evaluator" type="xs:string" use="required"/>  
+					<xs:attribute name="evaluator" type="xs:string" use="required" />  
 				</xs:extension>
 			</xs:simpleContent>
 		</xs:complexType>
