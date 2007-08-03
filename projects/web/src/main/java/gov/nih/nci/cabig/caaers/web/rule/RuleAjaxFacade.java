@@ -285,7 +285,9 @@ public class RuleAjaxFacade
     public Boolean removeRule(int ruleCount) {
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
-    	return ruleSet.getRule().remove(ruleCount) != null;
+    	ruleSet.getRule().get(ruleCount).setMarkedDelete(true);
+    	
+    	return ruleSet.getRule().get(ruleCount) != null;
     }
     
     private CreateRuleCommand getAuthorRuleCommand() {
