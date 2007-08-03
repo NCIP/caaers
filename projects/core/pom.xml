@@ -258,12 +258,6 @@
             <version>2.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>gov.nih.nci.cabig.ctms</groupId>
-            <artifactId>ctms-commons-testing-uctrace</artifactId>
-            <version>${ctms-commons.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
