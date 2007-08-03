@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
-import gov.nih.nci.cabig.caaers.rules.brxml.Value;
+
 
 public class RuleUtil {
 	
@@ -303,29 +303,42 @@ public class RuleUtil {
 		FieldConstraint fc = column.getFieldConstraint().get(0);
 		LiteralRestriction lr = fc.getLiteralRestriction().get(0);
 		
-		builder.append(" ");
+		builder.append(" &nbsp;&nbsp;&nbsp;");
 		//set domain-object display-uri to column
-		builder.append(column.getDisplayUri());
+		//builder.append(column.getDisplayUri());
 		
 		//set grammer prefix to column
 		builder.append(fc.getGrammerPrefix());
 		
 		//set filed display-uri to fc
-		builder.append(fc.getDisplayUri());
-		builder.append(" ");
+		//builder.append(fc.getDisplayUri());
+		//builder.append(" ");
 		
 		//set operator display-uri to lr
 		builder.append(lr.getDisplayUri());
 		builder.append(" ");
 		
-		List values = lr.getValue();
-		for (int i=0;i<values.size();i++) {
-			Value v = (Value)values.get(i);
-			builder.append("'" + v.getDisplayUri() + "' ");
-			if (i != values.size()-1 && values.size() > 1) {
-				builder.append(" or ");
+		
+		
+		
+		
+		String readableValues = lr.getReadableValue();
+		
+		if (readableValues != null) {
+		
+			String[] values = readableValues.split(",");
+			
+			//List values = lr.getValue();
+			for (int i=0;i<values.length;i++) {
+				
+				builder.append("'" + values[i] + "' ");
+				if (i != values.length-1 && values.length > 1) {
+					builder.append(" or ");
+				}
 			}
 		}
+		
+		builder.append(fc.getGrammerPostfix());
 	
 		return builder.toString();
 	}
