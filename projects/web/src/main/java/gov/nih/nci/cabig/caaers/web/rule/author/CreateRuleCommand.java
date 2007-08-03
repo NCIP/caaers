@@ -10,9 +10,9 @@ import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -63,6 +63,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	private String institutionName;
 	
 	private boolean isDataChanged;
+	
+	private String levelDescription;
 	
 	
 	
@@ -404,10 +406,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -435,10 +436,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -466,10 +466,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -485,6 +484,11 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+	public String getLevelDescription() {
+		return RuleLevel.valueOf(level).getDescription();
+
 	}
 
 	
