@@ -48,6 +48,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
+		
+		
 		CreateRuleCommand command = (CreateRuleCommand) oCommand;
         command.save();
 		Map<String, Object> model = new HashMap<String, Object>();
