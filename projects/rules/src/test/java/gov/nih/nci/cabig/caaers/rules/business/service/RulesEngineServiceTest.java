@@ -15,7 +15,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-import gov.nih.nci.cabig.caaers.rules.brxml.Value;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -222,38 +221,7 @@ public class RulesEngineServiceTest extends TestCase {
 	}
 
 	
-	private String readableColumn(Column column) {
-		StringBuilder builder = new StringBuilder();
-		
-		FieldConstraint fc = column.getFieldConstraint().get(0);
-		LiteralRestriction lr = fc.getLiteralRestriction().get(0);
-		
-		builder.append(" ");
-		//set domain-object display-uri to column
-		builder.append(column.getDisplayUri());
-		
-		//set grammer prefix to column
-		builder.append(fc.getGrammerPrefix());
-		
-		//set filed display-uri to fc
-		builder.append(fc.getDisplayUri());
-		builder.append(" ");
-		
-		//set operator display-uri to lr
-		builder.append(lr.getDisplayUri());
-		builder.append(" ");
-		
-		List values = lr.getValue();
-		for (int i=0;i<values.size();i++) {
-			Value v = (Value)values.get(i);
-			builder.append("'" + v.getDisplayUri() + "' ");
-			if (i != values.size()-1 && values.size() > 1) {
-				builder.append(" or ");
-			}
-		}
 	
-		return builder.toString();
-	}
 	
 	private void sponserAEAssesmentRuleFlow(String sponsorName,String ruleSetType, String studyName) throws Exception {
 
@@ -442,12 +410,10 @@ public class RulesEngineServiceTest extends TestCase {
 		ArrayList<LiteralRestriction> literalRestrictions = new ArrayList<LiteralRestriction>();
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
-		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -476,10 +442,9 @@ public class RulesEngineServiceTest extends TestCase {
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -504,10 +469,9 @@ public class RulesEngineServiceTest extends TestCase {
 		LiteralRestriction literalRestriction = new LiteralRestriction();
 		literalRestriction.setEvaluator("==");
 		
-		Value v = new Value();
-		v.setStoredValue(criteriaValue);
+
 		
-		literalRestriction.getValue().add(v);
+		literalRestriction.getValue().add(criteriaValue);
 		literalRestrictions.add(literalRestriction);
 		fieldConstraint.setLiteralRestriction(literalRestrictions);
 
@@ -688,13 +652,11 @@ public class RulesEngineServiceTest extends TestCase {
 		
 		// 5 
 		
-		List<Value> values1 = new ArrayList<Value>();
+		List<String> values1 = new ArrayList<String>();
 
-		Value v = new Value();
-		v.setDisplayUri("1: Mild");
-		v.setStoredValue("1");
+
 		
-		values1.add(v);
+		values1.add("1");
 
 		literalRestriction1.setValue(values1);
 
@@ -725,18 +687,12 @@ public class RulesEngineServiceTest extends TestCase {
 		LiteralRestriction literalRestriction2 = new LiteralRestriction();
 		literalRestriction2.setEvaluator("==");
 		literalRestriction2.setDisplayUri("Equal To");
-		List<Value> values2 = new ArrayList<Value>();
+		List<String> values2 = new ArrayList<String>();
 		
-		Value v1 = new Value();
-		v1.setDisplayUri("none");
-		v1.setStoredValue("1");
 
-		Value v2 = new Value();
-		v2.setDisplayUri("hospitalization");
-		v2.setStoredValue("2");
 		
-		values2.add(v1);
-		values2.add(v2);
+		values2.add("1");
+		values2.add("2");
 
 		literalRestriction2.setValue(values2);
 
@@ -781,7 +737,7 @@ public class RulesEngineServiceTest extends TestCase {
 				
 				// skip rule type filters
 				if (!column.getExpression().equals("getPrimaryFundingSponsorOrganization().getName()")) {
-					line.add(readableColumn(column));
+					line.add(RuleUtil.readableColumn(column));
 					line.add("AND");					
 				}
 				
