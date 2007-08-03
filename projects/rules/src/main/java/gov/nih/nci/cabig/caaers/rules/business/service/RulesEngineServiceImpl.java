@@ -228,6 +228,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription(ruleSetName);
 		
+		
+		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
 			 ruleSet.getImport().add("gov.nih.nci.cabig.caaers.domain.*");
