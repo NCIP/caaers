@@ -50,6 +50,7 @@
 	<xs:complexType name="valid-value">
 			<xs:attribute name="display-uri" type="xs:string"/>
 			<xs:attribute name="value" type="xs:string"/>
+			<xs:attribute name="readable-text" type="xs:string"/>
 	</xs:complexType>
 	
 	<xs:complexType name="method-call">
@@ -69,7 +70,8 @@
 	
 	<xs:complexType name="operator">
 		<xs:attribute name="name" type="xs:string"/>
-		<xs:attribute name="display-uri" type="xs:string" use="optional"/>		
+		<xs:attribute name="display-uri" type="xs:string" use="optional"/>
+		<xs:attribute name="readable-text" type="xs:string"/>		
 	</xs:complexType>
 
 	<xs:complexType name="grammer">
