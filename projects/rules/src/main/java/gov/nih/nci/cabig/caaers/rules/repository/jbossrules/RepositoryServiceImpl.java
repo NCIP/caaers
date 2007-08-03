@@ -214,10 +214,16 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		// ruleSet.externalURI = item.getExternalURI();
 		ruleSet.setDescription(item.getDescription());
 		ruleSet.setName(item.getName());
+		
 		// ruleSet.lastModified = item.getLastModified().getTime();
 		// ruleSet.lasContributor = item.getLastContributor();
 		// ruleSet.state = item.getStateDescription();
 
+		//make 2 assets , one is rule set info asset. and rule set asset 
+		//when we create rule set , acll the method add asset 
+		//when we load the the rules load asset (string name);
+		//
+		
 		AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
 
 		while (iterator.hasNext()) 
