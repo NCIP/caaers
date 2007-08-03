@@ -14,18 +14,18 @@
 					</method-call>
 					<input-type>select</input-type>
 				</field-value>
-				<valid-value value="0" display-uri="0: Normal"/>
-				<valid-value value="1" display-uri="1: Mild"/>
-				<valid-value value="2" display-uri="2: Moderate"/>
-				<valid-value value="3" display-uri="3: Severe"/>
-				<valid-value value="4" display-uri="4: Life-threatening or disabling"/>
-				<valid-value value="5" display-uri="5: Death"/>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
-				<operator name="&gt;=" display-uri="Greater Than Or Equal To" />
-				<operator name="&lt;=" display-uri="Less Than Or Equal To" />
+				<valid-value value="0" display-uri="0: Normal" readable-text="Grade 0"/>
+				<valid-value value="1" display-uri="1: Mild" readable-text="Grade 1"/>
+				<valid-value value="2" display-uri="2: Moderate" readable-text="Grade 2"/>
+				<valid-value value="3" display-uri="3: Severe" readable-text="Grade 3"/>
+				<valid-value value="4" display-uri="4: Life-threatening or disabling" readable-text="Grade 4"/>
+				<valid-value value="5" display-uri="5: Death" readable-text="Grade 5"/>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<operator name="&gt;=" display-uri="Greater Than Or Equal To" readable-text="is greater than or equal to "/>
+				<operator name="&lt;=" display-uri="Less Than Or Equal To" readable-text="is less than or equal to "/>
 				<expression>getGrade().getCode().intValue()</expression>
-				<grammer prefix=" has a " postfix=""/>
+				<grammer prefix=" Severity " postfix=""/>
 			</field>
 			<field name="term" display-uri="Term">
 				<field-value>
@@ -35,9 +35,10 @@
 					</method-call>
 					<input-type>autocompleter</input-type>
 				</field-value>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>getCtcTerm().getId().intValue()</expression>		
+				<grammer prefix=" Term " postfix=""/>
 			</field>
 			<field name="category" display-uri="Category">
 				<field-value>
@@ -47,9 +48,10 @@
 					</method-call>
 					<input-type>select</input-type>
 				</field-value>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>getCtcTerm().getCategory().getId().intValue()</expression>		
+				<grammer prefix=" has a " postfix=""/>
 			</field>
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
@@ -59,12 +61,13 @@
 					</method-call>
 					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="0" display-uri="None"/>
-				<valid-value value="1" display-uri="Hospitalization"/>
-				<valid-value value="2" display-uri="Prolonged Hospitalization"/>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
+				<valid-value value="0" display-uri="None" readable-text="none"/>
+				<valid-value value="1" display-uri="Hospitalization" readable-text="hospitalization"/>
+				<valid-value value="2" display-uri="Prolonged Hospitalization" readable-text="prolonged hospitalization "/>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>getHospitalization().getCode().intValue()</expression>		
+				<grammer prefix=" Cause " postfix=""/>
 			</field>
 			<field name="expected" display-uri="Expected">
 				<field-value>
@@ -74,11 +77,12 @@
 					</method-call>
 					<input-type>select</input-type>
 				</field-value>
-				<valid-value value="true" display-uri="Yes"/>
-				<valid-value value="false" display-uri="No"/>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getExpected().booleanValue()</expression>		
+				<valid-value value="true" display-uri="Yes" readable-text="is "/>
+				<valid-value value="false" display-uri="No" readable-text="is not "/>
+				<operator name="==" display-uri="Equal To" readable-text=""/>
+				<!-- <operator name="!=" display-uri="Not Equal To" readable-text="is not "/> -->
+				<expression>getExpected().booleanValue()</expression>	
+				<grammer prefix=" Adverse Event " postfix="expected "/>	
 			</field>			
 						
 			<field name="attributionSummary" display-uri="Attribution">
@@ -89,14 +93,15 @@
 					</method-call>
 					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="UNRELATED" display-uri="Unrelated"/>
-				<valid-value value="UNLIKELY" display-uri="Unlikely"/>
-				<valid-value value="POSSIBLE" display-uri="Possible"/>
-				<valid-value value="PROBABLE" display-uri="Probable"/>
-				<valid-value value="DEFINITE" display-uri="Definite"/>																
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
+				<valid-value value="UNRELATED" display-uri="Unrelated" readable-text="Unrelated"/>
+				<valid-value value="UNLIKELY" display-uri="Unlikely" readable-text="Unlikely"/>
+				<valid-value value="POSSIBLE" display-uri="Possible" readable-text="Possible"/>
+				<valid-value value="PROBABLE" display-uri="Probable" readable-text="Probable"/>
+				<valid-value value="DEFINITE" display-uri="Definite" readable-text="Definite"/>																
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>getAttributionSummary().getName()</expression>
+				<grammer prefix=" Attribution " postfix=""/>
 			</field>
 			
 		</domain-object>
@@ -105,16 +110,17 @@
 				<field-value>
 					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="Phase I Trial" display-uri="Phase I Trial"/>
-				<valid-value value="Phase I/II Trial" display-uri="Phase I/II Trial"/>
-				<valid-value value="Phase II Trial" display-uri="Phase II Trial"/>
-				<valid-value value="Phase III Trial" display-uri="Phase III Trial"/>
-				<valid-value value="Phase IV Trial" display-uri="Phase IV Trial"/>
-				<valid-value value="Phase 0 Trial" display-uri="Phase 0 Trial"/>
+				<valid-value value="Phase I Trial" display-uri="Phase I Trial" readable-text="Phase I Trial"/>
+				<valid-value value="Phase I/II Trial" display-uri="Phase I/II Trial" readable-text="Phase I/II Trial"/>
+				<valid-value value="Phase II Trial" display-uri="Phase II Trial" readable-text="Phase II Trial"/>
+				<valid-value value="Phase III Trial" display-uri="Phase III Trial" readable-text="Phase III Trial"/>
+				<valid-value value="Phase IV Trial" display-uri="Phase IV Trial" readable-text="Phase IV Trial"/>
+				<valid-value value="Phase 0 Trial" display-uri="Phase 0 Trial" readable-text="Phase 0 Trial"/>
 				<valid-value value="Pilot" display-uri="Pilot"/>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>getPhaseCode()</expression>
+				<grammer prefix=" Study " postfix=""/>
 			</field>
 		</domain-object>
 		<!-- commneted for iteration 5
