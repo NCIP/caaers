@@ -127,13 +127,20 @@
 							
 								var domainObjectDropDownID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].objectType'; 
 								var domainObjectIdentifierID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].identifier'; 
+								var domainObjectDisplayUriID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].displayUri'; 
 							
-			                              		$(domainObjectDropDownID).value=domainObject.className;
+			                        $(domainObjectDropDownID).value=domainObject.className;
 						      		$(domainObjectIdentifierID).value=domainObject.identifier;
+						      		$(domainObjectDisplayUriID).value=domainObject.displayUri;
 	
 							
 								var newColumnId = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].fieldConstraint[0].fieldName';
 								var expressionID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].expression';
+								var grammerPrefixID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].fieldConstraint[0].grammerPrefix';
+								
+								$(grammerPrefixID).value=domainObject.field[0].grammer.prefix;
+								
+								
 								//alert(newColumnId);
 
 				 				$(newColumnId).options.length = 0;
@@ -252,9 +259,39 @@
 				
 				}catch (e) {
 					alert("Exception " + e)
-				}		
+				}	
+					
 		}
 		
+		function deleteRule(ruleCount) {
+				
+				
+				try {
+					authorRule.removeRule(ruleCount-1, function(deleteStatus) {
+							if(deleteStatus) {
+									toggle(ruleCount);
+									var rules = $('allRules');
+									var rule = $('rule-'+ruleCount);
+									
+									rule.style.visibility="hidden";
+									//alert ("ss");
+									//rules.removeChild(rule);
+									
+
+								
+							} else {
+								alert("Delete failed on server " + values)
+							}
+					});
+				
+				}catch (e) {
+					alert("Exception " + e)
+				}
+				
+				
+					
+		
+		}
 		
 		function getElementHolderDiv() {
 			var elementHolderDiv = $('element-holder');
@@ -390,7 +427,107 @@
 	{
 	}
 	
-	function handleFieldOnchange(fieldDropDown, ruleCount) 
+	function handleValueOnselect(operatorDropDown, ruleCount, fieldIndex, multi)
+	{
+		
+	//	alert (fieldIndex);
+		
+		var selectedOperator = operatorDropDown.options[operatorDropDown.selectedIndex];
+		var selectId =  operatorDropDown.id.substring(0,operatorDropDown.id.lastIndexOf(".")); 
+		
+		// Get the index of Domain Object
+		var domainObjectDropDownID = selectId.substring(0,selectId.lastIndexOf("field")) + 'objectType';
+		
+		var domainObjectSelectedIndex = $(domainObjectDropDownID).selectedIndex;
+		//alert (domainObjectSelectedIndex);
+		
+		var displayUriID = selectId+ '.readableValue';
+		
+		var values = "";
+		//alert (displayUriID);		
+		
+		try 
+		  {
+			// Get the domain object
+			
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+		               {
+		                              		domainObject = object;
+		                              		
+		                    if (multi) {
+		                      for (var i = 0; i < operatorDropDown.options.length; i++) {
+		                    
+		                    	if (operatorDropDown.options[ i ].selected) {
+		                    		values = domainObject.field[fieldIndex].validValue[operatorDropDown.options[i].index].readableText + "," + values
+		                    	}
+		                      }
+		                   } else {
+		                   		values = domainObject.field[fieldIndex].validValue[operatorDropDown.selectedIndex-1].readableText
+		                   }
+		                    
+		                    
+		                    $(displayUriID).value = values;
+						
+							
+		           })
+		  }
+		catch(e) 
+		  {
+			alert('Exception');
+			alert(e);
+		  }
+		
+	}
+	
+	function handleOperatorOnchange(operatorDropDown, ruleCount) {
+	
+		
+		var selectedOperator = operatorDropDown.options[operatorDropDown.selectedIndex];
+		var selectId =  operatorDropDown.id.substring(0,operatorDropDown.id.lastIndexOf(".")); 
+		
+		
+		
+		// Get the index of Domain Object
+		var domainObjectDropDownID = selectId.substring(0,selectId.lastIndexOf("field")) + 'objectType';
+		
+		
+		
+		var domainObjectSelectedIndex = $(domainObjectDropDownID).selectedIndex;
+		//alert (domainObjectSelectedIndex);
+		
+		//ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri
+		
+		var displayUriID = selectId+ '.displayUri';
+		
+		//alert (displayUriID);
+		
+		try 
+		{
+			// Get the domain object
+			
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+		                              {
+		                              		domainObject = object;
+								
+						//	alert(domainObject.field[0].operator[operatorDropDown.selectedIndex-1].displayUri);
+						
+							
+							$(displayUriID).value = domainObject.field[0].operator[operatorDropDown.selectedIndex-1].readableText;
+							
+							//$(fieldDisplayUri).value = domainObject.field[fieldDropDown.selectedIndex-1].displayUri;
+							
+							
+		                              })
+		}
+		catch(e) 
+		{
+			alert('Exception');
+			alert(e);
+		}
+		
+	}
+	
+	function handleFieldOnchange(fieldDropDown, ruleCount, columnCount) 
 	{
 		var selectedField = fieldDropDown.options[fieldDropDown.selectedIndex];
 		
@@ -399,8 +536,11 @@
 		var validValueField = document.getElementById(selectId + '.literalRestriction[0].value');
 		
 		
+		
+		
 		// Get the index of Domain Object
 		var domainObjectDropDownID = selectId.substring(0,selectId.lastIndexOf("."))  + '.objectType';
+	//	alert (domainObjectDropDownID);
 		var domainObjectSelectedIndex = $(domainObjectDropDownID).selectedIndex;
 		
 		var domainObjectIdentifierID = selectId.substring(0,selectId.lastIndexOf("."))  + '.identifier';
@@ -409,6 +549,13 @@
 
 		// Get the index of Operator
 		var operatorDropDownID = selectId + '.literalRestriction[0].evaluator';
+		
+		var grammerPrefix = selectId.substring(0,selectId.lastIndexOf("."))  + '.fieldConstraint[0].grammerPrefix';
+		var grammerPostfix = selectId.substring(0,selectId.lastIndexOf("."))  + '.fieldConstraint[0].grammerPostfix';
+		var fieldDisplayUri = selectId.substring(0,selectId.lastIndexOf("."))  + '.fieldConstraint[0].displayUri';
+		
+		
+		var tIndex =selectedField.index-1;
 
 		//var domainObject = null;
 		
@@ -458,8 +605,28 @@
 
 								// Reset the expression
 								$(expressionID).value=domainObject.field[fieldDropDown.selectedIndex-1].expression;
+								
+						//	alert(domainObject.field[fieldDropDown.selectedIndex-1].displayUri);
+						//	alert(domainObject.field[fieldDropDown.selectedIndex-1].grammer.prefix);
+							
+							$(grammerPrefix).value = domainObject.field[fieldDropDown.selectedIndex-1].grammer.prefix;
+							$(grammerPostfix).value = domainObject.field[fieldDropDown.selectedIndex-1].grammer.postfix;
+							
+							$(fieldDisplayUri).value = domainObject.field[fieldDropDown.selectedIndex-1].readableText;
+							
+							
 		                              })
-		
+		                              
+		        // delay code
+				var date = new Date();
+				var curdate = null;
+				 do {curdate = new Date();} 
+				 	while (curdate - date < 500);
+				 	
+				 	//end 
+				 	
+				 	
+				 	
 			
 			if (selectedField.value == 'term')
 			{
@@ -556,6 +723,8 @@
 				}
 				else
 				{
+					
+					
 					fieldDropDown.value='category';
 					
 				                createAE.getCategories(3, function(categories) {
@@ -566,6 +735,8 @@
 							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this, '+ruleCount+')">';
 										selectArea += '</select>';
 				
+
+
 							//Element.remove(validValueField);
 
 							
@@ -600,18 +771,27 @@
 			}
 			else if (selectedField.value == 'category')
 			{
+				                alert ("here");
+				                
 				                createAE.getCategories(3, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this,' + ruleCount + ')">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this,' + ruleCount + ',' + tIndex + ',' + false + ')">';
 										selectArea += '</select>';
+				
+				
+				
+							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+									
+				
+				
 				
 							//Element.remove(validValueField);
 
 							
-							$(spanId).innerHTML = selectArea;
+							$(spanId).innerHTML = selectArea + hiddenField;
 
 							var sel = $(newId);	
 				                
@@ -648,21 +828,29 @@
 									
 									var selectArea = '';
 									
+									
+									
 									if (isMultiSelect)
 									{
-										selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3">';
+										selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselect(this,'+ ruleCount +',' + tIndex + ', true)"' +'>';
+										
 									}
 									else
 									{
-										selectArea = '<select id="' + newId + '" name="' + newId +'" >';
+										selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="handleValueOnselect(this,'+ ruleCount +',' + tIndex + ', false)"' +'>';
 									}
 									
+									var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 									selectArea += html + '</select>';
 						
 
 									//Element.remove(validValueField);
-									$(spanId).innerHTML = selectArea;
+									$(spanId).innerHTML = selectArea + hiddenField;
+									
+									//alert ($(spanId).innerHTML );
 							   	});
+							   	
+							   	//onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
 			}
 		
 		}
@@ -742,6 +930,10 @@
 		
 		var valueDropDownSpanID = prefixID + '.fieldConstraint[0].literalRestriction[0].value.span';
 		
+		//
+		var domainObjectDisplayUri = prefixID + '.displayUri'; 
+
+		
 		if (domainObjectDropDown.selectedIndex == 0)
 		{
 			// Set all the fields to null
@@ -773,10 +965,16 @@
 
 		authorRule.getRulesDomainObject(domainObjectDropDown.selectedIndex - 1, function(domainObject)
 		                              {
-							//alert(domainObject.identifier);		                              
+									                              
 							
 							// Set the identifier Value
 							$(domainObjectIdentifierID).value = domainObject.identifier;
+							
+							$(domainObjectDisplayUri).value = domainObject.displayUri;
+							
+
+							
+							
 						
 							// Reset expression
 							$(expressionID).value='';
@@ -809,9 +1007,24 @@
 		
 	}
 	
-	function onCategoryChange(category, ruleCount)
+	function onCategoryChange(category, ruleCount, fieldIndex, multi)
+
 	{
-		//alert('on cat change');
+		var selectId =   category.id.substring(0,category.id.lastIndexOf(".")); 
+		
+		var displayUriID = selectId+ '.readableValue';
+		
+		
+		
+				              for (var i = 0; i < category.options.length; i++) {
+		                    
+		                    	if (category.options[ i ].selected) {
+		                    		 $(displayUriID).value = category.options[ i ].text
+		                    		break;
+		                    	}
+		                    	
+		                      }
+		
 		
 				// Check whether category exists
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
@@ -899,11 +1112,13 @@ button. Rules created will belong to the selected RuleSet.</p>
 			<div class="row">
 			<div class="label"><label for="ruleSetName">RuleSet
 			Name</label></div>
-			<div class="value"><form:input path="ruleSetName" size="40" />
+			<div class="value"><form:input path="ruleSetName" size="40" readonly="readonly"/>
 			</div>
+			<!--
 			<div class="local-buttons"><input type="button"
 				value="Add Rule" align="right" onclick="addRule()" /></div>
 			</div>
+			-->
 
 
 			<div id="allRules"><c:forEach varStatus="ruleStatus"
@@ -966,12 +1181,19 @@ button. Rules created will belong to the selected RuleSet.</p>
 						<form:option value="">Please select Domain Object</form:option>
 						<form:options items="${ruleUi.condition[0].domainObject}"
 							itemLabel="displayUri" itemValue="className" />
-					</form:select> <form:hidden
-						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
+					</form:select> 
+					
+					<!-- set domain-object display-uri to column -->
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
+						
+															
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
+						
+						
 					</span> <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <form:select
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
-						onchange="handleFieldOnchange(this, ${ruleCount})">
+						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
 						<form:option value="">Please select Field</form:option>
 
 						<c:forEach items="${ruleUi.condition[0].domainObject}"
@@ -986,12 +1208,17 @@ button. Rules created will belong to the selected RuleSet.</p>
 							</c:if>
 						</c:forEach>
 
-					</form:select> <form:hidden
-						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
+					</form:select> 
+					
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
 
 					<img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <form:select
-						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator">
+						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
+						onchange="handleOperatorOnchange(this, ${ruleCount})">
 						<form:option value="">Please select operator</form:option>
 
 
@@ -1050,11 +1277,15 @@ button. Rules created will belong to the selected RuleSet.</p>
 																			//alert (fieldValue);
 																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
 																			selectArea += '</select>';
-																					
+						
+						
+													var hiddenField = '<input type="hidden" id="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+
+													
 																			//Element.remove(validValueField);
 																	
 																								
-																			$(spanId).innerHTML = selectArea;
+																			$(spanId).innerHTML = selectArea + hiddenField;
 																	
 																			var sel = $(newId);	
 																					                
@@ -1097,7 +1328,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 
 												function loadTermsBasedOnCategory() {
-
+	
 																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 																		var spanId = newId + '.span';
 																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
@@ -1186,21 +1417,25 @@ button. Rules created will belong to the selected RuleSet.</p>
 															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
 															<form:select
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
-																multiple="multiple" size="3">
+																multiple="multiple" size="3"
+																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
 																<form:options
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
 															</form:select>
+															<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
 														</c:when>
 														<c:otherwise>
 															<form:select
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
-																multiple="false">
+																multiple="false"
+																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
 																<form:option value="">Please select value</form:option>
 																<form:options
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
 															</form:select>
+															<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
 														</c:otherwise>
 													</c:choose>
 
@@ -1263,11 +1498,17 @@ button. Rules created will belong to the selected RuleSet.</p>
 				</div>
 				</div>
 
-			</c:forEach></div>
+			</c:forEach>
+			
+			
+			</div>
 			<!-- closing allRules -->
-
+			<div class="local-buttons"><input type="button"
+				value="Add Rule" align="right" onclick="addRule()" /></div>
+			</div>
 		</jsp:attribute>
 	</tags:tabForm>
+	
 </chrome:division>
 
 </body>
