@@ -4,10 +4,11 @@ import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -24,11 +25,11 @@ import java.util.Set;
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  * @author Ram Chilukuri
+ * @author Krikor Krumlian
  */
 @CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-	private CtcDao ctcDao = (CtcDao)getApplicationContext().getBean("ctcDao");
 
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
@@ -40,21 +41,15 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         Study study = getDao().getByGridId("gridStudy");
         assertNotNull("Study not found", study);
     }
-
-    public void testSave() throws Exception {
-
-    	Ctc ctc = ctcDao.getCtcaeV3();
-
+    
+    public void testSaveWithCtc() throws Exception {
     	Integer savedId;
         {
             Study newStudy = new Study();
             newStudy.setShortTitle("Short Title Inserted");
             newStudy.setLongTitle("Long Title Inserted");
-            newStudy.setCtcVersion(ctc);
-           // newStudy.setPrincipalInvestigatorCode("ICODE_101");
-           // newStudy.setPrincipalInvestigatorName("Investigator Name Inserted");
+            newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
             newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
-          //  newStudy.setPrimarySponsorName("Sponsor Name Inserted");
             getDao().save(newStudy);
             assertNotNull("No ID for newly saved study", newStudy.getId());
             savedId = newStudy.getId();
@@ -65,11 +60,36 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         {
             Study reloaded = getDao().getById(savedId);
             assertNotNull("Saved Study not found", reloaded);
-           // assertEquals("ICODE_101", reloaded.getPrincipalInvestigatorCode());
-           // assertEquals("Investigator Name Inserted", reloaded.getPrincipalInvestigatorName());
-          //  assertEquals("Sponsor Name Inserted", reloaded.getPrimarySponsorName());
+            assertNotNull("Terminology is null", reloaded.getTerminology());
+            assertNotNull("Ctc Version is null", reloaded.getTerminology().getCtcVersion());
+            assertEquals("Term should be Ctc",Term.CTC, reloaded.getTerminology().getTerm());
         }
     }
+    
+    public void testSaveWithMedDRA() throws Exception {
+    	Integer savedId;
+        {
+            Study newStudy = new Study();
+            newStudy.setShortTitle("Short Title Inserted");
+            newStudy.setLongTitle("Long Title Inserted");
+            newStudy.setTerminology(Fixtures.createMedDRATerminology(newStudy));
+            newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+            getDao().save(newStudy);
+            assertNotNull("No ID for newly saved study", newStudy.getId());
+            savedId = newStudy.getId();
+        }
+
+        interruptSession();
+
+        {
+            Study reloaded = getDao().getById(savedId);
+            assertNotNull("Saved Study not found", reloaded);
+            assertNotNull("Terminology is null", reloaded.getTerminology());
+            assertNull("Ctc Version should be null", reloaded.getTerminology().getCtcVersion());
+            assertEquals("Term should be MedDRA",Term.MEDDRA, reloaded.getTerminology().getTerm());
+        }
+    }
+    
 
     public void testGetBySubnameMatchesShortTitle() throws Exception {
         List<Study> actual = getDao().getBySubnames(new String[] { "orter" });
@@ -176,9 +196,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			Organization sponsor = sitedao.getById(-1001);
 			Organization organization = sitedao.getById(-1003);
 
-			Ctc ctc = ctcDao.getCtcaeV3();
-
-
 			Study study = new Study();
 			study.setShortTitle("ShortTitleText");
 			study.setLongTitle("LongTitleText");
@@ -187,8 +204,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			study.setTargetAccrualNumber(150);
 			//study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setCtcVersion(ctc);
-
+			study.setTerminology(Fixtures.createCtcV3Terminology(study));
 
 			// Study Site
 			StudySite studySite = new StudySite();
@@ -225,10 +241,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			Organization sponsor = sitedao.getById(-1001);
 			Organization organization = sitedao.getById(-1003);
 			Organization center = sitedao.getById(-1002);
-
-			Ctc ctc = ctcDao.getCtcaeV3();
-
-
+			
 			Study study = new Study();
 			study.setShortTitle("ShortTitleText");
 			study.setLongTitle("LongTitleText");
@@ -237,7 +250,8 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			study.setTargetAccrualNumber(150);
 			//study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setCtcVersion(ctc);
+			study.setTerminology(Fixtures.createCtcV3Terminology(study));
+			//study.setCtcVersion(ctc);
 
 
 			// Study Site

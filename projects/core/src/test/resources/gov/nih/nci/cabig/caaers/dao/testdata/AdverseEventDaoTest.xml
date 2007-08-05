@@ -46,7 +46,52 @@
         />
     <agents id="-101"/>
     <agents id="-102"/>
-    <studies id="-100" short_title="Min" ctc_id="3"/>
+    <studies id="-100" short_title="Min"/>
+    
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-100"
+   		/>
+   	 		   
+
+	<AE_REPORTS
+        id="-19"
+        assignment_id="-6"
+        detection_date="2007-04-03 21:43:56.987"
+        created_at="2007-04-04 13:22:32.055"
+        />
+        
+    <TREATMENTS
+        id="-21"
+        report_id="-19"
+        />
+        
+	<ADVERSE_EVENTS
+        id="-3"
+        report_id="-19"
+        grade_code="5"
+        hospitalization_code="0"
+        attribution_summary_code="3"
+        expected="1"
+        comments="That was some big AE"
+        />
+    
+     <AE_TERMS
+        id="-9"
+        adverse_event_id="-3"
+        term_id="-11"
+        term_type="meddra"
+        />
+
+	<MEDDRA_LLT
+		id="-11"
+		meddra_code="2"
+		meddra_term="Hello World"
+		/>       
+
+
 
     <AE_REPORTS
         id="-17"
@@ -63,12 +108,19 @@
         id="-2"
         report_id="-17"
         grade_code="5"
-        ctc_term_id="3007"
         hospitalization_code="0"
         attribution_summary_code="3"
         expected="1"
         comments="That was some big AE"
         />
+        
+        
+   <AE_TERMS
+        id="-8"
+        adverse_event_id="-2"
+        term_id="3012"
+        term_type="ctep"
+        />     
 
     <COURSE_AGENTS
         id="-23"

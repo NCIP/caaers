@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -21,6 +22,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +41,9 @@ import java.util.List;
     }
 )
 public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
-    private CtcTerm ctcTerm;
+	private AbstractAdverseEventTerm adverseEventTerm;
+	
+	//private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
     private Hospitalization hospitalization;
@@ -53,6 +59,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private List<DiseaseAttribution> diseaseAttributions;
     private List<SurgeryAttribution> surgeryAttributions;
     private List<RadiationAttribution> radiationAttributions;
+    
 
     ////// BOUND PROPERTIES
 
@@ -174,13 +181,64 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.radiationAttributions = radiationAttributions;
     }
 
-    @ManyToOne
+    
+    @Deprecated
+    @Transient
     public CtcTerm getCtcTerm() {
-        return ctcTerm;
+        if ( this.adverseEventTerm instanceof AdverseEventCtcTerm ){
+        	return getAdverseEventCtcTerm().getCtcTerm();
+        }
+        else{
+        	throw new RuntimeException("Do Not Use this Method");
+        }
     }
 
+    @Deprecated
+    @Transient
     public void setCtcTerm(CtcTerm ctcTerm) {
-        this.ctcTerm = ctcTerm;
+        getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
+    }
+    
+    @Transient
+    public AdverseEventCtcTerm getAdverseEventCtcTerm() {
+    	if ( adverseEventTerm == null ) { 
+    		this.adverseEventTerm = new AdverseEventCtcTerm(); 
+    		adverseEventTerm.setAdverseEvent(this);
+    		} 
+		return (AdverseEventCtcTerm)adverseEventTerm;
+	}
+    
+    @Transient
+	public void setAdverseEventCtcTerm(AdverseEventCtcTerm adverseEventCtcTerm) {
+		//this.adverseEventCtcTerm = adverseEventCtcTerm;
+    	setAdverseEventTerm(adverseEventCtcTerm);
+	}
+    
+    @Transient
+    public AdverseEventMeddraLowLevelTerm getAdverseEventMeddraLowLevelTerm() {
+    	if ( adverseEventTerm == null ) { 
+    		this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm(); 
+    		adverseEventTerm.setAdverseEvent(this);
+    		} 
+		return (AdverseEventMeddraLowLevelTerm)adverseEventTerm;
+	}
+    
+    @Transient
+	public void setAdverseEventMeddraLowLevelTerm(AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
+		//this.adverseEventCtcTerm = adverseEventCtcTerm;
+    	setAdverseEventTerm(adverseEventMeddraLowLevelTerm);
+	}
+    
+    
+    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public AbstractAdverseEventTerm getAdverseEventTerm() {
+        return adverseEventTerm;
+    }
+
+    public void setAdverseEventTerm(AbstractAdverseEventTerm adverseEventTerm) {
+        this.adverseEventTerm = adverseEventTerm;
     }
 
     public String getDetailsForOther() {

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
@@ -74,7 +75,8 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		//study.setPrimarySponsorCode("SCODE_101"); -- we should set the primaryfundinsponsor (Object)
-		study.setCtcVersion(getCtc());
+		//study.setCtcVersion(getCtc());
+		study.setTerminology(Fixtures.createCtcV3Terminology(study));
 
 		try {
 			dao.save(study);
@@ -108,7 +110,8 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
 		//study.setPrimarySponsorCode("SCODE_101");
-		study.setCtcVersion(getCtc());
+		//study.setCtcVersion(getCtc());
+		study.setTerminology(Fixtures.createCtcV3Terminology(study));
 		SecurityTestUtils.switchUser("study_cd1", "ROLE_caaers_study_cd");
 		try {
 			dao.save(study);
@@ -126,8 +129,8 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 		study.setShortTitle("some other title");
 		study.setLongTitle("long title");
 		study.setMultiInstitutionIndicator(Boolean.FALSE);
+		study.setTerminology(Fixtures.createCtcV3Terminology(study));
 		//study.setPrimarySponsorCode("SCODE_101");
-		study.setCtcVersion(getCtc());
 		// try {
 		// dao.merge(study);
 		// fail("Should have failed to merge study");

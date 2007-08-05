@@ -16,13 +16,14 @@ import org.hibernate.LockMode;
 
 /**
  * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
 @Transactional(readOnly=true)
 public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport>
     implements MutableDomainObjectDao<ExpeditedAdverseEventReport>
 {
     private static final String JOINS
-        = " join o.adverseEventsInternal as adverseEvents join adverseEvents.ctcTerm as ctcTerm " +
+        = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm " +
         " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier " + 
         " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
 
@@ -88,6 +89,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
          .append(domainClass().getName()).append(" o ").append(JOINS);
 		
+		
 		if (props.get("expeditedDate") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" o.detectionDate").append(" = ? ");
@@ -118,6 +120,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add( p.toLowerCase() );
 			firstClause = false;
 		}
+		
 		
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");

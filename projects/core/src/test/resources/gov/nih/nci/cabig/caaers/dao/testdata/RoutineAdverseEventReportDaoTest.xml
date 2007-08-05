@@ -64,21 +64,39 @@
      <ADVERSE_EVENTS
         id="-70"
         routine_report_id="-1"
-        ctc_term_id="3007"
         routine_list_index="0"
         />
         
     <ADVERSE_EVENTS
         id="-11"
         routine_report_id="-1"
-        ctc_term_id="3007"
         routine_list_index="1"
         /> 
+        
+     <AE_TERMS
+    	id="-11"
+    	adverse_event_id="-70"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+     <AE_TERMS
+    	id="-12"
+    	adverse_event_id="-11"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>   
+        
      <STUDIES
         id="-1"
-        ctc_id="3"
         short_title="That one"
-        />
+        /> 
+        
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-1"
+   		/>		       
         
     <IDENTIFIERS
         id="-201"

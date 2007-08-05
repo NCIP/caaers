@@ -262,9 +262,7 @@ public class AdverseEventReportSerializer {
 	    	adverseEvent.setOtherCauseAttributions(otList);
 	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
 	    	
-	    	
-	    	
-	    	adverseEvent.setCtcTerm(ae.getCtcTerm());
+	    	adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
 	    	adverseEvent.setHospitalization(ae.getHospitalization());
 	    	adverseEvent.setGrade(ae.getGrade());
 	    	

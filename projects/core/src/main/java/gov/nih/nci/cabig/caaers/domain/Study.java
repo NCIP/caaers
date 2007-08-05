@@ -42,7 +42,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private String description;
     private String precis;
     private String phaseCode;
-    private Ctc ctcVersion;
+    private Terminology terminology;
     private String status;
     private Boolean blindedIndicator;
     private Boolean multiInstitutionIndicator;
@@ -217,14 +217,32 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		this.diseaseLlt = diseaseLlt;
 	}
 
-    @OneToOne
-    @JoinColumn(name="ctc_id")
+    @Deprecated
+    @Transient
     public Ctc getCtcVersion() {
-		return ctcVersion;
+		return getTerminology().getCtcVersion();
 	}
 
+    @Deprecated
+    @Transient
 	public void setCtcVersion(Ctc ctcVersion) {
-		this.ctcVersion = ctcVersion;
+    	Terminology t = getTerminology();
+    	t.setTerm(Term.CTC);
+    	t.setCtcVersion(ctcVersion);
+	}    
+	
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public Terminology getTerminology() {
+		if ( this.terminology == null ) {
+			this.terminology = new Terminology();
+			terminology.setStudy(this);
+		}
+		return terminology;
+	}
+
+	public void setTerminology(Terminology terminology) {
+		this.terminology = terminology;
 	}    
 	
 	@Override

@@ -137,7 +137,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         CtcTerm term = ctcTermDao.getById(3012);
         AdverseEvent newEvent = new AdverseEvent();
         newEvent.setGrade(Grade.MILD);
-        newEvent.setCtcTerm(term);
+        newEvent.getAdverseEventCtcTerm().setCtcTerm(term);
         newEvent.setExpected(Boolean.FALSE);
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 

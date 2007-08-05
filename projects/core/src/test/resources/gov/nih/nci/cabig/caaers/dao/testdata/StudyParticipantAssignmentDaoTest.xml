@@ -9,8 +9,15 @@
     <STUDIES
         id="-4"
         short_title="A history of ghosts"
-        ctc_id="3"
         />
+        
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-4"
+   		/> 		   
+        
     <ORGANIZATIONS
         id="-1"
         name="Manse"

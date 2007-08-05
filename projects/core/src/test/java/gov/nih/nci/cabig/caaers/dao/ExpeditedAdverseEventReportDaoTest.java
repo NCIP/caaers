@@ -214,13 +214,13 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 CtcTerm term = ctcTermDao.getById(3012);
                 AdverseEvent event0 = new AdverseEvent();
                 event0.setGrade(Grade.MILD);
-                event0.setCtcTerm(term);
+                event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
                 event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
-                event1.setCtcTerm(term);
+                event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event1.setExpected(Boolean.FALSE);
                 event1.setHospitalization(Hospitalization.HOSPITALIZATION);
 
@@ -239,7 +239,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
                 assertNotNull("Cascaded AE not found", loadedEvent0);
                 assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
-                assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getCtcTerm().getId());
+                assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm().getCtcTerm().getId());
                 assertNotNull("No report", loadedEvent0.getReport());
                 assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedEvent0.getHospitalization());
                 assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
@@ -498,6 +498,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         });
     }
     
+    
     public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
     	List<ExpeditedAdverseEventReport> results;
     	Map<String,String> m = new HashMap<String,String>();
@@ -555,7 +556,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         ExpeditedAdverseEventReport report = Fixtures.createSavableExpeditedReport();
         report.setAssignment(assignmentDao.getById(-14));
         report.setDetectionDate(new Date());
-        report.getAdverseEvents().get(0).setCtcTerm(ctcTermDao.getById(3012));
+        report.getAdverseEvents().get(0).setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(report.getAdverseEvents().get(0), ctcTermDao.getById(3012)));
         return report;
     }
 

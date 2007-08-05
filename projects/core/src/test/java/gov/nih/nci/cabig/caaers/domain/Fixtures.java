@@ -90,6 +90,29 @@ public class Fixtures {
         def.setName(name);
         return def;
     }
+    
+    public static Terminology createCtcV3Terminology(Study s)
+    {
+    	Terminology t = s.getTerminology();
+    	Ctc v3 = setId(3, new Ctc());
+    	t.setTerm(Term.CTC);
+    	t.setCtcVersion(v3);
+    	return t;
+    }
+    
+    public static Terminology createMedDRATerminology(Study s)
+    {
+    	Terminology t = s.getTerminology();
+    	t.setTerm(Term.MEDDRA);
+    	return t;
+    }
+    
+    public static AdverseEventCtcTerm createAdverseEventCtcTerm(AdverseEvent adverseEvent,CtcTerm ctcTerm)
+    {
+    	AdverseEventCtcTerm adverseEventCtcTerm = adverseEvent.getAdverseEventCtcTerm();
+    	adverseEventCtcTerm.setCtcTerm(ctcTerm);
+    	return adverseEventCtcTerm;
+    }
 
     public static Ctc createCtcaeV3() {
         Ctc v3 = setId(3, new Ctc());

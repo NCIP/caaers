@@ -38,4 +38,7 @@
 	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="reportFormat">
 	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.report.ReportFormat</param>
 	</typedef>
+	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="term">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Term</param>
+    </typedef>
 </hibernate-mapping>

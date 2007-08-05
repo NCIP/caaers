@@ -43,7 +43,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
         ctcTerm.setCtepTerm("CTEP term");
         ctcTerm.setSelect("Select");
         ctcTerm.setOtherRequired(false);
-        adverseEvent.setCtcTerm(this.ctcTerm);
+        adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 
         wrappedReport = new BeanWrapperImpl(report);
     }
@@ -102,7 +102,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
     }
     
     public void testNotificationMessageExceptionForNoTerm() throws Exception {
-        adverseEvent.setCtcTerm(null);
+        adverseEvent.getAdverseEventCtcTerm().setCtcTerm(null);
         assertFalse(report.isNotificationMessagePossible());
         try {
             report.getNotificationMessage();

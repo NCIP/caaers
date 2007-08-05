@@ -82,7 +82,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
             AdverseEvent firstAe = getAdverseEventsInternal().get(0);
-            CtcTerm term = firstAe.getCtcTerm();
+            CtcTerm term = firstAe.getAdverseEventCtcTerm().getCtcTerm();
             String other = term.isOtherRequired()
                 ? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
             return String.format("Grade %d adverse event with term %s%s",
@@ -99,7 +99,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public boolean isNotificationMessagePossible() {
         if (getAdverseEventsInternal().size() < 1) return false;
         AdverseEvent ae = getAdverseEventsInternal().get(0);
-        return ae != null && ae.getGrade() != null && ae.getCtcTerm() != null;
+        return ae != null && ae.getGrade() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null;
     }
 
     @Transient
@@ -137,8 +137,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         summary.put("Study", summaryLine(getStudy()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
-        if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getCtcTerm() != null) {
-            primaryAeLine = getAdverseEvents().get(0).getCtcTerm().getCtepTerm();
+        if (getAdverseEvents().size() > 0 && 
+        		getAdverseEvents().get(0).getAdverseEventTerm() != null && 
+        		getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
+            primaryAeLine = getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm();
         }
         summary.put("Primary AE", primaryAeLine);
         summary.put("AE count", Integer.toString(getAdverseEvents().size()));

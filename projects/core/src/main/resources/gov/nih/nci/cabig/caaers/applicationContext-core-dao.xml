@@ -89,10 +89,11 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
                 <value>gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
-                <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
+                <!--<value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>-->
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
@@ -110,6 +111,9 @@
                 <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>        
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
             </list>
         </property>
         <property name="entityInterceptor">

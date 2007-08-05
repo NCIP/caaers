@@ -114,7 +114,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
                 substringMatchProperties, exactMatchProperties);
             if (i < subnames.length - 1) query.append(" and ");
         }
-        
+        getHibernateTemplate().setMaxResults(30);
         return getHibernateTemplate().find(query.toString(), params.toArray());
     }
 

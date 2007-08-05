@@ -31,7 +31,7 @@ public class StudyServiceTest extends CaaersDbTestCase {
     	study.setShortTitle("New Study");
     	List<Study> studies = studyService.search(study);
     	assertNotNull("Studes is null", studies);
-    	
     }
+    
 
 }

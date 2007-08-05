@@ -7,8 +7,15 @@
         id="-2"
         short_title="Zeppo"
         long_title="Zeppelin"
-        ctc_id="3"
         />
+    
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2"
+   		/> 		   
+        
     <AGENTS
         id="-3002"
         name="Orange"

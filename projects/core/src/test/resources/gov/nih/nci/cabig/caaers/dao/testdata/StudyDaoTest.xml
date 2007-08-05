@@ -7,8 +7,8 @@
         id="-2"
         multi_institution_indicator="0"
         short_title="Short Title"
-        long_title="Long Title" description="Description"
-        ctc_id="3"
+        long_title="Long Title" 
+        description="Description"
         grid_id=""
         />
     <STUDIES
@@ -17,7 +17,6 @@
         short_title="Shorter"
         long_title="Lengthy Title" description="Different description"
         grid_id=""
-        ctc_id="3"
         />
 
     <STUDIES
@@ -25,9 +24,30 @@
         id="-4"
         multi_institution_indicator="0"
         short_title="Shortest"
-        long_title="Event Lengthier Title" description="Yet another different description"
-        ctc_id="3"
+        long_title="Event Lengthier Title" 
+        description="Yet another different description"
         />
+   
+   <TERMINOLOGIES
+   		id="-10"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-4"
+   		/> 
+   		
+   <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-3"
+   		/>
+   	
+   	<TERMINOLOGIES
+   		id="-12"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2"
+   		/>	 		    
 
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS

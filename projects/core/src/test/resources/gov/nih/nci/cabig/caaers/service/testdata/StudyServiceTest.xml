@@ -36,8 +36,7 @@
     	multi_institution_indicator="0"
     	short_title="New Study"
     	long_title="Long Title" 
-    	description="Description" 
-    	ctc_id="3"
+    	description="Description"
     	grid_id="gridStudy"/>
     
     <STUDIES 
@@ -46,8 +45,21 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	ctc_id="3"
     	grid_id=""/>
+    
+     <TERMINOLOGIES
+   		id="-2000"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2001"
+   		/>
+   	
+   	<TERMINOLOGIES
+   		id="-2001"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2000"
+   		/>	 		   	
     
     <STUDY_ORGANIZATIONS
         id="-3001"

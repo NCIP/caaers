@@ -45,7 +45,7 @@
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
-    	ctc_id="3"/>
+    	/>
     
     <STUDIES 
     	id="-2000" 
@@ -53,7 +53,21 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	ctc_id="3"/>
+    	/>
+    	
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2000"
+   		/>
+   	
+   	<TERMINOLOGIES
+   		id="-12"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2001"
+   		/>	 		   	
     	
      <IDENTIFIERS
         id="-201"
