@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -84,6 +85,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
+        ControllerTools.registerEnumEditor(binder, Term.class);
     }
 
    

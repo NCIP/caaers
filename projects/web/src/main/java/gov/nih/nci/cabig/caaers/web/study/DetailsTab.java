@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -9,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +59,11 @@ class DetailsTab extends StudyTab {
             fields.add(sponsorField);
             fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true,
                 collectOptionsFromConfig("phaseCodeRefData", "desc","desc")));
-            fields.add(InputFieldFactory.createSelectField("ctcVersion", "CTC version", true,
-                collectOptions(ctcDao.getAll(), "id","name")));
+            fields.add(InputFieldFactory.createSelectField("terminology.term", "Terminology", true,
+            		InputFieldFactory.collectOptions(Arrays.asList(Term.values()), null, "displayName")));
+            // TODO: Add validation for when terminology.term = Term.CTC
+            fields.add(InputFieldFactory.createSelectField("terminology.ctcVersion", "CTC version", false,
+                    collectOptions(ctcDao.getAll(), "id","name")));
         }
         InputFieldGroupMap map  = new InputFieldGroupMap();
         map.addInputFieldGroup(fieldGroup);

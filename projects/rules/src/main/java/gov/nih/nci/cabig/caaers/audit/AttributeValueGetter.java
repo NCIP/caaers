@@ -17,20 +17,20 @@ public class AttributeValueGetter {
 	}
 	
 	public static String getTermFromAdverseEvent(AdverseEvent ae){
-		if(ae.getCtcTerm()==null){
+		if(ae.getAdverseEventCtcTerm().getCtcTerm()==null){
 			return "null";
 		}
-		String str = AuditStringUtils.isEmpty(ae.getCtcTerm().getTerm())==true?"null":ae.getCtcTerm().getTerm();
+		String str = AuditStringUtils.isEmpty(ae.getAdverseEventCtcTerm().getCtcTerm().getTerm())==true?"null":ae.getAdverseEventCtcTerm().getCtcTerm().getTerm();
 		return str;
 	}
 	public static String getCategoryFromAdverseEvent(AdverseEvent ae){
-		if(ae.getCtcTerm()==null){
+		if(ae.getAdverseEventCtcTerm().getCtcTerm()==null){
 			return "null";
 		}
-		if(ae.getCtcTerm().getCategory()==null){
+		if(ae.getAdverseEventCtcTerm().getCtcTerm().getCategory()==null){
 			return "null";
 		}
-		String str = AuditStringUtils.isEmpty(ae.getCtcTerm().getCategory().getName())==true?"null":ae.getCtcTerm().getCategory().getName();
+		String str = AuditStringUtils.isEmpty(ae.getAdverseEventCtcTerm().getCtcTerm().getCategory().getName())==true?"null":ae.getAdverseEventCtcTerm().getCtcTerm().getCategory().getName();
 		return str;
 	}
 	public static String getHospitalizationFromAdverseEvent(AdverseEvent ae){

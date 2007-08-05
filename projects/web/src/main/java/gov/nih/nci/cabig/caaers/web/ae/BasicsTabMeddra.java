@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-public class BasicsTab extends AeTab {
+public class BasicsTabMeddra extends AeTab {
     private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
@@ -39,16 +40,15 @@ public class BasicsTab extends AeTab {
         EXPEDITED_GRADES.remove(Grade.NORMAL);
     }
 
-    private CtcDao ctcDao;
+    private LowLevelTermDao lowLevelTermDao;
 
     private InputFieldGroup reportFieldGroup;
-    private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
+    private RepeatingFieldGroupFactory mainFieldFactory, meddraTermFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
-    public BasicsTab() {
-    	
-        super("Enter basic AE information", "AEs", "ae/enterBasic");
+    public BasicsTabMeddra() {
+        super("Enter basic AE information", "AEs", "ae/enterBasicMeddra");
         System.out.println(this.getClass().getName());
-        
+
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
             "aeReport.detectionDate", "Detection date", true));
@@ -68,7 +68,12 @@ public class BasicsTab extends AeTab {
             "expected", "Expected", true));
         mainFieldFactory.addField(InputFieldFactory.createTextArea(
             "comments", "Comments", false));
-
+        
+        meddraTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
+        InputField lowLevelTermField = InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true);
+        meddraTermFieldFactory.addField(lowLevelTermField);
+        
+        /*
         ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", true);
         InputFieldAttributes.setDetails(ctcTermField,
@@ -77,6 +82,7 @@ public class BasicsTab extends AeTab {
 
         ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
         ctcOtherFieldFactory.addField(InputFieldFactory.createTextArea("detailsForOther", "Other (specify)", false));
+        */
     }
 
     private Map<Object, Object> createAttributionOptions() {
@@ -94,15 +100,18 @@ public class BasicsTab extends AeTab {
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();
         map.addRepeatingFieldGroupFactory(mainFieldFactory, aeCount);
-        map.addRepeatingFieldGroupFactory(ctcTermFieldFactory, aeCount);
-        map.addRepeatingFieldGroupFactory(ctcOtherFieldFactory, aeCount);
+        map.addRepeatingFieldGroupFactory(meddraTermFieldFactory, aeCount);
+        //map.addRepeatingFieldGroupFactory(ctcTermFieldFactory, aeCount);
+        //map.addRepeatingFieldGroupFactory(ctcOtherFieldFactory, aeCount);
         return map;
     }
 
+    // TODO: I don't need this method
     @Override
     public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    	System.out.println("bum");
         Map<String, Object> refdata = super.referenceData(command);
-        refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy().getTerminology().getCtcVersion().getCategories());
+        //refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy().getCtcVersion().getCategories());
         return refdata;
     }
 
@@ -114,28 +123,19 @@ public class BasicsTab extends AeTab {
         // TODO: validate that there is at least one AE
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae =  lit.next();
-            validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
-        }
-    }
-
-    private void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
-        CtcTerm ctcTerm = ae.getAdverseEventCtcTerm().getCtcTerm();
-        
-        if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null) {
-            InputField field = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+           // validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
     }
 
     ////// CONFIGURATION
 
     @Required
-    public void setCtcDao(CtcDao ctcDao) {
-        this.ctcDao = ctcDao;
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
     }
 
     // for testing
-    CtcDao getCtcDao() {
-        return ctcDao;
+    LowLevelTermDao getLowLevelTermDao() {
+        return lowLevelTermDao;
     }
 }

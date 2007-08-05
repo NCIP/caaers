@@ -381,11 +381,11 @@ public class RuleAjaxFacade
 			adverseEventSDO.setGrade(new Integer(grade));
 					
 			//CATEGORY
-			CtcCategory category = adverseEvent.getCtcTerm().getCategory();
+			CtcCategory category = adverseEvent.getAdverseEventCtcTerm().getCtcTerm().getCategory();
 			adverseEventSDO.setCategory(category.getName());
 			
 			//CTC TERM
-			CtcTerm ctcTerm = adverseEvent.getCtcTerm();
+			CtcTerm ctcTerm = adverseEvent.getAdverseEventCtcTerm().getCtcTerm();
 			adverseEventSDO.setTerm(ctcTerm.getFullName());
 			
 			//HOSPITALIZATION

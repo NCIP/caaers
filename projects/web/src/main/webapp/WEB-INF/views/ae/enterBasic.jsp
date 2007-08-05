@@ -191,7 +191,7 @@
                 <div class="row">
                     <div class="label">CTC version</div>
                     <div class="value">
-                        ${command.assignment.studySite.study.ctcVersion.name}
+                        ${command.assignment.studySite.study.terminology.ctcVersion.name}
                     </div>
                 </div>
             </div>

@@ -38,7 +38,7 @@ public class CategoriesTab extends AeRoutTab {
     }
     
     private List<CtcCategory> getCategories(RoutineAdverseEventInputCommand command) {
-        List<CtcCategory> categories = command.getStudy().getCtcVersion().getCategories();
+        List<CtcCategory> categories = command.getStudy().getTerminology().getCtcVersion().getCategories();
         // cut down objects for serialization
         for (CtcCategory category : categories) {
             category.setTerms(null);

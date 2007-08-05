@@ -32,7 +32,7 @@
                     </c:choose>
                 </div>
                 <div class="grade">${ae.grade}</div>
-                <div class="term">${ae.ctcTerm.fullName}</div>
+                <div class="term">${ae.adverseEventTerm.universalTerm}</div>
             </th>
         </c:forEach>
     </tr>

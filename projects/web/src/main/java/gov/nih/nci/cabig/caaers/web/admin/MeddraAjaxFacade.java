@@ -32,7 +32,9 @@ public class MeddraAjaxFacade {
     public String handleMedDRA(String path, int step)
 	{
     	
+    	// This appears to work only with Windows
     	File theFile = new File(path + "\\" + files[step]);
+    	System.out.println(path);
     	List al = new ArrayList();
     	String message ="Done";
     	

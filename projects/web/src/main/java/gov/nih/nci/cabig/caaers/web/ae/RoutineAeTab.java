@@ -49,7 +49,7 @@ public class RoutineAeTab extends AeRoutTab {
     		  for (String ctcTermId : c.getCtcTermIds()) {
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
-    		  ae.setCtcTerm(ctcTerm);
+    		  ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
     		  c.getAeRoutineReport().addAdverseEvent(ae);
     		  }
     	  }

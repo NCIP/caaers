@@ -16,6 +16,8 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.Terminology;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -358,9 +360,17 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
 		st.setRandomizedIndicator(xstreamStudy.getRandomizedIndicator());
 		// CtcVersion
-		if (xstreamStudy.getCtcVersion() != null){
-			Ctc ctc = ctcDao.getById(Integer.parseInt(xstreamStudy.getCtcVersion().getName()));
-			st.setCtcVersion(ctc);
+		if (xstreamStudy.getTerminology() != null){
+			if(xstreamStudy.getTerminology().getTerm() == Term.CTC){
+				Ctc ctc = ctcDao.getById(Integer.parseInt(xstreamStudy.getTerminology().getCtcVersion().getName()));
+				Terminology t = st.getTerminology();
+				t.setTerm(Term.CTC);
+				t.setCtcVersion(ctc);
+			}
+			if(xstreamStudy.getTerminology().getTerm() == Term.MEDDRA){
+				Terminology t = st.getTerminology();
+				t.setTerm(Term.MEDDRA);
+			}
 		}
 		// Identifiers
 		if (xstreamStudy.getIdentifiers() != null) {

@@ -19,6 +19,13 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
         flow.addTab(new BeginTab());
         super.addTabs(flow);
     }
+    
+    
+    @Override
+    public void addMeddraTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+        flow.addTab(new BeginTab());
+        super.addMeddraTabs(flow);
+    }
 
     @Override
     protected String getFlowName() {

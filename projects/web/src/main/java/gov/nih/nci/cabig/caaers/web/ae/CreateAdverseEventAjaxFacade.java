@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
@@ -27,6 +28,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
@@ -56,6 +58,7 @@ public class CreateAdverseEventAjaxFacade {
     private CtcTermDao ctcTermDao;
     private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
+    private LowLevelTermDao lowLevelTermDao;
     private ExpeditedAdverseEventReportDao aeReportDao;
     private ResearchStaffDao researchStaffDao;
     private AnatomicSiteDao anatomicSiteDao;
@@ -74,6 +77,10 @@ public class CreateAdverseEventAjaxFacade {
     
     public List<PreExistingCondition> matchPreExistingConds(String text) {
         return preExistingConditionDao.getBySubnames(extractSubnames(text));
+    }
+    
+    public List<LowLevelTerm> matchLowLevelTermsByCode(String text) {
+        return lowLevelTermDao.getBySubnames(extractSubnames(text));
     }
     
     public List<Agent> matchAgents(String text) {
@@ -211,6 +218,16 @@ public class CreateAdverseEventAjaxFacade {
      */
     public String addAdverseEvent(int index, Integer aeReportId) {
         return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
+    }
+    
+    /**
+     * Returns the HTML for the section of the basic AE entry form for
+     * the adverse event with the given index
+     * @param index
+     * @return
+     */
+    public String addAdverseEventMeddra(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("adverseEventMeddraFormSection", index, aeReportId);
     }
 
     /**
@@ -400,6 +417,11 @@ public class CreateAdverseEventAjaxFacade {
     @Required
 	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
 		this.ctcCategoryDao = ctcCategoryDao;
+	}
+    
+    @Required
+	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+		this.lowLevelTermDao = lowLevelTermDao;
 	}
 
 	public void setPreExistingConditionDao(

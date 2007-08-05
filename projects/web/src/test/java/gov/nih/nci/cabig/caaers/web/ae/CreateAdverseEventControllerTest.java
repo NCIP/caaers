@@ -33,9 +33,11 @@ import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.ae.ExpeditedFlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
@@ -72,6 +74,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     protected PriorTherapyDao priorTherapyDao;
     protected ReportDefinitionDao reportDefinitionDao;
     protected PreExistingConditionDao preExistingConditionDao;
+    protected LowLevelTermDao lowLevelTermDao;
 
     private StudyParticipantAssignment assignment;
 
@@ -95,6 +98,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class),
             reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class),
             studyDao = registerDaoMockFor(StudyDao.class),
+            lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class),
             studyAgentDao = registerDaoMockFor(StudyAgentDao.class)
         );
         ConfigProperty configProperty = new ConfigProperty();
@@ -116,6 +120,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setPriorTherapyDao(priorTherapyDao);
         controller.setReportDefinitionDao(reportDefinitionDao);
         controller.setPreExistingConditionDao(preExistingConditionDao);
+        controller.setLowLevelTermDao(lowLevelTermDao);
         controller.setTabConfigurer(tabConfigurer);
 
         // This can't be a constant b/c it has to be created after the application context is
@@ -134,11 +139,11 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     public void testBindCtcTerm() throws Exception {
         CtcTerm expectedTerm = new CtcTerm();
-        request.setParameter("aeReport.adverseEvents[2].ctcTerm", "3022");
+        request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.ctcTerm", "3022");
         expect(ctcTermDao.getById(3022)).andReturn(expectedTerm);
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2).getCtcTerm());
+        assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2).getAdverseEventCtcTerm().getCtcTerm());
     }
 
     public void testBindConcomitantMedAgent() throws Exception {
@@ -242,7 +247,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     }
 
     public void testNoAlwaysVisibleFieldsPastReporterAreAbsolutelyRequired() throws Exception {
-        Flow<ExpeditedAdverseEventInputCommand> flow = controller.getFlow();
+        Flow<ExpeditedAdverseEventInputCommand> flow = ((ExpeditedFlowFactory)controller.getFlowFactory()).getFlow();
         List<Tab<ExpeditedAdverseEventInputCommand>> tabs = flow.getTabs();
         assertTrue("Test expectation violation: tab 0 not begin", tabs.get(0) instanceof BeginTab);
         assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof BasicsTab);

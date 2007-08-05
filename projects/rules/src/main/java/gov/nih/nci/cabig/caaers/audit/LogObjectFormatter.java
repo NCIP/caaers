@@ -775,7 +775,7 @@ public class LogObjectFormatter {
 		   CtcCategory cc = new CtcCategory();
 		   cc.setName("version 3.0");
 		   ctcTerm.setCategory(cc);
-		   ae.setCtcTerm(ctcTerm);
+		   ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 		   ae.setExpected(new Boolean(true));
 		   
 		   Study study = new Study();

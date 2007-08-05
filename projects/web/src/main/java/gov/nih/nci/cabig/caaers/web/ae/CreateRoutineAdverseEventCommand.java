@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
@@ -146,12 +147,13 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
-    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		//if (ae.getGrade() == Grade.DEATH){ testing purposes
-    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
+    		//String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		//if (ae.getGrade() == Grade.MODERATE){ testing purposes
+    		//if (message.equals("SERIOUS_ADVERSE_EVENT")){
+    			ae.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
     			aeReport.addAdverseEvent(ae);
     			isPopulated = true;
-    		}
+    		//}
     	}
     		return isPopulated;
     	}

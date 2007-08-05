@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Terminology;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -30,10 +31,13 @@ public class BasicsTabTest extends AeTabTestCase {
         super.setUp();
 
         ctcae3 = Fixtures.createCtcaeV3();
-        command.getAssignment().getStudySite().getStudy().setCtcVersion(ctcae3);
-
+        Terminology t = Fixtures.createCtcV3Terminology(
+				command.getAssignment().getStudySite().getStudy());
+        command.getAssignment().getStudySite().getStudy().setTerminology(t);
+        command.getAssignment().getStudySite().getStudy().getTerminology().setCtcVersion(Fixtures.createCtcaeV3());
+        
         ae0 = command.getAeReport().getAdverseEvents().get(0);
-        assertNotNull(ae0.getCtcTerm());
+        assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
     }
 
     @Override
@@ -44,7 +48,7 @@ public class BasicsTabTest extends AeTabTestCase {
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
         List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(command).get("ctcCategories");
-        assertEquals("Wrong categories in refdata", ctcae3.getCategories(), actual);
+        assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
     public void testRefDataIncludesFieldGroups() throws Exception {
@@ -64,9 +68,9 @@ public class BasicsTabTest extends AeTabTestCase {
     }
 
     public void testCtcTermRequired() throws Exception {
-        ae0.setCtcTerm(null);
+        ae0.getAdverseEventCtcTerm().setCtcTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].ctcTerm", "CTC term");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm", "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
@@ -75,7 +79,7 @@ public class BasicsTabTest extends AeTabTestCase {
     }
 
     public void testOtherRequiredIfTermRequiresIt() throws Exception {
-        ae0.getCtcTerm().setOtherRequired(true);
+        ae0.getAdverseEventCtcTerm().getCtcTerm().setOtherRequired(true);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (specify)");
     }

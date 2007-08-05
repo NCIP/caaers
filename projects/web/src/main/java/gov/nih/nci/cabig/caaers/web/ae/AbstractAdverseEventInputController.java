@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -17,6 +18,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
@@ -33,6 +35,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import gov.nih.nci.cabig.ctms.web.tabs.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -54,6 +57,7 @@ public abstract class AbstractAdverseEventInputController
     protected StudyDao studyDao;
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
+    protected LowLevelTermDao lowLevelTermDao;
     protected AgentDao agentDao;
     protected ExpeditedAdverseEventReportDao reportDao;
     protected RoutineAdverseEventReportDao routineReportDao;
@@ -71,8 +75,37 @@ public abstract class AbstractAdverseEventInputController
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
-        setFlow(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
-        addTabs(getFlow());
+        Flow<ExpeditedAdverseEventInputCommand> medDRAFlow = new Flow<ExpeditedAdverseEventInputCommand>(getFlowName());
+        ExpeditedFlowFactory ff = new ExpeditedFlowFactory<ExpeditedAdverseEventInputCommand>(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
+        addMeddraTabs(medDRAFlow);
+        ff.setSecondaryFlow(medDRAFlow);
+        setFlowFactory(ff);
+        addTabs(((ExpeditedFlowFactory<ExpeditedAdverseEventInputCommand>)ff).getFlow());
+        
+        //setFlow(new Flow<ExpeditedAdverseEventInputCommand>(getFlowName()));
+        //addTabs(getFlow());
+    }
+    
+    protected void addMeddraTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+        flow.addTab(new BasicsTabMeddra());
+        flow.addTab(new ReporterTab());	
+        flow.addTab(new CheckpointTab());
+        flow.addTab(new RadiationInterventionTab());
+        flow.addTab(new SurgeryInterventionTab());
+        flow.addTab(new MedicalDeviceTab());
+        flow.addTab(new DescriptionTab());
+        flow.addTab(new MedicalInfoTab());
+        flow.addTab(new TreatmentTab());
+        flow.addTab(new LabsTab());
+        // TODO: readd this when we have some idea what it should be
+        // flow.addTab(new EmptyAeTab("Outcome information", "Outcome", "ae/notimplemented"));
+        flow.addTab(new PriorTherapyTab());
+        flow.addTab(new PreExistingConditionsTab());
+        flow.addTab(new ConcomitantMedicationsTab());
+        flow.addTab(new OtherCausesTab());
+        flow.addTab(new AttributionTab());
+        flow.addTab(new AdditionalInformationTab());
+        flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
     }
 
     protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
@@ -98,6 +131,13 @@ public abstract class AbstractAdverseEventInputController
     }
 
     protected abstract String getFlowName();
+    
+
+    @Override
+    @SuppressWarnings({ "unchecked" })
+    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors) throws Exception {
+    	super.onBind(request, oCommand); 
+    }
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
@@ -105,6 +145,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
@@ -158,7 +199,6 @@ public abstract class AbstractAdverseEventInputController
         if (subviewName != null) {
             // for side-effects:
             super.getViewName(request, command, page);
-            
             return "ae/ajax/" + subviewName;
         } else {
             return super.getViewName(request, command, page);
@@ -284,4 +324,15 @@ public abstract class AbstractAdverseEventInputController
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
         this.reportDefinitionDao = reportDefinitionDao;
     }
+
+	public LowLevelTermDao getLowLevelTermDao() {
+		return lowLevelTermDao;
+	}
+
+	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+		this.lowLevelTermDao = lowLevelTermDao;
+	}
+    
+    
+    
 }
