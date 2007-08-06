@@ -1,20 +1,7 @@
-/* title - left of search */
-.titleArea { margin: 3px 0 5px 0; }
-#title { white-space: nowrap; font-size: 12px; font-weight: bold; color: #3B73B9; padding-top: 2px; }
-
-/* properties for search starting pages */
-.searchL { background: #FFFFFF; border-right: 1px solid #CCCCCC; padding: 10px 8px 12px 8px; }
-.searchR { background: #FFFFFF; border-left: 1px solid #CCCCCC; padding: 10px 8px 12px 15px; }
-
-#searchMain { white-space: nowrap; margin: 0; padding: 0; }
-#searchMain td { padding: 5px; }
-#searchMain h3 { font-size: 13px; }
-#searchMain input { border: 1px solid #CCCCCC; background: #FFFFFF; height: 18px; margin: 0; padding: 0 3px 0 3px; font-size: 11px; font-weight: normal; line-height: 17px; }
-#searchMain .field1 { width: 8px; }
+/* TODO: these styles should be consolidated into common.css, or removed */
 
 /* top page search */
 .search { margin: 0; }
-.notation { font-size: 9px; color: #3B73B9;  }
 
 .search td { white-space: nowrap; color: #3B73B9; margin: 0; font-weight: bold; padding: 0 3px 0 0; }
 .search .notation { font-weight: normal; }
