@@ -102,7 +102,7 @@
 
     <filter>
         <filter-name>BeansInRequestFilter</filter-name>
-        <filter-class>gov.nih.nci.cabig.caaers.web.BeansInRequestFilter</filter-class>
+        <filter-class>gov.nih.nci.cabig.ctms.web.filters.BeansInRequestFilter</filter-class>
         <init-param>
             <param-name>beanNames</param-name>
             <param-value>configuration</param-value>
