@@ -27,17 +27,17 @@
         var ctcVersion = ${command.assignment.studySite.study.ctcVersion.id}
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
-            <c:if test="${not empty ae.ctcTerm}">
+            <c:if test="${not empty ae.adverseEventCtcTerm.ctcTerm}">
             initialCtcTerm[${aeStatus.index}] = {
-                id: ${ae.ctcTerm.id},
+                id: ${ae.adverseEventCtcTerm.ctcTerm.id},
                 category: {
-                    id: ${ae.ctcTerm.category.id},
+                    id: ${ae.adverseEventCtcTerm.ctcTerm.category.id},
                     ctc: {
-                        id: ${ae.ctcTerm.category.ctc.id}
+                        id: ${ae.adverseEventCtcTerm.ctcTerm.category.ctc.id}
                     }
                 },
-                fullName: '${ae.ctcTerm.fullName}',
-                fullNameWithMedDRA : '${ae.ctcTerm.fullNameWithMedDRA}',
+                fullName: '${ae.adverseEventCtcTerm.ctcTerm.fullName}',
+                fullNameWithMedDRA : '${ae.adverseEventCtcTerm.ctcTerm.fullNameWithMedDRA}',
                 otherRequired: ${ae.ctcTerm.otherRequired}
             }
             </c:if>
@@ -63,10 +63,10 @@
                 this.ctcDetailsId = "ctc-details-" + index;
                 this.ctcCategoryId = "ctc-category-" + index
                 this.aeProperty = "aeReport.adverseEvents[" + index + "]";
-                this.ctcTermId = this.aeProperty + ".ctcTerm"
-                this.ctcTermInputId = this.aeProperty + ".ctcTerm-input"
-                this.ctcTermChoicesId = this.aeProperty + ".ctcTerm-choices"
-                this.ctcTermIndicatorId = this.aeProperty + ".ctcTerm-indicator"
+                this.ctcTermId = this.aeProperty + ".adverseEventCtcTerm.ctcTerm"
+                this.ctcTermInputId = this.aeProperty + ".adverseEventCtcTerm.ctcTerm-input"
+                this.ctcTermChoicesId = this.aeProperty + ".adverseEventCtcTerm.ctcTerm-choices"
+                this.ctcTermIndicatorId = this.aeProperty + ".adverseEventCtcTerm.ctcTerm-indicator"
                 this.detailsForOtherId = this.aeProperty + ".detailsForOther"
                 this.detailsForOtherRowId = this.aeProperty + ".detailsForOther-row"
 
@@ -75,7 +75,7 @@
                 Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
 
                 AE.createStandardAutocompleter(
-                    this.aeProperty + ".ctcTerm", this.termPopulator.bind(this), termValueSelector, {
+                    this.aeProperty + ".adverseEventCtcTerm.ctcTerm", this.termPopulator.bind(this), termValueSelector, {
                         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             this.selectTerm(selectedChoice)
                         }.bind(this)
