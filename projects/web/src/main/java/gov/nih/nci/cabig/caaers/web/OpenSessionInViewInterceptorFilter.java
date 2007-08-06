@@ -12,6 +12,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
+
 /**
  * A filter which implements the Open Session In View pattern.  Different
  * from the one built into Spring because this one delegates to an instance of
