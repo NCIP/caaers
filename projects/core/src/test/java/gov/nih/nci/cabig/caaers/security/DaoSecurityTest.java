@@ -12,6 +12,13 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+import org.acegisecurity.AccessDeniedException;
+import org.dbunit.DatabaseUnitException;
+import org.dbunit.database.DatabaseDataSourceConnection;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.springframework.test.AbstractTransactionalSpringContextTests;
 
 import java.io.IOException;
 import java.sql.SQLException;
