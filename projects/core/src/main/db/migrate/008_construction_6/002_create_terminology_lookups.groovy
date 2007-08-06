@@ -17,6 +17,7 @@ class CreateTerminologyLookups extends edu.northwestern.bioinformatics.bering.Mi
 	 	 if (databaseMatches('oracle')) {
 	 		 execute("INSERT INTO terminologies SELECT terminologies_id_seq.NEXTVAL, 1, ctc_id,id,0,id FROM studies")
 	 	}
+	 	execute("ALTER TABLE studies DROP CONSTRAINT fk_studies_ctc_version");
 	 	dropColumn("studies", "ctc_id")
 
     }
