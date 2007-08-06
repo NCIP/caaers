@@ -1,17 +1,23 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertContains;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_STUDIES;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -30,7 +36,8 @@ import java.util.Set;
 @CaaersUseCases({ CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
 public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-
+	private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
+	private InvestigationalNewDrugDao indDao = (InvestigationalNewDrugDao) getApplicationContext().getBean("investigationalNewDrugDao");
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
         assertNotNull("Study not found", loaded);
@@ -41,7 +48,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
         Study study = getDao().getByGridId("gridStudy");
         assertNotNull("Study not found", study);
     }
-    
+
     public void testSaveWithCtc() throws Exception {
     	Integer savedId;
         {
@@ -65,7 +72,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
             assertEquals("Term should be Ctc",Term.CTC, reloaded.getTerminology().getTerm());
         }
     }
-    
+
     public void testSaveWithMedDRA() throws Exception {
     	Integer savedId;
         {
@@ -89,7 +96,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
             assertEquals("Term should be MedDRA",Term.MEDDRA, reloaded.getTerminology().getTerm());
         }
     }
-    
+
 
     public void testGetBySubnameMatchesShortTitle() throws Exception {
         List<Study> actual = getDao().getBySubnames(new String[] { "orter" });
@@ -241,7 +248,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 			Organization sponsor = sitedao.getById(-1001);
 			Organization organization = sitedao.getById(-1003);
 			Organization center = sitedao.getById(-1002);
-			
+
 			Study study = new Study();
 			study.setShortTitle("ShortTitleText");
 			study.setLongTitle("LongTitleText");
@@ -354,4 +361,56 @@ public class StudyDaoTest extends DaoTestCase<StudyDao>{
 	    	assertEquals("Wrong number of results", 1, results.size());
 	    	assertEquals("Wrong match", "Short Title",results.get(0).getShortTitle());
 	    }
+	    public void testSaveNewStudyWithINDAgent(){
+				int studyId = 0;
+				{
+
+					Study newStudy = new Study();
+					newStudy.setShortTitle("Short Title Inserted");
+					newStudy.setLongTitle("Long Title Inserted");
+					newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+					newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+					//study agent
+					Agent agent = agentDao.getById(-990);
+					assertNotNull(agent);
+					StudyAgent sa = new StudyAgent();
+					sa.setAgent(agent);
+					newStudy.addStudyAgent(sa);
+					sa.setStudy(newStudy);
+					agent = agentDao.getById(-991);
+					sa = new StudyAgent();
+					sa.setAgent(agent);
+					InvestigationalNewDrug ind1 = indDao.getById(-881);
+					InvestigationalNewDrug ind2 = indDao.getById(-882);
+					StudyAgentINDAssociation ass1 = new StudyAgentINDAssociation();
+					ass1.setStudyAgent(sa);
+					sa.addStudyAgentINDAssociation(ass1);
+
+					ass1.setInvestigationalNewDrug(ind1);
+					StudyAgentINDAssociation ass2 = new StudyAgentINDAssociation();
+					ass2.setStudyAgent(sa);
+					ass1.setInvestigationalNewDrug(ind1);
+					ass2.setInvestigationalNewDrug(ind2);
+					sa.addStudyAgentINDAssociation(ass2);
+
+					newStudy.addStudyAgent(sa);
+
+					getDao().save(newStudy);
+					assertNotNull("No ID for newly saved study", newStudy.getId());
+					studyId = newStudy.getId();
+				}
+				interruptSession();
+				{
+					Study loaded = getDao().getById(studyId);
+					assertNotNull("Could not reload study with id " + studyId, loaded);
+					// assertNotNull("GridId not updated", loaded.getGridId());
+					assertEquals("Wrong name", "Short Title Inserted", loaded.getShortTitle());
+					assertNotNull("Agents should not be null", loaded.getStudyAgents());
+					assertEquals("Study agents size", 2, loaded.getStudyAgents().size());
+					assertEquals("Agent ID is wrong", -990, loaded.getStudyAgents().get(0).getAgent().getId().intValue());
+					List<StudyAgentINDAssociation> aList = loaded.getStudyAgents().get(1).getStudyAgentINDAssociations();
+					assertEquals("IND size", 2, aList.size());
+					assertEquals("IND # wrong", -881,aList.get(0).getInvestigationalNewDrug().getIndNumber().intValue());
+				}
+	}
 }

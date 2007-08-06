@@ -90,6 +90,11 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
+				<value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
+				<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
+				<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
+				<value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
+				 <value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
                 <value>gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
@@ -194,7 +199,7 @@
 	<bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
 	<bean id="preExistingConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
 	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
-	
+	<bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao" /> 
 	<!--Rules/Scheduler/Notification DAOs-->
 	<bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao" />
 	<bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao" />

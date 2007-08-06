@@ -1,16 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import java.util.List;
+
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 
 /**
@@ -25,45 +31,24 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
     }
 )
 public class StudyAgent extends AbstractMutableDomainObject implements StudyChild{
-	
-	private Boolean investigationalNewDrugIndicator;
-	private String investigationalNewDrugIdentifier;
+
+	private LazyListHelper lazyListHelper;
 	private Study study;
 	private Agent agent;
 	private String agentAsString;
 	@Embedded
 	private Participation participation;
 
-
 	/*
-	 * Constructor -- Initializes participation at create time 
-	 * 
+	 * Constructor -- Initializes participation at create time
+	 *
 	 */
 	public StudyAgent() {
-		this.participation = new Participation(); 
+		participation = new Participation();
+		lazyListHelper = new LazyListHelper();
+		lazyListHelper.add(StudyAgentINDAssociation.class, new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,StudyAgentINDAssociation.class));
 	}
 
-    @Column(name="ind_identifier")
-    public String getInvestigationalNewDrugIdentifier() {
-		return investigationalNewDrugIdentifier;
-	}
-
-	public void setInvestigationalNewDrugIdentifier(
-			String investigationalNewDrugIdentifier) {
-		this.investigationalNewDrugIdentifier = investigationalNewDrugIdentifier;
-	}
-	
-	@Column(name="ind_indicator")
-	public Boolean getInvestigationalNewDrugIndicator() {
-		return investigationalNewDrugIndicator;
-	}
-
-    
-	public void setInvestigationalNewDrugIndicator(
-			Boolean investigationalNewDrugIndicator) {
-		this.investigationalNewDrugIndicator = investigationalNewDrugIndicator;
-	}
-	
 	@ManyToOne
     @JoinColumn(name = "study_id")
 	public Study getStudy() {
@@ -73,18 +58,40 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	public void setStudy(Study study) {
 		this.study = study;
 	}
-	
+
 	@ManyToOne
     @JoinColumn(name = "agent_id")
     // We should never create new agents here, so no cascades
 	public Agent getAgent() {
 		return agent;
 	}
-	
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
-	
+
+	@OneToMany(mappedBy="studyAgent", fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+	public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
+		return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
+	}
+
+	public void setStudyAgentINDAssociationsInternal(
+			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+		lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
+
+	}
+
+	@Transient
+	public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
+		return lazyListHelper.getLazyList(StudyAgentINDAssociation.class);
+	}
+	@Transient
+	public void setStudyAgentINDAssociations(
+			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+		setStudyAgentINDAssociationsInternal(studyAgentINDAssociations);
+	}
+
+
+
 	@Transient
 	public String getAgentAsString() {
 		return agentAsString;
@@ -93,49 +100,26 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	public void setAgentAsString(String agentAsString) {
 		this.agentAsString = agentAsString;
 	}
-	
+
 	public Participation getParticipation() {
 		return participation;	}
 
 	public void setParticipation(Participation participation) {
 		this.participation = participation;
 	}
-	
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
 
-		final StudyAgent that = (StudyAgent) o;
 
-		if (investigationalNewDrugIdentifier != null ? !investigationalNewDrugIdentifier.equals(that.investigationalNewDrugIdentifier) : that.investigationalNewDrugIdentifier != null)
-			return false;
-		if (study != null ? !study.equals(that.study)
-				: that.study != null)
-			return false;
-		if (agent != null ? !agent.equals(that.agent)
-				: that.agent != null)
-			return false;
 
-		return true;
+	@Transient
+    public boolean getInvestigationalNewDrugIndicator(){
+    	return (getStudyAgentINDAssociations() != null) &&
+    	 getStudyAgentINDAssociations().size() > 0;
+    }
+
+	@Transient
+	public void addStudyAgentINDAssociation(StudyAgentINDAssociation ass){
+		getStudyAgentINDAssociations().add(ass);
+		ass.setStudyAgent(this);
 	}
-
-	public int hashCode() {
-		int result;
-		result = (investigationalNewDrugIdentifier != null ? investigationalNewDrugIdentifier.hashCode() : 0);
-		result = 29 * result
-				+ (agent != null ? agent.hashCode() : 0);
-		result = 29 * result + (study != null ? study.hashCode() : 0);
-		return result;
-	}
-	
-
-	
-	
-	
-	
-	
-	
 
 }

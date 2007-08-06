@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 /**
  * @author Rhett Sutphin
@@ -40,7 +40,10 @@ public class TreatmentInformationTest extends CaaersTestCase {
     private CourseAgent createCourseAgent(Boolean newDrug) {
         CourseAgent ca = new CourseAgent();
         StudyAgent sa = new StudyAgent();
-        sa.setInvestigationalNewDrugIndicator(newDrug);
+        if(newDrug != null && newDrug.booleanValue()){
+        	sa.getStudyAgentINDAssociations().get(0);
+        }
+        //sa.setInvestigationalNewDrugIndicator(newDrug);
         ca.setStudyAgent(sa);
 
         return ca;
