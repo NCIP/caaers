@@ -47,7 +47,6 @@ public class BasicsTabMeddra extends AeTab {
 
     public BasicsTabMeddra() {
         super("Enter basic AE information", "AEs", "ae/enterBasicMeddra");
-        System.out.println(this.getClass().getName());
 
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(

@@ -47,7 +47,6 @@ public class BasicsTab extends AeTab {
     public BasicsTab() {
     	
         super("Enter basic AE information", "AEs", "ae/enterBasic");
-        System.out.println(this.getClass().getName());
         
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(

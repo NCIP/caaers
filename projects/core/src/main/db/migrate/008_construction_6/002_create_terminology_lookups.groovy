@@ -24,6 +24,6 @@ class CreateTerminologyLookups extends edu.northwestern.bioinformatics.bering.Mi
 
     void down() {
     	addColumn("studies", "ctc_id","integer")
-        dropTable("terminologies", primaryKey: false)
+        dropTable('terminologies')
     }
 }
