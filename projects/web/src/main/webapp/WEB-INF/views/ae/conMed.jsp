@@ -77,7 +77,7 @@
             new EnterConMed(${status.index}, '${conMed.agent.name}')
             </c:forEach>
 
-            new ListEditor("conmed", createAE, "ConcomitantMedication", {
+            new ListEditor("conmed", createAE, "ConMed", {
                 addFirstAfter: "single-fields",
                 addParameters: [aeReportId],
                 addCallback: function(index) {

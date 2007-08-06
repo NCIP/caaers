@@ -223,7 +223,7 @@
         </chrome:division>
 
         <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" varStatus="status">
-             <ae:oneMetastatic index="${status.index}"/>
+             <ae:oneMetastaticDiseaseSite index="${status.index}"/>
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">

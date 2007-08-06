@@ -1,33 +1,32 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -37,10 +36,8 @@ import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.web.servlet.mvc.AbstractFormController;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -210,29 +207,14 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
 
+    /**
+     * Generic method which returns the contents of a JSP form section for the given
+     * named section.
+     */
     public String addFormSection(String name, int index, Integer aeReportId) {
         return renderIndexedAjaxView(name + "FormSection", index, aeReportId);
     }
 
-    /**
-     * Returns the HTML for the section of the basic AE entry form for
-     * the adverse event with the given index
-     * @param index
-     * @return
-     *
-    public String addAdverseEvent(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
-    } */
-    
-    /**
-     * Returns the HTML for the section of the basic AE entry form for
-     * the adverse event with the given index
-     * @param index
-     * @return
-     */
-    public String addAdverseEventMeddra(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("adverseEventMeddraFormSection", index, aeReportId);
-    }
     
     /**
      * Returns the HTML for the section of the basic AE entry form for
@@ -245,66 +227,6 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     /**
-     * Returns the HTML for the section of the lab form for
-     * the lab with the given index
-     * @param index
-     * @return
-     */
-    public String addLab(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("labFormSection", index, aeReportId);
-    }
-
-    /**
-     * Returns the HTML for the section of the concomitant medications form for
-     * the concomitant medication with the given index
-     * @param index
-     * @return
-     */
-    public String addConcomitantMedication(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("conMedFormSection", index, aeReportId);
-    }
-    
-    /**
-     * Returns the HTML for the section of the concomitant medications form for
-     * the concomitant medication with the given index
-     * @param index
-     * @return
-     */
-    public String addPreExistingCond(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("preExistingCondFormSection", index, aeReportId);
-    }
-    
-    /**
-     * Returns the HTML for the section of the metastatic disease site form for
-     * the metastatic disease with the given index
-     * @param index
-     * @return
-     */
-    public String addMetastaticDiseaseSite(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("metastaticFormSection", index, aeReportId);
-    }
-
-    /**
-     * Returns the HTML for the section of the course agent form for
-     * the course agent with the given index
-     * @param index
-     * @return
-     */
-    public String addCourseAgent(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("courseAgentFormSection", index, aeReportId);
-    }
-
-    /**
-     * Returns the HTML for the section of the other causes form for
-     * the other cause with the given index
-     * @param index
-     * @return
-     */
-    public String addOtherCause(int index, Integer aeReportId) {
-        return renderIndexedAjaxView("otherCauseFormSection", index, aeReportId);
-    }
-    
-    /**
      * Returns the HTML for the section of the other causes form for
      * the other cause with the given index
      * @param index
@@ -313,7 +235,7 @@ public class CreateAdverseEventAjaxFacade {
     public String addPriorTherapy(int index, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyFormSection", index, aeReportId);
     }
-    
+
     /**
      * Returns the HTML for the section of the other causes form for
      * the other cause with the given index
