@@ -113,11 +113,12 @@ Object.extend(ListEditor.prototype, {
     //    class, and have the id "${divisionClass}-${listIndex}"
     // dwrNS: the DWR namespace object in which the ajax fns can be found
     // basename:  the base of the name for the various ajax fns
-    //     e.g., add will call dwrNS.add${basename}
+    //     e.g., add will call dwrNS.add${basename}(...) or dwrNS.addFormSection(basename, ...)
     initialize: function(divisionClass, dwrNS, basename, options) {
         this.divisionClass = divisionClass
         this.dwrNS = dwrNS
-        this.basename = basename
+        this.basenameUC = basename[0].toUpperCase() + basename.substring(1)
+        this.basenameLC = basename[0].toLowerCase() + basename.substring(1)
         this.options = Object.extend({
             addButton:    "add-" + divisionClass + "-button",
             addIndicator: "add-" + divisionClass + "-indicator",
@@ -133,9 +134,22 @@ Object.extend(ListEditor.prototype, {
     },
 
     add: function() {
-        var fnName = "add" + this.basename;
-        var addFn = this.dwrNS[fnName]
-        if (!addFn) { alert("There is no function the selected dwr namespace named " + fnName); return; }
+        // fn resolution:  If there's a fn named add${basename}, use that
+        var specificFnName = "add" + this.basenameUC;
+        var addFn = this.dwrNS[specificFnName]
+        // otherwise ...
+        if (!addFn) {
+            var parameterizedFnName = "addFormSection";
+            var parameterizedFn = this.dwrNS[parameterizedFnName]
+            if (!parameterizedFn) {
+                alert("There is no function the selected dwr namespace named either " + specificFnName + " or " + parameterizedFnName); return;
+            }
+            // ... use a function called addFormSection, passing the basename as the first parameter
+            addFn = function() {
+                var args = [this.basenameLC].concat($A(arguments))
+                return parameterizedFn.apply(this, args)
+            }
+        }
 
         if (this.options.addButton) this.options.addButton.disable()
         if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
@@ -161,6 +175,7 @@ Object.extend(ListEditor.prototype, {
 
 // Provides a uniform set of functions for editing a form containing a
 // dynamically-resizable list.  Only "add" is implemented so far.
+// TODO: What is this copy-paste-fest for?
 var PriorTherapyListEditor = Class.create();
 Object.extend(PriorTherapyListEditor.prototype, {
     // divisionClass: class for the container.  Each container should have this

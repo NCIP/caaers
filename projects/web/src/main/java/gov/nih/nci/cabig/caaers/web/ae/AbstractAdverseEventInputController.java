@@ -144,7 +144,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
-        ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, "aeReport.adverseEvents.adverseEventCtcTerm.term", ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);

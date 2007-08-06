@@ -210,15 +210,19 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
 
+    public String addFormSection(String name, int index, Integer aeReportId) {
+        return renderIndexedAjaxView(name + "FormSection", index, aeReportId);
+    }
+
     /**
      * Returns the HTML for the section of the basic AE entry form for
      * the adverse event with the given index
      * @param index
      * @return
-     */
+     *
     public String addAdverseEvent(int index, Integer aeReportId) {
         return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
-    }
+    } */
     
     /**
      * Returns the HTML for the section of the basic AE entry form for
@@ -306,7 +310,7 @@ public class CreateAdverseEventAjaxFacade {
      * @param index
      * @return
      */
-    public String addPriorTherapyAgent(int index,int parentIndex, Integer aeReportId) {
+    public String addPriorTherapyAgent(int index, int parentIndex, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
     }
     

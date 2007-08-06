@@ -139,7 +139,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     public void testBindCtcTerm() throws Exception {
         CtcTerm expectedTerm = new CtcTerm();
-        request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.ctcTerm", "3022");
+        request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.term", "3022");
         expect(ctcTermDao.getById(3022)).andReturn(expectedTerm);
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
