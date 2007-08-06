@@ -19,6 +19,7 @@ class CreateAdverseEventTerms extends edu.northwestern.bioinformatics.bering.Mig
             execute("INSERT INTO ae_terms SELECT ae_terms_id_seq.NEXTVAL, id, ctc_term_id,'ctep',NULL,0,id FROM adverse_events")
         }
         
+         execute("ALTER TABLE adverse_events DROP CONSTRAINT fk_adv_ev_ctc_term");
          dropColumn("adverse_events", "ctc_term_id")
         
          
