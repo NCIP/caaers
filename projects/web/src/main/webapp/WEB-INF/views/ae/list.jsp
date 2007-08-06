@@ -64,8 +64,8 @@
         <ec:column property="adverseEvents[0].ctcTerm" title="CTC term">
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
-                <c:when test="${not empty report.adverseEvents[0].ctcTerm}">
-                    ${report.adverseEvents[0].ctcTerm.fullName}
+                <c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
+                    ${report.adverseEvents[0].adverseEventTerm.universalTerm}
                 </c:when>
                 <c:when test="${not empty report.labs}">
                     [Lab-based incomplete AE]
