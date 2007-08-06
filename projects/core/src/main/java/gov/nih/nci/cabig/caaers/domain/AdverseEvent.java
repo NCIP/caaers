@@ -185,11 +185,12 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     @Deprecated
     @Transient
     public CtcTerm getCtcTerm() {
-        if ( this.adverseEventTerm instanceof AdverseEventCtcTerm ){
-        	return getAdverseEventCtcTerm().getCtcTerm();
-        }
-        else{
-        	throw new RuntimeException("Do Not Use this Method");
+        if (this.adverseEventTerm == null) {
+            return null;
+        } else if (this.adverseEventTerm instanceof AdverseEventCtcTerm ){
+            return getAdverseEventCtcTerm().getCtcTerm();
+        } else {
+            throw new RuntimeException("Do Not Use this Method");
         }
     }
 
