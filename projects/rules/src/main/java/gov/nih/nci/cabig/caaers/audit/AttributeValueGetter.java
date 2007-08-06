@@ -5,8 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 
 public class AttributeValueGetter {
-	
-	
+
+
 
 	public static String getGradeFromAdverseEvent(AdverseEvent ae){
 		if(ae.getGrade()==null){
@@ -15,7 +15,7 @@ public class AttributeValueGetter {
 		String str = AuditStringUtils.isEmpty(ae.getGrade().getDisplayName())==true?"null":ae.getGrade().getDisplayName();
 		return str;
 	}
-	
+
 	public static String getTermFromAdverseEvent(AdverseEvent ae){
 		if(ae.getAdverseEventCtcTerm().getCtcTerm()==null){
 			return "null";
@@ -47,7 +47,7 @@ public class AttributeValueGetter {
 		String str = AuditStringUtils.isEmpty(ae.getExpected().toString())==true?"null":ae.getExpected().toString();
 		return str;
 	}
-	
+
 	public static String getAttributionFromAdverseEvent(AdverseEvent ae){
 		if(ae.getAttributionSummary()==null){
 			return "null";
@@ -55,7 +55,7 @@ public class AttributeValueGetter {
 		String str = AuditStringUtils.isEmpty(ae.getAttributionSummary().getDisplayName())==true?"null":ae.getAttributionSummary().getDisplayName();
 		return str;
 	}
-	
+
 	public static String getIdFromAdverseEvent(AdverseEvent ae){
 		if(ae.getId()==null){
 			return "null";
@@ -63,12 +63,12 @@ public class AttributeValueGetter {
 		String str = AuditStringUtils.isEmpty(ae.getId().toString())==true?"null":ae.getId().toString();
 		return str;
 	}
-	
+
 	public static String getPhaseFromStudy(Study study){
 		String str = AuditStringUtils.isEmpty(study.getPhaseCode())==true?"null":study.getPhaseCode();
 		return str;
 	}
-	
+
 	public static String getIdFromStudy(Study study){
 		if(study.getId()==null){
 			return "null";
@@ -76,11 +76,11 @@ public class AttributeValueGetter {
 		String str = AuditStringUtils.isEmpty(study.getId().toString())==true?"null":study.getId().toString();
 		return str;
 	}
-	
+
 	public static String getIndicatorFromStudyAgent(StudyAgent sa){
-		String str = AuditStringUtils.isEmpty(sa.getInvestigationalNewDrugIdentifier())==true?"null":sa.getInvestigationalNewDrugIdentifier();
+		String str = "null";// AuditStringUtils.isEmpty(sa.getInvestigationalNewDrugIdentifier())==true?"null":sa.getInvestigationalNewDrugIdentifier();
 		return str;
-		
+
 	}
 	public static String getIdFromStudyAgent(StudyAgent studyAgent){
 		String str ="null";
