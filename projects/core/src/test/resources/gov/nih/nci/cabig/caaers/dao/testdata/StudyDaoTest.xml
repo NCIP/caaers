@@ -3,6 +3,8 @@
         id="3"
         name="CTCAE v3.0"
         />
+        <agents id="-990" name="abcd" description="biju" nsc="123"/>
+        <agents id="-991" name="abcd" description="biju2" nsc="1223"/>
     <STUDIES
         id="-2"
         multi_institution_indicator="0"
@@ -229,9 +231,16 @@
     	study_id="-3"
     	site_id="-1002" 
     	type="SCC"/>
-    	
-     <!--  due to FK references -->
-     <ctc_categories />
-     <ctc_terms />
-      <ctc_grades/>
+     	
+     	<investigational_new_drugs id = "-881" ind_number="-881"/>
+   		<investigational_new_drugs id = "-882"  ind_number="-882"/>
+   		<investigational_new_drugs id = "-883" ind_number="-883"/>
+   		<investigational_new_drugs id = "-884" ind_number="-884"/>
+     	<!--  due to FK references -->
+     	<ctc_categories />
+     	<ctc_terms />
+      	<ctc_grades/>
+    
+    <study_agent_inds />
+    
 </dataset>

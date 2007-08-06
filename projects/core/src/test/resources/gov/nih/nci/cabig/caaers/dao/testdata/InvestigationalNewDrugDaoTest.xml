@@ -1,0 +1,22 @@
+<dataset>
+ 
+    <ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"
+    />
+    <INVESTIGATORS
+        id="-100"
+        first_name="Dilbert"
+        last_name="Scott"
+       />
+   <investigational_new_drugs id = "-881" ind_number="-881"/>
+   <investigational_new_drugs id = "-882"  ind_number="-882"/>
+   <investigational_new_drugs id = "-883" ind_number="-883"/>
+   <investigational_new_drugs id = "-884" ind_number="-884"/>
+   
+   <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881" />
+   <ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882" />
+   <ind_holders id="-773" dtype="INV" inv_id="-100" drug_id="-883" />
+   <ind_holders id="-774" dtype="INV" inv_id="-100" drug_id="-884" />
+</dataset>
