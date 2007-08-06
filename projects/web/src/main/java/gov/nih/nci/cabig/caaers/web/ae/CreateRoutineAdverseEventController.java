@@ -24,6 +24,14 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
         flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
         super.addTabs(flow);
     }
+    
+    @Override
+    public void addMeddraTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+        flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
+        super.addMeddraTabs(flow);
+    }
+
+    
 
     @Override
     protected String getFlowName() {

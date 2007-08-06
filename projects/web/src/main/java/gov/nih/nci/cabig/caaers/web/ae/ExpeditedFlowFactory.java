@@ -17,8 +17,8 @@ public class ExpeditedFlowFactory<C> implements FlowFactory<C> {
 	// //// LOGIC
 
 	public Flow<C> createFlow(C command) {
-		if (((ExpeditedAdverseEventInputCommand) command).getStudy() != null && 
-				((ExpeditedAdverseEventInputCommand) command).getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+		if (((AdverseEventInputCommand) command).getStudy() != null && 
+				((AdverseEventInputCommand) command).getStudy().getTerminology().getTerm() == Term.MEDDRA) {
 			return getSecondaryFlow();
 		}
 		return getFlow();

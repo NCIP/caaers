@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
@@ -47,14 +48,27 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
     protected CtcCategoryDao ctcCategoryDao;
+    protected LowLevelTermDao lowLevelTermDao;
     protected NowFactory nowFactory;
 
     protected AbstractRoutineAdverseEventInputController() {
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
-        setFlow(new Flow<RoutineAdverseEventInputCommand>(getFlowName()));
-        addTabs(getFlow());
+        
+        Flow<RoutineAdverseEventInputCommand> medDRAFlow = new Flow<RoutineAdverseEventInputCommand>(getFlowName());
+        ExpeditedFlowFactory flowFactory = new ExpeditedFlowFactory<RoutineAdverseEventInputCommand>(new Flow<RoutineAdverseEventInputCommand>(getFlowName()));
+        addMeddraTabs(medDRAFlow);
+        flowFactory.setSecondaryFlow(medDRAFlow);
+        setFlowFactory(flowFactory);
+        addTabs(((ExpeditedFlowFactory<RoutineAdverseEventInputCommand>)flowFactory).getFlow());
+        
     }
+    
+    protected void addMeddraTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+		flow.addTab(new RoutineAeMeddraTab());
+		flow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+
+	}
 
     protected void addTabs(Flow<RoutineAdverseEventInputCommand> flow) {
         flow.addTab(new CategoriesTab());
@@ -73,6 +87,7 @@ public abstract class AbstractRoutineAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
+        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -169,7 +184,15 @@ public abstract class AbstractRoutineAdverseEventInputController
         this.ctcCategoryDao = ctcCategoryDao;
     }
 
-    public NowFactory getNowFactory() {
+    public LowLevelTermDao getLowLevelTermDao() {
+		return lowLevelTermDao;
+	}
+
+	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+		this.lowLevelTermDao = lowLevelTermDao;
+	}
+
+	public NowFactory getNowFactory() {
         return nowFactory;
     }
 

@@ -22,6 +22,11 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     }
 	
 	@Transient
+    public String getUniversalTerm() {
+    		return getTerm() == null ? null : getTerm().getCtepTerm();
+    }
+	
+	@Transient
 	public CtcTerm getCtcTerm() {
 		return super.getTerm();
 	}

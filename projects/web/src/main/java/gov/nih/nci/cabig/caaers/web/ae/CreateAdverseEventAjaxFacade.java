@@ -233,6 +233,16 @@ public class CreateAdverseEventAjaxFacade {
     public String addAdverseEventMeddra(int index, Integer aeReportId) {
         return renderIndexedAjaxView("adverseEventMeddraFormSection", index, aeReportId);
     }
+    
+    /**
+     * Returns the HTML for the section of the basic AE entry form for
+     * the adverse event with the given index
+     * @param index
+     * @return
+     */
+    public String addRoutineAeMeddra(int index, Integer aeReportId) {
+        return renderIndexedAjaxView("routineAdverseEventMeddraFormSection", index, aeReportId);
+    }
 
     /**
      * Returns the HTML for the section of the lab form for

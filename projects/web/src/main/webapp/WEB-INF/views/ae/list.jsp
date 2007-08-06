@@ -61,7 +61,7 @@
     style="" styleClass=""
     filterable="false">
     <ec:row>
-        <ec:column property="adverseEvents[0].ctcTerm" title="CTC term">
+        <ec:column property="adverseEvents[0].adverseEventTerm.universalTerm" title="Term">
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
                 <c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
@@ -101,11 +101,11 @@
     style="" styleClass=""
     filterable="false">
     <ec:row>
-        <ec:column property="adverseEvents[0].ctcTerm" title="CTC term">
-            <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+        <ec:column property="adverseEvents[0].adverseEventTerm.universalTerm" title="Term">
+            <a href="<c:url value="/pages/ae/editRoutine?aeRoutineReport=${routineReport.id}"/>">
             <c:choose>
-                <c:when test="${not empty routineReport.adverseEvents[0].ctcTerm}">
-                    ${routineReport.adverseEvents[0].ctcTerm.fullName}
+                <c:when test="${not empty routineReport.adverseEvents[0].adverseEventTerm}">
+                    ${routineReport.adverseEvents[0].adverseEventTerm.universalTerm}
                 </c:when>
                 <c:otherwise>
                     [Incomplete AE]

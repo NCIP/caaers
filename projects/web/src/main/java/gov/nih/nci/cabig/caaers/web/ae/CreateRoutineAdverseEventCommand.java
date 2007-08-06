@@ -93,7 +93,8 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     public void save() {
         getAssignment().addRoutineReport(getAeRoutineReport());
         prepareExpeditedReport();
-        boolean isExpedited = findExpedited(getAeRoutineReport());
+        //boolean isExpedited = findExpedited(getAeRoutineReport());
+        boolean isExpedited = false;
         routineReportDao.save(getAeRoutineReport());
         
         if (isExpedited) {
@@ -147,13 +148,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
-    		//String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		//if (ae.getGrade() == Grade.MODERATE){ testing purposes
-    		//if (message.equals("SERIOUS_ADVERSE_EVENT")){
-    			ae.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
+    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
     			aeReport.addAdverseEvent(ae);
     			isPopulated = true;
-    		//}
+    		}
     	}
     		return isPopulated;
     	}

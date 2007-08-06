@@ -51,16 +51,10 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends A
         this.adverseEvent = adverseEvent;
     }
     
-
     @Transient
-    public String getUniversalTerm() {
-    	if ( this instanceof AdverseEventCtcTerm){
-    		return ((CtcTerm)term) == null ? null : ((CtcTerm)term).getCtepTerm();
-    	}
-    	else {
-    		return ((LowLevelTerm)term) == null ? null : ((LowLevelTerm)term).getMeddraCode();
-    	}
-    }
+    public abstract String getUniversalTerm();
+    
+    
     
     @Transient
     /* this is only transient here -- subclasses need to override it and specify what it refers to
