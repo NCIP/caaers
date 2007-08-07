@@ -123,7 +123,9 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import" p:linkName="importController"/> 
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Import MedDRA" p:linkName="importMeddraController"/>                                                                               
+                                p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
+							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Feed IND#" p:linkName="createINDController"/>                                                                                
                         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Organization" p:linkName="createOrganizationController"/>                                                                               
                         
@@ -144,7 +146,9 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Expedited Report search" p:linkName="reportController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Routine Report search" p:linkName="routineReportController"/>                                                                                                        
+                                p:displayName="Routine Report search" p:linkName="routineReportController"/>
+							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="IND search" p:linkName="searchINDController"/>                                                                                                        
                         </list>
                     </property>
                 </bean>
@@ -198,7 +202,11 @@
 	<bean name="/study/edit" id="editStudyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
 	</bean>    
-
+	<bean name="/study/studyAgentIND" id="studyAgentINDController" autowire="byType"
+        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
+    </bean>    
+	
     <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
         
@@ -248,7 +256,12 @@
 	<bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
     </bean>
-    
+    <bean name="/admin/createIND" id="createINDController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
+          
+ 
+    <bean name="/search/searchIND" id="searchINDController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
     
     <bean name="/search/study" id="studyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>

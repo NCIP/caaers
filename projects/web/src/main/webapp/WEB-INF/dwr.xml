@@ -32,7 +32,10 @@
         </create>
        <create creator="spring" javascript="reportDef">
             <param name="beanName" value="reportAjaxFacade"/>
-        </create>         
+        </create>   
+        <create creator="spring" javascript="createIND">
+            <param name="beanName" value="indAjaxFacade"/>
+        </create>       
         <create creator="new" javascript="date">
             <param name="class" value="java.util.Date"/>
         </create>

@@ -59,7 +59,7 @@
 			frm.elements['pointOnScale'].value = tsu;
 			//frm.elements['_page'].value = frm.elements['_page'].value - 1;
 			var target = $('_target');
-			target.name = '_target2';
+			target.name = '_noname';
 			frm.submit();
 		}
 		

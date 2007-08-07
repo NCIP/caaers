@@ -9,11 +9,15 @@
 <%@attribute name="sectionClass" required="true" %>
 <%@attribute name="removeButtonAction"%>
 <%@attribute name="enableDelete" type="java.lang.Boolean" %>
+<%@attribute name="localButtons" fragment="true" %>
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 <chrome:division title="${title}" id="${sectionClass}-${index}" 
 cssClass="${sectionClass}" style="${style}" enableDelete="${enableDelete}" deleteParams="${deleteParams}">
- <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-    <tags:renderRow field="${field}"/>
+ <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="status">
+    <tags:renderRow field="${field}" deleteParams="${index},${status.index-1}" cssClass="ind${index}"/>
  </c:forEach>
+ <div class="local-buttons">
+    <jsp:invoke fragment="localButtons"/>
+ </div>
 </chrome:division>

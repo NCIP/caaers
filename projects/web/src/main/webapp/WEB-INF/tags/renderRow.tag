@@ -5,6 +5,7 @@
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
 <%@attribute name="label" fragment="true" %>
+<%@attribute name="deleteParams" %>
 <div class="row ${cssClass}" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label">
         <c:choose>
@@ -12,7 +13,9 @@
             <c:otherwise><tags:renderLabel field="${field}"/></c:otherwise>
         </c:choose>
     </div>
-    <div class="value"><tags:renderInputs field="${field}"/></div>
+    <div class="value"><tags:renderInputs field="${field}"/>
+    <c:if test="${field.attributes.enableDelete}"><a href="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');"><img 
+	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a></c:if></div>
     <c:if test="${not empty field.attributes.details}">
         <div class="extra">${field.attributes.details}</div>
     </c:if>

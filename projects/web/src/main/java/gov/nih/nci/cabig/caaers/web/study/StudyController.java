@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -10,16 +12,13 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +47,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     private SiteInvestigatorDao siteInvestigatorDao;
     private ResearchStaffDao researchStaffDao;
     private CtcDao ctcDao;
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     public StudyController() {
         setCommandClass(Study.class);
@@ -57,13 +57,13 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
     }
-    
+
     ///LOGIC
 	@Override
 	protected Study getPrimaryDomainObject(C command) {
 		 return command;
 	}
-    
+
     @Override
     protected StudyDao getDao() {
         return studyDao;
@@ -85,10 +85,11 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         ControllerTools.registerDomainObjectEditor(binder, siteInvestigatorDao);
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
+        ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
         ControllerTools.registerEnumEditor(binder, Term.class);
     }
 
-   
+
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(
@@ -122,7 +123,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     /**
      * Override this in sub controller if summary is needed
      * @return
-     */ 
+     */
     protected boolean isSummaryEnabled() {
         return false;
     }
@@ -138,7 +139,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
         return null;
     }
-    
+
 	@Override
 	protected String getViewName(HttpServletRequest request, Object command, int page) {
 		Object subviewName = findInRequest(request, "_subview");
@@ -148,19 +149,19 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
             return super.getViewName(request, command, page);
         }
 	}
-	
+
 	/**
-	 *  Returns the value associated with the <code>attributeName</code>, if present in 
-	 *  HttpRequest parameter, if not available, will check in HttpRequest attribute map.  
+	 *  Returns the value associated with the <code>attributeName</code>, if present in
+	 *  HttpRequest parameter, if not available, will check in HttpRequest attribute map.
 	 */
 	private Object findInRequest(HttpServletRequest request, String attributName){
-		   
+
 	  	Object attr = request.getParameter(attributName);
 	  	if(attr == null) attr = request.getAttribute(attributName);
 	   	return attr;
 	}
-	
-	
+
+
 	@Override
 	protected boolean suppressValidation(HttpServletRequest request, Object command) {
 		//supress for ajax and delete requests
@@ -170,15 +171,15 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		if(StringUtils.isNotEmpty(action)) return true;
 		return super.suppressValidation(request, command);
 	}
-	
+
 	@Override
 	protected boolean shouldSave(HttpServletRequest request, C command, Tab<C> tab) {
-		return super.shouldSave(request, command, tab) && 
+		return super.shouldSave(request, command, tab) &&
 		 (findInRequest(request, "_isAjax") == null);
 	}
-	
+
 	///BEAN PROPERTIES
-	
+
 	public AgentDao getAgentDao() {
         return agentDao;
     }
@@ -226,7 +227,19 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 	public void setCtcDao(CtcDao ctcDao) {
 		this.ctcDao = ctcDao;
 	}
-    
-    
+
+
+	public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
+		return investigationalNewDrugDao;
+	}
+
+
+	public void setInvestigationalNewDrugDao(
+			InvestigationalNewDrugDao investigationalNewDrugDao) {
+		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
+
+
+
 
 }

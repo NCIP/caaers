@@ -64,6 +64,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/importMeddra"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	
+		<entry key="/pages/admin/createIND"
+			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	<!--  TODO: need to change domain class -->
 		<entry key="/pages/admin/createOrganization"
 			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	
 		
@@ -83,6 +85,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/search/searchIND" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/><!--  TODO: need to change domain class -->
 		
 
 	</util:map>

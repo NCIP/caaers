@@ -6,8 +6,8 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -26,14 +26,16 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     protected Study command;
 
     private SiteInvestigatorDao siteInvestigatorDao;
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         siteInvestigatorDao = registerDaoMockFor(SiteInvestigatorDao.class);
-
+        investigationalNewDrugDao = registerDaoMockFor(InvestigationalNewDrugDao.class);
         facade = new CreateStudyAjaxFacade();
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
+        facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
 
         command = new Study();
         request.getSession().setAttribute(
@@ -53,7 +55,7 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         StudySite studySite = new StudySite();
         studySite.setOrganization(setId(6, new Organization()));
         command.addStudySite(studySite);
-        
+
         expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6)))
             .andReturn(Arrays.asList(expectedInvestigator));
         replayMocks();
@@ -69,5 +71,22 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testResearchStaffReduced() throws Exception {
         // TODO
+    }
+
+    public void testMatchINDs() throws Exception{
+    	InvestigationalNewDrug expectedIND = new InvestigationalNewDrug();
+    	expectedIND.setId(32);
+    	expectedIND.setIndNumber(99);
+
+    	expect(investigationalNewDrugDao.findByIds(aryEq(new String[]{"9"})))
+    	.andReturn(Arrays.asList(expectedIND));
+    	replayMocks();
+    	List<InvestigationalNewDrug> results = facade.matchINDs("9");
+    	verifyMocks();
+
+    	assertEquals("Wrong number of results", 1, results.size());
+    	InvestigationalNewDrug actual = results.get(0);
+    	assertEquals("IND number is not matching", (int)actual.getIndNumber(), 99);
+    	//
     }
 }

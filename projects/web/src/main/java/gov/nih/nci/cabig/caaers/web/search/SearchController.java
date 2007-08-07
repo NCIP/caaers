@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade;
-import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
+import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +27,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  * @author Krikor Krumlian
  */
 public abstract class SearchController extends SimpleFormController {
-		    	
+
 	private StudyService studyService;
 	private ConfigProperty configurationProperty;
 	private ListValues listValues;
@@ -38,14 +37,15 @@ public abstract class SearchController extends SimpleFormController {
 	private ExpeditedAdverseEventReportDao expeditedDao;
 	private RoutineAdverseEventReportDao routineDao;
 	private AdverseEventDao adverseEventDao;
-	
-	public SearchController() {		             
-		setCommandClass(SearchStudyCommand.class);    
+
+	public SearchController() {
+		setCommandClass(SearchStudyCommand.class);
 		setFormView("search/study_search");
 		setSuccessView("search/study_search");
 	}
-	
-	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
+
+	 @Override
+	protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
 	    	Map<String, Object> refdata = new HashMap<String, Object>();
 	        refdata.put("genders", listValues.getParticipantGender());
 	        refdata.put("ethnicity", listValues.getParticipantEthnicity());
@@ -53,13 +53,13 @@ public abstract class SearchController extends SimpleFormController {
 		  	return refdata;
 	    }
 
-	// TODO: I really do not like the way I am implementing this I need to find a better way  
+	// TODO: I really do not like the way I am implementing this I need to find a better way
 	protected void buildSearchResultTable(HttpServletRequest request,String prop, String value, int x)throws Exception{
-		
+
 			SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao,participantDao,adverseEventDao,expeditedDao,routineDao);
 			Context context = null;
 			context = new HttpServletRequestContext(request);
-        
+
 			TableModel model = new TableModelImpl(context);
 			Object viewData = null;
 			try {
@@ -67,30 +67,33 @@ public abstract class SearchController extends SimpleFormController {
 				 	case 0:
 				 		//viewData = searchFacade.build(model, new ArrayList());
 				 		viewData = searchFacade.getTable(null, prop, value, request);
-				        break; 
-		            case 1:  
+				        break;
+		            case 1:
 		            	viewData = searchFacade.getParticipantTable(null, prop, value, request);
 		            	break;
-		            case 2:  
+		            case 2:
 		            	viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
 		            	break;
-		            case 3:  
+		            case 3:
 		            	viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
-		            	break;	
-		            case 4:  
+		            	break;
+		            case 4:
 		            	viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
-		            	break;		
-		            default: 
+		            	break;
+		            case 5:
+		            	viewData = searchFacade.getINDTable(null, prop, value, request);
+		            	break;
+		            default:
 		            	viewData = searchFacade.build(model, new ArrayList());
-				        break; 
+				        break;
 				 }
 			} catch (Exception e) {
 				e.printStackTrace();
-			} 			
-			
-			request.setAttribute("assembler", viewData);		
+			}
+
+			request.setAttribute("assembler", viewData);
 	}
-	
+
 	public StudyService getStudyService() {
 		return studyService;
 	}
@@ -106,7 +109,7 @@ public abstract class SearchController extends SimpleFormController {
 	public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
-	
+
 	public ListValues getListValues() {
 		return listValues;
 	}

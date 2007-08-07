@@ -136,7 +136,7 @@
 		<tr >						
 			<th scope="col">Agent Name</th>
 			<th scope="col">Agent NSC<br />Number</th>
-			<th scope="col">IND Identifier</th>
+			<th scope="col">IND #</th>
 			<th scope="col">Investigational New <br /> Drug?</th>	
 		</tr>																			
 	 	    
@@ -144,7 +144,16 @@
 			<tr>						
 				<td>${studyAgent.agent.name}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
-				<td>${studyAgent.investigationalNewDrugIdentifier}</td>
+				<td>
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					 <tr>
+						 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
+						 <td>${sai.investigationalNewDrug.indNumber}</td><td>${sai.investigationalNewDrug.holderName}</td>
+				 		 </c:forEach>
+					 </tr>
+					</table>
+				 
+				</td>
 				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
 			</tr>
 		</c:forEach>				
