@@ -20,4 +20,5 @@ cssClass="${sectionClass}" style="${style}" enableDelete="${enableDelete}" delet
  <div class="local-buttons">
     <jsp:invoke fragment="localButtons"/>
  </div>
+ <br />
 </chrome:division>
