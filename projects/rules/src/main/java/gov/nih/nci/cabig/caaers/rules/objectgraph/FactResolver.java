@@ -250,7 +250,7 @@ public class FactResolver {
 		
 		  return listToBeReturned;
 	  }  
-  private boolean wrapUp(Object targetObject,
+  private boolean wrapUpXX(Object targetObject,
 		                 Node targetNode,
 		                 String targetObjectType,
           				 String targetAttributeName,
@@ -326,6 +326,88 @@ public class FactResolver {
 	  return test;
 	  
   }
+  
+		  private boolean wrapUp(Object targetObject,
+		          Node targetNode,
+		          String targetObjectType,
+					 String targetAttributeName,
+					 String targetAttributeValue){
+		boolean test = false;
+		Class cls = null;
+		Method method = null;
+		try {
+		cls = Class.forName(targetObjectType);
+		} catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		String methodName = this.getMethodName(targetAttributeName);
+		try {
+		Class[] types = new Class[] {}; 
+		method = cls.getMethod(methodName, types);
+		} catch (SecurityException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		
+		Class class_ = targetObject.getClass();
+		
+		
+		if(class_.getName().equalsIgnoreCase("java.util.List")){
+		
+		List list = (List)targetObject;
+		Iterator it = list.iterator();
+		
+		while(it.hasNext()){
+		Object obj = it.next();
+		Object value=null;
+		try {
+			value = method.invoke(obj, new Object[0]);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(value.toString().equalsIgnoreCase(targetAttributeValue)){
+			test = true;
+			break;
+		}
+		}
+		
+		}else{
+		
+		Object value=null;
+		try {
+			value = method.invoke(targetObject, new Object[0]);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(value.toString().equalsIgnoreCase(targetAttributeValue)){
+			test = true;
+			
+		}
+		
+		}
+		return test;
+		
+		}
+
+  
   private String getMethodName(String name){
 	  String prop = "get"+Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	  return prop;
