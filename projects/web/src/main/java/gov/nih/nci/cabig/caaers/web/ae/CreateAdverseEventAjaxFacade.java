@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.ServletException;
@@ -49,6 +50,9 @@ import java.util.Map;
  */
 public class CreateAdverseEventAjaxFacade {
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
+    private static Class<?>[] CONTROLLERS = {
+        CreateAdverseEventController.class, EditAdverseEventController.class
+    };
 
     private StudyDao studyDao;
     private ParticipantDao participantDao;
@@ -215,7 +219,6 @@ public class CreateAdverseEventAjaxFacade {
         return renderIndexedAjaxView(name + "FormSection", index, aeReportId);
     }
 
-    
     /**
      * Returns the HTML for the section of the basic AE entry form for
      * the adverse event with the given index
@@ -245,17 +248,41 @@ public class CreateAdverseEventAjaxFacade {
     public String addPriorTherapyAgent(int index, int parentIndex, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
     }
-    
-    private String renderIndexedAjaxView(String viewName, int index, int parentIndex, Integer aeReportId) {
-        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-        params.put("index", Integer.toString(index));
-        params.put("parentIndex", Integer.toString(parentIndex));
-        return renderAjaxView(viewName, aeReportId, params);
+
+    // Note that other than the extract command bit, this is total non-ae-flow-specific
+    @SuppressWarnings({ "unchecked" })
+    public boolean reorder(String listProperty, int objectIndex, int targetIndex) {
+        Object command = extractCommand();
+        List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
+        if (targetIndex >= list.size()) {
+            log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
+            return false;
+        }
+        if (targetIndex < 0) {
+            log.debug("Attempted to move past the start; " + targetIndex + " < 0");
+            return false;
+        }
+        if (objectIndex == targetIndex) {
+            log.debug("No move requested; " + objectIndex + " == " + targetIndex);
+            return false;
+        }
+        if (0 > objectIndex || objectIndex >= list.size()) {
+            log.debug("No " + listProperty + " with index " + objectIndex);
+            return false;
+        }
+        Object o = list.remove(objectIndex);
+        list.add(targetIndex, o);
+        return true;
     }
 
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
+        return renderIndexedAjaxView(viewName, index, null, aeReportId);
+    }
+
+    private String renderIndexedAjaxView(String viewName, int index, Integer parentIndex, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
         params.put("index", Integer.toString(index));
+        if (parentIndex != null) params.put("parentIndex", Integer.toString(parentIndex));
         return renderAjaxView(viewName, aeReportId, params);
     }
 
@@ -276,6 +303,26 @@ public class CreateAdverseEventAjaxFacade {
             throw new CaaersSystemException(e);
         } catch (IOException e) {
             throw new CaaersSystemException(e);
+        }
+    }
+
+    private Object extractCommand() {
+        WebContext webContext = WebContextFactory.get();
+        Object command = null;
+        for (Class<?> controllerClass : CONTROLLERS) {
+            String formSessionAttributeName = controllerClass.getName() + ".FORM.command";
+            command = webContext.getSession().getAttribute(formSessionAttributeName);
+            if (command == null) {
+                log.debug("Command not found using name " + formSessionAttributeName);
+            } else {
+                log.debug("Command found using name " + formSessionAttributeName);
+                break;
+            }
+        }
+        if (command == null) {
+            throw new CaaersSystemException("Could not find command in session");
+        } else {
+            return command;
         }
     }
 
@@ -340,38 +387,35 @@ public class CreateAdverseEventAjaxFacade {
         this.interoperationService = interoperationService;
     }
 
-    
     @Required
     public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
         this.anatomicSiteDao = anatomicSiteDao;
     }
-    
-    @Required
-	public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-		this.priorTherapyDao = priorTherapyDao;
-	}
-    @Required
-	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
-		this.ctcCategoryDao = ctcCategoryDao;
-	}
-    
-    @Required
-	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
-		this.lowLevelTermDao = lowLevelTermDao;
-	}
 
-	public void setPreExistingConditionDao(
-			PreExistingConditionDao preExistingConditionDao) {
-		this.preExistingConditionDao = preExistingConditionDao;
-	}
-	@Required
-	public void setAgentDao(AgentDao agentDao) {
-		this.agentDao = agentDao;
-	}
-	
-	
-    
-    
-    
-    
+    @Required
+    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+        this.priorTherapyDao = priorTherapyDao;
+    }
+
+    @Required
+    public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+        this.ctcCategoryDao = ctcCategoryDao;
+    }
+
+    @Required
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
+
+    @Required
+    public void setPreExistingConditionDao(
+        PreExistingConditionDao preExistingConditionDao) {
+        this.preExistingConditionDao = preExistingConditionDao;
+    }
+
+    @Required
+    public void setAgentDao(AgentDao agentDao) {
+        this.agentDao = agentDao;
+    }
+
 }

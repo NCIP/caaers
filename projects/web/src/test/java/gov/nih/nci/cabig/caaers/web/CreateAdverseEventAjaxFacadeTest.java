@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -17,8 +18,12 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
+import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
+import gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController;
+import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.ArrayList;
@@ -320,5 +325,83 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals(1, actual.size());
         assertEquals(3, (int) actual.get(0).getCode());
         assertEquals("Oh, so severe", actual.get(0).getDisplayName());
+    }
+
+    public void testReorderAdverseEventsWithValidParams() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 1, 2));
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 0, 2, 1, 3);
+    }
+
+    public void testReorderMoveToEnd() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 0, 3));
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 1, 2, 3, 0);
+    }
+
+    public void testReorderMoveToBeginning() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 2, 0));
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 2, 0, 1, 3);
+    }
+
+    public void testReorderReturnsFalseWhenTargetOutOfRange() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        assertFalse("Should not have moved", facade.reorder("aeReport.adverseEvents", 1, 4));
+        verifyMocks();
+
+        assertNotMoved(command);
+    }
+
+    public void testReorderReturnsFalseWhenObjectOutOfRange() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        assertFalse("Should not have moved", facade.reorder("aeReport.adverseEvents", 4, 1));
+        verifyMocks();
+
+        assertNotMoved(command);
+    }
+
+    private void assertNotMoved(ExpeditedAdverseEventInputCommand command) {
+        assertAdverseEventsIdOrder(command, 0, 1, 2, 3);
+    }
+
+    private void assertAdverseEventsIdOrder(ExpeditedAdverseEventInputCommand command, int... expectedOrder) {
+        for (int i = 0; i < expectedOrder.length; i++) {
+            int id = expectedOrder[i];
+            assertTrue("More expected ids than AEs present",
+                i < command.getAeReport().getAdverseEvents().size());
+            assertEquals("Wrong id at " + i, new Integer(id),
+                command.getAeReport().getAdverseEvents().get(i).getId());
+        }
+    }
+
+    private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
+        EditExpeditedAdverseEventCommand command
+            = new EditExpeditedAdverseEventCommand(null, null, null);
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+        report.addAdverseEvent(setId(0, new AdverseEvent()));
+        report.addAdverseEvent(setId(1, new AdverseEvent()));
+        report.addAdverseEvent(setId(2, new AdverseEvent()));
+        report.addAdverseEvent(setId(3, new AdverseEvent()));
+        command.setAeReport(report);
+        session.setAttribute(EditAdverseEventController.class.getName() + ".FORM.command", command);
+        expect(webContext.getSession()).andReturn(session).anyTimes();
+        return command;
     }
 }
