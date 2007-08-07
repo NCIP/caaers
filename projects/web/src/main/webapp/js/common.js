@@ -170,67 +170,6 @@ Object.extend(ListEditor.prototype, {
 
 })
 
-
-////// FORM EDITING
-
-// Provides a uniform set of functions for editing a form containing a
-// dynamically-resizable list.  Only "add" is implemented so far.
-// TODO: What is this copy-paste-fest for?
-var PriorTherapyListEditor = Class.create();
-Object.extend(PriorTherapyListEditor.prototype, {
-    // divisionClass: class for the container.  Each container should have this
-    //    class, and have the id "${divisionClass}-${listIndex}"
-    // dwrNS: the DWR namespace object in which the ajax fns can be found
-    // basename:  the base of the name for the various ajax fns
-    //     e.g., add will call dwrNS.add${basename}
-    initialize: function(divisionClass, dwrNS, basename, options) {
-        this.divisionClass = divisionClass
-        this.dwrNS = dwrNS
-        this.basename = basename
-        this.options = Object.extend({
-            addButton:    "add-" + divisionClass + "-button",
-            addIndicator: "add-" + divisionClass + "-indicator",
-            addParameters: [ ]
-        }, options)
-
-        this.options.addButton = $(this.options.addButton)
-        this.options.addIndicator = $(this.options.addIndicator)
-        this.options.addFirstAfter = $(this.options.addFirstAfter)
-        this.options.addAfter = this.options.addAfter
-        if (this.options.addButton) {
-            this.options.addButton.observe("click", this.add.bindAsEventListener(this))
-        }
-    },
-
-    add: function() {
-        var fnName = "add" + this.basename;
-        var addFn = this.dwrNS[fnName]
-        if (!addFn) { alert("There is no function the selected dwr namespace named " + fnName); return; }
-
-        if (this.options.addButton) this.options.addButton.disable()
-        if (this.options.addIndicator) AE.showIndicator(this.options.addIndicator)
-        var sel = "." + this.divisionClass
-        var se = $$(sel).length > 0 ? "." + this.options.addAfter + $$(sel).last().id.substr($$(sel).last().id.indexOf('-')+1,$$(sel).last().id.length) : ""
-        var nextIndexx = $$(se).length
-        var nextIndex = $$(sel).length
-        var args = [nextIndex].concat(this.options.addParameters).concat([
-            function(html) {
-            	var after = nextIndexx == 0 ? nextIndex ==0 ? this.options.addFirstAfter :  $$(sel).last() : $$(se).last()
-                //var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
-                new Insertion.After(after, html)
-                if (this.options.addCallback) this.options.addCallback(nextIndex)
-                AE.slideAndShow(this.divisionClass + "-" + nextIndex)
-                if (this.options.addButton) this.options.addButton.enable()
-                if (this.options.addIndicator) AE.hideIndicator(this.options.addIndicator)
-            }.bind(this)
-        ])
-        addFn.apply(this, args)
-    }
-
-})
-
-
-
 //////// SEARCH helpers
 
 function showTable(table) {

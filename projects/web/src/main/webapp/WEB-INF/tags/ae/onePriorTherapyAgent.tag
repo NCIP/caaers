@@ -7,24 +7,22 @@
 <%@attribute name="parentIndex" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 
-<ae:nestedFieldGroupDivision fieldGroupFactoryName="ptAgent${parentIndex}" index="${index}" parentIndex="${parentIndex}"  style="${style}">
-     	
-     	
-     	<div class="row" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}]-row" >
-    		<div class="label">
-        		Agent
-    		</div>
-    
-    		<div class="value">
-    		
-    		 <input size="50" type="text" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-input"/>
-			 <img id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-indicator" class="indicator" src="/caaers/images/indicator.white.gif" alt="activity indicator"/>
-        
-        	 <div id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-choices" class="autocomplete" style="display: none"></div>
-       
-       		 <form:hidden path="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent"/>
-   
-			</div>
-     	</div>
-</ae:nestedFieldGroupDivision>
+<div class="ptAgent${parentIndex}" id="ptAgent${parentIndex}-${index}" <tags:attribute name="style" value="${style}"/> >
+    <div class="row" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}]-row" >
+        <div class="label">
+            Agent
+        </div>
+
+        <div class="value">
+
+            <input size="50" type="text" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-input"/>
+            <tags:indicator id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-indicator"/>
+
+            <div id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-choices" class="autocomplete" style="display: none"></div>
+
+            <form:hidden path="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent"/>
+
+        </div>
+    </div>
+</div>
 

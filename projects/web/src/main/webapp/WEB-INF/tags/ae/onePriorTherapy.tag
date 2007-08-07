@@ -5,6 +5,7 @@
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
+<%@attribute name="agentCount" type="java.lang.Integer" %>
 
 <ae:fieldGroupDivision fieldGroupFactoryName="priorTherapy" index="${index}" style="${style}">
     <tags:errors path="aeReport.adverseEventPriorTherapies[${index}]"/>
@@ -25,9 +26,13 @@
         </jsp:attribute>
     </tags:renderRow>
     <tags:renderRow field="${fieldGroup.fields[2]}"/>
-     <tags:renderRow field="${fieldGroup.fields[3]}"/>
-     
-     <div id="pptAgent${index}" style="display: none">
-     <tags:listEditorAddButton divisionClass="ptAgent${index}" label="Add an Agent"/>
-     </div>
+    <tags:renderRow field="${fieldGroup.fields[3]}"/>
+
+    <c:forEach begin="${1}" end="${agentCount}" var="s">
+         <ae:onePriorTherapyAgent index="${s - 1}" parentIndex="${index}"/>
+    </c:forEach>
+      
+    <div id="pptAgent${index}" style="display: none">
+        <tags:listEditorAddButton divisionClass="ptAgent${index}" label="Add an Agent"/>
+    </div>
 </ae:fieldGroupDivision>
