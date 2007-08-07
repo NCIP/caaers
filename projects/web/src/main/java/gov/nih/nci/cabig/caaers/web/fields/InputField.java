@@ -26,7 +26,8 @@ public interface InputField {
     // TODO: I don't think we need this; clear should probably be available for every autocompleter - RMS20070725
     String ENABLE_CLEAR = "enableClear"; //enables the clear button (only for AutoCompleters)
     String COLS = "cols";
-    
+    String ENABLE_DELETE = "enableDelete"; //will put delete symbol near to the field(in renderRow.tag).
+
     Category getCategory();
 
     /** @return the lowercased name of the value returned by {@link #getCategory} */
