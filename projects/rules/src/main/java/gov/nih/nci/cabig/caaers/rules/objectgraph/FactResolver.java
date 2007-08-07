@@ -81,6 +81,21 @@ public class FactResolver {
 			  if((!sourceNode.isCollection())&&(!targetNode.isCollection())){
 				  obj = getListOfNextTargetObjects(targetNode,sourceObjectInChain);
 			  }
+			   
+			  if(targetNode.isCollection()){
+				  if(obj==null){
+					  return false;
+				  }else{
+					  List l = (List)obj;
+					  if(l.size()==0){
+						  return false;
+					  }
+				  }
+			  }else{
+				  if(obj==null){
+					  return false;
+				  }
+			  }
 			  
 			  sourceNode = targetNode;
 			  sourceObjectInChain = obj;
@@ -106,19 +121,32 @@ public class FactResolver {
 	  List list = new ArrayList();
 	  String name = node.getName();
 	  String methodName = this.getMethodName(name);
-	  Class class_ = sourceObject.getClass();
+	  List outerList = (List)sourceObject;
+	  
+	  Class class_ = outerList.get(0).getClass();
 	  Method method = null;
 	  Object obj=null;
 	  try {
 		    Class[] types = new Class[] {};
 		   
-		method = class_.getMethod(methodName, types);
-		obj = method.invoke(sourceObject, new Object[0]);
-		List l = (List)obj;
-		Iterator it = l.iterator();
-		while(it.hasNext()){
-			list.add(it.next());
-		}
+		    method = class_.getMethod(methodName, types);
+		    
+		    Iterator outerIterator = outerList.iterator();
+		    while(outerIterator.hasNext()){
+		    	
+		    	obj = method.invoke(sourceObject, new Object[0]);
+		    	
+		    	if(obj!=null){
+						List innerList = (List)obj;
+						Iterator it = innerList.iterator();
+						while(it.hasNext()){
+							list.add(it.next());
+						}
+		    	}
+		    	
+		    }
+		
+		
 		
 	} catch (SecurityException e) {
 		// TODO Auto-generated catch block
@@ -195,7 +223,9 @@ public class FactResolver {
 			while(it.hasNext()){
 				Object objectInList = it.next();
 				obj = method.invoke(objectInList, new Object[0]);
+				if(obj!=null){
 				listToBeReturned.add(obj);
+				}
 			}
 			
 			
