@@ -133,8 +133,8 @@ public class FactResolver {
 		    
 		    Iterator outerIterator = outerList.iterator();
 		    while(outerIterator.hasNext()){
-		    	
-		    	obj = method.invoke(sourceObject, new Object[0]);
+		    	Object tempObject = outerIterator.next();
+		    	obj = method.invoke(tempObject, new Object[0]);
 		    	
 		    	if(obj!=null){
 						List innerList = (List)obj;
