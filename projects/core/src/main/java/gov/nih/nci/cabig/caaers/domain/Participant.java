@@ -23,197 +23,220 @@ import java.util.List;
  */
 @Entity
 @Table
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_participants_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participants_id") })
 public class Participant extends AbstractIdentifiableDomainObject {
-    private String institutionalPatientNumber;
-    private String institution;
-    private String firstName;
-    private String middleName;
-    private String maidenName;
-    private String lastName;
-    private Date dateOfBirth;
-    private String gender;
-    private String race;
-    private String ethnicity;
-    private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
+	private String institutionalPatientNumber;
 
-    ////// LOGIC
+	private String institution;
 
-    public void addAssignment(StudyParticipantAssignment studyParticipantAssignment){
-        getAssignments().add(studyParticipantAssignment);
-        studyParticipantAssignment.setParticipant(this);
-    }
+	private String firstName;
 
-    @Transient
-    public String getLastFirst() {
-        StringBuilder name = new StringBuilder();
-        boolean hasFirstName = getFirstName() != null;
-        if (getLastName() != null) {
-            name.append(getLastName());
-            if (hasFirstName) name.append(", ");
-        }
-        if (hasFirstName) {
-            name.append(getFirstName());
-        }
-        return name.toString();
-    }
+	private String middleName;
 
-    @Transient
-    public String getFullName() {
-        StringBuilder name = new StringBuilder();
-        boolean hasLastName = getLastName() != null;
-        if (getFirstName() != null) {
-            name.append(getFirstName());
-            if (hasLastName) name.append(' ');
-        }
-        if (hasLastName) {
-            name.append(getLastName());
-        }
-        return name.toString();
-    }
+	private String maidenName;
 
-    @Transient
-    public List<Study> getStudies() {
-        List<Study> collected = new ArrayList<Study>(getAssignments().size());
-        for (StudyParticipantAssignment assignment : getAssignments()) {
-            collected.add(assignment.getStudySite().getStudy());
-        }
-        return collected;
-    }
+	private String lastName;
 
-    ////// BEAN PROPERTIES
+	private Date dateOfBirth;
 
-    @Column(name= "instituitional_patient_number") // TODO: correct the column name's spelling
-    public String getInstitutionalPatientNumber() {
-        return institutionalPatientNumber;
-    }
+	private String gender;
 
-    public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
-        this.institutionalPatientNumber = instituitionalPatientNumber;
-    }
+	private String race;
 
-    public String getInstitution() {
-        return institution;
-    }
+	private String ethnicity;
 
-    public void setInstitution(String institution) {
-        this.institution = institution;
-    }
+	private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
 
-    public String getFirstName() {
-        return firstName;
-    }
+	// //// LOGIC
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void addAssignment(StudyParticipantAssignment studyParticipantAssignment) {
+		getAssignments().add(studyParticipantAssignment);
+		studyParticipantAssignment.setParticipant(this);
+	}
 
-    public String getMaidenName() {
-        return maidenName;
-    }
+	@Transient
+	public String getLastFirst() {
+		StringBuilder name = new StringBuilder();
+		boolean hasFirstName = getFirstName() != null;
+		if (getLastName() != null) {
+			name.append(getLastName());
+			if (hasFirstName) {
+				name.append(", ");
+			}
+		}
+		if (hasFirstName) {
+			name.append(getFirstName());
+		}
+		return name.toString();
+	}
 
-    public void setMaidenName(String maidenName) {
-        this.maidenName = maidenName;
-    }
+	@Transient
+	public String getFullName() {
+		StringBuilder name = new StringBuilder();
+		boolean hasLastName = getLastName() != null;
+		if (getFirstName() != null) {
+			name.append(getFirstName());
+			if (hasLastName) {
+				name.append(' ');
+			}
+		}
+		if (hasLastName) {
+			name.append(getLastName());
+		}
+		return name.toString();
+	}
 
-    public String getMiddleName() {
-        return middleName;
-    }
+	@Transient
+	public List<Study> getStudies() {
+		List<Study> collected = new ArrayList<Study>(getAssignments().size());
+		for (StudyParticipantAssignment assignment : getAssignments()) {
+			collected.add(assignment.getStudySite().getStudy());
+		}
+		return collected;
+	}
 
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
+	// //// BEAN PROPERTIES
 
-    public String getLastName() {
-        return lastName;
-    }
+	@Column(name = "instituitional_patient_number")
+	// TODO: correct the column name's spelling
+	public String getInstitutionalPatientNumber() {
+		return institutionalPatientNumber;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
+		institutionalPatientNumber = instituitionalPatientNumber;
+	}
 
-    @Column(name = "birth_date")
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public String getInstitution() {
+		return institution;
+	}
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+	public void setInstitution(String institution) {
+		this.institution = institution;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public String getEthnicity() {
-        return ethnicity;
-    }
+	public String getMaidenName() {
+		return maidenName;
+	}
 
-    public void setEthnicity(String ethnicity) {
-        this.ethnicity = ethnicity;
-    }
+	public void setMaidenName(String maidenName) {
+		this.maidenName = maidenName;
+	}
 
-    public String getRace() {
-        return race;
-    }
+	public String getMiddleName() {
+		return middleName;
+	}
 
-    public void setRace(String race) {
-        this.race = race;
-    }
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
 
-    @OneToMany (mappedBy = "participant", fetch=FetchType.LAZY)
-    @OrderBy // order by ID for testing consistency
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<StudyParticipantAssignment> getAssignments() {
-        return assignments;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setAssignments(List<StudyParticipantAssignment> assignments) {
-        this.assignments = assignments;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    @Override
-    @OneToMany
-    @Cascade({CascadeType.ALL,CascadeType.DELETE_ORPHAN})
-    @JoinColumn(name = "participant_id")
-    public List<Identifier> getIdentifiers() {
-        return super.getIdentifiers();
-    }
+	@Column(name = "birth_date")
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 
-        final Participant that = (Participant) o;
+	public String getGender() {
+		return gender;
+	}
 
-        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null)
-            return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null)
-            return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null)
-            return false;
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-        return true;
-    }
+	public String getEthnicity() {
+		return ethnicity;
+	}
 
-    @Override
-    public int hashCode() {
-        int result;
-        result = (firstName != null ? firstName.hashCode() : 0);
-        result = 29 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 29 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
-        result = 29 * result + (gender != null ? gender.hashCode() : 0);
-        return result;
-    }
+	public void setEthnicity(String ethnicity) {
+		this.ethnicity = ethnicity;
+	}
+
+	public String getRace() {
+		return race;
+	}
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+	@OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
+	@OrderBy
+	// order by ID for testing consistency
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<StudyParticipantAssignment> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<StudyParticipantAssignment> assignments) {
+		this.assignments = assignments;
+	}
+
+	@Override
+	@OneToMany
+	@Cascade( { CascadeType.ALL })
+	@JoinColumn(name = "participant_id")
+	public List<Identifier> getIdentifiers() {
+		return super.getIdentifiers();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+
+		final Participant that = (Participant) o;
+
+		if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) {
+			return false;
+		}
+		if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+			return false;
+		}
+		if (gender != null ? !gender.equals(that.gender) : that.gender != null) {
+			return false;
+		}
+		if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
+			return false;
+		}
+		if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result;
+		result = firstName != null ? firstName.hashCode() : 0;
+		result = 29 * result + (lastName != null ? lastName.hashCode() : 0);
+		result = 29 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
+		result = 29 * result + (gender != null ? gender.hashCode() : 0);
+		return result;
+	}
 }
