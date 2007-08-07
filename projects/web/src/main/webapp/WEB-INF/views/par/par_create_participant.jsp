@@ -17,6 +17,7 @@
     <style type="text/css">
         .leftpane { width: 32em }
     </style>
+  
     
 <tags:dwrJavascriptLink objects="createParticipant"/>
 <script language="JavaScript" type="text/JavaScript">
@@ -24,14 +25,18 @@
 	var addIdentifierEditor;
 	var jsIdentifier = Class.create();;
 	Object.extend(jsIdentifier.prototype, {	
-            initialize: function(index) {
+            initialize: function(index,orgName) {
             	this.index = index;
             	si[index] = this;
+            	this.orgName = orgName;
             	
             	if($('identifiers['  + index + '].organization'))
             	{
         		
             	this.organizationName = "identifiers["  + index + "].organization";
+                this.organizationInputId = this.organizationName + "-input";
+            	if(orgName) $(this.organizationInputId).value = orgName;
+                     	
             	AE.createStandardAutocompleter(this.organizationName, 
             		this.sitePopulator.bind(this),
             		this.siteSelector.bind(this)
@@ -80,7 +85,7 @@
         	
         	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					new jsIdentifier(${status.index}, '${si.organization}');
+					new jsIdentifier(${status.index}, '${si.organization.name}');
 				</c:if>
       		</c:forEach>
       		

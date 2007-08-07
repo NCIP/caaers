@@ -62,7 +62,12 @@
 			</tr>
 			<c:forEach items="${command.identifiers}" var="identifier">
 			<tr class="results">
-				<td>${identifier.source}</td>
+				<c:if	test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<td>${identifier.organization}</td>
+				</c:if>
+				<c:if 	test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+					<td>${identifier.systemName}</td>
+				</c:if>
 				<td>${identifier.type}</td>
 				<td>${identifier.value}</td>
 			</tr>
@@ -71,6 +76,7 @@
 			<br>
 			</chrome:division>
 		</c:if>
+		
 		<c:if test="${not empty command.studySites}">       
        		<chrome:division title="Sites">
        		<table class="tablecontent">

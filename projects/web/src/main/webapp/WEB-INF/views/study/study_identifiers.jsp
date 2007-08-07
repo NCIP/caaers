@@ -19,17 +19,24 @@
 	var addIdentifierEditor;
 	var jsIdentifier = Class.create();;
 	Object.extend(jsIdentifier.prototype, {	
-            initialize: function(index) {
+            initialize: function(index,orgName) {
             	this.index = index;
             	si[index] = this;            	
+            	this.orgName = orgName;
+            	
             	if($('identifiersLazy['  + index + '].organization'))
-            	{        		
+            	{
+        		
             	this.organizationName = "identifiersLazy["  + index + "].organization";
+                this.organizationInputId = this.organizationName + "-input";
+            	if(orgName) $(this.organizationInputId).value = orgName;
+                     	
             	AE.createStandardAutocompleter(this.organizationName, 
             		this.sitePopulator.bind(this),
             		this.siteSelector.bind(this)
             	);
-            } ;         	
+            	
+            	}        	
             	this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
@@ -71,10 +78,11 @@
 	  
     Event.observe(window, "load", function() {
         	
-        	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
-      		new jsIdentifier(${status.index}, '${si.source}');
+      		<c:forEach varStatus="status" items="${command.identifiers}" var="si">
+        		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					new jsIdentifier(${status.index}, '${si.organization.name}');
+				</c:if>
       		</c:forEach>
-      		
       		
       		//This is added for Add Sysetem Identifiers button
 		            new ListEditor("si-section", createStudy, "Identifier", {
