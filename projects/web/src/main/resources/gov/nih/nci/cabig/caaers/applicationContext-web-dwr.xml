@@ -12,6 +12,10 @@
           class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade"/>
     <bean id="studyAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
+          
+     <bean id="participantAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade"/>
+         
     <!--            
     <bean id="participantAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.participant.ParticipantAjaxFacade"/>

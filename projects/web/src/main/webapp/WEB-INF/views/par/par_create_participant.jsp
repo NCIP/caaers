@@ -8,6 +8,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@ taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 
 <html>
 <head>
@@ -16,124 +17,134 @@
     <style type="text/css">
         .leftpane { width: 32em }
     </style>
+    
+<tags:dwrJavascriptLink objects="createParticipant"/>
+<script language="JavaScript" type="text/JavaScript">
+	var si = [];
+	var addIdentifierEditor;
+	var jsIdentifier = Class.create();;
+	Object.extend(jsIdentifier.prototype, {	
+            initialize: function(index) {
+            	this.index = index;
+            	si[index] = this;
+            	
+            	if($('identifiers['  + index + '].organization'))
+            	{
+        		
+            	this.organizationName = "identifiers["  + index + "].organization";
+            	AE.createStandardAutocompleter(this.organizationName, 
+            		this.sitePopulator.bind(this),
+            		this.siteSelector.bind(this)
+            	);
+            	
+            	}
+            	this.indicator = "identifiers["  + index + "].primaryIndicator1";
+            	 Event.observe(this.indicator, "click", function() {
+            	 	for(i = 0; i < si.length; i++){
+            	 		if(i == this.index) continue;
+            	 		$(si[i].indicator).checked = false;
+            	 	}
+            	 }.bind(this));
+            
+            
+            },sitePopulator: function(autocompleter, text) {
+         		createParticipant.matchOrganization(text, function(values) {
+         			autocompleter.setChoices(values)
+         		})
+        	},siteSelector: function(organization) { 
+        		return organization.name 
+        	}
+        	}
+        	
+        	         
+        	
+    );
+    function fireAction(action, selected){
+		if(action == 'addIdentifier'){
+			addIdentifierEditor.add.bind(addIdentifierEditor)();
+		}else{
+			document.getElementById('command')._target.name='_noname';
+			document.createParticipantForm._action.value=action;
+			document.createParticipantForm._selected.value=selected;		
+			document.createParticipantForm.submit();
+		}
+	}
+	
+	function clearField(field){
+		field.value="";
+	}
+	
+	  
+    Event.observe(window, "load", function() {
+        	
+        	
+        	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
+        		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					new jsIdentifier(${status.index}, '${si.organization}');
+				</c:if>
+      		</c:forEach>
+      		
+      		
+      		//This is added for Add Sysetem Identifiers button
+		            new ListEditor("par-id-section", createParticipant, "Identifier", {
+		            	addParameters: [1],
+		            	addFirstAfter: "single-fields",
+		                addCallback: function(nextIndex) {
+             	new jsIdentifier(nextIndex);
+             }
+		            });
+		            //This is added for Add Organization Identifiers buttion
+		             new ListEditor("par-id-section", createParticipant, "Identifier", {
+		                addButton: "add-par-id-section-org-button",
+		                addIndicator: "add-par-id-section-org-indicator",
+		            	addParameters: [2],
+		            	addFirstAfter: "single-fields",
+		                addCallback: function(nextIndex) { 
+             	new jsIdentifier(nextIndex);
+             }
+            });      	
+    });
+	
+</script>
+    
+    
 </head>
 <body>
+		
     <p class="instructions">
         You are creating a new Participant
     </p>
     
-    <tags:tabForm tab="${tab}" flow="${flow}">
-        <jsp:attribute name="singleFields">
-        
-        <div class="leftpane">
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>First Name:</div>
-	            <div class="value">
-                    <form:input path="firstName" />
-                    <tags:inlineHelp path="firstName">
-                        Enter participant's first name. Required field.
-                    </tags:inlineHelp>
-                </div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>Last Name:</div>
-	            <div class="value">
-                    <form:input path="lastName" />
-                    <tags:inlineHelp path="lastName">
-                        Enter the participant's surname.  Required field.
-                    </tags:inlineHelp>
-                </div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label">Maiden Name:</div>
-	            <div class="value">
-                    <form:input path="maidenName" />
-                    <tags:inlineHelp path="maidenName">
-                        Enter the participant's pre-marital name.  Optional field.
-                    </tags:inlineHelp>
-                </div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label">Middle Name:</div>
-	            <div class="value">
-                    <form:input path="middleName" />
-                    <tags:inlineHelp path="middleName">
-                        Enter participant's middle name.  Optional field.
-                    </tags:inlineHelp>
-                </div>
-	        </div>
-        </div>
+    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm">
 
-        <div class="leftpane">
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>Date of Birth:</div>
-	            <div class="value"><tags:dateInput path="dateOfBirth"/></div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>Ethnicity:</div>
-	            <div class="value">
-	            		<form:select path="ethnicity">
-							<form:options items="${ethnicity}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>Race:</div>
-	            <div class="value">
-	            		<form:select path="race">
-						<form:options items="${race}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-	        
-	        <div class="row">
-	            <div class="label"><tags:requiredIndicator/>Gender:</div>
-	            <div class="value">
-	            		<form:select path="gender">
-						<form:options items="${genders}" itemLabel="desc" itemValue="code" />
-					    </form:select>
-				</div>
-	        </div>
-        </div>
-        
-        <div class="endpanes">&nbsp;</div>
 
-	<table width="700" border="0" cellspacing="0" cellpadding="0"
-		id="table1">
-		<tr>
-			<td align="center"><B>
-			Type:</td>
-			<td align="center"><em></em><B>
-			Value:</td>
-			<td align="center"><em></em><B>
-			Assigning Authority:</td>
-			<td align="center"><B>Is Primary:</td>
-		</tr>
-
-		<c:forEach var="index" begin="0" end="4">
-			<tr>
-				<td align="center"><form:input
-					path="identifiers[${index}].type" /></td>
-				<td align="center"><form:input
-					path="identifiers[${index}].value" /></td>
-				<td align="center">
-				<form:select path="identifiers[${index}].source">
-					  						<form:options items="${sources}" itemLabel="desc" itemValue="code" />
-				    					</form:select></td>
-
-				<td align="center"><form:checkbox
-					path="identifiers[${index}].primaryIndicator" /></td>
-			</tr>
-
-		</c:forEach>
-
-	</table>		
-        </jsp:attribute>
-    </tags:tabForm>    
+		 <jsp:attribute name="singleFields">
+            <div>
+			<input type="hidden" name="_action" value="">
+			<input type="hidden" name="_selected" value="">
+		</div>
+		
+            <div class="participant-fields">
+                <c:forEach items="${fieldGroups.participant.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                </c:forEach>
+            </div>
+            
+		 <c:forEach varStatus="status" items="${command.identifiers}">	
+				  <par:parIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					sectionClass="par-id-section" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
+		</c:forEach>	
+		      
+     </jsp:attribute>
+     
+     <jsp:attribute name="localButtons">
+     
+           <chrome:division title=""> 
+           		<tags:listEditorAddButton divisionClass="par-id-section-org" label="Add Organization Identifier"/>
+           		<tags:listEditorAddButton divisionClass="par-id-section" 	label="Add System Identifier" />
+           </chrome:division>
+     </jsp:attribute>
+     
+     </tags:tabForm>    
 </body>
 </html>

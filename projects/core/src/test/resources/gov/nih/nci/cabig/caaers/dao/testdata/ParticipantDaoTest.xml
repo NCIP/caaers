@@ -35,8 +35,11 @@
         participant_id="-100"
         value="13js77"
         source="Hosp"
-        type="MRN"/>
-    <ORGANIZATIONS
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"	/>
+        
+     <ORGANIZATIONS
         id="-1001"
         name="New Site"/>
     <STUDIES 
@@ -74,7 +77,9 @@
         stu_id="-2000"
         value="nci_test"
         source="Hosp"
-        type="MRN"/>	
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"/>	
     
     <STUDY_ORGANIZATIONS
         id="-3001"
@@ -93,4 +98,7 @@
         date_of_enrollment="2006-12-12"
         participant_id="-100"
         study_site_id="-3000"/>
+        
+    
+    
 </dataset>

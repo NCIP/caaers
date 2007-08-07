@@ -58,4 +58,6 @@
     <AE_REPORT_DESCRIPTIONS/>
     <AE_REPORT_PEOPLE id="-331" first_name="FA" last_name="KE" role="R" report_id="-100"/>
     <TREATMENTS/>
+    <ae_labs/>
+    <concomitant_medications/>
 </dataset>

@@ -15,6 +15,11 @@
             <param name="beanName" value="studyAjaxFacade"/>
         </create>
         
+        <create creator="spring" javascript="createParticipant">
+            <param name="beanName" value="participantAjaxFacade"/>
+        </create>
+        
+        
          <create creator="spring" javascript="searchStudy">
             <param name="beanName" value="searchStudyAjaxFacade"/>            
         </create> 

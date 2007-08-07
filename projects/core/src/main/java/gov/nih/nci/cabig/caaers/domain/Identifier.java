@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -14,89 +18,98 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
  * @author Rhett Sutphin
  */
 @Entity
-@Table (name = "IDENTIFIERS")
-@GenericGenerator (name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_identifiers_id")
-    }
-)
+@Table(name = "IDENTIFIERS")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_identifiers_id") })
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "discriminator_column", discriminatorType = DiscriminatorType.INTEGER)
 public class Identifier extends AbstractMutableDomainObject {
-    private String source;
-    private String type;
-    private String value;
-    private Boolean primaryIndicator = false;
+	private String source;
 
-    public static Identifier createTemplate(String source, String type, String value) {
-        Identifier id = new Identifier();
-        id.setSource(source);
-        id.setType(type);
-        id.setValue(value);
-        return id;
-    }
+	private String type;
 
-    public static Identifier createTemplate(String value) {
-        return createTemplate(null, null, value);
-    }
+	private String value;
 
-    /**
-     * Null-safe conversion from primaryIndicator property to simple boolean.
-     * TODO: switch the db field to not-null, default false so this isn't necessary.
-     */
-    @Transient
-    public boolean isPrimary() {
-        return getPrimaryIndicator() == null ? false : getPrimaryIndicator();
-    }
+	private Boolean primaryIndicator = false;
 
-    ////// BEAN PROPERTIES
+	public static Identifier createTemplate(final String source, final String type, final String value) {
+		Identifier id = new Identifier();
+		id.setSource(source);
+		id.setType(type);
+		id.setValue(value);
+		return id;
+	}
 
-    public String getSource() {
-        return source;
-    }
+	public static Identifier createTemplate(final String value) {
+		return createTemplate(null, null, value);
+	}
 
-    public void setSource(String source) {
-        this.source = source;
-    }
+	/**
+	 * Null-safe conversion from primaryIndicator property to simple boolean. TODO: switch the db field to not-null, default false so this
+	 * isn't necessary.
+	 */
+	@Transient
+	public boolean isPrimary() {
+		return getPrimaryIndicator() == null ? false : getPrimaryIndicator();
+	}
 
-    public String getType() {
-        return type;
-    }
+	// //// BEAN PROPERTIES
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	/**
+	 * Gets the source. Deprecated and will be removed in next release.
+	 * 
+	 * @return the source
+	 */
+	@Deprecated
+	public String getSource() {
+		return source;
+	}
 
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * Sets the source. Deprecated and will be removed in next release.
+	 * 
+	 * @param source the new source
+	 */
+	@Deprecated
+	public void setSource(final String source) {
+		this.source = source;
+	}
 
-    public void setValue(String value) {
-        this.value = value;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Boolean getPrimaryIndicator() {
-        return primaryIndicator;
-    }
+	public void setType(final String type) {
+		this.type = type;
+	}
 
-    public void setPrimaryIndicator(Boolean primaryIndicator) {
-    	if (primaryIndicator == null)
-		{
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(final String value) {
+		this.value = value;
+	}
+
+	public Boolean getPrimaryIndicator() {
+		return primaryIndicator;
+	}
+
+	public void setPrimaryIndicator(Boolean primaryIndicator) {
+		if (primaryIndicator == null) {
 			primaryIndicator = false;
 		}
 		this.primaryIndicator = primaryIndicator;
-    }
+	}
 
-    @Transient
-    public String getSummary() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append("[value=").append(getValue())
-            .append("; primary? ").append(getPrimaryIndicator())
-            .append("; type=").append(getType())
-            .append("; source=").append(getSource())
-            .append(']').toString()
-            ;
-    }
-    
-    public String toString() {
-    	return getValue();
-    }
+	@Transient
+	public String getSummary() {
+		return new StringBuilder(getClass().getSimpleName()).append("[value=").append(getValue()).append("; primary? ")
+				.append(getPrimaryIndicator()).append("; type=").append(getType()).append("; source=").append(
+						getSource()).append(']').toString();
+	}
+
+	@Override
+	public String toString() {
+		return getValue();
+	}
 }

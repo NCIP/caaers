@@ -265,7 +265,9 @@
         stu_id="-1"
         value="nci_test"
         source="Hosp"
-        type="MRN"/>  
+        type="MRN"
+        organization_id="-1"
+        discriminator_column="1"/>  
 
 	 <PARTICIPANTS
         id="-101"
@@ -284,7 +286,9 @@
         participant_id="-101"
         value="13js77"
         source="Hosp"
-        type="MRN"/> 
+        type="MRN" 
+        organization_id="-1"
+        discriminator_column="1"/> 
 
     <STUDY_DISEASES
         id="-4"
@@ -313,6 +317,12 @@
         weight_unit="kg"
         baseline_performance_status="About here"
         />
+        
+        <ORGANIZATIONS
+        id="-1"
+        name="New Site"
+        grid_id="gridSite"/>
+    
 
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->

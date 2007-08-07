@@ -30,7 +30,7 @@ function submitPage(s){
    You have successfully created a new Participant
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
-
+<chrome:division title="">
 
   <div class="leftpane">
 	        <div class="row">
@@ -89,7 +89,34 @@ function submitPage(s){
 	     
 	     <div class="endpanes">&nbsp;</div>   
 
-
+  </chrome:division>
+		<c:if test="${not empty participant.identifiers}">
+			<chrome:division title="Identifiers">
+			<table class="tablecontent">
+			<tr>
+				<th scope="col">Assigning Authority</th>
+				<th scope="col">Identifier Type</th>
+				<th scope="col">Identifier</th>
+			</tr>
+			<c:forEach items="${participant.identifiers}" var="identifier">
+			<tr class="results">
+				<c:if
+								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<td>${identifier.organization}</td>
+				</c:if>
+				<c:if
+								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+					<td>${identifier.systemName}</td>
+				</c:if>
+				<td>${identifier.type}</td>
+				<td>${identifier.value}</td>
+			</tr>
+			</c:forEach>
+			</table>
+			<br>
+			</chrome:division>
+		</c:if>
+		
 
 <%--
         <br>

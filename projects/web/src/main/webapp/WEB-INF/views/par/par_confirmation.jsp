@@ -6,14 +6,14 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Review and Submit</title>
-<tags:stylesheetLink name="participant"/>
+<tags:stylesheetLink name="participant" />
 <script>
 function submitPage(s){
 	document.getElementById("nextView").value=s;
@@ -25,12 +25,14 @@ function submitPage(s){
 <body>
 
 
-<tags:tabForm tab="${tab}" flow="${flow}" title="${command.lastName}, ${command.firstName}">
-    <jsp:attribute name="instructions">
+<tags:tabForm tab="${tab}" flow="${flow}"
+	title="${command.lastName}, ${command.firstName}">
+	<jsp:attribute name="instructions">
         Please verify this data and press Save to Create this Participant
     </jsp:attribute>
-    <jsp:attribute name="singleFields">
-        <input type="hidden" id="_finish" name="_finish"/>
+	<jsp:attribute name="singleFields">
+    <chrome:division title="">
+        <input type="hidden" id="_finish" name="_finish" />
         <br>
         
          <div class="leftpane">
@@ -56,7 +58,8 @@ function submitPage(s){
 	        
 	         <div class="row">
 	            <div class="label">Date of Birth:</div>
-	            <div class="value"><tags:formatDate value="${command.dateOfBirth}"/></div>
+	            <div class="value"><tags:formatDate
+				value="${command.dateOfBirth}" /></div>
 	        </div>
 	        
 	        <div class="row">
@@ -79,14 +82,52 @@ function submitPage(s){
 	     
 	     <div class="leftpane">
 	     
-	     	<div class="row"><div class="label"><strong>Assigned to Study</strong></div></div><br>
-	     	<c:forEach var="studySite" items="${command.studySites}" varStatus="status"> 
+	     	<div class="row">
+			<div class="label"><strong>Assigned to Study</strong></div></div><br>
+	     	<c:forEach var="studySite" items="${command.studySites}"
+				varStatus="status"> 
                		 
-					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${studySite.study.shortTitle}"/></div></div>
-					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${studySite.organization.name}"/></div></div>
+					 <div class="row">
+				<div class="label">Study Short Title:</div>
+				<div class="value"><c:out
+					value="${studySite.study.shortTitle}" /></div></div>
+					 <div class="row">
+				<div class="label">Site:</div>
+				<div class="value"><c:out
+					value="${studySite.organization.name}" /></div></div>
 			   </c:forEach>
 			   
-	     </div>   
+	     </div>
+	     
+	      </chrome:division>
+		<c:if test="${not empty command.identifiers}">
+			<chrome:division title="Identifiers">
+			<table class="tablecontent">
+			<tr>
+				<th scope="col">Assigning Authority</th>
+				<th scope="col">Identifier Type</th>
+				<th scope="col">Identifier</th>
+			</tr>
+			<c:forEach items="${command.identifiers}" var="identifier">
+			<tr class="results">
+				<c:if
+								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<td>${identifier.organization}</td>
+				</c:if>
+				<c:if
+								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+					<td>${identifier.systemName}</td>
+				</c:if>
+				<td>${identifier.type}</td>
+				<td>${identifier.value}</td>
+			</tr>
+			</c:forEach>
+			</table>
+			<br>
+			</chrome:division>
+		</c:if>
+		
+	        
     </jsp:attribute>
 </tags:tabForm>
 </body>

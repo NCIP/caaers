@@ -119,6 +119,9 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>        
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
+				<value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
+                
             </list>
         </property>
         <property name="entityInterceptor">

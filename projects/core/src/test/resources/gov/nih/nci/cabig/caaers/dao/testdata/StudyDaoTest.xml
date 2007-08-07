@@ -58,21 +58,24 @@
         value="1138-42"
         source="Some guy"
         type="local"
-        />
+        organization_id="-1003" 
+        discriminator_column="1"	/>
     <IDENTIFIERS
         id="-16"
         stu_id="-2"
         value="1138-43"
         source="Some guy"
         type="local"
-        />
+        organization_id="-1003"
+        discriminator_column="1"/>
     <IDENTIFIERS
         id="-17"
         stu_id="-2"
         value="1138-42"
         source="The man"
         type="uniqueness"
-        />
+       	organization_id="-1003" 
+       	discriminator_column="1"/>
         
      <IDENTIFIERS
         id="-18"
@@ -80,7 +83,8 @@
         value="1138-421"
         source="The man"
         type="uniqueness"
-        />    
+       	system_name="system_name" 
+       	discriminator_column="2"/>    
         
     <PARTICIPANTS
         id="-100"
@@ -99,7 +103,9 @@
         participant_id="-100"
         value="13js77"
         source="Hosp"
-        type="MRN"/>
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"	/>
         <!--
     <ORGANIZATIONS
         id="-1050"

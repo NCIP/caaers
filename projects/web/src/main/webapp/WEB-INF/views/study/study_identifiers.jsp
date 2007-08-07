@@ -12,16 +12,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
- <tags:includeScriptaculous/>
+<tags:includeScriptaculous/>
   <tags:dwrJavascriptLink objects="createStudy"/>
 <script language="JavaScript" type="text/JavaScript">
 	var si = [];
 	var addIdentifierEditor;
 	var jsIdentifier = Class.create();;
-	Object.extend(jsIdentifier.prototype, {
+	Object.extend(jsIdentifier.prototype, {	
             initialize: function(index) {
             	this.index = index;
-            	si[index] = this;
+            	si[index] = this;            	
+            	if($('identifiersLazy['  + index + '].organization'))
+            	{        		
+            	this.organizationName = "identifiersLazy["  + index + "].organization";
+            	AE.createStandardAutocompleter(this.organizationName, 
+            		this.sitePopulator.bind(this),
+            		this.siteSelector.bind(this)
+            	);
+            } ;         	
             	this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
@@ -29,10 +37,23 @@
             	 		$(si[i].indicator).checked = false;
             	 	}
             	 }.bind(this));
-            }            
+            
+            
+            },sitePopulator: function(autocompleter, text) {
+         		createStudy.matchOrganization(text, function(values) {
+         			autocompleter.setChoices(values)
+         		})
+        	},
         	
-    });
-	function fireAction(action, selected){
+        	siteSelector: function(organization) { 
+        		return organization.name 
+        	}
+        	}
+        	       
+        	
+    );
+    
+    function fireAction(action, selected){
 		if(action == 'addIdentifier'){
 			addIdentifierEditor.add.bind(addIdentifierEditor)();
 		}else{
@@ -46,20 +67,33 @@
 	function clearField(field){
 		field.value="";
 	}
+	
 	  
     Event.observe(window, "load", function() {
-    	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
-      		new jsIdentifier(${status.index});
-      	</c:forEach>
-      	addIdentifierEditor = new ListEditor('si-section',createStudy, "Identifier",{
-      		 addButton: "xxx",
-             addIndicator: "si-add-indicator",
-             addFirstAfter: "identifierbookmark",
-             addCallback: function(nextIndex) {
+        	
+        	<c:forEach varStatus="status" items="${command.identifiers}" var="si">
+      		new jsIdentifier(${status.index}, '${si.source}');
+      		</c:forEach>
+      		
+      		
+      		//This is added for Add Sysetem Identifiers button
+		            new ListEditor("si-section", createStudy, "Identifier", {
+		            	addParameters: [1],
+		            	addFirstAfter: "single-fields",
+		                addCallback: function(nextIndex) {
              	new jsIdentifier(nextIndex);
              }
-      	});
-      	
+		            });
+		            //This is added for Add Organization Identifiers buttion
+		             new ListEditor("si-section", createStudy, "Identifier", {
+		                addButton: "add-si-section-org-button",
+		                addIndicator: "add-si-section-org-indicator",
+		            	addParameters: [2],
+		            	addFirstAfter: "single-fields",
+		                addCallback: function(nextIndex) { 
+             	new jsIdentifier(nextIndex);
+             }
+            });      	
     });
 	
 </script>
@@ -71,17 +105,22 @@
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
-		<p id="instructions">
-			Add Identifiers associated with the Study
-			<a href="javascript:fireAction('addIdentifier','0');"><img
-				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="si-add-indicator"/><br>
-		</p>
 		<c:forEach varStatus="status" items="${command.identifiers}">	
-		  <study:aStudyChild title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-			sectionClass="si-section" removeButtonAction="removeIdentifier" index="${status.index}" />
+				  <study:studyIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					sectionClass="si-section" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
 		</c:forEach>	
+		
+		    
 		<span id="identifierbookmark"></span>
+		
     </jsp:attribute>
+	<jsp:attribute name="localButtons"> 
+	      	<chrome:division title="">          	
+	      		<tags:listEditorAddButton divisionClass="si-section" 	label="Add System Identifier" />   
+                <tags:listEditorAddButton divisionClass="si-section-org" label="Add Organization Identifier" /> 
+            </chrome:division>                                                                                                                                                                                                                                                             
+	</jsp:attribute>
+	
 </tags:tabForm>
 </body>
 </html>
