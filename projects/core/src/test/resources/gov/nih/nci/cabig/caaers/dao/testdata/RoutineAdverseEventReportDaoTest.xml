@@ -103,7 +103,9 @@
         stu_id="-1"
         value="nci_test"
         source="Hosp"
-        type="MRN"/>  
+        type="MRN"
+        organization_id="-1001"
+        discriminator_column="1"/>  
 
 	 <PARTICIPANTS
         id="-101"
@@ -122,5 +124,7 @@
         participant_id="-101"
         value="13js77"
         source="Hosp"
-        type="MRN"/>           
+        type="MRN"
+        organization_id="-1001"
+        discriminator_column="1"/>           
 </dataset>
