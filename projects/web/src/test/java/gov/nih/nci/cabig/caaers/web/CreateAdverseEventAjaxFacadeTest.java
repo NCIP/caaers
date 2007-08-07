@@ -256,7 +256,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
             .andReturn("The HTML");
 
         replayMocks();
-        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
+        assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
         verifyMocks();
     }
 
@@ -266,7 +266,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
             .andReturn("The HTML");
 
         replayMocks();
-        assertEquals("The HTML", facade.addConcomitantMedication(4, null));
+        assertEquals("The HTML", facade.addFormSection("conMed", 4, null));
         verifyMocks();
     }
 
@@ -277,7 +277,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
             .andReturn("The HTML");
 
         replayMocks();
-        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
+        assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
         verifyMocks();
     }
 
@@ -288,7 +288,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
             .andReturn("The HTML");
 
         replayMocks();
-        assertEquals("The HTML", facade.addConcomitantMedication(4, 12));
+        assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
         verifyMocks();
     }
 
