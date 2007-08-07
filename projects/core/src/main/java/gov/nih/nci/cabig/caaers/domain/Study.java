@@ -267,14 +267,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Override
 	@OneToMany
-	@Cascade( { CascadeType.ALL })
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "STU_ID")
 	public List<Identifier> getIdentifiers() {
 		return lazyListHelper.getInternalList(Identifier.class);
 	}
 
 	@Override
-	public void setIdentifiers(final List<? extends Identifier> identifiers) {
+	public void setIdentifiers(final List<Identifier> identifiers) {
 		lazyListHelper.setInternalList(Identifier.class, new ArrayList<Identifier>(identifiers));
 	}
 

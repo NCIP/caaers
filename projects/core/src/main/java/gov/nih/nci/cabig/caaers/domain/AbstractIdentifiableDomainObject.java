@@ -20,7 +20,7 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 		IdentifiableByAssignedIdentifers {
 	private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
 
-	private final List<Identifier> identifiers = new ArrayList<Identifier>();
+	private List<Identifier> identifiers = new ArrayList<Identifier>();
 
 	// //// LOGIC
 
@@ -61,7 +61,7 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 		return identifiers;
 	}
 
-	public void setIdentifiers(final List<? extends Identifier> identifiers) {
-		this.identifiers.addAll(identifiers);
+	public void setIdentifiers(final List<Identifier> identifiers) {
+		this.identifiers = identifiers;
 	}
 }

@@ -194,7 +194,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
 	@Override
 	@OneToMany
-	@Cascade( { CascadeType.ALL })
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "participant_id")
 	public List<Identifier> getIdentifiers() {
 		return super.getIdentifiers();

@@ -8,7 +8,7 @@ import java.util.List;
 public interface IdentifiableByAssignedIdentifers {
 	List<Identifier> getIdentifiers();
 
-	void setIdentifiers(List<? extends Identifier> identifiers);
+	void setIdentifiers(List<Identifier> identifiers);
 
 	Identifier getPrimaryIdentifier();
 
