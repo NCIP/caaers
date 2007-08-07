@@ -25,8 +25,6 @@ public class MedDRADao {
 		BatchPreparedStatementSetter setter = null;
 		setter = new BatchPreparedStatementSetter(){
 			
-			int stIndex = startIndex;
-			
 			public int getBatchSize(){
 				return llts.size();
 			}
@@ -40,10 +38,8 @@ public class MedDRADao {
 			}
 		};
 		
-		Object[] params = new Object[] {"test","test"};
-		
 		return jdbcTemplate.batchUpdate(sql,setter);
-		// return jdbcTemplate.update(sql,params);
+		
 	}
 	
 public int[] insertPreferredTerms(final List llts, final int startIndex){
@@ -53,8 +49,6 @@ public int[] insertPreferredTerms(final List llts, final int startIndex){
 		
 		BatchPreparedStatementSetter setter = null;
 		setter = new BatchPreparedStatementSetter(){
-			
-			int stIndex = startIndex;
 			
 			public int getBatchSize(){
 				return llts.size();
@@ -69,10 +63,7 @@ public int[] insertPreferredTerms(final List llts, final int startIndex){
 			}
 		};
 		
-		Object[] params = new Object[] {"test","test"};
-		
 		return jdbcTemplate.batchUpdate(sql,setter);
-		// return jdbcTemplate.update(sql,params);
 	}
 
 public int[] insertHighLevelTerms(final List llts, final int startIndex){
@@ -82,8 +73,6 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 	
 	BatchPreparedStatementSetter setter = null;
 	setter = new BatchPreparedStatementSetter(){
-		
-		int stIndex = startIndex;
 		
 		public int getBatchSize(){
 			return llts.size();
@@ -96,10 +85,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 			ps.setString(3,llt[1]);
 		}
 	};
-	Object[] params = new Object[] {"test","test"};
 	
 	return jdbcTemplate.batchUpdate(sql,setter);
-	// return jdbcTemplate.update(sql,params);
 }
 
 	
@@ -110,8 +97,6 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 		
 		BatchPreparedStatementSetter setter = null;
 		setter = new BatchPreparedStatementSetter(){
-			
-			int stIndex = startIndex;
 			
 			public int getBatchSize(){
 				return llts.size();
@@ -124,10 +109,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 				ps.setString(3,llt[1]);
 			}
 		};
-		Object[] params = new Object[] {"test","test"};
-		
+	
 		return jdbcTemplate.batchUpdate(sql,setter);
-		// return jdbcTemplate.update(sql,params);
 	}
 
 		
@@ -138,8 +121,6 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 			
 			BatchPreparedStatementSetter setter = null;
 			setter = new BatchPreparedStatementSetter(){
-				
-				int stIndex = startIndex;
 				
 				public int getBatchSize(){
 					return llts.size();
@@ -152,10 +133,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 					ps.setString(3,llt[1]);
 				}
 			};
-			Object[] params = new Object[] {"test","test"};
 			
 			return jdbcTemplate.batchUpdate(sql,setter);
-			// return jdbcTemplate.update(sql,params);
 		}
 	
 	public int[] insertHLTxPT(final List llts, final int startIndex){
@@ -179,10 +158,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 					ps.setInt(3,new Integer(llt[1]).intValue());
 				}
 			};
-			Object[] params = new Object[] {"test","test"};
-			
+		
 			return jdbcTemplate.batchUpdate(sql,setter);
-			// return jdbcTemplate.update(sql,params);
 		}
 	
 	public int[] insertHLGTxHLT(final List llts, final int startIndex){
@@ -206,10 +183,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 					ps.setInt(3,new Integer(llt[1]).intValue());
 				}
 			};
-			Object[] params = new Object[] {"test","test"};
 			
 			return jdbcTemplate.batchUpdate(sql,setter);
-			// return jdbcTemplate.update(sql,params);
 		}
 	
 	public int[] insertSOCxHLGT(final List llts, final int startIndex){
@@ -233,10 +208,8 @@ public int[] insertHighLevelTerms(final List llts, final int startIndex){
 					ps.setInt(3,new Integer(llt[1]).intValue());
 				}
 			};
-			Object[] params = new Object[] {"test","test"};
 			
 			return jdbcTemplate.batchUpdate(sql,setter);
-			// return jdbcTemplate.update(sql,params);
 		}
 
 

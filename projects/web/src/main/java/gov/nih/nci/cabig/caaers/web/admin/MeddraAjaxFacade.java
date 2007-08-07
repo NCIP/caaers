@@ -1,9 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.meddra.*;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
-import gov.nih.nci.cabig.caaers.domain.meddra.*;
-
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -14,9 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.web.servlet.mvc.AbstractFormController;
-import javax.servlet.http.HttpServletRequest;
-import org.directwebremoting.WebContextFactory;
 
 /**
  * 
@@ -31,11 +26,8 @@ public class MeddraAjaxFacade {
        
     public String handleMedDRA(String path, int step)
 	{
-    	
-    	// This appears to work only with Windows
-    	File theFile = new File(path + "\\" + files[step]);
-    	System.out.println(path);
-    	List al = new ArrayList();
+    	File theFile = getFile(path,step);
+    	List<String[]> al = new ArrayList<String[]>();
     	String message ="Done";
     	
     	//declared here only to make visible to finally clause
@@ -44,7 +36,6 @@ public class MeddraAjaxFacade {
           //use buffering, reading one line at a time
           //FileReader always assumes default encoding is OK!
           input = new BufferedReader( new FileReader(theFile) );
-          //ObjectInputStream in = xstream.createObjectInputStream(input);
           String line;
 
           while ((line = input.readLine()) != null ) {
@@ -95,6 +86,11 @@ public class MeddraAjaxFacade {
 	}
     ////// CONFIGURATION
     
+    private File getFile(String path,  int step){
+    	path=path.trim();
+    	File file = path.contains("/") ? new File(path + "/" + files[step]) :new File(path + "\\" + files[step]);
+    	return file;
+    }
     
     @Required
 	public MedDRADao getMeddraDao() {
