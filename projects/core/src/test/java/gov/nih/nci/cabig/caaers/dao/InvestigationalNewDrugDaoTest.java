@@ -88,4 +88,8 @@ public class InvestigationalNewDrugDaoTest extends  DaoTestCase<InvestigationalN
 		   System.out.println(ind);
 		assertEquals("Search Result size", 2, inds.size());
 	}
+	
+	public void testFindByIds() throws Exception{
+		getDao().findByIds(new String[]{"-8"});
+	}
 }

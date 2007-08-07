@@ -44,7 +44,11 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 	}
 
 	public List<InvestigationalNewDrug> findByIds(String[] ids){
-		return findBySubname(ids, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+		 StringBuilder query = new StringBuilder(" select distinct o from ")
+         .append(domainClass().getName()).append(" o where to_char(indNumber,'0000000000') like :indNo");
+		 return getHibernateTemplate().findByNamedParam(query.toString(), new String[]{"indNo"}, new String[]{"%" + ids[0] + "%" });
+		
+		//return findBySubname(ids, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 
 

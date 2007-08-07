@@ -5,7 +5,6 @@ import java.util.List;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -69,7 +70,8 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 		this.agent = agent;
 	}
 
-	@OneToMany(mappedBy="studyAgent", fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="studyAgent", fetch=FetchType.EAGER)
+	 @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
 	public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
 		return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
 	}

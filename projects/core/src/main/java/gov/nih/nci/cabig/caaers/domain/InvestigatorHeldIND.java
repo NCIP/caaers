@@ -12,8 +12,8 @@ import javax.persistence.Transient;
 public class InvestigatorHeldIND extends INDHolder {
 	private Investigator investigator;
 
-	@ManyToOne(optional=false, fetch=FetchType.LAZY)
-	@JoinColumn(name="inv_id")
+	@ManyToOne(optional=false)
+	@JoinColumn(name="inv_id",nullable=false)
 	public Investigator getInvestigator() {
 		return investigator;
 	}
@@ -26,6 +26,7 @@ public class InvestigatorHeldIND extends INDHolder {
 	@Override
 	@Transient
 	public String getName(){
-		return investigator.getFullName();
+		if(investigator != null) return investigator.getFullName();
+		return null;
 	}
 }

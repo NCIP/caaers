@@ -21,7 +21,7 @@ public class StudyAgentINDAssociation extends AbstractIdentifiableDomainObject i
 	private StudyAgent studyAgent;
 	private InvestigationalNewDrug investigationalNewDrug;
 
-	@ManyToOne(cascade={CascadeType.PERSIST})
+	@ManyToOne
 	@JoinColumn(name = "study_agent_id")
 	public StudyAgent getStudyAgent() {
 		return studyAgent;

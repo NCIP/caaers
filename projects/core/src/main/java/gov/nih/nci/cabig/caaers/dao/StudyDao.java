@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -32,9 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Priyatam
  */
 @Transactional(readOnly=true)
-public class StudyDao extends GridIdentifiableDao<Study> 
+public class StudyDao extends GridIdentifiableDao<Study>
 	implements MutableDomainObjectDao<Study>{
-	
+
     private static final List<String> SUBSTRING_MATCH_PROPERTIES
         = Arrays.asList("shortTitle", "longTitle");
     private static final List<String> EXACT_MATCH_PROPERTIES
@@ -43,22 +44,23 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		= Arrays.asList("longTitle");
     private static final List<String> EMPTY_PROPERTIES
 		= Collections.emptyList();
-    private static final String JOINS 
-    	= "join o.identifiers as identifier " + 
+    private static final String JOINS
+    	= "join o.identifiers as identifier " +
 		"join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
-    
-    public Class<Study> domainClass() {
+
+    @Override
+	public Class<Study> domainClass() {
         return Study.class;
     }
 
     @SuppressWarnings("unchecked")
     public List<Study> getAllStudies() {
-        return (List<Study>) getHibernateTemplate().find("from Study");
+        return getHibernateTemplate().find("from Study");
     }
 
     /**
      //TODO - Refactor this code with Hibernate Detached objects !!!
-      
+
 	 * This is a hack to load all collection objects in memory. Useful
 	 * for editing a Study when you know you will be needing all collections
 	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done
@@ -66,11 +68,11 @@ public class StudyDao extends GridIdentifiableDao<Study>
 	 * @param id
 	 * @return Fully loaded Study
 	 */
-	public Study getStudyDesignById(int id) {				
+	public Study getStudyDesignById(int id) {
         Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
         return initialize(study);
     }
-	
+
 	public Study initialize(Study s){
 		HibernateTemplate ht = getHibernateTemplate();
 		ht.initialize(s.getIdentifiers());
@@ -82,9 +84,13 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		}
 		ht.initialize(s.getMeddraStudyDiseases());
 		ht.initialize(s.getCtepStudyDiseases());
+		ht.initialize(s.getStudyAgentsInternal());
+		for(StudyAgent sa : s.getStudyAgents()){
+			ht.initialize(sa.getStudyAgentINDAssociationsInternal());
+		}
 		return s;
 	}
-	
+
     @Transactional(readOnly=false)
     public void save(Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
@@ -94,27 +100,27 @@ public class StudyDao extends GridIdentifiableDao<Study>
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
-    
-    
+
+
     public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
     {
     	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
     }
-    
+
 	public List<Study> searchStudy(Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
          .append(domainClass().getName()).append(" o ").append(JOINS);
-		
+
 		/*
 		if (true) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" ss.class = StudySite ");
 			firstClause = false;
 		}*/
-		
+
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ?");
@@ -164,7 +170,7 @@ public class StudyDao extends GridIdentifiableDao<Study>
 			params.add( p.toLowerCase() );
 			firstClause = false;
 		}
-		
+
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" p.dateOfBirth").append(" = ? ");
@@ -175,8 +181,8 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		log.debug("::: " + queryBuf.toString() );
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
     }
-    
-    
+
+
     /**
      * @param subnames a set of substrings to match
      * @return a list of participants such that each entry in <code>subnames</code> is a
@@ -190,13 +196,13 @@ public class StudyDao extends GridIdentifiableDao<Study>
     public Study getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);
     }
-    
+
     @Override
     //TODO - Need to refactor the below into CaaersDao along with identifiers
     public List<Study> searchByExample(Study study, boolean isWildCard) {
 		Example example = Example.create(study).excludeZeroes().ignoreCase();
 		Criteria studyCriteria = getSession().createCriteria(Study.class);
-	
+
 		if (isWildCard)
 		{
 			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
@@ -205,7 +211,7 @@ public class StudyDao extends GridIdentifiableDao<Study>
 				studyCriteria.createCriteria("identifiers")
 					.add(Restrictions.like("value", study.getIdentifiers().get(0)
 					.getValue()+ "%"));
-			} 
+			}
 			return studyCriteria.list();
 		}
 		return studyCriteria.add(example).list();

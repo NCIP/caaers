@@ -13,8 +13,8 @@ import javax.persistence.Transient;
 public class OrganizationHeldIND extends INDHolder {
 	private Organization organization;
 
-	@ManyToOne(optional=false, fetch=FetchType.LAZY)
-	@JoinColumn(name="org_id")
+	@ManyToOne(optional=false)
+	@JoinColumn(name="org_id",nullable=false)
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -26,6 +26,7 @@ public class OrganizationHeldIND extends INDHolder {
 	@Override
 	@Transient
 	public String getName() {
-		return organization.getName();
+		if(organization != null) return organization.getName();
+		return null;
 	}
 }
