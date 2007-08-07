@@ -356,7 +356,7 @@ public class FactResolver {
 		Class class_ = targetObject.getClass();
 		
 		
-		if(class_.getName().equalsIgnoreCase("java.util.List")){
+		if(class_.getName().startsWith("java.util")){
 		
 		List list = (List)targetObject;
 		Iterator it = list.iterator();
