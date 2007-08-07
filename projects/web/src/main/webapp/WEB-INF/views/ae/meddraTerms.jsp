@@ -29,7 +29,7 @@
       
                 AE.createStandardAutocompleter(
                     this.lowLevelTermProperty, this.termPopulator.bind(this),
-                    function(lowLevelTerm) { return lowLevelTerm.meddraCode })
+                    function(lowLevelTerm) { return lowLevelTerm.fullName })
 
                 //this.initializePriorTherapyOrOther()
             },
@@ -44,7 +44,7 @@
 
         Element.observe(window, "load", function() {
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status" var="aeLowLevelTerm">
-            new LowLevelTerm(${status.index}, '${aeLowLevelTerm.adverseEventMeddraLowLevelTerm.lowLevelTerm.meddraCode}')
+            new LowLevelTerm(${status.index}, '${aeLowLevelTerm.adverseEventMeddraLowLevelTerm.lowLevelTerm.fullName}')
             </c:forEach>
             
              new ListEditor("ae-section", createAE, "RoutineAeMeddra", {
@@ -81,11 +81,11 @@
     				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Expected:</b> </th>
     			</tr>
     			<tr id="koi" />
-    			</table>
+    			
             	<c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status">
                 	<ae:oneMeddraTerm index="${status.index}"/>
             	</c:forEach>
-            	
+            	</table>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
             <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE"/>

@@ -27,7 +27,7 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
 	
 	@Transient
     public String getUniversalTerm() {
-    		return getTerm() == null ? null : getTerm().getMeddraCode();
+    		return getTerm() == null ? null : getTerm().getFullName();
     }
 
 	@OneToOne

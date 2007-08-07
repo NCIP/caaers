@@ -21,14 +21,16 @@
 	
 	Event.observe(window, "load", function() {
     	
-		showCtcTerms()	
-		Event.observe("terminology.term", "change", function() { showCtcTerms() })	
+		Event.observe("terminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })	
+		
+		showMeddraTerms()
 		
 		function showCtcTerms(){
-				if ($('terminology.term').options[0].selected){
+				if ($('terminology.term').options[0].selected ){
 					Effect.toggle($('terminology.ctcVersion-row'), 'slide');
 				}
-				
+		}
+		function showMeddraTerms(){		
 				if ($('terminology.term').options[1].selected){
 					$('terminology.ctcVersion').options[0].selected=true
 					Effect.toggle($('terminology.ctcVersion-row'), 'slide');

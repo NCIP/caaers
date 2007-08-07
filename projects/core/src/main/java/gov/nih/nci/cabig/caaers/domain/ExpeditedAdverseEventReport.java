@@ -81,13 +81,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
+        	String other="";
+        	String fullName="";
             AdverseEvent firstAe = getAdverseEventsInternal().get(0);
-            CtcTerm term = firstAe.getAdverseEventCtcTerm().getCtcTerm();
-            String other = term.isOtherRequired()
-                ? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
+            if (firstAe.getAdverseEventCtcTerm().getCtcTerm() != null ){
+            	CtcTerm term = firstAe.getAdverseEventCtcTerm().getCtcTerm();
+            	fullName=term.getFullName();
+            	other = term.isOtherRequired()
+                	? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
+            }else{
+            	fullName = firstAe.getAdverseEventTerm().getUniversalTerm();
+            }
+                
             return String.format("Grade %d adverse event with term %s%s",
                 firstAe.getGrade().getCode(),
-                term.getFullName(), other
+                fullName, other
             );
         } else {
             throw new CaaersSystemException(
@@ -99,7 +107,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public boolean isNotificationMessagePossible() {
         if (getAdverseEventsInternal().size() < 1) return false;
         AdverseEvent ae = getAdverseEventsInternal().get(0);
-        return ae != null && ae.getGrade() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null;
+        return ae != null && ae.getGrade() != null && ae.getAdverseEventTerm().getTerm() != null;
     }
 
     @Transient

@@ -150,6 +150,6 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
 
     public void testSummaryIncludesFirstAETerm() throws Exception {
         Map<String, String> summary = report.getSummary();
-        assertEquals("CTEP term", summary.get("Primary AE"));
+        assertEquals("Term - Select", summary.get("Primary AE"));
     }
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
@@ -190,7 +191,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         } else if (this.adverseEventTerm instanceof AdverseEventCtcTerm ){
             return getAdverseEventCtcTerm().getCtcTerm();
         } else {
-            throw new RuntimeException("Do Not Use this Method");
+        	 throw new CaaersSystemException(
+             "Cannot Return a Ctc Term you are probably using a Terminology different than Ctc");
         }
     }
 

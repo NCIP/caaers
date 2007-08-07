@@ -12,8 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -90,11 +88,16 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         getAeRoutineReport().setAssignment(getAssignment());
     }
 
+    /*
+     * Will try to find serious AEs if found they will be reported as expedited.
+     * An AE might be MedDRA or CTC based Rules should take that into consideration 
+     * 
+     * @see gov.nih.nci.cabig.caaers.web.ae.AdverseEventInputCommand#save()
+     */
     public void save() {
         getAssignment().addRoutineReport(getAeRoutineReport());
         prepareExpeditedReport();
-        //boolean isExpedited = findExpedited(getAeRoutineReport());
-        boolean isExpedited = false;
+        boolean isExpedited = findExpedited(getAeRoutineReport());
         routineReportDao.save(getAeRoutineReport());
         
         if (isExpedited) {
