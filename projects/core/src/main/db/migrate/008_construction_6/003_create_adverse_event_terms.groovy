@@ -12,7 +12,7 @@ class CreateAdverseEventTerms extends edu.northwestern.bioinformatics.bering.Mig
         
          // Migrating Data
         if (databaseMatches('postgres')) {
-	 		 execute("INSERT INTO ae_terms SELECT nextval('seq_ae_terms_id'), id, ctc_term_id,'ctep',NULL,0,id FROM adverse_events")
+	 		 execute("INSERT INTO ae_terms SELECT nextval('ae_terms_id_seq'), id, ctc_term_id,'ctep',NULL,0,id FROM adverse_events")
 	 	}
 	 	
 	 	if (databaseMatches('oracle')) {

@@ -11,7 +11,7 @@ class CreateTerminologyLookups extends edu.northwestern.bioinformatics.bering.Mi
         
         // USE this for data migration 
         if (databaseMatches('postgres')) {
-	 		 execute("INSERT INTO terminologies SELECT nextval('seq_terminologies_id'), 1, ctc_id,id,0,id FROM studies")
+	 		 execute("INSERT INTO terminologies SELECT nextval('terminologies_id_seq'), 1, ctc_id,id,0,id FROM studies")
 	 	}
 	 	
 	 	 if (databaseMatches('oracle')) {
