@@ -250,6 +250,10 @@
      	<ctc_terms />
       	<ctc_grades/>
     
-    <study_agent_inds />
-    <ind_holders />
+    
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />    
+    <ind_holders />		
+	<study_agent_inds />
+
 </dataset>

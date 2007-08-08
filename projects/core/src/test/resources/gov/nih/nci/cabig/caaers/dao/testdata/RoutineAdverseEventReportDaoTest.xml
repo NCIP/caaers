@@ -126,5 +126,10 @@
         source="Hosp"
         type="MRN"
         organization_id="-1001"
-        discriminator_column="1"/>           
+        discriminator_column="1"/>      
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />    
+    <ind_holders />		
+	
+             
 </dataset>

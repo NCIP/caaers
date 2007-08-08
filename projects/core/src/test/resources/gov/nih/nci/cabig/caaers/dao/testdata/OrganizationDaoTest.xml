@@ -10,4 +10,7 @@
         name="Another Site"
         grid_id="anotherGridSite"
     />
+    <!--  We have some investigational new drugs pre-loaded for CTEP -->
+    <investigational_new_drugs />    
+    <ind_holders />
 </dataset>

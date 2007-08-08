@@ -78,4 +78,11 @@
         date_of_enrollment="2006-12-12"
         participant_id="-100"
         study_site_id="-3000"/>
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />    
+    <ind_holders />		
+    <!--  for ctc_versions delete -->
+    <ctc_categories />    
+    <ctc_terms />
+    <ctc_grades />
 </dataset>

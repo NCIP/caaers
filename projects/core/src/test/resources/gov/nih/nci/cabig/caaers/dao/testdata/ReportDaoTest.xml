@@ -223,4 +223,7 @@
 		rct_ID="-222"
         required="1"
         />
+    <!--  We have some investigational new drugs pre-loaded for CTEP -->
+    <investigational_new_drugs />    
+    <ind_holders />        
 </dataset>

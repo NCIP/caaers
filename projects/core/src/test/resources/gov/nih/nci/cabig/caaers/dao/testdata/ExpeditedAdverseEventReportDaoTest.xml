@@ -329,4 +329,6 @@
 	<!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
 	<SCHEDULED_NOTIFICATIONS />
 	<PLANNED_NOTIFICATIONS />
+	<investigational_new_drugs />    
+    <ind_holders />
 </dataset>
