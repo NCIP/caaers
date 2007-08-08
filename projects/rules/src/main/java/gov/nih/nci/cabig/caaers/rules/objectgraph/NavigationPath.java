@@ -43,7 +43,34 @@ public class NavigationPath {
 	 * @return
 	 */
 	private List<Node> buildNodes(){
-		return new ArrayList<Node>();
+		//return new ArrayList<Node>();
+		nodes = new ArrayList<Node>();
+		Node study= new Node();
+		study.setName("");
+		study.setObjectType("gov.nih.nci.cabig.caaers.domain.Study");
+		study.setCollection(false);
+		
+		nodes.add(study);
+		
+		Node studyAgent = new Node();
+		studyAgent.setName("studyAgents");
+		studyAgent.setObjectType("gov.nih.nci.cabig.caaers.domain.StudyAgent");
+		studyAgent.setCollection(true);
+		nodes.add(studyAgent);
+		
+		Node studyAgentINDAssociation = new Node();
+		studyAgentINDAssociation.setName("studyAgentINDAssociations");
+		studyAgentINDAssociation.setObjectType("gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation");
+		studyAgentINDAssociation.setCollection(true);
+		nodes.add(studyAgentINDAssociation);
+		
+		Node investigationalNewDrug = new Node();
+		investigationalNewDrug.setName("investigationalNewDrug");
+		investigationalNewDrug.setObjectType("gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug");
+		investigationalNewDrug.setCollection(false);
+		nodes.add(investigationalNewDrug);
+		
+		return nodes;
 	}
 
 }
