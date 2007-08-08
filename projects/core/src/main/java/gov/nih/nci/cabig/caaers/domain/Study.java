@@ -275,7 +275,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Override
 	public void setIdentifiers(final List<Identifier> identifiers) {
-		lazyListHelper.setInternalList(Identifier.class, new ArrayList<Identifier>(identifiers));
+		lazyListHelper.setInternalList(Identifier.class, identifiers);
 	}
 
 	@Transient
