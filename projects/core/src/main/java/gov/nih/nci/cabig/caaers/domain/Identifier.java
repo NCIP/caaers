@@ -60,6 +60,7 @@ public class Identifier extends AbstractMutableDomainObject {
 	 * @return the source
 	 */
 	@Deprecated
+	@Transient
 	public String getSource() {
 		return source;
 	}
@@ -70,6 +71,7 @@ public class Identifier extends AbstractMutableDomainObject {
 	 * @param source the new source
 	 */
 	@Deprecated
+	@Transient
 	public void setSource(final String source) {
 		this.source = source;
 	}
