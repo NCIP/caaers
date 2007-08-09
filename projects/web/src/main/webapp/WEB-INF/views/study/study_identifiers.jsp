@@ -17,7 +17,7 @@
 <script language="JavaScript" type="text/JavaScript">
 	var si = [];
 	var addIdentifierEditor;
-	var jsIdentifier = Class.create();;
+	var jsIdentifier = Class.create();
 	Object.extend(jsIdentifier.prototype, {	
             initialize: function(index,orgName) {
             	this.index = index;

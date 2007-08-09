@@ -115,6 +115,7 @@
      		AE.slideAndShow(indRow)
      		//setup auto completer
      		jsAgents[index].initINDAutoCompleter(indIndex);
+     		Effect.BlindUp('local-buttons-' + index);
      	});
      }
      
@@ -134,11 +135,13 @@
 			Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
 			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="sa-add-indicator"/>
 		</p>
-		<c:forEach varStatus="status" items="${command.studyAgents}">
-  	      <study:aStudyChild title="Study Identifier ${status.index + 1}" sectionClass="sa-section"
+		<c:forEach var="sa" varStatus="status" items="${command.studyAgents}">
+  	      <study:aStudyChild title="Study Agent ${status.index + 1}" sectionClass="sa-section"
 			 removeButtonAction="removeStudyAgent" enableDelete="true" index="${status.index}" >
 			 <jsp:attribute name="localButtons">
-			 	<input type="button" value="Add IND #" onClick="insertINDRow(${status.index})" />
+			 	<c:if test="${fn:length(sa.studyAgentINDAssociations) < 1}">
+			 		<input type="button" value="Add IND #" onClick="javascript:{this.disable(); insertINDRow(${status.index})}" />
+			 	</c:if>
 			 </jsp:attribute>
           </study:aStudyChild>
 		</c:forEach>
