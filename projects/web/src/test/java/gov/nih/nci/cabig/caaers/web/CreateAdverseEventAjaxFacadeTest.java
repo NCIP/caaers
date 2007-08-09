@@ -331,50 +331,74 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 1, 2));
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 1, 2);
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 0, 2, 1, 3);
+        assertEquals("Wrong changes: " + actual, 2, actual.size());
+        assertIndexChange(1, 2, actual.get(0));
+        assertIndexChange(2, 1, actual.get(1));
     }
 
     public void testReorderMoveToEnd() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 0, 3));
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 0, 3);
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 1, 2, 3, 0);
+        assertEquals("Wrong changes: " + actual, 4, actual.size());
+        assertIndexChange(0, 3, actual.get(0));
+        assertIndexChange(1, 0, actual.get(1));
+        assertIndexChange(2, 1, actual.get(2));
+        assertIndexChange(3, 2, actual.get(3));
     }
 
     public void testReorderMoveToBeginning() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        assertTrue("Should have moved", facade.reorder("aeReport.adverseEvents", 2, 0));
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 2, 0);
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 2, 0, 1, 3);
+        assertEquals("Wrong changes: " + actual, 3, actual.size());
+        assertIndexChange(0, 1, actual.get(0));
+        assertIndexChange(1, 2, actual.get(1));
+        assertIndexChange(2, 0, actual.get(2));
     }
 
     public void testReorderReturnsFalseWhenTargetOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        assertFalse("Should not have moved", facade.reorder("aeReport.adverseEvents", 1, 4));
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 1, 4);
         verifyMocks();
 
         assertNotMoved(command);
+        assertEquals(0, actual.size());
     }
 
     public void testReorderReturnsFalseWhenObjectOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        assertFalse("Should not have moved", facade.reorder("aeReport.adverseEvents", 4, 1));
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 4, 1);
         verifyMocks();
 
         assertNotMoved(command);
+        assertEquals(0, actual.size());
+    }
+
+    private void assertIndexChange(int expectedOriginal, int expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
+        assertEquals("Wrong original", expectedOriginal, actual.getOriginal());
+        assertEquals("Wrong current", expectedCurrent, actual.getCurrent());
     }
 
     private void assertNotMoved(ExpeditedAdverseEventInputCommand command) {
