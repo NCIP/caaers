@@ -18,7 +18,7 @@ import org.hibernate.annotations.Parameter;
 @Table (name = "investigational_new_drugs")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_investigational_new_dr_id")
+        @Parameter(name="sequence", value="seq_investigational_new_dru_id")
     }
 )
 public class InvestigationalNewDrug extends AbstractMutableDomainObject {
