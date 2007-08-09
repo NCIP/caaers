@@ -56,7 +56,6 @@
         id="-15"
         stu_id="-3"
         value="1138-42"
-        source="Some guy"
         type="local"
         organization_id="-1003" 
         discriminator_column="1"	/>
@@ -64,7 +63,6 @@
         id="-16"
         stu_id="-2"
         value="1138-43"
-        source="Some guy"
         type="local"
         organization_id="-1003"
         discriminator_column="1"/>
@@ -72,7 +70,6 @@
         id="-17"
         stu_id="-2"
         value="1138-42"
-        source="The man"
         type="uniqueness"
        	organization_id="-1003" 
        	discriminator_column="1"/>
@@ -81,7 +78,6 @@
         id="-18"
         stu_id="-4"
         value="1138-421"
-        source="The man"
         type="uniqueness"
        	system_name="system_name" 
        	discriminator_column="2"/>    
@@ -102,7 +98,6 @@
         id="-200"
         participant_id="-100"
         value="13js77"
-        source="Hosp"
         type="MRN"
         system_name="system name"
         discriminator_column="2"	/>
