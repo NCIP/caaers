@@ -17,7 +17,7 @@ cssClass="${sectionClass}" style="${style}" enableDelete="${enableDelete}" delet
  <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="status">
     <tags:renderRow field="${field}" deleteParams="${index},${status.index-1}" cssClass="ind${index}"/>
  </c:forEach>
- <div class="local-buttons">
+ <div id="local-buttons-${index}" class="local-buttons">
     <jsp:invoke fragment="localButtons"/>
  </div>
  <br />
