@@ -44,6 +44,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * @author Rhett Sutphin
@@ -249,30 +251,57 @@ public class CreateAdverseEventAjaxFacade {
         return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
     }
 
-    // Note that other than the extract command bit, this is total non-ae-flow-specific
+    /**
+     * Reorders the list property of the current session command, moving the element at
+     * <code>objectIndex</code> to <code>targetIndex</code> and shifting everything else
+     * around as appropriate.
+     *
+     * <p>
+     * Note that other than the extract command bit, this is entirely non-ae-flow-specific.
+     * </p>
+     *
+     * @return A list of changes indicating which elements of the list were moved and where to.
+     *      This list will be empty if the requested change is invalid or if the change is a no-op.
+     */
     @SuppressWarnings({ "unchecked" })
-    public boolean reorder(String listProperty, int objectIndex, int targetIndex) {
+    public List<IndexChange> reorder(String listProperty, int objectIndex, int targetIndex) {
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (targetIndex >= list.size()) {
             log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
-            return false;
+            return Collections.emptyList();
         }
         if (targetIndex < 0) {
             log.debug("Attempted to move past the start; " + targetIndex + " < 0");
-            return false;
+            return Collections.emptyList();
         }
         if (objectIndex == targetIndex) {
             log.debug("No move requested; " + objectIndex + " == " + targetIndex);
-            return false;
+            return Collections.emptyList();
         }
         if (0 > objectIndex || objectIndex >= list.size()) {
             log.debug("No " + listProperty + " with index " + objectIndex);
-            return false;
+            return Collections.emptyList();
         }
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
-        return true;
+        return createChangeList(objectIndex, targetIndex);
+    }
+
+    private List<IndexChange> createChangeList(int original, int target) {
+        List<IndexChange> list = new ArrayList<IndexChange>();
+        if (original < target) {
+            list.add(new IndexChange(original, target));
+            for (int i = original + 1 ; i <= target ; i++) {
+                list.add(new IndexChange(i, i - 1));
+            }
+        } else {
+            for (int i = target ; i < original ; i++) {
+                list.add(new IndexChange(i, i + 1));
+            }
+            list.add(new IndexChange(original, target));
+        }
+        return list;
     }
 
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
@@ -418,4 +447,25 @@ public class CreateAdverseEventAjaxFacade {
         this.agentDao = agentDao;
     }
 
+    public static class IndexChange {
+        private int original, current;
+
+        public IndexChange(int original, int current) {
+            this.original = original;
+            this.current = current;
+        }
+
+        public int getOriginal() {
+            return original;
+        }
+
+        public int getCurrent() {
+            return current;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%d => %d", original, current);
+        }
+    }
 }
