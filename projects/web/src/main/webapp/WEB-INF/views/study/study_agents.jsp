@@ -125,6 +125,11 @@
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
+	<jsp:attribute name="instructions">
+	 Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
+			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="sa-add-indicator"/>
+			<br /> <i>Cancer Therapy Evaluation Program(CTEP) should choose IND # 111, to mark the agent as investigational</i>
+	</jsp:attribute>
     <jsp:attribute name="singleFields">
 		<div>		
 			<input type="hidden" name="_action" value="">
@@ -132,8 +137,7 @@
 			<input type="hidden" name="_selectedInd" value="">
 		</div>	
 		<p id="instructions">
-			Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
-			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="sa-add-indicator"/>
+			
 		</p>
 		<c:forEach var="sa" varStatus="status" items="${command.studyAgents}">
   	      <study:aStudyChild title="Study Agent ${status.index + 1}" sectionClass="sa-section"

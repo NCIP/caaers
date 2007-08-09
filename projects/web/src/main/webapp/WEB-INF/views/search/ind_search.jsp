@@ -11,6 +11,7 @@
 	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
+<tags:stylesheetLink name="tabbedflow"/>
 <tags:stylesheetLink name="participant"/>
 <tags:includeScriptaculous />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -19,7 +20,11 @@
         /* Override default lable length */
          div.row div.label { width: 9em; } 
         div.row div.value { margin-left: 10em; }
+        div.content {
+            padding: 5px 15px;
+        }        
 </style>
+
 <title>${tab.longTitle}</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <tags:dwrJavascriptLink objects="search"/>
@@ -50,11 +55,23 @@ function buildTable(form) {
 </script>
 </head>
 <body>
-
-<form:form name="searchForm" id="searchForm" method="post">
-  Search for Investigational New Drug by choosing any of the listed Criteria. 
-The result will show the details such as IND# and sponsor. 
-<chrome:box title="Investigational New Drug Criteria" cssClass="mpaired" autopad="false">
+<div class="tabpane">
+ <ul id="workflow-tabs" class="tabs autoclear">
+    <li class="tab"><div>
+        <a href="createIND">Feed IND#</a>
+    </div></li>
+    <li class="tab selected"><div>
+        <a href="#">Search IND#</a>
+    </div></li>
+ </ul>
+ 
+ <div class="content">
+  <form:form name="searchForm" id="searchForm" method="post">
+   <p class="instructions">
+    <br />
+     Search for Investigational New Drug by choosing any of the listed Criteria. The result will show the details such as IND# and sponsor.
+   </p> 
+   <chrome:box title="Investigational New Drug Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> IND # :&nbsp; </div>
 		    	<div class="value"><input id="prop0" name="strINDNumber" type="text"/></div>
@@ -64,35 +81,33 @@ The result will show the details such as IND# and sponsor.
 		    	<div class="label"> Sponsor name :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="sponsorName"/></div>
 		    </div>
-</chrome:box>
+   </chrome:box>
 
-<div class="endpanes" />
-<div class="row" style="float:right;">
+	<div class="endpanes" />
+	<div class="row" style="float:right;">
 	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search'/>
 	<tags:indicator id="indicator" />
-</div>
-<div class="endpanes" />
+	</div>
+	<div class="endpanes" />
 
 
- </form:form>
-<br>
-<form:form id="assembler" >
-
-
-<div>			
+   </form:form>
+  <br>
+  <form:form id="assembler" >
+	<div>			
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
-</div>
-
-
-<chrome:box title="Search Results">
-	
+	</div>
+	<chrome:box title="Search Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
 		</div>
 	</chrome:division>
-</chrome:box>
-</form:form>
+	</chrome:box>
+   </form:form>
+ </div>
+ 
+</div>
 </body>
 </html>

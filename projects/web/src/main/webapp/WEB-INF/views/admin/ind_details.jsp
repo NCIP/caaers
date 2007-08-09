@@ -6,6 +6,13 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
  <head>
+ 	
+ 	<tags:stylesheetLink name="tabbedflow"/>
+ 	 <style type="text/css">
+        div.content {
+            padding: 5px 15px;
+        }
+    </style>
  	<tags:includeScriptaculous/>
  	<tags:dwrJavascriptLink objects="createIND"/>
 	<script>
@@ -41,7 +48,18 @@
 	</script>
  </head>
  <body>
-  <chrome:box title="Investigational New Drug Details">
+ <div class="tabpane">
+  <ul id="workflow-tabs" class="tabs autoclear">
+    <li class="tab selected"><div>
+        <a href="#">Feed IND#</a>
+    </div></li>
+    <li class="tab"><div>
+        <a href="searchIND">Search IND#</a>
+    </div></li>
+  </ul>
+  <br />
+  <div class="content">
+    <chrome:box title="Investigational New Drug Details">
 	<form:form>
 		<chrome:division id="single-fields">
 			<div class="instructions">You can add the details of an Investigational New Drug(IND)here.
@@ -63,5 +81,9 @@
 		</chrome:division>
 	</form:form>
   </chrome:box>
+  
+  </div>
+  
+  </div>
  </body>
 </html>

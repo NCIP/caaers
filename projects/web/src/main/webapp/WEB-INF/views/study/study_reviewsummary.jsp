@@ -151,14 +151,13 @@
 				<td>${studyAgent.agent.name}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
 				<td>
+					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					 <tr>
-						 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-						 <td>${sai.investigationalNewDrug.indNumber}</td><td>${sai.investigationalNewDrug.holderName}</td>
-				 		 </c:forEach>
-					 </tr>
-					</table>
-				 
+					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
+						  <tr><td>${sai.investigationalNewDrug.indNumber}</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
+				 	 </c:forEach>
+					</table>					
+					</c:if>
 				</td>
 				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
 			</tr>

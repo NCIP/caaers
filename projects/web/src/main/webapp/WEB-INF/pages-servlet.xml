@@ -125,7 +125,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
 							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Feed IND#" p:linkName="createINDController"/>                                                                                
+                                p:displayName="IND#" p:linkName="createINDController"/>                                                                                
                         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Organization" p:linkName="createOrganizationController"/>                                                                               
                         
@@ -147,8 +147,6 @@
                                 p:displayName="Expedited Report search" p:linkName="reportController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Routine Report search" p:linkName="routineReportController"/>
-							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="IND search" p:linkName="searchINDController"/>                                                                                                        
                         </list>
                     </property>
                 </bean>
@@ -258,10 +256,9 @@
     </bean>
     <bean name="/admin/createIND" id="createINDController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
-          
- 
-    <bean name="/search/searchIND" id="searchINDController" autowire="byType"
+    <bean name="/admin/searchIND" id="searchINDController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
+    
     
     <bean name="/search/study" id="studyController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
