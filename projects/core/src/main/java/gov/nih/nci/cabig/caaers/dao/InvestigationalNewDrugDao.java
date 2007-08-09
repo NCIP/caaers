@@ -37,7 +37,7 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 	 		" join h.investigationalNewDrug as ind " +
 	 		" left outer join h.organization as org" +
 	 		" left join h.investigator as inv" +
-	 		" where (org.name like :name or inv.firstName like :name) and to_char(ind.indNumber,'0000000000') like :indNo";
+	 		" where (org.name like :name or inv.firstName like :name) and str(ind.indNumber) like :indNo";
 	 return getHibernateTemplate().findByNamedParam(query,
 			 new String[]{"name","indNo"},
 			 new String[]{"%" + MapUtils.getString(paramMap,"sponsorName","%") + "%", "%" + MapUtils.getString(paramMap,"strINDNumber","%") + "%"});
@@ -45,9 +45,9 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 
 	public List<InvestigationalNewDrug> findByIds(String[] ids){
 		 StringBuilder query = new StringBuilder(" select distinct o from ")
-         .append(domainClass().getName()).append(" o where to_char(indNumber,'0000000000') like :indNo");
+         .append(domainClass().getName()).append(" o where str(indNumber) like :indNo");
 		 return getHibernateTemplate().findByNamedParam(query.toString(), new String[]{"indNo"}, new String[]{"%" + ids[0] + "%" });
-		
+
 		//return findBySubname(ids, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 
