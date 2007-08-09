@@ -137,7 +137,7 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
         this.applyFilter( results,
                           filter );
         
-        
+        /*
         try {
 			ruleLogger.logExecutionSummary(objects);
 		} catch (Exception e) {
@@ -145,6 +145,7 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
 			throw new InvalidRuleSessionException( e.getMessage(),
                     e );
 		}
+		*/
         return results;
     }
 
