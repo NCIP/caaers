@@ -71,6 +71,13 @@ public class ObjectGraphFactory {
 			}
 		}
 		
+		if (sourceObjectType.equals(targetObjectType)) {
+			NavigationPath navigationPath = new NavigationPath();
+			navigationPath.setSourceObjectType(sourceObjectType);
+			navigationPath.setTargetObjectType(targetObjectType);
+			return navigationPath;
+		}
+		
 		return null;
 	}
 }
