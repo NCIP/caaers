@@ -32,7 +32,7 @@ public class ObjectGraphTest extends TestCase {
 		
 	}
 	
-	public void atestFactResolver() {
+	public void atestFactResolver() throws Exception{
 		Study study = new Study ();
 		study.setShortTitle("cgems");
 		
