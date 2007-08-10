@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class FactResolver {
-	
+	private ObjectGraphFactory objectGraphFactory;
 	/**
 	 *  This method will evalaute a fact that is being asserted. For example a condition which says that - If CTEP is one of the IND holder for this study.
 	 *  In that case folllowing argument will be passed - (study,"gov.nih....INDHolder","name","CTEP")
@@ -26,15 +26,18 @@ public class FactResolver {
   public boolean assertFact(Object sourceObject,
 		                    String targetObjectType,
 		                    String targetAttributeName,
-		                    String targetAttributeValue){
+		                    String targetAttributeValue) throws Exception {
 	  
 	  
+	  objectGraphFactory = ObjectGraphFactory.getInstance();
 	  
-	 
+	  NavigationPath np = objectGraphFactory.findNavigationPath(sourceObject.getClass().getName(), targetObjectType);
 	  
+	  /*
 	  NavigationPath np = new NavigationPath();
 	  np.setSourceObjectType(sourceObject.getClass().getName());
 	  np.setTargetObjectType(targetObjectType);
+	  */
 	  
 	  List<Node> pathNodes = np.getNode();
 	  /**
