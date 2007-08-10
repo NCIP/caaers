@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<objectGraph xmlns="http://caaers.cabig.nci.nih.gov/rules/objectgraph">
+
+	<navigationPath >
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType> 
+		<node>
+			<name>study</name>			
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+		</node>
+		<node>
+			<name>studyAgents</name>			
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
+		</node>
+		<node>
+			<name>studyAgentINDAssociations</name>			
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</objectType>
+		</node>
+		<node>
+			<name>investigationalNewDrug</name>			
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</objectType>
+		</node>		
+	</navigationPath>
+			
+</objectGraph>
