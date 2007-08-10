@@ -36,7 +36,7 @@ public class FactResolver {
 	  np.setSourceObjectType(sourceObject.getClass().getName());
 	  np.setTargetObjectType(targetObjectType);
 	  
-	  List<Node> pathNodes = np.getNodes();
+	  List<Node> pathNodes = np.getNode();
 	  /**
 	   * We need minimum two nodes in the path for this method to work.
 	   */
