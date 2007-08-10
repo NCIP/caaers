@@ -78,8 +78,9 @@
                     <tags:renderRow field="${field}"/>
                 </c:forEach>
                 <div class="row">
-                    <div class="label">MedDRA</div>
+                    <div class="label">MedDRA Version</div>
                     <div class="value">
+                    	 ${command.assignment.studySite.study.terminology.meddraVersion.name}
                     </div>
                 </div>
             </div>

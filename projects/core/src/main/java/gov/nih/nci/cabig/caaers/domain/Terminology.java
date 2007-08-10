@@ -26,6 +26,7 @@ import org.hibernate.annotations.Type;
 public class Terminology extends AbstractMutableDomainObject {
     private Term term;
     private Ctc ctcVersion;
+    private MeddraVersion meddraVersion;
     private Study study;
 
     ////// BEAN PROPERTIES
@@ -48,6 +49,16 @@ public class Terminology extends AbstractMutableDomainObject {
 
 	public void setCtcVersion(Ctc ctcVersion) {
 		this.ctcVersion = ctcVersion;
+	}
+	
+	@OneToOne
+	@JoinColumn(name = "meddra_version_id")
+	public MeddraVersion getMeddraVersion() {
+		return meddraVersion;
+	}
+
+	public void setMeddraVersion(MeddraVersion meddraVersion) {
+		this.meddraVersion = meddraVersion;
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)

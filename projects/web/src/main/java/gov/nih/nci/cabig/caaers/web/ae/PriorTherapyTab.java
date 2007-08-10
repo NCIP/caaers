@@ -24,7 +24,7 @@ public class PriorTherapyTab extends AeTab {
         fieldFactory = new RepeatingFieldGroupFactory("priorTherapy", "aeReport.adverseEventPriorTherapies");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
-                return "Medication " + (index + 1);
+                return "Prior Therpy " + (index + 1);
             }
         });
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapy", "Therapy", false));

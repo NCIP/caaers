@@ -24,16 +24,20 @@
 		Event.observe("terminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })	
 		
 		showMeddraTerms()
-		
+
 		function showCtcTerms(){
 				if ($('terminology.term').options[0].selected ){
 					Effect.toggle($('terminology.ctcVersion-row'), 'slide');
+					Effect.toggle($('terminology.meddraVersion-row'), 'slide');
 				}
 		}
 		function showMeddraTerms(){		
 				if ($('terminology.term').options[1].selected){
 					$('terminology.ctcVersion').options[0].selected=true
 					Effect.toggle($('terminology.ctcVersion-row'), 'slide');
+					Effect.toggle($('terminology.meddraVersion-row'), 'slide');
+				}else{
+					$('terminology.meddraVersion-row').style.display="none"
 				}
 		}
 	
@@ -41,11 +45,10 @@
     	
 		AE.createStandardAutocompleter('primaryFundingSponsorOrganization', 
 			function(autocompleter, text) {
-createStudy.matchOrganization(text, 
-				function(values) {
-autocompleter.setChoices(values)
-})
-}, 
+					createStudy.matchOrganization(text, function(values) {
+													autocompleter.setChoices(values)
+												})
+				}, 
 				function(organization) { return organization.name });
         
         

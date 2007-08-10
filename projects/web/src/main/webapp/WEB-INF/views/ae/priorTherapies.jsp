@@ -57,11 +57,15 @@
                 if (isPriorTherapy) {
                     priorTherapyRow.removeClassName("disabled")
                     otherRow.addClassName("disabled")
+                    $(this.otherProperty).value=""
                     priorTherapyRow.getElementsByClassName("value")[0].enableDescendants()
                     otherRow.getElementsByClassName("value")[0].disableDescendants()
+                    
                 } else {
+                	
                     otherRow.removeClassName("disabled")
                     priorTherapyRow.addClassName("disabled")
+                    $(this.priorTherapyProperty).value=""
                     otherRow.getElementsByClassName("value")[0].enableDescendants()
                     priorTherapyRow.getElementsByClassName("value")[0].disableDescendants()
                 }
@@ -88,7 +92,7 @@
                 if (otherValue.length == 0) {
                     $("select-priorTherapy-" + this.index).click()
                 } else {
-                    $("select-priorTherapy-" + this.index).click()
+                    $("select-other-" + this.index).click()
                 }
             }
         })
@@ -171,4 +175,3 @@
     </tags:tabForm>
 </body>
 </html>
-

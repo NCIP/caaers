@@ -7,10 +7,8 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -48,6 +46,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
     private ResearchStaffDao researchStaffDao;
     private CtcDao ctcDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
+    private MeddraVersionDao meddraVersionDao;
 
     public StudyController() {
         setCommandClass(Study.class);
@@ -86,6 +85,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
         ControllerTools.registerDomainObjectEditor(binder, researchStaffDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
         ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
+        ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
         ControllerTools.registerEnumEditor(binder, Term.class);
     }
 
@@ -228,6 +228,13 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		this.ctcDao = ctcDao;
 	}
 
+	public MeddraVersionDao getMeddraVersionDao() {
+		return meddraVersionDao;
+	}
+
+	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
+		this.meddraVersionDao = meddraVersionDao;
+	}
 
 	public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
 		return investigationalNewDrugDao;

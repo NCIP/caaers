@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -14,11 +15,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+
 /**
  * @author Rhett Sutphin
  */
 class DetailsTab extends StudyTab {
     private CtcDao ctcDao;
+    private MeddraVersionDao meddraVersionDao;
     InputFieldGroup fieldGroup;
 
     public DetailsTab() {
@@ -64,11 +69,34 @@ class DetailsTab extends StudyTab {
             // TODO: Add validation for when terminology.term = Term.CTC
             fields.add(InputFieldFactory.createSelectField("terminology.ctcVersion", "CTC version", false,
                     collectOptions(ctcDao.getAll(), "id","name")));
+            fields.add(InputFieldFactory.createSelectField("terminology.meddraVersion", "MedDRA version", false,
+                    collectOptions(meddraVersionDao.getAll(), "id","name")));
         }
         InputFieldGroupMap map  = new InputFieldGroupMap();
         map.addInputFieldGroup(fieldGroup);
         return map;
     }
+    
+    
+    @Override
+    protected void validate(
+    		Study command, BeanWrapper commandBean,
+        Map<String, InputFieldGroup> fieldGroups, Errors errors
+    ) {
+    	if (command.getTerminology().getTerm() == Term.MEDDRA && 
+    			command.getTerminology().getMeddraVersion() == null){
+    		InputField field = fieldGroups.get("studyDetails").getFields().get(8);
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+    	}
+    	
+    	if (command.getTerminology().getTerm() == Term.CTC && 
+    			command.getTerminology().getCtcVersion() == null){
+    		InputField field = fieldGroups.get("studyDetails").getFields().get(7);
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+    	}
+       
+    }
+    
 
     public CtcDao getCtcDao() {
         return ctcDao;
@@ -77,4 +105,12 @@ class DetailsTab extends StudyTab {
     public void setCtcDao(CtcDao ctcDao) {
         this.ctcDao = ctcDao;
     }
+
+	public MeddraVersionDao getMeddraVersionDao() {
+		return meddraVersionDao;
+	}
+
+	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
+		this.meddraVersionDao = meddraVersionDao;
+	}
 }

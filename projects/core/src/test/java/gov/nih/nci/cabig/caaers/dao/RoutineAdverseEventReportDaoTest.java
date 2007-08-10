@@ -47,7 +47,7 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
     	results = getDao().searchRoutineReports(m);
     	assertEquals("Wrong number of results", 1, results.size());
     }
-    public void testSearchExpeditedReportByStartOrEndDate() throws Exception {
+    public void testSearchRoutineReportByStartOrEndDate() throws Exception {
     	List<RoutineAdverseEventReport> results;
     	Map<String,String> m = new HashMap<String,String>();
     	m.put("date", "05/12/2004");
@@ -55,7 +55,7 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
     	assertEquals("Wrong number of results", 1, results.size());
     }
     
-    public void testSearchExpeditedReportByParticipantFirstName() throws Exception {
+    public void testSearchRoutineReportByParticipantFirstName() throws Exception {
     	List<RoutineAdverseEventReport> results;
     	Map<String,String> m = new HashMap<String,String>();
     	m.put("participantFirstName", "Michael");
@@ -63,7 +63,7 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
     	assertEquals("Wrong number of results", 1, results.size());
     }
     
-    public void testSearchExpeditedReportByStudyShortTitle() throws Exception {
+    public void testSearchRoutineReportByStudyShortTitle() throws Exception {
     	List<RoutineAdverseEventReport> results;
     	Map<String,String> m = new HashMap<String,String>();
     	m.put("studyShortTitle", "That");

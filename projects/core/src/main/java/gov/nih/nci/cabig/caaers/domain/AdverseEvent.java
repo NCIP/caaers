@@ -32,9 +32,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-/* NOTES:
-    - MedDRA code mentioned in use case not yet implemented
-    */
+
 @Entity
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
@@ -43,8 +41,6 @@ import java.util.List;
 )
 public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
 	private AbstractAdverseEventTerm adverseEventTerm;
-	
-	//private CtcTerm ctcTerm;
     private String detailsForOther;
     private Grade grade;
     private Hospitalization hospitalization;
@@ -244,7 +240,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.adverseEventTerm = adverseEventTerm;
     }
 
-    public String getDetailsForOther() {
+    public String getDetailsForOther() {	
         return detailsForOther;
     }
 
