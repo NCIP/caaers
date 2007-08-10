@@ -120,7 +120,7 @@ public class FactResolver {
 	  
   }
   
-  private Object getListOfNextTargetObjectsForEverySourceObject(Node node,Object sourceObject){
+  private Object getListOfNextTargetObjectsForEverySourceObject(Node node,Object sourceObject) throws Exception{
 	  List list = new ArrayList();
 	  String name = node.getName();
 	  String methodName = this.getMethodName(name);
@@ -152,20 +152,15 @@ public class FactResolver {
 		
 		
 	} catch (SecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (NoSuchMethodException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (IllegalArgumentException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (IllegalAccessException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (InvocationTargetException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	}
 	
 	 
@@ -173,7 +168,7 @@ public class FactResolver {
 	  return list;
   }
   
-  private Object getListOfNextTargetObjects(Node node,Object nextSourceObject){
+  private Object getListOfNextTargetObjects(Node node,Object nextSourceObject) throws Exception{
 	  
 	  String name = node.getName();
 	  String methodName = this.getMethodName(name);
@@ -188,27 +183,22 @@ public class FactResolver {
 		obj = method.invoke(nextSourceObject, new Object[0]);
 		
 	} catch (SecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (NoSuchMethodException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (IllegalArgumentException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (IllegalAccessException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	} catch (InvocationTargetException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 	}
 	
 	 
 	
 	  return obj;
   }
-  private Object getListOfSingleNextTargetObjectsForEverySourceObject(Node node,Object nextSourceObject){
+  private Object getListOfSingleNextTargetObjectsForEverySourceObject(Node node,Object nextSourceObject) throws Exception{
 		  
 	  List listToBeReturned = new ArrayList();
 		  String name = node.getName();
@@ -233,127 +223,42 @@ public class FactResolver {
 			
 			
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		
 		 
 		
 		  return listToBeReturned;
 	  }  
-  private boolean wrapUpXX(Object targetObject,
-		                 Node targetNode,
-		                 String targetObjectType,
-          				 String targetAttributeName,
-          				 String targetAttributeValue){
-	  boolean test = false;
-	  Class cls = null;
-	  Method method = null;
-	  try {
-			cls = Class.forName(targetObjectType);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	 String methodName = this.getMethodName(targetAttributeName);
-	 try {
-		 Class[] types = new Class[] {}; 
-			method = cls.getMethod(methodName, types);
-	} catch (SecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (NoSuchMethodException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  
-	  if(targetNode.isCollection()){
-		  
-		  List list = (List)targetObject;
-		  Iterator it = list.iterator();
-		 
-		  while(it.hasNext()){
-			  Object obj = it.next();
-			  Object value=null;
-			  try {
-				value = method.invoke(obj, new Object[0]);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(value.toString().equalsIgnoreCase(targetAttributeValue)){
-				test = true;
-				break;
-			}
-		  }
-		  
-	  }else{
-		  
-		  Object value=null;
-		  try {
-				value = method.invoke(targetObject, new Object[0]);
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(value.toString().equalsIgnoreCase(targetAttributeValue)){
-				test = true;
-				
-			}
-		  
-	  }
-	  return test;
-	  
-  }
-  
-		  private boolean wrapUp(Object targetObject,
+  private boolean wrapUp(Object targetObject,
 		          Node targetNode,
 		          String targetObjectType,
 					 String targetAttributeName,
-					 String targetAttributeValue){
+					 String targetAttributeValue) throws Exception{
 		boolean test = false;
 		Class cls = null;
 		Method method = null;
 		try {
 		cls = Class.forName(targetObjectType);
 		} catch (ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		throw e;
 		}
 		String methodName = this.getMethodName(targetAttributeName);
 		try {
 		Class[] types = new Class[] {}; 
 		method = cls.getMethod(methodName, types);
 		} catch (SecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			throw e;
 		} catch (NoSuchMethodException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			throw e;
 		}
 		
 		Class class_ = targetObject.getClass();
@@ -370,14 +275,11 @@ public class FactResolver {
 		try {
 			value = method.invoke(obj, new Object[0]);
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		if(value.toString().equalsIgnoreCase(targetAttributeValue)){
 			test = true;
@@ -391,14 +293,11 @@ public class FactResolver {
 		try {
 			value = method.invoke(targetObject, new Object[0]);
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw e;
 		}
 		if(value.toString().equalsIgnoreCase(targetAttributeValue)){
 			test = true;
@@ -415,8 +314,5 @@ public class FactResolver {
 	  String prop = "get"+Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	  return prop;
   }
-  public static void main(String[] args){
-	  FactResolver fr = new FactResolver();
-	  
-  }
+  
 }
