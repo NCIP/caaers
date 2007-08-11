@@ -224,8 +224,8 @@ public class ReportServiceImpl  implements ReportService {
         //save the report
         reportDao.save(report);
 
-        //schedule the report.
-        schedulerService.scheduleNotification(report);
+        //schedule the report, if there are scheduled notificaitons.
+        if(report.hasScheduledNotifications()) schedulerService.scheduleNotification(report);
 
         return report;
     }
