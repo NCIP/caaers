@@ -26,10 +26,10 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 /**
- * A report sending schedule for an adverse event. 
+ * A report sending schedule for an adverse event.
  * The RuleExecutionService, evaluates pre-defined set of rules over the attributes of an AdverseEvent,
- * and creates a Report.  
- * 
+ * and creates a Report.
+ *
  * @author Biju Joseph
  *
  */
@@ -56,7 +56,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private ReportStatus status = ReportStatus.PENDING;
 
 	private List<ReportDelivery> deliveries;
-	
+
     ////// LOGIC
 
     public void addScheduledNotification(ScheduledNotification nf) {
@@ -148,17 +148,17 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setRequired(boolean required) {
         this.required = required;
     }
-    
+
     @OneToMany(fetch=FetchType.LAZY,mappedBy="report")
 	@Cascade(value = { CascadeType.ALL })
 	public List<ReportDelivery> getReportDeliveries() {
 		return deliveries;
 	}
-    
+
 	public void setReportDeliveries(List<ReportDelivery> deliveries) {
 		this.deliveries = deliveries;
 	}
-	
+
 
 	////// OBJECT METHODS
 
@@ -170,8 +170,10 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
             .append(", submittedOn :").append(String.valueOf(submittedOn))
             .append(", dueOn :").append(String.valueOf(dueOn));
         sb.append("\r\n notifications :");
-        for (ScheduledNotification sn : notifications) {
-            sb.append("\r\n").append(String.valueOf(sn));
+        if(notifications != null){
+        	for (ScheduledNotification sn : notifications) {
+        		sb.append("\r\n").append(String.valueOf(sn));
+        	}
         }
         sb.append("]");
         return sb.toString();
