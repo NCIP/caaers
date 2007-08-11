@@ -69,6 +69,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 		deliveries.add(rd);
 	}
 
+	public boolean hasScheduledNotifications(){
+		return (notifications != null) &&	(!notifications.isEmpty());
+	}
     ////// BEAN PROPERTIES
 
     public Date getCreatedOn() {
