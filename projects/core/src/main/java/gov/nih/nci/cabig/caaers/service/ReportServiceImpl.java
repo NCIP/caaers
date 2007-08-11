@@ -52,7 +52,7 @@ public class ReportServiceImpl  implements ReportService {
     private NowFactory nowFactory;
     private SchedulerService schedulerService;
     private ReportDao reportDao;
-    
+
     public  List<String> findToAddresses(PlannedNotification pnf, Report rs){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
@@ -95,7 +95,7 @@ public class ReportServiceImpl  implements ReportService {
         return null;
 	}
 
-	
+
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.service.ReportService#applyRuntimeReplacements(java.lang.String, gov.nih.nci.cabig.caaers.domain.report.Report)
@@ -134,9 +134,9 @@ public class ReportServiceImpl  implements ReportService {
 		map.put("study", report.getAeReport().getStudy());
 		return map;
 	}
-	
-	
-	
+
+
+
     /**
      * Creates a report from the given definition and associates it with the
      * given aeReport.  Initiates all notifications for the report.
@@ -147,7 +147,7 @@ public class ReportServiceImpl  implements ReportService {
 
         Date now = nowFactory.getNow();
         Calendar cal = GregorianCalendar.getInstance();
-        
+
         Report report = repDef.createReport();
         report.setCreatedOn(now);
 
@@ -164,11 +164,11 @@ public class ReportServiceImpl  implements ReportService {
             for (ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()) {
                 ReportDelivery rd = new ReportDelivery();
                 rd.setDeliveryStatus(DeliveryStatus.CREATED);
-                rd.setEndPoint(""); // TODO: this field is required, but I'm not clear what it is for
                 rd.setReportDeliveryDefinition(rdd);
                 //fetch the contact mechanism for role based entities.
                 if (rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE) {
-                    findContactMechanismValue(rdd.getEndPoint(), rdd.getEndPointType(), aeReport);
+                    rd.setEndPoint(findContactMechanismValue(rdd.getEndPoint(),
+                    		rdd.getEndPointType(), aeReport));
                 } else {
                     rd.setEndPoint(rdd.getEndPoint());
                 }
@@ -220,19 +220,19 @@ public class ReportServiceImpl  implements ReportService {
                 }//for each to
             }//for each pnf
         }//~if
-        
+
         //save the report
         reportDao.save(report);
-        
-        //schedule the report. 
+
+        //schedule the report.
         schedulerService.scheduleNotification(report);
-        
+
         return report;
     }
-    
+
     /**
      * Will mark the report as deleted:-
-     *   <br />Unschedules all scheduled notifications. 
+     *   <br />Unschedules all scheduled notifications.
      *   <br />Sets the status of the Report as {@link ReportStatus#WITHDRAWN}
      */
 	public void deleteReport(Report report) {
@@ -241,7 +241,7 @@ public class ReportServiceImpl  implements ReportService {
 		report.setStatus(ReportStatus.WITHDRAWN);
 		reportDao.save(report);
 	}
-	
+
 	public Object validate(Report report) {
 		// TODO Auto-generated method stub
 		return null;
@@ -257,6 +257,6 @@ public class ReportServiceImpl  implements ReportService {
 	public void setReportDao(ReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
-	
-    
+
+
 }
