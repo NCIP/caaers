@@ -20,52 +20,53 @@ import org.quartz.Trigger;
 import org.quartz.TriggerUtils;
 
 /**
- * This service will schedule the ScheduledNotification objects present in 
- * the Report, using Quartz scheduling engine. 
- * 
+ * This service will schedule the ScheduledNotification objects present in
+ * the Report, using Quartz scheduling engine.
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 29, 2007
  * @version     %I%, %G%
  * @since       1.0
  */
 public class SchedulerServiceImpl implements SchedulerService {
-	
+
 	private static final Log logger = LogFactory.getLog(SchedulerServiceImpl.class);
 	private Scheduler scheduler;
 	private ReportDao reportScheduleDao;
 	private Map<String,String> jobClassMapping;
-	
-	
+
+
 	/**
 	 * This method will scheduled the notifications, based on the Report.
-	 * 
+	 *
 	 */
 	public void scheduleNotification(Report report){
-		
+
 		assert report != null : "report should not be null";
 		assert report.getId() != null : "report must have a valid id";
-		
+		assert report.getScheduledNotifications() != null : "report must have valid scheduled notifications";
+
 		if(logger.isDebugEnabled()){
 			logger.debug(String.valueOf(report));
 			logReportSchedule(report);
 		}
-		
+
 		try {
 
 			//TODO: Audit Logging.
 			List<ScheduledNotification> notifications = report.getScheduledNotifications();
 			int curIndex = 0;
-			
+			assert notifications.size() > 0 : "report must have atleast one valid schedulded notification";
 			//for each notification creat job detail, and associate with the scheduler
 			for(ScheduledNotification nf: notifications){
-				
+
 				assert nf != null :"report must not contain invalid ScheduledNotificaiton objects";
 				assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
-				
-				
+
+
 				//create a trigger
 				Trigger trigger = makeTrigger(nf);
-				
+
 				//create job detail and set the map values
 				String jobName = "J-" +  nf.getId().toString();
 				Class jobClass = findJobClass(nf);
@@ -76,14 +77,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 				jobDataMap.put("report.id", report.getId());
 				jobDataMap.put("scheduledNotifiction.id",nf.getId());
 				jobDataMap.put("curIndex", curIndex);
-				
+
 				//schedule the jobs
 				logger.info("Scheduling the job (jobFullName : "+ jobDetail.getFullName() + ")");
 				scheduler.scheduleJob(jobDetail, trigger);
 
 				//update the delivery status of the ScheduledNotification
 				nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
-				
+
 				curIndex++;
 			}//for each nf
 			reportScheduleDao.save(report);
@@ -91,16 +92,16 @@ public class SchedulerServiceImpl implements SchedulerService {
 			logger.error("Exception while scheduling " ,e);
 			throw new CaaersSystemException("Exception while scheduling report{"+ String.valueOf(report)+"}", e);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Will unschedule a scheduled notification
 	 */
 	 public void unScheduleNotification(Report report) {
 		 assert report != null : "report should not be null";
 		 assert report.getId() != null : "report must have a valid id";
-		 
+
 		 try {
 			//delete all the jobs configured for ScheduledNotificaiton
 			 String jobName;
@@ -119,7 +120,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 			throw new CaaersSystemException("Exception while unscheduling report{"+ String.valueOf(report)+"}", e);
 		}
 	}
-	
+
 	/**
 	 * This function makes a triggerr based on ScheduledNotification.scheduledOn value
 	 * @param nf - A ScheduledNotification
@@ -130,10 +131,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 		Trigger t = TriggerUtils.makeMinutelyTrigger("T-"+ strId, 1, 0);
 		t.setGroup("TG-" + strId);
 		t.setStartTime(nf.getScheduledOn());
-	
+
 		return t;
 	}
-	
+
 	/**
 	 * This method returns the JobClass type to be used
 	 * inside the scheduler. The ScheduledNotificaiton - JobClass mapping
@@ -153,11 +154,11 @@ public class SchedulerServiceImpl implements SchedulerService {
 			throw new CaaersSystemException("Error while loading job class",e);
 		}
 	}
-	
+
 	public Scheduler getScheduler() {
 		return scheduler;
 	}
-	
+
 	public void setScheduler(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
@@ -167,7 +168,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 	public Map<String, String> getJobClassMapping(){
 		return jobClassMapping;
 	}
-	
+
 	/**
 	 * @return the reportScheduleDao
 	 */
@@ -188,6 +189,6 @@ public class SchedulerServiceImpl implements SchedulerService {
 		sb.append("emailNotifications:[").append(String.valueOf(s.getScheduledNotifications())).append("]");
 		logger.debug("Report :[" + sb.toString()+"]");
 	}
-	
-	
+
+
 }
