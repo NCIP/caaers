@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
+import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -14,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Term;
@@ -165,6 +168,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	// common
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
+    	xstream.alias("organizationAssignedIdentifier", gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier.class);
+    	xstream.alias("systemAssignedIdentifier", gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier.class);
     	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
     	xstream.alias("studyFundingSponsor", gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor.class);
@@ -179,6 +184,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("diseaseTerm", gov.nih.nci.cabig.caaers.domain.DiseaseTerm.class);
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
     	xstream.alias("ctcVersion" , gov.nih.nci.cabig.caaers.domain.Ctc.class);
+    	xstream.alias("terminology" , gov.nih.nci.cabig.caaers.domain.Terminology.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	
@@ -252,14 +258,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		participant.setRace(xstreamParticipant.getRace());
 		participant.setEthnicity(xstreamParticipant.getRace());
 		
-		// Identifiers
-		if (xstreamParticipant.getIdentifiers() != null) {
-			for (int i = 0; i < xstreamParticipant.getIdentifiers().size(); i++) {
-				Identifier identifier = (Identifier) xstreamParticipant
-						.getIdentifiers().get(i);
-				participant.getIdentifiers().add(identifier);
-			}
-		}
+		migrateIdentifiers(participant,xstreamParticipant);
 		
 		// Check for study and site association
 		if (xstreamParticipant.getAssignments() != null) {
@@ -359,48 +358,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		st.setBlindedIndicator(xstreamStudy.getBlindedIndicator());
 		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
 		st.setRandomizedIndicator(xstreamStudy.getRandomizedIndicator());
-		// CtcVersion
-		if (xstreamStudy.getTerminology() != null){
-			if(xstreamStudy.getTerminology().getTerm() == Term.CTC){
-				Ctc ctc = ctcDao.getById(Integer.parseInt(xstreamStudy.getTerminology().getCtcVersion().getName()));
-				Terminology t = st.getTerminology();
-				t.setTerm(Term.CTC);
-				t.setCtcVersion(ctc);
-			}
-			if(xstreamStudy.getTerminology().getTerm() == Term.MEDDRA){
-				Terminology t = st.getTerminology();
-				t.setTerm(Term.MEDDRA);
-			}
-		}
-		// Identifiers
-		if (xstreamStudy.getIdentifiers() != null) {
-			for (int i = 0; i < xstreamStudy.getIdentifiers().size(); i++) {
-				Identifier identifier = (Identifier) xstreamStudy
-						.getIdentifiers().get(i);
-				st.getIdentifiers().add(identifier);
-			}
-		}
 		
-		if (xstreamStudy.getStudyOrganizations() != null) {
-			for (int i = 0; i < xstreamStudy.getStudyOrganizations().size(); i++) {
-				StudyOrganization studyOrganization = xstreamStudy.getStudyOrganizations().get(i);
-				if (studyOrganization instanceof StudySite) {
-					StudySite studySite = (StudySite) studyOrganization;
-					Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
-					st.addStudySite(createStudyOrganization(organization));	
-				} 
-				if (studyOrganization instanceof StudyFundingSponsor) {
-					StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
-					Organization organization = organizationDao.getByName(studyFundingSponsor.getOrganization().getName());
-					st.addStudyFundingSponsor(createStudyFundingSponsor(organization));	
-				} 
-				
-			}
-		}
-		else
-		{
-			st.addStudySite(createStudyOrganization(null));
-		}
+		migrateTerminology(st,xstreamStudy);
+		migrateIdentifiers(st,xstreamStudy);
+		migrateStudyOrganizations(st,xstreamStudy);
+		
+		
 		
 		// StudyAgents
 		if (xstreamStudy.getStudyAgents() != null) {
@@ -427,6 +390,70 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		
 	}
 	
+	
+	private void migrateIdentifiers(AbstractIdentifiableDomainObject destination, AbstractIdentifiableDomainObject source) {
+
+		// Identifiers
+		if (source.getIdentifiers() != null) {
+			for (int i = 0; i < source.getIdentifiers().size(); i++) {
+				Identifier identifier = (Identifier) source.getIdentifiers()
+						.get(i);
+				if (identifier instanceof OrganizationAssignedIdentifier) {
+					Organization organization = organizationDao
+							.getByName(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
+					((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
+				}
+
+				if (identifier instanceof SystemAssignedIdentifier) {
+					// I don't need to do anything i think
+				}
+				destination.getIdentifiers().add(identifier);
+			}
+		}
+	}
+	
+	private void migrateStudyOrganizations(Study destination,Study source){
+		
+		if (source.getStudyOrganizations() != null) {
+			for (int i = 0; i < source.getStudyOrganizations().size(); i++) {
+				StudyOrganization studyOrganization = source.getStudyOrganizations().get(i);
+				if (studyOrganization instanceof StudySite) {
+					StudySite studySite = (StudySite) studyOrganization;
+					Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
+					studySite.setOrganization(organization);
+					destination.addStudySite(studySite);	
+				} 
+				if (studyOrganization instanceof StudyFundingSponsor) {
+					StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
+					Organization organization = organizationDao.getByName(studyFundingSponsor.getOrganization().getName());
+					studyFundingSponsor.setOrganization(organization);
+					destination.addStudyFundingSponsor(studyFundingSponsor);	
+				} 
+				
+			}
+		}
+		
+	}
+	
+	private void migrateTerminology(Study destination,Study source){
+		
+		// Terminology and Version 
+		if (source.getTerminology() != null){
+			if(source.getTerminology().getCtcVersion() != null){
+				Ctc ctc = ctcDao.getById(Integer.parseInt(source.getTerminology().getCtcVersion().getName()));
+				Terminology t = destination.getTerminology();
+				t.setTerm(Term.CTC);
+				t.setCtcVersion(ctc);
+			}
+			if(source.getTerminology().getMeddraVersion() != null){
+				Terminology t = destination.getTerminology();
+				t.setTerm(Term.MEDDRA);
+			}
+		}
+		
+	}
+	
+	/* Phased out
 	private StudySite createStudyOrganization(Organization organization){
 		
 		StudySite studySite = new StudySite();
@@ -440,7 +467,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
 		studyFundingSponsor.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studyFundingSponsor;
-	}
+	}*/
 	
 	private StudyAgent createStudyAgent(Agent agent){
 		
