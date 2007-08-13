@@ -189,7 +189,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 
 			@Override
 			public void validate(final NewParticipantCommand command, final Errors errors) {
-				boolean isIdentifier = true;
+				boolean noPrimaryIdentifier = true;
 
 				List<Identifier> identifiers = command.getIdentifiers();
 				for (int i = 0; i < identifiers.size(); i++) {
@@ -207,7 +207,11 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 						errors.rejectValue("identifiers[" + i + "].systemName", "REQUIRED",
 								"System Name is required..!");
 					}
-					isIdentifier = false;
+					if (identifier.getValue() == null || identifier.getValue().trim().equals("")) {
+
+						errors.rejectValue("identifiers[" + i + "].value", "REQUIRED", "Identifier is required..!");
+					}
+					noPrimaryIdentifier = false;
 				}
 
 				boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
@@ -234,7 +238,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 				if (race) {
 					errors.rejectValue("race", "REQUIRED", "Please specify the Race");
 				}
-				if (isIdentifier) {
+				if (noPrimaryIdentifier) {
 					errors
 							.rejectValue("identifiers", "REQUIRED",
 									"Please Include at least a single primary Identifier");
