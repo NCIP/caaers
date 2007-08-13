@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -67,12 +67,16 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private final LazyListHelper lazyListHelper;
 
+	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
+
 	// TODO move into Command Object
 	private String[] diseaseTermIds;
 
 	private String diseaseCategoryAsText;
 
 	private String diseaseLlt;
+
+	private Boolean multiInstitution;
 
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
 
@@ -186,6 +190,23 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 			}
 		}
 		return centers;
+		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
+	}
+
+	@Transient
+	public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
+
+		if (organizationAssignedIdentifier == null) {
+			organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
+			organizationAssignedIdentifier.setType("Co-ordinating Center Identifier");
+			organizationAssignedIdentifier.setPrimaryIndicator(Boolean.FALSE);
+		}
+		return organizationAssignedIdentifier;
+	}
+
+	@Transient
+	public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+		this.organizationAssignedIdentifier = organizationAssignedIdentifier;
 	}
 
 	@Transient
@@ -466,4 +487,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	 * studyDiseases; }
 	 */
 
+	@Transient
+	public Boolean getMultiInstitution() {
+		return multiInstitution;
+	}
+
+	@Transient
+	public void setMultiInstitution(Boolean multiInstitution) {
+		this.multiInstitution = multiInstitution;
+	}
 }

@@ -66,8 +66,7 @@ class IdentifiersTab extends StudyTab {
 			// collectOptions(organizationDao.getAll(), "name", "name")));
 
 			rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
-			rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization", "Organization Identifier",
-					false));
+			rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization", "Organization", false));
 			// rfgFactory.addField(InputFieldFactory.createAutocompleterField("source", "Source"));
 			rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 

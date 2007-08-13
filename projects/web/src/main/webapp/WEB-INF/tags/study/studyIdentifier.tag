@@ -14,34 +14,58 @@
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 
-<chrome:division title="${title}" id="${sectionClass}-${index}"
-	cssClass="${sectionClass}" style="${style}"
-	enableDelete="${enableDelete}" deleteParams="${deleteParams}">
+<!--  Saurabh : type : ${type}
+      Class : ${identifier.class.name} 
+      propertyName : ${field.propertyName}
+ -->
+<tr class="${sectionClass}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
 
-		<c:if test="${(fn:endsWith(field.propertyName, 'type'))}">
-			<tags:renderRow field="${field}" />
-		</c:if>
 
-		<c:if test="${(fn:endsWith(field.propertyName, 'value'))}">
-			<tags:renderRow field="${field}" />
-		</c:if>
-
+		
+			<c:if test="${(fn:endsWith(field.propertyName, 'value'))}">
+				 <td>
+				<tags:renderInputs field="${field}" />
+				</td>
+			</c:if>
+		
+		
+		
+    	    <c:if test="${(fn:endsWith(field.propertyName, 'type'))}">
+				<td>
+				<tags:renderInputs field="${field}" />
+				</td>
+			</c:if>
+		
+		
+		
+			<c:if
+				test="${(fn:endsWith(field.propertyName, 'systemName')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				<td>
+				<tags:renderInputs field="${field}"/>
+				</td>
+			</c:if>
+			<c:if
+				test="${(fn:endsWith(field.propertyName, 'organization')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+				<td>
+				<tags:renderInputs field="${field}" />
+				</td>
+			</c:if>
+		
+		
+		
 		<c:if test="${(fn:endsWith(field.propertyName, 'primaryIndicator'))}">
-			<tags:renderRow field="${field}" />
+			<td>
+			<tags:renderInputs field="${field}" />
+			</td>
+			
 		</c:if>
-
-
-		<c:if
-			test="${(fn:endsWith(field.propertyName, 'systemName')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-			<tags:renderRow field="${field}" />
-		</c:if>
-
-
-		<c:if
-			test="${(fn:endsWith(field.propertyName, 'organization')) &&  (identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-			<tags:renderRow field="${field}" />
-		</c:if>
+		
+		
+        
 
 	</c:forEach>
-</chrome:division>
+            <td align="right">
+        	<a href="javascript:fireAction(${deleteParams},'${sectionClass}-${index}','${cssClass}');"><img 
+	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
+            </tr>

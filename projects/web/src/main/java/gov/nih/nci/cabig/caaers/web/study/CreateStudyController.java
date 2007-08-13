@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -48,8 +49,6 @@ public class CreateStudyController extends StudyController<Study> {
 		StudySite studySite = new StudySite();
 		study.addStudySite(studySite);
 		List<Identifier> studyIdentifiers = new ArrayList<Identifier>();
-		// Identifier studyIdentifier = new Identifier();
-		// studyIdentifiers.add(studyIdentifier);
 		study.setIdentifiers(studyIdentifiers);
 
 		return study;
@@ -59,6 +58,18 @@ public class CreateStudyController extends StudyController<Study> {
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
 		Study study = (Study) command;
+
+		if (study.getMultiInstitution().equals(Boolean.TRUE)
+				&& study.getOrganizationAssignedIdentifier().getOrganization() != null) {
+			// add organization assigned identifier
+			study.addIdentifier(study.getOrganizationAssignedIdentifier());
+
+			StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
+			studyCoordinatingCenter.setOrganization(study.getOrganizationAssignedIdentifier().getOrganization());
+			studyCoordinatingCenter.setStudy(study);
+			study.addStudyOrganization(studyCoordinatingCenter);
+
+		}
 		// save the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)
 		// in different screens (hibernate session)

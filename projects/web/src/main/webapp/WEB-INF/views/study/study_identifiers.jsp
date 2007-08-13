@@ -22,14 +22,17 @@
             initialize: function(index,orgName) {
             	this.index = index;
             	si[index] = this;            	
-            	this.orgName = orgName;
+            	
             	
             	if($('identifiersLazy['  + index + '].organization'))
             	{
         		
             	this.organizationName = "identifiersLazy["  + index + "].organization";
                 this.organizationInputId = this.organizationName + "-input";
+            	this.orgName = orgName;
             	if(orgName) $(this.organizationInputId).value = orgName;
+                
+         
                      	
             	AE.createStandardAutocompleter(this.organizationName, 
             		this.sitePopulator.bind(this),
@@ -82,24 +85,40 @@
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, '${si.organization.name}');
 				</c:if>
+					<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+					new jsIdentifier(${status.index});
+				</c:if>
+				
       		</c:forEach>
       		
       		//This is added for Add Sysetem Identifiers button
-		            new ListEditor("si-section", createStudy, "Identifier", {
+		            new ListEditor("system-section-row", createStudy, "Identifier", {
 		            	addParameters: [1],
-		            	addFirstAfter: "single-fields",
-		                addCallback: function(nextIndex) {
-             	new jsIdentifier(nextIndex);
+		            	addFirstAfter: "system-section",
+		                addCallback: function(newIndex) {
+						var newIndex = 0;
+						var sysSectionLength = $$('.system-section-row').length;
+						var orgSectionLength = $$('.organization-section-row').length;
+						if(sysSectionLength > 0) newIndex = newIndex + sysSectionLength;
+						if(orgSectionLength > 0) newIndex = newIndex + orgSectionLength;  		            
+		                newIndex=newIndex-1;
+             	new jsIdentifier(newIndex);
              }
 		            });
 		            //This is added for Add Organization Identifiers buttion
-		             new ListEditor("si-section", createStudy, "Identifier", {
-		                addButton: "add-si-section-org-button",
-		                addIndicator: "add-si-section-org-indicator",
+		             new ListEditor("organization-section-row", createStudy, "Identifier", {
 		            	addParameters: [2],
-		            	addFirstAfter: "single-fields",
-		                addCallback: function(nextIndex) { 
-             	new jsIdentifier(nextIndex);
+		            	addFirstAfter: "organization-section",
+		                addCallback: function(newIndex) { 
+		                var newIndex = 0;
+						var sysSectionLength = $$('.system-section-row').length;
+						var orgSectionLength = $$('.organization-section-row').length;
+						
+						if(sysSectionLength > 0) newIndex = newIndex + sysSectionLength;
+						if(orgSectionLength > 0) newIndex = newIndex + orgSectionLength;
+						newIndex=newIndex-1;  		            
+		                
+             	new jsIdentifier(newIndex);
              }
             });      	
     });
@@ -108,24 +127,61 @@
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">
-    <jsp:attribute name="singleFields">
-		<div>
+    
+    <jsp:attribute name="repeatingFields">
+        	<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
-		<c:forEach varStatus="status" items="${command.identifiers}">	
-				  <study:studyIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="si-section" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
-		</c:forEach>	
 		
+		
+        	<chrome:division title="System Identifiers">
+        	<table id="test1" class="tablecontent" >
+    			<tr id="system-section">
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>System name:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
+    			</tr>
+    			
+            	<c:forEach items="${command.identifiers}" varStatus="status" >
+            	<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+		
+					<study:studyIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					sectionClass="system-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />            
+					</c:if>
+						</c:forEach>
+            	</table>
+            	</chrome:division>
+    	
 		    
-		<span id="identifierbookmark"></span>
 		
-    </jsp:attribute>
+		
+        	<chrome:division  title="Organization Identifiers"  >
+        	<table id="test" class="tablecontent">
+    			<tr id="organization-section">
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Organization:</b> </th>
+    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
+    			</tr>
+    			
+            	<c:forEach items="${command.identifiers}" varStatus="status">
+					<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<study:studyIdentifier  title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
+					</c:if>
+					            	</c:forEach>
+            	
+            	</table>
+            	</chrome:division>
+        </jsp:attribute>
+    
+    
 	<jsp:attribute name="localButtons"> 
 	      	<chrome:division title="">          	
-	      		<tags:listEditorAddButton divisionClass="si-section" 	label="Add System Identifier" />   
-                <tags:listEditorAddButton divisionClass="si-section-org" label="Add Organization Identifier" /> 
+	      		<tags:listEditorAddButton divisionClass="system-section-row" 	label="Add System Identifier" />   
+                <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" /> 
             </chrome:division>                                                                                                                                                                                                                                                             
 	</jsp:attribute>
 	

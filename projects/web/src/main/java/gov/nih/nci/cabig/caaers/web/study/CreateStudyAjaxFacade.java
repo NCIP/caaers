@@ -158,11 +158,15 @@ public class CreateStudyAjaxFacade {
 			study.getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
 		}
 
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+		request.setAttribute(AJAX_INDEX_PARAMETER, study.getIdentifiers().size() - 1);
+		request.setAttribute("type", type);
 		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studyIdentifierSection");
 		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
-		return getOutputFromJsp(url);
+		String html = getOutputFromJsp(url);
+		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+		return html;
 
 	}
 

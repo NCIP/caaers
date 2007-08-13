@@ -22,9 +22,26 @@
 	Event.observe(window, "load", function() {
     	
 		Event.observe("terminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })	
+		Event.observe("multiInstitution", "change", function() { showOrganizationIdentifier(); dontShowOrganizationIdentifier();})
+		
+		
+		dontShowOrganizationIdentifier()
+		
+		function showOrganizationIdentifier(){
+				if ($('multiInstitution').options[0].selected ){
+					Effect.toggle($('organizationAssignedIdentifier.organization-row'), 'slide');
+					Effect.toggle($('organizationAssignedIdentifier.value-row'), 'slide');
+				}
+		}
+		function dontShowOrganizationIdentifier(){
+				if ($('multiInstitution').options[1].selected ){
+					Effect.toggle($('organizationAssignedIdentifier.organization-row'), 'slide');
+					Effect.toggle($('organizationAssignedIdentifier.value-row'), 'slide');
+				}
+		}
+		
 		
 		showMeddraTerms()
-
 		function showCtcTerms(){
 				if ($('terminology.term').options[0].selected ){
 					Effect.toggle($('terminology.ctcVersion-row'), 'slide');
@@ -55,6 +72,23 @@
 				//populate the name of the associated organization in 'primaryFundingSponsorOrganization-input' field	
       	
 				$('primaryFundingSponsorOrganization-input').value = '${command.primaryFundingSponsorOrganization.name}';
+				
+				if($('organizationAssignedIdentifier.organization')){
+            	
+            	$('organizationAssignedIdentifier.organization-input').value = '${command.organizationAssignedIdentifier.organization.name}';
+        		this.organizationName = "organizationAssignedIdentifier.organization";
+                this.organizationInputId = this.organizationName + "-input";
+               	AE.createStandardAutocompleter(this.organizationName, 
+			
+			function(autocompleter, text)
+			{		
+				createStudy.matchOrganization(text,	function(values) 
+					{autocompleter.setChoices(values)})
+			},function(organization) { return organization.name }
+		);
+		
+            	
+            	}      	
       
 	});
   
@@ -73,6 +107,13 @@
        		</c:forEach>
         
        	</div>
+       	
+       	<chrome:division title="Multi-Institutional Details" >
+			<c:forEach items="${fieldGroups.organizationFieldGroup.fields}" var="field" varStatus="status">
+				<tags:renderRow field="${field}" />
+			</c:forEach>
+        </chrome:division>
+       	
 	</jsp:attribute>
 
 </tags:tabForm>
