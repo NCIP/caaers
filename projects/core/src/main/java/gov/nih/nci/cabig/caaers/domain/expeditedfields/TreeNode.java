@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -7,8 +10,10 @@ import java.util.ArrayList;
  * @author Rhett Sutphin
  */
 public class TreeNode {
+    protected final Log log = LogFactory.getLog(getClass());
+
     private TreeNode parent;
-    private String displayName;
+    private DisplayNameCreator displayNameCreator;
     private String propertyName;
     private boolean list;
 
@@ -21,7 +26,7 @@ public class TreeNode {
     public static TreeNode property(String propertyName, String displayName, TreeNode... children) {
         TreeNode f = new TreeNode();
         f.setPropertyName(propertyName);
-        f.setDisplayName(displayName);
+        f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(displayName));
         return f.add(children);
     }
 
@@ -29,12 +34,13 @@ public class TreeNode {
         return property(propertyName, null, children);
     }
 
-    public static TreeNode list(String propertyName, TreeNode... children) {
-        return list(propertyName, null, children);
+    public static TreeNode list(String propertyName, String baseDisplayName, TreeNode... children) {
+        return list(propertyName, new DefaultListDisplayNameCreator(baseDisplayName), children);
     }
 
-    public static TreeNode list(String propertyName, String displayName, TreeNode... children) {
-        TreeNode f = property(propertyName, displayName, children);
+    public static TreeNode list(String propertyName, DisplayNameCreator creator, TreeNode... children) {
+        TreeNode f = property(propertyName, children);
+        f.setDisplayNameCreator(creator);
         f.setList(true);
         return f;
     }
@@ -73,6 +79,68 @@ public class TreeNode {
         return target;
     }
 
+    /**
+     * Finds the {@link TreeNode} with the given property name, relative to this node.  E.g.,
+     * if this node is "a.b" in the tree which contains "a.b.c.d.e", the following calls will succeed:
+     * <ul>
+     *   <li><code>find("c")</code></li>
+     *   <li><code>find("c.d")</code></li>
+     *   <li><code>find("c.d.e")</code></li>
+     * </ul>
+     *
+     * @param desiredPropertyName
+     */
+    public TreeNode find(String desiredPropertyName) {
+        if (log.isDebugEnabled()) log.debug("Looking for " + desiredPropertyName + " in " + this);
+        String[] bits = desiredPropertyName.split("\\.", 2);
+        String immediatePropertyName = bits[0].replaceAll("[\\[\\]]", "");
+        String grandchildrenEtc = bits.length > 1 ? bits[1] : null;
+        for (TreeNode child : getChildren()) {
+            if (log.isDebugEnabled()) log.debug(" + Examining child " + child);
+            if (child.getPropertyName() == null) {
+                // a section -- recurse into it, but only return if there's a match
+                TreeNode match = child.find(desiredPropertyName);
+                if (match != null) return match;
+            } else {
+                if (child.getPropertyName().equals(immediatePropertyName)) {
+                    if (bits.length == 1) return child;
+                    else return child.find(grandchildrenEtc);
+                }
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug(" - No property " + desiredPropertyName + " found as child of " + this);
+        }
+        return null;
+    }
+
+    public String getDisplayName(int index) {
+        if (list) {
+            return getDisplayNameCreator().createIndexedName(index);
+        } else {
+            return getDisplayNameCreator().createGenericName();
+        }
+    }
+
+    public String getDisplayName() {
+        return getDisplayNameCreator().createGenericName();
+    }
+
+    public void setDisplayName(String displayName) {
+        setDisplayNameCreator(new StaticDisplayNameCreator(displayName));
+    }
+
+    /**
+     * The qualified name will be displayName[of parent]~displayName[of this node]
+     */
+    public String getQualifiedDisplayName(){
+        String name = (parent != null) ? parent.getQualifiedDisplayName() : "";
+        String displayName = getDisplayName();
+        if (displayName != null && displayName.length() > 0)
+            name += ( (name.length() > 0) ? "~" + displayName : displayName);
+        return name;
+    }
+
     ///// BEAN ACCESSORS
 
     public TreeNode getParent() {
@@ -83,20 +151,20 @@ public class TreeNode {
         this.parent = parent;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
     public String getPropertyName() {
         return propertyName;
     }
 
     public void setPropertyName(String propertyName) {
         this.propertyName = propertyName;
+    }
+
+    public DisplayNameCreator getDisplayNameCreator() {
+        return displayNameCreator == null ? NullDisplayNameCreator.INSTANCE : displayNameCreator;
+    }
+
+    public void setDisplayNameCreator(DisplayNameCreator displayNameCreator) {
+        this.displayNameCreator = displayNameCreator;
     }
 
     public boolean isList() {
@@ -111,13 +179,27 @@ public class TreeNode {
         return children;
     }
 
-    /**
-     * The qualified name will be displayName[of parent]~displayName[of this node]
-     */
-    public String getQualifiedDisplayName(){
-    	String name = (parent != null)? parent.getQualifiedDisplayName() : "";
-    	if(displayName != null && displayName.length() > 0)
-    		name += ( (name.length() > 0)?"~" + displayName : displayName );
-    	return name;
+    ////// OBJECT METHODS
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append('[').append(getPropertyName())
+            .append(", ").append(getDisplayName()).append(']')
+            .toString();
+    }
+
+    private static final class NullDisplayNameCreator implements DisplayNameCreator {
+        public static final DisplayNameCreator INSTANCE = new NullDisplayNameCreator();
+
+        private NullDisplayNameCreator() { }
+
+        public String createIndexedName(int i) {
+            return null;
+        }
+
+        public String createGenericName() {
+            return null;
+        }
     }
 }

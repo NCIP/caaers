@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import org.apache.commons.lang.StringUtils;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Tree representing most of the properties in the
@@ -60,7 +60,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("codedPrimaryDiseaseSite", "Primary disease site"),
                     property("otherPrimaryDiseaseSite", "Other primary disease site"),
                     property("diagnosisDate", "Diagnosis date"),
-                    list("metastaticDiseaseSites", "Metastatic disease sites",
+                    list("metastaticDiseaseSites", "Metastatic disease site",
                         property("codedSite", "Site name"),
                         property("otherSite", "Other site")
                     )

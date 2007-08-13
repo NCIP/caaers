@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 
 import java.beans.Introspector;
@@ -57,6 +58,24 @@ public class ExpeditedReportTreeTest extends TestCase {
         }
     }
 
+    public void testFindSimplePropertyNode() throws Exception {
+        TreeNode found = tree.find("reporter");
+        assertNotNull(found);
+        assertEquals("Reporter details", found.getDisplayName());
+    }
+
+    public void testFindNestedPropertyNode() throws Exception {
+        TreeNode found = tree.find("radiationIntervention.description");
+        assertNotNull(found);
+        assertEquals("Treatment arm description", found.getDisplayName());
+    }
+
+    public void testFindListPropertyChildNode() throws Exception {
+        TreeNode found = tree.find("diseaseHistory.metastaticDiseaseSites[].otherSite");
+        assertNotNull(found);
+        assertEquals("Other site", found.getDisplayName());
+    }
+
     /**
      * Figures out the next domain object type down from the descriptor given.
      */
@@ -78,7 +97,7 @@ public class ExpeditedReportTreeTest extends TestCase {
         } else {
             return descriptor.getPropertyType();
         }
-        throw new RuntimeException("That's unpossible");
+        throw new CaaersError("That's unpossible");
     }
 
     private List<String> listNames(PropertyDescriptor[] propertyDescriptors) {
