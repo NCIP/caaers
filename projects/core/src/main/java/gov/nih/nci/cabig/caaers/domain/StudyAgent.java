@@ -40,6 +40,9 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	@Embedded
 	private Participation participation;
 
+	//To be moved to command object
+	private transient int indType;
+
 	/*
 	 * Constructor -- Initializes participation at create time
 	 *
@@ -71,7 +74,7 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	}
 
 	@OneToMany(mappedBy="studyAgent", fetch=FetchType.EAGER)
-	 @Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+	@Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
 	public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
 		return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
 	}
@@ -79,7 +82,6 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	public void setStudyAgentINDAssociationsInternal(
 			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
 		lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
-
 	}
 
 	@Transient
@@ -124,4 +126,13 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 		ass.setStudyAgent(this);
 	}
 
+	@Transient
+	public int getIndType() {
+		return indType;
+	}
+
+	@Transient
+	public void setIndType(int indType) {
+		this.indType = indType;
+	}
 }

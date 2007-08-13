@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -301,8 +301,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		lazyListHelper.setInternalList(StudyAgent.class, studyAgents);
 	}
 
-	// @OneToMany (mappedBy="study", fetch=FetchType.LAZY)
-	// @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
 	@OneToMany
 	@JoinColumn(name = "study_id", nullable = false)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
