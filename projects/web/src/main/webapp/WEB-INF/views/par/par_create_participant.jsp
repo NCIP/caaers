@@ -158,7 +158,9 @@
     			</tr>
     			
     		</table> 
-            
+             </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
+    
             <chrome:division title="System Identifiers">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">

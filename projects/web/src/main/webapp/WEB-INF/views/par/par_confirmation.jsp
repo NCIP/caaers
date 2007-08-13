@@ -100,6 +100,9 @@ function submitPage(s){
 	     </div>
 	     
 	      </chrome:division>
+	               </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
+    
 		<c:if test="${not empty command.identifiers}">
 			<chrome:division title="Identifiers">
 			<table class="tablecontent">

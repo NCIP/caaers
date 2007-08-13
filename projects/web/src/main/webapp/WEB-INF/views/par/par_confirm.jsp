@@ -30,7 +30,10 @@ function submitPage(s){
    You have successfully created a new Participant
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
-<chrome:division title="">
+    
+ <form:form>
+    
+<chrome:division id="single-fields">
 
   <div class="leftpane">
 	        <div class="row">
@@ -90,8 +93,9 @@ function submitPage(s){
 	     <div class="endpanes">&nbsp;</div>   
 
   </chrome:division>
+  
 		<c:if test="${not empty participant.identifiers}">
-			<chrome:division title="Identifiers">
+			<chrome:division title="Identifiers" id="repeatingFields">
 			<table class="tablecontent">
 			<tr>
 				<th scope="col">Assigning Authority</th>
@@ -115,8 +119,8 @@ function submitPage(s){
 			</table>
 			<br>
 			</chrome:division>
+			
 		</c:if>
-		
 
 <%--
         <br>
@@ -190,6 +194,7 @@ function submitPage(s){
         </tr>
    </table>    
    
-   --%>        
+   --%>
+   </form:form>        
 </chrome:box>
 </body>
