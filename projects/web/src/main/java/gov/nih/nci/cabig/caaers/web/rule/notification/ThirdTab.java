@@ -26,14 +26,14 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 
 	private InputFieldGroup fieldGroup;
 	private InputFieldGroupMap map;
-		
+
 	public ThirdTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 	}
-	
+
 	public ThirdTab() {
 		this("Review","Review","rule/notification/thirdTab");
-		
+
 	}
 
 
@@ -56,21 +56,21 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		map = new InputFieldGroupMap();
 		return map;
 	}
-	
-	
+
+
 	public Pair fetchFieldValue(InputField field , BeanWrapper command){
 		Object value = command.getPropertyValue(field.getPropertyName());
 		String strValue = (value == null)? null : String.valueOf(value);
 		return new Pair(field.getDisplayName(), strValue );
 	}
-	
+
 	/**
 	 * This will return a list of Pair objects, with each pair consiting of the <code>displayName</code>
 	 * of the field and its associated <code>value</code>.
 	 * @param fieldGroup - An InputFieldGroup
 	 * @param command - The BeanWrapper instance wrapping {@link ReportDefinitionCommand}
 	 * @param exclusions - A list of <code>displayName</code> to be eliminated from the display.
-	 * @return List&lt;Pair&gt; objects. 
+	 * @return List&lt;Pair&gt; objects.
 	 */
 	public List<Pair> fetchFieldValues(InputFieldGroup fieldGroup, BeanWrapper command, String...exclusions){
 		List<Pair> fieldList = new ArrayList<Pair>();
@@ -81,14 +81,14 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		}
 		return fieldList;
 	}
-	
+
 	@Override
 	public Map<String, Object> referenceData(ReportDefinitionCommand command) {
-	
+
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		BeanWrapper wrappedCommand = new BeanWrapperImpl(command);
-		
-		//basic details tab fields 
+
+		//basic details tab fields
 		TabWithFields<ReportDefinitionCommand> tab = (TabWithFields<ReportDefinitionCommand>)getFlow().getTab(0) ;
 		Map<String, InputFieldGroup> fieldGroupMap = tab.createFieldGroups(command);
 		InputFieldGroup fieldGroup = fieldGroupMap.get("reportDefinitionOrganization");
@@ -96,7 +96,7 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		fieldGroup = fieldGroupMap.get("reportDefinitionFieldGroup"); //the name of the fieldgroup
 		fieldList.addAll(fetchFieldValues(fieldGroup, wrappedCommand));
 		map.put(tab.getShortTitle(), fieldList);
-		
+
 		//report definition tab
 		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(1);
 		fieldGroupMap = tab.createFieldGroups(command);
@@ -115,9 +115,13 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		}
 		map.put("Report Delivery Definition", rddMap);
 		map.put("rddKeySet", rddMap.keySet());
-		
+
+		// Mandatory Field Definition Tab
+		tab = (TabWithFields<ReportDefinitionCommand>)getFlow().getTab(2);
+		fieldGroupMap = tab.createFieldGroups(command);
+
 		//Notification details tab
-		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(2);
+		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3);
 		fieldGroupMap = tab.createFieldGroups(command);
 		Map<String, Object> pnfMap = new LinkedHashMap<String, Object>();
 		for(String key : fieldGroupMap.keySet()){
@@ -126,11 +130,11 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		}
 		map.put("Planned Notification", pnfMap);
 		map.put("pnfKeySet", pnfMap.keySet());
-		
+
 		Map<String, Object> refDataMap = super.referenceData(command);
 		refDataMap.put("FIELDS", map);
 		return refDataMap;
-		
+
 	}
-	
+
 }
