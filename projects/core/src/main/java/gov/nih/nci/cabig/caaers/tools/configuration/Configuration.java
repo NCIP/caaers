@@ -24,6 +24,17 @@ public class Configuration extends DatabaseBackedConfiguration {
     public static final ConfigurationProperty<String> ESB_URL
         = PROPERTIES.add(new ConfigurationProperty.Text("esbUrl"));
 
+    public static final ConfigurationProperty<String> SMTP_ADDRESS
+    	= PROPERTIES.add(new ConfigurationProperty.Text("smtpAddress"));
+    public static final ConfigurationProperty<String> SMTP_PORT
+    	= PROPERTIES.add(new ConfigurationProperty.Text("smtpPort"));
+    public static final ConfigurationProperty<String> SMTP_USER
+		= PROPERTIES.add(new ConfigurationProperty.Text("smtpUser"));
+    public static final ConfigurationProperty<String> SMTP_PASSWORD
+		= PROPERTIES.add(new ConfigurationProperty.Text("smtpPassword"));
+    public static final ConfigurationProperty<String> SYSTEM_FROM_EMAIL
+	= PROPERTIES.add(new ConfigurationProperty.Text("systemFromEmail"));
+
     @Override
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
