@@ -16,6 +16,7 @@ import java.util.List;
 public class FactResolver {
 	private ObjectGraphFactory objectGraphFactory;
 
+
 	/**
 	 * This method will evalaute a fact that is being asserted. For example a
 	 * condition which says that - If CTEP is one of the IND holder for this
@@ -30,13 +31,16 @@ public class FactResolver {
 	 */
 
 	public boolean assertFact(Object sourceObject, String targetObjectType,
-			String targetAttributeName, String targetAttributeValue)
+			String targetAttributeName, String targetAttributeValue,String operator)
 			throws Exception {
 
+		if (targetObjectType == null ) {
+			return wrapUp(sourceObject, null, sourceObject.getClass().getName(), targetAttributeName, targetAttributeValue, operator);
+		}
+		
 		objectGraphFactory = ObjectGraphFactory.getInstance();
 
-		NavigationPath np = objectGraphFactory.findNavigationPath(sourceObject
-				.getClass().getName(), targetObjectType);
+		NavigationPath np = objectGraphFactory.findNavigationPath(sourceObject.getClass().getName(), targetObjectType);
 
 		/*
 		 * NavigationPath np = new NavigationPath();
@@ -122,7 +126,7 @@ public class FactResolver {
 		 */
 
 		return wrapUp(sourceObjectInChain, targetNode, targetObjectType,
-				targetAttributeName, targetAttributeValue);
+				targetAttributeName, targetAttributeValue, operator);
 
 	}
 
@@ -242,7 +246,7 @@ public class FactResolver {
 
 	private boolean wrapUp(Object targetObject, Node targetNode,
 			String targetObjectType, String targetAttributeName,
-			String targetAttributeValue) throws Exception {
+			String targetAttributeValue, String operator) throws Exception {
 		boolean test = false;
 		Class cls = null;
 		Method method = null;
@@ -280,7 +284,9 @@ public class FactResolver {
 				} catch (InvocationTargetException e) {
 					throw e;
 				}
-				if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
+				
+				//if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
+				if (evaluate(value,operator,targetAttributeValue)) {
 					test = true;
 					break;
 				}
@@ -298,7 +304,8 @@ public class FactResolver {
 			} catch (InvocationTargetException e) {
 				throw e;
 			}
-			if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
+			//if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
+			if (evaluate(value,operator,targetAttributeValue)) {
 				test = true;
 
 			}
@@ -307,7 +314,42 @@ public class FactResolver {
 		return test;
 
 	}
-
+	
+	/**
+	 * 
+	 * @param value
+	 * @param operator
+	 * @param targetAttributeValue
+	 * @return
+	 */
+	private boolean evaluate(Object value,String operator, String targetAttributeValue) {
+		
+		if (value.getClass().getName().endsWith("String")) {
+			if (operator.equals("==")) {
+				return value.toString().equalsIgnoreCase(targetAttributeValue);
+			} else if (operator.equals("!=")) {
+				return !value.toString().equalsIgnoreCase(targetAttributeValue);
+			} 
+		} else if (value.getClass().getName().endsWith("Integer")) {
+			if (operator.equals("==")) {
+				return ((Integer)value).intValue() == new Integer (targetAttributeValue).intValue();
+			} else if (operator.equals("!=")) {
+				return ((Integer)value).intValue() != new Integer (targetAttributeValue).intValue();
+			} else if (operator.equals(">=")) {
+				return ((Integer)value).intValue() >= new Integer (targetAttributeValue).intValue();
+			} else if (operator.equals("<=")) {
+				return ((Integer)value).intValue() <= new Integer (targetAttributeValue).intValue();
+			} 			
+		} else if (value.getClass().getName().endsWith("Boolean")) {
+			if (operator.equals("==")) {
+				return ((Boolean)value).booleanValue() == new Boolean (targetAttributeValue).booleanValue();
+			} else if (operator.equals("!=")) {
+				return ((Boolean)value).booleanValue() != new Boolean (targetAttributeValue).booleanValue();
+			} 	
+		}
+		
+		return false;
+	}
 	private String getMethodName(String name) {
 		String prop = "get" + Character.toUpperCase(name.charAt(0))
 				+ name.substring(1);
