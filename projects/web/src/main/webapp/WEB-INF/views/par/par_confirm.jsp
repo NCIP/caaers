@@ -31,7 +31,6 @@ function submitPage(s){
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
     
- <form:form>
     
 <chrome:division id="single-fields">
 
@@ -195,6 +194,5 @@ function submitPage(s){
    </table>    
    
    --%>
-   </form:form>        
 </chrome:box>
 </body>

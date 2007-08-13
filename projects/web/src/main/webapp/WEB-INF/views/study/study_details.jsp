@@ -25,7 +25,6 @@
 		Event.observe("multiInstitution", "change", function() { showOrganizationIdentifier(); dontShowOrganizationIdentifier();})
 		
 		
-		dontShowOrganizationIdentifier()
 		
 		function showOrganizationIdentifier(){
 				if ($('multiInstitution').options[0].selected ){
@@ -110,7 +109,9 @@
        	
        	<chrome:division title="Multi-Institutional Details" >
 			<c:forEach items="${fieldGroups.organizationFieldGroup.fields}" var="field" varStatus="status">
-				<tags:renderRow field="${field}" />
+			
+				<tags:renderRow field="${field}"  style="${command.multiInstitution or status.index eq 0? '':'display:none'}" />
+				
 			</c:forEach>
         </chrome:division>
        	
