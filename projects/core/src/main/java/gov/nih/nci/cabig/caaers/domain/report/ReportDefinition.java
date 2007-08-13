@@ -21,10 +21,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -55,13 +57,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private List<PlannedNotification> plannedNotifications;
     private LazyListHelper lazyListHelper;
     private Organization organization;
-    
+    private List<ReportMandatoryFieldDefinition> mandatoryFields;
+
     public ReportDefinition(){
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
             new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
     }
-    
+
     ////// LOGIC
 
     public Report createReport() {
@@ -77,7 +80,6 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         for (PlannedNotification pn : plannedNotifications) {
             if (pn.getIndexOnTimeScale() == indexOnScale) return pn;
         }
-
         return null;
     }
 
@@ -87,26 +89,22 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         if (plannedNotifications == null) {
             plannedNotifications = new ArrayList<PlannedNotification>();
         }
-
         plannedNotifications.add(pn);
     }
-	
-    
+
+
 	public void addReportDeliveryDefinition(ReportDeliveryDefinition rdd){
 		if(rdd == null) return;
 		getDeliveryDefinitionsInternal().add(rdd);
 	}
-	
+
 	@Transient
 	public List<ReportDeliveryDefinition> getDeliveryDefinitions() {
 		return lazyListHelper.getLazyList(ReportDeliveryDefinition.class);
 	}
 
-	
-    
-    ////// BEAN PROPERTIES
 
-  
+    ////// BEAN PROPERTIES
 
 	public String getName() {
         return name;
@@ -147,8 +145,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public void setPlannedNotifications(List<PlannedNotification> eventList) {
         this.plannedNotifications = eventList;
     }
-    
-    
+
+
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="rct_id")
 	@Cascade(value = { CascadeType.ALL})
@@ -165,10 +163,19 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public Organization getOrganization() {
 		return organization;
 	}
-
-	
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+	}
+
+
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="rct_id")
+	@Cascade(value = { CascadeType.ALL})
+	public List<ReportMandatoryFieldDefinition> getMandatoryFields() {
+		return mandatoryFields;
+	}
+	public void setMandatoryFields(List<ReportMandatoryFieldDefinition> mandatoryFields) {
+		this.mandatoryFields = mandatoryFields;
 	}
 
 	////// OBJECT METHODS
@@ -229,4 +236,6 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         if (trace) log.debug("== by properties");
         return true;
     }
+
+
 }

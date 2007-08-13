@@ -56,7 +56,7 @@ public class TreeNode {
         }
         return this;
     }
-    
+
     public String getPropertyPath() {
         return getPropertyPath(new StringBuilder()).toString();
     }
@@ -109,5 +109,15 @@ public class TreeNode {
 
     public List<TreeNode> getChildren() {
         return children;
+    }
+
+    /**
+     * The qualified name will be displayName[of parent]~displayName[of this node]
+     */
+    public String getQualifiedDisplayName(){
+    	String name = (parent != null)? parent.getQualifiedDisplayName() : "";
+    	if(displayName != null && displayName.length() > 0)
+    		name += ( (name.length() > 0)?"~" + displayName : displayName );
+    	return name;
     }
 }
