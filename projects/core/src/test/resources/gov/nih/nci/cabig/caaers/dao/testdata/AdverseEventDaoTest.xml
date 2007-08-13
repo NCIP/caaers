@@ -235,4 +235,7 @@
         adverse_event_id="-2"
         list_index="0"
         />
+        
+    <!--  referenced tables -->   
+    <ae_labs />    
 </dataset>

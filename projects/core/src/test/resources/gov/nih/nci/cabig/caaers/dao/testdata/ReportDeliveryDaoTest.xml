@@ -32,6 +32,20 @@
 		version = "0"
 		rct_id="-222"
 		grid_id ="abcd282828"/>
+		
+		<mandatory_field_defs id="-330"
+		 field_path="abcd.e"
+		 mandatory="false" 
+		 rct_id="-222" />
+		<mandatory_field_defs id="-331"
+		 field_path="abcd.f"
+		 mandatory="true"
+		  rct_id="-222" />
+		<mandatory_field_defs id="-332"
+		 field_path="abcd.g"
+		 rct_id="-222"
+		 mandatory="true" />
+		 
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />		

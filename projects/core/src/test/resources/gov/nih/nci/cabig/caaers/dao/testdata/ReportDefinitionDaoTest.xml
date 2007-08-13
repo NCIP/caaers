@@ -63,7 +63,21 @@
 		role_name="Investigator"
 		version="0"
 		/>
+		
 	<report_delivery_defs />
+	<mandatory_field_defs id="-330"
+		 field_path="abcd.e"
+		 mandatory="false" 
+		 rct_id="-222" />
+		<mandatory_field_defs id="-331"
+		 field_path="abcd.f"
+		 mandatory="true"
+		  rct_id="-222" />
+		<mandatory_field_defs id="-332"
+		 field_path="abcd.g"
+		 rct_id="-222"
+		 mandatory="true" />
+	
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />	

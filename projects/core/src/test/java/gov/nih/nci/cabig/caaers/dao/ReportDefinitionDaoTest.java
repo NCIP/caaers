@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
@@ -95,7 +96,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 
         pnlist.add(pen);
         rct.setPlannedNotifications(pnlist);
-       
+
 		final ReportDeliveryDefinition rdd = new ReportDeliveryDefinition();
 		rdd.setEndPoint("abcd");
 		rdd.setEndPointType(rdd.ENDPOINT_TYPE_EMAIL);
@@ -103,40 +104,58 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		rdd.setEntityDescription("Joel");
 		rdd.setEntityName("Manju");
 		rdd.setEntityType(rdd.ENTITY_TYPE_ROLE);
-		
+
 		rct.addReportDeliveryDefinition(rdd);
-		
+
 		Organization org  = orgDao.getById(-1001);
 		org.addReportDefinition(rct);
+
+		//add new mandatory fields.
+		ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", false);
+		ReportMandatoryFieldDefinition mf2 = new ReportMandatoryFieldDefinition("biju.a2", true);
+		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
+		mandatoryFields.add(mf1);
+		mandatoryFields.add(mf2);
+		rct.setMandatoryFields(mandatoryFields);
+
 		rctDao.save(rct);
         final Integer id = rct.getId();
 
         interruptSession();
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
+            @Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
                // ReportDefinition rctLoaded = rctDao.getById(id);
             	ReportDefinition rctLoaded = rctDao.getByName("Test-RCT");
                 rctDao.initialize(rctLoaded);
 
                 log.debug(rctLoaded.getDuration());
-                
+
                 Organization org = rctLoaded.getOrganization();
                 assertNotNull("Organization should not be null", org);
                 assertEquals("Organization must be associated to ReportDefinition", org.getReportDefinitions().size() , 2);
                 PlannedEmailNotification nf = (PlannedEmailNotification) rctLoaded.getPlannedNotifications().get(0);
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
                 assertEquals("Body Content Equality Failed", "This is my body", nf.getNotificationBodyContent().getBody());
-                
+
                 ReportDeliveryDefinition rdd2 = rctLoaded.getDeliveryDefinitionsInternal().get(0);
                 assertEquals("Report delivery definiton name must be same" , rdd2.getEndPoint() , rdd.getEndPoint());
+
+                //verify report mandatory fields.
+                List<ReportMandatoryFieldDefinition> mfList = rctLoaded.getMandatoryFields();
+                assertEquals("Mandatory fields size", 2, mfList.size());
+                ReportMandatoryFieldDefinition mfLoaded = mfList.get(1);
+                assertEquals("Path should be same", "biju.a2", mfLoaded.getFieldPath());
+                assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory());
+
                 //update the values.
                 nf.setIndexOnTimeScale(4);
                 nf.setSubjectLine("New Subject Line");
                 rctDao.save(rctLoaded);
                 log.debug("============= after save ===============");
-                
-                
+
+
             }
         });
     }

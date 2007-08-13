@@ -223,6 +223,9 @@
 		rct_ID="-222"
         required="1"
         />
+    
+    <mandatory_field_defs />
+    <report_delivery_defs />
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />        

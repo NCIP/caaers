@@ -124,7 +124,8 @@
         value="13js77"
         type="MRN"
         organization_id="-1001"
-        discriminator_column="1"/>      
+        discriminator_column="1"/>
+     <ae_attributions />      
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />		
