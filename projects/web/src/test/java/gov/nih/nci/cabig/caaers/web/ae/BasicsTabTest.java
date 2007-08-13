@@ -70,7 +70,7 @@ public class BasicsTabTest extends AeTabTestCase {
     public void testCtcTermRequired() throws Exception {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm", "CTC term");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.term", "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
