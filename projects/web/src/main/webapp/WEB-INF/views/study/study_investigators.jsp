@@ -24,17 +24,7 @@
 var invListEditor;
 function fireAction(action, selectedInvestigator){
 	if(action == 'addInv'){
-		invListEditor = new ListEditor('ssi-section',createStudy, "Investigator",{
-      		 addButton: "xxx",
-             addIndicator: "ssi-add-indicator",
-             addParameters: [],
-             addFirstAfter: "ssi-bookmark",
-             addCallback: function(nextIndex) {
-          	   new jsInvestigator(nextIndex);
-             }
-         
-    	});  
-		invListEditor.add.bind(invListEditor)();
+		
 	}else{
 		var form = document.getElementById('command')
 		form._target.name='_noname';
@@ -77,13 +67,27 @@ Event.observe(window, "load", function() {
    	    selIndex = $F('studySiteIndex');
 		fireAction('changeSite', selIndex);
 	 });
-})
+	 
+	 
+	 
+	 //init the list editor
+	 invListEditor = new ListEditor('ssi-section',createStudy, "Investigator",{
+             addParameters: [],
+             addFirstAfter: "ssi-bookmark",
+             addCallback: function(nextIndex) {
+          	   new jsInvestigator(nextIndex);
+             }
+         
+    	});  
+	 
+});
 
 function chooseSitesfromSummary(indx){
 	var siteSelBox = $('studySiteIndex')
 	siteSelBox.selectedIndex = indx + 1;
 	fireAction('changeSite', indx);
 }
+
 </script>
 </head>
 <body>
@@ -124,7 +128,10 @@ function chooseSitesfromSummary(indx){
 		</td>
 	  </tr>
 	</table>
- </jsp:attribute>	 
+ </jsp:attribute>	
+ <jsp:attribute name="localButtons">
+  <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-section" label="Add Investigator" /></div>
+ </jsp:attribute> 
 </tags:tabForm>
 </body>
 </html>

@@ -16,17 +16,7 @@
 
      function fireAction(action, selectedPersonnel){
 	    if(action == 'addStudyPersonnel'){
-		   personnelListEditor = new ListEditor('ssi-section',createStudy, "StudyPersonnel",{
-      		 addButton: "xxx",
-             addIndicator: "ssi-add-indicator",
-             addParameters: [],
-             addFirstAfter: "ssi-bookmark",
-             addCallback: function(nextIndex) {
-          	   new jsPersonnel(nextIndex);
-             }
-         
-    	   });  
-		   personnelListEditor.add.bind(personnelListEditor)();
+		  
 	    }else{
 		   var form = document.getElementById('command')
 		   form._target.name='_noname';
@@ -69,6 +59,16 @@
    	      selIndex = $F('studySiteIndex');
 		  fireAction('changeSite', selIndex);
 	    });
+	    
+	    //initialize the list editor
+	     personnelListEditor = new ListEditor('ssi-section',createStudy, "StudyPersonnel",{
+             addParameters: [],
+             addFirstAfter: "ssi-bookmark",
+             addCallback: function(nextIndex) {
+          	   new jsPersonnel(nextIndex);
+             }
+         
+    	   });  
      })
      
  function chooseSitesfromSummary(indx){
@@ -117,7 +117,11 @@
 		</td>
 	  </tr>
 	</table>
- </jsp:attribute>	 
+ </jsp:attribute>	
+ <jsp:attribute name="localButtons">
+  <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-section" label="Add Research Staff" /></div>
+ </jsp:attribute> 
+  
 </tags:tabForm>
 </body>
 </html>

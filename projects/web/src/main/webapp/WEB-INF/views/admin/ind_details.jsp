@@ -51,7 +51,7 @@
  <div class="tabpane">
   <ul id="workflow-tabs" class="tabs autoclear">
     <li class="tab selected"><div>
-        <a href="#">Feed IND#</a>
+        <a href="#">Create IND#</a>
     </div></li>
     <li class="tab"><div>
         <a href="searchIND">Search IND#</a>
@@ -63,6 +63,7 @@
 	<form:form>
 		<chrome:division id="single-fields">
 			<div class="instructions">You can add the details of an Investigational New Drug(IND)here.
+			<br /><br />
 			</div>
 			<tags:hasErrorsMessage hideErrorDetails="true"/>
 			<!--  JSP body here -->
@@ -73,9 +74,11 @@
 			</div>
 			<div class="content buttons autoclear">
 			  <div class="flow-buttons">
+			   <span class="next">
 			  	<!--  reset and save buttons -->
 			  	<input type="reset" value="Reset" />
 			  	<input type="submit" value="Save" />
+			   </span>	
 			  </div>
 			</div>
 		</chrome:division>

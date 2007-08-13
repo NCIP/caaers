@@ -77,13 +77,11 @@
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="true">
-    <jsp:attribute name="singleFields">
+    <jsp:attribute name="repeatingFields">
    	
-		<p id="instructions">
-			Add StudySites associated with the Study
-			<a href="javascript:fireAction('addSite','0');"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a><tags:indicator id="ss-add-indicator"/>
-			<br>
+		<p id="instructions">&nbsp;&nbsp;
+		Click on the Add Study Site button below in order to associate a study site to this study.
+		 <br>
 		</p>
 		<div>
 			<input type="hidden" name="_action" value="">
@@ -95,6 +93,10 @@
 		</c:forEach>
 			<span id="sitebookmark"></span>
 		</table>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+    	<input type="button" onClick="javascript:fireAction('addSite','0');" 
+     		name="AddStudySite" value="Add Study Site"><tags:indicator id="ss-add-indicator"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

@@ -46,8 +46,9 @@ public class CreateINDController extends SimpleFormController{
 		holderTypeOptions.put("org", "Organization");
 		holderTypeOptions.put("inv", "Investigator");
 		InputField holderTypeField = InputFieldFactory.createSelectField("holderType", "IND held by?",true, holderTypeOptions);
-		InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId", "Sponsor", true);
-		InputFieldAttributes.setDetails(sponsorField, "Enter a portion of the Sponsor name");
+		InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId", "IND Holder", true);
+		sponsorField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+		//InputFieldAttributes.setDetails(sponsorField, "Enter a portion of the Sponsor name");
 
         fieldGroup.getFields().add(indNumberField);
         fieldGroup.getFields().add(holderTypeField);

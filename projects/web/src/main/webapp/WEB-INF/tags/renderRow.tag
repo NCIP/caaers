@@ -14,8 +14,7 @@
         </c:choose>
     </div>
     <div class="value"><tags:renderInputs field="${field}"/>
-    <c:if test="${field.attributes.enableDelete}"><a href="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');"><img 
-	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a></c:if></div>
+    <c:if test="${field.attributes.enableDelete}"><input type="button" name="delete" value="Delete" onClick="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');" /></c:if></div>
     <c:if test="${not empty field.attributes.details}">
         <div class="extra">${field.attributes.details}</div>
     </c:if>

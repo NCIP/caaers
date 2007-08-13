@@ -9,12 +9,14 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 /**
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  *         Created-on : May 22, 2007
@@ -39,8 +41,8 @@ public class ReportDefinitionCommand  {
 	private String duration;
 	private String notificationType;
 	private Organization organization;
-	
-	// page -3
+
+	// page -4
 	private String to;
 	private String message;
 	private String pointOnScale = "1"; // the selected point in the time scale
@@ -51,17 +53,23 @@ public class ReportDefinitionCommand  {
 	private List<String> directRecipient = new ArrayList<String>();
 	private Map<String, String> roles;
 
+	private Map<String, Integer> mandatoryFieldMap;
+
 	// supporting domain objects
 	protected ReportDefinition rpDef;
 	protected ReportDefinitionDao rpDefDao;
-	
+
 	//flow support variables
 	private boolean validationFailed;
 	private String delete; //index in the list to be deleted
 	private String entity; //entity to be deleted
-	
-	
-	
+
+	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao){
+		this.rpDef = rpDef;
+		this.rpDefDao = rpDefDao;
+		initializeMandatoryFieldMap();
+	}
+
 	///LOGIC
 	public void reset() {
 		subjectLine = "";
@@ -85,11 +93,11 @@ public class ReportDefinitionCommand  {
 	}
 
 	public void populate(PlannedNotification pn) {
-		
-		//reset the screen fields 
+
+		//reset the screen fields
 		reset();
 		if(pn == null) return;
-		
+
 		if (pn instanceof PlannedEmailNotification) {
 			PlannedEmailNotification pen = (PlannedEmailNotification) pn;
 			subjectLine = pen.getSubjectLine();
@@ -108,8 +116,23 @@ public class ReportDefinitionCommand  {
 				}
 			}
 		}
-		
+
 	}
+
+	public void initializeMandatoryFieldMap(){
+		mandatoryFieldMap = new LinkedHashMap<String, Integer>();
+		String path;
+		int i = 0;
+		for(ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()){
+			path = mf.getFieldPath();
+//			path = StringUtils.replaceChars(path, '[', '(');
+//			path = StringUtils.replaceChars(path, ']', ')');
+//			path = StringUtils.replaceChars(path, '.', '_');
+    		mandatoryFieldMap.put(path, i);
+    		i++;
+    	}
+	}
+
 	/**
 	 * <p>
 	 * This method will remove <code>PlannedNotification</code> object
@@ -140,10 +163,10 @@ public class ReportDefinitionCommand  {
 			rpDef.getDeliveryDefinitions().remove(indexToDelete);
 		}
 	}
-	
+
 
 	public void updateReportCalendarTemplate() {
-		
+
 		rpDef.setOrganization(organization);
 		rpDef.setName(name);
 		rpDef.setDescription(description);
@@ -195,14 +218,14 @@ public class ReportDefinitionCommand  {
 				recipientList.add(r);
 			}
 		}
-		
+
 		// reset the command(form) now
 		reset();
 	}
-	
-	
+
+
 	///BEAN PROPERTIES
-	
+
 	/**
 	 * Will tell the index of the PlannedNotification to be deleted.
 	 */
@@ -224,7 +247,7 @@ public class ReportDefinitionCommand  {
 	public void setValidationFailed(boolean validationFailed) {
 		this.validationFailed = validationFailed;
 	}
-	
+
 
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return rpDefDao;
@@ -250,17 +273,17 @@ public class ReportDefinitionCommand  {
 		return rpDef;
 	}
 
-	
+
 	public void setReportDefinition(ReportDefinition calendarTemplate) {
 		this.rpDef = calendarTemplate;
 	}
 
-	
+
 	public String getFromAddress() {
 		return fromAddress;
 	}
 
-	
+
 	public void setFromAddress(String fromAddress) {
 		this.fromAddress = fromAddress;
 	}
@@ -273,7 +296,7 @@ public class ReportDefinitionCommand  {
 		this.subjectLine = subjectLine;
 	}
 
-	
+
 	public String getPointOnScale() {
 		return pointOnScale;
 	}
@@ -322,12 +345,12 @@ public class ReportDefinitionCommand  {
 		this.notificationType = notificationType;
 	}
 
-	
+
 	public List<String> getDirectRecipient() {
 		return directRecipient;
 	}
 
-	
+
 	public void setDirectRecipient(List<String> directRecipient) {
 		this.directRecipient = directRecipient;
 	}
@@ -351,7 +374,7 @@ public class ReportDefinitionCommand  {
 		return roles;
 	}
 	/**
-	 * The roles, a map injected from spring config file, consits of the 
+	 * The roles, a map injected from spring config file, consits of the
 	 * roles to which notification can be sent.
 	 * @param roles
 	 */
@@ -397,5 +420,16 @@ public class ReportDefinitionCommand  {
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
+
+	public Map<String, Integer> getMandatoryFieldMap() {
+		return mandatoryFieldMap;
+	}
+
+	public void setMandatoryFieldMap(
+			Map<String, Integer> mandatoryFieldMap) {
+		this.mandatoryFieldMap = mandatoryFieldMap;
+	}
+
+
 
 }

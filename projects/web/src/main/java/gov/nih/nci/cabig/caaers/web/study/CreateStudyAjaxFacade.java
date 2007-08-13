@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -104,7 +105,7 @@ public class CreateStudyAjaxFacade {
 
 	public List<InvestigationalNewDrug> matchINDs(String text) {
 		List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByIds(new String[] { text });
-		return ObjectTools.reduceAll(inds, "id", "strINDNo");
+		return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
 	}
 
 	public List<Organization> matchOrganization(String text) {
@@ -190,22 +191,27 @@ public class CreateStudyAjaxFacade {
 	/**
 	 * A row of IND is needed to display
 	 */
-	public String addIND(int index, int indIndex) {
+	public String addIND(int index, int indIndex, int indType) {
 		HttpServletRequest request = getHttpServletRequest();
-
 		Study study = getStudyCommand(request);
-		// pre-initialize the StudyAgentINDAssociation object at indIndex.
-		StudyAgentINDAssociation sia = study.getStudyAgents().get(index).getStudyAgentINDAssociations().get(indIndex);
-		AgentsTab agentTab = new AgentsTab();
-		Map<String, InputFieldGroup> fieldGrpMap = agentTab.createFieldGroups(study);
-		request.setAttribute("fieldGroups", fieldGrpMap);
-		// request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, study);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute("indIndex", indIndex);
-		// request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studyAgentINDSection");
-		// request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-		String url = "/pages/study/studyAgentIND";// getCurrentPageContextRelative(WebContextFactory.get());
-		return getOutputFromJsp(url);
+		StudyAgent sa = study.getStudyAgents().get(index);
+		List<StudyAgentINDAssociation> aList = sa.getStudyAgentINDAssociations();
+		aList.clear(); //we are sure there is only 1 IND as of now
+		String html = "";
+		if(AgentsTab.IND_TYPE_CTEP == indType){
+			InvestigationalNewDrug ind = investigationalNewDrugDao.fetchCtepInd();
+			aList.get(0).setInvestigationalNewDrug(ind);
+		}else if(AgentsTab.IND_TYPE_OTHER == indType){
+			AgentsTab agentTab = new AgentsTab();
+			//pre-initialize one IND
+			aList.get(0);
+			request.setAttribute("fieldGroups", agentTab.createFieldGroups(study));
+			request.setAttribute(AJAX_INDEX_PARAMETER, index);
+			request.setAttribute("indIndex", indIndex);
+			String url = "/pages/study/studyAgentIND";
+			html = getOutputFromJsp(url);
+		}
+		return html;
 	}
 
 	// using existing list editor

@@ -47,20 +47,41 @@
             	this.agentName = agentName;
             	this.agentPropertyName = "studyAgents["  + index + "].agent";
             	this.agentInputId = this.agentPropertyName + "-input";
-            	//this.indName = indName;
-            	//this.indPropertyName = "studyAgents["  + index + "].investigationalNewDrugs";
-            	//this.indInputId = this.indPropertyName + "-input";
             	if(agentName) $(this.agentInputId).value = agentName;
-            	//if(indName) $(this.indInputId).value = indName;
             	
             	AE.createStandardAutocompleter(this.agentPropertyName, 
             		this.agentPopulator.bind(this),
             		this.agentSelector.bind(this)
             	);
+            	//observe on the change event on IND Type (usage) dropdown.
+				Event.observe('studyAgents['  + index + '].indType',"change", function(event){
+					
+					if(event.target.value == 2){
+					  	createStudy.addIND(index, 0, 2,function(html){
+     						new Insertion.After($$(".ind"+index ).last(), html);
+     						AE.slideAndShow('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+     						//setup auto completer
+    						jsAgents[index].initINDAutoCompleter(0);
+				     	});
+					}else if(event.target.value == 1){
+						createStudy.addIND(index, 0, 1,function(html){
+						var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+						if(el){
+							el.parentNode.removeChild(el);
+							}	
+						});
+					}else {
+					  //0 deletion
+					  fireRowDelete(index,0);
+					}
+					
+	 			});
             	
             },initINDAutoCompleter:function(indIndex, indNumber ,indHolderName){
                   var indPropName = "studyAgents["+this.index+"].studyAgentINDAssociations["+indIndex+"].investigationalNewDrug";
-                  if(indHolderName) $(indPropName + "-input").value = indNumber; 
+                  var indPropInput = $(indPropName + "-input");
+                  if(!indPropInput) return; 
+                  if(indHolderName)	indPropInput.value = indNumber;
         		  AE.createStandardAutocompleter(indPropName, 
             		this.indPopulator.bind(this),
             		this.indSelector.bind(this)
@@ -82,7 +103,7 @@
         	},
         	
         	indSelector: function(ind) { 
-        		return ind.strINDNo; 
+        		return ind.strINDNo + '::' + ind.holderName; 
         	}
     });
 	  
@@ -108,14 +129,14 @@
       
       //Function to add a row of IND numbers.
      function insertINDRow(index, prop){
-     	var indIndex = $$("." + "ind"+index).length - 1;
+     	var indIndex = $$("." + "ind"+index).length - 2;
      	var indRow = 'studyAgents[' + index + '].studyAgentINDAssociations[' + indIndex +'].investigationalNewDrug-row';
      	createStudy.addIND(index, indIndex,function(html){
      		new Insertion.After($$(".ind"+index ).last(), html);
      		AE.slideAndShow(indRow)
      		//setup auto completer
      		jsAgents[index].initINDAutoCompleter(indIndex);
-     		Effect.BlindUp('local-buttons-' + index);
+     		
      	});
      }
      
@@ -126,9 +147,7 @@
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
 	<jsp:attribute name="instructions">
-	 Add a Study Agent 	<a href="javascript:fireAction('addStudyAgent','0');">
-			<img src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="sa-add-indicator"/>
-			<br /> <i>Cancer Therapy Evaluation Program(CTEP) should choose IND # 111, to mark the agent as investigational</i>
+	  Click on the Add Study Agent button below, in order to add an agent to this study.
 	</jsp:attribute>
     <jsp:attribute name="singleFields">
 		<div>		
@@ -142,15 +161,14 @@
 		<c:forEach var="sa" varStatus="status" items="${command.studyAgents}">
   	      <study:aStudyChild title="Study Agent ${status.index + 1}" sectionClass="sa-section"
 			 removeButtonAction="removeStudyAgent" enableDelete="true" index="${status.index}" >
-			 <jsp:attribute name="localButtons">
-			 	<c:if test="${fn:length(sa.studyAgentINDAssociations) < 1}">
-			 		<input type="button" value="Add IND #" onClick="javascript:{this.disable(); insertINDRow(${status.index})}" />
-			 	</c:if>
-			 </jsp:attribute>
           </study:aStudyChild>
 		</c:forEach>
 		<span id="agentbookmark" />
     </jsp:attribute>
-</tags:tabForm>
+    <jsp:attribute name="localButtons">
+    <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" 
+     name="AddStudyAgent" value="Add Study Agent"><tags:indicator id="sa-add-indicator"/>
+    </jsp:attribute>
+ </tags:tabForm>
 </body>
 </html>

@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
@@ -20,23 +24,38 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public class EditStudyController extends StudyController<Study> {
-	
+
 	private static final Log log = LogFactory.getLog(EditStudyController.class);
 
 	public EditStudyController() {
 		setBindOnNewForm(true);
 	}
-	
+
 	///LOGIC
-	
-    protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+
+    @Override
+	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
     	request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
         if(log.isDebugEnabled()) log.debug("Retrieved Study :" + String.valueOf(study));
-        return study;
-    }    
 
-    protected Study save(Study study, Errors errors) {
+        //update the INDType of StudyAgents
+        if(study.getStudyAgentsInternal() != null && study.getStudyAgentsInternal().size() > 0){
+        	for(StudyAgent sa : study.getStudyAgentsInternal()){
+        		//update the IND Type.
+        		List<StudyAgentINDAssociation> sas  = sa.getStudyAgentINDAssociationsInternal();
+        		if(sas == null || sas.isEmpty()) sa.setIndType(0);
+        		else if(sas.get(0).getInvestigationalNewDrug().getIndNumber() == -111) sa.setIndType(1);
+        		else sa.setIndType(2);
+
+        	}
+        }
+
+        return study;
+    }
+
+    @Override
+	protected Study save(Study study, Errors errors) {
     	if( errors.hasErrors()) return study;
     	Study mergedStudy = getDao().merge(study);
     	mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
@@ -46,10 +65,12 @@ public class EditStudyController extends StudyController<Study> {
     }
 
 
+	@Override
 	protected boolean isSummaryEnabled() {
         return true;
     }
 
+	@Override
 	protected void layoutTabs(Flow<Study> flow) {
         flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
         flow.addTab(new DetailsTab());
@@ -62,7 +83,7 @@ public class EditStudyController extends StudyController<Study> {
     }
 
     @Override
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
     		Object command, BindException errors) throws Exception {
     	 Study study = (Study) command;
     	 studyDao.merge(study);
@@ -74,6 +95,6 @@ public class EditStudyController extends StudyController<Study> {
 		return super.shouldSave(request, command, tab) &&
 		tab.getNumber() != 0; //dont save if it is overview page
 	}
-    
-    
+
+
 }

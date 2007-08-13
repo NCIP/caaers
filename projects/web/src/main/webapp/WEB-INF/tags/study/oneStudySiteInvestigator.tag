@@ -7,8 +7,12 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
-	<p id="instructions" align="left">Add investigator to study <a href="javascript:fireAction('addInv', '0');"><img
-				src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a><tags:indicator id="ssi-add-indicator"/>
+	<p id="instructions" align="left">
+	<c:if  test="${fn:length(command.studySites[index].studyInvestigators) lt 1}">
+	   There are no investigators associated to this study site.
+	   </c:if>
+	   Click on the Add Investigator button to associate investigator to this study site.	
+	<br />
 	</p>
 	  <c:forEach var="si" items="${command.studySites[index].studyInvestigators}" varStatus="status">
 	    <study:aStudyChild title="Study Investigator ${status.index + 1}" enableDelete="true"
@@ -16,5 +20,5 @@
 	    
 	    <script>new jsInvestigator(${status.index}, '${si.siteInvestigator.investigator.fullName}');</script>
 	  </c:forEach>
-	  <span id="ssi-bookmark" />
+	  <span id="ssi-bookmark"> </span>
 </div>

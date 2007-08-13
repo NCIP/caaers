@@ -58,7 +58,7 @@ function buildTable(form) {
 <div class="tabpane">
  <ul id="workflow-tabs" class="tabs autoclear">
     <li class="tab"><div>
-        <a href="createIND">Feed IND#</a>
+        <a href="createIND">Create IND#</a>
     </div></li>
     <li class="tab selected"><div>
         <a href="#">Search IND#</a>
@@ -78,7 +78,7 @@ function buildTable(form) {
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> Sponsor name :&nbsp; </div>
+		    	<div class="label"> IND holder :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="sponsorName"/></div>
 		    </div>
    </chrome:box>

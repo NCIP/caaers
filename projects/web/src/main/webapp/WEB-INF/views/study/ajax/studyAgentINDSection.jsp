@@ -5,7 +5,7 @@
 <tags:noform>
 <c:set var="mainGroup">main${index}</c:set>
 <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="status">
-	<c:if test="${status.index gt indIndex }">
+	<c:if test="${fn:endsWith(field.propertyName, 'investigationalNewDrug') and (status.index gt indIndex )}">
     <tags:renderRow field="${field}" deleteParams="${index},${status.index-1}" cssClass="ind${index}" style="display:none"/>
     </c:if>
  </c:forEach>

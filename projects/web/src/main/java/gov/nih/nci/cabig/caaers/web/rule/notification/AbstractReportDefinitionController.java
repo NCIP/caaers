@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -13,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -21,31 +25,33 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 public abstract class AbstractReportDefinitionController extends AbstractTabbedFlowFormController<ReportDefinitionCommand>{
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-	
+
 	protected ReportDefinitionDao reportDefinitionDao;
 	protected Map<String, String> roles;
 	protected OrganizationDao organizationDao;
-	
+
 	public AbstractReportDefinitionController(){
 		initFlow();
 		super.setAllowDirtyBack(false);
 		super.setAllowDirtyForward(false);
 	}
-	
+
 	//initializes the flow
     protected void initFlow() {
         setFlow(new Flow<ReportDefinitionCommand>(getFlowName()));
         FirstTab firstTab = new FirstTab();
         ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
+        ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
         SecondTab secondTab = new SecondTab();
         ThirdTab thirdTab = new ThirdTab();
-        
+
         getFlow().addTab(firstTab);
         getFlow().addTab(deliveryDefTab);
+        getFlow().addTab(mandatoryFieldTab);
         getFlow().addTab(secondTab);
         getFlow().addTab(thirdTab);
     }
-    
+
     @Override
 	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
 		super.initBinder(request, binder);
@@ -53,7 +59,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
 		ControllerTools.registerEnumEditor(binder, ReportFormat.class);
 	}
-	
+
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res, Object cmd, BindException arg3) throws Exception {
 		ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand)cmd;
@@ -62,7 +68,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
         //model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToNotificationList", model);
 	}
-    
+
 
 	@Override
 	protected String getViewName(HttpServletRequest request, Object command, int page) {
@@ -76,9 +82,9 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 
 	/** Should return the name of the flow */
 	public abstract String getFlowName();
-	
+
     private Object findInRequest(HttpServletRequest request, String attributName){
-   
+
     	Object attr = request.getParameter(attributName);
     	if(attr == null) attr = request.getAttribute(attributName);
     	return attr;
@@ -90,8 +96,18 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 		if(isAjax != null) return true;
 		return super.suppressValidation(request, command);
 	}
-	
-	
+
+	protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList, TreeNode node) {
+		if(StringUtils.isNotEmpty(node.getPropertyPath())){
+			ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node.getPropertyPath());
+			mfList.add(mf);
+		}
+		if(node.getChildren() != null){
+			for(TreeNode n : node.getChildren())
+				populateMandatoryFields(mfList, n);
+		}
+	}
+
 	///BEAN PROPERTIES
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return reportDefinitionDao;
@@ -100,7 +116,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
 		this.reportDefinitionDao = rdDao;
 	}
-	
+
 	public void setRoles(Map<String,String> roleList){
 		this.roles = roleList;
 	}
@@ -108,11 +124,13 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	public Map<String,String> getAllRoles(){
 		return roles;
 	}
-	
+
 	public OrganizationDao getOrganizationDao(){
 		return organizationDao;
 	}
 	public void setOrganizationDao(OrganizationDao organizationDao){
 		this.organizationDao = organizationDao;
 	}
+
+
 }
