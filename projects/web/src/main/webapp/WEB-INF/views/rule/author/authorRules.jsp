@@ -549,7 +549,7 @@
 		var selectId =  fieldDropDown.id.substring(0,fieldDropDown.id.lastIndexOf(".")); 
 		
 		var validValueField = document.getElementById(selectId + '.literalRestriction[0].value');
-		
+
 		
 		
 		
@@ -826,10 +826,18 @@
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
-
+							var hiddenId = selectId + '.literalRestriction[0].readableValue'
+							
+							
+															
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35"/>';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
-					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
+					
+					var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" size="35"/>';
+					
+					
+					
+					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
 
 	
 
@@ -837,6 +845,8 @@
                 	orgsPopulator, {
                 	valueSelector: orgValueSelector,
                 	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                		
+                		document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
                 	},
                 	indicator: "ind-indicator"});
 
@@ -1428,12 +1438,18 @@ button. Rules created will belong to the selected RuleSet.</p>
 												function loadOrgs() {
 	
 																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+																		var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
 																		var spanId = newId + '.span';
 																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
-																		
+																	
+																	
+																	
 																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" />';
 																	inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
-																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
+																	
+																	var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" value = "'+ fieldValue + '" size="35" />';
+																	
+																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
 
 	
 
@@ -1441,7 +1457,7 @@ button. Rules created will belong to the selected RuleSet.</p>
                 														orgsPopulator, {
                 														valueSelector: orgValueSelector,
                 															afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-									
+																					document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
                 																},
                 																indicator: "ind-indicator"});
 	
