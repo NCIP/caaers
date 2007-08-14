@@ -162,11 +162,11 @@ Object.extend(ListEditor.prototype, {
         heading.innerHTML = "<span class='text'>" + heading.innerHTML + "</span>"
         if (this.options.reorderable) {
             // TODO: icons instead of text
-            var upControl = Builder.node("a", { 'class': 'list-control move-up-control', 'href': '#' });
+            var upControl = Builder.node("a", { 'class': 'list-control move-up-control', 'title': 'Move up', 'href': '#' });
             upControl.innerHTML = "&#9650;" // set directly to avoid escaping
             Event.observe(upControl, "click", this.up.bindAsEventListener(this))
 
-            var downControl = Builder.node("a", { 'class': 'list-control move-down-control', 'href': '#' });
+            var downControl = Builder.node("a", { 'class': 'list-control move-down-control', 'title': 'Move down', 'href': '#' });
             downControl.innerHTML = "&#9660;" // set directly to avoid escaping
             Event.observe(downControl, "click", this.down.bindAsEventListener(this))
 

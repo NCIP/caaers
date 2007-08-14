@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,8 +20,8 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
     }
 
     @Override
-    protected String getFlowName() {
-        return "Edit expedited report";
+    protected FlowFactory<RoutineAdverseEventInputCommand> createFlowFactory() {
+        return new RoutineFlowFactory("Edit routine AEs");
     }
 
     @Override

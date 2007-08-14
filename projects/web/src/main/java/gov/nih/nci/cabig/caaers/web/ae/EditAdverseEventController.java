@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,15 +19,40 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
 
     @Override
-    protected String getFlowName() {
-        return "Edit expedited report";
+    protected FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory() {
+        return new ExpeditedFlowFactory("Edit expedited report");
     }
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
+        EditExpeditedAdverseEventCommand command
+            = new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
+        /* TODO: make this work
+        command.setAeReport(getDao().getById(
+            ServletRequestUtils.getRequiredIntParameter(request, "aeReport")));
+        */
+        return command;
     }
-    
+
+    /* Attempt at not rebinding the aeReport with every request.  Exposes flow to lazy init exceptions,
+       so it is disabled for now.  TODO: make it work.
+    // Same as the super-implementation, except that it skips binding the aeReport parameter
+    @Override
+    protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception {
+        ServletRequestDataBinder binder = new ServletRequestDataBinder(command, getCommandName()) {
+            @Override
+            public void bind(ServletRequest request) {
+                MutablePropertyValues mpvs = new ServletRequestParameterPropertyValues(request);
+                mpvs.removePropertyValue("aeReport");
+                doBind(mpvs);
+            }
+        };
+        prepareBinder(binder);
+        initBinder(request, binder);
+        return binder;
+    }
+    */
+
     @Override
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {

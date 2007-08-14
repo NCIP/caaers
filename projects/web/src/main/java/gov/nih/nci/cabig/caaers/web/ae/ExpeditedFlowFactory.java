@@ -1,47 +1,76 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.ctms.web.tabs.*;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-public class ExpeditedFlowFactory<C> implements FlowFactory<C> {
-	private Flow<C> flow;
-	private Flow<C> secondaryFlow;
+/**
+ * @author Krikor Krumlian
+ * @author Rhett Sutphin
+ */
+public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
+    protected String flowName;
+    private Flow<ExpeditedAdverseEventInputCommand> ctepFlow;
+    private Flow<ExpeditedAdverseEventInputCommand> meddraFlow;
 
-	public ExpeditedFlowFactory() {
-	}
+    public ExpeditedFlowFactory(String flowName) {
+        this.flowName = flowName;
+    }
 
-	public ExpeditedFlowFactory(Flow<C> flow) {
-		this.flow = flow;
-	}
+    ////// LOGIC
 
-	// //// LOGIC
+    protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+    }
 
-	public Flow<C> createFlow(C command) {
-		if (((AdverseEventInputCommand) command).getStudy() != null && 
-				((AdverseEventInputCommand) command).getStudy().getTerminology().getTerm() == Term.MEDDRA) {
-			return getSecondaryFlow();
-		}
-		return getFlow();
-	}
+    protected void addPostBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+        flow.addTab(new ReporterTab());
+        flow.addTab(new CheckpointTab());
+        flow.addTab(new RadiationInterventionTab());
+        flow.addTab(new SurgeryInterventionTab());
+        flow.addTab(new MedicalDeviceTab());
+        flow.addTab(new DescriptionTab());
+        flow.addTab(new MedicalInfoTab());
+        flow.addTab(new TreatmentTab());
+        flow.addTab(new LabsTab());
+        flow.addTab(new PriorTherapyTab());
+        flow.addTab(new PreExistingConditionsTab());
+        flow.addTab(new ConcomitantMedicationsTab());
+        flow.addTab(new OtherCausesTab());
+        flow.addTab(new AttributionTab());
+        flow.addTab(new AdditionalInformationTab());
+        flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+    }
 
-	// //// BEAN PROPERTIES
+    public Flow<ExpeditedAdverseEventInputCommand> createFlow(ExpeditedAdverseEventInputCommand command) {
+        if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+            return getMeddraFlow();
+        } else {
+            return getCtepFlow();
+        }
+    }
 
-	public Flow<C> getFlow() {
-		return flow;
-	}
+    private Flow<ExpeditedAdverseEventInputCommand> createEmptyFlow() {
+        return new Flow<ExpeditedAdverseEventInputCommand>(flowName);
+    }
 
-	public void setFlow(Flow<C> flow) {
-		this.flow = flow;
-	}
+    private Flow<ExpeditedAdverseEventInputCommand> getMeddraFlow() {
+        if (meddraFlow == null) {
+            meddraFlow = createEmptyFlow();
+            addPreBasicTabs(meddraFlow);
+            meddraFlow.addTab(new BasicsTabMeddra());
+            addPostBasicTabs(meddraFlow);
+        }
+        return meddraFlow;
+    }
 
-	public Flow<C> getSecondaryFlow() {
-		return secondaryFlow;
-	}
-
-	public void setSecondaryFlow(Flow<C> secondaryFlow) {
-		this.secondaryFlow = secondaryFlow;
-	}
-	
-	
-	
+    private Flow<ExpeditedAdverseEventInputCommand> getCtepFlow() {
+        if (ctepFlow == null) {
+            ctepFlow = createEmptyFlow();
+            addPreBasicTabs(ctepFlow);
+            ctepFlow.addTab(new BasicsTab());
+            addPostBasicTabs(ctepFlow);
+        }
+        return ctepFlow;
+    }
 }

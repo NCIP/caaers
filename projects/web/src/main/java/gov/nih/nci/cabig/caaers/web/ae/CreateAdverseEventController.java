@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,21 +16,13 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     }
 
     @Override
-    public void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-        flow.addTab(new BeginTab());
-        super.addTabs(flow);
-    }
-    
-    
-    @Override
-    public void addMeddraTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-        flow.addTab(new BeginTab());
-        super.addMeddraTabs(flow);
-    }
-
-    @Override
-    protected String getFlowName() {
-        return "Create expedited report";
+    protected FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory() {
+        return new ExpeditedFlowFactory("Create expedited report") {
+            @Override
+            protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+                flow.addTab(new BeginTab<ExpeditedAdverseEventInputCommand>());
+            }
+        };
     }
 
     @Override

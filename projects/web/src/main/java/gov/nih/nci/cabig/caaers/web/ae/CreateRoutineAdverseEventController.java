@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,22 +21,13 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     }
 
     @Override
-    public void addTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-        flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
-        super.addTabs(flow);
-    }
-    
-    @Override
-    public void addMeddraTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-        flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
-        super.addMeddraTabs(flow);
-    }
-
-    
-
-    @Override
-    protected String getFlowName() {
-        return "Create Routine AE";
+    protected FlowFactory<RoutineAdverseEventInputCommand> createFlowFactory() {
+        return new RoutineFlowFactory("Create routine AEs") {
+            @Override
+            protected void addPreBasicTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+                flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
+            }
+        };
     }
 
     @Override

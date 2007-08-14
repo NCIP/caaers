@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
@@ -54,29 +55,10 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected AbstractRoutineAdverseEventInputController() {
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
-        
-        Flow<RoutineAdverseEventInputCommand> medDRAFlow = new Flow<RoutineAdverseEventInputCommand>(getFlowName());
-        ExpeditedFlowFactory flowFactory = new ExpeditedFlowFactory<RoutineAdverseEventInputCommand>(new Flow<RoutineAdverseEventInputCommand>(getFlowName()));
-        addMeddraTabs(medDRAFlow);
-        flowFactory.setSecondaryFlow(medDRAFlow);
-        setFlowFactory(flowFactory);
-        addTabs(((ExpeditedFlowFactory<RoutineAdverseEventInputCommand>)flowFactory).getFlow());
-        
-    }
-    
-    protected void addMeddraTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-		flow.addTab(new RoutineAeMeddraTab());
-		flow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
-
-	}
-
-    protected void addTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-        flow.addTab(new CategoriesTab());
-        flow.addTab(new RoutineAeTab());
-        flow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+        setFlowFactory(createFlowFactory());
     }
 
-    protected abstract String getFlowName();
+    protected abstract FlowFactory<RoutineAdverseEventInputCommand> createFlowFactory();
 
     @Override
     protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {

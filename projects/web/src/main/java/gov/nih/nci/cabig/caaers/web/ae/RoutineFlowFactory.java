@@ -1,0 +1,58 @@
+package gov.nih.nci.cabig.caaers.web.ae;
+
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.caaers.domain.Term;
+
+/**
+ * This factory is a lot like {@link ExpeditedFlowFactory}, but not in such a way that it's fruitful
+ * to give them a common superclass.
+ *
+ * @author Rhett Sutphin
+ */
+public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputCommand> {
+    private String flowName;
+    private Flow<RoutineAdverseEventInputCommand> ctepFlow;
+    private Flow<RoutineAdverseEventInputCommand> meddraFlow;
+
+    public RoutineFlowFactory(String flowName) {
+        this.flowName = flowName;
+    }
+
+    public Flow<RoutineAdverseEventInputCommand> createFlow(RoutineAdverseEventInputCommand command) {
+        if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+            return getMeddraFlow();
+        } else {
+            return getCtepFlow();
+        }
+    }
+
+    private Flow<RoutineAdverseEventInputCommand> createEmptyFlow() {
+        return new Flow<RoutineAdverseEventInputCommand>(flowName);
+    }
+
+    protected void addPreBasicTabs(Flow<RoutineAdverseEventInputCommand> flow) {
+    }
+
+    private Flow<RoutineAdverseEventInputCommand> getMeddraFlow() {
+        if (meddraFlow == null) {
+            meddraFlow = createEmptyFlow();
+            addPreBasicTabs(meddraFlow);
+            meddraFlow.addTab(new RoutineAeMeddraTab());
+            meddraFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+        }
+        return meddraFlow;
+    }
+
+    private Flow<RoutineAdverseEventInputCommand> getCtepFlow() {
+        if (ctepFlow == null) {
+            ctepFlow = createEmptyFlow();
+            addPreBasicTabs(ctepFlow);
+            ctepFlow.addTab(new CategoriesTab());
+            ctepFlow.addTab(new RoutineAeTab());
+            ctepFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+        }
+        return ctepFlow;
+    }
+}
