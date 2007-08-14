@@ -76,6 +76,10 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertEquals("Other site", found.getDisplayName());
     }
 
+    public void testNameForPrimaryAdverseEvent() throws Exception {
+        assertEquals("Primary adverse event", tree.find("adverseEvents").getDisplayName(0));
+    }
+
     /**
      * Figures out the next domain object type down from the descriptor given.
      */

@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
  * {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} model.
  * <p>
  * Internal nodes in the tree may represent a subproperty of their parent node,
- * or may indicate a logical grouping (section) of their children.  In the former case,
+ * or may indicate a logical grouping (section) of their children.  In the latter case,
  * the {@link #getPropertyName propertyName} property will be null.
  *
  *
@@ -17,6 +17,21 @@ import org.apache.commons.lang.StringUtils;
 public class ExpeditedReportTree extends TreeNode {
     public ExpeditedReportTree() {
         add(
+            section("Adverse events",
+                // TODO: figure out how to handle the MedDRA alternative here
+                property("detectionDate", "Detection date"),
+                list("adverseEvents", new AdverseEventsDisplayNameCreator(),
+                    property("grade", "Grade"),
+                    property("attributionSummary", "Attribution to study"),
+                    property("hospitalization", "Hospitalization"),
+                    property("expected", "Expected"),
+                    property("comments", "Comments"),
+                    property("adverseEventCtcTerm",
+                        property("term", "CTC term")
+                    ),
+                    property("detailsForOther", "Other (specify)")
+                )
+            ),
             section("Reporter info",
                 createPersonBlock("reporter"),
                 createPersonBlock("physician")
