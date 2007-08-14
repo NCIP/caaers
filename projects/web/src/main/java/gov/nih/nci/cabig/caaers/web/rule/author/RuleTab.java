@@ -85,6 +85,12 @@ public class RuleTab extends DefaultTab
 										i = -1;
 										continue;
 									}
+									if("factResolver".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}
 								}
 							}
 						}
@@ -132,6 +138,12 @@ public class RuleTab extends DefaultTab
 										i = -1;
 										continue;
 									}
+									if("factResolver".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}									
 								}
 								
 								// Remove category from sponsor rules
@@ -182,6 +194,12 @@ public class RuleTab extends DefaultTab
 										i = -1;
 										continue;
 									}
+									if("factResolver".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}									
 								}
 							}
 						}					
@@ -232,6 +250,12 @@ public class RuleTab extends DefaultTab
 										i = -1;
 										continue;
 									}
+									if("factResolver".equals(columns.get(i).getIdentifier()))
+									{
+										columns.remove(i);
+										i = -1;
+										continue;
+									}									
 								}
 								
 								// Remove category from sponsor rules
