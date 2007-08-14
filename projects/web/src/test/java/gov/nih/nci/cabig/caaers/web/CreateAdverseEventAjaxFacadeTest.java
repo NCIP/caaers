@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
@@ -62,6 +63,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setCtcTermDao(ctcTermDao);
         facade.setAeReportDao(aeReportDao);
         facade.setInteroperationService(interoperationService);
+        facade.setExpeditedReportTree(new ExpeditedReportTree());
     }
 
     public void testMatchParticipants() throws Exception {
@@ -396,9 +398,31 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals(0, actual.size());
     }
 
-    private void assertIndexChange(int expectedOriginal, int expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
+    public void testReorderChangeListIncludesDisplayName() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 2, 0);
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 2, 0, 1, 3);
+        assertEquals("Wrong changes: " + actual, 3, actual.size());
+        assertIndexChange(0, 1, "Adverse event 2", actual.get(0));
+        assertIndexChange(1, 2, "Adverse event 3", actual.get(1));
+        assertIndexChange(2, 0, "Primary adverse event", actual.get(2));
+    }
+
+    private static void assertIndexChange(int expectedOriginal, int expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
+        assertIndexChange(expectedOriginal, expectedCurrent, null, actual);
+    }
+
+    private static void assertIndexChange(int expectedOriginal, int expectedCurrent, String expectedDisplay, CreateAdverseEventAjaxFacade.IndexChange actual) {
         assertEquals("Wrong original", expectedOriginal, actual.getOriginal());
         assertEquals("Wrong current", expectedCurrent, actual.getCurrent());
+        if (expectedDisplay != null) {
+            assertEquals("Wrong displayName", expectedDisplay, actual.getCurrentDisplayName());
+        }
     }
 
     private void assertNotMoved(ExpeditedAdverseEventInputCommand command) {

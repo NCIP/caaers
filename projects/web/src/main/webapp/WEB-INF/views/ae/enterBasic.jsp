@@ -55,28 +55,17 @@
 
         var AESection = Class.create();
         Object.extend(AESection.prototype, {
-            initialize: function(index, ctcTerm) {
-                AESections[index] = this;
-                this.index = index
+            initialize: function(div, ctcTerm) {
+                this.div = $(div)
+                AESections.concat(this);
                 this.initialCtcTerm = ctcTerm;
-
-                this.ctcDetailsId = "ctc-details-" + index;
-                this.ctcCategoryId = "ctc-category-" + index
-                this.aeProperty = "aeReport.adverseEvents[" + index + "]";
-                var ctcTermBase = this.aeProperty + ".adverseEventCtcTerm.term"
-                this.ctcTermId = ctcTermBase
-                this.ctcTermInputId = ctcTermBase + "-input"
-                this.ctcTermChoicesId = ctcTermBase + "-choices"
-                this.ctcTermIndicatorId = ctcTermBase + "-indicator"
-                this.detailsForOtherId = this.aeProperty + ".detailsForOther"
-                this.detailsForOtherRowId = this.aeProperty + ".detailsForOther-row"
 
                 this.resetTermText()
 
-                Event.observe(this.ctcCategoryId, "change", this.clearSelectedTerm.bindAsEventListener(this))
+                Event.observe(this._ctcCategoryId(), "change", this.clearSelectedTerm.bindAsEventListener(this))
 
                 AE.createStandardAutocompleter(
-                    this.ctcTermId, this.termPopulator.bind(this), termValueSelector, {
+                    this._ctcTermId(), this.termPopulator.bind(this), termValueSelector, {
                         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             this.selectTerm(selectedChoice)
                         }.bind(this)
@@ -84,39 +73,51 @@
                 )
             },
 
+            _index: function() { return +this.div.getAttribute("item-index"); },
+
+            _aeProperty:            function() { return "aeReport.adverseEvents[" + this._index() + "]" },
+            _ctcDetailsId:          function() { return this._aeProperty() + ".ctc-details" },
+            _ctcCategoryId:         function() { return this._aeProperty() + ".ctc-category" },
+            _ctcTermId:             function() { return this._aeProperty() + ".adverseEventCtcTerm.term" },
+            _ctcTermInputId:        function() { return this._ctcTermId() + "-input" },
+            _ctcTermChoicesId:      function() { return this._ctcTermId() + "-choices" },
+            _ctcTermIndicatorId:    function() { return this._ctcTermId() + "-indicator" },
+            _detailsForOtherId:     function() { return this._aeProperty() + ".detailsForOther" },
+            _detailsForOtherRowId:  function() { return this._aeProperty() + ".detailsForOther-row" },
+
             resetTermText: function() {
                 if (this.initialCtcTerm) {
                     // select term first to work around a bug in showing the "other" row when the
                     // element is only partially visible
                     this.selectTerm(this.initialCtcTerm)
-                    $(this.ctcTermInputId).value = termValueSelector(this.initialCtcTerm)
+                    $(this._ctcTermInputId()).value = termValueSelector(this.initialCtcTerm)
                 }
             },
 
             clearSelectedTerm: function() {
-                $(this.ctcTermInputId).value = ""
-                $(this.ctcTermId).value = ""
-                $(this.detailsForOtherId).value = ""
-                AE.slideAndHide(this.detailsForOtherRowId)
+                $(this._ctcTermInputId()).value = ""
+                $(this._ctcTermId()).value = ""
+                $(this._detailsForOtherId()).value = ""
+                AE.slideAndHide(this._detailsForOtherRowId())
             },
 
             selectTerm: function(newCtcTerm) {
-                $A($(this.ctcCategoryId).options).each(function(opt) {
+                $A($(this._ctcCategoryId()).options).each(function(opt) {
                     if (opt.value == newCtcTerm.category.id) {
                         opt.selected = true
                     }
                 })
 
-                $(this.ctcTermId).value = newCtcTerm.id
+                $(this._ctcTermId()).value = newCtcTerm.id
                 if (newCtcTerm.otherRequired) {
-                    if ($(this.ctcDetailsId).visible()) {
-                        AE.slideAndShow(this.detailsForOtherRowId)
+                    if ($(this._ctcDetailsId()).visible()) {
+                        AE.slideAndShow(this._detailsForOtherRowId())
                     } else {
-                        $(this.detailsForOtherRowId).show()
+                        $(this._detailsForOtherRowId()).show()
                     }
                 } else {
-                    AE.slideAndHide(this.detailsForOtherRowId)
-                    $(this.detailsForOtherId).value = ""
+                    AE.slideAndHide(this._detailsForOtherRowId())
+                    $(this._detailsForOtherId()).value = ""
                 }
 
                 this.updateGrades(newCtcTerm.id)
@@ -128,14 +129,14 @@
 
                     // update text
                     grades.each(function(grade) {
-                        var text = $(this.aeProperty + ".grade-text-" + (grade.code - 1))
+                        var text = $(this._aeProperty() + ".grade-text-" + (grade.code - 1))
                         text.update(grade.code + ": " + grade.displayName.escapeHTML().gsub("(\\r\\n)|(\\n)|(\\r)", "<br>\n"))
                     }.bind(this))
 
                     // show & hide
                     var validCodes = grades.collect(function(g) { return g.code })
                     for (var i = 0 ; i <= 4 ; i++) {
-                        var row = $(this.aeProperty + ".grade-row-" + i)
+                        var row = $(this._aeProperty() + ".grade-row-" + i)
                         if (validCodes.include(i + 1)) {
                             row.enableDescendants()
                             row.show()
@@ -148,7 +149,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, ctcVersion, $F(this.ctcCategoryId), 10, function(values) {
+                createAE.matchTerms(text, ctcVersion, $F(this._ctcCategoryId()), 10, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
@@ -160,21 +161,24 @@
             })
         }
 
+        var aesEditor;
         Event.observe(window, "load", function() {
             // do this before any of the behaviors are applied to avoid their onChange side effects
             Event.observe("command", "reset", function() {
                 // onReset fires _before_ the reset; delay action so it happens afterward
                 setTimeout(postReset, 150)
             })
-            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-            new AESection(${status.index}, initialCtcTerm[${status.index}])
-            </c:forEach>
-            new ListEditor("ae-section", createAE, "AdverseEvent", {
+            aesEditor = new ListEditor("ae-section", createAE, "AdverseEvent", {
                 addParameters: [aeReportId],
                 addCallback: function(nextIndex) {
-                    new AESection(nextIndex);
-                }
-            })
+                    new AESection("ae-section-" + nextIndex);
+                },
+                reorderable: true
+            }, "aeReport.adverseEvents")
+            // item-index attribute is added by the list editor and it's needed to start up each AESection
+            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
+            new AESection("ae-section-${status.index}", initialCtcTerm[${status.index}])
+            </c:forEach>
         })
     </script>
 </head>

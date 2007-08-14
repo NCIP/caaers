@@ -45,6 +45,7 @@
             <param name="class" value="java.util.Date"/>
         </create>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.domain.*"/>
+        <convert converter="bean" match="gov.nih.nci.cabig.caaers.web.*"/>
         <convert converter="bean" match="gov.nih.nci.cabig.caaers.rules.ui.*"/>
     </allow>
 </dwr>

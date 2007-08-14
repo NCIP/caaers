@@ -27,6 +27,8 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -69,6 +71,7 @@ public class CreateAdverseEventAjaxFacade {
     private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
     private AgentDao agentDao;
+    private ExpeditedReportTree expeditedReportTree;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -285,7 +288,9 @@ public class CreateAdverseEventAjaxFacade {
         }
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
-        return createChangeList(objectIndex, targetIndex);
+        List<IndexChange> changes = createChangeList(objectIndex, targetIndex);
+        addDisplayNames(listProperty, changes);
+        return changes;
     }
 
     private List<IndexChange> createChangeList(int original, int target) {
@@ -302,6 +307,13 @@ public class CreateAdverseEventAjaxFacade {
             list.add(new IndexChange(original, target));
         }
         return list;
+    }
+
+    private void addDisplayNames(String listProperty, List<IndexChange> changes) {
+        TreeNode listNode = expeditedReportTree.find(listProperty.split("\\.", 2)[1]);
+        for (IndexChange change : changes) {
+            change.setCurrentDisplayName(listNode.getDisplayName(change.getCurrent()));
+        }
     }
 
     private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
@@ -447,8 +459,14 @@ public class CreateAdverseEventAjaxFacade {
         this.agentDao = agentDao;
     }
 
+    @Required
+    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+        this.expeditedReportTree = expeditedReportTree;
+    }
+
     public static class IndexChange {
         private int original, current;
+        private String currentDisplayName;
 
         public IndexChange(int original, int current) {
             this.original = original;
@@ -461,6 +479,14 @@ public class CreateAdverseEventAjaxFacade {
 
         public int getCurrent() {
             return current;
+        }
+
+        public String getCurrentDisplayName() {
+            return currentDisplayName;
+        }
+
+        public void setCurrentDisplayName(String currentDisplayName) {
+            this.currentDisplayName = currentDisplayName;
         }
 
         @Override

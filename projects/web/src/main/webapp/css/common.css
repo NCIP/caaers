@@ -292,6 +292,30 @@ ul.errors li {
   margin: 3px 4px 0 0;
 }
 
+div.first-item a.move-up-control {
+    visibility: hidden;
+}
+
+div.last-item a.move-down-control {
+    visibility: hidden;
+}
+
+a.list-control {
+    text-decoration: none;
+    color: #222;
+    font-size: 0.8em;
+    padding: 0 2px;
+}
+
+a.list-control:hover {
+    background-color: #222;
+    color: #eee;
+}
+
+span.list-controls {
+    padding: 0 4px;
+}
+
 /*
     'row' is a class for label: value type rows.  The intent is
     that each row would contain 2-3 subdivs:  a label (float: left), an optional extra

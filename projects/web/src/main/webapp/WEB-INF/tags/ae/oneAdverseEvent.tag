@@ -13,11 +13,11 @@
     <c:otherwise>Adverse event ${index + 1}</c:otherwise>
 </c:choose></c:set>
 <chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
-    <div id="ctc-details-${index}" class="ctc-details">
+    <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
         <div class="row">
-            <div class="label"><label for="ctc-category-${index}">CTC category</label></div>
+            <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
             <div class="value">
-                <select id="ctc-category-${index}">
+                <select id="aeReport.adverseEvents[${index}].ctc-category">
                     <option value="">Any</option>
                     <c:forEach items="${ctcCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
