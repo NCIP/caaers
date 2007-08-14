@@ -24,7 +24,7 @@
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<operator name="&gt;=" display-uri="Greater Than Or Equal To" readable-text="is greater than or equal to "/>
 				<operator name="&lt;=" display-uri="Less Than Or Equal To" readable-text="is less than or equal to "/>
-				<expression>getGrade().getCode().intValue()</expression>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Severity " postfix=""/>
 			</field>
 			<field name="term" display-uri="Term">
@@ -37,7 +37,7 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>getCtcTerm().getId().intValue()</expression>		
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Term " postfix=""/>
 			</field>
 			<field name="category" display-uri="Category">
@@ -50,8 +50,8 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>getCtcTerm().getCategory().getId().intValue()</expression>		
-				<grammer prefix=" has a " postfix=""/>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Category','id','runTimeValue','runTimeOperator')</expression>		
+				<grammer prefix=" Category " postfix=""/>
 			</field>
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
@@ -66,7 +66,7 @@
 				<valid-value value="2" display-uri="Prolonged Hospitalization" readable-text="prolonged hospitalization "/>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>getHospitalization().getCode().intValue()</expression>		
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>		
 				<grammer prefix=" Cause " postfix=""/>
 			</field>
 			<field name="expected" display-uri="Expected">
@@ -81,7 +81,7 @@
 				<valid-value value="false" display-uri="No" readable-text="is not "/>
 				<operator name="==" display-uri="Equal To" readable-text=""/>
 				<!-- <operator name="!=" display-uri="Not Equal To" readable-text="is not "/> -->
-				<expression>getExpected().booleanValue()</expression>	
+				<expression>factResolver.assertFact(adverseEvent,null,'expected','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Adverse Event " postfix="expected "/>	
 			</field>			
 						
@@ -100,7 +100,7 @@
 				<valid-value value="DEFINITE" display-uri="Definite" readable-text="Definite"/>																
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>getAttributionSummary().getName()</expression>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Attribution','name','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Attribution " postfix=""/>
 			</field>
 			
@@ -119,24 +119,21 @@
 				<valid-value value="Pilot" display-uri="Pilot"/>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>getPhaseCode()</expression>
+				<expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study " postfix=""/>
 			</field>
-		</domain-object>
-		<!-- commneted for iteration 5
-		<domain-object identifier="studyAgent" class-name="gov.nih.nci.cabig.caaers.domain.StudyAgent" display-uri="StudyAgent">
-			<field name="investigationalNewDrugIndicator" display-uri="Investigational New Drug Indicator">
+			<field name="investigationalNewDrugIndicator" display-uri="IND Holder">
 				<field-value>
-					<input-type>select</input-type>
+					<input-type>autocompleter</input-type>
 				</field-value>
-				<valid-value value="true" display-uri="Yes"/>
-				<valid-value value="false" display-uri="No"/>
-				<operator name="==" display-uri="Equal To" />
-				<operator name="!=" display-uri="Not Equal To" />
-				<expression>getInvestigationalNewDrugIndicator().booleanValue()</expression>		
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>	
+				<grammer prefix=" Study Agent " postfix=""/>
+				
 			</field>
 		</domain-object>
-		-->
+		
 	</condition>
 
 </rule-ui>
