@@ -4,14 +4,18 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
+import gov.nih.nci.cabig.caaers.rules.brxml.Column;
+import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
+import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 
@@ -30,6 +34,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	//private ReportServiceImpl reportService;
 	
 	public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
+	public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 	
 
 
@@ -48,35 +53,27 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
  */
 public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 	
-	String sponsor_define_study_level_evaluation = null;
-	String sponsor_level_evaluation = null;
-	String final_result = null;
-	
-	/**
-	 * get and fire study lelev rules
-	 */
-	sponsor_define_study_level_evaluation = sponsorDefinedStudyLevelAssesmentRules(ae, study);
 
-	// if study level rule exist and null message...
-	if (sponsor_define_study_level_evaluation == null) {
-		return CAN_NOT_DETERMINED;
-	
-	// if study level rules not found , then get to sponsor rules..
-	} else 	if (sponsor_define_study_level_evaluation.equals("no_rules_found")) {
-		sponsor_level_evaluation = sponsorLevelAssesmentRules(ae, study);
-		final_result = sponsor_level_evaluation;
+		String message = evaluateSponsorReportSchedule(ae,study);
+		if (!message.equals(CAN_NOT_DETERMINED)) {
+			return SERIOUS_ADVERSE_EVENT;
+		}
 		
-	// if study level rules exist and returned a message.. 
-	} else {
-		final_result = sponsor_define_study_level_evaluation;
-	}
-	
-	if (final_result == null || "no_rules_found".endsWith(final_result)) {
-		final_result = CAN_NOT_DETERMINED;
-	}
-	
-	//System.out.println("ASSES : " + final_result);
-	return final_result;	
+		for(StudyOrganization so : study.getStudyOrganizations() )
+		{
+
+		    message = evaluateInstitutionReportSchedule(ae, study, so.getOrganization());
+			if (!message.equals(CAN_NOT_DETERMINED)) {
+				return SERIOUS_ADVERSE_EVENT;
+			}
+
+		}
+		
+		System.out.println("message is : " + message );
+		
+		return CAN_NOT_DETERMINED;
+
+
 }
 
 public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception {
@@ -410,6 +407,14 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 		List<Object> inputObjects = new ArrayList<Object>();
 		inputObjects.add(ae);
+		FactResolver f = new FactResolver();
+		inputObjects.add(f);
+		
+		
+		
+		
+		
+		
 		if (study != null ) {
 			inputObjects.add(study);
 			//TO-DO need to send study agents also ..
