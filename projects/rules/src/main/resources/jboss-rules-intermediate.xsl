@@ -77,14 +77,43 @@
 							<xsl:choose>
 								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (.!='true') and  (.!='false') and (../../../rules:field-constraint/rules:literal-restriction/@evaluator = '!=')" >!</xsl:when>
 							</xsl:choose>
+							
+							<!-- multiple replacements , called replace-string template twice. -->
+							<xsl:variable name = "tempStr">
+								<xsl:call-template name="replace-string">
+								        <xsl:with-param name="text" select="../../../rules:expression"/>
+								        <xsl:with-param name="from" select="'runTimeValue'"/>
+								        <xsl:with-param name="to" select="."/>
+	    						</xsl:call-template>
+    						</xsl:variable>
+    						<xsl:variable name = "tempStr1">
+   								<xsl:call-template name="replace-string">
+							        <xsl:with-param name="text" select="$tempStr"/>
+							        <xsl:with-param name="from" select="'runTimeOperator'"/>
+							        <xsl:with-param name="to" select="../../../rules:field-constraint/rules:literal-restriction/@evaluator"/>
+    							</xsl:call-template>
+							</xsl:variable>	
+							<xsl:variable name="sQ">'</xsl:variable>
+							<xsl:variable name="dQ">"</xsl:variable>
+   								<xsl:call-template name="replace-string">
+							        <xsl:with-param name="text" select="$tempStr1"/>
+							        <xsl:with-param name="from" select="$sQ"/>
+							        <xsl:with-param name="to" select="$dQ"/>
+    							</xsl:call-template> == true 
+							<xsl:if test="$ct != position()"> <xsl:choose> <xsl:when test="../../../rules:field-constraint/rules:literal-restriction/@evaluator = '=='"> || </xsl:when><xsl:otherwise> &amp;&amp; </xsl:otherwise></xsl:choose></xsl:if>
+				</xsl:for-each>
+			</eval>															
+							<!-- 
 							<xsl:choose>							
 								<xsl:when  test="../../../rules:expression">
-									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:expression"/>
+									<xsl:value-of select="../../../rules:expression"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="../../../@identifier"/>.<xsl:value-of select="../../../rules:field-constraint/@field-name"/>
+									<xsl:value-of select="../../../rules:field-constraint/@field-name"/>
 								</xsl:otherwise>						
 							</xsl:choose>
+							
+							
 
 							
 							<xsl:choose>
@@ -100,9 +129,9 @@
 							</xsl:choose>
 							
 							<xsl:if test= "(contains(../../../rules:expression,'intValue()') = false)  and ( . != 'true') and (. != 'false')">")</xsl:if>
-							<xsl:if test="$ct != position()"> <xsl:choose> <xsl:when test="../../../rules:field-constraint/rules:literal-restriction/@evaluator = '=='"> || </xsl:when><xsl:otherwise> &amp;&amp; </xsl:otherwise></xsl:choose></xsl:if>
-				</xsl:for-each>
-			</eval>	
+							-->
+							
+
 			
 		</xsl:if>		
 	</xsl:template>
@@ -121,6 +150,34 @@
 	  
 	</xsl:template>
 	
+ <xsl:template name="replace-string">
+    <xsl:param name="text"/>
+    <xsl:param name="from"/>
+    <xsl:param name="to"/>
+
+    <xsl:choose>
+      <xsl:when test="contains($text, $from)">
+
+		<xsl:variable name="before" select="substring-before($text, $from)"/>
+		<xsl:variable name="after" select="substring-after($text, $from)"/>
+		<xsl:variable name="prefix" select="concat($before, $to)"/>
+
+		<xsl:value-of select="$before"/>
+		<xsl:value-of select="$to"/>
+        <xsl:call-template name="replace-string">
+			  <xsl:with-param name="text" select="$after"/>
+			  <xsl:with-param name="from" select="$from"/>
+			  <xsl:with-param name="to" select="$to"/>
+		</xsl:call-template>
+      </xsl:when> 
+      
+      <xsl:otherwise>
+        <xsl:value-of select="$text"/>  
+      </xsl:otherwise>
+      
+    </xsl:choose>            
+ </xsl:template>
+    
 
 					
 </xsl:stylesheet>
