@@ -106,6 +106,7 @@
 
 
 		function fetchCondition(ruleCount) {
+				 
 				try {
 					authorRule.addCondition(ruleCount, function(columnContent) {
 
@@ -323,7 +324,17 @@
 			toggleArray[ruleCount] = false;
 		}
 	}
-	
+
+				function orgsPopulator(autocompleter, text) 
+				{
+						
+				
+					authorRule.matchSites(text, function(values) {
+						                    autocompleter.setChoices(values)
+						                })
+
+				}
+				
 	
 	
 	
@@ -526,7 +537,11 @@
 		}
 		
 	}
-	
+				function orgValueSelector(organization) 
+			{
+				return organization.name;
+			}
+			
 	function handleFieldOnchange(fieldDropDown, ruleCount, columnCount) 
 	{
 		var selectedField = fieldDropDown.options[fieldDropDown.selectedIndex];
@@ -621,7 +636,7 @@
 				var date = new Date();
 				var curdate = null;
 				 do {curdate = new Date();} 
-				 	while (curdate - date < 500);
+				 	while (curdate - date < 100);
 				 	
 				 	//end 
 				 	
@@ -771,7 +786,7 @@
 			}
 			else if (selectedField.value == 'category')
 			{
-				                alert ("here");
+
 				                
 				                createAE.getCategories(3, function(categories) {
 
@@ -806,6 +821,29 @@
 				                    })
 				                })
 
+			}
+			else if (selectedField.value == 'investigationalNewDrugIndicator') {
+				//alert ("ind");
+							var newId = validValueField.id; 
+							var spanId = newId + '.span';
+
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
+					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
+					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
+
+	
+
+				new Autocompleter.DWR(newId, newId + '-choices',
+                	orgsPopulator, {
+                	valueSelector: orgValueSelector,
+                	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+									alert (selectedChoice);
+                	},
+                	indicator: "term-indicator"});
+
+	
+					
+					
 			}
 			else
 			{
