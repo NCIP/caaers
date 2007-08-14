@@ -400,7 +400,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
 		
-		String expression = "assertFact(studySDO,null," + "\"shortTitle" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
+		String expression = "factResolver.assertFact(studySDO,null," + "\"shortTitle" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
 		
 		
 		column.setExpression(expression);
