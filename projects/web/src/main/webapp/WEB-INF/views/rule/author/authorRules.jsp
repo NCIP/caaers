@@ -823,12 +823,12 @@
 
 			}
 			else if (selectedField.value == 'investigationalNewDrugIndicator') {
-				//alert ("ind");
+
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
+					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35"/>';
+					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
 
 	
@@ -837,9 +837,8 @@
                 	orgsPopulator, {
                 	valueSelector: orgValueSelector,
                 	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-									alert (selectedChoice);
                 	},
-                	indicator: "term-indicator"});
+                	indicator: "ind-indicator"});
 
 	
 					
@@ -1413,6 +1412,40 @@ button. Rules created will belong to the selected RuleSet.</p>
 	
 	
 												}											
+
+															
+							</script>
+
+						</c:when>
+						<c:when
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "investigationalNewDrugIndicator"}'>
+
+
+
+							<script type="text/javascript">
+
+														loadOrgs();
+												function loadOrgs() {
+	
+																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+																		var spanId = newId + '.span';
+																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
+																		
+																	var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" value = "'+ fieldValue + '" size="35" />';
+																	inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+																	$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
+
+	
+
+																	new Autocompleter.DWR(newId, newId + '-choices',
+                														orgsPopulator, {
+                														valueSelector: orgValueSelector,
+                															afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+									
+                																},
+                																indicator: "ind-indicator"});
+	
+																				}											
 
 															
 							</script>
