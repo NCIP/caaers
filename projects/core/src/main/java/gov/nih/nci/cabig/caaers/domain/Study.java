@@ -76,7 +76,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private String diseaseLlt;
 
-	private Boolean multiInstitution;
+	private Boolean multiInstitution = Boolean.FALSE;
 
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
 
