@@ -129,7 +129,7 @@
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>	
-				<grammer prefix=" Study Agent " postfix=""/>
+				<grammer prefix=" Study Agent IND Holder " postfix=""/>
 				
 			</field>
 		</domain-object>
