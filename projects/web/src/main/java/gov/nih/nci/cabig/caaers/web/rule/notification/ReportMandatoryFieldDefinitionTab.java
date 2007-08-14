@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefinitionCommand> {
-	private ExpeditedReportTree reportTree;
-    public ReportMandatoryFieldDefinitionTab(){
-    	super("Mandatory Fields", "Mandatory Fields Configuration","rule/notification/reportMandatoryFieldTab");
-    	reportTree = new ExpeditedReportTree();
+    private ExpeditedReportTree expeditedReportTree;
 
+    public ReportMandatoryFieldDefinitionTab(){
+        super("Mandatory Fields", "Mandatory Fields Configuration","rule/notification/reportMandatoryFieldTab");
     }
 
     @Override
     public Map<String, Object> referenceData(ReportDefinitionCommand command) {
-    	Map<String, Object> refdata =  super.referenceData(command);
-    	refdata.put("reportTree", reportTree);
-    	return refdata;
+        Map<String, Object> refdata =  super.referenceData(command);
+        refdata.put("reportTree", expeditedReportTree);
+        return refdata;
     }
 
     /**
@@ -35,36 +35,41 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
      * a display name, the display name of the parent will be used instead.
      */
     public void populateFieldMap(ReportDefinitionCommand command,
-    		Map<String, InputFieldGroup> map, TreeNode node) {
-    	//only add leaf nodes in the filed map. (others are just sections)
-    	if (node.isLeaf()) {
-			String key = node.getParent().getQualifiedDisplayName();
-			InputFieldGroup group = map.get(key);
-			if (group == null) {
-				group = new DefaultInputFieldGroup(key);
-				map.put(key, group);
-			}
-			List<InputField> fields = group.getFields();
+                                 Map<String, InputFieldGroup> map, TreeNode node) {
+        //only add leaf nodes in the filed map. (others are just sections)
+        if (node.isLeaf()) {
+            String key = node.getParent().getQualifiedDisplayName();
+            InputFieldGroup group = map.get(key);
+            if (group == null) {
+                group = new DefaultInputFieldGroup(key);
+                map.put(key, group);
+            }
+            List<InputField> fields = group.getFields();
 
-			String displayName = node.getDisplayName();
-			String path = node.getPropertyPath();
-			if(StringUtils.isEmpty(path)) return;
-			int index = command.getMandatoryFieldMap().get(path);
-			if (StringUtils.isEmpty(displayName))	displayName = node.getParent().getDisplayName();
-			fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["+index+"].mandatory",displayName));
-		} else {
-			//add children of this node in the map
-			for (TreeNode n : node.getChildren())
-				populateFieldMap(command, map, n);
-		}
+            String displayName = node.getDisplayName();
+            String path = node.getPropertyPath();
+            if(StringUtils.isEmpty(path)) return;
+            int index = command.getMandatoryFieldMap().get(path);
+            if (StringUtils.isEmpty(displayName))	displayName = node.getParent().getDisplayName();
+            fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["+index+"].mandatory",displayName));
+        } else {
+            //add children of this node in the map
+            for (TreeNode n : node.getChildren())
+                populateFieldMap(command, map, n);
+        }
 
     }
 
     @Override
-	public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
-    	Map<String, InputFieldGroup> fieldMap;
-    	fieldMap = new LinkedHashMap<String, InputFieldGroup>();
-    	populateFieldMap(command, fieldMap, reportTree);
-		return fieldMap;
-	}
+    public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
+        Map<String, InputFieldGroup> fieldMap;
+        fieldMap = new LinkedHashMap<String, InputFieldGroup>();
+        populateFieldMap(command, fieldMap, expeditedReportTree);
+        return fieldMap;
+    }
+
+    @Required
+    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+        this.expeditedReportTree = expeditedReportTree;
+    }
 }
