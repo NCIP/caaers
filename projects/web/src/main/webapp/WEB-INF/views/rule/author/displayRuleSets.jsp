@@ -83,9 +83,9 @@
             <div class="label"><label for="newRuleSetName">RuleSet Name</label></div>
             <div class="value">
                 <select id="newRuleSetName" onchange="setRuleSetName(this)">
-                    
-                    <!--
                     <option value="Please select a RuleSet Name">Please select a RuleSet Name</option>
+                    <!--
+                    
                     <c:if test="${command.level == 'Sponsor' || command.level == 'SponsorDefinedStudy'}">
                     	<option value="AE Assesment Rules">AE Assesment Rules </option>
                     </c:if>
