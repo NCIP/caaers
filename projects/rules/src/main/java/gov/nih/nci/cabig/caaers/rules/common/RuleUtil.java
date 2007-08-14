@@ -343,5 +343,24 @@ public class RuleUtil {
 		return builder.toString();
 	}
 	
+	public static String[] commaSeparatedStringToStringArray(String aString){
+	    String[] splittArray = null;
+	    if (aString != null || !aString.equalsIgnoreCase("")){
+	         splittArray = aString.split(",");
+	         
+	    }
+	    return splittArray;
+	}
+	
+	public static void main (String[] args) {
+		String message = "10 day report,5 Day Report";
+		String[] messages = RuleUtil.commaSeparatedStringToStringArray(message);
+		
+		for (int i=0;i<messages.length;i++) {
+			System.out.println(messages[i]);
+		}
+		
+	}
+	
 
 }
