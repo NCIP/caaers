@@ -99,6 +99,8 @@ public class CreateRuleCommand implements RuleInputCommand
 		//reportDefinitions = reportDefinitionDao.getAll();
 	}
 
+
+	
 	/*
 	 * This method saves the RuleSet
 	 */
@@ -124,6 +126,8 @@ public class CreateRuleCommand implements RuleInputCommand
 				for (Column col:cols) {					
 					rule.getCondition().getColumn().remove(col);
 				}
+
+				rule.getCondition().getColumn().add(createCriteriaForFactResolver());
 				
 			}
 			
@@ -395,7 +399,11 @@ public class CreateRuleCommand implements RuleInputCommand
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
-		column.setExpression("getShortTitle()");
+		
+		String expression = "assertFact(studySDO,null," + "\"shortTitle" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
+		
+		
+		column.setExpression(expression);
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
@@ -425,7 +433,8 @@ public class CreateRuleCommand implements RuleInputCommand
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Organization.class.getName());
 		column.setIdentifier("organizationSDO");
-		column.setExpression("getName()");
+		String expression = "factResolver.assertFact(organizationSDO,null," + "\"name" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
+
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
@@ -455,7 +464,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		Column column = BRXMLHelper.newColumn();
 		column.setObjectType(gov.nih.nci.cabig.caaers.domain.Study.class.getName());
 		column.setIdentifier("studySDO");
-		column.setExpression("getPrimaryFundingSponsorOrganization().getName()");
+		String expression = "factResolver.assertFact(studySDO,"+"\"gov.nih.nci.cabig.caaers.domain.Organization"+"\"," + "\"name" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
+
+		column.setExpression(expression);
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
@@ -476,6 +487,15 @@ public class CreateRuleCommand implements RuleInputCommand
 		
 		return column;
 		
+	}
+	
+	private Column createCriteriaForFactResolver() {
+		Column column = BRXMLHelper.newColumn();
+		column.setObjectType("gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver");
+		column.setIdentifier("factResolver");
+
+		return column;
+
 	}
 
 	public ReportDefinitionDao getReportDefinitionDao() {
