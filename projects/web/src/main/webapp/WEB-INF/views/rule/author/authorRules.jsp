@@ -1562,7 +1562,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
 							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
 						</c:when>
-						<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
+						<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
 									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
 								</c:forEach>	

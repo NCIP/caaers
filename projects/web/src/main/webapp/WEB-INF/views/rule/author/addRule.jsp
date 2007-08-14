@@ -138,7 +138,7 @@
 								<option value="ROUTINE_AE">Assess as Routine AE</option>														
 								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
 							</c:when>
-							<c:when test='${command.ruleSetName == "Report Scheduling Rules"}'>
+							<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">
 									<option value="${reportDefinition.name}">${reportDefinition.name}</option>
 								</c:forEach>								

@@ -91,7 +91,9 @@
 	        			</c:forEach>	
 	        		</chrome:division>
 	        		<p>
+	        		ACTION(S) : ${rule.action.actionId}
 	        </c:forEach>
+	        
 		</chrome:division>
 		
         <input id="markFinish" type="hidden" name="_finish"/>
