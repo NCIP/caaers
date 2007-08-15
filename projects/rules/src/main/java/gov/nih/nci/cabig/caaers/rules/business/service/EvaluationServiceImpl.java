@@ -23,7 +23,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=true)
 public class EvaluationServiceImpl implements EvaluationService {
     private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
     private static final Log log = LogFactory.getLog(EvaluationServiceImpl.class);
@@ -38,9 +40,6 @@ public class EvaluationServiceImpl implements EvaluationService {
      *  study, site, and participant
      */
     public boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent) {
-    	
-    	
-    	
         boolean isSevere = false;
 
         try {
@@ -69,8 +68,9 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
      */
+    @Transactional(readOnly=false)
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
-    	Map<String,List<String>> map;
+        Map<String,List<String>> map;
         List<String> reportDefinitionNames = new ArrayList<String>();
         try {
             map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
@@ -80,15 +80,13 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         
         Set<String> keys = map.keySet();
-        Iterator<String> it = keys.iterator();
-        while(it.hasNext()){
-        	String key = it.next();
-        	//System.out.println("KEY IS : " + key);
-        	List<String> reportDefNames = map.get(key);
-        	if ( reportDefNames.size() != 0 ) { 
-        		String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
-        		reportDefinitionNames.add(reportDefName);
-        	}
+        for (String key : keys) {
+            //System.out.println("KEY IS : " + key);
+            List<String> reportDefNames = map.get(key);
+            if (reportDefNames.size() != 0) {
+                String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
+                reportDefinitionNames.add(reportDefName);
+            }
         }
 
         for (Object reportDefinitionName : reportDefinitionNames) {
@@ -146,25 +144,23 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
     
     private String extractTopPriorityReportDefintionName(List<String> list){
-    	//System.out.println("list sixe ... " + list.size());
-    	
-    	List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-    	Iterator<String> it = list.iterator();
-    	while(it.hasNext()){
-    		String reportDefName = it.next();
-    		ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
-    		if(rd!=null){
-    			reportDefs.add(rd);
-    		}
-    	}
-    	//System.out.println("rep defs sixe ... " + reportDefs.size());
-    	
-    	Comparator<ReportDefinition> c = new ReportDefinitionComparator();
-    	ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
-    	java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
-    		
-    	ReportDefinition reportDefinition = reportDefArray[reportDefArray.length-1];
-    	return reportDefinition.getName();
+        //System.out.println("list sixe ... " + list.size());
+
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (String reportDefName : list) {
+            ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
+            if (rd != null) {
+                reportDefs.add(rd);
+            }
+        }
+        //System.out.println("rep defs sixe ... " + reportDefs.size());
+
+        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
+        ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
+        java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
+
+        ReportDefinition reportDefinition = reportDefArray[reportDefArray.length-1];
+        return reportDefinition.getName();
     }
     
     ////// CONFIGURATION
