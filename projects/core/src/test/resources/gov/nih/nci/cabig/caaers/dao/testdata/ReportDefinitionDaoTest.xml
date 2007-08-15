@@ -67,16 +67,16 @@
 	<report_delivery_defs />
 	<mandatory_field_defs id="-330"
 		 field_path="abcd.e"
-		 mandatory="false" 
+		 mandatory="0" 
 		 rct_id="-222" />
 		<mandatory_field_defs id="-331"
 		 field_path="abcd.f"
-		 mandatory="true"
+		 mandatory="1"
 		  rct_id="-222" />
 		<mandatory_field_defs id="-332"
 		 field_path="abcd.g"
 		 rct_id="-222"
-		 mandatory="true" />
+		 mandatory="1" />
 	
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
