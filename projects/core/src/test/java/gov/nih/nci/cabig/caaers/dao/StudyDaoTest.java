@@ -32,6 +32,7 @@ import java.util.Set;
  * @author Rhett Sutphin
  * @author Ram Chilukuri
  * @author Krikor Krumlian
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 @CaaersUseCases( { CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES })
 public class StudyDaoTest extends DaoTestCase<StudyDao> {
@@ -161,7 +162,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 
 	/**
 	 * Test for retrieving all study sites associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudySites() throws Exception {
@@ -175,7 +176,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 
 	/**
 	 * Test for retrieving all study funding sponsors associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudyFundingSponsors() throws Exception {
@@ -190,7 +191,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 
 	/**
 	 * Test for retrieving all study coordinating centers associated with this Study
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void testGetStudyCoordinatingCenters() throws Exception {
@@ -367,6 +368,11 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
 
+	public void testGetByShortTitle() throws Exception {
+		Study s =  getDao().getByShortTitle("Short Title");
+		assertNotNull("Study should not be null", s);
+
+	}
 	public void testSaveNewStudyWithINDAgent() {
 		int studyId = 0;
 		{
