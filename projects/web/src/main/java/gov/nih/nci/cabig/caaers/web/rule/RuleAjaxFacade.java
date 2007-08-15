@@ -31,9 +31,7 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
-import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
@@ -194,7 +192,8 @@ public class RuleAjaxFacade
     	Condition condition = newCondition();
 		newRule.setCondition(condition);
 		
-		Action action = new Action();
+		//Action action = new Action();
+		List<String> action = new ArrayList<String>();
 		newRule.setAction(action);
     	
     	ruleSet.getRule().add(newRule);

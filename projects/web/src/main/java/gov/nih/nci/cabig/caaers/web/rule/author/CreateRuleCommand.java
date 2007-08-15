@@ -66,6 +66,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private String levelDescription;
 	
+	private String terminology;
+	
 	
 	
 	private List<ReportDefinition> reportDefinitions;
@@ -509,6 +511,14 @@ public class CreateRuleCommand implements RuleInputCommand
 	public String getLevelDescription() {
 		return RuleLevel.valueOf(level).getDescription();
 
+	}
+
+	public String getTerminology() {
+		return terminology;
+	}
+
+	public void setTerminology(String terminology) {
+		this.terminology = terminology;
 	}
 
 	

@@ -1555,7 +1555,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 					<div id="action-template" style="margin-left:200px;"><img
 					src="/caaers/images/chrome/spacer.gif"
 					style="width:10px;height:10px" align="absmiddle" /> 
-				<form:select path="ruleSet.rule[${ruleCount}].action.actionId">
+				<form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 					<option value="" />Please Select Action</option>
 					<c:choose>
 						<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>

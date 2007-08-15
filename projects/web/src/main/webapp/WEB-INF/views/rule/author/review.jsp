@@ -91,7 +91,7 @@
 	        			</c:forEach>	
 	        		</chrome:division>
 	        		<p>
-	        		ACTION(S) : ${rule.action.actionId}
+	        		ACTION(S) : ${rule.action}
 	        </c:forEach>
 	        
 		</chrome:division>
