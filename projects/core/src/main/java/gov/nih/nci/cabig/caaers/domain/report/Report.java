@@ -67,6 +67,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void addReportDelivery(ReportDelivery rd){
 		if(this.deliveries == null) deliveries = new ArrayList<ReportDelivery>();
 		deliveries.add(rd);
+		rd.setReport(this);
 	}
 
 	public boolean hasScheduledNotifications(){
@@ -95,7 +96,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rpsh_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<ScheduledNotification> getScheduledNotifications() {
         return notifications;
     }
@@ -153,7 +154,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     }
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy="report")
-	@Cascade(value = { CascadeType.ALL })
+	@Cascade(value = { CascadeType.ALL , CascadeType.DELETE_ORPHAN})
 	public List<ReportDelivery> getReportDeliveries() {
 		return deliveries;
 	}

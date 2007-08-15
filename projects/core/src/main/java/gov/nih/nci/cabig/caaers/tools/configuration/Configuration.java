@@ -26,8 +26,8 @@ public class Configuration extends DatabaseBackedConfiguration {
 
     public static final ConfigurationProperty<String> SMTP_ADDRESS
         = PROPERTIES.add(new ConfigurationProperty.Text("smtpAddress"));
-    public static final ConfigurationProperty<String> SMTP_PORT
-        = PROPERTIES.add(new ConfigurationProperty.Text("smtpPort"));
+    public static final ConfigurationProperty<Integer> SMTP_PORT
+        = PROPERTIES.add(new ConfigurationProperty.Int("smtpPort"));
     public static final ConfigurationProperty<String> SMTP_USER
         = PROPERTIES.add(new ConfigurationProperty.Text("smtpUser"));
     public static final ConfigurationProperty<String> SMTP_PASSWORD

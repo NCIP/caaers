@@ -18,30 +18,37 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
     }
 )
 public class ReportDeliveryDefinition extends AbstractMutableDomainObject{
-	
+
 	/**
 	 * The entity type corresponds to Recipient Type
 	 */
 	public static final int ENTITY_TYPE_SYSTEM = 1;
 	public static final int ENTITY_TYPE_PERSON = 1;
 	public static final int ENTITY_TYPE_ROLE = 2;
-	
+
 	/**
 	 * The contact mechanism type
 	 */
 	public static final String ENDPOINT_TYPE_EMAIL = "email";
 	public static final String ENDPOINT_TYPE_FAX = "fax";
 	public static final String ENDPOINT_TYPE_URL = "url";
-	
-	
+
+
 	private ReportFormat format;
 	private String entityName;
 	private String entityDescription;
 	private int entityType;
 	private String endPoint;
 	private String endPointType;
-	
-	
+
+	//LOGIC
+	public ReportDelivery createReportDelivery(){
+		ReportDelivery rd = new ReportDelivery();
+		rd.setReportDeliveryDefinition(this);
+		rd.setDeliveryStatus(DeliveryStatus.CREATED);
+		return rd;
+	}
+
 	/**
 	 * @return the endPoint
 	 */
@@ -116,5 +123,5 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject{
 	public void setEntityType(int entityType) {
 		this.entityType = entityType;
 	}
-	
+
 }

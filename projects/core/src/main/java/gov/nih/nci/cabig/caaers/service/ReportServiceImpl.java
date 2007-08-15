@@ -162,9 +162,7 @@ public class ReportServiceImpl  implements ReportService {
         //populate the delivery definitions
         if (repDef.getDeliveryDefinitions() != null) {
             for (ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()) {
-                ReportDelivery rd = new ReportDelivery();
-                rd.setDeliveryStatus(DeliveryStatus.CREATED);
-                rd.setReportDeliveryDefinition(rdd);
+                ReportDelivery rd = rdd.createReportDelivery();
                 //fetch the contact mechanism for role based entities.
                 if (rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE) {
                     rd.setEndPoint(findContactMechanismValue(rdd.getEndPoint(),
@@ -173,7 +171,6 @@ public class ReportServiceImpl  implements ReportService {
                     rd.setEndPoint(rdd.getEndPoint());
                 }
                 report.addReportDelivery(rd);
-                rd.setReport(report);
             }//~for rdd
         }//~if
 

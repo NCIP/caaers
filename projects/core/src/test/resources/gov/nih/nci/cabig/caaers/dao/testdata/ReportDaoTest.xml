@@ -225,7 +225,10 @@
         />
     
     <mandatory_field_defs />
-    <report_delivery_defs />
+
+    <report_delivery_defs id="-221" format="0" entity_name="testentity1" end_point="11111111" entity_type="2" end_point_type="phone" rct_id="-222" />
+    <report_delivery_defs id="-222" format="0" entity_name="testentity2" end_point="11111112" entity_type="2" end_point_type="phone" rct_id="-222" />
+    
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />        
