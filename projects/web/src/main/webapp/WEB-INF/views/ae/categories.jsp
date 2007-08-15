@@ -14,9 +14,6 @@
     font: arial 10px;
     width: 17em;
 	}
-    .lebanon {
-    visibility:hidden;
-	}
 	</style>
 
     <tags:stylesheetLink name="ae"/>
@@ -47,13 +44,16 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-        Please select the CTC Categories for ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
+        Please select the CTC Categories for ${participantSummaryLine} on
+        ${studySummaryLine}.
     </jsp:attribute>
     <jsp:attribute name="singleFields">
    <b>Periods of Observation </b><br>
+   <div style="margin-left: 7.5em;">
    <b><tags:requiredIndicator/>From:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.startDate"/>
    <b><tags:requiredIndicator/>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
+   </div>
+   <hr> 
     <c:forEach items="${ctcCats}" varStatus="status" var="category">
     		<c:if test='${status.index % 10 == 0}'>
     		    </div>

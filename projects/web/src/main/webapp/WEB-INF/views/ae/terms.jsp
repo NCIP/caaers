@@ -81,8 +81,8 @@
 
  			
     <jsp:attribute name="instructions">
-        You are entering routine Adverse Events for ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
+        You are entering routine Adverse Events for ${participantSummaryLine} on
+        ${studySummaryLine}.
         <div>
            <input type="hidden" name="_action" value="">
            <input type="hidden" name="_selected" value="">
@@ -90,14 +90,16 @@
     </jsp:attribute>
    
     <jsp:attribute name="singleFields" >
+    	<strong>CTC Categories</strong><br>
     	<form:select id="cats" path="cats" size="5" cssClass="cats">
     	<form:options items="${command.categories}" itemValue="id" itemLabel="name"/>
     	</form:select>
     	<br><br>
+    	<strong>CTC Categories</strong><br>
     	<form:select id="ctcTerms" path="ctcTermIds" size="5" cssClass="selects">
     	</form:select>
-    	<a href="javascript:fireAction('addTerm','0');"><img
-                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
+    	<input style="float:right;" type="button" value="Add" onClick="javascript:fireAction('addTerm','0');" /><br>
+    	<br><br>
     	
        <hr> 
     </jsp:attribute>
@@ -105,13 +107,13 @@
     <jsp:attribute name="repeatingFields">
     		<center>
     		<c:if test="${fn:length(command.aeRoutineReport.adverseEvents) > 0}" >
-    		<table class="tablecontent">
+    		<table width="100%" class="tablecontent">
     			<tr>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Term:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Grade:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Attribution:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Hospitalization:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Expected:</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Term:</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Grade:</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Attribution:</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Hospitalization:</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Expected:</b> </th>
     			</tr>
     				
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">

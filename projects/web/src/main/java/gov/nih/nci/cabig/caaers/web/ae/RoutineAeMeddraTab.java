@@ -44,31 +44,55 @@ public class RoutineAeMeddraTab extends AeRoutTab {
         
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
-            "aeRoutineReport.startDate", "Start date", true));
+            "aeRoutineReport.startDate", "From:", true));
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
-                "aeRoutineReport.endDate", "End date", true));
+                "aeRoutineReport.endDate", "To:", true));
         
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeRoutineReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true,
-                InputFieldFactory.collectOptions(GRADES, "name", "code")));
+        		createGradeOptions()));
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
             "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
         mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(InputFieldFactory.createSelectField(
-            "hospitalization", "Hospitalization", true,
-                InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
+            "hospitalization", "Hospitalization", true,createHospitalizationOptions()));
         mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
             "expected", "Expected", true));
      
         
         meddraTermFieldFactory = new RepeatingFieldGroupFactory(MEDDRA_TERM_FIELD_GROUP, "aeRoutineReport.adverseEvents");
         InputField lowLevelTermField = InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true);
-        lowLevelTermField.getAttributes().put("size", 25);
+        lowLevelTermField.getAttributes().put("size", 40);
         meddraTermFieldFactory.addField(lowLevelTermField);
 
     }
+    
+    private Map<Object, Object> createExpectedOptions() {
+        Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
+        expectedOptions.put("", "Please select");
+        expectedOptions.put(Boolean.TRUE, "Yes");
+        expectedOptions.put(Boolean.FALSE, "No");
+        return expectedOptions;
+    }
+    
+    private Map<Object, Object> createGradeOptions() {
+        Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
+        gradeOptions.put("", "Please select");
+        gradeOptions.putAll(
+            InputFieldFactory.collectOptions(GRADES, "name", "code"));
+        return gradeOptions;
+    }
+    
+    private Map<Object, Object> createHospitalizationOptions() {
+        Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
+        hospitalizationOptions.put("", "Please select");
+        hospitalizationOptions.putAll(
+            InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName"));
+        return hospitalizationOptions;
+    }
+    
     
     private Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();

@@ -88,8 +88,8 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     @Transient
     public Map<String, String> getSummary() {
         Map<String, String> summary = new LinkedHashMap<String, String>();
-        summary.put("Participant", summaryLine(getParticipant()));
-        summary.put("Study", summaryLine(getStudy()));
+        summary.put("Participant", getParticipantSummaryLine());
+        summary.put("Study", getStudySummaryLine());
         String primaryAeLine = null;
         if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
             primaryAeLine = getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm();
@@ -100,14 +100,17 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return summary;
     }
 
-    private String summaryLine(Participant participant) {
+    @Transient
+    public String getParticipantSummaryLine() {
+    	Participant participant = getParticipant();
         if (participant == null) return null;
         StringBuilder sb = new StringBuilder(participant.getFullName());
         appendPrimaryIdentifier(participant, sb);
         return sb.toString();
     }
-
-    private String summaryLine(Study study) {
+    @Transient
+    public String getStudySummaryLine() {
+    	Study study = getStudy();
         if (study == null) return null;
         StringBuilder sb = new StringBuilder(study.getShortTitle());
         appendPrimaryIdentifier(study, sb);

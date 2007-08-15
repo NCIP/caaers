@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -77,9 +78,12 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         aeReport.setDetectionDate(aeRoutineReport.getStartDate());
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-        
-    	
     }
+    
+    public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {
+        this.aeRoutineReport = aeRoutineReport;
+    }
+    
 
     // This method deliberately sets only one side of the bidirectional link.
     // This is so hibernate will not discover the link from the persistent side
@@ -151,11 +155,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
-    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
+    		//String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		//if (message.equals("SERIOUS_ADVERSE_EVENT")){
     			aeReport.addAdverseEvent(ae);
     			isPopulated = true;
-    		}
+    		//}
     	}
     		return isPopulated;
     	}
@@ -171,9 +175,6 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.aeReport = aeReport;
     }
 
-    public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {
-		this.aeRoutineReport = aeRoutineReport;
-	}
 
 	public RoutineAdverseEventReport getAeRoutineReport() {
 		return aeRoutineReport;

@@ -61,24 +61,32 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
-            You are entering an adverse event report for ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
+            You are entering adverse events  for ${participantSummaryLine} on
+            ${studySummaryLine}.
         </jsp:attribute>
         <jsp:attribute name="singleFields">
+        	
             <div class="report-fields">
-                <c:forEach items="${fieldGroups.report.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-                </c:forEach>
+            	<b>Periods of Observation </b><br>
+            	<div class="row">
+            	<div class="label"><tags:renderLabel field="${fieldGroups.report.fields[0]}"/></div>
+            	<div class="value">
+                	<tags:renderInputs field="${fieldGroups.report.fields[0]}"/>
+                	<strong><tags:renderLabel field="${fieldGroups.report.fields[1]}"/></strong>
+                	<tags:renderInputs field="${fieldGroups.report.fields[1]}"/>
+            	</div>
+        		</div>
             </div>
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">
-        	<table id="test" class="tablecontent">
+        	<center>
+        	<table id="test" width="100%" class="tablecontent">
     			<tr>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Term:</b> </th>
-    				<th ><b> <span class="red">*</span><em></em>Grade:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Attribution:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Hospitalization:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Expected:</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Term:</b> </th>
+    				<th ><b><tags:requiredIndicator/>Grade:</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution:</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization:</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected:</b> </th>
     			</tr>
     			<tr id="koi" />
     			
@@ -86,6 +94,7 @@
                 	<ae:oneMeddraTerm index="${status.index}"/>
             	</c:forEach>
             	</table>
+            	</center>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
             <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE"/>

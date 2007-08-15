@@ -10,8 +10,11 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.web.ae.RoutineAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -82,7 +85,16 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected Map referenceData(
         HttpServletRequest request, Object oCommand, Errors errors, int page
     ) throws Exception {
+    	//If Study MedDRA based create an AdverseEvent , else Don't 
+    	RoutineAdverseEventInputCommand command = ((RoutineAdverseEventInputCommand)oCommand);
+    	if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+    		 if (command.getAeRoutineReport().getAdverseEvents().size() == 0) {
+    	        	command.getAeRoutineReport().addAdverseEvent(new AdverseEvent());
+    	        }
+		}
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+        refdata.put("participantSummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
+        refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
         if (displaySummary(page)) {
             refdata.put("summary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
         }
@@ -96,7 +108,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     }
 
     protected boolean displaySummary(int page) {
-        return true;
+        return false;
     }
 
     /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */

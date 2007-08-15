@@ -59,7 +59,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="List reports" p:linkName="listAdverseEventsController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Enter routine report" p:linkName="createRoutineAdverseEventController"/>
+                                p:displayName="Enter routine AEs" p:linkName="createRoutineAdverseEventController"/>
                         </list>
                     </property>
                 </bean>
