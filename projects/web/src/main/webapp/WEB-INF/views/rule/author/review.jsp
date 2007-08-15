@@ -82,8 +82,6 @@
 
 		</chrome:division>
 		<p>
-		<chrome:division title="Rule(s)">
-			<p>
 			<c:forEach var="rule" items="${command.ruleSet.rule}">
 	        		<chrome:division title="${rule.metaData.name}">
 	        			<c:forEach var="line" items="${rule.readableRule.line}">
@@ -91,10 +89,12 @@
 	        			</c:forEach>	
 	        		</chrome:division>
 	        		<p>
-	        		ACTION(S) : ${rule.action}
+	        		&nbsp;&nbsp;ACTION(S) : <br />
+	        		<c:forEach var="ruleac" items="${rule.action}">
+	        			&nbsp;&nbsp; &nbsp;&nbsp;${ruleac} <br />
+	        		</c:forEach>
+
 	        </c:forEach>
-	        
-		</chrome:division>
 		
         <input id="markFinish" type="hidden" name="_finish"/>
 
