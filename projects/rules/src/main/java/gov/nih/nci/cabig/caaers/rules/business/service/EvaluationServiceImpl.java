@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -144,8 +145,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
     
     private String extractTopPriorityReportDefintionName(List<String> list){
-        //System.out.println("list sixe ... " + list.size());
-
         List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
         for (String reportDefName : list) {
             ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
@@ -153,8 +152,8 @@ public class EvaluationServiceImpl implements EvaluationService {
                 reportDefs.add(rd);
             }
         }
-        //System.out.println("rep defs sixe ... " + reportDefs.size());
 
+        // XXX: You could do this without the array conversion using Collections.sort
         Comparator<ReportDefinition> c = new ReportDefinitionComparator();
         ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
         java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
