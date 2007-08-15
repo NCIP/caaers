@@ -6,23 +6,17 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  * @author Priyatam
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 @Transactional(readOnly=true)
 public class StudyDao extends GridIdentifiableDao<Study>
@@ -44,9 +39,15 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		= Arrays.asList("longTitle");
     private static final List<String> EMPTY_PROPERTIES
 		= Collections.emptyList();
+    private static final List<String> EXACT_MATCH_TITLE_PROPERTIES
+		= Arrays.asList("shortTitle");
+
     private static final String JOINS
     	= "join o.identifiers as identifier " +
 		"join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
+
+    private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() +
+    					" s where shortTitle = :st" ;
 
     @Override
 	public Class<Study> domainClass() {
@@ -195,6 +196,17 @@ public class StudyDao extends GridIdentifiableDao<Study>
 
     public Study getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);
+    }
+
+    /**
+     * This will do an exact match on the <code>shortTitle</code>, and will return the first available
+     * Study.
+     * Note:- Biz rule should be made that short title is unique.
+     */
+    public Study getByShortTitle(String shortTitle){
+    	List<Study> studies = findBySubname(new String[]{shortTitle}, null, EXACT_MATCH_TITLE_PROPERTIES);
+    	if(studies != null && studies.size() > 0) return studies.get(0);
+    		return null;
     }
 
     @Override
