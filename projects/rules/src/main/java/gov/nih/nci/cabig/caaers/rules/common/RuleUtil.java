@@ -343,18 +343,18 @@ public class RuleUtil {
 		return builder.toString();
 	}
 	
-	public static String[] commaSeparatedStringToStringArray(String aString){
+	public static String[] charSeparatedStringToStringArray(String aString, String chr){
 	    String[] splittArray = null;
 	    if (aString != null || !aString.equalsIgnoreCase("")){
-	         splittArray = aString.split(",");
+	         splittArray = aString.split(chr);
 	         
 	    }
 	    return splittArray;
 	}
 	
 	public static void main (String[] args) {
-		String message = "10 day report,5 Day Report";
-		String[] messages = RuleUtil.commaSeparatedStringToStringArray(message);
+		String message = "10 day report||5 Day Report";
+		String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
 		
 		for (int i=0;i<messages.length;i++) {
 			System.out.println(messages[i]);

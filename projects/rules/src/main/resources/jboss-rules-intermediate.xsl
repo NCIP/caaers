@@ -54,8 +54,14 @@
 				</xsl:for-each>
 				<xsl:apply-templates select="rules:condition/rules:column"/>
 		</condition>
-		
-		<xsl:apply-templates select="rules:action"/>
+		<xsl:variable name="ct" select="count(rules:action)"/>
+		<action>
+		     <xsl:attribute name="actionId">
+				<xsl:for-each select="rules:action">
+					<xsl:value-of select="."/> <xsl:if test="$ct != position()"> <xsl:text>||</xsl:text> </xsl:if>
+				</xsl:for-each>
+			</xsl:attribute>
+		</action>
 		<xsl:apply-templates select="rules:metaData"/>
 		
 	 </rule>
@@ -135,13 +141,16 @@
 			
 		</xsl:if>		
 	</xsl:template>
-
+<!-- 
 	<xsl:template match="rules:rule/rules:action">
+
 		<action>
 			<xsl:copy-of select="@* | node()"/>
 		</action>
+
 	  
 	</xsl:template>	
+-->
 	
 	<xsl:template match="rules:rule/rules:metaData">
 		<metaData>

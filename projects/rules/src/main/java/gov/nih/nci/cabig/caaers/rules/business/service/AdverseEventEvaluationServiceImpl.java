@@ -88,7 +88,15 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 	{
 		String message = evaluateSponsorReportSchedule(ae,aeReport.getStudy());
 		if (!message.equals(CAN_NOT_DETERMINED)) {
-			reportDefinitionsForSponsor.add(message);
+			
+			String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
+			
+			for (int i=0;i<messages.length;i++) {
+				System.out.println("adding .... " + messages[i]);
+				reportDefinitionsForSponsor.add(messages[i]);
+			}
+			
+			
 			//break;
 		}
 		
@@ -110,7 +118,11 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 		for(AdverseEvent ae : aes ) {
 			String message = evaluateInstitutionReportSchedule(ae, study, so.getOrganization());
 			if (!message.equals(CAN_NOT_DETERMINED)) {
-				reportDefinitionsForInstitution.add(message);
+				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
+				
+				for (int i=0;i<messages.length;i++) {
+					reportDefinitionsForInstitution.add(messages[i]);
+				}
 				//break;
 			}
 		}
@@ -462,210 +474,6 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		return evaluationForSponsor;
 	}
 	
-/*
-		
-		public String evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception{
-			    //Report rs = aeReport.getReportSchedule();
-			System.out.println("firing ... : :");
-			String institutionName = aeReport.getAssignment().getStudySite().getOrganization().getName();
-			String bindURI_ForInstitutionLevelRules = this.getBindURI(institutionName, "","INSTITUTION",RuleType.REPORT_SCHEDULING_RULES.getName());
-			//Study study = aeReport.getStudy();
-			
-			System.out.println(bindURI_ForInstitutionLevelRules);
-			List<AdverseEvent> aes = aeReport.getAdverseEvents();
-			AdverseEvent ae = aes.get(0);
-			
-			RuleSet ruleSetForInstitution = rulesEngineService.getRuleSetForInstitution(RuleType.REPORT_SCHEDULING_RULES.getName(), institutionName);
-			
-			if(ruleSetForInstitution==null){
-				throw new Exception("There are no rules configured for adverse event assesment for this site!");
-			}
-			
-			AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
-			
-			try {
-				evaluationForInstitution = this.getEvaluationObject(ae,  null, aeReport.getAssignment().getStudySite().getOrganization(), bindURI_ForInstitutionLevelRules);
-		
-				
-				
-				//reportService = this.getReportService();
-				
-				//System.out.println(reportServiceImpl.toString());
-				//Report r = reportService.createReport(reportDefinition, aeReport);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new Exception(e.getMessage(),e);
-			}
-		    
-			System.out.println("Message: :" + evaluationForInstitution.getMessage());
-			
 
-			
-			/*
-			ApplicationContext ac = AdverseEventEvaluationServiceImpl.getDeployedApplicationContext();
-			
-			ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao)ac.getBean("reportDefinitionDao");
-			ReportDefinition reportDefinition = reportDefinitionDao.getByName(evaluationForInstitution.getMessage());
-			reportDefinitionDao.initialize(reportDefinition);
-			System.out.println(reportDefinition.getDescription());
-			*/
-			//reportServiceImpl = this.getReportServiceImpl();
-			
-			//System.out.println(reportServiceImpl.toString());
-			//Report r = reportServiceImpl.createReport(reportDefinition, aeReport);
-			
-			// report .. aer and rd 
-			
-			//return evaluationForInstitution.getMessage();
-		//}
-/*
-	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Organization site, String bindURI) throws Exception{
-		
-		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
-		
-		List<Object> inputObjects = new ArrayList<Object>();
-		inputObjects.add(ae);
-		inputObjects.add(site);
-		
-		List<Object> outputObjects = null;
-		try{
-		
-			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
-		
-		}catch(Exception ex){
-		
-			throw new RuleException("There are no rule configured for this institution",ex);
-			//return evaluationForSponsor;
-		}
-		
-		
-		
-		Iterator<Object> it = outputObjects.iterator();
-		
-		while(it.hasNext()){
-			Object obj = it.next();
-			
-			if(obj instanceof AdverseEventEvaluationResult) {
-				evaluationForInstitution = (AdverseEventEvaluationResult)obj;
-				break;
-			}
-			
-			
-		}
-		
-		return evaluationForInstitution;
-	}
-*/
-	/*
-	public static String[] getConfigLocations() {
-        return new String[] {
-            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
-            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
-            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml",
-            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml"
-        		
-        };
-    }
-	/*
-	public synchronized static ApplicationContext getDeployedApplicationContext() {
-        if (acLoadFailure == null && applicationContext == null) {
-            // This might not be the right place for this
-            try {
-                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-            } catch (NamingException e) {
-                throw new RuntimeException("", e);
-            }
-
-            try {
-            	log.debug("Initializing test version of deployed application context");
-                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-            } catch (RuntimeException e) {
-                acLoadFailure = e;
-                throw e;
-            }
-        } else if (acLoadFailure != null) {
-            throw new CaaersSystemException(
-                "Application context loading already failed.  Will not retry.  " +
-                    "Original cause attached.", acLoadFailure);
-        }
-        return applicationContext;
-    }
-	*/
-
-
-	
-
-
-/*
-	public ReportServiceImpl getReportService() {
-		return reportService;
-	}
-
-
-	public void setReportService(ReportServiceImpl reportService) {
-		this.reportService = reportService;
-	}
-
-	/*
-	private String institutionLevelRules(AdverseEvent ae, Study study) throws Exception{
-		String message = null;
-		// TO DO get from ORG object 
-		String institutionName = ""; 
-		String bindURI = this.getBindURI(institutionName,"","INSTITUTION",RuleType.AE_ASSESMENT_RULES.getName());
-		
-		RuleSet ruleSetForInstitution = rulesEngineService.getRuleSetForInstitution(RuleType.AE_ASSESMENT_RULES.getName(), institutionName);
-		
-		if(ruleSetForInstitution==null){
-			throw new Exception("There are no rules configured for adverse event assesment for this institution!");
-		}
-		
-		AdverseEventEvaluationResult evaluationForInstitution = new AdverseEventEvaluationResult();
-		
-		try {
-			// TO DO GET ORG ...
-			evaluationForInstitution = this.getEvaluationObject(ae, null, new Organization(), bindURI);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new Exception(e.getMessage(),e);
-		}
-		
-		message = evaluationForInstitution.getMessage();
-		
-		return message;
-		
-	}
-	*/
-	
-	/*
-	private String institutionDefinedStudyLevelRules(AdverseEvent ae, Study study) throws Exception{
-		String message = null;
-		// TO DO get from ORG object 
-		String institutionName = ""; 
-		
-		String bindURI = getBindURI(institutionName, study.getShortTitle(),"INSTITUTION_DEFINED_STUDY",RuleType.AE_ASSESMENT_RULES.getName());
-		
-		RuleSet ruleSetForInstitutionDefinedStudy = rulesEngineService.getRuleSetForInstitutionDefinedStudy(RuleType.AE_ASSESMENT_RULES.getName(), study.getShortTitle(), institutionName);
-		
-		if(ruleSetForInstitutionDefinedStudy==null){
-			throw new Exception("There are no rules configured for adverse event assesment for this institution defined study!");
-		}
-		
-		AdverseEventEvaluationResult evaluationForInstitutionDefinedStudy = new AdverseEventEvaluationResult();
-		
-		try {
-			// TO DO get ORG...
-			evaluationForInstitutionDefinedStudy = this.getEvaluationObject(ae, study, new Organization(), bindURI);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw new Exception(e.getMessage(),e);
-		}
-		
-		message = evaluationForInstitutionDefinedStudy.getMessage();
-		
-		return message;
-		
-	}
-	*/
 	
 }

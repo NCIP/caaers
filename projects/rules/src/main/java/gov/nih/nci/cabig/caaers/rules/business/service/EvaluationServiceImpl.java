@@ -83,14 +83,22 @@ public class EvaluationServiceImpl implements EvaluationService {
         Set<String> keys = map.keySet();
         for (String key : keys) {
             //System.out.println("KEY IS : " + key);
+        	
             List<String> reportDefNames = map.get(key);
+            /*
             if (reportDefNames.size() != 0) {
                 String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
                 reportDefinitionNames.add(reportDefName);
             }
+            */
+            //uncommnted the above part for time being to test multiple actions in rules.
+            for (String reportDefName : reportDefNames) {
+            	reportDefinitionNames.add(reportDefName);
+            }
         }
 
         for (Object reportDefinitionName : reportDefinitionNames) {
+        	System.out.println("Saving ... " + reportDefinitionName.toString());
             ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
             Report report = existingReportWithDef(expeditedData, def);
 
@@ -98,6 +106,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 report = reportService.createReport(def, expeditedData);
             }
             report.setRequired(true);
+            System.out.println("Saved ... " + reportDefinitionName.toString());
 
         }
 

@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -22,7 +21,6 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.io.File;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -721,8 +719,8 @@ public class RulesEngineServiceTest extends TestCase {
 		// Notification action = new Notification();
 		// action.setActionId("ROUTINE_AE");
 
-		Action action = new Action();
-		action.setActionId(actionStr);
+		List<String> action = new ArrayList<String>();
+		action.add(actionStr);
 
 		rule1.setAction(action);
 		

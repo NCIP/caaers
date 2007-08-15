@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -18,18 +17,12 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.ReadableRule;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
-
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
-import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import java.io.File;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -65,103 +58,6 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		super.setUp();
 
-		Connection db; // A connection to the database
-		Statement sql; // Our statement to run queries with
-
-		Class.forName("org.postgresql.Driver");
-		db = DriverManager.getConnection(
-				"jdbc:postgresql://localhost/caaers", "postgres",
-				"postgres");
-
-		sql = db.createStatement();
-		String sqlText_1 = "drop table rep_binval";
-		String sqlText_2 = "drop table rep_fsentry";
-		String sqlText_3 = "drop table rep_node";
-		String sqlText_4 = "drop table rep_prop";
-		String sqlText_5 = "drop table rep_refs";
-
-		String sqlText_6 = "drop table rep_ver_binval";
-		String sqlText_7 = "drop table rep_ver_fsentry";
-		String sqlText_8 = "drop table rep_ver_node";
-		String sqlText_9 = "drop table rep_ver_prop";
-		String sqlText_0 = "drop table rep_ver_refs";
-		
-		try {
-			sql.executeUpdate(sqlText_1);
-			System.out.println(sqlText_1 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_2);
-			System.out.println(sqlText_2 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_3);
-			System.out.println(sqlText_3 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_4);
-			System.out.println(sqlText_4 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_5);
-			System.out.println(sqlText_5 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-
-		try {
-			sql.executeUpdate(sqlText_6);
-			System.out.println(sqlText_6 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_7);
-			System.out.println(sqlText_7 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_8);
-			System.out.println(sqlText_8 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_9);
-			System.out.println(sqlText_9 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		try {
-			sql.executeUpdate(sqlText_0);
-			System.out.println(sqlText_0 + " successfully executed");
-		} catch (org.postgresql.util.PSQLException pe) {
-			if (pe.getErrorCode() != 0)
-				throw pe;
-		}
-		db.close();
-
-		deleteDir(new File("/tmp/rules_repo/repox"));
-		File f = new File("/tmp/rules_repo/repox");
-		f.mkdir();
 
 		this.rulesEngineService = new RulesEngineServiceImpl();
 		
@@ -174,7 +70,12 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
 		String studyName = "cgems";
 
-		RuleSet rs = sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
+	//	InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/Users/sakkala/caaers/rules/n1.xml");
+		//Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
+		//RuleSet rs = (RuleSet)unmarshaller.unmarshal(inputStream);
+
+		
+		//RuleSet rs = sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
 		createAdverseEvent2(studyName,sponsorName);
 	}
 
@@ -228,7 +129,7 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		sa1.setAgentAsString("agent1");
 		
 		InvestigationalNewDrug investigationalNewDrug = new InvestigationalNewDrug();
-		investigationalNewDrug.setHolderName("NCI");
+		investigationalNewDrug.setHolderName("Wake Forest Comprehensive Cancer Center");
 		
 		StudyAgentINDAssociation studyAgentINDAssociation = new StudyAgentINDAssociation();
 		studyAgentINDAssociation.setInvestigationalNewDrug(investigationalNewDrug);
@@ -427,8 +328,8 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 
 
 
-		Action action = new Action();
-		action.setActionId(actionStr);
+		List<String> action = new ArrayList<String>();
+		action.add(actionStr);
 
 		rule1.setAction(action);
 		

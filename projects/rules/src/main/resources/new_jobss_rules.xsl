@@ -80,13 +80,10 @@
 
 <xsl:template match="action">
 	<rhs xmlns="http://drools.org/drools-3.0">
-	    System.out.println("Wow Vinay !!!");
-	    System.out.println("Value Is:"+"<xsl:value-of select="@actionId"/>");
-	    
+	    System.out.println("Value Is:"+"<xsl:value-of select="@actionId"/>");	    
 	    
 		if(adverseEventEvaluationResult != null) {
 			adverseEventEvaluationResult.setMessage("<xsl:value-of select="@actionId"/>");
-			System.out.println("Wow Vinay Inside Block!!!");
 		}
 		 else {
 			System.out.println("The Rule Conditions were met. But no action is specified. ");
