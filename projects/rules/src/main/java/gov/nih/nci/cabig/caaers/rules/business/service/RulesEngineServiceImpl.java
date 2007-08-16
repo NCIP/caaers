@@ -9,14 +9,21 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
+import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 /**
  * 
  * @author vinaykumar
@@ -663,6 +670,28 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet getRuleSet(String packageName) throws Exception {
 		// TODO Auto-generated method stub
 		return ruleAuthoringService.getRuleSet(packageName);
+	}
+
+
+	public void exportRules(String fileName) throws Exception {
+		StringBuilder sbr = new StringBuilder();
+		List<RuleSet> list = this.getAllRuleSets();
+		Iterator<RuleSet> it = list.iterator();
+		while(it.hasNext()){
+			RuleSet rs = it.next();
+			String str = XMLUtil.marshal(rs);
+			sbr.append(str);
+			sbr.append("\n");
+		}
+		Document doc = new Document();
+		Element rootElement = new Element("RuleSets");
+		doc.setRootElement(rootElement);
+		rootElement.addContent(sbr.toString());
+		XMLOutputter outputter = new XMLOutputter();
+		FileOutputStream out = new FileOutputStream(fileName);
+		outputter.output(doc,out);
+		out.flush();
+	    out.close();
 	}
 	
 	
