@@ -155,7 +155,6 @@ Object.extend(ListEditor.prototype, {
         itemDiv = $(itemDiv)
         var heading = itemDiv.getElementsByTagName("H3")[0]
         if (!heading) {
-            alert("division " + itemDiv.id + " is missing its header")
             return;
         }
         // wrap heading content in a span for easier access later
