@@ -140,6 +140,6 @@ public interface RulesEngineService {
 	
 	public boolean isDeployed(RuleSet ruleSet);
 	
-	
+	public void exportRules(String fileName) throws Exception;
 
 }
