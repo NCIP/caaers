@@ -14,11 +14,8 @@
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 
-<!--  Saurabh : type : ${type}
-      Class : ${identifier.class.name} 
-      propertyName : ${field.propertyName}
- -->
-<tr class="${sectionClass}">
+
+<tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
 
 
