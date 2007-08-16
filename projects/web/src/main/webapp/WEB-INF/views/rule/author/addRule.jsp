@@ -131,7 +131,7 @@
 				<br/>
 				<div id="action-template"  style="margin-left:200px;">
 					<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-					<select id="ruleSet.rule[${ruleCount}].action.actionId" name="ruleSet.rule[${ruleCount}].action.actionId" multiple="multiple" size="3">
+					<select id="ruleSet.rule[${ruleCount}].action" name="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 						
 						<c:choose>
 							<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
