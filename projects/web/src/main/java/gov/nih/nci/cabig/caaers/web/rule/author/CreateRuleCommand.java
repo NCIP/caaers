@@ -129,6 +129,20 @@ public class CreateRuleCommand implements RuleInputCommand
 					rule.getCondition().getColumn().remove(col);
 				}
 
+				
+				
+				//get comma seperated values ....
+				/*
+				for (Column col:rule.getCondition().getColumn()) {
+					String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().get(0);
+					if (value.contains(",")) {
+						List<String> values = RuleUtil.charSeparatedStringToStringList(value, ",");
+						col.getFieldConstraint().get(0).getLiteralRestriction().get(0).setValue(values);
+					}
+					
+				}	
+				*/
+				
 				rule.getCondition().getColumn().add(createCriteriaForFactResolver());
 				
 			}
@@ -437,6 +451,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		column.setIdentifier("organizationSDO");
 		String expression = "factResolver.assertFact(organizationSDO,null," + "\"name" + "\"," + "\"" + criteriaValue+ "\",\"==\""+")";
 
+		column.setExpression(expression);
 		
 		List<FieldConstraint> fieldConstraints = new ArrayList<FieldConstraint>();
 		
