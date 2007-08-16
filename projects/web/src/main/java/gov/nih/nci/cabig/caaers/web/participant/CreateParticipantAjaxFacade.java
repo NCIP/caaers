@@ -69,6 +69,7 @@ public class CreateParticipantAjaxFacade {
 		else if (type == 2) {
 			newParticipantCommand.getIdentifiers().add(new OrganizationAssignedIdentifier());
 		}
+		request.setAttribute("listEditorIndex", index);
 		request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getIdentifiers().size() - 1);
 		request.setAttribute("type", type);
 		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "newParticipantCommandIdentifierSection");
