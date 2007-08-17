@@ -96,7 +96,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             	reportDefinitionNames.add(reportDefName);
             }
         }
-
+        boolean anyReports = false;
         for (Object reportDefinitionName : reportDefinitionNames) {
         	System.out.println("Saving ... " + reportDefinitionName.toString());
             ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
@@ -107,10 +107,12 @@ public class EvaluationServiceImpl implements EvaluationService {
             }
             report.setRequired(true);
             System.out.println("Saved ... " + reportDefinitionName.toString());
+            anyReports = true;
 
         }
-
-        expeditedAdverseEventReportDao.save(expeditedData);
+        if (anyReports) {
+        	expeditedAdverseEventReportDao.save(expeditedData);
+        }
     }
 
     private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
