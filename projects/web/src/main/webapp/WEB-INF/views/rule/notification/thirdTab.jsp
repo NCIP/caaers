@@ -14,8 +14,15 @@
 			font-weight:bold;
 			margin-left:0.5em;
 			text-align:right;
+			font-family:verdana,arial,helvetica,sans-serif;
+			font-size:11px;
   		}
-  		div.row div.label { width: 9em; } 
+  		.value {
+  			font-family:verdana,arial,helvetica,sans-serif;
+			font-size:11px;
+			padding-left:15px;
+  		}
+  		div.row div.label { width: 11em; } 
   	</style>
     <script language="javascript">
     	function deleteEntity(iots, entity){
@@ -65,6 +72,7 @@
 			  </tr>
 		    </c:forEach>
 		  </table>
+		  <br>
 		</chrome:division>
 		<!--  Mandatory Fields  -->
 		<chrome:division title="Report Mandatory Fields">
