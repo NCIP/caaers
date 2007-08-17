@@ -37,6 +37,12 @@ public class ReportDaoStub extends ReportDao {
 		map.put(rs.getName() + reportId, rs);
 
 	}
+	public Report getById(int id, boolean refresh){
+		map.clear();
+		init(-444);
+		init(-885);
+		return getById(id);
+	}
 	@Override
 	public Report getById(int id) {
 		logger.debug("ReportScheduleDAOStub : getById(" + id +")");
@@ -94,6 +100,7 @@ public class ReportDaoStub extends ReportDao {
 
 		rs = new Report(){
 			int callCount = 0;
+			@Override
 			public ReportStatus getStatus(){
 				callCount++;
 				if(reportId == -885 && callCount > 1)

@@ -27,7 +27,7 @@ public interface EvaluationService {
      * {@link ReportDefinition}.  Implementors must also <em>not</em> remove
      * {@link gov.nih.nci.cabig.caaers.domain.report.Report}s if they don't evaluate as required
      * (e.g., some reports may have been directly selected by the user).  Instead, implementors
-     * should update the {@link Report#setRequired} flag. 
+     * should update the {@link Report#setRequired} flag.
      *
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
@@ -35,9 +35,18 @@ public interface EvaluationService {
     void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
 
     /**
+     * This method will instantiate and saves the optional reports.
+     * @param expeditedData
+     * @param reportDefs - A list of ReportDefinitions
+     */
+    void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs);
+
+    /**
      * @return All the report definitions which might apply to the given
      *  study, site, and participant
      */
     // TODO: it might more sense for this to go in ReportService
     List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment);
+
+
 }

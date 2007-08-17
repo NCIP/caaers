@@ -10,6 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.ReportDaoStub;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -18,7 +19,7 @@ import gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl;
 @CaaersUseCases({CREATE_NOTIFICATION_RULES, CREATE_REPORT_FORMAT })
 public class SchedulerServiceImplTest extends CaaersTestCase {
 	static ApplicationContext appCtx;
-	
+
 	SchedulerServiceImpl service;
 	public static ApplicationContext getApplicationContext(){
 		String[] locations = new String[] {
@@ -33,13 +34,14 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		return appCtx;
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
 		service = (SchedulerServiceImpl)getApplicationContext().getBean("schedulerService");
 		replayMocks();
 	}
-	
+
     @Override
     protected void tearDown() throws Exception {
     	// TODO Auto-generated method stub
@@ -92,6 +94,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		 service.scheduleNotification(report);
 		Thread t = new Thread(){
 			int cnt = 0;
+			@Override
 			public void run(){
 				assertTrue( "Thread has ran more than 10 times waiting for the Job to complete",cnt < 10);
 				cnt++;
@@ -119,7 +122,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	}
 
 	public void testUnscheduleNotification() throws Exception{
-		final Report report = service.getReportScheduleDao().getById(-444);
+		final Report report = ((ReportDaoStub)service.getReportScheduleDao()).getById(-444, true);
 		service.scheduleNotification(report);
 		service.unScheduleNotification(report);
 		for(ScheduledNotification snf : report.getScheduledNotifications())

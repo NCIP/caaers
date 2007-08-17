@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -48,6 +49,7 @@ import org.apache.commons.lang.StringUtils;
  * @version     %I%, %G%
  * @since       1.0
  */
+@Transactional(readOnly=true)
 public class ReportServiceImpl  implements ReportService {
     private NowFactory nowFactory;
     private SchedulerService schedulerService;
@@ -141,6 +143,7 @@ public class ReportServiceImpl  implements ReportService {
      * Creates a report from the given definition and associates it with the
      * given aeReport.  Initiates all notifications for the report.
      */
+	@Transactional(readOnly=false)
     public Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport) {
         assert repDef != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
@@ -232,6 +235,7 @@ public class ReportServiceImpl  implements ReportService {
      *   <br />Unschedules all scheduled notifications.
      *   <br />Sets the status of the Report as {@link ReportStatus#WITHDRAWN}
      */
+	@Transactional(readOnly=false)
 	public void deleteReport(Report report) {
 		assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
 		schedulerService.unScheduleNotification(report);

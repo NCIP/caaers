@@ -195,12 +195,27 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 	 * @throws Exception
 	 */
 	public void testGetStudyCoordinatingCenters() throws Exception {
-		Study study = getDao().getById(-2);
-		List<StudyCoordinatingCenter> centers = study.getStudyCoordinatingCenters();
-		assertEquals("Wrong number of study coordinating centers", 1, centers.size());
-		List<Integer> ids = collectIds(centers);
+		{
+			Study study = getDao().getById(-2);
+			List<StudyCoordinatingCenter> centers = study.getStudyCoordinatingCenters();
+			assertEquals("Wrong number of study coordinating centers", 1, centers.size());
+			List<Integer> ids = collectIds(centers);
 
-		assertContains("Missing expected study funding sponsor", ids, -1004);
+			assertContains("Missing expected study funding sponsor", ids, -1004);
+
+			StudyCoordinatingCenter sc = centers.get(0);
+			study.removeStudyOrganization(sc);
+			getDao().save(study);
+		}
+		interruptSession();
+		{
+			Study study = getDao().getById(-2);
+			List<StudyCoordinatingCenter> centers = study.getStudyCoordinatingCenters();
+			int size = 0;
+			if(centers != null) size = centers.size();
+			assertEquals("Wrong number of study co-ordinating centers", 0, size);
+		}
+
 	}
 
 	public void testSaveNewStudyWithFundingSponsor() throws Exception {

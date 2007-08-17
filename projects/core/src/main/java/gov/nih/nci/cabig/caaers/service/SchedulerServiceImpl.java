@@ -62,7 +62,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 				assert nf != null :"report must not contain invalid ScheduledNotificaiton objects";
 				assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
-
+				if(nf.getDeliveryStatus() != DeliveryStatus.CREATED){
+					throw new CaaersSystemException("Cannot schedule a Scheduled Notification which transitioned from DeliveryStatus.CREATED");
+				}
 
 				//create a trigger
 				Trigger trigger = makeTrigger(nf);

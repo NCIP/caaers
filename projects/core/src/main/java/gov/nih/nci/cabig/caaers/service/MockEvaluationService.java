@@ -71,12 +71,21 @@ public class MockEvaluationService implements EvaluationService {
             + Integer.toHexString(def.hashCode()) + ") found in EAER " + expeditedData.getId());
         return null;
     }
+    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData) {
+    	// TODO Auto-generated method stub
 
-    /**
-     * Mock implementation returns all the report defs in the system
-     */
-    public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
-        return reportDefinitionDao.getAll();
+    }
+
+    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
+		List<ReportDefinition> reportDefs) {
+    	// TODO Auto-generated method stub
+
+    }
+
+    public List<ReportDefinition> applicableReportDefinitions(
+		StudyParticipantAssignment assignment) {
+    	// TODO Auto-generated method stub
+    	return null;
     }
 
     ////// CONFIGURATION

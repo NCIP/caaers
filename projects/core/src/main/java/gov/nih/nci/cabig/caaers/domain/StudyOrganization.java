@@ -16,9 +16,9 @@ import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 /**
  * This class encapsulates all types of organizations associated with a Study
- * 
+ *
  * @author Ram Chilukuri
- * 
+ *
  */
 @Entity
 @Table(name = "study_organizations")
@@ -31,19 +31,17 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 	private Organization organization;
 
 	@ManyToOne
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "site_id", nullable = false)
 	public Organization getOrganization() {
 		return organization;
 	}
 
 	@ManyToOne
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "study_id", nullable = false)
 	public Study getStudy() {
 		return study;
 	}
-	
+
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
@@ -51,7 +49,7 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 	public void setStudy(Study study) {
 		this.study = study;
 	}
-	
+
 
 }
 
