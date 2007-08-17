@@ -19,13 +19,13 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
-public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
+public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
-	
+
 	private InputFieldGroupMap map;
-	
-	public FirstTab(String longTitle, String shortTitle, String viewName) {
-		
+
+	public BasicsTab(String longTitle, String shortTitle, String viewName) {
+
 		super(longTitle, shortTitle, viewName);
 		map = new InputFieldGroupMap();
 		InputFieldGroup orgFieldGroup = new DefaultInputFieldGroup("reportDefinitionOrganization");
@@ -33,7 +33,7 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 		InputFieldAttributes.setDetails(orgField, "Enter a portion of the organization name that you are looking");
 		orgFieldGroup.getFields().add(orgField);
 		map.addInputFieldGroup(orgFieldGroup);
-		
+
 		//setup the fileds
 		InputFieldGroup fieldGroup  = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
 		List<InputField> fields = fieldGroup.getFields();
@@ -46,16 +46,16 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 		fields.add(InputFieldFactory.createSelectField("timeScaleType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
 		fields.add(InputFieldFactory.createTextField("duration", "Time Till Report Due", true));
-		
+
 		map.addInputFieldGroup(fieldGroup);
-		
-		
+
+
 	}
 
-	public FirstTab() {
-		this("Report Definition", "Basic Details", "rule/notification/firstTab");
+	public BasicsTab() {
+		this("Report Definition", "Basic Details", "rule/notification/basicsTab");
 	}
-	
+
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
 		return map;
@@ -72,7 +72,7 @@ public class FirstTab extends TabWithFields<ReportDefinitionCommand> {
 	public void postProcess(HttpServletRequest req,
 			ReportDefinitionCommand cmd, Errors errors) {
 		super.postProcess(req, cmd, errors);
-		ReportDefinitionCommand nfCmd = (ReportDefinitionCommand) cmd;
+		ReportDefinitionCommand nfCmd = cmd;
 		if (!errors.hasErrors())
 			nfCmd.updateReportCalendarTemplate();
 	}

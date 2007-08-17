@@ -39,11 +39,11 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	//initializes the flow
     protected void initFlow() {
         setFlow(new Flow<ReportDefinitionCommand>(getFlowName()));
-        FirstTab firstTab = new FirstTab();
+        BasicsTab firstTab = new BasicsTab();
         ReportDeliveryDefinitionTab deliveryDefTab = new ReportDeliveryDefinitionTab();
         ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
-        SecondTab secondTab = new SecondTab();
-        ThirdTab thirdTab = new ThirdTab();
+        NotificationsTab secondTab = new NotificationsTab();
+        ReviewTab thirdTab = new ReviewTab();
 
         getFlow().addTab(firstTab);
         getFlow().addTab(deliveryDefTab);

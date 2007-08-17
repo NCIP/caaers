@@ -22,17 +22,17 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
-public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
+public class ReviewTab extends TabWithFields<ReportDefinitionCommand>{
 
 	private InputFieldGroup fieldGroup;
 	private InputFieldGroupMap map;
 
-	public ThirdTab(String longTitle, String shortTitle, String viewName) {
+	public ReviewTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 	}
 
-	public ThirdTab() {
-		this("Review","Review","rule/notification/thirdTab");
+	public ReviewTab() {
+		this("Review","Review","rule/notification/reviewTab");
 
 	}
 

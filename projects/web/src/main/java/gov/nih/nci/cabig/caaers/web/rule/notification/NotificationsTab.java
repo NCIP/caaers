@@ -24,12 +24,12 @@ import org.springframework.validation.Errors;
  * @author Sujith Vellat Thayyilthodi
  * @author Biju Joseph
  * */
-public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
+public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	private RepeatingFieldGroupFactory rfgFactory;
 
 
-	public SecondTab(String longTitle, String shortTitle, String viewName) {
+	public NotificationsTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 		rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.plannedNotifications");
 		rfgFactory.addField(InputFieldFactory.createTextField("fromAddress","From Address", false));
@@ -38,8 +38,8 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body","Message", false));
 	}
 
-	public SecondTab() {
-		this("Specify Notification Details", "Notifications", "rule/notification/secondTab");
+	public NotificationsTab() {
+		this("Specify Notification Details", "Notifications", "rule/notification/notificationsTab");
 	}
 
 
