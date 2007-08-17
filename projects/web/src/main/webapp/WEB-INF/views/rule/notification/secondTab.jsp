@@ -1,6 +1,4 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="ruletags" tagdir="/WEB-INF/tags/rule"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -114,7 +112,7 @@
    					<tr align="center" valign="middle"> 
    						<td align="left" width="80"> ${command.timeScaleType}</td>
    						<c:forTokens delims="," var="tsUnit" 
-   						             items="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28">
+   						             items="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28">
    						    <td width="40" class="divider">
    						    	<c:if test="${tsUnit eq command.pointOnScale}">
    						    	<div id="tsu_current">${tsUnit}</div>
@@ -238,7 +236,7 @@
    									</select>
    							</div>
  						 </tr>
- 						 </tr>
+
  						 <tr>
    							<td width="15%"><div class="row"><div class="label"><label for="subject">Subject Line</label></div></div></td>
    							<td width="85%"><form:input path="subjectLine" size="100" cssStyle="width:96%;" onfocus="lastElement = this;" /></td>

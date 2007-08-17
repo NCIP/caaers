@@ -1,4 +1,3 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
@@ -8,7 +7,15 @@
 <head>
     <tags:stylesheetLink name="ae"/>
     <title>Not implemented</title>
-  
+  	<style type="text/css">
+  		.label {
+  			float:left;
+			font-weight:bold;
+			margin-left:0.5em;
+			text-align:right;
+  		}
+  		div.row div.label { width: 9em; } 
+  	</style>
     <script language="javascript">
     	function deleteEntity(iots, entity){
     		var frm = $('command');
@@ -22,6 +29,7 @@
     	}
     	 
     </script>
+    
 </head>
 <body>
     
@@ -43,20 +51,18 @@
 		
 		<!-- Delivery Details -->
 		<chrome:division title="Report Delivery Definition(s)">
-		  <c:forEach items="${FIELDS.rddKeySet}" var="rddKey" varStatus="status">
-			<chrome:division title="Delivery Definition : ${status.index + 1}">
-		    	<c:forEach items="${FIELDS['Report Delivery Definition'][rddKey]}" var="pair" >
-		    		<rd:renderPair pair="${pair}" />
-			    </c:forEach>
-			     <div class="content buttons autoclear">
-    				<div class="local-buttons">
-			    		<input type="button" name="delRdd" onClick="javascript:deleteEntity(${status.index},'reportdeliverydefinition');" value="Delete Delivery Definition : ${status.index + 1}" />
-			    	</div>
-			    </div>
-		    </chrome:division>
-		  </c:forEach>
+		  <table width="90%" class="eXtremeTable">
+		    <c:forEach items="${FIELDS['rdd']}" var="pair" varStatus="status">
+		      <tr class="${status.index % 2 ne 0 ? 'even' : 'odd'}">
+		    	<td>${pair.key}</td><td>${pair.value}</td><td>${pair.attribute1}</td><td>${pair.attribute2}</td>
+			  </tr>
+		    </c:forEach>
+		  </table>
 		</chrome:division>
-		 
+		<!--  Mandatory Fields  -->
+		<chrome:division title="Report Mandatory Fields">
+		
+		</chrome:division> 
 		<!-- Notification Details -->	
 		<chrome:division title="Notification(s)">
 		  <c:forEach items="${FIELDS.pnfKeySet}" var="pnfKey" varStatus="pnfStatus">

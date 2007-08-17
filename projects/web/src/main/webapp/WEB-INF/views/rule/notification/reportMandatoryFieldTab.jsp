@@ -18,7 +18,9 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" >
     	<jsp:attribute name="instructions">
-    	  Cross/check the fields that are mandatory in adverse event entry screen when, <b>${command.name}</b> report definition is associated to a adverse event report.
+    	  Select the fields of adverse event entry screen which are to be made mandatory, 
+    	  when <b>${command.name}</b> report definition is associated to a adverse event report.
+    	  <i> <br/> <b>TODO:</b> need a better instruction...</i>
     	  <br> 
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
