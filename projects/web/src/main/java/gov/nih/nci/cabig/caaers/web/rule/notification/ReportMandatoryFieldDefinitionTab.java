@@ -19,7 +19,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
     private ExpeditedReportTree expeditedReportTree;
 
     public ReportMandatoryFieldDefinitionTab(){
-        super("Mandatory Fields", "Mandatory Fields Configuration","rule/notification/reportMandatoryFieldTab");
+        super("Mandatory Fields", "Mandatory Fields","rule/notification/reportMandatoryFieldTab");
     }
 
     @Override

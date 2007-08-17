@@ -98,7 +98,7 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		map.put(tab.getShortTitle(), fieldList);
 
 		//report definition tab
-		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(1);
+/*		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(1);
 		fieldGroupMap = tab.createFieldGroups(command);
 		Map<String, Object> rddMap = new LinkedHashMap<String, Object>();
 		int i = 0;
@@ -115,6 +115,34 @@ public class ThirdTab extends TabWithFields<ReportDefinitionCommand>{
 		}
 		map.put("Report Delivery Definition", rddMap);
 		map.put("rddKeySet", rddMap.keySet());
+*/
+		List<ReportDeliveryDefinition> deliveries = command.getReportDefinition().getDeliveryDefinitions();
+		if(deliveries != null){
+			List<Pair> pairs = new ArrayList<Pair>();
+			for(ReportDeliveryDefinition rdd : deliveries){
+				if(rdd.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_PERSON){
+					Pair p = new Pair("Person", rdd.getEntityName());
+					p.setAttribute1(rdd.getEndPoint());
+					p.setAttribute2(rdd.getFormat().getDisplayName());
+					pairs.add(p);
+				}
+				if(rdd.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_ROLE){
+					Pair p = new Pair("Role", rdd.getEntityName());
+					p.setAttribute1(rdd.getEndPoint());
+					p.setAttribute2(rdd.getFormat().getDisplayName());
+					pairs.add(p);
+				}
+			}
+			for(ReportDeliveryDefinition rdd : deliveries){
+				if(rdd.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM){
+					Pair p = new Pair("System", rdd.getEntityName());
+					p.setAttribute1(rdd.getEndPoint());
+					p.setAttribute2(rdd.getFormat().getDisplayName());
+					pairs.add(p);
+				}
+			}
+			map.put("rdd", pairs);
+		}
 
 		// Mandatory Field Definition Tab
 		tab = (TabWithFields<ReportDefinitionCommand>)getFlow().getTab(2);

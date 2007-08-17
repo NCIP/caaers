@@ -45,7 +45,7 @@ public class ReportDefinitionCommand  {
 	// page -4
 	private String to;
 	private String message;
-	private String pointOnScale = "1"; // the selected point in the time scale
+	private String pointOnScale = "0"; // the selected point in the time scale
 	private String lastPointOnScale;
 	private String subjectLine;
 	private String fromAddress;

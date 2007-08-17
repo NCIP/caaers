@@ -25,10 +25,10 @@ import org.springframework.validation.Errors;
  * @author Biju Joseph
  * */
 public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
-	
+
 	private RepeatingFieldGroupFactory rfgFactory;
-	
-	
+
+
 	public SecondTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 		rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.plannedNotifications");
@@ -37,20 +37,21 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		rfgFactory.addField(InputFieldFactory.createTextField("subjectLine","Subject Line", false));
 		rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body","Message", false));
 	}
-	
+
 	public SecondTab() {
-		this("Specify Notification Details", "Notification Details", "rule/notification/secondTab");
+		this("Specify Notification Details", "Notifications", "rule/notification/secondTab");
 	}
 
-	
+
+	@Override
 	public void postProcess(HttpServletRequest req, ReportDefinitionCommand cmd, Errors errors) {
 		super.postProcess(req,cmd,errors);
-		//update the report calendar 
+		//update the report calendar
 		if(errors.getErrorCount() < 1)
 			cmd.updateReportCalendarTemplate();
 		else
 			cmd.setPointOnScale(cmd.getLastPointOnScale());
-		
+
 	}
 
 	@Override
@@ -68,11 +69,11 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 		NotificationType nfType = NotificationType.valueOf(command.getNotificationType());
 		EmailValidator emailValidator = EmailValidator.getInstance();
 		switch(nfType){
-		
+
 			case EMAIL_NOTIFICATION:
 				//do I need to really validate??
 				boolean mustValidate = StringUtils.isNotEmpty(command.getFromAddress()) ||
-									   StringUtils.isNotEmpty(command.getMessage()) || 
+									   StringUtils.isNotEmpty(command.getMessage()) ||
 									   CollectionUtils.isNotEmpty(command.getRoleRecipient())||
 									   CollectionUtils.isNotEmpty(command.getDirectRecipient())||
 									   StringUtils.isNotEmpty(command.getSubjectLine());
@@ -86,11 +87,11 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 					errors.rejectValue("message", "REQUIRED","Message Invalid");
 				if(StringUtils.isEmpty(command.getSubjectLine()))
 					errors.rejectValue("subjectLine", "REQUIRED", "Subject Line Invalid");
-				if(CollectionUtils.isEmpty(command.getRoleRecipient()) && 
+				if(CollectionUtils.isEmpty(command.getRoleRecipient()) &&
 				   CollectionUtils.isEmpty(command.getDirectRecipient())){
 					errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
 				}else{
-				
+
 					if(CollectionUtils.isNotEmpty(command.getRoleRecipient())){
 						for(String role : command.getRoleRecipient()){
 							if(StringUtils.isEmpty(role)){
@@ -99,8 +100,8 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 							}
 						}
 					}
-				
-					
+
+
 					if(CollectionUtils.isNotEmpty(command.getDirectRecipient())){
 						for(String email : command.getDirectRecipient()){
 							if(!emailValidator.isValid(email)){
@@ -112,9 +113,9 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 				}
 			break;
 			default: //TODO, other validations needs to be implemented, may be at that time refactor this into elsewhere.
-	
+
 		}
-		
+
 		command.setValidationFailed(errors.hasErrors());
 	}
 
@@ -122,7 +123,7 @@ public class SecondTab extends TabWithFields<ReportDefinitionCommand> {
 	public Map<String, Object> referenceData(ReportDefinitionCommand command) {
 		//show the previously keyed-in values, if validation failed.
 		if(!command.isValidationFailed()) command.populate();
-		
+
 		Map<String, Object> refData = super.referenceData(command);
 		return refData;
 	}

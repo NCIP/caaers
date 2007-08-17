@@ -13,6 +13,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.validation.Errors;
+
 /**
  *
  *
@@ -26,23 +31,23 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
     private RepeatingFieldGroupFactory rfgFactory;
 
     public ReportDeliveryDefinitionTab(){
-        super("Report Delivery Details", "Report Delivery Configuration","rule/notification/reportDeliveryTab");
+        super("Report Delivery Details", "Delivery Details","rule/notification/reportDeliveryTab");
         rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.deliveryDefinitions");
         InputField eNameField = InputFieldFactory.createTextField("entityName","Name", true);
-        InputFieldAttributes.setSize(eNameField, 50);
+        InputFieldAttributes.setSize(eNameField, 30);
         rfgFactory.addField(eNameField);
-        InputField descField = InputFieldFactory.createTextArea("entityDescription", "Description", false);
-        InputFieldAttributes.setColumns(descField, 50);
-        rfgFactory.addField(descField);
-        rfgFactory.addField(InputFieldFactory.createSelectField("format", "Report Format", true,
-            collectSelectOptions(ReportFormat.values(), null, "displayName")));
+//        InputField descField = InputFieldFactory.createTextArea("entityDescription", "Description", false);
+//        InputFieldAttributes.setColumns(descField, 50);
+//        rfgFactory.addField(descField);
+//        rfgFactory.addField(InputFieldFactory.createSelectField("format", "Report Format", true,
+//            collectSelectOptions(ReportFormat.values(), null, "displayName")));
         InputField addressField = InputFieldFactory.createTextField("endPoint","Address", true);
         InputFieldAttributes.setSize(addressField, 50);
         rfgFactory.addField(addressField);
         rfgFactory.addField(InputFieldFactory.createSelectField("endPoint", "Role", true,
             collectSelectOptions(new String[]{"Sponsor", "Study PI"}, null, null)));
-        rfgFactory.addField(InputFieldFactory.createSelectField("endPointType", "Address Type", true,
-            collectSelectOptions(new String[]{"e-mail", "phone", "fax", "url"}, null, null)));
+//        rfgFactory.addField(InputFieldFactory.createSelectField("endPointType", "Address Type", true,
+//            collectSelectOptions(new String[]{"e-mail", "phone", "fax", "url"}, null, null)));
     }
 
     @Override
@@ -58,5 +63,16 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         options.put("" , "Please select");
         options.putAll(InputFieldFactory.collectOptions(Arrays.asList(items), nameProperty, valueProperty));
         return options;
+    }
+
+    @Override
+    public void postProcess(HttpServletRequest request,ReportDefinitionCommand command, Errors errors) {
+    	String action = request.getParameter("_action");
+    	String selectedIndex = request.getParameter("_selected");
+    	if(StringUtils.equals(action, "deleteDelivery")){
+    		int index = Integer.parseInt(selectedIndex);
+    		command.getReportDefinition().getDeliveryDefinitions().remove(index);
+    	}
+    	super.postProcess(request, command, errors);
     }
 }
