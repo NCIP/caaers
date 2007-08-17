@@ -209,7 +209,7 @@ public class ReportServiceImpl  implements ReportService {
                     snf.setCreatedOn(now);
                     snf.setDeliveryStatus(DeliveryStatus.CREATED);
                     cal.setTime(now);
-                    cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), (pnf.getIndexOnTimeScale() - 1));
+                    cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), (pnf.getIndexOnTimeScale()));
                     snf.setScheduledOn(cal.getTime());
 
                     report.addScheduledNotification(snf);

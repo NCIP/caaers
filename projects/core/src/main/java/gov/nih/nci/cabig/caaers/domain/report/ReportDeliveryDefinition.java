@@ -23,8 +23,8 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject{
 	 * The entity type corresponds to Recipient Type
 	 */
 	public static final int ENTITY_TYPE_SYSTEM = 1;
-	public static final int ENTITY_TYPE_PERSON = 1;
-	public static final int ENTITY_TYPE_ROLE = 2;
+	public static final int ENTITY_TYPE_PERSON = 2;
+	public static final int ENTITY_TYPE_ROLE = 3;
 
 	/**
 	 * The contact mechanism type
