@@ -16,11 +16,9 @@ import gov.nih.nci.cabig.caaers.service.ReportService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -173,6 +171,10 @@ public class EvaluationServiceImpl implements EvaluationService {
         return reportDefinition.getName();
     }
     
+    
+    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs) {
+    	//implement 
+    }
     ////// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
