@@ -6,6 +6,7 @@
 <html>
 <head>
     <tags:stylesheetLink name="ae"/>
+    <tags:stylesheetLink name="extremecomponents"/>
     <title>Not implemented</title>
   	<style type="text/css">
   		.label {
@@ -51,7 +52,13 @@
 		
 		<!-- Delivery Details -->
 		<chrome:division title="Report Delivery Definition(s)">
-		  <table width="90%" class="eXtremeTable">
+		  <table width="100%" class="eXtremeTable">
+			<tr>
+			<th width="5%" class="tableHeader">Recipient type</th>
+ 			 <th width="30%" class="tableHeader">Name</th>
+			 <th width="55%" class="tableHeader">Address/Role</th>
+			 <th width="10%" class="tableHeader">Report format</th>
+			</tr>
 		    <c:forEach items="${FIELDS['rdd']}" var="pair" varStatus="status">
 		      <tr class="${status.index % 2 ne 0 ? 'even' : 'odd'}">
 		    	<td>${pair.key}</td><td>${pair.value}</td><td>${pair.attribute1}</td><td>${pair.attribute2}</td>
