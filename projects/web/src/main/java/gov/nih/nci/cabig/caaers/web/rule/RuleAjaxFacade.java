@@ -603,8 +603,10 @@ public class RuleAjaxFacade
 	/*
 	 * This method returns a Rule UI domain object based on the index
 	 */
-	public DomainObject getRulesDomainObject(int domainObjectIndex)
+	public DomainObject getRulesDomainObject(int domainObjectIndex, String filter)
 	{
+		
+		System.out.println("Filter .." + filter);
 		ServletContext servletContext = WebContextFactory.get().getServletContext();
 		
 		RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 
@@ -615,6 +617,21 @@ public class RuleAjaxFacade
 			if (ruleUi.getCondition().get(0).getDomainObject().size() > domainObjectIndex)
 			{	
 				DomainObject domainObject = ruleUi.getCondition().get(0).getDomainObject().get(domainObjectIndex);
+				
+				List<Field> fields  = new ArrayList<Field>();
+				List<Field> fields2  = new ArrayList<Field>();
+				
+				for (Field field:domainObject.getField()) {
+					if (field.getFilter().equals("") || field.getFilter().equals(filter)) {
+						fields.add(field);
+					} else {
+						fields2.add(field);
+					}
+				}
+				fields.addAll(fields2);
+				
+				domainObject.setField(fields);
+				
 				return domainObject;
 			}
 		}

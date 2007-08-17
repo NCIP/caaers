@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
@@ -9,8 +10,7 @@ import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
-import java.text.ParseException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +35,22 @@ public class RuleTab extends DefaultTab
 		super("Add Rules","RuleSet","rule/author/authorRules");
 	}
 	
-
+	private List<ReportDefinition> getReportDefinitions(Organization org) {
+    	//System.out.println("getting report definitions ....");
+    	//get report defnitions
+    	List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
+    	
+        // cut down objects for serialization
+        List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
+        for (ReportDefinition reportDefinition : reportDefinitions) {
+            	reportDefinition.setPlannedNotifications(null);
+            	reportDefinition.setTimeScaleUnitType(null);
+            	reducedReportDefinitions.add(reportDefinition);  			
+        }	
+        
+        return reducedReportDefinitions;
+	}
+	
     @Override
     public Map<String, Object> referenceData(RuleInputCommand command) 
     {
@@ -43,27 +58,17 @@ public class RuleTab extends DefaultTab
     	
     	String studyShortTitle = createRuleCommand.getCategoryIdentifier();
     	
-    	System.out.println(" S R I N O " + studyShortTitle );
-    	
-    	if (!studyShortTitle.trim().equals("")) {
-    		Map<String, String> props = new HashMap<String, String>();
-    		props.put("studyShortTitle", studyShortTitle);
-    		try {
-    			List<Study> studies =  createRuleCommand.getStudyDao().getBySubnames(new String[] {studyShortTitle});
-    			if (studies.size() > 0) {
-    				Study study = studies.get(0);
+    	if (!"".equals(studyShortTitle)) {
+    			Study study =  createRuleCommand.getStudyDao().getByShortTitle(studyShortTitle);
+    			if (study != null ) {
     				createRuleCommand.setTerminology(study.getTerminology().getTerm().getDisplayName());
     			}
-    			
-    			//System.out.println(study.getTerminology().getTerm().getDisplayName());
-    			//System.out.println(study.getTerminology().getTerm().getCode());
-			} catch (Exception e) {
-				logger.error("Exception while retrieving the Study in RuleTab", e);
-			}
+    	} else {
+    		createRuleCommand.setTerminology("");
     	}
-    		
     	
     	createRuleCommand.setReportDefinitions(createRuleCommand.getReportDefinitionDao().getAll());
+    	createRuleCommand.setRuleUi(createRuleCommand.getTerminology());
     
     	RuleSet ruleSet = createRuleCommand.getRuleSet();
     	

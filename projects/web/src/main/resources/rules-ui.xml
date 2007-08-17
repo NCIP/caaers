@@ -2,7 +2,7 @@
 <rule-ui xmlns="http://caaers.cabig.nci.nih.gov/rules/ui">
 	<condition>
 		<domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Adverse Event">
-			<field name="grade" display-uri="Grade">
+			<field name="grade" display-uri="Grade" >
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
@@ -27,32 +27,7 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Severity " postfix=""/>
 			</field>
-			<field name="term" display-uri="Term">
-				<field-value>
-					<method-call>
-						<bean-name>aeDetails</bean-name>
-						<method-name>fetchTerms</method-name>
-					</method-call>
-					<input-type>autocompleter</input-type>
-				</field-value>
-				<operator name="==" display-uri="Equal To" readable-text="is "/>
-				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
-				<grammer prefix=" Term " postfix=""/>
-			</field>
-			<field name="category" display-uri="Category">
-				<field-value>
-					<method-call>
-						<bean-name>aeDetails</bean-name>
-						<method-name>fetchCategory</method-name>
-					</method-call>
-					<input-type>select</input-type>
-				</field-value>
-				<operator name="==" display-uri="Equal To" readable-text="is "/>
-				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Category','id','runTimeValue','runTimeOperator')</expression>		
-				<grammer prefix=" Category " postfix=""/>
-			</field>
+
 			<field name="hospitalization" display-uri="Hospitalization">
 				<field-value>
 					<method-call>
@@ -103,7 +78,44 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Attribution','name','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Attribution " postfix=""/>
 			</field>
-			
+
+			<field name="term" display-uri="Term" filter="Ctc">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchTerms</method-name>
+					</method-call>
+					<input-type>autocompleter</input-type>
+				</field-value>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" Term " postfix=""/>
+			</field>
+			<field name="category" display-uri="Category" filter="Ctc">
+				<field-value>
+					<method-call>
+						<bean-name>aeDetails</bean-name>
+						<method-name>fetchCategory</method-name>
+					</method-call>
+					<input-type>select</input-type>
+				</field-value>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Category','id','runTimeValue','runTimeOperator')</expression>		
+				<grammer prefix=" Category " postfix=""/>
+			</field>
+			<field name="meddraCode" display-uri="MedDRA code" filter="MedDRA">
+				<field-value>
+					<input-type>autocompleter</input-type>
+				</field-value>
+				<operator name="==" display-uri="Equal To" readable-text="equal to  "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="not equal to "/>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm','meddraCode','runTimeValue','runTimeOperator')</expression>	
+				<grammer prefix=" MedDRA code(s) " postfix=""/>
+				
+			</field>			
+						
 		</domain-object>
 		<domain-object identifier="study" class-name="gov.nih.nci.cabig.caaers.domain.Study" display-uri="Study">
 			<field name="phaseCode" display-uri="Phase">

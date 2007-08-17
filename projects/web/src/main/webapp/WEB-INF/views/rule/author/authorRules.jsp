@@ -109,7 +109,7 @@
 				 
 				try {
 					authorRule.addCondition(ruleCount, function(columnContent) {
-
+							
 							
 							var columns = $('rule-'+(ruleCount + 1)+'-columns');
 							var columnHolder = getElementHolderDiv();
@@ -139,7 +139,8 @@
 								var expressionID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].expression';
 								var grammerPrefixID = 'ruleSet.rule['+ ruleCount + '].condition.column[' + newNode + '].fieldConstraint[0].grammerPrefix';
 								
-								$(grammerPrefixID).value=domainObject.field[0].grammer.prefix;
+								//for term 
+								$(grammerPrefixID).value=domainObject.field[4].grammer.prefix;
 								
 								
 								//alert(newColumnId);
@@ -185,16 +186,20 @@
 								//Element.remove(validValueField);
 								$(spanId).innerHTML="";
 								
+								
+								
 								createAE.getTermsByCategory(0, function(terms) {
-						                   
+								
+								var selectId =   newId.substring(0,newId.lastIndexOf(".")); 
+			
+								var displayUriID = selectId+ '.readableValue';
+								
+									var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
 										
+									var hiddenField = '<input type="hidden" id="'+displayUriID + '" name="'+displayUriID + '" />';
+
 							
-										var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
-													selectArea += '</select>';
-										//			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
-										//									selectArea += '</select>';
-							
-										$(spanId).innerHTML = selectArea;
+										$(spanId).innerHTML = selectArea + hiddenField;
 
 										var sel = $(newId);	
 				        		        
@@ -210,24 +215,7 @@
 				                        	sel.options.add(opt)
 				                    	})
 				                })
-								
-								
-								/*				
-								var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-								inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
-								$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
-								
-								
-								new Autocompleter.DWR(newId, newId + '-choices',
-									                termPopulator, {
-									                valueSelector: termValueSelector,
-									                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-									
-												//alert(selectedChoice);
-												$(newId).value=termValueSelector(selectedChoice);
-									                },
-						                indicator: "term-indicator"});
-								*/
+
 								
 													                
 
@@ -437,11 +425,34 @@
 	function resetDropDowns()
 	{
 	}
+
+		                      
+	function handleValueOnselectNonValidValues(item)
+	{
+
+			var selectId =   item.id.substring(0,item.id.lastIndexOf(".")); 
+			var val = "";
+			var displayUriID = selectId+ '.readableValue';
+			var selVal = "";
+					              
+			for (var i = 0; i < item.options.length; i++) {
+				if (item.options[ i ].selected) {
+					 selVal = item.options[ i ].text;
+					
+					// g is for global replacement
+            		 val = val + "," + selVal.replace(/\,/g,' ');
+            		 
+            	}
+		    }	
+		    $(displayUriID).value = val.replace(/\,/,'');
+			
+	}
+	
 	
 	function handleValueOnselect(operatorDropDown, ruleCount, fieldIndex, multi)
 	{
 		
-	//	alert (fieldIndex);
+		//alert (fieldIndex);
 		
 		var selectedOperator = operatorDropDown.options[operatorDropDown.selectedIndex];
 		var selectId =  operatorDropDown.id.substring(0,operatorDropDown.id.lastIndexOf(".")); 
@@ -461,7 +472,7 @@
 		  {
 			// Get the domain object
 			
-			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, '${command.terminology}', function(object)
 		               {
 		                              		domainObject = object;
 		                              		
@@ -516,7 +527,7 @@
 		{
 			// Get the domain object
 			
-			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, '${command.terminology}', function(object)
 		                              {
 		                              		domainObject = object;
 								
@@ -605,7 +616,7 @@
 		{
 			// Get the domain object
 			
-			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, function(object)
+			authorRule.getRulesDomainObject(domainObjectSelectedIndex - 1, '${command.terminology}', function(object)
 		                              {
 		                              		domainObject = object;
 				
@@ -628,9 +639,7 @@
 							$(grammerPostfix).value = domainObject.field[fieldDropDown.selectedIndex-1].grammer.postfix;
 							
 							$(fieldDisplayUri).value = domainObject.field[fieldDropDown.selectedIndex-1].readableText;
-							
-							
-		                              })
+		               })
 		                              
 		        // delay code
 				var date = new Date();
@@ -689,13 +698,17 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
-										selectArea += '</select>';
+
+										
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
+										
+							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+
 				
 							//Element.remove(validValueField);
 
 							
-							$(spanId).innerHTML = selectArea;
+							$(spanId).innerHTML = selectArea + hiddenField;
 
 							var sel = $(newId);	
 				                
@@ -714,27 +727,6 @@
 				                    })
 				                })
 					
-					
-					
-					
-				 /**
-					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="60"/>';
-					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="term-indicator"/>';
-					$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>';
-
-
-					new Autocompleter.DWR(newId, newId + '-choices',
-					                termPopulator, {
-					                valueSelector: termValueSelector,
-					                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-					
-											//alert(selectedChoice);
-											$(newId).value=termValueSelector(selectedChoice);
-					                },
-					                indicator: "term-indicator"});
-					**/
-					
-					
 				}
 				else
 				{
@@ -742,7 +734,7 @@
 					
 					fieldDropDown.value='category';
 					
-				                createAE.getCategories(3, function(categories) {
+				       createAE.getCategories(3, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -751,11 +743,10 @@
 										selectArea += '</select>';
 				
 
-
-							//Element.remove(validValueField);
-
+							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 							
-							$(spanId).innerHTML = selectArea;
+							
+							$(spanId).innerHTML = selectArea+ hiddenField;
 
 							var sel = $(newId);	
 				                
@@ -775,6 +766,7 @@
 					
 					newNode = divNodes;
 					callback = true;
+					
 					fetchCondition(ruleCount);
 					
 					// Reset all the dropdowns for 'term'
@@ -793,18 +785,10 @@
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
 
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this,' + ruleCount + ',' + tIndex + ',' + false + ')">';
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" onchange="onCategoryChange(this,' + ruleCount + ')">';
 										selectArea += '</select>';
 				
-				
-				
 							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
-									
-				
-				
-				
-							//Element.remove(validValueField);
-
 							
 							$(spanId).innerHTML = selectArea + hiddenField;
 
@@ -853,6 +837,19 @@
 	
 					
 					
+			} else if (selectedField.value == 'meddraCode') {
+				var newId = validValueField.id; 
+				var spanId = newId + '.span';
+				var hiddenId = selectId + '.literalRestriction[0].readableValue'
+				
+				var inputArea = '<textarea id="' + newId + '" name="' + newId +'" ></textarea>';
+				inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+					
+				var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
+				
+				$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+				
+				
 			}
 			else
 			{
@@ -860,7 +857,7 @@
 				authorRule.getValidValues(domainObjectSelectedIndex-1, fieldDropDown.selectedIndex-1, 
 				                     		function (html) 
 			                   			{
-			                   				//alert(html);
+			                   				//alert(fieldDropDown.selectedIndex-1);
 					                   		//validValueField.innerHTML = html;
 
 									var newId = validValueField.id; 
@@ -1010,17 +1007,13 @@
 			return;
 		}
 
-		authorRule.getRulesDomainObject(domainObjectDropDown.selectedIndex - 1, function(domainObject)
+		authorRule.getRulesDomainObject(domainObjectDropDown.selectedIndex - 1, '${command.terminology}', function(domainObject)
 		                              {
-									                              
-							
+						
 							// Set the identifier Value
 							$(domainObjectIdentifierID).value = domainObject.identifier;
 							
 							$(domainObjectDisplayUri).value = domainObject.displayUri;
-							
-
-							
 							
 						
 							// Reset expression
@@ -1030,8 +1023,11 @@
 							$(fieldDropDownID).options.length = 0;
 							$(fieldDropDownID).options.add(new Option("Please select Field",""));
 							
-							domainObject.field.each(function(field){
-								$(fieldDropDownID).options.add(new Option(field.displayUri,field.name));
+							domainObject.field.each(function(field){	
+									
+								if (field.filter == '' || field.filter == '${command.terminology}') { 
+									$(fieldDropDownID).options.add(new Option(field.displayUri,field.name));
+								}
 							})
 							
 							// Reset Operator 
@@ -1047,26 +1043,26 @@
 
 							$(valueDropDownSpanID).innerHTML = selectArea;
 							
-							
-							
 		                              });
 		
 		
-	}
+		}
 	
-	function onCategoryChange(category, ruleCount, fieldIndex, multi)
+	function onCategoryChange(category, ruleCount)
 
 	{
 		var selectId =   category.id.substring(0,category.id.lastIndexOf(".")); 
 		
 		var displayUriID = selectId+ '.readableValue';
+
 		
 		
 		
 				              for (var i = 0; i < category.options.length; i++) {
 		                    
 		                    	if (category.options[ i ].selected) {
-		                    		 $(displayUriID).value = category.options[ i ].text
+		                    		 $(displayUriID).value = category.options[ i ].text;
+
 		                    		break;
 		                    	}
 		                    	
@@ -1249,9 +1245,14 @@ button. Rules created will belong to the selected RuleSet.</p>
 							<c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">
-								<form:options
-									items="${ruleUi.condition[0].domainObject[selectedIndex].field}"
-									itemLabel="displayUri" itemValue="name" />
+												        		      			
+								<c:forEach var="f" items="${command.ruleUi.condition[0].domainObject[selectedIndex].field}">
+								  <c:if test="${f.filter == '' || f.filter == command.terminology}">
+									<form:option value="${f.name}">${f.displayUri}</form:option>
+								  </c:if>									
+								</c:forEach>	
+
+
 							</c:if>
 						</c:forEach>
 
@@ -1259,6 +1260,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 					
 					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
 					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
+					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
 					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
 					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
 
@@ -1315,18 +1317,20 @@ button. Rules created will belong to the selected RuleSet.</p>
 																		}
 
 																		var fieldValue;
+																		var readableValue;
 																		createAE.getCategories(3, function(categories) {
 																	
 																			var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 																			var spanId = newId + '.span';
 																	
 																		 fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value[0]}';
-																			//alert (fieldValue);
+																		 readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
+																			//alert (readableValue);
 																			var selectArea = '<select id="' + newId + '" name="' + newId +  '" value="' + fieldValue + '" onchange="onCategoryChange(this, ${ruleCount})">';
 																			selectArea += '</select>';
 						
 						
-													var hiddenField = '<input type="hidden" id="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+													var hiddenField = '<input type="hidden" value = "'+ readableValue +'" id="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 
 													
 																			//Element.remove(validValueField);
@@ -1355,10 +1359,6 @@ button. Rules created will belong to the selected RuleSet.</p>
 																		               })
 																		        
 																	           })
-																	      //give some delay ...
-																	  //    wait(2000);
-																	     //alert('ss');
-
 																	</script>
 
 
@@ -1375,10 +1375,11 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 
 												function loadTermsBasedOnCategory() {
-	
+
 																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 																		var spanId = newId + '.span';
 																		var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
+																		var readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
 																		
 																		$(spanId).innerHTML="";
 																		
@@ -1393,9 +1394,14 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 																				var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
 																				selectArea += '</select>';
-				
+			
+																var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
+								
+																var hiddenField = '<input type="hidden" value = "'+ readableValue +'" id="ruleSet.rule['+${ruleCount} +'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+
+						
 							
-																				$(spanId).innerHTML = selectArea;
+																				$(spanId).innerHTML = selectArea+hiddenField;
 
 																				var sel = $(newId);	
 				                
@@ -1467,6 +1473,40 @@ button. Rules created will belong to the selected RuleSet.</p>
 							</script>
 
 						</c:when>
+
+						<c:when
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "meddraCode"}'>
+
+
+
+							<script type="text/javascript">
+
+
+	
+										var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+										var hiddenId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
+										var spanId = newId + '.span';
+										
+										var fieldValue = '';
+											<c:forEach items="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}"
+												var="val">
+												fieldValue = fieldValue + ',' + '${val}';
+											</c:forEach>
+										
+																	
+										var inputArea = '<textarea id="' + newId + '" name="' + newId +'" >'+ fieldValue.replace(/\,/,'') + '</textarea>';
+										inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
+					
+										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
+				
+										$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+											
+
+															
+							</script>
+
+						</c:when>
+
 
 						<c:otherwise>
 							<c:choose>

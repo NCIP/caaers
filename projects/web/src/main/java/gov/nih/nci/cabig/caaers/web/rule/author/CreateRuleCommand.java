@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -14,13 +15,24 @@ import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
+import gov.nih.nci.cabig.caaers.rules.objectgraph.ObjectGraph;
+import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
+import gov.nih.nci.cabig.caaers.rules.ui.Field;
+import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.directwebremoting.WebContextFactory;
 
 /**
  * Command Object holding information for Rule authoring 
@@ -46,6 +58,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private ReportDefinitionDao reportDefinitionDao;
 	
+	private OrganizationDao organizationDao;
+	
 	private StudyDao studyDao;
 	
 	private RuleSet ruleSet;
@@ -64,9 +78,11 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private boolean isDataChanged;
 	
-	private String levelDescription;
+	private RuleUi ruleUi;
 	
 	private String terminology;
+	
+	
 	
 	
 	
@@ -132,7 +148,7 @@ public class CreateRuleCommand implements RuleInputCommand
 				
 				
 				//get comma seperated values ....
-				/*
+				
 				for (Column col:rule.getCondition().getColumn()) {
 					String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().get(0);
 					if (value.contains(",")) {
@@ -141,7 +157,7 @@ public class CreateRuleCommand implements RuleInputCommand
 					}
 					
 				}	
-				*/
+				
 				
 				rule.getCondition().getColumn().add(createCriteriaForFactResolver());
 				
@@ -514,6 +530,51 @@ public class CreateRuleCommand implements RuleInputCommand
 		return column;
 
 	}
+	
+	public void  setRuleUi(String terminology)
+	{
+		
+		
+		System.out.println("termonilogy is " + terminology); 
+		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("rules-ui.xml");
+
+		Unmarshaller unmarshaller;
+		try {
+			unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.ui").createUnmarshaller();
+			ruleUi = (RuleUi)unmarshaller.unmarshal(inputStream);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("Error in reading rules-ui xml file " );
+			e.printStackTrace();
+		}
+		
+		
+		//ServletContext servletContext = WebContextFactory.get().getServletContext();
+		
+	    //ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 
+		
+		System.out.println("ui is " + ruleUi.getCondition().size());
+		
+		for (DomainObject domainObject : ruleUi.getCondition().get(0).getDomainObject()) {
+			List<Field> fields  = new ArrayList<Field>();
+			List<Field> fields2  = new ArrayList<Field>();
+			for (Field field:domainObject.getField()) {
+				if (field.getFilter().equals("") || field.getFilter().equals(terminology)) {
+					fields.add(field);
+				} else {
+					fields2.add(field);
+				}
+			}
+			fields.addAll(fields2);
+			
+			domainObject.setField(fields);			
+		}
+
+	}
+	
+	public RuleUi getRuleUi() {
+		return ruleUi;
+	}
 
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return reportDefinitionDao;
@@ -534,6 +595,14 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public void setTerminology(String terminology) {
 		this.terminology = terminology;
+	}
+
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	
