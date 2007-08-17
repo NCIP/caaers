@@ -85,7 +85,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             //System.out.println("KEY IS : " + key);
         	
             List<String> reportDefNames = map.get(key);
-            /*
+            /* TO-DO need to clarify this ranking incase of multi actions in rules 
             if (reportDefNames.size() != 0) {
                 String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
                 reportDefinitionNames.add(reportDefName);
@@ -98,7 +98,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         boolean anyReports = false;
         for (Object reportDefinitionName : reportDefinitionNames) {
-        	System.out.println("Saving ... " + reportDefinitionName.toString());
+        	
             ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
             Report report = existingReportWithDef(expeditedData, def);
 
@@ -106,7 +106,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 report = reportService.createReport(def, expeditedData);
             }
             report.setRequired(true);
-            System.out.println("Saved ... " + reportDefinitionName.toString());
+            
             anyReports = true;
 
         }
