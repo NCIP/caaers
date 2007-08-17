@@ -1,140 +1,146 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
+
 <objectGraph xmlns="http://caaers.cabig.nci.nih.gov/rules/objectgraph">
-	
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Grade</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Grade</targetObjectType>
 		<node>
-			<name>adverseEvent</name>			
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>grade</name>			
+			<name>grade</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Grade</objectType>
 		</node>
-	</navigationPath>	
-
-	<navigationPath >
+	</navigationPath>
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.CtcTerm</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.CtcTerm</targetObjectType>
 		<node>
-			<name>adverseEvent</name>			
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>ctcTerm</name>			
+			<name>adverseEventCtcTerm</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</objectType>
+		</node>
+		<node>
+			<name>ctcTerm</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.CtcTerm</objectType>
-		</node>	
+		</node>
 	</navigationPath>
-
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Category</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.CtcCategory</targetObjectType>
 		<node>
-			<name>adverseEvent</name>			
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>ctcTerm</name>			
+			<name>adverseEventCtcTerm</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</objectType>
+		</node>
+		<node>
+			<name>ctcTerm</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.CtcTerm</objectType>
-		</node>	
+		</node>
 		<node>
-			<name>category</name>			
+			<name>category</name>
 			<collection>false</collection>
-			<objectType>gov.nih.nci.cabig.caaers.domain.Category</objectType>
-		</node>			
+			<objectType>gov.nih.nci.cabig.caaers.domain.CtcCategory</objectType>
+		</node>
 	</navigationPath>
-
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Hospitalization</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Hospitalization</targetObjectType>
 		<node>
-			<name>adverseEvent</name>			
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>hospitalization</name>			
+			<name>hospitalization</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Hospitalization</objectType>
-		</node>			
+		</node>
 	</navigationPath>
-
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</targetObjectType>
 		<node>
-			<name>adverseEvent</name>			
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>adverseEventMeddraLowLevelTerm</name>			
+			<name>adverseEventMeddraLowLevelTerm</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</objectType>
-		</node>			
-	</navigationPath>
-	
-	<navigationPath >
-		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Attribution</targetObjectType> 
+		</node>
 		<node>
-			<name>adverseEvent</name>			
+			<name>lowLevelTerm</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</objectType>
+		</node>
+	</navigationPath>
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Attribution</targetObjectType>
+		<node>
+			<name>adverseEvent</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
 		</node>
 		<node>
-			<name>attributionSummary</name>			
+			<name>attributionSummary</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Attribution</objectType>
-		</node>			
+		</node>
 	</navigationPath>
-
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType>
 		<node>
-			<name>study</name>			
+			<name>study</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
 		</node>
 		<node>
-			<name>studyAgents</name>			
+			<name>studyAgents</name>
 			<collection>true</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
 		</node>
 		<node>
-			<name>studyAgentINDAssociations</name>			
+			<name>studyAgentINDAssociations</name>
 			<collection>true</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</objectType>
 		</node>
 		<node>
-			<name>investigationalNewDrug</name>			
+			<name>investigationalNewDrug</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</objectType>
-		</node>		
+		</node>
 	</navigationPath>
-
-	<navigationPath >
+	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
-		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType> 
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
 		<node>
-			<name>study</name>			
+			<name>study</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
 		</node>
 		<node>
-			<name>primaryFundingSponsorOrganization</name>			
+			<name>primaryFundingSponsorOrganization</name>
 			<collection>false</collection>
 			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
 		</node>
-	
 	</navigationPath>
-									
 </objectGraph>
