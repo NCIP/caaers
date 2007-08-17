@@ -62,7 +62,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * {@link ReportDefinition}.  Implementors must also <em>not</em> remove
      * {@link gov.nih.nci.cabig.caaers.domain.report.Report}s if they don't evaluate as required
      * (e.g., some reports may have been directly selected by the user).  Instead, implementors
-     * should update the {@link Report#setRequired} flag. 
+     * should update the {@link Report#setRequired} flag.
      *
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
@@ -77,13 +77,11 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new CaaersSystemException(
                 "Could not determine the reports necessary for the given expedited adverse event data", e);
         }
-        
+
         Set<String> keys = map.keySet();
         for (String key : keys) {
-            //System.out.println("KEY IS : " + key);
-        	
             List<String> reportDefNames = map.get(key);
-            /* TO-DO need to clarify this ranking incase of multi actions in rules 
+            /* TO-DO need to clarify this ranking incase of multi actions in rules
             if (reportDefNames.size() != 0) {
                 String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
                 reportDefinitionNames.add(reportDefName);
@@ -96,21 +94,29 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         boolean anyReports = false;
         for (Object reportDefinitionName : reportDefinitionNames) {
-        	
+
             ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
             Report report = existingReportWithDef(expeditedData, def);
 
             if (report == null) {
                 report = reportService.createReport(def, expeditedData);
+                anyReports = true;
             }
             report.setRequired(true);
-            
-            anyReports = true;
-
         }
         if (anyReports) {
         	expeditedAdverseEventReportDao.save(expeditedData);
         }
+    }
+    /**
+     * Will create the Report by calling ReportService, then saves the ExpeditedAdverseEventReport
+     */
+    @Transactional(readOnly=false)
+    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs) {
+    	for(ReportDefinition def : reportDefs){
+    		reportService.createReport(def, expeditedData);
+    	}
+    	expeditedAdverseEventReportDao.save(expeditedData);
     }
 
     private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
@@ -128,7 +134,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             + Integer.toHexString(def.hashCode()) + ") found in EAER " + expeditedData.getId());
         return null;
     }
-    
+
     /**
      * @return All the report definitions which might apply to the given
      *  study, site, and participant
@@ -141,18 +147,18 @@ public class EvaluationServiceImpl implements EvaluationService {
         	//System.out.println(" ORGS : " + studyOrganization.getOrganization().getName());
             reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
-        
+
         // get organaization of sponsor .
         // all sponsors are not in orgs table as of 07/13/2007
         Organization organization = organizationDao.getByName(assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization().getName());
-        
+
         if (organization != null) {
         	reportDefinitions.addAll(reportDefinitionDao.getAll(organization.getId()));
         }
 
         return reportDefinitions;
     }
-    
+
     private String extractTopPriorityReportDefintionName(List<String> list){
         List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
         for (String reportDefName : list) {
@@ -170,12 +176,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         ReportDefinition reportDefinition = reportDefArray[reportDefArray.length-1];
         return reportDefinition.getName();
     }
-    
-    
-    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs) {
-    	//implement 
-    }
-    ////// CONFIGURATION
+
+     ////// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
         this.reportDefinitionDao = reportDefinitionDao;
