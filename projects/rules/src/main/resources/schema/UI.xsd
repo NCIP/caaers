@@ -38,6 +38,8 @@
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string"/>
 		<xs:attribute name="display-uri" type="xs:string"/>
+		<xs:attribute name="filter" type="xs:string" default=""/>
+		
 	</xs:complexType>
 
 	<xs:complexType name="field-value">

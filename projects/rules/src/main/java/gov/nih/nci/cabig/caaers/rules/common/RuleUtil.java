@@ -1,14 +1,15 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import java.rmi.RemoteException;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
 import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RuleUtil {
@@ -323,6 +324,7 @@ public class RuleUtil {
 		
 		
 		String readableValues = lr.getReadableValue();
+		if ("".equals(readableValues)) readableValues = lr.getValue().get(0);
 		
 		if (readableValues != null) {
 		
@@ -350,6 +352,20 @@ public class RuleUtil {
 	         
 	    }
 	    return splittArray;
+	}
+
+	public static List charSeparatedStringToStringList(String aString, String chr){
+	    List<String> splittList = new ArrayList<String>();
+	    String[] splittArray = null;
+	    if (aString != null || !aString.equalsIgnoreCase("")){
+	         splittArray = aString.split(chr);
+	         
+	    }
+	    for (int i=0;i<splittArray.length;i++) {
+	    	splittList.add(splittArray[i]);
+	    }
+	    
+	    return splittList;
 	}
 	
 	public static void main (String[] args) {

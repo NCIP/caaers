@@ -68,6 +68,21 @@
 
 	<navigationPath >
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</targetObjectType> 
+		<node>
+			<name>adverseEvent</name>			
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
+		</node>
+		<node>
+			<name>adverseEventMeddraLowLevelTerm</name>			
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</objectType>
+		</node>			
+	</navigationPath>
+	
+	<navigationPath >
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Attribution</targetObjectType> 
 		<node>
 			<name>adverseEvent</name>			
