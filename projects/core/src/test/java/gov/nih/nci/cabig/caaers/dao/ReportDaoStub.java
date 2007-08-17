@@ -137,6 +137,7 @@ public class ReportDaoStub extends ReportDao {
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
+		senf.setSubjectLine(penf.getSubjectLine());
 		snfList.add(senf);
 
 
@@ -162,6 +163,7 @@ public class ReportDaoStub extends ReportDao {
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
+		senf.setSubjectLine(penf.getSubjectLine());
 		snfList.add(senf);
 
 
@@ -170,6 +172,7 @@ public class ReportDaoStub extends ReportDao {
 		penf.setId(-3333);
 		penf.setIndexOnTimeScale(3);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
+		senf.setSubjectLine(penf.getSubjectLine());
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
 		pnfList.add(penf);
@@ -186,6 +189,7 @@ public class ReportDaoStub extends ReportDao {
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
+		senf.setSubjectLine(penf.getSubjectLine());
 		snfList.add(senf);
 
 		return rs;
