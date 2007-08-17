@@ -102,7 +102,7 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
-				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Category','id','runTimeValue','runTimeOperator')</expression>		
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>		
 				<grammer prefix=" Category " postfix=""/>
 			</field>
 			<field name="meddraCode" display-uri="MedDRA code" filter="MedDRA">
@@ -111,7 +111,7 @@
 				</field-value>
 				<operator name="==" display-uri="Equal To" readable-text="equal to  "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="not equal to "/>
-				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm','meddraCode','runTimeValue','runTimeOperator')</expression>	
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm','fullName','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" MedDRA code(s) " postfix=""/>
 				
 			</field>			
