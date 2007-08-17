@@ -24,7 +24,10 @@
     	  <br> 
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
-		
+		<chrome:division title="Adverse events">
+			<rd:renderMandatoryFields key="Adverse events" />
+			<rd:renderMandatoryFields key="Adverse events~Adverse events" />
+		</chrome:division>
 		<chrome:division title="Reporter information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
