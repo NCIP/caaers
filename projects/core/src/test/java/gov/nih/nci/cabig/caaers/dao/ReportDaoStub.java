@@ -91,10 +91,10 @@ public class ReportDaoStub extends ReportDao {
 
 		rct = new ReportDefinition();
 		rct.setDescription("a rct description");
-		rct.setDuration(5);
+		rct.setDuration(28);
 		rct.setId(-333);
 		rct.setName("24 Hr 5Day report");
-		rct.setTimeScaleUnitType(TimeScaleUnit.MINUTE);
+		rct.setTimeScaleUnitType(TimeScaleUnit.SECOND);
 		rct.setPlannedNotifications(pnfList);
 
 
@@ -120,7 +120,7 @@ public class ReportDaoStub extends ReportDao {
 		PlannedEmailNotification penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3331);
-		penf.setIndexOnTimeScale(1);
+		penf.setIndexOnTimeScale(8);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
@@ -145,7 +145,7 @@ public class ReportDaoStub extends ReportDao {
 		penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3332);
-		penf.setIndexOnTimeScale(2);
+		penf.setIndexOnTimeScale(18);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
@@ -170,7 +170,7 @@ public class ReportDaoStub extends ReportDao {
 		penf = new PlannedEmailNotification();
 		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3333);
-		penf.setIndexOnTimeScale(3);
+		penf.setIndexOnTimeScale(26);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
 		senf.setSubjectLine(penf.getSubjectLine());
 		penf.setNotificationBodyContent(content);

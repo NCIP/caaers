@@ -168,8 +168,10 @@ public class ReportServiceImpl  implements ReportService {
                 ReportDelivery rd = rdd.createReportDelivery();
                 //fetch the contact mechanism for role based entities.
                 if (rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE) {
-                    rd.setEndPoint(findContactMechanismValue(rdd.getEndPoint(),
-                    		rdd.getEndPointType(), aeReport));
+                    rd.setEndPoint(findContactMechanismValue(
+                    		rdd.getEndPoint(),
+                    		rdd.getEndPointType(),
+                    		aeReport));
                 } else {
                     rd.setEndPoint(rdd.getEndPoint());
                 }

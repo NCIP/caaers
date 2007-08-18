@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -69,6 +69,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
 
+
 	// TODO move into Command Object
 	private String[] diseaseTermIds;
 
@@ -90,6 +91,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 				StudyFundingSponsor.class));
 		lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
 		lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
+		lazyListHelper.add(StudyAmendment.class, new InstantiateFactory<StudyAmendment>(StudyAmendment.class));
 
 		// mandatory, so that the lazy-projected list is created/managed properly.
 		setStudyOrganizations(new ArrayList<StudyOrganization>());
@@ -104,6 +106,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void removeStudyOrganization(final StudyOrganization so) {
 		getStudyOrganizations().remove(so);
+	}
+
+	public void addAmendment(StudyAmendment amendment){
+		getStudyAmendments().add(amendment);
 	}
 
 	@Transient
@@ -458,6 +464,25 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		lazyListHelper.setInternalList(StudyFundingSponsor.class, new ProjectedList<StudyFundingSponsor>(
 				this.studyOrganizations, StudyFundingSponsor.class));
 	}
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "stu_id", nullable=false)
+	@Cascade(value={CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+	public List<StudyAmendment> getStudyAmendmentsInternal(){
+		return lazyListHelper.getInternalList(StudyAmendment.class);
+	}
+	public void setStudyAmendmentsInternal(List<StudyAmendment> amendments){
+		lazyListHelper.setInternalList(StudyAmendment.class, amendments);
+	}
+
+	@Transient
+	public List<StudyAmendment> getStudyAmendments(){
+		return lazyListHelper.getInternalList(StudyAmendment.class);
+	}
+	public void setStudyAmendments(List<StudyAmendment> amendments){
+		setStudyAmendmentsInternal(amendments);
+	}
+
 
 	// TODO Why rules is still using primarySponsorCode... (check)
 	@Transient

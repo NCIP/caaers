@@ -24,12 +24,13 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 {
     private static final String JOINS
         = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm " +
-        " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier " + 
+        " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier " +
         " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
 
     private ReportDao reportDao;
 
-    public Class<ExpeditedAdverseEventReport> domainClass() {
+    @Override
+	public Class<ExpeditedAdverseEventReport> domainClass() {
         return ExpeditedAdverseEventReport.class;
     }
 
@@ -56,9 +57,10 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
             log.debug("Physican not savable; skipping cascade");
         }
         // since we can't cascade SAVE_UPDATE, we have to do this instead
-        for (Report r : report.getReports()) {
-            reportDao.save(r);
-        }
+//TODO : Review this and delete
+//        for (Report r : report.getReports()) {
+//            reportDao.save(r);
+//        }
     }
 
     @Override
@@ -88,8 +90,8 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 		boolean firstClause = true;
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
          .append(domainClass().getName()).append(" o ").append(JOINS);
-		
-		
+
+
 		if (props.get("expeditedDate") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" o.detectionDate").append(" = ? ");
@@ -97,7 +99,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add(stringToDate(p));
 			firstClause = false;
 		}
-		
+
 		if (props.get("ctcTerm") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("ctcTerm.term").append(") LIKE ?");
@@ -112,7 +114,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
-		
+
 		if (props.get("ctcCategory") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("ctcTerm.category.name").append(") LIKE ?");
@@ -120,8 +122,8 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add( p.toLowerCase() );
 			firstClause = false;
 		}
-		
-		
+
+
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("sIdentifier.value").append(") LIKE ?");
@@ -171,7 +173,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add( p.toLowerCase() );
 			firstClause = false;
 		}
-		
+
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" p.dateOfBirth").append(" = ? ");
@@ -179,7 +181,7 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			params.add(stringToDate(p));
 			firstClause = false;
 		}
-	
+
 		log.debug("::: " + queryBuf.toString() );
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
     }

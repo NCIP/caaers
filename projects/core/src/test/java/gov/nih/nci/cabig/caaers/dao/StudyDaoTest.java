@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyAmendment;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -21,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -438,6 +440,63 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			List<StudyAgentINDAssociation> aList = loaded.getStudyAgents().get(1).getStudyAgentINDAssociations();
 			assertEquals("IND size", 2, aList.size());
 			assertEquals("IND # wrong", -881, aList.get(0).getInvestigationalNewDrug().getIndNumber().intValue());
+		}
+	}
+
+	public void testGetStudyWithAmendments(){
+		Study study = getDao().getById(-3);
+		assertNotNull("Study with id -3 cannot be loaded", study);
+		List<StudyAmendment> list = study.getStudyAmendments();
+		assertNotNull("StudyAmendments list cannot be null", list);
+		assertEquals("Size of amendment list is wrong",1, list.size());
+		assertEquals("wrong amendment version number",1, list.get(0).getAmendmentVersion());
+	}
+
+	public void testSaveUpdateStudyWithAmendments(){
+
+		int studyId = 0;
+		Date d = new Date();
+		{
+			Study newStudy = new Study();
+			newStudy.setShortTitle("Short Title Inserted");
+			newStudy.setLongTitle("Long Title Inserted");
+			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+			// study amendments
+			StudyAmendment amendment = new StudyAmendment();
+			amendment.setAmendmentDate(d);
+			amendment.setIrbApprovalDate(d);
+			amendment.setAmendmentVersion(33);
+			newStudy.addAmendment(amendment);
+
+			amendment = new StudyAmendment();
+			amendment.setAmendmentDate(d);
+			amendment.setIrbApprovalDate(d);
+			amendment.setAmendmentVersion(43);
+			newStudy.addAmendment(amendment);
+
+			getDao().save(newStudy);
+			assertNotNull("No ID for newly saved study", newStudy.getId());
+			studyId = newStudy.getId();
+		}
+		interruptSession();
+		{
+			Study study = getDao().getById(studyId);
+			assertNotNull("study cannot be null", study);
+			assertNotNull("amendments cannot be null", study.getStudyAmendments());
+			assertEquals("StudyAmendments size", 2, study.getStudyAmendments().size());
+			assertEquals("Second amendment version wrong",43,study.getStudyAmendments().get(1).getAmendmentVersion());
+			//remove the first amendment at 0
+			study.getStudyAmendments().remove(0);
+			getDao().save(study);
+		}
+		interruptSession();
+		{
+			Study study = getDao().getById(studyId);
+			assertNotNull("study cannot be null", study);
+			assertNotNull("amendments cannot be null", study.getStudyAmendments());
+			assertEquals("StudyAmendments size", 1, study.getStudyAmendments().size());
+			assertEquals("Previous Second amendment version wrong",43,study.getStudyAmendments().get(0).getAmendmentVersion());
 		}
 	}
 }
