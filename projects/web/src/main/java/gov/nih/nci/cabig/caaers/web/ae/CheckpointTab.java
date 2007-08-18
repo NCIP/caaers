@@ -14,6 +14,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -91,12 +93,19 @@ public class CheckpointTab extends AeTab {
 
     @Override
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+
+    	//the list of report definitions to instantiate
+    	List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+
         for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
-            if (optionalReportSelected(command, def)) {
-                addOptionalReport(command.getAeReport(), def);
+            if (optionalReportSelected(command, def) && (findReportWithDefinition(command.getAeReport(), def) == null)) {
+                reportDefs.add(def); //  addOptionalReport(command, command.getAeReport(), def);
             } else {
                 removeOptionalReport(command.getAeReport(), def);
             }
+        }
+        if(reportDefs.size() > 0){
+        	evaluationService.addOptionalReports(command.getAeReport(), reportDefs);
         }
         if (command.getAeReport().getReports().size() > 0) {
             command.save();
@@ -108,17 +117,20 @@ public class CheckpointTab extends AeTab {
         return val == null ? false : val;
     }
 
-    private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
-        if (findReportWithDefinition(aeReport, def) == null) {
-            reportService.createReport(def, aeReport);
-        }
-    }
+//	 TODO: Review these changes.
+//    private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
+//        if (findReportWithDefinition(aeReport, def) == null) {
+//
+//            reportService.createReport(def, aeReport);
+//        }
+//    }
 
     private void removeOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
         // TODO: we're going to need a service method for this, too
         Report existing = findReportWithDefinition(aeReport, def);
         if (existing != null && !existing.isRequired()) {
             aeReport.getReports().remove(existing);
+            reportService.deleteReport(existing); //remove the existing report from ReportDefinition
         }
     }
 
