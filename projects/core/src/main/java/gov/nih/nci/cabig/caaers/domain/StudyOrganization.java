@@ -32,12 +32,14 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 
 	@ManyToOne
 	@JoinColumn(name = "site_id", nullable = false)
+	@Cascade(value={CascadeType.EVICT, CascadeType.LOCK, CascadeType.REFRESH})
 	public Organization getOrganization() {
 		return organization;
 	}
 
 	@ManyToOne
 	@JoinColumn(name = "study_id", nullable = false)
+	@Cascade(value={CascadeType.EVICT, CascadeType.LOCK, CascadeType.REFRESH})
 	public Study getStudy() {
 		return study;
 	}
