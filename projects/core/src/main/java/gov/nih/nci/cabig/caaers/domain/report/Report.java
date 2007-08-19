@@ -85,7 +85,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rct_id")
-    @Cascade({ CascadeType.LOCK, CascadeType.SAVE_UPDATE })
+    @Cascade({ CascadeType.LOCK})
     public ReportDefinition getReportDefinition() {
         return reportDefinition;
     }

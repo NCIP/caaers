@@ -7,6 +7,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 
 import java.util.List;
 
+import org.hibernate.LockMode;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyParticipantAssignment> {
-    public Class<StudyParticipantAssignment> domainClass() {
+    @Override
+	public Class<StudyParticipantAssignment> domainClass() {
         return StudyParticipantAssignment.class;
     }
 
@@ -26,5 +28,10 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
                 "from StudyParticipantAssignment a where a.participant = ? and a.studySite.study = ?",
                 new Object[] { participant, study })
         );
+    }
+
+    @Override
+    public void reassociate(StudyParticipantAssignment assignment) {
+    	getHibernateTemplate().lock(assignment, LockMode.NONE);
     }
 }
