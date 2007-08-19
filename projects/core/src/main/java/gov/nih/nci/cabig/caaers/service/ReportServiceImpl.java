@@ -55,22 +55,21 @@ public class ReportServiceImpl  implements ReportService {
     private SchedulerService schedulerService;
     private ReportDao reportDao;
 
-    public  List<String> findToAddresses(PlannedNotification pnf, Report rs){
+    public  List<String> findToAddresses(PlannedNotification pnf, Report report){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
-		String address;
+		String address = null;
 		String type = ExpeditedReportPerson.EMAIL;
 		if(pnf instanceof PlannedEmailNotification)
 			type = ExpeditedReportPerson.EMAIL;
 
 		for(Recipient r : pnf.getRecipients()){
 			if(r instanceof ContactMechanismBasedRecipient){
-				address = ((ContactMechanismBasedRecipient)r).getContactName();
-				toAddressList.add(address);
+				address = r.getContact();
 			}else if(r instanceof RoleBasedRecipient){
-				String roleName = ((RoleBasedRecipient)r).getRoleName();
-				toAddressList.add(findContactMechanismValue(roleName, type, rs.getAeReport()));
+				address = findContactMechanismValue(r.getContact(), type, report.getAeReport());
 			}
+			if(StringUtils.isNotEmpty(address)) toAddressList.add(address);
 		}//for each r
 
 		return toAddressList;

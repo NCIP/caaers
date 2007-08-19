@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -24,7 +26,7 @@ import org.hibernate.annotations.Type;
 /**
  * This class contains the details of the notification, that is to be send
  * out.
- * 
+ *
  * @author Biju Joseph
  *
  */
@@ -43,24 +45,22 @@ import org.hibernate.annotations.Type;
     }
 )
 public  abstract class ScheduledNotification extends AbstractMutableDomainObject  implements Serializable{
-	
-	
+
+
 	protected DeliveryStatus deliveryStatus;
-	
-	@Column(name="CREATED_ON")
+
 	protected Date createdOn;
-	
-	@Column(name="SCHEDULED_ON")
+
 	protected Date scheduledOn;
-	
+
 	protected PlannedNotification planedNotificaiton;
 
 	protected String body;
-	
+
 	public ScheduledNotification(){
 		deliveryStatus = DeliveryStatus.CREATED;
 	}
-	
+
 	@Type(type = "deliveryStatus")
     @Column(name = "DELIVERY_STATUS_CODE")
 	public DeliveryStatus getDeliveryStatus() {
@@ -69,12 +69,16 @@ public  abstract class ScheduledNotification extends AbstractMutableDomainObject
 	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
+
+	@Temporal(value=TemporalType.TIMESTAMP)
 	public Date getCreatedOn() {
 		return createdOn;
 	}
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
+
+	@Temporal(value=TemporalType.TIMESTAMP)
 	public Date getScheduledOn() {
 		return scheduledOn;
 	}
@@ -111,5 +115,5 @@ public  abstract class ScheduledNotification extends AbstractMutableDomainObject
 	public void setBody(String bodyContent) {
 		this.body = bodyContent;
 	}
-	
+
 }

@@ -18,26 +18,26 @@ import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
 
 /**
- * This class serves as the parent of all the job classes scheduled by <code>scheduler</code> component. 
+ * This class serves as the parent of all the job classes scheduled by <code>scheduler</code> component.
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 30, 2007
  * @version     %I%, %G%
  * @since       1.0
  */
 public abstract class ScheduledNotificationJobTemplate implements Job{
-	
+
 	protected static final Log logger = LogFactory.getLog(ScheduledNotificationJobTemplate.class);
 	protected Scheduler scheduler;
 	protected JobDetail jobDetail;
 	protected JobExecutionContext jobContext;
-	
+
 	protected Report report;
-	protected ScheduledNotification scheduledNotification;
+	protected ScheduledNotification notification;
 	protected ApplicationContext applicationContext;
-	protected ReportDao reportScheduleDao;
+	protected ReportDao reportDao;
 	protected int scheduledNotificationIndex;
 
-	
+
 	public ScheduledNotificationJobTemplate() {
 		super();
 	}
@@ -55,7 +55,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	}
 
 	public ScheduledNotification getScheduledNotification() {
-		return scheduledNotification;
+		return notification;
 	}
 
 	public ApplicationContext getApplicationContext() {
@@ -63,7 +63,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	}
 
 	public ReportDao getReportScheduleDao() {
-		return reportScheduleDao;
+		return reportDao;
 	}
 
 	/**
@@ -82,33 +82,36 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 
 	/**
 	 * Will reload the {@link Report} identified by <code>report.id</code>
-	 * and {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>, 
-	 * in {@link JobDetail} data map({@link JobDataMap}). 
+	 * and {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>,
+	 * in {@link JobDetail} data map({@link JobDataMap}).
 	 * This method will then check the present status of the AdverseEventReport, and if found {@link ReportStatus}.PENDING,
 	 * will call the <code>processNotification()</code> function, otherwise will delete all the scheduled
-	 * notifications and sets the ScheduledNotification status as{@link ReportStatus}.RECALL. 
+	 * notifications and sets the ScheduledNotification status as{@link ReportStatus}.RECALL.
 	 */
 	public final void execute(JobExecutionContext context) throws JobExecutionException {
 		if(logger.isDebugEnabled()) logger.debug("Executing ScheduledNotification Job");
 		try {
-			
+
 			//init the member variables
 			scheduler = context.getScheduler();
 			jobDetail = context.getJobDetail();
 			applicationContext = (ApplicationContext)scheduler.getContext().get("applicationContext");
-			reportScheduleDao = (ReportDao)applicationContext.getBean("reportDao");
-			
+			reportDao = (ReportDao)applicationContext.getBean("reportDao");
+
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 			scheduledNotificationIndex = jobDataMap.getInt("curIndex");
-			Integer reportScheduleId = jobDataMap.getInt("report.id");
-			report = reportScheduleDao.getById(reportScheduleId);
-			scheduledNotification = report.getScheduledNotifications().get(scheduledNotificationIndex);
-			
-			boolean status = verifyAeReportStatus();
-			if(status){
-				processNotification();
-				//update the delivery status. 
-				scheduledNotification.setDeliveryStatus(DeliveryStatus.DELIVERED);
+			Integer reportId = jobDataMap.getInt("report.id");
+			//report = reportDao.getById(reportId);
+			report = reportDao.getInitializedReportById(reportId);
+
+			notification = report.getScheduledNotifications().get(scheduledNotificationIndex);
+
+			boolean reportStatus = verifyAeReportStatus();
+			if(reportStatus){
+				DeliveryStatus deliveryStatus = processNotification();
+				logger.info("Delivery status of the notification :" + deliveryStatus);
+				//update the delivery status.
+				notification.setDeliveryStatus(deliveryStatus);
 			}else {
 				deleteSubsequentJobs();
 				//mark the status of all jobs from curIndex to RECALLED
@@ -116,24 +119,24 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 				for(ScheduledNotification nf : report.getScheduledNotifications()){
 				  if(index >= scheduledNotificationIndex){
 					  nf.setDeliveryStatus(DeliveryStatus.RECALLED);
-					  logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " + 
+					  logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " +
 							  DeliveryStatus.RECALLED.name());
 				  }
 				  index++;
 				}//for each nf
 			}
-			
+
 			//update the report
-			reportScheduleDao.save(report);
-			
+			reportDao.merge(report);
+
 		} catch (Exception e) {
 			logger.error("execution of job failed",e);
 		}
-	
+
 	  }
 
 	/**
-	 * This method will return true, if the status of the Report is still pending. 
+	 * This method will return true, if the status of the Report is still pending.
 	 * @return true - when stautus is {@link Report}.PENDING
 	 * @see Report
      */
@@ -142,12 +145,12 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	}
 
 	/**
-	   * This method will delete all the jobs that are available(scheduled for later execution) in the 
+	   * This method will delete all the jobs that are available(scheduled for later execution) in the
 	   * same group (associated to the same ScheduleReport).
 	   * @param context - The JobExecutionContext
 	   */
 	public void deleteSubsequentJobs() {
-		
+
 		//delete all the open jobs in the scheduler under the same group
 		String groupName = jobDetail.getGroup();
 		String currentJobName = jobDetail.getName();
@@ -166,10 +169,10 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		} catch (SchedulerException e) {
 			logger.warn("Error while deleting job[" + jobDetail.getFullName() + "]",e);
 		}
-		
-	}	
+
+	}
 	/**
 	 * This method is to be overriden in the subclasses,and should contain the logic for processing the notification.
 	 */
-	public abstract void processNotification();
+	public abstract DeliveryStatus processNotification();
 }

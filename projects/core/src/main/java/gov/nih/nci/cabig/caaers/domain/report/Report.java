@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
@@ -74,7 +76,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 		return (notifications != null) &&	(!notifications.isEmpty());
 	}
     ////// BEAN PROPERTIES
-
+	@Temporal(value=TemporalType.TIMESTAMP)
     public Date getCreatedOn() {
         return createdOn;
     }
@@ -115,6 +117,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.aeReport = aeReport;
     }
 
+    @Temporal(value=TemporalType.TIMESTAMP)
     public Date getDueOn() {
         return dueOn;
     }
@@ -123,6 +126,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.dueOn = dueOn;
     }
 
+    @Temporal(value=TemporalType.TIMESTAMP)
     public Date getSubmittedOn() {
         return submittedOn;
     }

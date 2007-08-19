@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 
 /**
- * 
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 11, 2007
  * @version     %I%, %G%
@@ -39,5 +39,6 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
     }
 )
 public abstract class Recipient extends AbstractMutableDomainObject {
-	
+	@Transient
+	public abstract String getContact();
 }

@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 
- * 
+ *
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 13, 2007
  * @version     %I%, %G%
@@ -34,24 +34,24 @@ public class ReportDao extends GridIdentifiableDao<Report>{
 	public void save(Report rs){
 		getHibernateTemplate().saveOrUpdate(rs);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Report> getAll(){
 		return getHibernateTemplate().find("from Report");
 	}
-	
+
 	public List<Report> getAllByDueDate(Date dueDate){
 		return getByDate(2, dueDate);
 	}
-	
+
 	public List<Report> getAllByCreatedDate(Date dueDate){
 		return getByDate(3, dueDate);
 	}
-	
+
 	public List<Report> getAllBySubmittedDate(Date dueDate){
 		return getByDate(1, dueDate);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private List<Report> getByDate(int dateType, Date d){
 		String column = (dateType == 1)? "submittedOn" : ((dateType == 2)? "dueOn" : "createdOn");
@@ -77,5 +77,14 @@ public class ReportDao extends GridIdentifiableDao<Report>{
     @Transactional(propagation = Propagation.REQUIRED)
     public void reassociate(Report report) {
         getHibernateTemplate().lock(report, LockMode.NONE);
+    }
+
+    public Report getInitializedReportById(int id){
+    	Report report = getById(id);
+    	if(report != null){
+    		if(report.getScheduledNotifications() != null) initialize(report.getScheduledNotifications());
+    		if(report.getReportDeliveries() != null) initialize(report.getReportDeliveries());
+    	}
+    	return report;
     }
 }

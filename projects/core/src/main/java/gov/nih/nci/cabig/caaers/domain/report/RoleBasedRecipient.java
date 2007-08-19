@@ -6,6 +6,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  *
@@ -36,6 +37,12 @@ public class RoleBasedRecipient extends Recipient {
 		this.roleName = roleName;
 	}
 
+	@Override
+	@Transient
+	public String getContact() {
+		return roleName;
+	}
+	@Override
 	public String toString(){
 		return "ROLE :" + roleName;
 	}

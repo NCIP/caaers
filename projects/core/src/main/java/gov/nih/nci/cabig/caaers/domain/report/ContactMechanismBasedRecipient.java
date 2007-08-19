@@ -7,6 +7,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 /**
  *
@@ -42,6 +43,12 @@ public class ContactMechanismBasedRecipient extends Recipient {
 		this.contactName = contactName;
 	}
 
+	@Override
+	@Transient
+	public String getContact() {
+		return contactName;
+	}
+	@Override
 	public String toString(){
 		return " " + contactName + " ";
 	}

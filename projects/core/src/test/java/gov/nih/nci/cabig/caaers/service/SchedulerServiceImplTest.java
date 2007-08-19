@@ -68,7 +68,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 
 		Report rs = service.getReportScheduleDao().getById(-444);
 		for(ScheduledNotification snf : rs.getScheduledNotifications()){
-			assertEquals("Delivery status should be delivered", snf.getDeliveryStatus(), DeliveryStatus.DELIVERED);
+			assertNotEquals("Delivery status", snf.getDeliveryStatus(), DeliveryStatus.SCHEDULED);
 		}
 	}
 	public void testScheduleNotificationWithJobDelete() throws Exception{

@@ -64,6 +64,12 @@ public class ReportDaoStub extends ReportDao {
 		map.put(rs.getName(), rs);
 	}
 
+	@Override
+	public Report merge(Report o) {
+		// TODO Auto-generated method stub
+		save(o);
+		return o;
+	}
 
 	public Report getDummyReportSchedule(final int reportId){
 
