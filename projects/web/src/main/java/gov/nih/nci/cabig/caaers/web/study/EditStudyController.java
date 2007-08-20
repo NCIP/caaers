@@ -80,6 +80,7 @@ public class EditStudyController extends StudyController<Study> {
         flow.addTab(new PersonnelTab());
         flow.addTab(new AgentsTab());
         flow.addTab(new DiseaseTab());
+        flow.addTab(new StudyAmendmentTab());
     }
 
     @Override

@@ -135,9 +135,7 @@ public class CreateStudyAjaxFacade {
 	public String addStudySite(int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studySiteSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		setRequestAttributes(request, index, -1, "studySiteSection");
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		return getOutputFromJsp(url);
 	}
@@ -158,12 +156,8 @@ public class CreateStudyAjaxFacade {
 			study.getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
 		}
 
-		request.setAttribute(AJAX_INDEX_PARAMETER, study.getIdentifiers().size() - 1);
-		request.setAttribute("listEditorIndex", index);
 		request.setAttribute("type", type);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studyIdentifierSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-
+		setRequestAttributes(request, study.getIdentifiers().size() - 1, index,"studyIdentifierSection");
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		String html = getOutputFromJsp(url);
 		request.setAttribute(AJAX_INDEX_PARAMETER, index);
@@ -181,9 +175,7 @@ public class CreateStudyAjaxFacade {
 		Study study = getStudyCommand(request);
 		// pre-initialize the agent at index
 		study.getStudyAgents().get(index);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studyAgentSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		setRequestAttributes(request, index, -1,"studyAgentSection");
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		return getOutputFromJsp(url);
 	}
@@ -219,37 +211,36 @@ public class CreateStudyAjaxFacade {
 		return html;
 	}
 
-	// using existing list editor
-	public String addChooseStudySite(int index, int siteIndex, String context) {
-		HttpServletRequest request = getHttpServletRequest();
-		Study study = getStudyCommand(request);
-		study.setStudySiteIndex(siteIndex);
-		if (siteIndex < 0) {
-			return " "; // a space, incase of a reset of the select box.
-		}
-		String subView = "";
-		if (StringUtils.equals("Personnel", context)) {
-			subView = "studySitePersonnelsSection";
-			study.getStudySites().get(siteIndex).getStudyPersonnels().get(0); // make sure one item is there
-		}
-		else {
-			subView = "studySiteInvestigatorsSection";
-			study.getStudySites().get(siteIndex).getStudyInvestigators().get(0); // make sure on entry is there.
-		}
-		request.setAttribute(AJAX_INDEX_PARAMETER, siteIndex);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, subView);
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-
-		String url = getCurrentPageContextRelative(WebContextFactory.get());
-		return getOutputFromJsp(url);
-	}
+//TODO : remove the commented method
+//	// using existing list editor
+//	public String addChooseStudySite(int index, int siteIndex, String context) {
+//		HttpServletRequest request = getHttpServletRequest();
+//		Study study = getStudyCommand(request);
+//		study.setStudySiteIndex(siteIndex);
+//		if (siteIndex < 0) {
+//			return " "; // a space, incase of a reset of the select box.
+//		}
+//		String subView = "";
+//		if (StringUtils.equals("Personnel", context)) {
+//			subView = "studySitePersonnelsSection";
+//			study.getStudySites().get(siteIndex).getStudyPersonnels().get(0); // make sure one item is there
+//		}
+//		else {
+//			subView = "studySiteInvestigatorsSection";
+//			study.getStudySites().get(siteIndex).getStudyInvestigators().get(0); // make sure on entry is there.
+//		}
+//		request.setAttribute(AJAX_INDEX_PARAMETER, siteIndex);
+//		request.setAttribute(AJAX_SUBVIEW_PARAMETER, subView);
+//		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+//
+//		String url = getCurrentPageContextRelative(WebContextFactory.get());
+//		return getOutputFromJsp(url);
+//	}
 
 	public String addInvestigator(int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studySiteInvestigatorSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		setRequestAttributes(request, index, -1,"studySiteInvestigatorSection");
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		return getOutputFromJsp(url);
 	}
@@ -262,9 +253,7 @@ public class CreateStudyAjaxFacade {
 	public String addStudyPersonnel(int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "studySitePersonnelSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		setRequestAttributes(request, index, -1, "studySitePersonnelSection");
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		return getOutputFromJsp(url);
 	}
@@ -273,7 +262,25 @@ public class CreateStudyAjaxFacade {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels().remove(index) != null;
 	}
+	public String addStudyAmendment(int index) {
+		HttpServletRequest request = getHttpServletRequest();
+		getStudyCommand(request);
+		setRequestAttributes(request, index, -1, "studyAmendmentSection");
+		String url = getCurrentPageContextRelative(WebContextFactory.get());
+		return getOutputFromJsp(url);
+	}
 
+	public boolean deleteStudyAmendment(int index) {
+		Study study = getStudyCommand(getHttpServletRequest());
+		return study.getStudyAmendments().remove(index) != null;
+	}
+
+	private void setRequestAttributes(HttpServletRequest request, int index, int listEditorIndex, String subview){
+		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+		request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
+		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		request.setAttribute("listEditorIndex", listEditorIndex);
+	}
 	private String getOutputFromJsp(String jspResource) {
 		String html = "Error in rendering...";
 		try {

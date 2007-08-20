@@ -92,7 +92,6 @@
 			    sectionClass="ss-section" removeButtonAction="removeSite" index="${status.index}" />
 		</c:forEach>
 			<span id="sitebookmark"></span>
-		</table>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
     	<input type="button" onClick="javascript:fireAction('addSite','0');" 

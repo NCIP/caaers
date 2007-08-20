@@ -28,6 +28,14 @@ public class InputFieldAttributes {
         field.getAttributes().put(COLS, cols);
     }
 
+    public static Integer getRows(InputField field){
+    	return (Integer) field.getAttributes().get(ROWS);
+    }
+
+    public static void setRows(InputField field, Integer rows){
+    	field.getAttributes().put(ROWS, rows);
+    }
+
     public static Integer getSize(InputField field) {
         return (Integer) field.getAttributes().get(SIZE);
     }
