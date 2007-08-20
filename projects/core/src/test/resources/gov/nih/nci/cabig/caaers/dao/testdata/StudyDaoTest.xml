@@ -164,8 +164,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1000" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role" 
     	status_code="active" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 
@@ -176,8 +174,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1001" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role2" 
     	status_code="inactive" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 
@@ -188,8 +184,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1004" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role2" 
     	status_code="inactive" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 
@@ -200,8 +194,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1002" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role" 
     	status_code="active" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 
@@ -212,8 +204,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1003" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role2" 
     	status_code="inactive" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 
@@ -224,8 +214,6 @@
     <STUDY_ORGANIZATIONS 
     	id="-1005" 
     	version="1" 
-    	irb_approval_date="01-01-2000" 
-    	role_code="role2" 
     	status_code="inactive" 
     	start_date="01-01-2001" 
     	end_date="01-01-2002" 

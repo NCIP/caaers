@@ -239,7 +239,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			// Study Site
 			StudySite studySite = new StudySite();
 			studySite.setOrganization(organization);
-			studySite.setRoleCode("role");
 			studySite.setStatusCode("active");
 
 			study.addStudySite(studySite);
@@ -287,7 +286,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			// Study Site
 			StudySite studySite = new StudySite();
 			studySite.setOrganization(organization);
-			studySite.setRoleCode("role");
 			studySite.setStatusCode("active");
 
 			study.addStudySite(studySite);
