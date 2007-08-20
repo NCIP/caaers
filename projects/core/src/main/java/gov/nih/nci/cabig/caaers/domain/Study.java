@@ -206,7 +206,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public StudyCoordinatingCenter getStudyCoordinatingCenter() {
-		if(!getStudyCoordinatingCenters().isEmpty()) return getStudyCoordinatingCenters().get(0);
+		return (getStudyCoordinatingCenters().isEmpty())? null:  getStudyCoordinatingCenters().get(0);
 		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
 	}
 
