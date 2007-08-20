@@ -32,7 +32,7 @@
            </div>
            <div class="row">
               <div class="label">Sponsor:</div>
-              <div class="value">${command.primarySponsorCode}</div>
+              <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
            </div>
            <div class="row">
               <div class="label">Phase:</div>
