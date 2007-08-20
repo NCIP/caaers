@@ -48,6 +48,7 @@ public class CreateStudyController extends StudyController<Study> {
 		Study study = new Study();
 
 		StudySite studySite = new StudySite();
+
 		study.addStudySite(studySite);
 		List<Identifier> studyIdentifiers = new ArrayList<Identifier>();
 		study.setIdentifiers(studyIdentifiers);
@@ -60,7 +61,7 @@ public class CreateStudyController extends StudyController<Study> {
 			final Object command, final BindException errors) throws Exception {
 		Study study = (Study) command;
 
-		if (study.getMultiInstitution().equals(Boolean.TRUE)
+		if (study.getMultiInstitutionIndicator().equals(Boolean.TRUE)
 				&& study.getOrganizationAssignedIdentifier().getOrganization() != null) {
 			// add organization assigned identifier
 			study.addIdentifier(study.getOrganizationAssignedIdentifier());
@@ -70,6 +71,14 @@ public class CreateStudyController extends StudyController<Study> {
 			studyCoordinatingCenter.setStudy(study);
 			study.addStudyOrganization(studyCoordinatingCenter);
 
+		}
+		if (!study.getIdentifiersLazy().isEmpty()) {
+			for (Identifier identifier : study.getIdentifiersLazy()) {
+				if (identifier.getId() == null) {
+					study.addIdentifier(identifier);
+				}
+
+			}
 		}
 		// save the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)

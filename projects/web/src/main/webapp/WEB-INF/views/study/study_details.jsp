@@ -22,18 +22,18 @@
 	Event.observe(window, "load", function() {
     	
 		Event.observe("terminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })	
-		Event.observe("multiInstitution", "change", function() { showOrganizationIdentifier(); dontShowOrganizationIdentifier();})
+		Event.observe("multiInstitutionIndicator", "change", function() { showOrganizationIdentifier(); dontShowOrganizationIdentifier();})
 		
 		
 		
 		function showOrganizationIdentifier(){
-				if ($('multiInstitution').options[0].selected ){
+				if ($('multiInstitutionIndicator').options[0].selected ){
 					Effect.toggle($('organizationAssignedIdentifier.organization-row'), 'slide');
 					Effect.toggle($('organizationAssignedIdentifier.value-row'), 'slide');
 				}
 		}
 		function dontShowOrganizationIdentifier(){
-				if ($('multiInstitution').options[1].selected ){
+				if ($('multiInstitutionIndicator').options[1].selected ){
 					Effect.toggle($('organizationAssignedIdentifier.organization-row'), 'slide');
 					Effect.toggle($('organizationAssignedIdentifier.value-row'), 'slide');
 				}
@@ -110,7 +110,7 @@
        	<chrome:division title="Multi-Institutional Details" >
 			<c:forEach items="${fieldGroups.organizationFieldGroup.fields}" var="field" varStatus="status">
 			
-				<tags:renderRow field="${field}"  style="${command.multiInstitution or status.index eq 0? '':'display:none'}" />
+				<tags:renderRow field="${field}"  style="${command.multiInstitutionIndicator or status.index eq 0? '':'display:none'}" />
 				
 			</c:forEach>
         </chrome:division>

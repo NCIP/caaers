@@ -81,7 +81,7 @@
 	  
     Event.observe(window, "load", function() {
         	
-      		<c:forEach varStatus="status" items="${command.identifiers}" var="si">
+      		<c:forEach varStatus="status" items="${command.identifiersLazy}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, '${si.organization.name}');
 				</c:if>
@@ -144,11 +144,11 @@
     				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
     			</tr>
     			
-            	<c:forEach items="${command.identifiers}" varStatus="status" >
-            	<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+            	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
+            	<c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 		
 					<study:studyIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="system-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />            
+					sectionClass="system-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiersLazy[status.index]}" />            
 					</c:if>
 						</c:forEach>
             	</table>
@@ -166,10 +166,10 @@
     				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
     			</tr>
     			
-            	<c:forEach items="${command.identifiers}" varStatus="status">
-					<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+            	<c:forEach items="${command.identifiersLazy}" varStatus="status">
+					<c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<study:studyIdentifier  title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
+					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiersLazy[status.index]}" />
 					</c:if>
 					            	</c:forEach>
             	

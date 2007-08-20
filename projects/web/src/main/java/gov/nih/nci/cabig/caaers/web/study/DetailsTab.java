@@ -22,7 +22,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-class DetailsTab extends StudyTab {
+public class DetailsTab extends StudyTab {
 	private CtcDao ctcDao;
 
 	private MeddraVersionDao meddraVersionDao;
@@ -47,7 +47,7 @@ class DetailsTab extends StudyTab {
 	}
 
 	@Override
-	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+	public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
 		if (fieldGroup == null) {
 			// set up the fields
 			fieldGroup = new DefaultInputFieldGroup("studyDetails");
@@ -86,7 +86,7 @@ class DetailsTab extends StudyTab {
 			organizationFieldGroup = new DefaultInputFieldGroup("organizationFieldGroup");
 			List<InputField> organizationFields = organizationFieldGroup.getFields();
 
-			organizationFields.add(InputFieldFactory.createBooleanSelectField("multiInstitution",
+			organizationFields.add(InputFieldFactory.createBooleanSelectField("multiInstitutionIndicator",
 					"Multi-Institutional", true));
 
 			organizationFields.add(InputFieldFactory.createTextField("organizationAssignedIdentifier.value",
@@ -102,8 +102,8 @@ class DetailsTab extends StudyTab {
 	}
 
 	@Override
-	protected void validate(Study command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,
-			Errors errors) {
+	protected void validate(final Study command, final BeanWrapper commandBean,
+			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 		if (command.getTerminology().getTerm() == Term.MEDDRA && command.getTerminology().getMeddraVersion() == null) {
 			InputField field = fieldGroups.get("studyDetails").getFields().get(8);
 			errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
@@ -114,15 +114,14 @@ class DetailsTab extends StudyTab {
 			errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
 		}
 		OrganizationAssignedIdentifier identifier = command.getOrganizationAssignedIdentifier();
-		Boolean multiInstitution = command.getMultiInstitution();
+		Boolean multiInstitution = command.getMultiInstitutionIndicator();
 		if (multiInstitution.equals(Boolean.TRUE) && identifier.getOrganization() == null) {
-			errors
-					.rejectValue("organizationAssignedIdentifier.organization", "REQUIRED",
-							"Organization is required..!");
+			errors.rejectValue("organizationAssignedIdentifier.organization", "REQUIRED",
+					"Coordinating Center is required..!");
 
 		}
 		if (multiInstitution.equals(Boolean.TRUE) && identifier.getValue() == null) {
-			errors.rejectValue("organizationAssignedIdentifier.value", "REQUIRED", "Organization is required..!");
+			errors.rejectValue("organizationAssignedIdentifier.value", "REQUIRED", "Identifier is required..!");
 
 		}
 
@@ -132,7 +131,7 @@ class DetailsTab extends StudyTab {
 		return ctcDao;
 	}
 
-	public void setCtcDao(CtcDao ctcDao) {
+	public void setCtcDao(final CtcDao ctcDao) {
 		this.ctcDao = ctcDao;
 	}
 
@@ -140,7 +139,7 @@ class DetailsTab extends StudyTab {
 		return meddraVersionDao;
 	}
 
-	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
+	public void setMeddraVersionDao(final MeddraVersionDao meddraVersionDao) {
 		this.meddraVersionDao = meddraVersionDao;
 	}
 }

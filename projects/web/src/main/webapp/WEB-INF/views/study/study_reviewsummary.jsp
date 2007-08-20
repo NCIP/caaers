@@ -52,7 +52,7 @@
                 <div class="value">${command.phaseCode}</div>
             </div>
        </chrome:division>
-		<c:if test="${not empty command.identifiers}">
+		<c:if test="${not empty command.identifiersLazy}">
 			<chrome:division title="Identifiers">
 			<table class="tablecontent">
 			<tr>
@@ -60,7 +60,7 @@
 				<th scope="col">Identifier Type</th>
 				<th scope="col">Identifier</th>
 			</tr>
-			<c:forEach items="${command.identifiers}" var="identifier">
+			<c:forEach items="${command.identifiersLazy}" var="identifier">
 			<tr class="results">
 				<c:if	test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<td>${identifier.organization}</td>

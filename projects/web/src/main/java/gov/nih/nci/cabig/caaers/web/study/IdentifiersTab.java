@@ -22,7 +22,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-class IdentifiersTab extends StudyTab {
+public class IdentifiersTab extends StudyTab {
 	private OrganizationDao organizationDao;
 
 	private RepeatingFieldGroupFactory rfgFactory;
@@ -48,7 +48,9 @@ class IdentifiersTab extends StudyTab {
 		String selected = request.getParameter("_selected");
 		if ("removeIdentifier".equals(action)) {
 			Study study = command;
+			Identifier identifier = study.getIdentifiersLazy().get(Integer.parseInt(selected));
 			study.getIdentifiersLazy().remove(Integer.parseInt(selected));
+			study.getIdentifiers().remove(identifier);
 		}
 	}
 
@@ -73,7 +75,10 @@ class IdentifiersTab extends StudyTab {
 		}
 		Study study = command;
 		InputFieldGroupMap map = new InputFieldGroupMap();
-		map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());
+		if (!study.getIdentifiersLazy().isEmpty()) {
+			map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());
+		}
+
 		return map;
 	}
 
@@ -82,7 +87,7 @@ class IdentifiersTab extends StudyTab {
 			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
 
-		List<Identifier> identifiers = command.getIdentifiers();
+		List<Identifier> identifiers = command.getIdentifiersLazy();
 		for (int i = 0; i < identifiers.size(); i++) {
 			Identifier identifier = identifiers.get(i);
 			if (identifier instanceof OrganizationAssignedIdentifier
