@@ -155,11 +155,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	try {
     	for(AdverseEvent ae : raer.getAdverseEvents() )
     	{
-    		//String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		//if (message.equals("SERIOUS_ADVERSE_EVENT")){
+    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
+    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
     			aeReport.addAdverseEvent(ae);
     			isPopulated = true;
-    		//}
+    		}
     	}
     		return isPopulated;
     	}
