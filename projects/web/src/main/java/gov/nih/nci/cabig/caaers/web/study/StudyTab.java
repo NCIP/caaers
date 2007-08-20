@@ -29,7 +29,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
     private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
 
-   
+
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
@@ -45,7 +45,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
     protected void addConfigMapToRefdata(Map<String, Object> refdata, String name) {
         refdata.put(name, getConfigurationProperty().getMap().get(name));
     }
-    protected Map<Object, Object> collectOptions(List list, 
+    protected Map<Object, Object> collectOptions(List list,
     		String nameProperty, String valueProperty){
     	Map<Object, Object> options = new LinkedHashMap<Object, Object>();
     	options.put("" , "Please select");
@@ -54,30 +54,30 @@ public abstract class StudyTab extends TabWithFields<Study> {
     }
     protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName,
     		String nameProperty, String valueProperty){
-    	return collectOptions((List)configurationProperty.getMap().get(configPropertyName),
+    	return collectOptions(configurationProperty.getMap().get(configPropertyName),
     			nameProperty, valueProperty);
     }
 
-	
+
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		return new InputFieldGroupMap();
 	}
-	
+
 	protected List<Lov> collectStudySiteDropdown(Study study){
 		ArrayList<Lov> list = new ArrayList<Lov>();
 		list.add(new Lov("-1", "Select a site"));
 		if(study.getStudySites() != null){
-			int i = -1; 
+			int i = -1;
 			for(StudySite ss : study.getStudySites()){
 				if(ss.getOrganization() != null){
-					list.add(new Lov(String.valueOf(++i), ss.getOrganization().getName() + "(" + ss.getRoleCode() + ")" ));
+					list.add(new Lov(String.valueOf(++i), ss.getOrganization().getName() ));
 				}
 			}
 		}
-		return list;  
+		return list;
 	}
-	
+
 	public String fieldValuesAsString(List<InputField> fields, BeanWrapper bean){
 		StringBuilder sb = new StringBuilder();
 		for(InputField field : fields){

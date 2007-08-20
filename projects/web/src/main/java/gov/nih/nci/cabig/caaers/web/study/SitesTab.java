@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -19,35 +18,25 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
 */
 class SitesTab extends StudyTab {
-	
-	
+
+
 	private RepeatingFieldGroupFactory rfgFactory;
-	
-    private OrganizationDao organizationDao;
 
     public SitesTab() {
         super("Study Sites", "Sites", "study/study_sites");
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
-
-        refdata.put("sitesRefData", organizationDao.getAll());
-        addConfigMapToRefdata(refdata, "studySiteStatusRefData"); //TODO : Remove
-        addConfigMapToRefdata(refdata, "studySiteRoleCodeRefData"); //TODO : Remove
-        return refdata;
-    }
-
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
         String action = request.getParameter("_action");
         if ("removeSite".equals(action)) {
             command.getStudySites().remove(Integer.parseInt(request.getParameter("_selected")));
         }
     }
-    
+
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		 if(rfgFactory == null){
@@ -55,12 +44,9 @@ class SitesTab extends StudyTab {
 			 InputField siteField = InputFieldFactory.createAutocompleterField("organization", "Site", true);
 			 //siteField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
 			 rfgFactory.addField(siteField);
-			 rfgFactory.addField(InputFieldFactory.createSelectField("roleCode", "Role", true, 
-						collectOptionsFromConfig("studySiteRoleCodeRefData", "desc","desc")));
-			 rfgFactory.addField(InputFieldFactory.createDateField("irbApprovalDate","IRB Approval Date", false));
 		 }
 		 InputFieldGroupMap map = new InputFieldGroupMap();
-		 Study study = (Study)command;
+		 Study study = command;
 		 map.addRepeatingFieldGroupFactory(rfgFactory, study.getStudySites().size());
 		 return map;
 	}
@@ -79,8 +65,4 @@ class SitesTab extends StudyTab {
 		}
 	}
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
-    }
-    
 }

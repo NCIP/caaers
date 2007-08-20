@@ -12,38 +12,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
- <tags:includeScriptaculous/>
+  <tags:includeScriptaculous/>
   <tags:dwrJavascriptLink objects="createStudy"/>
+  <tags:stylesheetLink name="extremecomponents"/>
 <script language="JavaScript" type="text/JavaScript">
 	var addSiteEditor;
-	function fireAction(action, selected){
-		if(action == 'addSite'){
-			addSiteEditor.add.bind(addSiteEditor)();
-		}else {
-			//addSiteEditor.delete.bind(addSiteEditor)();
-			var ssfrm = $('command');
-			ssfrm._target.name='_noname';
-			ssfrm._action.value=action;
-			ssfrm._selected.value=selected;		
-			ssfrm.submit();
-		}
+	
+	function fireDelete(selected, trClass){
+		var ssfrm = $('command');
+		ssfrm._target.name='_noname';
+		ssfrm._action.value='removeSite';
+		ssfrm._selected.value=selected;		
+		ssfrm.submit();
 	}
-
+	
 	var jsStudySite = Class.create();
 	Object.extend(jsStudySite.prototype, {
             initialize: function(index, orgName) {
             	this.index = index;
             	this.orgName = orgName;
             	this.sitePropertyName = "studySites["  + index + "].organization";
-            	this.irbApprovalInputId = "studySites["  + index + "].irbApprovalDate";
-            	this.irbApprovalButtonId = "studySites["  + index + "].irbApprovalDate-calbutton";
             	this.siteInputId = this.sitePropertyName + "-input";
             	if(orgName) $(this.siteInputId).value = orgName;
             	AE.createStandardAutocompleter(this.sitePropertyName, 
             		this.sitePopulator.bind(this),
             		this.siteSelector.bind(this)
             	);
-            	Calendar.setup({inputField:this.irbApprovalInputId,ifFormat:"%m/%d/%Y",button:this.irbApprovalButtonId});
             },            
             sitePopulator: function(autocompleter, text) {
          		createStudy.matchOrganization(text, function(values) {
@@ -62,9 +56,7 @@
       		new jsStudySite(${status.index}, '${ss.organization.name}');
       	</c:forEach>
       	addSiteEditor = new ListEditor('ss-section',createStudy, "StudySite",{
-      		 addButton: "xxx",
-             addIndicator: "ss-add-indicator",
-             addFirstAfter: "sitebookmark",
+             addFirstAfter: "ss-table-head",
              addCallback: function(nextIndex) {
                 	//initilze auto completer and calendar
                 	new jsStudySite(nextIndex);
@@ -77,26 +69,28 @@
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="true">
-    <jsp:attribute name="repeatingFields">
-   	
+    <jsp:attribute name="singleFields">
 		<p id="instructions">&nbsp;&nbsp;
 		Click on the Add Study Site button below in order to associate a study site to this study.
 		 <br>
 		</p>
-		<div>
-			<input type="hidden" name="_action" value="">
-			<input type="hidden" name="_selected" value="">
-		</div>
-		<c:forEach varStatus="status" items="${command.studySites}">	
-			<study:aStudyChild title="Study Site ${status.index + 1}" enableDelete="${status.index > 0}"
-			    sectionClass="ss-section" removeButtonAction="removeSite" index="${status.index}" />
-		</c:forEach>
-			<span id="sitebookmark"></span>
+		<input type="hidden" name="_action" value="">
+		<input type="hidden" name="_selected" value="">
+ 	    <table width="70%" class="eXtremeTable">
+		  <tr id="ss-table-head" class="amendment-table-head">
+			<th width="95%" class="tableHeader"><tags:requiredIndicator />Site</th>
+			<th width="5%" class="tableHeader">&nbsp;</th>
+ 		  </tr>
+ 		  <c:forEach varStatus="status" items="${command.studySites}">	
+ 		   <study:oneStudyChildRow cssClass="ss-section" index="${status.index}" disableDelete="${status.index < 1}"  />
+ 		  </c:forEach>
+		</table>
+		<br>
     </jsp:attribute>
-    <jsp:attribute name="localButtons">
-    	<input type="button" onClick="javascript:fireAction('addSite','0');" 
-     		name="AddStudySite" value="Add Study Site"><tags:indicator id="ss-add-indicator"/>
-    </jsp:attribute>
+    <jsp:attribute name="localButtons"> 
+	  <tags:listEditorAddButton divisionClass="ss-section" label="Add Study Site" />   
+	</jsp:attribute>
+
 </tags:tabForm>
 </body>
 </html>

@@ -22,6 +22,7 @@
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
         <chrome:division>
+        	
             <div class="row">
                 <div class="label">Primary Identifier</div>
                 <div class="value">${command.primaryIdentifier.value}</div>
@@ -82,14 +83,10 @@
        		<table class="tablecontent">
 				<tr>
 					<th scope="col">Study Site</th>
-					<th scope="col">Role</th>
-					<th scope="col">IRB Approval Date</th>
 				</tr>
 				<c:forEach items="${command.studySites}" var="studySite">
 				<tr class="results">
 					<td>${studySite.organization.name}</td>
-					<td>${studySite.roleCode}</td>
-					<td><tags:formatDate value="${studySite.irbApprovalDate}" /></td>
 				</tr>
 				</c:forEach>
 			</table>	

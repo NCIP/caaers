@@ -72,7 +72,7 @@
 			<th width="5%" class="tableHeader">&nbsp;</th>
  		  </tr>
  		  <c:forEach items="${command.studyAmendments}" varStatus="status" >
- 		   <study:oneAmendment index="${status.index}" />
+ 		   <study:oneStudyChildRow  index="${status.index}" cssClass="amendment-row" />
  		  </c:forEach>
  	   </table>
     </jsp:attribute>
