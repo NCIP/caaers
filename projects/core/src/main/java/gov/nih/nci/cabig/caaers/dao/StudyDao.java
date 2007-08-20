@@ -86,6 +86,7 @@ public class StudyDao extends GridIdentifiableDao<Study>
 		ht.initialize(s.getMeddraStudyDiseases());
 		ht.initialize(s.getCtepStudyDiseases());
 		ht.initialize(s.getStudyAgentsInternal());
+		ht.initialize(s.getStudyAmendmentsInternal());
 		for(StudyAgent sa : s.getStudyAgents()){
 			ht.initialize(sa.getStudyAgentINDAssociationsInternal());
 		}

@@ -477,7 +477,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public List<StudyAmendment> getStudyAmendments(){
-		return lazyListHelper.getInternalList(StudyAmendment.class);
+		return lazyListHelper.getLazyList(StudyAmendment.class);
 	}
 	public void setStudyAmendments(List<StudyAmendment> amendments){
 		setStudyAmendmentsInternal(amendments);

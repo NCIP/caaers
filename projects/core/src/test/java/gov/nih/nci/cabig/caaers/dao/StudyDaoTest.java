@@ -449,7 +449,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		List<StudyAmendment> list = study.getStudyAmendments();
 		assertNotNull("StudyAmendments list cannot be null", list);
 		assertEquals("Size of amendment list is wrong",1, list.size());
-		assertEquals("wrong amendment version number",1, list.get(0).getAmendmentVersion());
+		assertEquals("wrong amendment version number",new Integer(1), list.get(0).getAmendmentVersion());
 	}
 
 	public void testSaveUpdateStudyWithAmendments(){
@@ -485,7 +485,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertNotNull("study cannot be null", study);
 			assertNotNull("amendments cannot be null", study.getStudyAmendments());
 			assertEquals("StudyAmendments size", 2, study.getStudyAmendments().size());
-			assertEquals("Second amendment version wrong",43,study.getStudyAmendments().get(1).getAmendmentVersion());
+			assertEquals("Second amendment version wrong",new Integer(43),study.getStudyAmendments().get(1).getAmendmentVersion());
 			//remove the first amendment at 0
 			study.getStudyAmendments().remove(0);
 			getDao().save(study);
@@ -496,7 +496,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertNotNull("study cannot be null", study);
 			assertNotNull("amendments cannot be null", study.getStudyAmendments());
 			assertEquals("StudyAmendments size", 1, study.getStudyAmendments().size());
-			assertEquals("Previous Second amendment version wrong",43,study.getStudyAmendments().get(0).getAmendmentVersion());
+			assertEquals("Previous Second amendment version wrong",new Integer(43),study.getStudyAmendments().get(0).getAmendmentVersion());
 		}
 	}
 }

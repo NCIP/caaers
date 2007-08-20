@@ -19,17 +19,17 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 public class StudyAmendment extends AbstractMutableDomainObject{
 
-	private int amendmentVersion;
+	private Integer amendmentVersion;
 	private Date amendmentDate;
 	private String comments;
 	private Date irbApprovalDate;
 
 
 	/// Mutators
-	public int getAmendmentVersion() {
+	public Integer getAmendmentVersion() {
 		return amendmentVersion;
 	}
-	public void setAmendmentVersion(int amendmentVersion) {
+	public void setAmendmentVersion(Integer amendmentVersion) {
 		this.amendmentVersion = amendmentVersion;
 	}
 	public Date getAmendmentDate() {
