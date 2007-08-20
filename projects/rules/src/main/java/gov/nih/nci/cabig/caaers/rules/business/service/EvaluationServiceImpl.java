@@ -87,12 +87,12 @@ public class EvaluationServiceImpl implements EvaluationService {
                 reportDefinitionNames.add(reportDefName);
             }
             */
-            //uncommnted the above part for time being to test multiple actions in rules.
+            //uncomment the above part and comment the below code after figuring oout ranking.
             for (String reportDefName : reportDefNames) {
             	reportDefinitionNames.add(reportDefName);
             }
         }
-        boolean anyReports = false;
+
         for (Object reportDefinitionName : reportDefinitionNames) {
 
             ReportDefinition def = reportDefinitionDao.getByName(reportDefinitionName.toString());
@@ -100,13 +100,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             if (report == null) {
                 report = reportService.createReport(def, expeditedData);
-                anyReports = true;
+                expeditedAdverseEventReportDao.save(expeditedData);
             }
             report.setRequired(true);
         }
-        if (anyReports) {
-        	expeditedAdverseEventReportDao.save(expeditedData);
-        }
+
     }
     /**
      * Will create the Report by calling ReportService, then saves the ExpeditedAdverseEventReport
