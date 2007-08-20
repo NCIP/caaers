@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -99,6 +99,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		// mandatory, so that the lazy-projected list is created/managed properly.
 		setStudyOrganizations(new ArrayList<StudyOrganization>());
 		setStudyAgentsInternal(new ArrayList<StudyAgent>());
+
+		multiInstitutionIndicator = Boolean.FALSE;
 	}
 
 	// / LOGIC
