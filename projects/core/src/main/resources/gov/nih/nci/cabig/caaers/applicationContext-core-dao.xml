@@ -122,8 +122,8 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
 				<value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
+				<value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>                
 				<value>gov.nih.nci.cabig.caaers.domain.StudyAmendment</value>
-                
             </list>
         </property>
         <property name="entityInterceptor">

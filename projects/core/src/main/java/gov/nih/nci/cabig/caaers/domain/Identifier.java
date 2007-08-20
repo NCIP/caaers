@@ -89,4 +89,54 @@ public class Identifier extends AbstractMutableDomainObject {
 	public String toString() {
 		return getValue();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (getId() == null ? 0 : getId().hashCode());
+		result = prime * result + (type == null ? 0 : type.hashCode());
+		result = prime * result + (value == null ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Identifier other = (Identifier) obj;
+		if (getId() == null) {
+			if (other.getId() != null) {
+				return false;
+			}
+		}
+		else if (!getId().equals(other.getId())) {
+			return false;
+		}
+		if (type == null) {
+			if (other.type != null) {
+				return false;
+			}
+		}
+		else if (!type.equals(other.type)) {
+			return false;
+		}
+		if (value == null) {
+			if (other.value != null) {
+				return false;
+			}
+		}
+		else if (!value.equals(other.value)) {
+			return false;
+		}
+		return true;
+	}
+
 }

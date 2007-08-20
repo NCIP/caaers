@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -69,6 +69,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
 
+	private List<StudyTherapy> studyTherapies;
 
 	// TODO move into Command Object
 	private String[] diseaseTermIds;
@@ -77,7 +78,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private String diseaseLlt;
 
-	private Boolean multiInstitution = Boolean.FALSE;
+	private List<Identifier> identifiersLazy = new ArrayList<Identifier>();
+
+	private List<Identifier> identifiers = new ArrayList<Identifier>();
 
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
 
@@ -108,7 +111,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		getStudyOrganizations().remove(so);
 	}
 
-	public void addAmendment(StudyAmendment amendment){
+	public void addAmendment(final StudyAmendment amendment) {
 		getStudyAmendments().add(amendment);
 	}
 
@@ -200,13 +203,32 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@Transient
+	public StudyCoordinatingCenter getStudyCoordinatingCenter() {
+
+		return getStudyCoordinatingCenters().get(0);
+		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
+	}
+
+	@Transient
 	public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
 
+		if (getId() != null && multiInstitutionIndicator) {
+			for (Identifier identifier : getIdentifiers()) {
+
+				if (identifier instanceof OrganizationAssignedIdentifier
+						&& identifier.getType().equalsIgnoreCase("Co-ordinating Center Identifier")) {
+					organizationAssignedIdentifier = (OrganizationAssignedIdentifier) identifier;
+					return organizationAssignedIdentifier;
+				}
+
+			}
+		}
 		if (organizationAssignedIdentifier == null) {
 			organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
 			organizationAssignedIdentifier.setType("Co-ordinating Center Identifier");
 			organizationAssignedIdentifier.setPrimaryIndicator(Boolean.FALSE);
 		}
+
 		return organizationAssignedIdentifier;
 	}
 
@@ -297,25 +319,34 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "STU_ID")
 	public List<Identifier> getIdentifiers() {
-		return lazyListHelper.getInternalList(Identifier.class);
+		// return lazyListHelper.getInternalList(Identifier.class);
+		return identifiers;
 	}
 
 	@Override
 	public void setIdentifiers(final List<Identifier> identifiers) {
-		lazyListHelper.setInternalList(Identifier.class, identifiers);
+		this.identifiers = identifiers;
+		// lazyListHelper.setInternalList(Identifier.class, identifiers);
 	}
 
 	@Transient
 	public List<Identifier> getIdentifiersLazy() {
-		if (super.getIdentifiers() == null) {
-			setIdentifiers(new ArrayList<Identifier>());
+
+		if (getIdentifiers() != null && !getIdentifiers().isEmpty() && identifiersLazy.isEmpty()) {
+			for (Identifier identifier : getIdentifiers()) {
+				if (!identifier.getType().equalsIgnoreCase("Co-ordinating Center Identifier")) {
+					identifiersLazy.add(identifier);
+				}
+
+			}
 		}
-		return lazyListHelper.getLazyList(Identifier.class);
+		return identifiersLazy;
 	}
 
 	@Transient
 	public void setIdentifiersLazy(final List<Identifier> identifiers) {
-		setIdentifiers(identifiers);
+		identifiersLazy = identifiers;
+		// setIdentifiers(identifiers);
 	}
 
 	@OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
@@ -466,23 +497,24 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stu_id", nullable=false)
-	@Cascade(value={CascadeType.ALL,CascadeType.DELETE_ORPHAN})
-	public List<StudyAmendment> getStudyAmendmentsInternal(){
+	@JoinColumn(name = "stu_id", nullable = false)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<StudyAmendment> getStudyAmendmentsInternal() {
 		return lazyListHelper.getInternalList(StudyAmendment.class);
 	}
-	public void setStudyAmendmentsInternal(List<StudyAmendment> amendments){
+
+	public void setStudyAmendmentsInternal(final List<StudyAmendment> amendments) {
 		lazyListHelper.setInternalList(StudyAmendment.class, amendments);
 	}
 
 	@Transient
-	public List<StudyAmendment> getStudyAmendments(){
+	public List<StudyAmendment> getStudyAmendments() {
 		return lazyListHelper.getLazyList(StudyAmendment.class);
 	}
-	public void setStudyAmendments(List<StudyAmendment> amendments){
+
+	public void setStudyAmendments(final List<StudyAmendment> amendments) {
 		setStudyAmendmentsInternal(amendments);
 	}
-
 
 	// TODO Why rules is still using primarySponsorCode... (check)
 	@Transient
@@ -512,13 +544,23 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	 * studyDiseases; }
 	 */
 
-	@Transient
-	public Boolean getMultiInstitution() {
-		return multiInstitution;
+	@OneToMany(mappedBy = "study")
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<StudyTherapy> getStudyTherapies() {
+		return studyTherapies;
+	}
+
+	public void setStudyTherapies(final List<StudyTherapy> studyTherapies) {
+		this.studyTherapies = studyTherapies;
 	}
 
 	@Transient
-	public void setMultiInstitution(Boolean multiInstitution) {
-		this.multiInstitution = multiInstitution;
+	public void addStudyTherapy(final StudyTherapy studyTherapy) {
+		studyTherapies.add(studyTherapy);
 	}
+
+	public void removeIdentifier(final Identifier identifier) {
+		getIdentifiers().remove(identifier);
+	}
+
 }
