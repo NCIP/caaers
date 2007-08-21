@@ -73,6 +73,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private String institutionName;
 	
+	private String organizationName;
+	
 	private boolean isDataChanged;
 	
 	private RuleUi ruleUi;
@@ -600,6 +602,14 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
 	}
 
 

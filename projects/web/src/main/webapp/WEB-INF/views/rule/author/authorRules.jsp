@@ -853,7 +853,7 @@
 				
 			}
 			else if (selectedField.value == 'reportDefinitionName') {
-					authorRule.getAjaxObjects('reportDefinitionName', 'National Cancer Institute', function(values) {
+					authorRule.getAjaxObjects('reportDefinitionName', '${command.organizationName}', function(values) {
 						                   
 
 							var newId = validValueField.id; 
@@ -1553,7 +1553,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 							<script type="text/javascript">
 
 
-						authorRule.getAjaxObjects('reportDefinitionName', 'National Cancer Institute', function(values) {
+						authorRule.getAjaxObjects('reportDefinitionName', '${command.organizationName}', function(values) {
 						                   
 
 									var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 

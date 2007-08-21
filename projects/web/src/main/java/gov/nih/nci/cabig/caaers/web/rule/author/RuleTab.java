@@ -89,7 +89,7 @@ public class RuleTab extends DefaultTab
 				{
 
 						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
-						
+						createRuleCommand.setOrganizationName(createRuleCommand.getSponsorName());
 						if (ruleSet != null && ruleSet.getRule().size() > 0)
 						{	
 							List <Rule> rules = ruleSet.getRule();
@@ -126,7 +126,7 @@ public class RuleTab extends DefaultTab
 				}
 				else if (CreateRuleCommand.SPONSOR_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel()))
 				{
-					
+					createRuleCommand.setOrganizationName(createRuleCommand.getSponsorName());
 					
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
@@ -187,7 +187,7 @@ public class RuleTab extends DefaultTab
 							}
 						}
 				} else if (CreateRuleCommand.INSTITUTIONAL_LEVEL.equals(createRuleCommand.getLevel())) {
-
+					createRuleCommand.setOrganizationName(createRuleCommand.getInstitutionName());
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
 					ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
@@ -235,7 +235,7 @@ public class RuleTab extends DefaultTab
 				
 				else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
-
+					createRuleCommand.setOrganizationName(createRuleCommand.getInstitutionName());
 					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
 
 					boolean areSponsorRules = false;
