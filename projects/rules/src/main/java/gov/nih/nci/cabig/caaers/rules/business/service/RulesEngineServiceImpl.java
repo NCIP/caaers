@@ -16,7 +16,9 @@ import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -673,29 +675,31 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	}
 
 
-	public void exportRules(String fileName) throws Exception {
+	public void exportRules(String locationToExport) throws Exception {
 		StringBuilder sbr = new StringBuilder();
 		List<RuleSet> list = this.getAllRuleSets();
 		Iterator<RuleSet> it = list.iterator();
 		while(it.hasNext()){
 			RuleSet rs = it.next();
+			rs=repositoryService.getRuleSet(rs.getName());
 			String str = XMLUtil.marshal(rs);
-			sbr.append(str);
-			sbr.append("\n");
+			File outFile = new File(locationToExport+File.separator+RuleUtil.getStringWithoutSpaces(rs.getName())+".xml");
+			FileWriter out = new FileWriter(outFile);
+			out.write(str);
+			out.flush();
+			out.close();
 		}
+		/*
 		Document doc = new Document();
 		Element rootElement = new Element("RuleSets");
 		doc.setRootElement(rootElement);
 		rootElement.addContent(sbr.toString());
 		XMLOutputter outputter = new XMLOutputter();
-		FileOutputStream out = new FileOutputStream(fileName);
+		FileOutputStream out = new FileOutputStream("");
 		outputter.output(doc,out);
 		out.flush();
 	    out.close();
+	    */
 	}
-	
-	
-	
-	
 
 }
