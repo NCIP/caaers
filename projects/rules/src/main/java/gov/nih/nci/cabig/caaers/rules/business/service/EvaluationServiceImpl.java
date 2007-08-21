@@ -176,7 +176,16 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData){
-    	return null;
+    	List<String> sections;
+
+        try {
+        	sections = adverseEventEvaluationService.mandatorySections(expeditedData);
+
+        } catch (Exception e) {
+            throw new CaaersSystemException("Could not get mandatory sections", e);
+        }
+        
+        return sections;
     }
      ////// CONFIGURATION
 
