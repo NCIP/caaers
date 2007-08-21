@@ -52,11 +52,15 @@
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="80%"
     style="" styleClass="">
+    <c:if test="${ruleSet.name != 'default' }">
     <ec:row>
         <ec:column property="name" title="Name" sortable="false" filterable="false">
-
+        	<!-- 
             <a href="<c:url value="/pages/rule/edit?name=${ruleSet.name}"/>">${ruleSet.name}</a>
-
+            -->
+            
+            	<a href="<c:url value="#"/>">${ruleSet.name}</a>
+            
         </ec:column>
         <ec:column property="description" title="Description" sortable="false" filterable="false">
         </ec:column>
@@ -64,10 +68,12 @@
             <a id="deploy" href="javascript:deployRule('${ruleSet.name}')">Deploy</a>
         </ec:column>
     </ec:row>
+    </c:if>
 </ec:table>
 
 
 <p>
+
 
 <%--
 <a href="javascript:fireRulesNow('3')">Successful Execution</a>
@@ -79,6 +85,7 @@
 
 <a href="javascript:fireRulesNow('1')">Successful Execution 2</a>
 --%>
+
 
 </body>
 </html>
