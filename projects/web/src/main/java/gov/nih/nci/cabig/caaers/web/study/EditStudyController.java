@@ -86,6 +86,14 @@ public class EditStudyController extends StudyController<Study> {
 
 			}
 		}
+		// mergedStudy.setStudyTherapies(study.getStudyTherapies());
+		// now check for study therapies.
+		mergedStudy.setChemoTherapyType(study.getChemoTherapyType());
+		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
+		mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
+		mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
+		updateStudyTherapies(mergedStudy);
+
 		getDao().save(mergedStudy);
 		return mergedStudy;
 	}
@@ -132,6 +140,8 @@ public class EditStudyController extends StudyController<Study> {
 		flow.addTab(new AgentsTab());
 		flow.addTab(new DiseaseTab());
 		flow.addTab(new StudyAmendmentTab());
+		flow.addTab(new StudyTherapiesTab());
+
 	}
 
 	@Override

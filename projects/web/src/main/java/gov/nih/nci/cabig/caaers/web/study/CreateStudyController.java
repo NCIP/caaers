@@ -37,7 +37,9 @@ public class CreateStudyController extends StudyController<Study> {
 		flow.addTab(new AgentsTab());
 		flow.addTab(new DiseaseTab());
 		flow.addTab(new StudyAmendmentTab());
+		flow.addTab(new StudyTherapiesTab());
 		flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
+
 	}
 
 	/**
@@ -80,6 +82,10 @@ public class CreateStudyController extends StudyController<Study> {
 
 			}
 		}
+
+		// check for study therapy
+		updateStudyTherapies(study);
+
 		// save the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)
 		// in different screens (hibernate session)
@@ -87,5 +93,4 @@ public class CreateStudyController extends StudyController<Study> {
 
 		return new ModelAndView("forward:view?type=confirm", errors.getModel());
 	}
-
 }

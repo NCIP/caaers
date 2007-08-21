@@ -8,6 +8,8 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -17,6 +19,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -252,6 +255,48 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 
 	public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
+
+	protected void updateStudyTherapies(final Study study) {
+		List<StudyTherapy> studyTherapies = study.getStudyTherapies();
+
+		if (study.getChemoTherapyType() && study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) == null) {
+			StudyTherapy chemoTherapy = new StudyTherapy();
+			chemoTherapy.setStudy(study);
+			chemoTherapy.setStudyTherapyType(StudyTherapyType.CHEMO_THERAPY);
+			study.getStudyTherapies().add(chemoTherapy);
+		}
+		else if (!study.getChemoTherapyType() && study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY));
+		}
+		if (study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) == null) {
+			StudyTherapy deviceTherapy = new StudyTherapy();
+			deviceTherapy.setStudy(study);
+			deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+			study.getStudyTherapies().add(deviceTherapy);
+		}
+		else if (!study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DEVICE));
+		}
+		if (study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) == null) {
+			StudyTherapy radiationTherapy = new StudyTherapy();
+			radiationTherapy.setStudy(study);
+			radiationTherapy.setStudyTherapyType(StudyTherapyType.RADIATION);
+			study.getStudyTherapies().add(radiationTherapy);
+		}
+		else if (!study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.RADIATION));
+		}
+		if (study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) == null) {
+			StudyTherapy surgeryTherapy = new StudyTherapy();
+			surgeryTherapy.setStudy(study);
+			surgeryTherapy.setStudyTherapyType(StudyTherapyType.SURGERY);
+			study.getStudyTherapies().add(surgeryTherapy);
+		}
+		else if (!study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.SURGERY));
+		}
+
 	}
 
 }
