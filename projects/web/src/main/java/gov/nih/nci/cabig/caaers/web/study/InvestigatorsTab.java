@@ -21,7 +21,7 @@ import org.springframework.validation.Errors;
 */
 class InvestigatorsTab extends StudyTab {
 	private List<InputField> fields;
-	
+
     public InvestigatorsTab() {
         super("Study Investigators", "Investigators", "study/study_investigators");
     }
@@ -34,13 +34,14 @@ class InvestigatorsTab extends StudyTab {
         return refdata;
     }
 
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+    @Override
+	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
 		String action =request.getParameter("_action");
 		String selectedInvestigator = request.getParameter("_selectedInvestigator");
 		String prevSiteIndex = request.getParameter("_prevSite");
-		Study study = (Study) command;
+		Study study = command;
 		int selectedIndex = study.getStudySiteIndex();
-		if ("removeInv".equals(action) && selectedIndex >=0 ){	
+		if ("removeInv".equals(action) && selectedIndex >=0 ){
 			study.getStudySites().get(selectedIndex).getStudyInvestigators()
 				.remove(Integer.parseInt(selectedInvestigator));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
@@ -57,9 +58,9 @@ class InvestigatorsTab extends StudyTab {
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
 		siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("studySiteIndex", "Site", true,
-				InputFieldFactory.collectOptions(collectStudySiteDropdown(command), "code", "desc")));
+				InputFieldFactory.collectOptions(collectStudyOrganizations(command), "code", "desc")));
 		map.addInputFieldGroup(siteFieldGroup);
-		
+
 		if(fields == null){
 			fields = new ArrayList<InputField>();
 			InputField investigatorField = InputFieldFactory.createAutocompleterField("siteInvestigator", "Investigator", true);
@@ -67,20 +68,20 @@ class InvestigatorsTab extends StudyTab {
 			fields.add(investigatorField);
 			fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true,
 					collectOptionsFromConfig("invRoleCodeRefData", "desc","desc")));
-			fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true, 
+			fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true,
 					collectOptionsFromConfig("invStatusCodeRefData", "desc","desc")));
 		}
-		
+
 		int ssIndex = command.getStudySiteIndex();
 		if(ssIndex >= 0){
-			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studySites[" + ssIndex +"].studyInvestigators");
+			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studyOrganizations[" + ssIndex +"].studyInvestigators");
 			for(InputField f : fields){
 				rfgFactory.addField(f);
 			}
 			map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyInvestigators().size());
 		}
 		return map;
-	}	
-    
-	
+	}
+
+
 }

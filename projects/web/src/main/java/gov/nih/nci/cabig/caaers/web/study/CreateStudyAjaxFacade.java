@@ -152,8 +152,6 @@ public class CreateStudyAjaxFacade {
 		else if (type == 2) {
 			study.getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
 		}
-		request.setAttribute(AJAX_INDEX_PARAMETER, study.getIdentifiersLazy().size() - 1);
-		request.setAttribute("listEditorIndex", index);
 
 		request.setAttribute("type", type);
 		setRequestAttributes(request, study.getIdentifiersLazy().size() - 1, index, "studyIdentifierSection");

@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -23,13 +24,11 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class IdentifiersTab extends StudyTab {
-	private OrganizationDao organizationDao;
 
 	private RepeatingFieldGroupFactory rfgFactory;
 
 	public IdentifiersTab() {
 		super("Study Identifiers", "Identifiers", "study/study_identifiers");
-		setAutoPopulateHelpKey(true);
 	}
 
 	@Override
@@ -37,7 +36,6 @@ public class IdentifiersTab extends StudyTab {
 		Map<String, Object> refdata = super.referenceData();
 		Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
 
-		refdata.put("identifiersSourceRefData", organizationDao.getAll());
 		refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));
 		return refdata;
 	}
@@ -58,18 +56,19 @@ public class IdentifiersTab extends StudyTab {
 	public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
 		if (rfgFactory == null) {
 			rfgFactory = new RepeatingFieldGroupFactory("main", "identifiersLazy");
-			rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
+			InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
+			InputFieldAttributes.setSize(idField, 10);
+			rfgFactory.addField(idField);
+
 			rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
 					collectOptionsFromConfig("identifiersType", "desc", "desc")));
-			// InputField sourceField = InputFieldFactory.createAutocompleterField("source", "Assigning Authority", true);
-			// sourceField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
-			// //rfgFactory.addField(sourceField);
-			// rfgFactory.addField(InputFieldFactory.createSelectField("source", "Assigning Authority", true,
-			// collectOptions(organizationDao.getAll(), "name", "name")));
+			InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
+			InputFieldAttributes.setSize(sysNameField, 50);
+			rfgFactory.addField(sysNameField);
+			InputField orgNameField = InputFieldFactory.createAutocompleterField("organization", "Organization", false);
+			orgNameField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+			rfgFactory.addField(orgNameField);
 
-			rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
-			rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization", "Organization", false));
-			// rfgFactory.addField(InputFieldFactory.createAutocompleterField("source", "Source"));
 			rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
 		}
@@ -107,7 +106,5 @@ public class IdentifiersTab extends StudyTab {
 
 	}
 
-	public void setOrganizationDao(final OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+
 }
