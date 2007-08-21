@@ -1,18 +1,20 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * A mock implementation of {@link gov.nih.nci.cabig.caaers.service.EvaluationService}, suitable
@@ -75,6 +77,10 @@ public class MockEvaluationService implements EvaluationService {
     	// TODO Auto-generated method stub
 
     }
+    
+    public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
+    	return new ArrayList<String>();
+    }
 
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
 		List<ReportDefinition> reportDefs) {
@@ -82,8 +88,7 @@ public class MockEvaluationService implements EvaluationService {
 
     }
 
-    public List<ReportDefinition> applicableReportDefinitions(
-		StudyParticipantAssignment assignment) {
+    public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
     	// TODO Auto-generated method stub
     	return null;
     }
