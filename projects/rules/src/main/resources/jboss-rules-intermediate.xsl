@@ -80,9 +80,11 @@
 				-->
 				
 				<xsl:for-each select="rules:field-constraint/rules:literal-restriction/rules:value">				
+							<!--  
 							<xsl:choose>
 								<xsl:when  test="(contains(../../../rules:expression,'intValue()') = false) and (.!='true') and  (.!='false') and (../../../rules:field-constraint/rules:literal-restriction/@evaluator = '!=')" >!</xsl:when>
 							</xsl:choose>
+							-->
 							
 							<!-- multiple replacements , called replace-string template twice. -->
 							<xsl:variable name = "tempStr">
