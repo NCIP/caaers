@@ -85,7 +85,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected Map referenceData(
         HttpServletRequest request, Object oCommand, Errors errors, int page
     ) throws Exception {
-    	//If Study MedDRA based create an AdverseEvent , else Don't 
+    	//If Study MedDRA based create an AdverseEvent , else Don't  
     	RoutineAdverseEventInputCommand command = ((RoutineAdverseEventInputCommand)oCommand);
     	if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
     		 if (command.getAeRoutineReport().getAdverseEvents().size() == 0) {
