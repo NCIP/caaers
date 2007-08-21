@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.text.ParseException;
@@ -20,210 +21,216 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  * @author Priyatam
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
-@Transactional(readOnly=true)
-public class StudyDao extends GridIdentifiableDao<Study>
-	implements MutableDomainObjectDao<Study>{
+@Transactional(readOnly = true)
+public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomainObjectDao<Study> {
 
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES
-        = Arrays.asList("shortTitle", "longTitle");
-    private static final List<String> EXACT_MATCH_PROPERTIES
-        = Collections.emptyList();
-    private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES
-		= Arrays.asList("longTitle");
-    private static final List<String> EMPTY_PROPERTIES
-		= Collections.emptyList();
-    private static final List<String> EXACT_MATCH_TITLE_PROPERTIES
-		= Arrays.asList("shortTitle");
+	private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("shortTitle", "longTitle");
 
-    private static final String JOINS
-    	= "join o.identifiers as identifier " +
-		"join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
+	private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-    private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() +
-    					" s where shortTitle = :st" ;
+	private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES = Arrays.asList("longTitle");
 
-    @Override
+	private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
+
+	private static final List<String> EXACT_MATCH_TITLE_PROPERTIES = Arrays.asList("shortTitle");
+
+	private static final String JOINS = "join o.identifiers as identifier "
+			+ "join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
+
+	private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName()
+			+ " s where shortTitle = :st";
+
+	@Override
 	public Class<Study> domainClass() {
-        return Study.class;
-    }
+		return Study.class;
+	}
 
-    @SuppressWarnings("unchecked")
-    public List<Study> getAllStudies() {
-        return getHibernateTemplate().find("from Study");
-    }
+	@SuppressWarnings("unchecked")
+	public List<Study> getAllStudies() {
+		return getHibernateTemplate().find("from Study");
+	}
 
-    /**
-     //TODO - Refactor this code with Hibernate Detached objects !!!
-
-	 * This is a hack to load all collection objects in memory. Useful
-	 * for editing a Study when you know you will be needing all collections
-	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done
-	 * for each collection
+	/**
+	 * //TODO - Refactor this code with Hibernate Detached objects !!!
+	 * 
+	 * This is a hack to load all collection objects in memory. Useful for editing a Study when you know you will be needing all collections
+	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done for each collection
 	 * @param id
 	 * @return Fully loaded Study
 	 */
 	public Study getStudyDesignById(int id) {
-        Study study =  (Study) getHibernateTemplate().get(domainClass(), id);
-        return initialize(study);
-    }
+		Study study = (Study) getHibernateTemplate().get(domainClass(), id);
+		initialize(study);
 
-	public Study initialize(Study s){
+		// now select the therapies types
+		if (study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null) {
+			study.setChemoTherapyType(Boolean.TRUE);
+		}
+		if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
+			study.setDeviceTherapyType(Boolean.TRUE);
+		}
+		if (study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
+			study.setRadiationTherapyType(Boolean.TRUE);
+		}
+		if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
+			study.setSurgeryTherapyType(Boolean.TRUE);
+		}
+
+		return study;
+	}
+
+	public Study initialize(Study study) {
 		HibernateTemplate ht = getHibernateTemplate();
-		ht.initialize(s.getIdentifiers());
-		ht.initialize(s.getStudyOrganizations());
-		for (StudySite ss : s.getStudySites()) {
-			if(ss == null) continue;
+		ht.initialize(study.getIdentifiers());
+		ht.initialize(study.getStudyOrganizations());
+		for (StudySite ss : study.getStudySites()) {
+			if (ss == null) {
+				continue;
+			}
 			ht.initialize(ss.getStudyInvestigatorsInternal());
 			ht.initialize(ss.getStudyPersonnelsInternal());
 		}
-		ht.initialize(s.getMeddraStudyDiseases());
-		ht.initialize(s.getCtepStudyDiseases());
-		ht.initialize(s.getStudyAgentsInternal());
-		ht.initialize(s.getStudyAmendmentsInternal());
-		for(StudyAgent sa : s.getStudyAgents()){
+		ht.initialize(study.getMeddraStudyDiseases());
+		ht.initialize(study.getCtepStudyDiseases());
+		ht.initialize(study.getStudyAgentsInternal());
+		ht.initialize(study.getStudyAmendmentsInternal());
+		ht.initialize(study.getStudyTherapies());
+
+		for (StudyAgent sa : study.getStudyAgents()) {
 			ht.initialize(sa.getStudyAgentINDAssociationsInternal());
 		}
-		return s;
+		return study;
 	}
 
-    @Transactional(readOnly=false)
-    public void save(Study study) {
+	@Transactional(readOnly = false)
+	public void save(Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}
 
-    public List<Study> getBySubnames(String[] subnames) {
-        return findBySubname(subnames,
-            SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-    }
+	public List<Study> getBySubnames(String[] subnames) {
+		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+	}
 
-
-    public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
-    {
-    	return findBySubname(subnames,null,null,subStringMatchProperties,null,JOINS);
-    }
+	public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties) {
+		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
+	}
 
 	public List<Study> searchStudy(Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
-		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
-         .append(domainClass().getName()).append(" o ").append(JOINS);
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(
+				" o ").append(JOINS);
 
 		/*
-		if (true) {
-			queryBuf.append(firstClause ? " where " : " and ");
-			queryBuf.append(" ss.class = StudySite ");
-			firstClause = false;
-		}*/
+		 * if (true) { queryBuf.append(firstClause ? " where " : " and "); queryBuf.append(" ss.class = StudySite "); firstClause = false; }
+		 */
 
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ?");
-			String p = (String)props.get("studyIdentifier");
+			String p = (String) props.get("studyIdentifier");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
 		if (props.get("studyShortTitle") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
-			String p = (String)props.get("studyShortTitle");
+			String p = (String) props.get("studyShortTitle");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
 		if (props.get("participantIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("pIdentifier.value").append(") LIKE ?");
-			String p = (String)props.get("participantIdentifier");
+			String p = (String) props.get("participantIdentifier");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
 		if (props.get("participantFirstName") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("p.firstName").append(") LIKE ?");
-			String p = (String)props.get("participantFirstName");
+			String p = (String) props.get("participantFirstName");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
 		if (props.get("participantLastName") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("p.lastName").append(") LIKE ?");
-			String p = (String)props.get("participantLastName");
+			String p = (String) props.get("participantLastName");
 			params.add('%' + p.toLowerCase() + '%');
 			firstClause = false;
 		}
 		if (props.get("participantEthnicity") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("p.ethnicity").append(") LIKE ?");
-			String p = (String)props.get("participantEthnicity");
-			params.add( p.toLowerCase() );
+			String p = (String) props.get("participantEthnicity");
+			params.add(p.toLowerCase());
 			firstClause = false;
 		}
 		if (props.get("participantGender") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("p.gender").append(") LIKE ?");
-			String p = (String)props.get("participantGender");
-			params.add( p.toLowerCase() );
+			String p = (String) props.get("participantGender");
+			params.add(p.toLowerCase());
 			firstClause = false;
 		}
 
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append(" p.dateOfBirth").append(" = ? ");
-			String p = (String)props.get("participantDateOfBirth");
+			String p = (String) props.get("participantDateOfBirth");
 			params.add(stringToDate(p));
 			firstClause = false;
 		}
-		log.debug("::: " + queryBuf.toString() );
+		log.debug("::: " + queryBuf.toString());
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
-    }
+	}
 
+	/**
+	 * @param subnames a set of substrings to match
+	 * @return a list of participants such that each entry in <code>subnames</code> is a case-insensitive substring match of the
+	 *         participant's name or other identifier
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Study> getByUniqueIdentifiers(String[] subnames) {
+		return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
+	}
 
-    /**
-     * @param subnames a set of substrings to match
-     * @return a list of participants such that each entry in <code>subnames</code> is a
-     *  case-insensitive substring match of the participant's name or other identifier
-     */
-    @SuppressWarnings("unchecked")
-    public List<Study> getByUniqueIdentifiers(String[] subnames) {
-        return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
-    }
+	public Study getByIdentifier(Identifier identifier) {
+		return findByIdentifier(identifier);
+	}
 
-    public Study getByIdentifier(Identifier identifier) {
-        return findByIdentifier(identifier);
-    }
+	/**
+	 * This will do an exact match on the <code>shortTitle</code>, and will return the first available Study. Note:- Biz rule should be
+	 * made that short title is unique.
+	 */
+	public Study getByShortTitle(String shortTitle) {
+		List<Study> studies = findBySubname(new String[] { shortTitle }, null, EXACT_MATCH_TITLE_PROPERTIES);
+		if (studies != null && studies.size() > 0) {
+			return studies.get(0);
+		}
+		return null;
+	}
 
-    /**
-     * This will do an exact match on the <code>shortTitle</code>, and will return the first available
-     * Study.
-     * Note:- Biz rule should be made that short title is unique.
-     */
-    public Study getByShortTitle(String shortTitle){
-    	List<Study> studies = findBySubname(new String[]{shortTitle}, null, EXACT_MATCH_TITLE_PROPERTIES);
-    	if(studies != null && studies.size() > 0) return studies.get(0);
-    		return null;
-    }
-
-    @Override
-    //TODO - Need to refactor the below into CaaersDao along with identifiers
-    public List<Study> searchByExample(Study study, boolean isWildCard) {
+	@Override
+	// TODO - Need to refactor the below into CaaersDao along with identifiers
+	public List<Study> searchByExample(Study study, boolean isWildCard) {
 		Example example = Example.create(study).excludeZeroes().ignoreCase();
 		Criteria studyCriteria = getSession().createCriteria(Study.class);
 
-		if (isWildCard)
-		{
+		if (isWildCard) {
 			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
 			studyCriteria.add(example);
 			if (study.getIdentifiers().size() > 0) {
-				studyCriteria.createCriteria("identifiers")
-					.add(Restrictions.like("value", study.getIdentifiers().get(0)
-					.getValue()+ "%"));
+				studyCriteria.createCriteria("identifiers").add(
+						Restrictions.like("value", study.getIdentifiers().get(0).getValue() + "%"));
 			}
 			return studyCriteria.list();
 		}

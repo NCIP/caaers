@@ -69,7 +69,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
 
-	private List<StudyTherapy> studyTherapies;
+	private List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
 
 	// TODO move into Command Object
 	private String[] diseaseTermIds;
@@ -553,7 +553,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	 * studyDiseases; }
 	 */
 
-	@OneToMany(mappedBy = "study")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<StudyTherapy> getStudyTherapies() {
 		return studyTherapies;
@@ -574,7 +574,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public Boolean getChemoTherapyType() {
-		return getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null ? true : chemoTherapyType;
+		return chemoTherapyType;
 	}
 
 	public void setChemoTherapyType(Boolean chemoTherapyType) {
@@ -583,7 +583,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public Boolean getRadiationTherapyType() {
-		return getStudyTherapy(StudyTherapyType.RADIATION) != null ? true : radiationTherapyType;
+		return radiationTherapyType;
 	}
 
 	public void setRadiationTherapyType(Boolean radiationTherapyType) {
@@ -592,7 +592,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public Boolean getDeviceTherapyType() {
-		return getStudyTherapy(StudyTherapyType.DEVICE) != null ? true : deviceTherapyType;
+		return deviceTherapyType;
 	}
 
 	public void setDeviceTherapyType(Boolean deviceTherapyType) {
@@ -601,7 +601,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public Boolean getSurgeryTherapyType() {
-		return getStudyTherapy(StudyTherapyType.SURGERY) != null ? true : surgeryTherapyType;
+		return surgeryTherapyType;
 	}
 
 	public void setSurgeryTherapyType(Boolean surgeryTherapyType) {

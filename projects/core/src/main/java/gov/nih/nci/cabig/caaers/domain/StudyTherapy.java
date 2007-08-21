@@ -46,4 +46,47 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
 		this.studyTherapyType = studyTherapyType;
 	}
 
+	public StudyTherapy() {
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (study == null ? 0 : study.getId().hashCode());
+		result = prime * result + (studyTherapyType == null ? 0 : studyTherapyType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final StudyTherapy other = (StudyTherapy) obj;
+		if (study == null) {
+			if (other.study != null) {
+				return false;
+			}
+		}
+		else if (!study.getId().equals(other.study.getId())) {
+			return false;
+		}
+		if (studyTherapyType == null) {
+			if (other.studyTherapyType != null) {
+				return false;
+			}
+		}
+		else if (!studyTherapyType.equals(other.studyTherapyType)) {
+			return false;
+		}
+		return true;
+	}
+
 }
