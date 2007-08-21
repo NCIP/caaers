@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
+
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface EvaluationService {
      *  study, site, and participant
      */
     boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent);
+    
+    
 
     /**
      * Evaluates the provided data and associates new {@link Report}
@@ -41,6 +44,14 @@ public interface EvaluationService {
      */
     void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs);
 
+    
+    /**
+     * 
+     * @param expeditedData
+     * @return All the mandatory sections for a given expedited report.
+     */
+    List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData);
+    
     /**
      * @return All the report definitions which might apply to the given
      *  study, site, and participant
