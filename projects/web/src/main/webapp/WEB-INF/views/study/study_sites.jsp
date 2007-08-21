@@ -67,6 +67,7 @@
 </script>
 </head>
 <body>
+<study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="true">
     <jsp:attribute name="singleFields">
 		<p id="instructions">&nbsp;&nbsp;
@@ -76,7 +77,7 @@
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
  	    <div align="left" style="margin-left: 50px">
- 	    <table width="60%" class="tablecontent">
+ 	    <table width="55%" class="tablecontent">
 		  <tr id="ss-table-head" class="amendment-table-head">
 			<th width="95%" class="tableHeader"><tags:requiredIndicator />Site</th>
 			<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>

@@ -1,4 +1,3 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
@@ -8,17 +7,23 @@
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
 	<p id="instructions" align="left">
-	<c:if  test="${fn:length(command.studySites[index].studyPersonnels) lt 1}">
-	   There are no research staffs associated to this study site.
-	   </c:if>
 	   Click on the Add Research Staff button to associate research staff to this study site.	
 	<br />
 	</p>
-	  <c:forEach var="sp" items="${command.studySites[index].studyPersonnels}" varStatus="status">
-	    <study:aStudyChild title="Research Staff ${status.index + 1}" enableDelete="true"
-			    sectionClass="ssi-section" removeButtonAction="removeStudyPersonnel" index="${status.index}" />
-	    
-	    <script>new jsPersonnel(${status.index}, '${sp.researchStaff.fullName}');</script>
+	<table width="100%" class="tablecontent" valign="middle">
+	  <tr id="ssi-table-head" class="ssi-table-head">
+		<th width="55%" class="tableHeader"><tags:requiredIndicator />Research Staff</th>
+		<th width="20%" class="tableHeader"><tags:requiredIndicator />Role</th>
+		<th width="20%" class="tableHeader"><tags:requiredIndicator />Status</th>
+		<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
+ 	  </tr>
+	  <c:forEach var="sp" items="${command.studyOrganizations[index].studyPersonnels}" varStatus="status">
+	  <study:oneStudyChildRow cssClass="ssi-table-row" index="${status.index}" />
+      <script>new jsPersonnel(${status.index}, '${sp.researchStaff.fullName}');</script>
 	  </c:forEach>
-	  <span id="ssi-bookmark"> </span>
+	  <c:if  test="${fn:length(command.studyOrganizations[index].studyPersonnels) lt 1}">
+	   <tr id="ssi-empty-row" class="ssi-empty-row"><td colspan="4">There are no research staffs associated to this study site.</td></tr>
+	  </c:if>
+	</table>
+
 </div>

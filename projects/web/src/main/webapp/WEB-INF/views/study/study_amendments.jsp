@@ -14,7 +14,6 @@
   <title>${tab.longTitle}</title>
   <tags:includeScriptaculous/>
   <tags:dwrJavascriptLink objects="createStudy"/>
-  <tags:stylesheetLink name="extremecomponents"/>
   <script language="JavaScript" type="text/JavaScript">
 	var listEditor;
 	var jsAmendment = Class.create();
@@ -59,16 +58,21 @@
   </script>
  </head>
 <body>
+  <study:summary />
   <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAmendmentFrm" hideErrorDetails="true">
-    <jsp:attribute name="repeatingFields">
+    <jsp:attribute name="instructions">
+    <p> Amendment can be added to this study by clicking the Add Amendment button.<br>
+    </p>
+    </jsp:attribute>
+    <jsp:attribute name="singleFields">
 	   <input type="hidden" name="_action" value="">
 	   <input type="hidden" name="_selected" value="">
-	   <table width="100%" class="eXtremeTable">
+	   <table width="100%" class="tablecontent">
 		  <tr id="amendment-table-head" class="amendment-table-head">
-			<th width="12%" class="tableHeader">Version #</th>
-			<th width="19%" class="tableHeader">Date</th>
-			<th width="19%" class="tableHeader"><tags:requiredIndicator /> IRB Approval Date</th>
-			<th width="45%" class="tableHeader">Comments</th>
+			<th width="10%" class="tableHeader">Version #</th>
+			<th width="22%" class="tableHeader">Date</th>
+			<th width="22%" class="tableHeader"><tags:requiredIndicator /> IRB Approval Date</th>
+			<th width="41%" class="tableHeader">Comments</th>
 			<th width="5%" class="tableHeader">&nbsp;</th>
  		  </tr>
  		  <c:forEach items="${command.studyAmendments}" varStatus="status" >

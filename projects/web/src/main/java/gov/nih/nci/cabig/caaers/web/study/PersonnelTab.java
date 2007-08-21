@@ -31,13 +31,14 @@ class PersonnelTab extends StudyTab {
         return refdata;
     }
 
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+    @Override
+	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
     	String action = request.getParameter("_action");
 		String selectedPersonnel = request.getParameter("_selectedPersonnel");
 		String prevSiteIndex = request.getParameter("_prevSite");
-		Study study = (Study) command;
+		Study study = command;
 		int selectedIndex = study.getStudySiteIndex();
-		if ("removeStudyPersonnel".equals(action) &&  selectedIndex >=0){	
+		if ("removeStudyPersonnel".equals(action) &&  selectedIndex >=0){
 			study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels()
 				.remove(Integer.parseInt(selectedPersonnel));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
@@ -46,19 +47,19 @@ class PersonnelTab extends StudyTab {
 			if(siteIndex >=0){
 				study.getStudySites().get(siteIndex).getStudyPersonnels().get(0);
 			}
-				
-		}	
+
+		}
     }
 
-    
+
     @Override
 	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
 		siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("studySiteIndex", "Site", true,
-				InputFieldFactory.collectOptions(collectStudySiteDropdown(command), "code", "desc")));
+				InputFieldFactory.collectOptions(collectStudyOrganizations(command), "code", "desc")));
 		map.addInputFieldGroup(siteFieldGroup);
-		
+
 		if(fields == null){
 			fields = new ArrayList<InputField>();
 			InputField investigatorField = InputFieldFactory.createAutocompleterField("researchStaff", "Research Staff", true);
@@ -66,19 +67,19 @@ class PersonnelTab extends StudyTab {
 			fields.add(investigatorField);
 			fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true,
 					collectOptionsFromConfig("studyPersonnelRoleRefData", "desc","desc")));
-			fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true, 
+			fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true,
 					collectOptionsFromConfig("studyPersonnelStatusRefData", "desc","desc")));
 		}
-		
+
 		int ssIndex = command.getStudySiteIndex();
 		if(ssIndex >= 0){
-			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studySites[" + ssIndex +"].studyPersonnels");
-			
+			RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "studyOrganizations[" + ssIndex +"].studyPersonnels");
+
 			for(InputField f : fields){
 				rfgFactory.addField(f);
 			}
 			 map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyPersonnels().size());
 		}
 		return map;
-	}	
+	}
  }

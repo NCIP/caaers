@@ -1,4 +1,3 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
@@ -8,17 +7,23 @@
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
 	<p id="instructions" align="left">
-	<c:if  test="${fn:length(command.studySites[index].studyInvestigators) lt 1}">
-	   There are no investigators associated to this study site.
-	   </c:if>
 	   Click on the Add Investigator button to associate investigator to this study site.	
 	<br />
 	</p>
-	  <c:forEach var="si" items="${command.studySites[index].studyInvestigators}" varStatus="status">
-	    <study:aStudyChild title="Study Investigator ${status.index + 1}" enableDelete="true"
-			    sectionClass="ssi-section" removeButtonAction="removeInv" index="${status.index}" />
-	    
-	    <script>new jsInvestigator(${status.index}, '${si.siteInvestigator.investigator.fullName}');</script>
+	<table width="100%" class="tablecontent" valign="middle">
+	  <tr id="ssi-table-head" class="ssi-table-head">
+		<th width="55%" class="tableHeader"><tags:requiredIndicator />Investigator</th>
+		<th width="20%" class="tableHeader"><tags:requiredIndicator />Role</th>
+		<th width="20%" class="tableHeader"><tags:requiredIndicator />Status</th>
+		<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
+ 	  </tr>
+	
+	  <c:forEach var="si" items="${command.studyOrganizations[index].studyInvestigators}" varStatus="status">
+	   <study:oneStudyChildRow cssClass="ssi-table-row" index="${status.index}" />
+	   <script>new jsInvestigator(${status.index}, '${si.siteInvestigator.investigator.fullName}');</script>
 	  </c:forEach>
-	  <span id="ssi-bookmark"> </span>
+	  <c:if  test="${fn:length(command.studyOrganizations[index].studyInvestigators) lt 1}">
+	   <tr id="ssi-empty-row" class="ssi-empty-row"><td colspan="4">There are no investigators associated to this study site.</td></tr>
+	  </c:if>
+	</table>
 </div>

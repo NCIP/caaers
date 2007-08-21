@@ -11,6 +11,8 @@
 <html>
 <head>
 <title>caAERS || <decorator:title/></title>
+ <script language="javascript" type="text/javascript" 
+            src="file://c:/devtools/firebug/firebug.js"></script>
 <standard:head/>
 <decorator:head/>
 </head>

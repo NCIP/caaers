@@ -7,7 +7,6 @@
 <%@attribute name="identifier" required="true"
 	type="gov.nih.nci.cabig.caaers.domain.Identifier"%>
 <%@attribute name="style"%>
-<%@attribute name="title"%>
 <%@attribute name="sectionClass" required="true"%>
 <%@attribute name="removeButtonAction"%>
 <%@attribute name="enableDelete" type="java.lang.Boolean"%>
@@ -65,4 +64,4 @@
             <td align="right">
         	<a href="javascript:fireAction(${deleteParams},'${sectionClass}-${index}','${cssClass}');"><img 
 	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
-            </tr>
+</tr>

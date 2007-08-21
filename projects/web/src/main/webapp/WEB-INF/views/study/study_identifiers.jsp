@@ -2,10 +2,6 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
@@ -62,22 +58,14 @@
         	       
         	
     );
-    
-    function fireAction(action, selected){
-		if(action == 'addIdentifier'){
-			addIdentifierEditor.add.bind(addIdentifierEditor)();
-		}else{
-			document.getElementById('command')._target.name='_noname';
-			document.studyIdentifiersForm._action.value=action;
-			document.studyIdentifiersForm._selected.value=selected;		
-			document.studyIdentifiersForm.submit();
-		}
+    function fireDelete(selected, trClass){
+		var ssfrm = $('command');
+		ssfrm._target.name='_noname';
+		ssfrm._action.value='removeIdentifier';
+		ssfrm._selected.value=selected;		
+		ssfrm.submit();
 	}
-	
-	function clearField(field){
-		field.value="";
-	}
-	
+   
 	  
     Event.observe(window, "load", function() {
         	
@@ -85,7 +73,7 @@
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, '${si.organization.name}');
 				</c:if>
-					<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					new jsIdentifier(${status.index});
 				</c:if>
 				
@@ -126,65 +114,56 @@
 </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">
-    
-    <jsp:attribute name="repeatingFields">
+<study:summary />
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">   
+   <jsp:attribute name="repeatingFields">
         	<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
-		</div>
-		
-		
-        	<chrome:division title="System Identifiers">
+			</div>
+           <chrome:division title="System Identifiers">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>System name:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader" width="63%"><tags:requiredIndicator />System name </th>
+    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" width="5%">&nbsp;</th>
     			</tr>
-    			
+    			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
-            	<c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-		
-					<study:studyIdentifier title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="system-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiersLazy[status.index]}" />            
-					</c:if>
-						</c:forEach>
-            	</table>
-            	</chrome:division>
+            	 <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}" exclusions="Organization" />
+				  <c:set var="cntSys">${cntSys + 1}</c:set>
+			  </c:if>
+			 </c:forEach>
+             </table>
+           	</chrome:division>
     	
-		    
-		
-		
         	<chrome:division  title="Organization Identifiers"  >
         	<table id="test" class="tablecontent">
     			<tr id="organization-section">
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Organization:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader" width="63%"><tags:requiredIndicator />Organization name </th>
+    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" width="5%">&nbsp;</th>
     			</tr>
-    			
+    			<c:set var="cntOrg">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status">
-					<c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<study:studyIdentifier  title="Study Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiersLazy[status.index]}" />
-					</c:if>
-					            	</c:forEach>
-            	
-            	</table>
-            	</chrome:division>
-        </jsp:attribute>
-    
-    
-	<jsp:attribute name="localButtons"> 
-	      	<chrome:division title="">          	
-	      		<tags:listEditorAddButton divisionClass="system-section-row" 	label="Add System Identifier" />   
-                <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" /> 
-            </chrome:division>                                                                                                                                                                                                                                                             
-	</jsp:attribute>
-	
+				  <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" />
+					<c:set var="cntOrg">${cntOrg + 1}</c:set>
+				  </c:if>
+				</c:forEach>
+            </table>
+            </chrome:division>
+   </jsp:attribute>
+   <jsp:attribute name="localButtons"> 
+	 <tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier" />   
+     <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" />
+     <br /> 
+   </jsp:attribute>
 </tags:tabForm>
 </body>
 </html>

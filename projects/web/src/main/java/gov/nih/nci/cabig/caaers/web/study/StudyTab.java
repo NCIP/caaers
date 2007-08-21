@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -64,17 +65,18 @@ public abstract class StudyTab extends TabWithFields<Study> {
 		return new InputFieldGroupMap();
 	}
 
-	protected List<Lov> collectStudySiteDropdown(Study study){
+	protected List<Lov> collectStudyOrganizations(Study study){
 		ArrayList<Lov> list = new ArrayList<Lov>();
-		list.add(new Lov("-1", "Select a site"));
-		if(study.getStudySites() != null){
+		list.add(new Lov("-1", " - Please select - "));
+		if(study.getStudyOrganizations() != null){
 			int i = -1;
-			for(StudySite ss : study.getStudySites()){
-				if(ss.getOrganization() != null){
-					list.add(new Lov(String.valueOf(++i), ss.getOrganization().getName() ));
-				}
+			for(StudyOrganization so : study.getStudyOrganizations()){
+				i++;
+				if(so.getOrganization() == null) continue;
+				list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + "(" + so.getRoleName() + ")"));
 			}
 		}
+
 		return list;
 	}
 

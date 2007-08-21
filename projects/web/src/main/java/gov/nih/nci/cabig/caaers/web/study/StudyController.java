@@ -121,7 +121,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 				summary.put("Phase", study.getPhaseCode().toString());
 			}
 			if (page != 7) {
-				refdata.put("summary", summary);
+				refdata.put("studySummary", summary);
 			}
 		}
 

@@ -3,6 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -95,7 +96,7 @@
 
 </head>
 <body>
-
+<study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="true">
     
 	<jsp:attribute name="singleFields">

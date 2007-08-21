@@ -13,7 +13,9 @@
    <tags:dwrJavascriptLink objects="createStudy"/>
    <script language="JavaScript" type="text/JavaScript">
      var personnelListEditor;
-
+ 	 function fireDelete(selected, trClass){
+		fireAction('removeStudyPersonnel',selected);
+  	 }
      function fireAction(action, selectedPersonnel){
 	    if(action == 'addStudyPersonnel'){
 		  
@@ -32,7 +34,7 @@
             	this.index = index;
             	this.siteIndex = $F('studySiteIndex');
             	this.sitePersonnelName = sitePersonnelName;
-            	this.sitePersonnelPropertyName = "studySites["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
+            	this.sitePersonnelPropertyName = "studyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
             	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
@@ -61,11 +63,14 @@
 	    });
 	    
 	    //initialize the list editor
-	     personnelListEditor = new ListEditor('ssi-section',createStudy, "StudyPersonnel",{
+	     personnelListEditor = new ListEditor('ssi-table-row',createStudy, "StudyPersonnel",{
              addParameters: [],
-             addFirstAfter: "ssi-bookmark",
+             addFirstAfter: "ssi-table-head",
              addCallback: function(nextIndex) {
           	   new jsPersonnel(nextIndex);
+          	   if($('ssi-empty-row')){
+                	Effect.Fade('ssi-empty-row');
+               }
              }
          
     	   });  
@@ -80,7 +85,7 @@
 </head>
 
 <body>
-
+<study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" formName="form">
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
@@ -102,7 +107,7 @@
 	    </td>
       	<td valign="top" width="25%">
 			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.studySites}">
+ 				<c:forEach var="studySite" varStatus="status" items="${command.studyOrganizations}">
  					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
 						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>
@@ -119,7 +124,7 @@
 	</table>
  </jsp:attribute>	
  <jsp:attribute name="localButtons">
-  <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-section" label="Add Research Staff" /></div>
+  <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" /></div>
  </jsp:attribute> 
   
 </tags:tabForm>

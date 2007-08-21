@@ -1,7 +1,5 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
 <tags:noform>
-
-    <study:studyIdentifier title="Study Identifier ${index + 1}" enableDelete="${index > 0}"
-			sectionClass="${type eq 1 ? 'system-section-row' : 'organization-section-row'}" removeButtonAction="removeIdentifier" index="${index}" style="display: none" identifier="${command.identifiersLazy[index]}"/>
+ <study:oneStudyChildRow cssClass="${type eq 1 ? 'system-section-row' : 'organization-section-row'}" index="${index}"  style="display: none" exclusions="${type eq 1 ? 'Organization' : 'System Name'}" idSuffix="${listEditorIndex}"/>
 </tags:noform>

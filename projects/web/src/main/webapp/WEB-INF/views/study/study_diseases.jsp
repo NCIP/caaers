@@ -7,7 +7,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -238,6 +238,7 @@
     </script>
 </head>
 <body>
+ <study:summary /> 
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" cssClass="standard">
         <tags:tabFields tab="${tab}"/>

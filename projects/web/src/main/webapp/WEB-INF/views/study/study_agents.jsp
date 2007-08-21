@@ -13,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <style type="text/css">
-        .label { width: 12em; text-align: right; padding: 4px; }
+        .label { width: 12em;  }
         td#linkPosition a img { position:absolute; right: 30px; }
         
 </style>
@@ -144,7 +144,7 @@
 
 </head>
 <body>
-
+<study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
 	<jsp:attribute name="instructions">
 	  Click on the Add Study Agent button below, in order to add an agent to this study.
