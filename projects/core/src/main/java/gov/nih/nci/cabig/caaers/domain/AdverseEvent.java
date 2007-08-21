@@ -44,7 +44,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private String detailsForOther;
     private Grade grade;
     private Hospitalization hospitalization;
-    private Boolean expected = false;
+    private Boolean expected; // false assignment removed cause that is not default for Routine AEs
     private Attribution attributionSummary;
     private String comments;
 

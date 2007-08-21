@@ -52,14 +52,16 @@ public class RoutineAeMeddraTab extends AeRoutTab {
         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true,
         		createGradeOptions()));
         InputField attributionField = InputFieldFactory.createSelectField(
-            "attributionSummary", "Attribution to study", false, createAttributionOptions());
+            "attributionSummary", "Attribution to study", true, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
             "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
         mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(InputFieldFactory.createSelectField(
             "hospitalization", "Hospitalization", true,createHospitalizationOptions()));
-        mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
-            "expected", "Expected", true));
+        //mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
+        //    "expected", "Expected", true));
+        mainFieldFactory.addField(InputFieldFactory.createSelectField(
+                "expected", "Expected", true,createExpectedOptions()));
      
         
         meddraTermFieldFactory = new RepeatingFieldGroupFactory(MEDDRA_TERM_FIELD_GROUP, "aeRoutineReport.adverseEvents");

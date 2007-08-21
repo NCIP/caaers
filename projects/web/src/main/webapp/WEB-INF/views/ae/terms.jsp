@@ -95,7 +95,7 @@
     	<form:options items="${command.categories}" itemValue="id" itemLabel="name"/>
     	</form:select>
     	<br><br>
-    	<strong>CTC Categories</strong><br>
+    	<strong>CTC Terms</strong><br>
     	<form:select id="ctcTerms" path="ctcTermIds" size="5" cssClass="selects">
     	</form:select>
     	<input style="float:right;" type="button" value="Add" onClick="javascript:fireAction('addTerm','0');" /><br>
@@ -122,29 +122,37 @@
             		
             		<td>
             			<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
+            				<form:option value=" " label="Please select" />
             				<c:if test="${fn:length(ae.ctcTerm.contextualGrades) == 0}" >
             					<form:options items="${grade}" itemValue="name" itemLabel="code"/>
             				</c:if>
             				<form:options items="${ae.ctcTerm.contextualGrades}" itemValue="grade.name" itemLabel="grade.code"/>
             			</form:select>
+            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].grade"/>
             		</td>
             		
             		<td>
-            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary" cssClass="cats">
+            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary">
+            				<form:option value=" " label="Please select" />
             				<form:options items="${attribution}" itemValue="name" itemLabel="displayName"/>
             			</form:select>
+            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary"/>
             		</td>
             		
             		<td>
-            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization" cssClass="cats">
+            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization">
+            				<form:option value=" " label="Please select" />
             				<form:options items="${hospitalization}" itemValue="name" itemLabel="displayName"/>
             			</form:select>
+            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].hospitalization"/>
             		</td>
             		
             		<td><form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" >
+            				<form:option value="" label="Please select" />
             				<form:option value="true" label="Yes" />
             				<form:option value="false" label="No" />
-            			</form:select>	
+            			</form:select>
+            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].expected"/>
             		</td>
             		<%--<td><form:input path="aeRoutineReport.adverseEvents[${status.index}].comments" /></td>--%>
             	</tr>	 

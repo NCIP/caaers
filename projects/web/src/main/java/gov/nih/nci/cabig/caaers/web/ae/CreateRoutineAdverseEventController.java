@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -39,10 +41,11 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     protected void onBindAndValidate(HttpServletRequest request, Object command,BindException errors,int page)throws Exception {
 
     	// populate categories
-    	// TODO See if you do the below with binding
+    	// TODO See if you do the below with binding , the problem is the items are not being checked when go back
     	CreateRoutineAdverseEventCommand adverseEventCommand = (CreateRoutineAdverseEventCommand)command;
 
     	if (adverseEventCommand.getCtcCatIds() != null && page ==1 ) {
+    		adverseEventCommand.setCategories(new ArrayList<CtcCategory>());
 			for (String st : adverseEventCommand.getCtcCatIds()) {
 				CtcCategory ctcCategory = ctcCategoryDao.getById(Integer.parseInt(st));
 				adverseEventCommand.getCategories().add(ctcCategory);

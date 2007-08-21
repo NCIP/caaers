@@ -10,10 +10,12 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
+import java.util.ListIterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
@@ -64,6 +66,41 @@ public class RoutineAeTab extends AeRoutTab {
         refdata.put("grade", Grade.values());
         return refdata;
     }
+    
+    
+    @Override
+    protected void validate(
+        RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
+        Map<String, InputFieldGroup> fieldGroups, Errors errors
+    ) {
+    	int index = 0;
+    	if (command.getAeRoutineReport().getStartDate() == null){
+    		errors.rejectValue("aeRoutineReport.startDate", "REQUIRED", "Missing From");
+    	}
+    	if (command.getAeRoutineReport().getEndDate() == null){
+    		errors.rejectValue("aeRoutineReport.endDate", "REQUIRED", "Missing From");
+    	}
+        if (command.getAeRoutineReport().getAdverseEvents() != null) {
+			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
+					.getAdverseEvents().listIterator(); lit.hasNext();) {
+				AdverseEvent ae = lit.next();
+				if (ae.getGrade() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].grade", "REQUIRED", "Missing Grade");
+		    	}
+				if (ae.getHospitalization() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].hospitalization", "REQUIRED", "Missing Hospitalization");
+		    	}
+				if (ae.getAttributionSummary() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].attributionSummary", "REQUIRED", "Missing Attribution");
+		    	}
+				if (ae.getExpected() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].expected", "REQUIRED", "Missing Expected");
+		    	}
+				index++;
+			}
+		}
+    }
+    
 
     ////// CONFIGURATION
 

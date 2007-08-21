@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 public class AdverseEventTest extends CaaersTestCase {
     public void testDefaultExpectedness() throws Exception {
         AdverseEvent ae = new AdverseEvent();
-        assertNotNull(ae.getExpected());
-        assertFalse(ae.getExpected());
+        assertNull(ae.getExpected());
+        //assertFalse(ae.getExpected());
     }
 }

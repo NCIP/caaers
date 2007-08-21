@@ -75,8 +75,8 @@ public class InputFieldFactory {
     ) {
         DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName, required);
         Map<Object, Object> opts = new LinkedHashMap<Object, Object>();
-        opts.put(Boolean.TRUE, trueDisplay);
         opts.put(Boolean.FALSE, falseDisplay);
+        opts.put(Boolean.TRUE, trueDisplay);
         InputFieldAttributes.setOptions(select, opts);
         return select;
     }

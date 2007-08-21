@@ -94,12 +94,13 @@ public abstract class AbstractRoutineAdverseEventInputController
 		}
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         refdata.put("participantSummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
-        refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
+        refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getStudySummaryLine());
         if (displaySummary(page)) {
             refdata.put("summary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
         }
         return refdata;
     }
+    
 
     @Override
     protected boolean shouldSave(HttpServletRequest request, RoutineAdverseEventInputCommand command, Tab<RoutineAdverseEventInputCommand> tab) {
