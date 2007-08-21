@@ -853,7 +853,7 @@
 				
 			}
 			else if (selectedField.value == 'reportDefinitionName') {
-					authorRule.getAjaxObjects('National Cancer Institute', 'reportDefinitionName' , function(values) {
+					authorRule.getAjaxObjects('reportDefinitionName', 'National Cancer Institute', function(values) {
 						                   
 
 							var newId = validValueField.id; 
@@ -1428,9 +1428,6 @@ button. Rules created will belong to the selected RuleSet.</p>
 																		createAE.getTermsByCategory(categoryValue, function(terms) {
 						                   
 
-
-																				var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple" size="3">';
-																				selectArea += '</select>';
 			
 																var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
 								
@@ -1556,18 +1553,21 @@ button. Rules created will belong to the selected RuleSet.</p>
 							<script type="text/javascript">
 
 
-						authorRule.getAjaxObjects('National Cancer Institute', 'reportDefinitionName' , function(values) {
+						authorRule.getAjaxObjects('reportDefinitionName', 'National Cancer Institute', function(values) {
 						                   
 
-							var newId = validValueField.id; 
-							var spanId = newId + '.span';
+									var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+							
+								var spanId = newId + '.span';
+								var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';
+								var readableValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].readableValue}';
 
 
 										
-							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
-										
-							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
-
+						var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
+						var hiddenField = '<input type="hidden" value = "'+ readableValue +'" id="ruleSet.rule['+${ruleCount} +'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+${ruleCount}+'].condition.column['+${columnCount}+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+								
+						
 				
 							//Element.remove(validValueField);
 
@@ -1577,7 +1577,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 							var sel = $(newId);	
 				                
 				                    sel.options.length = 0
-				                    
+				                    var index = 0;	
 				                    
 				                    values.each(function(value) {
 										
@@ -1587,11 +1587,19 @@ button. Rules created will belong to the selected RuleSet.</p>
 											}
 											
 				                        var opt = new Option(value.displayName + tempT, value.displayName)
-				                        sel.options.add(opt)
+				                        sel.options.add(opt);
+				                        if (fieldValue.indexOf(value.displayName) != -1)
+														{
+													
+													sel.options[index].selected=true;
+													}
+													index++;
 				                    })
 				                })
 											
 
+				                    											
+				                    											
 															
 							</script>
 
