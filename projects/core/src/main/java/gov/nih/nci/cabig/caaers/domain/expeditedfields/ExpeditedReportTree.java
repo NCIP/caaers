@@ -112,5 +112,13 @@ public class ExpeditedReportTree extends TreeNode {
             property("unit", "units")
         );
     }
+    
+    // DONOT MODIFY NAMES EVEN IF THEY CHANGES....this is tied up with rules ....
+    public static String[] getAllSectionNames() {
+    	
+    	String[] sectionNames = {"Radiation intervention","Surgery intervention",
+    					"Medical device","Event and response description","Medical info"};
+    	return sectionNames;
+    }
 
 }
