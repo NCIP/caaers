@@ -27,7 +27,6 @@ public class StudySite extends StudyOrganization {
     private Date startDate;
     private Date endDate;
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
-    private LazyListHelper lazyListHelper;
 
 	//TODO : to be removed.
 	private Date irbApprovalDate;
@@ -36,25 +35,6 @@ public class StudySite extends StudyOrganization {
 
     //////LOGIC
 
-    public StudySite(){
-    	lazyListHelper = new LazyListHelper();
-    	lazyListHelper.add(StudyInvestigator.class, new StudySiteChildInstantiateFactory<StudyInvestigator>( this, StudyInvestigator.class));
-    	lazyListHelper.add(StudyPersonnel.class, new StudySiteChildInstantiateFactory<StudyPersonnel>(this, StudyPersonnel.class) );
-
-    	//set the studyInvestigators and studyPersonals
-    	setStudyPersonnelsInternal(new ArrayList<StudyPersonnel>());
-    	setStudyInvestigatorsInternal(new ArrayList<StudyInvestigator>());
-    }
-
-    public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
-        getStudyPersonnels().add(studyPersonnel);
-        studyPersonnel.setStudySite(this);
-    }
-
-    public void addStudyInvestigators(StudyInvestigator studyInvestigator) {
-        getStudyInvestigators().add(studyInvestigator);
-        studyInvestigator.setStudySite(this);
-    }
 
     public void addAssignment(StudyParticipantAssignment assignment) {
         getStudyParticipantAssignments().add(assignment);
@@ -84,15 +64,6 @@ public class StudySite extends StudyOrganization {
         return studyParticipantAssignments;
     }
 
-    @OneToMany (mappedBy = "studySite")
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<StudyInvestigator> getStudyInvestigatorsInternal() {
-		return lazyListHelper.getInternalList(StudyInvestigator.class);
-	}
-
-	public void setStudyInvestigatorsInternal(List<StudyInvestigator> studyInvestigators) {
-		lazyListHelper.setInternalList(StudyInvestigator.class, studyInvestigators);
-	}
 
     public Date getStartDate() {
 		return startDate;
@@ -119,31 +90,10 @@ public class StudySite extends StudyOrganization {
 		this.endDate = endDate;
 	}
 
-	@OneToMany (mappedBy = "studySite", fetch=FetchType.LAZY)
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<StudyPersonnel> getStudyPersonnelsInternal() {
-		return lazyListHelper.getInternalList(StudyPersonnel.class);
-	}
-
-	public void setStudyPersonnelsInternal(List<StudyPersonnel> studyPersonnels) {
-		lazyListHelper.setInternalList(StudyPersonnel.class, studyPersonnels);
-	}
-
+	@Override
 	@Transient
-	public List<StudyPersonnel> getStudyPersonnels() {
-		return lazyListHelper.getLazyList(StudyPersonnel.class);
-	}
-
-	public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
-		setStudyPersonnelsInternal(studyPersonnels);
-	}
-	@Transient
-	public List<StudyInvestigator> getStudyInvestigators() {
-		return lazyListHelper.getLazyList(StudyInvestigator.class);
-	}
-
-	public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
-		setStudyInvestigatorsInternal(studyInvestigators);
+	public String getRoleName() {
+		return "Site";
 	}
 
 }

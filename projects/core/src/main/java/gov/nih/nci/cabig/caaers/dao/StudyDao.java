@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
@@ -58,7 +59,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	/**
 	 * //TODO - Refactor this code with Hibernate Detached objects !!!
-	 * 
+	 *
 	 * This is a hack to load all collection objects in memory. Useful for editing a Study when you know you will be needing all collections
 	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done for each collection
 	 * @param id
@@ -89,12 +90,10 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		HibernateTemplate ht = getHibernateTemplate();
 		ht.initialize(study.getIdentifiers());
 		ht.initialize(study.getStudyOrganizations());
-		for (StudySite ss : study.getStudySites()) {
-			if (ss == null) {
-				continue;
-			}
-			ht.initialize(ss.getStudyInvestigatorsInternal());
-			ht.initialize(ss.getStudyPersonnelsInternal());
+		for (StudyOrganization studyOrg : study.getStudyOrganizations()) {
+			if(studyOrg == null) continue;
+			ht.initialize(studyOrg.getStudyInvestigatorsInternal());
+			ht.initialize(studyOrg.getStudyPersonnelsInternal());
 		}
 		ht.initialize(study.getMeddraStudyDiseases());
 		ht.initialize(study.getCtepStudyDiseases());
