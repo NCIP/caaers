@@ -384,6 +384,10 @@
 	function isFieldExists(ruleCount, domainObjectName, fieldName)
 	{
 
+				if (fieldName == 'studyTherapy') {
+					return false;
+				}
+				
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
 				
 				var divNodes = 0;
@@ -418,8 +422,8 @@
 				{
 					fieldExist = true;
 				}
-				// flase for all. removed this functionallity ... 
-				fieldExist=false;
+
+
 			return fieldExist;
 	}
 	
