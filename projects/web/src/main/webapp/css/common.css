@@ -279,6 +279,7 @@ ul.errors, p.errors {
 }
 ul.errors {
     margin: 0; padding: 0 1em 0.2em 1em;
+    font-size:8pt;
 }
 ul.errors li {
   margin: 0 0.8em; padding: 0;
@@ -360,22 +361,34 @@ img.indicator {
 */
 table.tablecontent {
     border-collapse: collapse;
+    border-width: 1px; 
+    border-style: solid;
+    border-color: #ddd;
 }
 
 .tablecontent td, .tablecontent th {
-    border: 1px solid #999;
     padding: 0.5em;
+     border: 1px solid #999;
 }
+
+.tablecontent .tableHeader th, .tablecontent .even td , .tablecontent .odd td {
+    text-align: left;
+    border: 0px none;
+}
+
 
 .tablecontent th {
     text-align: left;
     border-color: #444 #999;
-    background-color: #ddd;
+    background-color: #A2A2A2;
 }
 
 .tablecontent td {
     border-color: #888 #ddd;
     background-color: #fff;
+}
+.tablecontent .highlight td {
+	background-color: #F5F5F5;
 }
 
 a.help {

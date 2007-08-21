@@ -42,6 +42,7 @@ class SitesTab extends StudyTab {
 		 if(rfgFactory == null){
 			 rfgFactory = new RepeatingFieldGroupFactory("main", "studySites");
 			 InputField siteField = InputFieldFactory.createAutocompleterField("organization", "Site", true);
+			 siteField.getAttributes().put(InputField.ENABLE_CLEAR, true);
 			 //siteField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name you are looking for");
 			 rfgFactory.addField(siteField);
 		 }

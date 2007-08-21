@@ -14,7 +14,6 @@
 <title>${tab.longTitle}</title>
   <tags:includeScriptaculous/>
   <tags:dwrJavascriptLink objects="createStudy"/>
-  <tags:stylesheetLink name="extremecomponents"/>
 <script language="JavaScript" type="text/JavaScript">
 	var addSiteEditor;
 	
@@ -76,15 +75,17 @@
 		</p>
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
- 	    <table width="70%" class="eXtremeTable">
+ 	    <div align="left" style="margin-left: 50px">
+ 	    <table width="60%" class="tablecontent">
 		  <tr id="ss-table-head" class="amendment-table-head">
 			<th width="95%" class="tableHeader"><tags:requiredIndicator />Site</th>
-			<th width="5%" class="tableHeader">&nbsp;</th>
+			<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
  		  </tr>
  		  <c:forEach varStatus="status" items="${command.studySites}">	
  		   <study:oneStudyChildRow cssClass="ss-section" index="${status.index}" disableDelete="${status.index < 1}"  />
  		  </c:forEach>
 		</table>
+ 	    </div>
 		<br>
     </jsp:attribute>
     <jsp:attribute name="localButtons"> 
