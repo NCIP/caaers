@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -15,7 +16,6 @@ import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.BRXMLHelper;
 import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
-import gov.nih.nci.cabig.caaers.rules.objectgraph.ObjectGraph;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
@@ -25,14 +25,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.directwebremoting.WebContextFactory;
 
 /**
  * Command Object holding information for Rule authoring 
@@ -82,11 +79,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private String terminology;
 	
-	
-	
-	
-	
 	private List<ReportDefinition> reportDefinitions;
+
 	
 
 	
@@ -571,6 +565,9 @@ public class CreateRuleCommand implements RuleInputCommand
 		}
 
 	}
+	public String[] getReportSectionNames() {
+		return ExpeditedReportTree.getAllSectionNames();
+	}
 	
 	public RuleUi getRuleUi() {
 		return ruleUi;
@@ -605,5 +602,5 @@ public class CreateRuleCommand implements RuleInputCommand
 		this.organizationDao = organizationDao;
 	}
 
-	
+
 }

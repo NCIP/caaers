@@ -92,6 +92,7 @@
                     -->
                     
                     <option value="SAE Reporting Rules">SAE Reporting Rules </option>
+                    <option value="Mandatory Sections Rules">Mandatory Sections Rules</option>
                     <!-- <option value="Other">Other </option>-->
                 </select>
             </div>

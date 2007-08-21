@@ -94,6 +94,8 @@ public class RuleAjaxFacade
 	{
         List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
         
+   
+        
         if (sponsorName == null)
         {
         	return null;
@@ -101,7 +103,7 @@ public class RuleAjaxFacade
         
         for (Iterator<Study> it = studies.iterator(); it.hasNext();) 
         {
-            Study study = it.next();
+        	Study study = it.next();
             
             if (!sponsorName.equals(study.getPrimaryFundingSponsorOrganization().getName()))
             {
@@ -116,6 +118,8 @@ public class RuleAjaxFacade
                 buildReduced(study, Arrays.asList("id", "shortTitle"))
             );
         }
+      
+        
         return reducedStudies;
     }
 
@@ -222,6 +226,21 @@ public class RuleAjaxFacade
     	return getOutputFromJsp("/pages/rule/addRule");
     }
     
+    public List<RuleAjaxObject> getAjaxObjects(String fieldName,String filterCrieteria){
+    	List<RuleAjaxObject> ajaxObjects = new ArrayList<RuleAjaxObject>();
+    	if (fieldName.equals("reportDefinitionName")) {
+    		Organization org = organizationDao.getByName(filterCrieteria);
+    		List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
+    		
+    		//cut down objects for serialization
+            
+            for (ReportDefinition reportDefinition : reportDefinitions) {
+            	ajaxObjects.add(new RuleAjaxObject(reportDefinition.getName(),reportDefinition.getName()));
+			
+            }
+    	}
+    	return ajaxObjects;
+    }
     public String addCondition(int ruleCount) {
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
@@ -522,6 +541,8 @@ public class RuleAjaxFacade
 		return getOutputFromJsp("/pages/rule/createOptions");
 	}
 	
+	
+	
 	/* 
 	 * This method is used to retrieve the Sponsor Names based on the partial sponserName passed to it.
 	 * 
@@ -529,8 +550,7 @@ public class RuleAjaxFacade
 	public List<String> matchSponsors(String sponsorName)
 	{
 		// REVISIT: Replace this with the SponsorDao.
-		
-		System.out.println("getting from new method ....");
+
 		
 		List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(sponsorName));
 		List<String> sponsors = new ArrayList<String>();
@@ -606,7 +626,7 @@ public class RuleAjaxFacade
 	public DomainObject getRulesDomainObject(int domainObjectIndex, String filter)
 	{
 		
-		System.out.println("Filter .." + filter);
+		
 		ServletContext servletContext = WebContextFactory.get().getServletContext();
 		
 		RuleUi ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 

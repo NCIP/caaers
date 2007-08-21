@@ -134,9 +134,10 @@
 					<select id="ruleSet.rule[${ruleCount}].action" name="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 						
 						<c:choose>
-							<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
-								<option value="ROUTINE_AE">Assess as Routine AE</option>														
-								<option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</option>														
+							<c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
+								<c:forEach var="reportSectionName" items="${command.reportSectionNames}">
+									<option value="${reportSectionName}">${reportSectionName}</option>
+								</c:forEach>
 							</c:when>
 							<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">

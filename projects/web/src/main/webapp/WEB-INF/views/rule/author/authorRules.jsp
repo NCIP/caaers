@@ -418,7 +418,8 @@
 				{
 					fieldExist = true;
 				}
-				
+				// flase for all. removed this functionallity ... 
+				fieldExist=false;
 			return fieldExist;
 	}
 	
@@ -780,7 +781,7 @@
 			{
 
 				                
-				                createAE.getCategories(3, function(categories) {
+				          createAE.getCategories(3, function(categories) {
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
@@ -810,7 +811,7 @@
 
 							var newId = validValueField.id; 
 							var spanId = newId + '.span';
-							var hiddenId = selectId + '.literalRestriction[0].readableValue'
+								
 							
 							
 															
@@ -851,14 +852,50 @@
 				
 				
 			}
-			else
+			else if (selectedField.value == 'reportDefinitionName') {
+					authorRule.getAjaxObjects('National Cancer Institute', 'reportDefinitionName' , function(values) {
+						                   
+
+							var newId = validValueField.id; 
+							var spanId = newId + '.span';
+
+
+										
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
+										
+							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+
+				
+							//Element.remove(validValueField);
+
+							
+							$(spanId).innerHTML = selectArea + hiddenField;
+
+							var sel = $(newId);	
+				                
+				                    sel.options.length = 0
+				                    
+				                    
+				                    values.each(function(value) {
+										
+										var tempT='';
+											if (value.select != null) {
+												tempT='-' + value.select
+											}
+											
+				                        var opt = new Option(value.displayName + tempT, value.displayName)
+				                        sel.options.add(opt)
+				                    })
+				                })
+			
+			
+			} else 
 			{
 				
 				authorRule.getValidValues(domainObjectSelectedIndex-1, fieldDropDown.selectedIndex-1, 
 				                     		function (html) 
 			                   			{
-			                   				//alert(fieldDropDown.selectedIndex-1);
-					                   		//validValueField.innerHTML = html;
+
 
 									var newId = validValueField.id; 
 									var spanId = newId + '.span';
@@ -1500,6 +1537,10 @@ button. Rules created will belong to the selected RuleSet.</p>
 										var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" cols=40 rows=8/>';
 				
 										$(spanId).innerHTML = inputArea + '<div id="' + newId + '-choices' + '" class="autocomplete"></div>' + hiddenArea;
+										
+										
+										
+										
 											
 
 															
@@ -1507,6 +1548,56 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 						</c:when>
 
+						<c:when
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "reportDefinitionName"}'>
+
+
+
+							<script type="text/javascript">
+
+
+						authorRule.getAjaxObjects('National Cancer Institute', 'reportDefinitionName' , function(values) {
+						                   
+
+							var newId = validValueField.id; 
+							var spanId = newId + '.span';
+
+
+										
+							var selectArea = '<select id="' + newId + '" name="' + newId +'" multiple="multiple"  size="3"'+' onchange="handleValueOnselectNonValidValues(this)"' +'>';
+										
+							var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
+
+				
+							//Element.remove(validValueField);
+
+							
+							$(spanId).innerHTML = selectArea + hiddenField;
+
+							var sel = $(newId);	
+				                
+				                    sel.options.length = 0
+				                    
+				                    
+				                    values.each(function(value) {
+										
+										var tempT='';
+											if (value.select != null) {
+												tempT='-' + value.select
+											}
+											
+				                        var opt = new Option(value.displayName + tempT, value.displayName)
+				                        sel.options.add(opt)
+				                    })
+				                })
+											
+
+															
+							</script>
+
+						</c:when>
+						
+						
 
 						<c:otherwise>
 							<c:choose>
@@ -1598,9 +1689,10 @@ button. Rules created will belong to the selected RuleSet.</p>
 				<form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 					
 					<c:choose>
-						<c:when test='${command.ruleSetName == "AE Assesment Rules"}'>
-							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
-							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
+						<c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
+								<c:forEach var="reportSectionName" items="${command.reportSectionNames}">
+									<form:option value="${reportSectionName}">${reportSectionName}</form:option>
+								</c:forEach>
 						</c:when>
 						<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">

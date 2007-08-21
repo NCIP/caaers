@@ -54,10 +54,9 @@
     style="" styleClass="">
     <ec:row>
         <ec:column property="name" title="Name" sortable="false" filterable="false">
-        	<!-- 
+
             <a href="<c:url value="/pages/rule/edit?name=${ruleSet.name}"/>">${ruleSet.name}</a>
-            -->
-            <a href="<c:url value="#"/>">${ruleSet.name}</a>
+
         </ec:column>
         <ec:column property="description" title="Description" sortable="false" filterable="false">
         </ec:column>
