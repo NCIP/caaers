@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -83,6 +83,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
 
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
+
+	private Boolean chemoTherapyType = Boolean.FALSE;
+
+	private Boolean radiationTherapyType = Boolean.FALSE;
+
+	private Boolean deviceTherapyType = Boolean.FALSE;
+
+	private Boolean surgeryTherapyType = Boolean.FALSE;
 
 	public Study() {
 
@@ -206,7 +214,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public StudyCoordinatingCenter getStudyCoordinatingCenter() {
-		return (getStudyCoordinatingCenters().isEmpty())? null:  getStudyCoordinatingCenters().get(0);
+		return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters().get(0);
 		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
 	}
 
@@ -562,6 +570,54 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void removeIdentifier(final Identifier identifier) {
 		getIdentifiers().remove(identifier);
+	}
+
+	@Transient
+	public Boolean getChemoTherapyType() {
+		return getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null ? true : chemoTherapyType;
+	}
+
+	public void setChemoTherapyType(Boolean chemoTherapyType) {
+		this.chemoTherapyType = chemoTherapyType;
+	}
+
+	@Transient
+	public Boolean getRadiationTherapyType() {
+		return getStudyTherapy(StudyTherapyType.RADIATION) != null ? true : radiationTherapyType;
+	}
+
+	public void setRadiationTherapyType(Boolean radiationTherapyType) {
+		this.radiationTherapyType = radiationTherapyType;
+	}
+
+	@Transient
+	public Boolean getDeviceTherapyType() {
+		return getStudyTherapy(StudyTherapyType.DEVICE) != null ? true : deviceTherapyType;
+	}
+
+	public void setDeviceTherapyType(Boolean deviceTherapyType) {
+		this.deviceTherapyType = deviceTherapyType;
+	}
+
+	@Transient
+	public Boolean getSurgeryTherapyType() {
+		return getStudyTherapy(StudyTherapyType.SURGERY) != null ? true : surgeryTherapyType;
+	}
+
+	public void setSurgeryTherapyType(Boolean surgeryTherapyType) {
+		this.surgeryTherapyType = surgeryTherapyType;
+	}
+
+	@Transient
+	public StudyTherapy getStudyTherapy(StudyTherapyType studyTherapyType) {
+
+		for (StudyTherapy studyTherapy : studyTherapies) {
+			if (studyTherapy.getStudyTherapyType().equals(studyTherapyType)) {
+				return studyTherapy;
+			}
+
+		}
+		return null;
 	}
 
 }
