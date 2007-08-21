@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
@@ -13,7 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -160,6 +167,18 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		*/
 		study.setStudyAgents(studyAgents);
 		
+		
+		StudyTherapy st = new StudyTherapy();
+		st.setStudyTherapyType(StudyTherapyType.RADIATION);
+		
+		StudyTherapy st1 = new StudyTherapy();
+		st1.setStudyTherapyType(StudyTherapyType.DEVICE);
+		
+		List<StudyTherapy> stList = new ArrayList<StudyTherapy>();
+		stList.add(st);
+		stList.add(st1);
+		study.setStudyTherapies(stList);
+		
 		return study;
 	}
 	private void createAdverseEvent2(String studyName, String orgName) throws Exception {
@@ -202,10 +221,41 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		s.setPrimaryFundingSponsorOrganization(org);
 		s.setShortTitle(studyName);
 */
-		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
-		String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
+		
+		ReportDefinition rd = new ReportDefinition();
+		rd.setName("R-3");
 
-		System.out.println(msg);
+		ReportDefinition rd1 = new ReportDefinition();
+		rd1.setName("R-1");
+		
+		Report report = new Report();
+		report.setReportDefinition(rd);
+
+		Report report1 = new Report();
+		report1.setReportDefinition(rd1);
+		
+		ExpeditedAdverseEventReport ex = new ExpeditedAdverseEventReport();
+		ex.addAdverseEvent(ae1);
+		ex.addReport(report);
+		ex.addReport(report1);
+		
+		Study study = createStudy(studyName, orgName);
+		StudyParticipantAssignment spa = new StudyParticipantAssignment();
+		StudySite ss = new StudySite();
+		ss.setStudy(study);
+		spa.setStudySite(ss);
+		ex.setAssignment(spa);
+		
+		
+		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
+		//String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
+		List<String> sections = aees.mandatorySections(ex);
+
+		//System.out.println(msg);
+		
+		for (String section : sections) {
+			System.out.println(section);
+		}
 		
 		
 		//assertEquals(msg, "SERIOUS_ADVERSE_EVENT");

@@ -149,8 +149,10 @@ public List<String> mandatorySections(ExpeditedAdverseEventReport aeReport) thro
 				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
 				
 				for (int i=0;i<messages.length;i++) {
-					System.out.println("adding .... " + messages[i]);
-					mandatorySections.add(messages[i]);
+					//System.out.println("adding .... " + messages[i]);
+					if (!mandatorySections.contains(messages[i])) {
+						mandatorySections.add(messages[i]);
+					}
 				}
 
 			}
@@ -257,7 +259,7 @@ private String sponsorLevelRules(AdverseEvent ae, Study study, ReportDefinition 
 	AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
 	
 	try {
-		evaluationForSponsor = this.getEvaluationObject(ae, study, null, reportDefinition, bindURI);
+		evaluationForSponsor = this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		throw new Exception(e.getMessage(),e);
@@ -282,7 +284,7 @@ private String sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study, Repor
 	AdverseEventEvaluationResult evaluationForSponsorDefinedStudy = new AdverseEventEvaluationResult();
 	
 	try {
-		evaluationForSponsorDefinedStudy = this.getEvaluationObject(ae, study, null, reportDefinition, bindURI);
+		evaluationForSponsorDefinedStudy = this.getEvaluationObject(ae, study, study.getPrimaryFundingSponsorOrganization(), reportDefinition, bindURI);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		throw new Exception(e.getMessage(),e);
