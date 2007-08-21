@@ -271,7 +271,7 @@ public class FactResolver {
 
 			List list = (List) targetObject;
 			Iterator it = list.iterator();
-
+			int count = 0;
 			while (it.hasNext()) {
 				Object obj = it.next();
 				Object value = null;
@@ -287,9 +287,27 @@ public class FactResolver {
 				
 				//if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
 				if (evaluate(value,operator,targetAttributeValue)) {
-					test = true;
-					break;
+					count++;
+					if(!operator.equals("!="))  {
+						test = true;
+						break;
+					}
+					
 				}
+				
+				/*
+				 * 
+				 * 
+				 radiation != chemo = true
+				 chemo != chemo = false 
+				 
+				 
+				 radiation == radiation true 
+				 radiation == chemo false 
+				 */
+			}
+			if(operator.equals("!=") &&  count == list.size()) {
+				test = true;
 			}
 
 		} else {
