@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -29,6 +30,8 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	private NotificationDao notificationDao;
 	
 	private ReportDefinitionDao reportDefinitionDao;
+	
+	private OrganizationDao organizationDao;
 	
 	private RulesEngineService rulesEngineService;
 	
@@ -60,7 +63,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) {
-		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService,reportDefinitionDao);	
+		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService,reportDefinitionDao,organizationDao);	
 	}
 
     @Override
@@ -112,5 +115,13 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
 		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+	public OrganizationDao getOrganizationDao() {
+		return organizationDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 }

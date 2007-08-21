@@ -67,7 +67,7 @@ public class RuleTab extends DefaultTab
     		createRuleCommand.setTerminology("");
     	}
     	
-    	createRuleCommand.setReportDefinitions(createRuleCommand.getReportDefinitionDao().getAll());
+    	
     	createRuleCommand.setRuleUi(createRuleCommand.getTerminology());
     
     	RuleSet ruleSet = createRuleCommand.getRuleSet();
@@ -306,6 +306,9 @@ public class RuleTab extends DefaultTab
 					ruleSet.setDescription(createRuleCommand.getRuleSetName());
 				}
 				createRuleCommand.setRuleSet(ruleSet);
+				Organization org = createRuleCommand.getOrganizationDao().getByName(createRuleCommand.getOrganizationName());
+				
+				createRuleCommand.setReportDefinitions(getReportDefinitions(org));
 				
 			} 
 			catch (Exception e) 

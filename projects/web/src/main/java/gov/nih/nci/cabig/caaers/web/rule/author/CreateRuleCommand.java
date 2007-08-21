@@ -101,7 +101,7 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, 
 			NotificationDao notificationDao, RulesEngineService rulesEngineService,
-			ReportDefinitionDao reportDefinitionDao) 
+			ReportDefinitionDao reportDefinitionDao,OrganizationDao organizationDao) 
 	{
 		setRuleAuthoringService(ruleAuthoringService);
 		setStudyDao(studyDao);
@@ -110,6 +110,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		ruleSet = new RuleSet();
 		existingRuleSets = new ArrayList<RuleSet>();
 		setReportDefinitionDao(reportDefinitionDao);
+		setOrganizationDao(organizationDao);
 		//reportDefinitions = reportDefinitionDao.getAll();
 	}
 
@@ -133,7 +134,7 @@ public class CreateRuleCommand implements RuleInputCommand
 				List<Column> cols = new ArrayList<Column>();
 				for (Column col:rule.getCondition().getColumn()) {
 					if (col.isMarkedDelete()) {
-						System.out.println("is marked delete .. " + col.getIdentifier());
+						//System.out.println("is marked delete .. " + col.getIdentifier());
 						cols.add(col);
 					}					
 				}
@@ -531,7 +532,7 @@ public class CreateRuleCommand implements RuleInputCommand
 	{
 		
 		
-		System.out.println("termonilogy is " + terminology); 
+		//System.out.println("termonilogy is " + terminology); 
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("rules-ui.xml");
 
 		Unmarshaller unmarshaller;
@@ -549,7 +550,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		
 	    //ruleUi = (RuleUi) servletContext.getAttribute("ruleUi"); 
 		
-		System.out.println("ui is " + ruleUi.getCondition().size());
+		//System.out.println("ui is " + ruleUi.getCondition().size());
 		
 		for (DomainObject domainObject : ruleUi.getCondition().get(0).getDomainObject()) {
 			List<Field> fields  = new ArrayList<Field>();
