@@ -175,6 +175,9 @@ public class EvaluationServiceImpl implements EvaluationService {
         return reportDefinition.getName();
     }
 
+    public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData){
+    	return null;
+    }
      ////// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {

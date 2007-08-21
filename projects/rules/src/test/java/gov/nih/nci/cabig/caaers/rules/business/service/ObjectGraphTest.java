@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -9,7 +11,6 @@ import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.NavigationPath;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.Node;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.ObjectGraphFactory;
-import gov.nih.nci.cabig.caaers.domain.Grade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class ObjectGraphTest extends TestCase {
 		objectGraphFactory = ObjectGraphFactory.getInstance();
 	}
 	
-	public void atestLoadObjectGraph() throws Exception{
-		NavigationPath path = objectGraphFactory.findNavigationPath("gov.nih.nci.cabig.caaers.domain.Study", "gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug");
+	public void testLoadObjectGraph() throws Exception{
+		NavigationPath path = objectGraphFactory.findNavigationPath("gov.nih.nci.cabig.caaers.domain.AdverseEvent", "gov.nih.nci.cabig.caaers.domain.CtcCategory");
 		
 		for (Node node:path.getNode()) {
 			System.out.println(node.getObjectType());
@@ -34,14 +35,19 @@ public class ObjectGraphTest extends TestCase {
 		
 	}
 
-	public void testFactResolver_1() throws Exception{
+	public void atestFactResolver_1() throws Exception{
 		
 		AdverseEvent ae = new AdverseEvent();
 		ae.setExpected(true);
 		
+		AdverseEventMeddraLowLevelTerm x = new AdverseEventMeddraLowLevelTerm();
+		
+		x.setMeddraCode("nnn");
+		ae.setAdverseEventMeddraLowLevelTerm(x);
+		
 		FactResolver factResolver = new FactResolver();
 		
-		boolean result = factResolver.assertFact(ae, null, "expected", "false","eq");		
+		boolean result = factResolver.assertFact(ae, "gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm","meddraCode","1 - Not Specified","==");		
 		System.out.println(result);
 		
 		

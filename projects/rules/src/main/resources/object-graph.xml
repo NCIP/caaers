@@ -143,4 +143,18 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.Organization</objectType>
 		</node>
 	</navigationPath>
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</targetObjectType>
+		<node>
+			<name>studyTherapies</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyTherapy</objectType>
+		</node>
+		<node>
+			<name>studyTherapyType</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyTherapyType</objectType>
+		</node>
+	</navigationPath>
 </objectGraph>

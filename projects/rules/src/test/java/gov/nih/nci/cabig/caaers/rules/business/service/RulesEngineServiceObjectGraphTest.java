@@ -2,6 +2,10 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
@@ -9,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Condition;
 import gov.nih.nci.cabig.caaers.rules.brxml.FieldConstraint;
@@ -68,7 +73,11 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 	public void testRulesEngineService() throws Exception {
 		String sponsorName = "National Cancer Institute";
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
-		String studyName = "cgems";
+		String studyName = "ctcstudy";
+		
+		//String type = "gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm";
+		
+		//Class cls = Class.forName(type);
 
 	//	InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("/Users/sakkala/caaers/rules/n1.xml");
 		//Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
@@ -157,8 +166,35 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		// execute rules...
 		AdverseEvent ae1 = new AdverseEvent();
 		ae1.setGrade(Grade.DEATH);
+		ae1.setExpected(true);
 
 		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
+		
+		AdverseEventMeddraLowLevelTerm x = new AdverseEventMeddraLowLevelTerm();
+		LowLevelTerm ll = new LowLevelTerm();
+		ll.setMeddraCode("1");
+		ll.setMeddraTerm("Not Specified");
+		
+		System.out.println(ll.getFullName());
+		x.setLowLevelTerm(ll);
+
+		ae1.setAdverseEventMeddraLowLevelTerm(x);
+		
+		
+		CtcCategory ctcCategory = new CtcCategory();
+		ctcCategory.setId(new Integer("301"));
+		
+		CtcTerm ctcTerm = new CtcTerm();
+		ctcTerm.setId(new Integer("3002"));
+		
+		ctcTerm.setCategory(ctcCategory);
+		
+		
+		AdverseEventCtcTerm  adverseEventCtcTerm = new AdverseEventCtcTerm();
+		adverseEventCtcTerm.setCtcTerm(ctcTerm);
+		
+		ae1.setAdverseEventCtcTerm(adverseEventCtcTerm);
+		
 /*
 		Study s = new Study();
 		Organization org = new Organization();
