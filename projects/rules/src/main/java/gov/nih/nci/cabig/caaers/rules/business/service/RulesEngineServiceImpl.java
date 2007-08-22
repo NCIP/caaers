@@ -702,4 +702,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	    */
 	}
 
+
+	public void importRules(String fileName) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public boolean validateRules(String exportedRuleFileName, String domainJarFileName) throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
