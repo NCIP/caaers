@@ -133,7 +133,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
-		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
+		Category category = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName, studyShortTitle, ruleSetName);
 		
 		if(rule.getMetaData()==null){
 			rule.setMetaData(new MetaData());
@@ -167,7 +167,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
-		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
+		Category category = RuleUtil.getStudyInstitutionSpecificCategory(ruleAuthoringService, institutionName, studyShortTitle, ruleSetName);
 		
 		if(rule.getMetaData()==null){
 			rule.setMetaData(new MetaData());
@@ -286,7 +286,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception{
 		// TODO Auto-generated method stub
 		
-		Category cat = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, institutionName, studyShortTitle, ruleSetName);
+		Category cat = RuleUtil.getStudyInstitutionSpecificCategory(ruleAuthoringService, institutionName, studyShortTitle, ruleSetName);
 		RuleSet ruleSet = new RuleSet();
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
@@ -676,7 +676,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 
 	public void exportRules(String locationToExport) throws Exception {
-		StringBuilder sbr = new StringBuilder();
+		//StringBuilder sbr = new StringBuilder();
 		List<RuleSet> list = this.getAllRuleSets();
 		Iterator<RuleSet> it = list.iterator();
 		while(it.hasNext()){
@@ -689,6 +689,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			out.flush();
 			out.close();
 		}
+		
 		/*
 		Document doc = new Document();
 		Element rootElement = new Element("RuleSets");
