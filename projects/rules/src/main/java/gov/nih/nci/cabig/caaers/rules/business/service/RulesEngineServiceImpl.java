@@ -16,8 +16,10 @@ import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -706,6 +708,41 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public void importRules(String fileName) throws Exception {
 		// TODO Auto-generated method stub
+		BufferedReader br = null;
+		File f = new File(fileName);
+		if(!f.exists()||f.isDirectory()){
+			throw new Exception("This is not a valid file name or this is a directory");
+		}
+		StringBuilder sb = new StringBuilder();
+		FileReader fr = new FileReader(f);
+        br = new BufferedReader(fr);
+        String line;
+        while ((line = br.readLine()) != null) {
+          //System.out.println(line);
+          sb.append(line);
+        }
+		String xml = sb.toString();
+		RuleSet ruleSet =(RuleSet)XMLUtil.unmarshal(xml);
+		
+		System.out.println("Rule set name:"+ruleSet.getName());
+		System.out.println("Rule set id:"+ruleSet.getId());
+		System.out.println("Rule set desc:"+ruleSet.getDescription());
+		
+		List<Rule> rules = ruleSet.getRule();
+		if(rules.size()==0){
+			throw new Exception("There is nothing to import !");
+		}
+		Rule r = rules.get(0);
+		Category cat = r.getMetaData().getCategory().get(0);
+		System.out.println("Category Path:"+cat.getPath());
+		
+		RuleSet rs_ = this.getRuleSet(ruleSet.getName());
+		if(rs_==null){
+			
+			importRuleSet(ruleSet);
+			deployRuleSet(ruleSet);
+		}
+		
 		
 	}
 
@@ -714,5 +751,72 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private void importRuleSet(RuleSet ruleSet) throws Exception{
+		List<Rule> rules = ruleSet.getRule();
+		
+		Rule r = rules.get(0);
+		Category cat = r.getMetaData().getCategory().get(0);
+		System.out.println("Category Path:"+cat.getPath());
+		String catPath = cat.getPath();
+		int i=0;
+		String ruleSetName = ruleSet.getDescription();
+		Iterator<Rule> it = rules.iterator();
+		
+		if((catPath.indexOf("SPONSOR_DEFINED_STUDY")==-1)&&(catPath.indexOf("SPONSOR")!=-1)){
+			// this is sponsor level rules
+			i= catPath.lastIndexOf("/");
+			String sponsorName = catPath.substring(i+1,catPath.length());
+			
+			while(it.hasNext()){
+				Rule rule = it.next();
+				rule.setId("");
+				createRuleForSponsor(rule, ruleSetName, sponsorName);
+			}
+		}
+		
+		
+		if(catPath.indexOf("SPONSOR_DEFINED_STUDY")!=-1){
+			// this is sponsor defined study level rules
+			i= catPath.lastIndexOf("/");
+			String sponsorName = catPath.substring(i+1,catPath.length());
+			String stringMinusSponsorName = catPath.substring(0,i);
+			i= stringMinusSponsorName.lastIndexOf("/");
+			String studyShortTitle = stringMinusSponsorName.substring(i+1,stringMinusSponsorName.length());
+			
+			while(it.hasNext()){
+				Rule rule = it.next();
+				rule.setId("");
+				createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName);
+			}
+		}
+		if((catPath.indexOf("INSTITUTION_DEFINED_STUDY")==-1)&&(catPath.indexOf("INSTITUION")!=-1)){
+			// this is INSTITUTION defined level rules
+			i= catPath.lastIndexOf("/");
+			String institutionName = catPath.substring(i+1,catPath.length());
+			
+			while(it.hasNext()){
+				Rule rule = it.next();
+				rule.setId("");
+				createRuleForInstitution(rule, ruleSetName, institutionName);
+			}
+		}
+		if(catPath.indexOf("INSTITUTION_DEFINED_STUDY")!=-1){
+			// this is sponsor defined study level rules
+			i= catPath.lastIndexOf("/");
+			String institutionName = catPath.substring(i+1,catPath.length());
+			String stringMinusInstitutionName = catPath.substring(0,i);
+			i= stringMinusInstitutionName.lastIndexOf("/");
+			String studyShortTitle = stringMinusInstitutionName.substring(i+1,stringMinusInstitutionName.length());
+			
+			while(it.hasNext()){
+				Rule rule = it.next();
+				rule.setId("");
+				createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName);
+			}
+		}
+		
+	}
 
+   
 }
