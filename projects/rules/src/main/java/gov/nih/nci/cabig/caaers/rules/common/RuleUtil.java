@@ -227,6 +227,76 @@ public class RuleUtil {
 		return cat;
 	}
 	
+	
+	public static Category getStudyInstitutionSpecificCategory(RuleAuthoringService authService, String institutionName, String studyShortTitle, String ruleSetName) throws Exception{
+		Category cat = null;
+		
+		String studySpecificCatehoryPath = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle);
+		String studyInstitutionSpecificCategoryPath = studySpecificCatehoryPath+"/"+getStringWithoutSpaces(institutionName);
+		String studyInstitutionRuleSetSpecificCategoryPath = studyInstitutionSpecificCategoryPath+"/"+ getStringWithoutSpaces(ruleSetName);
+		/**
+		 * First check if the caAERS rule base exist
+		 */
+		boolean baseExist = categoryExist(authService, CategoryConfiguration.CAAERS_BASE.getPath());
+		/**
+		 * If does not exist then go ahead and create it
+		 */
+		if(!baseExist){
+			createCategory(authService,"/",CategoryConfiguration.CAAERS_BASE.getName(),CategoryConfiguration.CAAERS_BASE.getDescription());
+		}
+		/**
+		 * Now check if the Sponsor base category exist
+		 */
+		
+		boolean studyBaseExist=categoryExist(authService,CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPath());
+		/**
+		 * If does not exist then go ahead and create it
+		 */
+		
+		if(!studyBaseExist){
+			createCategory(authService,CategoryConfiguration.CAAERS_BASE.getPath(),CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName(),CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getDescription());
+		}
+		
+		boolean studySpecificCategoryExist = categoryExist(authService,studySpecificCatehoryPath);
+		
+		/**
+		 * If sponsor study specific category does not exist then go ahead nd create one
+		 */
+		
+		
+		if(!studySpecificCategoryExist){
+			String desc = studyShortTitle+" Rule Base category";
+			createCategory(authService,CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPath(),getStringWithoutSpaces(studyShortTitle),desc);
+		}
+		
+		boolean studySponsorSpecificCategoryExist = categoryExist(authService, studyInstitutionSpecificCategoryPath);
+		
+		/**
+		 * If the category for a particular sponsor does not exist in particular study then go ahead and create one
+		 */
+		
+		if(!studySponsorSpecificCategoryExist){
+			createCategory(authService,studySpecificCatehoryPath,getStringWithoutSpaces(institutionName),institutionName);
+		}
+		
+		boolean studySponsorRuleSetSpecificCategoryExist = categoryExist(authService,studyInstitutionRuleSetSpecificCategoryPath);
+		
+		/**
+		 * If it does not exist then go ahead and create it
+		 */
+		
+		
+		if(!studySponsorRuleSetSpecificCategoryExist){
+			createCategory(authService,studyInstitutionSpecificCategoryPath,getStringWithoutSpaces(ruleSetName),ruleSetName);
+		}
+		
+		
+			cat = authService.getCategory(studyInstitutionRuleSetSpecificCategoryPath);
+		
+		
+		return cat;
+	}
+	
 	public static String getPackageName(String prefix, String entityName, String ruleSetName){
 		String str = prefix+"."+getStringWithoutSpaces(entityName)+"."+getStringWithoutSpaces(ruleSetName);
 		return str;
