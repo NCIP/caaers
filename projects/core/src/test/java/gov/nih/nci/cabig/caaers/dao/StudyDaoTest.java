@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAmendment;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -327,6 +328,15 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		return ids;
 	}
 
+	public void testMatchStudyByParticipant() throws Exception {
+		List<Study> results;
+		Integer participantId = -100 ; 
+		results = getDao().matchStudyByParticipant(participantId);
+		assertEquals("Wrong number of results", 1, results.size());
+		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
+	}
+	
+	
 	public void testSearchStudyByStudyShortTitle() throws Exception {
 		List<Study> results;
 		Map<String, String> m = new HashMap<String, String>();

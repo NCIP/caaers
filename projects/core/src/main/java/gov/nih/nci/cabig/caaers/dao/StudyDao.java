@@ -119,6 +119,26 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
+	
+	 
+    // TODO : Use this method for AE searches - enhances performance . 
+    public List<Study> matchStudyByParticipant(Integer participantId) {
+    	
+    	String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
+    	
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
+         .append(domainClass().getName()).append(" o ").append(joins);
+
+		
+		queryBuf.append(" where ");
+		queryBuf.append("p.id = ?");
+		params.add( participantId );
+		
+		log.debug("::: " + queryBuf.toString() );
+		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+    }
+    
 
 	public List<Study> searchStudy(Map props) throws ParseException {
 
