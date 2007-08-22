@@ -141,5 +141,9 @@ public interface RulesEngineService {
 	public boolean isDeployed(RuleSet ruleSet);
 	
 	public void exportRules(String fileName) throws Exception;
+	
+	public void importRules(String fileName) throws Exception;
+	
+	public boolean validateRules(String exportedRuleFileName,String domainJarFileName) throws Exception;
 
 }
