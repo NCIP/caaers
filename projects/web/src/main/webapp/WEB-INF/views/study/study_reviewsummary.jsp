@@ -93,7 +93,7 @@
 	  		<br>
 			</chrome:division>
 	</c:if>
-	<c:if test="${not empty command.studySites}">    
+	<c:if test="${not empty command.studyOrganizations}">    
     	<chrome:division title="Investigators">
         <table class="tablecontent">
             <tr>
@@ -101,7 +101,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studySites}" var="studySite" >
+            <c:forEach items="${command.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
@@ -113,7 +113,7 @@
         </table>
     	</chrome:division>
     </c:if>
-    <c:if test="${not empty command.studySites}">
+    <c:if test="${not empty command.studyOrganizations}">
     <chrome:division title="Personnel">
         <table class="tablecontent">
             <tr>
@@ -121,7 +121,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studySites}" var="studySite" >
+            <c:forEach items="${command.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
                     <tr class="results">
                         <td>${studyPersonnel.researchStaff.fullName}</td>

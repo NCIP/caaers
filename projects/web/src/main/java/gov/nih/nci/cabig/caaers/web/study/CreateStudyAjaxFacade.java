@@ -71,7 +71,7 @@ public class CreateStudyAjaxFacade {
 	public List<SiteInvestigator> matchSiteInvestigator(String text, int indexId) {
 		String[] arr = new String[] { text };
 		Study study = getStudyCommand(getHttpServletRequest());
-		int siteId = study.getStudySites().get(indexId).getOrganization().getId();
+		int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
 		List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
 
 		return ObjectTools.reduceAll(siteInvestigators, new ObjectTools.Initializer<SiteInvestigator>() {

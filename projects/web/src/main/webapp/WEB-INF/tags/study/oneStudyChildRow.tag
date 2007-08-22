@@ -21,5 +21,4 @@
 	<c:if test="${disableDelete}">
 	<td>&nbsp;</td>
 	</c:if>
-	
 </tr>

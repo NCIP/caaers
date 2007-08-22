@@ -35,20 +35,19 @@ class InvestigatorsTab extends StudyTab {
     }
 
     @Override
-	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+	public void postProcess(HttpServletRequest request, Study study, Errors errors) {
 		String action =request.getParameter("_action");
 		String selectedInvestigator = request.getParameter("_selectedInvestigator");
 		String prevSiteIndex = request.getParameter("_prevSite");
-		Study study = command;
 		int selectedIndex = study.getStudySiteIndex();
 		if ("removeInv".equals(action) && selectedIndex >=0 ){
-			study.getStudySites().get(selectedIndex).getStudyInvestigators()
+			study.getStudyOrganizations().get(selectedIndex).getStudyInvestigators()
 				.remove(Integer.parseInt(selectedInvestigator));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
 			int siteIndex = Integer.parseInt(prevSiteIndex);
 			study.setStudySiteIndex(siteIndex);
 			if(siteIndex >= 0){
-				study.getStudySites().get(siteIndex).getStudyInvestigators().get(0);
+				study.getStudyOrganizations().get(siteIndex).getStudyInvestigators().get(0);
 			}
 		}
     }
@@ -78,7 +77,7 @@ class InvestigatorsTab extends StudyTab {
 			for(InputField f : fields){
 				rfgFactory.addField(f);
 			}
-			map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyInvestigators().size());
+			map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudyOrganizations().get(ssIndex).getStudyInvestigators().size());
 		}
 		return map;
 	}

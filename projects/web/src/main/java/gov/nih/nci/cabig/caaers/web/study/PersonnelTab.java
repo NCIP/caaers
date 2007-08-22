@@ -32,22 +32,20 @@ class PersonnelTab extends StudyTab {
     }
 
     @Override
-	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+	public void postProcess(HttpServletRequest request, Study study, Errors errors) {
     	String action = request.getParameter("_action");
 		String selectedPersonnel = request.getParameter("_selectedPersonnel");
 		String prevSiteIndex = request.getParameter("_prevSite");
-		Study study = command;
 		int selectedIndex = study.getStudySiteIndex();
 		if ("removeStudyPersonnel".equals(action) &&  selectedIndex >=0){
-			study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels()
+			study.getStudyOrganizations().get(study.getStudySiteIndex()).getStudyPersonnels()
 				.remove(Integer.parseInt(selectedPersonnel));
 		}else if ("changeSite".equals(action) && errors.hasErrors()){
 			int siteIndex = Integer.parseInt(prevSiteIndex);
 			study.setStudySiteIndex(siteIndex);
 			if(siteIndex >=0){
-				study.getStudySites().get(siteIndex).getStudyPersonnels().get(0);
+				study.getStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
 			}
-
 		}
     }
 
@@ -78,7 +76,7 @@ class PersonnelTab extends StudyTab {
 			for(InputField f : fields){
 				rfgFactory.addField(f);
 			}
-			 map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudySites().get(ssIndex).getStudyPersonnels().size());
+			 map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudyOrganizations().get(ssIndex).getStudyPersonnels().size());
 		}
 		return map;
 	}
