@@ -28,7 +28,7 @@
 		</property> 
 	</bean>
 
-	<bean id="studyServiceAPITarget" autowire="byType" lazy-init="true" 
+	<bean id="studyServiceAPITarget" autowire="byName" lazy-init="true" 
 		class="gov.nih.nci.cabig.caaers.api.impl.DefaultStudyService"> 
 	</bean> 
 

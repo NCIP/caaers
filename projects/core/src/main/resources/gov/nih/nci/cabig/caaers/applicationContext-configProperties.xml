@@ -166,10 +166,6 @@
                 <entry key="identifiersType">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="Protocol Authority Identifier" />
-                            <property name="desc" value="Protocol Authority Identifier" />
-                        </bean>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="Site Identifier" />
                             <property name="desc" value="Site Identifier" />
                         </bean>

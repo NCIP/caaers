@@ -59,7 +59,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	/**
 	 * //TODO - Refactor this code with Hibernate Detached objects !!!
-	 *
+	 * 
 	 * This is a hack to load all collection objects in memory. Useful for editing a Study when you know you will be needing all collections
 	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done for each collection
 	 * @param id
@@ -91,7 +91,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		ht.initialize(study.getIdentifiers());
 		ht.initialize(study.getStudyOrganizations());
 		for (StudyOrganization studyOrg : study.getStudyOrganizations()) {
-			if(studyOrg == null) continue;
+			if (studyOrg == null) {
+				continue;
+			}
 			ht.initialize(studyOrg.getStudyInvestigatorsInternal());
 			ht.initialize(studyOrg.getStudyPersonnelsInternal());
 		}
@@ -119,33 +121,30 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
-	
-	  
-    public List<Study> matchStudyByParticipant(Integer participantId, String text) {
-    	
-    	String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
-    	
-		List<Object> params = new ArrayList<Object>();
-		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
-         .append(domainClass().getName()).append(" o ").append(joins);
 
-		
+	public List<Study> matchStudyByParticipant(Integer participantId, String text) {
+
+		String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
+
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(
+				" o ").append(joins);
+
 		queryBuf.append(" where ");
 		queryBuf.append("p.id = ?");
-		params.add( participantId );
-		
+		params.add(participantId);
+
 		queryBuf.append(" and ( ");
 		queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
 		params.add('%' + text.toLowerCase() + '%');
-		
+
 		queryBuf.append(" or ");
 		queryBuf.append("LOWER(").append("o.longTitle").append(") LIKE ? ) ");
 		params.add('%' + text.toLowerCase() + '%');
-		
-		log.debug("::: " + queryBuf.toString() );
+
+		log.debug("::: " + queryBuf.toString());
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
-    }
-    
+	}
 
 	public List<Study> searchStudy(Map props) throws ParseException {
 
@@ -257,6 +256,20 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			if (study.getIdentifiers().size() > 0) {
 				studyCriteria.createCriteria("identifiers").add(
 						Restrictions.like("value", study.getIdentifiers().get(0).getValue() + "%"));
+			}
+			if (study.getStudyOrganizations().size() > 0) {
+				if (study.getStudyOrganizations().get(0) instanceof StudySite) {
+					studyCriteria.createCriteria("studyOrganizations").add(
+							Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
+									.getId())).add(Restrictions.sqlRestriction("type='SST'"));
+				}
+				else {
+					studyCriteria.createCriteria("studyOrganizations").add(
+							Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
+									.getId()));
+
+				}
+
 			}
 			return studyCriteria.list();
 		}

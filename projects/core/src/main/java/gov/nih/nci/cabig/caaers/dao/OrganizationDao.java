@@ -57,4 +57,9 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> {
 		getHibernateTemplate().saveOrUpdate(organization);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Organization> getOrganizationsHavingStudySites() {
+
+		return getHibernateTemplate().find("select distinct ss.organization from StudySite ss");
+	}
 }
