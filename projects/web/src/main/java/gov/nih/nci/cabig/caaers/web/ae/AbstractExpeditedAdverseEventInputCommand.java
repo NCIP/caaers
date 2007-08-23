@@ -26,13 +26,15 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
     private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
-    
+
     private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
 
     protected ExpeditedAdverseEventReportDao reportDao;
     protected ReportDefinitionDao reportDefinitionDao;
+
+    protected List<String> mandatorySections;
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
         this.reportDao = reportDao;
@@ -113,6 +115,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     public void setAttributionMap(AttributionMap attributionMap) {
         this.attributionMap = attributionMap;
+    }
+
+    public List<String> getMandatorySections() {
+    	return mandatorySections;
+    }
+
+    public void setMandatorySections(List<String> sections) {
+    	this.mandatorySections = sections;
     }
 
     @Override

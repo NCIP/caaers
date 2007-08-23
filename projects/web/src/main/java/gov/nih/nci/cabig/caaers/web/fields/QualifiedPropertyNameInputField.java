@@ -14,6 +14,7 @@ import java.util.Map;
 public abstract class QualifiedPropertyNameInputField implements InputField {
     private InputField src;
     private Map<String, Object> attributes;
+    private boolean mandatory;
 
     public QualifiedPropertyNameInputField(InputField src) {
         this.src = src;
@@ -52,7 +53,15 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         return attributes;
     }
 
-    protected abstract String qualifyPropertyName(String propertyName);
+	public boolean isMandatory() {
+		return mandatory;
+	}
+
+	public void setMandatory(boolean mandatory) {
+		this.mandatory = mandatory;
+	}
+
+	protected abstract String qualifyPropertyName(String propertyName);
 
     @SuppressWarnings("unchecked")
     public void setAttributes(Map<String, Object> attributes) {

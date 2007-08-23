@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * @author Rhett Sutphin
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputCommand {
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
@@ -29,4 +30,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void setOptionalReportDefinitions(List<ReportDefinition> defs);
 
     void reassociate();
+
+    List<String> getMandatorySections();
+    void setMandatorySections(List<String> sections);
 }
