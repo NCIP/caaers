@@ -817,11 +817,13 @@
 							var spanId = newId + '.span';
 								
 							
-							
+					var hiddenId = 'ruleSet.rule[' + ruleCount + '].condition.column[' + columnCount + '].fieldConstraint[0].literalRestriction[0].readableValue'; 
+																	
 															
 					var inputArea = '<input type="text" id="' + newId + '" name="' + newId +'" size="35"/>';
 					inputArea += '<img alt="activity indicator" src="/caaers/images/indicator.white.gif" class="indicator" id="ind-indicator"/>';
 					
+
 					var hiddenArea = '<input type="hidden" id="' + hiddenId + '" name="' + hiddenId +'" size="35"/>';
 					
 					
@@ -833,8 +835,7 @@
 				new Autocompleter.DWR(newId, newId + '-choices',
                 	orgsPopulator, {
                 	valueSelector: orgValueSelector,
-                	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                		
+                	afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {                		
                 		document.getElementById(hiddenId).value = orgValueSelector(selectedChoice);
                 	},
                 	indicator: "ind-indicator"});
