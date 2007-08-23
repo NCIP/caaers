@@ -19,7 +19,7 @@ public class FiredRuleSetInfoBuilder {
 			
 			buildForSponsor(str1, firedRuleSetInfo);
 		}else{
-			buildForInstitution(str1, null);
+			buildForInstitution(str1, firedRuleSetInfo);
 		}
 				
 		return firedRuleSetInfo;
@@ -36,7 +36,7 @@ public class FiredRuleSetInfoBuilder {
 			firedRuleSetInfo.setOrganizationName(organizationName);
 			String ruleSetName = str1.substring(m+1, str1.length());
 			firedRuleSetInfo.setRuleSetName(ruleSetName);
-			firedRuleSetInfo.setRuleSetType("Sponsor template rules");
+			firedRuleSetInfo.setRuleSetType("Rules for Sponsor");
 			
 		}else{
 			buildForSponsorDefinedStudyLevelRules(partialUri, firedRuleSetInfo);
@@ -55,11 +55,11 @@ public class FiredRuleSetInfoBuilder {
 			firedRuleSetInfo.setOrganizationName(organizationName);
 			String ruleSetName = str1.substring(m+1, str1.length());
 			firedRuleSetInfo.setRuleSetName(ruleSetName);
-			firedRuleSetInfo.setRuleSetType("Institution template rules");
+			firedRuleSetInfo.setRuleSetType("Rules for Institution");
 			
 			
 		}else{
-			buildForInstitutionDefinedStudyLevelRules(partialUri, null);
+			buildForInstitutionDefinedStudyLevelRules(partialUri, firedRuleSetInfo);
 		}
 	}
 	
@@ -79,7 +79,7 @@ public class FiredRuleSetInfoBuilder {
 		firedRuleSetInfo.setOrganizationName(organizationName);
 		String ruleSetName = str1.substring(k+1,str1.length());
 		firedRuleSetInfo.setRuleSetName(ruleSetName);
-		firedRuleSetInfo.setRuleSetType("Sponsor defined study level rules");
+		firedRuleSetInfo.setRuleSetType("Rules for Sponsor Defined Study");
 		
 	}
 	private void buildForInstitutionDefinedStudyLevelRules(String partialUri, FiredRuleSetInfo firedRuleSetInfo){
@@ -98,7 +98,7 @@ public class FiredRuleSetInfoBuilder {
 		firedRuleSetInfo.setOrganizationName(organizationName);
 		String ruleSetName = str1.substring(k+1,str1.length());
 		firedRuleSetInfo.setRuleSetName(ruleSetName);
-		firedRuleSetInfo.setRuleSetType("Institution defined study level rules");
+		firedRuleSetInfo.setRuleSetType("Rules for Institution Defined Study");
 		
 	}
 	
