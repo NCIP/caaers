@@ -307,7 +307,11 @@ public class RuleUtil {
 		
 		return str;
 	}
-	
+	public static String getStudyInstitutionSpecificPackageName(String prefix,String studyShortTitle, String institutionName,String ruleSetName){
+		String str = prefix+"."+ getStringWithoutSpaces(studyShortTitle)+"."+getStringWithoutSpaces(institutionName)+"."+getStringWithoutSpaces(ruleSetName);
+		
+		return str;
+	}	
 
 	
 	public static String getStringWithoutSpaces(String str)
@@ -336,7 +340,10 @@ public class RuleUtil {
 		String studySponsorSpecificPath = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle)+"/"+getStringWithoutSpaces(sponsorName);
 		return studySponsorSpecificPath;
 	}
-	
+	public static String getStudyInstitutionSpecificPath(String studyShortTitle, String sponsorName){
+		String studySponsorSpecificPath = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPath()+"/"+getStringWithoutSpaces(studyShortTitle)+"/"+getStringWithoutSpaces(sponsorName);
+		return studySponsorSpecificPath;
+	}	
 	public static boolean categoryExist(RuleAuthoringService authService, String path){
 		boolean exist = true;
 		Category base_cat = null;

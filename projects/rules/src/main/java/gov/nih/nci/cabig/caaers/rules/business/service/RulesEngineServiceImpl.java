@@ -293,7 +293,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		//This name should be unique
 		//String packageName = "gov.nih.nci.cabig.caaers.rules"+"."+this.getStringWithoutSpaces(this.our_dream_Sponsor)+"."+this.getStringWithoutSpaces(this.rule_set_1_name_for_dream_sponsor);
 
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
+		String packageName = RuleUtil.getStudyInstitutionSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
     	//System.out.println(packageName);
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
@@ -454,7 +454,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
-		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
+		String packageName = RuleUtil.getStudyInstitutionSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
 		
 			ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		
@@ -499,13 +499,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public List<RuleSet> getAllRuleSetsForInstitutionDefinedStudy(String studyShortTitle,String institutionName) throws Exception{
 		List<RuleSet> ruleSets = new ArrayList<RuleSet>();
-		String studySponsorSpecificCategoryPath = RuleUtil.getStudySponsorSpecificPath(studyShortTitle, institutionName);
+		String studyInstitutionSpecificCategoryPath = RuleUtil.getStudyInstitutionSpecificPath(studyShortTitle, institutionName);
 		/**
 		 * First check if there is a entry for this sponsor in the repository 
 		 * If there is no entry then return empty list implying that there are no rules
 		 * for this sponsor
 		 */
-		boolean exist = RuleUtil.categoryExist(ruleAuthoringService, studySponsorSpecificCategoryPath);
+		boolean exist = RuleUtil.categoryExist(ruleAuthoringService, studyInstitutionSpecificCategoryPath);
 		if(!exist) {
 			return ruleSets;
 		}
@@ -513,7 +513,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		/**
 		 * Now for this catgeory we can go ahead and pull all children
 		 */
-		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(studySponsorSpecificCategoryPath);
+		List<String> ruleSetNames = this.repositoryService.getAllImmediateChildren(studyInstitutionSpecificCategoryPath);
 		if(ruleSetNames.size()<1) {
 			return ruleSets;
 		}
@@ -763,7 +763,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		String ruleSetName = ruleSet.getDescription();
 		Iterator<Rule> it = rules.iterator();
 		
-		if((catPath.indexOf("SPONSOR_DEFINED_STUDY")==-1)&&(catPath.indexOf("SPONSOR")!=-1)){
+		if((catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())==-1)&&(catPath.indexOf(CategoryConfiguration.SPONSOR_BASE.getName())!=-1)){
 			// this is sponsor level rules
 			i= catPath.lastIndexOf("/");
 			String sponsorName = catPath.substring(i+1,catPath.length());
@@ -776,7 +776,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		}
 		
 		
-		if(catPath.indexOf("SPONSOR_DEFINED_STUDY")!=-1){
+		if(catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())!=-1){
 			// this is sponsor defined study level rules
 			i= catPath.lastIndexOf("/");
 			String sponsorName = catPath.substring(i+1,catPath.length());
@@ -790,7 +790,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 				createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName);
 			}
 		}
-		if((catPath.indexOf("INSTITUTION_DEFINED_STUDY")==-1)&&(catPath.indexOf("INSTITUION")!=-1)){
+		if((catPath.indexOf(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName())==-1)&&(catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName())!=-1)){
 			// this is INSTITUTION defined level rules
 			i= catPath.lastIndexOf("/");
 			String institutionName = catPath.substring(i+1,catPath.length());
@@ -801,7 +801,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 				createRuleForInstitution(rule, ruleSetName, institutionName);
 			}
 		}
-		if(catPath.indexOf("INSTITUTION_DEFINED_STUDY")!=-1){
+		if(catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName())!=-1){
 			// this is sponsor defined study level rules
 			i= catPath.lastIndexOf("/");
 			String institutionName = catPath.substring(i+1,catPath.length());
