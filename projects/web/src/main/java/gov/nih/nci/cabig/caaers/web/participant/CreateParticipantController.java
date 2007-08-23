@@ -6,9 +6,11 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.StudyService;
@@ -23,6 +25,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -98,21 +101,27 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 	public CreateParticipantController() {
 		setCommandClass(NewParticipantCommand.class);
 		setAllowDirtyBack(false);
+
 		setAllowDirtyForward(false);
 		setFlow(new Flow<NewParticipantCommand>("Create Participant"));
 		getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
 
 			private InputFieldGroup participantFieldGroup;
 
+			private InputFieldGroup siteFieldGroup;
+
 			private RepeatingFieldGroupFactory rfgFactory;
 
 			private static final String PARTICIPANT_FIELD_GROUP = "participant";
+
+			private static final String SITE_FIELD_GROUP = "site";
 
 			@Override
 			public Map<String, Object> referenceData(final NewParticipantCommand command) {
 				Map<String, Object> refdata = referenceData();
 				Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
 				refdata.put("fieldGroups", groupMap);
+
 				return refdata;
 			}
 
@@ -123,6 +132,22 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 			}
 
 			private Map<String, InputFieldGroup> createFieldGroups(final NewParticipantCommand command) {
+
+				if (siteFieldGroup == null) {
+
+					siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
+
+					Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+					options.put("", "Please select");
+					List<Organization> organizations = organizationDao.getOrganizationsHavingStudySites();
+					if (organizations != null) {
+						options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
+					}
+					siteFieldGroup.getFields().add(
+							InputFieldFactory.createSelectField("organization", "Site", true, options));
+
+				}
+
 				if (participantFieldGroup == null) {
 
 					participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
@@ -152,8 +177,13 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 				if (rfgFactory == null) {
 					rfgFactory = new RepeatingFieldGroupFactory("main", "identifiers");
 					rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
-					rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
-							collectOptions(listValues.getParticipantIdentifierType())));
+
+					Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+					List<ListValues> list = listValues.getParticipantIdentifierType();
+					options.put("", "Please select");
+					options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
+
+					rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
 
 					rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
 					rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
@@ -165,6 +195,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 				InputFieldGroupMap map = new InputFieldGroupMap();
 				map.addRepeatingFieldGroupFactory(rfgFactory, command.getIdentifiers().size());
 				map.addInputFieldGroup(participantFieldGroup);
+				map.addInputFieldGroup(siteFieldGroup);
 				return map;
 			}
 
@@ -191,6 +222,37 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 			public void validate(final NewParticipantCommand command, final Errors errors) {
 				boolean noPrimaryIdentifier = true;
 
+				boolean organization = command.getOrganization() == null
+						|| command.getOrganization().getName().equals("");
+
+				boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
+				boolean lastName = command.getLastName() == null || command.getLastName().equals("");
+				boolean dateOfBirth = command.getDateOfBirth() == null;
+				boolean gender = command.getGender().equals("---");
+				boolean ethnicity = command.getEthnicity().equals("---");
+				boolean race = command.getRace().equals("---");
+				if (organization) {
+					errors.rejectValue("organization", "REQUIRED", "Missing Site");
+				}
+				if (firstName) {
+					errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
+				}
+				if (lastName) {
+					errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
+				}
+				if (dateOfBirth) {
+					errors.rejectValue("dateOfBirth", "REQUIRED", "Missing Date Of Birth");
+				}
+				if (gender) {
+					errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
+				}
+				if (ethnicity) {
+					errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
+				}
+				if (race) {
+					errors.rejectValue("race", "REQUIRED", "Please specify the Race");
+				}
+
 				List<Identifier> identifiers = command.getIdentifiers();
 				for (int i = 0; i < identifiers.size(); i++) {
 					Identifier identifier = identifiers.get(i);
@@ -211,32 +273,11 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 
 						errors.rejectValue("identifiers[" + i + "].value", "REQUIRED", "Identifier is required..!");
 					}
-					noPrimaryIdentifier = false;
-				}
+					if (identifier.getType() == null || identifier.getType().trim().equals("")) {
 
-				boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
-				boolean lastName = command.getLastName() == null || command.getLastName().equals("");
-				boolean dateOfBirth = command.getDateOfBirth() == null;
-				boolean gender = command.getGender().equals("---");
-				boolean ethnicity = command.getEthnicity().equals("---");
-				boolean race = command.getRace().equals("---");
-				if (firstName) {
-					errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
-				}
-				if (lastName) {
-					errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
-				}
-				if (dateOfBirth) {
-					errors.rejectValue("dateOfBirth", "REQUIRED", "Missing Date Of Birth");
-				}
-				if (gender) {
-					errors.rejectValue("gender", "REQUIRED", "Please Specify a Gender");
-				}
-				if (ethnicity) {
-					errors.rejectValue("ethnicity", "REQUIRED", "Please Specify the Ethnicity");
-				}
-				if (race) {
-					errors.rejectValue("race", "REQUIRED", "Please specify the Race");
+						errors.rejectValue("identifiers[" + i + "].type", "REQUIRED", "Identifier type is required..!");
+					}
+					noPrimaryIdentifier = false;
 				}
 				if (noPrimaryIdentifier) {
 					errors
@@ -253,21 +294,17 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 				return refdata;
 			}
 
-			// /*
-			// * @Override
-			// */
-			// @Override
-			// public void validate(final NewParticipantCommand command, final Errors errors) {
-			// boolean studySiteArray = command.getStudySiteArray() == null || command.getStudySiteArray().length == 0;
-			// if (studySiteArray) {
-			// errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
-			// }
-			// }
-			//
-			// @Override
-			// public boolean isAllowDirtyForward() {
-			// return false;
-			// }
+			@Override
+			public void validate(final NewParticipantCommand command, final Errors errors) {
+				// boolean studiesArray = command.getStudies() == null || command.getStudies().size() == 0;
+				// if (studiesArray) {
+				// errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
+				// }
+				boolean studySiteArray = command.getStudySiteArray() == null || command.getStudySiteArray().length == 0;
+				if (studySiteArray) {
+					errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
+				}
+			}
 
 		});
 		getFlow().addTab(new Tab("Review and Submit", "Review and Submit", "par/par_confirmation") {
@@ -309,6 +346,11 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		if (searchtext != null && type != null && !searchtext.equals("")) {
 			log.debug("Search text : " + searchtext + "Type : " + type);
 			Study study = new Study();
+			StudyOrganization studyOrganization = new StudySite();
+			studyOrganization.setStudy(study);
+			studyOrganization.setOrganization(participantCommand.getOrganization());
+			study.setStudyOrganizations(Arrays.asList(studyOrganization));
+
 			participantCommand.setStudies(new ArrayList<Study>());
 			if ("st".equals(type)) {
 				study.setShortTitle(searchtext);
@@ -329,7 +371,11 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 			participantCommand.setStudies(studies);
 			participantCommand.setSearchTypeText("");
 			participantCommand.setSearchType("");
+
+			// participantCommand.setStudySiteArray(new String[] {});
+			// participantCommand.setStudySites(new ArrayList<StudySite>());
 		}
+
 		// This will happen everytime studySiteArray is populated
 		if (participantCommand.getStudySiteArray() != null) {
 			for (String st : participantCommand.getStudySiteArray()) {

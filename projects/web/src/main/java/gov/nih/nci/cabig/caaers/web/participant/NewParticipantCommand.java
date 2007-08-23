@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -56,6 +57,8 @@ public class NewParticipantCommand {
 	private final List<Identifier> identifiers = new ArrayList<Identifier>();
 
 	private List<StudySite> studySites = new ArrayList<StudySite>();
+
+	private Organization organization;
 
 	/*
 	 * public Participant createParticipant() { Participant participant = new Participant();
@@ -227,5 +230,13 @@ public class NewParticipantCommand {
 
 	public void setIdentifiers(final List<? extends Identifier> identifiers) {
 		this.identifiers.addAll(identifiers);
+	}
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 }

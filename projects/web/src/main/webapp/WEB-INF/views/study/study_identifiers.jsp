@@ -115,12 +115,31 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">   
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm">   
    <jsp:attribute name="repeatingFields">
         	<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 			</div>
+			<chrome:division  title="Organization Identifiers"  >
+        	<table id="test" class="tablecontent">
+    			<tr id="organization-section">
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader" width="63%"><tags:requiredIndicator />Organization name </th>
+    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" width="5%">&nbsp;</th>
+    			</tr>
+    			<c:set var="cntOrg">0</c:set>
+            	<c:forEach items="${command.identifiersLazy}" varStatus="status">
+				  <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" />
+					<c:set var="cntOrg">${cntOrg + 1}</c:set>
+				  </c:if>
+				</c:forEach>
+            </table>
+            </chrome:division>
+ 
            <chrome:division title="System Identifiers">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
@@ -140,25 +159,7 @@
              </table>
            	</chrome:division>
     	
-        	<chrome:division  title="Organization Identifiers"  >
-        	<table id="test" class="tablecontent">
-    			<tr id="organization-section">
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
-    				<th class="tableHeader" width="63%"><tags:requiredIndicator />Organization name </th>
-    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
-    				<th class="tableHeader" width="5%">&nbsp;</th>
-    			</tr>
-    			<c:set var="cntOrg">0</c:set>
-            	<c:forEach items="${command.identifiersLazy}" varStatus="status">
-				  <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" />
-					<c:set var="cntOrg">${cntOrg + 1}</c:set>
-				  </c:if>
-				</c:forEach>
-            </table>
-            </chrome:division>
-   </jsp:attribute>
+        	  </jsp:attribute>
    <jsp:attribute name="localButtons"> 
 	 <tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier" />   
      <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" />

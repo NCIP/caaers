@@ -119,8 +119,11 @@ public class ListValues {
 
 	public List<ListValues> getParticipantIdentifierType() {
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("Medical Center", "Medical Center");
+		ListValues lov1 = new ListValues("Medical Record Number", "Medical Record Number");
+		ListValues lov2 = new ListValues("Other", "Other");
 		col.add(lov1);
+		col.add(lov2);
+
 		return col;
 	}
 

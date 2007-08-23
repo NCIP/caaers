@@ -135,15 +135,24 @@
         You are creating a new Participant
     </p>
     
-    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm">
-
+    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm" hideErrorDetails="true" willSave="false">
 
 		 <jsp:attribute name="singleFields">
             <div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 		</div>
-		
+
+             </jsp:attribute>
+    <jsp:attribute name="repeatingFields">
+    
+    			
+<chrome:division  title="Site"  >
+<c:forEach items="${fieldGroups.site.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+           </c:forEach>     	
+</chrome:division>
+		<chrome:division  title="Partcipant Details"  >			
 		<table id="test2" class="single-fields" >
         	<tr >
     				<td> 
@@ -158,16 +167,36 @@
     			</tr>
     			
     		</table> 
-             </jsp:attribute>
-    <jsp:attribute name="repeatingFields">
+    		
+    		</chrome:division>
+    
+            	<chrome:division  title="Organization Identifiers"  >
+        	<table id="test" class="tablecontent">
+    			<tr id="organization-section">
+    				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Identifier type</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Organization</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
+    			</tr>
+    			
+            	<c:forEach items="${command.identifiers}" varStatus="status">
+					<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+					<par:parIdentifier  title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
+					</c:if>
+					            	</c:forEach>
+            	
+            	</table>
+            	</chrome:division>
+    
     
             <chrome:division title="System Identifiers">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>System name:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Identifier type</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />System name</th>
+    				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     			</tr>
     			
             	<c:forEach items="${command.identifiers}" varStatus="status" >
@@ -181,24 +210,6 @@
             	</chrome:division>
     	
             		
-        	<chrome:division  title="Organization Identifiers"  >
-        	<table id="test" class="tablecontent">
-    			<tr id="organization-section">
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Identifier type:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Organization:</b> </th>
-    				<th scope="col" align="left"><b> <span class="red">*</span><em></em>Primary indicator:</b> </th>
-    			</tr>
-    			
-            	<c:forEach items="${command.identifiers}" varStatus="status">
-					<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<par:parIdentifier  title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
-					</c:if>
-					            	</c:forEach>
-            	
-            	</table>
-            	</chrome:division>
          
      </jsp:attribute>
      

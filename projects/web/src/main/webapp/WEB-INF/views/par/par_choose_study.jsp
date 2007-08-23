@@ -61,7 +61,7 @@ function updateTargetPage(s){
     </form:form>
 </chrome:box>
 
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
     <jsp:attribute name="singleFields">
         <ec:table items="command.studies" var="study"
             action="${pageContext.request.contextPath}/pages/newParticipant"
