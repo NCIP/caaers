@@ -118,8 +118,10 @@ public class ExpeditedReportTree extends TreeNode {
             	   property("treatmentAssignmentCode","Assignment code"),
             	   property("firstCourseDate","First course start date"),
                    // TODO: these should be a component instead
-                   property("adverseEventCourse.date","Adverse event course start date"),
-                   property("adverseEventCourse.number","Adverse event course number")
+            	   property("adverseEventCourse",
+            			   property("date","Adverse event course start date"),
+            			   property("number","Adverse event course number")
+            			   )
                )
             )
         );
