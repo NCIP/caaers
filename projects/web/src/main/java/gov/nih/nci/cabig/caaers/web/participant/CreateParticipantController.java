@@ -334,6 +334,16 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 	}
 
 	@Override
+	protected boolean suppressValidation(HttpServletRequest request) {
+
+		Object go = findInRequest(request, "_action");
+		if (go instanceof String && ((String) go).equalsIgnoreCase("go")) {
+			return true;
+		}
+		return super.suppressValidation(request);
+	}
+
+	@Override
 	protected void onBind(final HttpServletRequest request, final Object command, final BindException errors)
 			throws Exception {
 		log.debug("Entering onBind...");

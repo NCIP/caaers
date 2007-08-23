@@ -26,7 +26,7 @@ function submitPage(s){
 
 
 <tags:tabForm tab="${tab}" flow="${flow}"
-	title="${command.lastName}, ${command.firstName}">
+	title="${command.lastName}, ${command.firstName}" willSave="false">
 	<jsp:attribute name="instructions">
         Please verify this data and press Save to Create this Participant
     </jsp:attribute>

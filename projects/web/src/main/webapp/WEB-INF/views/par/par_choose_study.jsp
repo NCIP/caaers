@@ -35,6 +35,10 @@ function updateTargetPage(s){
 
 <chrome:box autopad="true">
     <form:form id="searchForm" method="post">
+    <div>
+    		<input type="hidden" name="_action" value="go">
+	</div>
+        
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
             </tr>
@@ -63,6 +67,9 @@ function updateTargetPage(s){
 
 <tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
     <jsp:attribute name="singleFields">
+    <div>
+    		<input type="hidden" name="_action" value="">
+	</div>
         <ec:table items="command.studies" var="study"
             action="${pageContext.request.contextPath}/pages/newParticipant"
             imagePath="${pageContext.request.contextPath}/images/table/*.gif"
