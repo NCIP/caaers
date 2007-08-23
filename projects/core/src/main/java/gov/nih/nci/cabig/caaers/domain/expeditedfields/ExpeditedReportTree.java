@@ -61,8 +61,40 @@ public class ExpeditedReportTree extends TreeNode {
                     property("interventionDate", "Intervention date")
                 )
             ),
-            section("Medical device"), // skipped medical device for the moment
-            section("Event and response description"), // skipped description for the moment
+            section("Medical device",
+            	property("medicalDevice",
+            		property("brandName", "Brand name"),
+            		property("commonName", "Common name"),
+            		property("deviceType", "Device type"),
+            		property("manufacturerName", "Manufacturer name"),
+            		property("manufacturerCity", "Manufacturer city"),
+            		property("manufacturerState", "Manufacturer state"),
+            		property("modelNumber", "Model number"),
+            		property("lotNumber", "Lot number"),
+            		property("catalogNumber", "Catalog number"),
+            		property("expirationDate", "Expiration date"),
+            		property("serialNumber", "Serial number"),
+            		property("otherNumber", "Other number"),
+            		property("deviceOperator", "Device operator"),
+            		property("otherDeviceOperator", "Other device operator"),
+            		property("implantedDate", "If implanted give a date"),
+            		property("explantedDate", "IF explanted give a date"),
+            		property("deviceReprocessed", "Device reprocessed"),
+            		property("reprocessorName", "Reprocessor name"),
+            		property("reprocessorAddress", "Reprocessor address"),
+            		property("evaluationAvailability", "Evaluation availability"),
+            		property("returnedDate", "Returned date")
+            	)
+            ),
+            section("Event and response description",
+            	property("responseDescription",
+            		property("eventDescription","Description"),
+            		property("presentStatus","Present status"),
+            		property("recoveryDate","Date of recovery or death"),
+            		property("retreated","Has the particpant been re-treated?"),
+            		property("dateRemovedFromProtocol","Date removed from protocol")
+            	)
+            ),
             section("Medical info",
                 property("participantHistory",
                     participantMeasure("height"),
@@ -80,6 +112,15 @@ public class ExpeditedReportTree extends TreeNode {
                         property("otherSite", "Other site")
                     )
                 )
+            ),
+            section("Treatment Information",
+               property("treatmentInformation",
+            	   property("treatmentAssignmentCode","Assignment code"),
+            	   property("firstCourseDate","First course start date"),
+                   // TODO: these should be a component instead
+                   property("adverseEventCourse.date","Adverse event course start date"),
+                   property("adverseEventCourse.number","Adverse event course number")
+               )
             )
         );
     }
@@ -112,10 +153,10 @@ public class ExpeditedReportTree extends TreeNode {
             property("unit", "units")
         );
     }
-    
+
     // DONOT MODIFY NAMES EVEN IF THEY CHANGES....this is tied up with rules ....
     public static String[] getAllSectionNames() {
-    	
+
     	String[] sectionNames = {"Radiation intervention","Surgery intervention",
     					"Medical device","Event and response description","Medical info"};
     	return sectionNames;

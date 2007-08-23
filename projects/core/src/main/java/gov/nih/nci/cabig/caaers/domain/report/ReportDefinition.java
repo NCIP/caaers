@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Cascade;
@@ -103,6 +104,20 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		return lazyListHelper.getLazyList(ReportDeliveryDefinition.class);
 	}
 
+	/**
+	 * Returns the mandatory flag associated with the ReportMandatoryField, whose fieldPath matches
+	 * with the parameter <param>fieldPath</param>
+	 */
+	public boolean isFieldMandatory(String fieldPath){
+		if(mandatoryFields == null) return false;
+		for(ReportMandatoryFieldDefinition mandatoryField : mandatoryFields){
+			if(StringUtils.equals(fieldPath, mandatoryField.getFieldPath())){
+				return mandatoryField.getMandatory();
+			}
+		}
+
+		return false;
+	}
 
     ////// BEAN PROPERTIES
 
@@ -177,6 +192,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 	public void setMandatoryFields(List<ReportMandatoryFieldDefinition> mandatoryFields) {
 		this.mandatoryFields = mandatoryFields;
 	}
+
+
 
 	////// OBJECT METHODS
 
