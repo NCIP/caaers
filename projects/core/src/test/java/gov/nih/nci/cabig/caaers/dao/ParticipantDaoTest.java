@@ -154,6 +154,13 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
     	assertNotNull(identifier.getDeclaredField("value"));
     }
     
+    public void testMatchParticipantByStudy() throws Exception {
+    	List<Participant> results;
+    	results = getDao().matchParticipantByStudy(-2000, "il");
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
     public void testSearchParticipantByStudyFirstName() throws Exception {
     	List<Participant> results;
     	Map<String,String> m = new HashMap<String,String>();

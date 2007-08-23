@@ -120,9 +120,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
 	
-	 
-    // TODO : Use this method for AE searches - enhances performance . 
-    public List<Study> matchStudyByParticipant(Integer participantId) {
+	  
+    public List<Study> matchStudyByParticipant(Integer participantId, String text) {
     	
     	String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
     	
@@ -134,6 +133,14 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		queryBuf.append(" where ");
 		queryBuf.append("p.id = ?");
 		params.add( participantId );
+		
+		queryBuf.append(" and ( ");
+		queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
+		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("o.longTitle").append(") LIKE ? ) ");
+		params.add('%' + text.toLowerCase() + '%');
 		
 		log.debug("::: " + queryBuf.toString() );
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());

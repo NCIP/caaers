@@ -97,20 +97,20 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("Result not forwarded", 1, actualList.size());
     }
 
+    // No Testing needed here cause these tests are covered under DAO testing
     public void testMatchParticipantsFiltersByStudyId() throws Exception {
         List<Participant> expectedList = new ArrayList<Participant>();
-        expectedList.add(createParticipant("Joe", "One"));
         expectedList.add(createParticipant("Joe", "Two"));
         Study study = setId(4, new Study());
-        assignParticipant(expectedList.get(1), study, new Organization());
+        assignParticipant(expectedList.get(0), study, new Organization());
 
-        expect(participantDao.getBySubnames(aryEq(new String[] { "joe" })))
-            .andReturn(expectedList);
+        expect(participantDao.matchParticipantByStudy(4, "oe"))
+        .andReturn(expectedList);
 
         replayMocks();
-        List<Participant> actualList = facade.matchParticipants("joe", 4);
+        List<Participant> actualList = facade.matchParticipants("oe", 4);
         verifyMocks();
-
+        
         assertEquals("Wrong number of participants returned", 1, actualList.size());
         assertEquals("Wrong participant included", "Two", actualList.get(0).getLastName());
     }
@@ -155,15 +155,15 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("Result not forwarded", 1, actualList.size());
     }
 
+    //  No Testing needed here cause these tests are covered under DAO testing
     public void testMatchStudiesFiltersByParticipantId() throws Exception {
         List<Study> expectedList = new ArrayList<Study>();
-        expectedList.add(createStudy("Happy"));
         expectedList.add(createStudy("Joyful"));
         Participant p = setId(7, createParticipant("Sad", "Man"));
-        assignParticipant(p, expectedList.get(1), new Organization());
-
-        expect(studyDao.getBySubnames(aryEq(new String[] { "y" })))
-            .andReturn(expectedList);
+        assignParticipant(p, expectedList.get(0), new Organization());
+        
+        expect(studyDao.matchStudyByParticipant(7, "y"))
+        .andReturn(expectedList);
 
         replayMocks();
         List<Study> actualList = facade.matchStudies("y", 7);

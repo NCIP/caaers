@@ -331,7 +331,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 	public void testMatchStudyByParticipant() throws Exception {
 		List<Study> results;
 		Integer participantId = -100 ; 
-		results = getDao().matchStudyByParticipant(participantId);
+		results = getDao().matchStudyByParticipant(participantId,"or");
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}

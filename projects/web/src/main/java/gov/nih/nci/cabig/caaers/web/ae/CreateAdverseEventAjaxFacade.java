@@ -101,6 +101,19 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public List<Participant> matchParticipants(String text, Integer studyId) {
+    	List<Participant> participants;
+    	if (studyId == null){
+    		participants = participantDao.getBySubnames(extractSubnames(text));
+    	}
+    	else {
+    		participants = participantDao.matchParticipantByStudy(studyId, text);
+    	}
+        // cut down objects for serialization
+        return reduceAll(participants, "firstName", "lastName", "id");
+    }
+    
+    /* Depracated and replace by a hql based query to enhance performance
+    public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants = participantDao.getBySubnames(extractSubnames(text));
         if (studyId != null) {
             for (Iterator<Participant> it = participants.iterator(); it.hasNext();) {
@@ -111,6 +124,7 @@ public class CreateAdverseEventAjaxFacade {
         // cut down objects for serialization
         return reduceAll(participants, "firstName", "lastName", "id");
     }
+    */
 
     private boolean onStudy(Participant participant, Integer studyId) {
         boolean onStudy = false;
@@ -122,7 +136,8 @@ public class CreateAdverseEventAjaxFacade {
         }
         return onStudy;
     }
-
+    
+    /* Depracated and replace by a hql based query to enhance performance
     public List<Study> matchStudies(String text, Integer participantId) {
         List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
         if (participantId != null) {
@@ -131,6 +146,19 @@ public class CreateAdverseEventAjaxFacade {
                 if (!onStudy(study, participantId)) it.remove();
             }
         }
+        // cut down objects for serialization
+        return reduceAll(studies, "id", "shortTitle");
+    }
+    */
+    
+    public List<Study> matchStudies(String text, Integer participantId) {
+    	List<Study> studies ;
+    	if (participantId == null){
+    		studies = studyDao.getBySubnames(extractSubnames(text));
+    	}
+    	else{
+    		studies = studyDao.matchStudyByParticipant(participantId, text);
+    	}
         // cut down objects for serialization
         return reduceAll(studies, "id", "shortTitle");
     }

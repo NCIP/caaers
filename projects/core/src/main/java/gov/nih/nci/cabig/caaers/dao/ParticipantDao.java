@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -74,6 +75,33 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
     public Participant getByIdentifier(Identifier identifier) {
         return findByIdentifier(identifier);
     }
+    
+    
+    public List<Participant> matchParticipantByStudy(Integer studyId, String text) {
+    	
+    	String joins = " join o.assignments as spa join spa.studySite as ss join ss.study as s ";
+    	
+		List<Object> params = new ArrayList<Object>();
+		StringBuilder queryBuf = new StringBuilder(" select distinct o from ")
+         .append(domainClass().getName()).append(" o ").append(joins);
+
+		
+		queryBuf.append(" where ");
+		queryBuf.append("s.id = ?");
+		params.add( studyId );
+		
+		queryBuf.append(" and ( ");
+		queryBuf.append("LOWER(").append("o.firstName").append(") LIKE ?");
+		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("o.lastName").append(") LIKE ? ) ");
+		params.add('%' + text.toLowerCase() + '%');
+		
+		System.out.println("::: " + queryBuf.toString() );
+		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+    }
+    
     
     @SuppressWarnings({ "unchecked" })
 	public List<Participant> searchParticipant(Map props) throws ParseException {
