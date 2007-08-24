@@ -22,12 +22,12 @@
             <div class="value"><form:input path="name" size="90"/></div>
         </div>
         <div class="row">
-            <div class="label"><span class="red">*</span>Description:</div>
+            <div class="label">Description:</div>
             <div class="value"><form:textarea path="descriptionText" cssStyle="width:560px;height:80px;"  /></div>
         </div>
        <div class="row">
             <div class="label"><span class="red">*</span>NCI Identifier:</div>
-            <div class="value"><form:input path="nciInstituteCode" size="90" /></div>
+            <div class="value"><form:input path="nciInstituteCode" size="40" /></div>
         </div>   
      </div>
      <div align = "right">

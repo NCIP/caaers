@@ -133,14 +133,15 @@ public class EditStudyController extends StudyController<Study> {
 	protected void layoutTabs(final Flow<Study> flow) {
 		flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
 		flow.addTab(new DetailsTab());
-		flow.addTab(new IdentifiersTab());
+		flow.addTab(new StudyTherapiesTab());
+		flow.addTab(new AgentsTab());
+		flow.addTab(new TreatmentAssignmentTab());
+		flow.addTab(new DiseaseTab());
 		flow.addTab(new SitesTab());
 		flow.addTab(new InvestigatorsTab());
 		flow.addTab(new PersonnelTab());
-		flow.addTab(new AgentsTab());
-		flow.addTab(new DiseaseTab());
+		flow.addTab(new IdentifiersTab());
 		flow.addTab(new StudyAmendmentTab());
-		flow.addTab(new StudyTherapiesTab());
 
 	}
 

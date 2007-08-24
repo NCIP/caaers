@@ -32,8 +32,7 @@ public class CreateOrganizationController extends SimpleFormController {
 
 		/*
 		 * (non-Javadoc)
-		 * @see org.springframework.validation.Validator#validate(java.lang.Object,
-		 * org.springframework.validation.Errors)
+		 * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
 		 */
 		public void validate(Object object, Errors errors) {
 			Organization command = (Organization) object;
@@ -45,9 +44,9 @@ public class CreateOrganizationController extends SimpleFormController {
 			if (name) {
 				errors.rejectValue("name", "REQUIRED", "Missing name");
 			}
-			if (descriptionText) {
-				errors.rejectValue("descriptionText", "REQUIRED", "Missing Description Text");
-			}
+			// if (descriptionText) {
+			// errors.rejectValue("descriptionText", "REQUIRED", "Missing Description Text");
+			// }
 			if (nciInstituteCode) {
 				errors.rejectValue("nciInstituteCode", "REQUIRED", "Missing NCI Institute Code");
 			}

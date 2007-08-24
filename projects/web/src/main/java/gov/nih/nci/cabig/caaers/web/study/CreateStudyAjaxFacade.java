@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.io.IOException;
@@ -159,6 +160,18 @@ public class CreateStudyAjaxFacade {
 		String html = getOutputFromJsp(url);
 		request.setAttribute(AJAX_INDEX_PARAMETER, index);
 		return html;
+
+	}
+
+	public String addTreatmentAssignment(int index) {
+		HttpServletRequest request = getHttpServletRequest();
+		Study study = getStudyCommand(request);
+		study.addTreatmentAssignment(new TreatmentAssignment());
+
+		setRequestAttributes(request, index, -1, "treatmentAssignmentSection");
+
+		String url = getCurrentPageContextRelative(WebContextFactory.get());
+		return getOutputFromJsp(url);
 
 	}
 

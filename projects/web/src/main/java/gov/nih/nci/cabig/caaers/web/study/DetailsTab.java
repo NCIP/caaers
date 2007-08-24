@@ -32,7 +32,7 @@ public class DetailsTab extends StudyTab {
 	InputFieldGroup organizationFieldGroup;
 
 	public DetailsTab() {
-		super("Study Details", "Details", "study/study_details");
+		super("Basic Details", "Details", "study/study_details");
 		setAutoPopulateHelpKey(true);
 	}
 
