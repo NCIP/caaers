@@ -54,7 +54,7 @@
 			<input type="hidden" name="_selected" value="">
 			</div>
 		<c:forEach varStatus="status" items="${command.treatmentAssignments}">	
-				  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" enableDelete="${status.index > 0}" 
+				  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" enableDelete="true" 
 					sectionClass="si-section" removeButtonAction="removeTreatmentAssignment" index="${status.index}" identifier="${command.treatmentAssignments[status.index]}" />
 		</c:forEach>	
 		

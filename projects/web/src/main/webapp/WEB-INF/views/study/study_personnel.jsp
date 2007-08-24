@@ -43,7 +43,7 @@
             	);
             },            
             sitePersonnelPopulator: function(autocompleter, text) {
-         		createStudy.matchResearch(text, function(values) {
+         		createStudy.matchResearch(text,this.siteIndex, function(values) {
          			autocompleter.setChoices(values)
          		})
         	},

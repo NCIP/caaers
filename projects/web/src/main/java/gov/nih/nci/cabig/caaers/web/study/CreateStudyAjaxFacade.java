@@ -82,8 +82,11 @@ public class CreateStudyAjaxFacade {
 		}, "id", "investigator.firstName", "investigator.lastName");
 	}
 
-	public List<ResearchStaff> matchResearch(String text) {
-		List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text });
+	public List<ResearchStaff> matchResearch(String text, int indexId) {
+
+		Study study = getStudyCommand(getHttpServletRequest());
+		int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
+		List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text }, siteId);
 		return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName");
 	}
 
