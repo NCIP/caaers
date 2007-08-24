@@ -53,7 +53,7 @@
                 <div class="value">${command.phaseCode}</div>
             </div>
        </chrome:division>
-		<c:if test="${not empty command.identifiersLazy}">
+		<c:if test="${not empty command.identifiers}">
 			<chrome:division title="Identifiers">
 			<table class="tablecontent">
 			<tr>
@@ -112,6 +112,26 @@
             </c:forEach>
         </table>
     	</chrome:division>
+    </c:if>
+     <c:if test="${not empty command.treatmentAssignments}">
+    <chrome:division title="Treatment Assignments">
+        <table class="tablecontent">
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Dose level order</th>
+                <th scope="col">Description</th>
+                <th scope="col">Comments</th>
+            </tr>
+            <c:forEach items="${command.treatmentAssignments}" var="treatmentAssignment" >
+                    <tr class="results">
+                        <td>${treatmentAssignment.code}</td>
+                        <td>${treatmentAssignment.doseLevelOrder}</td>
+                        <td>${treatmentAssignment.description}</td>
+                        <td>${treatmentAssignment.comments}</td>
+                    </tr>
+            </c:forEach>
+        </table>
+    </chrome:division>
     </c:if>
     <c:if test="${not empty command.studyOrganizations}">
     <chrome:division title="Personnel">
