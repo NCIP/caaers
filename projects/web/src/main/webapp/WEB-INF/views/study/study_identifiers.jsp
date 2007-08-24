@@ -115,7 +115,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm">   
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">   
    <jsp:attribute name="repeatingFields">
         	<div>
 			<input type="hidden" name="_action" value="">
@@ -124,11 +124,11 @@
 			<chrome:division  title="Organization Identifiers"  >
         	<table id="test" class="tablecontent">
     			<tr id="organization-section">
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
-    				<th class="tableHeader" width="63%"><tags:requiredIndicator />Organization name </th>
-    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
-    				<th class="tableHeader" width="5%">&nbsp;</th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Organization name </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" >&nbsp;</th>
     			</tr>
     			<c:set var="cntOrg">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status">
@@ -143,11 +143,11 @@
            <chrome:division title="System Identifiers">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier </th>
-    				<th class="tableHeader" width="15%"><tags:requiredIndicator />Identifier type </th>
-    				<th class="tableHeader" width="63%"><tags:requiredIndicator />System name </th>
-    				<th class="tableHeader" width="2%"><tags:requiredIndicator />Primary indicator</th>
-    				<th class="tableHeader" width="5%">&nbsp;</th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Identifier type </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />System name </th>
+    				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
+    				<th class="tableHeader" >&nbsp;</th>
     			</tr>
     			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
