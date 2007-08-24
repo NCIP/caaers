@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
 import org.apache.commons.lang.StringUtils;
-
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 /**
  * Tree representing most of the properties in the
  * {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} model.
@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 public class ExpeditedReportTree extends TreeNode {
     public ExpeditedReportTree() {
         add(
-            section("Adverse events",
+            section(ADVERSE_EVENT_SECTION.section(),
                 // TODO: figure out how to handle the MedDRA alternative here
                 property("detectionDate", "Detection date"),
                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
@@ -32,12 +32,12 @@ public class ExpeditedReportTree extends TreeNode {
                     property("detailsForOther", "Other (specify)")
                 )
             ),
-            section("Reporter info",
+            section(REPORTER_INFO_SECTION.section(),
                 createPersonBlock("reporter"),
                 createPersonBlock("physician")
             ),
-            section("Checkpoint"), // so that ordering lines up
-            section("Radiation intervention",
+            section(CHECKPOINT_SECTION.section()), // so that ordering lines up
+            section(RADIATION_INTERVENTION_SECTION.section(),
                 property("radiationIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -53,7 +53,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("adjustment", "Adjustment")
                 )
             ),
-            section("Surgery intervention",
+            section(SURGERY_INTERVENTION_SECTION.section(),
                 property("surgeryIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -61,7 +61,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("interventionDate", "Intervention date")
                 )
             ),
-            section("Medical device",
+            section(MEDICAL_DEVICE_SECTION.section(),
             	property("medicalDevice",
             		property("brandName", "Brand name"),
             		property("commonName", "Common name"),
@@ -86,7 +86,7 @@ public class ExpeditedReportTree extends TreeNode {
             		property("returnedDate", "Returned date")
             	)
             ),
-            section("Event and response description",
+            section(DESCRIPTION_SECTION.section(),
             	property("responseDescription",
             		property("eventDescription","Description"),
             		property("presentStatus","Present status"),
@@ -95,7 +95,7 @@ public class ExpeditedReportTree extends TreeNode {
             		property("dateRemovedFromProtocol","Date removed from protocol")
             	)
             ),
-            section("Medical info",
+            section(MEDICAL_INFO_SCECTION.section(),
                 property("participantHistory",
                     participantMeasure("height"),
                     participantMeasure("weight"),
@@ -113,7 +113,7 @@ public class ExpeditedReportTree extends TreeNode {
                     )
                 )
             ),
-            section("Treatment Information",
+            section(TREATMENT_INFO_SECTION.section(),
                property("treatmentInformation",
             	   property("treatmentAssignmentCode","Assignment code"),
             	   property("firstCourseDate","First course start date"),
@@ -121,7 +121,7 @@ public class ExpeditedReportTree extends TreeNode {
             	   property("adverseEventCourse",
             			   property("date","Adverse event course start date"),
             			   property("number","Adverse event course number")
-            			   )
+            	   )
                )
             )
         );
