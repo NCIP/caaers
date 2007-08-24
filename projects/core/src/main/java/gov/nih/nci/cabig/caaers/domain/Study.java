@@ -104,6 +104,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
 		lazyListHelper.add(StudyAmendment.class, new InstantiateFactory<StudyAmendment>(StudyAmendment.class));
 
+		lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(
+				TreatmentAssignment.class));
+
 		// mandatory, so that the lazy-projected list is created/managed properly.
 		setStudyOrganizations(new ArrayList<StudyOrganization>());
 		setStudyAgentsInternal(new ArrayList<StudyAgent>());
@@ -115,6 +118,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public void addStudyOrganization(final StudyOrganization so) {
 		getStudyOrganizations().add(so);
 		so.setStudy(this);
+	}
+
+	public void addTreatmentAssignment(final TreatmentAssignment treatmentAssignment) {
+		getTreatmentAssignments().add(treatmentAssignment);
+		treatmentAssignment.setStudy(this);
 	}
 
 	public void removeStudyOrganization(final StudyOrganization so) {
@@ -523,6 +531,25 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void setStudyAmendments(final List<StudyAmendment> amendments) {
 		setStudyAmendmentsInternal(amendments);
+	}
+
+	@OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
+		return lazyListHelper.getInternalList(TreatmentAssignment.class);
+	}
+
+	public void setTreatmentAssignmentsInternal(List<TreatmentAssignment> treatmentAssignments) {
+		lazyListHelper.setInternalList(TreatmentAssignment.class, treatmentAssignments);
+	}
+
+	@Transient
+	public List<TreatmentAssignment> getTreatmentAssignments() {
+		return lazyListHelper.getLazyList(TreatmentAssignment.class);
+	}
+
+	public void setTreatmentAssignments(List<TreatmentAssignment> treatmentAssignments) {
+		setTreatmentAssignmentsInternal(treatmentAssignments);
 	}
 
 	// TODO Why rules is still using primarySponsorCode... (check)
