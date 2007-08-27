@@ -1,8 +1,24 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADVERSE_EVENT_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CHECKPOINT_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.DESCRIPTION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.LABS_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_DEVICE_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_INFO_SCECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OTHER_CAUSE_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRE_EXISTING_CONDITION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRIOR_THERAPIES_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.RADIATION_INTERVENTION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.REPORTER_INFO_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SURGERY_INTERVENTION_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.TREATMENT_INFO_SECTION;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+
 import org.apache.commons.lang.StringUtils;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 /**
  * Tree representing most of the properties in the
  * {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport} model.
@@ -219,15 +235,6 @@ public class ExpeditedReportTree extends TreeNode {
     	);
     }
 
-    // DONOT MODIFY NAMES EVEN IF THEY CHANGES....this is tied up with rules ....
-    public static String[] getAllSectionNames() {
-    	
-    	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
-    	String[] sectionNames = new String[expeditedReportSections.length];
-    	for (int i=0;i<expeditedReportSections.length;i++ ){
-    		sectionNames[i] = expeditedReportSections[i].displayName();
-    	}
-    	return sectionNames;
-    }
+
 
 }
