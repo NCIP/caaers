@@ -197,6 +197,7 @@ public class LogObjectFormatter {
 		/**
 		 * Build Asserted Objects Line
 		 */
+		/**
 		k = "Asserted Objects".length();
 		x = (headerWidth-k)/2;
 
@@ -213,13 +214,13 @@ public class LogObjectFormatter {
 		builder.append(line(headerWidth-2));
 		builder.append(columnSeperator());
 		builder.append("\n");
-
+        */
 
 		/**
 		 * Build Asserted Objects Table
 		 * Row 1
 		 */
-
+        /**
 		List<Object> objects = dc.getAssertedObjects();
 
 		for(int s=0;s<objects.size();s++){
@@ -234,7 +235,7 @@ public class LogObjectFormatter {
 				drawStudyAgent(builder,offSet,headerWidth,(StudyAgent)obj);
 			}
 		}
-
+         */
 		drawRuleExecutionSummary(builder,offSet,headerWidth,dc);
 
 
@@ -698,14 +699,16 @@ public class LogObjectFormatter {
 		AssertedObjectTableWidthFinder aw = new AssertedObjectTableWidthFinder();
 		int i =0;
 		int j = dc.getFiredRuleSetInfo().getMaxWidth();
-		int k = aw.maxWidth(dc.getAssertedObjects());
+		//int k = aw.maxWidth(dc.getAssertedObjects());
 
 		if(j>i){
 			i=j;
 		}
+		/**
 		if(k>i){
 			i=k;
 		}
+		*/
 		return i*3;
 	}
 
