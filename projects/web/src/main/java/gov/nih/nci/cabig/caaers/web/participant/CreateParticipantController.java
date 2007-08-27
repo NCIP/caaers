@@ -106,11 +106,7 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 		setFlow(new Flow<NewParticipantCommand>("Create Participant"));
 		getFlow().addTab(new Tab("Enter Participant Information", "New Participant", "par/par_create_participant") {
 
-			private InputFieldGroup participantFieldGroup;
 
-			private InputFieldGroup siteFieldGroup;
-
-			private RepeatingFieldGroupFactory rfgFactory;
 
 			private static final String PARTICIPANT_FIELD_GROUP = "participant";
 
@@ -133,64 +129,60 @@ public class CreateParticipantController extends AbstractTabbedFlowFormControlle
 
 			private Map<String, InputFieldGroup> createFieldGroups(final NewParticipantCommand command) {
 
-				if (siteFieldGroup == null) {
+				InputFieldGroup participantFieldGroup;
+				InputFieldGroup siteFieldGroup;
+				RepeatingFieldGroupFactory rfgFactory;
 
-					siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
+				siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
 
-					Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-					options.put("", "Please select");
-					List<Organization> organizations = organizationDao.getOrganizationsHavingStudySites();
-					if (organizations != null) {
-						options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
-					}
-					siteFieldGroup.getFields().add(
-							InputFieldFactory.createSelectField("organization", "Site", true, options));
-
+				Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+				options.put("", "Please select");
+				List<Organization> organizations = organizationDao.getOrganizationsHavingStudySites();
+				if (organizations != null) {
+					options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
 				}
+				siteFieldGroup.getFields().add(
+						InputFieldFactory.createSelectField("organization", "Site", true, options));
 
-				if (participantFieldGroup == null) {
 
-					participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createTextField("firstName", "First Name", true));
+				participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createTextField("firstName", "First Name", true));
 
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createTextField("lastName", "Last Name", true));
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createTextField("maidenName", "Maiden Name", false));
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createTextField("middleName", "Middle Name", false));
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createDateField("dateOfBirth", "Date of Birth", true));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createTextField("lastName", "Last Name", true));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createTextField("maidenName", "Maiden Name", false));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createTextField("middleName", "Middle Name", false));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createDateField("dateOfBirth", "Date of Birth", true));
 
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createSelectField("gender", "Gender", true, collectOptions(listValues
-									.getParticipantGender())));
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createSelectField("ethnicity", "Ethnicity", true,
-									collectOptions(listValues.getParticipantEthnicity())));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createSelectField("gender", "Gender", true, collectOptions(listValues
+								.getParticipantGender())));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createSelectField("ethnicity", "Ethnicity", true,
+								collectOptions(listValues.getParticipantEthnicity())));
 
-					participantFieldGroup.getFields().add(
-							InputFieldFactory.createSelectField("race", "Race", true, collectOptions(listValues
-									.getParticipantRace())));
-				}
-				if (rfgFactory == null) {
-					rfgFactory = new RepeatingFieldGroupFactory("main", "identifiers");
-					rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
+				participantFieldGroup.getFields().add(
+						InputFieldFactory.createSelectField("race", "Race", true, collectOptions(listValues
+								.getParticipantRace())));
+				rfgFactory = new RepeatingFieldGroupFactory("main", "identifiers");
+				rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
 
-					Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-					List<ListValues> list = listValues.getParticipantIdentifierType();
-					options.put("", "Please select");
-					options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
+				options = new LinkedHashMap<Object, Object>();
+				List<ListValues> list = listValues.getParticipantIdentifierType();
+				options.put("", "Please select");
+				options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
 
-					rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
+				rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
 
-					rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
-					rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
-							"Organization Identifier", false));
-					rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
+				rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
+				rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
+						"Organization Identifier", false));
+				rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
-				}
 
 				InputFieldGroupMap map = new InputFieldGroupMap();
 				map.addRepeatingFieldGroupFactory(rfgFactory, command.getIdentifiers().size());
