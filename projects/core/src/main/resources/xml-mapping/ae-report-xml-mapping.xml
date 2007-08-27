@@ -140,19 +140,21 @@
     </field>
   </class>
     
-  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
+    
+  <class name="gov.nih.nci.cabig.caaers.domain.Physician" extends="gov.nih.nci.cabig.caaers.domain.PersonContact">
     <map-to xml="Physician"  />
-    <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
+    <field name="contactMechanisms" type="java.lang.String" collection="map">
       <bind-xml name="ContactMechanism"/>
     </field> 
   </class>  
 
-  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
+  <class name="gov.nih.nci.cabig.caaers.domain.Reporter" extends="gov.nih.nci.cabig.caaers.domain.PersonContact">
     <map-to xml="Reporter"  />
-    <field name="contactMechanisms" type="gov.nih.nci.cabig.caaers.domain.ContactMechanism" collection="arraylist">
+    <field name="contactMechanisms" type="java.lang.String" collection="map">
       <bind-xml name="ContactMechanism"/>
     </field> 
   </class>  
+  
   
 <!--   
   <class name="gov.nih.nci.cabig.caaers.domain.Person">
@@ -169,8 +171,10 @@
   </class>  
 -->
 
-  <class name="gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson">
-    <map-to xml="AdverseEventReportPerson"  />
+ 
+ 
+  <class name="gov.nih.nci.cabig.caaers.domain.PersonContact">
+    <map-to xml="PersonContact"  />
 
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
@@ -181,18 +185,7 @@
     <field name="lastName" type="string">
       <bind-xml name="lastName" node="element" />
     </field>  
-  </class>  
-  
-  <class name="gov.nih.nci.cabig.caaers.domain.ContactMechanism">
-    <map-to xml="ContactMechanism"  />
-
-    <field name="type" type="string">
-      <bind-xml name="type" node="attribute"/>
-    </field>
-    <field name="value" type="string">
-      <bind-xml name="value" />
-    </field> 
-  </class> 
+  </class>   
   
   <class name="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
     <map-to xml="ConcomitantMedication"  />
@@ -212,21 +205,19 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-    <field name="otherPrimaryDiseaseCode" type="string">
-      <bind-xml name="otherPrimaryDiseaseCode" node="element" />
+    <field name="otherPrimaryDisease" type="string">
+      <bind-xml name="otherPrimaryDisease" node="element" />
     </field>
-    <field name="otherPrimaryDiseaseSiteCode" type="string">
-      <bind-xml name="otherPrimaryDiseaseSiteCode" node="element" />
+    <field name="otherPrimaryDiseaseSite" type="string">
+      <bind-xml name="otherPrimaryDiseaseSite" node="element" />
     </field>
-    <field name="dateOfInitialPathologicDiagnosis" type="date">
-      <bind-xml name="dateOfInitialPathologicDiagnosis" node="element" />
+    <field name="diagnosisDate" type="date">
+      <bind-xml name="diagnosisDate" node="element" />
     </field>
-    <field name="metastaticDiseaseSite" type="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite" collection="arraylist">
+    <field name="metastaticDiseaseSites" type="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite" collection="arraylist">
       <bind-xml name="MetastaticDiseaseSite"/>
     </field>
-    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
-      <bind-xml name="AnatomicSite"/>
-    </field>
+
   </class>  
 
   <class name="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite">
@@ -234,12 +225,7 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-    <field name="otherMetastaticDiseaseSite" type="string">
-      <bind-xml name="otherMetastaticDiseaseSite" node="element" />
-    </field>
-    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
-      <bind-xml name="AnatomicSite"/>
-    </field>
+
   </class> 
 
   <class name="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
@@ -278,10 +264,11 @@
     <field name="courseAgentAttributions" type="gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution" collection="arraylist">
       <bind-xml name="CourseAgentAttribution"/>
     </field>
+    <!--
     <field name="CtcTerm" type="gov.nih.nci.cabig.caaers.domain.CtcTerm">
       <bind-xml name="CtcTerm"/>
     </field>
-    <!--
+    
     <field name="attributionSummary" type="gov.nih.nci.cabig.caaers.domain.Attribution">
       <bind-xml name="attributionSummary"/>
     </field>
@@ -430,21 +417,7 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-    <field name="weight" type="float">
-      <bind-xml name="weight" node="element" />
-    </field>
-    <field name="height" type="float">
-      <bind-xml name="height" node="element" />
-    </field>
-    <field name="baselinePerformanceStatus" type="string">
-      <bind-xml name="baselinePerformanceStatus" node="element" />
-    </field>
-    <field name="heightUnitOfMeasure" type="string">
-      <bind-xml name="heightUnitOfMeasure" node="element" />
-    </field>
-    <field name="weightUnitOfMeasure" type="string">
-      <bind-xml name="weightUnitOfMeasure" node="element" />
-    </field>
+   
   </class> 
 
   <class name="gov.nih.nci.cabig.caaers.domain.CtcTerm">
@@ -458,18 +431,7 @@
     <field name="select" type="string">
       <bind-xml name="select" node="element" />
     </field>
-    <field name="ctepTerm" type="string">
-      <bind-xml name="ctepTerm" node="element" />
-    </field>
-    <field name="ctepCode" type="integer">
-      <bind-xml name="ctepCode" node="element" />
-    </field>
-    <field name="otherRequired" type="boolean">
-      <bind-xml name="otherRequired" node="element" />
-    </field>
-    <field name="category" type="gov.nih.nci.cabig.caaers.domain.CtcCategory">
-      <bind-xml name="CtcCategory"/>
-    </field>
+
   </class> 
 
   
@@ -599,12 +561,8 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-    <field name="irbApprovalDate" type="date">
-      <bind-xml name="irbApprovalDate" node="element" />
-    </field>
-    <field name="roleCode" type="string">
-      <bind-xml name="roleCode" node="element" />
-    </field>
+
+
     <field name="statusCode" type="string">
       <bind-xml name="statusCode" node="element" />
     </field>
@@ -617,20 +575,10 @@
     <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
       <bind-xml name="Study" />
     </field>
-    <field name="site" type="gov.nih.nci.cabig.caaers.domain.Site">
-      <bind-xml name="Site" />
-    </field>  
+ 
  </class>   
 
-  <class name="gov.nih.nci.cabig.caaers.domain.Site">
-    <map-to xml="Site"  />
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element" />
-    </field>
-    <field name="name" type="string">
-      <bind-xml name="name" node="element" />
-    </field>
- </class> 
+
 
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
     <map-to xml="Study"  />
