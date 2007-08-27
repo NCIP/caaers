@@ -52,5 +52,8 @@
 			</list> 
 		</property> 
 	</bean>
+	
+    <bean id="adeersReportGenerator" autowire="byType" lazy-init="true"
+    	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
 
 </beans>
