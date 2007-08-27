@@ -25,6 +25,19 @@
 		ssfrm.submit();
 	}
 	
+	function refreshDeleteButtons(){
+	  var deleteBtns = $$('.del-ss-section');
+	  if(deleteBtns.length > 1){
+	  	//deleteBtns[0].enable();
+	  	deleteBtns[0].show();
+	  }
+	  if(deleteBtns.length == 1){
+	  	//deleteBtns[0].disable();
+	  	deleteBtns[0].hide();
+	  }
+	  
+	}
+	
 	var jsStudySite = Class.create();
 	Object.extend(jsStudySite.prototype, {
             initialize: function(index, orgName) {
@@ -59,11 +72,15 @@
              addCallback: function(nextIndex) {
                 	//initilze auto completer and calendar
                 	new jsStudySite(nextIndex);
+                	refreshDeleteButtons();
              }
       	});
       	
+      	//enable-disable delete buttons
+      	refreshDeleteButtons();
+      	
     });
-
+	
 </script>
 </head>
 <body>
@@ -83,7 +100,7 @@
 			<th width="5%" class="tableHeader" style=" background-color: none">&nbsp;</th>
  		  </tr>
  		  <c:forEach varStatus="status" items="${command.studySites}">	
- 		   <study:oneStudyChildRow cssClass="ss-section" index="${status.index}" disableDelete="${status.index < 1}"  />
+ 		   <study:oneStudyChildRow cssClass="ss-section" index="${status.index}" />
  		  </c:forEach>
 		</table>
  	    </div>

@@ -6,6 +6,8 @@ import org.springframework.validation.Errors;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
@@ -16,7 +18,7 @@ public class SubmitReportTab extends AeTab {
 
     public SubmitReportTab() {
         super("Submission", "Submit Report", "ae/submitReport");
-       
+
     }
 
     @Override
@@ -25,16 +27,21 @@ public class SubmitReportTab extends AeTab {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         return groups;
     }
-    
+
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         System.out.println(command.getAeReport().getReports());
     }
-    
+
     @Override
     protected void validate(
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.SUBMIT_REPORT_SECTION;
     }
 }

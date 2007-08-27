@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
@@ -100,6 +101,11 @@ public class MedicalInfoTab extends AeTab {
 
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
         this.configurationProperty = configurationProperty;
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.MEDICAL_INFO_SCECTION;
     }
 
 }

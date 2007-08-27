@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -32,7 +33,10 @@ public class CheckpointTab extends AeTab {
     public CheckpointTab() {
         super("Is expedited reporting necessary?", "SAE?", "ae/checkpoint");
     }
-
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.CHECKPOINT_SECTION;
+    }
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
@@ -113,6 +117,7 @@ public class CheckpointTab extends AeTab {
         //find the mandatory sections.
         List<String> sections = evaluationService.mandatorySections(command.getAeReport());
         command.setMandatorySections(sections);
+        command.refreshMandatoryFieldMap();
     }
 
     private boolean optionalReportSelected(ExpeditedAdverseEventInputCommand command, ReportDefinition def) {

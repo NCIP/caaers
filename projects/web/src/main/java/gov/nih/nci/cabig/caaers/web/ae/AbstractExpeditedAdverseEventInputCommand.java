@@ -9,9 +9,11 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
@@ -35,6 +37,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected ReportDefinitionDao reportDefinitionDao;
 
     protected List<String> mandatorySections;
+    protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
         this.reportDao = reportDao;
@@ -125,7 +128,24 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	this.mandatorySections = sections;
     }
 
-    @Override
+    public void refreshMandatoryFieldMap(){
+    	if(aeReport.getReports() == null) return;
+    	for(Report report : aeReport.getReports()){
+    		for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
+    			mandatoryFieldMap.put(field.getFieldPath(), field.getMandatory());
+    		}
+    	}
+    }
+
+	public Map<String, Boolean> getMandatoryFieldMap() {
+		return mandatoryFieldMap;
+	}
+
+	public void setMandatoryFieldMap(Map<String, Boolean> mandatoryFieldMap) {
+		this.mandatoryFieldMap = mandatoryFieldMap;
+	}
+
+	@Override
     public String toString() {
         return new StringBuilder(getClass().getName())
             .append("[\n    aeReport: ").append(getAeReport())

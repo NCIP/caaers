@@ -16,7 +16,7 @@
 		</c:if>
 	</c:forEach>
 	<c:if test="${not disableDelete}">
-	<td><input type="button" value="Delete" onClick="javascript:fireDelete(${index},'${cssClass}-${index}');" /></td>
+	<td><input id="del-${empty idSuffix ? index : idSuffix}" class="del-${cssClass}" type="button" value="Delete" onClick="javascript:fireDelete(${index},'${cssClass}-${index}');" /></td>
 	</c:if>
 	<c:if test="${disableDelete}">
 	<td>&nbsp;</td>

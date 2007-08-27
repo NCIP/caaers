@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -57,5 +58,10 @@ public class PreExistingConditionsTab extends AeTab {
                 "Either a known pre Existing Condition or other is required"
             );
         }
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.PRE_EXISTING_CONDITION_SECTION;
     }
 }

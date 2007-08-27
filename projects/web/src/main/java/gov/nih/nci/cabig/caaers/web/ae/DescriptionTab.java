@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -48,5 +49,9 @@ public class DescriptionTab extends AeTab {
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         return createFieldGroupMap(Arrays.asList(allFields));
+    }
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.DESCRIPTION_SECTION;
     }
 }

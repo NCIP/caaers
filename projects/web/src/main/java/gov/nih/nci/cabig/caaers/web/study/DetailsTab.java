@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -15,6 +16,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -125,6 +128,24 @@ public class DetailsTab extends StudyTab {
 
 		}
 
+	}
+
+	@Override
+	public void postProcess(HttpServletRequest request, Study command,
+			Errors errors) {
+		super.postProcess(request, command, errors);
+		if(errors.hasErrors()) return;
+
+//		if(command.getMultiInstitutionIndicator()){
+//			//identifiers remove & add
+//			command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
+//			command.getIdentifiers().
+//		}else{
+//			//remove
+//			command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
+//			StudyCoordinatingCenter coordinatingCenter = command.getStudyCoordinatingCenter();
+//			if(coordinatingCenter != null) command.getStudyOrganizations().remove(coordinatingCenter);
+//		}
 	}
 
 	public CtcDao getCtcDao() {

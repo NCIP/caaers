@@ -3,15 +3,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.validation.Errors;
-
-
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.web.fields.AbstractInputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -34,35 +27,34 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
    @Override
    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
 	   Map <String, Object> refData = super.referenceData(command);
-	   populateSetMandatory(command, refData);
+	   Object fieldGroups = refData.get("fieldGroups");
+	   populateMandatoryFlag(fieldGroups, command, refData);
 	   return refData;
    }
+
+
 
    /**
     * Will populate the mandatory flag.
     */
     @SuppressWarnings("unchecked")
-    public void populateSetMandatory(ExpeditedAdverseEventInputCommand command, Map<String, Object> refData){
-
+    public void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData){
+      //TODO: need to see how to manage (this or that) kind mandatory fields
+      //TODO: Why not this we handle in createFields() of every tab, so that the looping through the fields
+      // here can be avoided.
 	   if(!isMandatory(command)) return;
 
-	   Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>)refData.get("fieldGroups");
+	   Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>)fieldGroups;
 	   if(groupMap == null ) return;
-	   List<String> sections = command.getMandatorySections();
-	   if(sections == null || sections.isEmpty()) return;
-	   List<Report> reports = command.getAeReport().getReports();
-	   if(reports ==  null || reports.isEmpty()) return;
-	   ReportDefinition reportDef;
-	   boolean mandatory;
+	   Map<String, Boolean> mandatoryFields = command.getMandatoryFieldMap();
+
+	   Boolean mandatory;
 	   for(InputFieldGroup group : groupMap.values()){
 		  for(InputField field : group.getFields()){
-			  for(Report report : reports){
-				  reportDef = report.getReportDefinition();
-				  mandatory = reportDef.isFieldMandatory(field.getPropertyName().split("\\.", 2)[1]);
-				  if(mandatory){
-					  field.setMandatory(true); //there may exist 2 reportdefs contradicting each other.
-				  }
-			  }
+		    mandatory = mandatoryFields.get(field.getPropertyName().split("\\.", 2)[1]);
+			if(mandatory != null && mandatory){
+				field.setMandatory(true); //there may exist 2 reportdefs contradicting each other.
+			}
 		  }
 	   }
     }
@@ -71,6 +63,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     * Check's whether this tab is mandatory
     */
     public boolean isMandatory(ExpeditedAdverseEventInputCommand command){
+    	//TODO: change to Enums
     	List<String> sections = command.getMandatorySections();
     	if(sections == null || sections.isEmpty()) return false;
     	return sections.contains(getLongTitle());
@@ -85,5 +78,5 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 		this.expeditedReportTree = expeditedReportTree;
 	}
 
-
+	public abstract ExpeditedReportSection section();
 }

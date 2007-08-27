@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -32,17 +33,17 @@ public class PriorTherapyTab extends AeTab {
         fieldFactory.addField(InputFieldFactory.createDateField("startDate", "Start Date", false));
         fieldFactory.addField(InputFieldFactory.createDateField("endDate", "End Date", false));
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapyAgents.agent", "Agent", false));
-        
+
         agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
         //agentFactory.addField(new AutocompleterField("agent", "Agent", false));
-        
-        
+
+
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	
+
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPriorTherapies().size());
         groups.addRepeatingFieldGroupFactory(agentFactory);
@@ -59,7 +60,7 @@ public class PriorTherapyTab extends AeTab {
             validatePriorTherapy(aePriorTherapy, it.previousIndex(), errors);
         }
     }
-    
+
     private void validatePriorTherapy(AdverseEventPriorTherapy aePriorTherapy, int index, Errors errors) {
         if (aePriorTherapy.getPriorTherapy() == null && aePriorTherapy.getOther() == null) {
             errors.rejectValue(
@@ -68,5 +69,9 @@ public class PriorTherapyTab extends AeTab {
                 "Either Prior Therapy or Other is required"
             );
         }
+    }
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.PRIOR_THERAPIES_SECTION;
     }
 }

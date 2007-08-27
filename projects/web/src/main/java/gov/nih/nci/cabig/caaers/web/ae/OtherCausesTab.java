@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -24,5 +25,10 @@ public class OtherCausesTab extends AeTab {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addRepeatingFieldGroupFactory(factory, command.getAeReport().getOtherCauses().size());
         return map;
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.OTHER_CAUSE_SECTION;
     }
 }

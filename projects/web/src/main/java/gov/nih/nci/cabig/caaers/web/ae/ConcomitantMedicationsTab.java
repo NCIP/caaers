@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -57,5 +58,9 @@ public class ConcomitantMedicationsTab extends AeTab {
                 "Either a known medication or other is required"
             );
         }
+    }
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
     }
 }

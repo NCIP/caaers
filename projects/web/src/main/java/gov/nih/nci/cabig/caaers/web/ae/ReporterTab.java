@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -23,6 +24,11 @@ public class ReporterTab extends AeTab {
 
     public ReporterTab() {
         super("Reporter info", "Reporter", "ae/reporter");
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.REPORTER_INFO_SECTION;
     }
 
     @Override

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -64,7 +65,7 @@ public class BasicsTabMeddra extends AeTab {
             "expected", "Expected", true));
         mainFieldFactory.addField(InputFieldFactory.createTextArea(
             "comments", "Comments", false));
-        
+
         meddraTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField lowLevelTermField = InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true);
         meddraTermFieldFactory.addField(lowLevelTermField);
@@ -106,7 +107,10 @@ public class BasicsTabMeddra extends AeTab {
             AdverseEvent ae =  lit.next();
         }
     }
-
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.BASICS_MEDRA_SECTION;
+    }
     ////// CONFIGURATION
 
     @Required

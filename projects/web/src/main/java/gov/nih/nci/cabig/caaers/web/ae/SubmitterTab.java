@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -56,7 +57,7 @@ public class SubmitterTab extends AeTab {
         group.getFields().add(createContactField(base, ReportPerson.FAX));
         return group;
     }
-    
+
     private Map<Object, Object> createExpectedOptions() {
         Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
         expectedOptions.put("", "Please select");
@@ -74,5 +75,10 @@ public class SubmitterTab extends AeTab {
     ) {
         return InputFieldFactory.createTextField(
             base + "contactMechanisms[" + contactType + ']', displayName, required);
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.SUBMITTER_SECTION;
     }
 }

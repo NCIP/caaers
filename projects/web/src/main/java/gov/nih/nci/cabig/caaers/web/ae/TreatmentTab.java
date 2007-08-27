@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -85,5 +86,10 @@ public class TreatmentTab extends AeTab {
             .addField(InputFieldFactory.createTextField("units", "units", required))
             .addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
         return new CompositeField(doseProperty, group);
+    }
+
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.TREATMENT_INFO_SECTION;
     }
 }

@@ -84,7 +84,49 @@
 			</table>
 			
 		</chrome:division>
+		
+		<chrome:division title="Treatment Information">
 			
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
+			  <tr>
+			  	  <td width="50%" VALIGN="top">
+			   		<chrome:division title=""  cssClass="paired" >
+					 <rd:renderMandatoryFields key="Treatment information" />
+			   		</chrome:division>
+			 	  </td>
+			 	  <td width="50%" VALIGN="top">
+			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
+			    	  <rd:renderMandatoryFields key="Treatment information~Course Agents" />
+			   		  <rd:renderMandatoryFields key="Treatment information~Course Agents~Dosage" tabular="true" heading="Dosage" singleRow="true"/>
+			   		  <rd:renderMandatoryFields key="Treatment information~Course Agents~ModifiedDose" tabular="true" heading="Modified dose" singleRow="true"/>
+			   		</chrome:division>
+			 	  </td>
+			  </tr>
+			</table>
+			
+		</chrome:division>
+		<chrome:division title="Labs">
+		<rd:renderMandatoryFields key="Labs~Labs" />
+		<rd:renderMandatoryFields key="Labs~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="Labs~Labs~Worst" heading="Wrost" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="Labs~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
+		</chrome:division>
+		
+		<chrome:division title="Prior Therapies">
+		<rd:renderMandatoryFields key="Prior therapies~Prior Therapys" />
+		</chrome:division>
+		
+		<chrome:division title="Pre-Existing Condictions">
+		<rd:renderMandatoryFields key="Pre-existing condictions~AdverseEventPreExistingConds" />
+		</chrome:division>
+		
+		<chrome:division>
+		<rd:renderMandatoryFields key="Concomitant medications~ConcomitantMedications" />
+		</chrome:division>
+		
+		<chrome:division title="Other contributing causes">
+			<rd:renderMandatoryFields key="Other contributing causes~OtherCausess" />
+		</chrome:division>
 		</jsp:attribute>
 	</tags:tabForm> 
 </body>

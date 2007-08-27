@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -45,9 +46,9 @@ public class BasicsTab extends AeTab {
     private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
     public BasicsTab() {
-    	
+
         super("Enter basic AE information", "AEs", "ae/enterBasic");
-        
+
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
             "aeReport.detectionDate", "Detection date", true));
@@ -119,13 +120,16 @@ public class BasicsTab extends AeTab {
 
     private void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
         CtcTerm ctcTerm = ae.getAdverseEventCtcTerm().getCtcTerm();
-        
+
         if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null) {
             InputField field = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
         }
     }
-
+    @Override
+    public ExpeditedReportSection section() {
+    	return ExpeditedReportSection.BASICS_SECTION;
+    }
     ////// CONFIGURATION
 
     @Required

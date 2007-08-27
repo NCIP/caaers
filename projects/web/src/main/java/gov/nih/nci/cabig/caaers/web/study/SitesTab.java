@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -32,8 +34,16 @@ class SitesTab extends StudyTab {
     @Override
 	public void postProcess(HttpServletRequest request, Study command, Errors errors) {
         String action = request.getParameter("_action");
+
         if ("removeSite".equals(action)) {
-            command.getStudySites().remove(Integer.parseInt(request.getParameter("_selected")));
+        	int index = Integer.parseInt(request.getParameter("_selected"));
+        	StudySite site = command.getStudySites().get(index);
+        	if(CollectionUtils.isEmpty(site.getStudyInvestigators()) &&
+        	   CollectionUtils.isEmpty(site.getStudyPersonnels())){
+        		command.getStudySites().remove(index);
+        		return;
+        	}
+        	errors.reject("site.notempty", "Site that is being deleted is associated to investigators and research staffs");
         }
     }
 
