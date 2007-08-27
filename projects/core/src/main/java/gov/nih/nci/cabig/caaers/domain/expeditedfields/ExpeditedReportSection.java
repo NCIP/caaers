@@ -1,28 +1,32 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 public enum ExpeditedReportSection {
-
-	ADVERSE_EVENT_SECTION("Adverse events", "Adverse Events"),
-	REPORTER_INFO_SECTION("Reporter info", "Reporter Info"),
-	CHECKPOINT_SECTION("Checkpoint", "Checkpoint"),
-	RADIATION_INTERVENTION_SECTION("Radiation intervention","Radiation Intervention"),
-	SURGERY_INTERVENTION_SECTION("Surgery intervention","Surgery Intervention"),
-	MEDICAL_DEVICE_SECTION("Medical device", "Medical Device"),
-	DESCRIPTION_SECTION("Event and response description", "Description"),
-	MEDICAL_INFO_SCECTION("Medical info", "Medical Info"),
-	TREATMENT_INFO_SECTION("Treatment information","Treatment Information")
+	BASICS_SECTION("Basic AE information"),
+	BASICS_MEDRA_SECTION("Basic AE information"),
+	ADVERSE_EVENT_SECTION("Adverse events"),
+	REPORTER_INFO_SECTION("Reporer Information"),
+	CHECKPOINT_SECTION("Checkpoint"),
+	RADIATION_INTERVENTION_SECTION("Radiation Intervention"),
+	SURGERY_INTERVENTION_SECTION("Surgery Intervention"),
+	MEDICAL_DEVICE_SECTION("Medical Device"),
+	DESCRIPTION_SECTION("Description"),
+	MEDICAL_INFO_SCECTION("Medical"),
+	TREATMENT_INFO_SECTION("Treatment"),
+	LABS_SECTION("Labs"),
+	PRIOR_THERAPIES_SECTION("Therapies"),
+	PRE_EXISTING_CONDITION_SECTION( "Pre-Existing Conditions"),
+	CONCOMITANT_MEDICATION_SECTION("Concomitant medications"),
+	OTHER_CAUSE_SECTION("Other contributing causes"),
+	ATTRIBUTION_SECTION("Attribution"),
+	ADDITIONAL_INFO_SECTION("Additional Information")
 	;
-	private String section;
-	private String tabTitle;
+	private String displayName;
 
-	private ExpeditedReportSection(String section, String tabTitle){
-		this.section = section;
-		this.tabTitle = tabTitle;
+	private ExpeditedReportSection(String displayName){
+		this.displayName = displayName;
 	}
-	public String section() {
-		return section;
+	public String displayName() {
+		return displayName;
 	}
-	public String tabTitle() {
-		return tabTitle;
-	}
+
 }
