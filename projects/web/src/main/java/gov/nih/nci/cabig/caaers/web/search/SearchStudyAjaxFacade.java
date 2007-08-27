@@ -37,6 +37,11 @@ import org.extremecomponents.table.core.TableModelImpl;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.bean.Export;
 import org.extremecomponents.table.view.CsvView;
+import org.extremecomponents.table.limit.LimitFactory;
+import org.extremecomponents.table.limit.Limit;
+import org.extremecomponents.table.limit.TableLimitFactory;
+import org.extremecomponents.table.limit.TableLimit;
+
 public class SearchStudyAjaxFacade {
 	private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
@@ -71,15 +76,11 @@ public class SearchStudyAjaxFacade {
         table.setVar("study");
         table.setAction(model.getContext().getContextPath() + "/pages/search/study");
         table.setTitle("");
-        table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(true);
-        //table.setRowsDisplayed(10);
-        //table.setShowPagination(true);
-        //table.setShowExports(true);
-        //table.setShowStatusBar(true);
+        table.setShowPagination(true);
         model.addTable(table);
 
 
@@ -134,11 +135,12 @@ public class SearchStudyAjaxFacade {
         table.setItems(participants);
         table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
         table.setTitle("");
-        table.setShowPagination(false);
+        table.setShowPagination(true);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(true);
+        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -199,12 +201,12 @@ public class SearchStudyAjaxFacade {
         table.setItems(adverseEvents);
         table.setAction(model.getContext().getContextPath() + "/pages/search/adverseEvent");
         table.setTitle("");
-        table.setShowPagination(false);
         table.setShowExports(true);
         table.setOnInvokeAction("buildTable('searchForm')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(true);
+        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -287,11 +289,11 @@ public class SearchStudyAjaxFacade {
         table.setItems(expeditedReports);
         table.setAction(model.getContext().getContextPath() + "/pages/search/report");
         table.setTitle("");
-        table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(true);
+        table.setShowPagination(true);
         model.addTable(table);
 
         Export export = model.getExportInstance();
@@ -369,10 +371,10 @@ public class SearchStudyAjaxFacade {
         table.setItems(expeditedReports);
         table.setAction(model.getContext().getContextPath() + "/pages/search/report");
         table.setTitle("");
-        table.setShowPagination(false);
         table.setOnInvokeAction("buildTable('assembler')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
+        table.setShowPagination(true);
         table.setSortable(true);
         model.addTable(table);
 
@@ -736,7 +738,7 @@ public class SearchStudyAjaxFacade {
 	   if (parameterMap != null) {
 
 			for (Object key : parameterMap.keySet()) {
-				log.debug(key.toString() + " -- " + parameterMap.get(key));
+				System.out.println(key.toString() + " -- " + parameterMap.get(key));
 			}
 		}
 
@@ -777,7 +779,6 @@ public class SearchStudyAjaxFacade {
 		}
 		log.debug("Participants :: " + participants.size());
 
-
        Context context = null;
        if (parameterMap == null) {
          context = new HttpServletRequestContext(request);
@@ -786,6 +787,11 @@ public class SearchStudyAjaxFacade {
        }
 
        TableModel model = new TableModelImpl(context);
+       //LimitFactory limitFactory = new TableLimitFactory(context);
+       //Limit limit = new TableLimit(limitFactory);
+       //limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
+       //model.setLimit(limit);
+       
        try {
          return buildParticipant(model, participants).toString();
        } catch (Exception e) {

@@ -65,7 +65,10 @@
             <a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             <c:choose>
                 <c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
-                    ${report.adverseEvents[0].adverseEventTerm.universalTerm}
+                    <c:forEach items="${report.adverseEvents}" var="adverseEvent">
+                		${adverseEvent.adverseEventTerm.universalTerm}<br />
+                
+    				</c:forEach>
                 </c:when>
                 <c:when test="${not empty report.labs}">
                     [Lab-based incomplete AE]
@@ -92,7 +95,7 @@
     </ec:row>
 </ec:table>
 <br>
-<h2>Routine Reports</h2>
+<h2>Routine AEs</h2>
 <ec:table
     items="command.assignment.aeRoutineReports"
     var="routineReport" imagePath="${ecImagePath}"
@@ -105,7 +108,11 @@
             <a href="<c:url value="/pages/ae/editRoutine?aeRoutineReport=${routineReport.id}"/>">
             <c:choose>
                 <c:when test="${not empty routineReport.adverseEvents[0].adverseEventTerm}">
-                    ${routineReport.adverseEvents[0].adverseEventTerm.universalTerm}
+                	<c:forEach items="${routineReport.adverseEvents}" var="adverseEvent">
+                		${adverseEvent.adverseEventTerm.universalTerm}<br />
+                
+    				</c:forEach>
+                    
                 </c:when>
                 <c:otherwise>
                     [Incomplete AE]

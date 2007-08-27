@@ -30,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainObjectDao<T> {
+	
+	protected static final int DEFAULT_MAX_RESULTS_SIZE = 0;
+	
 	/**
 	 * A variation of {@link #findBySubname} that does not allow for extra conditions
 	 */
@@ -113,6 +116,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 				query.append(" and ");
 			}
 		}
+		System.out.println(getHibernateTemplate().getMaxResults());
 		getHibernateTemplate().setMaxResults(30);
 		return getHibernateTemplate().find(query.toString(), params.toArray());
 	}
