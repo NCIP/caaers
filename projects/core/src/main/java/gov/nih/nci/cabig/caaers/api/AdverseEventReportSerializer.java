@@ -117,7 +117,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setParticipantHistory(getParticipantHistory(hibernateAdverseEventReport.getParticipantHistory()));
 
 	    	//build StudyParticipantAssignment
-	    	//aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
+	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
