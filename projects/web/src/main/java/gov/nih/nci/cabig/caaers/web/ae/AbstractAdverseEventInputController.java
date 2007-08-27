@@ -40,6 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -49,6 +50,7 @@ public abstract class AbstractAdverseEventInputController
     extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+    private static final int SUBMISSION_PAGE = 17;
     private final Log log = LogFactory.getLog(getClass());
 
     protected ParticipantDao participantDao;
@@ -107,6 +109,19 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerEnumEditor(binder, PostAdverseEventStatus.class);
         ControllerTools.registerEnumEditor(binder, RadiationAdministration.class);
         ControllerTools.registerEnumEditor(binder, Availability.class);
+    }
+    
+    @Override
+    protected int getInitialPage(HttpServletRequest request){
+    	boolean isReportSubmission = request.getParameter("action") != null ? request
+				.getParameter("action").equals("reportSubmission") ? true
+				: false
+				: false; 
+    	log.debug("This is a report Submission");
+    	if ( isReportSubmission ){
+    		return SUBMISSION_PAGE;
+    	}
+    	return super.getInitialPage(request);	
     }
 
     @Override

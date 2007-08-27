@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import org.apache.commons.lang.StringUtils;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 /**
@@ -133,9 +133,9 @@ public class ExpeditedReportTree extends TreeNode {
             property("firstName", "First name"),
             property("middleName", "Middle name"),
             property("lastName", "Last name"),
-            contactField(ExpeditedReportPerson.EMAIL, "E-mail address"),
-            contactField(ExpeditedReportPerson.PHONE),
-            contactField(ExpeditedReportPerson.FAX)
+            contactField(ReportPerson.EMAIL, "E-mail address"),
+            contactField(ReportPerson.PHONE),
+            contactField(ReportPerson.FAX)
         );
     }
 

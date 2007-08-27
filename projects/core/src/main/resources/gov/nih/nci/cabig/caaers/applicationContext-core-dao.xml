@@ -64,6 +64,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
+				<value>gov.nih.nci.cabig.caaers.domain.Submitter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>                

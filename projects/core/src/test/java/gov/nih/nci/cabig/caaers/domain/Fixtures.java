@@ -78,10 +78,10 @@ public class Fixtures {
         return report;
     }
 
-    private static <T extends ExpeditedReportPerson> T makeExpeditedReportPersonSavable(T person) {
+    private static <T extends ReportPerson> T makeExpeditedReportPersonSavable(T person) {
         person.setFirstName("Frank");
         person.setLastName("Just Frank");
-        person.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "just@frank.net");
+        person.getContactMechanisms().put(ReportPerson.EMAIL, "just@frank.net");
         return person;
     }
 

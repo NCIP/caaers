@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -54,6 +55,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private Date createdOn;
     private Date dueOn;
     private Date submittedOn;
+    
+    private Submitter submitter;
+    private Boolean physicianSignoff;
 
     private ReportStatus status = ReportStatus.PENDING;
 
@@ -166,6 +170,33 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setReportDeliveries(List<ReportDelivery> deliveries) {
 		this.deliveries = deliveries;
 	}
+	
+	@Transient
+	public void addSubmitter(){
+		if (submitter == null) setSubmitter(new Submitter());
+	}
+	
+	// non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
+    @OneToOne(mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public Submitter getSubmitter() {
+       //if (submitter == null) setSubmitter(new Submitter());
+       return submitter;
+    }
+
+    public void setSubmitter(Submitter submitter) {
+        this.submitter = submitter;
+        if (submitter != null) submitter.setReport(this);
+    }
+    
+    @Column(name="physician_signoff")
+	public Boolean getPhysicianSignoff() {
+		return physicianSignoff;
+	}
+
+	public void setPhysicianSignoff(Boolean physicianSignoff) {
+		this.physicianSignoff = physicianSignoff;
+	}
 
 
 	////// OBJECT METHODS
@@ -181,6 +212,11 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         if(notifications != null){
         	for (ScheduledNotification sn : notifications) {
         		sb.append("\r\n").append(String.valueOf(sn));
+        	}
+        }
+        if(deliveries != null){
+        	for (ReportDelivery delivery : deliveries) {
+        		sb.append("\r\n").append(String.valueOf(delivery));
         	}
         }
         sb.append("]");

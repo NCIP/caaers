@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -82,11 +82,11 @@ public abstract class AeWebTestCase extends WebTestCase {
         c.getAeReport().setReporter(new Reporter());
         c.getAeReport().getReporter().setFirstName("Dan");
         c.getAeReport().getReporter().setLastName("McReporter");
-        c.getAeReport().getReporter().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "dan@example.com");
+        c.getAeReport().getReporter().getContactMechanisms().put(ReportPerson.EMAIL, "dan@example.com");
         c.getAeReport().setPhysician(new Physician());
         c.getAeReport().getPhysician().setFirstName("Jim");
         c.getAeReport().getPhysician().setLastName("O'Physician");
-        c.getAeReport().getPhysician().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "docjim@example.com");
+        c.getAeReport().getPhysician().getContactMechanisms().put(ReportPerson.EMAIL, "docjim@example.com");
 
         return c;
     }

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -24,25 +25,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Rhett Sutphin
+ * @author Krikor Krumlian
  */
-@Entity
-@Table(name = "ae_report_people")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "role",
-    discriminatorType = DiscriminatorType.STRING
-)
-@DiscriminatorValue("ABSTRACT_BASE") // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_ae_report_people_id")
-    }
-)
-public abstract class ExpeditedReportPerson extends Person implements ExpeditedAdverseEventReportChild {
+@MappedSuperclass
+public abstract class PersonContact extends Person {
     private Map<String, String> contactMechanisms = new HashMap<String, String>();
-
-    private ExpeditedAdverseEventReport report;
 
     // TODO: it may be more appropriate to locate these constants somewhere else
 
@@ -71,15 +58,6 @@ public abstract class ExpeditedReportPerson extends Person implements ExpeditedA
 
     ////// BOUND PROPERTIES
 
-    @OneToOne
-    @JoinColumn(name="report_id")
-    public ExpeditedAdverseEventReport getReport() {
-        return report;
-    }
-
-    public void setReport(ExpeditedAdverseEventReport report) {
-        this.report = report;
-    }
 
     @CollectionOfElements
     @JoinTable(

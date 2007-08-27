@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -67,7 +67,7 @@ public class ReportServiceTest extends CaaersTestCase {
 
 		aeReport = new ExpeditedAdverseEventReport();
 		Reporter reporter = new Reporter();
-		reporter.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, REPORTER_EMAIL_ADDRESS);
+		reporter.getContactMechanisms().put(ReportPerson.EMAIL, REPORTER_EMAIL_ADDRESS);
 		aeReport.setReporter(reporter);
 
 		Participant p = new Participant();
@@ -162,7 +162,7 @@ public class ReportServiceTest extends CaaersTestCase {
 	}
 
 	public void testFindContactValueOfType() {
-		String address = service.findContactMechanismValue(REPORTER_ROLE, ExpeditedReportPerson.EMAIL, aeReport);
+		String address = service.findContactMechanismValue(REPORTER_ROLE, ReportPerson.EMAIL, aeReport);
 		assertEquals("email should be same", REPORTER_EMAIL_ADDRESS, address);
 	}
 

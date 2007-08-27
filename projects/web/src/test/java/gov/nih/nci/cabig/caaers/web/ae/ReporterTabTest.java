@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import static org.easymock.EasyMock.expect;
@@ -90,7 +90,7 @@ public class ReporterTabTest extends AeTabTestCase {
     }
 
     public void testReporterEmailAddressRequired() throws Exception {
-        command.getAeReport().getReporter().getContactMechanisms().remove(ExpeditedReportPerson.EMAIL);
+        command.getAeReport().getReporter().getContactMechanisms().remove(ReportPerson.EMAIL);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.reporter.contactMechanisms[e-mail]", "E-mail address");
     }
@@ -108,7 +108,7 @@ public class ReporterTabTest extends AeTabTestCase {
     }
 
     public void testPhysicianEmailAddressRequired() throws Exception {
-        command.getAeReport().getPhysician().getContactMechanisms().remove(ExpeditedReportPerson.EMAIL);
+        command.getAeReport().getPhysician().getContactMechanisms().remove(ReportPerson.EMAIL);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]", "E-mail address");
     }

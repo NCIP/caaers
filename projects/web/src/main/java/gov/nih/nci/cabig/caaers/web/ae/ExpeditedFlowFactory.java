@@ -40,6 +40,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         flow.addTab(new AttributionTab());
         flow.addTab(new AdditionalInformationTab());
         flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+        flow.addTab(new ViewReportTab());
     }
 
     public Flow<ExpeditedAdverseEventInputCommand> createFlow(ExpeditedAdverseEventInputCommand command) {

@@ -21,7 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
@@ -174,8 +174,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong reporter", -100, (int) actual.getId());
         assertEquals("DiMaggio", actual.getLastName());
         assertEquals("Wrong number of contact mechanisms", 2, actual.getContactMechanisms().size());
-        assertEquals("joltin@joe.com", actual.getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
-        assertEquals("212 555-1212", actual.getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+        assertEquals("joltin@joe.com", actual.getContactMechanisms().get(ReportPerson.EMAIL));
+        assertEquals("212 555-1212", actual.getContactMechanisms().get(ReportPerson.PHONE));
     }
 
     public void testGetPhysician() throws Exception {
@@ -443,15 +443,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             public void setupReport(ExpeditedAdverseEventReport report) {
                 report.getReporter().setFirstName(FIRST_NAME);
                 report.getReporter().setLastName(LAST_NAME);
-                report.getReporter().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, ADDRESS);
-                report.getReporter().getContactMechanisms().put(ExpeditedReportPerson.PHONE, PHONE);
+                report.getReporter().getContactMechanisms().put(ReportPerson.EMAIL, ADDRESS);
+                report.getReporter().getContactMechanisms().put(ReportPerson.PHONE, PHONE);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(FIRST_NAME, loaded.getReporter().getFirstName());
                 assertEquals(LAST_NAME, loaded.getReporter().getLastName());
-                assertEquals(ADDRESS, loaded.getReporter().getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
-                assertEquals(PHONE, loaded.getReporter().getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+                assertEquals(ADDRESS, loaded.getReporter().getContactMechanisms().get(ReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getReporter().getContactMechanisms().get(ReportPerson.PHONE));
             }
         });
     }
@@ -466,15 +466,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             public void setupReport(ExpeditedAdverseEventReport report) {
                 report.getPhysician().setFirstName(FIRST_NAME);
                 report.getPhysician().setLastName(LAST_NAME);
-                report.getPhysician().getContactMechanisms().put(ExpeditedReportPerson.EMAIL, ADDRESS);
-                report.getPhysician().getContactMechanisms().put(ExpeditedReportPerson.PHONE, PHONE);
+                report.getPhysician().getContactMechanisms().put(ReportPerson.EMAIL, ADDRESS);
+                report.getPhysician().getContactMechanisms().put(ReportPerson.PHONE, PHONE);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(FIRST_NAME, loaded.getPhysician().getFirstName());
                 assertEquals(LAST_NAME, loaded.getPhysician().getLastName());
-                assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.EMAIL));
-                assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(ExpeditedReportPerson.PHONE));
+                assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(ReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(ReportPerson.PHONE));
             }
         });
     }

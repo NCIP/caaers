@@ -214,6 +214,9 @@
     <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
         
+     <bean name="/ae/submitReport" id="submitReportController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
+        
     <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController"/>    
         

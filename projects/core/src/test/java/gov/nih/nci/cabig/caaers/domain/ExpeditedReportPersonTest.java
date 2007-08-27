@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
  */
 @CaaersUseCases({CREATE_REPORT_FORMAT })
 public class ExpeditedReportPersonTest extends CaaersTestCase {
-    private ExpeditedReportPerson person;
+    private ReportPerson person;
 
     @Override
     protected void setUp() throws Exception {
@@ -36,16 +36,16 @@ public class ExpeditedReportPersonTest extends CaaersTestCase {
 
     public void testSaveableWithoutEmailAddress() throws Exception {
         setSaveable();
-        person.getContactMechanisms().remove(ExpeditedReportPerson.EMAIL);
+        person.getContactMechanisms().remove(ReportPerson.EMAIL);
         assertFalse(person.isSavable());
     }
     
     private void setSaveable() {
         person.setFirstName("Mr.");
         person.setLastName("Anderson");
-        person.getContactMechanisms().put(ExpeditedReportPerson.EMAIL, "neo@example.com");
+        person.getContactMechanisms().put(ReportPerson.EMAIL, "neo@example.com");
     }
 
-    private static class TestPerson extends ExpeditedReportPerson {
+    private static class TestPerson extends ReportPerson {
     }
 }

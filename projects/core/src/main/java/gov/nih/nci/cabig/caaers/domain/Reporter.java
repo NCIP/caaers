@@ -15,5 +15,5 @@ import org.hibernate.annotations.CascadeType;
  */
 @Entity
 @DiscriminatorValue("R")
-public class Reporter extends ExpeditedReportPerson {
+public class Reporter extends ReportPerson {
 }

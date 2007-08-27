@@ -18,5 +18,5 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @DiscriminatorValue("P")
-public class Physician extends ExpeditedReportPerson {
+public class Physician extends ReportPerson {
 }

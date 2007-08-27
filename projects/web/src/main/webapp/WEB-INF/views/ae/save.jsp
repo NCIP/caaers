@@ -12,9 +12,7 @@
             flow.  To exit the flow and return the list of all adverse event collection
             data for this patient and study, please continue.
         </jsp:attribute>
-        <jsp:attribute name="singleFields">
-            <input type="hidden" name="_finish"/>
-        </jsp:attribute>
+        
     </tags:tabForm>
 </body>
 </html>

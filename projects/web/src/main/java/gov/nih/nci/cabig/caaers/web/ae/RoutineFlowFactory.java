@@ -40,7 +40,7 @@ public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputC
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new RoutineAeMeddraTab());
-            meddraFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+            meddraFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/saveRoutine"));
         }
         return meddraFlow;
     }
@@ -51,7 +51,7 @@ public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputC
             addPreBasicTabs(ctepFlow);
             ctepFlow.addTab(new CategoriesTab());
             ctepFlow.addTab(new RoutineAeTab());
-            ctepFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
+            ctepFlow.addTab(new Tab<RoutineAdverseEventInputCommand>("Confirm and save", "Save", "ae/saveRoutine"));
         }
         return ctepFlow;
     }

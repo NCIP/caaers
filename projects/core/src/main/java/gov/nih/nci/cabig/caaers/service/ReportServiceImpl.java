@@ -6,7 +6,7 @@ import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -59,9 +59,9 @@ public class ReportServiceImpl  implements ReportService {
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
 		String address = null;
-		String type = ExpeditedReportPerson.EMAIL;
+		String type = ReportPerson.EMAIL;
 		if(pnf instanceof PlannedEmailNotification)
-			type = ExpeditedReportPerson.EMAIL;
+			type = ReportPerson.EMAIL;
 
 		for(Recipient r : pnf.getRecipients()){
 			if(r instanceof ContactMechanismBasedRecipient){
