@@ -65,7 +65,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * @param id
 	 * @return Fully loaded Study
 	 */
-	public Study getStudyDesignById(int id) {
+	public Study getStudyDesignById(final int id) {
 		Study study = (Study) getHibernateTemplate().get(domainClass(), id);
 		initialize(study);
 
@@ -86,7 +86,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		return study;
 	}
 
-	public Study initialize(Study study) {
+	public Study initialize(final Study study) {
 		HibernateTemplate ht = getHibernateTemplate();
 		ht.initialize(study.getIdentifiers());
 		ht.initialize(study.getStudyOrganizations());
@@ -111,19 +111,19 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	}
 
 	@Transactional(readOnly = false)
-	public void save(Study study) {
+	public void save(final Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}
 
-	public List<Study> getBySubnames(String[] subnames) {
+	public List<Study> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 
-	public List<Study> getByCriteria(String[] subnames, List<String> subStringMatchProperties) {
+	public List<Study> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
 
-	public List<Study> matchStudyByParticipant(Integer participantId, String text) {
+	public List<Study> matchStudyByParticipant(final Integer participantId, final String text) {
 
 		String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
 
@@ -147,7 +147,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 
-	public List<Study> searchStudy(Map props) throws ParseException {
+	public List<Study> searchStudy(final Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
 		boolean firstClause = true;
@@ -225,11 +225,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 *         participant's name or other identifier
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Study> getByUniqueIdentifiers(String[] subnames) {
+	public List<Study> getByUniqueIdentifiers(final String[] subnames) {
 		return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
 	}
 
-	public Study getByIdentifier(Identifier identifier) {
+	public Study getByIdentifier(final Identifier identifier) {
 		return findByIdentifier(identifier);
 	}
 
@@ -237,7 +237,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * This will do an exact match on the <code>shortTitle</code>, and will return the first available Study. Note:- Biz rule should be
 	 * made that short title is unique.
 	 */
-	public Study getByShortTitle(String shortTitle) {
+	public Study getByShortTitle(final String shortTitle) {
 		List<Study> studies = findBySubname(new String[] { shortTitle }, null, EXACT_MATCH_TITLE_PROPERTIES);
 		if (studies != null && studies.size() > 0) {
 			return studies.get(0);
@@ -247,11 +247,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	@Override
 	// TODO - Need to refactor the below into CaaersDao along with identifiers
-	public List<Study> searchByExample(Study study, boolean isWildCard) {
+	public List<Study> searchByExample(final Study study, final boolean isWildCard) {
 		Example example = Example.create(study).excludeZeroes().ignoreCase();
 		Criteria studyCriteria = getSession().createCriteria(Study.class);
 
 		if (isWildCard) {
+			example.excludeProperty("multiInstitutionIndicator");
 			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
 			studyCriteria.add(example);
 			if (study.getIdentifiers().size() > 0) {

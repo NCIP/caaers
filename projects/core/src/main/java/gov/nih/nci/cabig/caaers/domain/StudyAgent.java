@@ -19,42 +19,43 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-
 /**
  * @author Krikor Krumlian
  */
 
 @Entity
-@Table (name = "study_agents")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_study_agents_id")
-    }
-)
-public class StudyAgent extends AbstractMutableDomainObject implements StudyChild{
+@Table(name = "study_agents")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agents_id") })
+public class StudyAgent extends AbstractMutableDomainObject implements StudyChild {
 
 	private LazyListHelper lazyListHelper;
+
 	private Study study;
+
 	private Agent agent;
+
 	private String agentAsString;
+
+	private String otherAgent;
+
 	@Embedded
 	private Participation participation;
 
-	//To be moved to command object
+	// To be moved to command object
 	private transient int indType;
 
 	/*
 	 * Constructor -- Initializes participation at create time
-	 *
 	 */
 	public StudyAgent() {
 		participation = new Participation();
 		lazyListHelper = new LazyListHelper();
-		lazyListHelper.add(StudyAgentINDAssociation.class, new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,StudyAgentINDAssociation.class));
+		lazyListHelper.add(StudyAgentINDAssociation.class,
+				new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this, StudyAgentINDAssociation.class));
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "study_id")
+	@JoinColumn(name = "study_id")
 	public Study getStudy() {
 		return study;
 	}
@@ -64,23 +65,23 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	}
 
 	@ManyToOne
-    @JoinColumn(name = "agent_id")
-    // We should never create new agents here, so no cascades
+	@JoinColumn(name = "agent_id")
+	// We should never create new agents here, so no cascades
 	public Agent getAgent() {
 		return agent;
 	}
+
 	public void setAgent(Agent agent) {
 		this.agent = agent;
 	}
 
-	@OneToMany(mappedBy="studyAgent", fetch=FetchType.EAGER)
-	@Cascade({ CascadeType.ALL,CascadeType.DELETE_ORPHAN})
+	@OneToMany(mappedBy = "studyAgent", fetch = FetchType.EAGER)
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
 		return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
 	}
 
-	public void setStudyAgentINDAssociationsInternal(
-			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+	public void setStudyAgentINDAssociationsInternal(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
 		lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
 	}
 
@@ -88,13 +89,11 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
 		return lazyListHelper.getLazyList(StudyAgentINDAssociation.class);
 	}
+
 	@Transient
-	public void setStudyAgentINDAssociations(
-			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+	public void setStudyAgentINDAssociations(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
 		setStudyAgentINDAssociationsInternal(studyAgentINDAssociations);
 	}
-
-
 
 	@Transient
 	public String getAgentAsString() {
@@ -106,22 +105,20 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	}
 
 	public Participation getParticipation() {
-		return participation;	}
+		return participation;
+	}
 
 	public void setParticipation(Participation participation) {
 		this.participation = participation;
 	}
 
-
+	@Transient
+	public boolean getInvestigationalNewDrugIndicator() {
+		return getStudyAgentINDAssociations() != null && getStudyAgentINDAssociations().size() > 0;
+	}
 
 	@Transient
-    public boolean getInvestigationalNewDrugIndicator(){
-    	return (getStudyAgentINDAssociations() != null) &&
-    	 getStudyAgentINDAssociations().size() > 0;
-    }
-
-	@Transient
-	public void addStudyAgentINDAssociation(StudyAgentINDAssociation ass){
+	public void addStudyAgentINDAssociation(StudyAgentINDAssociation ass) {
 		getStudyAgentINDAssociations().add(ass);
 		ass.setStudyAgent(this);
 	}
@@ -134,5 +131,13 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	@Transient
 	public void setIndType(int indType) {
 		this.indType = indType;
+	}
+
+	public String getOtherAgent() {
+		return otherAgent;
+	}
+
+	public void setOtherAgent(String otherAgent) {
+		this.otherAgent = otherAgent;
 	}
 }
