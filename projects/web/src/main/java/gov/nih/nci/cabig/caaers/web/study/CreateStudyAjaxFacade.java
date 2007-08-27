@@ -53,6 +53,10 @@ public class CreateStudyAjaxFacade {
 
 	public static final String EDIT_STUDY_FORM_NAME = EditStudyController.class.getName() + ".FORM.command";
 
+	public static final String CREATE_STUDY_REPLACED_FORM_NAME = CREATE_STUDY_FORM_NAME + ".to-replace";
+
+	public static final String EDIT_STUDY_REPLACED_FORM_NAME = EDIT_STUDY_FORM_NAME + ".to-replace";
+
 	private static final Log log = LogFactory.getLog(CreateStudyAjaxFacade.class);
 
 	private AgentDao agentDao;
@@ -69,20 +73,20 @@ public class CreateStudyAjaxFacade {
 
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
 
-	public List<SiteInvestigator> matchSiteInvestigator(String text, int indexId) {
+	public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
 		String[] arr = new String[] { text };
 		Study study = getStudyCommand(getHttpServletRequest());
 		int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
 		List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
 
 		return ObjectTools.reduceAll(siteInvestigators, new ObjectTools.Initializer<SiteInvestigator>() {
-			public void initialize(SiteInvestigator instance) {
+			public void initialize(final SiteInvestigator instance) {
 				instance.setInvestigator(new Investigator());
 			}
 		}, "id", "investigator.firstName", "investigator.lastName");
 	}
 
-	public List<ResearchStaff> matchResearch(String text, int indexId) {
+	public List<ResearchStaff> matchResearch(final String text, final int indexId) {
 
 		Study study = getStudyCommand(getHttpServletRequest());
 		int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
@@ -90,50 +94,66 @@ public class CreateStudyAjaxFacade {
 		return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName");
 	}
 
-	private Study getStudyCommand(HttpServletRequest request) {
-		Study study = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
+	private Study getStudyFromSession(final HttpServletRequest request) {
+
+		Study study = (Study) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
+		if (study == null) {
+			study = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
+		}
+
+		if (study == null) {
+			study = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
+		}
+
 		if (study == null) {
 			study = (Study) request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
 		}
+
+		return study;
+
+	}
+
+	private Study getStudyCommand(final HttpServletRequest request) {
+		Study study = getStudyFromSession(request);
 		request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, study);
 		return study;
 	}
 
-	public List<Agent> matchAgents(String text) {
+	public List<Agent> matchAgents(final String text) {
 		List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
 		return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
 	}
 
-	public List<InvestigationalNewDrug> matchINDs(String text) {
+	public List<InvestigationalNewDrug> matchINDs(final String text) {
 		List<InvestigationalNewDrug> inds = investigationalNewDrugDao.findByIds(new String[] { text });
 		return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
 	}
 
-	public List<Organization> matchOrganization(String text) {
+	public List<Organization> matchOrganization(final String text) {
 		List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
 		return ObjectTools.reduceAll(orgs, "id", "name");
 	}
 
-	private String[] extractSubnames(String text) {
+	private String[] extractSubnames(final String text) {
 		return text.split("\\s+");
 	}
 
-	public List<DiseaseCategory> matchDiseaseCategories(String text, Integer categoryId) {
+	public List<DiseaseCategory> matchDiseaseCategories(final String text, final Integer categoryId) {
 		List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getBySubname(extractSubnames(text), categoryId);
 		return diseaseCategories;
 	}
 
-	public List<DiseaseCategory> matchDiseaseCategoriesByParentId(Integer parentCategoryId) {
+	public List<DiseaseCategory> matchDiseaseCategoriesByParentId(final Integer parentCategoryId) {
 		List<DiseaseCategory> diseaseCategories = diseaseCategoryDao.getByParentId(parentCategoryId);
 		return diseaseCategories;
 	}
 
-	public List<DiseaseTerm> matchDiseaseTermsByCategoryId(Integer categoryId) {
+	public List<DiseaseTerm> matchDiseaseTermsByCategoryId(final Integer categoryId) {
 		List<DiseaseTerm> diseaseTerms = diseaseTermDao.getByCategoryId(categoryId);
 		return diseaseTerms;
 	}
 
-	public String addStudySite(int index) {
+	public String addStudySite(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
 		setRequestAttributes(request, index, -1, "studySiteSection");
@@ -141,7 +161,7 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudySite(int index) {
+	public boolean deleteStudySite(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudySites().remove(index) != null;
 	}
@@ -166,7 +186,7 @@ public class CreateStudyAjaxFacade {
 
 	}
 
-	public String addTreatmentAssignment(int index) {
+	public String addTreatmentAssignment(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		Study study = getStudyCommand(request);
 		study.addTreatmentAssignment(new TreatmentAssignment());
@@ -178,12 +198,12 @@ public class CreateStudyAjaxFacade {
 
 	}
 
-	public boolean deleteIdentifier(int index) {
+	public boolean deleteIdentifier(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getIdentifiersLazy().remove(index) != null;
 	}
 
-	public String addStudyAgent(int index) {
+	public String addStudyAgent(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		Study study = getStudyCommand(request);
 		// pre-initialize the agent at index
@@ -193,7 +213,7 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudyAgent(int index) {
+	public boolean deleteStudyAgent(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudyAgents().remove(index) != null;
 	}
@@ -201,7 +221,7 @@ public class CreateStudyAjaxFacade {
 	/**
 	 * A row of IND is needed to display
 	 */
-	public String addIND(int index, int indIndex, int indType) {
+	public String addIND(final int index, final int indIndex, final int indType) {
 		HttpServletRequest request = getHttpServletRequest();
 		Study study = getStudyCommand(request);
 		StudyAgent sa = study.getStudyAgents().get(index);
@@ -251,7 +271,7 @@ public class CreateStudyAjaxFacade {
 	// return getOutputFromJsp(url);
 	// }
 
-	public String addInvestigator(int index) {
+	public String addInvestigator(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
 		setRequestAttributes(request, index, -1, "studySiteInvestigatorSection");
@@ -259,12 +279,12 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteInvestigator(int index) {
+	public boolean deleteInvestigator(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudySites().get(study.getStudySiteIndex()).getStudyInvestigators().remove(index) != null;
 	}
 
-	public String addStudyPersonnel(int index) {
+	public String addStudyPersonnel(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
 		setRequestAttributes(request, index, -1, "studySitePersonnelSection");
@@ -272,12 +292,12 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudyPersonnel(int index) {
+	public boolean deleteStudyPersonnel(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels().remove(index) != null;
 	}
 
-	public String addStudyAmendment(int index) {
+	public String addStudyAmendment(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
 		setRequestAttributes(request, index, -1, "studyAmendmentSection");
@@ -285,19 +305,20 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudyAmendment(int index) {
+	public boolean deleteStudyAmendment(final int index) {
 		Study study = getStudyCommand(getHttpServletRequest());
 		return study.getStudyAmendments().remove(index) != null;
 	}
 
-	private void setRequestAttributes(HttpServletRequest request, int index, int listEditorIndex, String subview) {
+	private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex,
+			final String subview) {
 		request.setAttribute(AJAX_INDEX_PARAMETER, index);
 		request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
 		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
 		request.setAttribute("listEditorIndex", listEditorIndex);
 	}
 
-	private String getOutputFromJsp(String jspResource) {
+	private String getOutputFromJsp(final String jspResource) {
 		String html = "Error in rendering...";
 		try {
 			html = WebContextFactory.get().forwardToString(jspResource);
@@ -311,7 +332,7 @@ public class CreateStudyAjaxFacade {
 		return html;
 	}
 
-	private String getCurrentPageContextRelative(WebContext webContext) {
+	private String getCurrentPageContextRelative(final WebContext webContext) {
 		String contextPath = webContext.getHttpServletRequest().getContextPath();
 		String page = webContext.getCurrentPage();
 		if (contextPath == null) {
@@ -339,7 +360,7 @@ public class CreateStudyAjaxFacade {
 	}
 
 	@Required
-	public void setAgentDao(AgentDao agentDao) {
+	public void setAgentDao(final AgentDao agentDao) {
 		this.agentDao = agentDao;
 	}
 
@@ -349,7 +370,7 @@ public class CreateStudyAjaxFacade {
 	}
 
 	@Required
-	public void setDiseaseCategoryDao(DiseaseCategoryDao diseaseCategoryDao) {
+	public void setDiseaseCategoryDao(final DiseaseCategoryDao diseaseCategoryDao) {
 		this.diseaseCategoryDao = diseaseCategoryDao;
 	}
 
@@ -359,7 +380,7 @@ public class CreateStudyAjaxFacade {
 	}
 
 	@Required
-	public void setDiseaseTermDao(DiseaseTermDao diseaseTermDao) {
+	public void setDiseaseTermDao(final DiseaseTermDao diseaseTermDao) {
 		this.diseaseTermDao = diseaseTermDao;
 	}
 
@@ -367,7 +388,7 @@ public class CreateStudyAjaxFacade {
 		return researchStaffDao;
 	}
 
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+	public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}
 
@@ -375,7 +396,7 @@ public class CreateStudyAjaxFacade {
 		return organizationDao;
 	}
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
+	public void setOrganizationDao(final OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
 	}
 
@@ -383,7 +404,7 @@ public class CreateStudyAjaxFacade {
 		return siteInvestigatorDao;
 	}
 
-	public void setSiteInvestigatorDao(SiteInvestigatorDao siteInvestigatorDao) {
+	public void setSiteInvestigatorDao(final SiteInvestigatorDao siteInvestigatorDao) {
 		this.siteInvestigatorDao = siteInvestigatorDao;
 	}
 
@@ -397,7 +418,7 @@ public class CreateStudyAjaxFacade {
 	/**
 	 * @param investigationalNewDrugDao the investigationalNewDrugDao to set
 	 */
-	public void setInvestigationalNewDrugDao(InvestigationalNewDrugDao investigationalNewDrugDao) {
+	public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
 	}
 
