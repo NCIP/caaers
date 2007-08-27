@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.io.File;
@@ -19,15 +20,18 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 
 
-public class AdeersReportGenerator {
+public class AdeersReportGenerator  {
 
 	//TO-DO set in spring config 
 	private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
 	private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
 	private String pdfOutFile = "/tmp/aeReport.pdf";
+	protected Configuration configuration;
 	
 	
 	public AdeersReportGenerator () { };
+	
+
 	   
 	public String getAdeersXml(String  adverseEventReportXml) throws Exception{
 		XsltTransformer xsltTrans = new XsltTransformer();
@@ -62,18 +66,18 @@ public class AdeersReportGenerator {
 		}
 		
 		if (emails.size()>0 ){
-			sendMail("support@semanticbits.com", pdfOutFile,emails.toArray(new String[0]));
+			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile,emails.toArray(new String[0]));
 		}
 	}
 	
-	private void sendMail(String from,String attachment, String[] to) {
-		try {
-
+	private void sendMail(String mailHost, String from,String attachment, String[] to) throws Exception {
 				JavaMailSenderImpl sender = new JavaMailSenderImpl();
-				sender.setHost("smtp.comcast.net");
+				//sender.setHost("smtp.comcast.net");
+				sender.setHost(mailHost);
 				MimeMessage message = sender.createMimeMessage();
-				message.setFrom(new InternetAddress(from));
+				//message.setFrom(new InternetAddress(from));
 				message.setSubject("Expedited Adverse Event Report");
+				message.setFrom(new InternetAddress(from));
 				
 //				 use the true flag to indicate you need a multipart message
 				MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -94,12 +98,13 @@ public class AdeersReportGenerator {
 
 				sender.send(message);
 				
-				System.out.println("sent");
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+				System.out.println("sent . . ");
+
+	}
+
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 	/*
 	public static void main(String[] args) {
