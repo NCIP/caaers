@@ -46,7 +46,7 @@ public class Organization extends AbstractMutableDomainObject {
 
     ////// LOGIC
 
-	public void addStudySite(StudyOrganization studyOrg) {
+	public void addStudyOrganization(StudyOrganization studyOrg) {
     	this.getStudyOrganizations().add(studyOrg);
     	studyOrg.setOrganization(this);
 
@@ -92,8 +92,7 @@ public class Organization extends AbstractMutableDomainObject {
 	}
 
 	public void addStudySite(StudySite studySite) {
-		studyOrganizations.add(studySite);
-		studySite.setOrganization(this);
+		addStudyOrganization(studySite);
 	}
 
 	@Transient
@@ -157,6 +156,7 @@ public class Organization extends AbstractMutableDomainObject {
 		this.nciInstituteCode = nciInstituteCode;
 	}
 
+	@Override
 	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Organization)) return false;
@@ -168,7 +168,8 @@ public class Organization extends AbstractMutableDomainObject {
         return true;
     }
 
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return (getName() != null ? getName().hashCode() : 0);
     }
 

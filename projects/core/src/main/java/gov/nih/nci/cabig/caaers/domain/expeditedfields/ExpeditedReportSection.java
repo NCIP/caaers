@@ -18,7 +18,9 @@ public enum ExpeditedReportSection {
 	CONCOMITANT_MEDICATION_SECTION("Concomitant medications"),
 	OTHER_CAUSE_SECTION("Other contributing causes"),
 	ATTRIBUTION_SECTION("Attribution"),
-	ADDITIONAL_INFO_SECTION("Additional Information")
+	ADDITIONAL_INFO_SECTION("Additional Information"),
+	SUBMIT_REPORT_SECTION("Submit Report"),
+	SUBMITTER_SECTION("Submitter info")
 	;
 	private String displayName;
 

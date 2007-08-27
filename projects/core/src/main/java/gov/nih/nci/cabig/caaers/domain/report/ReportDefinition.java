@@ -67,7 +67,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
 
     ////// LOGIC
-
+    /**
+     * This method will create a Report object(an instance of, in the context of an AE Report) of a ReportDefinition.
+     */
     public Report createReport() {
         Report report = new Report();
         report.setReportDefinition(this);
@@ -75,6 +77,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         return report;
     }
 
+    /**
+     * This method will return the details of the reminder(PlannedNotification)
+     * configured at the specific index (represented by indexOnScale) of the
+     * this ReportDefinition
+     * @param indexOnScale
+     * @return
+     */
     public PlannedNotification fetchPlannedNotification(int indexOnScale) {
         if (plannedNotifications == null) return null;
 
@@ -83,7 +92,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         return null;
     }
-
+    /**
+     * This method will add a PlannedNotification to the plannedNotifications list.
+     * @param pn
+     */
     public void addPlannedNotification(PlannedNotification pn) {
         if (pn == null) return;
 
@@ -93,7 +105,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         plannedNotifications.add(pn);
     }
 
-
+    /**
+     * This method will append a ReportDeliveryDefinition to the reportDeliveriesInternal list.
+     * @param rdd
+     */
 	public void addReportDeliveryDefinition(ReportDeliveryDefinition rdd){
 		if(rdd == null) return;
 		getDeliveryDefinitionsInternal().add(rdd);

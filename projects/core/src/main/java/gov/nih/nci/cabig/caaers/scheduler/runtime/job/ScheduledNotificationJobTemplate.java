@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,7 +37,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	protected ApplicationContext applicationContext;
 	protected ReportDao reportDao;
 	protected int scheduledNotificationIndex;
-
+	protected Configuration configuration;
 
 	public ScheduledNotificationJobTemplate() {
 		super();
@@ -80,6 +81,15 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		this.scheduledNotificationIndex = scheduledNotificationIndex;
 	}
 
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+
 	/**
 	 * Will reload the {@link Report} identified by <code>report.id</code>
 	 * and {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>,
@@ -97,6 +107,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			jobDetail = context.getJobDetail();
 			applicationContext = (ApplicationContext)scheduler.getContext().get("applicationContext");
 			reportDao = (ReportDao)applicationContext.getBean("reportDao");
+			configuration = (Configuration)applicationContext.getBean("configuration");
 
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 			scheduledNotificationIndex = jobDataMap.getInt("curIndex");
@@ -145,10 +156,10 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	}
 
 	/**
-	   * This method will delete all the jobs that are available(scheduled for later execution) in the
-	   * same group (associated to the same ScheduleReport).
-	   * @param context - The JobExecutionContext
-	   */
+	 * This method will delete all the jobs that are available(scheduled for later execution) in the
+	 * same group (associated to the same ScheduleReport).
+	 * @param context - The JobExecutionContext
+	 */
 	public void deleteSubsequentJobs() {
 
 		//delete all the open jobs in the scheduler under the same group
