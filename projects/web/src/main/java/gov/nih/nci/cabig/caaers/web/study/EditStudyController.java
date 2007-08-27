@@ -53,7 +53,7 @@ public class EditStudyController extends StudyController<Study> {
 				if (sas == null || sas.isEmpty()) {
 					sa.setIndType(0);
 				}
-				else if (sas.get(0).getInvestigationalNewDrug().getIndNumber() == -111) {
+				else if (sas.get(0).getInvestigationalNewDrug().getIndNumber() == AgentsTab.CTEP_IND) {
 					sa.setIndType(1);
 				}
 				else {
