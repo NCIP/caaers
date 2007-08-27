@@ -17,7 +17,7 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
 public class ExpeditedReportTree extends TreeNode {
     public ExpeditedReportTree() {
         add(
-            section(ADVERSE_EVENT_SECTION.section(),
+            section(ADVERSE_EVENT_SECTION.name(),
                 // TODO: figure out how to handle the MedDRA alternative here
                 property("detectionDate", "Detection date"),
                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
@@ -32,12 +32,12 @@ public class ExpeditedReportTree extends TreeNode {
                     property("detailsForOther", "Other (specify)")
                 )
             ),
-            section(REPORTER_INFO_SECTION.section(),
+            section(REPORTER_INFO_SECTION.name(),
                 createPersonBlock("reporter"),
                 createPersonBlock("physician")
             ),
-            section(CHECKPOINT_SECTION.section()), // so that ordering lines up
-            section(RADIATION_INTERVENTION_SECTION.section(),
+            section(CHECKPOINT_SECTION.name()), // so that ordering lines up
+            section(RADIATION_INTERVENTION_SECTION.name(),
                 property("radiationIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -53,7 +53,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("adjustment", "Adjustment")
                 )
             ),
-            section(SURGERY_INTERVENTION_SECTION.section(),
+            section(SURGERY_INTERVENTION_SECTION.name(),
                 property("surgeryIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -61,7 +61,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("interventionDate", "Intervention date")
                 )
             ),
-            section(MEDICAL_DEVICE_SECTION.section(),
+            section(MEDICAL_DEVICE_SECTION.name(),
             	property("medicalDevice",
             		property("brandName", "Brand name"),
             		property("commonName", "Common name"),
@@ -86,7 +86,7 @@ public class ExpeditedReportTree extends TreeNode {
             		property("returnedDate", "Returned date")
             	)
             ),
-            section(DESCRIPTION_SECTION.section(),
+            section(DESCRIPTION_SECTION.name(),
             	property("responseDescription",
             		property("eventDescription","Description"),
             		property("presentStatus","Present status"),
@@ -95,7 +95,7 @@ public class ExpeditedReportTree extends TreeNode {
             		property("dateRemovedFromProtocol","Date removed from protocol")
             	)
             ),
-            section(MEDICAL_INFO_SCECTION.section(),
+            section(MEDICAL_INFO_SCECTION.name(),
                 property("participantHistory",
                     participantMeasure("height"),
                     participantMeasure("weight"),
@@ -113,7 +113,7 @@ public class ExpeditedReportTree extends TreeNode {
                     )
                 )
             ),
-            section(TREATMENT_INFO_SECTION.section(),
+            section(TREATMENT_INFO_SECTION.name(),
                property("treatmentInformation",
             	   property("treatmentAssignmentCode","Assignment code"),
             	   property("firstCourseDate","First course start date"),
@@ -121,9 +121,57 @@ public class ExpeditedReportTree extends TreeNode {
             	   property("adverseEventCourse",
             			   property("date","Adverse event course start date"),
             			   property("number","Adverse event course number")
+            	   ),
+            	   //TODO : Need a display name creator????
+            	   list("courseAgents", "Course Agent",
+            			property("studyAgent", "Study Agent"),
+            			dosage("dosage","Dosage"),
+            			property("durationAndSchedule", "Duration and schedule"),
+            			//TODO: this is a component
+       					property("administrationDelayAmount","Administration Delay Amount"),
+       					property("administrationDelayUnits","Administration Delay Units"),
+                 	    dosage("modifiedDose","Modified dose"),
+                 	    property("totalDoseAdministeredThisCourse", "Total dose administered this course"),
+                 	    property("lastAdministeredDate", "Date last administered")
             	   )
                )
-            )
+            ),
+            section(LABS_SECTION.name(),
+            		list("labs", "Lab",
+            			property("name", "Name"),
+            			property("units", "Units"),
+            			inference("baseline", "Baseline"),
+            			inference("nadir", "Worst"),
+            			inference("recovery","Recovery")
+            		)
+            ),
+            section(PRIOR_THERAPIES_SECTION.name(),
+            		list("adverseEventPriorTherapies","Prior Therapy",
+            				property("priorTherapy", "Therapy"),
+            				property("other", "Other"),
+            				property("startDate", "Start Date"),
+            				property("endDate", "End Date")
+            		)
+            ),
+            section(PRE_EXISTING_CONDITION_SECTION.name(),
+            		list("adverseEventPreExistingConds", "AdverseEventPreExistingCond",
+            				property("preExistingCondition","Pre-Existing condition"),
+            				property("other","Other")
+            		)
+            ),
+            section(CONCOMITANT_MEDICATION_SECTION.name(),
+            		list("concomitantMedications", "ConcomitantMedication",
+            				property("agent","Known medication"),
+            				property("other", "Other")
+            		)
+            ),
+            section(OTHER_CAUSE_SECTION.name(),
+            		list("otherCauses","OtherCauses",
+            				property("text", "Cause")
+            		)
+            ),
+            section(ATTRIBUTION_SECTION.name()), //TODO: how to fill this??
+            section(ADDITIONAL_INFO_SECTION.name())//TODO: additional info section
         );
     }
 
@@ -151,9 +199,24 @@ public class ExpeditedReportTree extends TreeNode {
 
     private static TreeNode participantMeasure(String baseName) {
         return property(baseName, StringUtils.capitalize(baseName),
-            property("quantity", ""),
-            property("unit", "units")
+            property("quantity", "Quantity"),
+            property("unit", "Units")
         );
+    }
+
+    private static TreeNode dosage(String baseName, String displayName){
+    	return property(baseName, StringUtils.capitalize(baseName),
+    			property("amount","Amount"),
+    			property("units","Units"),
+    			property("route","Route")
+    	);
+    }
+
+    private static TreeNode inference(String baseName, String displayName){
+    	return property(baseName, displayName,
+    			property("value","Value"),
+    			property("date","Date")
+    	);
     }
 
     // DONOT MODIFY NAMES EVEN IF THEY CHANGES....this is tied up with rules ....
