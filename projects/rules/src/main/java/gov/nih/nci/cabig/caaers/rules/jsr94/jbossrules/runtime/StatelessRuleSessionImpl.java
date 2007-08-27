@@ -108,7 +108,8 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
      * @throws InvalidRuleSessionException
      *             on illegal rule session state.
      */
-    public List executeRules(final List objects,
+    @SuppressWarnings("unchecked")
+	public List executeRules(final List objects,
                              final ObjectFilter filter) throws InvalidRuleSessionException {
         final WorkingMemory workingMemory = this.newWorkingMemory();
         RuleWorkingMemoryLogger ruleLogger;
@@ -137,15 +138,17 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
         this.applyFilter( results,
                           filter );
         
-        /*
+        
         try {
-			ruleLogger.logExecutionSummary(objects);
+			
+        	ruleLogger.logExecutionSummary(objects);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new InvalidRuleSessionException( e.getMessage(),
                     e );
 		}
-		*/
+		
         return results;
     }
 
