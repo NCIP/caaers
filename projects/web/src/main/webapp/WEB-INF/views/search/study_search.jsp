@@ -27,7 +27,6 @@
 <script>
 
 function buildTable(form) {
-alert('saurabh')
 	$('indicator').className=''
 	var type = "";
 	var text = "";
