@@ -3,11 +3,11 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
@@ -21,8 +21,16 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class AdverseEventReportSerializer {
 
@@ -32,7 +40,6 @@ public class AdverseEventReportSerializer {
 
 	   //TO-DO set in spring config
 	   private String mappingFile = "xml-mapping/ae-report-xml-mapping.xml";
-
 
 	   /**
 	    *
@@ -91,7 +98,7 @@ public class AdverseEventReportSerializer {
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 	    	aer.setDetectionDate(hibernateAdverseEventReport.getDetectionDate());
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
-	    	aer.setStatus(hibernateAdverseEventReport.getStatus());
+	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());
 
 
 	    	//build Reporter
@@ -110,7 +117,7 @@ public class AdverseEventReportSerializer {
 	    	aer.setParticipantHistory(getParticipantHistory(hibernateAdverseEventReport.getParticipantHistory()));
 
 	    	//build StudyParticipantAssignment
-	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
+	    	//aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
@@ -262,7 +269,14 @@ public class AdverseEventReportSerializer {
 	    	adverseEvent.setOtherCauseAttributions(otList);
 	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
 
-	    	adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
+			if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
+				adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
+			} else {
+				adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
+			}
+
+	    	
+	    	
 	    	adverseEvent.setHospitalization(ae.getHospitalization());
 	    	adverseEvent.setGrade(ae.getGrade());
 
