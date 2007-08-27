@@ -125,7 +125,7 @@ public class ExpeditedReportTree extends TreeNode {
             	   //TODO : Need a display name creator????
             	   list("courseAgents", "Course Agent",
             			property("studyAgent", "Study Agent"),
-            			dosage("dosage","Dosage"),
+            			dosage("dose","Dosage"),
             			property("durationAndSchedule", "Duration and schedule"),
             			//TODO: this is a component
        					property("administrationDelayAmount","Administration Delay Amount"),
