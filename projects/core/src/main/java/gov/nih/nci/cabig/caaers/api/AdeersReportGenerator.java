@@ -66,14 +66,18 @@ public class AdeersReportGenerator  {
 		}
 		
 		if (emails.size()>0 ){
-			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile,emails.toArray(new String[0]));
+			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
+					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
+					pdfOutFile,emails.toArray(new String[0]));
 		}
 	}
 	
-	private void sendMail(String mailHost, String from,String attachment, String[] to) throws Exception {
-				
+	private void sendMail(String mailHost, String user, String pwd, String from,String attachment, String[] to) throws Exception {
+			try {	
 				JavaMailSenderImpl sender = new JavaMailSenderImpl();
 				//sender.setHost("smtp.comcast.net");
+				sender.setUsername(user);
+				sender.setPassword(pwd);
 				sender.setHost(mailHost);
 				MimeMessage message = sender.createMimeMessage();
 				//message.setFrom(new InternetAddress(from));
@@ -100,6 +104,9 @@ public class AdeersReportGenerator  {
 				sender.send(message);
 				
 				System.out.println("sent . . ");
+			} catch (Exception e ) {
+				throw new Exception (" Error in sending email , please check the confiuration " + e);
+			}
 
 	}
 
