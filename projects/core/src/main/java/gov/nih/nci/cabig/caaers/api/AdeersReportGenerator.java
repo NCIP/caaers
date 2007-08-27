@@ -66,7 +66,9 @@ public class AdeersReportGenerator  {
 		}
 		
 		if (emails.size()>0 ){
-			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile,emails.toArray(new String[0]));
+			System.out.println("smtp ... " + configuration.get(Configuration.SMTP_ADDRESS));
+			
+			//sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile,emails.toArray(new String[0]));
 		}
 	}
 	
