@@ -221,9 +221,12 @@ public class ExpeditedReportTree extends TreeNode {
 
     // DONOT MODIFY NAMES EVEN IF THEY CHANGES....this is tied up with rules ....
     public static String[] getAllSectionNames() {
-
-    	String[] sectionNames = {"Radiation intervention","Surgery intervention",
-    					"Medical device","Event and response description","Medical info"};
+    	
+    	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
+    	String[] sectionNames = new String[expeditedReportSections.length];
+    	for (int i=0;i<expeditedReportSections.length;i++ ){
+    		sectionNames[i] = expeditedReportSections[i].displayName();
+    	}
     	return sectionNames;
     }
 
