@@ -4,7 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
@@ -569,7 +569,12 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	}
 	public String[] getReportSectionNames() {
-		return ExpeditedReportTree.getAllSectionNames();
+    	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
+    	String[] sectionNames = new String[expeditedReportSections.length];
+    	for (int i=0;i<expeditedReportSections.length;i++ ){
+    		sectionNames[i] = expeditedReportSections[i].displayName();
+    	}
+    	return sectionNames;
 	}
 	
 	public RuleUi getRuleUi() {
