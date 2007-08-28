@@ -51,6 +51,7 @@ public abstract class AbstractAdverseEventInputController
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final int SUBMISSION_PAGE = 17;
+    private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
     private final Log log = LogFactory.getLog(getClass());
 
     protected ParticipantDao participantDao;
@@ -67,7 +68,7 @@ public abstract class AbstractAdverseEventInputController
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected PreExistingConditionDao preExistingConditionDao;
-    
+
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
     protected ReportDefinitionDao reportDefinitionDao;
@@ -77,7 +78,7 @@ public abstract class AbstractAdverseEventInputController
         setAllowDirtyForward(false);
         setFlowFactory(createFlowFactory());
     }
-    
+
     protected abstract FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory();
 
     @Override
@@ -110,18 +111,18 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerEnumEditor(binder, RadiationAdministration.class);
         ControllerTools.registerEnumEditor(binder, Availability.class);
     }
-    
+
     @Override
     protected int getInitialPage(HttpServletRequest request){
     	boolean isReportSubmission = request.getParameter("action") != null ? request
 				.getParameter("action").equals("reportSubmission") ? true
 				: false
-				: false; 
+				: false;
     	log.debug("This is a report Submission");
     	if ( isReportSubmission ){
     		return SUBMISSION_PAGE;
     	}
-    	return super.getInitialPage(request);	
+    	return super.getInitialPage(request);
     }
 
     @Override
@@ -129,9 +130,20 @@ public abstract class AbstractAdverseEventInputController
     protected Map referenceData(
         HttpServletRequest request, Object oCommand, Errors errors, int page
     ) throws Exception {
-        Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+    	ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand) oCommand;
+        Map<String, Object> refdata = super.referenceData(request, cmd, errors, page);
+        StringBuffer sb = new StringBuffer("notab");
+        for(Tab<ExpeditedAdverseEventInputCommand> tab  : getFlow(cmd).getTabs()){
+        	if(tab instanceof AeTab){
+        		AeTab aeTab = (AeTab) tab;
+        		if(aeTab.hasEmptyMandatoryFields(cmd)){
+        			sb.append(",").append(tab.getShortTitle());
+        		}
+        	}
+        }
+        refdata.put(UNFILLED_TAB_KEY, sb.toString());
         if (displaySummary(page)) {
-            refdata.put("summary", ((ExpeditedAdverseEventInputCommand) oCommand).getAeReport().getSummary());
+            refdata.put("summary", cmd.getAeReport().getSummary());
         }
         return refdata;
     }
@@ -291,7 +303,7 @@ public abstract class AbstractAdverseEventInputController
 	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
 		this.lowLevelTermDao = lowLevelTermDao;
 	}
-    
-    
-    
+
+
+
 }

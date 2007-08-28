@@ -131,6 +131,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public void refreshMandatoryFieldMap(){
     	if(aeReport.getReports() == null) return;
     	for(Report report : aeReport.getReports()){
+    		if(report.getReportDefinition().getMandatoryFields() == null) continue;
     		for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
     			mandatoryFieldMap.put(field.getFieldPath(), field.getMandatory());
     		}

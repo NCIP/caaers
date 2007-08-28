@@ -1,10 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -48,15 +55,30 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 	   if(groupMap == null ) return;
 	   Map<String, Boolean> mandatoryFields = command.getMandatoryFieldMap();
 
-	   Boolean mandatory;
+	   boolean mandatory;
 	   for(InputFieldGroup group : groupMap.values()){
 		  for(InputField field : group.getFields()){
-		    mandatory = mandatoryFields.get(field.getPropertyName().split("\\.", 2)[1]);
-			if(mandatory != null && mandatory){
-				field.setMandatory(true); //there may exist 2 reportdefs contradicting each other.
-			}
+			 mandatory = fetchMandatoryValue(mandatoryFields, field);
+			 field.setMandatory(mandatory);
 		  }
 	   }
+    }
+
+
+    public boolean fetchMandatoryValue(Map<String, Boolean> mandatoryFieldMap , InputField field){
+    	boolean mandatory = false;
+    	String propertyName = field.getPropertyName().replaceAll("(\\[\\d+\\])", "[]");
+    	if(propertyName.indexOf('.') > 0){
+		  mandatory = mandatoryFieldMap.get(propertyName.split("\\.", 2)[1]);
+    	}else{
+		  mandatory = mandatoryFieldMap.get(propertyName);
+    	}
+    	if(field.getCategory() == InputField.Category.COMPOSITE){
+    		for(InputField subfield : CompositeField.getSubfields(field))
+    			mandatory |= fetchMandatoryValue(mandatoryFieldMap, subfield);
+
+    	}
+    	return mandatory;
     }
 
    /**
@@ -66,8 +88,28 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	//TODO: change to Enums
     	List<String> sections = command.getMandatorySections();
     	if(sections == null || sections.isEmpty()) return false;
-    	return sections.contains(getLongTitle());
+    	return sections.contains(section().displayName());
     }
+
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command){
+    	/*if(isMandatory(command)){
+    		BeanWrapper wCmd = new BeanWrapperImpl(command);
+    		TreeNode node = expeditedReportTree.fecthNode4Section(section());
+    		List<String> paths = new ArrayList<String>();
+    		TreeNode.listPropertyPaths(node, paths);
+    		Map<String, Boolean> map = command.getMandatoryFieldMap();
+    		Boolean mandatory  = null;
+    		for(String path : paths){
+    			mandatory = map.get(path);
+    			if(mandatory != null && mandatory){
+    				if(wCmd.getPropertyValue("aeReport." + path) == null) return false;
+    			}
+    		}
+    	}
+    	return false;*/
+    	return false;
+    }
+
 
 
 	public ExpeditedReportTree getExpeditedReportTree() {
@@ -79,4 +121,6 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 	}
 
 	public abstract ExpeditedReportSection section();
+
+
 }
