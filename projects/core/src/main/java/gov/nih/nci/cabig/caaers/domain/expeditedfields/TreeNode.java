@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Rhett Sutphin
@@ -61,6 +61,15 @@ public class TreeNode {
             treeNode.setParent(this);
         }
         return this;
+    }
+
+    public static void listPropertyPaths(TreeNode node, List<String> paths){
+    	if(node.getPropertyPath() != null)
+    		paths.add(node.getPropertyPath());
+
+    	for(TreeNode n : node.getChildren()){
+    		listPropertyPaths(n, paths);
+    	}
     }
 
     public String getPropertyPath() {

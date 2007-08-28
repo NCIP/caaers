@@ -191,6 +191,14 @@ public class ExpeditedReportTree extends TreeNode {
         );
     }
 
+    public  TreeNode fecthNode4Section(ExpeditedReportSection section){
+    	for(TreeNode node : getChildren()){
+    		if(StringUtils.equals(node.getDisplayName(), section.name()))
+    			return node;
+    	}
+    	return null;
+    }
+
     private static TreeNode createPersonBlock(String person) {
         return property(
             person, StringUtils.capitalize(person) + " details",

@@ -31,4 +31,10 @@ public enum ExpeditedReportSection {
 		return displayName;
 	}
 
+	public ExpeditedReportSection getByDisplayName(String displayName){
+		for(ExpeditedReportSection section : values()){
+			if(section.displayName.equals(displayName)) return section;
+		}
+		return null;
+	}
 }

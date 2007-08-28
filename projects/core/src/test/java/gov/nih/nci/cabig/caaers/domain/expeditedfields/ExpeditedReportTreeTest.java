@@ -80,6 +80,11 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertEquals("Primary adverse event", tree.find("adverseEvents").getDisplayName(0));
     }
 
+    public void testFecthNode4Section() throws Exception{
+    	TreeNode node = tree.fecthNode4Section(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
+    	assertEquals("Name should be ",node.getDisplayName(), ExpeditedReportSection.ADDITIONAL_INFO_SECTION.name());
+    }
+
     /**
      * Figures out the next domain object type down from the descriptor given.
      */
