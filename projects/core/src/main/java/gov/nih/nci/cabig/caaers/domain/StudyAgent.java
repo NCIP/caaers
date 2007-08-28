@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -139,5 +140,12 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 
 	public void setOtherAgent(String otherAgent) {
 		this.otherAgent = otherAgent;
+	}
+
+	@Transient
+	public String getAgentName(){
+		if(StringUtils.isNotEmpty(otherAgent)) return otherAgent;
+		if(agent != null) return agent.getName();
+		return "no-agent-name";
 	}
 }
