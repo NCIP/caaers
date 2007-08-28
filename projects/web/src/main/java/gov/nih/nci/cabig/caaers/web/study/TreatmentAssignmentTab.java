@@ -53,11 +53,11 @@ public class TreatmentAssignmentTab extends StudyTab {
 			rfgFactory.addField(doseLevelOrderField);
 
 			InputField descriptionField = InputFieldFactory.createTextArea("description", "Description", false);
-			InputFieldAttributes.setSize(descriptionField, 70);
+			InputFieldAttributes.setSize(descriptionField, 90);
 			rfgFactory.addField(descriptionField);
 
 			InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
-			InputFieldAttributes.setSize(commentsField, 70);
+			InputFieldAttributes.setSize(commentsField, 90);
 			rfgFactory.addField(commentsField);
 
 		}
