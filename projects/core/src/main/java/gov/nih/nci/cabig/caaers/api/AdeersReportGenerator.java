@@ -65,6 +65,14 @@ public class AdeersReportGenerator  {
 			}
 		}
 		
+		// CCs
+		String[] emailAddresses = report.getEmailAsArray();
+		if (emailAddresses != null) {
+			for (String email : emailAddresses) {
+				emails.add(email.trim());
+			}
+		}
+		
 		if (emails.size()>0 ){
 			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 

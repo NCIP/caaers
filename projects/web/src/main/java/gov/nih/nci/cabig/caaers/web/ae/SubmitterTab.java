@@ -9,6 +9,9 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+
 import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
 
 import java.util.LinkedHashMap;
@@ -76,6 +79,22 @@ public class SubmitterTab extends AeTab {
         return InputFieldFactory.createTextField(
             base + "contactMechanisms[" + contactType + ']', displayName, required);
     }
+    
+    
+    @Override
+    protected void validate(
+        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
+        Map<String, InputFieldGroup> fieldGroups, Errors errors
+    ) {
+    	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
+    	Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getPhysicianSignoff();
+            
+        	if (!hasPhysicianSignedOff){
+        		InputField field = fieldGroups.get("physicianSignoff").getFields().get(0);
+                errors.rejectValue(field.getPropertyName(), "Physician sign-off required", "Not Valid " + field.getDisplayName());
+        	}
+        }
+    
 
     @Override
     public ExpeditedReportSection section() {

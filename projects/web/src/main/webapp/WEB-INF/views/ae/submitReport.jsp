@@ -25,9 +25,26 @@
     </jsp:attribute>
     
     <jsp:attribute name="singleFields">
+    	<chrome:division title="PreConfigured Deliveries">
+    	<p>
+    		Report will be sent to the addresses below.<br />
+    		</p>
+    	
     	<c:forEach items="${command.aeReport.reports[command.reportIndex].reportDeliveries}" varStatus="status" var="report">
     		${status.index+1} - ${report.endPoint}
     	</c:forEach>
+    	
+    	</chrome:division>
+    	<chrome:division title="Cc details">
+    		<p>
+    		To send this report to others, enter the email addresses in the field below.<br />
+    		Multiple email addresses can be entered seperated by a commma.
+    		</p>
+
+            <c:forEach items="${fieldGroups['ccReport'].fields}" var="field">
+                <tags:renderRow field="${field}"/>
+            </c:forEach>
+        </chrome:division>
     
     <input type="hidden" name="_finish"/>
     </jsp:attribute>

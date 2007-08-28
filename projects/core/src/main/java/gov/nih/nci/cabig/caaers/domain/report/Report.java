@@ -61,6 +61,10 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private ReportStatus status = ReportStatus.PENDING;
 
+    // TODO: This is to CC people when submitting report - Not sure if this 
+    // should be here or if we should create a new ReportDelivery object which in
+    // turn is tied into ReportDeliveryDefinition & ReportDefinition
+    private String email;
 	private List<ReportDelivery> deliveries;
 
     ////// LOGIC
@@ -197,11 +201,29 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setPhysicianSignoff(Boolean physicianSignoff) {
 		this.physicianSignoff = physicianSignoff;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	@Transient
+	public String[] getEmailAsArray(){
+		if (this.email == null) {
+			return null;
+		}
+		String[] emails = this.email.split(",");
+		return emails;
+	}
+	
 
 
 	////// OBJECT METHODS
 
-    @Override
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Report [").append("id : ").append(getId())

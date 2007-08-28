@@ -27,8 +27,8 @@
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"></b> </th>
-    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Data complete ?</b> </th>
-    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Submitted?</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Data complete</b> </th>
+    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Report Submitted</b> </th>
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Info</b> </th>
     			</tr>
     			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
