@@ -260,14 +260,16 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 	protected void updateStudyTherapies(final Study study) {
 		List<StudyTherapy> studyTherapies = study.getStudyTherapies();
 
-		if (study.getChemoTherapyType() && study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) == null) {
-			StudyTherapy chemoTherapy = new StudyTherapy();
-			chemoTherapy.setStudy(study);
-			chemoTherapy.setStudyTherapyType(StudyTherapyType.CHEMO_THERAPY);
-			study.getStudyTherapies().add(chemoTherapy);
+		if (study.getDrugAdministrationTherapyType()
+				&& study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) == null) {
+			StudyTherapy drugAdministrationTherapy = new StudyTherapy();
+			drugAdministrationTherapy.setStudy(study);
+			drugAdministrationTherapy.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
+			study.getStudyTherapies().add(drugAdministrationTherapy);
 		}
-		else if (!study.getChemoTherapyType() && study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null) {
-			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY));
+		else if (!study.getDrugAdministrationTherapyType()
+				&& study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
 		}
 		if (study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) == null) {
 			StudyTherapy deviceTherapy = new StudyTherapy();
