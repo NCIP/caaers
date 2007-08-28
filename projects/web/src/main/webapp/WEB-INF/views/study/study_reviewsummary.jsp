@@ -165,7 +165,7 @@
 	 	    
 		<c:forEach items="${command.studyAgents}" var="studyAgent">
 			<tr>						
-				<td>${studyAgent.agent.name}</td>
+				<td>${studyAgent.agentName}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
 				<td>
 					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
