@@ -44,13 +44,14 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
     	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
+        
     	command.getAeReport().getReports().get(((int)reportIndex)).setSubmittedOn(new Date());
     	command.getAeReport().getReports().get(((int)reportIndex)).setStatus(ReportStatus.COMPLETED);
     	command.save();
     	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
-    	aegen.generateAndSendPdfReport(command.getAeReport());
+    	aegen.generateAndSendPdfReport(command.getAeReport() , reportIndex); 
     	
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("aeReport", command.getAeReport().getId());
