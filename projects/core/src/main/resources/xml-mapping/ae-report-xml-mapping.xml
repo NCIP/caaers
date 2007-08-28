@@ -35,6 +35,15 @@
     <field name="assignment" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
       <bind-xml name="StudyParticipantAssignment"/>
     </field> 
+    <field name="radiationIntervention" type="gov.nih.nci.cabig.caaers.domain.RadiationIntervention">
+      <bind-xml name="RadiationIntervention"/>
+    </field> 
+    <field name="surgeryIntervention" type="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention">
+      <bind-xml name="SurgeryIntervention"/>
+    </field> 
+    <field name="medicalDevice" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice">
+      <bind-xml name="MedicalDevice"/>
+    </field>    
     <field name="concomitantMedications" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" collection="arraylist">
       <bind-xml name="ConcomitantMedication"/>
     </field>
@@ -186,7 +195,165 @@
       <bind-xml name="lastName" node="element" />
     </field>  
   </class>   
+
+  <class name="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention">
+    <map-to xml="SurgeryIntervention"  />
+
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="treatmentArm" type="string">
+      <bind-xml name="treatmentArm" node="element" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element" />
+    </field>  
+    <field name="interventionDate" type="date">
+      <bind-xml name="interventionDate" node="element" />
+    </field>
+    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
+      <bind-xml name="AnatomicSite"/>
+    </field>         
+  </class> 
   
+  <class name="gov.nih.nci.cabig.caaers.domain.RadiationIntervention">
+    <map-to xml="RadiationIntervention"  />
+
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="treatmentArm" type="string">
+      <bind-xml name="treatmentArm" node="element" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element" />
+    </field>  
+    <field name="dosage" type="string">
+      <bind-xml name="dosage" node="element" />
+    </field>
+    <field name="dosageUnit" type="string">
+      <bind-xml name="dosageUnit" node="element" />
+    </field>  
+    <field name="lastTreatmentDate" type="date">
+      <bind-xml name="lastTreatmentDate" node="element" />
+    </field>
+    <field name="fractionNumber" type="string">
+      <bind-xml name="fractionNumber" node="element" />
+    </field>    
+    <field name="daysElapsed" type="string">
+      <bind-xml name="daysElapsed" node="element" />
+    </field>      
+    <field name="adjustment" type="string">
+      <bind-xml name="adjustment" node="element" />
+    </field> 
+    <field name="administration" type="gov.nih.nci.cabig.caaers.domain.RadiationAdministration">
+      <bind-xml name="administration"/>
+    </field> 
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.RadiationAdministration" verify-constructable="false">
+    <map-to xml="RadiationAdministration"  />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element" />
+    </field>
+  </class>  
+
+<class name="gov.nih.nci.cabig.caaers.domain.MedicalDevice">
+    <map-to xml="MedicalDevice"  />
+
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="brandName" type="string">
+      <bind-xml name="brandName" node="element" />
+    </field>
+    <field name="commonName" type="string">
+      <bind-xml name="commonName" node="element" />
+    </field>  
+    <field name="deviceType" type="string">
+      <bind-xml name="deviceType" node="element" />
+    </field>
+    <field name="manufacturerName" type="string">
+      <bind-xml name="manufacturerName" node="element" />
+    </field>  
+    <field name="manufacturerCity" type="string">
+      <bind-xml name="manufacturerCity" node="element" />
+    </field>
+    <field name="manufacturerState" type="string">
+      <bind-xml name="manufacturerState" node="element" />
+    </field>    
+    <field name="modelNumber" type="string">
+      <bind-xml name="modelNumber" node="element" />
+    </field>      
+    <field name="lotNumber" type="string">
+      <bind-xml name="lotNumber" node="element" />
+    </field> 
+
+    <field name="catalogNumber" type="string">
+      <bind-xml name="catalogNumber" node="element" />
+    </field>
+    <field name="expirationDate" type="date">
+      <bind-xml name="expirationDate" node="element" />
+    </field>  
+    <field name="serialNumber" type="string">
+      <bind-xml name="serialNumber" node="element" />
+    </field>
+    <field name="otherNumber" type="string">
+      <bind-xml name="otherNumber" node="element" />
+    </field>  
+    <field name="otherDeviceOperator" type="string">
+      <bind-xml name="otherDeviceOperator" node="element" />
+    </field>
+    <field name="implantedDate" type="date">
+      <bind-xml name="implantedDate" node="element" />
+    </field>    
+    <field name="explantedDate" type="date">
+      <bind-xml name="explantedDate" node="element" />
+    </field>      
+    <field name="reprocessorName" type="string">
+      <bind-xml name="reprocessorName" node="element" />
+    </field> 
+    <field name="reprocessorAddress" type="string">
+      <bind-xml name="reprocessorAddress" node="element" />
+    </field>      
+    <field name="returnedDate" type="date">
+      <bind-xml name="returnedDate" node="element" />
+    </field>     
+    
+    <field name="deviceOperator" type="gov.nih.nci.cabig.caaers.domain.DeviceOperator">
+      <bind-xml name="DeviceOperator"/>
+    </field> 
+    <field name="deviceReprocessed" type="gov.nih.nci.cabig.caaers.domain.Availability">
+      <bind-xml name="DeviceReprocessed"/>
+    </field> 
+    <field name="evaluationAvailability" type="gov.nih.nci.cabig.caaers.domain.Availability">
+      <bind-xml name="EvaluationAvailability"/>
+    </field>    
+  </class> 
+
+  <class name="gov.nih.nci.cabig.caaers.domain.DeviceOperator" verify-constructable="false">
+    <map-to xml="DeviceOperator"  />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName"/>
+    </field> 
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Availability" verify-constructable="false">
+    <map-to xml="Availability"  />
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName"/>
+    </field> 
+  </class>
+          
   <class name="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
     <map-to xml="ConcomitantMedication"  />
     <field name="id" type="integer">
@@ -417,8 +584,27 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-   
+    <field name="height" type="gov.nih.nci.cabig.caaers.domain.ParticipantHistory$Measure">
+      <bind-xml name="height"/>
+    </field>
+    <field name="weight" type="gov.nih.nci.cabig.caaers.domain.ParticipantHistory$Measure">
+      <bind-xml name="weight"/>
+    </field>
+    <field name="baselinePerformanceStatus" type="string">
+      <bind-xml name="baselinePerformanceStatus" node="element" />
+    </field>
   </class> 
+ 
+   <class name="gov.nih.nci.cabig.caaers.domain.ParticipantHistory$Measure">
+    <map-to xml="Measure"  />
+    <field name="quantity" type="big-decimal">
+      <bind-xml name="quantity" node="element" />
+    </field>
+    <field name="unit" type="string">
+      <bind-xml name="unit" node="element" />
+    </field>
+  </class> 
+   
 
   <class name="gov.nih.nci.cabig.caaers.domain.CtcTerm">
     <map-to xml="CtcTerm"  />
@@ -431,7 +617,6 @@
     <field name="select" type="string">
       <bind-xml name="select" node="element" />
     </field>
-
   </class> 
 
   

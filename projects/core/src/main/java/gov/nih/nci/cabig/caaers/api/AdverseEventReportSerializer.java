@@ -21,16 +21,8 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class AdverseEventReportSerializer {
 
@@ -117,10 +109,16 @@ public class AdverseEventReportSerializer {
 	    	aer.setParticipantHistory(getParticipantHistory(hibernateAdverseEventReport.getParticipantHistory()));
 
 	    	//build StudyParticipantAssignment
-	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
+//	    	aer.setAssignment(getStudyParticipantAssignment(hibernateAdverseEventReport.getAssignment()));
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
+	    	
+	    	aer.setRadiationIntervention(hibernateAdverseEventReport.getRadiationIntervention());
+	    	
+	    	aer.setSurgeryIntervention(hibernateAdverseEventReport.getSurgeryIntervention());
+	    	
+	    	aer.setMedicalDevice(hibernateAdverseEventReport.getMedicalDevice());
 
 	    	//build medications
 	    	List<ConcomitantMedication> conMedList = hibernateAdverseEventReport.getConcomitantMedications();
@@ -180,7 +178,7 @@ public class AdverseEventReportSerializer {
 	    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
 	    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
 	    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
-
+	    	
 	    	return participantHistory;
 	    }
 
