@@ -29,10 +29,16 @@ function submitPage(s){
 <p id="instructions">
    You have successfully created a new Participant
 </p>
-<chrome:box title="${participant.lastName}, ${participant.firstName}" autopad="true">
-    
-    
-<chrome:division id="single-fields">
+<chrome:box title="${participant.lastName}, ${participant.firstName}" >
+
+<chrome:division title="Assigned to Study">
+<c:forEach var="assignment" items="${participant.assignments}" varStatus="status"> 
+               		 
+					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${assignment.studySite.study.shortTitle}"/></div></div>
+					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.organization.name}"/></div></div>
+			   </c:forEach>
+</chrome:division>    
+<chrome:division title="Participant Details">
 
   <div class="leftpane">
 	        <div class="row">
@@ -76,19 +82,7 @@ function submitPage(s){
 	            <div class="value">${participant.gender}</div>
 	        </div>
 	              
-	     </div>
-	     
-	     <div class="leftpane">
-	   
-	     	<div class="row"><div class="label"><strong>Assigned to Study</strong></div></div><br>
-	     	<c:forEach var="assignment" items="${participant.assignments}" varStatus="status"> 
-               		 
-					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${assignment.studySite.study.shortTitle}"/></div></div>
-					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.organization.name}"/></div></div>
-			   </c:forEach>
-			   
-	     </div>
-	     
+	     </div>	     
 	     <div class="endpanes">&nbsp;</div>   
 
   </chrome:division>

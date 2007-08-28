@@ -30,8 +30,27 @@ function submitPage(s){
 	<jsp:attribute name="instructions">
         Please verify this data and press Save to Create this Participant
     </jsp:attribute>
-	<jsp:attribute name="singleFields">
-    <chrome:division title="">
+	
+	<jsp:attribute name="repeatingFields">
+    
+    <chrome:division title="Assigned to Study">
+     
+      	<c:forEach var="studySite" items="${command.studySites}"
+				varStatus="status"> 
+               		 
+					 <div class="row">
+				<div class="label">Study Short Title:</div>
+				<div class="value"><c:out
+					value="${studySite.study.shortTitle}" /></div></div>
+					 <div class="row">
+				<div class="label">Site:</div>
+				<div class="value"><c:out
+					value="${studySite.organization.name}" /></div></div>
+			   </c:forEach>
+	</chrome:division>	
+	
+     <chrome:division title="Participant Details">
+    
         <input type="hidden" id="_finish" name="_finish" />
         <br>
         
@@ -80,29 +99,8 @@ function submitPage(s){
 	              
 	     </div>
 	     
-	     <div class="leftpane">
-	     
-	     	<div class="row">
-			<div class="label"><strong>Assigned to Study</strong></div></div><br>
-	     	<c:forEach var="studySite" items="${command.studySites}"
-				varStatus="status"> 
-               		 
-					 <div class="row">
-				<div class="label">Study Short Title:</div>
-				<div class="value"><c:out
-					value="${studySite.study.shortTitle}" /></div></div>
-					 <div class="row">
-				<div class="label">Site:</div>
-				<div class="value"><c:out
-					value="${studySite.organization.name}" /></div></div>
-			   </c:forEach>
-			   
-	     </div>
-	     
 	      </chrome:division>
-	               </jsp:attribute>
-    <jsp:attribute name="repeatingFields">
-    
+	
 		<c:if test="${not empty command.identifiers}">
 			<chrome:division title="Identifiers">
 			<table class="tablecontent">
