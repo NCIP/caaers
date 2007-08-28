@@ -52,7 +52,7 @@ public class TreatmentTab extends AeTab {
 
         caFields.addField(InputFieldFactory.createSelectField(
             "studyAgent", "Study Agent", true,
-            InputFieldFactory.collectOptions(command.getStudy().getStudyAgents(), "id", "agent.name")));
+            InputFieldFactory.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName")));
         caFields.addField(createDoseField("dose", "Dose", true));
         caFields.addField(InputFieldFactory.createTextArea(
             "durationAndSchedule", "Duration and schedule", false));
