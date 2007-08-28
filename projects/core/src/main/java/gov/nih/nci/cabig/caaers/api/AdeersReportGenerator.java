@@ -46,7 +46,7 @@ public class AdeersReportGenerator  {
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOXsltFile);
 	}
 	
-	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
+	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject , Integer reportIndex) throws Exception{
 		AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 		String tempDir = System.getProperty("java.io.tmpdir");
 		pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
@@ -56,12 +56,12 @@ public class AdeersReportGenerator  {
 		
 		List<String> emails = new ArrayList<String>();
 
-		for (Report report : adverseEventReportDataObject.getReports()) {
-			for (ReportDelivery delivery: report.getReportDeliveries()) {
-				if (delivery.getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
-					String ep = delivery.getEndPoint();
-					emails.add(ep);
-				}
+		Report report = adverseEventReportDataObject.getReports().get(((int)reportIndex));
+		
+		for (ReportDelivery delivery: report.getReportDeliveries()) {
+			if (delivery.getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
+				String ep = delivery.getEndPoint();
+				emails.add(ep);
 			}
 		}
 		
