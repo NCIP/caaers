@@ -119,7 +119,7 @@
                 <div class="value">
                     <label>
                         <input type="checkbox" id="physician-same" name="physician-same" />&nbsp;Physician
-                        is same as reporter
+                        is same as Reporter
                     </label>
                 </div>
             </div>

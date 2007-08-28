@@ -222,7 +222,7 @@ public class SearchStudyAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
 
-
+        
         Column columnstudyIdentifier = model.getColumnInstance();
         columnstudyIdentifier.setProperty("test");
         columnstudyIdentifier.setTitle("Study ID");
@@ -244,7 +244,8 @@ public class SearchStudyAjaxFacade {
         columnAeType.setSortable(false);
         columnAeType.setCell("gov.nih.nci.cabig.caaers.web.search.AeTypeDisplayCell");
         model.addColumn(columnAeType);
-
+        
+        
         Column columnCtcCategory = model.getColumnInstance();
         columnCtcCategory.setTitle("CTC Category");
         columnCtcCategory.setAlias("category");
@@ -276,7 +277,7 @@ public class SearchStudyAjaxFacade {
         aeStartDate.setCell("gov.nih.nci.cabig.caaers.web.search.AeDetectionDateDisplayCell");
         aeStartDate.setTitle("Detection Date");
         model.addColumn(aeStartDate);
-
+	
         return model.assemble();
     }
 
@@ -738,7 +739,7 @@ public class SearchStudyAjaxFacade {
 	   if (parameterMap != null) {
 
 			for (Object key : parameterMap.keySet()) {
-				System.out.println(key.toString() + " -- " + parameterMap.get(key));
+				log.debug(key.toString() + " -- " + parameterMap.get(key));
 			}
 		}
 

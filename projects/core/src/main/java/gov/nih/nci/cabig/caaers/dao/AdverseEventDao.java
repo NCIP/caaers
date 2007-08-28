@@ -20,10 +20,10 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
     }
     
     private static final String JOINS 
-	= " join o.ctcTerm as ctcTerm join ctcTerm.category as ctcCategory  " + 
-	 "  join o.report as expeditedReport " +
-	 " join expeditedReport.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier" +
-	 " join spa.participant as p join p.identifiers as pIdentifier";
+	= " join o.adverseEventTerm as aeCtcTerm join aeCtcTerm.term as ctcTerm join ctcTerm.category as ctcCategory  " + 
+	  "  join o.report as expeditedReport " +
+	  " join expeditedReport.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier" +
+	  " join spa.participant as p join p.identifiers as pIdentifier";
     
     public List<AdverseEvent> getByCriteria(String[] subnames, List<String> subStringMatchProperties)
     {
@@ -50,6 +50,11 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 			//params.add('%' + p.toLowerCase() + '%');
 			//firstClause = false;
 		}
+		
+
+		
+		 if (true) { queryBuf.append(firstClause ? " where " : " and "); queryBuf.append(" aeCtcTerm.class = AdverseEventCtcTerm	 "); firstClause = false; }
+		 
 		
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");

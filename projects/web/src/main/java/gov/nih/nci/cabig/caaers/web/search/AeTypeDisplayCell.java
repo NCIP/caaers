@@ -10,8 +10,8 @@ public class AeTypeDisplayCell extends AbstractCell {
 
     @Override
     protected String getCellValue(TableModel model, Column column) {
-    	System.out.println("jj " + model.getCurrentRowBean().getClass().getName());
         AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
+        System.out.println(ae.getAdverseEventTerm().getClass().getName());
         String output= ae.getReport() != null ? "SAE" : "AE";
 
         String cellValue = column.getValueAsString();

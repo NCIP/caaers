@@ -12,7 +12,13 @@ public class StudyLinkDisplayCell extends AbstractCell {
     @Override
     protected String getCellValue(TableModel model, Column column) {
         AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
-        Study study = ae.getReport().getAssignment().getStudySite().getStudy();
+        Study study = null;
+        if (ae.getReport() != null){
+        	study = ae.getReport().getAssignment().getStudySite().getStudy();
+        }
+        if (ae.getRoutineReport() != null){
+        	study = ae.getRoutineReport().getAssignment().getStudySite().getStudy();
+        }
         String cellValue = study.getPrimaryIdentifier().getValue();
         String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
 

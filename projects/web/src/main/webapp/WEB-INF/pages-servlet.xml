@@ -146,7 +146,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Expedited Report search" p:linkName="reportController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Routine Report search" p:linkName="routineReportController"/>
+                                p:displayName="Routine AE search" p:linkName="routineReportController"/>
                         </list>
                     </property>
                 </bean>
