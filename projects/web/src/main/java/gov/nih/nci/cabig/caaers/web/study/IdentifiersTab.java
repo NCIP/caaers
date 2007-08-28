@@ -57,7 +57,7 @@ public class IdentifiersTab extends StudyTab {
 		if (rfgFactory == null) {
 			rfgFactory = new RepeatingFieldGroupFactory("main", "identifiersLazy");
 			InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
-			InputFieldAttributes.setSize(idField, 10);
+			InputFieldAttributes.setSize(idField, 50);
 			rfgFactory.addField(idField);
 
 			rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
@@ -74,9 +74,7 @@ public class IdentifiersTab extends StudyTab {
 		}
 		Study study = command;
 		InputFieldGroupMap map = new InputFieldGroupMap();
-		if (!study.getIdentifiersLazy().isEmpty()) {
-			map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());
-		}
+		map.addRepeatingFieldGroupFactory(rfgFactory, study.getIdentifiersLazy().size());
 
 		return map;
 	}
@@ -105,6 +103,5 @@ public class IdentifiersTab extends StudyTab {
 		}
 
 	}
-
 
 }

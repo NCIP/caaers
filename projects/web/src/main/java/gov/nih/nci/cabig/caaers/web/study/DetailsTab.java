@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -92,10 +91,11 @@ public class DetailsTab extends StudyTab {
 			organizationFields.add(InputFieldFactory.createBooleanSelectField("multiInstitutionIndicator",
 					"Multi-Institutional", true));
 
-			organizationFields.add(InputFieldFactory.createTextField("organizationAssignedIdentifier.value",
-					"Coordinating Center Study Identifier", false));
 			organizationFields.add(InputFieldFactory.createAutocompleterField(
 					"organizationAssignedIdentifier.organization", "Coordinating Center", false));
+
+			organizationFields.add(InputFieldFactory.createTextField("organizationAssignedIdentifier.value",
+					"Coordinating Center Study Identifier", false));
 
 		}
 		InputFieldGroupMap map = new InputFieldGroupMap();
@@ -131,21 +131,22 @@ public class DetailsTab extends StudyTab {
 	}
 
 	@Override
-	public void postProcess(HttpServletRequest request, Study command,
-			Errors errors) {
+	public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
 		super.postProcess(request, command, errors);
-		if(errors.hasErrors()) return;
+		if (errors.hasErrors()) {
+			return;
+		}
 
-//		if(command.getMultiInstitutionIndicator()){
-//			//identifiers remove & add
-//			command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
-//			command.getIdentifiers().
-//		}else{
-//			//remove
-//			command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
-//			StudyCoordinatingCenter coordinatingCenter = command.getStudyCoordinatingCenter();
-//			if(coordinatingCenter != null) command.getStudyOrganizations().remove(coordinatingCenter);
-//		}
+		// if(command.getMultiInstitutionIndicator()){
+		// //identifiers remove & add
+		// command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
+		// command.getIdentifiers().
+		// }else{
+		// //remove
+		// command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());
+		// StudyCoordinatingCenter coordinatingCenter = command.getStudyCoordinatingCenter();
+		// if(coordinatingCenter != null) command.getStudyOrganizations().remove(coordinatingCenter);
+		// }
 	}
 
 	public CtcDao getCtcDao() {

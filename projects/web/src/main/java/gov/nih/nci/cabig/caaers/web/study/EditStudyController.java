@@ -88,7 +88,7 @@ public class EditStudyController extends StudyController<Study> {
 		}
 		// mergedStudy.setStudyTherapies(study.getStudyTherapies());
 		// now check for study therapies.
-		mergedStudy.setChemoTherapyType(study.getChemoTherapyType());
+		mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
 		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
 		mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
 		mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());

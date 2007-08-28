@@ -19,7 +19,7 @@ public class StudyTherapiesTab extends StudyTab {
 	private InputFieldGroup fieldGroup;
 
 	public StudyTherapiesTab() {
-		super("Study Identifiers", "Study Therapies", "study/study_therapies");
+		super("Study Identifiers", "Therapies", "study/study_therapies");
 		setAutoPopulateHelpKey(true);
 	}
 
@@ -30,10 +30,10 @@ public class StudyTherapiesTab extends StudyTab {
 			fieldGroup = new DefaultInputFieldGroup("studyTherapies");
 			List<InputField> fields = fieldGroup.getFields();
 
-			InputField chemoTherapyTypeField = InputFieldFactory.createCheckboxField("chemoTherapyType",
-					"Chemo Therapy");
-			InputFieldAttributes.setSize(chemoTherapyTypeField, 50);
-			fields.add(chemoTherapyTypeField);
+			InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField(
+					"drugAdministrationTherapyType", "Drug Administration");
+			InputFieldAttributes.setSize(drugAdministrationTherapyTypeField, 50);
+			fields.add(drugAdministrationTherapyTypeField);
 
 			InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("deviceTherapyType", "Device");
 			InputFieldAttributes.setSize(deviceTherapyTypeField, 50);
