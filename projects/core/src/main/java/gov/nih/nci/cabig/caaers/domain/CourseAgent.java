@@ -84,7 +84,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
         if (getStudyAgent() == null) {
             sb.append("[no agent]");
         } else {
-            sb.append(getStudyAgent().getAgent().getName());
+            sb.append(getStudyAgent().getAgentName());
         }
         if (getDose() != null && getDose().getAmount() != null) {
             sb.append(" (").append(getDose().getDisplayName()).append(')');
