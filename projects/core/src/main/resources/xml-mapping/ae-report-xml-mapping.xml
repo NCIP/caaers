@@ -431,11 +431,11 @@
     <field name="courseAgentAttributions" type="gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution" collection="arraylist">
       <bind-xml name="CourseAgentAttribution"/>
     </field>
-    <!--
-    <field name="CtcTerm" type="gov.nih.nci.cabig.caaers.domain.CtcTerm">
-      <bind-xml name="CtcTerm"/>
-    </field>
     
+    <field name="adverseEventCtcTerm" type="gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm">
+      <bind-xml name="AdverseEventCtcTerm"/>
+    </field>
+    <!--
     <field name="attributionSummary" type="gov.nih.nci.cabig.caaers.domain.Attribution">
       <bind-xml name="attributionSummary"/>
     </field>
@@ -616,6 +616,18 @@
     </field>
     <field name="select" type="string">
       <bind-xml name="select" node="element" />
+    </field>
+    <field name="ctepTerm" type="string">
+      <bind-xml name="ctepTerm" node="element" />
+    </field>
+    <field name="ctepCode" type="string">
+      <bind-xml name="ctepCode" node="element" />
+    </field>
+    <field name="otherRequired" type="boolean">
+      <bind-xml name="otherRequired" node="element" />
+    </field>
+    <field name="category" type="gov.nih.nci.cabig.caaers.domain.CtcCategory">
+      <bind-xml name="CtcCategory"/>
     </field>
   </class> 
 

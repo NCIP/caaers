@@ -103,7 +103,9 @@
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > CTC Version  :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">  </fo:inline>	
+					<fo:inline xsl:use-attribute-sets="normal" > 
+				   		<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Ctc/name"/>
+				    </fo:inline>
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 						 
@@ -1431,12 +1433,12 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Start Date of AE
+						  			Start Date
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			End Date of AE
+						  			End Date
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1455,12 +1457,12 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="CtcTerm/CtcCategory/name"/>
+						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			-
+						  			<xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1490,7 +1492,7 @@
       						</fo:table-cell>  
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			-
+						  			<xsl:value-of select="comments"/>
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
@@ -1509,44 +1511,138 @@
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		
 
-
+		  	<xsl:for-each select="AdverseEventReport/AdverseEvent"> 
 		  		<fo:table>
 					<fo:table-column column-width="30%"/>
 					<fo:table-column column-width="30%"/>
-
-																				
 		  			<fo:table-body>
-		  	      					
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Attribute to 
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Gr.3 Lymphatics
-						  		</fo:block>      							
-      						</fo:table-cell>
-		  			    </fo:table-row>
-		  			  
- 					
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-		  			    </fo:table-row>
+			
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			Attribute to 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="label" > 
+							  			<xsl:value-of select="grade"/><xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
 
 		  			</fo:table-body>
-		  		</fo:table>			  		
-		  									  				  		
+		  		</fo:table>	
+		  		<fo:block space-after="0.2pt">
+							<fo:leader leader-length="95%" leader-pattern="rule" rule-thickness="0.2pt"/>
+				</fo:block>	
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="30%"/>
+		  			<fo:table-body>
+			
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			Concomitant medications 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
+			  			    <xsl:for-each select="ConcomitantMedicationAttribution"> 
+				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="ConcomitantMedication/Agent/name"/> <xsl:value-of select="ConcomitantMedication/other"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:value-of select="attribution"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+				  			    </fo:table-row>
+			  			    </xsl:for-each>
+			  			    
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			Other causes 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
+
+			  			    <xsl:for-each select="OtherCauseAttribution"> 
+				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="OtherCause/text"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:value-of select="attribution"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+				  			    </fo:table-row>
+			  			    </xsl:for-each>
+
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			Course 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
+
+			  			    <xsl:for-each select="CourseAgentAttribution"> 
+				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="CourseAgent/StudyAgent/Agent/name"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:value-of select="attribution"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+				  			    </fo:table-row>
+			  			    </xsl:for-each>
+
+
+			  			    
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
+			  			    			  			    
+			  			    			  			    			  			    
+		  			</fo:table-body>
+		  		</fo:table>					
+				
+			 </xsl:for-each>	
+			 	  			
+	  		
+	  									  				  		
 
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>

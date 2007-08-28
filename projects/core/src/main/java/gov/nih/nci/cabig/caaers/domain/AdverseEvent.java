@@ -196,14 +196,17 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     @Transient
     public void setCtcTerm(CtcTerm ctcTerm) {
         getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
-    }
+    } 
     
     @Transient
     public AdverseEventCtcTerm getAdverseEventCtcTerm() {
     	if ( adverseEventTerm == null ) { 
     		this.adverseEventTerm = new AdverseEventCtcTerm(); 
     		adverseEventTerm.setAdverseEvent(this);
-    		} 
+    	} else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
+    		return new AdverseEventCtcTerm();
+    	}
+    	
 		return (AdverseEventCtcTerm)adverseEventTerm;
 	}
     
@@ -218,7 +221,9 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     	if ( adverseEventTerm == null ) { 
     		this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm(); 
     		adverseEventTerm.setAdverseEvent(this);
-    		} 
+    	} else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
+    		return new AdverseEventMeddraLowLevelTerm();
+    	}
 		return (AdverseEventMeddraLowLevelTerm)adverseEventTerm;
 	}
     
