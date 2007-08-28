@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Biju Joseph
  */
 public enum StudyTherapyType implements CodedEnum<Integer> {
-	CHEMO_THERAPY(1, "Chemo Therapy"), RADIATION(2, "Radiation"), SURGERY(3, "Surgery"), DEVICE(4, "Device");
+	DRUG_ADMINISTRATION(1, "Drug Administration"), RADIATION(2, "Radiation"), SURGERY(3, "Surgery"), DEVICE(4, "Device");
 
 	private String studyTherapyType;
 

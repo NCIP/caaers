@@ -84,7 +84,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
 
-	private Boolean chemoTherapyType = Boolean.FALSE;
+	private Boolean drugAdministrationTherapyType = Boolean.FALSE;
 
 	private Boolean radiationTherapyType = Boolean.FALSE;
 
@@ -539,7 +539,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		return lazyListHelper.getInternalList(TreatmentAssignment.class);
 	}
 
-	public void setTreatmentAssignmentsInternal(List<TreatmentAssignment> treatmentAssignments) {
+	public void setTreatmentAssignmentsInternal(final List<TreatmentAssignment> treatmentAssignments) {
 		lazyListHelper.setInternalList(TreatmentAssignment.class, treatmentAssignments);
 	}
 
@@ -548,7 +548,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		return lazyListHelper.getLazyList(TreatmentAssignment.class);
 	}
 
-	public void setTreatmentAssignments(List<TreatmentAssignment> treatmentAssignments) {
+	public void setTreatmentAssignments(final List<TreatmentAssignment> treatmentAssignments) {
 		setTreatmentAssignmentsInternal(treatmentAssignments);
 	}
 
@@ -600,12 +600,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@Transient
-	public Boolean getChemoTherapyType() {
-		return chemoTherapyType;
+	public Boolean getDrugAdministrationTherapyType() {
+		return drugAdministrationTherapyType;
 	}
 
-	public void setChemoTherapyType(Boolean chemoTherapyType) {
-		this.chemoTherapyType = chemoTherapyType;
+	public void setDrugAdministrationTherapyType(final Boolean drugAdministrationTherapyType) {
+		this.drugAdministrationTherapyType = drugAdministrationTherapyType;
 	}
 
 	@Transient
@@ -613,7 +613,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		return radiationTherapyType;
 	}
 
-	public void setRadiationTherapyType(Boolean radiationTherapyType) {
+	public void setRadiationTherapyType(final Boolean radiationTherapyType) {
 		this.radiationTherapyType = radiationTherapyType;
 	}
 
@@ -622,7 +622,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		return deviceTherapyType;
 	}
 
-	public void setDeviceTherapyType(Boolean deviceTherapyType) {
+	public void setDeviceTherapyType(final Boolean deviceTherapyType) {
 		this.deviceTherapyType = deviceTherapyType;
 	}
 
@@ -631,12 +631,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		return surgeryTherapyType;
 	}
 
-	public void setSurgeryTherapyType(Boolean surgeryTherapyType) {
+	public void setSurgeryTherapyType(final Boolean surgeryTherapyType) {
 		this.surgeryTherapyType = surgeryTherapyType;
 	}
 
 	@Transient
-	public StudyTherapy getStudyTherapy(StudyTherapyType studyTherapyType) {
+	public StudyTherapy getStudyTherapy(final StudyTherapyType studyTherapyType) {
 
 		for (StudyTherapy studyTherapy : studyTherapies) {
 			if (studyTherapy.getStudyTherapyType().equals(studyTherapyType)) {

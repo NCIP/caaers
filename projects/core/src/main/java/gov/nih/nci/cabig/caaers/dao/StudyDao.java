@@ -70,8 +70,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		initialize(study);
 
 		// now select the therapies types
-		if (study.getStudyTherapy(StudyTherapyType.CHEMO_THERAPY) != null) {
-			study.setChemoTherapyType(Boolean.TRUE);
+		if (study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
+			study.setDrugAdministrationTherapyType(Boolean.TRUE);
 		}
 		if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
 			study.setDeviceTherapyType(Boolean.TRUE);
