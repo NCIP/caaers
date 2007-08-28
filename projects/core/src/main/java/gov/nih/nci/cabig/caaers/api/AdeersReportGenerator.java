@@ -51,7 +51,7 @@ public class AdeersReportGenerator  {
 		String tempDir = System.getProperty("java.io.tmpdir");
 		pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
 		String xml = aeser.serialize(adverseEventReportDataObject);
-		//System.out.println(xml);
+	//	System.out.println(xml);
 		genatePdf(xml);
 		
 		List<String> emails = new ArrayList<String>();
