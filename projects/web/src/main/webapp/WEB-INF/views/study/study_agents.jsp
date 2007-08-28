@@ -98,19 +98,16 @@ td#linkPosition a img {
                 var agentRow = $(this.agentPropertyName + "-row")
                 var otherRow = $(this.otherProperty + "-row")
                 if (isPriorTherapy) {
-                    agentRow.removeClassName("disabled")
-                    otherRow.addClassName("disabled")
+               		$(this.agentInputId).disabled=false
                     $(this.otherProperty).value=""
                     $(this.otherProperty).disabled=true
-                    $(this.agentInputId).disabled=false
-                    
-                } else {                	
-                    otherRow.removeClassName("disabled")
-                    agentRow.addClassName("disabled")
+                    otherRow.getElementsByClassName("value")[0]=""
+                } else { 
+                	$(this.otherProperty).disabled=false               	
                     $(this.agentInputId).value=""
                     $(this.agentPropertyName).value=""
                     $(this.agentInputId).disabled=true
-                    $(this.otherProperty).disabled=false
+                    
                 }
             },initializePriorTherapyOrOther: function() {
                 var otherValue = $(this.otherProperty).value
@@ -188,8 +185,7 @@ td#linkPosition a img {
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm"
-	hideErrorDetails="true">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
 	<jsp:attribute name="instructions">
 	  Click on the Add Study Agent button below, in order to add an agent to this study.
 	</jsp:attribute>

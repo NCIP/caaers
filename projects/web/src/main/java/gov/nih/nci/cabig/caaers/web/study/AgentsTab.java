@@ -61,6 +61,9 @@ public class AgentsTab extends StudyTab {
 				isAgentEmpty = true;
 				errors.rejectValue("studyAgents[" + i + "].otherAgent", "REQUIRED", "Select either Agent or Other ");
 			}
+			if (studyAgent.getAgent() != null) {
+				studyAgent.setOtherAgent(null);
+			}
 
 		}
 
@@ -87,7 +90,7 @@ public class AgentsTab extends StudyTab {
 
 			InputField otherAgentField = InputFieldFactory.createTextField(baseName + "[" + i + "].otherAgent",
 					"Other", false);
-			InputFieldAttributes.setSize(otherAgentField, 70);
+			InputFieldAttributes.setSize(otherAgentField, 50);
 			fields.add(otherAgentField);
 
 			InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i + "].indType",
@@ -132,5 +135,4 @@ public class AgentsTab extends StudyTab {
 			}
 		}
 	}
-
 }
