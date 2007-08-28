@@ -266,6 +266,8 @@ public class AdverseEventReportSerializer {
 
 	    	adverseEvent.setOtherCauseAttributions(otList);
 	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
+	    	
+	    	
 
 			if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
 				adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
@@ -282,6 +284,7 @@ public class AdverseEventReportSerializer {
 	    	return adverseEvent;
 	    }
 
+	    
 	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
 	    	otherCauseAttribution.setAttribution(oca.getAttribution());
