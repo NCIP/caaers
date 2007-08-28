@@ -25,20 +25,20 @@
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
 		<chrome:division title="Adverse events">
-			<rd:renderMandatoryFields key="Adverse events" />
-			<rd:renderMandatoryFields key="Adverse events~Adverse events" />
+			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION" />
+			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" />
 		</chrome:division>
 		<chrome:division title="Reporter information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
 			   		<chrome:division title="Reporter details"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB">
-					 <rd:renderMandatoryFields key="Reporter info~Reporter details" />
+					 <rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Reporter details" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%">
 			   		<chrome:division title="Physician details" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="Reporter info~Physician details" />
+			    	  <rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Physician details" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -47,23 +47,23 @@
 		</chrome:division>
 		
 		<chrome:division title="Medical information">
-		   <rd:renderMandatoryFields key="Medical info" />
+		   <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION" />
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
 			   		<chrome:division title="Height"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB" >
-					 <rd:renderMandatoryFields key="Medical info~Height" />
+					 <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Height" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%">
 			   		<chrome:division title="Weight" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="Medical info~Weight" />
+			    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Weight" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
 			</table>
 			<chrome:division title="Metastatic disease information">
-				<rd:renderMandatoryFields key="Medical info~Metastatic disease sites" />
+				<rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Metastatic disease sites" />
 			</chrome:division>
 		</chrome:division>
 		
@@ -72,12 +72,12 @@
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Radiation intervention"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB">
-					 <rd:renderMandatoryFields key="Radiation intervention" />
+					 <rd:renderMandatoryFields key="RADIATION_INTERVENTION_SECTION" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Surgery intervention" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="Surgery intervention" />
+			    	  <rd:renderMandatoryFields key="SURGERY_INTERVENTION_SECTION" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -91,14 +91,14 @@
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
 			   		<chrome:division title=""  cssClass="paired" >
-					 <rd:renderMandatoryFields key="Treatment information" />
+					 <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
-			    	  <rd:renderMandatoryFields key="Treatment information~Course Agents" />
-			   		  <rd:renderMandatoryFields key="Treatment information~Course Agents~Dosage" tabular="true" heading="Dosage" singleRow="true"/>
-			   		  <rd:renderMandatoryFields key="Treatment information~Course Agents~ModifiedDose" tabular="true" heading="Modified dose" singleRow="true"/>
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents" />
+			   		  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~Dose" tabular="true" heading="Dosage" singleRow="true"/>
+			   		  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~ModifiedDose" tabular="true" heading="Modified dose" singleRow="true"/>
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -106,26 +106,26 @@
 			
 		</chrome:division>
 		<chrome:division title="Labs">
-		<rd:renderMandatoryFields key="Labs~Labs" />
-		<rd:renderMandatoryFields key="Labs~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
-		<rd:renderMandatoryFields key="Labs~Labs~Worst" heading="Wrost" singleRow="true" tabular="true" />
-		<rd:renderMandatoryFields key="Labs~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
+		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Wrost" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
 		</chrome:division>
 		
 		<chrome:division title="Prior Therapies">
-		<rd:renderMandatoryFields key="Prior therapies~Prior Therapys" />
+		<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
 		</chrome:division>
 		
 		<chrome:division title="Pre-Existing Condictions">
-		<rd:renderMandatoryFields key="Pre-existing condictions~AdverseEventPreExistingConds" />
+		<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~AdverseEventPreExistingConds" />
 		</chrome:division>
 		
 		<chrome:division>
-		<rd:renderMandatoryFields key="Concomitant medications~ConcomitantMedications" />
+		<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~ConcomitantMedications" />
 		</chrome:division>
 		
 		<chrome:division title="Other contributing causes">
-			<rd:renderMandatoryFields key="Other contributing causes~OtherCausess" />
+			<rd:renderMandatoryFields key="OTHER_CAUSE_SECTION~OtherCausess" />
 		</chrome:division>
 		</jsp:attribute>
 	</tags:tabForm> 
