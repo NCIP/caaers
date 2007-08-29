@@ -64,19 +64,19 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 	   }
     }
 
-
     public boolean fetchMandatoryValue(Map<String, Boolean> mandatoryFieldMap , InputField field){
     	boolean mandatory = false;
+    	Boolean objMandatoryFlag = null;
     	String propertyName = field.getPropertyName().replaceAll("(\\[\\d+\\])", "[]");
     	if(propertyName.indexOf('.') > 0){
-		  mandatory = mandatoryFieldMap.get(propertyName.split("\\.", 2)[1]);
+		  objMandatoryFlag = mandatoryFieldMap.get(propertyName.split("\\.", 2)[1]);
     	}else{
-		  mandatory = mandatoryFieldMap.get(propertyName);
+		  objMandatoryFlag = mandatoryFieldMap.get(propertyName);
     	}
+    	mandatory = (objMandatoryFlag == null) ? false : objMandatoryFlag.booleanValue();
     	if(field.getCategory() == InputField.Category.COMPOSITE){
     		for(InputField subfield : CompositeField.getSubfields(field))
     			mandatory |= fetchMandatoryValue(mandatoryFieldMap, subfield);
-
     	}
     	return mandatory;
     }
