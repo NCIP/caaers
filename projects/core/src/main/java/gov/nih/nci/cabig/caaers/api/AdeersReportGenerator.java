@@ -47,12 +47,6 @@ public class AdeersReportGenerator  {
 	}
 	
 	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject , Integer reportIndex) throws Exception{
-		AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-		String tempDir = System.getProperty("java.io.tmpdir");
-		pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
-		String xml = aeser.serialize(adverseEventReportDataObject);
-	//	System.out.println(xml);
-		genatePdf(xml);
 		
 		List<String> emails = new ArrayList<String>();
 
@@ -71,9 +65,16 @@ public class AdeersReportGenerator  {
 			for (String email : emailAddresses) {
 				emails.add(email.trim());
 			}
-		}
+		} 
 		
 		if (emails.size()>0 ){
+			AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
+			String tempDir = System.getProperty("java.io.tmpdir");
+			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
+			String xml = aeser.serialize(adverseEventReportDataObject);
+		//	System.out.println(xml);
+			genatePdf(xml);
+			
 			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
 					pdfOutFile,emails.toArray(new String[0]));

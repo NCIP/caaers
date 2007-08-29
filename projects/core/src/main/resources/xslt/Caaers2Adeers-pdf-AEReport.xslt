@@ -146,7 +146,9 @@
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Created Date :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal" > 
-						<xsl:value-of select="AdverseEventReport/detectionDate"/> 
+						<xsl:call-template name="standard_date">
+						        <xsl:with-param name="date" select="AdverseEventReport/detectionDate"/>
+   						</xsl:call-template>
 					</fo:inline>
 				</fo:block>
 
@@ -390,7 +392,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth"/>
+			   						</xsl:call-template>						  		
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -580,7 +584,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
+			   						</xsl:call-template>	
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -750,7 +756,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/RadiationIntervention/lastTreatmentDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/RadiationIntervention/lastTreatmentDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -882,7 +890,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/SurgeryIntervention/interventionDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/SurgeryIntervention/interventionDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1025,7 +1035,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/expirationDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/MedicalDevice/expirationDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1073,7 +1085,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/implantedDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/MedicalDevice/implantedDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1085,7 +1099,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/explantedDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/MedicalDevice/explantedDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -1145,7 +1161,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/MedicalDevice/returnedDate"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/MedicalDevice/returnedDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>			  			    
@@ -1212,12 +1230,16 @@
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:value-of select="startDate"/> 
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="startDate"/>
+			   						</xsl:call-template>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:value-of select="endDate"/> 
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="endDate"/>
+			   						</xsl:call-template>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
@@ -1783,4 +1805,17 @@
 		</fo:page-sequence>
 	</fo:root>
 	</xsl:template>
+
+	<xsl:template name="standard_date">
+		<xsl:param name="date" />
+		<!-- Day -->
+		<xsl:value-of select="substring($date, 9, 2)" />
+		<xsl:text>/</xsl:text>
+		<!-- Month -->
+		<xsl:value-of select="substring($date, 6, 2)" />
+		<xsl:text>/</xsl:text>
+		<!-- Year -->
+		<xsl:value-of select="substring($date, 1, 4)" />
+	</xsl:template>
+
 </xsl:stylesheet>
