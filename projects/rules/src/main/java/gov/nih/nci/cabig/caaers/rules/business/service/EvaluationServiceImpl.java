@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.service.ReportService;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,20 +141,14 @@ public class EvaluationServiceImpl implements EvaluationService {
      // TODO: it might more sense for this to go in ReportService
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
-
+        //Same organization play multiple roles.
+        HashSet<Integer> orgIdSet = new HashSet<Integer>();
         for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
-        	//System.out.println(" ORGS : " + studyOrganization.getOrganization().getName());
-            reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
+        	orgIdSet.add(studyOrganization.getOrganization().getId());
         }
-
-        // get organaization of sponsor .
-        // all sponsors are not in orgs table as of 07/13/2007
-        Organization organization = organizationDao.getByName(assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization().getName());
-
-        if (organization != null) {
-        	reportDefinitions.addAll(reportDefinitionDao.getAll(organization.getId()));
+        for(Integer orgId : orgIdSet){
+        	reportDefinitions.addAll(reportDefinitionDao.getAll(orgId));
         }
-
         return reportDefinitions;
     }
 
@@ -184,7 +179,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         } catch (Exception e) {
             throw new CaaersSystemException("Could not get mandatory sections", e);
         }
-        
+
         return sections;
     }
      ////// CONFIGURATION
