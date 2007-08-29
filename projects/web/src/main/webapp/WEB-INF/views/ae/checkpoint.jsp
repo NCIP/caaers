@@ -42,7 +42,7 @@
                             <tags:requiredIndicator/>&nbsp;<input type="checkbox" checked="checked" disabled="disabled"/>
                         </div>
                         <div class="value">
-                            ${report.reportDefinition.name}
+                            ${report.reportDefinition.name} (${report.reportDefinition.organization.name})
                         </div>
                     </div>
                 </c:if>

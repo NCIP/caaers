@@ -43,7 +43,7 @@ public class CheckpointTab extends AeTab {
         for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
             optional.getFields().add(InputFieldFactory.createCheckboxField(
                 "optionalReportDefinitionsMap[" + reportDefinition.getId() + ']',
-                reportDefinition.getName()
+                reportDefinition.getName() + " (" + reportDefinition.getOrganization().getName() +")"
             ));
         }
 
