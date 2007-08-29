@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Transactional(readOnly = true)
-public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
+public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> implements
+		MutableDomainObjectDao<ResearchStaff> {
 
 	private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName", "lastName");
 
@@ -31,11 +33,11 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> {
 	}
 
 	@Transactional(readOnly = false)
-	public void save(ResearchStaff researchStaff) {
+	public void save(final ResearchStaff researchStaff) {
 		getHibernateTemplate().saveOrUpdate(researchStaff);
 	}
 
-	public List<ResearchStaff> getBySubnames(String[] subnames, int site) {
+	public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
 
 		return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS, SUBSTRING_MATCH_PROPERTIES,
 				EXACT_MATCH_PROPERTIES);

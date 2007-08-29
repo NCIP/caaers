@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rhett Sutphin
  */
 @Transactional(readOnly = true)
-public class OrganizationDao extends GridIdentifiableDao<Organization> {
+public class OrganizationDao extends GridIdentifiableDao<Organization> implements MutableDomainObjectDao<Organization> {
 
 	private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
 
