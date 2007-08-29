@@ -84,7 +84,12 @@
 			</table>
 			
 		</chrome:division>
-		
+		<chrome:division title="Event and response description">
+		   <rd:renderMandatoryFields key="DESCRIPTION_SECTION" />
+		</chrome:division>
+		<chrome:division title="Medical devices">
+		  <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" />
+		</chrome:division>
 		<chrome:division title="Treatment Information">
 			
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">

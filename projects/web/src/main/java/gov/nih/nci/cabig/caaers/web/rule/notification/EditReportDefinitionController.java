@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 /**
  *
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class EditReportDefinitionController  extends AbstractReportDefinitionController {
 
+	 private ExpeditedReportTree expeditedReportTree;
 
 	@Override
 	public String getFlowName() {
@@ -43,7 +46,7 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 		ReportDefinition rpDef = reportDefinitionDao.getById(rpDefId);
 		//initialize all the lazy collections in rpDef
 		reportDefinitionDao.initialize(rpDef);
-
+		reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
 		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao);
 		rpDefCmd.setRoles(roles);
 
@@ -81,6 +84,9 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 			mfList.remove(mf);
 		}
 	}
-
+	 @Required
+    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+        this.expeditedReportTree = expeditedReportTree;
+    }
 
 }
