@@ -182,10 +182,9 @@ public class ReportServiceImpl  implements ReportService {
         //Note:- ScheduledNotification is per Recipient. A PlannedNotificaiton has many recipients.
         if (repDef.getPlannedNotifications() != null) {
 
-            String subjectLine = null;
-            String bodyContent = null;
-
             for (PlannedNotification pnf : repDef.getPlannedNotifications()) {
+            	 String subjectLine = null;
+                 String bodyContent = null;
 
                 //obtain all valid recipient address
                 List<String> toAddressList = findToAddresses(pnf, report);

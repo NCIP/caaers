@@ -225,6 +225,10 @@
                             <property name="code" value="SI" />
                             <property name="desc" value="Site Investigator" />
                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="PI" />
+                            <property name="desc" value="Principal Investigator" />
+                        </bean>
                     </list>
                 </entry>
 
@@ -244,12 +248,16 @@
                 <entry key="studyPersonnelRoleRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="REG" />
-                            <property name="desc" value="Registar" />
+                            <property name="code" value="PC" />
+                            <property name="desc" value="Participant Coordinator" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SC" />
                             <property name="desc" value="Study Coordinator" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="AC" />
+                            <property name="desc" value="Adverse Event Coordinator" />
                         </bean>
                     </list>
                 </entry>
