@@ -25,8 +25,21 @@
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
 		<chrome:division title="Adverse events">
-			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION" />
-			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" />
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			  <tr>
+			  	  <td width="50%">
+			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION" />
+			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="0" endIndex="2" />
+			  	  </td>
+			 	  <td width="50%">
+					<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="3" />  	    	      
+			 	  </td>
+			  </tr>
+			</table>
+		
+		
+			
+			
 		</chrome:division>
 		<chrome:division title="Reporter information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -47,24 +60,22 @@
 		</chrome:division>
 		
 		<chrome:division title="Medical information">
-		   <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION" />
+		   
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
-			   		<chrome:division title="Height"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB" >
-					 <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Height" />
-			   		</chrome:division>
+			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION" />
 			 	  </td>
 			 	  <td width="50%">
-			   		<chrome:division title="Weight" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Weight" />
-			   		</chrome:division>
+		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
+  	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Height" heading="Height" singleRow="true" tabular="true" />
+  	    	      <chrome:division title="Metastatic disease information">
+					<rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Metastatic disease sites" />
+				  </chrome:division>
 			 	  </td>
 			  </tr>
 			</table>
-			<chrome:division title="Metastatic disease information">
-				<rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Metastatic disease sites" />
-			</chrome:division>
+			
 		</chrome:division>
 		
 		<chrome:division title="Intervention information">
@@ -88,7 +99,19 @@
 		   <rd:renderMandatoryFields key="DESCRIPTION_SECTION" />
 		</chrome:division>
 		<chrome:division title="Medical devices">
-		  <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" />
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
+			  <tr>
+			  	  <td width="50%" VALIGN="top">
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" startIndex="0" endIndex="10"/>
+			 	  </td>
+			 	  <td width="50%" VALIGN="top">
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" startIndex="11" />
+			 	  </td>
+			  </tr>
+			</table>
+		
+		
+		 
 		</chrome:division>
 		<chrome:division title="Treatment Information">
 			
@@ -125,7 +148,7 @@
 		<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~AdverseEventPreExistingConds" />
 		</chrome:division>
 		
-		<chrome:division>
+		<chrome:division title="Concomitant Medications">
 		<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~ConcomitantMedications" />
 		</chrome:division>
 		

@@ -6,9 +6,14 @@
 <%@attribute name="key" required="true" %>
 <%@attribute name="tabular" type="java.lang.Boolean" %>
 <%@attribute name="singleRow" type="java.lang.Boolean" %>
+<%@attribute name="startIndex" type="java.lang.Integer"%>
+<%@attribute name="endIndex" type="java.lang.Integer"%>
+<c:set var="len">${fn:length(fieldGroups[key].fields)}</c:set>
+<c:set var="st">${empty startIndex ? 0 : startIndex }</c:set>
+<c:set var="en">${empty endIndex ? (len-1) : endIndex}</c:set>
 <%@attribute name="heading" %>
 <c:if test="${not tabular}">
-	<c:forEach var="field" items="${fieldGroups[key].fields}">
+	<c:forEach var="field" begin="${st}" end="${en}" items="${fieldGroups[key].fields}">
 	<tags:renderRow field="${field}" />
 	</c:forEach>
 </c:if>
