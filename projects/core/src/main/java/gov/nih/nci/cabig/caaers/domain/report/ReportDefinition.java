@@ -200,7 +200,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="rct_id")
-	@Cascade(value = { CascadeType.ALL})
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
 	public List<ReportMandatoryFieldDefinition> getMandatoryFields() {
 		return mandatoryFields;
 	}
