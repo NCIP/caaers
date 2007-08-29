@@ -88,6 +88,7 @@ public class SubmitterTab extends AeTab {
     ) {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
     	Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getPhysicianSignoff();
+    	hasPhysicianSignedOff = hasPhysicianSignedOff == null ? false : hasPhysicianSignedOff;
             
         	if (!hasPhysicianSignedOff){
         		InputField field = fieldGroups.get("physicianSignoff").getFields().get(0);

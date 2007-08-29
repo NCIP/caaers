@@ -51,6 +51,7 @@ public class SubmitReportTab extends AeTab {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
     	String emailString = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getEmail();
     	
+    	if (emailString != null) {
     	String[] emails = emailString.split(",");
        
         for( String email : emails){
@@ -60,6 +61,7 @@ public class SubmitReportTab extends AeTab {
                 errors.rejectValue(field.getPropertyName(), "NOT VALID", "Not Valid " + field.getDisplayName());
                 break;
         	}
+        }
         }
     }
     
