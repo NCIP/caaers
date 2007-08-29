@@ -160,6 +160,31 @@ public List<String> mandatorySections(ExpeditedAdverseEventReport aeReport) thro
 		
 	}
 
+	for(StudyOrganization so : aeReport.getStudy().getStudyOrganizations() )
+	{
+		for(AdverseEvent ae : aes )
+		{
+			for(Report report : aeReport.getReports() ) {
+				String message = evaluateInstitutionTarget(ae,aeReport.getStudy(),so.getOrganization(), report.getReportDefinition(),RuleType.MANDATORY_SECTIONS_RULES.getName());
+				
+				if (!message.equals(CAN_NOT_DETERMINED)) {
+					
+					String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
+					
+					for (int i=0;i<messages.length;i++) {
+						//System.out.println("adding .... " + messages[i]);
+						if (!mandatorySections.contains(messages[i])) {
+							mandatorySections.add(messages[i]);
+						}
+					}
+
+				}
+			}
+			
+		}
+
+	}
+	
 	return mandatorySections;
 }
 
