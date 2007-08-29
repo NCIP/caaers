@@ -59,7 +59,7 @@
 		
 		<!-- Delivery Details -->
 		<chrome:division title="Report Delivery Definition(s)">
-		  <table width="100%" class="eXtremeTable">
+		  <table width="100%" class="tablecontent">
 			<tr>
 			<th width="5%" class="tableHeader">Recipient type</th>
  			 <th width="30%" class="tableHeader">Name</th>
