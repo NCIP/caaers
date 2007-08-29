@@ -758,8 +758,9 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
-
-
+    <field name="studyInvestigators" type="gov.nih.nci.cabig.caaers.domain.StudyInvestigator" collection="arraylist">
+      <bind-xml name="StudyInvestigator" node="element" />
+    </field>
     <field name="statusCode" type="string">
       <bind-xml name="statusCode" node="element" />
     </field>
@@ -775,8 +776,54 @@
  
  </class>   
 
+  <class name="gov.nih.nci.cabig.caaers.domain.StudyInvestigator">
+    <map-to xml="StudyInvestigator"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="signatureText" type="string">
+      <bind-xml name="signatureText" node="element" />
+    </field>
+    <field name="roleCode" type="string">
+      <bind-xml name="roleCode" node="element" />
+    </field>
+    <field name="statusCode" type="string">
+      <bind-xml name="statusCode" node="element" />
+    </field>
+    <field name="siteInvestigator" type="gov.nih.nci.cabig.caaers.domain.SiteInvestigator">
+      <bind-xml name="SiteInvestigator" />
+    </field>
+  </class> 
 
+  <class name="gov.nih.nci.cabig.caaers.domain.SiteInvestigator">
+    <map-to xml="SiteInvestigator"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="investigator" type="gov.nih.nci.cabig.caaers.domain.Investigator">
+      <bind-xml name="Investigator" node="element" />
+    </field>
+  </class> 
 
+  <class name="gov.nih.nci.cabig.caaers.domain.Investigator">
+    <map-to xml="SiteInvestigator"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="firstName" type="string">
+      <bind-xml name="firstName" node="element" />
+    </field>
+    <field name="middleName" type="string">
+      <bind-xml name="middleName" node="element" />
+    </field>
+    <field name="lastName" type="string">
+      <bind-xml name="lastName" node="element" />
+    </field>
+    <field name="nciIdentifier" type="string">
+      <bind-xml name="nciIdentifier" node="element" />
+    </field>
+  </class> 
+    
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
     <map-to xml="Study"  />
     <field name="id" type="integer">

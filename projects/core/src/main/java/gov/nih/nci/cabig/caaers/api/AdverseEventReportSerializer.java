@@ -216,7 +216,7 @@ public class AdverseEventReportSerializer {
 	    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
 
 	    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
-
+	    	
 	    	return studyParticipantAssignment;
 	    }
 
@@ -246,7 +246,7 @@ public class AdverseEventReportSerializer {
 
 	    	studySite.setStudy(ss.getStudy());
 	    	studySite.setOrganization(ss.getOrganization());
-
+	    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
 	    	return studySite;
 	    }
 

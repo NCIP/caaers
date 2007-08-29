@@ -109,11 +109,16 @@
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 						 
-						<!--  
-						<xsl:value-of select="AdverseEventReport/Physician/firstName"/> 
-						<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-						<xsl:value-of select="AdverseEventReport/Physician/lastName"/>
-						-->
+						
+						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator">
+							
+								<xsl:value-of select="SiteInvestigator/Investigator/firstName"/>
+								<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+								<xsl:value-of select="SiteInvestigator/Investigator/lastName"/>
+								
+							
+						</for-each>
+
 					</fo:inline>	
 					
 					
