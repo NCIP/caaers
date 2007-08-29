@@ -1268,7 +1268,7 @@
 		  		</fo:block>
 		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:block xsl:use-attribute-sets="normal" > Pancreatitis </fo:block>
+		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>
 
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
@@ -1279,7 +1279,7 @@
 		  		</fo:block>
 		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:block xsl:use-attribute-sets="normal" > Skin </fo:block>		  		
+		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>		  		
 
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
