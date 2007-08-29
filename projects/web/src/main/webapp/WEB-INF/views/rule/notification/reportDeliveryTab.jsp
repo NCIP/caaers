@@ -92,7 +92,7 @@
 					of the final report will be delivered to the email address entered. 
 				</jsp:attribute>
 				<jsp:attribute name="singleFields">
-					<table width="100%" class="eXtremeTable">
+					<table width="100%" class="tablecontent">
 						<tr id="emails-table-head" class="emails-table-head">
 							<th width="35%" class="tableHeader">Name</th>
 							<th width="60%" class="tableHeader"><tags:requiredIndicator /> Role/EmailAddress</th>
