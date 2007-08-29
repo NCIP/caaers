@@ -44,20 +44,20 @@ public class TreatmentAssignmentTab extends StudyTab {
 		if (rfgFactory == null) {
 			rfgFactory = new RepeatingFieldGroupFactory("main", "treatmentAssignments");
 			InputField codeField = InputFieldFactory.createTextField("code", "Code", true);
-			InputFieldAttributes.setSize(codeField, 30);
+			InputFieldAttributes.setSize(codeField, 20);
 			rfgFactory.addField(codeField);
 
 			InputField doseLevelOrderField = InputFieldFactory.createTextField("doseLevelOrder", "Dose level order",
 					false);
-			InputFieldAttributes.setSize(doseLevelOrderField, 30);
+			InputFieldAttributes.setSize(doseLevelOrderField, 20);
 			rfgFactory.addField(doseLevelOrderField);
 
 			InputField descriptionField = InputFieldFactory.createTextArea("description", "Description", false);
-			InputFieldAttributes.setSize(descriptionField, 90);
+			InputFieldAttributes.setSize(descriptionField, 200);
 			rfgFactory.addField(descriptionField);
 
 			InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
-			InputFieldAttributes.setSize(commentsField, 90);
+			InputFieldAttributes.setSize(commentsField, 200);
 			rfgFactory.addField(commentsField);
 
 		}

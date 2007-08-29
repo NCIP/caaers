@@ -57,7 +57,7 @@ public class IdentifiersTab extends StudyTab {
 		if (rfgFactory == null) {
 			rfgFactory = new RepeatingFieldGroupFactory("main", "identifiersLazy");
 			InputField idField = InputFieldFactory.createTextField("value", "Identifier", true);
-			InputFieldAttributes.setSize(idField, 15);
+			InputFieldAttributes.setSize(idField, 20);
 			rfgFactory.addField(idField);
 
 			rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,

@@ -1,0 +1,98 @@
+package gov.nih.nci.cabig.caaers.web.admin;
+
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+ * Base Controller class to handle the basic work flow in the Creation / Updation of a Organization Design This uses
+ * AbstractTabbedFlowFormController to implement tabbed workflow
+ * @author Saurabh
+ */
+public abstract class OrganizationController<C extends Organization> extends
+		AutomaticSaveFlowFormController<C, Organization, OrganizationDao> {
+
+	private static final Log log = LogFactory.getLog(OrganizationController.class);
+
+	protected OrganizationDao organizationDao;
+
+	public OrganizationController() {
+		setCommandClass(Organization.class);
+		Flow<C> flow = new Flow<C>("Create Organization");
+		layoutTabs(flow);
+		setFlow(flow);
+		setAllowDirtyBack(false);
+		setAllowDirtyForward(false);
+	}
+
+	// /LOGIC
+	@Override
+	protected Organization getPrimaryDomainObject(final C command) {
+		return command;
+	}
+
+	@Required
+	public void setOrganizationDao(final OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
+
+	@Override
+	protected OrganizationDao getDao() {
+		return organizationDao;
+	}
+
+	/**
+	 * Template method to let the subclass decide the order of tab
+	 */
+	protected abstract void layoutTabs(Flow<C> flow);
+
+	@Override
+	protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
+		super.initBinder(request, binder);
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
+			final int page) throws Exception {
+		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+		return refdata;
+	}
+
+	/**
+	 * Override this in sub controller if summary is needed
+	 * @return
+	 */
+	protected boolean isSummaryEnabled() {
+		return false;
+	}
+
+	@Override
+	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
+			final Object command, final BindException errors) throws Exception {
+
+		Organization organization = (Organization) command;
+		organizationDao.save(organization);
+		ModelAndView modelAndView = new ModelAndView("admin/organization_confirmation");
+		modelAndView.addAllObjects(errors.getModel());
+		return modelAndView;
+	}
+
+}

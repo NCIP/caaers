@@ -11,28 +11,23 @@
 	<tags:stylesheetLink name="participant"/>
 	</head>
 <body>
-    <form:form method="post" action="createOrganization" name="form" id="form">
-    <chrome:box title="Organization Details" id="organization" autopad="true">
-	
-    <tags:errors path="*"/>
-      
-     <div class="content">
-        <div class="row">
-            <div class="label"><span class="red">*</span>Name:</div>
-            <div class="value"><form:input path="name" size="90"/></div>
-        </div>
-        <div class="row">
-            <div class="label">Description:</div>
-            <div class="value"><form:textarea path="descriptionText" cssStyle="width:560px;height:80px;"  /></div>
-        </div>
-       <div class="row">
-            <div class="label"><span class="red">*</span>NCI Identifier:</div>
-            <div class="value"><form:input path="nciInstituteCode" size="40" /></div>
-        </div>   
-     </div>
-     <div align = "right">
-     <input type="submit" value="Save"/>
-    </chrome:box>
-   </form:form>
+<tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm">
+
+    
+		 <jsp:attribute name="singleFields">
+            <div>
+			<input type="hidden" name="_action" value="">
+			<input type="hidden" name="_selected" value="">
+		</div>
+		       <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
+		
+		
+    				<c:forEach  items="${fieldGroups.organization.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                	</c:forEach>
+             </jsp:attribute>
+    
+    
+</tags:tabForm>
  </body>
 </html>
