@@ -1808,14 +1808,16 @@
 
 	<xsl:template name="standard_date">
 		<xsl:param name="date" />
-		<!-- Day -->
-		<xsl:value-of select="substring($date, 9, 2)" />
-		<xsl:text>/</xsl:text>
-		<!-- Month -->
-		<xsl:value-of select="substring($date, 6, 2)" />
-		<xsl:text>/</xsl:text>
-		<!-- Year -->
-		<xsl:value-of select="substring($date, 1, 4)" />
+		<xsl:if test="$date">
+			<!-- Day -->
+			<xsl:value-of select="substring($date, 9, 2)" />
+			<xsl:text>/</xsl:text>
+			<!-- Month -->
+			<xsl:value-of select="substring($date, 6, 2)" />
+			<xsl:text>/</xsl:text>
+			<!-- Year -->
+			<xsl:value-of select="substring($date, 1, 4)" />
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
