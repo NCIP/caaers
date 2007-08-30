@@ -50,6 +50,18 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldAttributes.setSize(lastNameField, 30);
 		researchStaffFieldGroup.getFields().add(lastNameField);
 
+		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email Address", true);
+		InputFieldAttributes.setSize(emailAddressField, 30);
+		researchStaffFieldGroup.getFields().add(emailAddressField);
+
+		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone Number", true);
+		InputFieldAttributes.setSize(phoneNumberField, 30);
+		researchStaffFieldGroup.getFields().add(phoneNumberField);
+
+		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax Number", false);
+		InputFieldAttributes.setSize(faxNumberField, 30);
+		researchStaffFieldGroup.getFields().add(faxNumberField);
+
 		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
 		options.put("", "Please select");
 		options.putAll(InputFieldFactory.collectOptions(organizationDao.getAll(), "id", "name"));

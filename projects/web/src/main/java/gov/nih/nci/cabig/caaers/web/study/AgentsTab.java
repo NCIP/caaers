@@ -90,7 +90,7 @@ public class AgentsTab extends StudyTab {
 
 			InputField otherAgentField = InputFieldFactory.createTextField(baseName + "[" + i + "].otherAgent",
 					"Other", false);
-			InputFieldAttributes.setSize(otherAgentField, 50);
+			InputFieldAttributes.setSize(otherAgentField, 70);
 			fields.add(otherAgentField);
 
 			InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i + "].indType",

@@ -3,7 +3,9 @@ package gov.nih.nci.cabig.caaers.web.search;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.service.StudyService;
@@ -29,13 +31,25 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public abstract class SearchController extends SimpleFormController {
 
 	private StudyService studyService;
+
 	private ConfigProperty configurationProperty;
+
 	private ListValues listValues;
+
 	private CtcCategoryDao ctcCategoryDao;
+
 	private StudyDao studyDao;
+
 	private ParticipantDao participantDao;
+
+	private OrganizationDao organizationDao;
+
+	private ResearchStaffDao researchStaffDao;
+
 	private ExpeditedAdverseEventReportDao expeditedDao;
+
 	private RoutineAdverseEventReportDao routineDao;
+
 	private AdverseEventDao adverseEventDao;
 
 	public SearchController() {
@@ -44,61 +58,73 @@ public abstract class SearchController extends SimpleFormController {
 		setSuccessView("search/study_search");
 	}
 
-	 @Override
-	protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
-	    	Map<String, Object> refdata = new HashMap<String, Object>();
-	        refdata.put("genders", listValues.getParticipantGender());
-	        refdata.put("ethnicity", listValues.getParticipantEthnicity());
-	        refdata.put("ctcCategories", ctcCategoryDao.getAll());
-		  	return refdata;
-	    }
+	@Override
+	protected Map<String, Object> referenceData(final HttpServletRequest request) throws Exception {
+		Map<String, Object> refdata = new HashMap<String, Object>();
+		refdata.put("genders", listValues.getParticipantGender());
+		refdata.put("ethnicity", listValues.getParticipantEthnicity());
+		refdata.put("ctcCategories", ctcCategoryDao.getAll());
+		return refdata;
+	}
 
 	// TODO: I really do not like the way I am implementing this I need to find a better way
-	protected void buildSearchResultTable(HttpServletRequest request,String prop, String value, int x)throws Exception{
+	protected void buildSearchResultTable(final HttpServletRequest request, final String prop, final String value,
+			final int x) throws Exception {
 
-			SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao,participantDao,adverseEventDao,expeditedDao,routineDao);
-			Context context = null;
-			context = new HttpServletRequestContext(request);
+		SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao,
+				expeditedDao, routineDao, organizationDao);
+		searchFacade.setResearchStaffDao(researchStaffDao);
+		Context context = null;
+		context = new HttpServletRequestContext(request);
 
-			TableModel model = new TableModelImpl(context);
-			Object viewData = null;
-			try {
-				 switch (x) {
-				 	case 0:
-				 		//viewData = searchFacade.build(model, new ArrayList());
-				 		viewData = searchFacade.getTable(null, prop, value, request);
-				        break;
-		            case 1:
-		            	viewData = searchFacade.getParticipantTable(null, prop, value, request);
-		            	break;
-		            case 2:
-		            	viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
-		            	break;
-		            case 3:
-		            	viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
-		            	break;
-		            case 4:
-		            	viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
-		            	break;
-		            case 5:
-		            	viewData = searchFacade.getINDTable(null, prop, value, request);
-		            	break;
-		            default:
-		            	viewData = searchFacade.build(model, new ArrayList());
-				        break;
-				 }
-			} catch (Exception e) {
-				e.printStackTrace();
+		TableModel model = new TableModelImpl(context);
+		Object viewData = null;
+		try {
+			switch (x) {
+			case 0:
+				// viewData = searchFacade.build(model, new ArrayList());
+				viewData = searchFacade.getTable(null, prop, value, request);
+				break;
+			case 1:
+				viewData = searchFacade.getParticipantTable(null, prop, value, request);
+				break;
+			case 2:
+				viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
+				break;
+			case 3:
+				viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
+				break;
+			case 4:
+				viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
+				break;
+			case 5:
+				viewData = searchFacade.getINDTable(null, prop, value, request);
+				break;
+			case 6:
+				viewData = searchFacade.getOrganizationTable(null, prop, value, request);
+				break;
+
+			case 7:
+				viewData = searchFacade.getResearchStaffTable(null, prop, value, request);
+				break;
+
+			default:
+				viewData = searchFacade.build(model, new ArrayList());
+				break;
 			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
-			request.setAttribute("assembler", viewData);
+		request.setAttribute("assembler", viewData);
 	}
 
 	public StudyService getStudyService() {
 		return studyService;
 	}
 
-	public void setStudyService(StudyService studyService) {
+	public void setStudyService(final StudyService studyService) {
 		this.studyService = studyService;
 	}
 
@@ -106,7 +132,7 @@ public abstract class SearchController extends SimpleFormController {
 		return configurationProperty;
 	}
 
-	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+	public void setConfigurationProperty(final ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
 
@@ -114,11 +140,11 @@ public abstract class SearchController extends SimpleFormController {
 		return listValues;
 	}
 
-	public void setListValues(ListValues listValues) {
+	public void setListValues(final ListValues listValues) {
 		this.listValues = listValues;
 	}
 
-	public void setCtcCategoryDao(CtcCategoryDao ctcCategoryDao) {
+	public void setCtcCategoryDao(final CtcCategoryDao ctcCategoryDao) {
 		this.ctcCategoryDao = ctcCategoryDao;
 	}
 
@@ -130,7 +156,7 @@ public abstract class SearchController extends SimpleFormController {
 		return studyDao;
 	}
 
-	public void setStudyDao(StudyDao studyDao) {
+	public void setStudyDao(final StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
 
@@ -138,7 +164,7 @@ public abstract class SearchController extends SimpleFormController {
 		return adverseEventDao;
 	}
 
-	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
+	public void setAdverseEventDao(final AdverseEventDao adverseEventDao) {
 		this.adverseEventDao = adverseEventDao;
 	}
 
@@ -146,7 +172,7 @@ public abstract class SearchController extends SimpleFormController {
 		return expeditedDao;
 	}
 
-	public void setExpeditedDao(ExpeditedAdverseEventReportDao expeditedDao) {
+	public void setExpeditedDao(final ExpeditedAdverseEventReportDao expeditedDao) {
 		this.expeditedDao = expeditedDao;
 	}
 
@@ -154,15 +180,23 @@ public abstract class SearchController extends SimpleFormController {
 		return participantDao;
 	}
 
-	public void setParticipantDao(ParticipantDao participantDao) {
+	public void setParticipantDao(final ParticipantDao participantDao) {
 		this.participantDao = participantDao;
+	}
+
+	public void setOrganizationDao(final OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
 	public RoutineAdverseEventReportDao getRoutineDao() {
 		return routineDao;
 	}
 
-	public void setRoutineDao(RoutineAdverseEventReportDao routineDao) {
+	public void setRoutineDao(final RoutineAdverseEventReportDao routineDao) {
 		this.routineDao = routineDao;
+	}
+
+	public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
 	}
 }

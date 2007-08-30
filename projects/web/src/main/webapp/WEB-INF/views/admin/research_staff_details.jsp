@@ -4,12 +4,38 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
-<title>${tab.longTitle}</title>
+<tags:stylesheetLink name="tabbedflow"/>
+<tags:stylesheetLink name="participant"/>
+<tags:includeScriptaculous />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+        /* Override default lable length */
+         div.row div.label { width: 9em; } 
+        div.row div.value { margin-left: 10em; }
+        div.content {
+            padding: 5px 15px;
+        }        
+</style>
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+<tags:dwrJavascriptLink objects="search"/>
 </head>
 <body>
+<div class="tabpane">
+  <ul id="workflow-tabs" class="tabs autoclear">
+    <li class="tab selected"><div>
+        <a href="createResearchStaff">Create Research Staff</a>
+    </div></li>
+    <li class="tab"><div>
+        <a href="searchResearchStaff">Search Research Staff</a>
+    </div></li>
+  </ul>
+  <br />
+
 <tags:tabForm tab="${tab}" flow="${flow}"  formName="researchStaffForm">
 
     

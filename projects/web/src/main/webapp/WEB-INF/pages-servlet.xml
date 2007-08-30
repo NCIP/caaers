@@ -119,7 +119,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Investigator" p:linkName="createInvestigatorController"/>            
 							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Research Staff" p:linkName="createResearchStaffController"/>
+                                p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import" p:linkName="importController"/> 
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
@@ -127,7 +127,7 @@
 							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="IND#" p:linkName="createINDController"/>                                                                                
                         <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Organization" p:linkName="createOrganizationController"/>                                                                               
+                                p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
                         
                         </list>
                     </property>
@@ -238,6 +238,24 @@
           class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
            <property name="sessionForm"><value>true</value></property>
      </bean>
+     
+     <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
+     </bean>
+     
+
+	<bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController">
+     </bean>
+
+	<bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController">
+     </bean>
+
+<bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
+     </bean>
+     
           
     <bean name="/admin/import" id="importController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.ImportController"/>

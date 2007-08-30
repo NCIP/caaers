@@ -7,10 +7,28 @@
 
 <html>
 <head>
-    <title>Add organization</title>
-	<tags:stylesheetLink name="participant"/>
-	</head>
+	<tags:stylesheetLink name="tabbedflow"/>
+ 	 <style type="text/css">
+        div.content {
+            padding: 5px 15px;
+        }
+    </style>
+ 	<tags:includeScriptaculous/>
+ 	</head>
 <body>
+
+<div class="tabpane">
+  <ul id="workflow-tabs" class="tabs autoclear">
+    <li class="tab selected"><div>
+        <a href="createOrganization">Create Organization</a>
+    </div></li>
+    <li class="tab"><div>
+        <a href="searchOrganization">Search Organization</a>
+    </div></li>
+  </ul>
+  <br />
+ 
+
 <tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm">
 
     

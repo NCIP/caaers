@@ -27,131 +27,137 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
-  * @author Priyatam
+ * @author Priyatam
  */
 public class CreateInvestigatorController extends SimpleFormController {
-		    	
+
 	private InvestigatorDao investigatorDao;
-	private OrganizationDao organizationDao;	
+
+	private OrganizationDao organizationDao;
+
 	private ConfigProperty configurationProperty;
-	
-	public CreateInvestigatorController() {		
-        setCommandClass(Investigator.class);  
-        setFormView("admin/investigator_details");
+
+	public CreateInvestigatorController() {
+		setCommandClass(Investigator.class);
+		setFormView("admin/investigator_details");
 		setSuccessView("admin/investigator_details");
 	}
-	
-	 @Override
-	 protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
-		 Map<String, Object> refdata =  new HashMap<String, Object>();  
-		 return referenceData(refdata);
-    }
-    
-	private Map<String, Object> referenceData(Map<String, Object> refdata) {
-		Map <String, List<Lov>> configMap = configurationProperty.getMap();
-        
-        refdata.put("sitesRefData", getOrganizations());
-        refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
-  		refdata.put("studySiteRoleCodeRefData",  configMap.get("studySiteRoleCodeRefData"));
-        return refdata;
+
+	@Override
+	protected Map<String, Object> referenceData(final HttpServletRequest request) throws Exception {
+		Map<String, Object> refdata = new HashMap<String, Object>();
+		return referenceData(refdata);
 	}
-	 
-    public void validate(Investigator command, Errors errors) {
-        boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
-        boolean lastName = command.getLastName() == null || command.getLastName().equals("");
-         if (firstName) errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
-        if (lastName) errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
-    }
-	
-	protected void initBinder(HttpServletRequest request,
-			ServletRequestDataBinder binder) throws Exception {
+
+	private Map<String, Object> referenceData(final Map<String, Object> refdata) {
+		Map<String, List<Lov>> configMap = configurationProperty.getMap();
+
+		refdata.put("sitesRefData", getOrganizations());
+		refdata.put("studySiteStatusRefData", configMap.get("studySiteStatusRefData"));
+		refdata.put("studySiteRoleCodeRefData", configMap.get("studySiteRoleCodeRefData"));
+		return refdata;
+	}
+
+	public void validate(final Investigator command, final Errors errors) {
+		boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
+		boolean lastName = command.getLastName() == null || command.getLastName().equals("");
+		boolean emailAddress = command.getEmailAddress() == null || command.getEmailAddress().equals("");
+		boolean phoneNumber = command.getPhoneNumber() == null || command.getPhoneNumber().equals("");
+		if (firstName) {
+			errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
+		}
+		if (lastName) {
+			errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
+		}
+		if (emailAddress) {
+			errors.rejectValue("emailAddress", "REQUIRED", "Missing Email Address");
+		}
+		if (phoneNumber) {
+			errors.rejectValue("phoneNumber", "REQUIRED", "Missing Phone Number");
+		}
+
+	}
+
+	@Override
+	protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
 		super.initBinder(request, binder);
-		binder.registerCustomEditor(Date.class, ControllerTools
-				.getDateEditor(true));
-		binder.registerCustomEditor(Organization.class, new DaoBasedEditor(
-				organizationDao));		
+		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
+		binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
 	}
-	
+
 	@Override
-	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
-		return createInvestigatorWithDesign();		         
+	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
+		return createInvestigatorWithDesign();
 	}
-	
+
 	@Override
-	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, 
-			Object command, BindException errors) throws Exception {
-		
+	protected ModelAndView onSubmit(final HttpServletRequest request, final HttpServletResponse response,
+			final Object command, final BindException errors) throws Exception {
+
 		int selected = Integer.parseInt(request.getParameter("_selected"));
 		String action = request.getParameter("_action");
 		Investigator investigator = (Investigator) command;
-		
-		if ("addSite".equals(action))
-		{	
-			SiteInvestigator siteInvestigator = new SiteInvestigator();						
-			investigator.addSiteInvestigator(siteInvestigator);		
+
+		if ("addSite".equals(action)) {
+			SiteInvestigator siteInvestigator = new SiteInvestigator();
+			investigator.addSiteInvestigator(siteInvestigator);
 		}
-		else if ("removeSite".equals(action))
-		{				
+		else if ("removeSite".equals(action)) {
 			investigator.getSiteInvestigators().remove(selected);
-		}	
-		else
-		{
+		}
+		else {
 			Investigator inv = (Investigator) command;
 			investigatorDao.save(inv);
-			
+
 			return new ModelAndView(new RedirectView("createInvestigator"));
 		}
-		
-		Map map = errors.getModel();	
+
+		Map map = errors.getModel();
 		referenceData(map);
-		ModelAndView modelAndView= new ModelAndView(getSuccessView(), map);
-     	
-    	// needed for saving session state
-    	request.getSession().setAttribute(getFormSessionAttributeName(), command);
-    	
+		ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
+
+		// needed for saving session state
+		request.getSession().setAttribute(getFormSessionAttributeName(), command);
+
 		return modelAndView;
 	}
-	
-	private void handleSiteInvestigatorAction(Investigator investigator, String action, String selected)
-	{				
-		if ("addSite".equals(action))
-		{	
-			SiteInvestigator siteInvestigator = new SiteInvestigator();						
-			investigator.addSiteInvestigator(siteInvestigator);		
+
+	private void handleSiteInvestigatorAction(final Investigator investigator, final String action,
+			final String selected) {
+		if ("addSite".equals(action)) {
+			SiteInvestigator siteInvestigator = new SiteInvestigator();
+			investigator.addSiteInvestigator(siteInvestigator);
 		}
-		else if ("removeSite".equals(action))
-		{				
+		else if ("removeSite".equals(action)) {
 			investigator.getSiteInvestigators().remove(Integer.parseInt(selected));
-		}							
+		}
 	}
-	
-	private Investigator createInvestigatorWithDesign()
-	{
-		Investigator investigator = new Investigator(); 			  
+
+	private Investigator createInvestigatorWithDesign() {
+		Investigator investigator = new Investigator();
 		SiteInvestigator siteInvestigator = new SiteInvestigator();
 		investigator.addSiteInvestigator(siteInvestigator);
-		
+
 		return investigator;
-	} 
-		
+	}
+
 	public OrganizationDao getOrganizationDao() {
 		return organizationDao;
 	}
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
+	public void setOrganizationDao(final OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
-	}		
-	
-	private List<Organization> getOrganizations()
-	{
-		return organizationDao.getAll();  	
 	}
-					
+
+	private List<Organization> getOrganizations() {
+		return organizationDao.getAll();
+	}
+
 	public InvestigatorDao getInvestigatorDao() {
 		return investigatorDao;
 	}
 
-	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
 		this.investigatorDao = investigatorDao;
 	}
 
@@ -159,7 +165,7 @@ public class CreateInvestigatorController extends SimpleFormController {
 		return configurationProperty;
 	}
 
-	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+	public void setConfigurationProperty(final ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
-	}        		
+	}
 }

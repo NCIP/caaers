@@ -48,14 +48,30 @@
        <div class="row">
             <div class="label">NCI Identifier:</div>
             <div class="value"><form:input path="nciIdentifier" /></div>
-        </div>   
+        </div>  
+        
+        <div class="row">
+            <div class="label"><span class="red">*</span>Email Address:</div>
+            <div class="value"><form:input path="emailAddress" /></div>
+        </div>
+        
+        <div class="row">
+            <div class="label"><span class="red">*</span>Phone Number:</div>
+            <div class="value"><form:input path="phoneNumber" /></div>
+        </div>
+        
+        <div class="row">
+            <div class="label">Fax Number:</div>
+            <div class="value"><form:input path="faxNumber" /></div>
+        </div>
+        
+         
      </div>
     </chrome:box>
     <chrome:box title="Associate Sites" id="investigator" autopad="true">
       <table class="tablecontent">
 		<tr>
 			<th scope="col"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-			<th scope="col"> <b> <em></em>Email Address:</b> </td>							
 			<th scope="col"><b> <span class="red">*</span><em></em>Status:</b> </td>							
 			<th scope="col">										
 				<b><a href="javascript:fireAction('addSite','0');"><img
@@ -69,8 +85,6 @@
 				<form:select path="siteInvestigators[${status.index}].organization">
    					<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
 				</form:select> </td>	
-			<td class="alt"> 					
-				<form:input path="siteInvestigators[${status.index}].emailAddress"/> </td>
 			<td class="alt"> 
 			    <form:select path="siteInvestigators[${status.index}].statusCode">										
 				 	<form:options items="${studySiteStatusRefData}" itemLabel="desc" itemValue="code" />
