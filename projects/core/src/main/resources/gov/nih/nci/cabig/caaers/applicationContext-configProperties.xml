@@ -244,7 +244,7 @@
                         </bean>
                     </list>
                 </entry>
-                <!-- Study Investigators -->
+                <!-- Study Personnels -->
                 <entry key="studyPersonnelRoleRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
@@ -256,7 +256,7 @@
                             <property name="desc" value="Study Coordinator" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="AC" />
+                            <property name="code" value="AEC" />
                             <property name="desc" value="Adverse Event Coordinator" />
                         </bean>
                     </list>
@@ -273,7 +273,18 @@
                         </bean>
                     </list>
                 </entry>
-
+				 <entry key="reportingRolesRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="REP" />
+                            <property name="desc" value="Reporter" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="SUB" />
+                            <property name="desc" value="Submitter" />
+                        </bean>
+                    </list>
+                </entry>
                 <entry key="heightUnitsRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">

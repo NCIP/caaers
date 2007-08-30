@@ -55,13 +55,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private Date createdOn;
     private Date dueOn;
     private Date submittedOn;
-    
+
     private Submitter submitter;
     private Boolean physicianSignoff;
 
     private ReportStatus status = ReportStatus.PENDING;
 
-    // TODO: This is to CC people when submitting report - Not sure if this 
+    // TODO: This is to CC people when submitting report - Not sure if this
     // should be here or if we should create a new ReportDelivery object which in
     // turn is tied into ReportDeliveryDefinition & ReportDefinition
     private String email;
@@ -83,6 +83,18 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public boolean hasScheduledNotifications(){
 		return (notifications != null) &&	(!notifications.isEmpty());
 	}
+
+	/**
+	 * Returns the notification having the supplied Id.
+	 */
+	public ScheduledNotification fetchScheduledNotification(Integer nfId){
+		if(notifications == null) return null;
+		for(ScheduledNotification nf : notifications){
+			if(nf.getId().equals(nfId)) return nf;
+		}
+		return null;
+	}
+
     ////// BEAN PROPERTIES
 	@Temporal(value=TemporalType.TIMESTAMP)
     public Date getCreatedOn() {
@@ -174,12 +186,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setReportDeliveries(List<ReportDelivery> deliveries) {
 		this.deliveries = deliveries;
 	}
-	
+
 	@Transient
 	public void addSubmitter(){
 		if (submitter == null) setSubmitter(new Submitter());
 	}
-	
+
 	// non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -192,7 +204,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.submitter = submitter;
         if (submitter != null) submitter.setReport(this);
     }
-    
+
     @Column(name="physician_signoff")
 	public Boolean getPhysicianSignoff() {
 		return physicianSignoff;
@@ -201,7 +213,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setPhysicianSignoff(Boolean physicianSignoff) {
 		this.physicianSignoff = physicianSignoff;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -209,7 +221,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	@Transient
 	public String[] getEmailAsArray(){
 		if (this.email == null) {
@@ -218,7 +230,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 		String[] emails = this.email.split(",");
 		return emails;
 	}
-	
+
 
 
 	////// OBJECT METHODS

@@ -36,7 +36,6 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	protected ScheduledNotification notification;
 	protected ApplicationContext applicationContext;
 	protected ReportDao reportDao;
-	protected int scheduledNotificationIndex;
 	protected Configuration configuration;
 
 	public ScheduledNotificationJobTemplate() {
@@ -67,19 +66,6 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		return reportDao;
 	}
 
-	/**
-	 * @return the scheduledNotificationIndex
-	 */
-	public int getScheduledNotificationIndex() {
-		return scheduledNotificationIndex;
-	}
-
-	/**
-	 * @param scheduledNotificationIndex the scheduledNotificationIndex to set
-	 */
-	public void setScheduledNotificationIndex(int scheduledNotificationIndex) {
-		this.scheduledNotificationIndex = scheduledNotificationIndex;
-	}
 
 	public Configuration getConfiguration() {
 		return configuration;
@@ -110,12 +96,12 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			configuration = (Configuration)applicationContext.getBean("configuration");
 
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
-			scheduledNotificationIndex = jobDataMap.getInt("curIndex");
+			Integer scheduledNFId = jobDataMap.getInt("scheduledNotifiction.id");
 			Integer reportId = jobDataMap.getInt("report.id");
 			//report = reportDao.getById(reportId);
 			report = reportDao.getInitializedReportById(reportId);
 
-			notification = report.getScheduledNotifications().get(scheduledNotificationIndex);
+			notification = report.fetchScheduledNotification(scheduledNFId);
 
 			boolean reportStatus = verifyAeReportStatus();
 			if(reportStatus){
@@ -125,15 +111,12 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 				notification.setDeliveryStatus(deliveryStatus);
 			}else {
 				deleteSubsequentJobs();
-				//mark the status of all jobs from curIndex to RECALLED
-				int index = 0;
+				//mark the status of all jobs which are in SCHEDULED status to RECALLED
 				for(ScheduledNotification nf : report.getScheduledNotifications()){
-				  if(index >= scheduledNotificationIndex){
-					  nf.setDeliveryStatus(DeliveryStatus.RECALLED);
-					  logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " +
+					if(!nf.getDeliveryStatus().equals(DeliveryStatus.SCHEDULED)) continue;
+					nf.setDeliveryStatus(DeliveryStatus.RECALLED);
+					logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " +
 							  DeliveryStatus.RECALLED.name());
-				  }
-				  index++;
 				}//for each nf
 			}
 
