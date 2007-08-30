@@ -76,7 +76,7 @@
                 if (otherValue.length == 0) {
                     $("select-priorTherapy-" + this.index).click()
                 } else {
-                    $("select-priorTherapy-" + this.index).click()
+                    $("select-other-" + this.index).click()
                 }
             }
         })
