@@ -135,7 +135,7 @@
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Institution :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal" > 
-						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/institution"/> 
+						<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/name"/> 
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>

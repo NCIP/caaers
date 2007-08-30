@@ -773,9 +773,27 @@
     <field name="study" type="gov.nih.nci.cabig.caaers.domain.Study">
       <bind-xml name="Study" />
     </field>
- 
+    <field name="organization" type="gov.nih.nci.cabig.caaers.domain.Organization">
+      <bind-xml name="Organization" />
+    </field>
  </class>   
 
+  <class name="gov.nih.nci.cabig.caaers.domain.Organization">
+    <map-to xml="Organization"  />
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element" />
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
+    </field>
+    <field name="nciInstituteCode" type="string">
+      <bind-xml name="nciInstituteCode" node="element" />
+    </field>
+    <field name="descriptionText" type="string">
+      <bind-xml name="descriptionText" node="element" />
+    </field>
+ </class>  
+ 
   <class name="gov.nih.nci.cabig.caaers.domain.StudyInvestigator">
     <map-to xml="StudyInvestigator"  />
     <field name="id" type="integer">
