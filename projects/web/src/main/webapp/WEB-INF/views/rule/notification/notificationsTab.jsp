@@ -133,8 +133,6 @@
     	<!-- hidden role recipient div -->
 			<div id="div_recipient_role" style="display: none">
 			  <select name="roleRecipient" id="recipient_role">
-			   <option value="">Select a Role</option>
-			  
 			  <c:forEach var="role" begin="0" items="${command.roles}">
 			  	<option value="${role.key}">${role.value}</option>
 			  </c:forEach>
@@ -160,10 +158,7 @@
 			
 		          	<div id="div_nf_box">
 		         	  	<table width="100%" border="0" align="left" valign="top" cellspacing="0" cellpadding="0">
- 						 <tr>
-   							<td width="15%"><div class="row"><div class="label"><label for="fromAddress">From Address</label></div></div></td>
-  							<td width="85%"><form:input path="fromAddress" size="40"/></td>
- 						 </tr>
+ 						
  						 <tr>
    							<td width="15%"><div class="row"><div class="label"><label for="recipients">Recipients</label></div></div></td>
    							<td>

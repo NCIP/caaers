@@ -12,11 +12,22 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class LabsTab extends AeTab {
-    private RepeatingFieldGroupFactory fieldFactory;
 
     public LabsTab() {
         super("Diagnostic test and lab results", "Labs", "ae/labs");
-        fieldFactory = new RepeatingFieldGroupFactory("lab", "aeReport.labs");
+
+    }
+
+    private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName, String displayName) {
+        fieldFactory.addField(InputFieldFactory.createTextField(propName + ".value", displayName + " value", false));
+        fieldFactory.addField(InputFieldFactory.createDateField(propName + ".date", displayName + " date", false));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("lab", "aeReport.labs");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 char c = (char) ('A' + index);
@@ -25,19 +36,10 @@ public class LabsTab extends AeTab {
         });
         fieldFactory.addField(InputFieldFactory.createTextField("name", "Lab test name", true));
         fieldFactory.addField(InputFieldFactory.createTextField("units", "Units", true));
-        addLabValueFields("baseline", "Baseline");
-        addLabValueFields("nadir", "Worst");
-        addLabValueFields("recovery", "Recovery");
-    }
-
-    private void addLabValueFields(String propName, String displayName) {
-        fieldFactory.addField(InputFieldFactory.createTextField(propName + ".value", displayName + " value", false));
-        fieldFactory.addField(InputFieldFactory.createDateField(propName + ".date", displayName + " date", false));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+        addLabValueFields(fieldFactory, "baseline", "Baseline");
+        addLabValueFields(fieldFactory, "nadir", "Worst");
+        addLabValueFields(fieldFactory, "recovery", "Recovery");
+        //-
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;

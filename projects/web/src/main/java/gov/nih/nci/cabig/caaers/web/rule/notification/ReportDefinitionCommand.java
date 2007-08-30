@@ -48,10 +48,10 @@ public class ReportDefinitionCommand  {
 	private String pointOnScale = "0"; // the selected point in the time scale
 	private String lastPointOnScale;
 	private String subjectLine;
-	private String fromAddress;
+//	private String fromAddress;
 	private List<String> roleRecipient = new ArrayList<String>();
 	private List<String> directRecipient = new ArrayList<String>();
-	private Map<String, String> roles;
+	private Map<Object, Object> roles;
 
 	private Map<String, Integer> mandatoryFieldMap;
 
@@ -73,7 +73,7 @@ public class ReportDefinitionCommand  {
 	///LOGIC
 	public void reset() {
 		subjectLine = "";
-		fromAddress = "";
+//		fromAddress = "";
 		roleRecipient.clear(); // = new ArrayList<String>();
 		directRecipient.clear(); // = new ArrayList<String>();
 		message = "";
@@ -101,7 +101,7 @@ public class ReportDefinitionCommand  {
 		if (pn instanceof PlannedEmailNotification) {
 			PlannedEmailNotification pen = (PlannedEmailNotification) pn;
 			subjectLine = pen.getSubjectLine();
-			fromAddress = pen.getFromAddress();
+//			fromAddress = pen.getFromAddress();
             message = (pen.getNotificationBodyContent() != null) ? pen
                 .getNotificationBodyContent().getBody() : "";
 			List<Recipient> recipientList = pn.getRecipients();
@@ -180,8 +180,7 @@ public class ReportDefinitionCommand  {
 		Integer lastPoint = Integer.valueOf(lastPointOnScale);
 		if (NotificationType.EMAIL_NOTIFICATION.name().equals(notificationType)) {
 			// only add values if atleast one filed has value.
-			boolean mustAdd = StringUtils.isNotEmpty(fromAddress)
-					|| StringUtils.isNotEmpty(message)
+			boolean mustAdd = StringUtils.isNotEmpty(message)
 					|| CollectionUtils.isNotEmpty(roleRecipient)
 					|| CollectionUtils.isNotEmpty(directRecipient)
 					|| StringUtils.isNotEmpty(subjectLine);
@@ -195,7 +194,7 @@ public class ReportDefinitionCommand  {
 			}
 			pen.setIndexOnTimeScale(lastPoint);
 			pen.setSubjectLine(subjectLine);
-			pen.setFromAddress(fromAddress);
+			pen.setFromAddress("test@test.com");
 			if (StringUtils.isNotEmpty(message)) {
 				NotificationBodyContent nfBody = new NotificationBodyContent();
 				nfBody.setBody(message);
@@ -279,15 +278,6 @@ public class ReportDefinitionCommand  {
 	}
 
 
-	public String getFromAddress() {
-		return fromAddress;
-	}
-
-
-	public void setFromAddress(String fromAddress) {
-		this.fromAddress = fromAddress;
-	}
-
 	public String getSubjectLine() {
 		return subjectLine;
 	}
@@ -370,7 +360,7 @@ public class ReportDefinitionCommand  {
 		this.roleRecipient = roleRecipient;
 	}
 
-	public Map<String, String> getRoles() {
+	public Map<Object, Object> getRoles() {
 		return roles;
 	}
 	/**
@@ -378,7 +368,7 @@ public class ReportDefinitionCommand  {
 	 * roles to which notification can be sent.
 	 * @param roles
 	 */
-	public void setRoles(Map<String, String> roles) {
+	public void setRoles(Map<Object, Object> roles) {
 		this.roles = roles;
 	}
 

@@ -350,7 +350,7 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>rule/author/addColumn</value></property>
     </bean>    
-	
+	<!-- TODO: to be removed -->
 	<util:map id="roles" map-class="java.util.LinkedHashMap">
 	  <entry key="Site Study PI" value="Site Study PI" />
 	  <entry key="Study Chair" value="Study Chair" />

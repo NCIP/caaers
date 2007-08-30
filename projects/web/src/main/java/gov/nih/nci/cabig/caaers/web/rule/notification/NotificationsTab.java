@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -8,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +29,11 @@ import org.springframework.validation.Errors;
 public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	private RepeatingFieldGroupFactory rfgFactory;
-
+	private ConfigProperty configurationProperty;
 
 	public NotificationsTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
 		rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.plannedNotifications");
-		rfgFactory.addField(InputFieldFactory.createTextField("fromAddress","From Address", false));
 		rfgFactory.addField(InputFieldFactory.createTextField("recipients","Recipients", false));
 		rfgFactory.addField(InputFieldFactory.createTextField("subjectLine","Subject Line", false));
 		rfgFactory.addField(InputFieldFactory.createTextField("notificationBodyContent.body","Message", false));
@@ -72,17 +73,11 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 			case EMAIL_NOTIFICATION:
 				//do I need to really validate??
-				boolean mustValidate = StringUtils.isNotEmpty(command.getFromAddress()) ||
-									   StringUtils.isNotEmpty(command.getMessage()) ||
+				boolean mustValidate = StringUtils.isNotEmpty(command.getMessage()) ||
 									   CollectionUtils.isNotEmpty(command.getRoleRecipient())||
 									   CollectionUtils.isNotEmpty(command.getDirectRecipient())||
 									   StringUtils.isNotEmpty(command.getSubjectLine());
 				if(!mustValidate) break;
-				if(StringUtils.isEmpty(command.getFromAddress())){
-					errors.rejectValue("fromAddress", "REQUIRED","From Address Invalid");
-				}else if(!emailValidator.isValid(command.getFromAddress())){
-					errors.rejectValue("fromAddress", "REQUIRED","From Address Invalid");
-				}
 				if(StringUtils.isEmpty(command.getMessage()))
 					errors.rejectValue("message", "REQUIRED","Message Invalid");
 				if(StringUtils.isEmpty(command.getSubjectLine()))
@@ -91,7 +86,6 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 				   CollectionUtils.isEmpty(command.getDirectRecipient())){
 					errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
 				}else{
-
 					if(CollectionUtils.isNotEmpty(command.getRoleRecipient())){
 						for(String role : command.getRoleRecipient()){
 							if(StringUtils.isEmpty(role)){
@@ -127,4 +121,5 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 		Map<String, Object> refData = super.referenceData(command);
 		return refData;
 	}
+
 }

@@ -17,12 +17,17 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  * @author Rhett Sutphin
  */
 public class PriorTherapyTab extends AeTab {
-    private RepeatingFieldGroupFactory fieldFactory;
-    private RepeatingFieldGroupFactory agentFactory;
 
     public PriorTherapyTab() {
         super("Prior Therapies", "Therapies", "ae/priorTherapies");
-        fieldFactory = new RepeatingFieldGroupFactory("priorTherapy", "aeReport.adverseEventPriorTherapies");
+
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("priorTherapy", "aeReport.adverseEventPriorTherapies");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 return "Prior Therpy " + (index + 1);
@@ -34,16 +39,10 @@ public class PriorTherapyTab extends AeTab {
         fieldFactory.addField(InputFieldFactory.createDateField("endDate", "End Date", false));
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapyAgents.agent", "Agent", false));
 
-        agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
+        RepeatingFieldGroupFactory agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
         //agentFactory.addField(new AutocompleterField("agent", "Agent", false));
 
-
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-
+    	//-
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPriorTherapies().size());
         groups.addRepeatingFieldGroupFactory(agentFactory);

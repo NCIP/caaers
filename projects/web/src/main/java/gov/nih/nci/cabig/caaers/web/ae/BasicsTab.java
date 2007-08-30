@@ -42,18 +42,31 @@ public class BasicsTab extends AeTab {
 
     private CtcDao ctcDao;
 
-    private InputFieldGroup reportFieldGroup;
-    private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
+//    private InputFieldGroup reportFieldGroup;
+//    private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
 
     public BasicsTab() {
 
         super("Enter basic AE information", "AEs", "ae/enterBasic");
+    }
 
-        reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
+    private Map<Object, Object> createAttributionOptions() {
+        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
+        attributionOptions.put("", "Please select");
+        attributionOptions.putAll(
+            InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+        return attributionOptions;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	InputFieldGroup reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
             "aeReport.detectionDate", "Detection date", true));
 
-        mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
+        RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
                 InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
         InputField attributionField = InputFieldFactory.createSelectField(
@@ -69,27 +82,16 @@ public class BasicsTab extends AeTab {
         mainFieldFactory.addField(InputFieldFactory.createTextArea(
             "comments", "Comments", false));
 
-        ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
+        RepeatingFieldGroupFactory ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.term", "CTC term", true);
         InputFieldAttributes.setDetails(ctcTermField,
             "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
         ctcTermFieldFactory.addField(ctcTermField);
 
-        ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
+        RepeatingFieldGroupFactory ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
         ctcOtherFieldFactory.addField(InputFieldFactory.createTextArea("detailsForOther", "Other (specify)", false));
-    }
 
-    private Map<Object, Object> createAttributionOptions() {
-        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
-        attributionOptions.put("", "Please select");
-        attributionOptions.putAll(
-            InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
-        return attributionOptions;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();

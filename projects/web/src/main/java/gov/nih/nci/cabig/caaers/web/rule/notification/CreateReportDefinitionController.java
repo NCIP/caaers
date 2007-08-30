@@ -36,7 +36,7 @@ public class CreateReportDefinitionController  extends AbstractReportDefinitionC
 		rpDef.setMandatoryFields(mandatoryFields);
 
 		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao);
-		rpDefCmd.setRoles(roles);
+		rpDefCmd.setRoles(collectRoleOptions());
 		return rpDefCmd;
 	}
 

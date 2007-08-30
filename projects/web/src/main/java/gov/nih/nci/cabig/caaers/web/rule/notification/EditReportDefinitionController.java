@@ -48,7 +48,7 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 		reportDefinitionDao.initialize(rpDef);
 		reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
 		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao);
-		rpDefCmd.setRoles(roles);
+		rpDefCmd.setRoles(collectRoleOptions());
 
 		//find the index of the first planned notificaiton
 		List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();

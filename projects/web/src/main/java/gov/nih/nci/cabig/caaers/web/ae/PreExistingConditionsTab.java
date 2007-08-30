@@ -17,11 +17,15 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  * @author Krikor Krumlian
  */
 public class PreExistingConditionsTab extends AeTab {
-    private RepeatingFieldGroupFactory fieldFactory;
 
     public PreExistingConditionsTab() {
         super("Pre-Existing Conditions", "Pre-Existing Conditions", "ae/preExistingConds");
-        fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.adverseEventPreExistingConds");
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.adverseEventPreExistingConds");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 return "Pre-Existing Condition " + (index + 1);
@@ -29,11 +33,7 @@ public class PreExistingConditionsTab extends AeTab {
         });
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false));
         fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
-    }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPreExistingConds().size());
         return groups;

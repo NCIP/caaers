@@ -128,7 +128,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand>{
 				}
 				if(rdd.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_ROLE){
 					Pair p = new Pair("Role", rdd.getEntityName());
-					p.setAttribute1(rdd.getEndPoint());
+					p.setAttribute1(String.valueOf(command.getRoles().get(rdd.getEndPoint())));
 					p.setAttribute2(rdd.getFormat().getDisplayName());
 					pairs.add(p);
 				}

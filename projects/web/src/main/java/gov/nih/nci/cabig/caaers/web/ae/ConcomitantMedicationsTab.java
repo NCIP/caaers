@@ -17,11 +17,16 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  * @author Rhett Sutphin
  */
 public class ConcomitantMedicationsTab extends AeTab {
-    private RepeatingFieldGroupFactory fieldFactory;
 
     public ConcomitantMedicationsTab() {
         super("Concomitant medications", "Con. meds", "ae/conMed");
-        fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.concomitantMedications");
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+        RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.concomitantMedications");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
                 return "Medication " + (index + 1);
@@ -29,11 +34,8 @@ public class ConcomitantMedicationsTab extends AeTab {
         });
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("agent", "Known medication", false));
         fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
-    }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         InputFieldGroupMap groups = new InputFieldGroupMap();
         groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;

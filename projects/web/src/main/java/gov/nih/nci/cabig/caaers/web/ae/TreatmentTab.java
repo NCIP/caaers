@@ -16,32 +16,34 @@ import java.util.Arrays;
  * @author Rhett Sutphin
  */
 public class TreatmentTab extends AeTab {
-    private InputFieldGroup treatmentFields;
 
     public TreatmentTab() {
         super("Treatment Information", "Treatment", "ae/treatment");
 
-        treatmentFields = new DefaultInputFieldGroup("treatmentInfo");
-        treatmentFields.getFields().add(InputFieldFactory.createDateField(
-            "aeReport.treatmentInformation.firstCourseDate",
-            "First course start date", false
-        ));
-        treatmentFields.getFields().add(InputFieldFactory.createTextField(
-            "aeReport.treatmentInformation.adverseEventCourse.number",
-            "Adverse event course number", false
-        ));
-        treatmentFields.getFields().add(InputFieldFactory.createDateField(
-            "aeReport.treatmentInformation.adverseEventCourse.date",
-            "Adverse event course start date", false
-        ));
-        treatmentFields.getFields().add(InputFieldFactory.createTextField(
-            "aeReport.treatmentInformation.treatmentAssignmentCode",
-            "Assignment code", false
-        ));
+
     }
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	InputFieldGroup treatmentFields = new DefaultInputFieldGroup("treatmentInfo");
+          treatmentFields.getFields().add(InputFieldFactory.createDateField(
+              "aeReport.treatmentInformation.firstCourseDate",
+              "First course start date", false
+          ));
+          treatmentFields.getFields().add(InputFieldFactory.createTextField(
+              "aeReport.treatmentInformation.adverseEventCourse.number",
+              "Adverse event course number", false
+          ));
+          treatmentFields.getFields().add(InputFieldFactory.createDateField(
+              "aeReport.treatmentInformation.adverseEventCourse.date",
+              "Adverse event course start date", false
+          ));
+          treatmentFields.getFields().add(InputFieldFactory.createTextField(
+              "aeReport.treatmentInformation.treatmentAssignmentCode",
+              "Assignment code", false
+          ));
+    	//-
         RepeatingFieldGroupFactory caFields = new RepeatingFieldGroupFactory("courseAgent",
             "aeReport.treatmentInformation.courseAgents");
         caFields.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {

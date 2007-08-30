@@ -14,11 +14,17 @@ import java.util.Arrays;
  * @author Krikor Krumlian
  */
 public class MedicalDeviceTab extends AeTab {
-    private InputFieldGroup allFields;
 
     public MedicalDeviceTab() {
         super("Medical Device", "Medical Device", "ae/medicalDevice");
-        allFields = new DefaultInputFieldGroup("desc");
+
+
+    }
+
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.medicalDevice";
 
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".brandName", "Brand name", false));
@@ -59,11 +65,7 @@ public class MedicalDeviceTab extends AeTab {
 
         allFields.getFields().add(InputFieldFactory.createDateField(
                 baseProp + ".returnedDate", "Returned date",  false));
-
-    }
-
-    @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         return createFieldGroupMap(Arrays.asList(allFields));
     }
 

@@ -40,17 +40,28 @@ public class BasicsTabMeddra extends AeTab {
 
     private LowLevelTermDao lowLevelTermDao;
 
-    private InputFieldGroup reportFieldGroup;
-    private RepeatingFieldGroupFactory mainFieldFactory, meddraTermFieldFactory;
-
     public BasicsTabMeddra() {
         super("Enter basic AE information", "AEs", "ae/enterBasicMeddra");
 
-        reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
+    }
+
+    private Map<Object, Object> createAttributionOptions() {
+        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
+        attributionOptions.put("", "Please select");
+        attributionOptions.putAll(
+            InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+        return attributionOptions;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+        InputFieldGroup reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
             "aeReport.detectionDate", "Detection date", true));
 
-        mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
+        RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
                 InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
         InputField attributionField = InputFieldFactory.createSelectField(
@@ -66,22 +77,10 @@ public class BasicsTabMeddra extends AeTab {
         mainFieldFactory.addField(InputFieldFactory.createTextArea(
             "comments", "Comments", false));
 
-        meddraTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
+        RepeatingFieldGroupFactory meddraTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField lowLevelTermField = InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true);
         meddraTermFieldFactory.addField(lowLevelTermField);
-    }
-
-    private Map<Object, Object> createAttributionOptions() {
-        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
-        attributionOptions.put("", "Please select");
-        attributionOptions.putAll(
-            InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
-        return attributionOptions;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();

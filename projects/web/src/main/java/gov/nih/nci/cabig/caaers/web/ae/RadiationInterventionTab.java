@@ -15,11 +15,16 @@ import java.util.Arrays;
  * @author Krikor Krumlian
  */
 public class RadiationInterventionTab extends AeTab {
-    private InputFieldGroup allFields;
 
     public RadiationInterventionTab() {
         super("Radiation Intervention", "Radiation Intervention", "ae/radiationIntervention");
-        allFields = new DefaultInputFieldGroup("desc");
+
+    }
+
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.radiationIntervention";
 
 
@@ -40,10 +45,7 @@ public class RadiationInterventionTab extends AeTab {
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".fractionNumber", "Schedule number of fractions", false));
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".daysElapsed", " Number of elapsed days", false));
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".adjustment", "Adjustment", false));
-    }
-
-    @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         return createFieldGroupMap(Arrays.asList(allFields));
     }
 

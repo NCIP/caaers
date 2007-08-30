@@ -16,11 +16,16 @@ import java.util.LinkedHashMap;
  * @author Rhett Sutphin
  */
 public class DescriptionTab extends AeTab {
-    private InputFieldGroup allFields;
 
     public DescriptionTab() {
         super("Event and response description", "Description", "ae/description");
-        allFields = new DefaultInputFieldGroup("desc");
+
+    }
+
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
+    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.responseDescription";
 
         InputField desc = InputFieldFactory.createTextArea(baseProp + ".eventDescription",
@@ -44,10 +49,7 @@ public class DescriptionTab extends AeTab {
             "Date removed from protocol", false);
         InputFieldAttributes.setDetails(removedDateField, "If the participant was removed from the protocol, enter the date here.  Otherwise, leave it blank.");
         allFields.getFields().add(removedDateField);
-    }
-
-    @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	//-
         return createFieldGroupMap(Arrays.asList(allFields));
     }
     @Override

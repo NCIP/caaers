@@ -13,11 +13,14 @@ import java.util.Arrays;
  * @author Krikor Krumlian
  */
 public class AdditionalInformationTab extends AeTab {
-    private InputFieldGroup allFields;
 
     public AdditionalInformationTab() {
         super("Additional Information", "Additional Info", "ae/additionalInformation");
-        allFields = new DefaultInputFieldGroup("desc");
+    }
+
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.additionalInformation";
 
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".autopsyReport", "Autopsy Report", false));
@@ -33,11 +36,8 @@ public class AdditionalInformationTab extends AeTab {
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".referralLetters", "Referral Letters", false));
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".irbReport", "Summary Report Sent to IRB", false));
         allFields.getFields().add(InputFieldFactory.createTextArea(baseProp + ".otherInformation", "Other Information", false));
-    }
 
-    @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        return createFieldGroupMap(Arrays.asList(allFields));
+    	return createFieldGroupMap(Arrays.asList(allFields));
     }
 
     @Override

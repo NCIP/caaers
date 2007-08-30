@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -27,6 +30,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
 
 	protected ReportDefinitionDao reportDefinitionDao;
+	private ConfigProperty configurationProperty;
 	protected Map<String, String> roles;
 	protected OrganizationDao organizationDao;
 
@@ -108,6 +112,20 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 		}
 	}
 
+
+	protected Map<Object, Object> collectRoleOptions(){
+        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("" , "Please select");
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"),
+        		"code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"),
+        		"code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"),
+        		"code", "desc"));
+
+        return options;
+    }
+
 	///BEAN PROPERTIES
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return reportDefinitionDao;
@@ -131,6 +149,11 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	public void setOrganizationDao(OrganizationDao organizationDao){
 		this.organizationDao = organizationDao;
 	}
-
+	public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 
 }

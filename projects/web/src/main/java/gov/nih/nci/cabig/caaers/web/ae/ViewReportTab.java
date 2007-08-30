@@ -30,7 +30,6 @@ public class ViewReportTab extends AeTab {
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
-        //groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
         return groups;
     }
 
