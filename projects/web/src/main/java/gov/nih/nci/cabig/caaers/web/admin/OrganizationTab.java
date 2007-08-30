@@ -42,7 +42,8 @@ public class OrganizationTab extends TabWithFields<Organization> {
 		organizationFieldGroup.getFields().add(nameField);
 
 		InputField descriptionField = InputFieldFactory.createTextArea("descriptionText", "Description", false);
-		InputFieldAttributes.setSize(descriptionField, 1200);
+
+		InputFieldAttributes.setColumns(descriptionField, 60);
 
 		organizationFieldGroup.getFields().add(descriptionField);
 

@@ -39,6 +39,8 @@ public class EditStudyController extends StudyController<Study> {
 	@Override
 	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+		request.getSession().removeAttribute(CreateStudyAjaxFacade.CREATE_STUDY_FORM_NAME);
+
 		Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
 
 		if (log.isDebugEnabled()) {
@@ -148,6 +150,7 @@ public class EditStudyController extends StudyController<Study> {
 	@Override
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
+		super.processFinish(request, response, command, errors);
 		Study study = (Study) command;
 		updateStudyCordinatingCentere(study);
 		studyDao.merge(study);
