@@ -3,5 +3,7 @@
         id="-100"
         first_name="Dilbert"
         last_name="Scott"
+        email_address="abc@def.com"
+        phone_number="123-456-789"
        />
 </dataset>

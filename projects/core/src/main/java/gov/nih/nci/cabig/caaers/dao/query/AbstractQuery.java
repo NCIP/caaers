@@ -5,6 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * @author Saurabh Agrawal
+ * 
+ */
 public class AbstractQuery {
 
 	private final String queryString;
