@@ -357,6 +357,10 @@ public class FactResolver {
 				return ((Integer)value).intValue() >= new Integer (targetAttributeValue).intValue();
 			} else if (operator.equals("<=")) {
 				return ((Integer)value).intValue() <= new Integer (targetAttributeValue).intValue();
+			} else if (operator.equals(">")) {
+				return ((Integer)value).intValue() > new Integer (targetAttributeValue).intValue();
+			} else if (operator.equals("<")) {
+				return ((Integer)value).intValue() < new Integer (targetAttributeValue).intValue();
 			} 			
 		} else if (value.getClass().getName().endsWith("Boolean")) {
 			if (operator.equals("==")) {
