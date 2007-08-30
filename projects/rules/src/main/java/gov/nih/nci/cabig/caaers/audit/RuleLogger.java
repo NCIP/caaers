@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.audit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -42,9 +44,13 @@ public class RuleLogger {
 	
 	private String getLogFileLocation(){
 		String rule_file_location = "";
-		String CATALINA_HOME = System.getProperty("CATALINA_HOME");
+		
+		String CATALINA_HOME = this.getCatalinaHome();
+		
 		if(CATALINA_HOME==null){
-			rule_file_location = System.getProperty("user.home")+File.separator+"rules.log";
+			
+				 	rule_file_location = System.getProperty("user.home")+File.separator+"rules.log";
+			 
 		}else{
 			rule_file_location=CATALINA_HOME+File.separator+"logs"+File.separator+"rules.log";
 			
@@ -52,10 +58,20 @@ public class RuleLogger {
 		
 		return rule_file_location;
 	}
+	
+	private String getCatalinaHome(){
+		String CATALINA_HOME=null;
+		CATALINA_HOME = System.getenv("CATALINA_HOME");
+		if(CATALINA_HOME==null){
+			CATALINA_HOME = System.getProperty("CATALINA_HOME");
+		}
+		return CATALINA_HOME;
+	}
   
 	public void logMessage(String message){
 		fileRuleLogger.log(Level.INFO, message);
 	}
+	
 	
 	
 }
