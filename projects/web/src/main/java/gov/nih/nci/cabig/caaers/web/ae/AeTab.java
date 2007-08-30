@@ -59,7 +59,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 	   for(InputFieldGroup group : groupMap.values()){
 		  for(InputField field : group.getFields()){
 			 mandatory = fetchMandatoryValue(mandatoryFields, field);
-			 field.setMandatory(mandatory);
+			 if(mandatory) field.setMandatory(mandatory);
 		  }
 	   }
     }
