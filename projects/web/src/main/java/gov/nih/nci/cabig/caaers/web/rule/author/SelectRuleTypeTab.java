@@ -25,7 +25,7 @@ public class SelectRuleTypeTab extends DefaultTab
 	}
 
 	public SelectRuleTypeTab() {
-        super("Select Rule Type", "Select Rule Type", "rule/author/selectRuleLevel");
+        super("Rule Level", "Rule Level", "rule/author/selectRuleLevel");
 	}
 
     @Override

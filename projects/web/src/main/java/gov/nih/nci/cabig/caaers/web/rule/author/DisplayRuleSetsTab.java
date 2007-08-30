@@ -31,7 +31,7 @@ public class DisplayRuleSetsTab extends DefaultTab
 
 	public DisplayRuleSetsTab() 
 	{
-        super("Select Rule Set", "Select Rule Set", "rule/author/displayRuleSets");
+        super("Rule Set", "Rule Set", "rule/author/displayRuleSets");
 	}
 
     

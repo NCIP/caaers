@@ -32,7 +32,7 @@ public class RuleTab extends DefaultTab
 	}
 
 	public RuleTab() {
-		super("Add Rules","RuleSet","rule/author/authorRules");
+		super("Rules","Rules","rule/author/authorRules");
 	}
 	
 	private List<ReportDefinition> getReportDefinitions(Organization org) {
