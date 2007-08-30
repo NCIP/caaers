@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -41,6 +42,7 @@ public class CreateInvestigatorController extends SimpleFormController {
 		setCommandClass(Investigator.class);
 		setFormView("admin/investigator_details");
 		setSuccessView("admin/investigator_details");
+		setValidator(new InvestigatorValidator());
 	}
 
 	@Override
@@ -58,24 +60,31 @@ public class CreateInvestigatorController extends SimpleFormController {
 		return refdata;
 	}
 
-	public void validate(final Investigator command, final Errors errors) {
-		boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
-		boolean lastName = command.getLastName() == null || command.getLastName().equals("");
-		boolean emailAddress = command.getEmailAddress() == null || command.getEmailAddress().equals("");
-		boolean phoneNumber = command.getPhoneNumber() == null || command.getPhoneNumber().equals("");
-		if (firstName) {
-			errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
-		}
-		if (lastName) {
-			errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
-		}
-		if (emailAddress) {
-			errors.rejectValue("emailAddress", "REQUIRED", "Missing Email Address");
-		}
-		if (phoneNumber) {
-			errors.rejectValue("phoneNumber", "REQUIRED", "Missing Phone Number");
+	private class InvestigatorValidator implements Validator {
+		public boolean supports(final Class clazz) {
+			return clazz.equals(Investigator.class);
 		}
 
+		public void validate(final Object object, final Errors errors) {
+			Investigator command = (Investigator) object;
+			boolean firstName = command.getFirstName() == null || command.getFirstName().equals("");
+			boolean lastName = command.getLastName() == null || command.getLastName().equals("");
+			boolean emailAddress = command.getEmailAddress() == null || command.getEmailAddress().equals("");
+			boolean phoneNumber = command.getPhoneNumber() == null || command.getPhoneNumber().equals("");
+			if (firstName) {
+				errors.rejectValue("firstName", "REQUIRED", "Missing First Name");
+			}
+			if (lastName) {
+				errors.rejectValue("lastName", "REQUIRED", "Missing Last Name");
+			}
+			if (emailAddress) {
+				errors.rejectValue("emailAddress", "REQUIRED", "Missing Email Address");
+			}
+			if (phoneNumber) {
+				errors.rejectValue("phoneNumber", "REQUIRED", "Missing Phone Number");
+			}
+
+		}
 	}
 
 	@Override
@@ -88,6 +97,20 @@ public class CreateInvestigatorController extends SimpleFormController {
 	@Override
 	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		return createInvestigatorWithDesign();
+	}
+
+	@Override
+	protected boolean suppressValidation(final HttpServletRequest request, final Object command) {
+		return suppressValidation(request);
+	}
+
+	@Override
+	protected boolean suppressValidation(final HttpServletRequest request) {
+		String action = request.getParameter("_action");
+		if ("addSite".equals(action) || "removeSite".equals(action)) {
+			return true;
+		}
+		return super.suppressValidation(request);
 	}
 
 	@Override
