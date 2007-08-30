@@ -38,27 +38,27 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
 		researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
 
-		InputField firstNameField = InputFieldFactory.createTextField("firstName", "First Name", true);
+		InputField firstNameField = InputFieldFactory.createTextField("firstName", "First name", true);
 		InputFieldAttributes.setSize(firstNameField, 30);
 		researchStaffFieldGroup.getFields().add(firstNameField);
 
-		InputField middleNameField = InputFieldFactory.createTextField("middleName", "Middle Name", false);
+		InputField middleNameField = InputFieldFactory.createTextField("middleName", "Middle name", false);
 		InputFieldAttributes.setSize(middleNameField, 30);
 		researchStaffFieldGroup.getFields().add(middleNameField);
 
-		InputField lastNameField = InputFieldFactory.createTextField("lastName", "Last Name", true);
+		InputField lastNameField = InputFieldFactory.createTextField("lastName", "Last name", true);
 		InputFieldAttributes.setSize(lastNameField, 30);
 		researchStaffFieldGroup.getFields().add(lastNameField);
 
-		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email Address", true);
+		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", true);
 		InputFieldAttributes.setSize(emailAddressField, 30);
 		researchStaffFieldGroup.getFields().add(emailAddressField);
 
-		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone Number", true);
+		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone", true);
 		InputFieldAttributes.setSize(phoneNumberField, 30);
 		researchStaffFieldGroup.getFields().add(phoneNumberField);
 
-		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax Number", false);
+		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", false);
 		InputFieldAttributes.setSize(faxNumberField, 30);
 		researchStaffFieldGroup.getFields().add(faxNumberField);
 

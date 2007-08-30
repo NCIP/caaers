@@ -3,14 +3,14 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 <html>
 <head>
-    <title>Add investigator</title>
-	<tags:stylesheetLink name="participant"/>
-	
-	<script language="JavaScript" type="text/JavaScript">
+<title>Add investigator</title>
+<tags:stylesheetLink name="participant" />
+
+<script language="JavaScript" type="text/JavaScript">
 
 	function fireAction(action, selected){				
 		document.getElementById("_action").value=action;	
@@ -21,85 +21,95 @@
 
 </head>
 <body>
-    <form:form method="post" action="createInvestigator" name="form" id="form">
-    <div>		
-		<input type="hidden" name="_action" id="_action" value="">
-		<input type="hidden" name="_selected" id="_selected" value="-1">
+<form:form method="post" action="createInvestigator" name="form"
+	id="form">
+	<div><input type="hidden" name="_action" id="_action" value="">
+	<input type="hidden" name="_selected" id="_selected" value="-1">
 	</div>
-    <chrome:box title="Investigator Details" id="investigator" autopad="true">
-	<p id="instructions">
-        Add a new Investigator
-    </p>
-    <tags:errors path="*"/>
-      
-     <div class="content">
-        <div class="row">
-            <div class="label"><span class="red">*</span>First Name:</div>
-            <div class="value"><form:input path="firstName" /></div>
-        </div>
-        <div class="row">
-            <div class="label">Middle Name:</div>
-            <div class="value"><form:input path="middleName" /></div>
-        </div>
-        <div class="row">
-            <div class="label"><span class="red">*</span>Last Name:</div>
-            <div class="value"><form:input path="lastName" /></div>
-        </div>
-       <div class="row">
-            <div class="label">NCI Identifier:</div>
-            <div class="value"><form:input path="nciIdentifier" /></div>
-        </div>  
-        
-        <div class="row">
-            <div class="label"><span class="red">*</span>Email Address:</div>
-            <div class="value"><form:input path="emailAddress" /></div>
-        </div>
-        
-        <div class="row">
-            <div class="label"><span class="red">*</span>Phone Number:</div>
-            <div class="value"><form:input path="phoneNumber" /></div>
-        </div>
-        
-        <div class="row">
-            <div class="label">Fax Number:</div>
-            <div class="value"><form:input path="faxNumber" /></div>
-        </div>
-        
-         
-     </div>
-    </chrome:box>
-    <chrome:box title="Associate Sites" id="investigator" autopad="true">
-      <table class="tablecontent">
-		<tr>
-			<th scope="col"> <b> <span class="red">*</span><em></em>Site:</b> </td>
-			<th scope="col"><b> <span class="red">*</span><em></em>Status:</b> </td>							
-			<th scope="col">										
-				<b><a href="javascript:fireAction('addSite','0');"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b> 
-			</td>
-		</tr>
+	<chrome:box title="Investigator Details" id="investigator"
+		autopad="true">
+		<p id="instructions">Add a new Investigator</p>
+		<tags:errors path="*" />
 
-		<c:forEach varStatus="status" items="${command.siteInvestigators}">					
-		<tr>
-			<td class="alt">  
-				<form:select path="siteInvestigators[${status.index}].organization">
-   					<form:options items="${sitesRefData}" itemLabel="name" itemValue="id" />
-				</form:select> </td>	
-			<td class="alt"> 
-			    <form:select path="siteInvestigators[${status.index}].statusCode">										
-				 	<form:options items="${studySiteStatusRefData}" itemLabel="desc" itemValue="code" />
-				</form:select></td>										
-			<td class="alt"> 
-				<a href="javascript:fireAction('removeSite',${status.index});"><img
+		<table id="test2" class="single-fields">
+			<tr>
+				<td>
+
+				<div class="row">
+				<div class="label"><span class="red">*</span>First name:</div>
+				<div class="value"><form:input path="firstName" /></div>
+				</div>
+				<div class="row">
+				<div class="label">Middle name:</div>
+				<div class="value"><form:input path="middleName" /></div>
+				</div>
+				<div class="row">
+				<div class="label"><span class="red">*</span>Last name:</div>
+				<div class="value"><form:input path="lastName" /></div>
+				</div>
+				<div class="row">
+				<div class="label">NCI Identifier:</div>
+				<div class="value"><form:input path="nciIdentifier" /></div>
+				</div>
+				</td>
+				<td>
+				<div class="row">
+				<div class="label"><span class="red">*</span>Email address:</div>
+				<div class="value"><form:input path="emailAddress" /></div>
+				</div>
+
+				<div class="row">
+				<div class="label"><span class="red">*</span>Phone:</div>
+				<div class="value"><form:input path="phoneNumber" /></div>
+				</div>
+
+				<div class="row">
+				<div class="label">Fax:</div>
+				<div class="value"><form:input path="faxNumber" /></div>
+				</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+	</chrome:box>
+	<chrome:box title="Associate Sites" id="investigator" autopad="true">
+		<table class="tablecontent">
+			<tr>
+				<th scope="col"><b> <span class="red">*</span><em></em>Site:</b>
+				</td>
+				<th scope="col"><b> <span class="red">*</span><em></em>Status:</b>
+				</td>
+				<th scope="col"><b><a
+					href="javascript:fireAction('addSite','0');"><img
+					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b>
+				</td>
+			</tr>
+
+			<c:forEach varStatus="status" items="${command.siteInvestigators}">
+				<tr>
+					<td class="alt"><form:select
+						path="siteInvestigators[${status.index}].organization">
+						<form:options items="${sitesRefData}" itemLabel="name"
+							itemValue="id" />
+					</form:select></td>
+					<td class="alt"><form:select
+						path="siteInvestigators[${status.index}].statusCode">
+						<form:options items="${studySiteStatusRefData}" itemLabel="desc"
+							itemValue="code" />
+					</form:select></td>
+					<td class="alt"><a
+						href="javascript:fireAction('removeSite',${status.index});"><img
 						src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
-		</tr>
-		</c:forEach>														
+				</tr>
+			</c:forEach>
 		</table>
 		<br>
 		<br>
-        <div align = "right">
-        <input type="submit" value="Save"/>
-        </chrome:box>      
-        </form:form>
- </body>
+		<div align="right"><input type="submit" value="Save" />
+	</chrome:box>
+</form:form>
+</body>
 </html>

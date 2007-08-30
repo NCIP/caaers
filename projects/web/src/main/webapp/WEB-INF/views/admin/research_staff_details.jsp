@@ -46,10 +46,20 @@
 		</div>
 		       <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
 		
-		
-    				<c:forEach  items="${fieldGroups.researchStaff.fields}" var="field">
+			<table id="test2" class="single-fields" >
+        	<tr >
+    				<td> 
+    				<c:forEach begin="0" end="3" items="${fieldGroups.researchStaff.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 	</c:forEach>
+    				</td>
+    				<td><c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                	</c:forEach>
+    				</td>
+    			</tr>
+    			
+    		</table> 
              </jsp:attribute>
     
     
