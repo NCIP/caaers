@@ -18,16 +18,13 @@
     <jsp:attribute name="singleFields">
         <c:choose>
             <c:when test="${command.aeReport.expeditedReportingRequired}">
-                The adverse events you have entered require
+                The AEs you have entered require
                 ${ctms:countString(command.aeReport.requiredReportCount, 'expedited report')} to
                 be submitted.
-                <c:if test="${not empty command.optionalReportDefinitionsMap}">
-                    If you wish to submit others, please select them below.
-                </c:if>
             </c:when>
             <c:otherwise>
                 <p>
-                    The adverse events you have entered <strong>do not</strong> seem to
+                    The AEs you have entered <strong>do not</strong> seem to
                     require any expedited reporting.  If you wish override this decision,
                     please select the reports below.
                 </p>
@@ -47,6 +44,15 @@
                     </div>
                 </c:if>
             </c:forEach>
+            <br>
+            <c:choose>
+            <c:when test="${command.aeReport.expeditedReportingRequired}">
+                <c:if test="${not empty command.optionalReportDefinitionsMap}">
+                    If you wish to submit optional Reports, please select them below.
+                </c:if>
+            </c:when>
+       		</c:choose>
+            
             <!-- optional reports -->
             <c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
                 <div class="row">

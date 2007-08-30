@@ -49,6 +49,7 @@ import java.util.Map;
 public abstract class AbstractAdverseEventInputController
     extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
+	
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final int SUBMISSION_PAGE = 17;
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";

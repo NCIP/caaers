@@ -170,6 +170,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> {
 		}
 		
 		log.debug("::: " + queryBuf.toString() );
+		getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
     }
     

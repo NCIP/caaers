@@ -61,7 +61,7 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
-            You are entering adverse events  for ${participantSummaryLine} on
+            You are entering AEs  for ${participantSummaryLine} on
             ${studySummaryLine}.
         </jsp:attribute>
         <jsp:attribute name="singleFields">

@@ -97,7 +97,7 @@
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
     <jsp:attribute name="instructions">
            		<p>
-                    Complete the Submitter Information Below
+                    Complete the submitter information below
                 </p>
 
     </jsp:attribute>
@@ -108,7 +108,7 @@
     		
     		<p>
     			
-    			Certify that this Expedited Report has been reviewed and approved by a physician or his/her medical designee responsible for the
+    			Certify that this expedited report has been reviewed and approved by a physician or his/her medical designee responsible for the
     			
     			care of this patient.
     		
@@ -123,7 +123,7 @@
     	
     	</chrome:division>
     	
-        <chrome:division title="Reporter & Physician Details">
+        <chrome:division title="Reporter & Physician details">
         	<%--
             <div class="row">
                 <div class="label">Research staff</div>

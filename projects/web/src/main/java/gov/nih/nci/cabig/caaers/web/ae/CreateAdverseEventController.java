@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventController extends AbstractAdverseEventInputController {
+	
+	
+	
     public CreateAdverseEventController() {
         super();
         setCommandClass(CreateExpeditedAdverseEventCommand.class);
@@ -18,9 +21,14 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     @Override
     protected FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory() {
         return new ExpeditedFlowFactory("Create expedited report") {
+        	
+        	private String instructions = "In order to create or edit an expedited AE report, you need to first select a participant and a\n" +
+            "study. You may start with either one. Once you have selected one, the options\n" +
+            "for the other will be automatically constrained.";
+        	
             @Override
             protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-                flow.addTab(new BeginTab<ExpeditedAdverseEventInputCommand>());
+                flow.addTab(new BeginTab<ExpeditedAdverseEventInputCommand>(instructions));
             }
         };
     }

@@ -56,7 +56,7 @@ public class BasicsTabMeddra extends AeTab {
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
-            "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
+            "Indicate the likelihood that this AE is attributable to any element of the study protocol.");
         mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(InputFieldFactory.createSelectField(
             "hospitalization", "Hospitalization", true,

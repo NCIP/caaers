@@ -103,7 +103,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10attributionforadverseevents">
     <jsp:attribute name="instructions">
-        You are attributing adverse events to causes for
+        You are attributing AEs to causes for
         ${command.assignment.participant.fullName} on
         ${command.assignment.studySite.study.shortTitle}.
     </jsp:attribute>

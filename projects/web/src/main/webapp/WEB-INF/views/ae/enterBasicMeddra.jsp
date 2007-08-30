@@ -69,8 +69,7 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
-            You are entering an adverse event report for ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
+            Enter all AEs that should appear on this expedited report.
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <div class="report-fields">

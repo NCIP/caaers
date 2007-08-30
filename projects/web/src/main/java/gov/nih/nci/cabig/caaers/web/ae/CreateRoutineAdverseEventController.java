@@ -25,9 +25,14 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
     @Override
     protected FlowFactory<RoutineAdverseEventInputCommand> createFlowFactory() {
         return new RoutineFlowFactory("Create routine AEs") {
+        	
+        	private String instructions = "In order to document Routine AEs, you need to first select a participant and a\n" +
+            "study. You may start with either one. Once you have selected one, the options\n" +
+            "for the other will be automatically constrained.";
+        	
             @Override
             protected void addPreBasicTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-                flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>());
+                flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>(instructions));
             }
         };
     }

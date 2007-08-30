@@ -81,7 +81,7 @@
 
  			
     <jsp:attribute name="instructions">
-        You are entering routine Adverse Events for ${participantSummaryLine} on
+        You are entering routine AEs for ${participantSummaryLine} on
         ${studySummaryLine}.
         <div>
            <input type="hidden" name="_action" value="">

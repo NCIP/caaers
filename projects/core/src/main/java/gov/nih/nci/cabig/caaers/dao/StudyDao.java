@@ -144,7 +144,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		params.add('%' + text.toLowerCase() + '%');
 
 		log.debug("::: " + queryBuf.toString());
-		getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 
@@ -217,6 +216,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			firstClause = false;
 		}
 		log.debug("::: " + queryBuf.toString());
+		getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 

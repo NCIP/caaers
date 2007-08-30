@@ -98,7 +98,7 @@
                     <div id="participant-choices" class="autocomplete"></div>
                     <tags:errors path="participant"/>
                     <p id="participant-selected" style="display: none">
-                        You've selected the participant <span id="participant-selected-name"></span>.
+                        You have selected the participant <span id="participant-selected-name"></span>.
                     </p>
                 </chrome:box>
                 <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
@@ -111,7 +111,7 @@
                     <tags:errors path="study"/>
                     <div id="study-choices" class="autocomplete"></div>
                     <p id="study-selected" style="display: none">
-                        You've selected the study <span id="study-selected-name"></span>.
+                        You have selected the study <span id="study-selected-name"></span>.
                     </p>
                 </chrome:box>
             </div>

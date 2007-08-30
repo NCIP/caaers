@@ -76,25 +76,25 @@
         <c:choose>
             <c:when test="${oneOrMoreSevere || aeReport.isExpeditedReportingRequired}">
                 <p>
-                    One or more of the adverse events you entered <strong>requires expedited
-                    reporting</strong> under the rules in efect for this study and participant.
-                    Please enter your contact information and that for the treating physician.
+                    One or more of the AEs you entered <strong>requires expedited
+                    reporting</strong>.
+                    Enter your contact information and that for the treating physician.
                     Then proceed to the next page for details about the required expedited
                     report(s).
                 </p>
             </c:when>
             <c:otherwise>
                 <p>
-                    None of the adverse events you entered requires expedited reporting under the
-                    rules in effect for this study and participant.  If you would like to prepare
-                    and submit one or more expedited reports anyway, please start by entering your
-                    contact information and that for the treating physician.
+                    None of the AEs you entered requires expedited reporting.  
+                    If you would like to prepare and submit one or more expedited reports 
+                    anyway, start by entering your contact information and that for 
+                    the treating physician.
                 </p>
             </c:otherwise>
         </c:choose>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
-        <chrome:division title="Reporter Details">
+        <chrome:division title="Reporter details">
             <div class="row">
                 <div class="label">Research staff</div>
                 <div class="value">

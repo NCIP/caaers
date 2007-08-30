@@ -25,7 +25,7 @@ public class DescriptionTab extends AeTab {
 
         InputField desc = InputFieldFactory.createTextArea(baseProp + ".eventDescription",
             "Description", false);
-        InputFieldAttributes.setDetails(desc, "Describe the adverse event(s) and any action prompted by them");
+        InputFieldAttributes.setDetails(desc, "Describe the AE(s) and any action prompted by them");
         allFields.getFields().add(desc);
 
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
