@@ -1,7 +1,6 @@
 class CreateParticipants extends edu.northwestern.bioinformatics.bering.Migration {
     
     void up() {
-    if (databaseMatches('postgres')) {
             addColumn("investigators","email_address", 'string');
             execute("UPDATE investigators set email_address='abc@email.com'") 
             setNullable("investigators", "email_address", false);
@@ -9,7 +8,6 @@ class CreateParticipants extends edu.northwestern.bioinformatics.bering.Migratio
            	execute("UPDATE investigators set phone_number='123-456-7890'") 
            	setNullable("investigators", "phone_number", false);
            	addColumn("investigators","fax_number", 'string');
-     }
     }
 
     void down() {
