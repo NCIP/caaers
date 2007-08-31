@@ -142,10 +142,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		return mandatoryFieldMap;
 	}
 
-	public void setMandatoryFieldMap(Map<String, Boolean> mandatoryFieldMap) {
-		this.mandatoryFieldMap = mandatoryFieldMap;
-	}
-
 	@Override
     public String toString() {
         return new StringBuilder(getClass().getName())

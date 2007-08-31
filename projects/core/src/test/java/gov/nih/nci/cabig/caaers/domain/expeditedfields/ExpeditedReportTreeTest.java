@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 
@@ -81,8 +80,8 @@ public class ExpeditedReportTreeTest extends TestCase {
     }
 
     public void testFecthNode4Section() throws Exception{
-    	TreeNode node = tree.fecthNode4Section(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
-    	assertEquals("Name should be ",node.getDisplayName(), ExpeditedReportSection.ADDITIONAL_INFO_SECTION.name());
+        TreeNode node = tree.fecthNodeForSection(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
+        assertEquals("Name should be ",node.getDisplayName(), ExpeditedReportSection.ADDITIONAL_INFO_SECTION.name());
     }
 
     /**

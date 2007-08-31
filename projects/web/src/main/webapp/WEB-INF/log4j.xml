@@ -18,6 +18,7 @@
         </layout>
     </appender>
 
+    <logger name="org.hibernate.type">          <level value="trace"/></logger>
     <!-- disable really verbose logging from libraries.  Switch to debug if necessary. -->
     <logger name="org.acegisecurity">           <level value="info"/></logger>
     <logger name="org.springframework">         <level value="info"/></logger>
