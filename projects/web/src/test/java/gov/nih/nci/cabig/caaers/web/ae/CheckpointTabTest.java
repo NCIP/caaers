@@ -125,7 +125,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     public void testPostProcessSavesWhenThereAreAnyReports() throws Exception {
         command.getAeReport().getReports().add(createRequiredReport(r2));
         reportDao.save(command.getAeReport());
-
+        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<String>emptyList());
         replayMocks();
         getTab().postProcess(request, command, errors);
         verifyMocks();
@@ -133,7 +133,7 @@ public class CheckpointTabTest extends AeTabTestCase {
 
     public void testPostProcessDoesNotSaveWhenThereAreNoReports() throws Exception {
         command.getAeReport().getReports().clear();
-
+        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<String>emptyList());
         replayMocks();
         getTab().postProcess(request, command, errors);
         verifyMocks();
