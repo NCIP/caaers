@@ -8,8 +8,11 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="instructions">
-            To save , exit the flow and return the list of all adverse event collection
-            data for this patient and study, please continue.
+            
+            To save the set of AEs that you entered, click on Save button. 
+            To exit the current flow after saving, click on Save and Continue button. 
+            This will return you to the list of AEs for the selected study and participant combination.
+            
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <input type="hidden" name="_finish"/>
