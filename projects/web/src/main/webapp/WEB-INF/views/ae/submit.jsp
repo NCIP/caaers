@@ -42,7 +42,8 @@
             			<c:if test="${empty report.submittedOn}" >
             				<center>
             				Due on <br> <b><tags:formatDate value="${report.dueOn}" /></b><br>
-            				<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportIndex=${status.index}"/>">Submit</a>
+            				<%--<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportIndex=${status.index}"/>">Submit</a>--%>
+            				<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a
             				</center>
             			</c:if>
             		</td>

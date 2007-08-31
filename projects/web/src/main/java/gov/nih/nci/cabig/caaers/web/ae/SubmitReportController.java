@@ -33,8 +33,8 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	SubmitExpeditedAdverseEventCommand command
             = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
-        String reportIndex = request.getParameter("reportIndex");
-        command.setReportIndex(reportIndex);
+        String reportId = request.getParameter("reportId");
+        command.setReportId(reportId);
         return command;
         
     }

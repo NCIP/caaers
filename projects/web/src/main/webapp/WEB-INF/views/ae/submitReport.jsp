@@ -17,18 +17,11 @@
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
-    <jsp:attribute name="instructions">
-           		<p>
-                    The Report will be delivered to 
-                </p>
-
-    </jsp:attribute>
+    
     
     <jsp:attribute name="singleFields">
     	
-    <chrome:division title="Preconfigured Recepients of this report">
-    	
-    	<p>Report will be sent to the addresses below.<br /></p>
+    	<p> The <b>${command.aeReport.reports[command.reportIndex].reportDefinition.name} </b> report will be sent to the following preconfigured recepients .<br /></p>
     	
     	<table class="tablecontent">
     		
@@ -47,10 +40,9 @@
     		</tr>
     	</c:forEach>
     	</table>
-    	
-    	
-    </chrome:division>
-    	
+
+    	<br>
+    	    	
     
     <chrome:division title="Cc details">
     		

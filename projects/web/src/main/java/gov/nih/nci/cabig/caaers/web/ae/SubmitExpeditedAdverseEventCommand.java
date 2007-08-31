@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -32,6 +33,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     
     // Used in SubmitReport
     private String reportIndex;
+    private String reportId;
 
     ////// LOGIC
 
@@ -46,17 +48,33 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     @Override
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         super.setAeReport(aeReport);
+        getReportIndex();
         aeReport.getReports().get(((int)(Integer.parseInt(reportIndex)))).addSubmitter();
     }
 
    
 	public String getReportIndex() {
+		for(int i=0; i< getAeReport().getReports().size(); i++){
+			if (getAeReport().getReports().get(i).getId().toString().equals(reportId)){
+				this.reportIndex = String.valueOf(i);
+			}
+		}
 		return reportIndex;
 	}
 
 	public void setReportIndex(String reportIndex) {
 		this.reportIndex = reportIndex;
 	}
+
+	public String getReportId() {
+		return reportId;
+	}
+
+	public void setReportId(String reportId) {
+		this.reportId = reportId;
+	}
+	
+	
     
     
 }
