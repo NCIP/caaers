@@ -436,11 +436,6 @@
             <artifactId>ctms-commons-lang</artifactId>
             <version>${ctms-commons.version}</version>
         </dependency>
-        <dependency>
-            <groupId>gov.nih.nci.cabig.ctms</groupId>
-            <artifactId>uctrace-maven-plugin</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>        
         <!-- Jackrabbit Dependencies -->
         <dependency>
 			<artifactId>jackrabbit-api</artifactId>
