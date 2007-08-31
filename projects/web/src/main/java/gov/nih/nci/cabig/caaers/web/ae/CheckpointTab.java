@@ -115,9 +115,11 @@ public class CheckpointTab extends AeTab {
             command.save();
         }
         //find the mandatory sections.
-        List<String> sections = evaluationService.mandatorySections(command.getAeReport());
-        command.setMandatorySections(sections);
-        command.refreshMandatoryFieldMap();
+        if(command.getMandatoryFieldMap().isEmpty()){
+        	List<String> sections = evaluationService.mandatorySections(command.getAeReport());
+        	command.setMandatorySections(sections);
+        	command.refreshMandatoryFieldMap();
+        }
     }
 
     private boolean optionalReportSelected(ExpeditedAdverseEventInputCommand command, ReportDefinition def) {

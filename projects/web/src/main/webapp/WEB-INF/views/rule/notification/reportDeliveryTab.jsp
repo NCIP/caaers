@@ -121,7 +121,7 @@
 					Click on Add URL button to add a system URL. An XML version of the final report will be posted to the system URL.
 				</jsp:attribute>
 				<jsp:attribute name="singleFields">
-					<table width="100%" class="eXtremeTable">
+					<table width="100%" class="tablecontent">
 						<tr id="system-table-head" class="system-table-head">
 							<th width="35%" class="tableHeader"><tags:requiredIndicator /> Name</th>
 							<th width="60%" class="tableHeader"><tags:requiredIndicator /> URL</th>

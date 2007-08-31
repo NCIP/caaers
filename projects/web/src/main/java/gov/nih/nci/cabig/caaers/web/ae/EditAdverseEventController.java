@@ -7,6 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +33,19 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         command.setAeReport(getDao().getById(
             ServletRequestUtils.getRequiredIntParameter(request, "aeReport")));
         */
+
         return command;
+    }
+
+    @Override
+    protected void onBind(HttpServletRequest request, Object command,
+    		BindException errors) throws Exception {
+    	super.onBind(request, command, errors);
+    	EditExpeditedAdverseEventCommand cmd = (EditExpeditedAdverseEventCommand)command;
+    	//In edit flow from begining the tab must be hilighted.
+    	List<String> sections = evaluationService.mandatorySections(cmd.getAeReport());
+    	cmd.setMandatorySections(sections);
+    	cmd.refreshMandatoryFieldMap();
     }
 
     /* Attempt at not rebinding the aeReport with every request.  Exposes flow to lazy init exceptions,
@@ -57,7 +71,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
-        
+
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
