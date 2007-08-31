@@ -177,7 +177,6 @@
             <plugin>
                 <groupId>gov.nih.nci.cabig.ctms</groupId>
                 <artifactId>uctrace-maven-plugin</artifactId>
-                <version>0.3-SNAPSHOT</version>
                 <configuration>
                     <useCasesAnnotationClassName>gov.nih.nci.cabig.caaers.CaaersUseCases</useCasesAnnotationClassName>
                 </configuration>
