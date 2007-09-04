@@ -4,4 +4,8 @@
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	<bean id="reportDao" parent="daoTemplate"  class="gov.nih.nci.cabig.caaers.dao.ReportDaoStub" />
+	<bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ScheduledNotificationDaoStub" />
+	<!-- TODO: Remove the below mail settings after demo -->
+	<bean id="mailer" class="gov.nih.nci.cabig.caaers.service.MailerStub">
+	</bean>
 </beans>

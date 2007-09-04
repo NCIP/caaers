@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -242,6 +243,8 @@ public class ReportServiceImpl  implements ReportService {
 		report.setStatus(ReportStatus.WITHDRAWN);
 		reportDao.save(report);
 	}
+
+
 
 	public Object validate(Report report) {
 		// TODO Auto-generated method stub

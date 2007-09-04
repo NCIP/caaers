@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 /**
- * 
- * 
+ *
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 29, 2007
  * @version     %I%, %G%
@@ -11,7 +13,6 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
  */
 
 public interface SchedulerService {
-	public  void scheduleNotification(Report report); 
+	public  void scheduleNotification(Report report);
 	public void unScheduleNotification(Report report);
-	
 }

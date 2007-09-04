@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -37,6 +38,7 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 	protected ApplicationContext applicationContext;
 	protected ReportDao reportDao;
 	protected Configuration configuration;
+	protected ScheduledNotificationDao notificationDao;
 
 	public ScheduledNotificationJobTemplate() {
 		super();
@@ -75,6 +77,13 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 		this.configuration = configuration;
 	}
 
+	public ScheduledNotificationDao getNotificationDao() {
+		return notificationDao;
+	}
+
+	public void setNotificationDao(ScheduledNotificationDao notificationDao) {
+		this.notificationDao = notificationDao;
+	}
 
 	/**
 	 * Will reload the {@link Report} identified by <code>report.id</code>
@@ -93,14 +102,13 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 			jobDetail = context.getJobDetail();
 			applicationContext = (ApplicationContext)scheduler.getContext().get("applicationContext");
 			reportDao = (ReportDao)applicationContext.getBean("reportDao");
+			notificationDao = (ScheduledNotificationDao) applicationContext.getBean("scheduledNotificationDao");
 			configuration = (Configuration)applicationContext.getBean("configuration");
 
 			JobDataMap jobDataMap = jobDetail.getJobDataMap();
 			Integer scheduledNFId = jobDataMap.getInt("scheduledNotifiction.id");
 			Integer reportId = jobDataMap.getInt("report.id");
-			//report = reportDao.getById(reportId);
 			report = reportDao.getInitializedReportById(reportId);
-
 			notification = report.fetchScheduledNotification(scheduledNFId);
 
 			boolean reportStatus = verifyAeReportStatus();
@@ -108,20 +116,13 @@ public abstract class ScheduledNotificationJobTemplate implements Job{
 				DeliveryStatus deliveryStatus = processNotification();
 				logger.info("Delivery status of the notification :" + deliveryStatus);
 				//update the delivery status.
-				notification.setDeliveryStatus(deliveryStatus);
+				notificationDao.updateDeliveryStatus(notification, notification.getDeliveryStatus(), deliveryStatus);
+
 			}else {
 				deleteSubsequentJobs();
 				//mark the status of all jobs which are in SCHEDULED status to RECALLED
-				for(ScheduledNotification nf : report.getScheduledNotifications()){
-					if(!nf.getDeliveryStatus().equals(DeliveryStatus.SCHEDULED)) continue;
-					nf.setDeliveryStatus(DeliveryStatus.RECALLED);
-					logger.info("Updating status of ScheduledNotification[id :" + nf.getId().intValue() +"] to " +
-							  DeliveryStatus.RECALLED.name());
-				}//for each nf
+				notificationDao.recallScheduledNotifications(report.getScheduledNotifications());
 			}
-
-			//update the report
-			reportDao.merge(report);
 
 		} catch (Exception e) {
 			logger.error("execution of job failed",e);

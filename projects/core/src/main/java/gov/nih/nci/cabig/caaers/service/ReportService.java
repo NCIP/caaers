@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import java.util.List;
 
@@ -18,32 +20,32 @@ import java.util.List;
  * @since       1.0
  */
 public interface ReportService {
-	
+
 
     /**
      * Applies runtime variable replacements, with the values availabe in report.
-     * Note: Uses freemarker based text replacements 
+     * Note: Uses freemarker based text replacements
      */
     public String applyRuntimeReplacements(String rawContent, Report report);
-    
+
    /**
     * Creates a report from the given definition and associates it with the
     * given aeReport and saves it in the database.
-    * 
-    * Also it will schedule the report. 
+    *
+    * Also it will schedule the report.
     */
    public Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
-   
+
    /**
-    * Will mark the report as deleted (ReportStatus = WITHDRAWN). 
-    * At present it will unschedule the pending scheduled notifications present in the scheduler, by 
+    * Will mark the report as deleted (ReportStatus = WITHDRAWN).
+    * At present it will unschedule the pending scheduled notifications present in the scheduler, by
     * delegating the call to SchedulerService.
     */
    public void deleteReport(Report report);
-   
+
    /**
     * Vaidates the report against the predefined set of mandatory fields available in ReportDefinition.
     */
-   //TODO: need to identify the return type 
+   //TODO: need to identify the return type
    public Object validate(Report report);
 }
