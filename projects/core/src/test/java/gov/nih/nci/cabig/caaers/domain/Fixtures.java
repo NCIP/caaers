@@ -62,7 +62,7 @@ public class Fixtures {
         agent.getAgent().setName(agentName);
         return agent;
     }
-    
+
     public static RoutineAdverseEventReport createSavableRoutineReport() {
         RoutineAdverseEventReport report = new RoutineAdverseEventReport();
         report.setStartDate(new Timestamp(103));
@@ -88,9 +88,12 @@ public class Fixtures {
     public static ReportDefinition createReportDefinition(String name) {
         ReportDefinition def = new ReportDefinition();
         def.setName(name);
+        Organization org = new Organization();
+        org.setName("Test");
+        def.setOrganization(org);
         return def;
     }
-    
+
     public static Terminology createCtcV3Terminology(Study s)
     {
     	Terminology t = s.getTerminology();
@@ -99,14 +102,14 @@ public class Fixtures {
     	t.setCtcVersion(v3);
     	return t;
     }
-    
+
     public static Terminology createMedDRATerminology(Study s)
     {
     	Terminology t = s.getTerminology();
     	t.setTerm(Term.MEDDRA);
     	return t;
     }
-    
+
     public static AdverseEventCtcTerm createAdverseEventCtcTerm(AdverseEvent adverseEvent,CtcTerm ctcTerm)
     {
     	AdverseEventCtcTerm adverseEventCtcTerm = adverseEvent.getAdverseEventCtcTerm();
