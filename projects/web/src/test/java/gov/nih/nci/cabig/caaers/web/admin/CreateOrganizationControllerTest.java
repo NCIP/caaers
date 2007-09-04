@@ -67,7 +67,7 @@ public class CreateOrganizationControllerTest extends TestCase {
 
 		mv = controller.handleRequest(request, response);
 		// organization was added..
-		assertEquals("admin/organization_confirmation", mv.getViewName());
+		assertEquals("admin/organization_details", mv.getViewName());
 
 	}
 
