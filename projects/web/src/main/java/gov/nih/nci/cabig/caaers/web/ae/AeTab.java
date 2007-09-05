@@ -1,20 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportService;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 /**
  * @author Rhett Sutphin
@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 
 	private ExpeditedReportTree expeditedReportTree;
+	protected ReportService reportService;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -92,25 +93,19 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command){
-    	/*if(isMandatory(command)){
-    		BeanWrapper wCmd = new BeanWrapperImpl(command);
-    		TreeNode node = expeditedReportTree.fecthNode4Section(section());
-    		List<String> paths = new ArrayList<String>();
-    		TreeNode.listPropertyPaths(node, paths);
-    		Map<String, Boolean> map = command.getMandatoryFieldMap();
-    		Boolean mandatory  = null;
-    		for(String path : paths){
-    			mandatory = map.get(path);
-    			if(mandatory != null && mandatory){
-    				if(wCmd.getPropertyValue("aeReport." + path) == null) return false;
-    			}
-    		}
-    	}
-    	return false;*/
-    	return false;
+    	Map<String, Boolean> mandatoryFields = command.getMandatoryFieldMap();
+    	if(mandatoryFields.isEmpty()) return false;
+
+    	BeanWrapper wrappedCommand = new BeanWrapperImpl(command.getAeReport());
+    	ErrorMessages messages = new ErrorMessages();
+    	TreeNode node = expeditedReportTree.fecthNodeForSection(section());
+    	if(node == null) return false;
+    	reportService.validate(wrappedCommand, mandatoryFields, node, messages);
+
+    	return messages.hasErros();
     }
 
-
+    public abstract ExpeditedReportSection section();
 
 	public ExpeditedReportTree getExpeditedReportTree() {
 		return expeditedReportTree;
@@ -120,7 +115,9 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 		this.expeditedReportTree = expeditedReportTree;
 	}
 
-	public abstract ExpeditedReportSection section();
+	public void setReportService(ReportService reportService) {
+	    this.reportService = reportService;
+	}
 
 
 }

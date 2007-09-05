@@ -34,6 +34,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     List<String> getMandatorySections();
     void setMandatorySections(List<String> sections);
 
+    //TODO: the caller should use the equivalent method in report service.
+    @Deprecated
     void refreshMandatoryFieldMap();
     Map<String, Boolean> getMandatoryFieldMap();
 }

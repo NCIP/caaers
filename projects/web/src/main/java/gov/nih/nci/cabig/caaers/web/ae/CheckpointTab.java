@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -28,8 +27,6 @@ public class CheckpointTab extends AeTab {
     private static final Log log = LogFactory.getLog(CheckpointTab.class);
 
     private EvaluationService evaluationService;
-    private ReportService reportService;
-
     public CheckpointTab() {
         super("Is expedited reporting necessary?", "SAE?", "ae/checkpoint");
     }
@@ -82,10 +79,8 @@ public class CheckpointTab extends AeTab {
     }
 
     @Override
-    protected void validate(
-        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
+        Map<String, InputFieldGroup> fieldGroups, Errors errors ) {
         boolean anyReports = command.getAeReport().getReports().size() > 0;
         for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
             anyReports |= optionalReportSelected(command, def);
@@ -127,14 +122,6 @@ public class CheckpointTab extends AeTab {
         return val == null ? false : val;
     }
 
-//	 TODO: Review these changes.
-//    private void addOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
-//        if (findReportWithDefinition(aeReport, def) == null) {
-//
-//            reportService.createReport(def, aeReport);
-//        }
-//    }
-
     private void removeOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
         // TODO: we're going to need a service method for this, too
         Report existing = findReportWithDefinition(aeReport, def);
@@ -155,9 +142,5 @@ public class CheckpointTab extends AeTab {
 
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
-    }
-
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
     }
 }
