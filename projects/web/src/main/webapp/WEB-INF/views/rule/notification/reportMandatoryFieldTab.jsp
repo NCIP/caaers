@@ -136,7 +136,7 @@
 		<chrome:division title="Labs">
 		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
 		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
-		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Wrost" singleRow="true" tabular="true" />
+		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" singleRow="true" tabular="true" />
 		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
 		</chrome:division>
 		
