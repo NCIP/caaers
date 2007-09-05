@@ -5,13 +5,14 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -21,6 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
@@ -31,13 +33,17 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -55,6 +61,9 @@ public class ReportServiceImpl  implements ReportService {
     private NowFactory nowFactory;
     private SchedulerService schedulerService;
     private ReportDao reportDao;
+    private ExpeditedReportTree expeditedReportTree;
+
+
 
     public  List<String> findToAddresses(PlannedNotification pnf, Report report){
 		assert pnf != null : "PlannedNotification should not be null";
@@ -244,12 +253,86 @@ public class ReportServiceImpl  implements ReportService {
 		reportDao.save(report);
 	}
 
+   /**
+	 * Will test if the mandatory field is empty. If found empty, then will populate the error details in
+	 * the <code>messages</code> object.
+	 * @param bean - The bean to validate
+	 * @param mandatoryMap - A map, with property name as key and associated boolean
+	 * value will tell if the field is mandatory
+	 * @param node - The node, based on which the evaluation is to be performed.
+	 * @param messages - An error message object
+	 */
+	@SuppressWarnings("unchecked")
+	public void validate(BeanWrapper bean, Map<String, Boolean> mandatoryMap,
+			TreeNode node, ErrorMessages messages) {
+		//TODO: should take care of 'This' or 'Other' field validations
+		String path = node.getPropertyName();
+		Boolean objMandatory = mandatoryMap.get(node.getPropertyPath());
+		boolean markedMandatory = (objMandatory == null) ? false : objMandatory.booleanValue();
+		Object o = (StringUtils.isEmpty(path)) ? bean.getWrappedInstance() :  bean.getPropertyValue(path);
 
+		if(markedMandatory && ReportServiceImpl.isEmpty(o)){
+			messages.addErrorMessage(0, node.getDisplayName(), node.getPropertyPath());
+		}
 
-	public Object validate(Report report) {
-		// TODO Auto-generated method stub
-		return null;
+		if(node.isLeaf()) return;
+
+		if(node.isList()){
+			int size = ReportServiceImpl.size(o);
+			List list = (List) o;
+			//validate each element in collection
+			for(int i = 0; i < size; i++){
+				BeanWrapper newCommand = new BeanWrapperImpl(list.get(i));
+				for(TreeNode n : node.getChildren())
+					validate( newCommand, mandatoryMap, n, messages);
+			}
+		}else{
+			BeanWrapper newCommand = new BeanWrapperImpl(o);
+			for(TreeNode n : node.getChildren())
+				validate( newCommand, mandatoryMap, n, messages);
+		}
 	}
+
+   /**
+    * Will tell whether all the mandatory field for this report is duly filled.
+    * Internally this will call the validate method for each element having children in the {@link ExpeditedReportTree}
+    * @param aeReport
+    * @return ErrorMessages
+    */
+
+	public ErrorMessages isSubmitable(ExpeditedAdverseEventReport aeReport, List<String> mandatorySectionNames) {
+		//TODO: should validate against complex rules
+
+		ErrorMessages messages = new ErrorMessages();
+		BeanWrapper wrappedAEReport = new BeanWrapperImpl(aeReport);
+
+		Map<String, Boolean> mandatoryFieldMap = fetchMandatoryFieldMap(aeReport);
+
+		for(TreeNode node : expeditedReportTree.getChildren()){
+			if(mandatorySectionNames.contains(node.getDisplayName())){
+				validate(wrappedAEReport, mandatoryFieldMap, node, messages);
+			}
+		}
+		return messages;
+	}
+
+	/**
+	 * Will return the summate of mandatory fields associated to each ReportDefinition associated
+	 * to this ExpeditedAdverseEventReport.
+	 */
+	public Map<String, Boolean> fetchMandatoryFieldMap(ExpeditedAdverseEventReport aeReport) {
+		Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
+		if(CollectionUtils.isNotEmpty(aeReport.getReports())){
+			for(Report report : aeReport.getReports()){
+	    		if(report.getReportDefinition().getMandatoryFields() == null) continue;
+	    		for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
+	    			mandatoryFieldMap.put(field.getFieldPath(), field.getMandatory());
+	    		}
+	    	}
+		}
+		return mandatoryFieldMap;
+	}
+
 	public void setNowFactory(NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
@@ -262,5 +345,29 @@ public class ReportServiceImpl  implements ReportService {
 		this.reportDao = reportDao;
 	}
 
+	public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+		this.expeditedReportTree = expeditedReportTree;
+	}
 
+
+
+	//TODO: Move this to some utility class
+
+	@SuppressWarnings("unchecked")
+	public static boolean isEmpty(Object o){
+		if(o instanceof Collection){
+			return CollectionUtils.isEmpty((Collection)o);
+		}
+		return o == null;
+	}
+
+	//TODO : Move this to some utility class
+	@SuppressWarnings("unchecked")
+	public static int size(Object o){
+		if(o == null) return 0;
+		if(o instanceof Collection){
+			return CollectionUtils.size(o);
+		}
+		return -1;
+	}
 }

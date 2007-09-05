@@ -1,13 +1,14 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.BeanWrapper;
 
 
 /**
@@ -44,8 +45,30 @@ public interface ReportService {
    public void deleteReport(Report report);
 
    /**
-    * Vaidates the report against the predefined set of mandatory fields available in ReportDefinition.
+    * This method will return a map consisting of the <code>aeReport</code> property (key) and boolean representing whether
+    * the property is mandatory.
+    * @param aeReport - An {@link ExpeditedAdverseEventReport}
+    * @return map
     */
-   //TODO: need to identify the return type
-   public Object validate(Report report);
+   public Map<String, Boolean> fetchMandatoryFieldMap(ExpeditedAdverseEventReport aeReport);
+
+
+   /**
+    * Will test if the mandatory field is empty. If found empty, then will populate the error details in
+    * the <code>messages</code> object.
+    * @param bean - The bean to validate
+    * @param mandatoryMap - A map, with property name as key and associated boolean
+    * value will tell if the field is mandatory
+    * @param node - The node, based on which the evaluation is to be performed.
+    * @param messages - An error message object
+    */
+   public void validate(BeanWrapper bean, Map<String, Boolean> mandatoryMap, TreeNode node,ErrorMessages messages);
+
+   /**
+    * Will tell whether all the mandatory field for this report is duly filled.
+    * @param aeReport
+    * @return ErrorMessages, if any.
+    */
+   public ErrorMessages isSubmitable(ExpeditedAdverseEventReport aeReport, List<String> mandatorySectionNames);
+
 }
