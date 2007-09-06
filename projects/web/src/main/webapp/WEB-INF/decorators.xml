@@ -13,6 +13,7 @@
         <pattern>/pages/study/edit</pattern>
         <pattern>/pages/study/create</pattern>
         <pattern>/pages/participant/create</pattern>
+        <pattern>/pages/participant/edit</pattern>
         <pattern>/pages/participant/assignStudy</pattern>
         <pattern>/pages/participant/assignParticipant</pattern>
         <pattern>/pages/ae/create</pattern>

@@ -33,6 +33,12 @@ public class CreateParticipantAjaxFacade {
 	public static final String CREATE_PARTICIPANT_FORM_NAME = CreateParticipantController.class.getName()
 			+ ".FORM.command";
 
+	public static final String EDIT_PARTICIPANT_FORM_NAME = EditParticipantController.class.getName() + ".FORM.command";
+
+	public static final String CREATE_PARTICIPANT_REPLACED_FORM_NAME = CREATE_PARTICIPANT_FORM_NAME + ".to-replace";
+
+	public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME + ".to-replace";
+
 	// public static final String EDIT_PARTICIPANT_FORM_NAME = E.class.getName() + ".FORM.command";
 
 	private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
@@ -41,11 +47,21 @@ public class CreateParticipantAjaxFacade {
 
 	private NewParticipantCommand getParticipantCommand(final HttpServletRequest request) {
 		NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-				CREATE_PARTICIPANT_FORM_NAME);
+				CREATE_PARTICIPANT_REPLACED_FORM_NAME);
 		if (newParticipantCommand == null) {
-			// newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-			// EDIT_PARTICIPANT_FORM_NAME);
+			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+					CREATE_PARTICIPANT_FORM_NAME);
 		}
+		if (newParticipantCommand == null) {
+			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+					EDIT_PARTICIPANT_REPLACED_FORM_NAME);
+		}
+
+		if (newParticipantCommand == null) {
+			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+					EDIT_PARTICIPANT_FORM_NAME);
+		}
+
 		request.setAttribute(BaseCommandController.DEFAULT_COMMAND_NAME, newParticipantCommand);
 		return newParticipantCommand;
 	}
@@ -64,13 +80,13 @@ public class CreateParticipantAjaxFacade {
 		NewParticipantCommand newParticipantCommand = getParticipantCommand(request);
 
 		if (type == 1) {
-			newParticipantCommand.getIdentifiers().add(new SystemAssignedIdentifier());
+			newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
 		}
 		else if (type == 2) {
-			newParticipantCommand.getIdentifiers().add(new OrganizationAssignedIdentifier());
+			newParticipantCommand.getParticipant().getIdentifiers().add(new OrganizationAssignedIdentifier());
 		}
 		request.setAttribute("listEditorIndex", index);
-		request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getIdentifiers().size() - 1);
+		request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getParticipant().getIdentifiers().size() - 1);
 		request.setAttribute("type", type);
 		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "newParticipantCommandIdentifierSection");
 		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
@@ -78,12 +94,13 @@ public class CreateParticipantAjaxFacade {
 		String url = getCurrentPageContextRelative(WebContextFactory.get());
 		String html = getOutputFromJsp(url);
 		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+
 		return html;
 	}
 
 	public boolean deleteIdentifier(final int index) {
 		NewParticipantCommand newParticipantCommand = getParticipantCommand(getHttpServletRequest());
-		return newParticipantCommand.getIdentifiers().remove(index) != null;
+		return newParticipantCommand.getParticipant().getIdentifiers().remove(index) != null;
 	}
 
 	private String getOutputFromJsp(final String jspResource) {

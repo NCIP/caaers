@@ -8,21 +8,18 @@ import org.extremecomponents.table.core.TableModel;
 
 public class ParticipantLinkDisplayCell extends AbstractCell {
 
-    //private static final String LINK = "edit?studyId=";
-    //private  String LINK = model.getContext().getContextPath() "view?participantId=";
+	@Override
+	protected String getCellValue(final TableModel model, final Column column) {
 
-    @Override
-    protected String getCellValue(TableModel model, Column column) {
-        Participant participant = (Participant) model.getCurrentRowBean();
-        String cellValue = participant.getPrimaryIdentifier() != null ? participant.getPrimaryIdentifier().getValue() : "n/a";
-        String link = model.getContext().getContextPath() + "/pages/participant/view?participantId=";
-        
+		Participant participant = (Participant) model.getCurrentRowBean();
 
-        if (participant != null) {
-            cellValue = "<a href=\"" + link + participant.getId().toString() + "&type=confirm\">"
-                + cellValue + "</a>";
-        }
+		String cellValue = column.getValueAsString();
+		String link = model.getContext().getContextPath() + "/pages/participant/edit?participantId=";
 
-        return cellValue;
-    }
+		if (participant != null) {
+			cellValue = "<a href=\"" + link + participant.getId().toString() + "\">" + cellValue + "</a>";
+		}
+		return cellValue;
+
+	}
 }

@@ -14,6 +14,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========== PARTICIPANT ===========-->
 		<entry key="/pages/participant/create"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
+		<entry key="/pages/participant/edit"
+			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />		
 		<entry key="/pages/participant/view"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
 		<entry key="/pages/participant/assign"
@@ -22,6 +24,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
 		<entry key="/pages/participant/assignParticipant"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
+		<entry key="/pages/participant/search" 
+			value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
 		<!--========== STUDY ===========-->
 		<entry key="/pages/study/create"

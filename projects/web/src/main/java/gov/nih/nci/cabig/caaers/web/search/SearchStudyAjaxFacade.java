@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -1132,6 +1133,125 @@ public class SearchStudyAjaxFacade {
 		}
 
 		return "";
+	}
+
+	@SuppressWarnings("finally")
+	private List<Participant> getParticipants(final String type, final String text) {
+
+		StringTokenizer typeToken = new StringTokenizer(type, ",");
+		StringTokenizer textToken = new StringTokenizer(text, ",");
+		log.debug("type :: " + type);
+		log.debug("text :: " + text);
+		String sType, sText;
+
+		List<Participant> participants = new ArrayList<Participant>();
+		ParticipantQuery participantQuery = new ParticipantQuery();
+
+		while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+			sType = typeToken.nextToken();
+			sText = textToken.nextToken();
+			if (sType.equals("firstName")) {
+				participantQuery.filterByFirstName(sText);
+			}
+			else if (sType.equals("identifier")) {
+				participantQuery.filterByIdentifierValue(sText);
+			}
+			else if (sType.equals("lastName")) {
+				participantQuery.filterByLastName(sText);
+			}
+		}
+
+		try {
+			participants = participantDao.searchParticipant(participantQuery);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Formatting Error", e);
+		}
+		finally {
+			return participants;
+		}
+	}
+
+	public String buildParticipantTable(final Map parameterMap, final String type, final String text,
+			final HttpServletRequest request) {
+
+		List<Participant> participants = new ArrayList<Participant>();
+		if (type != null && text != null) {
+			participants = getParticipants(type, text);
+		}
+		log.debug("Participants :: " + participants.size());
+
+		Context context = null;
+		if (parameterMap == null) {
+			context = new HttpServletRequestContext(request);
+		}
+		else {
+			context = new HttpServletRequestContext(request, parameterMap);
+		}
+
+		TableModel model = new TableModelImpl(context);
+		// LimitFactory limitFactory = new TableLimitFactory(context);
+		// Limit limit = new TableLimit(limitFactory);
+		// limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
+		// model.setLimit(limit);
+
+		try {
+			return buildPartcipantTable(model, participants).toString();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+
+	}
+
+	public Object buildPartcipantTable(final TableModel model, final List<Participant> participants) throws Exception {
+		Table table = model.getTableInstance();
+		table.setTableId("assembler");
+		table.setForm("assembler");
+		table.setItems(participants);
+		table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
+		table.setTitle("");
+		table.setShowPagination(true);
+		table.setOnInvokeAction("buildTable('assembler')");
+		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+		table.setFilterable(true);
+		table.setSortable(true);
+		table.setShowPagination(true);
+		model.addTable(table);
+
+		Export export = model.getExportInstance();
+		export.setView(TableConstants.VIEW_CSV);
+		export.setViewResolver(TableConstants.VIEW_CSV);
+		export.setImageName(TableConstants.VIEW_CSV);
+		export.setText(TableConstants.VIEW_CSV);
+		export.addAttribute(CsvView.DELIMITER, "|");
+		export.setFileName("caaers_participants.txt");
+		model.addExport(export);
+
+		Row row = model.getRowInstance();
+		row.setHighlightRow(Boolean.TRUE);
+		model.addRow(row);
+
+		Column columnFirstName = model.getColumnInstance();
+		columnFirstName.setProperty("firstName");
+		columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
+		model.addColumn(columnFirstName);
+
+		Column columnLastName = model.getColumnInstance();
+		columnLastName.setProperty("lastName");
+		model.addColumn(columnLastName);
+
+		// Column columnPrimaryIdentifier = model.getColumnInstance();
+		// columnPrimaryIdentifier.setSortable(false);
+		// columnPrimaryIdentifier.setProperty("test");
+		// columnPrimaryIdentifier.setTitle("Primary ID");
+		// columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
+		// model.addColumn(columnPrimaryIdentifier);
+
+		return model.assemble();
+
 	}
 
 	public StudyService getStudyService() {

@@ -31,16 +31,30 @@ function submitPage(s){
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}" >
 
-<chrome:division title="Assigned to Study">
-<c:forEach var="assignment" items="${participant.assignments}" varStatus="status"> 
-               		 
-					 <div class="row"><div class="label">Study Short Title:</div><div class="value"><c:out value="${assignment.studySite.study.shortTitle}"/></div></div>
-					 <div class="row"><div class="label">Site:</div><div class="value"><c:out value="${assignment.studySite.organization.name}"/></div></div>
-			   </c:forEach>
-</chrome:division>    
-<chrome:division title="Participant Details">
+<chrome:division title="Assigned to Studies">
+		<table class="tablecontent">
+			<tr>
+				<th scope="col">Study Short Title</th>
+				<th scope="col">Site</th>
+			</tr>
+      	<c:forEach var="assignment" items="${participant.assignments}"
+				varStatus="status"> 
+			<tr class="results">
+			
+					<td>${assignment.studySite.study.shortTitle}</td>
+				<td>${assignment.studySite.organization.name}</td>
+			</tr>
+			</c:forEach>
+			</table>
+			<br>
+    
 
-  <div class="leftpane">
+</chrome:division>    
+     <chrome:division title="Participant Details">
+		<table id="test2" class="single-fields" >
+        	<tr>
+    	<td>
+         <div class="leftpane">
 	        <div class="row">
 	            <div class="label">First Name:</div>
 	            <div class="value">${participant.firstName}</div>
@@ -48,7 +62,7 @@ function submitPage(s){
 	        
 	         <div class="row">
 	            <div class="label">Last Name:</div>
-	            <div class="value">${participant.lastName}</div>
+	            <div class="value">${command.participant.lastName}</div>
 	        </div>
 	        
 	        <div class="row">
@@ -60,10 +74,11 @@ function submitPage(s){
 	            <div class="label">Middle Name:</div>
 	            <div class="value">${participant.middleName}</div>
 	        </div>
-	        
+	       </td> <td>
 	         <div class="row">
 	            <div class="label">Date of Birth:</div>
-	            <div class="value"><tags:formatDate value="${participant.dateOfBirth}"/></div>
+	            <div class="value"><tags:formatDate
+				value="${participant.dateOfBirth}" /></div>
 	        </div>
 	        
 	        <div class="row">
@@ -82,11 +97,11 @@ function submitPage(s){
 	            <div class="value">${participant.gender}</div>
 	        </div>
 	              
-	     </div>	     
-	     <div class="endpanes">&nbsp;</div>   
-
-  </chrome:division>
-  
+	     </td>
+	    </tr>
+	    </table> 
+	      </chrome:division>
+	
 		<c:if test="${not empty participant.identifiers}">
 			<chrome:division title="Identifiers" id="repeatingFields">
 			<table class="tablecontent">

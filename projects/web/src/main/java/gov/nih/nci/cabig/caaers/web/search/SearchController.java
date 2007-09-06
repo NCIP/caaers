@@ -108,6 +108,10 @@ public abstract class SearchController extends SimpleFormController {
 				viewData = searchFacade.getResearchStaffTable(null, prop, value, request);
 				break;
 
+			case 8:
+				viewData = searchFacade.buildParticipantTable(null, prop, value, request);
+				break;
+
 			default:
 				viewData = searchFacade.build(model, new ArrayList());
 				break;

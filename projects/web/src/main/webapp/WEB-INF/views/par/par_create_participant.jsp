@@ -14,6 +14,7 @@
 <head>
     <tags:includeScriptaculous/>
     <tags:stylesheetLink name="participant"/>
+    
     <style type="text/css">
         .leftpane { width: 32em }
     </style>
@@ -30,10 +31,10 @@
             	si[index] = this;
             	this.orgName = orgName;
             	
-            	if($('identifiers['  + index + '].organization'))
+            	if($('participant.identifiers['  + index + '].organization'))
             	{
         		
-            	this.organizationName = "identifiers["  + index + "].organization";
+            	this.organizationName = "participant.identifiers["  + index + "].organization";
                 this.organizationInputId = this.organizationName + "-input";
             	if(orgName) $(this.organizationInputId).value = orgName;
                      	
@@ -43,7 +44,7 @@
             	);
             	
             	}
-            	this.indicator = "identifiers["  + index + "].primaryIndicator1";
+            	this.indicator = "participant.identifiers["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
             	 		if(i == this.index) continue;
@@ -83,7 +84,7 @@
 	  
     Event.observe(window, "load", function() {
         	
-      		<c:forEach varStatus="status" items="${command.identifiers}" var="si">
+      		<c:forEach varStatus="status" items="${command.participant.identifiers}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, '${si.organization.name}');
 				</c:if>
@@ -130,12 +131,8 @@
     
 </head>
 <body>
-		
-    <p class="instructions">
-        You are creating a new Participant
-    </p>
     
-    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm" hideErrorDetails="true" willSave="false">
+    <tags:tabForm tab="${tab}" flow="${flow}"  formName="createParticipantForm" hideErrorDetails="false" willSave="false">
 
 		 <jsp:attribute name="singleFields">
             <div>
@@ -148,9 +145,14 @@
     
     			
 <chrome:division  title="Site"  >
+<c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
 <c:forEach items="${fieldGroups.site.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-           </c:forEach>     	
+                    <tags:renderRow field="${field}"  />
+</c:forEach>     	
+</c:if>
+<c:if test="${!(empty command.participant.id) and (command.participant.id gt 0)}">
+${command.organization}
+</c:if>
 </chrome:division>
 		<chrome:division  title="Partcipant Details"  >			
 		<table id="test2" class="single-fields" >
@@ -179,10 +181,10 @@
     				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     			</tr>
     			
-            	<c:forEach items="${command.identifiers}" varStatus="status">
-					<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+            	<c:forEach items="${command.participant.identifiers}" varStatus="status">
+					<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<par:parIdentifier  title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />
+					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.participant.identifiers[status.index]}" />
 					</c:if>
 					            	</c:forEach>
             	
@@ -199,11 +201,13 @@
     				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     			</tr>
     			
-            	<c:forEach items="${command.identifiers}" varStatus="status" >
-            	<c:if test="${(command.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+            	<c:forEach items="${command.participant.identifiers}" varStatus="status" >
+            	<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 		
 					<par:parIdentifier title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
-					sectionClass="system-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.identifiers[status.index]}" />            
+					sectionClass="system-section-row" removeButtonAction="removeIdentifier" 
+					index="${status.index}"  identifier="${command.participant.identifiers[status.index]}" /> 
+					
 					</c:if>
 						</c:forEach>
             	</table>

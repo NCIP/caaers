@@ -83,6 +83,8 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Participant" p:linkName="createParticipantController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
                         </list>
                     </property>
@@ -163,19 +165,23 @@
     <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
     <!--  PARTICIPANT   -->
-    <bean name="/participant/create" id="createParticipantController" autowire="byName"
+    <bean name="/participant/create" id="createParticipantController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
     </bean>
 
-    <bean name="/participant/view" id="viewParticipantController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
+    <bean name="/participant/edit" id="editParticipantController" autowire="byType"
+    	  class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
     </bean>
 
     <bean name="/participant/assign" id="assignController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
     	  <property name="sessionForm"><value>true</value></property>
   	</bean>
-
+	
+	<bean name="/participant/view" id="viewParticipantController" autowire="byName"
+    	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
+    </bean>
+    
     <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
     	  class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
     </bean>
@@ -286,6 +292,10 @@
           
     <bean name="/search/participant" id="participantController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
+          
+    <bean name="/participant/search" id="searchParticipantController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
+    
           
     <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 

@@ -1,18 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import java.util.Date;
-import java.util.List;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 
 /**
  * @author Krikor Krumlian
@@ -20,26 +18,6 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 
 public class NewParticipantCommand {
 	protected final Log log = LogFactory.getLog(getClass());
-
-	private String instituitionalPatientNumber;
-
-	private String institution;
-
-	private String firstName;
-
-	private String middleName;
-
-	private String maidenName;
-
-	private String lastName;
-
-	private Date dateOfBirth;
-
-	private String gender;
-
-	private String race;
-
-	private String ethnicity;
 
 	private String[] studySiteArray;
 
@@ -54,119 +32,60 @@ public class NewParticipantCommand {
 
 	private List<Study> studies = new ArrayList<Study>();
 
-	private final List<Identifier> identifiers = new ArrayList<Identifier>();
-
 	private List<StudySite> studySites = new ArrayList<StudySite>();
 
 	private Organization organization;
 
-	/*
-	 * public Participant createParticipant() { Participant participant = new Participant();
-	 * participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber()); participant.setInstitution(getInstitution());
-	 * participant.setFirstName(getFirstName()); participant.setLastName(getLastName()); participant.setDateOfBirth(getDateOfBirth());
-	 * participant.setGender(getGender()); participant.setRace(getRace()); participant.setEthnicity(getEthnicity());
-	 * participant.setIdentifiers(getIdentifiers()); return participant; }
-	 */
+	private Participant participant;
 
-	public Participant createParticipant() {
-		Participant participant = new Participant();
-		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
-		participant.setInstitution(getInstitution());
-		participant.setFirstName(getFirstName());
-		participant.setMaidenName(getMaidenName());
-		participant.setMiddleName(getMiddleName());
-		participant.setLastName(getLastName());
-		participant.setDateOfBirth(getDateOfBirth());
-		participant.setGender(getGender());
-		participant.setRace(getRace());
-		participant.setEthnicity(getEthnicity());
-		participant.setIdentifiers(getIdentifiers());
-
-		for (int i = 0; i < studySites.size(); i++) {
-			participant.getAssignments().add(new StudyParticipantAssignment(participant, studySites.get(i)));
-		}
-		return participant;
+	public NewParticipantCommand() {
+		participant = new Participant();
 	}
 
-	public String getInstituitionalPatientNumber() {
-		return instituitionalPatientNumber;
+	public NewParticipantCommand(final Participant participant) {
+		this.participant = participant;
 	}
 
-	public void setInstituitionalPatientNumber(final String instituitionalPatientNumber) {
-		this.instituitionalPatientNumber = instituitionalPatientNumber;
-	}
+	// public static NewParticipantCommand createNewParticipantCommand(final Participant participant) {
+	//
+	// NewParticipantCommand newParticipantCommand = new NewParticipantCommand();
+	// // newParticipantCommand.setInstitutionalPatientNumber(participant.getInstituitionalPatientNumber());
+	//
+	// List<StudyParticipantAssignment> assignments = participant.getAssignments();
+	// for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
+	// newParticipantCommand.addStudySite(studyParticipantAssignment.getStudySite());
+	// }
+	//
+	// newParticipantCommand.setOrganization(assignments.get(0).getStudySite().getOrganization());
+	// // for (int i = 0; i < participant.getStudies()studySites.size(); i++) {
+	// // newParticipantCommand.getAssignmts().add(new StudyParticipantAssignment(participant, studySites.get(i)));
+	// // }
+	// return newParticipantCommand;
+	// }
 
-	public String getInstitution() {
-		return institution;
-	}
+	// private void addStudySite(final StudySite studySite) {
+	// studySites.add(studySite);
+	// }
 
-	public void setInstitution(final String institution) {
-		this.institution = institution;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(final String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(final String middleName) {
-		this.middleName = middleName;
-	}
-
-	public String getMaidenName() {
-		return maidenName;
-	}
-
-	public void setMaidenName(final String maidenName) {
-		this.maidenName = maidenName;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(final String gender) {
-		this.gender = gender;
-	}
-
-	public String getEthnicity() {
-		return ethnicity;
-	}
-
-	public void setEthnicity(final String ethnicity) {
-		this.ethnicity = ethnicity;
-	}
-
-	public String getRace() {
-		return race;
-	}
-
-	public void setRace(final String race) {
-		this.race = race;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(final String lastName) {
-		this.lastName = lastName;
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(final Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+	// public Participant createParticipant() {
+	// Participant participant = new Participant();
+	// participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
+	// participant.setInstitution(getInstitution());
+	// participant.setFirstName(getFirstName());
+	// participant.setMaidenName(getMaidenName());
+	// participant.setMiddleName(getMiddleName());
+	// participant.setLastName(getLastName());
+	// participant.setDateOfBirth(getDateOfBirth());
+	// participant.setGender(getGender());
+	// participant.setRace(getRace());
+	// participant.setEthnicity(getEthnicity());
+	// participant.setIdentifiers(getIdentifiers());
+	//
+	// for (int i = 0; i < studySites.size(); i++) {
+	// participant.getAssignments().add(new StudyParticipantAssignment(participant, studySites.get(i)));
+	// }
+	// return participant;
+	// }
 
 	public String[] getStudySiteArray() {
 		return studySiteArray;
@@ -222,21 +141,22 @@ public class NewParticipantCommand {
 
 	public void setStudySites(final List<StudySite> studySites) {
 		this.studySites = studySites;
-	}
 
-	public List<Identifier> getIdentifiers() {
-		return identifiers;
-	}
-
-	public void setIdentifiers(final List<? extends Identifier> identifiers) {
-		this.identifiers.addAll(identifiers);
 	}
 
 	public Organization getOrganization() {
 		return organization;
 	}
 
-	public void setOrganization(Organization organization) {
+	public void setOrganization(final Organization organization) {
 		this.organization = organization;
+	}
+
+	public Participant getParticipant() {
+		return participant;
+	}
+
+	public void setParticipant(final Participant participant) {
+		this.participant = participant;
 	}
 }
