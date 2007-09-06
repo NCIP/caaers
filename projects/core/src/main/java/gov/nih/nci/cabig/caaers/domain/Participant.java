@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import javax.persistence.Entity;
 import javax.persistence.Column;
@@ -45,11 +48,22 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
 	private String ethnicity;
 
+	private final LazyListHelper lazyListHelper;
+
 	private List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
+
+	public Participant() {
+
+		lazyListHelper = new LazyListHelper();
+
+		// register with lazy list helper study site.
+		lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
+
+	}
 
 	// //// LOGIC
 
-	public void addAssignment(StudyParticipantAssignment studyParticipantAssignment) {
+	public void addAssignment(final StudyParticipantAssignment studyParticipantAssignment) {
 		getAssignments().add(studyParticipantAssignment);
 		studyParticipantAssignment.setParticipant(this);
 	}
@@ -103,7 +117,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return institutionalPatientNumber;
 	}
 
-	public void setInstitutionalPatientNumber(String instituitionalPatientNumber) {
+	public void setInstitutionalPatientNumber(final String instituitionalPatientNumber) {
 		institutionalPatientNumber = instituitionalPatientNumber;
 	}
 
@@ -111,7 +125,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return institution;
 	}
 
-	public void setInstitution(String institution) {
+	public void setInstitution(final String institution) {
 		this.institution = institution;
 	}
 
@@ -119,7 +133,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -127,7 +141,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return maidenName;
 	}
 
-	public void setMaidenName(String maidenName) {
+	public void setMaidenName(final String maidenName) {
 		this.maidenName = maidenName;
 	}
 
@@ -135,7 +149,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return middleName;
 	}
 
-	public void setMiddleName(String middleName) {
+	public void setMiddleName(final String middleName) {
 		this.middleName = middleName;
 	}
 
@@ -143,7 +157,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -152,7 +166,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(final Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
@@ -160,7 +174,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(final String gender) {
 		this.gender = gender;
 	}
 
@@ -168,7 +182,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return ethnicity;
 	}
 
-	public void setEthnicity(String ethnicity) {
+	public void setEthnicity(final String ethnicity) {
 		this.ethnicity = ethnicity;
 	}
 
@@ -176,7 +190,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return race;
 	}
 
-	public void setRace(String race) {
+	public void setRace(final String race) {
 		this.race = race;
 	}
 
@@ -188,20 +202,12 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		return assignments;
 	}
 
-	public void setAssignments(List<StudyParticipantAssignment> assignments) {
+	public void setAssignments(final List<StudyParticipantAssignment> assignments) {
 		this.assignments = assignments;
 	}
 
 	@Override
-	@OneToMany
-	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	@JoinColumn(name = "participant_id")
-	public List<Identifier> getIdentifiers() {
-		return super.getIdentifiers();
-	}
-
-	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -226,6 +232,9 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null) {
 			return false;
 		}
+		if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+			return false;
+		}
 
 		return true;
 	}
@@ -239,4 +248,27 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		result = 29 * result + (gender != null ? gender.hashCode() : 0);
 		return result;
 	}
+
+	@OneToMany
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@JoinColumn(name = "participant_id")
+	public List<Identifier> getIdentifiersInternal() {
+		return lazyListHelper.getInternalList(Identifier.class);
+	}
+
+	public void setIdentifiersInternal(final List<Identifier> identifiers) {
+		lazyListHelper.setInternalList(Identifier.class, identifiers);
+	}
+
+	@Override
+	@Transient
+	public List<Identifier> getIdentifiers() {
+		return lazyListHelper.getLazyList(Identifier.class);
+	}
+
+	@Override
+	public void setIdentifiers(final List<Identifier> identifiers) {
+		setIdentifiersInternal(identifiers);
+	}
+
 }
