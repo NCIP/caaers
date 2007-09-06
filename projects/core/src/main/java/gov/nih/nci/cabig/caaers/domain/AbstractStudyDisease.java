@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.io.Serializable;
+
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import org.hibernate.annotations.GenericGenerator;
@@ -33,7 +35,7 @@ import javax.persistence.DiscriminatorValue;
         @Parameter(name = "sequence", value = "seq_study_diseases_id")
     }
 )
-public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject {
+public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject implements Serializable{
     private T term;
     private Study study;
 
@@ -50,7 +52,7 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends Abstr
 	public void setStudy(Study study) {
 		this.study = study;
 	}
-    
+
 
     @Transient
     /* this is only transient here -- subclasses need to override it and specify what it refers to
