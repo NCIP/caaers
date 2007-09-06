@@ -87,8 +87,8 @@
                             <property name="desc" value="Phase II Trial" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="II/II" />
-                            <property name="desc" value="Phase II/II Trial" />
+                            <property name="code" value="II/III" />
+                            <property name="desc" value="Phase II/III Trial" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="III" />
