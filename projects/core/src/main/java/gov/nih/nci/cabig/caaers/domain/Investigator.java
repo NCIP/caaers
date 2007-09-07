@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -39,7 +40,14 @@ public class Investigator extends AbstractMutableDomainObject {
 
 	private String faxNumber;
 
-	private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+	private final LazyListHelper lazyListHelper;
+
+	public Investigator() {
+		lazyListHelper = new LazyListHelper();
+
+		// register with lazy list helper study site.
+		lazyListHelper.add(SiteInvestigator.class, new InstantiateFactory<SiteInvestigator>(SiteInvestigator.class));
+	}
 
 	// business methods
 
@@ -111,12 +119,21 @@ public class Investigator extends AbstractMutableDomainObject {
 
 	@OneToMany(mappedBy = "investigator", fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<SiteInvestigator> getSiteInvestigators() {
-		return siteInvestigators;
+	public List<SiteInvestigator> getSiteInvestigatorsInternal() {
+		return lazyListHelper.getInternalList(SiteInvestigator.class);
 	}
 
-	public void setSiteInvestigators(final List<SiteInvestigator> siteInvestigators) {
-		this.siteInvestigators = siteInvestigators;
+	public void setSiteInvestigatorsInternal(final List<SiteInvestigator> investigators) {
+		lazyListHelper.setInternalList(SiteInvestigator.class, investigators);
+	}
+
+	@Transient
+	public List<SiteInvestigator> getSiteInvestigators() {
+		return lazyListHelper.getLazyList(SiteInvestigator.class);
+	}
+
+	public void setSiteInvestigators(final List<SiteInvestigator> investigators) {
+		setSiteInvestigatorsInternal(investigators);
 	}
 
 	@Override
