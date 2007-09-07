@@ -15,11 +15,10 @@
           
      <bean id="participantAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade"/>
-         
-    <!--            
-    <bean id="participantAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.participant.ParticipantAjaxFacade"/>
-    -->
+    
+     <bean id="investigatorAjaxFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.admin.InvestigatorAjaxFacade"/>
+       
      <bean id="searchStudyAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade"/>   
      <bean id="ruleAjaxFacade" autowire="byType" 

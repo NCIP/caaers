@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.search;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
@@ -52,6 +53,8 @@ public abstract class SearchController extends SimpleFormController {
 
 	private AdverseEventDao adverseEventDao;
 
+	private InvestigatorDao investigatorDao;
+
 	public SearchController() {
 		setCommandClass(SearchStudyCommand.class);
 		setFormView("search/study_search");
@@ -74,6 +77,7 @@ public abstract class SearchController extends SimpleFormController {
 		SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao,
 				expeditedDao, routineDao, organizationDao);
 		searchFacade.setResearchStaffDao(researchStaffDao);
+		searchFacade.setInvestigatorDao(investigatorDao);
 		Context context = null;
 		context = new HttpServletRequestContext(request);
 
@@ -110,6 +114,9 @@ public abstract class SearchController extends SimpleFormController {
 
 			case 8:
 				viewData = searchFacade.buildParticipantTable(null, prop, value, request);
+				break;
+			case 9:
+				viewData = searchFacade.getInvestigatorTable(null, prop, value, request);
 				break;
 
 			default:
@@ -202,5 +209,9 @@ public abstract class SearchController extends SimpleFormController {
 
 	public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
+	}
+
+	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
 	}
 }

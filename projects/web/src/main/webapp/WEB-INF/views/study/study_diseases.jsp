@@ -237,6 +237,7 @@
     </script>
 </head>
 <body>
+<study:summary></study:summary>
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" cssClass="standard">
         <tags:tabFields tab="${tab}"/>

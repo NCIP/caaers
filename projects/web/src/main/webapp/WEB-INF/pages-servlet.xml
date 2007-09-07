@@ -125,7 +125,7 @@
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Configure caAERS" p:linkName="configurationController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Investigator" p:linkName="createInvestigatorController"/>            
+                                p:displayName="Investigator" p:linkName="createInvestigatorController"/>            
 							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
@@ -244,7 +244,15 @@
           class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
            <property name="sessionForm"><value>true</value></property>
      </bean>
+	
+	     <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
+     </bean>
      
+
+	<bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
+     </bean>     
      
 	<bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">

@@ -3,17 +3,20 @@ package gov.nih.nci.cabig.caaers.web.search;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -54,6 +57,8 @@ public class SearchStudyAjaxFacade {
 	private ParticipantDao participantDao;
 
 	private OrganizationDao organizationDao;
+
+	private InvestigatorDao investigatorDao;
 
 	private ResearchStaffDao researchStaffDao;
 
@@ -163,6 +168,43 @@ public class SearchStudyAjaxFacade {
 		Column columnLastName = model.getColumnInstance();
 		columnLastName.setProperty("nciInstituteCode");
 		model.addColumn(columnLastName);
+
+		return model.assemble();
+	}
+
+	public Object buildInvestigator(final TableModel model, final List<Investigator> investigators) throws Exception {
+		Table table = model.getTableInstance();
+		table.setTableId("assembler");
+		table.setForm("assembler");
+		table.setItems(investigators);
+		table.setAction(model.getContext().getContextPath() + "/pages/admin/editInvestigator");
+		table.setTitle("");
+		table.setShowPagination(true);
+		table.setOnInvokeAction("buildTable('assembler')");
+		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+		table.setFilterable(true);
+		table.setSortable(true);
+		table.setShowPagination(true);
+		model.addTable(table);
+
+		Row row = model.getRowInstance();
+		row.setHighlightRow(Boolean.TRUE);
+		model.addRow(row);
+
+		Column columnFirstName = model.getColumnInstance();
+		columnFirstName.setProperty("firstName");
+		columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.InvestigatorLinkDisplayCell");
+
+		model.addColumn(columnFirstName);
+
+		Column columnLastName = model.getColumnInstance();
+		columnLastName.setProperty("lastName");
+		model.addColumn(columnLastName);
+
+		Column columnNciInstituteCode = model.getColumnInstance();
+		columnNciInstituteCode.setProperty("nciInstituteCode");
+
+		model.addColumn(columnNciInstituteCode);
 
 		return model.assemble();
 	}
@@ -672,6 +714,43 @@ public class SearchStudyAjaxFacade {
 	}
 
 	@SuppressWarnings("finally")
+	private List<Investigator> constructExecuteInvestigatorQuery(final String type, final String text) {
+
+		StringTokenizer typeToken = new StringTokenizer(type, ",");
+		StringTokenizer textToken = new StringTokenizer(text, ",");
+		log.debug("type :: " + type);
+		log.debug("text :: " + text);
+		String sType, sText;
+		List<Investigator> investigators = new ArrayList<Investigator>();
+
+		InvestigatorQuery investigatorQuery = new InvestigatorQuery();
+
+		while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+			sType = typeToken.nextToken();
+			sText = textToken.nextToken();
+			if (sType.equals("firstName")) {
+				investigatorQuery.filterByFirstName(sText);
+			}
+			else if (sType.equals("nciInstituteCode")) {
+				investigatorQuery.filterByNciIdentifier(sText);
+			}
+			else if (sType.equals("lastName")) {
+				investigatorQuery.filterByLastName(sText);
+			}
+		}
+
+		try {
+			investigators = investigatorDao.searchInvestigator(investigatorQuery);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Formatting Error", e);
+		}
+		finally {
+			return investigators;
+		}
+	}
+
+	@SuppressWarnings("finally")
 	private List<ResearchStaff> constructExecuteResearchStaffQuery(final String type, final String text) {
 
 		StringTokenizer typeToken = new StringTokenizer(type, ",");
@@ -944,6 +1023,39 @@ public class SearchStudyAjaxFacade {
 
 		try {
 			return buildOrganization(model, organizationss).toString();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String getInvestigatorTable(final Map parameterMap, final String type, final String text,
+			final HttpServletRequest request) {
+
+		List<Investigator> investigators = new ArrayList<Investigator>();
+		if (type != null && text != null) {
+			investigators = constructExecuteInvestigatorQuery(type, text);
+		}
+		log.debug("Investigators :: " + investigators.size());
+
+		Context context = null;
+		if (parameterMap == null) {
+			context = new HttpServletRequestContext(request);
+		}
+		else {
+			context = new HttpServletRequestContext(request, parameterMap);
+		}
+
+		TableModel model = new TableModelImpl(context);
+		// LimitFactory limitFactory = new TableLimitFactory(context);
+		// Limit limit = new TableLimit(limitFactory);
+		// limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
+		// model.setLimit(limit);
+
+		try {
+			return buildInvestigator(model, investigators).toString();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -1318,6 +1430,9 @@ public class SearchStudyAjaxFacade {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
 	}
 
+	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
+	}
 }
 
 class ColumnValueObject {

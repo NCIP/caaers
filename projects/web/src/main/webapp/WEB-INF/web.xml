@@ -113,7 +113,14 @@
         <filter-name>BeansInRequestFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+    <filter>
+  		<filter-name>AuditInfoFilter</filter-name>
+  		<filter-class>gov.nih.nci.cabig.caaers.web.AuditInfoFilter</filter-class>
+	</filter>
+    <filter-mapping>
+        <filter-name>AuditInfoFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter>
   		<filter-name>eXtremeExport</filter-name>
   		<filter-class>org.extremecomponents.table.filter.ExportFilter</filter-class>
@@ -124,11 +131,11 @@
 	</filter-mapping>
 	
 	<filter>
-  		<filter-name>Sitemesh</filter-name>
+  		<filter-name>sitemesh</filter-name>
   		<filter-class>org.extremecomponents.table.filter.SitemeshPageFilter</filter-class>
 	</filter>
 	<filter-mapping>
-  		<filter-name>Sitemesh</filter-name>
+  		<filter-name>sitemesh</filter-name>
   		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 

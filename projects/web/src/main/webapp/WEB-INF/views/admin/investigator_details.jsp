@@ -1,115 +1,143 @@
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@ taglib prefix="investigator" tagdir="/WEB-INF/tags/investigator"%>
 
 <html>
 <head>
-<title>Add investigator</title>
 <tags:stylesheetLink name="participant" />
+<tags:includeScriptaculous />
+<tags:stylesheetLink name="tabbedflow"/>
+ 	 <style type="text/css">
+        div.content {
+            padding: 5px 15px;
+        }
+    </style>
+
+<tags:dwrJavascriptLink objects="createInvestigator" />
 
 <script language="JavaScript" type="text/JavaScript">
 
-	function fireAction(action, selected){				
-		document.getElementById("_action").value=action;	
-		document.getElementById("_selected").value=selected;
-		document.form.submit();	
-	}
+
+var si = [];
+var addInvestigatorEditor;
+var jsInvestigator = Class.create();
+Object.extend(jsInvestigator.prototype, {initialize: function(index) {}});
+    
+function fireAction(action, selected){
+		if(action == 'addInvestigator'){
+			addInvestigatorEditor.add.bind(addInvestigatorEditor)();
+		}else{
+			document.getElementById('command')._target.name='_noname';
+			document.createInvestigatorForm._action.value=action;
+			document.createInvestigatorForm._selected.value=selected;
+			document.createInvestigatorForm._finish.name='xyz';		
+			document.createInvestigatorForm.submit();
+		}
+	};
+	
+function clearField(field){
+		field.value="";
+	};
+	
+	
+	  
+Event.observe(window, "load", function() {
+            	<c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
+					new jsInvestigator(${status.index});
+			
+      		</c:forEach>
+      		
+      		//This is added for Add Site Investigator button
+		            new ListEditor("site-investigator-row", createInvestigator, "SiteInvestigator", {
+		            	addFirstAfter: "site-investigator",
+		                addCallback: function(nextIndex) {new jsInvestigator(nextIndex);}
+		            });
+    });
+	
+
 	</script>
 
 </head>
 <body>
-<form:form method="post" action="createInvestigator" name="form"
-	id="form">
+
+<div class="tabpane">
+  <ul id="workflow-tabs" class="tabs autoclear">
+    <li class="tab selected"><div>
+        <a href="createInvestigator">Add/Edit Investigator</a>
+    </div></li>
+    <li class="tab"><div>
+        <a href="searchInvestigator">Search Investigator</a>
+    </div></li>
+  </ul>
+  <br />
+ 
+
+<tags:tabForm tab="${tab}" flow="${flow}" formName="createInvestigatorForm"
+	hideErrorDetails="true" willSave="false">
+
+	<jsp:attribute name="singleFields">
 	<div><input type="hidden" name="_action" id="_action" value="">
 	<input type="hidden" name="_selected" id="_selected" value="-1">
+	    <c:if test="${(empty id) or ( id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
 	</div>
-	<chrome:box title="Investigator Details" id="investigator"
-		autopad="true">
-		<p id="instructions">Add a new Investigator</p>
-		<tags:errors path="*" />
 
-		<table id="test2" class="single-fields">
-			<tr>
-				<td>
+             </jsp:attribute>
+	<jsp:attribute name="repeatingFields">
+    
+    
+    	<chrome:division title="Investigator Details" id="investigator">
+		
+<table id="test2" class="single-fields" class="tablecontent">
+        	<tr>
+    				<td> 
+    				<c:forEach begin="0" end="3"
+						items="${fieldGroups.investigator.fields}" var="field">
+                    <tags:renderRow field="${field}"  />
+                	</c:forEach>
+    				</td>
+    				<td><c:forEach begin="4" end="6"
+						items="${fieldGroups.investigator.fields}" var="field">
+                    <tags:renderRow field="${field}" />
+                	</c:forEach>
+                	<div id="test-row" class="row"></div>
+    				</td>
+    			</tr>
+    			
+    		</table> 
+    
+	</chrome:division>
+	<chrome:division title="Associate Sites">
+	  
+	  <table class="tablecontent">
+    			<tr id="site-investigator">
+    				<th class="tableHeader"><tags:requiredIndicator />Site</th>
+    				<th class="tableHeader"><tags:requiredIndicator />Status type</th>
+    			</tr>
+    			
+            	<c:forEach varStatus="status" items="${command.siteInvestigators}">
+					<investigator:siteInvestigator 	title="Associated Sites ${status.index + 1}" enableDelete="${status.index > 0}"
+						sectionClass="site-investigator-row"
+						removeButtonAction="removeInvestigator" index="${status.index}" />
+				</c:forEach>
+            	
+            	</table>
+	
+	</chrome:division>
+         
+     </jsp:attribute>
 
-				<div class="row">
-				<div class="label"><span class="red">*</span>First name:</div>
-				<div class="value"><form:input path="firstName" /></div>
-				</div>
-				<div class="row">
-				<div class="label">Middle name:</div>
-				<div class="value"><form:input path="middleName" /></div>
-				</div>
-				<div class="row">
-				<div class="label"><span class="red">*</span>Last name:</div>
-				<div class="value"><form:input path="lastName" /></div>
-				</div>
-				<div class="row">
-				<div class="label">NCI Identifier:</div>
-				<div class="value"><form:input path="nciIdentifier" /></div>
-				</div>
-				</td>
-				<td>
-				<div class="row">
-				<div class="label"><span class="red">*</span>Email address:</div>
-				<div class="value"><form:input path="emailAddress" /></div>
-				</div>
+	<jsp:attribute name="localButtons"> 
+	      	<chrome:division title="">          	
+	      		<tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Site Investigator" />   
+            </chrome:division>                                                                                                                                                                                                                                                             
+	</jsp:attribute>
 
-				<div class="row">
-				<div class="label"><span class="red">*</span>Phone:</div>
-				<div class="value"><form:input path="phoneNumber" /></div>
-				</div>
+</tags:tabForm>
 
-				<div class="row">
-				<div class="label">Fax:</div>
-				<div class="value"><form:input path="faxNumber" /></div>
-				</div>
-				</td>
-			</tr>
-		</table>
-
-
-
-
-	</chrome:box>
-	<chrome:box title="Associate Sites" id="investigator" autopad="true">
-		<table class="tablecontent">
-			<tr>
-				<th scope="col"><b> <span class="red">*</span><em></em>Site:</b>
-				</td>
-				<th scope="col"><b> <span class="red">*</span><em></em>Status:</b>
-				</td>
-				<th scope="col"><b><a
-					href="javascript:fireAction('addSite','0');"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></b>
-				</td>
-			</tr>
-
-			<c:forEach varStatus="status" items="${command.siteInvestigators}">
-				<tr>
-					<td class="alt"><form:select
-						path="siteInvestigators[${status.index}].organization">
-						<form:options items="${sitesRefData}" itemLabel="name"
-							itemValue="id" />
-					</form:select></td>
-					<td class="alt"><form:select
-						path="siteInvestigators[${status.index}].statusCode">
-						<form:options items="${studySiteStatusRefData}" itemLabel="desc"
-							itemValue="code" />
-					</form:select></td>
-					<td class="alt"><a
-						href="javascript:fireAction('removeSite',${status.index});"><img
-						src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
-				</tr>
-			</c:forEach>
-		</table>
-		<br>
-		<br>
-		<div align="right"><input type="submit" value="Save" />
-	</chrome:box>
-</form:form>
 </body>
 </html>
