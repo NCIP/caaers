@@ -102,8 +102,14 @@
                                 p:displayName="Manage Rules" p:linkName="createRuleController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="List Rules" p:linkName="listRuleController"/>
+                            <!--  
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
+                            -->
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Export Rules" p:linkName="exportRuleController"/>
+                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+                                p:displayName="Import Rules" p:linkName="importRuleController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
@@ -338,6 +344,14 @@
 
     <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
 
+    <bean name="/rule/export" id="exportRuleController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController">
+    </bean>	
+
+    <bean name="/rule/import" id="importRuleController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleController">
+    </bean>	
+    
     <bean name="/rule/create" id="createRuleController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController">
     </bean>
