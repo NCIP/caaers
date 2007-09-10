@@ -1,8 +1,17 @@
 package gov.nih.nci.cabig.caaers;
 
-import edu.nwu.bioinformatics.commons.StringUtils;
-import edu.nwu.bioinformatics.commons.testing.DbTestCase;
-import edu.nwu.bioinformatics.commons.testing.HsqlDataTypeFactory;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,205 +19,202 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ColumnMapRowMapper;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
+import org.springframework.web.context.request.WebRequest;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Locale;
-
+import edu.nwu.bioinformatics.commons.DateUtils;
+import edu.nwu.bioinformatics.commons.StringUtils;
+import edu.nwu.bioinformatics.commons.testing.DbTestCase;
+import edu.nwu.bioinformatics.commons.testing.HsqlDataTypeFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-
+import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 
 /**
  * @author Rhett Sutphin
  */
-/* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: much of this class is shared with PSC. Refactor into a shared library. */
 public abstract class CaaersDbTestCase extends DbTestCase {
-    protected final Log log = LogFactory.getLog(getClass());
+	protected final Log log = LogFactory.getLog(getClass());
 
-    protected WebRequest webRequest = new StubWebRequest();
-    private boolean shouldFlush = true;
+	protected WebRequest webRequest = new StubWebRequest();
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        SecurityTestUtils.insertCSMPolicy(this.getDataSource());
-        SecurityTestUtils.switchToSuperuser();
-        beginSession();
-    }
+	private boolean shouldFlush = true;
 
-    @Override
-    protected void tearDown() throws Exception {
-        endSession();
-        SecurityTestUtils.switchToNoUser();
-        SecurityTestUtils.deleteCSMPolicy(this.getDataSource());
-        super.tearDown();
-        
-    }
+	private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo("dun", "127.1.2.7",
+			DateUtils.createDate(2004, Calendar.NOVEMBER, 2), "/studycalendar/zippo");
 
-    @Override
-    public void runBare() throws Throwable {
-        setUp();
-        try {
-            runTest();
-        } catch (Throwable throwable) {
-            shouldFlush = false;
-            throw throwable;
-        } finally {
-            tearDown();
-        }
-    }
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		SecurityTestUtils.insertCSMPolicy(getDataSource());
+		SecurityTestUtils.switchToSuperuser();
+		DataAuditInfo.setLocal(INFO);
+		beginSession();
+	}
 
-    private void beginSession() {
-        log.info("-- beginning CaaersDbTestCase interceptor session --");
-        for (OpenSessionInViewInterceptor interceptor : interceptors()) {
-            interceptor.preHandle(webRequest);
-        }
-    }
+	@Override
+	protected void tearDown() throws Exception {
+		endSession();
+		SecurityTestUtils.switchToNoUser();
+		SecurityTestUtils.deleteCSMPolicy(getDataSource());
+		DataAuditInfo.setLocal(null);
+		super.tearDown();
 
-    private void endSession() {
-        log.info("--    ending CaaersDbTestCase interceptor session --");
-        for (OpenSessionInViewInterceptor interceptor : reverseInterceptors()) {
-            if (shouldFlush) {
-                interceptor.postHandle(webRequest, null);
-            }
-            interceptor.afterCompletion(webRequest, null);
-        }
-    }
+	}
 
-    protected void interruptSession() {
-        endSession();
-        log.info("-- interrupted CaaersDbTestCase session --");
-        beginSession();
-    }
+	@Override
+	public void runBare() throws Throwable {
+		setUp();
+		try {
+			runTest();
+		}
+		catch (Throwable throwable) {
+			shouldFlush = false;
+			throw throwable;
+		}
+		finally {
+			tearDown();
+		}
+	}
 
-    private List<OpenSessionInViewInterceptor> interceptors() {
-        return Arrays.asList(
-            (OpenSessionInViewInterceptor) getApplicationContext().getBean("openSessionInViewInterceptor")
-        );
-    }
+	private void beginSession() {
+		log.info("-- beginning CaaersDbTestCase interceptor session --");
+		for (OpenSessionInViewInterceptor interceptor : interceptors()) {
+			interceptor.preHandle(webRequest);
+		}
+	}
 
-    private List<OpenSessionInViewInterceptor> reverseInterceptors() {
-        List<OpenSessionInViewInterceptor> interceptors = interceptors();
-        Collections.reverse(interceptors);
-        return interceptors;
-    }
+	private void endSession() {
+		log.info("--    ending CaaersDbTestCase interceptor session --");
+		for (OpenSessionInViewInterceptor interceptor : reverseInterceptors()) {
+			if (shouldFlush) {
+				interceptor.postHandle(webRequest, null);
+			}
+			interceptor.afterCompletion(webRequest, null);
+		}
+	}
 
-    protected DataSource getDataSource() {
-        return (DataSource) getApplicationContext().getBean("dataSource");
-    }
+	protected void interruptSession() {
+		endSession();
+		log.info("-- interrupted CaaersDbTestCase session --");
+		beginSession();
+	}
 
-    public static ApplicationContext getApplicationContext() {
-        return CaaersTestCase.getDeployedApplicationContext();
-    }
+	private List<OpenSessionInViewInterceptor> interceptors() {
+		return Arrays.asList((OpenSessionInViewInterceptor) getApplicationContext().getBean(
+				"openSessionInViewInterceptor"));
+	}
 
-    @Override
-    protected IDataTypeFactory createDataTypeFactory() {
-        String productName = ((String) getJdbcTemplate().execute(new ConnectionCallback() {
-            public Object doInConnection(Connection con) throws SQLException, DataAccessException {
-                return con.getMetaData().getDatabaseProductName();
-            }
-        })).toLowerCase();
-        if (productName.contains("oracle")) {
-            return new OracleDataTypeFactory();
-        } else if (productName.contains("hsql")) {
-            return new HsqlDataTypeFactory();
-        } else {
-            return new DefaultDataTypeFactory();
-        }
-    }
+	private List<OpenSessionInViewInterceptor> reverseInterceptors() {
+		List<OpenSessionInViewInterceptor> interceptors = interceptors();
+		Collections.reverse(interceptors);
+		return interceptors;
+	}
 
-    protected final void dumpResults(String sql) {
-        List<Map<String, String>> rows = new JdbcTemplate(getDataSource()).query(
-            sql,
-            new ColumnMapRowMapper() {
-                protected Object getColumnValue(ResultSet rs, int index) throws SQLException {
-                    Object value = super.getColumnValue(rs, index);
-                    return value == null ? "null" : value.toString();
-                }
-            }
-        );
-        StringBuffer dump = new StringBuffer(sql).append('\n');
-        if (rows.size() > 0) {
-            Map<String, Integer> colWidths = new HashMap<String, Integer>();
-            for (String colName : rows.get(0).keySet()) {
-                colWidths.put(colName, colName.length());
-                for (Map<String, String> row : rows) {
-                    colWidths.put(colName, Math.max(colWidths.get(colName), row.get(colName).length()));
-                }
-            }
+	@Override
+	protected DataSource getDataSource() {
+		return (DataSource) getApplicationContext().getBean("dataSource");
+	}
 
-            for (String colName : rows.get(0).keySet()) {
-                StringUtils.appendWithPadding(colName, colWidths.get(colName), false, dump);
-                dump.append("   ");
-            }
-            dump.append('\n');
+	public static ApplicationContext getApplicationContext() {
+		return CaaersTestCase.getDeployedApplicationContext();
+	}
 
-            for (Map<String, String> row : rows) {
-                for (String colName : row.keySet()) {
-                    StringUtils.appendWithPadding(row.get(colName), colWidths.get(colName), false, dump);
-                    dump.append(" | ");
-                }
-                dump.append('\n');
-            }
-        }
-        dump.append("  ").append(rows.size()).append(" row").append(rows.size() != 1 ? "s\n" : "\n");
+	@Override
+	protected IDataTypeFactory createDataTypeFactory() {
+		String productName = ((String) getJdbcTemplate().execute(new ConnectionCallback() {
+			public Object doInConnection(Connection con) throws SQLException, DataAccessException {
+				return con.getMetaData().getDatabaseProductName();
+			}
+		})).toLowerCase();
+		if (productName.contains("oracle")) {
+			return new OracleDataTypeFactory();
+		}
+		else if (productName.contains("hsql")) {
+			return new HsqlDataTypeFactory();
+		}
+		else {
+			return new DefaultDataTypeFactory();
+		}
+	}
 
-        System.out.print(dump);
-    }
+	protected final void dumpResults(final String sql) {
+		List<Map<String, String>> rows = new JdbcTemplate(getDataSource()).query(sql, new ColumnMapRowMapper() {
+			@Override
+			protected Object getColumnValue(ResultSet rs, int index) throws SQLException {
+				Object value = super.getColumnValue(rs, index);
+				return value == null ? "null" : value.toString();
+			}
+		});
+		StringBuffer dump = new StringBuffer(sql).append('\n');
+		if (rows.size() > 0) {
+			Map<String, Integer> colWidths = new HashMap<String, Integer>();
+			for (String colName : rows.get(0).keySet()) {
+				colWidths.put(colName, colName.length());
+				for (Map<String, String> row : rows) {
+					colWidths.put(colName, Math.max(colWidths.get(colName), row.get(colName).length()));
+				}
+			}
 
-    private static class StubWebRequest implements WebRequest {
-        public String getParameter(String paramName) {
-            return null;
-        }
+			for (String colName : rows.get(0).keySet()) {
+				StringUtils.appendWithPadding(colName, colWidths.get(colName), false, dump);
+				dump.append("   ");
+			}
+			dump.append('\n');
 
-        public String[] getParameterValues(String paramName) {
-            return null;
-        }
+			for (Map<String, String> row : rows) {
+				for (String colName : row.keySet()) {
+					StringUtils.appendWithPadding(row.get(colName), colWidths.get(colName), false, dump);
+					dump.append(" | ");
+				}
+				dump.append('\n');
+			}
+		}
+		dump.append("  ").append(rows.size()).append(" row").append(rows.size() != 1 ? "s\n" : "\n");
 
-        public Map getParameterMap() {
-            return Collections.emptyMap();
-        }
+		System.out.print(dump);
+	}
 
-        public Locale getLocale() {
-            return null;
-        }
+	private static class StubWebRequest implements WebRequest {
+		public String getParameter(final String paramName) {
+			return null;
+		}
 
-        public Object getAttribute(String name, int scope) {
-            return null;
-        }
+		public String[] getParameterValues(final String paramName) {
+			return null;
+		}
 
-        public void setAttribute(String name, Object value, int scope) {
-        }
+		public Map getParameterMap() {
+			return Collections.emptyMap();
+		}
 
-        public void removeAttribute(String name, int scope) {
-        }
+		public Locale getLocale() {
+			return null;
+		}
 
-        public void registerDestructionCallback(String name, Runnable callback, int scope) {
-        }
+		public Object getAttribute(final String name, final int scope) {
+			return null;
+		}
 
-        public String getSessionId() {
-            return null;
-        }
+		public void setAttribute(final String name, final Object value, final int scope) {
+		}
 
-        public Object getSessionMutex() {
-            return null;
-        }
-    }
+		public void removeAttribute(final String name, final int scope) {
+		}
+
+		public void registerDestructionCallback(final String name, final Runnable callback, final int scope) {
+		}
+
+		public String getSessionId() {
+			return null;
+		}
+
+		public Object getSessionMutex() {
+			return null;
+		}
+	}
 }
