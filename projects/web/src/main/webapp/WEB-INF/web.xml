@@ -114,14 +114,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
-  		<filter-name>AuditInfoFilter</filter-name>
-  		<filter-class>gov.nih.nci.cabig.caaers.web.AuditInfoFilter</filter-class>
-	</filter>
-    <filter-mapping>
-        <filter-name>AuditInfoFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
   		<filter-name>eXtremeExport</filter-name>
   		<filter-class>org.extremecomponents.table.filter.ExportFilter</filter-class>
 	</filter>
