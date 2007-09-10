@@ -115,14 +115,17 @@ public abstract class AbstractAdverseEventInputController
 
     @Override
     protected int getInitialPage(HttpServletRequest request){
-    	boolean isReportSubmission = request.getParameter("action") != null ? request
-				.getParameter("action").equals("reportSubmission") ? true
-				: false
-				: false;
-    	log.debug("This is a report Submission");
-    	if ( isReportSubmission ){
+    	boolean isActionAvailable = request.getParameter("action") != null ? true : false;
+    	
+    	if (isActionAvailable && request.getParameter("action").equals("reportSubmission")){
+    		log.debug("This is a report Submission");
     		return SUBMISSION_PAGE;
     	}
+    	if (isActionAvailable && request.getParameter("action").equals("create")){
+    		log.debug("This is a Create where the StudyParticipantAssignment is already defined");
+    		return 1;
+    	}
+    	// default behaviour 
     	return super.getInitialPage(request);
     }
 

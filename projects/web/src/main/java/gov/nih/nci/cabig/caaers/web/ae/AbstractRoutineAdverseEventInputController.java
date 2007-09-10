@@ -23,6 +23,9 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -54,6 +57,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected CtcCategoryDao ctcCategoryDao;
     protected LowLevelTermDao lowLevelTermDao;
     protected NowFactory nowFactory;
+    private final Log log = LogFactory.getLog(getClass());
 
     protected AbstractRoutineAdverseEventInputController() {
         setAllowDirtyForward(false);
@@ -80,6 +84,19 @@ public abstract class AbstractRoutineAdverseEventInputController
         ControllerTools.registerEnumEditor(binder, Attribution.class);
     }
 
+    
+    @Override
+    protected int getInitialPage(HttpServletRequest request){
+    	boolean isActionAvailable = request.getParameter("action") != null ? true : false;
+    	
+    	if (isActionAvailable && request.getParameter("action").equals("create")){
+    		log.debug("This is a Create where the Participant & Study are already defined");
+    		return 1;
+    	}
+    	// default behaviour 
+    	return super.getInitialPage(request);
+    }
+    
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(

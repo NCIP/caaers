@@ -16,6 +16,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     public CreateAdverseEventController() {
         super();
         setCommandClass(CreateExpeditedAdverseEventCommand.class);
+        setBindOnNewForm(true);
     }
 
     @Override

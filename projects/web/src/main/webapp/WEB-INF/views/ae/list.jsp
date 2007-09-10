@@ -51,7 +51,15 @@
 </p>
 </c:if>
 
-<h2>Expedited Reports</h2>
+
+
+
+
+
+<h2>Expedited Reports
+<a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
+</h2>
+
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
     items="command.assignment.aeReports"
@@ -95,7 +103,9 @@
     </ec:row>
 </ec:table>
 <br>
-<h2>Routine AEs</h2>
+<h2>Routine AEs
+<a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
+</h2>
 <ec:table
     items="command.assignment.aeRoutineReports"
     var="routineReport" imagePath="${ecImagePath}"

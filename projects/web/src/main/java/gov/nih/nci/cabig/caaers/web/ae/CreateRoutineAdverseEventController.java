@@ -19,6 +19,7 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
 
 	public CreateRoutineAdverseEventController() {
         super();
+        setBindOnNewForm(true);
         setCommandClass(CreateRoutineAdverseEventCommand.class);
     }
 
