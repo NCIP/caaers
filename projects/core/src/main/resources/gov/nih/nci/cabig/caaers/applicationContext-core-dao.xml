@@ -128,12 +128,78 @@
 				<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
             </list>
         </property>
+        
         <property name="entityInterceptor">
-            <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
-        </property>
+       <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
+            </bean>-->
+            <ref local="chainedInterceptor"/>
+        </property> 
+    
     </bean>
     
-    <!-- 
+    <!-- Auditing related beans definition start here-->
+    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy">
+            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+    			<value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue</value>
+                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent</value>            
+            </list>
+        </property>
+     </bean>
+    
+    <bean id="chainedInterceptor" class="gov.nih.nci.cabig.ctms.audit.ChainedInterceptor" autowire="byType">
+		<property name="interceptors">
+			<list>
+				<ref local="gridIdentifierInterceptor"/>
+				<ref local="auditInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="auditInterceptor" class="gov.nih.nci.cabig.ctms.audit.AuditInterceptorImpl" autowire="byType">
+		<property name="dataAuditRepository" ref="dataAuditRepository"></property>
+		<!--<property name="auditableEntities">
+			<list>
+				<value>edu.northwestern.bioinformatics.studycalendar.domain.Arm</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Duration</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Period</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Study</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Activity</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.ActivityType</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.PlannedEvent</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Site</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.StudySite</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Participant</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.StudyParticipantAssignment</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.PlannedCalendar</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.Epoch</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.ScheduledCalendar</value>
+                <value>edu.northwestern.bioinformatics.studycalendar.domain.ScheduledArm</value>                
+			</list>
+		</property> -->
+		<property name="auditAll"><value>true</value></property>
+	</bean>
+        
+    <bean name="dataAuditRepository" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
+		<property name="sessionFactory">
+			<ref local="auditSessionFactory" />
+		</property>
+	</bean>
+
+    
+    <!-- auditing beans definition end here -->
+	
+	 <bean id="gridIdentifierInterceptor" class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
+	
+	<!-- 
     
     <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.CaBigGridIdentifierCreator"> 
         <property name="handleRepositoryDir"><value>cabig</value></property>
@@ -143,7 +209,9 @@
     <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
     
     <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
-        <property name="dialectName"> <value>s[hibernate.dialect]</value> </property>
+        <property name="dialectName"><value>s[hibernate.dialect]</value>  
+        <!-- <value>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</value> -->
+         </property>
         <property name="properties">
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>

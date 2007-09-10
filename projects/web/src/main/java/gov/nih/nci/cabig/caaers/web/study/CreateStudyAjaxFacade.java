@@ -97,12 +97,12 @@ public class CreateStudyAjaxFacade {
 	private Study getStudyFromSession(final HttpServletRequest request) {
 
 		Study study = (Study) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
-		if (study == null) {
-			study = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
-		}
 
 		if (study == null) {
 			study = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
+		}
+		if (study == null) {
+			study = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
 		}
 
 		if (study == null) {
