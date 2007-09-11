@@ -50,6 +50,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -62,30 +63,31 @@ import org.springframework.util.FileCopyUtils;
  * @author Krikor Krumlian
  */
 public class ImportController extends AbstractTabbedFlowFormController<ImportCommand> {
-	
+
 	private static Log log = LogFactory.getLog(CreateParticipantController.class);
-	
+
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
 	private OrganizationDao organizationDao;
-	private AgentDao agentDao; 
+	private AgentDao agentDao;
 	private MedDRADao meddraDao;
 	private CtcDao ctcDao;
-	
-	public ImportController() {		
+
+	public ImportController() {
         setCommandClass(ImportCommand.class);
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
 
-        Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");       
-        
+        Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");
+
         flow.addTab(new Tab<ImportCommand>("Import ", "Import ", "admin/import") {
-            public Map<String, Object> referenceData() {
+            @Override
+			public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
                 refdata.put("action", "New");
                 return refdata;
             }
-            
+
             @Override
             public void validate(ImportCommand command, Errors errors) {
                 boolean participantFile = command.getParticipantFile().isEmpty();
@@ -93,7 +95,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 log.debug("Are files empty : " + participantFile + ":" + studyFile);
                 if (participantFile && studyFile) errors.rejectValue("participantFile", "REQUIRED", "Please choose either a stuy or a participant file.");
             }
-            
+
             @Override
             public void postProcess(HttpServletRequest request,
                     				ImportCommand command,
@@ -102,69 +104,72 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             	// TODO: see why the command variable type has a comma attached to it
             	handleLoad(command, command.getType().replace(',', ' ').trim());
              }
-            
-            
+
+
         });
-        
+
         flow.addTab(new Tab<ImportCommand>("Review & Submit", "Review & Submit", "admin/import_review_submit") {
-            public Map<String, Object> referenceData() {
+            @Override
+			public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
                 //refdata.put("action", "New");
                 return refdata;
             }
         });
-                                           
-        setFlow(flow);        
+
+        setFlow(flow);
     }
-	
+
+	@Override
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(Date.class, ControllerTools
-				.getDateEditor(true));	
+				.getDateEditor(true));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param request -
 	 *            HttpServletRequest
 	 * @throws ServletException
 	 */
-	protected Object formBackingObject(HttpServletRequest request) throws ServletException {	
-		return createCommandObject();		         
+	@Override
+	protected Object formBackingObject(HttpServletRequest request) throws ServletException {
+		return createCommandObject();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.AbstractWizardFormController#processFinish
-	 * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, 
+	 * (javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse,
 	 * java.lang.Object, org.springframework.validation.BindException)
 	 */
 	@Override
-	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, 
+	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
 			Object command, BindException errors) throws Exception {
-		
+
 		ImportCommand cObject = (ImportCommand)command;
 		for ( int i=0; i < cObject.getStudies().size(); i ++)
 		{
 			Study s = cObject.getStudies().get(i);
 			studyDao.save(s);
 		}
-		
+
 		for ( int j=0; j < cObject.getParticipants().size(); j++)
 		{
 			Participant p = cObject.getParticipants().get(j);
 			participantDao.save(p);
 		}
-		
+
 		response.sendRedirect("/caaers/pages/study/search");
     	return null;
 	}
-	
+
 	private void handleLoad(ImportCommand command, String type){
-		
+
 		XStream xstream = new XStream();
 		xstream.registerConverter(new JavaBeanConverter(xstream.getMapper(),"class"),-20);
-    	
+
     	// common
     	xstream.alias("study", gov.nih.nci.cabig.caaers.domain.Study.class);
     	xstream.alias("identifier", gov.nih.nci.cabig.caaers.domain.Identifier.class);
@@ -187,33 +192,33 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("terminology" , gov.nih.nci.cabig.caaers.domain.Terminology.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
-    	
+
         BufferedReader input = null;
         try {
-        	
+
         	File xmlFile = File.createTempFile("file","uploaded");
-        	FileCopyUtils.copy(type.equals("participant") ? 
-        			command.getParticipantFile().getInputStream() : 
+        	FileCopyUtils.copy(type.equals("participant") ?
+        			command.getParticipantFile().getInputStream() :
         				command.getStudyFile().getInputStream(),
         			new FileOutputStream(xmlFile));
-        	
+
         	input = new BufferedReader( new FileReader(xmlFile) );
             ObjectInputStream in = xstream.createObjectInputStream(input);
-        	
+
           if (type.equals("participant")){
         	  while (true)
               {
               Participant participant = (Participant)in.readObject();
               createParticipantObjects(participant, command);
-              }  
+              }
           }
-          
+
           if (type.equals("study")){
         	  while (true)
               {
               Study study = (Study)in.readObject();
               createStudyObjects(study, command);
-              }  
+              }
           }
         }
         catch (EOFException ex){
@@ -238,16 +243,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
           catch (IOException ex) {
         	  throw new RuntimeException("IO Exception", ex);
           }
-          
+
           log.debug("Study List size "  + command.getStudies().size());
-          log.debug("Participant List size "  + command.getParticipants().size());   
+          log.debug("Participant List size "  + command.getParticipants().size());
         }
 	}
-	
-	
+
+
 	private void createParticipantObjects(Participant xstreamParticipant,
 			ImportCommand command) {
-		
+
 		Participant participant = new Participant();
 		participant.setFirstName(xstreamParticipant.getFirstName());
 		participant.setLastName(xstreamParticipant.getLastName());
@@ -257,44 +262,44 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		participant.setGender(xstreamParticipant.getGender());
 		participant.setRace(xstreamParticipant.getRace());
 		participant.setEthnicity(xstreamParticipant.getRace());
-		
+
 		migrateIdentifiers(participant,xstreamParticipant);
-		
+
 		// Check for study and site association
 		if (xstreamParticipant.getAssignments() != null) {
 			for (int i = 0; i < xstreamParticipant.getAssignments().size(); i++) {
 				StudyParticipantAssignment studyParticipantAssignment = xstreamParticipant
 						.getAssignments().get(i);
 				StudySite studySite = null;
-				
-				for (Identifier identifier : studyParticipantAssignment.getStudySite().getStudy().getIdentifiers()) 
-				{	
+
+				for (Identifier identifier : studyParticipantAssignment.getStudySite().getStudy().getIdentifiers())
+				{
 					Study study = studyDao.getByIdentifier(identifier);
 					if (study != null) {
 						studySite = study.getStudySites().get(0);
 						participant.getAssignments().add(
 								new StudyParticipantAssignment(participant,studySite));
 						break;
-					} 		
+					}
 				}
 			}
-				
+
 			if (participantUniquenessCheck(command,participant) && participantAssignmentCheck(command,participant) )
 			{
 				command.getParticipants().add(participant);
 			}
-		}	
+		}
 	}
-	
+
 
 	/*
 	 * If participant that we are trying to import has the same firstName
 	 * and lastName as a participant in the system then fail
-	 * 
+	 *
 	 */
 	private boolean participantUniquenessCheck(ImportCommand command, Participant participant){
-		
-		
+
+
 		String[] s = {participant.getFirstName(),participant.getLastName() };
 		List<Participant> pars = participantDao.getByUniqueIdentifiers(s);
 		boolean result = true;
@@ -306,14 +311,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		}
 		return result;
 	}
-	
+
 	/*
 	 * If the participant that we are trying to import has no assignments
 	 * then it has no studies attached to it => fail.
 	 */
-	
+
 	private boolean participantAssignmentCheck(ImportCommand command, Participant participant){
-		
+
 		if (participant.getAssignments().size() == 0 ) {
 			command.addParticipantErros(participant, "This participant is not associated to any Study.");
 			log.debug("We have a validation error");
@@ -322,28 +327,29 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			return true;
 		}
 	}
-	
+
 	/*
-	 * 
+	 *
 	 */
 	private boolean studyUniquenessCheck(ImportCommand command, Study study){
-		
-		for (Identifier identifier : study.getIdentifiers()) 
-		{	
+
+		for (Identifier identifier : study.getIdentifiers())
+		{
 			Study tempStudy = studyDao.getByIdentifier(identifier);
 			if (tempStudy != null) {
 				command.addStudyErros(study, "This Study/Protocol contains the same identifier as a study already in caAERS." );
 				//log.debug("Validation Error");
 				return false;
-			} 		
+			}
 		}
-		return true;	
+		return true;
 	}
-	
+
 	private void createStudyObjects(Study xstreamStudy, ImportCommand command)
 	{
 		Study st = new Study();
-		st.setShortTitle(xstreamStudy.getShortTitle());
+		String shortTitle = xstreamStudy.getShortTitle();
+		st.setShortTitle(StringUtils.isNotEmpty(shortTitle) ? shortTitle : "NA");
 		st.setLongTitle(xstreamStudy.getLongTitle());
 		st.setDescription(xstreamStudy.getDescription());
 		st.setPrecis(xstreamStudy.getPrecis());
@@ -358,13 +364,13 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		st.setBlindedIndicator(xstreamStudy.getBlindedIndicator());
 		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
 		st.setRandomizedIndicator(xstreamStudy.getRandomizedIndicator());
-		
+
 		migrateTerminology(st,xstreamStudy);
 		migrateIdentifiers(st,xstreamStudy);
 		migrateStudyOrganizations(st,xstreamStudy);
-		
-		
-		
+
+
+
 		// StudyAgents
 		if (xstreamStudy.getStudyAgents() != null) {
 			for (int i = 0; i < xstreamStudy.getStudyAgents().size(); i++) {
@@ -380,23 +386,23 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 					st.addStudyAgent(createStudyAgent(agent));
 				}
 				// TODO: ADD error handling with user interaction
-				
+
 			}
 		}
-		
+
 		if (studyUniquenessCheck(command,st)) {
 			command.getStudies().add(st);
 		}
-		
+
 	}
-	
-	
+
+
 	private void migrateIdentifiers(AbstractIdentifiableDomainObject destination, AbstractIdentifiableDomainObject source) {
 
 		// Identifiers
 		if (source.getIdentifiers() != null) {
 			for (int i = 0; i < source.getIdentifiers().size(); i++) {
-				Identifier identifier = (Identifier) source.getIdentifiers()
+				Identifier identifier = source.getIdentifiers()
 						.get(i);
 				if (identifier instanceof OrganizationAssignedIdentifier) {
 					Organization organization = organizationDao
@@ -411,9 +417,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			}
 		}
 	}
-	
+
 	private void migrateStudyOrganizations(Study destination,Study source){
-		
+
 		if (source.getStudyOrganizations() != null) {
 			for (int i = 0; i < source.getStudyOrganizations().size(); i++) {
 				StudyOrganization studyOrganization = source.getStudyOrganizations().get(i);
@@ -421,23 +427,23 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 					StudySite studySite = (StudySite) studyOrganization;
 					Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
 					studySite.setOrganization(organization);
-					destination.addStudySite(studySite);	
-				} 
+					destination.addStudySite(studySite);
+				}
 				if (studyOrganization instanceof StudyFundingSponsor) {
 					StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
 					Organization organization = organizationDao.getByName(studyFundingSponsor.getOrganization().getName());
 					studyFundingSponsor.setOrganization(organization);
-					destination.addStudyFundingSponsor(studyFundingSponsor);	
-				} 
-				
+					destination.addStudyFundingSponsor(studyFundingSponsor);
+				}
+
 			}
 		}
-		
+
 	}
-	
+
 	private void migrateTerminology(Study destination,Study source){
-		
-		// Terminology and Version 
+
+		// Terminology and Version
 		if (source.getTerminology() != null){
 			if(source.getTerminology().getCtcVersion() != null){
 				Ctc ctc = ctcDao.getById(Integer.parseInt(source.getTerminology().getCtcVersion().getName()));
@@ -450,33 +456,33 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 				t.setTerm(Term.MEDDRA);
 			}
 		}
-		
+
 	}
-	
+
 	/* Phased out
 	private StudySite createStudyOrganization(Organization organization){
-		
+
 		StudySite studySite = new StudySite();
 		studySite.setRoleCode("Site");
 		studySite.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studySite;
 	}
-	
+
 	private StudyFundingSponsor createStudyFundingSponsor(Organization organization){
-		
+
 		StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
 		studyFundingSponsor.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
 		return studyFundingSponsor;
 	}*/
-	
+
 	private StudyAgent createStudyAgent(Agent agent){
-		
+
 		StudyAgent studyAgent = new StudyAgent();
 		studyAgent.setAgent(agent);
 		return studyAgent;
 	}
-	
-	
+
+
 	private ImportCommand createCommandObject()
 	{
 		ImportCommand ic = new ImportCommand();
@@ -530,15 +536,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	public void setCtcDao(CtcDao ctcDao) {
 		this.ctcDao = ctcDao;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 }
