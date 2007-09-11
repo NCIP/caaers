@@ -1,8 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
+import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,6 +19,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -23,7 +27,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 /**
  * This class represent the details that which is to be used
- * while creating the actual ScheduledNotification. 
+ * while creating the actual ScheduledNotification.
  * @author Biju Joseph
  */
 @Entity
@@ -44,12 +48,12 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 	/** The actual mark selected on the time scale*/
 	@Column(name="index_on_time_scale")
 	private int indexOnTimeScale;
-	
+
 	/** The recipients of this content */
 	private List<Recipient> recipients;
-	
+
 	private NotificationBodyContent bodyContent;
-	
+
 	private List<NotificationAttachment> attachments;
 
     // TODO: this signature may be insufficient
@@ -69,15 +73,15 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 	public void setIndexOnTimeScale(int indexOnTimeScale) {
 		this.indexOnTimeScale = indexOnTimeScale;
 	}
-	
+
 	@OneToMany
 	@JoinColumn(name="plnf_id", nullable=false)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<Recipient> getRecipients() {
-		
+
 		return recipients;
 	}
-	
+
 	public void setRecipients(List<Recipient> recipients) {
 		this.recipients = recipients;
 	}
@@ -95,6 +99,38 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 	 */
 	public void setAttachments(List<NotificationAttachment> attachments) {
 		this.attachments = attachments;
+	}
+
+	@Transient
+	public List<RoleBasedRecipient> getRoleBasedRecipients(){
+		return new ProjectedList<RoleBasedRecipient>(recipients, RoleBasedRecipient.class);
+	}
+
+	@Transient
+	public void setRoleBasedRecipients(String[] roleRecipients){
+		if(roleRecipients == null) return;
+		List<RoleBasedRecipient> xRecipients = getRoleBasedRecipients();
+		if(xRecipients != null) recipients.removeAll(xRecipients);
+
+		for(String role : roleRecipients){
+			recipients.add(new RoleBasedRecipient(role));
+		}
+
+
+	}
+
+	@Transient
+	public List<ContactMechanismBasedRecipient> getContactMechanismBasedRecipients(){
+		return new ProjectedList<ContactMechanismBasedRecipient>(recipients, ContactMechanismBasedRecipient.class);
+	}
+
+	public void setContactMechanismBasedRecipients(String[] contactRecipients){
+		if(contactRecipients == null) return;
+		List<ContactMechanismBasedRecipient> xRecipients = getContactMechanismBasedRecipients();
+		if(xRecipients != null) recipients.removeAll(xRecipients);
+		for(String contact : contactRecipients){
+			recipients.add(new ContactMechanismBasedRecipient(contact));
+		}
 	}
 
 }

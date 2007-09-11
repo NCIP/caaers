@@ -6,11 +6,13 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This enumeration represents the status of an EmailNotificaiton.
- * 
+ *
  * @author Biju Joseph
  */
 public enum StudyTherapyType implements CodedEnum<Integer> {
-	DRUG_ADMINISTRATION(1, "Drug Administration"), RADIATION(2, "Radiation"), SURGERY(3, "Surgery"), DEVICE(4, "Device");
+	DRUG_ADMINISTRATION(1, "Drug Administration"), RADIATION(2, "Radiation"),
+	SURGERY(3, "Surgery"), DEVICE(4, "Device") ,
+	BEHAVIORAL(5,"Behavioral");
 
 	private String studyTherapyType;
 

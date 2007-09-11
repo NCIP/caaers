@@ -24,7 +24,7 @@ import org.hibernate.annotations.Where;
 
 /**
  * Domain object representing Study(Protocol)
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
@@ -91,6 +91,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private Boolean deviceTherapyType = Boolean.FALSE;
 
 	private Boolean surgeryTherapyType = Boolean.FALSE;
+
+	private Boolean behavioralTherapyType = Boolean.FALSE;
 
 	public Study() {
 
@@ -633,6 +635,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void setSurgeryTherapyType(final Boolean surgeryTherapyType) {
 		this.surgeryTherapyType = surgeryTherapyType;
+	}
+
+	@Transient
+	public Boolean getBehavioralTherapyType(){
+		return behavioralTherapyType;
+	}
+	public void setBehavioralTherapyType(final Boolean behavioralTherapyType){
+		this.behavioralTherapyType = behavioralTherapyType;
 	}
 
 	@Transient

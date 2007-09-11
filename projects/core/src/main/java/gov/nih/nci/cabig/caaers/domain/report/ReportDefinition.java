@@ -53,9 +53,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     private String name;
     private String description;
-    private int duration;
+    private Integer duration;
     private TimeScaleUnit timeScaleUnitType;
-    private List<PlannedNotification> plannedNotifications;
     private LazyListHelper lazyListHelper;
     private Organization organization;
     private List<ReportMandatoryFieldDefinition> mandatoryFields;
@@ -64,6 +63,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
             new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
+        lazyListHelper.add(PlannedNotification.class,
+        	new InstantiateFactory<PlannedNotification>(PlannedNotification.class));
     }
 
     ////// LOGIC
@@ -84,13 +85,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
      * @param indexOnScale
      * @return
      */
-    public PlannedNotification fetchPlannedNotification(int indexOnScale) {
-        if (plannedNotifications == null) return null;
+    public List<PlannedNotification> fetchPlannedNotification(int indexOnScale) {
+    	List<PlannedNotification> plannedNotificaitons = new ArrayList<PlannedNotification>();
 
-        for (PlannedNotification pn : plannedNotifications) {
-            if (pn.getIndexOnTimeScale() == indexOnScale) return pn;
+        for (PlannedNotification pn : getPlannedNotifications()) {
+            if (pn.getIndexOnTimeScale() == indexOnScale) plannedNotificaitons.add(pn);
         }
-        return null;
+        return plannedNotificaitons;
     }
     /**
      * This method will add a PlannedNotification to the plannedNotifications list.
@@ -98,11 +99,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
      */
     public void addPlannedNotification(PlannedNotification pn) {
         if (pn == null) return;
-
-        if (plannedNotifications == null) {
-            plannedNotifications = new ArrayList<PlannedNotification>();
-        }
-        plannedNotifications.add(pn);
+        getPlannedNotifications().add(pn);
     }
 
     /**
@@ -150,10 +147,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         this.description = description;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -169,13 +166,20 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name="rct_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<PlannedNotification> getPlannedNotificationsInternal() {
+        return lazyListHelper.getInternalList(PlannedNotification.class);
+    }
+    public void setPlannedNotificationsInternal(List<PlannedNotification> plannedNotifications) {
+        lazyListHelper.setInternalList(PlannedNotification.class, plannedNotifications);
+    }
+    @Transient
     public List<PlannedNotification> getPlannedNotifications() {
-        return plannedNotifications;
+        return lazyListHelper.getLazyList(PlannedNotification.class);
     }
-    public void setPlannedNotifications(List<PlannedNotification> eventList) {
-        this.plannedNotifications = eventList;
+    @Transient
+    public void setPlannedNotifications(List<PlannedNotification> plannedNotifications) {
+        lazyListHelper.setInternalList(PlannedNotification.class, plannedNotifications);
     }
-
 
 	@OneToMany(fetch=FetchType.LAZY)
 	@JoinColumn(name="rct_id")
@@ -217,7 +221,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		final int PRIME = 31;
 		int result = 1;
 		result = PRIME * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-		result = PRIME * result + getDuration();
+		result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
 		result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
 		result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
 		result = PRIME * result + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());

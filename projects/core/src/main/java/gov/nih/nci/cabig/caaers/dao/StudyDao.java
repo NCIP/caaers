@@ -59,7 +59,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	/**
 	 * //TODO - Refactor this code with Hibernate Detached objects !!!
-	 * 
+	 *
 	 * This is a hack to load all collection objects in memory. Useful for editing a Study when you know you will be needing all collections
 	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done for each collection
 	 * @param id
@@ -82,7 +82,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
 			study.setSurgeryTherapyType(Boolean.TRUE);
 		}
-
+		if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null){
+			study.setBehavioralTherapyType(Boolean.TRUE);
+		}
 		return study;
 	}
 

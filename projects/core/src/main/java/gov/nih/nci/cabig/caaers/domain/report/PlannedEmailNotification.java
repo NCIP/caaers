@@ -5,8 +5,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
- * 
- * 
+ *
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 13, 2007
  * @version     %I%, %G%
@@ -19,8 +19,8 @@ public class PlannedEmailNotification extends PlannedNotification {
 	/** The subject line of the email */
 	private String subjectLine;
 	/** The from address */
-	private String fromAddress;
-	
+	private String fromAddress="test@test.com";
+
     ////// LOGIC
 
     @Override
@@ -33,16 +33,16 @@ public class PlannedEmailNotification extends PlannedNotification {
     }
 
     ///BEAN PROPERTIES
-    
+
 	@Column(name="FROM_ADDR")
 	public String getFromAddress() {
 		return fromAddress;
 	}
 
 	public void setFromAddress(String fromAddress) {
-		this.fromAddress = fromAddress;
+
 	}
-	
+
 	@Column(name="SUBJECT")
 	public String getSubjectLine() {
 		return subjectLine;
@@ -51,7 +51,7 @@ public class PlannedEmailNotification extends PlannedNotification {
 	public void setSubjectLine(String subjectLine) {
 		this.subjectLine = subjectLine;
 	}
-	
+
 	///Object methods
 	@Override
 	public boolean equals(Object obj) {
@@ -68,6 +68,6 @@ public class PlannedEmailNotification extends PlannedNotification {
 		} else if (!subjectLine.equals(other.subjectLine))return false;
 		return true;
 	}
-	
-	
+
+
 }

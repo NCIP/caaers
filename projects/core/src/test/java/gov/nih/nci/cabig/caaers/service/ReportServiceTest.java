@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.CourseDate;
+import gov.nih.nci.cabig.caaers.domain.Dose;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -9,6 +12,10 @@ import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -21,16 +28,23 @@ import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+
+
 /**
- * 
- * 
+ *
+ *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : Jun 1, 2007
  * @version %I%, %G%
  * @since 1.0
@@ -186,6 +200,59 @@ public class ReportServiceTest extends CaaersTestCase {
 		System.out.println(snf.getBody());
 		assertEquals("The body of ScheduledNotificaiton should be same", snf.getBody(),
 				"The study : Headache, identified by 123ST903, has a patient with id :12345");
+	}
+
+
+	public void testValidate() throws Exception{
+		ExpeditedReportTree reportTree = new ExpeditedReportTree();
+		TreeNode sectionNode = reportTree.fecthNodeForSection(ExpeditedReportSection.TREATMENT_INFO_SECTION);
+
+
+		ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+		TreatmentInformation treatmentInformation = new TreatmentInformation();
+		treatmentInformation.setFirstCourseDate(new Date());
+		CourseDate courseDate = new CourseDate();
+		courseDate.setDate(new Date());
+		courseDate.setNumber(22);
+		treatmentInformation.setAdverseEventCourse(courseDate);
+		treatmentInformation.setId(33);
+
+		CourseAgent ca = new CourseAgent();
+		ca.setId(334);
+		Dose dose = new Dose();
+		dose.setAmount(new BigDecimal(22));
+		dose.setRoute("rpit");
+		dose.setUnits("cd");
+		ca.setDose(dose);
+		treatmentInformation.addCourseAgent(ca);
+		report.setTreatmentInformation(treatmentInformation);
+
+		Map<String, Boolean> mandatoryMap = new HashMap<String, Boolean>();
+		mandatoryMap.put("treatmentInformation.courseAgents[].dose.quantity", false);
+		mandatoryMap.put("treatmentInformation.courseAgents[].dose.amount", true);
+		mandatoryMap.put("treatmentInformation.courseAgents[].durationAndSchedule", true);
+
+
+		ErrorMessages messages = new ErrorMessages();
+
+		BeanWrapper wrapper = new BeanWrapperImpl(report);
+
+		service.validate(wrapper, mandatoryMap, sectionNode, messages);
+
+		assertEquals("One error should be reported", 1, messages.messages().size());
+	}
+
+
+	public void testISubmitable() throws Exception{
+		assertTrue(true);
+	}
+
+	public void testFetchMandatoryFieldMap() throws Exception{
+		assertTrue(true);
+	}
+
+	public void testDeleteReport() throws Exception {
+		assertTrue(true);
 	}
 
 	/*
