@@ -31,7 +31,7 @@ public class StudyTherapiesTab extends StudyTab {
 			List<InputField> fields = fieldGroup.getFields();
 
 			InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField(
-					"drugAdministrationTherapyType", "Drug Administration");
+					"drugAdministrationTherapyType", "Agent");
 			InputFieldAttributes.setSize(drugAdministrationTherapyTypeField, 50);
 			fields.add(drugAdministrationTherapyTypeField);
 
@@ -47,6 +47,9 @@ public class StudyTherapiesTab extends StudyTab {
 			InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("surgeryTherapyType", "Surgery");
 			InputFieldAttributes.setSize(surgeryTherapyTypeField, 50);
 			fields.add(surgeryTherapyTypeField);
+
+			InputField behavioralTypeField = InputFieldFactory.createCheckboxField("behavioralTherapyType", "Behavioral");
+			fields.add(behavioralTypeField);
 		}
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		map.addInputFieldGroup(fieldGroup);

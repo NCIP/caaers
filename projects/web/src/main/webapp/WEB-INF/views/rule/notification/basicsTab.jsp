@@ -15,14 +15,14 @@
       Event.observe(window, "load", function() {
     	//Calls ReportDefinitionAjaxFacade:matchOrganization(..)
     	AE.createStandardAutocompleter(
-    		'organization', function(autocompleter, text) {
+    		'reportDefinition.organization', function(autocompleter, text) {
          		reportDef.matchOrganization(text, function(values) {
          			autocompleter.setChoices(values)
          		})
         	}, function(organization) { return organization.name });
         
         //populate the name of the associated organization in 'organization-input' field	
-      	$('organization-input').value = '${command.reportDefinition.organization.name}';
+      	$('reportDefinition.organization-input').value = '${command.reportDefinition.organization.name}';
       });
       
     </script>

@@ -38,7 +38,7 @@ public class AgentsTab extends StudyTab {
 		super("Study Agents", "Agents", "study/study_agents");
 		// setAutoPopulateHelpKey(true);
 		indTypeMap.put(AgentsTab.IND_TYPE_NOT_USED, "Not Used");
-		indTypeMap.put(AgentsTab.IND_TYPE_CTEP, "CTEP unspecified IND");
+		indTypeMap.put(AgentsTab.IND_TYPE_CTEP, "CTEP IND");
 		indTypeMap.put(AgentsTab.IND_TYPE_OTHER, "Other");
 	}
 

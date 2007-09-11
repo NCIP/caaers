@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -67,59 +70,61 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 	@Override
 	protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
-		NotificationType nfType = NotificationType.valueOf(command.getNotificationType());
+
+		List<PlannedNotification> plannedNotifications = command.getEmailNotifications();
+		if(CollectionUtils.isEmpty(plannedNotifications)) return;
 		EmailValidator emailValidator = EmailValidator.getInstance();
-		switch(nfType){
-
-			case EMAIL_NOTIFICATION:
-				//do I need to really validate??
-				boolean mustValidate = StringUtils.isNotEmpty(command.getMessage()) ||
-									   CollectionUtils.isNotEmpty(command.getRoleRecipient())||
-									   CollectionUtils.isNotEmpty(command.getDirectRecipient())||
-									   StringUtils.isNotEmpty(command.getSubjectLine());
-				if(!mustValidate) break;
-				if(StringUtils.isEmpty(command.getMessage()))
-					errors.rejectValue("message", "REQUIRED","Message Invalid");
-				if(StringUtils.isEmpty(command.getSubjectLine()))
-					errors.rejectValue("subjectLine", "REQUIRED", "Subject Line Invalid");
-				if(CollectionUtils.isEmpty(command.getRoleRecipient()) &&
-				   CollectionUtils.isEmpty(command.getDirectRecipient())){
-					errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
-				}else{
-					if(CollectionUtils.isNotEmpty(command.getRoleRecipient())){
-						for(String role : command.getRoleRecipient()){
-							if(StringUtils.isEmpty(role)){
-								errors.rejectValue("roleRecipient","REQUIRED", "Invalid Recipient Information");
-								break;
-							}
-						}
+		int i = 1;
+		for(PlannedNotification plannedNotification : plannedNotifications){
+			PlannedEmailNotification nf = (PlannedEmailNotification) plannedNotification;
+			if(nf.getNotificationBodyContent() == null || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())){
+				errors.rejectValue("bodyContent" + i, "REQUIRED","Message Invalid  in Email Notification(" + i +")");
+			}
+			if(nf.getRecipients() == null){
+				errors.rejectValue("recipient" + i,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
+				for(Recipient recipient : nf.getRecipients()){
+					if(StringUtils.isEmpty(recipient.getContact())){
+						errors.rejectValue("recipient" + i,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
+						break;
 					}
-
-
-					if(CollectionUtils.isNotEmpty(command.getDirectRecipient())){
-						for(String email : command.getDirectRecipient()){
-							if(!emailValidator.isValid(email)){
-								errors.rejectValue("directRecipient", "REQUIRED", "Invalid Recipient Information");
-								break;
-							}
+					if(recipient instanceof ContactMechanismBasedRecipient){
+						if(!emailValidator.isValid(recipient.getContact())){
+							errors.rejectValue("recipient" + i,"REQUIRED", "Invalid email address [" + recipient.getContact() +"] in Email Notification (" + i + ")");
+							break;
 						}
 					}
 				}
-			break;
-			default: //TODO, other validations needs to be implemented, may be at that time refactor this into elsewhere.
+			}
 
+			if(StringUtils.isEmpty(nf.getSubjectLine())){
+				errors.rejectValue("subjectLine" + i, "REQUIRED","Subject line Invalid  in Email Notification(" + i +")");
+			}
+			i++;
 		}
-
 		command.setValidationFailed(errors.hasErrors());
 	}
 
 	@Override
 	public Map<String, Object> referenceData(ReportDefinitionCommand command) {
 		//show the previously keyed-in values, if validation failed.
-		if(!command.isValidationFailed()) command.populate();
-
+		/*if(!command.isValidationFailed()) command.populate();*/
+		command.setIndexToFetch(command.getPointOnScale());
 		Map<String, Object> refData = super.referenceData(command);
 		return refData;
+	}
+
+	@Override
+	public void onBind(HttpServletRequest request,
+			ReportDefinitionCommand cmd, Errors errors) {
+		super.onBind(request, cmd, errors);
+		int size = cmd.getEmailNotifications().size();
+    	for(int i = 0; i < size; i++){
+    		String[] roleRecipients = request.getParameterValues("emailNotifications[" +  i + "].roleBasedRecipients");
+    		String[] contactRecipients = request.getParameterValues("emailNotifications[" +  i + "].contactMechanismBasedRecipients");
+    		PlannedNotification plannedNotification = cmd.getEmailNotifications().get(i);
+    		plannedNotification.setRoleBasedRecipients(roleRecipients);
+    		plannedNotification.setContactMechanismBasedRecipients(contactRecipients);
+    	}
 	}
 
 }

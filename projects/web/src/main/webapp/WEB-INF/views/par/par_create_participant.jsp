@@ -172,7 +172,7 @@ ${command.organization}
     		
     		</chrome:division>
     
-            	<chrome:division  title="Organization Identifiers"  >
+            	<chrome:division  title="Study ID Assigned by Organization"  >
         	<table id="test" class="tablecontent">
     			<tr id="organization-section">
     				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>
@@ -192,7 +192,7 @@ ${command.organization}
             	</chrome:division>
     
     
-            <chrome:division title="System Identifiers">
+            <chrome:division title="Study ID Assigned by a System">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
     				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>

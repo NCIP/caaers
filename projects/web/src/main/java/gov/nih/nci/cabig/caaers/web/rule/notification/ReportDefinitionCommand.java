@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections15.Factory;
+import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.collections15.list.LazyList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
@@ -34,21 +37,14 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class ReportDefinitionCommand  {
 
-	// page - 1
-	private String name;
-	private String description;
-	private String timeScaleType;
-	private String duration;
-	private String notificationType;
-	private Organization organization;
 
 	// page -4
 	private String to;
 	private String message;
 	private String pointOnScale = "0"; // the selected point in the time scale
 	private String lastPointOnScale;
+	private String indexToFetch = "0";
 	private String subjectLine;
-//	private String fromAddress;
 	private List<String> roleRecipient = new ArrayList<String>();
 	private List<String> directRecipient = new ArrayList<String>();
 	private Map<Object, Object> roles;
@@ -70,6 +66,17 @@ public class ReportDefinitionCommand  {
 		initializeMandatoryFieldMap();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<PlannedNotification> getEmailNotifications(){
+		List<PlannedNotification> plannedNotifications = rpDef.fetchPlannedNotification(Integer.parseInt(indexToFetch));
+		return  LazyList.decorate(plannedNotifications,
+				new PlannedEmailNotificationFactory(this.rpDef.getPlannedNotifications())
+			);
+	}
+
+
+
+
 	///LOGIC
 	public void reset() {
 		subjectLine = "";
@@ -79,18 +86,14 @@ public class ReportDefinitionCommand  {
 		message = "";
 	}
 
-	public void populate() {
-		if(rpDef.getOrganization() != null) this.organization = rpDef.getOrganization();
-		this.name = rpDef.getName();
-		this.description = rpDef.getDescription();
-		this.duration = String.valueOf(rpDef.getDuration());
-		this.timeScaleType = rpDef.getTimeScaleUnitType().getName();
-		int indexOnScale = Integer.parseInt(pointOnScale);
-		PlannedNotification pn = rpDef
-				.fetchPlannedNotification(indexOnScale);
-		populate(pn);
-		lastPointOnScale = pointOnScale;
-	}
+//	public void populate() {
+//
+//		int indexOnScale = Integer.parseInt(pointOnScale);
+//		PlannedNotification pn = rpDef
+//				.fetchPlannedNotification(indexOnScale);
+//		populate(pn);
+//		lastPointOnScale = pointOnScale;
+//	}
 
 	public void populate(PlannedNotification pn) {
 
@@ -167,56 +170,48 @@ public class ReportDefinitionCommand  {
 
 	public void updateReportCalendarTemplate() {
 
-		rpDef.setOrganization(organization);
-		rpDef.setName(name);
-		rpDef.setDescription(description);
-		rpDef.setTimeScaleUnitType(TimeScaleUnit
-				.valueOf(timeScaleType));
-		rpDef.setDuration(Integer.parseInt(duration));
 		// configure planned notification if lastPointOnScale is not empty
-		if (StringUtils.isEmpty(lastPointOnScale))
-			return;
-
+		if (StringUtils.isEmpty(lastPointOnScale)) return;
 		Integer lastPoint = Integer.valueOf(lastPointOnScale);
-		if (NotificationType.EMAIL_NOTIFICATION.name().equals(notificationType)) {
-			// only add values if atleast one filed has value.
-			boolean mustAdd = StringUtils.isNotEmpty(message)
-					|| CollectionUtils.isNotEmpty(roleRecipient)
-					|| CollectionUtils.isNotEmpty(directRecipient)
-					|| StringUtils.isNotEmpty(subjectLine);
-			if (!mustAdd)
-				return;
-			PlannedEmailNotification pen = (PlannedEmailNotification) rpDef
-					.fetchPlannedNotification(lastPoint);
-			if (pen == null) {
-				pen = new PlannedEmailNotification();
-				rpDef.addPlannedNotification(pen);
-			}
-			pen.setIndexOnTimeScale(lastPoint);
-			pen.setSubjectLine(subjectLine);
-			pen.setFromAddress("test@test.com");
-			if (StringUtils.isNotEmpty(message)) {
-				NotificationBodyContent nfBody = new NotificationBodyContent();
-				nfBody.setBody(message);
-				pen.setNotificationBodyContent(nfBody);
-			}
-			List<Recipient> recipientList = pen.getRecipients();
-			if (recipientList == null) {
-				recipientList = new ArrayList<Recipient>();
-				pen.setRecipients(recipientList);
-			} else {
-				recipientList.clear();
-			}
 
-			for (String role : roleRecipient) {
-				Recipient r = new RoleBasedRecipient(role);
-				recipientList.add(r);
-			}
-			for (String email : directRecipient) {
-				Recipient r = new ContactMechanismBasedRecipient(email);
-				recipientList.add(r);
-			}
+		//below things are to be done only for NotificationType.EMAIL
+		// only add values if atleast one filed has value.
+		boolean mustAdd = StringUtils.isNotEmpty(message)
+				|| CollectionUtils.isNotEmpty(roleRecipient)
+				|| CollectionUtils.isNotEmpty(directRecipient)
+				|| StringUtils.isNotEmpty(subjectLine);
+		if (!mustAdd)
+			return;
+		PlannedEmailNotification pen = (PlannedEmailNotification) rpDef
+				.fetchPlannedNotification(lastPoint);
+		if (pen == null) {
+			pen = new PlannedEmailNotification();
+			rpDef.addPlannedNotification(pen);
 		}
+		pen.setIndexOnTimeScale(lastPoint);
+		pen.setSubjectLine(subjectLine);
+		if (StringUtils.isNotEmpty(message)) {
+			NotificationBodyContent nfBody = new NotificationBodyContent();
+			nfBody.setBody(message);
+			pen.setNotificationBodyContent(nfBody);
+		}
+		List<Recipient> recipientList = pen.getRecipients();
+		if (recipientList == null) {
+			recipientList = new ArrayList<Recipient>();
+			pen.setRecipients(recipientList);
+		} else {
+			recipientList.clear();
+		}
+
+		for (String role : roleRecipient) {
+			Recipient r = new RoleBasedRecipient(role);
+			recipientList.add(r);
+		}
+		for (String email : directRecipient) {
+			Recipient r = new ContactMechanismBasedRecipient(email);
+			recipientList.add(r);
+		}
+
 
 		// reset the command(form) now
 		reset();
@@ -256,13 +251,7 @@ public class ReportDefinitionCommand  {
 		this.rpDefDao = rdDao;
 	}
 
-	public String getDuration() {
-		return duration;
-	}
 
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
 
 	/**
 	 * The underlying domain object, used by this command object
@@ -295,13 +284,6 @@ public class ReportDefinitionCommand  {
 		this.pointOnScale = pointOnScale;
 	}
 
-	public String getTimeScaleType() {
-		return timeScaleType;
-	}
-
-	public void setTimeScaleType(String timeScaleType) {
-		this.timeScaleType = timeScaleType;
-	}
 
 	public String getMessage() {
 		return message;
@@ -317,22 +299,6 @@ public class ReportDefinitionCommand  {
 
 	public void setTo(String to) {
 		this.to = to;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getNotificationType() {
-		return notificationType;
-	}
-
-	public void setNotificationType(String notificationType) {
-		this.notificationType = notificationType;
 	}
 
 
@@ -372,20 +338,7 @@ public class ReportDefinitionCommand  {
 		this.roles = roles;
 	}
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
 
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	/**
 	 * The entity to delete, it could be <code>notification</code> or <code>reportdefinition</code>.
@@ -403,13 +356,6 @@ public class ReportDefinitionCommand  {
 		this.entity = entity;
 	}
 
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
 
 	public Map<String, Integer> getMandatoryFieldMap() {
 		return mandatoryFieldMap;
@@ -421,5 +367,39 @@ public class ReportDefinitionCommand  {
 	}
 
 
+
+	 class PlannedEmailNotificationFactory<T extends PlannedNotification> implements Factory<T>{
+		private List<PlannedNotification> plannedNotificationList;
+
+		public PlannedEmailNotificationFactory(List<PlannedNotification> plannedNotificationList) {
+			this.plannedNotificationList = plannedNotificationList;
+		}
+
+		@SuppressWarnings("unchecked")
+		public T create() {
+			PlannedEmailNotification nf = new PlannedEmailNotification();
+			NotificationBodyContent bodyContent = new NotificationBodyContent();
+			nf.setNotificationBodyContent(bodyContent);
+			nf.setRecipients(new ArrayList<Recipient>());
+			this.plannedNotificationList.add(nf);
+			return (T) nf;
+		}
+	}
+
+
+
+	/**
+	 * @return the indexToFetch
+	 */
+	public String getIndexToFetch() {
+		return indexToFetch;
+	}
+
+	/**
+	 * @param indexToFetch the indexToFetch to set
+	 */
+	public void setIndexToFetch(String indexToFetch) {
+		this.indexToFetch = indexToFetch;
+	}
 
 }

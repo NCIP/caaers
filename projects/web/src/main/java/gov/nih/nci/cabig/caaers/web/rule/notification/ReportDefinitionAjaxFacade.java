@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 
@@ -56,6 +58,19 @@ public class ReportDefinitionAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
+	public String addNotification(int index, int indexOnScale){
+		WebContext webCtx = WebContextFactory.get();
+		HttpServletRequest request = webCtx.getHttpServletRequest();
+		ReportDefinitionCommand cmd = getCommand( request);
+		PlannedNotification plannedNotification = cmd.getEmailNotifications().get(index);
+		plannedNotification.setIndexOnTimeScale(indexOnScale);
+		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "addNotificationSection");
+		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+		String url = getCurrentPageContextRelative(webCtx);
+
+		return getOutputFromJsp(url);
+	}
 	public List<Organization> matchOrganization(String text){
 		return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name");
 	}

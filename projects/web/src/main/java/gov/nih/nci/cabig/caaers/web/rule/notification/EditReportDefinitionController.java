@@ -54,7 +54,8 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 		List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();
 		PlannedNotification pnf = (pnfList.size() > 0)? pnfList.get(0) : null;
 		if(pnf != null) rpDefCmd.setPointOnScale("" + pnf.getIndexOnTimeScale());
-		rpDefCmd.populate();
+		//TODO: uncomment this
+		//rpDefCmd.populate();
 		return rpDefCmd;
 
 	}
@@ -72,6 +73,7 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 		}
 		//newly calculated list
 		List<ReportMandatoryFieldDefinition> mfListNew =  new ArrayList<ReportMandatoryFieldDefinition>();
+
 		super.populateMandatoryFields(mfListNew, node);
 		for(ReportMandatoryFieldDefinition mf : mfListNew){
 			if(existingFieldMap.remove(mf.getFieldPath()) == null){

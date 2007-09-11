@@ -121,7 +121,7 @@
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">
 			</div>
-			<chrome:division  title="Organization Identifiers"  >
+			<chrome:division  title="Study ID Assigned by Organization"  >
         	<table id="test" class="tablecontent">
     			<tr id="organization-section">
     				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
@@ -140,7 +140,7 @@
             </table>
             </chrome:division>
  
-           <chrome:division title="System Identifiers">
+           <chrome:division title="Study ID Assigned by a System">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
     				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>

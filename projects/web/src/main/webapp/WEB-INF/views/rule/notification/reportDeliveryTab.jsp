@@ -75,7 +75,7 @@
     <chrome:division>
 	    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideErrorDetails="true">
 	     <jsp:attribute name="instructions">
-        	You are entering final report delivery information for <b>${command.name}</b>.
+        	You are entering final report delivery information for <b>${command.reportDefinition.name}</b>.
    		 </jsp:attribute>
 			<jsp:attribute name="singleFields">
 				<div id="rdd-tab-fields">

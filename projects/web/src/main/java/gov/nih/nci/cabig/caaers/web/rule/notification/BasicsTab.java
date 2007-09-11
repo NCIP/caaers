@@ -29,7 +29,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 		super(longTitle, shortTitle, viewName);
 		map = new InputFieldGroupMap();
 		InputFieldGroup orgFieldGroup = new DefaultInputFieldGroup("reportDefinitionOrganization");
-		InputField orgField = InputFieldFactory.createAutocompleterField("organization", "Organization", true);
+		InputField orgField = InputFieldFactory.createAutocompleterField("reportDefinition.organization", "Organization", true);
 		InputFieldAttributes.setDetails(orgField, "Enter a portion of the organization name that you are looking");
 		orgFieldGroup.getFields().add(orgField);
 		map.addInputFieldGroup(orgFieldGroup);
@@ -37,15 +37,15 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 		//setup the fileds
 		InputFieldGroup fieldGroup  = new DefaultInputFieldGroup("reportDefinitionFieldGroup");
 		List<InputField> fields = fieldGroup.getFields();
-		InputField nameField = InputFieldFactory.createTextField("name","Name", true);
+		InputField nameField = InputFieldFactory.createTextField("reportDefinition.name","Name", true);
         InputFieldAttributes.setSize(nameField, 50);
         fields.add(nameField);
-		InputField descField = InputFieldFactory.createTextArea("description", "Description", false);
+		InputField descField = InputFieldFactory.createTextArea("reportDefinition.description", "Description", false);
 		InputFieldAttributes.setColumns(descField, 50);
 		fields.add(descField);
-		fields.add(InputFieldFactory.createSelectField("timeScaleType", "Time Scale UOM", true,
+		fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
-		fields.add(InputFieldFactory.createTextField("duration", "Time Till Report Due", true));
+		fields.add(InputFieldFactory.createTextField("reportDefinition.duration", "Time Till Report Due", true));
 
 		map.addInputFieldGroup(fieldGroup);
 
@@ -68,14 +68,6 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
     	return map;
     }
 
-	@Override
-	public void postProcess(HttpServletRequest req,
-			ReportDefinitionCommand cmd, Errors errors) {
-		super.postProcess(req, cmd, errors);
-		ReportDefinitionCommand nfCmd = cmd;
-		if (!errors.hasErrors())
-			nfCmd.updateReportCalendarTemplate();
-	}
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.web.fields.TabWithFields#validate(java.lang.Object, org.springframework.beans.BeanWrapper, java.util.Map, org.springframework.validation.Errors)
@@ -83,9 +75,8 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 	@Override
 	protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
-		if (!NumberUtils.isDigits(command.getDuration())) {
-			errors.rejectValue("duration", "REQUIRED",
-					"Invalid Time Till Report Due");
+		if(command.getReportDefinition().getDuration() == null){
+			errors.rejectValue("reportDefinition.duration", "REQUIRED",	"Invalid Time Till Report Due");
 		}
 	}
 }

@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -62,6 +64,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
 		ControllerTools.registerEnumEditor(binder, ReportFormat.class);
+		ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
 	}
 
 	@Override

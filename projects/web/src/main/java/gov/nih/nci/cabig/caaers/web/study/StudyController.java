@@ -298,7 +298,15 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		else if (!study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
 			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.SURGERY));
 		}
-
+		if (study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) == null) {
+			StudyTherapy behavioralTherapy = new StudyTherapy();
+			behavioralTherapy.setStudy(study);
+			behavioralTherapy.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
+			study.getStudyTherapies().add(behavioralTherapy);
+		}
+		else if (!study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
+			studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
+		}
 	}
 
 }
