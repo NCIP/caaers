@@ -103,7 +103,7 @@
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<!--  <expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>		-->
-				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')</expression>		
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','runTimeValue','runTimeOperator')</expression>		
 				<grammer prefix=" Category " postfix=""/>
 			</field>
 			<field name="meddraCode" display-uri="MedDRA code" filter="MedDRA">

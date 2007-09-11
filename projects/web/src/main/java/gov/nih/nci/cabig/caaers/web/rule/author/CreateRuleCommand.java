@@ -129,19 +129,34 @@ public class CreateRuleCommand implements RuleInputCommand
 		{
 			List<Rule> rules = ruleSet.getRule();
 			
+			
+			
 			// delete columns which are marked as delete . 
 			for (Rule rule:rules) {
+				boolean termSelected = false;
+				
 				List<Column> cols = new ArrayList<Column>();
 				for (Column col:rule.getCondition().getColumn()) {
 					if (col.isMarkedDelete()) {
 						//System.out.println("is marked delete .. " + col.getIdentifier());
 						cols.add(col);
-					}					
+					}	
+					
+					if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
+						termSelected = true;
+					}
 				}
 				for (Column col:cols) {					
 					rule.getCondition().getColumn().remove(col);
 				}
-
+				// modify category if term selecetd 
+				if (termSelected) {
+					for (Column col:rule.getCondition().getColumn()) {
+						if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
+							col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
+						}
+					}
+				}
 				
 				
 				//get comma seperated values ....
