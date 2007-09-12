@@ -30,6 +30,7 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 			researchStaff.setLastName("Someone");
 			researchStaff.setEmailAddress("abc@def.com");
 			researchStaff.setPhoneNumber("123-456-789");
+			researchStaff.setNciIdentifier("nci id");
 
 			Organization organization = organizationDao.getById(-1000);
 			researchStaff.setOrganization(organization);

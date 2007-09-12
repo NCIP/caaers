@@ -11,6 +11,7 @@
         last_name="Gates"
         email_address="abc@def.com"
         phone_number="123-456-789"
+        nci_identifier="nci id"
         site_id="-1000"/>
     <RESEARCH_STAFFS
         id="-1001"
@@ -19,6 +20,7 @@
         last_name="Bush"
         email_address="abc@def.com"
         phone_number="123-456-789"
+        nci_identifier="nci id"
         site_id="-1000"/>
     <RESEARCH_STAFFS
         id="-1002"
@@ -27,6 +29,7 @@
         last_name="Franklin"
         email_address="abc@def.com"
         phone_number="123-456-789"
+        nci_identifier="nci id"
         site_id="-1000"/>
     <RESEARCH_STAFFS
         id="-1003"
@@ -35,6 +38,7 @@
         last_name="Kennedy"
         email_address="abc@def.com"
         phone_number="123-456-789"
+        nci_identifier="nci id"
         site_id="-1000"/>
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
