@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -11,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -27,6 +29,8 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
 	private static final String RESEARCH_STAFF_FIELD_GROUP = "researchStaff";
 
+	private static final String SITE_FIELD_GROUP = "site";
+
 	public ResearchStaffTab() {
 		super("Research Staff Details", "Research Staff Details", "admin/research_staff_details");
 		setAutoPopulateHelpKey(true);
@@ -35,6 +39,26 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(final ResearchStaff command) {
 		InputFieldGroup researchStaffFieldGroup;
+
+		InputFieldGroup siteFieldGroup;
+
+		siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
+
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+		options.put("", "Please select");
+		List<Organization> organizations = organizationDao.getAll();
+		if (organizations != null) {
+			options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
+		}
+		siteFieldGroup.getFields().add(
+				InputFieldFactory.createSelectField("organization", "Organization", true, options));
+
+		// Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+		// options.put("", "Please select");
+		// options.putAll(InputFieldFactory.collectOptions(organizationDao.getAll(), "id", "name"));
+		//
+		// researchStaffFieldGroup.getFields().add(
+		// InputFieldFactory.createSelectField("organization", "Site", true, options));
 
 		researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
 
@@ -50,6 +74,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldAttributes.setSize(lastNameField, 30);
 		researchStaffFieldGroup.getFields().add(lastNameField);
 
+		InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "NCI Identifier", true);
+		InputFieldAttributes.setSize(ncidIdField, 30);
+		researchStaffFieldGroup.getFields().add(ncidIdField);
+
 		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", true);
 		InputFieldAttributes.setSize(emailAddressField, 30);
 		researchStaffFieldGroup.getFields().add(emailAddressField);
@@ -62,15 +90,9 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldAttributes.setSize(faxNumberField, 30);
 		researchStaffFieldGroup.getFields().add(faxNumberField);
 
-		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-		options.put("", "Please select");
-		options.putAll(InputFieldFactory.collectOptions(organizationDao.getAll(), "id", "name"));
-
-		researchStaffFieldGroup.getFields().add(
-				InputFieldFactory.createSelectField("organization", "Site", true, options));
-
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		map.addInputFieldGroup(researchStaffFieldGroup);
+		map.addInputFieldGroup(siteFieldGroup);
 
 		return map;
 	}

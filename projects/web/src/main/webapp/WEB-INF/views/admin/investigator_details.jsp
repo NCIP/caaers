@@ -111,12 +111,12 @@ Event.observe(window, "load", function() {
     		</table> 
     
 	</chrome:division>
-	<chrome:division title="Associate Sites">
+	<chrome:division title="Associate Organizations">
 	  
 	  <table class="tablecontent">
     			<tr id="site-investigator">
-    				<th class="tableHeader"><tags:requiredIndicator />Site</th>
-    				<th class="tableHeader"><tags:requiredIndicator />Status type</th>
+    				<th class="tableHeader"><tags:requiredIndicator />Organization</th>
+    				<th class="tableHeader"><tags:requiredIndicator />Status</th>
     			</tr>
     			
             	<c:forEach varStatus="status" items="${command.siteInvestigators}">
@@ -133,7 +133,7 @@ Event.observe(window, "load", function() {
 
 	<jsp:attribute name="localButtons"> 
 	      	<chrome:division title="">          	
-	      		<tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Site Investigator" />   
+	      		<tags:listEditorAddButton divisionClass="site-investigator-row" label="Add Organization" />   
             </chrome:division>                                                                                                                                                                                                                                                             
 	</jsp:attribute>
 

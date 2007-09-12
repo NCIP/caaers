@@ -201,8 +201,13 @@ public class SearchStudyAjaxFacade {
 		columnLastName.setProperty("lastName");
 		model.addColumn(columnLastName);
 
+		Column columnMiddleName = model.getColumnInstance();
+		columnMiddleName.setProperty("middleName");
+		model.addColumn(columnMiddleName);
+
 		Column columnNciInstituteCode = model.getColumnInstance();
 		columnNciInstituteCode.setProperty("nciInstituteCode");
+		columnNciInstituteCode.setTitle("NCI Institute Code");
 
 		model.addColumn(columnNciInstituteCode);
 
@@ -230,7 +235,7 @@ public class SearchStudyAjaxFacade {
 
 		Column columnFirstName = model.getColumnInstance();
 		columnFirstName.setProperty("firstName");
-		// columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffLinkDisplayCell");
+		columnFirstName.setCell("gov.nih.nci.cabig.caaers.web.search.ResearchStaffLinkDisplayCell");
 		model.addColumn(columnFirstName);
 
 		Column columnMiddleName = model.getColumnInstance();
@@ -243,7 +248,7 @@ public class SearchStudyAjaxFacade {
 
 		Column columnOrganizationNameName = model.getColumnInstance();
 		columnOrganizationNameName.setProperty("organization.name");
-		columnOrganizationNameName.setTitle("Site");
+		columnOrganizationNameName.setTitle("Organization");
 		model.addColumn(columnOrganizationNameName);
 
 		return model.assemble();

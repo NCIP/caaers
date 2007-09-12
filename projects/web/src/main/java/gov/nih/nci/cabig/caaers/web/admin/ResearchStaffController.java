@@ -21,7 +21,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * Base Controller class to handle the basic work flow in the Creation / Updation of a ResearchStaff Design This uses
@@ -95,10 +94,13 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 	@Override
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
+		ResearchStaff researchStaff = (ResearchStaff) command;
+		researchStaffDao.save(researchStaff);
 
-		ResearchStaff staff = (ResearchStaff) command;
-		researchStaffDao.save(staff);
-		return new ModelAndView(new RedirectView("createResearchStaff"));
+		ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
+		modelAndView.addAllObjects(errors.getModel());
+		modelAndView.addObject("researchStaff", researchStaff);
+		return modelAndView;
 
 	}
 

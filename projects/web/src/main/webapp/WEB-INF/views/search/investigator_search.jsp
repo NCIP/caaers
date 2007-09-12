@@ -75,16 +75,16 @@ function buildTable(form) {
    </p> 
    <chrome:box title="Investigator Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
-		    	<div class="label"> First Name :&nbsp; </div>
+		    	<div class="label"> First Name&nbsp; </div>
 		    	<div class="value"><input id="prop0" name="firstName" type="text"/></div>
 		    </div>
 		    <div class="row">
-		    	<div class="label"> Last Name :&nbsp; </div>
+		    	<div class="label"> Last Name&nbsp; </div>
 		    	<div class="value"><input id="prop1" name="lastName" type="text"/></div>
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> NCI Identifier :&nbsp; </div>
+		    	<div class="label"> NCI Identifier&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="text" name="nciInstituteCode"/></div>
 		    </div>
    </chrome:box>

@@ -98,9 +98,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 			options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
 		}
 
-		rfgFactory.addField(InputFieldFactory.createSelectField("organization", "Site", false, options));
+		rfgFactory.addField(InputFieldFactory.createSelectField("organization", "Organization", false, options));
 
-		rfgFactory.addField(InputFieldFactory.createSelectField("statusCode", "Status type", false,
+		rfgFactory.addField(InputFieldFactory.createSelectField("statusCode", "Status", false,
 				collectOptionsFromConfig("studySiteStatusRefData", "desc", "code")));
 
 		investigatorFieldGroup = new DefaultInputFieldGroup(INVESTIGATOR_FIELD_GROUP);
