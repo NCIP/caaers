@@ -77,6 +77,8 @@ public abstract class AeWebTestCase extends WebTestCase {
         event.setGrade(Grade.MODERATE);
         event.setHospitalization(Hospitalization.NONE);
         event.getAdverseEventCtcTerm().setCtcTerm(new CtcTerm());
+        event.setStartDate(NOW);
+        event.setEndDate(NOW);
 
         // ReporterTab
         c.getAeReport().setReporter(new Reporter());
