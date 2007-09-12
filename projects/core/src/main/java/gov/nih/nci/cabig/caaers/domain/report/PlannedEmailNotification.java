@@ -18,8 +18,6 @@ public class PlannedEmailNotification extends PlannedNotification {
 
 	/** The subject line of the email */
 	private String subjectLine;
-	/** The from address */
-	private String fromAddress="test@test.com";
 
     ////// LOGIC
 
@@ -27,21 +25,11 @@ public class PlannedEmailNotification extends PlannedNotification {
     public ScheduledEmailNotification createScheduledNotification(Object objTo) {
         ScheduledEmailNotification notification = new ScheduledEmailNotification();
         notification.setPlanedNotificaiton(this);
-        notification.setFromAddress(getFromAddress());
         notification.setToAddress((String)objTo);
         return notification;
     }
 
     ///BEAN PROPERTIES
-
-	@Column(name="FROM_ADDR")
-	public String getFromAddress() {
-		return fromAddress;
-	}
-
-	public void setFromAddress(String fromAddress) {
-
-	}
 
 	@Column(name="SUBJECT")
 	public String getSubjectLine() {
@@ -60,9 +48,6 @@ public class PlannedEmailNotification extends PlannedNotification {
 		if (getClass() != obj.getClass())return false;
 		final PlannedEmailNotification other = (PlannedEmailNotification) obj;
 		if(other.getId() != null && getId() != null && other.getId().equals(getId()))  return true;
-		if (fromAddress == null) {
-			if (other.fromAddress != null) return false;
-		} else if (!fromAddress.equals(other.fromAddress)) return false;
 		if (subjectLine == null) {
 			if (other.subjectLine != null) return false;
 		} else if (!subjectLine.equals(other.subjectLine))return false;

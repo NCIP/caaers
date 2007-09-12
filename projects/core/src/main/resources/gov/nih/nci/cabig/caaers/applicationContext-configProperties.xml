@@ -344,7 +344,42 @@
                         </bean>
                     </list>
                 </entry>
-
+                <entry key="notificationSubstitutionsRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="nCIProtocolNumber" />
+                            <property name="desc" value="NCI Protocol Number" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="ticketNumber" />
+                            <property name="desc" value="Ticket Number" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="patientId" />
+                            <property name="desc" value="Patient ID" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="amendmentNumber" />
+                            <property name="desc" value="Amendment Number" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="reportId" />
+                            <property name="desc" value="Report ID" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="reportURL" />
+                            <property name="desc" value="URL To Report" />
+                        </bean>
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="study.shortTitle" />
+                            <property name="desc" value="Study Short Title" />
+                        </bean>
+                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="study.primaryIdentifier.value" />
+                            <property name="desc" value="Study Primary Identifier" />
+                        </bean>
+                    </list>
+                </entry>
             </map>
         </property>
     </bean>

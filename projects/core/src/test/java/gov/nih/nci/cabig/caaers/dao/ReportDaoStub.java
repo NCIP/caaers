@@ -124,7 +124,6 @@ public class ReportDaoStub extends ReportDao {
 		rs.setScheduledNotifications(snfList);
 
 		PlannedEmailNotification penf = new PlannedEmailNotification();
-		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3331);
 		penf.setIndexOnTimeScale(8);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
@@ -139,7 +138,6 @@ public class ReportDaoStub extends ReportDao {
 		senf.setBody(penf.getNotificationBodyContent().getBody());
 		senf.setCreatedOn(new Date());
 		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setFromAddress(penf.getFromAddress());
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
@@ -149,7 +147,6 @@ public class ReportDaoStub extends ReportDao {
 
 
 		penf = new PlannedEmailNotification();
-		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3332);
 		penf.setIndexOnTimeScale(18);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
@@ -165,7 +162,6 @@ public class ReportDaoStub extends ReportDao {
 		senf.setBody(penf.getNotificationBodyContent().getBody());
 		senf.setCreatedOn(new Date());
 		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setFromAddress(penf.getFromAddress());
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");
@@ -174,7 +170,6 @@ public class ReportDaoStub extends ReportDao {
 
 
 		penf = new PlannedEmailNotification();
-		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(-3333);
 		penf.setIndexOnTimeScale(26);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
@@ -191,7 +186,6 @@ public class ReportDaoStub extends ReportDao {
 		senf.setBody(penf.getNotificationBodyContent().getBody());
 		senf.setCreatedOn(new Date());
 		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setFromAddress(penf.getFromAddress());
 		senf.setPlanedNotificaiton(penf);
 		senf.setScheduledOn(cal.getTime());
 		senf.setToAddress("biju.joseph@semanticbits.com");

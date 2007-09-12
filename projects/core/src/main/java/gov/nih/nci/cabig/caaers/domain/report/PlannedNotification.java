@@ -116,7 +116,6 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 			recipients.add(new RoleBasedRecipient(role));
 		}
 
-
 	}
 
 	@Transient

@@ -74,7 +74,6 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         NotificationBodyContent nbc = new NotificationBodyContent();
         nbc.setBody("This is my body");
         pen.setNotificationBodyContent(nbc);
-        pen.setFromAddress("biju@semanticbits.com");
         pen.setGridId("90890d99dke");
         pen.setIndexOnTimeScale(2);
         pen.setSubjectLine("MySubjectline");
