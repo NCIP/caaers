@@ -69,7 +69,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testMatchParticipants() throws Exception {
         Participant expectedMatch = setId(3, createParticipant("Foo", "B"));
         expectedMatch.setDateOfBirth(new Date());  // set not null so we can be sure it isn't copied
-        expect(participantDao.getBySubnames(aryEq(new String[] { "foo" })))
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "foo" })))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
@@ -87,7 +87,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     
     public void testMatchParticipantsMultipleSubnames() throws Exception {
         Participant expectedMatch = setId(5, new Participant());
-        expect(participantDao.getBySubnames(aryEq(new String[] { "foo", "zappa" })))
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "foo", "zappa" })))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
@@ -116,7 +116,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     }
 
     public void testMatchParticipantsWithBlankToken() throws Exception {
-        expect(participantDao.getBySubnames(aryEq(new String[] { })))
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { })))
             .andReturn(Collections.<Participant>emptyList());
 
         replayMocks();
@@ -128,7 +128,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchStudies() throws Exception {
         Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(studyDao.getBySubnames(aryEq(new String[] { "jim" })))
+        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jim" })))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
@@ -145,7 +145,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchStudiesMultipleSubnames() throws Exception {
         Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(studyDao.getBySubnames(aryEq(new String[] { "jules", "jim" })))
+        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jules", "jim" })))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();

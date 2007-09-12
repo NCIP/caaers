@@ -120,14 +120,23 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
+	
+	
+	public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames) {
+		String joins = " join o.identifiers as identifier ";
+		List<String> subStringMatchProperties = Arrays.asList("o.shortTitle", "o.longTitle","identifier.type", "identifier.value");
+		return findBySubname(subnames, null, null, subStringMatchProperties , EXACT_MATCH_PROPERTIES, joins);
+	}
 
+	/*
 	public List<Study> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
+	*/
 
 	public List<Study> matchStudyByParticipant(final Integer participantId, final String text) {
 
-		String joins = " join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
+		String joins = " join o.identifiers as identifier join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
 
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(
@@ -140,12 +149,21 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		queryBuf.append(" and ( ");
 		queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
 		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ? ");
+		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("identifier.type").append(") LIKE ? ");
+		params.add('%' + text.toLowerCase() + '%');
 
 		queryBuf.append(" or ");
 		queryBuf.append("LOWER(").append("o.longTitle").append(") LIKE ? ) ");
 		params.add('%' + text.toLowerCase() + '%');
 
-		log.debug("::: " + queryBuf.toString());
+		log.debug("matchStudyByParticipant : " + queryBuf.toString());
+		getHibernateTemplate().setMaxResults(30);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -61,8 +62,16 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 
+	/*
 	public List<Participant> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
+	}
+	*/
+	
+	public List<Participant> getBySubnamesJoinOnIdentifier(final String[] subnames) {
+		String joins = " join o.identifiersInternal as identifier ";
+		List<String> subStringMatchProperties = Arrays.asList("o.firstName", "o.lastName","identifier.type", "identifier.value");
+		return findBySubname(subnames, null, null, subStringMatchProperties , EMPTY_PROPERTIES, joins);
 	}
 
 	/**
@@ -81,7 +90,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 	public List<Participant> matchParticipantByStudy(final Integer studyId, final String text) {
 
-		String joins = " join o.assignments as spa join spa.studySite as ss join ss.study as s ";
+		String joins = " join o.identifiersInternal as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s ";
 
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(
@@ -94,12 +103,21 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 		queryBuf.append(" and ( ");
 		queryBuf.append("LOWER(").append("o.firstName").append(") LIKE ?");
 		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("identifier.type").append(") LIKE ? ");
+		params.add('%' + text.toLowerCase() + '%');
+		
+		queryBuf.append(" or ");
+		queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ? ");
+		params.add('%' + text.toLowerCase() + '%');
 
 		queryBuf.append(" or ");
 		queryBuf.append("LOWER(").append("o.lastName").append(") LIKE ? ) ");
 		params.add('%' + text.toLowerCase() + '%');
 
-		System.out.println("::: " + queryBuf.toString());
+		log.debug("matchParticipantByStudy : " + queryBuf.toString());
+		getHibernateTemplate().setMaxResults(30);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 

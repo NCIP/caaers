@@ -161,6 +161,48 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
     	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
     }
     
+    public void testMatchParticipantByStudyByIdentifier() throws Exception {
+    	List<Participant> results;
+    	// full identifier value
+    	results = getDao().matchParticipantByStudy(-2000, "13js77");
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    	 
+    	// partial identifier value
+    	results = getDao().matchParticipantByStudy(-2000, "13js");
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    	 
+    	// partial identifier type
+    	results = getDao().matchParticipantByStudy(-2000, "MR");
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    }
+    
+    public void testGetBySubnamesJoinOnIdentifier() throws Exception {
+    	List<Participant> results;
+    	// full identifier value
+    	String[] str = {"13js77"};
+    	results = getDao().getBySubnamesJoinOnIdentifier(str);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    	
+    	// firstName
+    	String[] str1 = {"il"};
+    	results = getDao().getBySubnamesJoinOnIdentifier(str1);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    	
+    	//lastName
+    	String[] str2 = {"scott"};
+    	results = getDao().getBySubnamesJoinOnIdentifier(str2);
+    	assertEquals("Wrong number of results", 1, results.size());
+    	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
+    	
+    	
+    }
+    
+    
     public void testSearchParticipantByStudyFirstName() throws Exception {
     	List<Participant> results;
     	Map<String,String> m = new HashMap<String,String>();

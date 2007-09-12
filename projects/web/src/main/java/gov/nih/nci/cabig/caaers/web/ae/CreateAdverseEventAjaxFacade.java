@@ -103,7 +103,7 @@ public class CreateAdverseEventAjaxFacade {
     public List<Participant> matchParticipants(String text, Integer studyId) {
     	List<Participant> participants;
     	if (studyId == null){
-    		participants = participantDao.getBySubnames(extractSubnames(text));
+    		participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
     	}
     	else {
     		participants = participantDao.matchParticipantByStudy(studyId, text);
@@ -154,7 +154,7 @@ public class CreateAdverseEventAjaxFacade {
     public List<Study> matchStudies(String text, Integer participantId) {
     	List<Study> studies ;
     	if (participantId == null){
-    		studies = studyDao.getBySubnames(extractSubnames(text));
+    		studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
     	}
     	else{
     		studies = studyDao.matchStudyByParticipant(participantId, text);

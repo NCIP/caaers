@@ -59,18 +59,21 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		if (extraConditions != null) {
 			query.append(extraConditions).append(" and ");
 		}
+		
 		List<Object> params = new LinkedList<Object>();
 		if (extraParameters != null) {
 			params.addAll(extraParameters);
 		}
 
 		for (int i = 0; i < subnames.length; i++) {
-			buildSubQuery(subnames[i], query, params, substringMatchProperties.get(i));
+			buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, false);
 			if (i < subnames.length - 1) {
 				query.append(" and ");
 			}
 		}
+		
 		log.debug("query::" + query.toString());
+		getHibernateTemplate().setMaxResults(30);
 		return getHibernateTemplate().find(query.toString(), params.toArray());
 	}
 
@@ -111,7 +114,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		}
 
 		for (int i = 0; i < subnames.length; i++) {
-			buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties);
+			buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, true);
 			if (i < subnames.length - 1) {
 				query.append(" and ");
 			}
@@ -121,12 +124,18 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 	}
 
 	private void buildSubnameQuery(String subname, StringBuilder query, List<Object> params,
-			List<String> substringMatchProperties, List<String> exactMatchProperties) {
+			List<String> substringMatchProperties, List<String> exactMatchProperties, boolean includeObjectReference) {
 		query.append('(');
 		if (hasAny(substringMatchProperties)) {
 			for (Iterator<String> it = substringMatchProperties.iterator(); it.hasNext();) {
 				String prop = it.next();
-				query.append("LOWER(o.").append(prop).append(") LIKE ?");
+				if ( includeObjectReference ) {
+					query.append("LOWER(o.").append(prop).append(") LIKE ?");
+				}
+				else {
+					query.append("LOWER(").append(prop).append(") LIKE ?");
+				}
+				
 				params.add('%' + subname.toLowerCase() + '%');
 				if (it.hasNext()) {
 					query.append(" or ");
@@ -139,7 +148,12 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		if (hasAny(exactMatchProperties)) {
 			for (Iterator<String> it = exactMatchProperties.iterator(); it.hasNext();) {
 				String prop = it.next();
-				query.append("LOWER(o.").append(prop).append(") = ?");
+				if ( includeObjectReference ) {
+					query.append("LOWER(o.").append(prop).append(") LIKE ?");
+				}
+				else {
+					query.append("LOWER(").append(prop).append(") LIKE ?");
+				}
 				params.add(subname.toLowerCase());
 				if (it.hasNext()) {
 					query.append(" or ");
