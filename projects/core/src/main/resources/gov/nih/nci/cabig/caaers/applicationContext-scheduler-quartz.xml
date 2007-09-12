@@ -7,7 +7,7 @@
 		  destroy-method="destroy" >
  	 	<property name="waitForJobsToCompleteOnShutdown"><value>true</value></property>
  	 	<property name="autoStartup"><value>true</value></property>
- 	 	<property name="startupDelay"><value>10</value></property>
+ 	 	<property name="startupDelay"><value>2</value></property>
 		<property name="applicationContextSchedulerContextKey"><value>applicationContext</value></property>
         <property name="dataSource" ref="dataSource"/>
 		<property name="quartzProperties">

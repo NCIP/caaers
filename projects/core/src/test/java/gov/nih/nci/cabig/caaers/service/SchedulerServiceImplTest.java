@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_NOTIFICATION_RULES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ReportDaoStub;
@@ -19,8 +20,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SchedulerServiceImplTest extends CaaersTestCase {
 	static ApplicationContext appCtx;
 
-	SchedulerServiceImpl service;
-
 	public static ApplicationContext getApplicationContext() {
 		String[] locations = new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
 				"classpath*:gov/nih/nci/cabig/caaers/testApplicationContext-scheduler.xml" };
@@ -36,38 +35,26 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		service = (SchedulerServiceImpl) getApplicationContext().getBean("schedulerService");
-		replayMocks();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 		// TODO Auto-generated method stub
 		super.tearDown();
-		verifyMocks();
+
 		try {
 			System.gc();
 			Thread.sleep(5000);
 		}
 		catch (Exception exp) {
-			exp.printStackTrace();
 		}
 	}
 
-	public void testGetReportScheduleDao() {
-		assertNotNull("ReportScheduleDao should not be null", service.getReportScheduleDao());
-	}
 
-	public void testGetScheduler() {
-		assertNotNull("Scheduler should not be null", service.getScheduler());
-	}
-
-	public void testGetJobClassMapping() {
-		assertNotNull("Scheduler Mapping should not be null", service.getJobClassMapping());
-	}
 
 	public void testScheduleNotification() throws Exception {
-		scheduleJobForReport(-444);
+		SchedulerServiceImpl service = (SchedulerServiceImpl) getApplicationContext().getBean("schedulerService");
+		scheduleJobForReport(-444, service);
 		// verify the deliver status.
 
 		Report rs = service.getReportScheduleDao().getById(-444);
@@ -77,7 +64,8 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	}
 
 	public void testScheduleNotificationWithJobDelete() throws Exception {
-		scheduleJobForReport(-885);
+		SchedulerServiceImpl service = (SchedulerServiceImpl) getApplicationContext().getBean("schedulerService");
+		scheduleJobForReport(-885, service);
 		// verify delivery status
 		Report rs = service.getReportScheduleDao().getById(-885);
 		int i = 0;
@@ -95,7 +83,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 		}
 	}
 
-	public void scheduleJobForReport(final int reportId) throws Exception {
+	public void scheduleJobForReport(final int reportId, final SchedulerServiceImpl service) throws Exception {
 		assertNotNull("SchedulerService is not valid", service);
 		final Report report = service.getReportScheduleDao().getById(reportId);
 		System.out.println("========== going to schedule ==================== [reportId :" + reportId + "]");
@@ -121,7 +109,6 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 					}
 				}
 				catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}// run
@@ -133,6 +120,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 	}
 
 	public void testUnscheduleNotification() throws Exception {
+		SchedulerServiceImpl service = (SchedulerServiceImpl) getApplicationContext().getBean("schedulerService");
 		final Report report = ((ReportDaoStub) service.getReportScheduleDao()).getById(-444, true);
 		service.scheduleNotification(report);
 		service.unScheduleNotification(report);
