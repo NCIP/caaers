@@ -21,7 +21,6 @@
 	<planned_notifications 
 		id="-222"
 		index_on_time_scale="2"
-		from_addr ="from@from.com"
 		subject="Test Subject Line"
 		dtype="email"
 		rct_id="-222"
@@ -231,5 +230,20 @@
     
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
-    <ind_holders />        
+    <ind_holders />   
+    
+    <!--  Hack, we need to clear all miss-fired triggers from quartz tables for easy execution of 
+     	  SchedulerServiceTest. So adding certain of the quartz related tables so that when this 
+     	  test case executes, it will be cleared off. 
+     -->
+        <qrtz_blob_triggers />
+        <qrtz_cron_triggers />  
+        <qrtz_fired_triggers />
+        <qrtz_job_details />
+        <qrtz_job_listeners />
+        <qrtz_paused_trigger_grps />
+        <qrtz_scheduler_state />
+        <qrtz_simple_triggers />
+        <qrtz_trigger_listeners />
+        <qrtz_triggers />
 </dataset>
