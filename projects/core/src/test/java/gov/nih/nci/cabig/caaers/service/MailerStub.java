@@ -16,7 +16,7 @@ public class MailerStub extends JavaMailSenderImpl{
 	@Override
 	public void send(MimeMessage mimeMessage) throws MailException {
 		// TODO Auto-generated method stub
-		super.send(mimeMessage);
+		//super.send(mimeMessage);
 	}
 
 	public void send(MailMessage msg) throws MailException{
@@ -25,73 +25,73 @@ public class MailerStub extends JavaMailSenderImpl{
 	@Override
 	public void send(MimeMessage[] mimeMessages) throws MailException {
 		// TODO Auto-generated method stub
-		super.send(mimeMessages);
+		//super.send(mimeMessages);
 	}
 	@Override
 	public void send(MimeMessagePreparator mimeMessagePreparator)
 			throws MailException {
 		// TODO Auto-generated method stub
-		super.send(mimeMessagePreparator);
+		//super.send(mimeMessagePreparator);
 	}
 	@Override
 	public void send(MimeMessagePreparator[] arg0) throws MailException {
 		// TODO Auto-generated method stub
-		super.send(arg0);
+		//super.send(arg0);
 	}
 	@Override
 	public void send(SimpleMailMessage simpleMessage) throws MailException {
 		// TODO Auto-generated method stub
-		super.send(simpleMessage);
+		//super.send(simpleMessage);
 	}
 	@Override
 	public void send(SimpleMailMessage[] arg0) throws MailException {
 		// TODO Auto-generated method stub
-		super.send(arg0);
+		//super.send(arg0);
 	}
 	@Override
 	public void setHost(String host) {
 		// TODO Auto-generated method stub
-		super.setHost(host);
+		//super.setHost(host);
 	}
 	@Override
 	public void setDefaultEncoding(String defaultEncoding) {
 		// TODO Auto-generated method stub
-		super.setDefaultEncoding(defaultEncoding);
+		//super.setDefaultEncoding(defaultEncoding);
 	}
 	@Override
 	public void setDefaultFileTypeMap(FileTypeMap defaultFileTypeMap) {
 		// TODO Auto-generated method stub
-		super.setDefaultFileTypeMap(defaultFileTypeMap);
+		//super.setDefaultFileTypeMap(defaultFileTypeMap);
 	}
 	@Override
 	public void setJavaMailProperties(Properties javaMailProperties) {
 		// TODO Auto-generated method stub
-		super.setJavaMailProperties(javaMailProperties);
+		//super.setJavaMailProperties(javaMailProperties);
 	}
 	@Override
 	public void setPassword(String password) {
 		// TODO Auto-generated method stub
-		super.setPassword(password);
+		//super.setPassword(password);
 	}
 	@Override
 	public void setPort(int port) {
 		// TODO Auto-generated method stub
-		super.setPort(port);
+		//super.setPort(port);
 	}
 	@Override
 	public void setProtocol(String protocol) {
 		// TODO Auto-generated method stub
-		super.setProtocol(protocol);
+		//super.setProtocol(protocol);
 	}
 	@Override
 	public void setSession(Session session) {
 		// TODO Auto-generated method stub
-		super.setSession(session);
+		//super.setSession(session);
 	}
 	@Override
 	public void setUsername(String username) {
 		// TODO Auto-generated method stub
-		super.setUsername(username);
+		//super.setUsername(username);
 	}
 
 }
