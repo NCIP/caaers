@@ -33,11 +33,13 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 
 	private String lastName;
 
-	private String emailAddress;// abc@email.com
+	private String emailAddress;
 
 	private String phoneNumber;
 
 	private String faxNumber;
+
+	private String nciIdentifier;
 
 	private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
 
@@ -131,10 +133,13 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 
 	@Override
 	public int hashCode() {
-		final int PRIME = 31;
+		final int prime = 31;
 		int result = 1;
-		result = PRIME * result + (firstName == null ? 0 : firstName.hashCode());
-		result = PRIME * result + (lastName == null ? 0 : lastName.hashCode());
+		result = prime * result + (emailAddress == null ? 0 : emailAddress.hashCode());
+		result = prime * result + (faxNumber == null ? 0 : faxNumber.hashCode());
+		result = prime * result + (firstName == null ? 0 : firstName.hashCode());
+		result = prime * result + (lastName == null ? 0 : lastName.hashCode());
+		result = prime * result + (nciIdentifier == null ? 0 : nciIdentifier.hashCode());
 		return result;
 	}
 
@@ -150,6 +155,22 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 			return false;
 		}
 		final ResearchStaff other = (ResearchStaff) obj;
+		if (emailAddress == null) {
+			if (other.emailAddress != null) {
+				return false;
+			}
+		}
+		else if (!emailAddress.equals(other.emailAddress)) {
+			return false;
+		}
+		if (faxNumber == null) {
+			if (other.faxNumber != null) {
+				return false;
+			}
+		}
+		else if (!faxNumber.equals(other.faxNumber)) {
+			return false;
+		}
 		if (firstName == null) {
 			if (other.firstName != null) {
 				return false;
@@ -164,6 +185,14 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 			}
 		}
 		else if (!lastName.equals(other.lastName)) {
+			return false;
+		}
+		if (nciIdentifier == null) {
+			if (other.nciIdentifier != null) {
+				return false;
+			}
+		}
+		else if (!nciIdentifier.equals(other.nciIdentifier)) {
 			return false;
 		}
 		return true;
@@ -199,6 +228,14 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 
 	public void setFaxNumber(final String faxNumber) {
 		this.faxNumber = faxNumber;
+	}
+
+	public String getNciIdentifier() {
+		return nciIdentifier;
+	}
+
+	public void setNciIdentifier(final String nciIdentifier) {
+		this.nciIdentifier = nciIdentifier;
 	}
 
 }
