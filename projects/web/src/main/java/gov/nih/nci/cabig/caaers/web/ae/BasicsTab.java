@@ -69,6 +69,10 @@ public class BasicsTab extends AeTab {
         RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
                 InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
+        mainFieldFactory.addField(InputFieldFactory.createDateField(
+                "startDate", "Start date", true));
+        mainFieldFactory.addField(InputFieldFactory.createDateField(
+                "endDate", "End date", false));
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
