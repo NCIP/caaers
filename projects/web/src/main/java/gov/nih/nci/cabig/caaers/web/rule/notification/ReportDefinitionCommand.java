@@ -37,16 +37,10 @@ import org.apache.commons.lang.math.NumberUtils;
  */
 public class ReportDefinitionCommand  {
 
-
 	// page -4
-	private String to;
-	private String message;
 	private String pointOnScale = "0"; // the selected point in the time scale
 	private String lastPointOnScale;
 	private String indexToFetch = "0";
-	private String subjectLine;
-	private List<String> roleRecipient = new ArrayList<String>();
-	private List<String> directRecipient = new ArrayList<String>();
 	private Map<Object, Object> roles;
 
 	private Map<String, Integer> mandatoryFieldMap;
@@ -59,6 +53,7 @@ public class ReportDefinitionCommand  {
 	private boolean validationFailed;
 	private String delete; //index in the list to be deleted
 	private String entity; //entity to be deleted
+	private String tempProperty;
 
 	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao){
 		this.rpDef = rpDef;
@@ -75,62 +70,13 @@ public class ReportDefinitionCommand  {
 	}
 
 
-
-
 	///LOGIC
-	public void reset() {
-		subjectLine = "";
-//		fromAddress = "";
-		roleRecipient.clear(); // = new ArrayList<String>();
-		directRecipient.clear(); // = new ArrayList<String>();
-		message = "";
-	}
-
-//	public void populate() {
-//
-//		int indexOnScale = Integer.parseInt(pointOnScale);
-//		PlannedNotification pn = rpDef
-//				.fetchPlannedNotification(indexOnScale);
-//		populate(pn);
-//		lastPointOnScale = pointOnScale;
-//	}
-
-	public void populate(PlannedNotification pn) {
-
-		//reset the screen fields
-		reset();
-		if(pn == null) return;
-
-		if (pn instanceof PlannedEmailNotification) {
-			PlannedEmailNotification pen = (PlannedEmailNotification) pn;
-			subjectLine = pen.getSubjectLine();
-//			fromAddress = pen.getFromAddress();
-            message = (pen.getNotificationBodyContent() != null) ? pen
-                .getNotificationBodyContent().getBody() : "";
-			List<Recipient> recipientList = pn.getRecipients();
-			String str;
-			for (Recipient r : recipientList) {
-				if (r instanceof RoleBasedRecipient) {
-					str = ((RoleBasedRecipient) r).getRoleName();
-					roleRecipient.add(str);
-				} else if (r instanceof ContactMechanismBasedRecipient) {
-					str = ((ContactMechanismBasedRecipient) r).getContactName();
-					directRecipient.add(str);
-				}
-			}
-		}
-
-	}
-
 	public void initializeMandatoryFieldMap(){
 		mandatoryFieldMap = new LinkedHashMap<String, Integer>();
 		String path;
 		int i = 0;
 		for(ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()){
 			path = mf.getFieldPath();
-//			path = StringUtils.replaceChars(path, '[', '(');
-//			path = StringUtils.replaceChars(path, ']', ')');
-//			path = StringUtils.replaceChars(path, '.', '_');
     		mandatoryFieldMap.put(path, i);
     		i++;
     	}
@@ -167,57 +113,6 @@ public class ReportDefinitionCommand  {
 		}
 	}
 
-
-	public void updateReportCalendarTemplate() {
-
-		// configure planned notification if lastPointOnScale is not empty
-		if (StringUtils.isEmpty(lastPointOnScale)) return;
-		Integer lastPoint = Integer.valueOf(lastPointOnScale);
-
-		//below things are to be done only for NotificationType.EMAIL
-		// only add values if atleast one filed has value.
-		boolean mustAdd = StringUtils.isNotEmpty(message)
-				|| CollectionUtils.isNotEmpty(roleRecipient)
-				|| CollectionUtils.isNotEmpty(directRecipient)
-				|| StringUtils.isNotEmpty(subjectLine);
-		if (!mustAdd)
-			return;
-		PlannedEmailNotification pen = (PlannedEmailNotification) rpDef
-				.fetchPlannedNotification(lastPoint);
-		if (pen == null) {
-			pen = new PlannedEmailNotification();
-			rpDef.addPlannedNotification(pen);
-		}
-		pen.setIndexOnTimeScale(lastPoint);
-		pen.setSubjectLine(subjectLine);
-		if (StringUtils.isNotEmpty(message)) {
-			NotificationBodyContent nfBody = new NotificationBodyContent();
-			nfBody.setBody(message);
-			pen.setNotificationBodyContent(nfBody);
-		}
-		List<Recipient> recipientList = pen.getRecipients();
-		if (recipientList == null) {
-			recipientList = new ArrayList<Recipient>();
-			pen.setRecipients(recipientList);
-		} else {
-			recipientList.clear();
-		}
-
-		for (String role : roleRecipient) {
-			Recipient r = new RoleBasedRecipient(role);
-			recipientList.add(r);
-		}
-		for (String email : directRecipient) {
-			Recipient r = new ContactMechanismBasedRecipient(email);
-			recipientList.add(r);
-		}
-
-
-		// reset the command(form) now
-		reset();
-	}
-
-
 	///BEAN PROPERTIES
 
 	/**
@@ -242,7 +137,6 @@ public class ReportDefinitionCommand  {
 		this.validationFailed = validationFailed;
 	}
 
-
 	public ReportDefinitionDao getReportDefinitionDao() {
 		return rpDefDao;
 	}
@@ -250,8 +144,6 @@ public class ReportDefinitionCommand  {
 	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
 		this.rpDefDao = rdDao;
 	}
-
-
 
 	/**
 	 * The underlying domain object, used by this command object
@@ -266,16 +158,6 @@ public class ReportDefinitionCommand  {
 		this.rpDef = calendarTemplate;
 	}
 
-
-	public String getSubjectLine() {
-		return subjectLine;
-	}
-
-	public void setSubjectLine(String subjectLine) {
-		this.subjectLine = subjectLine;
-	}
-
-
 	public String getPointOnScale() {
 		return pointOnScale;
 	}
@@ -284,46 +166,12 @@ public class ReportDefinitionCommand  {
 		this.pointOnScale = pointOnScale;
 	}
 
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-
-	public List<String> getDirectRecipient() {
-		return directRecipient;
-	}
-
-
-	public void setDirectRecipient(List<String> directRecipient) {
-		this.directRecipient = directRecipient;
-	}
 	public String getLastPointOnScale() {
 		return lastPointOnScale;
 	}
 
 	public void setLastPointOnScale(String lastPointOnScale) {
 		this.lastPointOnScale = lastPointOnScale;
-	}
-
-	public List<String> getRoleRecipient() {
-		return roleRecipient;
-	}
-
-	public void setRoleRecipient(List<String> roleRecipient) {
-		this.roleRecipient = roleRecipient;
 	}
 
 	public Map<Object, Object> getRoles() {
@@ -337,8 +185,6 @@ public class ReportDefinitionCommand  {
 	public void setRoles(Map<Object, Object> roles) {
 		this.roles = roles;
 	}
-
-
 
 	/**
 	 * The entity to delete, it could be <code>notification</code> or <code>reportdefinition</code>.
@@ -401,5 +247,10 @@ public class ReportDefinitionCommand  {
 	public void setIndexToFetch(String indexToFetch) {
 		this.indexToFetch = indexToFetch;
 	}
-
+	public String getTempProperty() {
+		return tempProperty;
+	}
+	public void setTempProperty(String tempProperty){
+		this.tempProperty = tempProperty;
+	}
 }

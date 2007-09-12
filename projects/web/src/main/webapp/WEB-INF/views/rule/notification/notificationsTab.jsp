@@ -172,9 +172,7 @@
     				title="Configure Notification for ${command.reportDefinition.timeScaleUnitType} : ${command.pointOnScale}">
     			  
 				  <jsp:attribute name="singleFields">
-			 		<tags:errors path="*"/>   
 		          	<c:forEach var="curNF" items="${command.emailNotifications}"  varStatus="status">
-		          	
 		          	 <report:oneNotification index="${status.index}" pnf="${curNF}"/>
 		          	</c:forEach>
 		          	<span id="nfbookmark" />

@@ -51,10 +51,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 	public void postProcess(HttpServletRequest req, ReportDefinitionCommand cmd, Errors errors) {
 		super.postProcess(req,cmd,errors);
 		//update the report calendar
-		if(errors.getErrorCount() < 1)
-			cmd.updateReportCalendarTemplate();
-		else
-			cmd.setPointOnScale(cmd.getLastPointOnScale());
+		if(errors.hasErrors()) cmd.setPointOnScale(cmd.getLastPointOnScale());
 
 	}
 
@@ -78,18 +75,19 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 		for(PlannedNotification plannedNotification : plannedNotifications){
 			PlannedEmailNotification nf = (PlannedEmailNotification) plannedNotification;
 			if(nf.getNotificationBodyContent() == null || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())){
-				errors.rejectValue("bodyContent" + i, "REQUIRED","Message Invalid  in Email Notification(" + i +")");
+				errors.rejectValue("tempProperty", "REQUIRED","Message Invalid  in Email Notification(" + i +")");
 			}
 			if(nf.getRecipients() == null){
-				errors.rejectValue("recipient" + i,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
+				errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
+			}else {
 				for(Recipient recipient : nf.getRecipients()){
 					if(StringUtils.isEmpty(recipient.getContact())){
-						errors.rejectValue("recipient" + i,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
+						errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
 						break;
 					}
 					if(recipient instanceof ContactMechanismBasedRecipient){
 						if(!emailValidator.isValid(recipient.getContact())){
-							errors.rejectValue("recipient" + i,"REQUIRED", "Invalid email address [" + recipient.getContact() +"] in Email Notification (" + i + ")");
+							errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid email address [" + recipient.getContact() +"] in Email Notification (" + i + ")");
 							break;
 						}
 					}
@@ -97,7 +95,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 			}
 
 			if(StringUtils.isEmpty(nf.getSubjectLine())){
-				errors.rejectValue("subjectLine" + i, "REQUIRED","Subject line Invalid  in Email Notification(" + i +")");
+				errors.rejectValue("tempProperty" , "REQUIRED","Subject line Invalid  in Email Notification(" + i +")");
 			}
 			i++;
 		}
@@ -106,9 +104,8 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	@Override
 	public Map<String, Object> referenceData(ReportDefinitionCommand command) {
-		//show the previously keyed-in values, if validation failed.
-		/*if(!command.isValidationFailed()) command.populate();*/
 		command.setIndexToFetch(command.getPointOnScale());
+		command.setLastPointOnScale(command.getPointOnScale());
 		Map<String, Object> refData = super.referenceData(command);
 		return refData;
 	}
