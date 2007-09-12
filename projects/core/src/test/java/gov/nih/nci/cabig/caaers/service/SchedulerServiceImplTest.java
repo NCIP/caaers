@@ -108,7 +108,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 				assertTrue("Thread has ran more than 10 times waiting for the Job to complete", cnt < 10);
 				cnt++;
 				try {
-					Thread.sleep(1000 * 2); // delay 20 seconds, so that the job properly setup in quartz
+					Thread.sleep(1000 * 2); // delay 2 seconds, so that the job properly setup in quartz
 					while (true) {
 
 						String[] jobNames = service.getScheduler().getJobNames("JG-" + report.getId());
@@ -117,7 +117,7 @@ public class SchedulerServiceImplTest extends CaaersTestCase {
 							break;
 						}
 						System.out.println(Arrays.asList(jobNames));
-						Thread.sleep(1000 * 30); // poll every 30 seconds, for the scheduled jobs in the Scheduler
+						Thread.sleep(1000 * 10); // poll every 10 seconds, for the scheduled jobs in the Scheduler
 					}
 				}
 				catch (Exception e) {

@@ -110,7 +110,6 @@ public class ReportServiceTest extends CaaersTestCase {
 
 		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
 		PlannedEmailNotification penf = new PlannedEmailNotification();
-		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(2998);
 		penf.setIndexOnTimeScale(2);
 		penf.setSubjectLine("Subject Line for day 2");
@@ -119,7 +118,6 @@ public class ReportServiceTest extends CaaersTestCase {
 		pnfList.add(penf);
 
 		penf = new PlannedEmailNotification();
-		penf.setFromAddress("biju.joseph@semanticbits.com");
 		penf.setId(3999);
 		penf.setIndexOnTimeScale(4);
 		penf.setSubjectLine("Subject Line for day 4");
