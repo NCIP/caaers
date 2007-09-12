@@ -27,6 +27,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +48,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private Boolean expected; // false assignment removed cause that is not default for Routine AEs
     private Attribution attributionSummary;
     private String comments;
+    private Date startDate;
+    private Date endDate;
 
     private ExpeditedAdverseEventReport report;
     private RoutineAdverseEventReport routineReport;
@@ -56,7 +59,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private List<DiseaseAttribution> diseaseAttributions;
     private List<SurgeryAttribution> surgeryAttributions;
     private List<RadiationAttribution> radiationAttributions;
-    
 
     ////// BOUND PROPERTIES
 
@@ -71,7 +73,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     public void setReport(ExpeditedAdverseEventReport report) {
         this.report = report;
     }
-    
+
      //  This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,7 +84,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     public void setRoutineReport(RoutineAdverseEventReport routineReport) {
         this.routineReport = routineReport;
-    } 
+    }
 
     @OneToMany
     @JoinColumn(name="adverse_event_id", nullable=false)
@@ -178,7 +180,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.radiationAttributions = radiationAttributions;
     }
 
-    
+
     @Deprecated
     @Transient
     public CtcTerm getCtcTerm() {
@@ -196,45 +198,45 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     @Transient
     public void setCtcTerm(CtcTerm ctcTerm) {
         getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
-    } 
-    
+    }
+
     @Transient
     public AdverseEventCtcTerm getAdverseEventCtcTerm() {
-    	if ( adverseEventTerm == null ) { 
-    		this.adverseEventTerm = new AdverseEventCtcTerm(); 
+    	if ( adverseEventTerm == null ) {
+    		this.adverseEventTerm = new AdverseEventCtcTerm();
     		adverseEventTerm.setAdverseEvent(this);
     	} else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
     		return new AdverseEventCtcTerm();
     	}
-    	
+
 		return (AdverseEventCtcTerm)adverseEventTerm;
 	}
-    
+
     @Transient
 	public void setAdverseEventCtcTerm(AdverseEventCtcTerm adverseEventCtcTerm) {
 		//this.adverseEventCtcTerm = adverseEventCtcTerm;
     	setAdverseEventTerm(adverseEventCtcTerm);
 	}
-    
+
     @Transient
     public AdverseEventMeddraLowLevelTerm getAdverseEventMeddraLowLevelTerm() {
-    	if ( adverseEventTerm == null ) { 
-    		this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm(); 
+    	if ( adverseEventTerm == null ) {
+    		this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm();
     		adverseEventTerm.setAdverseEvent(this);
     	} else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
     		return new AdverseEventMeddraLowLevelTerm();
     	}
 		return (AdverseEventMeddraLowLevelTerm)adverseEventTerm;
 	}
-    
+
     @Transient
 	public void setAdverseEventMeddraLowLevelTerm(AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
 		//this.adverseEventCtcTerm = adverseEventCtcTerm;
     	setAdverseEventTerm(adverseEventMeddraLowLevelTerm);
 	}
-    
-    
-    
+
+
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public AbstractAdverseEventTerm getAdverseEventTerm() {
@@ -245,7 +247,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.adverseEventTerm = adverseEventTerm;
     }
 
-    public String getDetailsForOther() {	
+    public String getDetailsForOther() {
         return detailsForOther;
     }
 
@@ -263,7 +265,24 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
         this.grade = grade;
     }
 
-    @Type(type = "hospitalization")
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	@Type(type = "hospitalization")
     @Column(name = "hospitalization_code")
     public Hospitalization getHospitalization() {
         return hospitalization;

@@ -1,6 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+
+import java.util.Calendar;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -27,6 +31,8 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("AE not found", loaded);
         assertEquals("Wrong grade", Grade.DEATH, loaded.getGrade());
+        assertDayOfDate("Wrong start date", 2007, Calendar.SEPTEMBER, 12,loaded.getStartDate());
+        assertDayOfDate("Wrong end date", 2007, Calendar.SEPTEMBER, 12,loaded.getEndDate());
         assertEquals("Wrong term", 3012, (int) loaded.getAdverseEventCtcTerm().getCtcTerm().getId());
         assertEquals("Wrong hosp.", Hospitalization.NONE, loaded.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, loaded.getExpected());
@@ -102,7 +108,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.PROBABLE, actual.getAttribution());
     }
-    
+
     public void testLoadCtcBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("Ctc Term is null", loaded.getAdverseEventTerm());
@@ -110,7 +116,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("This term is not CtcTerm",true, loaded.getAdverseEventTerm().getTerm() instanceof CtcTerm);
         assertEquals("Wrong Ctc Id",3012, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
-    
+
     public void testLoadMeddraBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-3);
         assertNotNull("Meddra Term is null", loaded.getAdverseEventTerm());
@@ -118,5 +124,5 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
 		assertEquals("This term is not LowLevelTerm",true, loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
 		assertEquals("Wrong Meddra Id",-11, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
-    
+
 }

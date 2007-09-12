@@ -112,6 +112,8 @@
         attribution_summary_code="3"
         expected="1"
         comments="That was some big AE"
+        start_date="2007-09-12 21:43:56.987"
+        end_date="2007-09-12 21:43:56.987"
         />
         
         
