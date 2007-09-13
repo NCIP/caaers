@@ -159,7 +159,7 @@
 		<property name="interceptors">
 			<list>
 				<ref local="gridIdentifierInterceptor"/>
-				<!-- ref local="auditInterceptor" /-->
+				<ref local="auditInterceptor" />
 			</list>
 		</property>
 	</bean>
