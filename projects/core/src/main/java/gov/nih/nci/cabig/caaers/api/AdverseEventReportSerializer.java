@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
@@ -115,10 +116,12 @@ public class AdverseEventReportSerializer {
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
 	    	
 	    	aer.setRadiationIntervention(hibernateAdverseEventReport.getRadiationIntervention());
-	    	
+	    	//aer.getRadiationIntervention().setAdministration(hibernateAdverseEventReport.getRadiationIntervention().getAdministration());
 	    	aer.setSurgeryIntervention(hibernateAdverseEventReport.getSurgeryIntervention());
 	    	
 	    	aer.setMedicalDevice(hibernateAdverseEventReport.getMedicalDevice());
+	    	
+	    	aer.setAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation());
 
 	    	//build medications
 	    	List<ConcomitantMedication> conMedList = hibernateAdverseEventReport.getConcomitantMedications();
@@ -148,6 +151,22 @@ public class AdverseEventReportSerializer {
 	    	for (AdverseEventPriorTherapy therapy: thList) {
 	    		aer.addAdverseEventPriorTherapies(therapy);
 	    	}
+	    	
+	    	//Build pre existing conditions
+	    	List<AdverseEventPreExistingCond> peList = hibernateAdverseEventReport.getAdverseEventPreExistingConds();
+
+	    	for (AdverseEventPreExistingCond pe: peList) {
+	    		aer.addAdverseEventPreExistingCond(pe);
+	    	}
+	    	
+	    	//Build other causes
+	    	List<OtherCause> ocList = hibernateAdverseEventReport.getOtherCauses();
+
+	    	for (OtherCause oc: ocList) {
+	    		aer.addOtherCause(oc);
+	    	}
+	    	
+	    	
 
 	    	return aer;
 	   }
@@ -202,6 +221,7 @@ public class AdverseEventReportSerializer {
 	    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
 	    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
 	    	diseaseHistory.setCodedPrimaryDiseaseSite(dh.getCodedPrimaryDiseaseSite());
+	    	diseaseHistory.setCtepStudyDisease(dh.getCtepStudyDisease());
 	    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
 
 	    	for (MetastaticDiseaseSite site: mdsList) {
@@ -279,6 +299,8 @@ public class AdverseEventReportSerializer {
 	    	
 	    	adverseEvent.setHospitalization(ae.getHospitalization());
 	    	adverseEvent.setGrade(ae.getGrade());
+	    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
+	    	adverseEvent.setExpected(ae.getExpected());
 
 
 	    	return adverseEvent;
@@ -306,7 +328,8 @@ public class AdverseEventReportSerializer {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
 	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
-
+	    	treatmentInformation.setTreatmentAssignmentCode(trtInf.getTreatmentAssignmentCode());
+	    	
 	    	List<CourseAgent> caList = trtInf.getCourseAgents();
 
 	    	for (CourseAgent ca: caList) {
