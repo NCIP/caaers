@@ -142,7 +142,7 @@
 					<fo:inline xsl:use-attribute-sets="normal">  </fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Ticket #:</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">   </fo:inline>	
+					<fo:inline xsl:use-attribute-sets="normal">   <xsl:value-of select="AdverseEventReport/Summary[@id='Ticket number']/value"/> </fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Amendment #:</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal">   </fo:inline>																	
