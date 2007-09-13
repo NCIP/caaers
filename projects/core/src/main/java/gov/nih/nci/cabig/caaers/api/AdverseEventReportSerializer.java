@@ -267,6 +267,8 @@ public class AdverseEventReportSerializer {
 	    	studySite.setStudy(ss.getStudy());
 	    	studySite.setOrganization(ss.getOrganization());
 	    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
+	    	
+	    	//System.out.println("STUDY INVES INTERNAL >>>>>>>>>>>>>>> " + ss.getStudyInvestigatorsInternal().size());
 	    	return studySite;
 	    }
 
