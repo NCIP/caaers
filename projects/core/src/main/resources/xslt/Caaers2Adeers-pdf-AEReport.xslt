@@ -492,7 +492,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/otherPrimaryDiseaseCode"/>
+						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -531,7 +531,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/dateOfInitialPathologicDiagnosis"/>
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/DiseaseHistory/diagnosisDate"/>
+			   						</xsl:call-template>							  		 
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -562,7 +564,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -576,7 +578,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -590,7 +592,7 @@
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEvent/CourseAgentAttribution/CourseAgent/TreatmentInformation/firstCourseDate"/>
+									        <xsl:with-param name="date" select="AdverseEventReport/TreatmentInformation/firstCourseDate"/>
 			   						</xsl:call-template>	
 						  		</fo:block>      							
       						</fo:table-cell>
@@ -604,7 +606,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/TreatmentInformation/AdverseEventCourse/date"/>
+			   						</xsl:call-template>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -653,7 +657,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/AdverseEventCourse/number"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>		
@@ -1230,7 +1234,7 @@
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:value-of select="PriorTherapy/text"/>
+							  			<xsl:value-of select="PriorTherapy/text"/><xsl:value-of select="other"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
@@ -1249,12 +1253,12 @@
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			-
+							  			
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			-
+							  			
 							  		</fo:block>      							
 	      						</fo:table-cell>      						      						      						      						
 			  			    </fo:table-row> 
@@ -1271,7 +1275,12 @@
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Pre-Existing Conditions
 		  		</fo:block>
-		  		
+				<xsl:for-each select="AdverseEventReport/AdverseEventPreExistingCond">
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="PreExistingCondition/text"/><xsl:value-of select="other"/>
+						  		</fo:block> 				
+				</xsl:for-each>
+						  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>
 
@@ -1282,7 +1291,11 @@
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Sites of Metastatic Disease
 		  		</fo:block>
-		  		
+				<xsl:for-each select="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="AnatomicSite/name"/><xsl:value-of select="otherSite"/>
+						  		</fo:block> 				
+				</xsl:for-each>		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>		  		
 
@@ -1295,12 +1308,12 @@
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code : </fo:block>
-
+				<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
 					<fo:table-column column-width="10%"/>
@@ -1345,21 +1358,23 @@
       						</fo:table-cell> 
 		  			    </fo:table-row>
 		  			  
- 					
+ 					<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="StudyAgent/Agent/name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="totalDoseAdministeredThisCourse"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="lastAdministeredDate"/>
+			   						</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1379,11 +1394,11 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="administrationDelayAmount"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="administrationDelayUnits"/>
 						  		</fo:block>      							
       						</fo:table-cell>  
 		  			    </fo:table-row>
-
+					 </xsl:for-each>
 		  			</fo:table-body>
 		  		</fo:table>	
 
@@ -1412,15 +1427,24 @@
 		  		</fo:block>
 		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:block xsl:use-attribute-sets="normal" > test </fo:block>		  		
+		  			<xsl:for-each select="AdverseEventReport/OtherCause">
+			  			<fo:block xsl:use-attribute-sets="normal" > 
+			  				<xsl:value-of select="text"/>  
+			  			</fo:block>
+			  		</xsl:for-each>	  		
 
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
 
-
+		  		
   				<fo:block  xsl:use-attribute-sets="sub-head" > 
-		  			Adverse Events (CTCAE)
+					<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
+		  				Adverse Events (CTCAE)
+		  			</xsl:if>
+		  			<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventMeddraLowLevelTerm/universalTerm">
+		  				Adverse Events (MedDRA)
+		  			</xsl:if>
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 
@@ -1440,7 +1464,9 @@
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
+						  		<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
 						  			CTCAE CATEGORY
+						  		</xsl:if>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1479,17 +1505,19 @@
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
-		  			  
+	  
  					<xsl:for-each select="AdverseEventReport/AdverseEvent"> 
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  			<xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
+						  			
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  			<xsl:value-of select="AdverseEventCtcTerm/universal-term"/>
+						  			<xsl:value-of select="AdverseEventMeddraLowLevelTerm/universalTerm"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1749,41 +1777,48 @@
       						</fo:table-cell> 
 		  			    </fo:table-row>
 		  			  
- 					
+ 					 <xsl:for-each select="AdverseEventReport/Lab"> 
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="baseline/date"/>
+			   						</xsl:call-template>						  			
+						  		</fo:block> 
+						  		     							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="baseline/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="nadir/date"/>
+			   						</xsl:call-template>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="nadir/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+									<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="recovery/date"/>
+			   						</xsl:call-template>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="recovery/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>  
       						<fo:table-cell>
@@ -1802,7 +1837,7 @@
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
-
+					</xsl:for-each>
 		  			</fo:table-body>
 		  		</fo:table>			  		
   			  <fo:block id="content_terminator"/>    
