@@ -578,7 +578,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
+						  			
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -625,18 +625,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Treatment Assignment Code :
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-		  			    </fo:table-row>
+
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
@@ -1307,8 +1296,11 @@
 		  			Protocol Agents
 		  		</fo:block>
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code : </fo:block>
-				<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:block xsl:use-attribute-sets="label" > Treatment Assignment Code : 
+				 <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> 
+				 <xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
+				 </fo:block>
+				
 		  		<fo:table>
 					<fo:table-column column-width="15%"/>
 					<fo:table-column column-width="20%"/>
