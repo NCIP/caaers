@@ -1,10 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.web.ae.RoutineAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,9 +28,16 @@ public class DiseaseTab extends StudyTab {
 
     private DiseaseTermDao diseaseTermDao;
     private LowLevelTermDao lowLevelTermDao;
+    private InputFieldGroup healthyVolunteerFieldGroup;
+    
+    private static final String HEALTHY_VOLUNTEER_FIELD_GROUP = "healthyVolunteer";
+    
 
     public DiseaseTab() {
         super("Study Disease", "Disease", "study/study_diseases");
+        
+        healthyVolunteerFieldGroup = new DefaultInputFieldGroup(HEALTHY_VOLUNTEER_FIELD_GROUP);
+        healthyVolunteerFieldGroup.getFields().add(InputFieldFactory.createBooleanSelectField("healthyVolunteer", "healthyVolunteer", true));
     }
 
     @Override
@@ -32,6 +46,15 @@ public class DiseaseTab extends StudyTab {
             request.getParameter("_selected"));
     }
 
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        map.addInputFieldGroup(healthyVolunteerFieldGroup);
+        return map;
+    }
+    
     private void handleStudyDiseaseAction(Study study, String action, String selected) {
         if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 ) {
             String diseaseCode = study.getDiseaseLlt();
