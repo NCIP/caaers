@@ -89,10 +89,7 @@
                         </list>
                     </property>
                 </bean>
-                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Reports" p:mainController="reportsNotImplementedController">
-                    <property name="pathMapping"><value>/report/**</value></property>
-                </bean>
+                  
                 <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
                     p:displayName="Rules" p:mainController="createRuleController">
                     <property name="pathMapping"><value>/rule/**</value></property>
