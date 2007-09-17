@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.LiteralRestriction;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
+import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
@@ -31,16 +32,19 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
+import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
+import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -66,6 +70,8 @@ public class RuleAjaxFacade
 	private RuleAuthoringService ruleAuthoringService; 
 	
 	private RuleExecutionService ruleExecutionService;
+	
+	private RulesEngineService rulesEngineService;
 	
 	private RuleDeploymentService ruleDeploymentService;
 	
@@ -211,8 +217,8 @@ public class RuleAjaxFacade
         // cut down objects for serialization
         List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
         for (ReportDefinition reportDefinition : reportDefinitions) {
-            	reportDefinition.setPlannedNotifications(null);
-            	reportDefinition.setTimeScaleUnitType(null);
+            	//reportDefinition.setPlannedNotifications(null);
+            	//reportDefinition.setTimeScaleUnitType(null);
             	reducedReportDefinitions.add(reportDefinition);  			
         }
         
@@ -348,6 +354,40 @@ public class RuleAjaxFacade
     	}
     	
     	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+    }
+
+    public void exportRuleSet(String ruleSetName) throws RemoteException
+    {
+    		
+    	DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+		Properties props = b.getProperties();
+		//props.list(System.out);
+		
+		String repoLocation = props.getProperty("rules.repository");
+		
+    	String osName = System.getProperty("os.name");
+    	
+    	if (!osName.toLowerCase().contains("windows")) {    		
+    		repoLocation = repoLocation.substring(5,repoLocation.length());
+    	} else {
+    		repoLocation = repoLocation.substring(7,repoLocation.length());
+    	}
+    	
+
+    		String exportLocation = repoLocation + File.separator + "export";
+    		
+    		File f = new File(exportLocation);
+    		try {
+				f.mkdir();
+
+				getRulesEngineService().exportRule(ruleSetName, exportLocation);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RemoteException ("Error exporting ruleset ",e);
+			}
+    		
+    		
     }
     
     public void fireRules(String bindUri, String mode) throws RemoteException {
@@ -673,5 +713,13 @@ public class RuleAjaxFacade
 
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+
+	public RulesEngineService getRulesEngineService() {
+		return rulesEngineService;
+	}
+
+	public void setRulesEngineService(RulesEngineService rulesEngineService) {
+		this.rulesEngineService = rulesEngineService;
 	}
 }
