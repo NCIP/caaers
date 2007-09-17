@@ -355,7 +355,7 @@ public class RuleAjaxFacade
     	
     	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
     }
-
+/*
     public void exportRuleSet(String ruleSetName) throws RemoteException
     {
     		
@@ -389,7 +389,7 @@ public class RuleAjaxFacade
     		
     		
     }
-    
+ */   
     public void fireRules(String bindUri, String mode) throws RemoteException {
     	StudySDO study = new StudySDO();
     	study.setShortTitle("AML/MDS 9911");
