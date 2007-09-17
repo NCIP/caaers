@@ -38,13 +38,14 @@ public class RuleTab extends DefaultTab
 	private List<ReportDefinition> getReportDefinitions(Organization org) {
     	//System.out.println("getting report definitions ....");
     	//get report defnitions
+		
     	List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
     	
-        // cut down objects for serialization
+       // cut down objects for serialization
         List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(reportDefinitions.size());
         for (ReportDefinition reportDefinition : reportDefinitions) {
-            	reportDefinition.setPlannedNotifications(null);
-            	reportDefinition.setTimeScaleUnitType(null);
+            	//reportDefinition.setPlannedNotifications(null);
+            	//reportDefinition.setTimeScaleUnitType(null);
             	reducedReportDefinitions.add(reportDefinition);  			
         }	
         
