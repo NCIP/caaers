@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class PriorTherapyTab extends AeTab {
 
     public PriorTherapyTab() {
-        super("Prior Therapies", "Therapies", "ae/priorTherapies");
+        super("Prior Therapies", "Prior Therapies", "ae/priorTherapies");
 
     }
 

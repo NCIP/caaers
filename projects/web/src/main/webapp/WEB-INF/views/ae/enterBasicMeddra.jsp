@@ -73,9 +73,6 @@
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <div class="report-fields">
-                <c:forEach items="${fieldGroups.report.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-                </c:forEach>
                 <div class="row">
                     <div class="label">MedDRA Version</div>
                     <div class="value">

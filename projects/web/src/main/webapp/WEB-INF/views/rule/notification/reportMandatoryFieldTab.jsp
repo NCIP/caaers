@@ -28,18 +28,13 @@
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
-			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION" />
-			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="0" endIndex="2" />
+			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="0" endIndex="3" />
 			  	  </td>
 			 	  <td width="50%">
-					<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="3" />  	    	      
+					<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="4" />  	    	      
 			 	  </td>
 			  </tr>
 			</table>
-		
-		
-			
-			
 		</chrome:division>
 		<chrome:division title="Reporter information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">

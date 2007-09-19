@@ -8,9 +8,12 @@
 <%@attribute name="style"%>
 
 <ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}">
-    <c:forEach begin="0" end="3" var="i">
-        <tags:renderRow field="${fieldGroup.fields[i]}"/>
-    </c:forEach>
+ <tags:renderRow field="${fieldGroup.fields[0]}"/>
+ <tags:renderRow field="${fieldGroup.fields[1]}"/>
+ <tags:renderRow field="${fieldGroup.fields[2]}"/>
+ <tags:renderRow field="${fieldGroup.fields[3]}"/>
+ <tags:renderRow field="${fieldGroup.fields[4]}"/>
+ <tags:renderRow field="${fieldGroup.fields[5]}"/>
     <div class="row">
         <div class="value">
             <label>
@@ -20,9 +23,8 @@
         </div>
     </div>
     <div id="modified-dose-fields-${index}">
-        <tags:renderRow field="${fieldGroup.fields[4]}"/>
-    </div>
-    <c:forEach begin="5" end="${fn:length(fieldGroup.fields) - 1}" var="i">
+    <c:forEach begin="6" end="${fn:length(fieldGroup.fields) - 1}" var="i">
         <tags:renderRow field="${fieldGroup.fields[i]}"/>
     </c:forEach>
+    </div>
 </ae:fieldGroupDivision>

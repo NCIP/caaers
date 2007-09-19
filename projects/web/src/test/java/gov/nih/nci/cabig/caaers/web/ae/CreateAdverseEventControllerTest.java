@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
@@ -73,6 +74,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     protected ReportDefinitionDao reportDefinitionDao;
     protected PreExistingConditionDao preExistingConditionDao;
     protected LowLevelTermDao lowLevelTermDao;
+    protected TreatmentAssignmentDao treatmentAssignmentDao;
 
     private StudyParticipantAssignment assignment;
 
@@ -97,7 +99,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class),
             studyDao = registerDaoMockFor(StudyDao.class),
             lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class),
-            studyAgentDao = registerDaoMockFor(StudyAgentDao.class)
+            studyAgentDao = registerDaoMockFor(StudyAgentDao.class),
+            treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class)
         );
         ConfigProperty configProperty = new ConfigProperty();
         configProperty.setMap(LazyMap.decorate(new HashMap<String, List<Lov>>(), new InstantiateFactory(ArrayList.class)));
@@ -119,6 +122,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setReportDefinitionDao(reportDefinitionDao);
         controller.setPreExistingConditionDao(preExistingConditionDao);
         controller.setLowLevelTermDao(lowLevelTermDao);
+        controller.setTreatmentAssignmentDao(treatmentAssignmentDao);
         controller.setTabConfigurer(tabConfigurer);
 
         // This can't be a constant b/c it has to be created after the application context is
@@ -129,30 +133,17 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         passFirstPage();
     }
 
-    public void testBindDetectionDate() throws Exception {
-        request.setParameter("aeReport.detectionDate", "12/30/1999");
-        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertDayOfDate(1999, Calendar.DECEMBER, 30, command.getAeReport().getDetectionDate());
-    }
 
     public void testBindCtcTerm() throws Exception {
         CtcTerm expectedTerm = new CtcTerm();
-        request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.term", "3022");
+        request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.ctcTerm", "3022");
         expect(ctcTermDao.getById(3022)).andReturn(expectedTerm);
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
         assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2).getAdverseEventCtcTerm().getCtcTerm());
     }
 
-    public void testBindConcomitantMedAgent() throws Exception {
-        Agent expectedAgent = new Agent();
-        request.setParameter("aeReport.concomitantMedications[2].agent", "30");
-        expect(agentDao.getById(30)).andReturn(expectedAgent);
 
-        CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertSame(expectedAgent,
-            command.getAeReport().getConcomitantMedications().get(2).getAgent());
-    }
 
     public void testBindStudyAgent() throws Exception {
         StudyAgent expected = setId(332, createStudyAgent("Zed"));
@@ -233,7 +224,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
         firstCommand.getAeReport().addConcomitantMedication(new ConcomitantMedication());
-        
+
         request.setParameter("attributionMap[courseAgent][1][1]", Attribution.DEFINITE.name());
         request.setParameter("attributionMap[conMed][0][2]", Attribution.PROBABLE.name());
 
@@ -255,6 +246,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             if (!(tabs.get(i) instanceof TabWithFields)) continue;
             TabWithFields<ExpeditedAdverseEventInputCommand> tab
                 = (TabWithFields<ExpeditedAdverseEventInputCommand>) tabs.get(i);
+            if(tab instanceof TreatmentTab) continue; //treatment tab has got 'Required' fields
             Map<String, InputFieldGroup> groups = tab.createFieldGroups(firstCommand);
             for (String groupName : groups.keySet()) {
                 InputFieldGroup group = groups.get(groupName);
@@ -281,7 +273,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         assertSame("merge result not pushed into command", expectedEAER, firstCommand.getAeReport());
         verifyMocks();
     }
-    
+
     public void testCurrentFormObjectDoesNothingIfEAERIsNotSaved() throws Exception {
         firstCommand.getAeReport().setId(null);
 

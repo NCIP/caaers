@@ -14,44 +14,30 @@
 			font-weight:bold;
 			margin-left:0.5em;
 			text-align:right;
-			font-family:verdana,arial,helvetica,sans-serif;
-			font-size:11px;
   		}
   		.value {
-  			font-family:verdana,arial,helvetica,sans-serif;
-			font-size:11px;
-			padding-left:15px;
+  			padding-left:15px;
   		}
   		div.row div.label { width: 11em; } 
   	</style>
     <script language="javascript">
-    	function deleteEntity(iots, entity){
-    		var frm = $('command');
-			frm.elements['delete'].value = iots;
-			frm.elements['entity'].value = entity;
-			var target = $('_target');
-			target.name = '_target3';
-			var finish = $('markFinish');
-			finish.name='xyz';
-			frm.submit();
-    	}
+    	
     	 
     </script>
     
 </head>
 <body>
-    
-    <chrome:division title="Review Notification(s)">
+ <chrome:division title="Review Notification(s)">
     <tags:tabForm tab="${tab}" flow="${flow}" >
     <jsp:attribute name="instructions">
     	Please review the details furnished below, then press save to persist the modifications.
     </jsp:attribute>
-	<jsp:attribute name="singleFields">
-		  
+	<jsp:attribute name="repeatingFields">
 		  <tags:errors path="*"/>
 		  
 		<!-- Basic Details -->
 		<chrome:division title="Basic Details">
+		 
 		  <c:forEach items="${FIELDS['Basic Details']}" var="pair">
 		    <rd:renderPair pair="${pair}" />
 		  </c:forEach>
@@ -81,22 +67,15 @@
 		<!-- Notification Details -->	
 		<chrome:division title="Notification(s)">
 		  <c:forEach items="${FIELDS.pnfKeySet}" var="pnfKey" varStatus="pnfStatus">
-			<chrome:division title="Notification for ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}">
+			<chrome:division title="Notification ${pnfStatus.index + 1} of ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}">
 		    	<c:forEach items="${FIELDS['Planned Notification'][pnfKey]}" var="pair" >
 		    		<rd:renderPair pair="${pair}" preformatedValue="${pair.key eq 'Message'}"/>
 			    </c:forEach>
-			    <div class="content buttons autoclear">
-    				<div class="local-buttons">
-			    		<input type="button" name="del" onClick="javascript:deleteEntity(${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale},'notification');" value="Delete Notification of ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}" />
-			    	</div>
-			    </div>
+
 		    </chrome:division>
 		  </c:forEach>
 		</chrome:division>
         <input id="markFinish" type="hidden" name="_finish"/>
-        <input type="hidden" name="lastPointOnScale" value="" />
-        <input type="hidden" name="delete" value="" /> 
-        <input type="hidden" name="entity" value="" />
 	</jsp:attribute>
 </tags:tabForm> 
 </chrome:division>

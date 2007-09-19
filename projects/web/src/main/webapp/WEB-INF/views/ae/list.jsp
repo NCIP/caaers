@@ -87,8 +87,8 @@
             </c:choose>
             </a>
         </ec:column>
-        <ec:column property="detectionDate" title="Detection date">
-            <tags:formatDate value="${report.detectionDate}"/>
+        <ec:column property="createdAt" title="Start date">
+            <tags:formatDate value="${report.adverseEvents[0].startDate}"/>
         </ec:column>
         <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
         <ec:column property="adverseEvents[0].attribution.code" title="Attribution"/>

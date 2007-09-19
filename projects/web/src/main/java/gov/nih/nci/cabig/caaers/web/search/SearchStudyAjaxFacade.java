@@ -398,7 +398,7 @@ public class SearchStudyAjaxFacade {
 		aeStartDate.setProperty("test");
 		aeStartDate.setSortable(false);
 		aeStartDate.setCell("gov.nih.nci.cabig.caaers.web.search.AeDetectionDateDisplayCell");
-		aeStartDate.setTitle("Detection Date");
+		aeStartDate.setTitle("Start Date");
 		model.addColumn(aeStartDate);
 
 		return model.assemble();
@@ -450,8 +450,8 @@ public class SearchStudyAjaxFacade {
 		model.addColumn(attributionCode);
 
 		Column aeDetectionDate = model.getColumnInstance();
-		aeDetectionDate.setProperty("detectionDate");
-		aeDetectionDate.setTitle("Detection Date");
+		aeDetectionDate.setProperty("adverseEvents[0].startDate");
+		aeDetectionDate.setTitle("Start Date");
 		aeDetectionDate.setCell(TableConstants.DATE);
 		aeDetectionDate.setFormat("MM/dd/yyyy");
 		model.addColumn(aeDetectionDate);

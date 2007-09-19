@@ -43,6 +43,10 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 		InputField descField = InputFieldFactory.createTextArea("reportDefinition.description", "Description", false);
 		InputFieldAttributes.setColumns(descField, 50);
 		fields.add(descField);
+
+		InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
+		fields.add(amendableField);
+
 		fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
 		fields.add(InputFieldFactory.createTextField("reportDefinition.duration", "Time Till Report Due", true));

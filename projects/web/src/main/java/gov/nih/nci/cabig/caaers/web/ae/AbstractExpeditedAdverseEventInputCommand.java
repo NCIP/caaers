@@ -39,6 +39,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected List<String> mandatorySections;
     protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
 
+    private String treatmentDescriptionType;
+
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
@@ -137,6 +139,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     		}
     	}
     }
+
+    public String getTreatmentDescriptionType() {
+		return treatmentDescriptionType;
+	}
+    public void setTreatmentDescriptionType(String type) {
+		this.treatmentDescriptionType = type;
+	}
 
 	public Map<String, Boolean> getMandatoryFieldMap() {
 		return mandatoryFieldMap;

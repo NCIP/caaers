@@ -71,19 +71,18 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             return null;
         }
     }
-    
+
     private void prepareExpeditedReport()
     {
     	this.aeReport = new ExpeditedAdverseEventReport();
-        aeReport.setDetectionDate(aeRoutineReport.getStartDate());
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
     }
-    
+
     public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {
         this.aeRoutineReport = aeRoutineReport;
     }
-    
+
 
     // This method deliberately sets only one side of the bidirectional link.
     // This is so hibernate will not discover the link from the persistent side
@@ -94,8 +93,8 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 
     /*
      * Will try to find serious AEs if found they will be reported as expedited.
-     * An AE might be MedDRA or CTC based Rules should take that into consideration 
-     * 
+     * An AE might be MedDRA or CTC based Rules should take that into consideration
+     *
      * @see gov.nih.nci.cabig.caaers.web.ae.AdverseEventInputCommand#save()
      */
     public void save() {
@@ -103,11 +102,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         prepareExpeditedReport();
         boolean isExpedited = findExpedited(getAeRoutineReport());
         routineReportDao.save(getAeRoutineReport());
-        
+
         if (isExpedited) {
 			reportDao.save(this.aeReport);
-		} 
-        
+		}
+
     }
 
     ////// BOUND PROPERTIES
@@ -147,7 +146,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         }
         updateReportAssignmentLink();
     }
-    
+
 	@SuppressWarnings("finally")
 	public boolean findExpedited(RoutineAdverseEventReport raer ){
 		log.debug("Checking for expedited AEs");
@@ -213,5 +212,13 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.cats = cats;
     }
 
+    public String getTreatmentDescriptionType() {
+    	// TODO Check if we need this for routine adverse events
+    	return null;
+    }
+    public void setTreatmentDescriptionType(String type) {
+    	// TODO Check if this is needed for routine adverse events
+
+    }
 
 }

@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class RadiationInterventionTab extends AeTab {
 
     public RadiationInterventionTab() {
-        super("Radiation Intervention", "Radiation Intervention", "ae/radiationIntervention");
+        super("Radiation Intervention", "Radiation", "ae/radiationIntervention");
 
     }
 

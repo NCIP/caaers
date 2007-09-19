@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,13 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class AttributionTab extends AeTab {
-    private static final Map<Object,Object> ATTRIBUTION_OPTIONS = InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null);
-
+    private static final Map<Object,Object> ATTRIBUTION_OPTIONS;
+    static{
+    	ATTRIBUTION_OPTIONS = collectAttributionOptions();
+    }
     protected AttributionTab() {
         super("Attribution", "Attribution", "ae/attribution");
+
     }
 
     @Override
@@ -110,6 +114,14 @@ public class AttributionTab extends AeTab {
                 .append(causeIndex).append(']').toString();
         return InputFieldFactory.createSelectField(propertyName, null, true, ATTRIBUTION_OPTIONS);
     }
+
+    private static Map<Object, Object> collectAttributionOptions(){
+    	Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+    	map.put("", "Please select");
+    	map.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+    	return map;
+    }
+
     @Override
     public ExpeditedReportSection section() {
     	return ExpeditedReportSection.ATTRIBUTION_SECTION;

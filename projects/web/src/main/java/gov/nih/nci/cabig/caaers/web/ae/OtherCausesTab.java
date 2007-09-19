@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class OtherCausesTab extends AeTab {
     public OtherCausesTab() {
-        super("Other contributing causes", "Other", "ae/other");
+        super("Other contributing causes", "Other Causes", "ae/other");
     }
 
     @Override

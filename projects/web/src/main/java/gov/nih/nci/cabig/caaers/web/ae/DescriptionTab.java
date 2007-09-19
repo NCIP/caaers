@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 public class DescriptionTab extends AeTab {
 
     public DescriptionTab() {
-        super("Event and response description", "Description", "ae/description");
+        super("Event and response description", "Description of Event and Outcome", "ae/description");
 
     }
 

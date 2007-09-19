@@ -23,7 +23,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
     private ExpeditedAdverseEventReport aeReport;
     private RoutineAdverseEventReport aeRoutineReport;
     private Map<String, List<List<Attribution>>> attributionMap;
-    
+
     private List<CtcCategory> categories;
     private String[] ctcCatIds;
     private String[] cats;
@@ -114,8 +114,12 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 	public void setCtcTermIds(String[] ctcTermIds) {
 		this.ctcTermIds = ctcTermIds;
 	}
-	
-	
+	public String getTreatmentDescriptionType() {
+	 	// TODO Check if we need this for routine adverse events
+	   	return null;
+	}
+	public void setTreatmentDescriptionType(String type) {
+	  	// TODO Check if this is needed for routine adverse events
+	}
 
-    
 }

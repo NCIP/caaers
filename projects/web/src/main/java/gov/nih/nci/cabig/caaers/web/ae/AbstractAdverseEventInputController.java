@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
@@ -49,7 +50,7 @@ import java.util.Map;
 public abstract class AbstractAdverseEventInputController
     extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
 {
-	
+
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final int SUBMISSION_PAGE = 17;
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
@@ -69,6 +70,7 @@ public abstract class AbstractAdverseEventInputController
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected PreExistingConditionDao preExistingConditionDao;
+    protected TreatmentAssignmentDao treatmentAssignmentDao;
 
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
@@ -93,7 +95,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
-        ControllerTools.registerDomainObjectEditor(binder, "aeReport.adverseEvents.adverseEventCtcTerm.term", ctcTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
@@ -102,6 +104,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
+        ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
         ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -116,7 +119,7 @@ public abstract class AbstractAdverseEventInputController
     @Override
     protected int getInitialPage(HttpServletRequest request){
     	boolean isActionAvailable = request.getParameter("action") != null ? true : false;
-    	
+
     	if (isActionAvailable && request.getParameter("action").equals("reportSubmission")){
     		log.debug("This is a report Submission");
     		return SUBMISSION_PAGE;
@@ -125,7 +128,7 @@ public abstract class AbstractAdverseEventInputController
     		log.debug("This is a Create where the StudyParticipantAssignment is already defined");
     		return 1;
     	}
-    	// default behaviour 
+    	// default behaviour
     	return super.getInitialPage(request);
     }
 
@@ -140,7 +143,7 @@ public abstract class AbstractAdverseEventInputController
         for(Tab<ExpeditedAdverseEventInputCommand> tab  : getFlow(cmd).getTabs()){
         	if(tab instanceof AeTab){
         		AeTab aeTab = (AeTab) tab;
-        		if(aeTab.hasEmptyMandatoryFields(cmd)){
+        		if(aeTab.isMandatory(cmd) && aeTab.hasEmptyMandatoryFields(cmd)){
         			sb.append(",").append(tab.getShortTitle());
         		}
         	}
@@ -308,6 +311,13 @@ public abstract class AbstractAdverseEventInputController
 		this.lowLevelTermDao = lowLevelTermDao;
 	}
 
+	public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+		return treatmentAssignmentDao;
+	}
+	public void setTreatmentAssignmentDao(
+			TreatmentAssignmentDao treatmentAssignmentDao) {
+		this.treatmentAssignmentDao = treatmentAssignmentDao;
+	}
 
 
 }

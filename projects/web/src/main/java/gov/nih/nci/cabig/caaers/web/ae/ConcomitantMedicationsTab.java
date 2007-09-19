@@ -8,6 +8,8 @@ import java.util.ListIterator;
 
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -19,7 +21,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class ConcomitantMedicationsTab extends AeTab {
 
     public ConcomitantMedicationsTab() {
-        super("Concomitant medications", "Con. meds", "ae/conMed");
+        super("Concomitant medications", "Concomitant Medications", "ae/conMed");
     }
 
     @Override
@@ -32,35 +34,17 @@ public class ConcomitantMedicationsTab extends AeTab {
                 return "Medication " + (index + 1);
             }
         });
-        fieldFactory.addField(InputFieldFactory.createAutocompleterField("agent", "Known medication", false));
-        fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
+        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Agent name", true);
+        InputFieldAttributes.setSize(agentNameField, 50);
+        fieldFactory.addField(agentNameField);
 
     	//-
         InputFieldGroupMap groups = new InputFieldGroupMap();
-        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getLabs().size());
+        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getConcomitantMedications().size());
         return groups;
     }
 
-    @Override
-    protected void validate(
-        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-        for (ListIterator<ConcomitantMedication> it = command.getAeReport().getConcomitantMedications().listIterator(); it.hasNext();) {
-            ConcomitantMedication conMed = it.next();
-            validateConcomitantMedication(conMed, it.previousIndex(), errors);
-        }
-    }
 
-    private void validateConcomitantMedication(ConcomitantMedication conMed, int index, Errors errors) {
-        if (conMed.getAgent() == null && conMed.getOther() == null) {
-            errors.rejectValue(
-                String.format("aeReport.concomitantMedications[%d]", index),
-                "REQUIRED",
-                "Either a known medication or other is required"
-            );
-        }
-    }
     @Override
     public ExpeditedReportSection section() {
     	return ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;

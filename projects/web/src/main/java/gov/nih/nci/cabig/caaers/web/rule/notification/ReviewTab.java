@@ -43,9 +43,6 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand>{
 	@Override
 	public void postProcess(HttpServletRequest req, ReportDefinitionCommand nfCmd, Errors errors) {
 		super.postProcess(req,nfCmd,errors);
-		nfCmd.setValidationFailed(errors.hasErrors());
-		if(errors.hasErrors()) return;
-		nfCmd.removeEntities();
 	}
 
 	/* (non-Javadoc)
@@ -98,24 +95,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand>{
 		map.put(tab.getShortTitle(), fieldList);
 
 		//report definition tab
-/*		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(1);
-		fieldGroupMap = tab.createFieldGroups(command);
-		Map<String, Object> rddMap = new LinkedHashMap<String, Object>();
-		int i = 0;
-		String exclude = "";
-		for(String key : fieldGroupMap.keySet()){
-			int entityType = command.getReportDefinition().getDeliveryDefinitions().get(i).getEntityType();
-			if(entityType == ReportDeliveryDefinition.ENTITY_TYPE_ROLE)
-				exclude = "Address";
-			else
-				exclude = "Role";
-			i++;
-			fieldGroup = fieldGroupMap.get(key);
-			rddMap.put(key, fetchFieldValues(fieldGroup, wrappedCommand,exclude));
-		}
-		map.put("Report Delivery Definition", rddMap);
-		map.put("rddKeySet", rddMap.keySet());
-*/
+
 		List<ReportDeliveryDefinition> deliveries = command.getReportDefinition().getDeliveryDefinitions();
 		if(deliveries != null){
 			List<Pair> pairs = new ArrayList<Pair>();
@@ -147,6 +127,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand>{
 		// Mandatory Field Definition Tab
 		tab = (TabWithFields<ReportDefinitionCommand>)getFlow().getTab(2);
 		fieldGroupMap = tab.createFieldGroups(command);
+		Map<String, List<Pair>> sectionMap = new LinkedHashMap<String, List<Pair>>();
 
 		//Notification details tab
 		tab = (TabWithFields<ReportDefinitionCommand>) getFlow().getTab(3);

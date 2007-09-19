@@ -24,32 +24,26 @@ public class ConcomitantMedicationsTabTest extends AeTabTestCase {
     public void testFieldProperties() throws Exception {
         assertFieldProperties(
             "conmed7",
-            "aeReport.concomitantMedications[7].agent",
-            "aeReport.concomitantMedications[7].other"
+            "aeReport.concomitantMedications[7].agentName"
         );
     }
 
-    public void testConcomitantMedicationValidWithAgent() throws Exception {
-        command.getAeReport().getConcomitantMedications().get(0).setAgent(new Agent());
+    public void testConcomitantMedicationValidWithAgentName() throws Exception {
+        command.getAeReport().getConcomitantMedications().get(0).setAgentName("agentName");
         doValidate();
         assertEquals(0, getErrors().getErrorCount());
     }
 
-    public void testConcomitantMedicationValidWithOther() throws Exception {
-        command.getAeReport().getConcomitantMedications().get(0).setOther("Tylenol");
-        doValidate();
-        assertEquals(0, getErrors().getErrorCount());
-    }
-    
-    public void testEitherAgentOrOtherRequired() throws Exception {
-        command.getAeReport().getConcomitantMedications().get(0).setAgent(null);
-        command.getAeReport().getConcomitantMedications().get(0).setOther(null);
+
+
+    public void testAgentNameRequired() throws Exception {
+        command.getAeReport().getConcomitantMedications().get(0).setAgentName(null);
         doValidate();
         assertEquals(1, getErrors().getErrorCount());
-        ObjectError fieldError = getErrors().getFieldError("aeReport.concomitantMedications[0]");
+        ObjectError fieldError = getErrors().getFieldError("aeReport.concomitantMedications[0].agentName");
         assertNotNull(fieldError);
         assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
-        assertEquals("Wrong message", "Either a known medication or other is required",
+        assertEquals("Wrong message", "Missing Agent name",
             fieldError.getDefaultMessage());
     }
 }

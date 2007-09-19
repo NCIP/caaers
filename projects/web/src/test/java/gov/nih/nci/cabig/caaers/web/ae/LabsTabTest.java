@@ -1,15 +1,36 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.validation.ObjectError;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 /**
  * @author Rhett Sutphin
  */
 @CaaersUseCases({ CREATE_EXPEDITED_REPORT })
 public class LabsTabTest extends AeTabTestCase {
-    @Override protected LabsTab createTab() { return new LabsTab(); }
+    @Override
+    protected LabsTab createTab() {
+    	ConfigProperty configProperty = new ConfigProperty();
+    	Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
+    	map.put("labUnitsRefData", new ArrayList<Lov>());
+    	configProperty.setMap(map);
+    	LabsTab tab = new LabsTab();
+    	tab.setConfigurationProperty(configProperty);
+    	return tab;
+    }
 
     @Override
     protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
@@ -20,10 +41,11 @@ public class LabsTabTest extends AeTabTestCase {
         assertDisplayNameForFieldGroup("Lab A", "lab0");
         assertDisplayNameForFieldGroup("Lab G", "lab6");
     }
-    
+
     public void testFieldProperties() throws Exception {
         assertFieldProperties("lab3",
             "aeReport.labs[3].name",
+            "aeReport.labs[3].other",
             "aeReport.labs[3].units",
             "aeReport.labs[3].baseline.value",
             "aeReport.labs[3].baseline.date",
@@ -32,5 +54,17 @@ public class LabsTabTest extends AeTabTestCase {
             "aeReport.labs[3].recovery.value",
             "aeReport.labs[3].recovery.date"
         );
+    }
+
+    public void testEitherTestNameOrOtherRequired() throws Exception {
+        command.getAeReport().getLabs().get(0).setName(null);
+        command.getAeReport().getLabs().get(0).setOther(null);
+        doValidate();
+        assertEquals(2, getErrors().getErrorCount()); //one for missing name(or other) and one for missing units
+        ObjectError fieldError = getErrors().getFieldError("aeReport.labs[0]");
+        assertNotNull(fieldError);
+        assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
+        assertEquals("Wrong message", "Either a known test name or other is required",
+            fieldError.getDefaultMessage());
     }
 }

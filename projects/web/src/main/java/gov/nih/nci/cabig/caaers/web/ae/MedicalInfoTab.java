@@ -25,7 +25,7 @@ public class MedicalInfoTab extends AeTab {
     private ConfigProperty configurationProperty;
 
     public MedicalInfoTab() {
-        super("Medical info", "Medical", "ae/medical");
+        super("Medical info", "Patient Details", "ae/medical");
     }
 
     // TODO: configurationProperty and all things associated with it are abhorrent

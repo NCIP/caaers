@@ -27,7 +27,7 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     }
 
     public void testTabCount() throws Exception {
-        assertEquals(18, factory.createFlow(command).getTabCount());
+        assertEquals(17, factory.createFlow(command).getTabCount());
     }
 
     public void testMeddraBasicsTabUsedWhenAppropriate() throws Exception {

@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
@@ -27,11 +28,15 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,24 +76,26 @@ public class CreateAdverseEventAjaxFacade {
     private PriorTherapyDao priorTherapyDao;
     private PreExistingConditionDao preExistingConditionDao;
     private AgentDao agentDao;
+    private TreatmentAssignmentDao treatmentAssignmentDao;
     private ExpeditedReportTree expeditedReportTree;
+    private ConfigProperty configProperty;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
-    } 
-    
+    }
+
     public List<PriorTherapy> matchPriorTherapies(String text) {
         return priorTherapyDao.getBySubnames(extractSubnames(text));
     }
-    
+
     public List<PreExistingCondition> matchPreExistingConds(String text) {
         return preExistingConditionDao.getBySubnames(extractSubnames(text));
     }
-    
+
     public List<LowLevelTerm> matchLowLevelTermsByCode(String text) {
         return lowLevelTermDao.getBySubnames(extractSubnames(text));
     }
-    
+
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents,"id", "name", "nscNumber","description");
@@ -99,7 +106,7 @@ public class CreateAdverseEventAjaxFacade {
         ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
         return reduce(researchStaff, "id", "firstName", "lastName", "middleName");
     }
-    
+
     public List<Participant> matchParticipants(String text, Integer studyId) {
     	List<Participant> participants;
     	if (studyId == null){
@@ -111,7 +118,7 @@ public class CreateAdverseEventAjaxFacade {
         // cut down objects for serialization
         return reduceAll(participants, "firstName", "lastName", "id");
     }
-    
+
     /* Depracated and replace by a hql based query to enhance performance
     public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants = participantDao.getBySubnames(extractSubnames(text));
@@ -136,7 +143,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         return onStudy;
     }
-    
+
     /* Depracated and replace by a hql based query to enhance performance
     public List<Study> matchStudies(String text, Integer participantId) {
         List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
@@ -150,7 +157,7 @@ public class CreateAdverseEventAjaxFacade {
         return reduceAll(studies, "id", "shortTitle");
     }
     */
-    
+
     public List<Study> matchStudies(String text, Integer participantId) {
     	List<Study> studies ;
     	if (participantId == null){
@@ -188,7 +195,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         return terms;
     }
-    
+
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
         List<CtcTerm> terms;
         if (ctcCategoryId == 0) {
@@ -212,7 +219,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         return categories;
     }
-    
+
     public List<? extends CodedGrade> getTermGrades(int ctcTermId) {
         List<CodedGrade> list = ctcTermDao.getById(ctcTermId).getGrades();
         // have to detect whether it's a collection of Grade or CtcGrade;
@@ -224,6 +231,20 @@ public class CreateAdverseEventAjaxFacade {
         } else {
             return reduceAll(list, "grade", "text");
         }
+    }
+
+    //will return the labTestNamesRefData Lov's matching the testName.
+    public List<Lov> matchLabTestNames(String testName){
+    	List<Lov> lovs = new ArrayList<Lov>();
+    	for(Lov lov : configProperty.getMap().get("labTestNamesRefData")){
+    		if(lov.getDesc().contains(testName)) lovs.add(lov);
+    	}
+    	return ObjectTools.reduceAll(lovs, "code", "desc");
+    }
+
+    public List<TreatmentAssignment> matchTreatmentAssignment(String text, int studyId){
+    	List<TreatmentAssignment> treatmentAssignments = treatmentAssignmentDao.getAssignmentsByStudyId(text, studyId);
+    	 return ObjectTools.reduceAll(treatmentAssignments, "id", "code", "description");
     }
 
     private String[] extractSubnames(String text) {
@@ -445,7 +466,7 @@ public class CreateAdverseEventAjaxFacade {
     public void setAeReportDao(ExpeditedAdverseEventReportDao aeReportDao) {
         this.aeReportDao = aeReportDao;
     }
-    
+
     @Required
     public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
         this.researchStaffDao = researchStaffDao;
@@ -491,6 +512,22 @@ public class CreateAdverseEventAjaxFacade {
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }
+
+    @Required
+    public ConfigProperty getConfigurationProperty() {
+		return configProperty;
+	}
+    public void setConfigurationProperty(ConfigProperty configProperty) {
+		this.configProperty = configProperty;
+	}
+    @Required
+    public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+		return treatmentAssignmentDao;
+	}
+    public void setTreatmentAssignmentDao(
+			TreatmentAssignmentDao treatmentAssignmentDao) {
+		this.treatmentAssignmentDao = treatmentAssignmentDao;
+	}
 
     public static class IndexChange {
         private int original, current;

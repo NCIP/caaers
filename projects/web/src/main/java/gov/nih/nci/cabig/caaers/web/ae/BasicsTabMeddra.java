@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -20,6 +21,7 @@ import org.springframework.validation.Errors;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.ListIterator;
 import java.util.Map;
@@ -28,7 +30,6 @@ import java.util.Map;
  * @author Krikor Krumlian
  */
 public class BasicsTabMeddra extends AeTab {
-    private static final String REPORT_FIELD_GROUP = "report";
     private static final String MAIN_FIELD_GROUP = "main";
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
 
@@ -57,13 +58,14 @@ public class BasicsTabMeddra extends AeTab {
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
-        InputFieldGroup reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
-        reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
-            "aeReport.detectionDate", "Detection date", true));
 
         RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
                 InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
+        mainFieldFactory.addField(InputFieldFactory.createDateField(
+                "startDate", "Start date"));
+        mainFieldFactory.addField(InputFieldFactory.createDateField(
+                "endDate", "End date"));
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
@@ -82,7 +84,6 @@ public class BasicsTabMeddra extends AeTab {
         meddraTermFieldFactory.addField(lowLevelTermField);
     	//-
         InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeReport().getAdverseEvents().size();
         map.addRepeatingFieldGroupFactory(mainFieldFactory, aeCount);
         map.addRepeatingFieldGroupFactory(meddraTermFieldFactory, aeCount);
@@ -104,8 +105,17 @@ public class BasicsTabMeddra extends AeTab {
         // TODO: validate that there is at least one AE
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae =  lit.next();
+            validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
     }
+
+    private void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
+    	if(index == 0){
+        	InputField field = groups.get(MAIN_FIELD_GROUP + index).getFields().get(1);
+        	if(ae.getStartDate() == null) errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+        }
+    }
+
     @Override
     public ExpeditedReportSection section() {
     	return ExpeditedReportSection.BASICS_MEDRA_SECTION;

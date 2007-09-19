@@ -30,6 +30,8 @@ public abstract class StudyTab extends TabWithFields<Study> {
     private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
 
+    //This is used to filter the sponsor identifier.
+    public static final String SPONSOR_IDENTIFIER_CODE="Sponsor Identifier";
 
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -47,16 +49,19 @@ public abstract class StudyTab extends TabWithFields<Study> {
         refdata.put(name, getConfigurationProperty().getMap().get(name));
     }
     protected Map<Object, Object> collectOptions(List list,
-    		String nameProperty, String valueProperty){
+    		String nameProperty, String valueProperty, String... exclusionProperties){
     	Map<Object, Object> options = new LinkedHashMap<Object, Object>();
     	options.put("" , "Please select");
     	options.putAll(InputFieldFactory.collectOptions(list,nameProperty, valueProperty));
+    	for(String key : exclusionProperties){
+    		options.remove(key);
+    	}
     	return options;
     }
     protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName,
-    		String nameProperty, String valueProperty){
+    		String nameProperty, String valueProperty, String... exclusionProperties){
     	return collectOptions(configurationProperty.getMap().get(configPropertyName),
-    			nameProperty, valueProperty);
+    			nameProperty, valueProperty, exclusionProperties);
     }
 
 

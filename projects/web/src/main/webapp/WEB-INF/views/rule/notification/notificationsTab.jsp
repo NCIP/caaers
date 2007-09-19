@@ -33,6 +33,7 @@
    
 	<script language="javascript" type="text/javascript"><!--
 		Event.observe(window, "load", function() {
+			//to add new notification section
 			Event.observe($('add-nf-section-button'), "click", function(evnt){
 				index = $$('.nf-section').length;
 				scaleIndex = $F('pointOnScale');
@@ -51,13 +52,18 @@
 			var inputNode = newDiv.getElementsByClassName('rInput')[0];
 			if(rType == 'role'){
 				inputNode.name = 'emailNotifications[' + index + '].roleBasedRecipients';
+				var insertLoc = $('rbookmark'+ index);
+				insertLoc.parentNode.insertBefore(newDiv,insertLoc);
+				newDiv.show();
 			}else{
-			   inputNode.name = 'emailNotifications[' + index + '].contactMechanismBasedRecipients';
+			   	inputNode.name = 'emailNotifications[' + index + '].contactMechanismBasedRecipients';
+			   	var insertLoc = $('ebookmark'+ index);
+				insertLoc.parentNode.insertBefore(newDiv,insertLoc);
+				newDiv.show();
 			}
-			var insertLoc = $('rbookmark'+ index);
-			insertLoc.parentNode.insertBefore(newDiv,insertLoc);
-			newDiv.show();
+			
 		}
+		
 		//removes a recipient
 		function removeRecipient(aDiv){
 			var frm = $('command');
@@ -67,7 +73,6 @@
 		function selectTimeScaleUnit(tsu){
 			var frm = $('command');
 			frm.elements['pointOnScale'].value = tsu;
-			//frm.elements['_page'].value = frm.elements['_page'].value - 1;
 			var target = $('_target');
 			target.name = '_noname';
 			frm.submit();
@@ -112,6 +117,14 @@
 			}
 			selSub.selectedIndex = 0;
 			lastElement.focus();
+		}
+		function deleteNotification(index){
+			var frm = $('command');
+			frm.elements['indexToDelete'].value = index;
+			frm.elements['_action'].value = 'delete';
+			var target = $('_target');
+			target.name = '_noname';
+			frm.submit();
 		}
 		
 	--></script> 
@@ -178,6 +191,9 @@
 		          	<span id="nfbookmark" />
 		         	<form:hidden path="pointOnScale" />
 					<form:hidden path="lastPointOnScale" />
+					<form:hidden path="indexToDelete" />
+					<input type="hidden" name="_action" value=""/>
+					
 				  </jsp:attribute>
 				  <jsp:attribute name="localButtons"> 
 	  				<tags:listEditorAddButton divisionClass="nf-section" label="Add Notification" />   

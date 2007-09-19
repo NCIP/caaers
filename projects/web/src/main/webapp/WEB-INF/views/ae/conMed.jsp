@@ -17,71 +17,15 @@
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
-        var EnterConMed = Class.create()
-        Object.extend(EnterConMed.prototype, {
-            initialize: function(index, agentName) {
-                this.index = index
-                var cmProperty = "aeReport.concomitantMedications[" + index + "]";
-                this.agentProperty = cmProperty + ".agent"
-                this.otherProperty = cmProperty + ".other"
-
-                if (agentName) $(this.agentProperty + "-input").value = agentName
-
-                $("select-agent-" + this.index)
-                    .observe("click", this.updateAgentOrOther.bind(this))
-                $("select-other-" + this.index)
-                    .observe("click", this.updateAgentOrOther.bind(this))
-
-                AE.createStandardAutocompleter(
-                    this.agentProperty, this.termPopulator.bind(this),
-                    function(agent) { return agent.name })
-
-                this.initializeAgentOrOther()
-            },
-
-            termPopulator: function(autocompleter, text) {
-                createStudy.matchAgents(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-
-            updateAgentOrOther: function() {
-                var isAgent = $("select-agent-" + this.index).checked
-                var agentRow = $(this.agentProperty + "-row")
-                var otherRow = $(this.otherProperty + "-row")
-                if (isAgent) {
-                    agentRow.removeClassName("disabled")
-                    otherRow.addClassName("disabled")
-                    agentRow.getElementsByClassName("value")[0].enableDescendants()
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
-                } else {
-                    otherRow.removeClassName("disabled")
-                    agentRow.addClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].enableDescendants()
-                    agentRow.getElementsByClassName("value")[0].disableDescendants()
-                }
-            },
-
-            initializeAgentOrOther: function() {
-                var otherValue = $(this.otherProperty).value
-                if (otherValue.length == 0) {
-                    $("select-agent-" + this.index).click()
-                } else {
-                    $("select-other-" + this.index).click()
-                }
-            }
-        })
-
         Element.observe(window, "load", function() {
             <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status" var="conMed">
-            new EnterConMed(${status.index}, '${conMed.agent.name}')
+            new EnterConMed(${status.index}, '${conMed.agentName}')
             </c:forEach>
 
             new ListEditor("conmed", createAE, "ConMed", {
                 addFirstAfter: "single-fields",
                 addParameters: [aeReportId],
                 addCallback: function(index) {
-                    new EnterConMed(index);
                 }
             })
         })

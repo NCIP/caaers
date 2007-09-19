@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
  * @author Krikor Krumlian
  */
 public interface AdverseEventInputCommand {
-    
+
     StudyParticipantAssignment getAssignment();
 
     Participant getParticipant();
@@ -17,4 +17,7 @@ public interface AdverseEventInputCommand {
     Study getStudy();
 
     void save();
+
+    public String getTreatmentDescriptionType();
+    public void setTreatmentDescriptionType(String type);
 }

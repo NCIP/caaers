@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class SurgeryInterventionTab extends AeTab {
 
     public SurgeryInterventionTab() {
-        super("Surgery Intervention", "Surgery Intervention", "ae/surgeryIntervention");
+        super("Surgery Intervention", "Surgery", "ae/surgeryIntervention");
 
     }
 

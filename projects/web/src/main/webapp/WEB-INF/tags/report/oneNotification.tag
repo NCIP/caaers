@@ -11,20 +11,25 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
 <div class="row">
  <div class="label"><label for="recipients">Recipients</label></div>
   <div class="value">
-     <input type="button" value="Add eMail" onClick="javascript:insertRecipient('direct', ${index})" /> 
-     <input type="button" value="Add Role" onClick="javascript:insertRecipient('role',${index})" />
-     <br>
-     <c:if test="${not empty pnf}">
-     	
-   		 <c:forEach var="email" items="${pnf.contactMechanismBasedRecipients}">
+    <table border="0" cellspacing="2" cellpadding="0" width="90%">
+      <tr align="middle">
+         <td width="49%"><input type="button" value="Add eMail" onClick="javascript:insertRecipient('direct', ${index})" /> </td>
+         <td rowspan="2" width="2%" class="divider">&nbsp;</td>
+         <td><input type="button" value="Add Role" onClick="javascript:insertRecipient('role',${index})" /></td>
+      </tr>
+      <tr>
+         <td width="49%" >
+          <c:forEach var="email" items="${pnf.contactMechanismBasedRecipients}">
    			<div>
   			<input name="emailNotifications[${index}].contactMechanismBasedRecipients" id="email" value="${email.contact}" size="40"/>
 			<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
         		 style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     		</div> 
-   		 </c:forEach>    
-   		
-   		<c:forEach var="selectedRole" items="${pnf.roleBasedRecipients}">
+   		 </c:forEach>
+          <span id="ebookmark${index}" />
+         </td>
+         <td>
+          <c:forEach var="selectedRole" items="${pnf.roleBasedRecipients}">
    		  <div>
 		   <select name="emailNotifications[${index}].roleBasedRecipients" id="recipient_role">
 			 <option value="">Select a Role</option>
@@ -35,9 +40,11 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
 	       <input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
            		style="border: 0px none ;" 	onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	  </div>
-   	    </c:forEach>
-     </c:if>
-     <span id="rbookmark${index}" />
+   	      </c:forEach>
+   	      <span id="rbookmark${index}" /> 
+         </td>
+      </tr>
+    </table>
   </div>
 </div>
 <div class="row">
@@ -63,5 +70,10 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
 <div class="row">
  <div class="label"><label for="message">Message</label></div>
  <div class="value"><form:textarea cssStyle="width:96%; height:300px"  path="emailNotifications[${index}].notificationBodyContent.body" onfocus="lastElement = this;"/></div>
+</div>
+<div class="content buttons autoclear">
+	<div class="local-buttons">
+		<input type="button" value="Delete" onClick="javascript:deleteNotification(${index});"/>
+	</div> 
 </div>
 </chrome:minimizableBox>

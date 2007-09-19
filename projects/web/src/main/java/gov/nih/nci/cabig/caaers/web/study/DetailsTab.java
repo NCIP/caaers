@@ -25,6 +25,8 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class DetailsTab extends StudyTab {
+
+
 	private CtcDao ctcDao;
 
 	private MeddraVersionDao meddraVersionDao;
@@ -42,8 +44,6 @@ public class DetailsTab extends StudyTab {
 	public Map<String, Object> referenceData() {
 		Map<String, Object> refdata = super.referenceData();
 		// TODO : to be removed from reference data, as they are no longer used.
-		addConfigMapToRefdata(refdata, "phaseCodeRefData"); // remove
-		addConfigMapToRefdata(refdata, "sponsorCodeRefData"); // remove
 		refdata.put("ctcVersion", ctcDao.getAll()); // remove
 		return refdata;
 	}
@@ -70,6 +70,8 @@ public class DetailsTab extends StudyTab {
 					"Primary sponsor", true);
 			// sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor name you are looking for");
 			fields.add(sponsorField);
+			InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Sponsor Identifier", true);
+			fields.add(sponsorIdentiferField);
 			fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true, collectOptionsFromConfig(
 					"phaseCodeRefData", "desc", "desc")));
 			fields.add(InputFieldFactory.createSelectField("terminology.term", "Terminology", true, InputFieldFactory
@@ -137,6 +139,12 @@ public class DetailsTab extends StudyTab {
 			return;
 		}
 
+		//set the sponsor assigned identifier.
+		OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier)command.getIdentifiers().get(0);
+		if(identifier.getOrganization() == null || command.getPrimaryFundingSponsorOrganization().equals(identifier.getOrganization())){
+			identifier.setOrganization(command.getPrimaryFundingSponsorOrganization());
+			identifier.setType(SPONSOR_IDENTIFIER_CODE);
+		}
 		// if(command.getMultiInstitutionIndicator()){
 		// //identifiers remove & add
 		// command.getIdentifiers().remove(command.getOrganizationAssignedIdentifier());

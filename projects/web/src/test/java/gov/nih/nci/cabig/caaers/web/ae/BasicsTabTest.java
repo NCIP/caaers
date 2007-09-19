@@ -35,7 +35,7 @@ public class BasicsTabTest extends AeTabTestCase {
 				command.getAssignment().getStudySite().getStudy());
         command.getAssignment().getStudySite().getStudy().setTerminology(t);
         command.getAssignment().getStudySite().getStudy().getTerminology().setCtcVersion(Fixtures.createCtcaeV3());
-        
+
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
     }
@@ -70,7 +70,7 @@ public class BasicsTabTest extends AeTabTestCase {
     public void testCtcTermRequired() throws Exception {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.term", "CTC term");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm", "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {

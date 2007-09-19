@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.rule.notification.enums.NotificationType;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -32,7 +34,6 @@ import org.springframework.validation.Errors;
 public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	private RepeatingFieldGroupFactory rfgFactory;
-	private ConfigProperty configurationProperty;
 
 	public NotificationsTab(String longTitle, String shortTitle, String viewName) {
 		super(longTitle, shortTitle, viewName);
@@ -50,8 +51,25 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 	@Override
 	public void postProcess(HttpServletRequest req, ReportDefinitionCommand cmd, Errors errors) {
 		super.postProcess(req,cmd,errors);
-		//update the report calendar
-		if(errors.hasErrors()) cmd.setPointOnScale(cmd.getLastPointOnScale());
+		String action = req.getParameter("_action");
+		if(StringUtils.equals("delete", action)){
+			int indexToDelete = NumberUtils.toInt(cmd.getIndexToDelete());
+			int indexOnTimeScale = NumberUtils.toInt(cmd.getPointOnScale());
+			int i = 0;
+			for (Iterator<PlannedNotification> it = cmd.getReportDefinition()
+						.getPlannedNotifications().iterator(); it.hasNext();) {
+			PlannedNotification pen = it.next();
+					if (pen.getIndexOnTimeScale() == indexOnTimeScale) {
+						if(i == indexToDelete){
+							it.remove();
+							break;
+						}
+						i++;
+					}
+				}
+		}else{
+			if(errors.hasErrors()) cmd.setPointOnScale(cmd.getLastPointOnScale());
+		}
 
 	}
 
@@ -66,17 +84,20 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	@Override
 	protected void validate(ReportDefinitionCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-		super.validate(command, commandBean, fieldGroups, errors);
+		if(CollectionUtils.isEmpty(command.getReportDefinition().getPlannedNotifications())) return;
 
 		List<PlannedNotification> plannedNotifications = command.getEmailNotifications();
 		if(CollectionUtils.isEmpty(plannedNotifications)) return;
 		EmailValidator emailValidator = EmailValidator.getInstance();
-		int i = 1;
+		int i = 0;
 		for(PlannedNotification plannedNotification : plannedNotifications){
+			i++;
 			PlannedEmailNotification nf = (PlannedEmailNotification) plannedNotification;
+			//Message
 			if(nf.getNotificationBodyContent() == null || StringUtils.isEmpty(nf.getNotificationBodyContent().getBody())){
 				errors.rejectValue("tempProperty", "REQUIRED","Message Invalid  in Email Notification(" + i +")");
 			}
+			//Recipients
 			if(nf.getRecipients() == null){
 				errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
 			}else {
@@ -85,6 +106,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 						errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid Recipient Information in Email Notification (" + i + ")");
 						break;
 					}
+					//valid email?
 					if(recipient instanceof ContactMechanismBasedRecipient){
 						if(!emailValidator.isValid(recipient.getContact())){
 							errors.rejectValue("tempProperty" ,"REQUIRED", "Invalid email address [" + recipient.getContact() +"] in Email Notification (" + i + ")");
@@ -93,13 +115,11 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 					}
 				}
 			}
-
+			//subject line
 			if(StringUtils.isEmpty(nf.getSubjectLine())){
 				errors.rejectValue("tempProperty" , "REQUIRED","Subject line Invalid  in Email Notification(" + i +")");
 			}
-			i++;
 		}
-		command.setValidationFailed(errors.hasErrors());
 	}
 
 	@Override
@@ -110,6 +130,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 		return refData;
 	}
 
+	/*The binding of recipients are done here*/
 	@Override
 	public void onBind(HttpServletRequest request,
 			ReportDefinitionCommand cmd, Errors errors) {

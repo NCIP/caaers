@@ -78,7 +78,7 @@
             _aeProperty:            function() { return "aeReport.adverseEvents[" + this._index() + "]" },
             _ctcDetailsId:          function() { return this._aeProperty() + ".ctc-details" },
             _ctcCategoryId:         function() { return this._aeProperty() + ".ctc-category" },
-            _ctcTermId:             function() { return this._aeProperty() + ".adverseEventCtcTerm.term" },
+            _ctcTermId:             function() { return this._aeProperty() + ".adverseEventCtcTerm.ctcTerm" },
             _ctcTermInputId:        function() { return this._ctcTermId() + "-input" },
             _ctcTermChoicesId:      function() { return this._ctcTermId() + "-choices" },
             _ctcTermIndicatorId:    function() { return this._ctcTermId() + "-indicator" },
@@ -189,9 +189,6 @@
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <div class="report-fields">
-                <c:forEach items="${fieldGroups.report.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-                </c:forEach>
                 <div class="row">
                     <div class="label">CTC version</div>
                     <div class="value">

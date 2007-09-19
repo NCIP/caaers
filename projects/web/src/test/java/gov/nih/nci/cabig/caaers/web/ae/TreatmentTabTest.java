@@ -28,28 +28,31 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     public void testTreatmentInfoFields() throws Exception {
         assertFieldProperties("treatmentInfo",
-            "aeReport.treatmentInformation.firstCourseDate",
-            "aeReport.treatmentInformation.adverseEventCourse.number",
-            "aeReport.treatmentInformation.adverseEventCourse.date",
-            "aeReport.treatmentInformation.treatmentAssignmentCode"
+        	"aeReport.treatmentInformation.treatmentAssignment",
+        	"aeReport.treatmentInformation.treatmentAssignmentDescription",
+        	"aeReport.treatmentInformation.treatmentDescription",
+        	"aeReport.treatmentInformation.firstCourseDate",
+        	"aeReport.treatmentInformation.adverseEventCourse.date",
+        	"aeReport.treatmentInformation.adverseEventCourse.number",
+            "aeReport.treatmentInformation.totalCourses"
         );
     }
 
     public void testCourseAgentFields() throws Exception {
         assertFieldProperties("courseAgent2",
             "aeReport.treatmentInformation.courseAgents[2].studyAgent",
+            "aeReport.treatmentInformation.courseAgents[2].totalDoseAdministeredThisCourse",
             "aeReport.treatmentInformation.courseAgents[2].dose",
             "aeReport.treatmentInformation.courseAgents[2].durationAndSchedule",
+            "aeReport.treatmentInformation.courseAgents[2].lastAdministeredDate",
             "aeReport.treatmentInformation.courseAgents[2]", // administration delay doesn't have a base prop
-            "aeReport.treatmentInformation.courseAgents[2].modifiedDose",
-            "aeReport.treatmentInformation.courseAgents[2].totalDoseAdministeredThisCourse",
-            "aeReport.treatmentInformation.courseAgents[2].lastAdministeredDate"
+            "aeReport.treatmentInformation.courseAgents[2].modifiedDose"
         );
     }
 
     @SuppressWarnings({ "unchecked" })
     public void testDoseSubfields() throws Exception {
-        InputField doseField = getFieldGroup("courseAgent7").getFields().get(1); // dose
+        InputField doseField = getFieldGroup("courseAgent7").getFields().get(2); // dose
         assertTrue("Field 1 isn't dose (probably a test setup issue): " + doseField.getPropertyName(),
             doseField.getPropertyName().endsWith("dose"));
         List<InputField> subfields
@@ -71,8 +74,8 @@ public class TreatmentTabTest extends AeTabTestCase {
     public void testDoseSubfieldsWhenAllPreviousGroupsLoaded() throws Exception {
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
         for (int i = 0; i <= 6; i++) map.get("courseAgent" + i);
-        
-        InputField doseField = map.get("courseAgent7").getFields().get(1); // dose
+
+        InputField doseField = map.get("courseAgent7").getFields().get(2); // dose
         assertTrue("Field 1 isn't dose (probably a test setup issue): " + doseField.getPropertyName(),
             doseField.getPropertyName().endsWith("dose"));
         List<InputField> subfields
@@ -92,7 +95,7 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     @SuppressWarnings({ "unchecked" })
     public void testModDoseSubfields() throws Exception {
-        InputField modDoseField = getFieldGroup("courseAgent7").getFields().get(4); // modifiedDose
+        InputField modDoseField = getFieldGroup("courseAgent7").getFields().get(6); // modifiedDose
         assertTrue("Field 4 isn't dose (probably a test setup issue): " + modDoseField.getPropertyName(),
             modDoseField.getPropertyName().endsWith("modifiedDose"));
         List<InputField> subfields
@@ -112,7 +115,7 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     @SuppressWarnings({ "unchecked" })
     public void testAdminDelaySubfields() throws Exception {
-        InputField delayField = getFieldGroup("courseAgent7").getFields().get(3); // modifiedDose
+        InputField delayField = getFieldGroup("courseAgent7").getFields().get(5); // admindelay
         List<InputField> subfields
             = (List<InputField>) delayField.getAttributes().get(InputField.SUBFIELDS);
         assertNotNull("Dose isn't a composite field", subfields);
@@ -127,7 +130,7 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     @SuppressWarnings({ "unchecked" })
     public void testDelayUnitsInField() throws Exception {
-        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(3);
+        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(5);
 
         Map<Object, Object> actualOptions = getActualSelectFieldOptions(
             (List<InputField>) delayComposite.getAttributes().get(InputField.SUBFIELDS),

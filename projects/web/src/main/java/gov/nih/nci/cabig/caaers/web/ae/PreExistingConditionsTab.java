@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class PreExistingConditionsTab extends AeTab {
 
     public PreExistingConditionsTab() {
-        super("Pre-Existing Conditions", "Pre-Existing Conditions", "ae/preExistingConds");
+        super("Pre-Existing Conditions", "Pre-existing Conditions", "ae/preExistingConds");
     }
 
     @Override
