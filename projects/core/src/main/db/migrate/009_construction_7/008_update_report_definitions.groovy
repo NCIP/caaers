@@ -1,6 +1,7 @@
 class UpdateReportDefinitions extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-         addColumn("report_calendar_templates","amendable", 'boolean', nullable: false);
+         addColumn("report_calendar_templates","amendable", 'boolean');
+         
     }
       
     void down() {
