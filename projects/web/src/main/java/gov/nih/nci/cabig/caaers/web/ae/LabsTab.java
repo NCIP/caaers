@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -46,7 +48,9 @@ public class LabsTab extends AeTab {
 					}
 				});
 		 fieldFactory.addField(InputFieldFactory.createAutocompleterField("name", "Lab test name"));
-	     fieldFactory.addField(InputFieldFactory.createTextField("other", "Other", false));
+		 InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
+		 InputFieldAttributes.setSize(otherField, 50);
+	     fieldFactory.addField(otherField);
 
 		fieldFactory.addField(InputFieldFactory.createSelectField("units",
 				"Units", true, InputFieldFactory.collectOptions(configurationProperty.getMap().get("labUnitsRefData"),

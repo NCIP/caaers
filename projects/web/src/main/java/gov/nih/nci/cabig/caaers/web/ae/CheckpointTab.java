@@ -49,15 +49,13 @@ public class CheckpointTab extends AeTab {
 
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        //evaluationService.addRequiredReports(command.getAeReport());
+        evaluationService.addRequiredReports(command.getAeReport());
         command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
     }
 
     private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
         List<ReportDefinition> all = evaluationService.applicableReportDefinitions(command.getAssignment());
-        return all;
-        //TODO: AEFIX , remove the commented piece of code.
-       /* if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Applicable report defs: " + all);
         }
         for (Report report : command.getAeReport().getReports()) {
@@ -77,7 +75,7 @@ public class CheckpointTab extends AeTab {
         if (log.isDebugEnabled()) {
             log.debug("Optional report defs: " + all);
         }
-        return all;*/
+        return all;
     }
 
     @Override

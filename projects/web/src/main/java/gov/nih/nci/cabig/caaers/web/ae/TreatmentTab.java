@@ -43,12 +43,12 @@ public class TreatmentTab extends AeTab {
     	  treatmentFields.getFields().add(assignmentField);
     	  InputField descField = InputFieldFactory.createTextArea("aeReport.treatmentInformation.treatmentAssignmentDescription",
 		  "Description of treatment assignment or dose level");
-    	  InputFieldAttributes.setColumns(descField,38);
+    	  InputFieldAttributes.setColumns(descField,45);
     	  InputFieldAttributes.setRows(descField, 4);
     	  treatmentFields.getFields().add(descField);
     	  InputField newDescField = InputFieldFactory.createTextArea("aeReport.treatmentInformation.treatmentDescription",
 		  "Enter a description of treatment assignment or dose level");
-    	  InputFieldAttributes.setColumns(newDescField, 38);
+    	  InputFieldAttributes.setColumns(newDescField, 45);
     	  InputFieldAttributes.setRows(newDescField, 4);
 
     	  treatmentFields.getFields().add(newDescField);

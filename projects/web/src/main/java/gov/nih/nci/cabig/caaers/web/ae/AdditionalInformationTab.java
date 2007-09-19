@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class AdditionalInformationTab extends AeTab {
 
     public AdditionalInformationTab() {
-        super("Additional Information", "Additional Details", "ae/additionalInformation");
+        super("Additional Information", "Attachments", "ae/additionalInformation");
     }
 
     @Override
