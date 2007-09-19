@@ -1,0 +1,19 @@
+<dataset>
+	<STUDIES
+        id="-2"
+        multi_institution_indicator="0"
+        short_title="Short Title"
+        long_title="Long Title" 
+        description="Description"
+        grid_id=""
+        />
+        <treatment_assignment id="-11"
+        code="TAC-12345"
+        study_id="-2" />
+        <treatment_assignment id="-12"
+        code="TAC-12346"
+        study_id="-2" />
+        <treatment_assignment id="-13"
+        code="TAC-12347"
+        study_id="-2" />
+</dataset>

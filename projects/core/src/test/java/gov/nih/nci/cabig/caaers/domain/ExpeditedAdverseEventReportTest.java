@@ -42,7 +42,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         ctcTerm.setSelect("Select");
         ctcTerm.setOtherRequired(false);
         adverseEvent.getAdverseEventCtcTerm().setCtcTerm(this.ctcTerm);
-
+        report.setAssignment(Fixtures.createAssignment());
         wrappedReport = new BeanWrapperImpl(report);
     }
 
@@ -105,7 +105,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         adverseEvent.setDetailsForOther("other");
         assertEquals("Grade 2 adverse event with term Term - Select (other)", report.getNotificationMessage());
     }
-    
+
     public void testNotificationMessageExceptionForNoAe() throws Exception {
         report.getAdverseEventsInternal().clear();
         assertFalse(report.isNotificationMessagePossible());
@@ -127,7 +127,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
         }
     }
-    
+
     public void testNotificationMessageExceptionForNoTerm() throws Exception {
         adverseEvent.getAdverseEventCtcTerm().setCtcTerm(null);
         assertFalse(report.isNotificationMessagePossible());
@@ -146,7 +146,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         Map<String, String> summary = report.getSummary();
         assertEquals("El Study", summary.get("Study"));
     }
-    
+
     public void testSummaryStudyIncludesPrimaryIdentifier() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");

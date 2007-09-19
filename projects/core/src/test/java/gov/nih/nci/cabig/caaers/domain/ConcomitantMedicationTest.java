@@ -12,13 +12,8 @@ public class ConcomitantMedicationTest extends CaaersTestCase {
     private ConcomitantMedication medication = new ConcomitantMedication();
 
     public void testNameWithAgent() throws Exception {
-        Agent agent = new Agent(); agent.setName("Jomocillin");
-        medication.setAgent(agent);
+        medication.setAgentName("Jomocillin");
         assertEquals("Wrong name", "Jomocillin", medication.getName());
     }
 
-    public void testNameWithOther() throws Exception {
-        medication.setOther("Jomocillin");
-        assertEquals("Wrong name", "Other: Jomocillin", medication.getName());
-    }
 }

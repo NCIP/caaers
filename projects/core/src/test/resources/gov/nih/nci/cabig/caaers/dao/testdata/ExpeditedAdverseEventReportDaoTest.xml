@@ -57,7 +57,6 @@
     <AE_REPORTS
         id="-1"
         assignment_id="-14"
-        detection_date="2004-05-12"
         created_at="2004-09-04 13:15:30"
         />
     <ADVERSE_EVENTS
@@ -111,23 +110,15 @@
         id="-30"
         list_index="1"
         report_id="-1"
-        agent_id="-101"
         />
     <CONCOMITANT_MEDICATIONS
         id="-31"
         list_index="0"
         report_id="-1"
+        agent_name="agent_name1"
         />
     <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70" cause_id="-31" cause_type="CM" attribution_code="4"/>
 
-    <TREATMENTS
-        id="-10"
-        report_id="-1"
-        first_course_date="2005-06-04"
-        adverse_event_course_date="2006-07-09"
-        adverse_event_course_number="8"
-        />
-        
     <SURGERY_INTERVENTIONS
         id="-110"
         report_id="-1"
@@ -199,6 +190,7 @@
         name="11-day"
         duration="8"
         time_scale_unit_code="4"
+        amendable="0"
         />
     <REPORT_SCHEDULES
         id="-41"
@@ -252,7 +244,35 @@
         id="-1"
         short_title="That one"
         />
-        
+    <TREATMENT_ASSIGNMENT
+        id="-11"
+  		code="TAC001"
+  		study_id="-1" 
+		dose_level_order="22"
+  		description="description"
+  		comments="comments"
+  		version="0"
+  		grid_id="TAC333" />
+  	
+  	<TREATMENT_ASSIGNMENT
+        id="-10"
+  		code="TAC010"
+  		study_id="-1" 
+		dose_level_order="22"
+  		description="description"
+  		comments="comments"
+  		version="0"
+  		grid_id="TAC333" />
+  	
+  	<TREATMENTS
+        id="-10"
+        report_id="-1"
+        first_course_date="2005-06-04"
+        adverse_event_course_date="2006-07-09"
+        adverse_event_course_number="8"
+        treatment_assignment_id="-10"
+        />
+  		
      <TERMINOLOGIES
    		id="-11"
    		term_code="1"

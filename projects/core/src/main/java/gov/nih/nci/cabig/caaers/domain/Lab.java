@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Embedded;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * @author Rhett Sutphin
@@ -22,6 +22,7 @@ import javax.persistence.Column;
 )
 public class Lab extends AbstractExpeditedReportCollectionElementChild {
     private String name;
+    private String other;
     private String units;  // TODO: source this from caDSR
 
     private LabValue baseline;
@@ -87,4 +88,11 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     public void setRecovery(LabValue recovery) {
         this.recovery = recovery;
     }
+
+    public String getOther() {
+		return other;
+	}
+    public void setOther(String other) {
+		this.other = other;
+	}
 }

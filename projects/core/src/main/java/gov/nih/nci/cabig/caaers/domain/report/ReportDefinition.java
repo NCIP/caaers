@@ -53,6 +53,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     private String name;
     private String description;
+    private Boolean amendable;
     private Integer duration;
     private TimeScaleUnit timeScaleUnitType;
     private LazyListHelper lazyListHelper;
@@ -212,9 +213,16 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		this.mandatoryFields = mandatoryFields;
 	}
 
+	public Boolean getAmendable() {
+		return amendable;
+	}
 
+	public void setAmendable(Boolean amendable) {
+		this.amendable = amendable;
+	}
 
 	////// OBJECT METHODS
+
 
 	@Override
 	public int hashCode() {

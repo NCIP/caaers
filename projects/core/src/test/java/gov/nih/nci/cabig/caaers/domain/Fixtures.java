@@ -31,6 +31,7 @@ public class Fixtures {
     public static Organization createOrganization(String name) {
         Organization organization = new Organization();
         organization.setName(name);
+        organization.setNciInstituteCode("NCI333");
         return organization;
     }
 

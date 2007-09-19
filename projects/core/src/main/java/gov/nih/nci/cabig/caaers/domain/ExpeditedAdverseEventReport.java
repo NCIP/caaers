@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import java.util.Map;
 )
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
-    private Date detectionDate;
     private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
@@ -92,7 +90,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
             }else{
             	fullName = firstAe.getAdverseEventTerm().getUniversalTerm();
             }
-                
+
             return String.format("Grade %d adverse event with term %s%s",
                 firstAe.getGrade().getCode(),
                 fullName, other
@@ -145,14 +143,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         summary.put("Study", summaryLine(getStudy()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
-        if (getAdverseEvents().size() > 0 && 
-        		getAdverseEvents().get(0).getAdverseEventTerm() != null && 
+        if (getAdverseEvents().size() > 0 &&
+        		getAdverseEvents().get(0).getAdverseEventTerm() != null &&
         		getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
             primaryAeLine = getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm();
         }
         summary.put("Primary AE", primaryAeLine);
         summary.put("AE count", Integer.toString(getAdverseEvents().size()));
-
+        summary.put("Public identifier", getPublicIdentifier());
         // TODO: placeholders
         summary.put("Ticket number", null);
         summary.put("Next report due", null);
@@ -223,7 +221,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public List<AdverseEventPreExistingCond> getAdverseEventPreExistingConds() {
         return lazyListHelper.getLazyList(AdverseEventPreExistingCond.class);
     }
-    
+
     public void addAdverseEventPriorTherapies(AdverseEventPriorTherapy adverseEventPriorTherapy) {
         getAdverseEventPriorTherapiesInternal().add(adverseEventPriorTherapy);
         if (adverseEventPriorTherapy != null) adverseEventPriorTherapy.setReport(this);
@@ -248,13 +246,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     ////// BEAN PROPERTIES
 
-    public Date getDetectionDate() {
-        return detectionDate;
-    }
 
-    public void setDetectionDate(Date detectionDate) {
-        this.detectionDate = detectionDate;
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {
@@ -310,7 +302,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     protected void setConcomitantMedicationsInternal(List<ConcomitantMedication> concomitantMedicationsInternal) {
         lazyListHelper.setInternalList(ConcomitantMedication.class, concomitantMedicationsInternal);
     }
-    
+
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
@@ -365,7 +357,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.treatmentInformation = treatmentInformation;
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
-    
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public SurgeryIntervention getSurgeryIntervention() {
@@ -377,7 +369,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		this.surgeryIntervention = surgeryIntervention;
 		if (surgeryIntervention != null) surgeryIntervention.setReport(this);
 	}
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public AdditionalInformation getAdditionalInformation() {
@@ -401,7 +393,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.responseDescription = responseDescription;
         if (responseDescription != null) responseDescription.setReport(this);
     }
-    
+
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public RadiationIntervention getRadiationIntervention() {
@@ -413,7 +405,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		this.radiationIntervention = radiationIntervention;
 		if (radiationIntervention != null) radiationIntervention.setReport(this);
 	}
-	
+
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public MedicalDevice getMedicalDevice() {
@@ -422,7 +414,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 	}
 
 	public void setMedicalDevice(MedicalDevice medicalDevice) {
-		
+
 		this.medicalDevice = medicalDevice;
 		if (medicalDevice != null) medicalDevice.setReport(this);
 	}
@@ -501,22 +493,31 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-    
+
 
 	@Deprecated
     @Transient
     public ReportStatus getStatus(){
-    	//TODO: to be removed after compile/runtime 
+    	//TODO: to be removed after compile/runtime
     	//dependency is resolved, by respective developer
-    	
+
     	//assert false : "Update your code";
     	return ReportStatus.PENDING;
     }
     @Deprecated
     public void setStatus(ReportStatus status){
-    	//TODO: to be removed after compile/runtime 
+    	//TODO: to be removed after compile/runtime
     	//dependency is resolved, by respective developer
-    	
+
     	//assert false : "Update your code";
+    }
+    @Transient
+    public String getPublicIdentifier(){
+    	String id = getAssignment().getStudySite().getOrganization().getNciInstituteCode() +  "-" + getAssignment().getStudySite().getOrganization().getNciInstituteCode();
+    	id = (id.indexOf("null") > -1)? "None" : id;
+    	return id;
+    }
+    @Transient
+    public void setPublicIdentifier(String strId){
     }
 }

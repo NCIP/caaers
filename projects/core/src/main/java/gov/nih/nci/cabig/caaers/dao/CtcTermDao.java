@@ -18,10 +18,14 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-    public Class<CtcTerm> domainClass() {
+    @Override
+	public Class<CtcTerm> domainClass() {
         return CtcTerm.class;
     }
-
+    @Override
+    public CtcTerm getById(int id) {
+    	return super.getById(id);
+    }
     public List<CtcTerm> getBySubname(String[] subnames, Integer ctcVersionId, Integer ctcCategoryId) {
         List<Object> extraParams = new LinkedList<Object>();
         StringBuilder extraConds = new StringBuilder("");
@@ -36,10 +40,10 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
         return findBySubname(subnames, extraConds.toString(), extraParams,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<CtcTerm> getAll() {
         return getHibernateTemplate().find("from CtcTerm");
     }
-    
+
 }

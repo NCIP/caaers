@@ -30,6 +30,13 @@ public class AdverseEventReportSerializer {
 	   private ExpeditedAdverseEventReportDao adverseEventReportDao;
 	   private ExpeditedAdverseEventReport adverseEventReportDataObject;
 
+	   //TODO:
+	   // Added TreatmentAssignment in TreatmentInformation
+	   // Removed TreatmentInformation.treatmentAssignmentCode
+
+	   // Added StartDate and endDate in AdverseEvent
+	   // Removed detection date from expedited adverse event report
+	   //Removed getTreatmentAssignmentCode, from TreatmentInformation
 
 	   //TO-DO set in spring config
 	   private String mappingFile = "xml-mapping/ae-report-xml-mapping.xml";
@@ -89,7 +96,6 @@ public class AdverseEventReportSerializer {
 	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport ) throws Exception{
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
-	    	aer.setDetectionDate(hibernateAdverseEventReport.getDetectionDate());
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
 	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());
 
@@ -114,13 +120,13 @@ public class AdverseEventReportSerializer {
 
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
-	    	
+
 	    	aer.setRadiationIntervention(hibernateAdverseEventReport.getRadiationIntervention());
 	    	//aer.getRadiationIntervention().setAdministration(hibernateAdverseEventReport.getRadiationIntervention().getAdministration());
 	    	aer.setSurgeryIntervention(hibernateAdverseEventReport.getSurgeryIntervention());
-	    	
+
 	    	aer.setMedicalDevice(hibernateAdverseEventReport.getMedicalDevice());
-	    	
+
 	    	aer.setAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation());
 
 	    	//build medications
@@ -151,22 +157,22 @@ public class AdverseEventReportSerializer {
 	    	for (AdverseEventPriorTherapy therapy: thList) {
 	    		aer.addAdverseEventPriorTherapies(therapy);
 	    	}
-	    	
+
 	    	//Build pre existing conditions
 	    	List<AdverseEventPreExistingCond> peList = hibernateAdverseEventReport.getAdverseEventPreExistingConds();
 
 	    	for (AdverseEventPreExistingCond pe: peList) {
 	    		aer.addAdverseEventPreExistingCond(pe);
 	    	}
-	    	
+
 	    	//Build other causes
 	    	List<OtherCause> ocList = hibernateAdverseEventReport.getOtherCauses();
 
 	    	for (OtherCause oc: ocList) {
 	    		aer.addOtherCause(oc);
 	    	}
-	    	
-	    	
+
+
 
 	    	return aer;
 	   }
@@ -197,7 +203,7 @@ public class AdverseEventReportSerializer {
 	    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
 	    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
 	    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
-	    	
+
 	    	return participantHistory;
 	    }
 
@@ -236,7 +242,7 @@ public class AdverseEventReportSerializer {
 	    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
 
 	    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
-	    	
+
 	    	return studyParticipantAssignment;
 	    }
 
@@ -267,7 +273,7 @@ public class AdverseEventReportSerializer {
 	    	studySite.setStudy(ss.getStudy());
 	    	studySite.setOrganization(ss.getOrganization());
 	    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
-	    	
+
 	    	//System.out.println("STUDY INVES INTERNAL >>>>>>>>>>>>>>> " + ss.getStudyInvestigatorsInternal().size());
 	    	return studySite;
 	    }
@@ -288,8 +294,8 @@ public class AdverseEventReportSerializer {
 
 	    	adverseEvent.setOtherCauseAttributions(otList);
 	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
-	    	
-	    	
+
+
 
 			if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
 				adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
@@ -297,8 +303,8 @@ public class AdverseEventReportSerializer {
 				adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
 			}
 
-	    	
-	    	
+
+
 	    	adverseEvent.setHospitalization(ae.getHospitalization());
 	    	adverseEvent.setGrade(ae.getGrade());
 	    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
@@ -308,7 +314,7 @@ public class AdverseEventReportSerializer {
 	    	return adverseEvent;
 	    }
 
-	    
+
 	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
 	    	otherCauseAttribution.setAttribution(oca.getAttribution());
@@ -330,8 +336,9 @@ public class AdverseEventReportSerializer {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
 	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
-	    	treatmentInformation.setTreatmentAssignmentCode(trtInf.getTreatmentAssignmentCode());
-	    	
+	    	//TODO: remove the below line.
+	    	//treatmentInformation.setTreatmentAssignmentCode(trtInf.getTreatmentAssignmentCode());
+
 	    	List<CourseAgent> caList = trtInf.getCourseAgents();
 
 	    	for (CourseAgent ca: caList) {

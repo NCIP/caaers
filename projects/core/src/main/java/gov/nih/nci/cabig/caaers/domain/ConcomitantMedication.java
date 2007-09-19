@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 /**
@@ -17,38 +16,22 @@ import javax.persistence.Transient;
     }
 )
 public class ConcomitantMedication extends AbstractExpeditedReportCollectionElementChild {
-    private Agent agent;
-    private String other;
+    private String agentName;
 
     ////// LOGIC
 
     @Transient
     public String getName() {
-        if (getAgent() != null) {
-            return getAgent().getName();
-        } else if (getOther() != null) {
-            return "Other: " + getOther();
-        } else {
-            return null;
-        }
+       return agentName;
     }
 
     ////// BOUND PROPERTIES
 
-    @ManyToOne
-    public Agent getAgent() {
-        return agent;
+    public String getAgentName() {
+        return agentName;
     }
 
-    public void setAgent(Agent agent) {
-        this.agent = agent;
-    }
-
-    public String getOther() {
-        return other;
-    }
-
-    public void setOther(String other) {
-        this.other = other;
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 }

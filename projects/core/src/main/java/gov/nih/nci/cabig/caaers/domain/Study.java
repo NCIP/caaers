@@ -93,7 +93,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private Boolean surgeryTherapyType = Boolean.FALSE;
 
 	private Boolean behavioralTherapyType = Boolean.FALSE;
-	
+
 	private Boolean healthyVolunteer;
 
 	public Study() {
@@ -355,10 +355,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 		if (getIdentifiers() != null && !getIdentifiers().isEmpty() && identifiersLazy.isEmpty()) {
 			for (Identifier identifier : getIdentifiers()) {
-				if (!identifier.getType().equalsIgnoreCase("Co-ordinating Center Identifier")) {
-					identifiersLazy.add(identifier);
+				if (identifier.getType().equalsIgnoreCase("Co-ordinating Center Identifier") ||
+					identifier.getType().equalsIgnoreCase("Sponsor Identifier") ) {
+					continue;
 				}
-
+				identifiersLazy.add(identifier);
 			}
 		}
 		return identifiersLazy;

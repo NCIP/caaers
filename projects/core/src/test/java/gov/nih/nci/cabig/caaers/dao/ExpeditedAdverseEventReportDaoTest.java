@@ -15,6 +15,8 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
@@ -98,8 +100,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
         ConcomitantMedication cm1 = loaded.getConcomitantMedications().get(1);
         assertSame("Wrong report", loaded, cm1.getReport());
-        assertEquals("Wrong agent", -101, (int) cm1.getAgent().getId());
-        assertNull("Wrong other", cm1.getOther());
+        assertNull("Wrong agent name", cm1.getAgentName());
     }
 
     public void testGetTreatmentInformation() throws Exception {
@@ -114,6 +115,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
         assertEquals("Wrong number of course agents", 2, actual.getCourseAgents().size());
         assertEquals("Wrong course agent 0", -19, (int) actual.getCourseAgents().get(0).getId());
+        assertNotNull("Worng association to TreatmentAssignment", actual.getTreatmentAssignment());
+        assertEquals("Wrong treatmentAssignment code", "TAC010" ,actual.getTreatmentAssignment().getCode());
 
         CourseAgent agent1 = actual.getCourseAgents().get(1);
         assertEquals("Wrong course agent 1", -20, (int) agent1.getId());
@@ -217,6 +220,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
                 event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+                event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
@@ -228,12 +232,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 report.addAdverseEvent(event0);
                 report.addAdverseEvent(event1);
                 report.setAssignment(assignmentDao.getById(-14));
-                report.setDetectionDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
-                assertDayOfDate("Wrong day for loaded date", 2004, Calendar.APRIL, 25, loaded.getDetectionDate());
 
                 assertEquals("Wrong number of AEs", 2, loaded.getAdverseEvents().size());
                 AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
@@ -252,8 +255,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
                 ConcomitantMedication conMed = report.getConcomitantMedications().get(0);
-                conMed.setAgent(agentDao.getById(-101));
-
+                conMed.setAgentName("agentName");
                 AdverseEvent ae0 = report.getAdverseEvents().get(0);
                 report.getAdverseEvents().get(0).getConcomitantMedicationAttributions()
                     .add(new ConcomitantMedicationAttribution());
@@ -267,14 +269,12 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 assertNotNull("Report not found", loaded);
 
                 assertEquals(1, loaded.getConcomitantMedications().size());
-                assertEquals("Wrong concomitant med", -101,
-                    (int) loaded.getConcomitantMedications().get(0).getAgent().getId());
 
                 List<ConcomitantMedicationAttribution> attribs
                     = loaded.getAdverseEvents().get(0).getConcomitantMedicationAttributions();
                 assertEquals(1, attribs.size());
-                assertEquals("Wrong number of con med attribs", -101,
-                    (int) attribs.get(0).getCause().getAgent().getId());
+                assertEquals("Wrong number of con med attribs", "agentName",
+                     attribs.get(0).getCause().getAgentName());
             }
         });
     }
@@ -288,7 +288,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 ti.setFirstCourseDate(DateTools.createDate(2005, Calendar.JULY, 30));
                 ti.getCourseAgents().get(0).setAdministrationDelay(new BigDecimal(480));
                 ti.getCourseAgents().get(0).getDose().setAmount(new BigDecimal("45.2"));
-                ti.setTreatmentAssignmentCode("WAC TAC");
+                //TODO: load the treatmentAssignment and add it, before saving.
                 report.setTreatmentInformation(ti);
             }
 
@@ -301,7 +301,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                     (int) ti.getAdverseEventCourse().getNumber());
                 assertDayOfDate("Wrong AE course date", 2006, Calendar.MAY, 4,
                     ti.getAdverseEventCourse().getDate());
-                assertEquals("Wrong TAC", "WAC TAC", ti.getTreatmentAssignmentCode());
 
                 assertEquals("Wrong number of course agents", 1, ti.getCourseAgents().size());
                 CourseAgent ca = ti.getCourseAgents().get(0);
@@ -507,13 +506,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     	assertEquals("Wrong number of results", 1, results.size());
     }
 
-    public void testSearchExpeditedReportByDetectionDate() throws Exception {
-    	List<ExpeditedAdverseEventReport> results;
-    	Map<String,String> m = new HashMap<String,String>();
-    	m.put("expeditedDate", "05/12/2004");
-    	results = getDao().searchExpeditedReports(m);
-    	assertEquals("Wrong number of results", 1, results.size());
-    }
+
 
     public void testSearchExpeditedReportByParticipantFirstName() throws Exception {
     	List<ExpeditedAdverseEventReport> results;
@@ -555,7 +548,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     private ExpeditedAdverseEventReport createMinimalAeReport() {
         ExpeditedAdverseEventReport report = Fixtures.createSavableExpeditedReport();
         report.setAssignment(assignmentDao.getById(-14));
-        report.setDetectionDate(new Date());
         report.getAdverseEvents().get(0).setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(report.getAdverseEvents().get(0), ctcTermDao.getById(3012)));
         return report;
     }

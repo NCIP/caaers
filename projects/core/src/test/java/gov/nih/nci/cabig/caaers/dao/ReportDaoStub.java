@@ -73,11 +73,11 @@ public class ReportDaoStub extends ReportDao {
 
 	public Report getDummyReportSchedule(final int reportId){
 
-		ReportDefinition rct = null;
+		ReportDefinition reportDefinition = null;
 		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
 		aeReport.setId(reportId);
 
-		Report rs = null;
+		Report report = null;
 
 
 		Calendar cal = GregorianCalendar.getInstance();
@@ -95,16 +95,16 @@ public class ReportDaoStub extends ReportDao {
 
 
 
-		rct = new ReportDefinition();
-		rct.setDescription("a rct description");
-		rct.setDuration(28);
-		rct.setId(-333);
-		rct.setName("24 Hr 5Day report");
-		rct.setTimeScaleUnitType(TimeScaleUnit.SECOND);
-		rct.setPlannedNotifications(pnfList);
+		reportDefinition = new ReportDefinition();
+		reportDefinition.setDescription("a rct description");
+		reportDefinition.setDuration(28);
+		reportDefinition.setId(-333);
+		reportDefinition.setName("24 Hr 5Day report");
+		reportDefinition.setTimeScaleUnitType(TimeScaleUnit.SECOND);
+		reportDefinition.setPlannedNotifications(pnfList);
 
 
-		rs = new Report(){
+		report = new Report(){
 			int callCount = 0;
 			@Override
 			public ReportStatus getStatus(){
@@ -114,14 +114,14 @@ public class ReportDaoStub extends ReportDao {
 				return super.getStatus();
 			}
 		};
-		rs.setStatus(ReportStatus.PENDING);
+		report.setStatus(ReportStatus.PENDING);
 		//rs.setName("24Hour5Day("+ reportId+")");
-		rs.setCreatedOn(new Date());
-		rs.setId(reportId);
-		rs.setReportDefinition(rct);
-		rs.setAeReport(aeReport);
-		aeReport.addReport(rs);
-		rs.setScheduledNotifications(snfList);
+		report.setCreatedOn(new Date());
+		report.setId(reportId);
+		report.setReportDefinition(reportDefinition);
+		report.setAeReport(aeReport);
+		aeReport.addReport(report);
+		report.setScheduledNotifications(snfList);
 
 		PlannedEmailNotification penf = new PlannedEmailNotification();
 		penf.setId(-3331);
@@ -132,7 +132,7 @@ public class ReportDaoStub extends ReportDao {
 		pnfList.add(penf);
 
 		cal.setTime(now);
-		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
+		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
 		ScheduledEmailNotification senf = new ScheduledEmailNotification();
 		senf.setId(reportId - 11);
 		senf.setBody(penf.getNotificationBodyContent().getBody());
@@ -148,7 +148,7 @@ public class ReportDaoStub extends ReportDao {
 
 		penf = new PlannedEmailNotification();
 		penf.setId(-3332);
-		penf.setIndexOnTimeScale(18);
+		penf.setIndexOnTimeScale(40);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
 		penf.setNotificationBodyContent(content);
 		penf.setRecipients(rList);
@@ -156,7 +156,7 @@ public class ReportDaoStub extends ReportDao {
 
 
 		cal.setTime(now);
-		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
+		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
 	    senf = new ScheduledEmailNotification();
 	    senf.setId(reportId - 12);
 		senf.setBody(penf.getNotificationBodyContent().getBody());
@@ -171,7 +171,7 @@ public class ReportDaoStub extends ReportDao {
 
 		penf = new PlannedEmailNotification();
 		penf.setId(-3333);
-		penf.setIndexOnTimeScale(26);
+		penf.setIndexOnTimeScale(75);
 		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
 		senf.setSubjectLine(penf.getSubjectLine());
 		penf.setNotificationBodyContent(content);
@@ -180,7 +180,7 @@ public class ReportDaoStub extends ReportDao {
 
 
 		cal.setTime(now);
-		cal.add(rct.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
+		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
 	    senf = new ScheduledEmailNotification();
 	    senf.setId(reportId - 13);
 		senf.setBody(penf.getNotificationBodyContent().getBody());
@@ -192,7 +192,7 @@ public class ReportDaoStub extends ReportDao {
 		senf.setSubjectLine(penf.getSubjectLine());
 		snfList.add(senf);
 
-		return rs;
+		return report;
 	}
 
 

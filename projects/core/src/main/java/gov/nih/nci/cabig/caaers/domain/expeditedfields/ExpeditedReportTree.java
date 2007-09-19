@@ -19,9 +19,10 @@ public class ExpeditedReportTree extends TreeNode {
         add(
             section(ADVERSE_EVENT_SECTION.name(),
                 // TODO: figure out how to handle the MedDRA alternative here
-                property("detectionDate", "Detection date"),
                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
                     property("grade", "Grade"),
+                    property("startDate", "Start date"),
+                    property("endDate", "End date"),
                     property("attributionSummary", "Attribution to study"),
                     property("hospitalization", "Hospitalization"),
                     property("expected", "Expected"),
@@ -115,30 +116,34 @@ public class ExpeditedReportTree extends TreeNode {
             ),
             section(TREATMENT_INFO_SECTION.name(),
                 property("treatmentInformation",
-                    property("treatmentAssignmentCode", "Assignment code"),
-                    property("firstCourseDate", "First course start date"),
+                    property("treatmentAssignment", "Treatment assignment code"),
+                    property("treatmentAssignmentDescription", "Description of treatment assignment or dose level"),
+                    property("firstCourseDate", "Start date of first course"),
                     // TODO: these should be a component instead
                     property("adverseEventCourse",
-                        property("date", "Adverse event course start date"),
-                        property("number", "Adverse event course number")
+                        property("date", "Start date of course associated with expedited report"),
+                        property("number", "Course# on which event occurred")
                     ),
+                    property("totalCourses", "Total number of courses till date"),
                     //TODO : Need a display name creator????
                     list("courseAgents", "Course Agent",
                         property("studyAgent", "Study Agent"),
-                        dosage("dose", "Dosage"),
+                        property("totalDoseAdministeredThisCourse", "Total dose administered this course"),
                         property("durationAndSchedule", "Duration and schedule"),
+                        property("lastAdministeredDate", "Date last administered"),
+                        dosage("dose", "Dosage"),
                         //TODO: this is a component
                         property("administrationDelayAmount", "Administration Delay Amount"),
                         property("administrationDelayUnits", "Administration Delay Units"),
-                        dosage("modifiedDose", "Modified dose"),
-                        property("totalDoseAdministeredThisCourse", "Total dose administered this course"),
-                        property("lastAdministeredDate", "Date last administered")
+                        dosage("modifiedDose", "Modified dose")
+
                     )
                 )
             ),
             section(LABS_SECTION.name(),
                 list("labs", "Lab",
-                    property("name", "Name"),
+                    property("name", "Lab test name"),
+                    property("other", "Other test name"),
                     property("units", "Units"),
                     labValue("baseline", "Baseline"),
                     labValue("nadir", "Worst"),
@@ -161,8 +166,7 @@ public class ExpeditedReportTree extends TreeNode {
             ),
             section(CONCOMITANT_MEDICATION_SECTION.name(),
                 list("concomitantMedications", "ConcomitantMedication",
-                    property("agent", "Known medication"),
-                    property("other", "Other")
+                    property("agentName", "Known medication")
                 )
             ),
             section(OTHER_CAUSE_SECTION.name(),

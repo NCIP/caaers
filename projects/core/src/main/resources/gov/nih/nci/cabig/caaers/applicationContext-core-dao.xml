@@ -276,6 +276,7 @@
 	<bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
 	<bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao" /> 
 	<bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao" /> 
+	<bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao" />
 	<!--Rules/Scheduler/Notification DAOs-->
 	<bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao" />
 	<bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao" />

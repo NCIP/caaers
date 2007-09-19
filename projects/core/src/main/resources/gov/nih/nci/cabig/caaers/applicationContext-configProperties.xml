@@ -189,6 +189,10 @@
                             <property name="code" value="C3D Identifier" />
                             <property name="desc" value="C3D Identifier" />
                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Sponsor Identifier" />
+                            <property name="desc" value="Sponsor Identifier" />
+                        </bean>
                     </list>
                 </entry>
 
@@ -223,7 +227,7 @@
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SPI" />
-                            <property name="desc" value="Site Principle Investigator" />
+                            <property name="desc" value="Site Principal Investigator" />
                         </bean>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="SI" />
@@ -344,7 +348,326 @@
                         </bean>
                     </list>
                 </entry>
-                <entry key="notificationSubstitutionsRefData">
+                
+                <!-- Units used by lab -->
+                <entry key="labUnitsRefData">
+                <list>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="cc/min" />
+                   <property name="desc" value="cc/min" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="gm" />
+                   <property name="desc" value="gm" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mg/dL" />
+                   <property name="desc" value="mg/dL" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mg/dl" />
+                   <property name="desc" value="mg/dl" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mg/L" />
+                   <property name="desc" value="mg/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="g/dL" />
+                   <property name="desc" value="g/dL" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="g/L" />
+                   <property name="desc" value="g/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="gm/dl" />
+                   <property name="desc" value="gm/dl" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="ug/mL" />
+                   <property name="desc" value="ug/mL" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mL/Min/1.73m2" />
+                   <property name="desc" value="mL/Min/1.73m2" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mm3" />
+                   <property name="desc" value="mm3" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mEq/L" />
+                   <property name="desc" value="mEq/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="ul" />
+                   <property name="desc" value="ul" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="1000/uL" />
+                   <property name="desc" value="1000/uL" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="1000/mm3" />
+                   <property name="desc" value="1000/mm3" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="cells/L" />
+                   <property name="desc" value="cells/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="U/L" />
+                   <property name="desc" value="U/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="iU/L" />
+                   <property name="desc" value="iU/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mmol/L" />
+                   <property name="desc" value="mmol/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="umol/L" />
+                   <property name="desc" value="umol/L" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="mmHg" />
+                   <property name="desc" value="mmHg" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="kPa" />
+                   <property name="desc" value="kPa" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="min" />
+                   <property name="desc" value="min" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="seconds" />
+                   <property name="desc" value="seconds" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="number" />
+                   <property name="desc" value="number" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="%" />
+                   <property name="desc" value="%" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="Vol Frac" />
+                   <property name="desc" value="Vol Frac" />
+                  </bean>
+                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                   <property name="code" value="n/a" />
+                   <property name="desc" value="n/a" />
+                  </bean>
+                  </list>
+                </entry>
+                <!-- Lab testnames -->
+               <entry key="labTestNamesRefData">
+                <list>
+	                  <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+	                   <property name="code" value="ANC" />
+	                   <property name="desc" value="ANC" />
+	                  </bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Activated partial thromboplastin time (APTT)" />
+					   <property name="desc" value="Activated partial thromboplastin time (APTT)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Albumin - blood" />
+					   <property name="desc" value="Albumin - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Alkaline phosphates NOS" />
+					   <property name="desc" value="Alkaline phosphates NOS" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Amylase - blood" />
+					   <property name="desc" value="Amylase - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Bacterial infection NOS" />
+					   <property name="desc" value="Bacterial infection NOS" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Bilirubin direct - blood" />
+					   <property name="desc" value="Bilirubin direct - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Bilirubin total - blood" />
+					   <property name="desc" value="Bilirubin total - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Blood Urea Nitrogen (BUN)" />
+					   <property name="desc" value="Blood Urea Nitrogen (BUN)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Blood bicarbonate" />
+					   <property name="desc" value="Blood bicarbonate" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Blood carbon dioxide" />
+					   <property name="desc" value="Blood carbon dioxide" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Blood neutrophils (ANC)" />
+					   <property name="desc" value="Blood neutrophils (ANC)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Bone Marrow Cellularity" />
+					   <property name="desc" value="Bone Marrow Cellularity" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Bone Marrow blasts" />
+					   <property name="desc" value="Bone Marrow blasts" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Calcium - blood (Ca)" />
+					   <property name="desc" value="Calcium - blood (Ca)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Carbon dioxide - blood (CO2)" />
+					   <property name="desc" value="Carbon dioxide - blood (CO2)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Chloride - blood" />
+					   <property name="desc" value="Chloride - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Cholesterol - blood" />
+					   <property name="desc" value="Cholesterol - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Creatine phosphokinase - blood (CK)" />
+					   <property name="desc" value="Creatine phosphokinase - blood (CK)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Creatinine - serum (Cr)" />
+					   <property name="desc" value="Creatinine - serum (Cr)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Creatinine clearance (CrCl)" />
+					   <property name="desc" value="Creatinine clearance (CrCl)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Fibrin D-dimer" />
+					   <property name="desc" value="Fibrin D-dimer" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Fibrin degradation products (FDP)" />
+					   <property name="desc" value="Fibrin degradation products (FDP)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Fibrinogen - blood" />
+					   <property name="desc" value="Fibrinogen - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Fungal infection NOS" />
+					   <property name="desc" value="Fungal infection NOS" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Glucose - blood" />
+					   <property name="desc" value="Glucose - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Glutamic-oxaloacetic transferase (AST, SGOT)" />
+					   <property name="desc" value="Glutamic-oxaloacetic transferase (AST, SGOT)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Glutamic-pyruvate transferase (ALT, SGPT)" />
+					   <property name="desc" value="Glutamic-pyruvate transferase (ALT, SGPT)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Hematocrit (Hct)" />
+					   <property name="desc" value="Hematocrit (Hct)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Hemoglobin (Hb)" />
+					   <property name="desc" value="Hemoglobin (Hb)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Hemoglobin (fetal)" />
+					   <property name="desc" value="Hemoglobin (fetal)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="International normalised ratio (INR)" />
+					   <property name="desc" value="International normalised ratio (INR)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Lactate dehydrogenase - blood (LDH)" />
+					   <property name="desc" value="Lactate dehydrogenase - blood (LDH)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Lipase" />
+					   <property name="desc" value="Lipase" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Magnesium - blood (Mg)" />
+					   <property name="desc" value="Magnesium - blood (Mg)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Oxygen saturation" />
+					   <property name="desc" value="Oxygen saturation" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Peripheral Blasts count" />
+					   <property name="desc" value="Peripheral Blasts count" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Phosphorus" />
+					   <property name="desc" value="Phosphorus" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Platelet count (PLT)" />
+					   <property name="desc" value="Platelet count (PLT)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Potassium - blood (K)" />
+					   <property name="desc" value="Potassium - blood (K)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Protein NOS (Total)" />
+					   <property name="desc" value="Protein NOS (Total)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Prothrombin time (PT)" />
+					   <property name="desc" value="Prothrombin time (PT)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Sodium - blood" />
+					   <property name="desc" value="Sodium - blood" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Triglycerides" />
+					   <property name="desc" value="Triglycerides" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Urine analysis" />
+					   <property name="desc" value="Urine analysis" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="Viral infection NOS" />
+					   <property name="desc" value="Viral infection NOS" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="White blood cell count (WBC)" />
+					   <property name="desc" value="White blood cell count (WBC)" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="pH NOS" />
+					   <property name="desc" value="pH NOS" />
+					</bean>
+					<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+					   <property name="code" value="pO2" />
+					   <property name="desc" value="pO2" />
+					</bean>
+				  </list>
+				</entry>
+				<entry key="notificationSubstitutionsRefData">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="nCIProtocolNumber" />
@@ -380,6 +703,7 @@
                         </bean>
                     </list>
                 </entry>
+				
             </map>
         </property>
     </bean>

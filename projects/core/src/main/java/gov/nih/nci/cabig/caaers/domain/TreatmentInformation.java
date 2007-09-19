@@ -8,6 +8,8 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -37,7 +39,10 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
     private Date firstCourseDate;
     private CourseDate adverseEventCourse;
-    private String treatmentAssignmentCode;
+    private Integer totalCourses;
+
+    private TreatmentAssignment treatmentAssignment;
+    private String treatmentDescription;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -73,13 +78,6 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
     ////// BEAN PROPERTIES
 
-    public String getTreatmentAssignmentCode() {
-        return treatmentAssignmentCode;
-    }
-
-    public void setTreatmentAssignmentCode(String treatmentAssignmentCode) {
-        this.treatmentAssignmentCode = treatmentAssignmentCode;
-    }
 
     public Date getFirstCourseDate() {
         return firstCourseDate;
@@ -117,4 +115,38 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
         this.courseAgentsInternal = courseAgentsInternal;
         createLazyCourseAgents();
     }
+
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="treatment_assignment_id")
+    @Cascade(value={CascadeType.LOCK})
+    public TreatmentAssignment getTreatmentAssignment() {
+		return treatmentAssignment;
+	}
+    public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
+		this.treatmentAssignment = treatmentAssignment;
+	}
+
+	public String getTreatmentDescription() {
+		return treatmentDescription;
+	}
+
+	public void setTreatmentDescription(String treatmentDescription) {
+		this.treatmentDescription = treatmentDescription;
+	}
+	public Integer getTotalCourses() {
+		return totalCourses;
+	}
+	public void setTotalCourses(Integer totalCourses) {
+		this.totalCourses = totalCourses;
+	}
+
+	@Transient
+	public String getTreatmentAssignmentDescription(){
+		if(treatmentAssignment != null) return treatmentAssignment.getDescription();
+		return null;
+	}
+	@Transient
+	public void setTreatmentAssignmentDescription(String desc){
+		//do nothing.
+	}
 }

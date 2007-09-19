@@ -62,11 +62,13 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
     }
 
     public void testSave() {
-        ReportDefinition rct = new ReportDefinition();
-        rct.setDuration(5);
-        rct.setGridId("202020202044iiei90");
-        rct.setName("Test-RCT");
-        rct.setTimeScaleUnitType(TimeScaleUnit.DAY);
+        ReportDefinition definition = new ReportDefinition();
+        definition.setDuration(5);
+        definition.setGridId("202020202044iiei90");
+        definition.setName("Test-RCT");
+        definition.setTimeScaleUnitType(TimeScaleUnit.DAY);
+        definition.setAmendable(true);
+
         //create planned notifications
         List<PlannedNotification> pnlist = new ArrayList<PlannedNotification>();
         PlannedEmailNotification pen = new PlannedEmailNotification();
@@ -94,7 +96,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         pen.setAttachments(alist);
 
         pnlist.add(pen);
-        rct.setPlannedNotifications(pnlist);
+        definition.setPlannedNotifications(pnlist);
 
 		final ReportDeliveryDefinition rdd = new ReportDeliveryDefinition();
 		rdd.setEndPoint("abcd");
@@ -104,10 +106,10 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		rdd.setEntityName("Manju");
 		rdd.setEntityType(rdd.ENTITY_TYPE_ROLE);
 
-		rct.addReportDeliveryDefinition(rdd);
+		definition.addReportDeliveryDefinition(rdd);
 
 		Organization org  = orgDao.getById(-1001);
-		org.addReportDefinition(rct);
+		org.addReportDefinition(definition);
 
 		//add new mandatory fields.
 		ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", false);
@@ -115,10 +117,10 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
 		mandatoryFields.add(mf1);
 		mandatoryFields.add(mf2);
-		rct.setMandatoryFields(mandatoryFields);
+		definition.setMandatoryFields(mandatoryFields);
 
-		rctDao.save(rct);
-        final Integer id = rct.getId();
+		rctDao.save(definition);
+        final Integer id = definition.getId();
 
         interruptSession();
 

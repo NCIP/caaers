@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -330,53 +331,53 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 
 	public void testMatchStudyByParticipant() throws Exception {
 		List<Study> results;
-		Integer participantId = -100 ; 
+		Integer participantId = -100 ;
 		results = getDao().matchStudyByParticipant(participantId,"or");
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
-	
+
 	public void testMatchStudyByParticipantByIdentifier() throws Exception {
 		List<Study> results;
-		Integer participantId = -100 ; 
+		Integer participantId = -100 ;
 		// Full Identifier Value
 		results = getDao().matchStudyByParticipant(participantId,"1138-43");
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-		
+
 		// Partial  Identifier Value
 		results = getDao().matchStudyByParticipant(participantId,"-43");
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-		
+
 		// Partial  Identifier type
 		results = getDao().matchStudyByParticipant(participantId,"lo");
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-		
+
 		// Full  Identifier type
 		results = getDao().matchStudyByParticipant(participantId,"local");
 		assertEquals("Wrong number of results", 1, results.size());
-		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());	
+		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
-	
+
 	public void testGetBySubnamesJoinOnIdentifier() throws Exception {
 		List<Study> results;
-		 
+
 		// Full Identifier Value
 		String[] str = {"1138-43"};
 		results = getDao().getBySubnamesJoinOnIdentifier(str);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-		
+
 		// Partial  Identifier Value
 		String[] str1 = {"-43"};
 		results = getDao().getBySubnamesJoinOnIdentifier(str1);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
-	
-	
+
+
 	public void testSearchStudyByStudyShortTitle() throws Exception {
 		List<Study> results;
 		Map<String, String> m = new HashMap<String, String>();
@@ -546,5 +547,62 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertEquals("StudyAmendments size", 1, study.getStudyAmendments().size());
 			assertEquals("Previous Second amendment version wrong",new Integer(43),study.getStudyAmendments().get(0).getAmendmentVersion());
 		}
+	}
+
+	public void testSaveUpdateStudyWithTreatmentAssignment(){
+		int studyId = 0;
+		Date d = new Date();
+		{
+			Study newStudy = new Study();
+			newStudy.setShortTitle("Short Title Inserted");
+			newStudy.setLongTitle("Long Title Inserted");
+			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+			// study amendments
+			StudyAmendment amendment = new StudyAmendment();
+			amendment.setAmendmentDate(d);
+			amendment.setIrbApprovalDate(d);
+			amendment.setAmendmentVersion(33);
+			newStudy.addAmendment(amendment);
+
+			amendment = new StudyAmendment();
+			amendment.setAmendmentDate(d);
+			amendment.setIrbApprovalDate(d);
+			amendment.setAmendmentVersion(43);
+			newStudy.addAmendment(amendment);
+
+			TreatmentAssignment ta = new TreatmentAssignment();
+			ta.setCode("111");
+			ta.setComments("no comments");
+			ta.setDescription("sample description");
+			ta.setDoseLevelOrder(33);
+			ta.setStudy(newStudy);
+			newStudy.addTreatmentAssignment(ta);
+
+			getDao().save(newStudy);
+			assertNotNull("No ID for newly saved study", newStudy.getId());
+			assertNotNull("Treatment is not saved", newStudy.getTreatmentAssignments().get(0).getId());
+			studyId = newStudy.getId();
+		}
+		interruptSession();
+		{
+			Study loaded = getDao().getById(studyId);
+			assertNotNull("Could not reload study with id " + studyId, loaded);
+			// assertNotNull("GridId not updated", loaded.getGridId());
+			assertEquals("Wrong name", "Short Title Inserted", loaded.getShortTitle());
+			assertEquals("Treatment Assigments are not loaded properly", 1, loaded.getTreatmentAssignments().size());
+			TreatmentAssignment ta = loaded.getTreatmentAssignments().get(0);
+			assertEquals("Invalid treatment code", "111", ta.getCode());
+			loaded.getTreatmentAssignments().remove(ta);
+			getDao().save(loaded);
+		}
+		interruptSession();
+		{
+			Study loaded = getDao().getById(studyId);
+			assertNotNull("Could not reload study with id " + studyId, loaded);
+			assertEquals("Wrong name", "Short Title Inserted", loaded.getShortTitle());
+			assertEquals("Treatment Assigments are not removed properly", 0, loaded.getTreatmentAssignments().size());
+		}
+
 	}
 }
