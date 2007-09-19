@@ -140,9 +140,9 @@ public class ExpeditedReportTree extends TreeNode {
                 list("labs", "Lab",
                     property("name", "Name"),
                     property("units", "Units"),
-                    inference("baseline", "Baseline"),
-                    inference("nadir", "Worst"),
-                    inference("recovery", "Recovery")
+                    labValue("baseline", "Baseline"),
+                    labValue("nadir", "Worst"),
+                    labValue("recovery", "Recovery")
                 )
             ),
             section(PRIOR_THERAPIES_SECTION.name(),
@@ -175,7 +175,7 @@ public class ExpeditedReportTree extends TreeNode {
         );
     }
 
-    public TreeNode fecthNodeForSection(ExpeditedReportSection section) {
+    public TreeNode fetchNodeForSection(ExpeditedReportSection section) {
         for (TreeNode node : getChildren()) {
             if (StringUtils.equals(node.getDisplayName(), section.name()))
                 return node;
@@ -213,19 +213,17 @@ public class ExpeditedReportTree extends TreeNode {
     }
 
     private static TreeNode dosage(String baseName, String displayName) {
-        return property(baseName, StringUtils.capitalize(baseName),
+        return property(baseName, displayName,
             property("amount", "Amount"),
             property("units", "Units"),
             property("route", "Route")
         );
     }
 
-    private static TreeNode inference(String baseName, String displayName) {
+    private static TreeNode labValue(String baseName, String displayName) {
         return property(baseName, displayName,
             property("value", "Value"),
             property("date", "Date")
         );
     }
-
-
 }

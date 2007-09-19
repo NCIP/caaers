@@ -98,7 +98,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     	BeanWrapper wrappedCommand = new BeanWrapperImpl(command.getAeReport());
     	ErrorMessages messages = new ErrorMessages();
-    	TreeNode node = expeditedReportTree.fecthNodeForSection(section());
+    	TreeNode node = expeditedReportTree.fetchNodeForSection(section());
     	if(node == null) return false;
     	reportService.validate(wrappedCommand, mandatoryFields, node, messages);
 

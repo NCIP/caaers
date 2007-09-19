@@ -203,7 +203,7 @@ public class ReportServiceTest extends CaaersTestCase {
 
 	public void testValidate() throws Exception{
 		ExpeditedReportTree reportTree = new ExpeditedReportTree();
-		TreeNode sectionNode = reportTree.fecthNodeForSection(ExpeditedReportSection.TREATMENT_INFO_SECTION);
+		TreeNode sectionNode = reportTree.fetchNodeForSection(ExpeditedReportSection.TREATMENT_INFO_SECTION);
 
 
 		ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();

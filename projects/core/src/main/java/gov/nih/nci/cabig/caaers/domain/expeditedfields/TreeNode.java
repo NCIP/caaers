@@ -63,15 +63,6 @@ public class TreeNode {
         return this;
     }
 
-    public static void listPropertyPaths(TreeNode node, List<String> paths){
-    	if(node.getPropertyPath() != null)
-    		paths.add(node.getPropertyPath());
-
-    	for(TreeNode n : node.getChildren()){
-    		listPropertyPaths(n, paths);
-    	}
-    }
-
     public String getPropertyPath() {
         return getPropertyPath(new StringBuilder()).toString();
     }
