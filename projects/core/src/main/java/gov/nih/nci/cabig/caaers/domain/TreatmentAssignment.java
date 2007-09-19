@@ -13,7 +13,7 @@ import org.hibernate.validator.Length;
 
 /**
  * Domain object representing Study Therapy
- * 
+ *
  * @author Saurabh Agrawal
  */
 @Entity
@@ -84,7 +84,7 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
 		result = prime * result + (code == null ? 0 : code.hashCode());
 		result = prime * result + (comments == null ? 0 : comments.hashCode());
 		result = prime * result + (description == null ? 0 : description.hashCode());
-		result = prime * result + doseLevelOrder;
+		result = prime * result + ( doseLevelOrder == null? 0 : doseLevelOrder);
 		result = prime * result + (study.getId() == null ? 0 : study.getId().hashCode());
 		return result;
 	}
@@ -125,9 +125,7 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
 		else if (!description.equals(other.description)) {
 			return false;
 		}
-		if (doseLevelOrder != other.doseLevelOrder) {
-			return false;
-		}
+
 		if (study.getId() == null) {
 			if (other.study.getId() != null) {
 				return false;
