@@ -21,7 +21,10 @@
         function chooseStaff() {
             var id = document.getElementById("staff").value;
             if (id == -1) {
-                clear();
+                clear('reporter');
+                if(isPhysicianSame()){
+                 clear('physician');
+                }
             } else {
                 createAE.getResearchStaff(id, updateReporterFromStaff)
             }
@@ -31,7 +34,10 @@
             NAME_FIELDS.each(function(field) {
                 $('aeReport.reporter.' + field).value = staff[field]
             })
-
+			$('aeReport.reporter.' + 'contactMechanisms[e-mail]').value = staff['emailAddress']
+			$('aeReport.reporter.' + 'contactMechanisms[phone]').value = staff['phoneNumber']
+			$('aeReport.reporter.' + 'contactMechanisms[fax]').value = staff['faxNumber']
+			
             updatePhysicianFromReporterIfSame()
         }
 

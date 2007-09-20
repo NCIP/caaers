@@ -104,7 +104,7 @@ public class CreateAdverseEventAjaxFacade {
 
     public ResearchStaff getResearchStaff(String text) {
         ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
-        return reduce(researchStaff, "id", "firstName", "lastName", "middleName");
+        return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
 
     public List<Participant> matchParticipants(String text, Integer studyId) {

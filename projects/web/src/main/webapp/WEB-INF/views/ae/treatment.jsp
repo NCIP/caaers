@@ -21,7 +21,7 @@
             if (hasModified) {
                 $(baseProp + "modifiedDose.amount").value = ""
                 $(baseProp + "modifiedDose.units").value = $(baseProp + "dose.units").value
-                $(baseProp + "modifiedDose.route").value = $(baseProp + "dose.route").value
+                //$(baseProp + "modifiedDose.route").value = $(baseProp + "dose.route").value
             } else {
                 $A([
                     baseProp + "modifiedDose.amount",
@@ -164,7 +164,7 @@
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
-            <tags:listEditorAddButton divisionClass="courseAgent" label="Add a course agent"/>
+            <tags:listEditorAddButton divisionClass="courseAgent" label="Add a study agent"/>
         </jsp:attribute>
     </tags:tabForm>
 </body>

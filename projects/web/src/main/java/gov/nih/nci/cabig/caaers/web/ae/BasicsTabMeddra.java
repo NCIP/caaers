@@ -76,8 +76,10 @@ public class BasicsTabMeddra extends AeTab {
                 InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
         mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
             "expected", "Expected", true));
-        mainFieldFactory.addField(InputFieldFactory.createTextArea(
-            "comments", "Comments", false));
+        InputField commentsField = InputFieldFactory.createTextArea(
+                "comments", "Comments", false);
+        InputFieldAttributes.setColumns(commentsField, 50);
+        mainFieldFactory.addField(commentsField);
 
         RepeatingFieldGroupFactory meddraTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField lowLevelTermField = InputFieldFactory.createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true);

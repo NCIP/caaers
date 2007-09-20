@@ -120,8 +120,6 @@
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
 			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents" />
-			   		  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~Dose" tabular="true" heading="Dosage" singleRow="true"/>
-			   		  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~ModifiedDose" tabular="true" heading="Modified dose" singleRow="true"/>
 			   		</chrome:division>
 			 	  </td>
 			  </tr>

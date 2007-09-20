@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -24,7 +25,7 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class TreatmentTab extends AeTab {
-
+	private ConfigProperty configurationProperty;
     public TreatmentTab() {
         super("Treatment Information", "Course and Agent", "ae/treatment");
     }
@@ -62,14 +63,14 @@ public class TreatmentTab extends AeTab {
           ));
     	  InputField eventCourseField = InputFieldFactory.createTextField(
                   "aeReport.treatmentInformation.adverseEventCourse.number",
-                  "Course# on which event occurred", true
+                  "Course number on which event occurred", true
               );
     	  InputFieldAttributes.setSize(eventCourseField, 4);
           treatmentFields.getFields().add(eventCourseField);
 
           InputField totalCourseField = InputFieldFactory.createTextField(
                   "aeReport.treatmentInformation.totalCourses",
-                  "Total number of courses till date", true
+                  "Total number of courses to date", true
               );
     	  InputFieldAttributes.setSize(totalCourseField, 4);
           treatmentFields.getFields().add(totalCourseField);
@@ -81,18 +82,24 @@ public class TreatmentTab extends AeTab {
             "aeReport.treatmentInformation.courseAgents");
         caFields.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {
-                return "Course agent " + (index + 1);
+                return "Study agent " + (index + 1);
             }
         });
 
         caFields.addField(InputFieldFactory.createSelectField(
             "studyAgent", "Study Agent", true,
             InputFieldFactory.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName")));
-        caFields.addField(InputFieldFactory.createTextField(
-                "totalDoseAdministeredThisCourse", "Total dose administered this course", true));
-        caFields.addField(createDoseField("dose", "Dose", true));
-        caFields.addField(InputFieldFactory.createTextArea(
-            "durationAndSchedule", "Duration and schedule", false));
+
+        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", true);
+        InputFieldAttributes.setSize(totalDoseField, 4);
+        caFields.addField(totalDoseField);
+
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units",
+        		"Unit of measure",
+        		true,
+        		InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select"));
+
+        caFields.addField(totalUOMField);
         caFields.addField(InputFieldFactory.createDateField(
                 "lastAdministeredDate", "Date last administered", false));
 
@@ -104,7 +111,12 @@ public class TreatmentTab extends AeTab {
                     InputFieldFactory.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName")))
         ));
 
-        caFields.addField(createDoseField("modifiedDose", "Modified dose", false));
+       InputField commentsField =InputFieldFactory.createTextArea(
+    		      "comments", "Comments", false);
+       InputFieldAttributes.setColumns(commentsField, 45);
+      caFields.addField(commentsField);
+
+        caFields.addField(createDoseField("modifiedDose", "Modified dose", false, false));
 
 
 
@@ -116,11 +128,16 @@ public class TreatmentTab extends AeTab {
         return map;
     }
 
-    private CompositeField createDoseField(String doseProperty, String displayName, boolean required) {
-        InputFieldGroup group = new DefaultInputFieldGroup(null, displayName)
+    private CompositeField createDoseField(String doseProperty, String displayName, boolean required, boolean hideRoute) {
+    	DefaultInputFieldGroup group = new DefaultInputFieldGroup(null, displayName)
             .addField(InputFieldFactory.createTextField("amount", "", required))
-            .addField(InputFieldFactory.createTextField("units", "units", required))
-            .addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
+            .addField(InputFieldFactory.createSelectField("units",
+            		"units",
+            		true,
+            		InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select")));
+        if(!hideRoute){
+            group.addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
+        }
         return new CompositeField(doseProperty, group);
     }
 
@@ -153,6 +170,14 @@ public class TreatmentTab extends AeTab {
     		}
     	}
     }
+
+    public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 
     @Override
     public ExpeditedReportSection section() {

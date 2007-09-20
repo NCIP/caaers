@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class MedicalDeviceTab extends AeTab {
 
     public MedicalDeviceTab() {
-        super("Medical Device", "Medical Device", "ae/medicalDevice");
+        super("Medical Device", "Device", "ae/medicalDevice");
 
 
     }

@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -29,7 +31,9 @@ public class RadiationInterventionTab extends AeTab {
 
 
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".treatmentArm", "Treatment arm", false));
-        allFields.getFields().add(InputFieldFactory.createTextArea(baseProp + ".description", "Treatment arm description", false));
+        InputField descField = InputFieldFactory.createTextArea(baseProp + ".description", "Treatment arm description", false);
+        InputFieldAttributes.setSize(descField, 45);
+        allFields.getFields().add(descField);
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(InputFieldFactory.collectOptions(

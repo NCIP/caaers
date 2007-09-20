@@ -82,8 +82,9 @@ public class BasicsTab extends AeTab {
                 InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
         mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
             "expected", "Expected", true));
-        mainFieldFactory.addField(InputFieldFactory.createTextArea(
-            "comments", "Comments", false));
+        InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
+        InputFieldAttributes.setColumns(commentsField, 50);
+        mainFieldFactory.addField(commentsField);
 
         RepeatingFieldGroupFactory ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
         InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", true);
