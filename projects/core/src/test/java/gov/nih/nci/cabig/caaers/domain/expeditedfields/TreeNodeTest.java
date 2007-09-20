@@ -7,13 +7,13 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.*;
  * @author Rhett Sutphin
  */
 public class TreeNodeTest extends TestCase {
-    private TreeNode deepTree = section("container",
+    private TreeNode deepTree = section(ExpeditedReportSection.BASICS_SECTION,
         property("R",
             property("a",
                 property("A1"),
                 property("A2")
             ),
-            section("Land of Bees",
+            section(ExpeditedReportSection.CHECKPOINT_SECTION,
                 property("b",
                      property("B1"),
                      property("B2")
@@ -44,7 +44,7 @@ public class TreeNodeTest extends TestCase {
     public void testPropertyPathThroughSection() throws Exception {
         TreeNode end;
         property("top", "Top",
-            section("Four",
+            section(ExpeditedReportSection.BASICS_SECTION,
                 end = property("bottom", "End")
             )
         );
@@ -53,7 +53,7 @@ public class TreeNodeTest extends TestCase {
 
     public void testPropertyPathStartingAtSection() throws Exception {
         TreeNode end;
-        section("DC",
+        section(ExpeditedReportSection.BASICS_SECTION,
             end = property("end", "DC")
         );
         assertEquals("end", end.getPropertyPath());

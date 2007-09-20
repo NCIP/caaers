@@ -354,7 +354,7 @@ public class ReportServiceImpl  implements ReportService {
 	//TODO: Move this to some utility class
 
 	@SuppressWarnings("unchecked")
-	public static boolean isEmpty(Object o){
+    private static boolean isEmpty(Object o){
 		if(o instanceof Collection){
 			return CollectionUtils.isEmpty((Collection)o);
 		}
@@ -363,7 +363,7 @@ public class ReportServiceImpl  implements ReportService {
 
 	//TODO : Move this to some utility class
 	@SuppressWarnings("unchecked")
-	public static int size(Object o){
+    private static int size(Object o){
 		if(o == null) return 0;
 		if(o instanceof Collection){
 			return CollectionUtils.size(o);

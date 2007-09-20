@@ -12,7 +12,7 @@ public class ErrorMessages {
 		messages.add(new ErrorMessage(code, "Invalid " + msg, property));
 	}
 
-	public boolean hasErros(){
+	public boolean hasErrors(){
 		return messages.size() > 0;
 	}
 

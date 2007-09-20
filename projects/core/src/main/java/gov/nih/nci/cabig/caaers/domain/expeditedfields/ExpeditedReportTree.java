@@ -14,10 +14,10 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author Rhett Sutphin
  */
-public class ExpeditedReportTree extends TreeNode {
+public class ExpeditedReportTree extends PropertylessNode {
     public ExpeditedReportTree() {
         add(
-            section(ADVERSE_EVENT_SECTION.name(),
+            section(ADVERSE_EVENT_SECTION,
                 // TODO: figure out how to handle the MedDRA alternative here
                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
                     property("grade", "Grade"),
@@ -33,12 +33,12 @@ public class ExpeditedReportTree extends TreeNode {
                     property("detailsForOther", "Other (specify)")
                 )
             ),
-            section(REPORTER_INFO_SECTION.name(),
+            section(REPORTER_INFO_SECTION,
                 createPersonBlock("reporter"),
                 createPersonBlock("physician")
             ),
-            section(CHECKPOINT_SECTION.name()), // so that ordering lines up
-            section(RADIATION_INTERVENTION_SECTION.name(),
+            section(CHECKPOINT_SECTION), // so that ordering lines up
+            section(RADIATION_INTERVENTION_SECTION,
                 property("radiationIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -54,7 +54,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("adjustment", "Adjustment")
                 )
             ),
-            section(SURGERY_INTERVENTION_SECTION.name(),
+            section(SURGERY_INTERVENTION_SECTION,
                 property("surgeryIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
@@ -62,7 +62,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("interventionDate", "Intervention date")
                 )
             ),
-            section(MEDICAL_DEVICE_SECTION.name(),
+            section(MEDICAL_DEVICE_SECTION,
                 property("medicalDevice",
                     property("brandName", "Brand name"),
                     property("commonName", "Common name"),
@@ -87,7 +87,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("returnedDate", "Returned date")
                 )
             ),
-            section(DESCRIPTION_SECTION.name(),
+            section(DESCRIPTION_SECTION,
                 property("responseDescription",
                     property("eventDescription", "Description"),
                     property("presentStatus", "Present status"),
@@ -96,7 +96,7 @@ public class ExpeditedReportTree extends TreeNode {
                     property("dateRemovedFromProtocol", "Date removed from protocol")
                 )
             ),
-            section(MEDICAL_INFO_SCECTION.name(),
+            section(MEDICAL_INFO_SCECTION,
                 property("participantHistory",
                     participantMeasure("height"),
                     participantMeasure("weight"),
@@ -114,7 +114,7 @@ public class ExpeditedReportTree extends TreeNode {
                     )
                 )
             ),
-            section(TREATMENT_INFO_SECTION.name(),
+            section(TREATMENT_INFO_SECTION,
                 property("treatmentInformation",
                     property("treatmentAssignment", "Treatment assignment code"),
                     property("treatmentAssignmentDescription", "Description of treatment assignment or dose level"),
@@ -143,7 +143,7 @@ public class ExpeditedReportTree extends TreeNode {
                     )
                 )
             ),
-            section(LABS_SECTION.name(),
+            section(LABS_SECTION,
                 list("labs", "Lab",
                     property("name", "Lab test name"),
                     property("other", "Other test name"),
@@ -153,7 +153,7 @@ public class ExpeditedReportTree extends TreeNode {
                     labValue("recovery", "Recovery")
                 )
             ),
-            section(PRIOR_THERAPIES_SECTION.name(),
+            section(PRIOR_THERAPIES_SECTION,
                 list("adverseEventPriorTherapies", "Prior Therapy",
                     property("priorTherapy", "Therapy"),
                     property("other", "Other"),
@@ -161,31 +161,38 @@ public class ExpeditedReportTree extends TreeNode {
                     property("endDate", "End Date")
                 )
             ),
-            section(PRE_EXISTING_CONDITION_SECTION.name(),
+            section(PRE_EXISTING_CONDITION_SECTION,
                 list("adverseEventPreExistingConds", "AdverseEventPreExistingCond",
-                    property("preExistingCondition", "Pre-Existing condition"),
+                    property("preExistingCondition", "Pre-existing condition"),
                     property("other", "Other")
                 )
             ),
-            section(CONCOMITANT_MEDICATION_SECTION.name(),
+            section(CONCOMITANT_MEDICATION_SECTION,
                 list("concomitantMedications", "ConcomitantMedication",
                     property("agentName", "Known medication")
                 )
             ),
-            section(OTHER_CAUSE_SECTION.name(),
+            section(OTHER_CAUSE_SECTION,
                 list("otherCauses", "OtherCauses",
                     property("text", "Cause")
                 )
             ),
-            section(ATTRIBUTION_SECTION.name()), //TODO: how to fill this??
-            section(ADDITIONAL_INFO_SECTION.name())//TODO: additional info section
+            section(ATTRIBUTION_SECTION), //TODO: how to fill this??
+            section(ADDITIONAL_INFO_SECTION)//TODO: additional info section
         );
     }
 
-    public TreeNode fetchNodeForSection(ExpeditedReportSection section) {
+    @Override
+    public String getPropertyName() {
+        return null;
+    }
+
+    public TreeNode getNodeForSection(ExpeditedReportSection section) {
         for (TreeNode node : getChildren()) {
-            if (StringUtils.equals(node.getDisplayName(), section.name()))
-                return node;
+            if (((SectionNode) node).getSection() == section) return node;
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("No node in the expedited report tree for " + section);
         }
         return null;
     }

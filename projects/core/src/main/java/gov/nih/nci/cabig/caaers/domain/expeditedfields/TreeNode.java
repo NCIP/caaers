@@ -9,13 +9,11 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Rhett Sutphin
  */
-public class TreeNode {
+public abstract class TreeNode {
     protected final Log log = LogFactory.getLog(getClass());
 
     private TreeNode parent;
     private DisplayNameCreator displayNameCreator;
-    private String propertyName;
-    private boolean list;
 
     private List<TreeNode> children;
 
@@ -24,8 +22,7 @@ public class TreeNode {
     }
 
     public static TreeNode property(String propertyName, String displayName, TreeNode... children) {
-        TreeNode f = new TreeNode();
-        f.setPropertyName(propertyName);
+        TreeNode f = new PropertyNode(propertyName);
         f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(displayName));
         return f.add(children);
     }
@@ -39,16 +36,13 @@ public class TreeNode {
     }
 
     public static TreeNode list(String propertyName, DisplayNameCreator creator, TreeNode... children) {
-        TreeNode f = property(propertyName, children);
+        TreeNode f = new ListPropertyNode(propertyName).add(children);
         f.setDisplayNameCreator(creator);
-        f.setList(true);
         return f;
     }
 
-    public static TreeNode section(String displayName, TreeNode... children) {
-        TreeNode f = new TreeNode();
-        f.setDisplayName(displayName);
-        return f.add(children);
+    public static TreeNode section(ExpeditedReportSection section, TreeNode... children) {
+        return new SectionNode(section).add(children);
     }
 
     public boolean isLeaf() {
@@ -67,14 +61,9 @@ public class TreeNode {
         return getPropertyPath(new StringBuilder()).toString();
     }
 
-    private StringBuilder getPropertyPath(StringBuilder target) {
+    protected StringBuilder getPropertyPath(StringBuilder target) {
         if (parent != null) {
             parent.getPropertyPath(target);
-        }
-        if (getPropertyName() != null) {
-            if (target.length() > 0) target.append('.');
-            target.append(getPropertyName());
-            if (isList()) target.append("[]");
         }
         return target;
     }
@@ -91,35 +80,21 @@ public class TreeNode {
      * @param desiredPropertyName
      */
     public TreeNode find(String desiredPropertyName) {
-        if (log.isDebugEnabled()) log.debug("Looking for " + desiredPropertyName + " in " + this);
-        String[] bits = desiredPropertyName.split("\\.", 2);
-        String immediatePropertyName = bits[0].replaceAll("[\\[\\]]", "");
-        String grandchildrenEtc = bits.length > 1 ? bits[1] : null;
-        for (TreeNode child : getChildren()) {
-            if (log.isDebugEnabled()) log.debug(" + Examining child " + child);
-            if (child.getPropertyName() == null) {
-                // a section -- recurse into it, but only return if there's a match
-                TreeNode match = child.find(desiredPropertyName);
-                if (match != null) return match;
-            } else {
-                if (child.getPropertyName().equals(immediatePropertyName)) {
-                    if (bits.length == 1) return child;
-                    else return child.find(grandchildrenEtc);
-                }
-            }
-        }
-        if (log.isDebugEnabled()) {
-            log.debug(" - No property " + desiredPropertyName + " found as child of " + this);
+        for (TreeNode child : children) {
+            TreeNode match = child.matchProperty(desiredPropertyName);
+            if (match != null) return match;
         }
         return null;
     }
 
+    /**
+     * Finds the node (either this node or a child) which matches the given path.  This is different
+     * from {@link #find}, which only matches children.
+     */
+    protected abstract TreeNode matchProperty(String desiredPropertyName);
+
     public String getDisplayName(int index) {
-        if (list) {
-            return getDisplayNameCreator().createIndexedName(index);
-        } else {
-            return getDisplayNameCreator().createGenericName();
-        }
+        return getDisplayNameCreator().createGenericName();
     }
 
     public String getDisplayName() {
@@ -141,6 +116,10 @@ public class TreeNode {
         return name;
     }
 
+    public abstract String getPropertyName();
+
+    public boolean isList() { return false; }
+
     ///// BEAN ACCESSORS
 
     public TreeNode getParent() {
@@ -151,28 +130,12 @@ public class TreeNode {
         this.parent = parent;
     }
 
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
     public DisplayNameCreator getDisplayNameCreator() {
         return displayNameCreator == null ? NullDisplayNameCreator.INSTANCE : displayNameCreator;
     }
 
     public void setDisplayNameCreator(DisplayNameCreator displayNameCreator) {
         this.displayNameCreator = displayNameCreator;
-    }
-
-    public boolean isList() {
-        return list;
-    }
-
-    public void setList(boolean list) {
-        this.list = list;
     }
 
     public List<TreeNode> getChildren() {

@@ -66,8 +66,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     public boolean fetchMandatoryValue(Map<String, Boolean> mandatoryFieldMap , InputField field){
-    	boolean mandatory = false;
-    	Boolean objMandatoryFlag = null;
+    	boolean mandatory;
+    	Boolean objMandatoryFlag;
     	String propertyName = field.getPropertyName().replaceAll("(\\[\\d+\\])", "[]");
     	if(propertyName.indexOf('.') > 0){
 		  objMandatoryFlag = mandatoryFieldMap.get(propertyName.split("\\.", 2)[1]);
@@ -98,11 +98,11 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     	BeanWrapper wrappedCommand = new BeanWrapperImpl(command.getAeReport());
     	ErrorMessages messages = new ErrorMessages();
-    	TreeNode node = expeditedReportTree.fetchNodeForSection(section());
+    	TreeNode node = expeditedReportTree.getNodeForSection(section());
     	if(node == null) return false;
     	reportService.validate(wrappedCommand, mandatoryFields, node, messages);
 
-    	return messages.hasErros();
+    	return messages.hasErrors();
     }
 
     public abstract ExpeditedReportSection section();

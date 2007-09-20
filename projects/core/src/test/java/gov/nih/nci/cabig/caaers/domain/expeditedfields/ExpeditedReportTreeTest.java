@@ -80,7 +80,7 @@ public class ExpeditedReportTreeTest extends TestCase {
     }
 
     public void testFecthNode4Section() throws Exception{
-        TreeNode node = tree.fetchNodeForSection(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
+        TreeNode node = tree.getNodeForSection(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
         assertEquals("Name should be ",node.getDisplayName(), ExpeditedReportSection.ADDITIONAL_INFO_SECTION.name());
     }
 
