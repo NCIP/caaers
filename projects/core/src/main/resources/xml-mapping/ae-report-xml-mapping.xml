@@ -443,12 +443,15 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
+    <!--  
     <field name="other" type="string">
       <bind-xml name="other" node="element" />
     </field>
+    
     <field name="agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
       <bind-xml name="Agent"/>
     </field> 
+    -->
   </class>  
 
   <class name="gov.nih.nci.cabig.caaers.domain.DiseaseHistory">
@@ -702,9 +705,11 @@
     <field name="firstCourseDate" type="date">
       <bind-xml name="firstCourseDate" node="element" />
     </field>
+    <!--  
     <field name="treatmentAssignmentCode" type="string">
       <bind-xml name="treatmentAssignmentCode" node="element" />
-    </field>    
+    </field>   
+    --> 
     <field name="adverseEventCourse" type="gov.nih.nci.cabig.caaers.domain.CourseDate">
       <bind-xml name="AdverseEventCourse"/>
     </field>
