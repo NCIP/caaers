@@ -21,7 +21,7 @@
         div.row div.value { margin-left: 10em; }
 </style>
 <title>${tab.longTitle}</title>
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
 <script>

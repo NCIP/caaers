@@ -37,7 +37,7 @@ public class DiseaseTab extends StudyTab {
         super("Study Disease", "Disease", "study/study_diseases");
         
         healthyVolunteerFieldGroup = new DefaultInputFieldGroup(HEALTHY_VOLUNTEER_FIELD_GROUP);
-        healthyVolunteerFieldGroup.getFields().add(InputFieldFactory.createBooleanSelectField("healthyVolunteer", "healthyVolunteer", true));
+        healthyVolunteerFieldGroup.getFields().add(InputFieldFactory.createBooleanSelectField("healthyVolunteer", "Healthy Volunteer", true));
     }
 
     @Override

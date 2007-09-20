@@ -14,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <title>${tab.longTitle}</title>
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+<tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="searchStudy"/>
 
 <script>
