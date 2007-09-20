@@ -8,9 +8,11 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
+    <!--  
     <field name="detectionDate" type="date">
       <bind-xml name="detectionDate" node="element" />
     </field>
+    -->
     <field name="createdAt" type="timestamp">
       <bind-xml name="createdAt" node="element" />
     </field>
