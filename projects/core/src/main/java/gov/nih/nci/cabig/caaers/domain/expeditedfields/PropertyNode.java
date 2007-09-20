@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.BeanWrapperImpl;
+
 /**
  * @author Rhett Sutphin
  */
@@ -17,7 +22,7 @@ class PropertyNode extends TreeNode {
         String[] bits = desiredPropertyName.split("\\.", 2);
         String immediatePropertyName = bits[0].replaceAll("[\\[\\]]", "");
         String grandchildrenEtc = bits.length > 1 ? bits[1] : null;
-        if (log.isDebugEnabled()) log.debug(" + " + immediatePropertyName + " " + grandchildrenEtc);
+        if (log.isDebugEnabled()) log.debug(" + " + immediatePropertyName + ' ' + grandchildrenEtc);
         if (getPropertyName().equals(immediatePropertyName)) {
             if (log.isDebugEnabled()) log.debug(" + Matched immediate");
             if (bits.length == 1) {
@@ -33,6 +38,35 @@ class PropertyNode extends TreeNode {
             log.debug(" - No property " + desiredPropertyName + " found as child of " + this);
         }
         return null;
+    }
+
+    @Override
+    public MutablePropertyValues getPropertyValuesFrom(Object value) {
+        MutablePropertyValues these = new MutablePropertyValues();
+
+        PropertyValues parentValues = null;
+        if (getParent() != null) {
+            parentValues = getParent().getPropertyValuesFrom(value);
+        }
+
+        if (parentValues == null) {
+            addPropertyValues(getPropertyName(), value, these);
+        } else {
+            for (PropertyValue pv : parentValues.getPropertyValues()) {
+                String thisName = (pv.getName() == null ? "" : pv.getName() + '.') + getPropertyName();
+                addPropertyValues(thisName, pv.getValue(), these);
+            }
+        }
+        return these;
+    }
+
+    protected void addPropertyValues(String qualifiedName, Object baseValue, MutablePropertyValues target) {
+        if (baseValue == null) {
+            target.addPropertyValue(qualifiedName, null);
+        } else {
+            target.addPropertyValue(qualifiedName,
+                new BeanWrapperImpl(baseValue).getPropertyValue(getPropertyName()));
+        }
     }
 
     @Override

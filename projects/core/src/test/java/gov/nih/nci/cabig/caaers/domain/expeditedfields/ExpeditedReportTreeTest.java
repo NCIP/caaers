@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.Lab;
 
 import java.beans.Introspector;
 import java.beans.BeanInfo;
@@ -79,9 +81,60 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertEquals("Primary adverse event", tree.find("adverseEvents").getDisplayName(0));
     }
 
-    public void testFecthNode4Section() throws Exception{
+    public void testGetNodeForSection() throws Exception{
         TreeNode node = tree.getNodeForSection(ExpeditedReportSection.ADDITIONAL_INFO_SECTION);
         assertEquals("Name should be ",node.getDisplayName(), ExpeditedReportSection.ADDITIONAL_INFO_SECTION.name());
+    }
+
+    public void testSimplePropertyIsSatisfied() throws Exception {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+
+        assertUnsatisfiedProperties("Reported present for null prop",
+            "reporter.lastName", report, "reporter.lastName");
+        report.setReporter(new Reporter());
+        assertUnsatisfiedProperties("Reported present for null prop",
+            "reporter.lastName", report, "reporter.lastName");
+        report.getReporter().setLastName("Mendoza");
+        assertUnsatisfiedProperties("Reported not present when present",
+            "reporter.lastName", report);
+    }
+
+    public void testListPropertyIsSatisfied() throws Exception {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+
+        assertUnsatisfiedProperties("Reported not present for empty list",
+            "labs[].name", report);
+        report.addLab(new Lab());
+        assertUnsatisfiedProperties("Reported present for null prop",
+            "labs[].name", report, "labs[0].name");
+        report.getLabs().get(0).setName("Eliza");
+        assertUnsatisfiedProperties(
+            "Reported not present for set prop",
+            "labs[].name", report);
+    }
+
+    public void testListPropertyIsNotSatisfiedWhenOneInstanceIsMissing() throws Exception {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+
+        assertUnsatisfiedProperties("Reported not present for empty list",
+            "labs[].name", report);
+        report.getLabs().get(0).setName("Eliza");
+        report.getLabs().get(1).setName(null);
+        assertUnsatisfiedProperties(
+            "Wrong unsatisfied properties found",
+            "labs[].name", report, "labs[1].name");
+    }
+
+    private void assertUnsatisfiedProperties(
+        String msg, String expectedProp, ExpeditedAdverseEventReport report, String... expectedUnsatisfiedProperties
+    ) {
+        List<UnsatisfiedProperty> actualUnsatisfied = tree.verifyPropertiesPresent(expectedProp, report);
+        assertEquals(msg + ": Wrong number of unsatisfied props: " + actualUnsatisfied,
+            expectedUnsatisfiedProperties.length, actualUnsatisfied.size());
+        for (int i = 0; i < expectedUnsatisfiedProperties.length; i++) {
+            String expected = expectedUnsatisfiedProperties[i];
+            assertEquals(msg + ": Mismatched prop", expected, actualUnsatisfied.get(i).getBeanPropertyName());
+        }
     }
 
     /**

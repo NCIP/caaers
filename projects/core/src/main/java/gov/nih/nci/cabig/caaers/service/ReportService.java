@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
@@ -62,7 +63,8 @@ public interface ReportService {
     * @param node - The node, based on which the evaluation is to be performed.
     * @param messages - An error message object
     */
-   public void validate(BeanWrapper bean, Map<String, Boolean> mandatoryMap, TreeNode node,ErrorMessages messages);
+   // TODO: clean this interface up to make it more clear
+   public void validate(BeanWrapper bean, Map<String, Boolean> mandatoryMap, TreeNode node, ErrorMessages messages);
 
    /**
     * Will tell whether all the mandatory field for this report is duly filled.

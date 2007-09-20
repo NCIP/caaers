@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.BeanWrapperImpl;
+
+import java.util.List;
+
 /**
  * @author Rhett Sutphin
  */
@@ -9,8 +14,21 @@ class ListPropertyNode extends PropertyNode {
     }
 
     @Override
+    @Deprecated // Maybe
     public boolean isList() {
         return true;
+    }
+
+    @Override
+    protected void addPropertyValues(String qualifiedName, Object baseValue, MutablePropertyValues target) {
+        if (baseValue == null) return;
+        BeanWrapperImpl wrappedValue = new BeanWrapperImpl(baseValue);
+        List<?> thisProp = (List<?>) wrappedValue.getPropertyValue(getPropertyName());
+        if (thisProp == null) return;
+        for (int i = 0; i < thisProp.size(); i++) {
+            Object o = thisProp.get(i);
+            target.addPropertyValue(String.format("%s[%d]", qualifiedName, i), o);
+        }
     }
 
     @Override

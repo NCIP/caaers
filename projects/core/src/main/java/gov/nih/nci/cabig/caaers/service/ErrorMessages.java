@@ -4,25 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorMessages {
-	List<ErrorMessage> messages = new ArrayList<ErrorMessage>();
-	public List<ErrorMessage> getMessages() {
-		return messages;
-	}
-	public void addErrorMessage(int code, String msg, String property){
-		messages.add(new ErrorMessage(code, "Invalid " + msg, property));
-	}
+    private List<Message> messages = new ArrayList<Message>();
 
-	public boolean hasErrors(){
-		return messages.size() > 0;
-	}
+    public void addErrorMessage(String msg, String property){
+        messages.add(new Message("Invalid " + msg, property));
+    }
 
-	public List<ErrorMessage> messages(){
-		return messages;
-	}
+    public boolean hasErrors(){
+        return messages.size() > 0;
+    }
 
-	@Override
-	public String toString() {
-		return messages.toString();
-	}
+    @Override
+    public String toString() {
+        return messages.toString();
+    }
 
+    public static class Message {
+        private String message;
+        private String property;
+
+        public Message(String message, String property) {
+            this.message = message;
+            this.property = property;
+        }
+
+        @Override
+        public String toString() {
+            return message + ", " + property;
+        }
+    }
 }

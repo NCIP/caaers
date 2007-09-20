@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.MutablePropertyValues;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 
 /**
  * @author Rhett Sutphin
@@ -115,6 +117,18 @@ public abstract class TreeNode {
             name += ( (name.length() > 0) ? "~" + displayName : displayName);
         return name;
     }
+
+    /**
+     * Find the property value(s) matching this node from the given object.
+     * These may not exactly match the properties returned by a simple BeanWrapper.  In particular,
+     * this will be true for list properties (where the returned values will be values in
+     * the list, not the list itself) and for coded-or-other properties (where the return value
+     * will be either the coded value or the "other" value, whichever is set).
+     *
+     * @param value
+     * @return
+     */
+    public abstract MutablePropertyValues getPropertyValuesFrom(Object value);
 
     public abstract String getPropertyName();
 

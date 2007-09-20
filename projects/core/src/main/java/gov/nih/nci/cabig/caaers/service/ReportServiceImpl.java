@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -39,6 +41,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -263,35 +266,21 @@ public class ReportServiceImpl  implements ReportService {
 	 * @param messages - An error message object
 	 */
 	@SuppressWarnings("unchecked")
-	public void validate(BeanWrapper bean, Map<String, Boolean> mandatoryMap,
-			TreeNode node, ErrorMessages messages) {
-		//TODO: should take care of 'This' or 'Other' field validations
-		String path = node.getPropertyName();
-		Boolean objMandatory = mandatoryMap.get(node.getPropertyPath());
-		boolean markedMandatory = (objMandatory == null) ? false : objMandatory.booleanValue();
-		Object o = (StringUtils.isEmpty(path)) ? bean.getWrappedInstance() :  bean.getPropertyValue(path);
-
-		if(markedMandatory && ReportServiceImpl.isEmpty(o)){
-			messages.addErrorMessage(0, node.getDisplayName(), node.getPropertyPath());
-		}
-
-		if(node.isLeaf()) return;
-
-		if(node.isList()){
-			int size = ReportServiceImpl.size(o);
-			List list = (List) o;
-			//validate each element in collection
-			for(int i = 0; i < size; i++){
-				BeanWrapper newCommand = new BeanWrapperImpl(list.get(i));
-				for(TreeNode n : node.getChildren())
-					validate( newCommand, mandatoryMap, n, messages);
-			}
-		}else{
-			BeanWrapper newCommand = new BeanWrapperImpl(o);
-			for(TreeNode n : node.getChildren())
-				validate( newCommand, mandatoryMap, n, messages);
-		}
-	}
+    public void validate(
+       BeanWrapper bean, Map<String, Boolean> mandatoryMap, TreeNode node,
+       ErrorMessages messages
+   ) {
+       List<String> mandatoryProperties = new LinkedList<String>();
+       for (Map.Entry<String, Boolean> e : mandatoryMap.entrySet()) {
+           if (e.getValue()) mandatoryProperties.add(e.getKey());
+       }
+       List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(
+           mandatoryProperties, (ExpeditedAdverseEventReport) bean.getWrappedInstance());
+       for (UnsatisfiedProperty uProp : unsatisfied) {
+           messages.addErrorMessage(uProp.getTreeNode().getDisplayName(),
+               uProp.getBeanPropertyName());
+       }
+   }
 
    /**
     * Will tell whether all the mandatory field for this report is duly filled.

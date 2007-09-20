@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
+import org.springframework.beans.MutablePropertyValues;
+
 /**
  * @author Rhett Sutphin
  */
@@ -7,6 +9,12 @@ abstract class PropertylessNode extends TreeNode {
     @Override
     public String getPropertyName() {
         return null;
+    }
+
+    @Override
+    public MutablePropertyValues getPropertyValuesFrom(Object value) {
+        if (getParent() == null) return null;
+        return getParent().getPropertyValuesFrom(value);
     }
 
     @Override

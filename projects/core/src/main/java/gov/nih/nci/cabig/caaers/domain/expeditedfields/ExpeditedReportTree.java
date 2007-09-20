@@ -1,8 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.PropertyValue;
+
+import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Tree representing most of the properties in the
@@ -185,6 +193,28 @@ public class ExpeditedReportTree extends PropertylessNode {
     @Override
     public String getPropertyName() {
         return null;
+    }
+
+    public List<UnsatisfiedProperty> verifyPropertiesPresent(
+        String nodePropertyName, ExpeditedAdverseEventReport report
+    ) {
+        return verifyPropertiesPresent(Collections.singleton(nodePropertyName), report);
+    }
+
+    public List<UnsatisfiedProperty> verifyPropertiesPresent(
+        Collection<String> nodePropertyNames, ExpeditedAdverseEventReport report
+    ) {
+        List<UnsatisfiedProperty> unsatisfied = new LinkedList<UnsatisfiedProperty>();
+        for (String propertyName : nodePropertyNames) {
+            TreeNode node = find(propertyName);
+            PropertyValues values = node.getPropertyValuesFrom(report);
+            for (PropertyValue pv : values.getPropertyValues()) {
+                if (pv.getValue() == null) {
+                    unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
+                }
+            }
+        }
+        return unsatisfied;
     }
 
     public TreeNode getNodeForSection(ExpeditedReportSection section) {
