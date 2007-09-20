@@ -149,7 +149,7 @@
 				<field-value>
 					<input-type>multiselect</input-type>
 				</field-value>
-				<valid-value value="Agent" display-uri="Agent" readable-text="Agent"/>
+				<valid-value value="Drug Administration" display-uri="Agent" readable-text="Agent"/>
 				<valid-value value="Radiation" display-uri="Radiation" readable-text="Radiation"/>
 				<valid-value value="Surgery" display-uri="Surgery" readable-text="Surgery"/>
 				<valid-value value="Device" display-uri="Device" readable-text="Device"/>
