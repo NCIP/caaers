@@ -122,19 +122,22 @@ public class ExpeditedReportTree extends TreeNode {
                     // TODO: these should be a component instead
                     property("adverseEventCourse",
                         property("date", "Start date of course associated with expedited report"),
-                        property("number", "Course# on which event occurred")
+                        property("number", "Course number on which event occurred")
                     ),
-                    property("totalCourses", "Total number of courses till date"),
+                    property("totalCourses", "Total number of courses to date"),
                     //TODO : Need a display name creator????
                     list("courseAgents", "Course Agent",
                         property("studyAgent", "Study Agent"),
-                        property("totalDoseAdministeredThisCourse", "Total dose administered this course"),
-                        property("durationAndSchedule", "Duration and schedule"),
+                        property("dose",
+                        		property("amount", "Total dose administered this course"),
+                        		property("units", "Unit of measure")),
+                        //property("durationAndSchedule", "Duration and schedule"),
                         property("lastAdministeredDate", "Date last administered"),
-                        dosage("dose", "Dosage"),
+                        //dosage("dose", "Dose"), //old Dose
                         //TODO: this is a component
                         property("administrationDelayAmount", "Administration Delay Amount"),
                         property("administrationDelayUnits", "Administration Delay Units"),
+                        property("comments", "Comments"),
                         dosage("modifiedDose", "Modified dose")
 
                     )

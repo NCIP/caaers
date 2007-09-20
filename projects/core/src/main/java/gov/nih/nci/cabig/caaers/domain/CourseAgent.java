@@ -41,6 +41,8 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     private Date lastAdministeredDate;
     private BigDecimal totalDoseAdministeredThisCourse;
+    private String comments;
+
 
     ////// LOGIC
 
@@ -187,5 +189,12 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     public void setAdministrationDelayUnits(DelayUnits administrationDelayUnits) {
         this.administrationDelayUnits = administrationDelayUnits;
+    }
+
+    public String getComments() {
+		return comments;
+	}
+    public void setComments(String comments){
+    	this.comments = comments;
     }
 }
