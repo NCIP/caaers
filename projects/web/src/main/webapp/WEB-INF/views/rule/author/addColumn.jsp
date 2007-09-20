@@ -4,9 +4,9 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
 <div id="rule-${ruleCount}-column-${columnCount}" style="margin-left:200px; display:none" class="lineitem">
-	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 	<label for="AND">AND</label>		
-	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType" onchange="handleDomainObjectonChange(this, ${ruleCount})">>
 	        <option value="">Please select Domain Object</option>
@@ -19,7 +19,7 @@
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" value="${ruleUi.condition[0].domainObject[0].identifier}"/>
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" value="${ruleUi.condition[0].domainObject[0].displayUri}"/>
 
-	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName" 
@@ -40,7 +40,7 @@
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].displayUri}"/>
 	<input type="hidden" id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri"  name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" value="${ruleUi.condition[0].domainObject[0].field[0].operator[0].readableText}"/>
 	
-	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	<select id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator" 
 				name="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
@@ -56,7 +56,7 @@
 	</select>
 	
 	
-	<img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 
 	<span id="rule-${ruleCount}-column-${columnCount}-field-value">
 	
@@ -78,10 +78,10 @@
 	</span>
 	
 	<a href="javascript:fetchCondition(${ruleCount})">
-		<img id="add-column-${ruleCount}" src="/caaers/images/rule/add_condition.gif" align="absmiddle" style="cursor:hand; border:0px"/>
+		<img id="add-column-${ruleCount}" src="<c:url value="/images/rule/add_condition.gif"/>" align="absmiddle" style="cursor:hand; border:0px"/>
 	</a>
 	<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
-		<img id="remove-column-${ruleCount}" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" style="cursor:hand;  border:0px"/>
+		<img id="remove-column-${ruleCount}" src="<c:url value="/images/rule/remove_condition.gif"/>" align="absmiddle" style="cursor:hand;  border:0px"/>
 	</a>
 	
 </div>
