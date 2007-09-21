@@ -20,8 +20,9 @@ class ListPropertyNode extends PropertyNode {
     }
 
     @Override
-    protected void addPropertyValues(String qualifiedName, Object baseValue, MutablePropertyValues target) {
+    protected void addPropertyValues(String baseName, Object baseValue, MutablePropertyValues target) {
         if (baseValue == null) return;
+        String qualifiedName = qualifyName(baseName, getPropertyName());
         BeanWrapperImpl wrappedValue = new BeanWrapperImpl(baseValue);
         List<?> thisProp = (List<?>) wrappedValue.getPropertyValue(getPropertyName());
         if (thisProp == null) return;

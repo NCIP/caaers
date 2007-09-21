@@ -111,14 +111,20 @@ public class ExpeditedReportTree extends PropertylessNode {
                     property("baselinePerformanceStatus", "Baseline performance")
                 ),
                 property("diseaseHistory",
-                    property("ctepStudyDisease", "Disease from study"),
-                    property("otherPrimaryDisease", "Other disease"),
-                    property("codedPrimaryDiseaseSite", "Primary disease site"),
-                    property("otherPrimaryDiseaseSite", "Other primary disease site"),
+                    codedOrOther(
+                        "ctepStudyDisease", "Disease from study",
+                        "otherPrimaryDisease", "Other disease"
+                    ),
+                    codedOrOther(
+                        "codedPrimaryDiseaseSite", "Primary disease site",
+                        "otherPrimaryDiseaseSite", "Other primary disease site"
+                    ),
                     property("diagnosisDate", "Diagnosis date"),
                     list("metastaticDiseaseSites", "Metastatic disease site",
-                        property("codedSite", "Site name"),
-                        property("otherSite", "Other site")
+                        codedOrOther(
+                            "codedSite", "Site name",
+                            "otherSite", "Other site"
+                        )
                     )
                 )
             ),
@@ -163,21 +169,25 @@ public class ExpeditedReportTree extends PropertylessNode {
             ),
             section(PRIOR_THERAPIES_SECTION,
                 list("adverseEventPriorTherapies", "Prior Therapy",
-                    property("priorTherapy", "Therapy"),
-                    property("other", "Other"),
+                    codedOrOther(
+                        "priorTherapy", "Therapy",
+                        "other", "Other"
+                    ),
                     property("startDate", "Start Date"),
                     property("endDate", "End Date")
                 )
             ),
             section(PRE_EXISTING_CONDITION_SECTION,
                 list("adverseEventPreExistingConds", "AdverseEventPreExistingCond",
-                    property("preExistingCondition", "Pre-existing condition"),
-                    property("other", "Other")
+                    codedOrOther(
+                        "preExistingCondition", "Pre-existing condition",
+                        "other", "Other"
+                    )
                 )
             ),
             section(CONCOMITANT_MEDICATION_SECTION,
                 list("concomitantMedications", "ConcomitantMedication",
-                    property("agentName", "Known medication")
+                    property("agentName", "Medication")
                 )
             ),
             section(OTHER_CAUSE_SECTION,

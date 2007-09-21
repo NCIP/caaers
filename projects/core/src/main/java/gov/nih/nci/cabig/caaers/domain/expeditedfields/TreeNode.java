@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.MutablePropertyValues;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 
 /**
  * @author Rhett Sutphin
@@ -45,6 +44,17 @@ public abstract class TreeNode {
 
     public static TreeNode section(ExpeditedReportSection section, TreeNode... children) {
         return new SectionNode(section).add(children);
+    }
+
+    public static TreeNode codedOrOther(
+        String codedPropertyName, String codedDisplayName,
+        String otherPropertyName, String otherDisplayName
+    ) {
+        CodedOrOtherPropertyNode node
+            = new CodedOrOtherPropertyNode(codedPropertyName, otherPropertyName);
+        node.setCodedDisplayName(codedDisplayName);
+        node.setOtherDisplayName(otherDisplayName);
+        return node;
     }
 
     public boolean isLeaf() {

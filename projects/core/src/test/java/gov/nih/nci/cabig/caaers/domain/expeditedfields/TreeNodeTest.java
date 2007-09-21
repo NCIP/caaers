@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
@@ -45,6 +46,10 @@ public class TreeNodeTest extends TestCase {
                             property("duplicate", "Dup 3")
                         )
                     )
+                ),
+                codedOrOther(
+                    "z", "Z",
+                    "oz", "Other"
                 )
             )
         );
@@ -176,8 +181,9 @@ public class TreeNodeTest extends TestCase {
     }
 
     public void testFindListPropertyFrom() throws Exception {
-        assertEquals("Should have no values for empty list",
-            0, deepTree.find("r.l[]").getPropertyValuesFrom(instance).getPropertyValues().length);
+        PropertyValue[] pvWhenEmpty = deepTree.find("r.l[]").getPropertyValuesFrom(instance).getPropertyValues();
+        assertEquals("Should have no values for empty list: " + Arrays.asList(pvWhenEmpty),
+            0, pvWhenEmpty.length);
         instance.getR().getL().add(new L());
         instance.getR().getL().add(new L());
         assertEquals("Wrong number of values for populated list",
@@ -198,6 +204,36 @@ public class TreeNodeTest extends TestCase {
         assertPropertyValue("Wrong 0th PV", "r.l[0].l7.l72", "Frob", actualPVs[0]);
         assertPropertyValue("Wrong 1st PV", "r.l[1].l7.l72", null, actualPVs[1]);
         assertPropertyValue("Wrong 2nd PV", "r.l[2].l7.l72", "Baz", actualPVs[2]);
+    }
+
+    public void testFindCodedPropertyFindsCode() throws Exception {
+        instance.getR().setZ(8);
+
+        assertSinglePropertyValue("Coded value not found", "r.z", 8,
+            deepTree.find("r.z").getPropertyValuesFrom(instance));
+    }
+
+    public void testFindCodedPropertyFindsOther() throws Exception {
+        instance.getR().setOz("eightq");
+
+        assertSinglePropertyValue("Coded value not found", "r.oz", "eightq",
+            deepTree.find("r.z").getPropertyValuesFrom(instance));
+    }
+
+    public void testFindCodedPropertyPrefersCode() throws Exception {
+        instance.getR().setZ(8);
+        instance.getR().setOz("eightq");
+
+        assertSinglePropertyValue("Coded value not found", "r.z", 8,
+            deepTree.find("r.z").getPropertyValuesFrom(instance));
+    }
+
+    public void testNullCodedPropertyPrefersCodedPropertyName() throws Exception {
+        instance.getR().setZ(null);
+        instance.getR().setOz(null);
+
+        assertSinglePropertyValue("Coded value not found", "r.z", null,
+            deepTree.find("r.z").getPropertyValuesFrom(instance));
     }
 
     private void assertSinglePropertyValue(String msg, String expectedName, Object expectedValue, PropertyValues pvs) {
@@ -222,6 +258,8 @@ public class TreeNodeTest extends TestCase {
         private B b = new B();
         private List<L> l = new ArrayList<L>();
         private Duplicate duplicate = new Duplicate();
+        private Integer z;
+        private String oz;
 
         public A getA() { return a; }
         public void setA(A a) { this.a = a; }
@@ -231,6 +269,10 @@ public class TreeNodeTest extends TestCase {
         public void setL(List<L> l) { this.l = l; }
         public Duplicate getDuplicate() { return duplicate; }
         public void setDuplicate(Duplicate duplicate) { this.duplicate = duplicate; }
+        public Integer getZ() { return z; }
+        public void setZ(Integer z) { this.z = z; }
+        public String getOz() { return oz; }
+        public void setOz(String oz) { this.oz = oz; }
     }
 
     private static class A {

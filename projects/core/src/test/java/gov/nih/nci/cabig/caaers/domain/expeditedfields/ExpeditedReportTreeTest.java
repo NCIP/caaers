@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 
 import java.beans.Introspector;
 import java.beans.BeanInfo;
@@ -55,6 +57,22 @@ public class ExpeditedReportTreeTest extends TestCase {
                         + ".  Properties: " + listNames(beanInfo.getPropertyDescriptors())
                     );
                 }
+                // check for "other" property, if applicable
+                if (child instanceof CodedOrOtherPropertyNode) {
+                    boolean otherFound = false;
+                    CodedOrOtherPropertyNode codedOrOther = ((CodedOrOtherPropertyNode) child);
+                    for (PropertyDescriptor pd : beanInfo.getPropertyDescriptors()) {
+                        otherFound = pd.getName().equals(codedOrOther.getOtherPropertyName());
+                        if (otherFound) break;
+                    }
+                    if (!otherFound) {
+                        fail("Did not find property " + codedOrOther.getOtherPropertyName()
+                            + " ('other' for coded " + childPropName + ')'
+                            + " in " + nodePropertyClass.getSimpleName()
+                            + ".  Properties: " + listNames(beanInfo.getPropertyDescriptors())
+                        );
+                    }
+                }
             }
         }
     }
@@ -72,9 +90,9 @@ public class ExpeditedReportTreeTest extends TestCase {
     }
 
     public void testFindListPropertyChildNode() throws Exception {
-        TreeNode found = tree.find("diseaseHistory.metastaticDiseaseSites[].otherSite");
+        TreeNode found = tree.find("diseaseHistory.metastaticDiseaseSites[].codedSite");
         assertNotNull(found);
-        assertEquals("Other site", found.getDisplayName());
+        assertEquals("Site name", found.getDisplayName());
     }
 
     public void testNameForPrimaryAdverseEvent() throws Exception {
@@ -95,20 +113,20 @@ public class ExpeditedReportTreeTest extends TestCase {
         assertUnsatisfiedProperties("Reported present for null prop",
             "reporter.lastName", report, "reporter.lastName");
         report.getReporter().setLastName("Mendoza");
-        assertUnsatisfiedProperties("Reported not present when present",
+        assertNoUnsatisfiedProperties("Reported not present when present",
             "reporter.lastName", report);
     }
 
     public void testListPropertyIsSatisfied() throws Exception {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
 
-        assertUnsatisfiedProperties("Reported not present for empty list",
+        assertNoUnsatisfiedProperties("Reported not present for empty list",
             "labs[].name", report);
         report.addLab(new Lab());
         assertUnsatisfiedProperties("Reported present for null prop",
             "labs[].name", report, "labs[0].name");
         report.getLabs().get(0).setName("Eliza");
-        assertUnsatisfiedProperties(
+        assertNoUnsatisfiedProperties(
             "Reported not present for set prop",
             "labs[].name", report);
     }
@@ -116,7 +134,7 @@ public class ExpeditedReportTreeTest extends TestCase {
     public void testListPropertyIsNotSatisfiedWhenOneInstanceIsMissing() throws Exception {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
 
-        assertUnsatisfiedProperties("Reported not present for empty list",
+        assertNoUnsatisfiedProperties("Reported not present for empty list",
             "labs[].name", report);
         report.getLabs().get(0).setName("Eliza");
         report.getLabs().get(1).setName(null);
@@ -125,8 +143,37 @@ public class ExpeditedReportTreeTest extends TestCase {
             "labs[].name", report, "labs[1].name");
     }
 
+    public void testCodedOrOtherSatisfiedByCoded() throws Exception {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+
+        assertUnsatisfiedProperties("Should be initially unsatisfied",
+            "diseaseHistory.ctepStudyDisease", report, "diseaseHistory.ctepStudyDisease");
+
+        report.setDiseaseHistory(new DiseaseHistory());
+        report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
+        assertNoUnsatisfiedProperties("Coded didn't satisfy it",
+            "diseaseHistory.ctepStudyDisease", report);
+    }
+
+    public void testCodedOrOtherSatisfiedByOther() throws Exception {
+        ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+
+        assertUnsatisfiedProperties("Should be initially unsatisfied",
+            "diseaseHistory.ctepStudyDisease", report, "diseaseHistory.ctepStudyDisease");
+
+        report.setDiseaseHistory(new DiseaseHistory());
+        report.getDiseaseHistory().setOtherPrimaryDisease("Hoolitis");
+        assertNoUnsatisfiedProperties("Other didn't satisfy it",
+            "diseaseHistory.ctepStudyDisease", report);
+    }
+
+    private void assertNoUnsatisfiedProperties(String msg, String expectedProp, ExpeditedAdverseEventReport report) {
+        assertUnsatisfiedProperties(msg, expectedProp, report);
+    }
+
     private void assertUnsatisfiedProperties(
-        String msg, String expectedProp, ExpeditedAdverseEventReport report, String... expectedUnsatisfiedProperties
+        String msg, String expectedProp, ExpeditedAdverseEventReport report,
+        String... expectedUnsatisfiedProperties
     ) {
         List<UnsatisfiedProperty> actualUnsatisfied = tree.verifyPropertiesPresent(expectedProp, report);
         assertEquals(msg + ": Wrong number of unsatisfied props: " + actualUnsatisfied,

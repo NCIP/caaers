@@ -50,23 +50,28 @@ class PropertyNode extends TreeNode {
         }
 
         if (parentValues == null) {
-            addPropertyValues(getPropertyName(), value, these);
+            addPropertyValues(null, value, these);
         } else {
             for (PropertyValue pv : parentValues.getPropertyValues()) {
-                String thisName = (pv.getName() == null ? "" : pv.getName() + '.') + getPropertyName();
-                addPropertyValues(thisName, pv.getValue(), these);
+                addPropertyValues(pv.getName(), pv.getValue(), these);
             }
         }
         return these;
     }
 
-    protected void addPropertyValues(String qualifiedName, Object baseValue, MutablePropertyValues target) {
-        if (baseValue == null) {
-            target.addPropertyValue(qualifiedName, null);
-        } else {
-            target.addPropertyValue(qualifiedName,
-                new BeanWrapperImpl(baseValue).getPropertyValue(getPropertyName()));
-        }
+    protected static String qualifyName(String base, String local) {
+        return (base == null ? "" : base + '.') + local;
+    }
+
+    protected void addPropertyValues(String baseName, Object baseValue, MutablePropertyValues target) {
+        target.addPropertyValue(qualifyName(baseName, getPropertyName()),
+            nullSafePropertyValue(baseValue, getPropertyName()));
+    }
+
+    protected static Object nullSafePropertyValue(Object bean, String propertyName) {
+        return bean == null
+            ? null
+            : new BeanWrapperImpl(bean).getPropertyValue(propertyName);
     }
 
     @Override
