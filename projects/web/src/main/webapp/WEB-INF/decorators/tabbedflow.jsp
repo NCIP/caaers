@@ -19,8 +19,6 @@
 <html>
 <head>
     <title>caAERS || ${flow.name} || ${tab.longTitle}</title>
-     <script language="javascript" type="text/javascript" 
-            src="file://c:/devtools/firebug/firebug.js"></script>
     <standard:head/>
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:javascriptLink name="tabbedflow"/>
