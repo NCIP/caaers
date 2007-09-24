@@ -121,16 +121,9 @@ public class CreateRuleCommand implements RuleInputCommand
 	 */
 	public void save() 
 	{
-		
-		
-		
-		
 		try 
 		{
 			List<Rule> rules = ruleSet.getRule();
-			
-			
-			
 			// delete columns which are marked as delete . 
 			for (Rule rule:rules) {
 				boolean termSelected = false;
@@ -175,7 +168,30 @@ public class CreateRuleCommand implements RuleInputCommand
 				
 			}
 			
+			ruleSet.setCoverage("Not Enabled");
+			
+			String subject  = "";
+			
+			if(SPONSOR_DEFINED_STUDY_LEVEL.equals(getLevel())) 
+			{
+				subject = "Sponsor defined rules for a study||" + getSponsorName() + "||" + getCategoryIdentifier();
+			} 
+			else if(SPONSOR_LEVEL.equals(getLevel())) 
+			{
+				subject = "Sponsor rules||" + getSponsorName() ;
+			}
+			else if (INSTITUTIONAL_LEVEL.equals(getLevel()))
+			{
+				subject = "Institution rules||" + getInstitutionName() ;
+			} else if (INSTITUTION_DEFINED_STUDY_LEVEL.equals(getLevel())) {
+
+				subject = "Institution defined rules for a study||" + getInstitutionName() + "||" + getCategoryIdentifier();
+			}
+			
 			ruleSet.setDescription(ruleSetName);
+			ruleSet.setSubject(subject);
+			
+			
 			
 			//Set the Package name and categoryIdentifier for all rules before saving them.
 			for(Rule rule : rules) 
@@ -356,10 +372,7 @@ public class CreateRuleCommand implements RuleInputCommand
 			isDataChanged = true;
 		}
 
-		if (ruleSet != null)
-		{
-			this.ruleSet.setDescription(ruleSetName);
-		}
+
 		
 		this.ruleSetName = ruleSetName;
 	}

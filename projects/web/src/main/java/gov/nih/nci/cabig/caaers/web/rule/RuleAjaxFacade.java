@@ -25,9 +25,12 @@ import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
+import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
@@ -52,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.directwebremoting.WebContextFactory;
+import org.drools.repository.PackageItem;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.web.servlet.mvc.AbstractFormController;
@@ -74,6 +78,7 @@ public class RuleAjaxFacade
 	private RulesEngineService rulesEngineService;
 	
 	private RuleDeploymentService ruleDeploymentService;
+
 	
     private ConfigProperty configurationProperty;
     
@@ -339,7 +344,29 @@ public class RuleAjaxFacade
     	HttpServletResponse response = WebContextFactory.get().getHttpServletResponse();
     	return Arrays.asList(Grade.values());
     }
-    
+
+    public void unDeployRuleSet(String ruleSetName) throws RemoteException
+    {
+    	String bindUri = ruleSetName;
+    	
+    	try 
+    	{
+    		getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+    	} 
+    	catch (Exception e) 
+    	{
+    		//A hack... for the first time this exception will be there...ignore...
+
+    	}
+    	getRuleDeploymentService().deregisterRuleSet(bindUri);
+
+    	
+    	RepositoryService repositoryService =  (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
+    	PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
+    	item.updateCoverage("Not Enabled");
+    	repositoryService.getRulesRepository().save();    	
+
+    }
     public void deployRuleSet(String ruleSetName) throws RemoteException
     {
     	String bindUri = ruleSetName;
@@ -352,13 +379,56 @@ public class RuleAjaxFacade
     	{
     		//A hack... for the first time this exception will be there...ignore...
     	}
-    	
     	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
-    }
+    	
+    	RepositoryService repositoryService =  (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
+    	PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
+    	item.updateCoverage("Enabled");
+    	repositoryService.getRulesRepository().save();
+
+    	
+    	//rs.setCoverage("Deployed");
+    	
 /*
+    	
+    	try {
+    		
+        	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+        	
+        	repositoryService =  (RepositoryServiceImpl)RuleServiceContext.getInstance();
+        	RuleSet ruleSet = repositoryService.getRuleSet(ruleSetName);
+        	ruleSet.setStatus("Deployed");
+        	String path = ruleSet.getMetaData().getCategory().get(0).getPath();
+        	
+	    	if (path.indexOf("/SPONSOR/") > 0 ) 
+	    	{
+	    		rulesEngineService.saveRulesForSponsor(ruleSet, path.split("/")[1]); 
+	    	}
+	    	else if (path.indexOf("/INSTITUTION/") > 0 ) 
+	    	{
+	    		rulesEngineService.saveRulesForInstitution(ruleSet, path.split("/")[1]);
+	    	}
+	    	else if (path.indexOf("/SPONSOR_DEFINED_STUDY/") > 0 ) 
+	    	{
+	    		rulesEngineService.saveRulesForSponsorDefinedStudy(ruleSet, path.split("/")[1], path.split("/")[2]);
+	    		
+	    	}
+	    	else if (path.indexOf("/INSTITUTION_DEFINED_STUDY/") > 0 ) 
+	    	{
+	    		rulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, path.split("/")[1], path.split("/")[2]);
+	    		
+	    	} 
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		throw new RemoteException ("Error updating rule status " , e );
+    		
+    	}
+  */
+    }
+
     public void exportRuleSet(String ruleSetName) throws RemoteException
     {
-    		
+    	
     	DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
 		Properties props = b.getProperties();
 		//props.list(System.out);
@@ -389,7 +459,7 @@ public class RuleAjaxFacade
     		
     		
     }
- */   
+  
     public void fireRules(String bindUri, String mode) throws RemoteException {
     	StudySDO study = new StudySDO();
     	study.setShortTitle("AML/MDS 9911");
@@ -722,4 +792,6 @@ public class RuleAjaxFacade
 	public void setRulesEngineService(RulesEngineService rulesEngineService) {
 		this.rulesEngineService = rulesEngineService;
 	}
+
+
 }

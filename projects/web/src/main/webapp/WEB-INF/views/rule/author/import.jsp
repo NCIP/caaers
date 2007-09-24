@@ -51,7 +51,7 @@
                 <div class="value">
                 	<input id="importDir" type="text" name="importDir" size="100" value="${param.importDir}"/>
                 	<p class="description">Directory location on the server </p>
-                	<p class="description">Please reset your rules database and repositiry before performing import. </p>
+                	<!-- <p class="description">Please reset your rules database and repositiry before performing import. </p> -->
                 </div>
             </div>    
         <div class="row submit">

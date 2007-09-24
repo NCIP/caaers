@@ -24,14 +24,33 @@
 
 		});
 		
-		function deployRule(name) {
+		function deployRule(name , divId) {
 			try {
 				authorRule.deployRuleSet(name, function(values) {
-							alert("Successfully Deployed");
+							alert("Successfully Enabled");
+							document.getElementById(divId).innerHTML = "<font color='green'>Enabled</font>";
+					});
+			} catch(e) {alert(e)}
+			
+		}
+
+		function unDeployRule(name , divId) {
+			try {
+				authorRule.unDeployRuleSet(name, function(values) {
+							alert("Successfully Disabled");
+							document.getElementById(divId).innerHTML = "<font color='red'>Not Enabled</font>";
 					});
 			} catch(e) {alert(e)}
 		}
 		
+		function exportRule(name) {
+			try {
+				authorRule.exportRuleSet(name, function(values) {
+							alert("Successfully Exported");
+					});
+			} catch(e) {alert(e)}
+		}
+				
 		function fireRulesNow(mode) {
 			try {
 				authorRule.fireRules("gov.nih.nci.cabig.caaers.rule.study", mode, function(values) {
@@ -54,18 +73,38 @@
     style="" styleClass="">
     <c:if test="${ruleSet.name != 'default' }">
     <ec:row>
-        <ec:column property="name" title="Name" sortable="false" filterable="false">
-        	<!-- 
-            <a href="<c:url value="/pages/rule/edit?name=${ruleSet.name}"/>">${ruleSet.name}</a>
-            -->
-            
-            	<a href="<c:url value="#"/>">${ruleSet.name}</a>
-            
+    
+    	<ec:column property="level" title="Rule Level" sortable="false" filterable="false">
+    		${ruleSet.level}
+    	</ec:column>
+    	
+    	<ec:column property="description" title="Rule Set" sortable="false" filterable="false"/>
+    	
+    	<ec:column property="organization" title="Organization" sortable="false" filterable="false">
+    	    		${ruleSet.organization}
+    	</ec:column>
+    	
+    	<ec:column property="study" title="Study" sortable="false" filterable="false">
+    	    		${ruleSet.study}
+    	</ec:column>    	
+    	
+       <ec:column property="status" title="Status" sortable="false" filterable="false">
+		  <div id="status-${ruleSet.id}">
+		   <c:choose>
+            <c:when test="${ruleSet.coverage == 'Not Enabled'}">
+            	<font color="red">${ruleSet.coverage}</font>
+            </c:when>
+            <c:otherwise>
+				<font color="green">${ruleSet.coverage}</font>
+			</c:otherwise>
+		   </c:choose>
+		  </div>
+		  
         </ec:column>
-        <ec:column property="description" title="Description" sortable="false" filterable="false">
-        </ec:column>
-        <ec:column property="status" title="Status" sortable="false" filterable="false">
-            <a id="deploy" href="javascript:deployRule('${ruleSet.name}')">Deploy</a>
+        <ec:column property="action" title="Action" sortable="false" filterable="false">
+            	<a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
+            	<a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
+            	<a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>
         </ec:column>
     </ec:row>
     </c:if>
