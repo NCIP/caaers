@@ -169,9 +169,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 		if ( getId() != null ){
 			id = Integer.toString(getId() + 1000);
 			if (this.getReport() != null && this.getReport().getReportDefinition() != null && this.getReport().getReportDefinition().getOrganization() !=null){
-				System.out.println("I am in");
 				id = id + this.getReport().getReportDefinition().getOrganization().getId();
-				System.out.println("this is the id");
 				this.reportVersionId = id;
 			}
 		}else
