@@ -18,6 +18,9 @@
 	<jsp:attribute name="instructions">
 	 <tags:instructions code="instruction_ae_checkpoint" />
 	</jsp:attribute>
+	<jsp:attribute name="instructions">
+	 <tags:instructions code="instruction_ae_checkpoint" />
+	</jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:choose>
             <c:when test="${command.aeReport.expeditedReportingRequired}">

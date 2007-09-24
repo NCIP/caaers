@@ -30,7 +30,7 @@ public class SurgeryInterventionTab extends AeTab {
 
         allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".treatmentArm", "Treatment arm", false));
         InputField descField = InputFieldFactory.createTextArea(baseProp + ".description", "Treatment arm description", false);
-        InputFieldAttributes.setSize(descField, 45);
+        InputFieldAttributes.setColumns(descField, 45);
         allFields.getFields().add(descField);
         allFields.getFields().add(InputFieldFactory.createAutocompleterField(baseProp + ".anatomicSite", "Intervention site", false));
         allFields.getFields().add(InputFieldFactory.createDateField(

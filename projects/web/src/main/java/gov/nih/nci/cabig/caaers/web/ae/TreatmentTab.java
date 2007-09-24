@@ -87,16 +87,16 @@ public class TreatmentTab extends AeTab {
         });
 
         caFields.addField(InputFieldFactory.createSelectField(
-            "studyAgent", "Study Agent", true,
+            "studyAgent", "Study Agent", false,
             InputFieldFactory.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName")));
 
-        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", true);
+        InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
         caFields.addField(totalDoseField);
 
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units",
         		"Unit of measure",
-        		true,
+        		false,
         		InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select"));
 
         caFields.addField(totalUOMField);

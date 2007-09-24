@@ -67,10 +67,10 @@ public class DetailsTab extends StudyTab {
 			InputFieldAttributes.setColumns(descField, 50);
 			fields.add(descField);
 			InputField sponsorField = InputFieldFactory.createAutocompleterField("primaryFundingSponsorOrganization",
-					"Primary sponsor", true);
+					"Funding sponsor", true);
 			// sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor name you are looking for");
 			fields.add(sponsorField);
-			InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Sponsor Identifier", true);
+			InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Funding sponsor study identifier", true);
 			fields.add(sponsorIdentiferField);
 			fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true, collectOptionsFromConfig(
 					"phaseCodeRefData", "desc", "desc")));

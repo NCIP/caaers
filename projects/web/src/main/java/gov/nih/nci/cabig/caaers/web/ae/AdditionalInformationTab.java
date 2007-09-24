@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -35,7 +37,9 @@ public class AdditionalInformationTab extends AeTab {
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".radiologyReports", "Radiology Report", false));
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".referralLetters", "Referral Letters", false));
         allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".irbReport", "Summary Report Sent to IRB", false));
-        allFields.getFields().add(InputFieldFactory.createTextArea(baseProp + ".otherInformation", "Other Information", false));
+        InputField otherInfoField = InputFieldFactory.createTextArea(baseProp + ".otherInformation", "Other Information", false);
+        InputFieldAttributes.setColumns(otherInfoField,45);
+        allFields.getFields().add(otherInfoField);
 
     	return createFieldGroupMap(Arrays.asList(allFields));
     }
