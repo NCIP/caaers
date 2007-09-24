@@ -16,12 +16,18 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
+import gov.nih.nci.cabig.caaers.service.MockEvaluationService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.jcr.PathNotFoundException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
@@ -31,6 +37,9 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
 	public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
 	public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
+	private static final Log log = LogFactory.getLog(AdverseEventEvaluationServiceImpl.class);
+	
+	   
 
 
 
@@ -414,15 +423,24 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 
 			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
 
-		}catch(Exception ex){
+		} catch(Exception ex){
+			
+			log.error("Unable to fire the rule : " + bindURI );
+			log.error("Rule might have been be un deployed  , please look at the exception . " , ex); 
+
 			/**
 			 * Don't do anything, it means there are no rules for this package
 			 */
-			throw new RuleException("There are no rule configured for this sponsor",ex);
+			//throw new RuleException("There are no rule configured for this sponsor",ex);
 			//return evaluationForSponsor;
 		}
 
-
+		if (outputObjects == null) {
+			//no_rules_found
+			evaluationForSponsor = new AdverseEventEvaluationResult();
+			evaluationForSponsor.setMessage("no_rules_found");
+			return evaluationForSponsor;
+		}
 
 		Iterator<Object> it = outputObjects.iterator();
 
