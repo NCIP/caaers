@@ -79,7 +79,7 @@
 				<grammer prefix=" Attribution " postfix=""/>
 			</field>
 
-			<field name="term" display-uri="Term" filter="Ctc">
+			<field name="term" display-uri="Term" filter="CTC">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
@@ -92,7 +92,7 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcTerm','id','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Term " postfix=""/>
 			</field>
-			<field name="category" display-uri="Category" filter="Ctc">
+			<field name="category" display-uri="Category" filter="CTC">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
