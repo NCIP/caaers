@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -46,6 +49,21 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	List<String> sections = evaluationService.mandatorySections(cmd.getAeReport());
     	cmd.setMandatorySections(sections);
     	cmd.refreshMandatoryFieldMap();
+    	
+    	// Amendment implementation
+    	// Test this
+    	 if (request.getParameter("reportId") != null) {
+         	Integer reportId = Integer.parseInt(request.getParameter("reportId"));
+         	for (Report report : cmd.getAeReport().getReports()) {
+         		if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING)){
+         			ReportVersion reportVersion = new ReportVersion();
+         	        reportVersion.setCreatedOn(nowFactory.getNow());
+         	        reportVersion.setReportStatus(ReportStatus.PENDING);
+         	        report.addReportVersion(reportVersion);
+         	        break;
+         		}
+ 			}
+         }
     }
 
     /* Attempt at not rebinding the aeReport with every request.  Exposes flow to lazy init exceptions,

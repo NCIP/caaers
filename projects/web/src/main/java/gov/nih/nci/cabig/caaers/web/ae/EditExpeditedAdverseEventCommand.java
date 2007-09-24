@@ -58,6 +58,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     @Override
     public void save() {
+    	System.out.println("Im saving");
         reportDao.save(getAeReport());
     }
 

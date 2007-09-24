@@ -107,6 +107,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
                 <value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>

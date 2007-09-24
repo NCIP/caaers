@@ -1,6 +1,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
@@ -15,8 +16,31 @@
         .notify-unit.failure {
             color: #900;
         }
+        
+        .dueOn {
+        	color: #cc0033;
+        	text-align: center;
+        }
+        
+         .submittedOn {
+        	color: #66cc33;
+        	text-align: center;
+        }
+        
     </style>
     <script type="text/javascript">
+    
+    	function toggleImage(id){
+			imageStr=document.getElementById(id).src;
+			//	alert(imageStr);
+			if(imageStr.indexOf('plus')==-1)
+				document.getElementById(id).src=imageStr.replace('minus','plus');
+			else
+				document.getElementById(id).src=imageStr.replace('plus','minus');	
+			//	alert(document.getElementById(id).src)
+		}
+    
+    
         function notifyPsc(aeReportId) {
             AE.showIndicator("notify-indicator-" + aeReportId)
             createAE.pushAdverseEventToStudyCalendar(aeReportId, function(result) {
@@ -51,14 +75,142 @@
 </p>
 </c:if>
 
-
-
-
-
-
 <h2>Expedited Reports
 <a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
 </h2>
+
+<!-- STUDY SEARCH RESULTS START HERE -->
+<div class="eXtremeTable" >
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
+	<c:if test="${fn:length(command.assignment.aeReports) > 0}">
+		<thead>
+		<tr align="center" class="label">
+			<td class="tableHeader"></td>
+			<td class="tableHeader">Term</td>				
+			<td class="tableHeader">Start date </td>
+			<td class="tableHeader">Primary AE grade</td>
+			<td class="tableHeader">Actions</td>
+		</tr>
+		</thead>
+	</c:if>
+	<%int i=0; %>
+	<c:forEach items="${command.assignment.aeReports}" var="report" varStatus="statusReport">
+		<% String currClass=i%2==0? "odd":"even"; %>
+		<%--
+		<c:choose>
+			<c:when test="${!empty subjectId}">
+				<c:set var="documentLocation" value="${url}?participant=${subjectId }&resumeFlow=true&_page=1&_target3=3&studySite=" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="documentLocation" value="${url}?studySiteId=" />	
+			</c:otherwise>
+		</c:choose>
+		--%>
+		<tr align="center" id="row<%= i++ %>" class="<%= currClass %>" onMouseOver="this.className='highlight'"
+				onMouseOut="this.className='<%= currClass %>'">
+			<td width="2%" onClick="
+				<c:choose>
+					<c:when test="${fn:length(report.reports) > 0}">
+						new Element.toggle('studySites-table-${statusReport.index }');
+							toggleImage('image-open-${statusReport.index }');
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+			">
+					<c:if test="${fn:length(report.reports) > 0}">
+						<img id="image-open-${statusReport.index }" src="<c:url value="/images/b-plus.gif"/>" border="0" alt="expand">
+					</c:if>
+			</td>
+			<td>
+					<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+            			<c:choose>
+                			<c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
+                    			<c:forEach items="${report.adverseEvents}" var="adverseEvent">
+                					${adverseEvent.adverseEventTerm.universalTerm}<br />
+                
+    							</c:forEach>
+                			</c:when> 
+            			</c:choose>
+            		</a>
+			</td>
+			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
+			<td width="10%"><c:out value="${report.adverseEvents[0].grade.code}" /></td>
+			<td>
+					<c:if test="${report.notificationMessagePossible}">
+                		<span class="notify-unit" id="notify-unit-${report.id}">
+                    	<a id="notify-${report.id}" class="notify" href="#">notify PSC</a>
+                    	<tags:indicator id="notify-indicator-${report.id}"/>
+                		</span>
+           			</c:if>
+			</td>
+			
+		</tr>
+		<c:if test="${fn:length(report.reports) > 0}">
+			<tr id="studySites-table-${statusReport.index }" style="display:none;">
+				<td colspan="1">&nbsp;</td>
+				<td colspan="5" height="0" class>
+					<div id="studySites-${statusReport.index }">
+					<table width="75%" height="0" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
+						<thead>
+						<tr>
+							<td class="tableHeader">Report</td>
+							<td class="tableHeader">Report Id</td>
+							<td class="tableHeader">Data complete</td>
+							<td class="tableHeader">Status</td>
+							<td class="tableHeader">Actions</td>
+						</tr>
+						</thead>
+						<%int j=i*100; %>
+						<c:forEach items="${report.reports}" var="theReport" varStatus="siteIndex">
+						<% String currClassJ=j%2==0? "odd":"even"; %>
+							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
+									onMouseOut="this.className='<%= currClass %>'" 
+									onClick="document.location='${documentLocation }${site.id }'">
+								<td width="20%">${theReport.reportDefinition.name}</td>
+								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
+								<td width="30%"><i>Not Implemented</i></td>
+								<td width="20%">
+									<c:if test="${empty theReport.lastVersion.submittedOn}" >
+										<span class="dueOn" >
+											<c:if test="${not empty theReport.lastVersion.dueOn}" >
+            								<i>Due on</i> <br> <b><tags:formatDate value="${theReport.lastVersion.dueOn}" /></b><br>
+            								</c:if>
+            								<c:if test="${ empty theReport.lastVersion.dueOn}" >
+            								<i>Amendment Due</i>
+            								</c:if>
+            							</span>
+            						</c:if>
+            						<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
+            							<span class="submittedOn" >
+            								<strong>Submitted on </strong><br/><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></center>
+            							</span>
+            						</c:if>
+								</td>
+								<td width="50%">
+            						<c:if test="${empty theReport.lastVersion.submittedOn}" >
+            							<center>
+            								<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}"/>">Submit</a>
+            							</center>
+            						</c:if>
+            						<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
+            							<center>
+            								<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+            							</center>
+            						</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+					</div>
+				</td>
+			</tr>
+		</c:if>
+	</c:forEach>
+</table>
+
+
+<%--
 
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
@@ -102,6 +254,8 @@
         </ec:column>
     </ec:row>
 </ec:table>
+--%>
+
 <br>
 <h2>Routine AEs
 <a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>

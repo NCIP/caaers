@@ -45,8 +45,15 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
         
+        // TODO: take out
     	command.getAeReport().getReports().get(((int)reportIndex)).setSubmittedOn(new Date());
     	command.getAeReport().getReports().get(((int)reportIndex)).setStatus(ReportStatus.COMPLETED);
+    	
+    	// Report Version information 
+    	command.getAeReport().getReports().get(((int)reportIndex)).getLastVersion().setSubmittedOn(new Date());
+    	command.getAeReport().getReports().get(((int)reportIndex)).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+    	
+    	
     	command.save();
     	
     	//generate report and send ...

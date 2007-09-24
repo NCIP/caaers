@@ -40,11 +40,11 @@ public class SubmitterTab extends AeTab {
         InputFieldGroup physicianSignoff = new DefaultInputFieldGroup("physicianSignoff");
         physicianSignoff.getFields().add(
 				InputFieldFactory.createSelectField("aeReport.reports["
-						+ reportIndex + "].physicianSignoff",
+						+ reportIndex + "].lastVersion.physicianSignoff",
 						"Physician sign-off", true,createExpectedOptions()));
         map.addInputFieldGroup(physicianSignoff);
         map.addInputFieldGroup(createPersonGroup("reporter",null));
-        map.addInputFieldGroup(createPersonGroup("reports["+ reportIndex + "].submitter","submitter"));
+        map.addInputFieldGroup(createPersonGroup("reports["+ reportIndex + "].lastVersion.submitter","submitter"));
         return map;
     }
 
@@ -87,7 +87,7 @@ public class SubmitterTab extends AeTab {
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
-    	Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getPhysicianSignoff();
+    	Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getLastVersion().getPhysicianSignoff();
     	hasPhysicianSignedOff = hasPhysicianSignedOff == null ? false : hasPhysicianSignedOff;
             
         	if (!hasPhysicianSignedOff){

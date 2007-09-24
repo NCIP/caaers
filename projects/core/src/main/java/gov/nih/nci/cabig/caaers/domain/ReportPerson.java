@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -35,17 +35,17 @@ import javax.persistence.Table;
 public abstract class ReportPerson extends PersonContact {
 
 	private ExpeditedAdverseEventReport expeditedReport;
-    private Report report;
+    private ReportVersion report;
 
     ////// BOUND PROPERTIES
 
     @OneToOne
-    @JoinColumn(name="report_schedule_id")
-    public Report getReport() {
+    @JoinColumn(name="report_version_id")
+    public ReportVersion getReport() {
         return report;
     }
 
-    public void setReport(Report report) {
+    public void setReport(ReportVersion report) {
         this.report = report;
     }
     

@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
@@ -55,11 +56,11 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private Date createdOn;
     private Date dueOn;
     private Date submittedOn;
-
     private Submitter submitter;
     private Boolean physicianSignoff;
 
     private ReportStatus status = ReportStatus.PENDING;
+    private List<ReportVersion> reportVersions;
 
     // TODO: This is to CC people when submitting report - Not sure if this
     // should be here or if we should create a new ReportDelivery object which in
@@ -68,6 +69,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	private List<ReportDelivery> deliveries;
 
     ////// LOGIC
+	
+	
+	 public void addReportVersion(ReportVersion reportVersion) {
+	        if (reportVersions == null) reportVersions = new ArrayList<ReportVersion>();
+	        reportVersion.setReport(this);
+	        reportVersions.add(reportVersion);
+	    }
 
     public void addScheduledNotification(ScheduledNotification nf) {
         if (notifications == null) notifications = new ArrayList<ScheduledNotification>();
@@ -93,6 +101,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 			if(nf.getId().equals(nfId)) return nf;
 		}
 		return null;
+	}
+	
+	@Transient
+	public ReportVersion getLastVersion(){
+		
+		return reportVersions!= null && reportVersions.size() > 0  ? 
+				reportVersions.get(reportVersions.size() -1) : 
+					 null;
 	}
 
     ////// BEAN PROPERTIES
@@ -191,18 +207,16 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void addSubmitter(){
 		if (submitter == null) setSubmitter(new Submitter());
 	}
-
-	// non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
-    @OneToOne(mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	
+	@Transient
     public Submitter getSubmitter() {
        //if (submitter == null) setSubmitter(new Submitter());
        return submitter;
     }
-
+    
+	@Transient
     public void setSubmitter(Submitter submitter) {
         this.submitter = submitter;
-        if (submitter != null) submitter.setReport(this);
     }
 
     @Column(name="physician_signoff")
@@ -230,11 +244,26 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 		String[] emails = this.email.split(",");
 		return emails;
 	}
+	
+	 @OneToMany
+	 @JoinColumn(name="report_id", nullable=true)
+	 @IndexColumn(name="list_index")
+	 @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<ReportVersion> getReportVersions() {
+		return reportVersions;
+	}
+
+	public void setReportVersions(List<ReportVersion> reportVersions) {
+		this.reportVersions = reportVersions;
+	}
+
+	
 
 
 
 	////// OBJECT METHODS
 
+	
 	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

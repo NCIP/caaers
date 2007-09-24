@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
@@ -165,6 +166,11 @@ public class ReportServiceImpl  implements ReportService {
 
         Report report = repDef.createReport();
         report.setCreatedOn(now);
+        
+        ReportVersion reportVersion = new ReportVersion();
+        reportVersion.setCreatedOn(now);
+        reportVersion.setReportStatus(ReportStatus.PENDING);
+        report.addReportVersion(reportVersion);
 
         //attach the aeReport to report
         aeReport.addReport(report);
@@ -173,6 +179,7 @@ public class ReportServiceImpl  implements ReportService {
         cal.setTime(now);
         cal.add(repDef.getTimeScaleUnitType().getCalendarTypeCode(), repDef.getDuration());
         report.setDueOn(cal.getTime());
+        reportVersion.setDueOn(cal.getTime());
 
         //populate the delivery definitions
         if (repDef.getDeliveryDefinitions() != null) {

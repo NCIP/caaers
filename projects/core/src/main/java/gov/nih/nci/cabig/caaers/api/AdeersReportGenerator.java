@@ -60,7 +60,7 @@ public class AdeersReportGenerator  {
 		}
 		
 		// CCs
-		String[] emailAddresses = report.getEmailAsArray();
+		String[] emailAddresses = report.getLastVersion().getEmailAsArray();
 		if (emailAddresses != null) {
 			for (String email : emailAddresses) {
 				emails.add(email.trim());

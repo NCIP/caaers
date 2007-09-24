@@ -49,7 +49,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         super.setAeReport(aeReport);
         getReportIndex();
-        aeReport.getReports().get(((int)(Integer.parseInt(reportIndex)))).addSubmitter();
+        aeReport.getReports().get(((int)(Integer.parseInt(reportIndex)))).getLastVersion().addSubmitter();
     }
 
    

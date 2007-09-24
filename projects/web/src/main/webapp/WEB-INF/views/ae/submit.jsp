@@ -26,28 +26,39 @@
     
     	<table class="tablecontent">
     			<tr>
-    				<th scope="col" align="left"></b> </th>
+    				<th scope="col" align="left"><b>Report</b> </th>
+    				<th scope="col" align="left"><b>Report Id</b> </th>
     				<th scope="col" align="left"><b>Data complete</b> </th>
-    				<th scope="col" align="left"><b>Report Submitted</b> </th>
-    				<th scope="col" align="left"><b>Info</b> </th>
+    				<th scope="col" align="left"><b>Status</b> </th>
+    				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
     			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
-    			<tr>
+    			<tr>    				
             		<td><div class="label">${report.reportDefinition.name}</div></td>
+            		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><i>Not Implemented</i></td>
             		<td>
-            			<c:if test="${ not empty report.submittedOn}" >
-            				<center><strong>Submitted on </strong><br/><tags:formatDate value="${report.submittedOn}" /></center>
+            			<c:if test="${ not empty report.lastVersion.submittedOn}" >
+            				<center><strong>Submitted on </strong><br/><tags:formatDate value="${report.lastVersion.submittedOn}" /></center>
             			</c:if>
-            			<c:if test="${empty report.submittedOn}" >
+            			<c:if test="${empty report.lastVersion.submittedOn}" >
             				<center>
-            				Due on <br> <b><tags:formatDate value="${report.dueOn}" /></b><br>
-            				<%--<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportIndex=${status.index}"/>">Submit</a>--%>
-            				<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a>
+            				Due on <br> <b><tags:formatDate value="${report.lastVersion.dueOn}" /></b><br>
             				</center>
             			</c:if>
             		</td>
-            		<td><i>Not Implemented</i></td>
+            		<td>
+            			<c:if test="${empty theReport.lastVersion.submittedOn}" >
+            				<center>
+            					<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a>
+            				</center>
+            			</c:if>
+            			<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
+            				<center>
+            					<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
+            				</center>
+            			</c:if>
+            		</td>
     			</tr>
     			</c:forEach>    						
     	</table>		

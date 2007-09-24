@@ -37,7 +37,7 @@ public class SubmitReportTab extends AeTab {
         ccReport.getFields().add(
         		
 				InputFieldFactory.createTextArea("aeReport.reports["
-						+ reportIndex + "].email",
+						+ reportIndex + "].lastVersion.email",
 						"Cc"));
         map.addInputFieldGroup(ccReport);
         return map;
@@ -49,7 +49,7 @@ public class SubmitReportTab extends AeTab {
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
-    	String emailString = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getEmail();
+    	String emailString = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getLastVersion().getEmail();
     	
     	if (emailString != null) {
     	String[] emails = emailString.split(",");

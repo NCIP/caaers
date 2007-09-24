@@ -75,13 +75,13 @@
 
         function updateSubmitterFromReporter() {
             PERSON_FIELDS.each(function(field) {
-                $("aeReport.reports[" + reportIndex + "].submitter." + field).value = $('aeReport.Reporter.' + field).innerHTML
+                $("aeReport.reports[" + reportIndex + "].lastVersion.submitter." + field).value = $('aeReport.Reporter.' + field).innerHTML
             })
         }
         
         function updateSubmitterFromPhysician() {
             PERSON_FIELDS.each(function(field) {
-                $("aeReport.reports[" + reportIndex + "].submitter." + field).value = $('aeReport.Physician.' + field).innerHTML
+                $("aeReport.reports[" + reportIndex + "].lastVersion.submitter." + field).value = $('aeReport.Physician.' + field).innerHTML
             })
         }
 
