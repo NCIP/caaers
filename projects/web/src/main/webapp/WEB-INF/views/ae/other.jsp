@@ -29,8 +29,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section9othercontributingcauses">
     <jsp:attribute name="instructions">
-        You are entering other causes for ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
+     <tags:instructions code="instruction_ae_otherCause" />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.otherCauses}" varStatus="status">

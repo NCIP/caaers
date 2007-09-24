@@ -74,8 +74,11 @@ public class BasicsTabMeddra extends AeTab {
         mainFieldFactory.addField(InputFieldFactory.createSelectField(
             "hospitalization", "Hospitalization", true,
                 InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
-        mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
-            "expected", "Expected", true));
+        InputField exField = InputFieldFactory.createBooleanSelectField(
+                "expected", "Expected", true);
+        InputFieldAttributes.setDetails(exField, "If known, specify whether the AE is expected or not, as determined by the protocol guidelines. If this is a CTEP Sponsored trial, you may refer also to the AdEERS Agent Specific Adverse Event List (ASAEL).");
+        mainFieldFactory.addField(exField);
+
         InputField commentsField = InputFieldFactory.createTextArea(
                 "comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 50);
@@ -120,7 +123,7 @@ public class BasicsTabMeddra extends AeTab {
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.BASICS_MEDRA_SECTION;
+    	return ExpeditedReportSection.BASICS_SECTION;
     }
     ////// CONFIGURATION
 

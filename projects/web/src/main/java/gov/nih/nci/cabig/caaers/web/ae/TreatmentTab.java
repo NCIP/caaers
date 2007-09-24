@@ -55,22 +55,22 @@ public class TreatmentTab extends AeTab {
     	  treatmentFields.getFields().add(newDescField);
     	  treatmentFields.getFields().add(InputFieldFactory.createDateField(
               "aeReport.treatmentInformation.firstCourseDate",
-              "Start date of first course", true
+              "Start date of first course", false
           ));
     	  treatmentFields.getFields().add(InputFieldFactory.createDateField(
                   "aeReport.treatmentInformation.adverseEventCourse.date",
-                  "Start date of course associated with expedited report", true
+                  "Start date of course associated with expedited report", false
           ));
     	  InputField eventCourseField = InputFieldFactory.createTextField(
                   "aeReport.treatmentInformation.adverseEventCourse.number",
-                  "Course number on which event occurred", true
+                  "Course number on which event occurred", false
               );
     	  InputFieldAttributes.setSize(eventCourseField, 4);
           treatmentFields.getFields().add(eventCourseField);
 
           InputField totalCourseField = InputFieldFactory.createTextField(
                   "aeReport.treatmentInformation.totalCourses",
-                  "Total number of courses to date", true
+                  "Total number of courses to date", false
               );
     	  InputFieldAttributes.setSize(totalCourseField, 4);
           treatmentFields.getFields().add(totalCourseField);

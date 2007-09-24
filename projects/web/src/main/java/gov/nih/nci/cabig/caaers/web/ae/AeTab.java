@@ -64,7 +64,14 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 		  }
 	   }
     }
-
+    /**
+     * Tells whether the given field is mandatory.
+     * Incase of Composite fields, the given field (parent) will be marked mandatory if any of its subfields
+     * are mandatory.
+     * @param mandatoryFieldMap
+     * @param field
+     * @return
+     */
     public boolean fetchMandatoryValue(Map<String, Boolean> mandatoryFieldMap , InputField field){
     	boolean mandatory;
     	Boolean objMandatoryFlag;

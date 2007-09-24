@@ -158,9 +158,9 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section7priortherapies">
         <jsp:attribute name="instructions">
-            If applicable, enter a Prior Therapy for the Primary Disease for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}. Note: If the therapy you need is not listed, select 
-            Prior Therapy, NOS and enter the therapy in Other .
+            <tags:instructions code="instruction_ae_priorTherapy" />
+            <br />
+            <tags:instructions code="instruction_ae_priorThrerapyNote" heading="Note: " />
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">

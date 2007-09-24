@@ -26,9 +26,8 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            If applicable, enter Radiation Intervention Information for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}. YES
-        </jsp:attribute>
+    	<tags:instructions code="instruction_ae_radiation" />
+    </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">
             <tags:renderRow field="${field}"/>

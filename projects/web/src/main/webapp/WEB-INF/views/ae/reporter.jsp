@@ -81,21 +81,11 @@
     <jsp:attribute name="instructions">
         <c:choose>
             <c:when test="${oneOrMoreSevere || aeReport.isExpeditedReportingRequired}">
-                <p>
-                    One or more of the AEs you entered <strong>requires expedited
-                    reporting</strong>.
-                    Enter your contact information and that for the treating physician.
-                    Then proceed to the next page for details about the required expedited
-                    report(s).
-                </p>
+               <tags:instructions  code="instruction_ae_reporterAE"/>
             </c:when>
             <c:otherwise>
-                <p>
-                    None of the AEs you entered requires expedited reporting.  
-                    If you would like to prepare and submit one or more expedited reports 
-                    anyway, start by entering your contact information and that for 
-                    the treating physician.
-                </p>
+            	<tags:instructions code="instruction_ae_reporterNoAE" />
+                <tags:instructions code="instruction_ae_reporter" heading="Note: " />
             </c:otherwise>
         </c:choose>
     </jsp:attribute>

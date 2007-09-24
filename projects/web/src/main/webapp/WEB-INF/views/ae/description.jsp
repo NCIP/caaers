@@ -16,6 +16,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3eventandresponsedescription">
     <jsp:attribute name="instructions">
+    <tags:instructions code="instruction_ae_description" />
     </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">

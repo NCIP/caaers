@@ -85,8 +85,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section6diagnostictestandlabresults">
     <jsp:attribute name="instructions">
-        You are entering labs for ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
+    <tags:instructions code="instruction_ae_labs" />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.labs}" varStatus="status">

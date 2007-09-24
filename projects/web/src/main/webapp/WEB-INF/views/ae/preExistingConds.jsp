@@ -99,9 +99,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
         <jsp:attribute name="instructions">
-            If applicable, enter a Pre-Existing Condition for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}. Note: If the condition you need is not listed, 
-            enter the condition in Other .
+         <tags:instructions code="instruction_ae_preexistingCond" />
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">

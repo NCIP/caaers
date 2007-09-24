@@ -55,16 +55,16 @@ public class LabsTabTest extends AeTabTestCase {
             "aeReport.labs[3].recovery.date"
         );
     }
-
-    public void testEitherTestNameOrOtherRequired() throws Exception {
-        command.getAeReport().getLabs().get(0).setName(null);
-        command.getAeReport().getLabs().get(0).setOther(null);
-        doValidate();
-        assertEquals(2, getErrors().getErrorCount()); //one for missing name(or other) and one for missing units
-        ObjectError fieldError = getErrors().getFieldError("aeReport.labs[0]");
-        assertNotNull(fieldError);
-        assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
-        assertEquals("Wrong message", "Either a known test name or other is required",
-            fieldError.getDefaultMessage());
-    }
+//TODO: This test is no longer valid.
+//    public void testEitherTestNameOrOtherRequired() throws Exception {
+//        command.getAeReport().getLabs().get(0).setName(null);
+//        command.getAeReport().getLabs().get(0).setOther(null);
+//        doValidate();
+//        assertEquals(2, getErrors().getErrorCount()); //one for missing name(or other) and one for missing units
+//        ObjectError fieldError = getErrors().getFieldError("aeReport.labs[0]");
+//        assertNotNull(fieldError);
+//        assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
+//        assertEquals("Wrong message", "Either a known test name or other is required",
+//            fieldError.getDefaultMessage());
+//    }
 }

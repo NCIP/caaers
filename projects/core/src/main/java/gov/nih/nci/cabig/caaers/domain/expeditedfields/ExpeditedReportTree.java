@@ -217,12 +217,19 @@ public class ExpeditedReportTree extends PropertylessNode {
         List<UnsatisfiedProperty> unsatisfied = new LinkedList<UnsatisfiedProperty>();
         for (String propertyName : nodePropertyNames) {
             TreeNode node = find(propertyName);
-            PropertyValues values = node.getPropertyValuesFrom(report);
-            for (PropertyValue pv : values.getPropertyValues()) {
-                if (pv.getValue() == null) {
-                    unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
+
+            if(node == null){
+            	//TODO: refactor this
+            	//System.out.println("Unable to find Node propertyName: " + propertyName);
+            }else{
+            	PropertyValues values = node.getPropertyValuesFrom(report);
+                for (PropertyValue pv : values.getPropertyValues()) {
+                    if (pv.getValue() == null) {
+                        unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
+                    }
                 }
             }
+
         }
         return unsatisfied;
     }

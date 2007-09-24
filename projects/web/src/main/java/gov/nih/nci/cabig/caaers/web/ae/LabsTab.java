@@ -53,7 +53,7 @@ public class LabsTab extends AeTab {
 	     fieldFactory.addField(otherField);
 
 		fieldFactory.addField(InputFieldFactory.createSelectField("units",
-				"Units", true, InputFieldFactory.collectOptions(configurationProperty.getMap().get("labUnitsRefData"),
+				"Units", false, InputFieldFactory.collectOptions(configurationProperty.getMap().get("labUnitsRefData"),
 						"code","desc", "Please select")));
 		addLabValueFields(fieldFactory, "baseline", "Baseline");
 		addLabValueFields(fieldFactory, "nadir", "Worst");
@@ -70,17 +70,17 @@ public class LabsTab extends AeTab {
 			BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,
 			Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
-		int index = 0;
-		for(Lab lab : command.getAeReport().getLabs()){
-			if(lab.getName() == null && lab.getOther() == null){
-				errors.rejectValue(
-		                String.format("aeReport.labs[%d]", index),
-		                "REQUIRED",
-		                "Either a known test name or other is required"
-		            );
-			}
-			index++;
-		}
+//		int index = 0;
+//		for(Lab lab : command.getAeReport().getLabs()){
+//			if(lab.getName() == null && lab.getOther() == null){
+//				errors.rejectValue(
+//		                String.format("aeReport.labs[%d]", index),
+//		                "REQUIRED",
+//		                "Either a known test name or other is required"
+//		            );
+//			}
+//			index++;
+//		}
 
 	}
 

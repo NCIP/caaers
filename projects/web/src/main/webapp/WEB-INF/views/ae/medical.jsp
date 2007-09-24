@@ -131,6 +131,9 @@
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section4medicalinformation">
+	<jsp:attribute name="instructions">
+	 <tags:instructions code="instruction_ae_description" />
+	</jsp:attribute>
     <jsp:attribute name="singleFields">
     <%-- The database identifier shouldn't be here.
          TODO: it should probably be the primary assigned id

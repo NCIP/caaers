@@ -81,10 +81,9 @@
     </script>
     </head>
     <body>
-        <p id="instructions">
-            ${instructions}
-        </p>
-
+    	<p>
+        <tags:instructions code="instruction_ae_assignment" />
+		</p>
         <form:form method="post" cssClass="standard autoclear">
             <tags:tabFields tab="${tab}"/>
             <div class="autoclear">

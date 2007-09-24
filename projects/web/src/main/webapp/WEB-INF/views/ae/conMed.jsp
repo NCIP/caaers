@@ -34,10 +34,9 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section8concomitantmedications">
     <jsp:attribute name="instructions">
-        You are entering concomitant medications for ${command.assignment.participant.fullName}
-        on ${command.assignment.studySite.study.shortTitle}.  For each medication, if there's
-        an appropriate known agent, enter that.  Otherwise, enter a description in the other
-        field.
+      <tags:instructions code="instruction_ae_conMed" />
+      <br />
+      <tags:instructions code="instruction_ae_conMedNote" heading="Note: " />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">

@@ -75,13 +75,16 @@ public class BasicsTab extends AeTab {
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to lead IND", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
-            "Indicate the likelihood that this AE is attributable to any element of the study protocol.");
+            "Select from the list the most appropriate term describing the relationship of the event to the lead intervention or agent.");
         mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(InputFieldFactory.createSelectField(
             "hospitalization", "Hospitalization", true,
                 InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
-        mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
-            "expected", "Expected", true));
+        InputField exField = InputFieldFactory.createBooleanSelectField(
+                "expected", "Expected", true);
+        InputFieldAttributes.setDetails(exField, "If known, specify whether the AE is expected or not, as determined by the protocol guidelines. If this is a CTEP Sponsored trial, you may refer also to the AdEERS Agent Specific Adverse Event List (ASAEL).");
+        mainFieldFactory.addField(exField);
+
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 50);
         mainFieldFactory.addField(commentsField);

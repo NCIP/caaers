@@ -69,7 +69,7 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
-            Enter all AEs that should appear on this expedited report.
+           <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
         <jsp:attribute name="singleFields">
             <div class="report-fields">

@@ -22,9 +22,8 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            Indicate additional information being submitted by fax or mail for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}.
-        </jsp:attribute>
+        <tags:instructions code="instruction_ae_additionalInfo" />
+    </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">
             <tags:renderRow field="${field}"/>

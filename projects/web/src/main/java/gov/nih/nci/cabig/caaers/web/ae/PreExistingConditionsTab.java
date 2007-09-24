@@ -33,8 +33,10 @@ public class PreExistingConditionsTab extends AeTab {
                 return "Pre-Existing Condition " + (index + 1);
             }
         });
-        fieldFactory.addField(InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false));
-        InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
+        InputField preCondField = InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false);
+        InputFieldAttributes.setDetails(preCondField, "If the correct term is not available in this list, type the pre-condition below in the <strong>Other (pre-existing)</strong> field.");
+        fieldFactory.addField(preCondField);
+        InputField otherField = InputFieldFactory.createTextField("other", "Other (pre-existing)", false);
         InputFieldAttributes.setSize(otherField, 50);
         fieldFactory.addField(otherField);
 

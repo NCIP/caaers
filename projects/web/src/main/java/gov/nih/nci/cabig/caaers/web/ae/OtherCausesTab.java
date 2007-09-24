@@ -20,7 +20,7 @@ public class OtherCausesTab extends AeTab {
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("otherCause",
             "aeReport.otherCauses");
-        factory.addField(InputFieldFactory.createTextArea("text", "Cause", true));
+        factory.addField(InputFieldFactory.createTextArea("text", "Cause", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addRepeatingFieldGroupFactory(factory, command.getAeReport().getOtherCauses().size());

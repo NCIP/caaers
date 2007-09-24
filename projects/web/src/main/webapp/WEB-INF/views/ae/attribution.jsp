@@ -103,9 +103,8 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10attributionforadverseevents">
     <jsp:attribute name="instructions">
-        You are attributing AEs to causes for
-        ${command.assignment.participant.fullName} on
-        ${command.assignment.studySite.study.shortTitle}.
+    <tags:instructions code="instruction_ae_attribution" /><br />
+    <tags:instructions code="instruction_ae_attributionNote"  heading="Note: "/>
     </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach var="offset" begin="0" end="${fn:length(command.aeReport.adverseEvents) - 1}" step="${MAX_COLS}">

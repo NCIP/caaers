@@ -279,6 +279,8 @@ public class ReportServiceImpl  implements ReportService {
    ) {
        List<String> mandatoryProperties = new LinkedList<String>();
        for (Map.Entry<String, Boolean> e : mandatoryMap.entrySet()) {
+    	   TreeNode n = node.find(e.getKey());
+    	   if(n == null) continue;
            if (e.getValue()) mandatoryProperties.add(e.getKey());
        }
        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(

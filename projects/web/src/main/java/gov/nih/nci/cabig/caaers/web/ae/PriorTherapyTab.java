@@ -35,12 +35,18 @@ public class PriorTherapyTab extends AeTab {
                 return "Prior Therapy " + (index + 1);
             }
         });
-        fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapy", "Therapy", false));
-        InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
-        InputFieldAttributes.setSize(otherField, 50);
+        InputField priorThreapyField = InputFieldFactory.createAutocompleterField("priorTherapy", "Prior therapy", false);
+        InputFieldAttributes.setDetails(priorThreapyField, "If the appropriate therapy is not listed, type the therapy in the &quots;Comments (Prior therapy)&quots; field below.");
+        fieldFactory.addField(priorThreapyField);
+        InputField otherField = InputFieldFactory.createTextArea("other", "Comments (prior therapy)", false);
+        InputFieldAttributes.setColumns(otherField, 45);
         fieldFactory.addField(otherField);
-        fieldFactory.addField(InputFieldFactory.createDateField("startDate", "Start Date", false));
-        fieldFactory.addField(InputFieldFactory.createDateField("endDate", "End Date", false));
+        InputField startDateField = InputFieldFactory.createDateField("startDate", "Start Date", false);
+        InputFieldAttributes.setDetails(startDateField, "If known, enter start date for prior therapy.");
+        fieldFactory.addField(startDateField);
+        InputField endDateField = InputFieldFactory.createDateField("endDate", "Therapy (end date)", false);
+        InputFieldAttributes.setDetails(endDateField, "If known, enter end date for prior therapy.");
+        fieldFactory.addField(endDateField);
         fieldFactory.addField(InputFieldFactory.createAutocompleterField("priorTherapyAgents.agent", "Agent", false));
 
         RepeatingFieldGroupFactory agentFactory = new RepeatingFieldGroupFactory("ptAgent", "aeReport.adverseEventPriorTherapies");
@@ -65,13 +71,13 @@ public class PriorTherapyTab extends AeTab {
     }
 
     private void validatePriorTherapy(AdverseEventPriorTherapy aePriorTherapy, int index, Errors errors) {
-        if (aePriorTherapy.getPriorTherapy() == null && aePriorTherapy.getOther() == null) {
-            errors.rejectValue(
-                String.format("aeReport.adverseEventPriorTherapies[%d]", index),
-                "REQUIRED",
-                "Either Prior Therapy or Other is required"
-            );
-        }
+//        if (aePriorTherapy.getPriorTherapy() == null && aePriorTherapy.getOther() == null) {
+//            errors.rejectValue(
+//                String.format("aeReport.adverseEventPriorTherapies[%d]", index),
+//                "REQUIRED",
+//                "Either Prior Therapy or Other is required"
+//            );
+//        }
     }
     @Override
     public ExpeditedReportSection section() {

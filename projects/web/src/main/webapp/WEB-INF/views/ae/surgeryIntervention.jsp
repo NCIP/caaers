@@ -74,9 +74,8 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            If applicable, enter Surgery Intervention Information for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}.
-        </jsp:attribute>
+    <tags:instructions code="instruction_ae_surgery" />   
+    </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">
             <tags:renderRow field="${field}"/>

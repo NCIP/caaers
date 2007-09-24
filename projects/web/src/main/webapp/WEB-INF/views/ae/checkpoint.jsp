@@ -15,20 +15,15 @@
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}">
+	<jsp:attribute name="instructions">
+	 <tags:instructions code="instruction_ae_checkpoint" />
+	</jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:choose>
             <c:when test="${command.aeReport.expeditedReportingRequired}">
-                The AEs you have entered require
-                ${ctms:countString(command.aeReport.requiredReportCount, 'expedited report')} to
-                be submitted.
+               <br /> <strong>Reports Identified by caAERS</strong><br />
+               <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
             </c:when>
-            <c:otherwise>
-                <p>
-                    The AEs you have entered <strong>do not</strong> seem to
-                    require any expedited reporting.  If you wish override this decision,
-                    please select the reports below.
-                </p>
-            </c:otherwise>
         </c:choose>
         <div class="report-list">
             <!-- required reports -->
@@ -66,37 +61,16 @@
             </c:forEach>
         </div>
         <p>
+        	If you agree with this assessment and wish to proceed, click Save & Continue. 
+        	Once you click this button, the report will be initiated and the countdown to the due date will begin.
+        	<br />
             Every report you select has a minimum set of fields which the target agency needs
             you to provide.  Once you pass this page, all those fields will be tagged with
             <ae:requiredToSubmit/>.  The tabs along the top of the flow will be similarly
             tagged if they are missing fields that are required for submission.
-            (Note: this is not yet implemented.)
         </p>
 
     </jsp:attribute>
 </tags:tabForm>
-
-<c:if test="${not command.aeReport.expeditedReportingRequired}">
-<form:form>
-    <chrome:box title="Save as routine">
-        <chrome:division>
-            <p class="instructions">
-                Alternatively, if you would like to save the adverse event information you entered
-                <strong>without submitting</strong> any expedited reports, you may save it as a
-                routine report.
-            </p>
-        </chrome:division>
-
-        <div class="content buttons autoclear">
-            <div class="flow-buttons">
-                <span class="next">
-                    Not implemented <input type="submit" value="Save as routine report &raquo;" disabled="disabled"/>
-                </span>
-            </div>
-        </div>
-    </chrome:box>
-</form:form>
-</c:if>
-
 </body>
 </html>

@@ -34,7 +34,7 @@ public class ConcomitantMedicationsTab extends AeTab {
                 return "Medication " + (index + 1);
             }
         });
-        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Agent name", true);
+        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Information about concomitant medication", false);
         InputFieldAttributes.setSize(agentNameField, 50);
         fieldFactory.addField(agentNameField);
 

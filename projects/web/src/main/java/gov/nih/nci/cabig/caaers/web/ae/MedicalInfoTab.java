@@ -57,17 +57,21 @@ public class MedicalInfoTab extends AeTab {
         Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
             command.getStudy().getCtepStudyDiseases(), "id", "term.term", ""
         );
-        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease from study", false,
+        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false,
             ctepStudyDiseaseOptions);
-        InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease isn't listed above, enter it in other.");
-        InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary disease site", false);
-        InputFieldAttributes.setDetails(diseaseSite, "If the correct site isn't in the autocompleter above, please enter it in other.");
+        InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease is not listed in the drop down list, type the appropriate disease name in the Other (disease) field below.");
+        InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
+        InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");
+        InputField otherDiseaseField = InputFieldFactory.createTextField("otherPrimaryDisease", "Other (disease)");
+        InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");
+        InputField diganosisDateField = InputFieldFactory.createDateField("diagnosisDate", "Date of initial diagnosis", false);
+        InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");
         disease
             .addField(ctepStudyDisease)
-            .addField(InputFieldFactory.createTextField("otherPrimaryDisease", "Other disease"))
+            .addField(otherDiseaseField)
             .addField(diseaseSite)
-            .addField(InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other primary disease site"))
-            .addField(InputFieldFactory.createDateField("diagnosisDate", "Diagnosis date", false))
+            .addField(InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other (site of primary disease)"))
+            .addField(diganosisDateField)
             ;
 
         RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSites");
@@ -76,8 +80,11 @@ public class MedicalInfoTab extends AeTab {
                 return "Metastatic disease site " + (index + 1);
             }
         });
-        fieldFactory.addField(InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false));
-        fieldFactory.addField(InputFieldFactory.createTextField("otherSite", "Other Site", false));
+        InputField codedSiteField = InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false);
+        InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the <strong>Other(Site of Metastatic Disease)</strong> field");
+        fieldFactory.addField(codedSiteField);
+
+        fieldFactory.addField(InputFieldFactory.createTextField("otherSite", "Other(Site of metastatic disease)", false));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(participant);

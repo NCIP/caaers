@@ -14,7 +14,6 @@ class ListPropertyNode extends PropertyNode {
     }
 
     @Override
-    @Deprecated // Maybe
     public boolean isList() {
         return true;
     }

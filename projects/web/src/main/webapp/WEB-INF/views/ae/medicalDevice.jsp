@@ -57,9 +57,8 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
     <jsp:attribute name="instructions">
-            If applicable, enter Medical Device Information for ${command.assignment.participant.fullName}
-            on ${command.assignment.studySite.study.shortTitle}.
-        </jsp:attribute>
+    <tags:instructions code="instruction_ae_device" />
+    </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach items="${fieldGroups.desc.fields}" var="field">
             <tags:renderRow field="${field}"/>

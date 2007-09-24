@@ -30,7 +30,7 @@ public class DescriptionTab extends AeTab {
 
         InputField desc = InputFieldFactory.createTextArea(baseProp + ".eventDescription",
             "Description", false);
-        InputFieldAttributes.setDetails(desc, "Describe the AE(s) and any action prompted by them");
+        InputFieldAttributes.setDetails(desc,"Type in a narrative describing the following: (1) presentation of the event, (2), clinical findings, (3) the treatment of the events, and (4) the timing of events related to agent administration or investigational intervention.");
         allFields.getFields().add(desc);
 
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
