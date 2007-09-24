@@ -37,7 +37,15 @@
 				<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1"/>
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="description" minOccurs="0" type="xs:string"/>
+				<!-- using subject to store level , org and study . spliting and setting to right variables in rulerepositiry service,  -->
+				<xs:element name="subject" minOccurs="0" type="xs:string"/>		
+				<!-- using coverage to hold  state ...  -->		
+				<xs:element name="coverage" minOccurs="0" type="xs:string"/> 
 				
+				<xs:element name="level" type="xs:string" /> 
+				<xs:element name="organization" type="xs:string" /> 
+				<xs:element name="study" type="xs:string" />
+								
 				<!-- 
 				<xs:element name="type" type="xs:string" /> ae assesement or report schedule 
 				<xs:element name="level" type="xs:string" /> sponsor define, .... etc  

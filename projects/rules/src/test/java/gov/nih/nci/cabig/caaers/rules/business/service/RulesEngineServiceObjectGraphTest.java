@@ -63,7 +63,7 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
     protected Set<Object> mocks = new HashSet<Object>();
 
     private EvaluationService aees;
-    
+     
     private static String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 
 	protected void setUp() throws Exception {
@@ -80,7 +80,7 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 	public void testRulesEngineService() throws Exception {
 		String sponsorName = "National Cancer Institute";
 		String ruleSetType = RuleType.AE_ASSESMENT_RULES.getName();
-		String studyName = "ctcstudy";
+		String studyName = "ctc study";
 		
 		//String type = "gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm";
 		
@@ -92,7 +92,7 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 
 		
 		//RuleSet rs = sponserAEAssesmentRuleFlow(sponsorName,ruleSetType,studyName);	
-		createAdverseEvent2(studyName,sponsorName);
+		createAdverseEvent3(studyName,sponsorName);
 	}
 
 	
@@ -181,6 +181,59 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		return study;
 	}
+	private void createAdverseEvent3(String studyName, String orgName) throws Exception {
+//		 execute rules...
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setGrade(Grade.SEVERE);
+		ae1.setExpected(true);
+
+		ae1.setHospitalization(Hospitalization.HOSPITALIZATION);
+		
+		
+		
+		
+		CtcCategory ctcCategory = new CtcCategory();
+		ctcCategory.setId(new Integer("301"));
+		
+		CtcTerm ctcTerm = new CtcTerm();
+		ctcTerm.setId(new Integer("3002"));
+		
+		ctcTerm.setCategory(ctcCategory);
+		
+		
+		AdverseEventCtcTerm  adverseEventCtcTerm = new AdverseEventCtcTerm();
+		adverseEventCtcTerm.setCtcTerm(ctcTerm);
+		
+		ae1.setAdverseEventCtcTerm(adverseEventCtcTerm);
+		
+
+		
+		ExpeditedAdverseEventReport ex = new ExpeditedAdverseEventReport();
+		ex.addAdverseEvent(ae1);
+	
+		
+		Study study = createStudy(studyName, orgName);
+		StudyParticipantAssignment spa = new StudyParticipantAssignment();
+		StudySite ss = new StudySite();
+		ss.setStudy(study);
+		spa.setStudySite(ss);
+		ex.setAssignment(spa);
+		
+		
+		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
+		String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
+		List<String> sections = aees.mandatorySections(ex);
+
+		System.out.println(msg);
+		
+		for (String section : sections) {
+			System.out.println(section);
+		}
+		
+		
+		//assertEquals(msg, "SERIOUS_ADVERSE_EVENT");
+	
+	}
 	private void createAdverseEvent2(String studyName, String orgName) throws Exception {
 		// execute rules...
 		AdverseEvent ae1 = new AdverseEvent();
@@ -210,9 +263,9 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		
 		AdverseEventCtcTerm  adverseEventCtcTerm = new AdverseEventCtcTerm();
-		adverseEventCtcTerm.setCtcTerm(ctcTerm);
+		//adverseEventCtcTerm.setCtcTerm(ctcTerm);
 		
-		ae1.setAdverseEventCtcTerm(adverseEventCtcTerm);
+		//ae1.setAdverseEventCtcTerm(adverseEventCtcTerm);
 		
 /*
 		Study s = new Study();
@@ -248,10 +301,10 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		
 		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
-		//String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
+		String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
 		List<String> sections = aees.mandatorySections(ex);
 
-		//System.out.println(msg);
+		System.out.println(msg);
 		
 		for (String section : sections) {
 			System.out.println(section);

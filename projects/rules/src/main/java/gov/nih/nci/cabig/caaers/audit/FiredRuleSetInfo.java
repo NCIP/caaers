@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
 import java.util.ArrayList;
 import java.util.List;
-
+   
 public class FiredRuleSetInfo {
 	private String ruleSetType;
 	private String organizationName;

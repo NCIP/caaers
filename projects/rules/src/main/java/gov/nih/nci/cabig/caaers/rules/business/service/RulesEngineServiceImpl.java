@@ -15,7 +15,7 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
-
+   
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +41,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	private RepositoryService repositoryService;
 	
 	
-	
+	public void exportRule(String ruleSetName, String locationToExport) throws Exception {
+		
+	}
 	
 	public RulesEngineServiceImpl(){
 		ruleAuthoringService = new RuleAuthoringServiceImpl();
@@ -54,15 +56,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		
-		/**
-		 * First check if the RuleSet has been created or not
-		 * If not then first create the ruleset
-		 */
+
 		RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
+		/*
 		if(ruleSet==null){
 			this.createRuleSetForInstitution(ruleSetName, institutionName);
 		}
-		
+		*/
 		String uuid = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		Category category = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
@@ -88,14 +88,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		
-		/**
-		 * First check if the RuleSet has been created or not
-		 * If not then first create the ruleset
-		 */
+
 		RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
+		/*
 		if(ruleSet==null){
-			this.createRuleSetForSponsor(ruleSetName, sponsorName);
+			this.createRuleSetForSponsor(ruleSetName, sponsorName, "");
 		}
+		*/
 		String uuid= null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
@@ -123,16 +122,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
-		/**
-		 * First check if the RuleSet has been created or not
-		 * If not then first create the ruleset
-		 */
+
 		RuleSet ruleSet = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
-		
+		/*
 		if(ruleSet==null){
 			this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
 		}
-		
+		*/
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		Category category = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName, studyShortTitle, ruleSetName);
@@ -157,15 +153,13 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 
 	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
-		/**
-		 * First check if the RuleSet has been created or not
-		 * If not then first create the ruleset
-		 */
+
 		RuleSet ruleSet = this.getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
-		
+		/*
 		if(ruleSet==null){
 			this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
 		}
+		*/
 		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
@@ -189,7 +183,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 	}
 	
-	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception {
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName,String subject,String state) throws Exception {
 		// TODO Auto-generated method stub
 		
 		Category cat = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
@@ -203,6 +197,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription(ruleSetName);
+		ruleSet.setSubject(subject);
+		ruleSet.setCoverage(state);
+		
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -224,7 +221,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	 * 
 	 */
 
-	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception {
+	public RuleSet createRuleSetForSponsor(String ruleSetName, String sponsorName, String subject, String state) throws Exception {
 		// TODO Also create the category for the same rule set as well. 
 		
 		Category cat = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
@@ -238,6 +235,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription(ruleSetName);
+		ruleSet.setSubject(subject);
+		ruleSet.setCoverage(state);
 		
 		
 		
@@ -256,7 +255,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return ruleSet;
 	}
 
-	public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
+	public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName, String subject, String state) throws Exception{
 		// TODO Auto-generated method stub
 		
 		Category cat = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName, studyShortTitle, ruleSetName);
@@ -269,6 +268,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription(ruleSetName);
+		ruleSet.setSubject(subject);
+		ruleSet.setCoverage(state);
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -285,7 +286,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return ruleSet;
 	}
 
-	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception{
+	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName, String subject, String state) throws Exception{
 		// TODO Auto-generated method stub
 		
 		Category cat = RuleUtil.getStudyInstitutionSpecificCategory(ruleAuthoringService, institutionName, studyShortTitle, ruleSetName);
@@ -298,6 +299,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		ruleSet.setName(packageName);
 		ruleSet.setStatus("Draft");
 		ruleSet.setDescription(ruleSetName);
+		ruleSet.setSubject(subject);
+		ruleSet.setCoverage(state);
 		
 		//ruleSet.getImport().add("gov.nih.nci.cabig.caaers.rules.domain.*");
 		if(ruleSet.getImport().size()==0){
@@ -398,7 +401,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		
-			ruleSet = ruleAuthoringService.getRuleSet(packageName);
+		ruleSet = ruleAuthoringService.getRuleSet(packageName);
 		
 		return ruleSet;
 	}
@@ -562,13 +565,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void saveRulesForInstitution(RuleSet ruleSet, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		String ruleSetName = ruleSet.getDescription();
+		String subject = ruleSet.getSubject();
+		String state = ruleSet.getCoverage();
+		
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
 		RuleSet rs = this.getRuleSetForInstitution(ruleSetName, institutionName);
 		if(rs==null){
 			//create the rule set
-			RuleSet ruleSetTemp = this.createRuleSetForInstitution(ruleSetName, institutionName);
+			RuleSet ruleSetTemp = this.createRuleSetForInstitution(ruleSetName, institutionName,subject,state);
 		}
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
@@ -587,18 +593,22 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		// TODO Auto-generated method stub
 		
 		String ruleSetName = ruleSet.getDescription();
+		String subject = ruleSet.getSubject();
+		String state = ruleSet.getCoverage();
+		
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
 		RuleSet rs = this.getRuleSetForSponsor(ruleSetName, sponsorName);
+
 		if(rs==null){
 			//create the rule set
-			RuleSet ruleSetTemp = this.createRuleSetForSponsor(ruleSetName, sponsorName);
+			RuleSet ruleSetTemp = this.createRuleSetForSponsor(ruleSetName, sponsorName, subject, state);
 		}
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
 			if(rule.getId()==null){
-			this.createRuleForSponsor(rule, ruleSetName, sponsorName);
+				this.createRuleForSponsor(rule, ruleSetName, sponsorName);
 			}else{
 				this.updateRule(rule);
 			}
@@ -610,13 +620,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void saveRulesForSponsorDefinedStudy(RuleSet ruleSet, String studyShortTitle, String sponsorName) throws Exception {
 		// TODO Auto-generated method stub
 		String ruleSetName = ruleSet.getDescription();
+		String subject = ruleSet.getSubject();
+		String state = ruleSet.getCoverage();
+		
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
 		}
 		RuleSet rs = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
 		if(rs==null){
 			//create the rule set
-			RuleSet ruleSetTemp = this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
+			RuleSet ruleSetTemp = this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName,subject,state);
 		}
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
@@ -632,6 +645,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void saveRulesForInstitutionDefinedStudy(RuleSet ruleSet, String studyShortTitle, String institutionName) throws Exception {
 		// TODO Auto-generated method stub
 		String ruleSetName = ruleSet.getDescription();
+		String subject = ruleSet.getSubject();
+		String state = ruleSet.getCoverage();
+		
 		//System.out.println("package name before savinf : " + ruleSet.getMetaData().getPackageName());
 		if(ruleSetName==null){
 			throw new Exception("Rule name should be set to some  valid value");
@@ -639,7 +655,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		RuleSet rs = this.getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
 		if(rs==null){
 			//create the rule set
-			RuleSet ruleSetTemp = this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
+			RuleSet ruleSetTemp = this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName,subject,state);
 		}
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){

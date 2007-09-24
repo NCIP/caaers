@@ -40,11 +40,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 
-
-
-
-
-
 public class RulesEngineServiceTest extends TestCase {
 
 	private RulesEngineService rulesEngineService;
@@ -53,7 +48,7 @@ public class RulesEngineServiceTest extends TestCase {
     private static RuntimeException acLoadFailure = null;
 
     private static ApplicationContext applicationContext = null;
-
+ 
     protected Set<Object> mocks = new HashSet<Object>();
 
     private EvaluationService aees;
@@ -158,8 +153,8 @@ public class RulesEngineServiceTest extends TestCase {
 		}
 		db.close();
 
-		deleteDir(new File("/tmp/rules_repo/repo"));
-		File f = new File("/tmp/rules_repo/repo");
+		deleteDir(new File("/tmp/rr"));
+		File f = new File("/tmp/rr");
 		f.mkdir();
 
 		this.rulesEngineService = new RulesEngineServiceImpl();
@@ -276,14 +271,14 @@ public class RulesEngineServiceTest extends TestCase {
 	}
 	
 	private void createRuleSetForSponsor(String sponsorName, String ruleSetName) throws Exception {
-		rulesEngineService.createRuleSetForSponsor(ruleSetName, sponsorName);
+		rulesEngineService.createRuleSetForSponsor(ruleSetName, sponsorName, "","");
 	}
 	
 	private RuleSet createRulesForSponsor(int id, String sponsorName) {
 
 		RuleSet rs = new RuleSet();
 		rs.setDescription(RuleType.AE_ASSESMENT_RULES.getName());
-		
+		rs.setSubject("this is my subject ... ");
 		
 
 
@@ -546,7 +541,7 @@ public class RulesEngineServiceTest extends TestCase {
 		String studyShortTitle = "Our test Study";
 		String sponsorName = "Loudoun Medical Center";
 		rulesEngineService.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle,
-				sponsorName);
+				sponsorName,"","");
 	}
 
 	private void getRuleSetForStudy() throws Exception {
@@ -554,7 +549,7 @@ public class RulesEngineServiceTest extends TestCase {
 		String studyShortTitle = "Our test Study";
 		String sponsorName = "Loudoun Medical Center";
 		RuleSet ruleSet = rulesEngineService.createRuleSetForSponsorDefinedStudy(ruleSetName,
-				studyShortTitle, sponsorName);
+				studyShortTitle, sponsorName,"","");
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(
 				CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(),
 				studyShortTitle, sponsorName, ruleSetName);

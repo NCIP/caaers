@@ -159,6 +159,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	public String createRuleSet(RuleSet ruleSet) 
 	{
 		PackageItem item = getRulesRepository().createPackage(ruleSet.getName(), ruleSet.getDescription());
+		item.updateSubject(ruleSet.getSubject());
+		item.updateCoverage(ruleSet.getCoverage());
 		
 		List imports = ruleSet.getImport();
 		String header = "";
@@ -187,9 +189,28 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		while (iterator.hasNext()) {
 			PackageItem packageItem = (PackageItem) iterator.next();
 			ruleSet = new RuleSet();
+			ruleSet.setId(packageItem.getUUID());
 			ruleSet.setDescription(packageItem.getDescription());
 			ruleSet.setName(packageItem.getName());
-			ruleSetList.add(ruleSet);
+			ruleSet.setSubject(packageItem.getSubject());
+			ruleSet.setCoverage(packageItem.getCoverage());
+			
+			//
+			String subject = packageItem.getSubject();
+			String[] tokens = subject.split("\\|\\|");
+			
+			if (tokens.length>1){
+				ruleSet.setLevel(tokens[0]);
+				ruleSet.setOrganization(tokens[1]);
+			}
+			if (tokens.length>2){
+				ruleSet.setStudy(tokens[2]);
+			} else {
+				ruleSet.setStudy(" N/A ");
+			}
+			if (!ruleSet.getName().equals("default")) {
+				ruleSetList.add(ruleSet);
+			}
 		}
 		return ruleSetList;
 	}
@@ -214,6 +235,9 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		// ruleSet.externalURI = item.getExternalURI();
 		ruleSet.setDescription(item.getDescription());
 		ruleSet.setName(item.getName());
+		ruleSet.setSubject(item.getSubject());
+		ruleSet.setCoverage(item.getCoverage());
+		
 		
 		// ruleSet.lastModified = item.getLastModified().getTime();
 		// ruleSet.lasContributor = item.getLastContributor();

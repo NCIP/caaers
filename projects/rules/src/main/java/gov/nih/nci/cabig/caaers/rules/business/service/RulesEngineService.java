@@ -23,22 +23,22 @@ public interface RulesEngineService {
 	/*
 	 * REVISIT: Make it private
 	 */
-	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName) throws Exception;
+	public RuleSet createRuleSetForSponsor( String ruleSetName,String sponsorName,String subject, String state) throws Exception;
 	
 	/*
 	 * REVISIT: Make it private
 	 */
-	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception;
+	public RuleSet createRuleSetForInstitution(String ruleSetName, String institutionName,String subject, String state) throws Exception;
 	
 	/*
 	 * REVISIT: Make it private
 	 */
-	public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName,String studyShortTitle, String sponsorName) throws Exception;
+	public RuleSet createRuleSetForSponsorDefinedStudy(String ruleSetName,String studyShortTitle, String sponsorName,String subject, String state) throws Exception;
 	
 	/*
 	 * REVISIT: Make it private
 	 */
-	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,String studyShortTitle, String institutionName) throws Exception;
+	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,String studyShortTitle, String institutionName,String subject, String state) throws Exception;
 	
 	
 	/**
@@ -141,6 +141,8 @@ public interface RulesEngineService {
 	public boolean isDeployed(RuleSet ruleSet);
 	
 	public void exportRules(String fileName) throws Exception;
+	
+	public void exportRule(String ruleSetName, String locationToExport) throws Exception;
 	
 	public void importRules(String fileName) throws Exception;
 	

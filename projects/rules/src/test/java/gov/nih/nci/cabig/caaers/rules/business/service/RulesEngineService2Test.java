@@ -54,7 +54,7 @@ public class RulesEngineService2Test extends TestCase {
     protected Set<Object> mocks = new HashSet<Object>();
 
     private EvaluationService aees;
-    
+     
     private static String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 
 	protected void setUp() throws Exception {

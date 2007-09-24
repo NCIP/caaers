@@ -56,7 +56,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		//The repository configurations can be passed in AS  PROPERTIES
 		
 		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName);
-		//String ruleSetDesc = ruleSet.getDescription();
+
 
 
 		try {
@@ -72,10 +72,10 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			Object ruleSetObj = ruleAdapter.adapt(ruleSet);
 			//Please note that we can only pass the Package here to the RuleExecution set.
 			//Since we still use drools implementation of LocalRuleExecutionSetProvider
-			final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider
-			.createRuleExecutionSet(ruleSetObj, properties);
-			RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri,
-					ruleExecutionSet, properties);
+			final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider.createRuleExecutionSet(ruleSetObj, properties);
+			
+			RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri, ruleExecutionSet, properties);
+			
 		} catch (RuleExecutionSetCreateException e) {
 			throw new RuleException(e.getMessage(), e);
 		} catch (RuleExecutionSetRegisterException e) {
@@ -98,7 +98,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			throw new RuleException(e.getMessage(), e);
 		} catch (RemoteException e) {
 			throw new RuleException(e.getMessage(), e);
-		}
+		} 
 	}
 
 	public RuleSetInfo[] listRegistrations() throws RemoteException {
