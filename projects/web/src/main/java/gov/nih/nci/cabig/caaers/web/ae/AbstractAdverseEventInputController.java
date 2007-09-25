@@ -52,7 +52,7 @@ public abstract class AbstractAdverseEventInputController
 {
 
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-    private static final int SUBMISSION_PAGE = 17;
+    private static final int SUBMISSION_PAGE = 16;
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
     private final Log log = LogFactory.getLog(getClass());
 
