@@ -280,8 +280,8 @@ public class ExpeditedReportTree extends PropertylessNode {
     private static TreeNode dosage(String baseName, String displayName) {
         return property(baseName, displayName,
             property("amount", "Amount"),
-            property("units", "Units"),
-            property("route", "Route")
+            property("units", "Units")
+            //,property("route", "Route")
         );
     }
 
