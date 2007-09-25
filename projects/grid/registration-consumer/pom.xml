@@ -24,18 +24,19 @@
         </dependency>
 
         <dependency>
-            <groupId>gov.nih.nci.cabig.ctms</groupId>
-            <artifactId>c3pr-registration-consumer-client</artifactId>
+            <groupId>gov.nih.nci.ccts.grid</groupId>
+            <artifactId>RegistrationConsumer-client</artifactId>
+            <version>0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>gov.nih.nci.ccts.grid</groupId>
+            <artifactId>RegistrationConsumer-common</artifactId>
             <version>0.0</version>
         </dependency>
         <dependency>
-            <groupId>gov.nih.nci.cabig.ctms</groupId>
-            <artifactId>c3pr-registration-consumer-common</artifactId>
-            <version>0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>gov.nih.nci.cabig.ctms</groupId>
-            <artifactId>c3pr-registration-consumer-stubs</artifactId>
+            <groupId>gov.nih.nci.ccts.grid</groupId>
+            <artifactId>RegistrationConsumer-stubs</artifactId>
             <version>0.0</version>
         </dependency>
 
