@@ -25,6 +25,7 @@ public class AdeersReportGenerator  {
 	//TO-DO set in spring config 
 	private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
 	private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
+	private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
 	private String pdfOutFile = "/tmp/aeReport.pdf";
 	protected Configuration configuration;
 	
@@ -44,6 +45,12 @@ public class AdeersReportGenerator  {
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOXsltFile);
+	}
+
+	public void genateMedwatchPdf(String  adverseEventReportXml) throws Exception{
+		
+		XsltTransformer xsltTrans = new XsltTransformer();
+		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOMedWatchXsltFile);
 	}
 	
 	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject , Integer reportIndex) throws Exception{
@@ -72,7 +79,7 @@ public class AdeersReportGenerator  {
 			String tempDir = System.getProperty("java.io.tmpdir");
 			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
 			String xml = aeser.serialize(adverseEventReportDataObject);
-		//	System.out.println(xml);
+			System.out.println(xml);
 			genatePdf(xml);
 			
 			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
