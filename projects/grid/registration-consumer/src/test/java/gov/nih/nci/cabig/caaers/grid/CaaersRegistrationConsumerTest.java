@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cabig.caaers.grid;
 
@@ -9,11 +9,14 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.ctms.common.RegistrationConsumer;
-import gov.nih.nci.cabig.ctms.grid.RegistrationType;
+import gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer;
+import gov.nih.nci.ccts.grid.*;
+import gov.nih.nci.ccts.grid.common.RegistrationConsumer;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cagrid.common.Utils;
 import static org.easymock.EasyMock.expect;
+
+import org.easymock.EasyMock;
 import org.easymock.IArgumentMatcher;
 import static org.easymock.classextension.EasyMock.*;
 import org.globus.wsrf.encoding.DeserializationException;
@@ -26,7 +29,7 @@ import java.io.Reader;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
- * 
+ *
  */
 public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     private String clientConfigFile;
@@ -57,10 +60,10 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     }
 
     public void testCreateRegistrationLocal() throws Exception {
-        expect(studyService.assignParticipant(studyMatcher(), participantMatcher(), organizationMatcher(), eq("studyParticipantIdentifier0")))
+        expect(studyService.assignParticipant(studyMatcher(), participantMatcher(), organizationMatcher(), eq("gridStudy")))
             .andReturn(new StudyParticipantAssignment());
 
-        RegistrationType reg = getRegistration();
+        Registration reg = getRegistration();
 
         replayMocks();
         consumer.register(reg);
@@ -105,10 +108,10 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
         reportMatcher(new TestRegistrationMatcher<Participant>("particpant", "gridParticipant") {
             @Override public void assertMatches(Participant actual) {
                 super.assertMatches(actual);
-                assertEquals("Wrong gender", "administrativeGenderCode0", actual.getGender());
-                assertEquals("Wrong first name", "firstName0", actual.getFirstName());
-                assertEquals("Wrong last name", "lastName0", actual.getLastName());
-                assertEquals("Wrong number of identifiers", 3, actual.getIdentifiers().size());
+                assertEquals("Wrong gender", "M", actual.getGender());
+                assertEquals("Wrong first name", "Rudolph", actual.getFirstName());
+                assertEquals("Wrong last name", "Clooney", actual.getLastName());
+                assertEquals("Wrong number of identifiers", 1, actual.getIdentifiers().size());
             }
         });
         return null;
@@ -128,12 +131,16 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     }
     */
 
-    private RegistrationType getRegistration() throws DeserializationException, SAXException {
-        RegistrationType reg = null;
+    private Registration getRegistration() throws DeserializationException, SAXException {
+    	Registration reg = null;
         InputStream config = getClass().getResourceAsStream(clientConfigFile);
         Reader reader = new InputStreamReader(getClass().getResourceAsStream(registrationResourceName));
-        reg = (RegistrationType) Utils
-                        .deserializeObject(reader, RegistrationType.class, config);
+        try {
+			reg = (Registration) Utils.deserializeObject(reader, Registration.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return reg;
     }
 }
