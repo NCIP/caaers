@@ -7,7 +7,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
@@ -21,6 +26,27 @@ public class ViewReportTab extends AeTab {
         super("Submission", "Submit", "ae/submit");
 
     }
+    
+    @Override
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+
+        handleWithdrawAction(command, request.getParameter("_action"),
+            request.getParameter("_selected"));
+    }
+    
+    private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action, String selected) {
+        if ("withdraw".equals(action) ) {
+        	
+        	for (Report report : command.getAeReport().getReports()) {
+            	if (report.getId().equals(selected) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
+            		reportService.withdrawLastReportVersion(report);
+         	        break;
+         		}
+    		}
+        }
+    }
+    
+    
 
     @Override
     @SuppressWarnings("unchecked")

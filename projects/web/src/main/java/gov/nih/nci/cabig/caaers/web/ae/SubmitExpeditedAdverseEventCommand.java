@@ -34,6 +34,7 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     // Used in SubmitReport
     private String reportIndex;
     private String reportId;
+    private String from;
 
     ////// LOGIC
 
@@ -73,6 +74,15 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
 	public void setReportId(String reportId) {
 		this.reportId = reportId;
 	}
+
+	public String getFrom() {
+		return from;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+	
 	
 	
     

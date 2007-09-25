@@ -35,6 +35,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
+        command.setFrom(request.getParameter("from"));
         return command;
         
     }
@@ -60,9 +61,17 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
     	aegen.generateAndSendPdfReport(command.getAeReport() , reportIndex); 
     	
-        // everything is saved as you move from page to page, so no action required here
-        Map<String, Object> model = new ModelMap("aeReport", command.getAeReport().getId());
-        model.put("action", "reportSubmission");
-        return new ModelAndView("redirectToExpeditedAeEdit", model);
+    	ModelAndView modelAndView;
+    	if (command.getFrom()!= null && command.getFrom().equals("list") ){
+    		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
+            model.put("study", command.getStudy().getId());
+            modelAndView =  new ModelAndView("redirectToAeList", model);
+    	}else{
+    		Map<String, Object> model = new ModelMap("aeReport", command.getAeReport().getId());
+            model.put("action", "reportSubmission");
+    		modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
+    	}
+    	
+        return modelAndView;
     }
 }

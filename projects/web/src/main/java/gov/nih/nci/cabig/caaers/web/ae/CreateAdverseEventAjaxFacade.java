@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -32,10 +33,14 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
@@ -79,6 +84,7 @@ public class CreateAdverseEventAjaxFacade {
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private ExpeditedReportTree expeditedReportTree;
     private ConfigProperty configProperty;
+    private ReportService reportService;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -263,6 +269,18 @@ public class CreateAdverseEventAjaxFacade {
             log.error("Unexpected error in communicating with study calendar", re);
             return false;
         }
+    }
+    
+    public String withdrawReportVersion(int aeReportId, int reportId) {
+        ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
+        for (Report report : aeReport.getReports()) {
+        	if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
+        		reportService.withdrawLastReportVersion(report);
+     	        break;
+     		}
+		}
+        aeReportDao.save(aeReport);
+        return "Success";
     }
 
     /**
@@ -528,6 +546,15 @@ public class CreateAdverseEventAjaxFacade {
 			TreatmentAssignmentDao treatmentAssignmentDao) {
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
+    
+	@Required
+	public void setReportService(ReportService reportService) {
+		this.reportService = reportService;
+	}
+
+    
+    
+    
 
     public static class IndexChange {
         private int original, current;

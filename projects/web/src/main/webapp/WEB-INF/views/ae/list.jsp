@@ -17,15 +17,6 @@
             color: #900;
         }
         
-        .dueOn {
-        	color: #cc0033;
-        	text-align: center;
-        }
-        
-         .submittedOn {
-        	color: #66cc33;
-        	text-align: center;
-        }
         
     </style>
     <script type="text/javascript">
@@ -39,6 +30,21 @@
 				document.getElementById(id).src=imageStr.replace('plus','minus');	
 			//	alert(document.getElementById(id).src)
 		}
+		
+		function withdraw(aeReportId,reportId) {
+            AE.showIndicator("notify-indicator-" + aeReportId)
+            createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+                AE.hideIndicator("notify-indicator-" + aeReportId)
+                 var status = $("status"+reportId)
+         		 var statusData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+          
+          		var action = $("action"+reportId)
+          		actionData = $("amend"+reportId).innerHTML;
+          
+          		Element.update(status, statusData)
+          		Element.update(action, actionData)
+            })
+        }
     
     
         function notifyPsc(aeReportId) {
@@ -166,40 +172,59 @@
 						<% String currClassJ=j%2==0? "odd":"even"; %>
 							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
 									onMouseOut="this.className='<%= currClass %>'" 
-									onClick="document.location='${documentLocation }${site.id }'">
+									>
 								<td width="20%">${theReport.reportDefinition.name}</td>
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
 								<td width="30%"><i>Not Implemented</i></td>
-								<td width="20%">
-									<c:if test="${empty theReport.lastVersion.submittedOn}" >
+								<td width="20%" id="status${theReport.id}">
+									<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
 										<span class="dueOn" >
 											<c:if test="${not empty theReport.lastVersion.dueOn}" >
-            								<i>Due on</i> <br> <b><tags:formatDate value="${theReport.lastVersion.dueOn}" /></b><br>
+            								<i>Due on</i> <br> <b><tags:formatDate value="${theReport.lastVersion.dueOn}" /></b>
             								</c:if>
             								<c:if test="${ empty theReport.lastVersion.dueOn}" >
             								<i>Amendment Due</i>
             								</c:if>
             							</span>
             						</c:if>
-            						<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
+            						<c:if test="${theReport.lastVersion.reportStatus == 'WITHDRAWN'}" >
+										<span class="submittedOn" >
+            								<i>Withdrawn</i>
+            							</span>
+            						</c:if>
+            						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
             							<span class="submittedOn" >
-            								<strong>Submitted on </strong><br/><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></center>
+            								<i>Submitted on </i><br> <b><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></b>
             							</span>
             						</c:if>
 								</td>
-								<td width="50%">
-            						<c:if test="${empty theReport.lastVersion.submittedOn}" >
+								<td width="50%" id="action${theReport.id}">
+            						<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
             							<center>
-            								<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}"/>">Submit</a>
+            								<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
+            								<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
             							</center>
             						</c:if>
-            						<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
+            						
+            						<c:if test="${theReport.lastVersion.reportStatus == 'WITHDRAWN'}" >
+            							<center>
+            								<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+            							</center>
+            						</c:if>
+            						
+            						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
             							<center>
             								<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
             							</center>
             						</c:if>
 								</td>
 							</tr>
+							<!-- This is a hack a better way to pass this to javscript -->
+							<span id="amend${theReport.id}" style="display:none;">
+								<center>
+            						<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+            					</center>
+							</span>
 						</c:forEach>
 					</table>
 					</div>

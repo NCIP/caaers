@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedList;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
@@ -330,6 +332,16 @@ public class ReportServiceImpl  implements ReportService {
 		}
 		return mandatoryFieldMap;
 	}
+	
+	@Transient
+	public void withdrawLastReportVersion(Report report){
+		
+		ReportVersion reportVersion = report.getLastVersion();
+		reportVersion.setReportStatus(ReportStatus.WITHDRAWN);
+		reportVersion.setWithdrawnOn(nowFactory.getNow());
+		reportVersion.setDueOn(null);
+	}
+	
 
 	public void setNowFactory(NowFactory nowFactory) {
         this.nowFactory = nowFactory;

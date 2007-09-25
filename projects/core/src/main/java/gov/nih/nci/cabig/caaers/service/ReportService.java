@@ -73,4 +73,10 @@ public interface ReportService {
     */
    public ErrorMessages isSubmitable(ExpeditedAdverseEventReport aeReport, List<String> mandatorySectionNames);
 
+   /**
+    * Will withdraw the latest version of the report.
+    * @param report
+    */
+   public void withdrawLastReportVersion(Report report);
+   
 }
