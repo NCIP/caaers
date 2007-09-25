@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
@@ -20,7 +22,9 @@ public class OtherCausesTab extends AeTab {
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("otherCause",
             "aeReport.otherCauses");
-        factory.addField(InputFieldFactory.createTextArea("text", "Cause", false));
+        InputField otherField = InputFieldFactory.createTextArea("text", "Cause", false);
+        InputFieldAttributes.setColumns(otherField, 50);
+        factory.addField(otherField);
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addRepeatingFieldGroupFactory(factory, command.getAeReport().getOtherCauses().size());

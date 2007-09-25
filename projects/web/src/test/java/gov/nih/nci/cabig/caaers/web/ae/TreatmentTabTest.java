@@ -118,16 +118,14 @@ public class TreatmentTabTest extends AeTabTestCase {
         List<InputField> subfields
             = (List<InputField>) modDoseField.getAttributes().get(InputField.SUBFIELDS);
         assertNotNull("Dose isn't a composite field", subfields);
-        assertEquals("Wrong number of subfields", 3, subfields.size());
+        assertEquals("Wrong number of subfields", 2, subfields.size());
         assertEquals("Wrong subfield 0",
             "aeReport.treatmentInformation.courseAgents[7].modifiedDose.amount",
             subfields.get(0).getPropertyName());
         assertEquals("Wrong subfield 1",
             "aeReport.treatmentInformation.courseAgents[7].modifiedDose.units",
             subfields.get(1).getPropertyName());
-        assertEquals("Wrong subfield 2",
-            "aeReport.treatmentInformation.courseAgents[7].modifiedDose.route",
-            subfields.get(2).getPropertyName());
+
     }
 
     @SuppressWarnings({ "unchecked" })

@@ -116,7 +116,7 @@ public class TreatmentTab extends AeTab {
        InputFieldAttributes.setColumns(commentsField, 45);
       caFields.addField(commentsField);
 
-        caFields.addField(createDoseField("modifiedDose", "Modified dose", false, false));
+        caFields.addField(createDoseField("modifiedDose", "Modified dose", false, true));
 
 
 

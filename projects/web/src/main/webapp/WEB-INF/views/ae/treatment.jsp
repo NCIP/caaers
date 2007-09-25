@@ -25,8 +25,7 @@
             } else {
                 $A([
                     baseProp + "modifiedDose.amount",
-                    baseProp + "modifiedDose.units",
-                    baseProp + "modifiedDose.route"
+                    baseProp + "modifiedDose.units"
                 ]).each(function(input) {
                     $(input).value = "";
                 })
@@ -37,8 +36,7 @@
             var baseProp = "aeReport.treatmentInformation.courseAgents[" + index + "]."
             $A([
                 baseProp + "modifiedDose.amount",
-                baseProp + "modifiedDose.units",
-                baseProp + "modifiedDose.route"
+                baseProp + "modifiedDose.units"
             ]).each(function(input) {
                 $(input).disabled = !enable;
             })
