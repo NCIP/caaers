@@ -97,7 +97,7 @@ public class DisplayRuleSetsTab extends DefaultTab
 	    CreateRuleCommand command = (CreateRuleCommand)cmd;
 	    if (command != null ) {	
 	    	String ruleSetName = command.getRuleSetName();
-
+	    	System.out.println("RULE SET NAME :"+ruleSetName+":");
 	    	if (ruleSetName == null || (ruleSetName != null && ruleSetName.trim().equals(""))) 
 	    		{
 	    			errors.reject("Missing Rule Set","Missing Rule Set");
