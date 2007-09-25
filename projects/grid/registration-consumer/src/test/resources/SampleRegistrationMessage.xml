@@ -1,84 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<registration xmlns="http://semanticbits.com/registration.xsd"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://semanticbits.com/registration.xsd file:/Users/joshua/dev/ew_caaers/c3prv2_codebase/projects/grid/RegistrationConsumer/schema/RegistrationConsumer/registration.xsd"
- healthCareSiteGridId="gridSite"   
- studyGridId="gridStudy"
-    >
-    <informedConsentFormSignedDate>2006-05-04</informedConsentFormSignedDate>
-    <enrollmentDate>2006-05-04</enrollmentDate>
-    <studyParticipantIdentifier>studyParticipantIdentifier0</studyParticipantIdentifier>
-    <eligibilityIndicator>false</eligibilityIndicator>
-    <participant participantGridId="gridParticipant">
-        <administrativeGenderCode>administrativeGenderCode0</administrativeGenderCode>
-        <birthDate>2006-05-04</birthDate>
-        <ethnicGroupCode>ethnicGroupCode0</ethnicGroupCode>
-        <firstName>firstName0</firstName>
-        <lastName>lastName0</lastName>
-        <maritalStatusCode>maritalStatusCode0</maritalStatusCode>
-        <raceCode>raceCode0</raceCode>
+
+<registration xmlns="gme://c3pr.cabig/2.0/edu.duke.cabig.c3pr.domain">
+
+<gridId>gridStudy</gridId>
+
+    <studyRef>
+
+        <shortTitleText>short_title_text</shortTitleText>
+
+        <longTitleText>long_title_text</longTitleText>
+
         <identifier>
-            <source>source0</source>
-            <type>type0</type>
-            <value>value0</value>
-            <isprimary>false</isprimary>
+
+            <type>local</type>
+
+            <value>nci</value>
+
+            <primaryIndicator>false</primaryIndicator>
+
         </identifier>
-        <identifier>
-            <source>source1</source>
-            <type>type1</type>
-            <value>value1</value>
-            <isprimary>false</isprimary>
-        </identifier>
-        <identifier>
-            <source>source2</source>
-            <type>type2</type>
-            <value>value2</value>
-            <isprimary>false</isprimary>
-        </identifier>
-        <address>
-            <city>city0</city>
-            <countryCode>countryCode0</countryCode>
-            <postalCode>postalCode0</postalCode>
-            <stateCode>stateCode0</stateCode>
-            <streetAddress>streetAddress0</streetAddress>
-        </address>
+
+    </studyRef>
+
+    <participant xmlns:ns1="gme://c3pr.cabig/2.0/edu.duke.cabig.c3pr.domain">
+
+       <ns1:gridId>gridParticipant</ns1:gridId>
+
+        <ns1:firstName>Rudolph</ns1:firstName>
+
+        <ns1:lastName>Clooney</ns1:lastName>
+
+        <ns1:address>
+
+            <ns1:streetAddress>12359 sunrise valley drive</ns1:streetAddress>
+
+            <ns1:city>Reston</ns1:city>
+
+            <ns1:stateCode>VA</ns1:stateCode>
+
+            <ns1:postalCode>20191</ns1:postalCode>
+
+            <ns1:countryCode>USA</ns1:countryCode>
+
+        </ns1:address>
+
+        <ns1:administrativeGenderCode>M</ns1:administrativeGenderCode>
+
+        <ns1:birthDate>0006-06-23</ns1:birthDate>
+
+        <ns1:raceCode>White</ns1:raceCode>
+
+        <ns1:identifier>
+
+            <type>MRN</type>
+
+            <value>nci</value>
+
+            <primaryIndicator>false</primaryIndicator>
+
+        </ns1:identifier>
+
     </participant>
-    <study>
-        <identifier>
-            <source>source3</source>
-            <type>type3</type>
-            <value>value3</value>
-            <isprimary>false</isprimary>
-        </identifier>
-        <identifier>
-            <source>source4</source>
-            <type>type4</type>
-            <value>value4</value>
-            <isprimary>false</isprimary>
-        </identifier>
-        <identifier>
-            <source>source5</source>
-            <type>type5</type>
-            <value>value5</value>
-            <isprimary>false</isprimary>
-        </identifier>
-    </study>
-    <identifier>
-        <source>source6</source>
-        <type>type6</type>
-        <value>value6</value>
-        <isprimary>false</isprimary>
-    </identifier>
-    <identifier>
-        <source>source7</source>
-        <type>type7</type>
-        <value>value7</value>
-        <isprimary>false</isprimary>
-    </identifier>
-    <identifier>
-        <source>source8</source>
-        <type>type8</type>
-        <value>value8</value>
-        <isprimary>false</isprimary>
-    </identifier>
+
+    <startDate>0006-06-23</startDate>
+
+    <informedConsentFormSignedDate>0006-06-23</informedConsentFormSignedDate>
+
+    <regDataEntryStatus>INCOMPLETE</regDataEntryStatus>
+
+    <regWorkflowStatus>INVALID</regWorkflowStatus>
+
+    <studySite gridId="gridSite">
+
+        <healthcareSite>
+
+            <name>duke healthcare</name>
+
+            <descriptionText>duke healthcare</descriptionText>
+
+            <address><streetAddress>12359 sunrise valley drive</streetAddress><city>Reston</city><stateCode>VA</stateCode><postalCode>20191</postalCode><countryCode>USA</countryCode></address>
+
+            <nciInstituteCode>code</nciInstituteCode>
+
+        </healthcareSite>
+
+        <irbApprovalDate>2007-09-19</irbApprovalDate>
+
+        <startDate>2007-09-19</startDate>
+
+    </studySite>
+
+    
+
 </registration>
+
