@@ -38,7 +38,7 @@
     </tr>
     <c:forEach items="${blocks}" var="block">
         <tr class="subhead">
-            <th colspan="${cols}"><c:if test="${not empty block.rows}"><tags:requiredIndicator /></c:if>${block.displayName}</th>
+            <th colspan="${cols}">${block.displayName}</th>
         </tr>
         <c:if test="${empty block.rows}">
         <td colspan="${cols}">No ${fn:toLowerCase(block.displayName)} for this report.</td>
