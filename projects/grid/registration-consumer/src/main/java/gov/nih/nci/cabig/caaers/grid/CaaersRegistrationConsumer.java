@@ -19,7 +19,6 @@ import gov.nih.nci.ccts.grid.IdentifierType;
 import gov.nih.nci.ccts.grid.ParticipantType;
 import gov.nih.nci.ccts.grid.Registration;
 import gov.nih.nci.ccts.grid.common.RegistrationConsumer;
-import gov.nih.nci.ccts.grid.stubs.service.RegistrationConsumerService;
 import gov.nih.nci.ccts.grid.stubs.types.InvalidRegistrationException;
 import gov.nih.nci.ccts.grid.stubs.types.RegistrationConsumptionException;
 
@@ -63,7 +62,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 
         //String registrationGridId = registration.getStudyParticipantIdentifier();
         String registrationGridId = registration.getGridId();
-
         StudyService svc = (StudyService) getApplicationContext().getBean(STUDY_SERVICE_BEAN_NAME);
         StudyParticipantAssignment assignment = svc.assignParticipant(study, participant, organization, registrationGridId);
         logger.debug("Created assignment " + assignment.getGridId());
