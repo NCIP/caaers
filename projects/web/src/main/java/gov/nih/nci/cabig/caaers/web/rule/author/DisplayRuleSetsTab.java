@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
@@ -89,4 +90,19 @@ public class DisplayRuleSetsTab extends DefaultTab
 		//CreateRuleCommand createRuleCommand = (CreateRuleCommand) command;
 		
 	}
-}
+	
+    @Override
+    public void validate(RuleInputCommand cmd, Errors errors) {    	
+
+	    CreateRuleCommand command = (CreateRuleCommand)cmd;
+	    if (command != null ) {	
+	    	String ruleSetName = command.getRuleSetName();
+
+	    	if (ruleSetName == null || (ruleSetName != null && ruleSetName.trim().equals(""))) 
+	    		{
+	    			errors.reject("Missing Rule Set","Missing Rule Set");
+	    		}
+	    }
+    }
+	    
+ }
