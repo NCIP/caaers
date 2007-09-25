@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
+import gov.nih.nci.cabig.caaers.rules.common.RuleLevel;
 
 /**
  * Represents the first tab while authoring Rules.
@@ -49,6 +50,41 @@ public class SelectRuleTypeTab extends DefaultTab
 		super.postProcess(arg0, arg1, arg2);
 		
 	}
-    
+
+    @Override
+    public void validate(RuleInputCommand cmd, Errors errors) {    	
+
+	    CreateRuleCommand command = (CreateRuleCommand)cmd;
+	    if (command != null ) {	
+	    	String level = command.getLevel();
+	    	if (level != null) {
+		    	if (level.equals(RuleLevel.Sponsor.getName())) {
+		    		if (command.getSponsorName().trim().equals("")) {
+		    			errors.reject("Missing Sponsor","Missing Sponsor");
+		    		}
+		    	} else if (level.equals(RuleLevel.SponsorDefinedStudy.getName())) {
+		    		if (command.getSponsorName().trim().equals("")) {
+		    			errors.reject("Missing Sponsor","Missing Sponsor");
+		    		}
+		    		if (command.getCategoryIdentifier().trim().equals("")) {
+		    			errors.reject("Missing Study","Missing Study");
+		    		}
+		    	} else if (level.equals(RuleLevel.Institution.getName())) {
+		    		System.out.println("inst:"+command.getInstitutionName()+":");
+		    		if (command.getInstitutionName().trim().equals("")) {
+		    			errors.reject("Missing Instiution","Missing Instiution");
+		    		}
+		    	}else if (level.equals(RuleLevel.InstitutionDefinedStudy.getName())) {
+		    		if (command.getInstitutionName().trim().equals("")) {
+		    			errors.reject("Missing Instiution","Missing Instiution");
+		    		}
+		    		if (command.getCategoryIdentifier().trim().equals("")) {
+		    			errors.reject("Missing Study","Missing Study");
+		    		}
+		    	}
+	    	}
+    	}
+	    
+    }
     
 }
