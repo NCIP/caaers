@@ -14,7 +14,7 @@ public enum ExpeditedReportSection {
 	LABS_SECTION("Labs"),
 	PRIOR_THERAPIES_SECTION("Therapies"),
 	PRE_EXISTING_CONDITION_SECTION( "Pre-Existing Conditions"),
-	CONCOMITANT_MEDICATION_SECTION("Concomitant medications"),
+	CONCOMITANT_MEDICATION_SECTION("Conmeds"),
 	OTHER_CAUSE_SECTION("Other contributing causes"),
 	ATTRIBUTION_SECTION("Attribution"),
 	ADDITIONAL_INFO_SECTION("Additional Information"),
