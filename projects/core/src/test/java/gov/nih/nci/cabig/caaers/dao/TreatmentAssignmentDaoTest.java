@@ -12,7 +12,7 @@ public class TreatmentAssignmentDaoTest extends DaoTestCase<TreatmentAssignmentD
 		assertNotNull("There should be TreatmentAssignments", tas);
 		assertEquals("Incorrect treatment assignment count", 3, tas.size());
 		TreatmentAssignment ta = tas.get(1);
-		assertEquals("The treatment assignment code is different", "TAC-12345",ta.getCode());
+		assertTrue("The treatment assignment code is different", ta.getCode().contains("123"));
 
 		tas = getDao().getAssignmentsByStudyId("12345", -2);
 		assertNotNull("There should be TreatmentAssignments", tas);
