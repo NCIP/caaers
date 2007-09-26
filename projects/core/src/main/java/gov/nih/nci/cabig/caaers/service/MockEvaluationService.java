@@ -77,7 +77,13 @@ public class MockEvaluationService implements EvaluationService {
     	// TODO Auto-generated method stub
 
     }
-    
+
+    public List<ReportDefinition> findRequiredReportDefinitions(
+    		ExpeditedAdverseEventReport expeditedData) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
+
     public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
     	return new ArrayList<String>();
     }
@@ -89,6 +95,11 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
+
+    public ErrorMessages isSubmitable(Report report) {
     	// TODO Auto-generated method stub
     	return null;
     }

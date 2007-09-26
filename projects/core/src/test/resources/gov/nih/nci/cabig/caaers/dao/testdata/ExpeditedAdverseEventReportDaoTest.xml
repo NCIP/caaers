@@ -349,4 +349,6 @@
 	<PLANNED_NOTIFICATIONS />
 	<investigational_new_drugs />    
     <ind_holders />
+    <study_amendments />
+    <study_therapy />
 </dataset>

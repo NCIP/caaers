@@ -238,4 +238,10 @@
         
     <!--  referenced tables -->   
     <ae_labs />    
+    <participant_histories />
+   
+    <treatment_assignment />
+    <ae_report_people />
+     <contact_mechanisms />
+     <study_amendments />
 </dataset>

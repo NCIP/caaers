@@ -18,8 +18,23 @@ public interface EvaluationService {
      *  study, site, and participant
      */
     boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent);
-    
-    
+
+    /**
+     * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
+     * ErrorMessages will be empty
+     * @param report - {@link Report}
+     * @return {@link ErrorMessages}
+     */
+    //return type based on the method name, is misleading,need to find a better name.
+    public ErrorMessages isSubmitable(Report report);
+
+    /**
+     * Will return the ReportDefinition that are marked required at rules engine.
+     *
+     * @param expeditedData - The expedited adverse event report
+     * @return - A list of {@link ReportDefinition} objects.
+     */
+    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData);
 
     /**
      * Evaluates the provided data and associates new {@link Report}
@@ -44,20 +59,21 @@ public interface EvaluationService {
      */
     void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs);
 
-    
+
     /**
-     * 
+     *
      * @param expeditedData
      * @return All the mandatory sections for a given expedited report.
      */
     List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData);
-    
+
     /**
      * @return All the report definitions which might apply to the given
      *  study, site, and participant
      */
     // TODO: it might more sense for this to go in ReportService
     List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment);
+
 
 
 }

@@ -48,8 +48,6 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -94,22 +92,30 @@ public class ReportServiceImpl  implements ReportService {
     // package-level for testing
     String findContactMechanismValue(
         String role, String mechanismType, ExpeditedAdverseEventReport aeReport) {
-		// TODO : do runtime expression evaluation using roleEntityMapping.
-        // TODO: these role names should be defined as constants somewhere
-        if (StringUtils.equals("Reporter", role)) {
-            return aeReport.getReporter().getContactMechanisms().get(mechanismType);
-        } else if (StringUtils.equals("Site Study PI", role)) {
+    	 String address = null;
+    	if(StringUtils.equals("REP", role)){//Reporter
+    		address = aeReport.getReporter().getContactMechanisms().get(mechanismType);
+    	}else if(StringUtils.equals(role, "SUB")){//Submitter
+    		address = aeReport.getReports().get(0).getLastVersion().getSubmitter().getContactMechanisms().get(mechanismType);
+    	}else if(StringUtils.equals(role, "SPI")){//Site Principal Investigator
 
-        } else if (StringUtils.equals("Study Chair", role)) {
+    	}else if(StringUtils.equals(role, "SI")){//Site Investigator
 
-        } else if (StringUtils.equals("Treating Physician", role)) {
-            return aeReport.getPhysician().getContactMechanisms().get(mechanismType);
-        } else if (StringUtils.equals("Sponsor", role)) {
 
-        } else if (StringUtils.equals("IRB", role)) {
+    	}else if(StringUtils.equals(role, "PI")){//Principal Investigator
 
-        }
-        return null;
+
+    	}else if(StringUtils.equals(role, "PC")){//Participant Coordinator
+
+
+    	}else if(StringUtils.equals(role, "SC")){//Study Coordinator
+
+
+    	}else if(StringUtils.equals(role, "AEC")){//Adverse Event Coordinator
+
+    	}
+    	return address;
+
 	}
 
 
@@ -168,7 +174,7 @@ public class ReportServiceImpl  implements ReportService {
 
         Report report = repDef.createReport();
         report.setCreatedOn(now);
-        
+
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(now);
         reportVersion.setReportStatus(ReportStatus.PENDING);
@@ -185,18 +191,20 @@ public class ReportServiceImpl  implements ReportService {
 
         //populate the delivery definitions
         if (repDef.getDeliveryDefinitions() != null) {
+        	String endPoint = null;
             for (ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()) {
-                ReportDelivery rd = rdd.createReportDelivery();
-                //fetch the contact mechanism for role based entities.
-                if (rdd.getEntityType() == rdd.ENTITY_TYPE_ROLE) {
-                    rd.setEndPoint(findContactMechanismValue(
-                    		rdd.getEndPoint(),
-                    		rdd.getEndPointType(),
-                    		aeReport));
-                } else {
-                    rd.setEndPoint(rdd.getEndPoint());
-                }
-                report.addReportDelivery(rd);
+             //fetch the contact mechanism for role based entities.
+             endPoint = (rdd.getEntityType() != rdd.ENTITY_TYPE_ROLE)?
+            		rdd.getEndPoint() :
+            		findContactMechanismValue(rdd.getEndPoint(),
+                   		rdd.getEndPointType(),
+                   		aeReport);
+             if(StringUtils.isNotEmpty(endPoint)){
+               	ReportDelivery rd = rdd.createReportDelivery();
+               	rd.setEndPoint(endPoint);
+               	report.addReportDelivery(rd);
+             }
+
             }//~for rdd
         }//~if
 
@@ -268,15 +276,20 @@ public class ReportServiceImpl  implements ReportService {
    /**
 	 * Will test if the mandatory field is empty. If found empty, then will populate the error details in
 	 * the <code>messages</code> object.
-	 * @param bean - The bean to validate
+	 * @param aeReport - The bean to validate
 	 * @param mandatoryMap - A map, with property name as key and associated boolean
 	 * value will tell if the field is mandatory
 	 * @param node - The node, based on which the evaluation is to be performed.
-	 * @param messages - An error message object
 	 */
+	public ErrorMessages validate(ExpeditedAdverseEventReport aeReport,TreeNode node,Map<String, Boolean> mandatoryMap){
+		ErrorMessages messages = new ErrorMessages();
+		validate(aeReport,mandatoryMap, node, messages);
+		return messages;
+	}
+
 	@SuppressWarnings("unchecked")
-    public void validate(
-       BeanWrapper bean, Map<String, Boolean> mandatoryMap, TreeNode node,
+    private void validate(
+       ExpeditedAdverseEventReport aeReport, Map<String, Boolean> mandatoryMap, TreeNode node,
        ErrorMessages messages
    ) {
        List<String> mandatoryProperties = new LinkedList<String>();
@@ -286,7 +299,7 @@ public class ReportServiceImpl  implements ReportService {
            if (e.getValue()) mandatoryProperties.add(e.getKey());
        }
        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(
-           mandatoryProperties, (ExpeditedAdverseEventReport) bean.getWrappedInstance());
+           mandatoryProperties, aeReport);
        for (UnsatisfiedProperty uProp : unsatisfied) {
            messages.addErrorMessage(uProp.getTreeNode().getDisplayName(),
                uProp.getBeanPropertyName());
@@ -300,37 +313,28 @@ public class ReportServiceImpl  implements ReportService {
     * @return ErrorMessages
     */
 
-	public ErrorMessages isSubmitable(ExpeditedAdverseEventReport aeReport, List<String> mandatorySectionNames) {
+	public ErrorMessages validate(Report report, List<String> mandatorySectionNames) {
 		//TODO: should validate against complex rules
 
 		ErrorMessages messages = new ErrorMessages();
-		BeanWrapper wrappedAEReport = new BeanWrapperImpl(aeReport);
-
-		Map<String, Boolean> mandatoryFieldMap = fetchMandatoryFieldMap(aeReport);
+		Map<String, Boolean> mandatoryFieldMap = fetchMandatoryFieldMap(report);
 
 		for(TreeNode node : expeditedReportTree.getChildren()){
 			if(mandatorySectionNames.contains(node.getDisplayName())){
-				validate(wrappedAEReport, mandatoryFieldMap, node, messages);
+				validate(report.getAeReport(), mandatoryFieldMap, node, messages);
 			}
 		}
 		return messages;
 	}
 
-	/**
-	 * Will return the summate of mandatory fields associated to each ReportDefinition associated
-	 * to this ExpeditedAdverseEventReport.
-	 */
-	public Map<String, Boolean> fetchMandatoryFieldMap(ExpeditedAdverseEventReport aeReport) {
-		Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
-		if(CollectionUtils.isNotEmpty(aeReport.getReports())){
-			for(Report report : aeReport.getReports()){
-	    		if(report.getReportDefinition().getMandatoryFields() == null) continue;
-	    		for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
-	    			mandatoryFieldMap.put(field.getFieldPath(), field.getMandatory());
-	    		}
-	    	}
+	private Map<String , Boolean> fetchMandatoryFieldMap(Report report){
+		Map<String, Boolean> map = new HashMap<String, Boolean>();
+		if(report.getReportDefinition().getMandatoryFields() != null){
+			for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
+				map.put(field.getFieldPath(), field.getMandatory());
+			}
 		}
-		return mandatoryFieldMap;
+		return map;
 	}
 	
 	@Transient
