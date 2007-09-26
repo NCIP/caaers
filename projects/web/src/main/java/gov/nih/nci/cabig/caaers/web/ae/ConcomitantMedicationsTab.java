@@ -21,7 +21,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class ConcomitantMedicationsTab extends AeTab {
 
     public ConcomitantMedicationsTab() {
-        super("Concomitant medications", "Concomitant Medications", "ae/conMed");
+        super("Concomitant medications", "Conmeds", "ae/conMed");
     }
 
     @Override
