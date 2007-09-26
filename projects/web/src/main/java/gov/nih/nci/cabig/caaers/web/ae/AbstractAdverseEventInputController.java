@@ -54,6 +54,7 @@ public abstract class AbstractAdverseEventInputController
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
     private static final int SUBMISSION_PAGE = 16;
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
+    private static final String MANDATORY_TAB_KEY = "MANDATORY_TABS";
     private final Log log = LogFactory.getLog(getClass());
 
     protected ParticipantDao participantDao;
@@ -140,14 +141,19 @@ public abstract class AbstractAdverseEventInputController
     	ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand) oCommand;
         Map<String, Object> refdata = super.referenceData(request, cmd, errors, page);
         StringBuffer sb = new StringBuffer("notab");
+        StringBuffer sbSections = new StringBuffer();
         for(Tab<ExpeditedAdverseEventInputCommand> tab  : getFlow(cmd).getTabs()){
         	if(tab instanceof AeTab){
         		AeTab aeTab = (AeTab) tab;
-        		if(aeTab.isMandatory(cmd) && aeTab.hasEmptyMandatoryFields(cmd)){
-        			sb.append(",").append(tab.getShortTitle());
+        		if(aeTab.isMandatory(cmd)){
+        			sbSections.append(",").append(tab.getShortTitle());
+        			if(aeTab.hasEmptyMandatoryFields(cmd)){
+            			sb.append(",").append(tab.getShortTitle());
+            		}	
         		}
         	}
         }
+        refdata.put(MANDATORY_TAB_KEY, sbSections.toString());
         refdata.put(UNFILLED_TAB_KEY, sb.toString());
         if (displaySummary(page)) {
             refdata.put("summary", cmd.getAeReport().getSummary());
