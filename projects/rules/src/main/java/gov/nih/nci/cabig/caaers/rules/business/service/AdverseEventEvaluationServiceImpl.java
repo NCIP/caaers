@@ -19,10 +19,14 @@ import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 import gov.nih.nci.cabig.caaers.service.MockEvaluationService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jcr.PathNotFoundException;
 
@@ -38,8 +42,8 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 	public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
 	public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
 	private static final Log log = LogFactory.getLog(AdverseEventEvaluationServiceImpl.class);
-	
-	   
+
+
 
 
 
@@ -79,8 +83,6 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception {
 
 	Map<String,List<String>> map = new HashMap<String,List<String>>();
-
-
 
 	List<AdverseEvent> aes = aeReport.getAdverseEvents();
 	List<String> reportDefinitionsForSponsor = new ArrayList<String>();
@@ -132,57 +134,44 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 	return map;
 }
 
+public List<String> mandatorySectionsForReport(Report report) throws Exception{
+	List<AdverseEvent> adverseEvents = report.getAeReport().getAdverseEvents();
+	Study study = report.getAeReport().getStudy();
+	ReportDefinition reportDefinition = report.getReportDefinition();
+	Set<String> sections = new HashSet<String>();
+	String strSections = null;
+	String[] sectionNames = null;
+
+	//for every AE evaluate, sponsor & organization level rules
+	for(AdverseEvent ae : adverseEvents){
+
+		//evaluate sponsor level rules
+		strSections = evaluateSponsorTarget(ae,study,reportDefinition,RuleType.MANDATORY_SECTIONS_RULES.getName());
+		if(!strSections.equals(CAN_NOT_DETERMINED)){
+			sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections,"\\|\\|");
+			sections.addAll(Arrays.asList(sectionNames));
+		}
+
+		//evaluate organization level rules
+		for(StudyOrganization so : study.getStudyOrganizations()){
+			strSections = evaluateInstitutionTarget(ae,study,so.getOrganization(), reportDefinition,RuleType.MANDATORY_SECTIONS_RULES.getName());
+			if(!strSections.equals(CAN_NOT_DETERMINED)){
+				sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections,"\\|\\|");
+				sections.addAll(Arrays.asList(sectionNames));
+			}
+		}
+
+	}
+	return new ArrayList<String>(sections);
+}
 
 public List<String> mandatorySections(ExpeditedAdverseEventReport aeReport) throws Exception{
+	Set<String> sections = new HashSet<String>();
 
-	List<AdverseEvent> aes = aeReport.getAdverseEvents();
-	List<String> mandatorySections = new ArrayList<String>();
-
-	for(AdverseEvent ae : aes )
-	{
-		for(Report report : aeReport.getReports() ) {
-			String message = evaluateSponsorTarget(ae,aeReport.getStudy(),report.getReportDefinition(),RuleType.MANDATORY_SECTIONS_RULES.getName());
-
-			if (!message.equals(CAN_NOT_DETERMINED)) {
-
-				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-				for (int i=0;i<messages.length;i++) {
-					if (!mandatorySections.contains(messages[i])) {
-						mandatorySections.add(messages[i]);
-					}
-				}
-
-			}
-		}
-
+	for(Report report : aeReport.getReports() ) {
+		sections.addAll(mandatorySectionsForReport(report));
 	}
-
-	for(StudyOrganization so : aeReport.getStudy().getStudyOrganizations() )
-	{
-		for(AdverseEvent ae : aes )
-		{
-			for(Report report : aeReport.getReports() ) {
-				String message = evaluateInstitutionTarget(ae,aeReport.getStudy(),so.getOrganization(), report.getReportDefinition(),RuleType.MANDATORY_SECTIONS_RULES.getName());
-
-				if (!message.equals(CAN_NOT_DETERMINED)) {
-
-					String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-					for (int i=0;i<messages.length;i++) {
-						if (!mandatorySections.contains(messages[i])) {
-							mandatorySections.add(messages[i]);
-						}
-					}
-
-				}
-			}
-
-		}
-
-	}
-
-	return mandatorySections;
+	return new ArrayList<String>(sections);
 }
 
 /**
@@ -424,9 +413,9 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
 
 		} catch(Exception ex){
-			
+
 			log.error("Unable to fire the rule : " + bindURI );
-			log.error("Rule might have been be un deployed  , please look at the exception . " , ex); 
+			log.error("Rule might have been be un deployed  , please look at the exception . " , ex);
 
 			/**
 			 * Don't do anything, it means there are no rules for this package

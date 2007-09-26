@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 
@@ -52,6 +53,28 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
         return isSevere;
+    }
+
+    /**
+     * The report definitions that are marked as mandatory at rules engine.
+     * @param expeditedData - The {@link ExpeditedAdverseEventReport}
+     * @return - The list of {@link ReportDefinition} objects, that are associated to this report.
+     */
+    public List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData){
+    	Map<String,List<String>> map;
+    	List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+    	try {
+            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
+        } catch (Exception e) {
+            throw new CaaersSystemException("Could not determine the reports necessary for the given expedited adverse event data", e);
+        }
+        for(List<String> nameList : map.values()){
+        	for(String name : nameList){
+        		ReportDefinition reportDefinition = reportDefinitionDao.getByName(name);
+        		defList.add(reportDefinition);
+        	}
+        }
+        return defList;
     }
 
     /**
@@ -182,6 +205,24 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         return sections;
     }
+
+   /**
+    * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
+    * ErrorMessages will be empty
+    * @param report - {@link Report}
+    * @return {@link ErrorMessages}
+    */
+    //return type based on the method name, is misleading,need to find a better name.
+    public ErrorMessages isSubmitable(Report report) {
+    	try {
+			List<String> mandatorySections = adverseEventEvaluationService.mandatorySectionsForReport(report);
+			return reportService.validate(report, mandatorySections);
+		} catch (Exception e) {
+			log.warn("Unable to evalute mandatory sections", e);
+		}
+		return new ErrorMessages();
+    }
+
      ////// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
@@ -200,5 +241,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+	public void setAdverseEventEvaluationService(
+			AdverseEventEvaluationService adverseEventEvaluationService) {
+		this.adverseEventEvaluationService = adverseEventEvaluationService;
+	}
+	public AdverseEventEvaluationService getAdverseEventEvaluationService() {
+		return adverseEventEvaluationService;
 	}
 }
