@@ -13,9 +13,6 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
 /**
  * @author Rhett Sutphin
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
@@ -39,8 +36,6 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 	   populateMandatoryFlag(fieldGroups, command, refData);
 	   return refData;
    }
-
-
 
    /**
     * Will populate the mandatory flag.
@@ -103,11 +98,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	Map<String, Boolean> mandatoryFields = command.getMandatoryFieldMap();
     	if(mandatoryFields.isEmpty()) return false;
 
-    	BeanWrapper wrappedCommand = new BeanWrapperImpl(command.getAeReport());
-    	ErrorMessages messages = new ErrorMessages();
+    	ErrorMessages messages = null;
     	TreeNode node = expeditedReportTree.getNodeForSection(section());
     	if(node == null) return false;
-    	reportService.validate(wrappedCommand, mandatoryFields, node, messages);
+    	messages = reportService.validate(command.getAeReport(),node, mandatoryFields);
 
     	return messages.hasErrors();
     }
