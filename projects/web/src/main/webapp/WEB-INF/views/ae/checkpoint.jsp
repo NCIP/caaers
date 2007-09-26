@@ -69,8 +69,9 @@
         	<br />
             Every report you select has a minimum set of fields which the target agency needs
             you to provide.  Once you pass this page, all those fields will be tagged with
-            <ae:requiredToSubmit/>.  The tabs along the top of the flow will be similarly
-            tagged if they are missing fields that are required for submission.
+            <tags:requiredIndicator />.  The tabs along the top of the flow will be similarly
+            tagged with <tags:requiredIndicator /> if they are mandatory and <ae:requiredToSubmit />, 
+            when there are unfilled fields that are required for submission.
         </p>
 
     </jsp:attribute>
