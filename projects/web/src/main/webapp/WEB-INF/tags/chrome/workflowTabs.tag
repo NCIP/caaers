@@ -5,7 +5,7 @@
 <%@attribute name="flow" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" required="true" %>
 <ul id="workflow-tabs" class="tabs autoclear">
 <c:set var="unfilledTabs">${UNFILLED_TABS}</c:set>
-<c:set var="mandatoryTabs">${UNFILLED_TABS}</c:set>
+<c:set var="mandatoryTabs">${MANDATORY_TABS}</c:set>
 <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
     <c:set var="selected" value="${atab.number == tab.number}"/>
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}"><div>
