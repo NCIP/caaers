@@ -3,29 +3,29 @@
  */
 package gov.nih.nci.cabig.caaers.grid;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.reportMatcher;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.api.StudyService;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer;
-import gov.nih.nci.ccts.grid.*;
-import gov.nih.nci.ccts.grid.common.RegistrationConsumer;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cagrid.common.Utils;
-import static org.easymock.EasyMock.expect;
-
-import org.easymock.EasyMock;
-import org.easymock.IArgumentMatcher;
-import static org.easymock.classextension.EasyMock.*;
-import org.globus.wsrf.encoding.DeserializationException;
-import org.springframework.context.ApplicationContext;
-import org.xml.sax.SAXException;
+import gov.nih.nci.ccts.grid.Registration;
+import gov.nih.nci.ccts.grid.client.RegistrationConsumerClient;
+import gov.nih.nci.ccts.grid.common.RegistrationConsumer;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import org.easymock.IArgumentMatcher;
+import org.globus.wsrf.encoding.DeserializationException;
+import org.springframework.context.ApplicationContext;
+import org.xml.sax.SAXException;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
@@ -48,7 +48,8 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
         this.registrationResourceName = System.getProperty("caaers.test.sampleRegistrationFile",
             "/SampleRegistrationMessage.xml");
         this.serviceUrl = System.getProperty("caaers.test.serviceUrl",
-            "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer");
+           // "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer");
+        	"http://10.10.10.2:8015/wsrf/services/cagrid/RegistrationConsumer");
 
         applicationContext = registerMockFor(ApplicationContext.class);
         consumer = new CaaersRegistrationConsumer() {
@@ -119,8 +120,10 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
 
     /*
      * TODO: this test needs to be able to run in isolation (i.e., w/o another server) somehow.
-    public void testCreateRegistrationRemote() {
-        RegistrationType reg = getRegistration();
+     */
+    
+    public void testCreateRegistrationRemote() throws DeserializationException, SAXException {
+        Registration reg = getRegistration();
         try {
             RegistrationConsumerClient client = new RegistrationConsumerClient(this.serviceUrl);
             client.register(reg);
@@ -129,7 +132,7 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
             fail("Error making call: " + ex.getMessage());
         }
     }
-    */
+    
 
     private Registration getRegistration() throws DeserializationException, SAXException {
     	Registration reg = null;
