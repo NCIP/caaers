@@ -89,13 +89,13 @@ public interface RulesEngineService {
 	 *
 	 */
 	
-	public String createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName) throws Exception;
+	public String createRuleForSponsor(Rule rule, String ruleSetName,String sponsorName, String subject,String state) throws Exception;
 	
-	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception;
+	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName, String subject,String state) throws Exception;
 	
-	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
+	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName, String subject,String state) throws Exception;
 	
-	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName) throws Exception;
+	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName, String subject,String state) throws Exception;
 	
 	/*
 	 * REVISIT: Add 3 more methods similar to the above methods that take RuleSet as the input parameter

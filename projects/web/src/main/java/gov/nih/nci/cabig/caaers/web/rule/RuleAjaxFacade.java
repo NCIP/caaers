@@ -379,12 +379,22 @@ public class RuleAjaxFacade
     	{
     		//A hack... for the first time this exception will be there...ignore...
     	}
-    	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
     	
-    	RepositoryService repositoryService =  (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
-    	PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
-    	item.updateCoverage("Enabled");
-    	repositoryService.getRulesRepository().save();
+    	try 
+    	{
+        	getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+        	
+        	RepositoryService repositoryService =  (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
+        	PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
+        	item.updateCoverage("Enabled");
+        	repositoryService.getRulesRepository().save();
+    	} 
+    	catch (Exception e) 
+    	{
+    		e.printStackTrace();
+    		throw new RemoteException("Error deploying ruleset",e);
+    	}
+
 
     	
     	//rs.setCoverage("Deployed");

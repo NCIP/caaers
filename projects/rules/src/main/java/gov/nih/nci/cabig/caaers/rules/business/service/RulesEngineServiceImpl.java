@@ -53,16 +53,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	}
 	
 
-	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName) throws Exception {
+	public String createRuleForInstitution(Rule rule, String ruleSetName, String institutionName, String subject,String state) throws Exception {
 		// TODO Auto-generated method stub
 		
 
 		RuleSet ruleSet = this.getRuleSetForInstitution(ruleSetName, institutionName);
-		/*
+		
 		if(ruleSet==null){
-			this.createRuleSetForInstitution(ruleSetName, institutionName);
+			this.createRuleSetForInstitution(ruleSetName, institutionName, subject, state);
 		}
-		*/
+		
 		String uuid = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		Category category = RuleUtil.getInstitutionSpecificCategory(ruleAuthoringService, institutionName, ruleSetName);
@@ -85,16 +85,16 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return uuid;
 	}
 
-	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName) throws Exception {
+	public String createRuleForSponsor(Rule rule, String ruleSetName, String sponsorName, String subject,String state) throws Exception {
 		// TODO Auto-generated method stub
 		
 
 		RuleSet ruleSet = this.getRuleSetForSponsor(ruleSetName, sponsorName);
-		/*
+
 		if(ruleSet==null){
-			this.createRuleSetForSponsor(ruleSetName, sponsorName, "");
+			this.createRuleSetForSponsor(ruleSetName, sponsorName,subject, state);
 		}
-		*/
+
 		String uuid= null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		Category category = RuleUtil.getSponsorSpecificCategory(ruleAuthoringService, sponsorName, ruleSetName);
@@ -120,15 +120,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return uuid;
 	}
 
-	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
+	public String createRuleForSponsorDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String sponsorName, String subject,String state) throws Exception {
 		// TODO Auto-generated method stub
 
 		RuleSet ruleSet = this.getRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
-		/*
+		
 		if(ruleSet==null){
-			this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName);
+			this.createRuleSetForSponsorDefinedStudy(ruleSetName, studyShortTitle, sponsorName, subject, state);
 		}
-		*/
+		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		Category category = RuleUtil.getStudySponsorSpecificCategory(ruleAuthoringService, sponsorName, studyShortTitle, ruleSetName);
@@ -151,15 +151,15 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		
 	}
 
-	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName) throws Exception {
+	public String createRuleForInstitutionDefinedStudy(Rule rule, String ruleSetName, String studyShortTitle, String institutionName, String subject,String state) throws Exception {
 		// TODO Auto-generated method stub
 
 		RuleSet ruleSet = this.getRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
-		/*
+		
 		if(ruleSet==null){
-			this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName);
+			this.createRuleSetForInstitutionDefinedStudy(ruleSetName, studyShortTitle, institutionName, subject, state);
 		}
-		*/
+		
 		
 		String uuid = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
@@ -579,7 +579,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
 			if(rule.getId()==null){
-			this.createRuleForInstitution(rule, ruleSetName, institutionName);
+			this.createRuleForInstitution(rule, ruleSetName, institutionName, subject, state);
 			}else{
 				this.updateRule(rule);
 			}
@@ -608,7 +608,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
 			if(rule.getId()==null){
-				this.createRuleForSponsor(rule, ruleSetName, sponsorName);
+				this.createRuleForSponsor(rule, ruleSetName, sponsorName,subject, state);
 			}else{
 				this.updateRule(rule);
 			}
@@ -634,7 +634,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
 			if(rule.getId()==null){
-			this.createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName);
+			this.createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName,subject, state);
 			}else{
 				this.updateRule(rule);
 			}
@@ -660,7 +660,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		List<Rule> rules = ruleSet.getRule();
 		for(Rule rule: rules){
 			if(rule.getId()==null){
-			this.createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName);
+			this.createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName, subject, state);
 			}else{
 				this.updateRule(rule);
 			}
@@ -778,16 +778,19 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		int i=0;
 		String ruleSetName = ruleSet.getDescription();
 		Iterator<Rule> it = rules.iterator();
+		String subject = ruleSet.getSubject();
+		String state = ruleSet.getCoverage();
 		
 		if((catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())==-1)&&(catPath.indexOf(CategoryConfiguration.SPONSOR_BASE.getName())!=-1)){
 			// this is sponsor level rules
 			i= catPath.lastIndexOf("/");
 			String sponsorName = catPath.substring(i+1,catPath.length());
+
 			
 			while(it.hasNext()){
 				Rule rule = it.next();
 				rule.setId("");
-				createRuleForSponsor(rule, ruleSetName, sponsorName);
+				createRuleForSponsor(rule, ruleSetName, sponsorName, subject, state);
 			}
 		}
 		
@@ -799,11 +802,12 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			String stringMinusSponsorName = catPath.substring(0,i);
 			i= stringMinusSponsorName.lastIndexOf("/");
 			String studyShortTitle = stringMinusSponsorName.substring(i+1,stringMinusSponsorName.length());
+
 			
 			while(it.hasNext()){
 				Rule rule = it.next();
 				rule.setId("");
-				createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName);
+				createRuleForSponsorDefinedStudy(rule, ruleSetName, studyShortTitle, sponsorName, subject, state);
 			}
 		}
 		if((catPath.indexOf(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getName())==-1)&&(catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName())!=-1)){
@@ -814,7 +818,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			while(it.hasNext()){
 				Rule rule = it.next();
 				rule.setId("");
-				createRuleForInstitution(rule, ruleSetName, institutionName);
+				createRuleForInstitution(rule, ruleSetName, institutionName, subject, state);
 			}
 		}
 		if(catPath.indexOf(CategoryConfiguration.INSTITUTION_BASE.getName())!=-1){
@@ -828,7 +832,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			while(it.hasNext()){
 				Rule rule = it.next();
 				rule.setId("");
-				createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName);
+				createRuleForInstitutionDefinedStudy(rule, ruleSetName, studyShortTitle, institutionName, subject, state);
 			}
 		}
 		
