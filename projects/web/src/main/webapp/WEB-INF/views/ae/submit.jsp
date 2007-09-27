@@ -2,8 +2,10 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>${tab.longTitle}</title>
@@ -37,6 +39,7 @@
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
     				<th scope="col" align="left"><b>Report Id</b> </th>
+    				<th scope="col" align="left"><b>Report version</b> </th>
     				<th scope="col" align="left"><b>Data complete</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
@@ -45,6 +48,7 @@
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
+            		<td><div class="label">v${fn:length(report.reportVersions)}</div></td>
             		<td><i>Not Implemented</i></td>
             		<td>
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >

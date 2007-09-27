@@ -124,21 +124,6 @@
     	</chrome:division>
     	
         <chrome:division title="Reporter & Physician details">
-        	<%--
-            <div class="row">
-                <div class="label">Research staff</div>
-                <div class="value">
-                    <select id="staff" name="staff">
-                        <option value=-1>please select--</option>
-                        <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
-                            <option value="${person.id}">
-                                ${person.firstName} ${person.lastName}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
-            </div>
-            --%>
             <c:forEach begin="0" end="1" varStatus="status">
             	<c:if test="${status.first}">
             		<c:set var="reporter" value="${command.aeReport.reporter}"/>
@@ -149,7 +134,7 @@
 					<c:set var="reporterType" value="Physician"/>
    				</c:if>
             	<div class="row">
-					<div class="label">${reporterType}</div><br>
+					<div class="label">${reporterType}</div>
 			
 					<div class="value">
             			<span id="aeReport.${reporterType}.firstName"><c:out value="${reporter.firstName}"/></span>
@@ -161,13 +146,6 @@
             		</div>
             	</div>
             </c:forEach>	
-            
-            <%--
-            <c:forEach items="${fieldGroups['reporter'].fields}" var="field">
-             <tags:renderRow field="${field}"/>
-                <c:out value="${field.propertyName}"/>
-            </c:forEach>
-            --%>
         </chrome:division>
 
         <chrome:division title="Submitter details">
@@ -175,13 +153,13 @@
                 <div class="value">
                     <label>
                         <input type="checkbox" id="reporter_same_as_submitter" name="reporter_same_as_submitter" />&nbsp;
-                        	If the Submitter is the same as the Reporter click here
+                        	If the Submitter same as Reporter
                     </label>
                 </div>
                 <div class="value">
                     <label>
                         <input type="checkbox" id="physician_same_as_submitter" name="physician_same_as_submitter" />&nbsp;
-                        	If the Submitter is the same as the Physician click here
+                        	If the Submitter same as Physician
                     </label>
                 </div>
             </div>

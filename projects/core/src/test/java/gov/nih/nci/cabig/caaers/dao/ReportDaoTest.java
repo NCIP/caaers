@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -20,6 +21,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,19 +66,18 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 
 		Report rs = new Report();
 		rs.setAeReport(null);
-	//	rs.setName("My Sample Report");
+		//rs.setName("My Sample Report");
 		rs.setCreatedOn(new Date());
 		rs.setDueOn(new Date());
 		rs.setSubmittedOn(new Date());
 		rs.setGridId("ADEDR99393939");
+		Fixtures.createReportVersion(rs);
 		//add deliveries.
 
 		rsDao.save(rs);
-		Integer id = rs.getId();
 
-		log.debug("Report ID: [" + id + ']');
-
-        // TODO: this has no assertions
+		assertNotNull("report id is null",rs.getId());
+		assertNotNull("report version id is null",rs.getReportVersions().get(0).getId());
     }
 
 

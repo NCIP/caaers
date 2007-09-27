@@ -92,9 +92,9 @@
 		<thead>
 		<tr align="center" class="label">
 			<td class="tableHeader"></td>
-			<td class="tableHeader">Term</td>				
-			<td class="tableHeader">Start date </td>
-			<td class="tableHeader">Primary AE grade</td>
+			<td class="tableHeader">Term</td>		
+			<td class="tableHeader">AE grade</td>
+			<td class="tableHeader">Primary AE start date</td>
 			<td class="tableHeader">Actions</td>
 		</tr>
 		</thead>
@@ -128,20 +128,38 @@
 						<img id="image-open-${statusReport.index }" src="<c:url value="/images/b-plus.gif"/>" border="0" alt="expand">
 					</c:if>
 			</td>
-			<td>
+			<td align="left">
 					<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
-            			<c:choose>
-                			<c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
-                    			<c:forEach items="${report.adverseEvents}" var="adverseEvent">
-                					${adverseEvent.adverseEventTerm.universalTerm}<br />
-                
+            			
+                    			<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="termStatus">
+                    				<c:choose>
+									<c:when test="${termStatus.index == 0}">
+										*${adverseEvent.adverseEventTerm.universalTerm}<br />
+									</c:when>
+									<c:otherwise>
+										${adverseEvent.adverseEventTerm.universalTerm}<br />
+									</c:otherwise>
+									</c:choose>
     							</c:forEach>
-                			</c:when> 
-            			</c:choose>
+                		
             		</a>
 			</td>
+			<td width="10%">
+				<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="gradeStatus">
+					<c:choose>
+					<c:when test="${gradeStatus.index == 0}">
+						*<c:out value="${adverseEvent.grade.code}" /><br />
+					</c:when>
+					<c:otherwise>
+						<c:out value="${adverseEvent.grade.code}" /><br />
+					</c:otherwise>
+					</c:choose>
+                	
+    			</c:forEach>
+				
+			</td>
 			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
-			<td width="10%"><c:out value="${report.adverseEvents[0].grade.code}" /></td>
+			
 			<td>
 					<c:if test="${report.notificationMessagePossible}">
                 		<span class="notify-unit" id="notify-unit-${report.id}">
@@ -162,6 +180,7 @@
 						<tr>
 							<td class="tableHeader">Report</td>
 							<td class="tableHeader">Report Id</td>
+							<td class="tableHeader">Report version</td>
 							<td class="tableHeader">Data complete</td>
 							<td class="tableHeader">Status</td>
 							<td class="tableHeader">Actions</td>
@@ -175,7 +194,8 @@
 									>
 								<td width="20%">${theReport.reportDefinition.name}</td>
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
-								<td width="30%"><i>Not Implemented</i></td>
+								<td width="20%">v${fn:length(theReport.reportVersions)}</td>
+								<td width="10%"><i>Not Implemented</i></td>
 								<td width="20%" id="status${theReport.id}">
 									<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
 										<span class="dueOn" >

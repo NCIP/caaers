@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -34,11 +35,11 @@ public class SubmitReportTab extends AeTab {
     	}
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup ccReport = new DefaultInputFieldGroup("ccReport");
-        ccReport.getFields().add(
-        		
-				InputFieldFactory.createTextArea("aeReport.reports["
+        InputField cc = InputFieldFactory.createTextArea("aeReport.reports["
 						+ reportIndex + "].lastVersion.email",
-						"Cc"));
+						"Cc");
+        InputFieldAttributes.setColumns(cc, 65);
+        ccReport.getFields().add(cc);				
         map.addInputFieldGroup(ccReport);
         return map;
     }

@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -95,6 +97,13 @@ public class Fixtures {
         return def;
     }
 
+    public static void createReportVersion(Report report){
+    	 ReportVersion reportVersion = new ReportVersion();
+         reportVersion.setCreatedOn(new Timestamp(106));
+         reportVersion.setReportStatus(ReportStatus.PENDING);
+         report.addReportVersion(reportVersion);
+    }
+    
     public static Terminology createCtcV3Terminology(Study s)
     {
     	Terminology t = s.getTerminology();
