@@ -53,7 +53,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
      */
     public Registration register(Registration registration) throws RemoteException, InvalidRegistrationException, RegistrationConsumptionException {
         Study study = new Study();
-        study.setGridId(registration.getGridId());
+        study.setGridId(registration.getStudyRef().getGridId());
 
         Participant participant = createParticipant(registration);
 
