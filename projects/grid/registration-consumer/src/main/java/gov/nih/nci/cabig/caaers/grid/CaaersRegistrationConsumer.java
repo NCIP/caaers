@@ -122,7 +122,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
           
             		OrganizationAssignedIdentifier orgIdentifier = new OrganizationAssignedIdentifier();
             		Organization organization = new Organization();
-            		organization.setGridId(orgIdentifier.getOrganization().getGridId());
+            		organization.setGridId(orgIdentifierType.getHealthcareSite().getGridId());
             		orgIdentifier.setOrganization(organization);
             		identifier = orgIdentifier;
             	}
