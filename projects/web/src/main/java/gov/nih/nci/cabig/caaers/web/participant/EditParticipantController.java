@@ -49,7 +49,7 @@ public class EditParticipantController extends ParticipantController<NewParticip
 		for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
 			studySites.add(studyParticipantAssignment.getStudySite());
 		}
-
+		participantCommand.setStudySites(studySites);
 		participantCommand.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
 		return participantCommand;
 
