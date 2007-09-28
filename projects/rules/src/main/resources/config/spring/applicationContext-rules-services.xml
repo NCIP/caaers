@@ -22,7 +22,7 @@
 
     <bean id="emailService" class="gov.nih.nci.cabig.caaers.email.EmailServiceImpl"/>
 
-    <bean id="ruleEngineService" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/>
+    <bean id="ruleEngineService" autowire="byType" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/>
 
     <bean id="evaluationService" autowire="byType"
         class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"/>

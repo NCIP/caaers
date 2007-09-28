@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
@@ -8,6 +13,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.RuleType;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
@@ -15,19 +21,14 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
-   
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 /**
  * 
  * @author vinaykumar
@@ -39,6 +40,8 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	private RuleAuthoringService ruleAuthoringService;
 	private RuleDeploymentService ruleDeploymentService;
 	private RepositoryService repositoryService;
+	private ReportDefinitionDao reportDefinitionDao;
+	private OrganizationDao organizationDao;
 	
 	
 	public void exportRule(String ruleSetName, String locationToExport) throws Exception {
@@ -722,7 +725,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	}
 
 
-	public void importRules(String fileName) throws Exception {
+	public List<String> importRules(String fileName) throws Exception {
 		// TODO Auto-generated method stub
 		BufferedReader br = null;
 		File f = new File(fileName);
@@ -753,13 +756,14 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		System.out.println("Category Path:"+cat.getPath());
 		
 		RuleSet rs_ = this.getRuleSet(ruleSet.getName());
+		List<String> reportDefinitionsCreated = new ArrayList<String>();
 		if(rs_==null){
 			
-			importRuleSet(ruleSet);
+			reportDefinitionsCreated = importRuleSet(ruleSet);
 			deployRuleSet(ruleSet);
 		}
 		
-		
+		return reportDefinitionsCreated;
 	}
 
 
@@ -768,7 +772,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return false;
 	}
 	
-	private void importRuleSet(RuleSet ruleSet) throws Exception{
+	
+	private List<String> importRuleSet(RuleSet ruleSet) throws Exception{
+		
 		List<Rule> rules = ruleSet.getRule();
 		
 		Rule r = rules.get(0);
@@ -780,6 +786,21 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		Iterator<Rule> it = rules.iterator();
 		String subject = ruleSet.getSubject();
 		String state = ruleSet.getCoverage();
+		String desc = ruleSet.getDescription();
+		List<String> reportDefinitions = new ArrayList<String>();
+		
+		if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName())) {
+		
+			for(Rule rule : rules){
+				for (String action : rule.getAction()) {
+					if (!reportDefinitions.contains(action)) {
+						reportDefinitions.add(action);
+					}
+				}
+			}
+		}
+		
+		
 		
 		if((catPath.indexOf(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getName())==-1)&&(catPath.indexOf(CategoryConfiguration.SPONSOR_BASE.getName())!=-1)){
 			// this is sponsor level rules
@@ -791,6 +812,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 				Rule rule = it.next();
 				rule.setId("");
 				createRuleForSponsor(rule, ruleSetName, sponsorName, subject, state);
+				
 			}
 		}
 		
@@ -836,6 +858,48 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			}
 		}
 		
+		String orgName = subject.split("\\|\\|")[1];
+		//System.out.println(orgName);
+		Organization org = organizationDao.getByName(orgName);
+		System.out.println(org.getId() + "," + org.getName());
+		List<String> reportDefinitionsCreated = new ArrayList<String>();
+		if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName())) {
+		
+			System.out.println("Size " + reportDefinitions.size());
+			//check report definitions for this org
+			for (String rd:reportDefinitions) {
+				ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
+				if (reportDefinition == null) {
+					System.out.println("need to create .." + rd);
+					ReportDefinition newRd = new ReportDefinition();
+					newRd.setName(rd);
+					newRd.setOrganization(org);
+					newRd.setAmendable(true);
+					newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
+					newRd.setDuration(2);
+					
+					reportDefinitionDao.save(newRd);
+					reportDefinitionsCreated.add(rd);
+				}
+				
+			}
+		}
+		return reportDefinitionsCreated;
+
+		
+		
+		// check report definitions in db , make a list of report definitions not found . 
+		
+		
+		
+	}
+
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+		this.reportDefinitionDao = reportDefinitionDao;
+	}
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 
    

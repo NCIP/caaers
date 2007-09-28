@@ -144,7 +144,7 @@ public interface RulesEngineService {
 	
 	public void exportRule(String ruleSetName, String locationToExport) throws Exception;
 	
-	public void importRules(String fileName) throws Exception;
+	public List<String> importRules(String fileName) throws Exception;
 	
 	public boolean validateRules(String exportedRuleFileName,String domainJarFileName) throws Exception;
 

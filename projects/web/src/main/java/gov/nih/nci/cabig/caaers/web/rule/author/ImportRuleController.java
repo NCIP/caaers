@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
-import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +21,7 @@ public class ImportRuleController extends SimpleFormController {
         setSuccessView("rule/author/import");
     }
 
+	
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	ImportRuleCommand command =  new ImportRuleCommand();
@@ -37,23 +38,34 @@ public class ImportRuleController extends SimpleFormController {
 		importRuleCommand.setUpdated(true);
 		
 		if (validate(importRuleCommand)) {
-			RulesEngineService rulesEngineService = new RulesEngineServiceImpl();
+			//RulesEngineService rulesEngineService = new RulesEngineServiceImpl();
+			RulesEngineService rulesEngineService = (RulesEngineService) getApplicationContext().getBean("ruleEngineService");
 			
 			File file = new File(importRuleCommand.getFolder());
 			File[] list = file.listFiles();
 			String fileName = "";
+			StringBuffer sb = new StringBuffer();
 			for (int i=0;i<list.length;i++) {
 				fileName = ((File)list[i]).getAbsolutePath();
 				if (fileName.endsWith(".xml")) {
 					System.out.println(" importing " + fileName);
 					try {
-						rulesEngineService.importRules(fileName);
+						List<String> rds = rulesEngineService.importRules(fileName);
+						if (rds.size() > 0 ) {
+							
+							sb.append("Following report definitions are created with basic information.<br/>");
+							sb.append("Please update these report definitions<br/>");
+							for (String rd : rds) {
+								sb.append(rd + "<br/>");
+							}
+							
+						}
 					} catch (Exception e) {
 						logger.error(" Import Ruleset failed  : " + fileName , e );						
 					}
 				}
 			}
-			importRuleCommand.setMessage("Rules imported successfully");
+			importRuleCommand.setMessage("Rules imported successfully <br/>" + sb.toString());
 
 		} 
 
