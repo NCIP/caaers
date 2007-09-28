@@ -122,7 +122,7 @@ public class CreateAdverseEventAjaxFacade {
     		participants = participantDao.matchParticipantByStudy(studyId, text);
     	}
         // cut down objects for serialization
-        return reduceAll(participants, "firstName", "lastName", "id");
+        return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
     }
 
     /* Depracated and replace by a hql based query to enhance performance
@@ -173,7 +173,7 @@ public class CreateAdverseEventAjaxFacade {
     		studies = studyDao.matchStudyByParticipant(participantId, text);
     	}
         // cut down objects for serialization
-        return reduceAll(studies, "id", "shortTitle");
+        return reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
     }
 
     private boolean onStudy(Study study, Integer participantId) {

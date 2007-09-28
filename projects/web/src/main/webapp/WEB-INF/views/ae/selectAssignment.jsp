@@ -26,7 +26,7 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.fullName
+                return obj.fullName + " ( " + obj.primaryIdentifierValue + " ) "
             }
         }
 
@@ -38,7 +38,7 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.shortTitle
+                return obj.shortTitle + " ( " + obj.primaryIdentifierValue + " ) "
             }
         }
 

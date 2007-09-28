@@ -21,6 +21,8 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 	private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
 
 	private List<Identifier> identifiers = new ArrayList<Identifier>();
+	
+	private String primaryIdentifierValue ; 
 
 	// //// LOGIC
 
@@ -38,6 +40,32 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 		log.warn(getClass().getName() + '#' + getId() + " does not have a primary identifier");
 		return null;
 	}
+	
+	/*
+	 * Used as a property that survive Reduction 
+	 * @See CreateAdverseEventAjaxFacade #matchParticipants, matchStudies
+	 */
+	@Transient
+	public void setPrimaryIdentifierValue(String primaryIdentifierValue){
+		this.primaryIdentifierValue = primaryIdentifierValue;
+	}
+	
+	/*
+	 * Used as a property that survive Reduction 
+	 * @See CreateAdverseEventAjaxFacade #matchParticipants, matchStudies
+	 */
+	@Transient
+	public String getPrimaryIdentifierValue(){
+		if (this.primaryIdentifierValue == null ) {
+			Identifier identifier = getPrimaryIdentifier();
+			if(identifier != null ){
+				setPrimaryIdentifierValue(identifier.getValue());
+			}
+		}
+		return this.primaryIdentifierValue;
+	}
+	
+	
 
 	@Transient
 	public List<Identifier> getSecondaryIdentifiers() {
