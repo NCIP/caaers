@@ -76,7 +76,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
      * @see gov.nih.nci.cabig.ctms.common.RegistrationConsumer#createRegistration(gov.nih.nci.cabig.ctms.grid.RegistrationType)
      */
     public Registration register(Registration registration) throws RemoteException, InvalidRegistrationException, RegistrationConsumptionException {
-        Study study = new Study();
+        System.out.print("In register method ...");
+    	Study study = new Study();
         study.setGridId(registration.getStudyRef().getGridId());
 
         Participant participant = createParticipant(registration);
