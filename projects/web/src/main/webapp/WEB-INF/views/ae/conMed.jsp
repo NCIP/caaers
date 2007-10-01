@@ -18,15 +18,9 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
         Element.observe(window, "load", function() {
-            <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status" var="conMed">
-            new EnterConMed(${status.index}, '${conMed.agentName}')
-            </c:forEach>
-
             new ListEditor("conmed", createAE, "ConMed", {
                 addFirstAfter: "single-fields",
-                addParameters: [aeReportId],
-                addCallback: function(index) {
-                }
+                addParameters: [aeReportId]
             })
         })
     </script>
