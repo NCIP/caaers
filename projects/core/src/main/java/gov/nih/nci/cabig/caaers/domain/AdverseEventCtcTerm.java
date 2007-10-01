@@ -13,28 +13,42 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 @Entity
 @DiscriminatorValue("ctep")
 public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
-	
-	@OneToOne
+
+    @OneToOne
     @JoinColumn(name = "term_id")
     @Override
     public CtcTerm getTerm() {
         return super.getTerm();
     }
-	
-	@Transient
+
+    @Override
+    @Transient
     public String getUniversalTerm() {
-    		return getTerm() == null ? null : getTerm().getFullName();
+        if (getTerm() == null) {
+            return null;
+        } else if (getTerm().isOtherRequired() && getAdverseEvent() != null && getAdverseEvent().getDetailsForOther() != null) {
+            StringBuilder sb = new StringBuilder(getTerm().getFullName());
+            // strip everything after "Other", if it is in the name
+            int otherAt = sb.indexOf("Other");
+            if (otherAt >= 0) {
+                sb.delete(otherAt + 5, sb.length());
+            }
+            sb.append(": ").append(getAdverseEvent().getDetailsForOther());
+            return sb.toString();
+        } else {
+            return getTerm().getFullName();
+        }
     }
-	
-	@Transient
-	public CtcTerm getCtcTerm() {
-		return super.getTerm();
-	}
-	
-	@Transient
-	public void setCtcTerm(CtcTerm ctcTerm) {
-	       super.setTerm(ctcTerm);
-	    }
-	
-	
+
+    @Transient
+    public CtcTerm getCtcTerm() {
+        return super.getTerm();
+    }
+
+    @Transient
+    public void setCtcTerm(CtcTerm ctcTerm) {
+        super.setTerm(ctcTerm);
+    }
+
+
 }
