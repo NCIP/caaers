@@ -49,7 +49,14 @@
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><div class="label">v${fn:length(report.reportVersions)}</div></td>
-            		<td><i>Not Implemented</i></td>
+            		<td><i>
+            			<c:if test="${report.dataMissing == 'false'}" >
+							Complete
+						</c:if>
+						<c:if test="${report.dataMissing == 'true'}" >
+							Incomplete
+						</c:if>	            		
+            		</i></td>
             		<td>
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 							<span class="dueOn" >
@@ -84,38 +91,28 @@
             			--%>
             		</td>
             		<td>
-            			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
-							<center>
-								<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
-								<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
-								<a href="javascript:fireAction('withdraw',${report.id});">Withdraw</a>
-							</center>
-						</c:if>
-						
-						<c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}" >
-							<center>
-								<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
-							</center>
-						</c:if>
-						
-						<c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}" >
-							<center>
-								<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
-							</center>
+            			<c:if test="${report.dataMissing == 'false'}" >
+							<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
+								<center>
+									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
+									<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
+									<a href="javascript:fireAction('withdraw',${report.id});">Withdraw</a>
+								</center>
+							</c:if>
+							
+							<c:if test="${report.lastVersion.reportStatus == 'WITHDRAWN'}" >
+								<center>
+									<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
+								</center>
+							</c:if>
+							
+							<c:if test="${report.lastVersion.reportStatus == 'COMPLETED'}" >
+								<center>
+									<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
+								</center>
+							</c:if>
 						</c:if>
             		
-            			<%--
-            			<c:if test="${empty theReport.lastVersion.submittedOn}" >
-            				<center>
-            					<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a>
-            				</center>
-            			</c:if>
-            			<c:if test="${ not empty theReport.lastVersion.submittedOn}" >
-            				<center>
-            					<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
-            				</center>
-            			</c:if>
-            			--%>
             		</td>
     			</tr>
     			</c:forEach>    						

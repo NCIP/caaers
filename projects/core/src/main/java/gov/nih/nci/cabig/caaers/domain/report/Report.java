@@ -61,6 +61,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private ReportStatus status = ReportStatus.PENDING;
     private List<ReportVersion> reportVersions;
+    
+    private boolean isDataMissing;
 
     // TODO: This is to CC people when submitting report - Not sure if this
     // should be here or if we should create a new ReportDelivery object which in
@@ -256,14 +258,19 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	public void setReportVersions(List<ReportVersion> reportVersions) {
 		this.reportVersions = reportVersions;
 	}
-
 	
+	@Transient
+	public boolean isDataMissing() {
+		return isDataMissing;
+	}
 
-
+	public void setDataMissing(boolean isDataMissing) {
+		this.isDataMissing = isDataMissing;
+	}
+	
 
 	////// OBJECT METHODS
 
-	
 	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

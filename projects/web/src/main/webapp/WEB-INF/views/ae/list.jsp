@@ -192,10 +192,19 @@
 							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
 									onMouseOut="this.className='<%= currClass %>'" 
 									>
+									
 								<td width="20%">${theReport.reportDefinition.name}</td>
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
 								<td width="20%">v${fn:length(theReport.reportVersions)}</td>
-								<td width="10%"><i>Not Implemented</i></td>
+								<td width="10%"><i>
+									<c:if test="${theReport.dataMissing == 'false'}" >
+										Complete
+									</c:if>
+									<c:if test="${theReport.dataMissing == 'true'}" >
+										Incomplete
+									</c:if>	
+									</i>
+								</td>
 								<td width="20%" id="status${theReport.id}">
 									<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
 										<span class="dueOn" >
@@ -219,23 +228,25 @@
             						</c:if>
 								</td>
 								<td width="50%" id="action${theReport.id}">
-            						<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
-            							<center>
-            								<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
-            								<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
-            							</center>
-            						</c:if>
-            						
-            						<c:if test="${theReport.lastVersion.reportStatus == 'WITHDRAWN'}" >
-            							<center>
-            								<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
-            							</center>
-            						</c:if>
-            						
-            						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
-            							<center>
-            								<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
-            							</center>
+									<c:if test="${theReport.dataMissing == 'false'}" >
+										<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
+											<center>
+												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
+												<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
+											</center>
+										</c:if>
+										
+										<c:if test="${theReport.lastVersion.reportStatus == 'WITHDRAWN'}" >
+											<center>
+												<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+											</center>
+										</c:if>
+										
+										<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
+											<center>
+												<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+											</center>
+										</c:if>
             						</c:if>
 								</td>
 							</tr>

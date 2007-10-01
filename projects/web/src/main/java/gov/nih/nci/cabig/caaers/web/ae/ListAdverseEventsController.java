@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -21,6 +22,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
     private StudyDao studyDao;
+    protected EvaluationService evaluationService;
 
     public ListAdverseEventsController() {
         setCommandClass(ListAdverseEventsCommand.class);
@@ -31,7 +33,7 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao);
+        return new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao, evaluationService);
     }
 
     @Override
@@ -81,4 +83,15 @@ public class ListAdverseEventsController extends SimpleFormController {
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
+
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
+	}
+
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
+	}
+    
+    
+    
 }

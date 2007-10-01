@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+
 import org.easymock.classextension.EasyMock;
 
 /**
@@ -21,6 +23,7 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
     private StudyDao studyDao;
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
+    private EvaluationService evaluationService;
 
     @Override
     protected void setUp() throws Exception {
@@ -28,8 +31,9 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
         studyDao = registerDaoMockFor(StudyDao.class);
         assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
         participantDao = registerDaoMockFor(ParticipantDao.class);
+        evaluationService = registerMockFor(EvaluationService.class);
 
-        command = new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao);
+        command = new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao, evaluationService);
     }
 
     public void testExplicitStudyTrumps() throws Exception {

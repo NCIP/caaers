@@ -7,6 +7,10 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 
 /**
  * @author Rhett Sutphin
@@ -29,11 +33,13 @@ public class ListAdverseEventsCommand {
     private StudyParticipantAssignmentDao assignmentDao;
     private StudyDao studyDao;
     private ParticipantDao participantDao;
+    private EvaluationService evaluationService;
 
-    public ListAdverseEventsCommand(StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao) {
+    public ListAdverseEventsCommand(StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, EvaluationService evaluationService) {
         this.assignmentDao = assignmentDao;
         this.studyDao = studyDao;
         this.participantDao = participantDao;
+        this.evaluationService = evaluationService;
     }
 
     ////// LOGIC
@@ -43,10 +49,21 @@ public class ListAdverseEventsCommand {
             return assignment;
         } else if (getParticipant() != null && getStudy() != null) {
             assignment = assignmentDao.getAssignment(getParticipant(), getStudy());
+            updateReports(assignment);
             return assignment;
         } else {
             return null;
         }
+    }
+    
+    // Set a property in the Report object to provide a clean way of accessing this on the JSP
+    private void updateReports(StudyParticipantAssignment assignment){
+    	for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
+    		for (Report report : aeReport.getReports()) {
+    			ErrorMessages errorMessages = evaluationService.isSubmitable(report);
+    			report.setDataMissing(errorMessages.hasErrors());
+			}
+		}
     }
 
     public Study getStudy() {

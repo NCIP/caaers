@@ -8,11 +8,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
@@ -20,7 +24,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
  * @author Krikor Krumlian
  */
 public class ViewReportTab extends AeTab {
-    //private RepeatingFieldGroupFactory fieldFactory;
+	private EvaluationService evaluationService;
 
     public ViewReportTab() {
         super("Submission", "Submit", "ae/submit");
@@ -32,6 +36,21 @@ public class ViewReportTab extends AeTab {
 
         handleWithdrawAction(command, request.getParameter("_action"),
             request.getParameter("_selected"));
+    }
+    
+    @Override
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+       updateReports(command);
+    }
+    
+    //  Set a property in the Report object to provide a clean way of accessing this on the JSP
+    private void updateReports(ExpeditedAdverseEventInputCommand command){
+    	
+    		for (Report report : command.getAeReport().getReports()) {
+    			ErrorMessages errorMessages = evaluationService.isSubmitable(report);
+    			report.setDataMissing(errorMessages.hasErrors());
+    			System.out.println(errorMessages.hasErrors());
+			}
     }
     
     private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action, String selected) {
@@ -56,14 +75,16 @@ public class ViewReportTab extends AeTab {
     }
 
     @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-    }
-
-    @Override
     protected void validate(
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
+    }
+    
+    ////// CONFIGURATION
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
     }
 
     @Override
