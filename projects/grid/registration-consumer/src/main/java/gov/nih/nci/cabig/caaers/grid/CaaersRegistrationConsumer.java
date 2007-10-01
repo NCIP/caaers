@@ -80,6 +80,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
      *
      * @see gov.nih.nci.cabig.ctms.common.RegistrationConsumer#createRegistration(gov.nih.nci.cabig.ctms.grid.RegistrationType)
      */
+    //TODO: need full refactoring.
+    //Editing participant is not proper.
     public Registration register(Registration registration) throws RemoteException, InvalidRegistrationException, RegistrationConsumptionException {
         Study study = new Study();
         study.setGridId(registration.getStudyRef().getGridId());
