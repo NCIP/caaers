@@ -261,7 +261,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
     @JoinColumn(name="report_id", nullable=true)
-    @IndexColumn(name="list_index")
+    @IndexColumn(name="list_index", nullable=false)
     @Cascade(value = {
         // Manually-managing PERSIST cascades due to cascade ordering issue
         CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,

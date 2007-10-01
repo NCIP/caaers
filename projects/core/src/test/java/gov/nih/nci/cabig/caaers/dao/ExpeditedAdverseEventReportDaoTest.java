@@ -497,6 +497,22 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 //        });
 //    }
 
+    public void testDeleteOrphanAdverseEvent() throws Exception {
+        {
+            ExpeditedAdverseEventReport loaded = getDao().getById(-1);
+            assertEquals("Wrong number of AEs initially", 2, loaded.getAdverseEvents().size());
+            assertEquals("Wrong initial AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
+            assertEquals("Wrong initial AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
+            loaded.getAdverseEvents().remove(0);
+            getDao().save(loaded);
+        }
+
+        interruptSession();
+
+        ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
+        assertEquals("Wrong number of AEs when reloaded", 1, reloaded.getAdverseEvents().size());
+        assertEquals("Wrong AE when reloaded", -11, (int) reloaded.getAdverseEvents().get(0).getId());
+    }
 
     public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
     	List<ExpeditedAdverseEventReport> results;

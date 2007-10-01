@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.hibernate.LockMode;
+import org.hibernate.LazyInitializationException;
 
 /**
  * @author Rhett Sutphin
@@ -43,19 +44,27 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 		for (AdverseEvent ae : report.getAdverseEvents()) {
 			getHibernateTemplate().saveOrUpdate(ae);
 		}
-		if (report.getReporter().isSavable()) {
-			getHibernateTemplate().saveOrUpdate(report.getReporter());
-		}
-		else {
-			log.debug("Reporter not savable; skipping cascade");
-		}
-		if (report.getPhysician().isSavable()) {
-			getHibernateTemplate().saveOrUpdate(report.getPhysician());
-		}
-		else {
-			log.debug("Physican not savable; skipping cascade");
-		}
-		// since we can't cascade SAVE_UPDATE, we have to do this instead
+        try {
+            if (report.getReporter().isSavable()) {
+                getHibernateTemplate().saveOrUpdate(report.getReporter());
+            }
+            else {
+                log.debug("Reporter not savable; skipping cascade");
+            }
+        } catch (LazyInitializationException lie) {
+            log.debug("Reporter not initialized, skipping cascade");
+        }
+        try {
+            if (report.getPhysician().isSavable()) {
+                getHibernateTemplate().saveOrUpdate(report.getPhysician());
+            }
+            else {
+                log.debug("Physican not savable; skipping cascade");
+            }
+        } catch (LazyInitializationException lie) {
+            log.debug("Physician not initialized, skipping cascade");
+        }
+        // since we can't cascade SAVE_UPDATE, we have to do this instead
 		// TODO : Review this and delete
 		// for (Report r : report.getReports()) {
 		// reportDao.save(r);
