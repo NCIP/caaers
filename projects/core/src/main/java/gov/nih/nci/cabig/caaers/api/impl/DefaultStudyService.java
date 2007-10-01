@@ -4,6 +4,7 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.ctms.domain.GridIdentifiable;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -24,8 +27,11 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
+ * @author Biju Joseph
  *
  */
+
+//TODO: need refactoring.
 @Transactional
 public class DefaultStudyService implements StudyService {
     
@@ -61,12 +67,24 @@ public class DefaultStudyService implements StudyService {
 
         Participant loadedParticipant = load(participant, getParticipantDao(), false);
         if (loadedParticipant == null) {
+        	List<Identifier> identifiers = participant.getIdentifiers();
+        	for(Identifier identifier : identifiers){
+        		if(identifier instanceof OrganizationAssignedIdentifier){
+        			//load the organization.
+        			OrganizationAssignedIdentifier orgIdentifer = (OrganizationAssignedIdentifier) identifier;
+        			Organization org = organizationDao.getByGridId(orgIdentifer.getGridId());
+        			//update it
+        			orgIdentifer.setOrganization(org);
+        		}
+        	}
+        	
             getParticipantDao().save(participant);
             loadedParticipant = participant;
             
         } else {
             StudyParticipantAssignment existingAssignment = 
                 getStudyParticipantAssignmentDao().getAssignment(loadedParticipant, loader.getStudy());
+            //TODO: newly added organization identifiers should be updated. 
             if (existingAssignment != null) {
                 throw new IllegalArgumentException(
                     "Participant already assigned to this study.");
