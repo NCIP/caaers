@@ -131,7 +131,8 @@ Object.extend(ListEditor.prototype, {
             addButton:    "add-" + divisionClass + "-button",
             addIndicator: "add-" + divisionClass + "-indicator",
             addParameters: [ ],
-            reorderable: false
+            reorderable: false,
+            deletable: false
         }, options)
 
         this.options.addButton = $(this.options.addButton)
@@ -159,8 +160,17 @@ Object.extend(ListEditor.prototype, {
         }
         // wrap heading content in a span for easier access later
         heading.innerHTML = "<span class='text'>" + heading.innerHTML + "</span>"
+        controls = Builder.node("span", { 'class': "list-controls" })
+        heading.insertBefore(controls, heading.childNodes[0])
+
+        if (this.options.deletable) {
+            var deleteControl = Builder.node("a", { 'class': 'list-control delete-control', 'title': 'Delete', 'href': '#' })
+            deleteControl.innerHTML = "&times;"
+            Event.observe(deleteControl, "click", this.remove.bindAsEventListener(this))
+            controls.appendChild(deleteControl)
+        }
+
         if (this.options.reorderable) {
-            // TODO: icons instead of text
             var upControl = Builder.node("a", { 'class': 'list-control move-up-control', 'title': 'Move up', 'href': '#' });
             upControl.innerHTML = "&#9650;" // set directly to avoid escaping
             Event.observe(upControl, "click", this.up.bindAsEventListener(this))
@@ -169,10 +179,8 @@ Object.extend(ListEditor.prototype, {
             downControl.innerHTML = "&#9660;" // set directly to avoid escaping
             Event.observe(downControl, "click", this.down.bindAsEventListener(this))
 
-            heading.insertBefore(
-                Builder.node("span", { 'class': "list-controls" }, [ upControl, downControl ]),
-                heading.childNodes[0]
-            );
+            controls.appendChild(upControl)
+            controls.appendChild(downControl)
         }
     },
 
@@ -234,6 +242,45 @@ Object.extend(ListEditor.prototype, {
         this.reorder(original, target)
     },
 
+    remove: function(evt) {
+        Event.stop(evt);
+        var div = Event.element(evt).up("div." + this.divisionClass)
+        if (!div) {
+            alert("Could not find containing div for delete event");
+            return;
+        }
+
+        var indexToDelete = div.getAttribute("item-index");
+        if (!this.collectionProperty) {
+            alert("collectionProperty must be specified for deleting to work")
+            return;
+        }
+
+        var removeFn = this.dwrNS["remove"]
+        if (!removeFn) {
+            alert("There is no function named 'remove' in the selected DWR namespace")
+            return;
+        }
+
+        removeFn.apply(this, [this.collectionProperty, indexToDelete, function(changes) {
+            if (changes.length == 0) return;
+
+            var divs = $$('div.' + this.divisionClass)
+            if (!divs[indexToDelete]) return;
+
+            $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.conceal(); })
+
+            var container = divs[0].parentNode
+            var toDelete = divs[indexToDelete];
+            container.removeChild(toDelete)
+
+            this.updateFirstAndLast()
+            this.applyIndexChanges(changes)
+
+            $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
+        }.bind(this)])
+    },
+
     reorder: function(original, target) {
         if (!this.collectionProperty) {
             alert("collectionProperty must be specified for reordering to work")
@@ -280,7 +327,7 @@ Object.extend(ListEditor.prototype, {
             }
 
             this.updateFirstAndLast()
-            this.applyChanges(changes)
+            this.applyIndexChanges(changes)
             
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
         }.bind(this)])
@@ -288,7 +335,7 @@ Object.extend(ListEditor.prototype, {
 
     // Updates the field names, IDs, and "for" attributes of all properties
     // modified by the given list of changes.
-    applyChanges: function(changes) {
+    applyIndexChanges: function(changes) {
         // radio button values are trashed sometimes; preserve them so they can be restored
         // TODO: are checkboxes similarly afflicted?
         var radioValues = $$("#" + this.form.id + " input[type=radio]").inject({ }, function(values, radio) {

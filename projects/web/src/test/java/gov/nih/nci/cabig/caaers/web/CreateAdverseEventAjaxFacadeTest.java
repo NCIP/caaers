@@ -75,13 +75,13 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setExpeditedReportTree(new ExpeditedReportTree());
 
         ConfigProperty configProperty = new ConfigProperty();
-    	Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
-    	map.put("labUnitsRefData", new ArrayList<Lov>());
-    	ArrayList<Lov> list = new ArrayList<Lov>();
-    	list.add(new Lov("Chloride","Chloride"));
-    	map.put("labTestNamesRefData", list);
-    	configProperty.setMap(map);
-    	facade.setConfigurationProperty(configProperty);
+        Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
+        map.put("labUnitsRefData", new ArrayList<Lov>());
+        List<Lov> list = new ArrayList<Lov>();
+        list.add(new Lov("Chloride","Chloride"));
+        map.put("labTestNamesRefData", list);
+        configProperty.setMap(map);
+        facade.setConfigurationProperty(configProperty);
     }
 
     public void testMatchParticipants() throws Exception {
@@ -455,11 +455,81 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertIndexChange(2, 0, "Primary adverse event", actual.get(2));
     }
 
-    private static void assertIndexChange(int expectedOriginal, int expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
+    public void testDeleteFromEnd() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 3);
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 0, 1, 2);
+        assertEquals("Wrong changes: " + actual, 1, actual.size());
+        assertIndexChange(3, null, actual.get(0));
+    }
+
+    public void testDeleteFromTop() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 0);
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 1, 2, 3);
+        assertEquals("Wrong changes: " + actual, 4, actual.size());
+        assertIndexChange(0, null, actual.get(0));
+        assertIndexChange(1, 0, actual.get(1));
+        assertIndexChange(2, 1, actual.get(2));
+        assertIndexChange(3, 2, actual.get(3));
+    }
+
+    public void testDeleteInMiddle() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 2);
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 0, 1, 3);
+        assertEquals("Wrong changes: " + actual, 2, actual.size());
+        assertIndexChange(2, null, actual.get(0));
+        assertIndexChange(3, 2, actual.get(1));
+    }
+
+    public void testDeleteOutOfRange() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 4);
+        verifyMocks();
+
+        assertNotMoved(command);
+        assertEquals(0, actual.size());
+    }
+    
+    public void testDeleteSavesIfAlreadySaved() throws Exception {
+        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+        command.getAeReport().setId(17);
+        aeReportDao.save(command.getAeReport());
+
+        replayMocks();
+        List<CreateAdverseEventAjaxFacade.IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 3);
+        verifyMocks();
+
+        assertAdverseEventsIdOrder(command, 0, 1, 2);
+        assertEquals("Wrong changes: " + actual, 1, actual.size());
+        assertIndexChange(3, null, actual.get(0));
+    }
+
+    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
         assertIndexChange(expectedOriginal, expectedCurrent, null, actual);
     }
 
-    private static void assertIndexChange(int expectedOriginal, int expectedCurrent, String expectedDisplay, CreateAdverseEventAjaxFacade.IndexChange actual) {
+    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, String expectedDisplay, CreateAdverseEventAjaxFacade.IndexChange actual) {
         assertEquals("Wrong original", expectedOriginal, actual.getOriginal());
         assertEquals("Wrong current", expectedCurrent, actual.getCurrent());
         if (expectedDisplay != null) {

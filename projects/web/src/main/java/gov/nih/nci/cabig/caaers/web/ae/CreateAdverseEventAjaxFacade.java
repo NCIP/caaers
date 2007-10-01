@@ -34,14 +34,11 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,7 +49,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -355,12 +351,13 @@ public class CreateAdverseEventAjaxFacade {
         }
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
-        List<IndexChange> changes = createChangeList(objectIndex, targetIndex);
+        List<IndexChange> changes = createMoveChangeList(objectIndex, targetIndex);
         addDisplayNames(listProperty, changes);
+        saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
         return changes;
     }
 
-    private List<IndexChange> createChangeList(int original, int target) {
+    private List<IndexChange> createMoveChangeList(int original, int target) {
         List<IndexChange> list = new ArrayList<IndexChange>();
         if (original < target) {
             list.add(new IndexChange(original, target));
@@ -376,10 +373,58 @@ public class CreateAdverseEventAjaxFacade {
         return list;
     }
 
+    /**
+     * Deletes an element in a list property of the current session command, shifting everything
+     * else around as appropriate.
+     *
+     * <p>
+     * Note that other than the extract command bit, this is entirely non-ae-flow-specific.
+     * </p>
+     *
+     * @return A list of changes indicating which elements of the list were moved and where to.
+     *      This list will be empty if the requested change is invalid or if the change is a no-op.
+     *      The element to remove will be represented by a move to a negative index.
+     */
+    @SuppressWarnings({ "unchecked" })
+    public List<IndexChange> remove(String listProperty, int indexToDelete) {
+        Object command = extractCommand();
+        List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
+        if (indexToDelete >= list.size()) {
+            log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
+            return Collections.emptyList();
+        }
+        if (indexToDelete < 0) {
+            log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
+            return Collections.emptyList();
+        }
+        List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
+        list.remove(indexToDelete);
+        addDisplayNames(listProperty, changes);
+        saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+        return changes;
+    }
+
+    private List<IndexChange> createDeleteChangeList(int indexToDelete, int length) {
+        List<IndexChange> changes = new ArrayList<IndexChange>();
+        changes.add(new IndexChange(indexToDelete, null));
+        for (int i = indexToDelete + 1 ; i < length ; i++) {
+            changes.add(new IndexChange(i, i - 1));
+        }
+        return changes;
+    }
+
     private void addDisplayNames(String listProperty, List<IndexChange> changes) {
         TreeNode listNode = expeditedReportTree.find(listProperty.split("\\.", 2)[1]);
         for (IndexChange change : changes) {
-            change.setCurrentDisplayName(listNode.getDisplayName(change.getCurrent()));
+            if (change.getCurrent() != null) {
+                change.setCurrentDisplayName(listNode.getDisplayName(change.getCurrent()));
+            }
+        }
+    }
+
+    private void saveIfAlreadyPersistent(ExpeditedAdverseEventInputCommand command) {
+        if (command.getAeReport().getId() != null) {
+            aeReportDao.save(command.getAeReport());
         }
     }
 
@@ -540,36 +585,32 @@ public class CreateAdverseEventAjaxFacade {
 	}
     @Required
     public TreatmentAssignmentDao getTreatmentAssignmentDao() {
-		return treatmentAssignmentDao;
-	}
-    public void setTreatmentAssignmentDao(
-			TreatmentAssignmentDao treatmentAssignmentDao) {
-		this.treatmentAssignmentDao = treatmentAssignmentDao;
-	}
-    
-	@Required
-	public void setReportService(ReportService reportService) {
-		this.reportService = reportService;
-	}
+        return treatmentAssignmentDao;
+    }
 
-    
-    
-    
+    public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
+        this.treatmentAssignmentDao = treatmentAssignmentDao;
+    }
+
+    @Required
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
+    }
 
     public static class IndexChange {
-        private int original, current;
+        private Integer original, current;
         private String currentDisplayName;
 
-        public IndexChange(int original, int current) {
+        public IndexChange(Integer original, Integer current) {
             this.original = original;
             this.current = current;
         }
 
-        public int getOriginal() {
+        public Integer getOriginal() {
             return original;
         }
 
-        public int getCurrent() {
+        public Integer getCurrent() {
             return current;
         }
 

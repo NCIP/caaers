@@ -19,6 +19,9 @@
             padding-left: 3.0em;
             text-indent: -2.5em;
         }
+        .first-item .delete-control {
+            display: none;
+        }
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
@@ -173,7 +176,8 @@
                 addCallback: function(nextIndex) {
                     new AESection("ae-section-" + nextIndex);
                 },
-                reorderable: true
+                reorderable: true,
+                deletable: true
             }, "aeReport.adverseEvents")
             // item-index attribute is added by the list editor and it's needed to start up each AESection
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
