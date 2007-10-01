@@ -72,7 +72,7 @@ public class DefaultStudyService implements StudyService {
         		if(identifier instanceof OrganizationAssignedIdentifier){
         			//load the organization.
         			OrganizationAssignedIdentifier orgIdentifer = (OrganizationAssignedIdentifier) identifier;
-        			Organization org = organizationDao.getByGridId(orgIdentifer.getGridId());
+        			Organization org = organizationDao.getByGridId(orgIdentifer.getOrganization().getGridId());
         			//update it
         			orgIdentifer.setOrganization(org);
         		}
