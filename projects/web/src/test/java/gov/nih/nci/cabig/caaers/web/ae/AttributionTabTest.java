@@ -107,7 +107,7 @@ public class AttributionTabTest extends AeTabTestCase {
         assertEquals("attributionMap[other][0][1]", actualGroup1.getFields().get(0).getPropertyName());
     }
 
-    public void testDiseaseFieldsIncluded() throws Exception {
+    public void testCtepDiseaseFieldsIncluded() throws Exception {
         DiseaseHistory dh = new DiseaseHistory();
         dh.setCtepStudyDisease(new CtepStudyDisease());
         dh.getCtepStudyDisease().setTerm(new DiseaseTerm());
@@ -122,6 +122,26 @@ public class AttributionTabTest extends AeTabTestCase {
 
         InputFieldGroup actualGroup0 = map.get("disease0");
         assertNotNull(actualGroup0);
+        assertEquals("Something", actualGroup0.getDisplayName());
+        assertEquals(2, actualGroup0.getFields().size());
+        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    }
+
+    public void testOtherDiseaseFieldsIncluded() throws Exception {
+        DiseaseHistory dh = new DiseaseHistory();
+        dh.setOtherPrimaryDisease("Nose pain");
+        command.getAeReport().setDiseaseHistory(dh);
+        ensureAeCount(2);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of disease groups", 1, map.size());
+        assertTrue("Map doesn't contain expected repeating group key. Actual keys: " +  map.keySet(),
+            map.containsKey("disease0"));
+
+        InputFieldGroup actualGroup0 = map.get("disease0");
+        assertNotNull(actualGroup0);
+        assertEquals("Nose pain", actualGroup0.getDisplayName());
         assertEquals(2, actualGroup0.getFields().size());
         assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0).getPropertyName());
         assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1).getPropertyName());
