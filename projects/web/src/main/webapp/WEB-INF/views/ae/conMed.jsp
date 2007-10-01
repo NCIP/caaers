@@ -20,8 +20,9 @@
         Element.observe(window, "load", function() {
             new ListEditor("conmed", createAE, "ConMed", {
                 addFirstAfter: "single-fields",
-                addParameters: [aeReportId]
-            })
+                addParameters: [aeReportId],
+                deletable: true
+            }, 'aeReport.concomitantMedications')
         })
     </script>
 </head>

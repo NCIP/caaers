@@ -117,8 +117,9 @@
             addParameters: [aeReportId],
             addCallback: function(index) {
                 new EnterDiseaseSite(index);
-            }
-        })
+            },
+            deletable: true
+        }, 'aeReport.diseaseHistory.metastaticDiseaseSites')
 
         $('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
             chooseDiseaseOrOther();

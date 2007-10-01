@@ -66,8 +66,9 @@
                 addCallback: function(index) {
                     registerDoseModHandler(index)
                     AE.registerCalendarPopups("courseAgent-" + index)
-                }
-            })
+                },
+                deletable: true
+            }, 'aeReport.treatmentInformation.courseAgents')
             Event.observe("command", "submit", renableModified)
             $$('.dose-mod-checkbox').each(function(elt) {
                 var index = elt.id.substring(18)

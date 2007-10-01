@@ -73,8 +73,10 @@
                 addFirstAfter: "single-fields",
                 addCallback: function(index) {
                     new EnterLab(index);
-                }
-            })
+                },
+                deletable: true,
+                reorderable: true
+            }, 'aeReport.labs')
             <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
             	new EnterLab(${status.index},"${lab.name}");
             </c:forEach>

@@ -91,8 +91,9 @@
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapy(index);
-                }
-            })
+                },
+                deletable: true
+            }, 'aeReport.adverseEventPreExistingConds')
         })
     </script>
 </head>
