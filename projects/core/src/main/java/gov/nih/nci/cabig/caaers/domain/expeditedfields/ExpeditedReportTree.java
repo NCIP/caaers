@@ -158,7 +158,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                 )
             ),
             section(LABS_SECTION,
-                list("labs", "Lab",
+                list("labs", new LabsDisplayNameCreator(),
                     property("name", "Lab test name"),
                     property("other", "Other test name"),
                     property("units", "Units"),
