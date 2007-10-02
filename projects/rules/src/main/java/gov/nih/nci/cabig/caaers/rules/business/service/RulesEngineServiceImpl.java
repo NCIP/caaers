@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,9 +45,25 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	private OrganizationDao organizationDao;
 	
 	
-	public void exportRule(String ruleSetName, String locationToExport) throws Exception {
+	public void exportRule(String ruleSetName, String locationToExport)  throws Exception {
 		
+		try {	
+				RuleSet rs=repositoryService.getRuleSet(ruleSetName);
+				String str = XMLUtil.marshal(rs);
+				File outFile = new File(locationToExport+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml");
+				FileWriter out;
+			
+				out = new FileWriter(outFile);
+				out.write(str);
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+					//		 TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new Exception ("Error exporting rule set ", e);
+			}
 	}
+
 	
 	public RulesEngineServiceImpl(){
 		ruleAuthoringService = new RuleAuthoringServiceImpl();

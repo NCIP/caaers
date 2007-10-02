@@ -42,25 +42,6 @@
     </style>
 </head>
 <body>
-<chrome:box autopad="true">
-	<form:form action="${action}" cssClass="standard">
-            <div class="row">
-                <div class="label">
-                    Export to directory
-                </div>
-                <div class="value">
-                	<input id="exportDir" type="text" name="exportDir" size="100" value="${param.exportDir}"/>
-                	<p class="description">(Directory location on the server)</p>
-                </div>
 
-            </div>    
-        <div class="row submit">
-            <input type="submit" value="Export"/>
-        </div>
-    </form:form>
-    <c:if test="${command.updated}">
-		<p class="updated">${command.message}</p>
-	</c:if>
-</chrome:box>
 </body>
 </html>

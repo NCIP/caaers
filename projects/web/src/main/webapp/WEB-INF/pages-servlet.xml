@@ -102,9 +102,10 @@
                             <!--  
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
-                            -->
+                            
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Export Rules" p:linkName="exportRuleController"/>
+                                -->
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
                                 p:displayName="Import Rules" p:linkName="importRuleController"/>
                             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"

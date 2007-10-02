@@ -4,11 +4,24 @@ import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 import java.rmi.RemoteException;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ImportRuleCommand implements RuleInputCommand {
 
 	private String folder;
 	private String message;
 	private boolean updated = false ;
+	private MultipartFile ruleSetFile1;
+
+	public MultipartFile getRuleSetFile1() {
+		return ruleSetFile1;
+	}
+
+
+	public void setRuleSetFile1(MultipartFile ruleSetFile1) {
+		this.ruleSetFile1 = ruleSetFile1;
+	}
+
 
 	public boolean isUpdated() {
 		return updated;

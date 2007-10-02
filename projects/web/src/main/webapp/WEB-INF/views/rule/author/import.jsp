@@ -43,14 +43,19 @@
 </head>
 <body>
 <chrome:box autopad="true">
-	<form:form action="${action}" cssClass="standard">
+	<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             <div class="row">
                 <div class="label">
-                    Import from directory
+                    Rule set xml file : 
                 </div>
                 <div class="value">
+                
+                	<input type="file" name="ruleSetFile1" size="50"/>
+                	<!-- 
                 	<input id="importDir" type="text" name="importDir" size="100" value="${param.importDir}"/>
                 	<p class="description">Directory location on the server </p>
+                	-->
+                	
                 	<!-- <p class="description">Please reset your rules database and repositiry before performing import. </p> -->
                 </div>
             </div>    

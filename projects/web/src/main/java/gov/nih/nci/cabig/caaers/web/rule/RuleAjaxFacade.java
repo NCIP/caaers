@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
+import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
@@ -35,19 +36,19 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
-import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -438,7 +439,46 @@ public class RuleAjaxFacade
 
     public void exportRuleSet(String ruleSetName) throws RemoteException
     {
+    	/*
+    	String tempDir = System.getProperty("java.io.tmpdir");
+    	try {
+			//File ruleSetFile1 = File.createTempFile(ruleSetName,"export.xml");
+    		try {
+				getRulesEngineService().exportRule(ruleSetName, tempDir);
+				File file = new File(tempDir+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml");
+				FileInputStream fileIn = new FileInputStream(file);
+				OutputStream out = response.getOutputStream();
+				out.setContentType("application/octet");
+				out.setContentLength((int) file.length());
+				 
+				byte[] buffer = new byte[2048];
+				int bytesRead = fileIn.read(buffer);
+				while (bytesRead >= 0) {
+				  if (bytesRead > 0)
+				    out.write(buffer, 0, bytesRead);
+				    bytesRead = in.read(buffer);
+				}
+				out.flush();
+				out.close();
+				in.close();
+				
+				//Reader input = new BufferedReader( new FileReader(tempDir+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml"));
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RemoteException ("Error exporting ruleset ",e);
+			}
+			
+			
+			
+			//input = new BufferedReader( new FileReader(xmlFile) );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
+    	/*
     	DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
 		Properties props = b.getProperties();
 		//props.list(System.out);
@@ -466,7 +506,7 @@ public class RuleAjaxFacade
 				e.printStackTrace();
 				throw new RemoteException ("Error exporting ruleset ",e);
 			}
-    		
+    	*/	
     		
     }
   

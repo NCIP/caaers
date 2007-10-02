@@ -104,7 +104,8 @@
         <ec:column property="action" title="Action" sortable="false" filterable="false">
             	<a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
             	<a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
-            	<a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>
+            	<!-- <a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>-->
+            	<a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>
         </ec:column>
     </ec:row>
     </c:if>
