@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -138,7 +139,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         getTab().postProcess(request, command, errors);
         verifyMocks();
     }
-/*  //No longer we call addRequiredReports in onDisplay()
+
     public void testPreProcessEvaluates() throws Exception {
         evaluationService.addRequiredReports(command.getAeReport());
         expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
@@ -148,9 +149,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         getTab().onDisplay(request, command);
         verifyMocks();
     }
-*/
 
-/*  //No longer we call addRequiredReports in onDisplay()
     public void testPreProcessSetsUpOptionalDefList() throws Exception {
         command.getAeReport().getReports().clear();
         command.getAeReport().addReport(r1.createReport());
@@ -170,7 +169,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         assertTrue("Optional defs does not include r1", map.containsKey(r1));
         assertTrue("Optional defs does not include r3", map.containsKey(r3));
     }
-*/
+
     public void testFieldsPresentForOptionalReports() throws Exception {
         command.getAeReport().addReport(r2.createReport());
         command.setOptionalReportDefinitions(Arrays.asList(r1, r2, r3));
