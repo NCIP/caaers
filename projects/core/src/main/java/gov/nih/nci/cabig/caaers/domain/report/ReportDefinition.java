@@ -223,8 +223,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
 	////// OBJECT METHODS
 
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+            .append('[').append(getName()).append(", ").append(getOrganization()).append(']')
+            .toString();
+    }
 
-	@Override
+    @Override
 	public int hashCode() {
 		final int PRIME = 31;
 		int result = 1;
