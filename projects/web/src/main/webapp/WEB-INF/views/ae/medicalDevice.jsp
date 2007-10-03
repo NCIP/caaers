@@ -25,6 +25,32 @@
      <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
     
+    
+    	var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+
+        Element.observe(window, "load", function() {
+           
+
+			//var otherTextId= "aeReport.medicalDevice.otherDeviceOperator"
+    		//var otherSelectId= "aeReport.medicalDevice.deviceOperator"
+    	    //showOther(otherTextId,otherSelectId);
+            //Event.observe("aeReport.medicalDevice.deviceOperator", "change", function() { showOther(otherTextId,otherSelectId) })
+
+			if ( $('medicalDevice-0') != null ){
+				$('add-medicalDevice-button').type="hidden";
+			}
+			
+            new ListEditor("medicalDevice", createAE, "MedicalDevice", {
+                addFirstAfter: "single-fields",
+                addParameters: [aeReportId],
+                addCallback: function(index) {
+                	AE.registerCalendarPopups("medicalDevice-" + index)
+                	$('add-medicalDevice-button').type="hidden";
+                	
+                }
+            })
+        })
+    
     	
     	function showOther(otherTextId,otherSelectId){
     			if ($(otherSelectId).options[2].selected){
@@ -36,15 +62,14 @@
     			}
     		}
     	
-    	
+    	/*
     	Event.observe(window, "load", function() {
     		var otherTextId= "aeReport.medicalDevice.otherDeviceOperator"
     		var otherSelectId= "aeReport.medicalDevice.deviceOperator"
     	    showOther(otherTextId,otherSelectId);
            Event.observe("aeReport.medicalDevice.deviceOperator", "change", function() { showOther(otherTextId,otherSelectId) })
-           //Event.observe("aeReport.medicalDevice.deviceOperator-radio-1", "change", function() { showOther(otherTextId,otherSelectId) })
-           //Event.observe("aeReport.medicalDevice.deviceOperator-radio-2", "change", function() { showOther(otherTextId,otherSelectId) })
         })
+        */
     
     </script>
     <style type="text/css">
@@ -59,10 +84,13 @@
     <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_device" />
     </jsp:attribute>
-    <jsp:attribute name="singleFields">
-        <c:forEach items="${fieldGroups.desc.fields}" var="field">
-            <tags:renderRow field="${field}"/>
+    <jsp:attribute name="repeatingFields">
+        <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status">
+            <ae:oneMedicalDevice index="${status.index}"/>
         </c:forEach>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="medicalDevice" label="Add a Medical device"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

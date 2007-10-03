@@ -42,10 +42,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private AdverseEventResponseDescription responseDescription;
     private TreatmentInformation treatmentInformation;
-    private SurgeryIntervention surgeryIntervention;
-    private RadiationIntervention radiationIntervention;
+    //private SurgeryIntervention surgeryIntervention;
+    //private RadiationIntervention radiationIntervention;
     private AdditionalInformation additionalInformation;
-    private MedicalDevice medicalDevice;
+    //private MedicalDevice medicalDevice;
 
 
     private Reporter reporter;
@@ -63,6 +63,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(AdverseEvent.class);
         addReportChildLazyList(Lab.class);
+        addReportChildLazyList(MedicalDevice.class);
+        addReportChildLazyList(RadiationIntervention.class);
+        addReportChildLazyList(SurgeryIntervention.class);
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(AdverseEventPriorTherapy.class);
@@ -199,6 +202,41 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public List<Lab> getLabs() {
         return lazyListHelper.getLazyList(Lab.class);
     }
+    
+    public void addMedicalDevice(MedicalDevice medicalDevice) {
+        getMedicalDevicesInternal().add(medicalDevice);
+        if (medicalDevice != null) medicalDevice.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<MedicalDevice> getMedicalDevices() {
+        return lazyListHelper.getLazyList(MedicalDevice.class);
+    }
+    
+    
+    public void addRadiationIntervention(RadiationIntervention radiationIntervention){
+    	getRadiationInterventionsInternal().add(radiationIntervention);
+    	if ( radiationIntervention != null) radiationIntervention.setReport(this);
+    }
+    
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<RadiationIntervention> getRadiationInterventions() {
+        return lazyListHelper.getLazyList(RadiationIntervention.class);
+    }
+    
+    public void addSurgeryIntervention(SurgeryIntervention surgeryIntervention){
+    	getSurgeryInterventionsInternal().add(surgeryIntervention);
+    	if ( surgeryIntervention != null) surgeryIntervention.setReport(this);
+    }
+    
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<SurgeryIntervention> getSurgeryInterventions() {
+        return lazyListHelper.getLazyList(SurgeryIntervention.class);
+    }
+    
 
     public void addConcomitantMedication(ConcomitantMedication concomitantMedication) {
         getConcomitantMedicationsInternal().add(concomitantMedication);
@@ -288,6 +326,48 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     protected void setLabsInternal(List<Lab> labsInternal) {
         lazyListHelper.setInternalList(Lab.class, labsInternal);
     }
+    
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<MedicalDevice> getMedicalDevicesInternal(){
+    	return lazyListHelper.getInternalList(MedicalDevice.class);
+    }
+    
+    protected void setMedicalDevicesInternal(List<MedicalDevice> medicalDevicesInternal){
+    	lazyListHelper.setInternalList(MedicalDevice.class, medicalDevicesInternal);
+    }
+    
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<RadiationIntervention> getRadiationInterventionsInternal(){
+    	return lazyListHelper.getInternalList(RadiationIntervention.class);
+    }
+    
+    protected void setRadiationInterventionsInternal(List<RadiationIntervention> radiationInterventionsInternal){
+    	lazyListHelper.setInternalList(RadiationIntervention.class, radiationInterventionsInternal);
+    }
+    
+    //  This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    protected List<SurgeryIntervention> getSurgeryInterventionsInternal(){
+    	return lazyListHelper.getInternalList(SurgeryIntervention.class);
+    }
+    
+    protected void setSurgeryInterventionsInternal(List<SurgeryIntervention> surgeryInterventionsInternal){
+    	lazyListHelper.setInternalList(SurgeryIntervention.class, surgeryInterventionsInternal);
+    }
 
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
@@ -358,6 +438,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
 
+    /*
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public SurgeryIntervention getSurgeryIntervention() {
@@ -369,6 +450,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		this.surgeryIntervention = surgeryIntervention;
 		if (surgeryIntervention != null) surgeryIntervention.setReport(this);
 	}
+	*/
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -394,6 +476,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (responseDescription != null) responseDescription.setReport(this);
     }
 
+    /*
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public RadiationIntervention getRadiationIntervention() {
@@ -405,6 +488,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		this.radiationIntervention = radiationIntervention;
 		if (radiationIntervention != null) radiationIntervention.setReport(this);
 	}
+
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
@@ -418,6 +502,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 		this.medicalDevice = medicalDevice;
 		if (medicalDevice != null) medicalDevice.setReport(this);
 	}
+	*/
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")

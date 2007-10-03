@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -148,31 +150,35 @@ public class AttributionTabTest extends AeTabTestCase {
     }
 
     public void testSurgeryFieldsIncluded() throws Exception {
-        command.getAeReport().getSurgeryIntervention().setDescription("Something");
-        ensureAeCount(2);
+    	
+    	 ensureSurgeryInterventionCount(1);
+         ensureAeCount(3);
 
-        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
-        assertEquals("Wrong number of surgery groups", 1, map.size());
+         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+         assertEquals("Wrong number of surgery intervention groups", 1, map.size());
 
-        InputFieldGroup actualGroup0 = map.get("surgery0");
-        assertNotNull(actualGroup0);
-        assertEquals(2, actualGroup0.getFields().size());
-        assertEquals("attributionMap[surgery][0][0]", actualGroup0.getFields().get(0).getPropertyName());
-        assertEquals("attributionMap[surgery][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+         InputFieldGroup actualGroup0 = map.get("surgery0");
+         assertNotNull(actualGroup0);
+         assertEquals(3, actualGroup0.getFields().size());
+         assertEquals("attributionMap[surgery][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+         assertEquals("attributionMap[surgery][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+         assertEquals("attributionMap[surgery][2][0]", actualGroup0.getFields().get(2).getPropertyName());
     }
 
     public void testRadiationFieldsIncluded() throws Exception {
-        command.getAeReport().getRadiationIntervention().setDescription("Something");
-        ensureAeCount(2);
-
-        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
-        assertEquals("Wrong number of radiation groups", 1, map.size());
-
-        InputFieldGroup actualGroup0 = map.get("radiation0");
-        assertNotNull(actualGroup0);
-        assertEquals(2, actualGroup0.getFields().size());
-        assertEquals("attributionMap[radiation][0][0]", actualGroup0.getFields().get(0).getPropertyName());
-        assertEquals("attributionMap[radiation][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    	
+		 ensureRadiationInterventionCount(1);
+		 ensureAeCount(3);
+		
+		 Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+		 assertEquals("Wrong number of radiation intervention groups", 1, map.size());
+		
+		 InputFieldGroup actualGroup0 = map.get("radiation0");
+		 assertNotNull(actualGroup0);
+		 assertEquals(3, actualGroup0.getFields().size());
+		 assertEquals("attributionMap[radiation][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+		 assertEquals("attributionMap[radiation][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+		 assertEquals("attributionMap[radiation][2][0]", actualGroup0.getFields().get(2).getPropertyName());
     }
 
     public void testNoDiseaseFieldsWhenDiseaseBlank() throws Exception {
@@ -252,6 +258,18 @@ public class AttributionTabTest extends AeTabTestCase {
     private void ensureConMedCount(int count) {
         while (command.getAeReport().getConcomitantMedications().size() < count) {
             command.getAeReport().addConcomitantMedication(new ConcomitantMedication());
+        }
+    }
+    
+    private void ensureRadiationInterventionCount(int count) {
+        while (command.getAeReport().getRadiationInterventions().size() < count) {
+            command.getAeReport().addRadiationIntervention(new RadiationIntervention());
+        }
+    }
+    
+    private void ensureSurgeryInterventionCount(int count) {
+        while (command.getAeReport().getSurgeryInterventions().size() < count) {
+            command.getAeReport().addSurgeryIntervention(new SurgeryIntervention());
         }
     }
 

@@ -10,6 +10,9 @@ import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -121,11 +124,29 @@ public class AdverseEventReportSerializer {
 	    	//build treatment info
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
 
-	    	aer.setRadiationIntervention(hibernateAdverseEventReport.getRadiationIntervention());
+	    	
 	    	//aer.getRadiationIntervention().setAdministration(hibernateAdverseEventReport.getRadiationIntervention().getAdministration());
-	    	aer.setSurgeryIntervention(hibernateAdverseEventReport.getSurgeryIntervention());
+	    
+	    	//build MedicalDevices
+	    	List<MedicalDevice> medicalDeviceList = hibernateAdverseEventReport.getMedicalDevices();
 
-	    	aer.setMedicalDevice(hibernateAdverseEventReport.getMedicalDevice());
+	    	for (MedicalDevice medicalDevice: medicalDeviceList) {
+	    		aer.addMedicalDevice(medicalDevice);
+	    	}
+	    	
+	    	//	build RadiationInterventions
+	    	List<RadiationIntervention> radiationInterventionList = hibernateAdverseEventReport.getRadiationInterventions();
+
+	    	for (RadiationIntervention radiationIntervention: radiationInterventionList) {
+	    		aer.addRadiationIntervention(radiationIntervention);
+	    	}
+	    	
+	    	//	build SurgeryInterventions
+	    	List<SurgeryIntervention> surgeryInterventionList = hibernateAdverseEventReport.getSurgeryInterventions();
+
+	    	for (SurgeryIntervention surgeryIntervention: surgeryInterventionList) {
+	    		aer.addSurgeryIntervention(surgeryIntervention);
+	    	}
 
 	    	aer.setAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation());
 

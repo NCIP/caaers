@@ -210,9 +210,10 @@
         list_index="0"
         />
 
-    <SURGERY_INTERVENTIONS
+    <AE_SURGERY_INTERVENTIONS
         id="-34"
         report_id="-17"
+        list_index="0"
         />
     <AE_ATTRIBUTIONS
         id="-18"
@@ -223,9 +224,10 @@
         list_index="0"
         />
 
-    <RADIATION_INTERVENTIONS
+    <AE_RADIATION_INTERVENTIONS
         id="-37"
         report_id="-17"
+        list_index="0"
         />
     <AE_ATTRIBUTIONS
         id="-19"

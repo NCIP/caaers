@@ -4,11 +4,11 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
 import java.util.Map;
-import java.util.Arrays;
 
 
 /**
@@ -23,20 +23,28 @@ public class SurgeryInterventionTab extends AeTab {
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	//-
-    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
-        String baseProp = "aeReport.surgeryIntervention";
+    	
+        RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("surgeryIntervention", "aeReport.surgeryInterventions");
+    	
+    	fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
+            public String createDisplayName(int index) {
+                return "Surgery " + (index + 1);
+            }
+        });
 
 
-        allFields.getFields().add(InputFieldFactory.createTextField(baseProp + ".treatmentArm", "Treatment arm", false));
-        InputField descField = InputFieldFactory.createTextArea(baseProp + ".description", "Treatment arm description", false);
+    	fieldFactory.addField(InputFieldFactory.createTextField("treatmentArm", "Treatment arm", false));
+        InputField descField = InputFieldFactory.createTextArea("description", "Treatment arm description", false);
         InputFieldAttributes.setColumns(descField, 45);
-        allFields.getFields().add(descField);
-        allFields.getFields().add(InputFieldFactory.createAutocompleterField(baseProp + ".anatomicSite", "Intervention site", false));
-        allFields.getFields().add(InputFieldFactory.createDateField(
-                baseProp + ".interventionDate", "Date of intervention",  false));
-    	//-
-        return createFieldGroupMap(Arrays.asList(allFields));
+        fieldFactory.addField(descField);
+        fieldFactory.addField(InputFieldFactory.createAutocompleterField("anatomicSite", "Intervention site", false));
+        fieldFactory.addField(InputFieldFactory.createDateField(
+                "interventionDate", "Date of intervention",  false));
+        //      -
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        int siCount = command.getAeReport().getSurgeryInterventions().size();
+        map.addRepeatingFieldGroupFactory(fieldFactory, siCount);
+        return map;
     }
 
     @Override

@@ -12,6 +12,25 @@
      <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
     
+    	var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+
+        Element.observe(window, "load", function() {
+        
+			if ( $('radiationIntervention-0') != null ){
+				$('add-radiationIntervention-button').type="hidden";
+			}
+			
+            new ListEditor("radiationIntervention", createAE, "RadiationIntervention", {
+                addFirstAfter: "single-fields",
+                addParameters: [aeReportId],
+                addCallback: function(index) {
+                	AE.registerCalendarPopups("radiationIntervention-" + index)
+                	$('add-radiationIntervention-button').type="hidden";
+                	
+                }
+            })
+        })
+    
     </script>
     <style type="text/css">
     	div.row div.label { width: 16em; }
@@ -28,10 +47,13 @@
     <jsp:attribute name="instructions">
     	<tags:instructions code="instruction_ae_radiation" />
     </jsp:attribute>
-    <jsp:attribute name="singleFields">
-        <c:forEach items="${fieldGroups.desc.fields}" var="field">
-            <tags:renderRow field="${field}"/>
+   <jsp:attribute name="repeatingFields">
+        <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status">
+            <ae:oneRadiationIntervention index="${status.index}"/>
         </c:forEach>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="radiationIntervention" label="Add a radiation"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

@@ -11,19 +11,19 @@ public class RadiationInterventionTabTest extends AeTabTestCase {
     protected RadiationInterventionTab createTab() {
         return new RadiationInterventionTab();
     }
-
-    public void testFields() throws Exception {
-        assertFieldProperties("desc",
-            "aeReport.radiationIntervention.treatmentArm",
-            "aeReport.radiationIntervention.description",
-            "aeReport.radiationIntervention.administration",
-            "aeReport.radiationIntervention.dosage",
-            "aeReport.radiationIntervention.dosageUnit",
-            "aeReport.radiationIntervention.lastTreatmentDate",
-            "aeReport.radiationIntervention.fractionNumber",
-            "aeReport.radiationIntervention.daysElapsed",
-            "aeReport.radiationIntervention.adjustment"
-            
+    
+    public void testFieldProperties() throws Exception {
+        assertFieldProperties(
+            "radiationIntervention6",
+            "aeReport.radiationInterventions[6].treatmentArm",
+            "aeReport.radiationInterventions[6].description",
+            "aeReport.radiationInterventions[6].administration",
+            "aeReport.radiationInterventions[6].dosage",
+            "aeReport.radiationInterventions[6].dosageUnit",
+            "aeReport.radiationInterventions[6].lastTreatmentDate",
+            "aeReport.radiationInterventions[6].fractionNumber",
+            "aeReport.radiationInterventions[6].daysElapsed",
+            "aeReport.radiationInterventions[6].adjustment"
         );
     }
 }

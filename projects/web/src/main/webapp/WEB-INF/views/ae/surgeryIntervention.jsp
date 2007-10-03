@@ -23,50 +23,55 @@
     </style>
     
     <script type="text/javascript">
+    
+    	var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
     	
-         var anatomicAutocompleterProps = {
-          basename: "aeReport.surgeryIntervention.anatomicSite",
-          populator: function(autocompleter, text) {
-              createAE.matchAnatomicSite(text, function(values) {
-                  autocompleter.setChoices(values)
-              })
-          },
-          valueSelector: function(obj) {
-              return obj.name
-          }
-      }
-      
-      function acPostSelect(mode, selectedChoice) {
-          //Element.update(mode.basename + "-selected-name", mode.valueSelector(selectedChoice))
-          $(mode.basename).value = selectedChoice.id;
-          //$(mode.basename + '-selected').show()
-          //new Effect.Highlight(mode.basename + "-selected")
-      }
+    	
+    	 var EnterAnatomicSite = Class.create()
+        Object.extend(EnterAnatomicSite.prototype, {
+            initialize: function(index, anatomicSiteName) {
+                this.index = index
+                var cmProperty = "aeReport.surgeryInterventions[" + index + "]";
+                this.anatomicSiteProperty = cmProperty + ".anatomicSite"
 
-      function updateSelectedDisplay(mode) {
-      	 
-          if ($(mode.basename).value) {
-              	$(mode.basename + '-input').value = '${command.aeReport.surgeryIntervention.anatomicSite.name}'
-          }
-      }
+                if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
+						
+       
+                AE.createStandardAutocompleter(
+                    this.anatomicSiteProperty, this.termPopulator.bind(this),
+                    function(anatomicSiteCondition) { return anatomicSiteCondition.name })
 
-      function acCreate(mode) {
-          new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-              mode.populator, {
-              valueSelector: mode.valueSelector,
-              afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                  acPostSelect(mode, selectedChoice)
-              },
-              indicator: mode.basename + "-indicator"
-          })
-         
-      }
+            },
 
+            termPopulator: function(autocompleter, text) {
+                createAE.matchAnatomicSite(text, function(values) {
+                    autocompleter.setChoices(values)
+                })
+            }
+        })
+    	
 
-        Event.observe(window, "load", function() {
-            acCreate(anatomicAutocompleterProps)
-            updateSelectedDisplay(anatomicAutocompleterProps)
-            
+        Element.observe(window, "load", function() {
+        	
+        	<c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgeryIntervention">
+            new EnterAnatomicSite(${status.index}, '${surgeryIntervention.anatomicSite.name}')
+            </c:forEach>
+           
+
+			if ( $('surgeryIntervention-0') != null ){
+				$('add-surgeryIntervention-button').type="hidden";
+			}
+			
+            new ListEditor("surgeryIntervention", createAE, "SurgeryIntervention", {
+                addFirstAfter: "single-fields",
+                addParameters: [aeReportId],
+                addCallback: function(index) {
+                	AE.registerCalendarPopups("surgeryIntervention-" + index)
+                	new EnterAnatomicSite(index);
+                	$('add-surgeryIntervention-button').type="hidden";
+                	
+                }
+            })
         })
     
     </script>
@@ -76,10 +81,13 @@
     <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_surgery" />   
     </jsp:attribute>
-    <jsp:attribute name="singleFields">
-        <c:forEach items="${fieldGroups.desc.fields}" var="field">
-            <tags:renderRow field="${field}"/>
+   <jsp:attribute name="repeatingFields">
+        <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status">
+            <ae:oneSurgeryIntervention index="${status.index}"/>
         </c:forEach>
+    </jsp:attribute>
+    <jsp:attribute name="localButtons">
+        <tags:listEditorAddButton divisionClass="surgeryIntervention" label="Add a Surgery intervention"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

@@ -13,13 +13,13 @@ import java.util.Date;
  * @author Krikor Krumlian
  */
 @Entity
-@Table(name="radiation_interventions")
+@Table(name="ae_radiation_interventions")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_radiation_interventions_id")
+        @Parameter(name="sequence", value="seq_ae_radiation_interventions_id")
     }
 )
-public class RadiationIntervention extends AbstractExpeditedReportSingleChild {
+public class RadiationIntervention extends AbstractExpeditedReportCollectionElementChild {
    
     private String treatmentArm;
     private String description;

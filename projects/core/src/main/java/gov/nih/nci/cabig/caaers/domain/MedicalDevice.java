@@ -13,9 +13,9 @@ import java.util.Date;
  * @author Krikor Krumlian
  */
 @Entity
-@Table(name = "medical_devices")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_medical_devices_id") })
-public class MedicalDevice extends AbstractExpeditedReportSingleChild {
+@Table(name = "ae_medical_devices")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_medical_devices_id") })
+public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild {
 
 	private String brandName;
 	private String commonName;

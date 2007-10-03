@@ -385,23 +385,24 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewMedicalDevice() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-            	report.getMedicalDevice().setBrandName("IBM");
+            	report.getMedicalDevices().get(0).setBrandName("IBM");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals("IBM", loaded.getMedicalDevice().getBrandName());
+                assertEquals("IBM", loaded.getMedicalDevices().get(0).getBrandName());
             }
         });
     }
+    
 
     public void testSaveNewRadiationIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getRadiationIntervention().setTreatmentArm("ARM:");
+                report.getRadiationInterventions().get(0).setTreatmentArm("ARM:");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals("ARM:", loaded.getRadiationIntervention().getTreatmentArm());
+                assertEquals("ARM:", loaded.getRadiationInterventions().get(0).getTreatmentArm());
             }
         });
     }

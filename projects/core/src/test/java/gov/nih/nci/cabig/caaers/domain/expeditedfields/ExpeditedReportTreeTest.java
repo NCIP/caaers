@@ -84,7 +84,7 @@ public class ExpeditedReportTreeTest extends TestCase {
     }
 
     public void testFindNestedPropertyNode() throws Exception {
-        TreeNode found = tree.find("radiationIntervention.description");
+        TreeNode found = tree.find("radiationInterventions[].description");
         assertNotNull(found);
         assertEquals("Treatment arm description", found.getDisplayName());
     }

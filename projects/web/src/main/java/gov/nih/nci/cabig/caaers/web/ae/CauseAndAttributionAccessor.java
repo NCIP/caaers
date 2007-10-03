@@ -218,12 +218,13 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class SurgeryAccessor extends SingleObjectAccessor<SurgeryIntervention, SurgeryAttribution> {
+    private static class SurgeryAccessor extends CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.SURGERY_ATTRIBUTION_KEY;
         }
 
+        /*
         @Override
         protected SurgeryIntervention getSingleCause(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getSurgeryIntervention();
@@ -232,7 +233,13 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         protected boolean considerEmpty(SurgeryIntervention cause) {
             return cause.getDescription() == null;
+        }*/
+        
+        @Override
+        protected List<SurgeryIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getSurgeryInterventions();
         }
+
 
         @Override
         public SurgeryAttribution createAttribution() {
@@ -250,12 +257,13 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class RadiationAccessor extends SingleObjectAccessor<RadiationIntervention, RadiationAttribution> {
+    private static class RadiationAccessor extends CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.RADIATION_ATTRIBUTION_KEY;
         }
-
+        
+        /*
         @Override
         protected RadiationIntervention getSingleCause(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getRadiationIntervention();
@@ -264,7 +272,13 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         protected boolean considerEmpty(RadiationIntervention cause) {
             return cause.getDescription() == null;
+        }*/
+        
+        @Override
+        protected List<RadiationIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getRadiationInterventions();
         }
+        
 
         @Override
         public RadiationAttribution createAttribution() {
