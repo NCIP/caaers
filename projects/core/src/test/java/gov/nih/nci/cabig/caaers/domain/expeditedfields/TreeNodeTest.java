@@ -130,6 +130,10 @@ public class TreeNodeTest extends TestCase {
         assertFindInDeepTree("r.l[].l7.l72", "l72");
     }
 
+    public void testFindOtherInCoded() throws Exception {
+        assertNode("r.z", "z", null, deepTree.find("r.oz"));
+    }
+
     public void testFindIsRelative() throws Exception {
         TreeNode a = deepTree.getChildren().get(0).getChildren().get(0);
         assertEquals("Test setup failure", "r.a", a.getPropertyPath());

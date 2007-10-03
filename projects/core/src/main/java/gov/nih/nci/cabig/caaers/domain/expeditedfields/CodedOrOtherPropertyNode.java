@@ -26,6 +26,12 @@ class CodedOrOtherPropertyNode extends PropertyNode {
         }
     }
 
+    @Override
+    protected boolean isImmediatePropertyMatch(String immediatePropertyName) {
+        return immediatePropertyName.equals(getCodedPropertyName())
+            || immediatePropertyName.equals(getOtherPropertyName());
+    }
+
     ////// BEAN PROPERTIES
 
     public String getCodedPropertyName() {

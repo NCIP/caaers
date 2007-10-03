@@ -20,10 +20,10 @@ class PropertyNode extends TreeNode {
     protected TreeNode matchProperty(String desiredPropertyName) {
         if (log.isDebugEnabled()) log.debug("Looking for " + desiredPropertyName + " in " + this);
         String[] bits = desiredPropertyName.split("\\.", 2);
-        String immediatePropertyName = bits[0].replaceAll("[\\[\\]]", "");
+        String immediatePropertyName = bits[0];
         String grandchildrenEtc = bits.length > 1 ? bits[1] : null;
         if (log.isDebugEnabled()) log.debug(" + " + immediatePropertyName + ' ' + grandchildrenEtc);
-        if (getPropertyName().equals(immediatePropertyName)) {
+        if (isImmediatePropertyMatch(immediatePropertyName)) {
             if (log.isDebugEnabled()) log.debug(" + Matched immediate");
             if (bits.length == 1) {
                 return this;
@@ -38,6 +38,10 @@ class PropertyNode extends TreeNode {
             log.debug(" - No property " + desiredPropertyName + " found as child of " + this);
         }
         return null;
+    }
+
+    protected boolean isImmediatePropertyMatch(String immediatePropertyName) {
+        return getPropertyName().equals(immediatePropertyName);
     }
 
     @Override

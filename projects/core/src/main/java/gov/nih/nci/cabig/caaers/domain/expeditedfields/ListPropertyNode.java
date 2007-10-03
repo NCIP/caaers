@@ -37,6 +37,11 @@ class ListPropertyNode extends PropertyNode {
     }
 
     @Override
+    protected boolean isImmediatePropertyMatch(String immediatePropertyName) {
+        return immediatePropertyName.replaceAll("\\[\\d*\\]", "").equals(getPropertyName());
+    }
+
+    @Override
     public String getDisplayName(int index) {
         return getDisplayNameCreator().createIndexedName(index);
     }
