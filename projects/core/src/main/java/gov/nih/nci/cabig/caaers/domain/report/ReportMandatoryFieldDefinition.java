@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -16,10 +17,11 @@ import org.hibernate.annotations.Parameter;
     @Parameter(name="sequence", value="seq_mandatory_field_defs_id")
         }
 )
+// TODO: why store field definitions for mandatory=false?
 public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements Serializable {
 
 	private String fieldPath;
-	private Boolean mandatory;
+    private Boolean mandatory;
 
 
 	public ReportMandatoryFieldDefinition(){
@@ -34,7 +36,12 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 		this.fieldPath = fieldPath;
 	}
 
-	public String getFieldPath() {
+    @Transient
+    public boolean isMandatory() {
+        return getMandatory() != null && getMandatory();
+    }
+
+    public String getFieldPath() {
 		return fieldPath;
 	}
 	public void setFieldPath(String fieldPath) {
