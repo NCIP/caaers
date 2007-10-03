@@ -25,4 +25,9 @@ public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignm
 				 new Object[]{"%" + code + "%",studyId});
 	}
 
+	@SuppressWarnings(value="unchecked")
+	public List<TreatmentAssignment> getAll(){
+		 return getHibernateTemplate().find("from TreatmentAssignment ta order by ta.id");
+	}
+	
 }
