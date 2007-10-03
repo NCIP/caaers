@@ -1,27 +1,28 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.HashSet;
-
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Rhett Sutphin
@@ -33,17 +34,19 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Map<String, List<List<Attribution>>> attributionMap;
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
 
-    protected ExpeditedAdverseEventReportDao reportDao;
-    protected ReportDefinitionDao reportDefinitionDao;
-
-    protected List<String> mandatorySections;
-    protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
+    protected Collection<ExpeditedReportSection> mandatorySections;
+    protected MandatoryProperties mandatoryProperties;
 
     private String treatmentDescriptionType;
 
-    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao) {
+    protected ExpeditedAdverseEventReportDao reportDao;
+    protected ReportDefinitionDao reportDefinitionDao;
+    protected ExpeditedReportTree expeditedReportTree;
+
+    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
+        this.expeditedReportTree = expeditedReportTree;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
     }
 
@@ -96,7 +99,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         Set<ReportDefinition> defsInAeReport = new HashSet<ReportDefinition>();
         for (Report report : this.getAeReport().getReports()) {
             log.debug("Found Report in new aeReport: "
-                + report.getReportDefinition().getName() + " " + report.getId());
+                + report.getReportDefinition().getName() + ' ' + report.getId());
             log.debug("Report def hashCode is " + Integer.toHexString(report.getReportDefinition().hashCode()));
             if (!report.isRequired()) {
                 defsInAeReport.add(report.getReportDefinition());
@@ -122,36 +125,38 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.attributionMap = attributionMap;
     }
 
-    public List<String> getMandatorySections() {
-    	return mandatorySections;
+    public Collection<ExpeditedReportSection> getMandatorySections() {
+        return mandatorySections;
     }
 
-    public void setMandatorySections(List<String> sections) {
-    	this.mandatorySections = sections;
+    public void setMandatorySections(Collection<ExpeditedReportSection> sections) {
+        this.mandatorySections = sections;
     }
 
-    public void refreshMandatoryFieldMap(){
-    	if(aeReport.getReports() == null) return;
-    	for(Report report : aeReport.getReports()){
-    		if(report.getReportDefinition().getMandatoryFields() == null) continue;
-    		for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
-    			mandatoryFieldMap.put(field.getFieldPath(), field.getMandatory());
-    		}
-    	}
+    public void refreshMandatoryProperties() {
+        if (aeReport.getReports() == null) return;
+        mandatoryProperties = new MandatoryProperties(expeditedReportTree);
+        for (Report report : aeReport.getReports()) {
+            if (report.getReportDefinition().getMandatoryFields() == null) continue;
+            for (ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()) {
+                mandatoryProperties.add(field);
+            }
+        }
+    }
+
+    public MandatoryProperties getMandatoryProperties() {
+        return mandatoryProperties;
     }
 
     public String getTreatmentDescriptionType() {
-		return treatmentDescriptionType;
-	}
+        return treatmentDescriptionType;
+    }
+
     public void setTreatmentDescriptionType(String type) {
-		this.treatmentDescriptionType = type;
-	}
+        this.treatmentDescriptionType = type;
+    }
 
-	public Map<String, Boolean> getMandatoryFieldMap() {
-		return mandatoryFieldMap;
-	}
-
-	@Override
+    @Override
     public String toString() {
         return new StringBuilder(getClass().getName())
             .append("[\n    aeReport: ").append(getAeReport())

@@ -2,10 +2,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 
 /**
  * @author Rhett Sutphin
@@ -31,11 +33,12 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 
     void reassociate();
 
-    List<String> getMandatorySections();
-    void setMandatorySections(List<String> sections);
+    Collection<ExpeditedReportSection> getMandatorySections();
+    void setMandatorySections(Collection<ExpeditedReportSection> sections);
 
     //TODO: the caller should use the equivalent method in report service.
     @Deprecated
-    void refreshMandatoryFieldMap();
-    Map<String, Boolean> getMandatoryFieldMap();
+    void refreshMandatoryProperties();
+
+    MandatoryProperties getMandatoryProperties();
 }

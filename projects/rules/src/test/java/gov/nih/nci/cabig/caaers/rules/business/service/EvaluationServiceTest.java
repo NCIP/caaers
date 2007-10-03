@@ -1,28 +1,22 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import static org.easymock.EasyMock.*;
-import org.hibernate.jdbc.Expectation;
-
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.service.ReportService;
+import static org.easymock.EasyMock.expect;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class EvaluationServiceTest extends CaaersTestCase {
 
@@ -88,18 +82,18 @@ public class EvaluationServiceTest extends CaaersTestCase {
     }
 
     public void testIsSubmittable() throws Exception{
-    	ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-    	List<String> mandatorySections = Arrays.asList("MEDICAL_INFO_SCECTION","SURGERY_INTERVENTION_SECTION");
-    	ErrorMessages messages = new ErrorMessages();
-    	Report report = new Report();
-    	report.setAeReport(aeReport);
-    	aeReport.addReport(report);
-    	expect(adverseEventEvaluationService.mandatorySectionsForReport(report)).andReturn(mandatorySections);
-    	expect(reportService.validate(report, mandatorySections)).andReturn(messages);
-    	replayMocks();
-    	ErrorMessages msgs = service.isSubmitable(report);
-    	verifyMocks();
-    	assertEquals("ErrorMessage object is not same",messages, msgs);
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        List<ExpeditedReportSection> mandatorySections = Arrays.asList(ExpeditedReportSection.MEDICAL_INFO_SCECTION, ExpeditedReportSection.SURGERY_INTERVENTION_SECTION);
+        ErrorMessages messages = new ErrorMessages();
+        Report report = new Report();
+        report.setAeReport(aeReport);
+        aeReport.addReport(report);
+        expect(adverseEventEvaluationService.mandatorySectionsForReport(report)).andReturn(mandatorySections);
+        expect(reportService.validate(report, mandatorySections)).andReturn(messages);
+        replayMocks();
+        ErrorMessages msgs = service.isSubmittable(report);
+        verifyMocks();
+        assertEquals("ErrorMessage object is not same",messages, msgs);
     }
 
 }

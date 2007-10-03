@@ -240,6 +240,17 @@ public class TreeNodeTest extends TestCase {
             deepTree.find("r.z").getPropertyValuesFrom(instance));
     }
 
+    public void testIsAncestorOf() throws Exception {
+        TreeNode r = deepTree.find("r");
+        TreeNode a = deepTree.find("r.a");
+        assertTrue(deepTree.isAncestorOf(r));
+        assertTrue(deepTree.isAncestorOf(a));
+        assertTrue(r.isAncestorOf(a));
+        assertFalse(a.isAncestorOf(r));
+        assertFalse(a.isAncestorOf(a));
+        assertFalse(r.isAncestorOf(r));
+    }
+
     private void assertSinglePropertyValue(String msg, String expectedName, Object expectedValue, PropertyValues pvs) {
         assertEquals(msg + ": Expected only one PV", 1, pvs.getPropertyValues().length);
         assertPropertyValue(msg, expectedName, expectedValue, pvs.getPropertyValues()[0]);

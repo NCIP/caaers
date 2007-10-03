@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
 
 import javax.naming.NamingException;
 
@@ -222,11 +224,11 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
 		String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
-		List<String> sections = aees.mandatorySections(ex);
+		Collection<ExpeditedReportSection> sections = aees.mandatorySections(ex);
 
 		System.out.println(msg);
 		
-		for (String section : sections) {
+		for (ExpeditedReportSection section : sections) {
 			System.out.println(section);
 		}
 		
@@ -302,11 +304,11 @@ public class RulesEngineServiceObjectGraphTest extends TestCase {
 		
 		AdverseEventEvaluationService aees = new AdverseEventEvaluationServiceImpl();
 		String msg = aees.assesAdverseEvent(ae1, this.createStudy(studyName, orgName));
-		List<String> sections = aees.mandatorySections(ex);
+		Collection<ExpeditedReportSection> sections = aees.mandatorySections(ex);
 
 		System.out.println(msg);
 		
-		for (String section : sections) {
+		for (ExpeditedReportSection section : sections) {
 			System.out.println(section);
 		}
 		

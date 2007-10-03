@@ -1,20 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import static org.easymock.classextension.EasyMock.expect;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * @author Rhett Sutphin
@@ -45,26 +45,25 @@ public class CheckpointTabTest extends AeTabTestCase {
         return tab;
     }
 
-//TODO: fix the commented testcase URGENT
-//    public void testPostProcessAddsOptionalReports() throws Exception {
-//        assertEquals(0, command.getAeReport().getReports().size());
-//        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-//        reportDefs.add(r1);
-//        reportDefs.add(r2);
-//        reportDefs.add(r3);
-//
-//        command.getOptionalReportDefinitionsMap().put(r1, Boolean.TRUE);
-//        command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
-//        command.getOptionalReportDefinitionsMap().put(r3, Boolean.TRUE);
-//        evaluationService.addOptionalReports(command.getAeReport(), reportDefs);
-//        expect(reportService.createReport(r1, command.getAeReport())).andReturn(null); // DC
-//        expect(reportService.createReport(r3, command.getAeReport())).andReturn(null); // DC
-//
-//        replayMocks();
-//
-//        getTab().postProcess(request, command, errors);
-//        verifyMocks();
-//    }
+    public void testPostProcessAddsOptionalReports() throws Exception {
+        assertEquals(0, command.getAeReport().getReports().size());
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        reportDefs.add(r1);
+        reportDefs.add(r2);
+        reportDefs.add(r3);
+
+        command.getOptionalReportDefinitionsMap().put(r1, Boolean.TRUE);
+        command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
+        command.getOptionalReportDefinitionsMap().put(r3, Boolean.TRUE);
+        evaluationService.addOptionalReports(command.getAeReport(), reportDefs);
+        expect(reportService.createReport(r1, command.getAeReport())).andReturn(null); // DC
+        expect(reportService.createReport(r3, command.getAeReport())).andReturn(null); // DC
+
+        replayMocks();
+
+        getTab().postProcess(request, command, errors);
+        verifyMocks();
+    }
 
     public void testPostProcessDoesNotInterfereWithExistingRequiredReports() throws Exception {
         command.getAeReport().getReports().add(createRequiredReport(r1));
@@ -125,7 +124,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     public void testPostProcessSavesWhenThereAreAnyReports() throws Exception {
         command.getAeReport().getReports().add(createRequiredReport(r2));
         reportDao.save(command.getAeReport());
-        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<String>emptyList());
+        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<ExpeditedReportSection>emptyList());
         replayMocks();
         getTab().postProcess(request, command, errors);
         verifyMocks();
@@ -133,7 +132,7 @@ public class CheckpointTabTest extends AeTabTestCase {
 
     public void testPostProcessDoesNotSaveWhenThereAreNoReports() throws Exception {
         command.getAeReport().getReports().clear();
-        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<String>emptyList());
+        expect(evaluationService.mandatorySections(command.getAeReport())).andReturn(Collections.<ExpeditedReportSection>emptyList());
         replayMocks();
         getTab().postProcess(request, command, errors);
         verifyMocks();

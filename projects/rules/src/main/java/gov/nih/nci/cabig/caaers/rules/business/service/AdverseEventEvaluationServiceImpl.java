@@ -5,9 +5,9 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -16,19 +16,18 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
-import gov.nih.nci.cabig.caaers.service.MockEvaluationService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.PathNotFoundException;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.LinkedHashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -134,7 +133,7 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 	return map;
 }
 
-public List<String> mandatorySectionsForReport(Report report) throws Exception{
+public Collection<ExpeditedReportSection> mandatorySectionsForReport(Report report) throws Exception{
 	List<AdverseEvent> adverseEvents = report.getAeReport().getAdverseEvents();
 	Study study = report.getAeReport().getStudy();
 	ReportDefinition reportDefinition = report.getReportDefinition();
@@ -162,17 +161,31 @@ public List<String> mandatorySectionsForReport(Report report) throws Exception{
 		}
 
 	}
-	return new ArrayList<String>(sections);
+
+    if (log.isDebugEnabled()) {
+        log.debug("Determined " + sections + " are mandatory for " + report);
+    }
+
+    return sectionNamesToSections(sections);
 }
 
-public List<String> mandatorySections(ExpeditedAdverseEventReport aeReport) throws Exception{
-	Set<String> sections = new HashSet<String>();
+    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport aeReport) throws Exception{
+        Set<ExpeditedReportSection> sections = new LinkedHashSet<ExpeditedReportSection>();
 
-	for(Report report : aeReport.getReports() ) {
-		sections.addAll(mandatorySectionsForReport(report));
-	}
-	return new ArrayList<String>(sections);
-}
+        for (Report report : aeReport.getReports()) {
+            sections.addAll(mandatorySectionsForReport(report));
+        }
+
+        return sections;
+    }
+
+    private Collection<ExpeditedReportSection> sectionNamesToSections(Collection<String> sectionNames) {
+        List<ExpeditedReportSection> sections = new LinkedList<ExpeditedReportSection>();
+        for (String sectionName : sectionNames) {
+            sections.add(ExpeditedReportSection.getByDisplayName(sectionName));
+        }
+        return sections;
+    }
 
 /**
  *  fire the rules at sponsor defined defined study level..

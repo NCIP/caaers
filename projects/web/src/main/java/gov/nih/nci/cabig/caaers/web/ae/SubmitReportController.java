@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,7 +31,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	SubmitExpeditedAdverseEventCommand command
-            = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
+            = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));

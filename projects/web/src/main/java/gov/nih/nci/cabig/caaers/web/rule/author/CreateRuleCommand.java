@@ -600,7 +600,7 @@ public class CreateRuleCommand implements RuleInputCommand
     	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
     	String[] sectionNames = new String[expeditedReportSections.length];
     	for (int i=0;i<expeditedReportSections.length;i++ ){
-    		sectionNames[i] = expeditedReportSections[i].displayName();
+    		sectionNames[i] = expeditedReportSections[i].getDisplayName();
     	}
     	return sectionNames;
 	}

@@ -3,11 +3,13 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 
 import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Rhett Sutphin
@@ -26,7 +28,7 @@ public interface EvaluationService {
      * @return {@link ErrorMessages}
      */
     //return type based on the method name, is misleading,need to find a better name.
-    public ErrorMessages isSubmitable(Report report);
+    public ErrorMessages isSubmittable(Report report);
 
     /**
      * Will return the ReportDefinition that are marked required at rules engine.
@@ -65,7 +67,7 @@ public interface EvaluationService {
      * @param expeditedData
      * @return All the mandatory sections for a given expedited report.
      */
-    List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData);
+    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData);
 
     /**
      * @return All the report definitions which might apply to the given

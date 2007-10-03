@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,7 +30,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         EditExpeditedAdverseEventCommand command
-            = new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao);
+            = new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
         /* TODO: make this work
         command.setAeReport(getDao().getById(
             ServletRequestUtils.getRequiredIntParameter(request, "aeReport")));
@@ -44,11 +43,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected void onBind(HttpServletRequest request, Object command,
     		BindException errors) throws Exception {
     	super.onBind(request, command, errors);
-    	EditExpeditedAdverseEventCommand cmd = (EditExpeditedAdverseEventCommand)command;
+        log.debug("onBind");
+        EditExpeditedAdverseEventCommand cmd = (EditExpeditedAdverseEventCommand)command;
     	//In edit flow from begining the tab must be hilighted.
-    	List<String> sections = evaluationService.mandatorySections(cmd.getAeReport());
-    	cmd.setMandatorySections(sections);
-    	cmd.refreshMandatoryFieldMap();
+        cmd.setMandatorySections(evaluationService.mandatorySections(cmd.getAeReport()));
+    	cmd.refreshMandatoryProperties();
     	
     	// Amendment implementation
     	// Test this

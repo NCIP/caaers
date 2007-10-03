@@ -6,9 +6,9 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -165,7 +166,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
         //Same organization play multiple roles.
-        HashSet<Integer> orgIdSet = new HashSet<Integer>();
+        Set<Integer> orgIdSet = new HashSet<Integer>();
         for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
         	orgIdSet.add(studyOrganization.getOrganization().getId());
         }
@@ -193,17 +194,14 @@ public class EvaluationServiceImpl implements EvaluationService {
         return reportDefinition.getName();
     }
 
-    public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData){
-    	List<String> sections;
-
+    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
         try {
-        	sections = adverseEventEvaluationService.mandatorySections(expeditedData);
-
+            Collection<ExpeditedReportSection> sections = adverseEventEvaluationService.mandatorySections(expeditedData);
+            if (log.isDebugEnabled()) log.debug("Mandatory sections: " + sections);
+            return sections;
         } catch (Exception e) {
             throw new CaaersSystemException("Could not get mandatory sections", e);
         }
-
-        return sections;
     }
 
    /**
@@ -213,15 +211,14 @@ public class EvaluationServiceImpl implements EvaluationService {
     * @return {@link ErrorMessages}
     */
     //return type based on the method name, is misleading,need to find a better name.
-    public ErrorMessages isSubmitable(Report report) {
-    	try {
-			List<String> mandatorySections = adverseEventEvaluationService.mandatorySectionsForReport(report);
-			return reportService.validate(report, mandatorySections);
-		} catch (Exception e) {
-			log.warn("Unable to evalute mandatory sections", e);
-		}
-		return new ErrorMessages();
-    }
+   public ErrorMessages isSubmittable(Report report) {
+       try {
+           return reportService.validate(report,
+               adverseEventEvaluationService.mandatorySectionsForReport(report));
+       } catch (Exception e) {
+           throw new CaaersSystemException("Unable to determine mandatory sections", e);
+       }
+   }
 
      ////// CONFIGURATION
 

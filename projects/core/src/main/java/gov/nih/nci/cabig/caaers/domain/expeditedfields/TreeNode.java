@@ -176,6 +176,15 @@ public abstract class TreeNode {
             .toString();
     }
 
+    public boolean isAncestorOf(TreeNode node) {
+        if (isLeaf()) return false;
+        if (getChildren().contains(node)) return true;
+        for (TreeNode child : getChildren()) {
+            if (child.isAncestorOf(node)) return true;
+        }
+        return false;
+    }
+
     private static final class NullDisplayNameCreator implements DisplayNameCreator {
         public static final DisplayNameCreator INSTANCE = new NullDisplayNameCreator();
 

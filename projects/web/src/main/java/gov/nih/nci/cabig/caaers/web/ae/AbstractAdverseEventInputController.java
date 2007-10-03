@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -55,7 +56,8 @@ public abstract class AbstractAdverseEventInputController
     private static final int SUBMISSION_PAGE = 16;
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
     private static final String MANDATORY_TAB_KEY = "MANDATORY_TABS";
-    private final Log log = LogFactory.getLog(getClass());
+
+    protected final Log log = LogFactory.getLog(getClass());
 
     protected ParticipantDao participantDao;
     protected StudyDao studyDao;
@@ -76,6 +78,7 @@ public abstract class AbstractAdverseEventInputController
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
     protected ReportDefinitionDao reportDefinitionDao;
+    protected ExpeditedReportTree expeditedReportTree;
 
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -325,5 +328,7 @@ public abstract class AbstractAdverseEventInputController
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
 
-
+    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+        this.expeditedReportTree = expeditedReportTree;
+    }
 }

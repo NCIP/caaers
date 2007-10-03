@@ -3,12 +3,12 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.util.List;
 import java.util.Map;
-
-
+import java.util.Collection;
 
 
 /**
@@ -18,21 +18,18 @@ import java.util.Map;
  * and executing the rules
  */
 public interface AdverseEventEvaluationService {
-
-
-
-	public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception;
+	String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception;
 
 	//public String identifyAdverseEventType()
 
-	public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception;
+	Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport) throws Exception;
 
-	public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData) throws Exception;
+	Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData) throws Exception;
 	/**
 	 * Will retun the mandatory sections available for a specific report
 	 * @param report
 	 * @return
 	 * @throws Exception
 	 */
-	List<String> mandatorySectionsForReport(Report report) throws Exception;
+	Collection<ExpeditedReportSection> mandatorySectionsForReport(Report report) throws Exception;
 }

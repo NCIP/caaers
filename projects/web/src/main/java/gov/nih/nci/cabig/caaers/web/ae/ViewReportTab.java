@@ -7,12 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
@@ -47,7 +42,7 @@ public class ViewReportTab extends AeTab {
     private void updateReports(ExpeditedAdverseEventInputCommand command){
     	
     		for (Report report : command.getAeReport().getReports()) {
-    			ErrorMessages errorMessages = evaluationService.isSubmitable(report);
+    			ErrorMessages errorMessages = evaluationService.isSubmittable(report);
     			report.setDataMissing(errorMessages.hasErrors());
     			System.out.println(errorMessages.hasErrors());
 			}

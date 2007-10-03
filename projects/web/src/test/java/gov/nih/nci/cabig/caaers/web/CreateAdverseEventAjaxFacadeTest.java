@@ -553,7 +553,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
         EditExpeditedAdverseEventCommand command
-            = new EditExpeditedAdverseEventCommand(null, null, null);
+            = new EditExpeditedAdverseEventCommand(null, null, null, null);
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.addAdverseEvent(setId(0, new AdverseEvent()));
         report.addAdverseEvent(setId(1, new AdverseEvent()));

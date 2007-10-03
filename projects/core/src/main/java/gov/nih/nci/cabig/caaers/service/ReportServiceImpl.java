@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -273,33 +274,19 @@ public class ReportServiceImpl  implements ReportService {
 		reportDao.save(report);
 	}
 
-   /**
-	 * Will test if the mandatory field is empty. If found empty, then will populate the error details in
-	 * the <code>messages</code> object.
-	 * @param aeReport - The bean to validate
-	 * @param mandatoryMap - A map, with property name as key and associated boolean
-	 * value will tell if the field is mandatory
-	 * @param node - The node, based on which the evaluation is to be performed.
-	 */
-	public ErrorMessages validate(ExpeditedAdverseEventReport aeReport,TreeNode node,Map<String, Boolean> mandatoryMap){
-		ErrorMessages messages = new ErrorMessages();
-		validate(aeReport,mandatoryMap, node, messages);
-		return messages;
-	}
-
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private void validate(
-       ExpeditedAdverseEventReport aeReport, Map<String, Boolean> mandatoryMap, TreeNode node,
+       ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, TreeNode node,
        ErrorMessages messages
    ) {
-       List<String> mandatoryProperties = new LinkedList<String>();
-       for (Map.Entry<String, Boolean> e : mandatoryMap.entrySet()) {
-    	   TreeNode n = node.find(e.getKey());
-    	   if(n == null) continue;
-           if (e.getValue()) mandatoryProperties.add(e.getKey());
+        List<String> applicableFields = new LinkedList<String>();
+        for (String field : mandatoryFields) {
+            TreeNode n = node.find(field);
+            if (n == null) continue;
+            applicableFields.add(field);
        }
        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(
-           mandatoryProperties, aeReport);
+           applicableFields, aeReport);
        for (UnsatisfiedProperty uProp : unsatisfied) {
            messages.addErrorMessage(uProp.getTreeNode().getDisplayName(),
                uProp.getBeanPropertyName());
@@ -309,33 +296,32 @@ public class ReportServiceImpl  implements ReportService {
    /**
     * Will tell whether all the mandatory field for this report is duly filled.
     * Internally this will call the validate method for each element having children in the {@link ExpeditedReportTree}
-    * @param aeReport
+    * @param mandatorySections
     * @return ErrorMessages
     */
+   public ErrorMessages validate(Report report, Collection<ExpeditedReportSection> mandatorySections) {
+       // TODO: should validate against complex rules
 
-	public ErrorMessages validate(Report report, List<String> mandatorySectionNames) {
-		//TODO: should validate against complex rules
+       ErrorMessages messages = new ErrorMessages();
+       List<String> mandatoryFields = createMandatoryFieldList(report);
 
-		ErrorMessages messages = new ErrorMessages();
-		Map<String, Boolean> mandatoryFieldMap = fetchMandatoryFieldMap(report);
+       for (ExpeditedReportSection section : mandatorySections) {
+           validate(report.getAeReport(), mandatoryFields,
+               expeditedReportTree.getNodeForSection(section), messages);
+       }
 
-		for(TreeNode node : expeditedReportTree.getChildren()){
-			if(mandatorySectionNames.contains(node.getDisplayName())){
-				validate(report.getAeReport(), mandatoryFieldMap, node, messages);
-			}
-		}
-		return messages;
-	}
+       return messages;
+   }
 
-	private Map<String , Boolean> fetchMandatoryFieldMap(Report report){
-		Map<String, Boolean> map = new HashMap<String, Boolean>();
-		if(report.getReportDefinition().getMandatoryFields() != null){
-			for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
-				map.put(field.getFieldPath(), field.getMandatory());
-			}
-		}
-		return map;
-	}
+    private List<String> createMandatoryFieldList(Report report){
+        List<String> fields = new LinkedList<String>();
+        if(report.getReportDefinition().getMandatoryFields() != null){
+            for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
+                if (field.isMandatory()) fields.add(field.getFieldPath());
+            }
+        }
+        return fields;
+    }
 	
 	@Transient
 	public void withdrawLastReportVersion(Report report){

@@ -6,11 +6,13 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -84,8 +86,8 @@ public class MockEvaluationService implements EvaluationService {
     	return null;
     }
 
-    public List<String> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
-    	return new ArrayList<String>();
+    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
+    	return new ArrayList<ExpeditedReportSection>();
     }
 
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
@@ -99,7 +101,7 @@ public class MockEvaluationService implements EvaluationService {
     	return null;
     }
 
-    public ErrorMessages isSubmitable(Report report) {
+    public ErrorMessages isSubmittable(Report report) {
     	// TODO Auto-generated method stub
     	return null;
     }

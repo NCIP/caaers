@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * Tree representing most of the properties in the
@@ -23,7 +25,10 @@ import java.util.LinkedList;
  * @author Rhett Sutphin
  */
 public class ExpeditedReportTree extends PropertylessNode {
+    private Map<ExpeditedReportSection, TreeNode> sections;
+
     public ExpeditedReportTree() {
+        sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
             section(ADVERSE_EVENT_SECTION,
                 // TODO: figure out how to handle the MedDRA alternative here
@@ -201,6 +206,17 @@ public class ExpeditedReportTree extends PropertylessNode {
     }
 
     @Override
+    public TreeNode add(TreeNode... subnodes) {
+        super.add(subnodes);
+        for (TreeNode subnode : subnodes) {
+            if (subnode instanceof SectionNode) {
+                sections.put(((SectionNode) subnode).getSection(), subnode);
+            }
+        }
+        return this;
+    }
+
+    @Override
     public String getPropertyName() {
         return null;
     }
@@ -214,38 +230,40 @@ public class ExpeditedReportTree extends PropertylessNode {
     public List<UnsatisfiedProperty> verifyPropertiesPresent(
         Collection<String> nodePropertyNames, ExpeditedAdverseEventReport report
     ) {
-        List<UnsatisfiedProperty> unsatisfied = new LinkedList<UnsatisfiedProperty>();
+        List<TreeNode> propertyNodes = new LinkedList<TreeNode>();
         for (String propertyName : nodePropertyNames) {
             TreeNode node = find(propertyName);
-            //HACK - if there is a property mismatch, node will be null.
-            if(node == null) continue; //continue with next property.
-            PropertyValues values = node.getPropertyValuesFrom(report);
-            //if values is empty, then the mandatory 'propertyName' is not available.
-            if(values.isEmpty()){
-            	unsatisfied.add(new UnsatisfiedProperty(node, propertyName));
-            	continue;
-            }
+            // HACK - if there is a property mismatch, node will be null.
+            if (node == null) continue; // continue with next property.
+            propertyNodes.add(node);
+        }
+        return verifyNodesSatisfied(propertyNodes, report);
+    }
 
-            //check each property value.
+    public List<UnsatisfiedProperty> verifyNodesSatisfied(
+        Collection<TreeNode> propertyNodes, ExpeditedAdverseEventReport report
+    ) {
+        if (log.isDebugEnabled()) {
+            log.debug("Examining report for satisfaction of " + propertyNodes);
+        }
+        List<UnsatisfiedProperty> unsatisfied = new LinkedList<UnsatisfiedProperty>();
+        for (TreeNode node : propertyNodes) {
+            PropertyValues values = node.getPropertyValuesFrom(report);
             for (PropertyValue pv : values.getPropertyValues()) {
                 if (pv.getValue() == null) {
                     unsatisfied.add(new UnsatisfiedProperty(node, pv.getName()));
                 }
             }
-
-
         }
         return unsatisfied;
     }
 
     public TreeNode getNodeForSection(ExpeditedReportSection section) {
-        for (TreeNode node : getChildren()) {
-            if (((SectionNode) node).getSection() == section) return node;
-        }
-        if (log.isDebugEnabled()) {
+        TreeNode node = sections.get(section);
+        if (node == null && log.isDebugEnabled()) {
             log.debug("No node in the expedited report tree for " + section);
         }
-        return null;
+        return node;
     }
 
     private static TreeNode createPersonBlock(String person) {

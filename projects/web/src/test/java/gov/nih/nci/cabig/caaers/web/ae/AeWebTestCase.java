@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -34,6 +35,7 @@ public abstract class AeWebTestCase extends WebTestCase {
     private StudyDao studyDao;
     private ParticipantDao participantDao;
     protected Errors errors;
+    private ExpeditedReportTree expeditedReportTree;
 
     @Override
     protected void setUp() throws Exception {
@@ -44,6 +46,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         reportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         studyDao = registerMockFor(StudyDao.class);
         participantDao = registerMockFor(ParticipantDao.class);
+        expeditedReportTree = new ExpeditedReportTree();
 
         command = createCommand();
 
@@ -53,11 +56,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract CreateExpeditedAdverseEventCommand createCommand();
 
     protected final CreateExpeditedAdverseEventCommand createRealCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory, expeditedReportTree);
     }
 
     protected final CreateExpeditedAdverseEventCommand createMockCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory) {
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory, expeditedReportTree) {
             @Override
             public StudyParticipantAssignment getAssignment() {
                 return assignment;

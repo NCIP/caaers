@@ -5,24 +5,12 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
-import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,9 +31,9 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     public CreateExpeditedAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
         ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ParticipantDao participantDao,
-        NowFactory nowFactory
+        NowFactory nowFactory, ExpeditedReportTree expeditedReportTree
     ) {
-        super(reportDao, reportDefinitionDao);
+        super(reportDao, reportDefinitionDao, expeditedReportTree);
         this.assignmentDao = assignmentDao;
         this.studyDao = studyDao;
         this.participantDao = participantDao;

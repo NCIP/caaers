@@ -60,7 +60,7 @@ public class ListAdverseEventsCommand {
     private void updateReports(StudyParticipantAssignment assignment){
     	for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
     		for (Report report : aeReport.getReports()) {
-    			ErrorMessages errorMessages = evaluationService.isSubmitable(report);
+    			ErrorMessages errorMessages = evaluationService.isSubmittable(report);
     			report.setDataMissing(errorMessages.hasErrors());
 			}
 		}
