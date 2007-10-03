@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
@@ -54,15 +53,14 @@ public interface ReportService {
 
    /**
     * Will tell whether all the mandatory field for this report is duly filled.
-    * @param aeReport
     * @return ErrorMessages, if any.
     */
-   public ErrorMessages validate(Report report, List<String> mandatorySectionNames);
+   ErrorMessages validate(Report report, List<String> mandatorySectionNames);
 
    /**
     * Will withdraw the latest version of the report.
     * @param report
     */
-   public void withdrawLastReportVersion(Report report);
+   void withdrawLastReportVersion(Report report);
    
 }
