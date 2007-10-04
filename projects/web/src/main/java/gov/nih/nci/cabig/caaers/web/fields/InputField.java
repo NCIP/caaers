@@ -38,8 +38,6 @@ public interface InputField {
     String getDisplayName();
 
     boolean isRequired();
-    boolean isMandatory();
-    void setMandatory(boolean mandatory);
 
     void validate(BeanWrapper commandBean, Errors errors);
 

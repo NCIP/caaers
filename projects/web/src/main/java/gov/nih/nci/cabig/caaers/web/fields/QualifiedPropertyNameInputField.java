@@ -53,15 +53,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         return attributes;
     }
 
-	public boolean isMandatory() {
-		return mandatory;
-	}
-
-	public void setMandatory(boolean mandatory) {
-		this.mandatory = mandatory;
-	}
-
-	protected abstract String qualifyPropertyName(String propertyName);
+    protected abstract String qualifyPropertyName(String propertyName);
 
     @SuppressWarnings("unchecked")
     public void setAttributes(Map<String, Object> attributes) {

@@ -20,6 +20,7 @@ import java.util.Collection;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
+    protected static final String MANDATORY_FIELD_ATTR = "mandatory";
 
     private ExpeditedReportTree expeditedReportTree;
     protected ReportService reportService;
@@ -58,7 +59,9 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
         for (InputFieldGroup group : groupMap.values()) {
             for (InputField field : group.getFields()) {
-                field.setMandatory(isMandatory(command.getMandatoryProperties(), field));
+                if (isMandatory(command.getMandatoryProperties(), field)) {
+                    field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
+                }
             }
         }
     }

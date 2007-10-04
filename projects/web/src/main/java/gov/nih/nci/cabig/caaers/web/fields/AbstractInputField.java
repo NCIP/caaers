@@ -33,7 +33,6 @@ public abstract class AbstractInputField implements InputField {
         validateRequired(this, commandBean, errors);
     }
 
-
     /**
      * Helper so that other InputField implementations can easily implement requiredness
      * validation just like this class.
@@ -45,18 +44,8 @@ public abstract class AbstractInputField implements InputField {
         }
     }
 
-    /**
-     * Same as validateRequired, with only difference that this checks for <code>mandatory</code> field.
-     */
-    public static void validateMandatory(InputField field, BeanWrapper commandBean, Errors errors){
-    	if( field.isMandatory() && isEmpty(field, commandBean)){
-    	    errors.rejectValue(field.getPropertyName(),
-                    "REQUIRED", "Missing " + field.getDisplayName());
-        }
-    }
-
     public static boolean isEmpty(InputField field, BeanWrapper commandBean){
-    	return commandBean.getPropertyValue(field.getPropertyName()) == null;
+        return commandBean.getPropertyValue(field.getPropertyName()) == null;
     }
 
     public abstract Category getCategory();
@@ -97,17 +86,7 @@ public abstract class AbstractInputField implements InputField {
         this.attributes = attributes;
     }
 
-
-	public boolean isMandatory() {
-		return mandatory;
-	}
-
-
-	public void setMandatory(boolean mandatory) {
-		this.mandatory = mandatory;
-	}
-
-	//////OBJECT METHODS
+    //////OBJECT METHODS
 
 	@Override
 	public String toString() {

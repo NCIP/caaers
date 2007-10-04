@@ -6,12 +6,12 @@
 <c:choose>
     <c:when test="${field.categoryName == 'autocompleter'}">
         <label for="${field.propertyName}-input">
-            <c:if test="${field.required or field.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
+            <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
         </label>
     </c:when>
     <c:otherwise>
         <form:label path="${field.propertyName}">
-            <c:if test="${field.required or field.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
+            <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
         </form:label>
     </c:otherwise>
 </c:choose>

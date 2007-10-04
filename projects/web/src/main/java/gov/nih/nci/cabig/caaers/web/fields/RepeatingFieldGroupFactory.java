@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
