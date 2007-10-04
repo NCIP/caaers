@@ -37,6 +37,7 @@
     <field name="assignment" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
       <bind-xml name="StudyParticipantAssignment"/>
     </field> 
+    <!--  
     <field name="radiationIntervention" type="gov.nih.nci.cabig.caaers.domain.RadiationIntervention">
       <bind-xml name="RadiationIntervention"/>
     </field> 
@@ -45,7 +46,7 @@
     </field> 
     <field name="medicalDevice" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice">
       <bind-xml name="MedicalDevice"/>
-    </field>    
+    </field>   --> 
     <field name="concomitantMedications" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" collection="arraylist">
       <bind-xml name="ConcomitantMedication"/>
     </field>
@@ -58,6 +59,7 @@
     <field name="adverseEventPriorTherapiesInternal" type="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy" collection="arraylist">
       <bind-xml name="AdverseEventPriorTherapy"/>
     </field>
+    <!--  
     <field name="summary" collection="map">
       <bind-xml name="Summary">
       	   <class name="org.exolab.castor.mapping.MapItem">
@@ -68,6 +70,7 @@
 		   </class>
 	  </bind-xml>
     </field>
+    -->
     <field name="treatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
       <bind-xml name="TreatmentInformation"/>
     </field>    
