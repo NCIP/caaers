@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -40,7 +39,7 @@ public class MedicalInfoTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         BasePropertyInputFieldGroup participant
             = new BasePropertyInputFieldGroup("participant", "aeReport.participantHistory");
         participant

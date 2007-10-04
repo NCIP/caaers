@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
+
+    @Override
+    // require InputFieldGroupMap, not just a Map<String, InputFieldGroup>
+    public abstract InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command);
 
     /**
      * Will also update the InputField mandatory flag.

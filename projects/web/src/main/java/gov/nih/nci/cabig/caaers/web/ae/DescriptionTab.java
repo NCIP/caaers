@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
@@ -23,9 +24,9 @@ public class DescriptionTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	//-
-    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+        //-
+        InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.responseDescription";
 
         InputField desc = InputFieldFactory.createTextArea(baseProp + ".eventDescription",
@@ -50,11 +51,11 @@ public class DescriptionTab extends AeTab {
             "Date removed from protocol", false);
         InputFieldAttributes.setDetails(removedDateField, "If the participant was removed from the protocol, enter the date here.  Otherwise, leave it blank.");
         allFields.getFields().add(removedDateField);
-    	//-
-        return createFieldGroupMap(Arrays.asList(allFields));
+        //-
+        return InputFieldGroupMap.create(allFields);
     }
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.DESCRIPTION_SECTION;
+        return ExpeditedReportSection.DESCRIPTION_SECTION;
     }
 }

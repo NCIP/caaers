@@ -7,7 +7,6 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +20,7 @@ public class TabWithFieldsTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        group = new DefaultInputFieldGroup();
+        group = new DefaultInputFieldGroup("sole");
         group.getFields().add(registerMockFor(InputField.class));
         group.getFields().add(registerMockFor(InputField.class));
 
@@ -30,9 +29,7 @@ public class TabWithFieldsTest extends CaaersTestCase {
         tab = new TabWithFields<TestBean>("DC", "dc", "dc") {
             @Override
             public Map<String, InputFieldGroup> createFieldGroups(TestBean command) {
-                Map<String, InputFieldGroup> groups = new LinkedHashMap<String, InputFieldGroup>();
-                groups.put("sole", group);
-                return groups;
+                return InputFieldGroupMap.create(group);
             }
         };
     }

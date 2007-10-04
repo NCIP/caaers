@@ -26,7 +26,7 @@ public class PreExistingConditionsTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.adverseEventPreExistingConds");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
             public String createDisplayName(int index) {

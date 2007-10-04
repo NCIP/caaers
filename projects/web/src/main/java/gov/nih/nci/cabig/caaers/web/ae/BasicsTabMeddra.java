@@ -53,7 +53,7 @@ public class BasicsTabMeddra extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
 
         RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");

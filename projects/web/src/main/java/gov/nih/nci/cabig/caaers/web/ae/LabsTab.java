@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -35,7 +34,7 @@ public class LabsTab extends AeTab {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Map<String, InputFieldGroup> createFieldGroups(
+	public InputFieldGroupMap createFieldGroups(
 			ExpeditedAdverseEventInputCommand command) {
 		// -
 		RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory(

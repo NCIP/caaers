@@ -7,8 +7,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +50,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
             String path = node.getPropertyPath();
             if(StringUtils.isEmpty(path)) return;
             int index = command.getMandatoryFieldMap().get(path);
-            if (StringUtils.isEmpty(displayName))	displayName = node.getParent().getDisplayName();
+            if (StringUtils.isEmpty(displayName))   displayName = node.getParent().getDisplayName();
             fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["+index+"].mandatory",displayName));
         } else {
             //add children of this node in the map
@@ -62,8 +62,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
-        Map<String, InputFieldGroup> fieldMap;
-        fieldMap = new LinkedHashMap<String, InputFieldGroup>();
+        InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         populateFieldMap(command, fieldMap, expeditedReportTree);
         return fieldMap;
     }

@@ -12,6 +12,12 @@ public class InputFieldGroupMap extends LazyMap<String, InputFieldGroup> {
         super(new LinkedHashMap<String, InputFieldGroup>(), new RepeatingFieldGroupTransformer());
     }
 
+    public static InputFieldGroupMap create(InputFieldGroup... groups) {
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        for (InputFieldGroup group : groups) map.addInputFieldGroup(group);
+        return map;
+    }
+
     @SuppressWarnings("unchecked")
     public void addInputFieldGroup(InputFieldGroup group) {
         map.put(group.getName(), group);

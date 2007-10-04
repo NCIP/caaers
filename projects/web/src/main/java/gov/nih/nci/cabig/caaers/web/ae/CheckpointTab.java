@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.apache.commons.logging.Log;
@@ -27,24 +28,27 @@ public class CheckpointTab extends AeTab {
     private static final Log log = LogFactory.getLog(CheckpointTab.class);
 
     private EvaluationService evaluationService;
+    
     public CheckpointTab() {
         super("Is expedited reporting necessary?", "Select Report", "ae/checkpoint");
     }
+
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.CHECKPOINT_SECTION;
+        return ExpeditedReportSection.CHECKPOINT_SECTION;
     }
+
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
         for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
             optional.getFields().add(InputFieldFactory.createCheckboxField(
                 "optionalReportDefinitionsMap[" + reportDefinition.getId() + ']',
-                reportDefinition.getName() + " (" + reportDefinition.getOrganization().getName() +")"
+                reportDefinition.getName() + " (" + reportDefinition.getOrganization().getName() + ')'
             ));
         }
 
-        return Collections.singletonMap(optional.getName(), optional);
+        return InputFieldGroupMap.create(optional);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class TreatmentTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
     	  InputFieldGroup treatmentFields = new DefaultInputFieldGroup("treatmentInfo");
     	/*InputField assignmentField = InputFieldFactory.createAutocompleterField(

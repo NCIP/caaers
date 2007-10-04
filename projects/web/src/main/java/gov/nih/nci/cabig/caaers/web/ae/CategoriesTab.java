@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
@@ -35,7 +33,7 @@ public class CategoriesTab extends AeRoutTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(RoutineAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(RoutineAdverseEventInputCommand command) {
     	InputFieldGroupMap map = new InputFieldGroupMap();
         //groups.addRepeatingFieldGroupFactory(fieldFactory,command.getCategories().size());
         return map;

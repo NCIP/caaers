@@ -1,13 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import java.util.Map;
-
 import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.web.ae.RoutineAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -18,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
+
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -49,7 +48,7 @@ public class DiseaseTab extends StudyTab {
     
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+    public Map<String,InputFieldGroup> createFieldGroups(Study command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(healthyVolunteerFieldGroup);
         return map;

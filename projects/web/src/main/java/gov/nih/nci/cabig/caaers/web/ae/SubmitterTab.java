@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
-import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,7 +29,7 @@ public class SubmitterTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex() ;
     	if ( reportIndex == null ){
     		throw new CaaersSystemException("Report Index Not Defined");

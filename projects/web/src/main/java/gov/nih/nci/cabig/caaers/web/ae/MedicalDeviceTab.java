@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
-import java.util.Map;
 import java.util.Arrays;
 
 /**
@@ -24,7 +23,7 @@ public class MedicalDeviceTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
     	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
     	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("medicalDevice", "aeReport.medicalDevices");

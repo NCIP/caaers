@@ -52,7 +52,7 @@ public class RoutineAeTab extends AeRoutTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(RoutineAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(RoutineAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
     }

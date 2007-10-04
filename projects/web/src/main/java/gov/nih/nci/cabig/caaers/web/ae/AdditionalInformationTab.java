@@ -6,8 +6,9 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 
-import java.util.Map;
 import java.util.Arrays;
 
 
@@ -21,31 +22,31 @@ public class AdditionalInformationTab extends AeTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+        InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
         String baseProp = "aeReport.additionalInformation";
 
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".autopsyReport", "Autopsy Report", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".consults", "Consults", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".dischargeSummary", "Discharge Summary", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".flowCharts", "Flow Sheets/Case Report Forms", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".labReports", "Laboratory Reports", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".obaForm", "OBA Form", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".other", "Other", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".pathologyReport", "Pathology Report", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".progressNotes", "Progress Notes", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".radiologyReports", "Radiology Report", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".referralLetters", "Referral Letters", false));
-        allFields.getFields().add(InputFieldFactory.createBooleanSelectField(baseProp + ".irbReport", "Summary Report Sent to IRB", false));
-        InputField otherInfoField = InputFieldFactory.createTextArea(baseProp + ".otherInformation", "Other Information", false);
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".autopsyReport", "Autopsy Report", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".consults", "Consults", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".dischargeSummary", "Discharge Summary", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".flowCharts", "Flow Sheets/Case Report Forms", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".labReports", "Laboratory Reports", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".obaForm", "OBA Form", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".other", "Other", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".pathologyReport", "Pathology Report", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".progressNotes", "Progress Notes", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".radiologyReports", "Radiology Report", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".referralLetters", "Referral Letters", false));
+        allFields.getFields().add(createBooleanSelectField(baseProp + ".irbReport", "Summary Report Sent to IRB", false));
+        InputField otherInfoField = createTextArea(baseProp + ".otherInformation", "Other Information", false);
         InputFieldAttributes.setColumns(otherInfoField,45);
         allFields.getFields().add(otherInfoField);
 
-    	return createFieldGroupMap(Arrays.asList(allFields));
+        return InputFieldGroupMap.create(allFields);
     }
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
+        return ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
     }
 }

@@ -24,7 +24,7 @@ public class StudyTherapiesTab extends StudyTab {
 	}
 
 	@Override
-	public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
+	public Map<String,InputFieldGroup> createFieldGroups(final Study command) {
 		if (fieldGroup == null) {
 			// set up the fields
 			fieldGroup = new DefaultInputFieldGroup("studyTherapies");

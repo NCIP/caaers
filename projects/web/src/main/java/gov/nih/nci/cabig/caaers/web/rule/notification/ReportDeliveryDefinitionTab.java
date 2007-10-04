@@ -1,23 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
-import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
+
+import java.util.Map;
 
 /**
  *
@@ -34,7 +30,7 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
+    public Map<String,InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
     	//-
     	RepeatingFieldGroupFactory rfgFactory;
         rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.deliveryDefinitions");

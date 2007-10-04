@@ -28,7 +28,7 @@ public class SubmitReportTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex() ;
     	if ( reportIndex == null ){
     		throw new CaaersSystemException("Report Index Not Defined");

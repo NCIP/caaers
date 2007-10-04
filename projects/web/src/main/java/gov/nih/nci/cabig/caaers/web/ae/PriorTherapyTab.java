@@ -27,7 +27,7 @@ public class PriorTherapyTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
     	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("priorTherapy", "aeReport.adverseEventPriorTherapies");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {

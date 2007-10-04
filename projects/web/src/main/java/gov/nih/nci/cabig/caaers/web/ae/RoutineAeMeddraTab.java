@@ -106,7 +106,7 @@ public class RoutineAeMeddraTab extends AeRoutTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(RoutineAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(RoutineAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeRoutineReport().getAdverseEvents().size();

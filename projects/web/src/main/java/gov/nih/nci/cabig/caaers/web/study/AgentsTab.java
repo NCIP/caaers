@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,7 +76,7 @@ public class AgentsTab extends StudyTab {
 
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
-		Map<String, InputFieldGroup> map = new LinkedHashMap<String, InputFieldGroup>();
+		InputFieldGroupMap map = new InputFieldGroupMap();
 		String baseName = "studyAgents";
 		int i = -1;
 		for (StudyAgent sa : command.getStudyAgents()) {
@@ -112,7 +113,7 @@ public class AgentsTab extends StudyTab {
 					fields.add(indField);
 				}
 			}// ~if
-			map.put(fieldGrp.getName(), fieldGrp);
+			map.addInputFieldGroup(fieldGrp);
 		}
 		return map;
 	}

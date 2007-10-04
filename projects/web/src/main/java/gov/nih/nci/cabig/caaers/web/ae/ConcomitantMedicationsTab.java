@@ -1,16 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
-
-import java.util.Map;
-import java.util.ListIterator;
-
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -26,7 +18,7 @@ public class ConcomitantMedicationsTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
     	//-
         RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.concomitantMedications");
         fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {

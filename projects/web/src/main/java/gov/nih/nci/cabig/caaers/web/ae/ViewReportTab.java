@@ -64,7 +64,7 @@ public class ViewReportTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap groups = new InputFieldGroupMap();
         return groups;
     }

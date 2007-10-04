@@ -44,13 +44,6 @@ public abstract class TabWithFields<C> extends Tab<C> {
         return refdata;
     }
 
-    /** Helper which subclasses can use to implement #createFieldGroupMap(command) if they are using a simple list */
-    protected static Map<String, InputFieldGroup> createFieldGroupMap(List<InputFieldGroup> groups) {
-        Map<String, InputFieldGroup> groupMap = new LinkedHashMap<String, InputFieldGroup>();
-        for (InputFieldGroup group : groups) groupMap.put(group.getName(), group);
-        return groupMap;
-    }
-
     @Override
     public final void validate(C command, Errors errors) {
         super.validate(command, errors);

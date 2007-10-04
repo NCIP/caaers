@@ -14,7 +14,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 /**
  * @author Kulasekaran
@@ -34,7 +33,7 @@ public class ReporterTab extends AeTab {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(createPersonGroup("reporter"));
         map.addInputFieldGroup(createPersonGroup("physician"));
