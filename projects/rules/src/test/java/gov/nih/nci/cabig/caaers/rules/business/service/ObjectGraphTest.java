@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.NavigationPath;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.Node;
@@ -26,8 +26,8 @@ public class ObjectGraphTest extends TestCase {
 		objectGraphFactory = ObjectGraphFactory.getInstance();
 	}
 	
-	public void testLoadObjectGraph() throws Exception{
-		NavigationPath path = objectGraphFactory.findNavigationPath("gov.nih.nci.cabig.caaers.domain.AdverseEvent", "gov.nih.nci.cabig.caaers.domain.CtcCategory");
+	public void atestLoadObjectGraph() throws Exception{
+		NavigationPath path = objectGraphFactory.findNavigationPath("gov.nih.nci.cabig.caaers.domain.Study", "gov.nih.nci.cabig.caaers.domain.TreatmentAssignment");
 		
 		for (Node node:path.getNode()) {
 			System.out.println(node.getObjectType());
@@ -35,19 +35,17 @@ public class ObjectGraphTest extends TestCase {
 		
 	}
 
-	public void atestFactResolver_1() throws Exception{
+	public void testFactResolver_1() throws Exception{
 		
-		AdverseEvent ae = new AdverseEvent();
-		ae.setExpected(true);
+		TreatmentAssignment ta = new TreatmentAssignment();
+		ta.setCode("456");
 		
-		AdverseEventMeddraLowLevelTerm x = new AdverseEventMeddraLowLevelTerm();
-		
-		x.setMeddraCode("nnn");
-		ae.setAdverseEventMeddraLowLevelTerm(x);
+		Study study = new Study();
+		study.addTreatmentAssignment(ta);
 		
 		FactResolver factResolver = new FactResolver();
 		
-		boolean result = factResolver.assertFact(ae, "gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm","meddraCode","1 - Not Specified","==");		
+		boolean result = factResolver.assertFact(study, "gov.nih.nci.cabig.caaers.domain.TreatmentAssignment","code","45g6","==");		
 		System.out.println(result);
 		
 		

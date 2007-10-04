@@ -857,8 +857,19 @@
 				
 				
 			}
-			else if (selectedField.value == 'reportDefinitionName') {
-					authorRule.getAjaxObjects('reportDefinitionName', '${command.organizationName}', function(values) {
+			else if (selectedField.value == 'reportDefinitionName' || selectedField.value == 'treatmentAssignmentCode') {
+					
+					var criteria1 = "" ;
+					
+					if (selectedField.value == 'reportDefinitionName') { 
+						criteria1 = '${command.organizationName}';
+					}
+					
+					if (selectedField.value == 'treatmentAssignmentCode') { 
+						criteria1 = '';
+					}
+										
+					authorRule.getAjaxObjects(selectedField.value , criteria1 , function(values) {
 						                   
 
 							var newId = validValueField.id; 
@@ -1551,17 +1562,28 @@ button. Rules created will belong to the selected RuleSet.</p>
 						</c:when>
 
 						<c:when
-							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "reportDefinitionName"}'>
+							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "reportDefinitionName" || command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "treatmentAssignmentCode"}'>
 
 
 
 							<script type="text/javascript">
+							
+					var criteria = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}' ;
+					var criteria1 = "" ;
+					
+					if (criteria == 'reportDefinitionName') { 
+						criteria1 = '${command.organizationName}';
+					}
+					
+					if (criteria == 'treatmentAssignmentCode') { 
+						criteria1 = '';
+					}
+					
 
-
-						authorRule.getAjaxObjects('reportDefinitionName', '${command.organizationName}', function(values) {
+						authorRule.getAjaxObjects(criteria, criteria1, function(values) {
 						                   
 
-									var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
+								var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 							
 								var spanId = newId + '.span';
 								var fieldValue = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].literalRestriction[0].value}';

@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
@@ -26,7 +28,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineService;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventSDO;
 import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
@@ -40,10 +41,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +86,8 @@ public class RuleAjaxFacade
     private OrganizationDao organizationDao;
     
     private ReportDefinitionDao reportDefinitionDao;
+    
+    private TreatmentAssignmentDao treatmentAssignmentDao;
 
     public ConfigProperty getConfigurationProperty() 
     {
@@ -239,6 +239,7 @@ public class RuleAjaxFacade
     }
     
     public List<RuleAjaxObject> getAjaxObjects(String fieldName,String filterCrieteria){
+    	System.out.println(" in get ajax object ..");
     	List<RuleAjaxObject> ajaxObjects = new ArrayList<RuleAjaxObject>();
     	if (fieldName.equals("reportDefinitionName")) {
     		Organization org = organizationDao.getByName(filterCrieteria);
@@ -251,6 +252,18 @@ public class RuleAjaxFacade
 			
             }
     	}
+    	
+    	if (fieldName.equals("treatmentAssignmentCode")) {
+    		//Study study = studyDao.getByShortTitle(filterCrieteria);
+    		List<TreatmentAssignment> assignments = treatmentAssignmentDao.getAll();
+    		
+    		//cut down objects for serialization
+            
+            for (TreatmentAssignment treatmentAssignment : assignments) {
+            	ajaxObjects.add(new RuleAjaxObject(treatmentAssignment.getCode(),treatmentAssignment.getCode()));
+			
+            }
+    	} 
     	return ajaxObjects;
     }
     public String addCondition(int ruleCount) {
@@ -841,6 +854,10 @@ public class RuleAjaxFacade
 
 	public void setRulesEngineService(RulesEngineService rulesEngineService) {
 		this.rulesEngineService = rulesEngineService;
+	}
+
+	public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
+		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
 
 

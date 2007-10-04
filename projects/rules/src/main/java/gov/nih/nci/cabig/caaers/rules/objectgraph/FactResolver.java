@@ -267,7 +267,7 @@ public class FactResolver {
 
 		Class class_ = targetObject.getClass();
 
-		if (class_.getName().startsWith("java.util")) {
+		if (class_.getName().startsWith("java.util") || class_.getName().indexOf("LazyList") != -1 ) {
 
 			List list = (List) targetObject;
 			Iterator it = list.iterator();

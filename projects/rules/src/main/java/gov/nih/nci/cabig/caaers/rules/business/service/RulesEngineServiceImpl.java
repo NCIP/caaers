@@ -793,6 +793,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	private List<String> importRuleSet(RuleSet ruleSet) throws Exception{
 		
 		List<Rule> rules = ruleSet.getRule();
+
 		
 		Rule r = rules.get(0);
 		Category cat = r.getMetaData().getCategory().get(0);
@@ -824,6 +825,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			i= catPath.lastIndexOf("/");
 			String sponsorName = catPath.substring(i+1,catPath.length());
 
+			//this.saveRulesForSponsor(ruleSet, sponsorName);
 			
 			while(it.hasNext()){
 				Rule rule = it.next();
@@ -831,6 +833,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 				createRuleForSponsor(rule, ruleSetName, sponsorName, subject, state);
 				
 			}
+			
 		}
 		
 		
