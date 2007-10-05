@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Collection;
 
 /**
@@ -28,8 +30,9 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     Map<String, List<List<Attribution>>> getAttributionMap();
 
     Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap();
-
+    
     void setOptionalReportDefinitions(List<ReportDefinition> defs);
+    void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs);
 
     void reassociate();
 
@@ -41,4 +44,16 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void refreshMandatoryProperties();
 
     MandatoryProperties getMandatoryProperties();
+    
+	 List<ReportDefinition> getAllReportDefinitions();
+	 void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions); 
+	 List<ReportDefinition> getSelectedReportDefinitions();
+	 void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
+	 
+	 List<ReportDefinition> getInstantiatedReportDefinitions();
+	 void setSelectedReportDefinitionNames(String selectedNames);
+	 
+	 List<ReportDefinition> getRequiredReportDeifnitions();
+	 void setRequiredReportDefinition(List<ReportDefinition> def);
+	 String getRequiredReportDefinitionNames();
 }
