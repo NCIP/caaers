@@ -80,12 +80,12 @@
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
     <jsp:attribute name="instructions">
         <c:choose>
-            <c:when test="${oneOrMoreSevere || aeReport.isExpeditedReportingRequired}">
+            <c:when test="${oneOrMoreSevere}">
                <tags:instructions  code="instruction_ae_reporterAE"/>
             </c:when>
             <c:otherwise>
             	<tags:instructions code="instruction_ae_reporterNoAE" />
-                <tags:instructions code="instruction_ae_reporter" heading="Note: " />
+                <tags:instructions code="instruction_ae_reporterNote" heading="Note: " />
             </c:otherwise>
         </c:choose>
     </jsp:attribute>
