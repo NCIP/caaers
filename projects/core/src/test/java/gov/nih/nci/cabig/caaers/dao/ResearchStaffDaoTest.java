@@ -24,17 +24,16 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
     public void testSaveNewResearchStaff() throws Exception {
 
-        Organization organization = organizationDao.getByGridId("gridId9");
-        if (organization == null) {
 
-            organization = new Organization();
-            organization.setGridId("gridId9");
-            organization.setName("test org9");
-            organization.setNciInstituteCode("nci9");
-            organization.setDescriptionText("dec9");
-            organizationDao.save(organization);
+        double name = Math.random();
 
-        }
+        Organization organization = new Organization();
+        organization.setGridId("gridId" + name);
+        organization.setName("test org" + name);
+        organization.setNciInstituteCode("nci" + name);
+        organization.setDescriptionText("dec" + name);
+        organizationDao.save(organization);
+
 
         interruptSession();
 
