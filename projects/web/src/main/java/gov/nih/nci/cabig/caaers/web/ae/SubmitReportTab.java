@@ -38,7 +38,7 @@ public class SubmitReportTab extends AeTab {
         InputField cc = InputFieldFactory.createTextArea("aeReport.reports["
 						+ reportIndex + "].lastVersion.email",
 						"Cc");
-        InputFieldAttributes.setColumns(cc, 65);
+        InputFieldAttributes.setColumns(cc, 50);
         ccReport.getFields().add(cc);				
         map.addInputFieldGroup(ccReport);
         return map;
