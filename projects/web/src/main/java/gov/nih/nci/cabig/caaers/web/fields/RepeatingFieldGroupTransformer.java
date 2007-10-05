@@ -28,15 +28,15 @@ public class RepeatingFieldGroupTransformer implements Transformer<String, Input
             String basename = match.group(1);
             RepeatingFieldGroupFactory factory = factories.get(basename);
             if (factory == null) {
-                throw new IllegalArgumentException(String.format(
-                    "No RepeatingFieldGroupFactory with basename '%s' for '%s'", basename, in));
+                log.warn(String.format("No RepeatingFieldGroupFactory with basename '%s' for '%s'", basename, in));
+                return null;
             } else {
                 Integer index = new Integer(match.group(2));
                 return factory.createGroup(index);
             }
         } else {
-            throw new IllegalArgumentException(String.format(
-                "'%s' is not a valid name for a repeating field group", in));
+            log.warn(String.format("'%s' is not a valid name for a repeating field group", in));
+            return null;
         }
     }
 

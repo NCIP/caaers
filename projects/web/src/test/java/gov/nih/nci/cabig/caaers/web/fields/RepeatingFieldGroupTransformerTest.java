@@ -43,21 +43,11 @@ public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
     }
 
     public void testExceptionIfNoMatches() throws Exception {
-        try {
-            transform("o90");
-            fail("Exception not thrown");
-        } catch (IllegalArgumentException iae) {
-            assertEquals("No RepeatingFieldGroupFactory with basename 'o' for 'o90'", iae.getMessage());
-        }
+        assertNull(transform("o90"));
     }
 
-    public void testExceptionIfNotValidFieldGroupName() throws Exception {
-        try {
-            transform("14alp");
-            fail("Exception not thrown");
-        } catch (IllegalArgumentException iae) {
-            assertEquals("'14alp' is not a valid name for a repeating field group", iae.getMessage());
-        }
+    public void testNullIfNotValidFieldGroupName() throws Exception {
+        assertNull(transform("14alp"));
     }
 
     private RepeatingFieldGroupFactory.RepeatingFieldGroup transform(String input) {
