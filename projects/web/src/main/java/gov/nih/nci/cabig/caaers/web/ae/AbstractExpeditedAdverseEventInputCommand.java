@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -14,15 +15,19 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin
@@ -33,21 +38,26 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private ExpeditedAdverseEventReport aeReport;
     private Map<String, List<List<Attribution>>> attributionMap;
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
-
+    
     protected Collection<ExpeditedReportSection> mandatorySections;
     protected MandatoryProperties mandatoryProperties;
-
-    private String treatmentDescriptionType;
 
     protected ExpeditedAdverseEventReportDao reportDao;
     protected ReportDefinitionDao reportDefinitionDao;
     protected ExpeditedReportTree expeditedReportTree;
+
+    protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
+
+    private String treatmentDescriptionType;
+    private List<ReportDefinition> allReportDefinitions;
+    private List<ReportDefinition> requiredReportDefinitions; //report definitions identified by rules engine
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
         this.expeditedReportTree = expeditedReportTree;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
+        this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
     }
 
     public abstract StudyParticipantAssignment getAssignment();
@@ -67,12 +77,19 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             setAeReport(merged);
         }
     }
-
+    
+    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs){
+    	//deselect all previously selected report
+    	for(Map.Entry<ReportDefinition, Boolean>  entry: optionalReportDefinitionsMap.entrySet()){
+			entry.setValue(false);
+		}
+    	setSelectedReportDefinitions(defs);
+    }
+    
     public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
-        for (ReportDefinition def : defs) {
-            if (!optionalReportDefinitionsMap.containsKey(def)) {
+    	if(defs == null || defs.isEmpty()) return;
+    	for (ReportDefinition def : defs) {
                 optionalReportDefinitionsMap.put(def, false);
-            }
         }
         // Deliberately not removing entries from the map that aren't in defs.
         // This is so that the user may still remove Reports whose ReportDefinitions
@@ -82,6 +99,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap() {
         return optionalReportDefinitionsMap;
     }
+    
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         if (aeReport.getAdverseEvents().size() == 0) {
@@ -101,11 +119,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             log.debug("Found Report in new aeReport: "
                 + report.getReportDefinition().getName() + ' ' + report.getId());
             log.debug("Report def hashCode is " + Integer.toHexString(report.getReportDefinition().hashCode()));
-            if (!report.isRequired()) {
-                defsInAeReport.add(report.getReportDefinition());
-                optionalReportDefinitionsMap.put(report.getReportDefinition(), true);
-                log.debug("Report is not required, so added to optional reports map: " + optionalReportDefinitionsMap);
-            }
+            defsInAeReport.add(report.getReportDefinition());
+            optionalReportDefinitionsMap.put(report.getReportDefinition(), true);
+            log.debug("Report is not required, so added to optional reports map: " + optionalReportDefinitionsMap);
         }
         // deselect any definitions which were already in the map but not in the aeReport
         for (ReportDefinition inMap : optionalReportDefinitionsMap.keySet()) {
@@ -156,6 +172,86 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.treatmentDescriptionType = type;
     }
 
+	public Map<String, Boolean> getMandatoryFieldMap() {
+		return mandatoryFieldMap;
+	}
+	
+	/**
+	 * Returns all the {@link ReportDefinition} available to this AE
+	 */
+	public List<ReportDefinition> getAllReportDefinitions() {
+		return allReportDefinitions;
+	}
+	public void setAllReportDefinitions(
+			List<ReportDefinition> allReportDefinitions) {
+		this.allReportDefinitions = allReportDefinitions;
+	}
+	
+	/**
+	 * This method will return the {@link ReportDefinition} that are instantiated
+	 */
+	public List<ReportDefinition> getInstantiatedReportDefinitions(){
+		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+		for(Report report : aeReport.getReports()){
+			if(!report.getStatus().equals(ReportStatus.WITHDRAWN))
+				reportDefs.add(report.getReportDefinition());
+		}
+		
+		return reportDefs;
+
+	}
+	/**
+	 * This method will return the ReportDefinition which are selected by user 
+	 * in the checkpoint page.
+	 */
+	public List<ReportDefinition> getSelectedReportDefinitions() {
+		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();	
+		for(Map.Entry<ReportDefinition, Boolean>  entry: optionalReportDefinitionsMap.entrySet()){
+			if(entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
+		}
+		return reportDefs;
+	}
+	
+	public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
+		if(defs == null || defs.isEmpty()) return;
+    	for (ReportDefinition def : defs) {
+    		optionalReportDefinitionsMap.put(def, true);
+        }
+	}
+
+	public void setSelectedReportDefinitionNames(String selectedNames){
+		if(selectedNames == null || selectedNames.length() < 1) return;
+		String[] names = selectedNames.split(",");
+		String name = null;
+		Map<ReportDefinition, Boolean> map = new LinkedHashMap<ReportDefinition, Boolean>();
+		for(Map.Entry<ReportDefinition, Boolean> entry: optionalReportDefinitionsMap.entrySet()){
+			name = "optionalReportDefinitionsMap[" + entry.getKey().getId() + "]";
+			if(ArrayUtils.contains(names, name)){
+				map.put(entry.getKey(), true);
+			}else{
+				map.put(entry.getKey(), false);
+			}
+		}
+		//add all
+		optionalReportDefinitionsMap.putAll(map);
+	}
+	
+	public String getRequiredReportDefinitionNames(){
+		StringBuilder sb = new StringBuilder();
+		for(ReportDefinition def : requiredReportDefinitions){
+			sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
+		}
+		return sb.toString();
+	}
+
+	public List<ReportDefinition> getRequiredReportDeifnitions() {
+		return requiredReportDefinitions;
+	}
+	
+	public void setRequiredReportDefinition(List<ReportDefinition> defs) {
+		if(defs != null) requiredReportDefinitions.addAll(defs);
+	}
+	
     @Override
     public String toString() {
         return new StringBuilder(getClass().getName())
