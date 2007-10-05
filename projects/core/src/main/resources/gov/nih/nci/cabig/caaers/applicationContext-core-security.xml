@@ -258,5 +258,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="daoSecurity" />
 
 	</bean>
+	<bean id="sitePrivilegeAndObjectIdGenerator"
+	              class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
+	            <property name="accessPrivilege" value="ACCESS"/>
+	            <property name="pathSeperator" value="."/>
+       </bean>
 
 </beans>
