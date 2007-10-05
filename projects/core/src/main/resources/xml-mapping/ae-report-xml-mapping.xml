@@ -715,10 +715,11 @@
     <field name="firstCourseDate" type="date">
       <bind-xml name="firstCourseDate" node="element" />
     </field>
-      <!--  
+      
     <field name="treatmentAssignment" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment">
       <bind-xml name="TreatmentAssignment"/>
-    </field>   -->
+    </field>   
+    
     <field name="totalCourses" type="integer">
       <bind-xml name="totalCourses"/>
     </field>    

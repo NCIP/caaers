@@ -564,7 +564,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/treatmentAssignmentCode"/>
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -578,7 +578,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>

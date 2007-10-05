@@ -11,16 +11,18 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
@@ -359,8 +361,17 @@ public class AdverseEventReportSerializer {
 	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
 	    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
-	    	//TODO: remove the below line.
-	    	treatmentInformation.setTreatmentAssignment(trtInf.getTreatmentAssignment());
+
+	    	TreatmentAssignment ta = trtInf.getTreatmentAssignment();
+	    	
+	    	TreatmentAssignment taNew = new TreatmentAssignment();
+	    	taNew.setCode(ta.getCode());
+	    	taNew.setDoseLevelOrder(ta.getDoseLevelOrder());
+	    	taNew.setDescription(ta.getDescription());
+	    	taNew.setComments(ta.getComments());
+	    	taNew.setStudy(ta.getStudy());
+	    	
+	    	treatmentInformation.setTreatmentAssignment(taNew);
 
 	    	List<CourseAgent> caList = trtInf.getCourseAgents();
 
