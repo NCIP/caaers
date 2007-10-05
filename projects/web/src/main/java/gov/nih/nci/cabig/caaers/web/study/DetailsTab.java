@@ -70,7 +70,7 @@ public class DetailsTab extends StudyTab {
 					"Funding sponsor", true);
 			// sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor name you are looking for");
 			fields.add(sponsorField);
-			InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Funding sponsor study identifier", true);
+			InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Funding sponsor study identifier", false);
 			fields.add(sponsorIdentiferField);
 			fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true, collectOptionsFromConfig(
 					"phaseCodeRefData", "desc", "desc")));
@@ -94,10 +94,10 @@ public class DetailsTab extends StudyTab {
 					"Multi-Institutional", true));
 
 			organizationFields.add(InputFieldFactory.createAutocompleterField(
-					"organizationAssignedIdentifier.organization", "Coordinating Center", false));
+					"organizationAssignedIdentifier.organization", "Coordinating Center", true));
 
 			organizationFields.add(InputFieldFactory.createTextField("organizationAssignedIdentifier.value",
-					"Coordinating Center Study Identifier", false));
+					"Coordinating Center Study Identifier", true));
 
 		}
 		InputFieldGroupMap map = new InputFieldGroupMap();
@@ -118,19 +118,7 @@ public class DetailsTab extends StudyTab {
 			InputField field = fieldGroups.get("studyDetails").getFields().get(7);
 			errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
 		}
-		OrganizationAssignedIdentifier identifier = command.getOrganizationAssignedIdentifier();
-		Boolean multiInstitution = command.getMultiInstitutionIndicator();
-		if (multiInstitution.equals(Boolean.TRUE) && identifier.getOrganization() == null) {
-			errors.rejectValue("organizationAssignedIdentifier.organization", "REQUIRED",
-					"Coordinating Center is required..!");
-
-		}
-		if (multiInstitution.equals(Boolean.TRUE) && identifier.getValue() == null) {
-			errors.rejectValue("organizationAssignedIdentifier.value", "REQUIRED", "Identifier is required..!");
-
-		}
-
-	}
+    }
 
 	@Override
 	public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {

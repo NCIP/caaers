@@ -228,7 +228,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Transient
 	public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
 
-		if (getId() != null && multiInstitutionIndicator) {
+		if (getId() != null) {
 			for (Identifier identifier : getIdentifiers()) {
 
 				if (identifier instanceof OrganizationAssignedIdentifier

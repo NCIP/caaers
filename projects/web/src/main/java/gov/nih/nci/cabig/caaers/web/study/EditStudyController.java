@@ -1,11 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
@@ -30,7 +25,8 @@ public class EditStudyController extends StudyController<Study> {
 
 	private static final Log log = LogFactory.getLog(EditStudyController.class);
 
-	public EditStudyController() {
+
+    public EditStudyController() {
 		setBindOnNewForm(true);
 	}
 
@@ -77,8 +73,16 @@ public class EditStudyController extends StudyController<Study> {
 		mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
 		getDao().initialize(mergedStudy);
 
-		updateOrganizationAssignedIdentifier(study, mergedStudy);
-		updateStudyCordinatingCentere(mergedStudy);
+
+	     OrganizationAssignedIdentifier organizationAssignedIdentifier=study.getOrganizationAssignedIdentifier();
+		 mergedStudy.addIdentifier(organizationAssignedIdentifier);
+
+        StudyCoordinatingCenter studyCoordinatingCenter = mergedStudy.getStudyCoordinatingCenter();
+
+        if (!studyCoordinatingCenter.getOrganization().getId().equals(organizationAssignedIdentifier.getOrganization().getId())) {
+				studyCoordinatingCenter.setOrganization(organizationAssignedIdentifier.getOrganization());
+				mergedStudy.addStudyOrganization(studyCoordinatingCenter);
+		}
 
 		if (!study.getIdentifiersLazy().isEmpty()) {
 			for (Identifier identifier : study.getIdentifiersLazy()) {
@@ -98,32 +102,6 @@ public class EditStudyController extends StudyController<Study> {
 
 		getDao().save(mergedStudy);
 		return mergedStudy;
-	}
-
-	private void updateOrganizationAssignedIdentifier(final Study study, final Study mergedStudy) {
-
-		OrganizationAssignedIdentifier organizationAssignedIdentifier = study.getOrganizationAssignedIdentifier();
-		if (study.getMultiInstitutionIndicator().equals(Boolean.TRUE)
-				&& organizationAssignedIdentifier.getOrganization() != null
-				&& organizationAssignedIdentifier.getId() == null) {
-
-			mergedStudy.addIdentifier(organizationAssignedIdentifier);
-
-			StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
-
-			studyCoordinatingCenter.setStudy(mergedStudy);
-			studyCoordinatingCenter.setOrganization(organizationAssignedIdentifier.getOrganization());
-			mergedStudy.addStudyOrganization(studyCoordinatingCenter);
-		}
-		else if (study.getMultiInstitutionIndicator().equals(Boolean.FALSE)
-				&& organizationAssignedIdentifier.getId() != null) {
-
-			// remove both study cordinating centere and organization identifier
-			StudyCoordinatingCenter studyCoordinatingCenter = mergedStudy.getStudyCoordinatingCenter();
-			mergedStudy.removeStudyOrganization(studyCoordinatingCenter);
-			mergedStudy.removeIdentifier(organizationAssignedIdentifier);
-
-		}
 	}
 
 	@Override
@@ -151,8 +129,7 @@ public class EditStudyController extends StudyController<Study> {
 			final Object command, final BindException errors) throws Exception {
 		super.processFinish(request, response, command, errors);
 		Study study = (Study) command;
-		updateStudyCordinatingCentere(study);
-		studyDao.merge(study);
+        studyDao.merge(study);
 		return new ModelAndView(new RedirectView("search"));
 	}
 
@@ -168,22 +145,7 @@ public class EditStudyController extends StudyController<Study> {
 		if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
 			return false;
 		}
-		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont save if it is overview page
+		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont saveResearchStaff if it is overview page
 	}
 
-	private void updateStudyCordinatingCentere(final Study mergedStudy) {
-		OrganizationAssignedIdentifier organizationAssignedIdentifier = mergedStudy.getOrganizationAssignedIdentifier();
-		if (mergedStudy.getMultiInstitutionIndicator().equals(Boolean.TRUE)
-				&& organizationAssignedIdentifier.getOrganization() != null) {
-
-			StudyCoordinatingCenter studyCoordinatingCenter = mergedStudy.getStudyCoordinatingCenter();
-			if (!studyCoordinatingCenter.getOrganization().getId().equals(
-					organizationAssignedIdentifier.getOrganization().getId())) {
-				studyCoordinatingCenter.setOrganization(organizationAssignedIdentifier.getOrganization());
-				studyCoordinatingCenter.setStudy(mergedStudy);
-				mergedStudy.addStudyOrganization(studyCoordinatingCenter);
-			}
-
-		}
-	}
 }

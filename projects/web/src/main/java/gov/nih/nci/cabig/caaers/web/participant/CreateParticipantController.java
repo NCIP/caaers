@@ -1,27 +1,22 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
+
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateParticipantController extends ParticipantController<NewParticipantCommand> {
 
@@ -33,7 +28,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 
 	private StudySiteDao studySiteDao;
 
-	@Override
+    private ListValues listValues;
+
+    @Override
 	protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
 		flow.addTab(new CreateParticipantTab());
 		flow.addTab(new SelectStudyForParticipantTab());
@@ -45,7 +42,13 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	protected Object formBackingObject(final HttpServletRequest request) throws Exception {
 		log.debug("Entering formBackingObject ...");
 		NewParticipantCommand participantCommand = new NewParticipantCommand();
-		participantCommand.getParticipant().setIdentifiers(new ArrayList<Identifier>());
+        List<Identifier>  identifiers=new ArrayList<Identifier>();
+        OrganizationAssignedIdentifier organizationAssignedIdentifier=new OrganizationAssignedIdentifier();
+        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
+        organizationAssignedIdentifier.setType(listValues.getParticipantIdentifierType().get(0).getDesc());
+
+        //identifiers.add();
+        participantCommand.getParticipant().setIdentifiers(identifiers);
 		return participantCommand;
 	}
 
@@ -120,5 +123,8 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	public void setStudyService(final StudyService studyService) {
 		this.studyService = studyService;
 	}
-
+    @Required
+    public void setListValues(ListValues listValues) {
+        this.listValues = listValues;
+    }
 }

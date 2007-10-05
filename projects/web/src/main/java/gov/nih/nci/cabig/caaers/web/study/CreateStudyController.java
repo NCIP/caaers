@@ -60,8 +60,7 @@ public class CreateStudyController extends StudyController<Study> {
 			final Object command, final BindException errors) throws Exception {
 		Study study = (Study) command;
 
-		if (study.getMultiInstitutionIndicator().equals(Boolean.TRUE)
-				&& study.getOrganizationAssignedIdentifier().getOrganization() != null) {
+		if (study.getOrganizationAssignedIdentifier().getOrganization() != null) {
 			// add organization assigned identifier
 			study.addIdentifier(study.getOrganizationAssignedIdentifier());
 
@@ -83,7 +82,7 @@ public class CreateStudyController extends StudyController<Study> {
 		// check for study therapy
 		updateStudyTherapies(study);
 
-		// save the study by calling merge, as the study might be assocated
+		// saveResearchStaff the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)
 		// in different screens (hibernate session)
 		studyDao.merge(study);
