@@ -7,8 +7,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +62,8 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
-        InputFieldGroupMap fieldMap = new InputFieldGroupMap();
+        Map<String, InputFieldGroup> fieldMap;
+        fieldMap = new LinkedHashMap<String, InputFieldGroup>();
         populateFieldMap(command, fieldMap, expeditedReportTree);
         return fieldMap;
     }
