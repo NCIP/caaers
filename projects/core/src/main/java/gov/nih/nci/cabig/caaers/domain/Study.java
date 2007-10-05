@@ -106,7 +106,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 				StudyFundingSponsor.class));
 		lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
 		lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
-		lazyListHelper.add(StudyAmendment.class, new InstantiateFactory<StudyAmendment>(StudyAmendment.class));
 
 		lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(
 				TreatmentAssignment.class));
@@ -131,10 +130,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void removeStudyOrganization(final StudyOrganization so) {
 		getStudyOrganizations().remove(so);
-	}
-
-	public void addAmendment(final StudyAmendment amendment) {
-		getStudyAmendments().add(amendment);
 	}
 
 	@Transient
@@ -518,25 +513,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 				this.studyOrganizations, StudyFundingSponsor.class));
 	}
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stu_id", nullable = false)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<StudyAmendment> getStudyAmendmentsInternal() {
-		return lazyListHelper.getInternalList(StudyAmendment.class);
-	}
-
-	public void setStudyAmendmentsInternal(final List<StudyAmendment> amendments) {
-		lazyListHelper.setInternalList(StudyAmendment.class, amendments);
-	}
-
-	@Transient
-	public List<StudyAmendment> getStudyAmendments() {
-		return lazyListHelper.getLazyList(StudyAmendment.class);
-	}
-
-	public void setStudyAmendments(final List<StudyAmendment> amendments) {
-		setStudyAmendmentsInternal(amendments);
-	}
 
 	@OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
