@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -13,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import org.easymock.EasyMock;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class also contains tests for the shared behavior in AbstractExpeditedAdverseEventInputCommand
@@ -81,7 +83,7 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
         aeReport.getReports().get(1).setRequired(true);
         command.setAeReport(aeReport);
 
-        assertEquals(2, command.getOptionalReportDefinitionsMap().size());
+        assertEquals(3, command.getOptionalReportDefinitionsMap().size());
         assertEquals(Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r1));
         assertEquals(Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r3));
     }
@@ -100,7 +102,7 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
         assertEquals(Boolean.FALSE, command.getOptionalReportDefinitionsMap().get(r3));
     }
 
-    public void testSetOptionalReportDefsDoesNotClearExisting() throws Exception {
+    public void testSetOptionalReportDefsClearExisting() throws Exception {
         assertEquals("Test setup failure", 0, command.getOptionalReportDefinitionsMap().size());
 
         ReportDefinition r1 = createReportDefinition("R1");
@@ -115,8 +117,41 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
 
         assertEquals(4, command.getOptionalReportDefinitionsMap().size());
         assertEquals(Boolean.FALSE, command.getOptionalReportDefinitionsMap().get(r1));
-        assertEquals("Existing reset", Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r2));
+        assertEquals("Reseted r2", Boolean.FALSE, command.getOptionalReportDefinitionsMap().get(r2));
         assertEquals(Boolean.FALSE, command.getOptionalReportDefinitionsMap().get(r3));
-        assertEquals("Existing removed", Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r4));
+        assertEquals("Reseted r4", Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r4));
     }
+    
+    public void testGetSelectedReportDefs(){
+    	assertEquals("Test setup failure", 0, command.getOptionalReportDefinitionsMap().size());
+    	ReportDefinition r1 = createReportDefinition("R1");
+        ReportDefinition r2 = createReportDefinition("R2");
+        ReportDefinition r3 = createReportDefinition("R3");
+        ReportDefinition r4 = createReportDefinition("R4");
+       
+        command.setSelectedReportDefinitions(Arrays.asList(r3, r4));
+        command.setOptionalReportDefinitions(Arrays.asList(r1, r2, r4));
+        
+        List<ReportDefinition> list = command.getSelectedReportDefinitions();
+        assertEquals(1, list.size());
+    	
+    }
+    public void testGetInstantiatedReportDefs(){
+    	ReportDefinition r1 = createReportDefinition("R1");
+        ReportDefinition r2 = createReportDefinition("R2");
+        ReportDefinition r3 = createReportDefinition("R3");
+        ReportDefinition r4 = createReportDefinition("R4");
+        
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        aeReport.addReport(r1.createReport());
+        aeReport.addReport(r2.createReport());
+        aeReport.addReport(r3.createReport());
+        aeReport.getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
+        command.setAeReport(aeReport);
+       
+        List<ReportDefinition> list = command.getInstantiatedReportDefinitions();
+        assertEquals(2, list.size());
+    	
+    }
+    
 }
