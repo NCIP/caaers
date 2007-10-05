@@ -125,7 +125,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             if (report == null) {
                 report = reportService.createReport(def, expeditedData);
-                expeditedAdverseEventReportDao.save(expeditedData);
+                //expeditedAdverseEventReportDao.save(expeditedData);
             }
             report.setRequired(true);
         }
