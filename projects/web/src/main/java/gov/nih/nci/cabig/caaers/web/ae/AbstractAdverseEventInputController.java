@@ -91,7 +91,7 @@ public abstract class AbstractAdverseEventInputController
     @Override
     @SuppressWarnings({ "unchecked" })
     protected void onBind(HttpServletRequest request, Object oCommand, BindException errors) throws Exception {
-        super.onBind(request, oCommand);
+        super.onBind(request, oCommand, errors);
     }
 
     @Override
