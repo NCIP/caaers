@@ -17,6 +17,7 @@ public class PreExistingConditionTabTest extends AeTabTestCase {
         return new PreExistingConditionsTab();
     }
 
+    @Override
     protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
         cmd.getAeReport().addAdverseEventPreExistingCond(new AdverseEventPreExistingCond());
     }

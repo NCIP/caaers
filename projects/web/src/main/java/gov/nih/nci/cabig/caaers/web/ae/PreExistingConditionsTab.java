@@ -11,8 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
@@ -24,25 +22,19 @@ public class PreExistingConditionsTab extends AeTab {
         super("Pre-Existing Conditions", "Pre-existing Conditions", "ae/preExistingConds");
     }
 
+    // TODO: eventually, this will be abstract
     @Override
-    @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("conmed", "aeReport.adverseEventPreExistingConds");
-        fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
-            public String createDisplayName(int index) {
-                return "Pre-Existing Condition " + (index + 1);
-            }
-        });
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField preCondField = InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false);
         InputFieldAttributes.setDetails(preCondField, "If the correct term is not available in this list, type the pre-condition below in the <strong>Other (pre-existing)</strong> field.");
-        fieldFactory.addField(preCondField);
         InputField otherField = InputFieldFactory.createTextField("other", "Other (pre-existing)", false);
         InputFieldAttributes.setSize(otherField, 50);
-        fieldFactory.addField(otherField);
 
-        InputFieldGroupMap groups = new InputFieldGroupMap();
-        groups.addRepeatingFieldGroupFactory(fieldFactory, command.getAeReport().getAdverseEventPreExistingConds().size());
-        return groups;
+        creator.createRepeatingFieldGroup("conmed", "adverseEventPreExistingConds",
+            new SimpleNumericDisplayNameCreator("Pre-existing condition"),
+            preCondField,
+            otherField
+        );
     }
 
     @Override

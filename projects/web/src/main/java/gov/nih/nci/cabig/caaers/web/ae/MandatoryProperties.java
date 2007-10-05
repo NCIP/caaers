@@ -1,20 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Collection;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.LinkedHashSet;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Rhett Sutphin
@@ -48,9 +45,17 @@ public class MandatoryProperties {
             log.debug("No expedited tree node matching " + realProperty);
             return false;
         }
-        boolean mandatory = getMandatoryNodes().contains(node);
+        boolean mandatory = isMandatory(node);
         if (log.isDebugEnabled()) {
             log.debug(realProperty + "is " + (mandatory ? "" : "not ") + "mandatory");
+        }
+        return mandatory;
+    }
+
+    public boolean isMandatory(TreeNode node) {
+        boolean mandatory = getMandatoryNodes().contains(node);
+        if (log.isDebugEnabled()) {
+            log.debug(node + "is " + (mandatory ? "" : "not ") + "mandatory");
         }
         return mandatory;
     }

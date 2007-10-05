@@ -8,33 +8,20 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.collections15.ListUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
  */
 public class CheckpointTab extends AeTab {
-    private static final Log log = LogFactory.getLog(CheckpointTab.class);
-
     private EvaluationService evaluationService;
     
     public CheckpointTab() {
@@ -47,7 +34,7 @@ public class CheckpointTab extends AeTab {
     }
 
     @Override
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
         for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
             optional.getFields().add(InputFieldFactory.createCheckboxField(
@@ -56,7 +43,7 @@ public class CheckpointTab extends AeTab {
             ));
         }
 
-        return InputFieldGroupMap.create(optional);
+        creator.addUnprocessedFieldGroup(optional);
     }
 
     @Override

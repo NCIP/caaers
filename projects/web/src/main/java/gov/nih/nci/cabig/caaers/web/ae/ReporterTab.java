@@ -4,11 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,32 +29,27 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(createPersonGroup("reporter"));
-        map.addInputFieldGroup(createPersonGroup("physician"));
-        return map;
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+        createPersonGroup(creator, "reporter");
+        createPersonGroup(creator, "physician");
     }
 
-    private InputFieldGroup createPersonGroup(String person) {
-        InputFieldGroup group = new DefaultInputFieldGroup(person, StringUtils.capitalize(person) + " details");
-        String base = "aeReport." + person  + '.';
+    private void createPersonGroup(AeInputFieldCreator creator, String person) {
+        String base = person  + '.';
         InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
-        //InputFieldAttributes.setSize(firstNameField, 50);
-        group.getFields().add(firstNameField);
         InputField middleNameField = InputFieldFactory.createTextField(base + "middleName", "Middle name", false);
-        //InputFieldAttributes.setSize(middleNameField, 50);
-        group.getFields().add(middleNameField);
         InputField lastNameField = InputFieldFactory.createTextField(base + "lastName", "Last name", true);
-        //InputFieldAttributes.setSize(lastNameField, 50);
-        group.getFields().add(lastNameField);
         InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", true);
         InputFieldAttributes.setSize(emailField, 50);
-        group.getFields().add(emailField);
-        group.getFields().add(createContactField(base, ReportPerson.PHONE));
-        group.getFields().add(createContactField(base, ReportPerson.FAX));
-        return group;
+
+        creator.createFieldGroup(person, StringUtils.capitalize(person) + " details",
+            firstNameField,
+            middleNameField,
+            lastNameField,
+            emailField,
+            createContactField(base, ReportPerson.PHONE),
+            createContactField(base, ReportPerson.FAX)
+        );
     }
 
     private InputField createContactField(String base, String contactType) {

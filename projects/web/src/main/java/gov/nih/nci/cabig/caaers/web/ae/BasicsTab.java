@@ -1,52 +1,38 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
  */
-public class BasicsTab extends AeTab {
-    private static final String MAIN_FIELD_GROUP = "main";
-    private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
-    private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
-
-    private static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
+public abstract class BasicsTab extends AeTab {
+    protected static final String MAIN_FIELD_GROUP = "main";
+    protected static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
     static {
         EXPEDITED_GRADES.addAll(Arrays.asList(Grade.values()));
         EXPEDITED_GRADES.remove(Grade.NORMAL);
     }
 
-    private CtcDao ctcDao;
-
-//    private InputFieldGroup reportFieldGroup;
-//    private RepeatingFieldGroupFactory mainFieldFactory, ctcTermFieldFactory, ctcOtherFieldFactory;
-
-    public BasicsTab() {
-
-        super("Enter basic AE information", "Enter AEs", "ae/enterBasic");
+    public BasicsTab(String longTitle, String shortTitle, String viewName) {
+        super(longTitle, shortTitle, viewName);
     }
 
     private Map<Object, Object> createAttributionOptions() {
@@ -58,57 +44,33 @@ public class BasicsTab extends AeTab {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	//-
-
-        RepeatingFieldGroupFactory mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeReport.adverseEvents");
-        mainFieldFactory.addField(InputFieldFactory.createLongSelectField("grade", "Grade", true,
-                InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)));
-        mainFieldFactory.addField(InputFieldFactory.createDateField(
-                "startDate", "Start date"));
-        mainFieldFactory.addField(InputFieldFactory.createDateField(
-                "endDate", "End date"));
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to lead IND", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
             "Select from the list the most appropriate term describing the relationship of the event to the lead intervention or agent.");
-        mainFieldFactory.addField(attributionField);
-        mainFieldFactory.addField(InputFieldFactory.createSelectField(
-            "hospitalization", "Hospitalization", true,
-                InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")));
         InputField exField = InputFieldFactory.createBooleanSelectField(
                 "expected", "Expected", true);
         InputFieldAttributes.setDetails(exField, "If known, specify whether the AE is expected or not, as determined by the protocol guidelines. If this is a CTEP Sponsored trial, you may refer also to the AdEERS Agent Specific Adverse Event List (ASAEL).");
-        mainFieldFactory.addField(exField);
-
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 50);
-        mainFieldFactory.addField(commentsField);
-
-        RepeatingFieldGroupFactory ctcTermFieldFactory = new RepeatingFieldGroupFactory(CTC_TERM_FIELD_GROUP, "aeReport.adverseEvents");
-        InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", true);
-        InputFieldAttributes.setDetails(ctcTermField,
-            "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
-        ctcTermFieldFactory.addField(ctcTermField);
-
-        RepeatingFieldGroupFactory ctcOtherFieldFactory = new RepeatingFieldGroupFactory(CTC_OTHER_FIELD_GROUP, "aeReport.adverseEvents");
-        ctcOtherFieldFactory.addField(InputFieldFactory.createTextArea("detailsForOther", "Other (specify)", false));
-
-    	//-
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        int aeCount = command.getAeReport().getAdverseEvents().size();
-        map.addRepeatingFieldGroupFactory(mainFieldFactory, aeCount);
-        map.addRepeatingFieldGroupFactory(ctcTermFieldFactory, aeCount);
-        map.addRepeatingFieldGroupFactory(ctcOtherFieldFactory, aeCount);
-        return map;
+        creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
+            InputFieldFactory.createLongSelectField("grade", "Grade", true,
+                    InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)),
+            InputFieldFactory.createDateField("startDate", "Start date"),
+            InputFieldFactory.createDateField("endDate", "End date"),
+            attributionField,
+            InputFieldFactory.createSelectField(
+                "hospitalization", "Hospitalization", true,
+                    InputFieldFactory.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
+            exField,
+            commentsField
+        );
     }
 
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refdata = super.referenceData(command);
-        refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy().getTerminology().getCtcVersion().getCategories());
-        return refdata;
+    public ExpeditedReportSection section() {
+        return ExpeditedReportSection.BASICS_SECTION;
     }
 
     @Override
@@ -116,40 +78,19 @@ public class BasicsTab extends AeTab {
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
-
         // TODO: validate that there is at least one AE
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae =  lit.next();
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
-    }
 
-    private void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
-        CtcTerm ctcTerm = ae.getAdverseEventCtcTerm().getCtcTerm();
-
-        if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null) {
-            InputField field = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+        InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(1);
+        if (command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
+            errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
+                firstStartDateField.getDisplayName() + " required for primary AE");
         }
-        if(index == 0){
-        	InputField field = groups.get(MAIN_FIELD_GROUP + index).getFields().get(1);
-        	if(ae.getStartDate() == null) errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
-        }
-
-    }
-    @Override
-    public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.BASICS_SECTION;
-    }
-    ////// CONFIGURATION
-
-    @Required
-    public void setCtcDao(CtcDao ctcDao) {
-        this.ctcDao = ctcDao;
     }
 
-    // for testing
-    CtcDao getCtcDao() {
-        return ctcDao;
+    protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
     }
 }

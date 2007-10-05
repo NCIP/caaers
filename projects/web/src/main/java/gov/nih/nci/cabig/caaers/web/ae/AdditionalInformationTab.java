@@ -3,9 +3,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 
 
@@ -19,27 +16,25 @@ public class AdditionalInformationTab extends AeTab {
     }
 
     @Override
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        InputFieldGroup allFields = new DefaultInputFieldGroup("desc");
-        String baseProp = "aeReport.additionalInformation";
-
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".autopsyReport", "Autopsy Report", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".consults", "Consults", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".dischargeSummary", "Discharge Summary", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".flowCharts", "Flow Sheets/Case Report Forms", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".labReports", "Laboratory Reports", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".obaForm", "OBA Form", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".other", "Other", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".pathologyReport", "Pathology Report", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".progressNotes", "Progress Notes", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".radiologyReports", "Radiology Report", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".referralLetters", "Referral Letters", false));
-        allFields.getFields().add(createBooleanSelectField(baseProp + ".irbReport", "Summary Report Sent to IRB", false));
-        InputField otherInfoField = createTextArea(baseProp + ".otherInformation", "Other Information", false);
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+        InputField otherInfoField = createTextArea("otherInformation", "Other Information", false);
         InputFieldAttributes.setColumns(otherInfoField,45);
-        allFields.getFields().add(otherInfoField);
 
-        return InputFieldGroupMap.create(allFields);
+        creator.createFieldGroup("desc", null, "additionalInformation",
+            createBooleanSelectField("autopsyReport", "Autopsy Report", false),
+            createBooleanSelectField("consults", "Consults", false),
+            createBooleanSelectField("dischargeSummary", "Discharge Summary", false),
+            createBooleanSelectField("flowCharts", "Flow Sheets/Case Report Forms", false),
+            createBooleanSelectField("labReports", "Laboratory Reports", false),
+            createBooleanSelectField("obaForm", "OBA Form", false),
+            createBooleanSelectField("other", "Other", false),
+            createBooleanSelectField("pathologyReport", "Pathology Report", false),
+            createBooleanSelectField("progressNotes", "Progress Notes", false),
+            createBooleanSelectField("radiologyReports", "Radiology Report", false),
+            createBooleanSelectField("referralLetters", "Referral Letters", false),
+            createBooleanSelectField("irbReport", "Summary Report Sent to IRB", false),
+            otherInfoField
+        );
     }
 
     @Override

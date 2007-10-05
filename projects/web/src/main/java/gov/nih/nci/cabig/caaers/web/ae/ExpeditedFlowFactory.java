@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 /**
  * @author Krikor Krumlian
@@ -39,8 +38,6 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         flow.addTab(new LabsTab());
         flow.addTab(new AttributionTab());
         flow.addTab(new AdditionalInformationTab());
-        //TODO: remove below commented line.
-       // flow.addTab(new Tab<ExpeditedAdverseEventInputCommand>("Confirm and save", "Save", "ae/save"));
         flow.addTab(new ViewReportTab());
     }
 
@@ -60,7 +57,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         if (meddraFlow == null) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
-            meddraFlow.addTab(new BasicsTabMeddra());
+            meddraFlow.addTab(new MeddraBasicsTab());
             addPostBasicTabs(meddraFlow);
         }
         return meddraFlow;
@@ -70,7 +67,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         if (ctepFlow == null) {
             ctepFlow = createEmptyFlow();
             addPreBasicTabs(ctepFlow);
-            ctepFlow.addTab(new BasicsTab());
+            ctepFlow.addTab(new CtcBasicsTab());
             addPostBasicTabs(ctepFlow);
         }
         return ctepFlow;

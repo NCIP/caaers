@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
@@ -21,25 +20,20 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class AttributionTab extends AeTab {
-    private static final Map<Object,Object> ATTRIBUTION_OPTIONS;
-    static{
-    	ATTRIBUTION_OPTIONS = collectAttributionOptions();
-    }
+    private static final Map<Object,Object> ATTRIBUTION_OPTIONS = collectAttributionOptions();
+
     protected AttributionTab() {
         super("Attribution", "Attribution", "ae/attribution");
-
     }
 
     @Override
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        InputFieldGroupMap map = new InputFieldGroupMap();
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         List<AttributionBlock> blocks = createBlocks(command.getAeReport());
         for (AttributionBlock block : blocks) {
             for (InputFieldGroup group : block.getRows()) {
-                map.addInputFieldGroup(group);
+                creator.addUnprocessedFieldGroup(group);
             }
         }
-        return map;
     }
 
     private List<AttributionBlock> createBlocks(ExpeditedAdverseEventReport report) {
@@ -116,14 +110,14 @@ public class AttributionTab extends AeTab {
     }
 
     private static Map<Object, Object> collectAttributionOptions(){
-    	Map<Object, Object> map = new LinkedHashMap<Object, Object>();
-    	map.put("", "Please select");
-    	map.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
-    	return map;
+        Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+        map.put("", "Please select");
+        map.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", null));
+        return map;
     }
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.ATTRIBUTION_SECTION;
+        return ExpeditedReportSection.ATTRIBUTION_SECTION;
     }
 }

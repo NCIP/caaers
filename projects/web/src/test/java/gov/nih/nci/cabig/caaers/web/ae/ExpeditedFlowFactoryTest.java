@@ -33,12 +33,12 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     public void testMeddraBasicsTabUsedWhenAppropriate() throws Exception {
         study.getTerminology().setTerm(Term.MEDDRA);
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
-        assertTrue("Wrong basics tab", flow.getTab(0) instanceof BasicsTabMeddra);
+        assertTrue("Wrong basics tab", flow.getTab(0) instanceof MeddraBasicsTab);
     }
 
     public void testCtcTabUsedWhenExplicitlyRequired() throws Exception {
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
-        assertTrue("Wrong basics tab", flow.getTab(0) instanceof BasicsTab);
+        assertTrue("Wrong basics tab", flow.getTab(0) instanceof CtcBasicsTab);
     }
 
     public void testCtcTabUsedByDefault() throws Exception {
@@ -47,6 +47,6 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
         replayMocks();
 
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
-        assertTrue("Wrong basics tab", flow.getTab(0) instanceof BasicsTab);
+        assertTrue("Wrong basics tab", flow.getTab(0) instanceof CtcBasicsTab);
     }
 }

@@ -3,8 +3,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
@@ -16,20 +14,15 @@ public class OtherCausesTab extends AeTab {
     }
 
     @Override
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("otherCause",
-            "aeReport.otherCauses");
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField otherField = InputFieldFactory.createTextArea("text", "Cause", false);
         InputFieldAttributes.setColumns(otherField, 50);
-        factory.addField(otherField);
 
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addRepeatingFieldGroupFactory(factory, command.getAeReport().getOtherCauses().size());
-        return map;
+        creator.createRepeatingFieldGroup("otherCause", "otherCauses", otherField);
     }
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.OTHER_CAUSE_SECTION;
+        return ExpeditedReportSection.OTHER_CAUSE_SECTION;
     }
 }

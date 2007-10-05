@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * An {@link InputField} which actually should be rendered as multiple
@@ -30,6 +31,18 @@ public class CompositeField extends AbstractInputField {
     @SuppressWarnings({ "unchecked" })
     public static List<InputField> getSubfields(InputField compositeField) {
         return (List<InputField>) compositeField.getAttributes().get(SUBFIELDS);
+    }
+
+    public static List<String> getEffectivePropertyNames(InputField compositeField) {
+        List<String> properties = new LinkedList<String>();
+        for (InputField field : getSubfields(compositeField)) {
+            if (compositeField.getPropertyName() == null) {
+                properties.add(field.getPropertyName());
+            } else {
+                properties.add(compositeField.getPropertyName() + '.' + field.getPropertyName());
+            }
+        }
+        return properties;
     }
 
     @Override

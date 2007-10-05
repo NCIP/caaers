@@ -31,11 +31,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignmentDao assignmentDao;
     protected CreateExpeditedAdverseEventCommand command;
     protected ExpeditedAdverseEventReportDao reportDao;
-    private ReportDefinitionDao reportDefinitionDao;
-    private StudyDao studyDao;
-    private ParticipantDao participantDao;
+    protected ReportDefinitionDao reportDefinitionDao;
+    protected StudyDao studyDao;
+    protected ParticipantDao participantDao;
     protected Errors errors;
-    private ExpeditedReportTree expeditedReportTree;
+    protected ExpeditedReportTree expeditedReportTree;
 
     @Override
     protected void setUp() throws Exception {

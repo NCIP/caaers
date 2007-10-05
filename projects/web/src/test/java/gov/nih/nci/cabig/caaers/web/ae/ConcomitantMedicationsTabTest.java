@@ -33,17 +33,4 @@ public class ConcomitantMedicationsTabTest extends AeTabTestCase {
         doValidate();
         assertEquals(0, getErrors().getErrorCount());
     }
-
-
-//TODO: No longer valid
-//    public void testAgentNameRequired() throws Exception {
-//        command.getAeReport().getConcomitantMedications().get(0).setAgentName(null);
-//        doValidate();
-//        assertEquals(1, getErrors().getErrorCount());
-//        ObjectError fieldError = getErrors().getFieldError("aeReport.concomitantMedications[0].agentName");
-//        assertNotNull(fieldError);
-//        assertEquals("Wrong code", "REQUIRED", fieldError.getCode());
-//        assertEquals("Wrong message", "Missing Information about concomitant medication",
-//            fieldError.getDefaultMessage());
-//    }
 }

@@ -18,7 +18,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -30,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -80,6 +80,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     private CreateAdverseEventController controller;
     private CreateExpeditedAdverseEventCommand firstCommand;
+    private ExpeditedReportTree expeditedReportTree;
 
     @Override
     protected void setUp() throws Exception {
@@ -100,7 +101,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             studyDao = registerDaoMockFor(StudyDao.class),
             lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class),
             studyAgentDao = registerDaoMockFor(StudyAgentDao.class),
-            treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class)
+            treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class),
+            expeditedReportTree = new ExpeditedReportTree()
         );
         ConfigProperty configProperty = new ConfigProperty();
         configProperty.setMap(LazyMap.decorate(new HashMap<String, List<Lov>>(), new InstantiateFactory(ArrayList.class)));
@@ -124,6 +126,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setLowLevelTermDao(lowLevelTermDao);
         controller.setTreatmentAssignmentDao(treatmentAssignmentDao);
         controller.setTabConfigurer(tabConfigurer);
+        controller.setExpeditedReportTree(expeditedReportTree);
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded
@@ -239,7 +242,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         Flow<ExpeditedAdverseEventInputCommand> flow = controller.getFlowFactory().createFlow(firstCommand);
         List<Tab<ExpeditedAdverseEventInputCommand>> tabs = flow.getTabs();
         assertTrue("Test expectation violation: tab 0 not begin", tabs.get(0) instanceof BeginTab);
-        assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof BasicsTab);
+        assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof CtcBasicsTab);
         assertTrue("Test expectation violation: tab 2 not reporter", tabs.get(2) instanceof ReporterTab);
         assertTrue("Test expectation violation: tab 3 not checkpoint", tabs.get(3) instanceof CheckpointTab);
         for (int i = 4; i < tabs.size(); i++) {

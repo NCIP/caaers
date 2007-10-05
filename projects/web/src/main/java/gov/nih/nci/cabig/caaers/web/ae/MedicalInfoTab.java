@@ -3,9 +3,6 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -39,23 +36,18 @@ public class MedicalInfoTab extends AeTab {
     }
 
     @Override
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-        BasePropertyInputFieldGroup participant
-            = new BasePropertyInputFieldGroup("participant", "aeReport.participantHistory");
-        participant
-            .addField(createParticipantMeasureField("height", "Height",
-                optionsFromConfigurationProperty("heightUnitsRefData")))
-            .addField(createParticipantMeasureField("weight", "Weight",
-                optionsFromConfigurationProperty("weightUnitsRefData")))
-            .addField(InputFieldFactory.createSelectField("baselinePerformanceStatus", "Baseline performance", false,
-                optionsFromConfigurationProperty("bpsRefData", "Please select")))
-            ;
-
-        BasePropertyInputFieldGroup disease
-            = new BasePropertyInputFieldGroup("disease", "aeReport.diseaseHistory");
-        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
-            command.getStudy().getCtepStudyDiseases(), "id", "term.term", ""
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+        creator.createFieldGroup("participant", null, "participantHistory",
+            createParticipantMeasureField("height", "Height",
+                optionsFromConfigurationProperty("heightUnitsRefData")),
+            createParticipantMeasureField("weight", "Weight",
+                optionsFromConfigurationProperty("weightUnitsRefData")),
+            InputFieldFactory.createSelectField("baselinePerformanceStatus", "Baseline performance",
+                false, optionsFromConfigurationProperty("bpsRefData", "Please select"))
         );
+
+        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
+            command.getStudy().getCtepStudyDiseases(), "id", "term.term", "");
         InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false,
             ctepStudyDiseaseOptions);
         InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease is not listed in the drop down list, type the appropriate disease name in the Other (disease) field below.");
@@ -65,32 +57,23 @@ public class MedicalInfoTab extends AeTab {
         InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");
         InputField diganosisDateField = InputFieldFactory.createDateField("diagnosisDate", "Date of initial diagnosis", false);
         InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");
-        disease
-            .addField(ctepStudyDisease)
-            .addField(otherDiseaseField)
-            .addField(diseaseSite)
-            .addField(InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other (site of primary disease)"))
-            .addField(diganosisDateField)
-            ;
 
-        RepeatingFieldGroupFactory fieldFactory = new RepeatingFieldGroupFactory("metastatic", "aeReport.diseaseHistory.metastaticDiseaseSites");
-        fieldFactory.setDisplayNameCreator(new RepeatingFieldGroupFactory.DisplayNameCreator() {
-            public String createDisplayName(int index) {
-                return "Metastatic disease site " + (index + 1);
-            }
-        });
+        creator.createFieldGroup("disease", null, "diseaseHistory",
+            ctepStudyDisease,
+            otherDiseaseField,
+            diseaseSite,
+            InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other (site of primary disease)"),
+            diganosisDateField
+        );
+
         InputField codedSiteField = InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false);
         InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the <strong>Other(Site of Metastatic Disease)</strong> field");
-        fieldFactory.addField(codedSiteField);
 
-        fieldFactory.addField(InputFieldFactory.createTextField("otherSite", "Other(Site of metastatic disease)", false));
-
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(participant);
-        map.addInputFieldGroup(disease);
-        map.addRepeatingFieldGroupFactory(fieldFactory,
-            command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites().size());
-        return map;
+        creator.createRepeatingFieldGroup("metastatic", "diseaseHistory.metastaticDiseaseSites",
+            new SimpleNumericDisplayNameCreator("Metastatic disease site"),
+            codedSiteField,
+            InputFieldFactory.createTextField("otherSite", "Other(Site of metastatic disease)", false)
+        );
     }
 
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {

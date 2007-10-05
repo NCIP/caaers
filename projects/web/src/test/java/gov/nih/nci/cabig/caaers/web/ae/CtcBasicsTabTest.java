@@ -8,12 +8,9 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Terminology;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import org.easymock.classextension.EasyMock;
-import static org.easymock.classextension.EasyMock.*;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +19,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 @CaaersUseCases({ CREATE_EXPEDITED_REPORT , CREATE_ROUTINE_REPORT})
-public class BasicsTabTest extends AeTabTestCase {
+public class CtcBasicsTabTest extends AeTabTestCase {
     private AdverseEvent ae0;
     private Ctc ctcae3;
 
@@ -31,8 +28,8 @@ public class BasicsTabTest extends AeTabTestCase {
         super.setUp();
 
         ctcae3 = Fixtures.createCtcaeV3();
-        Terminology t = Fixtures.createCtcV3Terminology(
-				command.getAssignment().getStudySite().getStudy());
+        Terminology t
+            = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite().getStudy());
         command.getAssignment().getStudySite().getStudy().setTerminology(t);
         command.getAssignment().getStudySite().getStudy().getTerminology().setCtcVersion(Fixtures.createCtcaeV3());
 
@@ -41,8 +38,8 @@ public class BasicsTabTest extends AeTabTestCase {
     }
 
     @Override
-    protected BasicsTab createTab() {
-        return new BasicsTab();
+    protected CtcBasicsTab createTab() {
+        return new CtcBasicsTab();
     }
 
     @SuppressWarnings("unchecked")

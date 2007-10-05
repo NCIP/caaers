@@ -10,10 +10,17 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import java.util.Arrays;
+
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.BeanWrapper;
 
 /**
  * @author Rhett Sutphin
@@ -30,8 +37,18 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     @Override
-    // require InputFieldGroupMap, not just a Map<String, InputFieldGroup>
-    public abstract InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command);
+    // TODO: this should be final, but there are non-EAE-flow tabs extending this one that need to be fixed first
+    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+        AeInputFieldCreator creator = new AeInputFieldCreator(command);
+        createFieldGroups(creator, command);
+        return creator.getMap();
+    }
+
+    /**
+     * Template method for subclasses to instantiate their fields via the {@link AeInputFieldCreator}.
+     */
+    // TODO: this should be abstract -- see above
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) { }
 
     /**
      * Will also update the InputField mandatory flag.
@@ -117,5 +134,118 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     public void setReportService(ReportService reportService) {
         this.reportService = reportService;
+    }
+
+    //////
+
+    protected class AeInputFieldCreator {
+        protected final ExpeditedAdverseEventInputCommand command;
+        private BeanWrapper wrappedReport;
+
+        private InputFieldGroupMap map;
+
+        protected AeInputFieldCreator(ExpeditedAdverseEventInputCommand command) {
+            this.command = command;
+            this.wrappedReport = new BeanWrapperImpl(command.getAeReport());
+            this.map = new InputFieldGroupMap();
+        }
+
+        /**
+         * Add a RepeatingFieldGroup to the groups for this tab.  Note that the
+         * listProperty should be relative to {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport}
+         * <em>not</em> the command.  That is, it should not begin with <code>aeReport.</code>.
+         */
+        public final AeInputFieldCreator createRepeatingFieldGroup(String basename, String listProperty, InputField... fields) {
+            return createRepeatingFieldGroup(basename, listProperty, null, fields);
+        }
+
+        public final AeInputFieldCreator createRepeatingFieldGroup(String basename, String listProperty, RepeatingFieldGroupFactory.DisplayNameCreator nameCreator, InputField... fields) {
+            RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory(basename, "aeReport." + listProperty);
+            TreeNode listNode = expeditedReportTree.find(listProperty);
+            if (listNode == null) {
+                throw new CaaersSystemException(listProperty + " does not appear in the expedited report tree");
+            }
+            for (InputField field : fields) {
+                List<String> props = field.getCategory() == InputField.Category.COMPOSITE
+                    ? CompositeField.getEffectivePropertyNames(field)
+                    : Arrays.asList(field.getPropertyName());
+                for (String prop : props) {
+                    setMandatoryAttribute(listNode.find(prop), field);
+                }
+                factory.addField(field);
+            }
+
+            Collection<?> list = (Collection<?>) wrappedReport.getPropertyValue(listProperty);
+            int initialCount = list == null ? 0 : list.size();
+
+            if (nameCreator != null) {
+                factory.setDisplayNameCreator(nameCreator);
+            }
+
+            map.addRepeatingFieldGroupFactory(factory, initialCount);
+            return this;
+        }
+
+        /**
+         * Add a normal, single group of fields to this tab.  Note that the fields' propertyNames
+         * should be relative to {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport}
+         * <em>not</em> the command.  That is, they should not begin with <code>aeReport.</code>.
+         */
+        public final AeInputFieldCreator createFieldGroup(String name, InputField... fields) {
+            return createFieldGroup(name, null, fields);
+        }
+
+        public final AeInputFieldCreator createFieldGroup(
+            String name, String displayName, InputField... fields
+        ) {
+            return createFieldGroup(name, displayName, null, fields);
+        }
+
+        public final AeInputFieldCreator createFieldGroup(
+            String name, String displayName, String baseProperty, InputField... fields
+        ) {
+            BasePropertyInputFieldGroup group = new BasePropertyInputFieldGroup(name, displayName, "aeReport" + (baseProperty == null ? "" : '.' + baseProperty));
+            for (InputField field : fields) {
+                String treePropName = (baseProperty == null ? "" : baseProperty + '.') + field.getPropertyName();
+                setMandatoryAttribute(expeditedReportTree.find(treePropName), field);
+                group.addField(field);
+            }
+            map.addInputFieldGroup(group);
+            return this;
+        }
+
+        public InputFieldGroupMap getMap() {
+            return map;
+        }
+
+        private void setMandatoryAttribute(TreeNode fieldNode, InputField field) {
+            if (command.getMandatoryProperties() != null) {
+                if (command.getMandatoryProperties().isMandatory(fieldNode)) {
+                    field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
+                }
+            }
+        }
+
+        /**
+         * Directly add an input field group.  This group should not contain any fields which
+         * represent properties in the command's aeReport.
+         *
+         * @param group
+         */
+        public void addUnprocessedFieldGroup(InputFieldGroup group) {
+            map.addInputFieldGroup(group);
+        }
+    }
+
+    protected final class SimpleNumericDisplayNameCreator implements RepeatingFieldGroupFactory.DisplayNameCreator {
+        private String heading;
+
+        public SimpleNumericDisplayNameCreator(String heading) {
+            this.heading = heading;
+        }
+
+        public String createDisplayName(int index) {
+            return new StringBuilder(heading).append(' ').append(index + 1).toString();
+        }
     }
 }
