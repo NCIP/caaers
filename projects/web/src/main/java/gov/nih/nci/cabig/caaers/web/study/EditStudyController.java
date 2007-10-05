@@ -143,7 +143,6 @@ public class EditStudyController extends StudyController<Study> {
 		flow.addTab(new InvestigatorsTab());
 		flow.addTab(new PersonnelTab());
 		flow.addTab(new IdentifiersTab());
-		flow.addTab(new StudyAmendmentTab());
 
 	}
 
