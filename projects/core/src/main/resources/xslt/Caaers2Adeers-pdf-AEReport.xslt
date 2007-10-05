@@ -109,12 +109,12 @@
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Principal Investigator :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal"> 						 
-						
-						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/StudyInvestigator">
-							
-								<xsl:value-of select="SiteInvestigator/Investigator/firstName"/>
+					
+						<for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/SiteInvestigator"> 
+								
+								<xsl:value-of select="Investigator/firstName"/>
 								<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
-								<xsl:value-of select="SiteInvestigator/Investigator/lastName"/>
+								<xsl:value-of select="Investigator/lastName"/>
 								
 							
 						</for-each>
@@ -151,8 +151,13 @@
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Created Date :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal" > 
+						<xsl:variable name="trimmedDate">
+							<xsl:call-template name="trim">
+						        <xsl:with-param name="s" select="AdverseEventReport/createdAt"/>
+   							</xsl:call-template>				
+						</xsl:variable>
 						<xsl:call-template name="standard_date">
-						        <xsl:with-param name="date" select="AdverseEventReport/detectionDate"/>
+						        <xsl:with-param name="date" select="$trimmedDate"/>
    						</xsl:call-template>
 					</fo:inline>
 				</fo:block>
@@ -1875,4 +1880,50 @@
 		</xsl:if>
 	</xsl:template>
 
+<xsl:template name="left-trim">
+  <xsl:param name="s" />
+  <xsl:choose>
+    <xsl:when test="substring($s, 1, 1) = ''">
+      <xsl:value-of select="$s"/>
+    </xsl:when>
+    <xsl:when test="normalize-space(substring($s, 1, 1)) = ''">
+      <xsl:call-template name="left-trim">
+        <xsl:with-param name="s" select="substring($s, 2)" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$s" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="right-trim">
+  <xsl:param name="s" />
+  <xsl:choose>
+    <xsl:when test="substring($s, 1, 1) = ''">
+      <xsl:value-of select="$s"/>
+    </xsl:when>
+    <xsl:when test="normalize-space(substring($s, string-length($s))) = ''">
+      <xsl:call-template name="right-trim">
+        <xsl:with-param name="s" select="substring($s, 1, string-length($s) - 1)" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$s" />
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="trim">
+  <xsl:param name="s" />
+  <xsl:call-template name="right-trim">
+    <xsl:with-param name="s">
+      <xsl:call-template name="left-trim">
+        <xsl:with-param name="s" select="$s" />
+      </xsl:call-template>
+    </xsl:with-param>
+  </xsl:call-template>
+</xsl:template>
+
+  
 </xsl:stylesheet>
