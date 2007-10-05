@@ -4,11 +4,12 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,11 +20,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
 
 /**
  * @author Rhett Sutphin
@@ -54,7 +56,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private DiseaseHistory diseaseHistory;
 
     private List<Report> reports;
-
 
     // TODO
     // private List<MedicalDevice> medicalDevices;
@@ -123,6 +124,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     @Transient
+    @Deprecated
     public boolean isExpeditedReportingRequired() {
         for (Report report : getReports()) {
             if (report.isRequired()) return true;
@@ -131,6 +133,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     @Transient
+    @Deprecated
     public int getRequiredReportCount() {
         int count = 0;
         for (Report report : getReports()) {
@@ -565,7 +568,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
-
+    
     public void addReport(Report report) {
         getReports().add(report);
         report.setAeReport(this);
@@ -605,4 +608,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @Transient
     public void setPublicIdentifier(String strId){
     }
+    
+    
 }

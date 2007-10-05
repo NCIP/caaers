@@ -317,7 +317,7 @@ public class ReportServiceImpl  implements ReportService {
         List<String> fields = new LinkedList<String>();
         if(report.getReportDefinition().getMandatoryFields() != null){
             for(ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()){
-                if (field.isMandatory()) fields.add(field.getFieldPath());
+                if (field.getMandatory()) fields.add(field.getFieldPath());
             }
         }
         return fields;

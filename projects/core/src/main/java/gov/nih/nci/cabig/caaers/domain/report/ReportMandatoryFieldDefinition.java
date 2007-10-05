@@ -36,10 +36,10 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 		this.fieldPath = fieldPath;
 	}
 
-    @Transient
-    public boolean isMandatory() {
-        return getMandatory() != null && getMandatory();
-    }
+//    @Transient
+//    public boolean isMandatory() {
+//        return getMandatory() != null && getMandatory();
+//    }
 
     public String getFieldPath() {
 		return fieldPath;
@@ -49,7 +49,7 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 	}
 
 	public Boolean getMandatory() {
-		return mandatory;
+		return mandatory != null && mandatory;
 	}
 
 	public void setMandatory(Boolean mandatory) {
