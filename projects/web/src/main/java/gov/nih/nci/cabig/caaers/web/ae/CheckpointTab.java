@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -19,6 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -52,33 +61,34 @@ public class CheckpointTab extends AeTab {
 
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        evaluationService.addRequiredReports(command.getAeReport());
-        command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+    	//evalutate available report definitions per session.
+    	if(command.getAllReportDefinitions() == null || command.getAllReportDefinitions().isEmpty()){
+    		command.setAllReportDefinitions(evaluationService.applicableReportDefinitions(command.getAssignment()));
+    	}
+    	
+    	//identify the report definitions mandated by Rules engine
+    	if(command.getRequiredReportDeifnitions().isEmpty()){
+    		command.setRequiredReportDefinition(evaluationService.findRequiredReportDefinitions(command.getAeReport()));
+    	}
+        
+    	//already AE report is saved.
+    	if(command.getAeReport().getId() != null){
+        	//set up selected reports
+    		command.refreshSelectedReportDefinitionsMap(command.getInstantiatedReportDefinitions());
+    		//set up the optional reports
+        	command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+     	}else{
+     		//set up the optional reports
+        	command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+    		//new, so no reports are associated with this yet. 
+        	command.setSelectedReportDefinitions(command.getRequiredReportDeifnitions());
+    	}
     }
 
     private List<ReportDefinition> createOptionalReportDefinitionsList(ExpeditedAdverseEventInputCommand command) {
-        List<ReportDefinition> all = evaluationService.applicableReportDefinitions(command.getAssignment());
-        if (log.isDebugEnabled()) {
-            log.debug("Applicable report defs: " + all);
-        }
-        for (Report report : command.getAeReport().getReports()) {
-            if (report.isRequired()) {
-                boolean removed = all.remove(report.getReportDefinition());
-                if (log.isDebugEnabled()) {
-                    if (removed) {
-                        log.debug("  Removed " + report.getReportDefinition() + " from optional list because it is required");
-                    } else {
-                        log.debug("  Report def " + report.getReportDefinition()
-                            + " is in the EAER, but is not applicable according to "
-                            + evaluationService.getClass().getName());
-                    }
-                }
-            }
-        }
-        if (log.isDebugEnabled()) {
-            log.debug("Optional report defs: " + all);
-        }
-        return all;
+    	if(command.getSelectedReportDefinitions() == null) return command.getAllReportDefinitions();
+    	
+    	return ListUtils.subtract(command.getAllReportDefinitions(), command.getSelectedReportDefinitions());
     }
 
     @Override
@@ -86,29 +96,30 @@ public class CheckpointTab extends AeTab {
         Map<String, InputFieldGroup> fieldGroups, Errors errors ) {
         boolean anyReports = command.getAeReport().getReports().size() > 0;
         for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
-            anyReports |= optionalReportSelected(command, def);
+            anyReports |= reportSelected(command, def);
         }
         if (!anyReports) {
             errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
         }
     }
-
+    
+    @Override
+    public void onBind(HttpServletRequest request,ExpeditedAdverseEventInputCommand command, Errors errors) {
+    	super.onBind(request, command, errors);
+    	//explicitly call setSelectedReportDefinitionNames
+    	command.setSelectedReportDefinitionNames(request.getParameter("selectedReportDefinitionNames"));
+    }
+    
     @Override
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
-
-    	//the list of report definitions to instantiate
-    	List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-
-        for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
-            if (optionalReportSelected(command, def) && (findReportWithDefinition(command.getAeReport(), def) == null)) {
-                reportDefs.add(def); //  addOptionalReport(command, command.getAeReport(), def);
-            } else {
-                removeOptionalReport(command.getAeReport(), def);
-            }
-        }
-        if(reportDefs.size() > 0){
-        	evaluationService.addOptionalReports(command.getAeReport(), reportDefs);
-        }
+    	
+    	List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
+    	removeUnselectedReports(command);
+    	
+    	if(newlySelectedDefs != null){
+    		evaluationService.addOptionalReports(command.getAeReport(), newlySelectedDefs);
+    	}
+    	
         if (command.getAeReport().getReports().size() > 0) {
             command.save();
         }
@@ -117,27 +128,50 @@ public class CheckpointTab extends AeTab {
             command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
             command.refreshMandatoryProperties();
         }
+        
+        if(command.getMandatorySections() != null){
+        	//pre-initialize lazy fields in mandatory sections.
+            for(ExpeditedReportSection section : command.getMandatorySections()){
+            	switch(section){
+            	case LABS_SECTION:
+            		command.getAeReport().getLabs().get(0);
+            		break;
+            	case PRE_EXISTING_CONDITION_SECTION:
+            		command.getAeReport().getAdverseEventPreExistingConds().get(0);
+            		break;
+            	case PRIOR_THERAPIES_SECTION:
+            		command.getAeReport().getAdverseEventPriorTherapies().get(0);
+            		break;
+            	case MEDICAL_DEVICE_SECTION:
+            		//TODO: 
+            		break;
+            	case MEDICAL_INFO_SCECTION:
+            		break;
+            	}
+            }
+        }
     }
+    
+    private List<ReportDefinition> newlySelectedReportDefinitions(ExpeditedAdverseEventInputCommand command){
+    	List<ReportDefinition> selectedReportDefs = command.getSelectedReportDefinitions();
+    	List<ReportDefinition> instantiatedReportDefs = command.getInstantiatedReportDefinitions();
+    	List<ReportDefinition> difference =  ListUtils.subtract(selectedReportDefs, instantiatedReportDefs);
+    	return difference;
+    }
+    
+   private void removeUnselectedReports(ExpeditedAdverseEventInputCommand command){
+	  List<Report> reports = command.getAeReport().getReports();
+	  for(Report report : reports){
+		  if(report.getStatus() == ReportStatus.WITHDRAWN) continue;
+		  if(!reportSelected(command, report.getReportDefinition())){
+			  reportService.deleteReport(report);
+		  }
+	  }
+   }
 
-    private boolean optionalReportSelected(ExpeditedAdverseEventInputCommand command, ReportDefinition def) {
+    private boolean reportSelected(ExpeditedAdverseEventInputCommand command, ReportDefinition def) {
         Boolean val = command.getOptionalReportDefinitionsMap().get(def);
         return val == null ? false : val;
-    }
-
-    private void removeOptionalReport(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
-        // TODO: we're going to need a service method for this, too
-        Report existing = findReportWithDefinition(aeReport, def);
-        if (existing != null && !existing.isRequired()) {
-            aeReport.getReports().remove(existing);
-            reportService.deleteReport(existing); //remove the existing report from ReportDefinition
-        }
-    }
-
-    private Report findReportWithDefinition(ExpeditedAdverseEventReport aeReport, ReportDefinition def) {
-        for (Report report : aeReport.getReports()) {
-            if (report.getReportDefinition().equals(def)) return report;
-        }
-        return null;
     }
 
     ////// CONFIGURATION
