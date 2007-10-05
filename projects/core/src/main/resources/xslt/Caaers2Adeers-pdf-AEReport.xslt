@@ -1381,9 +1381,15 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
+									<xsl:variable name="trimmedlastAdministeredDate">
+										<xsl:call-template name="trim">
+									        <xsl:with-param name="s" select="lastAdministeredDate"/>
+			   							</xsl:call-template>									
+									</xsl:variable>
 									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="lastAdministeredDate"/>
+									        <xsl:with-param name="date" select="$trimmedlastAdministeredDate"/>
 			   						</xsl:call-template>
+	
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
