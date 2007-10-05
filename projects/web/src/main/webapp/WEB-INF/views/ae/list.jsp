@@ -167,6 +167,8 @@
                     	<tags:indicator id="notify-indicator-${report.id}"/>
                 		</span>
            			</c:if>
+           			
+           			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}"/>">Generate PDF</a>
 			</td>
 			
 		</tr>

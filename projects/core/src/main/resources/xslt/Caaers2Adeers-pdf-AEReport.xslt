@@ -621,7 +621,13 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:for-each select="AdverseEventReport/AdverseEvent"> 
+						  				<xsl:if test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">
+								  			<xsl:call-template name="standard_date">
+								        		<xsl:with-param name="date" select="startDate"/>
+		   									</xsl:call-template>						  					
+						  				</xsl:if>
+						  			</xsl:for-each>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -634,7 +640,13 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:for-each select="AdverseEventReport/AdverseEvent"> 
+						  				<xsl:if test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">
+								  			<xsl:call-template name="standard_date">
+								        		<xsl:with-param name="date" select="endDate"/>
+		   									</xsl:call-template>						  					
+						  				</xsl:if>
+						  			</xsl:for-each>						  			
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>		  			  		  			  
@@ -658,7 +670,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/totalCourses"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>		
@@ -1404,7 +1416,7 @@
 		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		
-		  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication/Agent">
+		  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
 			  			<fo:block xsl:use-attribute-sets="normal" > 
 			  				<xsl:value-of select="name"/>  
 			  			</fo:block>
@@ -1524,17 +1536,28 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			-
+						  			<xsl:call-template name="standard_date">
+						        		<xsl:with-param name="date" select="startDate"/>
+   									</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>      						      						      						      						
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			-
+						  			<xsl:call-template name="standard_date">
+						        		<xsl:with-param name="date" select="endDate"/>
+   									</xsl:call-template>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			-
+						  			<xsl:choose>
+							  			<xsl:when test="AdverseEventCtcTerm/universal-term = ../Summary[@id='Primary AE']/value">
+							  				Yes
+							  			</xsl:when>
+							  			<xsl:otherwise>
+							  				No
+							  			</xsl:otherwise>
+						  			</xsl:choose>
 						  		</fo:block>      							
       						</fo:table-cell>  
       						<fo:table-cell>
@@ -1841,11 +1864,11 @@
 	<xsl:template name="standard_date">
 		<xsl:param name="date" />
 		<xsl:if test="$date">
-			<!-- Day -->
-			<xsl:value-of select="substring($date, 9, 2)" />
-			<xsl:text>/</xsl:text>
 			<!-- Month -->
 			<xsl:value-of select="substring($date, 6, 2)" />
+			<xsl:text>/</xsl:text>
+			<!-- Day -->
+			<xsl:value-of select="substring($date, 9, 2)" />
 			<xsl:text>/</xsl:text>
 			<!-- Year -->
 			<xsl:value-of select="substring($date, 1, 4)" />

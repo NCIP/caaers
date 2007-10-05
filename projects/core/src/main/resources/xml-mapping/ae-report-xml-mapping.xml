@@ -37,16 +37,17 @@
     <field name="assignment" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment">
       <bind-xml name="StudyParticipantAssignment"/>
     </field> 
-    <!--  
-    <field name="radiationIntervention" type="gov.nih.nci.cabig.caaers.domain.RadiationIntervention">
+    
+    <field name="radiationInterventions" type="gov.nih.nci.cabig.caaers.domain.RadiationIntervention" collection="arraylist">
       <bind-xml name="RadiationIntervention"/>
     </field> 
-    <field name="surgeryIntervention" type="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention">
+    <field name="surgeryInterventions" type="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention" collection="arraylist">
       <bind-xml name="SurgeryIntervention"/>
     </field> 
-    <field name="medicalDevice" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice">
+    <field name="medicalDevices" type="gov.nih.nci.cabig.caaers.domain.MedicalDevice" collection="arraylist">
       <bind-xml name="MedicalDevice"/>
-    </field>   --> 
+    </field>   
+    
     <field name="concomitantMedications" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" collection="arraylist">
       <bind-xml name="ConcomitantMedication"/>
     </field>
@@ -59,7 +60,7 @@
     <field name="adverseEventPriorTherapiesInternal" type="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy" collection="arraylist">
       <bind-xml name="AdverseEventPriorTherapy"/>
     </field>
-    <!--  
+    
     <field name="summary" collection="map">
       <bind-xml name="Summary">
       	   <class name="org.exolab.castor.mapping.MapItem">
@@ -70,7 +71,7 @@
 		   </class>
 	  </bind-xml>
     </field>
-    -->
+    
     <field name="treatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
       <bind-xml name="TreatmentInformation"/>
     </field>    
@@ -443,8 +444,8 @@
           
   <class name="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication">
     <map-to xml="ConcomitantMedication"  />
-    <field name="id" type="integer">
-      <bind-xml name="id" node="element" />
+    <field name="name" type="string">
+      <bind-xml name="name" node="element" />
     </field>
     <!--  
     <field name="other" type="string">
@@ -554,6 +555,12 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element" />
     </field>
+    <field name="startDate" type="date">
+      <bind-xml name="startDate" node="element" />
+    </field>
+    <field name="endDate" type="date">
+      <bind-xml name="endDate" node="element" />
+    </field>        
     <field name="detailsForOther" type="string">
       <bind-xml name="detailsForOther" node="element" />
     </field>
@@ -708,11 +715,13 @@
     <field name="firstCourseDate" type="date">
       <bind-xml name="firstCourseDate" node="element" />
     </field>
-    <!--  
-    <field name="treatmentAssignmentCode" type="string">
-      <bind-xml name="treatmentAssignmentCode" node="element" />
-    </field>   
-    --> 
+      <!--  
+    <field name="treatmentAssignment" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment">
+      <bind-xml name="TreatmentAssignment"/>
+    </field>   -->
+    <field name="totalCourses" type="integer">
+      <bind-xml name="totalCourses"/>
+    </field>    
     <field name="adverseEventCourse" type="gov.nih.nci.cabig.caaers.domain.CourseDate">
       <bind-xml name="AdverseEventCourse"/>
     </field>
@@ -721,6 +730,22 @@
     </field>
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment">
+    <map-to xml="TreatmentAssignment"  />
+    <field name="code" type="string">
+      <bind-xml name="code" node="element" />
+    </field>
+    <field name="doseLevelOrder" type="integer">
+      <bind-xml name="doseLevelOrder" node="element" />
+    </field>
+    <field name="description" type="string">
+      <bind-xml name="description" node="element" />
+    </field>
+    <field name="comments" type="string">
+      <bind-xml name="comments" node="element" />
+    </field>
+  </class> 
+  
   <class name="gov.nih.nci.cabig.caaers.domain.CourseDate">
     <map-to xml="CourseDate"  />
     <field name="number" type="integer">

@@ -101,7 +101,7 @@ public class AdverseEventReportSerializer {
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
 	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());
-
+	    	
 
 	    	//build Reporter
 	    	aer.setReporter(getReporter(hibernateAdverseEventReport.getReporter()));
@@ -304,7 +304,8 @@ public class AdverseEventReportSerializer {
 	    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
 	    	adverseEvent.setExpected(ae.getExpected());
 	    	adverseEvent.setComments(ae.getComments());
-
+	    	adverseEvent.setStartDate(ae.getStartDate());
+	    	adverseEvent.setEndDate(ae.getEndDate());
 	    	adverseEvent.setConcomitantMedicationAttributions(ae.getConcomitantMedicationAttributions());
 
 	    	List<OtherCauseAttribution> otList = new ArrayList<OtherCauseAttribution>();
@@ -357,8 +358,9 @@ public class AdverseEventReportSerializer {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
 	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
 	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
+	    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
 	    	//TODO: remove the below line.
-	    	//treatmentInformation.setTreatmentAssignmentCode(trtInf.getTreatmentAssignmentCode());
+	    	treatmentInformation.setTreatmentAssignment(trtInf.getTreatmentAssignment());
 
 	    	List<CourseAgent> caList = trtInf.getCourseAgents();
 
