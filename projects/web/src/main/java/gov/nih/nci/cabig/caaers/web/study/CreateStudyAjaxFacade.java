@@ -297,19 +297,6 @@ public class CreateStudyAjaxFacade {
 		return study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels().remove(index) != null;
 	}
 
-	public String addStudyAmendment(final int index) {
-		HttpServletRequest request = getHttpServletRequest();
-		getStudyCommand(request);
-		setRequestAttributes(request, index, -1, "studyAmendmentSection");
-		String url = getCurrentPageContextRelative(WebContextFactory.get());
-		return getOutputFromJsp(url);
-	}
-
-	public boolean deleteStudyAmendment(final int index) {
-		Study study = getStudyCommand(getHttpServletRequest());
-		return study.getStudyAmendments().remove(index) != null;
-	}
-
 	private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex,
 			final String subview) {
 		request.setAttribute(AJAX_INDEX_PARAMETER, index);
