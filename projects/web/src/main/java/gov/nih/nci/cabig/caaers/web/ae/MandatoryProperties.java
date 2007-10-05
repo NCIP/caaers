@@ -36,7 +36,7 @@ public class MandatoryProperties {
     }
 
     public void add(ReportMandatoryFieldDefinition definition) {
-        if (definition.isMandatory()) {
+        if (definition.getMandatory()) {
             TreeNode node = tree.find(definition.getFieldPath());
             if (node != null) add(node);
         }
