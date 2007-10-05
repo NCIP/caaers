@@ -1,12 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
-
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -15,6 +8,12 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+
+import java.util.Map;
+
+import org.apache.commons.validator.EmailValidator;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Krikor Krumlian
@@ -67,21 +66,7 @@ public class SubmitReportTab extends AeTab {
     }
     
     public boolean isEmailValid(String email){
-
-        //Set the email pattern string
-        Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
-
-        //Match the given string with the pattern
-        Matcher m = p.matcher(email.trim());
-
-        //check whether match is found 
-        boolean matchFound = m.matches();
-
-        if (matchFound)
-          return true;
-        else
-          return false;
-          
+    	return EmailValidator.getInstance().isValid(email);
       }
 
     @Override
