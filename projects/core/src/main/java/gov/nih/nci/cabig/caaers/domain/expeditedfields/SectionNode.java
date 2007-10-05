@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 /**
  * @author Rhett Sutphin
  */
-public class SectionNode extends PropertylessNode {
+class SectionNode extends PropertylessNode {
     private ExpeditedReportSection section;
 
     public SectionNode(ExpeditedReportSection section) {
@@ -15,5 +15,4 @@ public class SectionNode extends PropertylessNode {
     public ExpeditedReportSection getSection() {
         return section;
     }
-
 }
