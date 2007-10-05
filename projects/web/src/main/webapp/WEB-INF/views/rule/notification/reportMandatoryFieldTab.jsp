@@ -24,18 +24,7 @@
     	  <br> 
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
-		<chrome:division title="Adverse events">
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
-			  <tr>
-			  	  <td width="50%">
-			  	  <rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="0" endIndex="3" />
-			  	  </td>
-			 	  <td width="50%">
-					<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" startIndex="4" />  	    	      
-			 	  </td>
-			  </tr>
-			</table>
-		</chrome:division>
+		
 		<chrome:division title="Reporter information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
@@ -78,12 +67,12 @@
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Radiation intervention"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB">
-					 <rd:renderMandatoryFields key="RADIATION_INTERVENTION_SECTION" />
+					 <rd:renderMandatoryFields key="RADIATION_INTERVENTION_SECTION~RadiationIntervention" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Surgery intervention" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="SURGERY_INTERVENTION_SECTION" />
+			    	  <rd:renderMandatoryFields key="SURGERY_INTERVENTION_SECTION~SurgeryIntervention" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -97,10 +86,10 @@
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" startIndex="0" endIndex="10"/>
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevice" startIndex="0" endIndex="10"/>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION" startIndex="11" />
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevice" startIndex="11" />
 			 	  </td>
 			  </tr>
 			</table>
@@ -120,6 +109,7 @@
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
 			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents" />
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -127,10 +117,18 @@
 			
 		</chrome:division>
 		<chrome:division title="Labs">
-		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
-		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
-		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" singleRow="true" tabular="true" />
-		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
+			  <tr>
+			  	  <td width="50%" VALIGN="top">
+			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
+			 	  </td>
+			 	  <td width="50%" VALIGN="top">
+			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
+					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" singleRow="true" tabular="true" />
+					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
+			 	  </td>
+			  </tr>
+			</table>
 		</chrome:division>
 		
 		<chrome:division title="Prior Therapies">
