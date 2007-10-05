@@ -30,7 +30,6 @@
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section8concomitantmedications">
     <jsp:attribute name="instructions">
       <tags:instructions code="instruction_ae_conMed" />
-      <br />
       <tags:instructions code="instruction_ae_conMedNote" heading="Note: " />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">

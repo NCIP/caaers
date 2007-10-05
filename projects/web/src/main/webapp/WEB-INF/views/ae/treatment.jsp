@@ -90,24 +90,33 @@
 			});            
             //radio button.
             $('description-type-default').observe("click" , function(event){
-            	$('aeReport.treatmentInformation.treatmentAssignment').enable();
-            	$('aeReport.treatmentInformation.treatmentDescription').clear();
-            	$('aeReport.treatmentInformation.treatmentDescription').disable();
+          		enableTac();  	
             });
             $('description-type-other').observe("click", function(event){
-            	$('aeReport.treatmentInformation.treatmentAssignment').selectedIndex = 0;
-            	$('aeReport.treatmentInformation.treatmentAssignmentDescription').clear();
-            	$('aeReport.treatmentInformation.treatmentAssignment').disable();
-            	$('aeReport.treatmentInformation.treatmentDescription').enable();
+            	disableTac();
             });
             
             //set the initial value of the description text area. 
-            var initialIndex = $('aeReport.treatmentInformation.treatmentAssignment').selectedIndex;
-            if(initialIndex > 0){
-            	$('aeReport.treatmentInformation.treatmentAssignmentDescription').value = descArray[initialIndex-1];
+            if($('aeReport.treatmentInformation.treatmentDescription').value){
+              	disableTac();
+              	$('description-type-other').checked=true;
+            }else{
+            	enableTac();
             }
             
         })
+        
+        function enableTac(){
+          $('aeReport.treatmentInformation.treatmentAssignment').enable();
+          $('aeReport.treatmentInformation.treatmentDescription').clear();
+          $('aeReport.treatmentInformation.treatmentDescription').disable();
+        }
+        function disableTac(){
+          $('aeReport.treatmentInformation.treatmentAssignment').selectedIndex = 0;
+          $('aeReport.treatmentInformation.treatmentAssignmentDescription').clear();
+          $('aeReport.treatmentInformation.treatmentAssignment').disable();
+          $('aeReport.treatmentInformation.treatmentDescription').enable();
+        }
     </script>
     <style type="text/css">
         div.row div.label {

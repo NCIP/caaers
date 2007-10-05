@@ -103,7 +103,7 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10attributionforadverseevents">
     <jsp:attribute name="instructions">
-    <tags:instructions code="instruction_ae_attribution" /><br />
+    <tags:instructions code="instruction_ae_attribution" />
     <tags:instructions code="instruction_ae_attributionNote"  heading="Note: "/>
     </jsp:attribute>
     <jsp:attribute name="singleFields">
