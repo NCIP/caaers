@@ -26,12 +26,12 @@ public class PriorTherapyTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField priorTherapyField = InputFieldFactory.createAutocompleterField("priorTherapy", "Prior therapy", false);
-        InputFieldAttributes.setDetails(priorTherapyField, "If the appropriate therapy is not listed, type the therapy in the &quots;Comments (Prior therapy)&quots; field below.");
+        InputFieldAttributes.setDetails(priorTherapyField, "If the appropriate therapy is not listed, type the therapy in the &quot;Comments(prior therapy)&quot; field below.");
         InputField otherField = InputFieldFactory.createTextArea("other", "Comments (prior therapy)", false);
         InputFieldAttributes.setColumns(otherField, 50);
-        InputField startDateField = InputFieldFactory.createDateField("startDate", "Start Date", false);
+        InputField startDateField = InputFieldFactory.createDateField("startDate", "Therapy start Date", false);
         InputFieldAttributes.setDetails(startDateField, "If known, enter start date for prior therapy.");
-        InputField endDateField = InputFieldFactory.createDateField("endDate", "Therapy (end date)", false);
+        InputField endDateField = InputFieldFactory.createDateField("endDate", "Therapy end date", false);
         InputFieldAttributes.setDetails(endDateField, "If known, enter end date for prior therapy.");
 
         creator.createRepeatingFieldGroup("priorTherapy", "adverseEventPriorTherapies",
