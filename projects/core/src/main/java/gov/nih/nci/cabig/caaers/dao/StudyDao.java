@@ -102,7 +102,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		ht.initialize(study.getMeddraStudyDiseases());
 		ht.initialize(study.getCtepStudyDiseases());
 		ht.initialize(study.getStudyAgentsInternal());
-		ht.initialize(study.getStudyAmendmentsInternal());
 		ht.initialize(study.getStudyTherapies());
 		ht.initialize(study.getTreatmentAssignmentsInternal());
 
