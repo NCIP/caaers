@@ -1,23 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -74,8 +77,6 @@ public class TreatmentTab extends AeTab {
               );
     	  InputFieldAttributes.setSize(totalCourseField, 4);
           treatmentFields.getFields().add(totalCourseField);
-
-
 
     	//-
         RepeatingFieldGroupFactory caFields = new RepeatingFieldGroupFactory("courseAgent",
@@ -152,7 +153,18 @@ public class TreatmentTab extends AeTab {
     	}
     	return map;
     }
-
+    
+    @Override
+    public void onBind(HttpServletRequest request,ExpeditedAdverseEventInputCommand command, Errors errors) {
+    	super.onBind(request, command, errors);
+    	if(StringUtils.equals("other", request.getParameter("treatmentDescriptionType"))){
+    		command.getAeReport().getTreatmentInformation().setTreatmentAssignment(null);
+    	}else{
+    		command.getAeReport().getTreatmentInformation().setTreatmentDescription(null);
+    	}
+    	
+    }
+    
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command,
     		BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,
