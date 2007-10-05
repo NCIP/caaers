@@ -4,28 +4,52 @@
 -->
 
 <beans
-    xmlns="http://www.springframework.org/schema/beans"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
-    >
+        >
 
     <tx:annotation-driven proxy-target-class="true"/>
 
     <!-- ACTUAL SERVICE LAYER -->
-    
+
     <bean id="studyService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl"/>
     <bean id="participantService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl"/>
     <bean id="interoperationService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
-	<bean id="connectionFactory"
-		class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp://10.10.10.2:61616" />
-	</bean>
+    <bean id="connectionFactory"
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://10.10.10.2:61616"/>
+    </bean>
+
+
+    <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true">
+
+        <property name="mailSender" ref="mailer"/>
+        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+    </bean>
+
+
+    <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl">
+        <property name="csmApplicationContextName" ref="csmApplicationContextName"/>
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="siteProtectionGroupId">
+            <!--id for site protection group-->
+            <value>-5</value>
+        </property>
+        <property name="siteAccessRoleId">
+            <value>-14</value>
+        </property>
+    </bean>
+
 
     <!-- ALTERNATIVE
     <bean id="connectionFactory" autowire="byType"
@@ -33,56 +57,68 @@
     -->
 
     <bean id="sendQueueDestination"
-		class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg>
-			<value>ae-message.inputQueue</value>
-		</constructor-arg>
-	</bean>
+          class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>ae-message.inputQueue</value>
+        </constructor-arg>
+    </bean>
 
-	<bean id="recvQueueDestination"
-		class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg>
-			<value>ae-message.outputQueue</value>
-		</constructor-arg>
-	</bean>
+    <bean id="recvQueueDestination"
+          class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>ae-message.outputQueue</value>
+        </constructor-arg>
+    </bean>
 
-	<bean id="messageBroadcastService" lazy-init="true"
-		class="gov.nih.nci.cabig.caaers.esb.client.impl.MessageBroadcastServiceImpl">
-		<constructor-arg>
-			<ref bean="connectionFactory" />
-		</constructor-arg>
-		<constructor-arg>
-			<ref bean="sendQueueDestination" />
-		</constructor-arg>
-		<constructor-arg>
-			<ref bean="recvQueueDestination" />
-		</constructor-arg>
-	</bean>	
+    <bean id="messageBroadcastService" lazy-init="true"
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.MessageBroadcastServiceImpl">
+        <constructor-arg>
+            <ref bean="connectionFactory"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="sendQueueDestination"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="recvQueueDestination"/>
+        </constructor-arg>
+    </bean>
 
     <!-- XXX: may want to put this in a different app context -->
     <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
-	
-	<bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType" />
-	
-	<!--  This bean that implements the service  -->	
-	<bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl" >
-		<property name="scheduler" ><ref bean="schedulerFactory" /> </property>
-		
-		<!-- The mapping is used to identify the correct job class implementation -->
-		<property name="jobClassMapping">
-			<map>
-				<entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
-					   value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob" />
-			</map>
-		</property>
-		<property name="reportScheduleDao"><ref bean="reportDao" />	</property>
-	</bean>
-	<!-- TODO: Remove the below mail settings after demo -->
-	<bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="s[smtp.host]"/>
-		<property name="port" value="s[smtp.port]"/>
-		<property name="username" value="s[smtp.username]"/>
-		<property name="password" value="s[smtp.password]"/>
-	</bean>
+
+    <bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType"/>
+
+    <!--  This bean that implements the service  -->
+    <bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">
+        <property name="scheduler">
+            <ref bean="schedulerFactory"/>
+        </property>
+
+        <!-- The mapping is used to identify the correct job class implementation -->
+        <property name="jobClassMapping">
+            <map>
+                <entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
+                       value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob"/>
+            </map>
+        </property>
+        <property name="reportScheduleDao">
+            <ref bean="reportDao"/>
+        </property>
+    </bean>
+    <!-- TODO: Remove the below mail settings after demo -->
+    <bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="s[smtp.host]"/>
+        <property name="port" value="s[smtp.port]"/>
+        <property name="username" value="s[smtp.username]"/>
+        <property name="password" value="s[smtp.password]"/>
+    </bean>
+
+
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="accountCreatedTemplateMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="${outgoing.mail.from.address}"/>
+        <property name="subject" value="Account created in caAERS"/>
+    </bean>
+
 
 </beans>

@@ -2,18 +2,19 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.service.OrganizationService;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Padmaja Vedula
@@ -26,7 +27,9 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 
 	private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-	@Override
+    private OrganizationService organizationService;
+
+    @Override
 	public Class<Organization> domainClass() {
 		return Organization.class;
 	}
@@ -61,7 +64,9 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 	 */
 	@Transactional(readOnly = false)
 	public void save(final Organization organization) {
-		getHibernateTemplate().saveOrUpdate(organization);
+        //FIXME:Saurabh handle edit logic
+        organizationService.createGroupForOrganization(organization);
+        getHibernateTemplate().saveOrUpdate(organization);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -73,7 +78,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 	@SuppressWarnings( { "unchecked" })
 	public List<Organization> searchOrganization(final OrganizationQuery query) {
 		String queryString = query.getQueryString();
-		log.debug("::: " + queryString.toString());
+		log.debug("::: " + queryString);
 		return (List<Organization>) getHibernateTemplate().execute(new HibernateCallback() {
 
 			public Object doInHibernate(final Session session) throws HibernateException, SQLException {
@@ -90,5 +95,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 		});
 
 	}
+
+    @Required
+    public void setOrganizationServie(OrganizationService organizationService){
+        this.organizationService=organizationService;
+    }
+
+
+
 
 }

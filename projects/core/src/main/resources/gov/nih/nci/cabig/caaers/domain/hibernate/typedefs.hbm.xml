@@ -44,4 +44,7 @@
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="studyTherapyType">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.StudyTherapyType</param>
     </typedef>
+    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="userGroupType">
+        <param name="enumClass">gov.nih.nci.cabig.caaers.domain.UserGroupType</param>
+    </typedef>
 </hibernate-mapping>

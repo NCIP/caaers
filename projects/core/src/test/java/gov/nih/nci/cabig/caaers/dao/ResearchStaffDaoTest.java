@@ -10,43 +10,57 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 /**
  * @author Kulasekaran
  */
-@CaaersUseCases( { CREATE_STUDY, STUDY_ABSTRACTION })
+@CaaersUseCases({CREATE_STUDY, STUDY_ABSTRACTION})
 public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
-	OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+    OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
-	public void testGetById() throws Exception {
-		ResearchStaff researchStaff = getDao().getById(-1000);
-		assertNotNull("ResearchStaff not found", researchStaff);
-		assertEquals("Wrong last name", "Gates", researchStaff.getLastName());
-		assertEquals("Wrong first name", "Bill", researchStaff.getFirstName());
-	}
+    public void testGetById() throws Exception {
+        ResearchStaff researchStaff = getDao().getById(-1000);
+        assertNotNull("ResearchStaff not found", researchStaff);
+        assertEquals("Wrong last name", "Gates", researchStaff.getLastName());
+        assertEquals("Wrong first name", "Bill", researchStaff.getFirstName());
+    }
 
-	public void testSaveNewResearchStaff() throws Exception {
-		Integer savedId;
-		{
-			ResearchStaff researchStaff = new ResearchStaff();
-			researchStaff.setFirstName("Jeff");
-			researchStaff.setLastName("Someone");
-			researchStaff.setEmailAddress("abc@def.com");
-			researchStaff.setPhoneNumber("123-456-789");
-			researchStaff.setNciIdentifier("nci id");
+    public void testSaveNewResearchStaff() throws Exception {
 
-			Organization organization = organizationDao.getById(-1000);
-			researchStaff.setOrganization(organization);
+        Organization organization = organizationDao.getByGridId("gridId9");
+        if (organization == null) {
 
-			getDao().save(researchStaff);
-			savedId = researchStaff.getId();
-			assertNotNull("The saved researchStaff id", savedId);
-		}
+            organization = new Organization();
+            organization.setGridId("gridId9");
+            organization.setName("test org9");
+            organization.setNciInstituteCode("nci9");
+            organization.setDescriptionText("dec9");
+            organizationDao.save(organization);
 
-		interruptSession();
+        }
 
-		{
-			ResearchStaff loaded = getDao().getById(savedId);
-			assertNotNull("Could not reload researchStaff id " + savedId, loaded);
-			assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
-			assertEquals("Wrong lastname", "Someone", loaded.getLastName());
-		}
-	}
+        interruptSession();
+
+        Integer savedId;
+        {
+            ResearchStaff researchStaff = new ResearchStaff();
+            researchStaff.setFirstName("Jeff");
+            researchStaff.setLastName("Someone");
+            researchStaff.setEmailAddress("abc@def.com");
+            researchStaff.setPhoneNumber("123-456-789");
+            researchStaff.setNciIdentifier("nci id");
+
+            researchStaff.setOrganization(organization);
+
+            getDao().save(researchStaff);
+            savedId = researchStaff.getId();
+            assertNotNull("The saved researchStaff id", savedId);
+        }
+
+        interruptSession();
+
+        {
+            ResearchStaff loaded = getDao().getById(savedId);
+            assertNotNull("Could not reload researchStaff id " + savedId, loaded);
+            assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
+            assertEquals("Wrong lastname", "Someone", loaded.getLastName());
+        }
+    }
 }

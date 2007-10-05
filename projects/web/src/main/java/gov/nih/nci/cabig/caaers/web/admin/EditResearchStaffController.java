@@ -31,7 +31,9 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 		ResearchStaff researchStaff = researchStaffDao.getById(Integer
 				.parseInt(request.getParameter("researchStaffId")));
 
-		if (log.isDebugEnabled()) {
+
+
+        if (log.isDebugEnabled()) {
 			log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
 		}
 
@@ -43,9 +45,10 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 		if (errors.hasErrors()) {
 			return researchStaff;
 		}
-
+         //FIXME:Saurabh:update the edit logic for updating user role
 		ResearchStaff mergedResearchStaff = getDao().merge(researchStaff);
-		getDao().save(mergedResearchStaff);
+        //populateUserRole(mergedResearchStaff,);
+        getDao().save(mergedResearchStaff);
 		return mergedResearchStaff;
 
 	}

@@ -1,22 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Priyatam
@@ -25,19 +17,8 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "research_staffs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_research_staffs_id") })
-public class ResearchStaff extends AbstractMutableDomainObject {
+public class ResearchStaff extends User {
 
-	private String firstName;
-
-	private String middleName;
-
-	private String lastName;
-
-	private String emailAddress;
-
-	private String phoneNumber;
-
-	private String faxNumber;
 
 	private String nciIdentifier;
 
@@ -58,60 +39,14 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 	 */
 
 	// business methods
-	@Transient
-	public String getLastFirst() {
-		StringBuilder name = new StringBuilder();
-		boolean hasFirstName = getFirstName() != null;
-		if (getLastName() != null) {
-			name.append(getLastName());
-			if (hasFirstName) {
-				name.append(", ");
-			}
-		}
-		if (hasFirstName) {
-			name.append(getFirstName());
-		}
-		return name.toString();
-	}
 
-	@Transient
-	public String getFullName() {
-		StringBuilder name = new StringBuilder();
-		boolean hasLastName = getLastName() != null;
-		if (getFirstName() != null) {
-			name.append(getFirstName());
-			if (hasLastName) {
-				name.append(' ');
-			}
-		}
-		if (hasLastName) {
-			name.append(getLastName());
-		}
-		return name.toString();
-	}
-
-	/*
-	 * public void addSiteInvestigator(SiteInvestigator studyInvestigator) { getSiteInvestigators().add(studyInvestigator); }
-	 */
+    /*
+      * public void addSiteInvestigator(SiteInvestigator studyInvestigator) { getSiteInvestigators().add(studyInvestigator); }
+      */
 
 	// bean methods
-	public String getFirstName() {
-		return firstName;
-	}
 
-	public void setFirstName(final String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(final String lastName) {
-		this.lastName = lastName;
-	}
-
-	@OneToMany(mappedBy = "researchStaff", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "researchStaff", fetch = FetchType.LAZY)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<StudyPersonnel> getStudyPersonnels() {
 		return studyPersonnels;
@@ -131,106 +66,27 @@ public class ResearchStaff extends AbstractMutableDomainObject {
 		this.organization = organization;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (emailAddress == null ? 0 : emailAddress.hashCode());
-		result = prime * result + (faxNumber == null ? 0 : faxNumber.hashCode());
-		result = prime * result + (firstName == null ? 0 : firstName.hashCode());
-		result = prime * result + (lastName == null ? 0 : lastName.hashCode());
-		result = prime * result + (nciIdentifier == null ? 0 : nciIdentifier.hashCode());
-		return result;
-	}
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final ResearchStaff other = (ResearchStaff) obj;
-		if (emailAddress == null) {
-			if (other.emailAddress != null) {
-				return false;
-			}
-		}
-		else if (!emailAddress.equals(other.emailAddress)) {
-			return false;
-		}
-		if (faxNumber == null) {
-			if (other.faxNumber != null) {
-				return false;
-			}
-		}
-		else if (!faxNumber.equals(other.faxNumber)) {
-			return false;
-		}
-		if (firstName == null) {
-			if (other.firstName != null) {
-				return false;
-			}
-		}
-		else if (!firstName.equals(other.firstName)) {
-			return false;
-		}
-		if (lastName == null) {
-			if (other.lastName != null) {
-				return false;
-			}
-		}
-		else if (!lastName.equals(other.lastName)) {
-			return false;
-		}
-		if (nciIdentifier == null) {
-			if (other.nciIdentifier != null) {
-				return false;
-			}
-		}
-		else if (!nciIdentifier.equals(other.nciIdentifier)) {
-			return false;
-		}
-		return true;
-	}
+        ResearchStaff that = (ResearchStaff) o;
 
-	public String getMiddleName() {
-		return middleName;
-	}
+        if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier) : that.nciIdentifier != null)
+            return false;
 
-	public void setMiddleName(final String middleName) {
-		this.middleName = middleName;
-	}
+        return true;
+    }
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
+        return result;
+    }
 
-	public String getFaxNumber() {
-		return faxNumber;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(final String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public void setEmailAddress(final String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	public void setFaxNumber(final String faxNumber) {
-		this.faxNumber = faxNumber;
-	}
-
-	public String getNciIdentifier() {
+   
+    public String getNciIdentifier() {
 		return nciIdentifier;
 	}
 

@@ -251,19 +251,26 @@
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
-    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
     <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
     <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
+    <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao">
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"></property>
+        <property name="userService" ref="userService"/>
+    </bean>
+    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao">
+        <property name="organizationServie" ref="organizationService"/>
+    </bean>
+
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
     <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
     <bean id="ctcCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcCategoryDao"/>
     <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
 
-	<bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
+
 	<bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
     <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
 	<bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
