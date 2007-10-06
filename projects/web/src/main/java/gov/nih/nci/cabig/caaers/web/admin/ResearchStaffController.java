@@ -38,7 +38,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
      private static final String CAAERS_STUDY_CORDINATOR = "caaersStudyCordinator";
      private static final String CAAERS_PARTICIPANT_CORDINATOR = "caaersParticipantCordinator";
      private static final String CAAERS_AE_CORDINATOR = "caaersAECordinator";
-
+     
     protected ResearchStaffDao researchStaffDao;
 
     private OrganizationDao organizationDao;
@@ -92,12 +92,15 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
         refdata.put("isCaaersPartcipantCordinator",new Boolean(false));
         refdata.put("isCaaersStudyCordinator",new Boolean(false));
         refdata.put("isCaaersAECordinator",new Boolean(false));
+        refdata.put("isCaaersSiteCordinator",new Boolean(false));
         if(researchStaff.getUserGroupTypes().contains(UserGroupType.caaers_participant_cd)){
         refdata.put("isCaaersPartcipantCordinator",new Boolean(true));
         }if(researchStaff.getUserGroupTypes().contains(UserGroupType.caaers_study_cd)){
         refdata.put("isCaaersStudyCordinator",new Boolean(true));
         }if(researchStaff.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
         refdata.put("isCaaersAECordinator",new Boolean(true));
+        }if(researchStaff.getUserGroupTypes().contains(UserGroupType.caaers_site_cd)){
+        refdata.put("isCaaersSiteCordinator",new Boolean(true));
         }
         
         return refdata;
@@ -146,6 +149,9 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
         } if(findUsersRoleInRequest(request,CAAERS_AE_CORDINATOR)){
             researchStaff.addUserGroupType(UserGroupType.caaers_ae_cd);
+
+        }if(findUsersRoleInRequest(request,CAAERS_SITE_CORDINATOR)){
+            researchStaff.addUserGroupType(UserGroupType.caaers_site_cd);
 
         }
 

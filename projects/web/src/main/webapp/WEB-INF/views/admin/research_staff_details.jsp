@@ -126,6 +126,17 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="label">
+            Site cordinator:
+        </div>
+        <div class="value">
+            <input type="checkbox"
+                   onclick="this.checked?$('caaersSiteCordinator').value='true':$('caaersSiteCordinator').value='false';" ${isCaaersSiteCordinator?'checked':'off'} />
+            <input id="caaersSiteCordinator" type="hidden" name="caaersSiteCordinator"/>
+        </div>
+    </div>
+
 
 </div>
 
