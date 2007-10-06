@@ -61,8 +61,8 @@
 
 <chrome:division title="Site">
 <c:forEach items="${fieldGroups.site.fields}" var="field">
-    <csmauthz:accesscontrol domainObject="${organization}"
-                            hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
+<csmauthz:accesscontrol domainObject="${organization}"
+                        hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
     <tags:renderRow field="${field}"/>
 </csmauthz:accesscontrol>
 </c:forEach>
@@ -95,25 +95,36 @@
 
     <div class="row">
         <div class="label">
-                Caaers participant cordinator:
+            Participant cordinator:
         </div>
         <div class="value">
-            <input type="checkbox" onclick="this.checked?$('caaersParticipantCordinator').value='true':$('caaersParticipantCordinator').value='false';" ${isCaaersPartcipantCordinator?'checked':'off' }/>
+            <input type="checkbox"
+                   onclick="this.checked?$('caaersParticipantCordinator').value='true':$('caaersParticipantCordinator').value='false';" ${isCaaersPartcipantCordinator?'checked':'off' }/>
             <input id="caaersParticipantCordinator" type="hidden" name="caaersParticipantCordinator"/>
         </div>
     </div>
 
     <div class="row">
-            <div class="label">
-                    Caaers study cordinator:
-            </div>
-            <div class="value">
-                <input type="checkbox" onclick="this.checked?$('caaersStudyCordinator').value='true':$('caaersStudyCordinator').value='false';" ${isCaaersStudyCordinator?'checked':'off'} />
-                <input id="caaersStudyCordinator" type="hidden" name="caaersStudyCordinator"/>
-            </div>
+        <div class="label">
+            Study cordinator:
         </div>
+        <div class="value">
+            <input type="checkbox"
+                   onclick="this.checked?$('caaersStudyCordinator').value='true':$('caaersStudyCordinator').value='false';" ${isCaaersStudyCordinator?'checked':'off'} />
+            <input id="caaersStudyCordinator" type="hidden" name="caaersStudyCordinator"/>
+        </div>
+    </div>
 
-        
+    <div class="row">
+        <div class="label">
+            Adverse event cordinator:
+        </div>
+        <div class="value">
+            <input type="checkbox"
+                   onclick="this.checked?$('caaersAECordinator').value='true':$('caaersAECordinator').value='false';" ${isCaaersAECordinator?'checked':'off'} />
+            <input id="caaersAECordinator" type="hidden" name="caaersAECordinator"/>
+        </div>
+    </div>
 
 
 </div>

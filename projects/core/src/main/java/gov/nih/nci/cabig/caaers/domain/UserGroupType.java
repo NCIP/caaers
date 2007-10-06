@@ -15,7 +15,8 @@ public enum UserGroupType implements CodedEnum<Integer> {
     caaers_admin(-1,"caaers_admin"),
     caaers_super_user(-3,"caaers_super_user"),
     caaers_study_cd(-4,"caaers_study_cd"),
-    caaers_participant_cd(-5,"caaers_participant_cd");
+    caaers_participant_cd(-5,"caaers_participant_cd"),
+    caaers_ae_cd(-13,"caaers_ae_cd");
 
     private String csmName;
     private int code;
