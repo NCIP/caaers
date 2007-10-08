@@ -9,7 +9,7 @@
         id="-2"
         multi_institution_indicator="0"
         short_title="Short Title"
-        long_title="Long Title" 
+        long_title="Long Title"
         description="Description"
         grid_id=""
         />
@@ -26,30 +26,30 @@
         id="-4"
         multi_institution_indicator="0"
         short_title="Shortest"
-        long_title="Event Lengthier Title" 
+        long_title="Event Lengthier Title"
         description="Yet another different description"
         />
-   
+
    <TERMINOLOGIES
    		id="-10"
    		term_code="1"
    		ctc_id="3"
    		study_id="-4"
-   		/> 
-   		
+   		/>
+
    <TERMINOLOGIES
    		id="-11"
    		term_code="1"
    		ctc_id="3"
    		study_id="-3"
    		/>
-   	
+
    	<TERMINOLOGIES
    		id="-12"
    		term_code="1"
    		ctc_id="3"
    		study_id="-2"
-   		/>	 		    
+   		/>
 
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
@@ -57,7 +57,7 @@
         stu_id="-3"
         value="1138-42"
         type="local"
-        organization_id="-1003" 
+        organization_id="-1003"
         discriminator_column="1"	/>
     <IDENTIFIERS
         id="-16"
@@ -71,17 +71,17 @@
         stu_id="-2"
         value="1138-42"
         type="uniqueness"
-       	organization_id="-1003" 
+       	organization_id="-1003"
        	discriminator_column="1"/>
-        
+
      <IDENTIFIERS
         id="-18"
         stu_id="-4"
         value="1138-421"
         type="uniqueness"
-       	system_name="system_name" 
-       	discriminator_column="2"/>    
-        
+       	system_name="system_name"
+       	discriminator_column="2"/>
+
     <PARTICIPANTS
         id="-100"
         instituitional_patient_number="P001"
@@ -104,141 +104,145 @@
         <!--
     <ORGANIZATIONS
         id="-1050"
-         name="National Cancer Institute" 
-        description_text="National Cancer Institute"  
+         name="National Cancer Institute"
+        description_text="National Cancer Institute"
         nci_institute_code="code"/>
-    
+
     <STUDY_ORGANIZATIONS
         id="-3000"
         site_id="-1050"
         study_id="-2"
         type="SST"
-        />  
-       -->   
+        />
+       -->
     <PARTICIPANT_ASSIGNMENTS
         id="-10"
         date_of_enrollment="2006-12-12"
         participant_id="-100"
-        study_site_id="-1000"/>    
-        
-    <ORGANIZATIONS 
-        id="-1001" 
-        version="1" 
-        name="National Cancer Institute" 
-        description_text="National Cancer Institute"  
-        nci_institute_code="code" 
+        study_site_id="-1000"/>
+
+    <ORGANIZATIONS
+        id="-1001"
+        version="1"
+        name="National Cancer Institute"
+        description_text="NCI"
+        nci_institute_code="NCI"
     />
-    <ORGANIZATIONS 
-    	id="-1002" 
-    	version="1" 
-    	name="CALGB" 
+    <ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	name="CALGB"
     	description_text="CALGB"
-    	nci_institute_code="CALGB code" 
+    	nci_institute_code="DEFAULT"
     />
+
+
+
+    <ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	name="Northwestern Univ Cancer Center"
+    	description_text="NUCC"
+    	nci_institute_code="WAKE" />
+
     
-    <ORGANIZATIONS 
-    	id="-1003" 
-    	version="1" 
-    	name="Northwestern Univ Cancer Center" 
-    	description_text="Northwestern Univ Cancer Center" 
-    	nci_institute_code="NU code" />
-<!-- 
-    <ADDRESSES 
-    	id="-100" 
-    	version="1" 
-    	street_address="12359 sunrise valley drive" 
-    	city="Reston" 
-    	state_code="VA" 
-    	postal_code="20191" 
-    	country_code="USA" />
-    
-    <ADDRESSES 
-    	id="-101" 
-    	version="1" 
-    	street_address="Coppermine Dr" 
-    	city="Herndon" 
-    	state_code="VA" 
-    	postal_code="20171" 
-    	country_code="USA" />
--->    	
-    <STUDY_ORGANIZATIONS 
-    	id="-1000" 
-    	version="1" 
-    	status_code="active" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+    <!--
+        <ADDRESSES
+            id="-100"
+            version="1"
+            street_address="12359 sunrise valley drive"
+            city="Reston"
+            state_code="VA"
+            postal_code="20191"
+            country_code="USA" />
+
+        <ADDRESSES
+            id="-101"
+            version="1"
+            street_address="Coppermine Dr"
+            city="Herndon"
+            state_code="VA"
+            postal_code="20171"
+            country_code="USA" />
+    -->
+    <STUDY_ORGANIZATIONS
+    	id="-1000"
+    	version="1"
+    	status_code="active"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-2"
-    	site_id="-1003" 
+    	site_id="-1003"
     	type="SST"/>
-    
-    <STUDY_ORGANIZATIONS 
-    	id="-1001" 
-    	version="1" 
-    	status_code="inactive" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+
+    <STUDY_ORGANIZATIONS
+    	id="-1001"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-2"
-    	site_id="-1001" 
+    	site_id="-1001"
     	type="SFS"
     />
-    <STUDY_ORGANIZATIONS 
-    	id="-1004" 
-    	version="1" 
-    	status_code="inactive" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+    <STUDY_ORGANIZATIONS
+    	id="-1004"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-2"
-    	site_id="-1002" 
+    	site_id="-1002"
     	type="SCC"
     />
-    <STUDY_ORGANIZATIONS 
-    	id="-1002" 
-    	version="1" 
-    	status_code="active" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+    <STUDY_ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	status_code="active"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-3"
-    	site_id="-1003" 
+    	site_id="-1003"
     	type="SST"/>
-    
-    <STUDY_ORGANIZATIONS 
-    	id="-1003" 
-    	version="1" 
-    	status_code="inactive" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+
+    <STUDY_ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-3"
-    	site_id="-1001" 
+    	site_id="-1001"
     	type="SFS"
     />
-    <STUDY_ORGANIZATIONS 
-    	id="-1005" 
-    	version="1" 
-    	status_code="inactive" 
-    	start_date="01-01-2001" 
-    	end_date="01-01-2002" 
+    <STUDY_ORGANIZATIONS
+    	id="-1005"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
     	study_id="-3"
-    	site_id="-1002" 
+    	site_id="-1002"
     	type="SCC"/>
-     	
+
      	<investigational_new_drugs id = "-881" ind_number="-881"/>
    		<investigational_new_drugs id = "-882"  ind_number="-882"/>
    		<investigational_new_drugs id = "-883" ind_number="-883"/>
    		<investigational_new_drugs id = "-884" ind_number="-884"/>
    		 <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881" />
    		<ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882" />
-   		
+
    		<study_amendments id="-640" amendment_version="1" irb_approval_date="01-01-2000" stu_id="-3"/>
-   		
+
      	<!--  due to FK references -->
      	<ctc_categories />
      	<ctc_terms />
       	<ctc_grades/>
-    
-    
+
+
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
-    <investigational_new_drugs />    
-    <ind_holders />		
+    <investigational_new_drugs />
+    <ind_holders />
 	<study_agent_inds />
 
 </dataset>
