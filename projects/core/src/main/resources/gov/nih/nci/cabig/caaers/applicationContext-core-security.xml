@@ -1,197 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean id="authorizationSwitch"
-		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
-		factory-method="getInstance">
-		<property name="on" value="true" />
-	</bean>
+    <bean id="authorizationSwitch"
+          class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
+          factory-method="getInstance">
+        <property name="on" value="true"/>
+    </bean>
 
 
-	<bean id="csmApplicationContextName" class="java.lang.String">
-		<constructor-arg value="caaers" />
-	</bean>
+    <bean id="csmApplicationContextName" class="java.lang.String">
+        <constructor-arg value="caaers"/>
+    </bean>
 
 
-	<bean id="csmAuthorizationDao"
-		class="gov.nih.nci.security.dao.DIAuthorizationDao"
-		init-method="init">
-		<property name="sessionFactory">
-			<bean
-				class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-				<property name="dataSource" ref="dataSource" />
-				<property name="mappingResources">
-					<list>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/User.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml
-						</value>
-						<value>
-							gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml
-						</value>
-					</list>
-				</property>
-				<property name="hibernateProperties">
-					<bean
-						class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
-													<!-- 
-						<property name="dialectName">
+    <bean id="csmAuthorizationDao"
+          class="gov.nih.nci.security.dao.DIAuthorizationDao"
+          init-method="init">
+        <property name="sessionFactory">
+            <bean
+                    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+                <property name="dataSource" ref="dataSource"/>
+                <property name="mappingResources">
+                    <list>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/User.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml
+                        </value>
+                        <value>
+                            gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml
+                        </value>
+                    </list>
+                </property>
+                <property name="hibernateProperties">
+                    <bean
+                            class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+                        <!--
+                              <property name="dialectName">
 
-							<value>s[hibernate.dialect]</value>
+                                  <value>s[hibernate.dialect]</value>
 
-						</property>
-							 -->						
-						<property name="properties">
-							<props>
-								<!-- 
-									<prop key="hibernate.show_sql">
-									true
-									</prop>
-									<prop key="hibernate.format_sql">
-									true
-									</prop>
-								-->
-								<prop
-									key="hibernate.connection.release_mode">
-									after_transaction
-								</prop>
+                              </property>
+                                   -->
+                        <property name="properties">
+                            <props>
+                                <!--
+                                            <prop key="hibernate.show_sql">
+                                            true
+                                            </prop>
+                                            <prop key="hibernate.format_sql">
+                                            true
+                                            </prop>
+                                        -->
+                                <prop
+                                        key="hibernate.connection.release_mode">
+                                    after_transaction
+                                </prop>
 
-							</props>
-						</property>
-					</bean>
-				</property>
-			</bean>
-		</property>
-		<property name="applicationContextName"
-			ref="csmApplicationContextName" />
-	</bean>
+                            </props>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="applicationContextName"
+                  ref="csmApplicationContextName"/>
+    </bean>
 
-	<bean id="csmUserProvisioningManager"
-		class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
-		<property name="authorizationDAO" ref="csmAuthorizationDao" />
-	</bean>
+    <bean id="csmUserProvisioningManager"
+          class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
+        <property name="authorizationDAO" ref="csmAuthorizationDao"/>
+    </bean>
 
-	<bean id="csmAuthenticationManager"
-		class="gov.nih.nci.security.SecurityServiceProvider"
-		factory-method="getAuthenticationManager">
-		<constructor-arg ref="csmApplicationContextName" />
-	</bean>
+    <bean id="csmAuthenticationManager"
+          class="gov.nih.nci.security.SecurityServiceProvider"
+          factory-method="getAuthenticationManager">
+        <constructor-arg ref="csmApplicationContextName"/>
+    </bean>
 
-	<bean id="csmObjectIdGenerator"
-		class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
-		<property name="idMethodName" value="getId" />
-		<property name="classNameFirst" value="true" />
-		<property name="separator" value=":" />
-	</bean>
+    <bean id="csmObjectIdGenerator"
+          class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator">
+        <property name="idMethodName" value="getId"/>
+        <property name="classNameFirst" value="true"/>
+        <property name="separator" value=":"/>
+    </bean>
 
-	<bean id="csmExtentIdGenerator"
-		class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator" />
+    <bean id="csmExtentIdGenerator"
+          class="gov.nih.nci.security.acegi.csm.authorization.BasicCSMObjectIdGenerator"/>
 
-	<aop:aspectj-autoproxy />
-	<aop:spring-configured />
+    <aop:aspectj-autoproxy/>
+    <aop:spring-configured/>
 
-	<aop:config>
-		<!-- pointcuts -->
-		<aop:pointcut id="daoSaveOrUpdatePointcut"
-			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
+    <aop:config>
+        <!-- pointcuts -->
+        <aop:pointcut id="daoSaveOrUpdatePointcut"
+                      expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
         || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
         || execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.get*(..))
          ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
-                              " />
+                              "/>
 
 
-		<!-- advisors -->
+        <!-- advisors -->
 
 
-		<!-- aspects -->
-		<!-- 
-			<aop:aspect id="assignDomainObjectOwnershipAspect"
-			ref="assignDomainObjectOwnershipBean">
-			<aop:after-returning 
-			pointcut-ref="daoSaveOrUpdatePointcut"
-			method="assignOwner"
-			returning="domainObject" />
-			</aop:aspect>
-		-->
+        <!-- aspects -->
+        <!--
+              <aop:aspect id="assignDomainObjectOwnershipAspect"
+              ref="assignDomainObjectOwnershipBean">
+              <aop:after-returning
+              pointcut-ref="daoSaveOrUpdatePointcut"
+              method="assignOwner"
+              returning="domainObject" />
+              </aop:aspect>
+          -->
 
-		<aop:aspect id="daoSecurityInterceptorAspect"
-			ref="daoSecurityInterceptorAspectBean">
-			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"                                                                          
-				method="advise" />
-		</aop:aspect>		
-
-
-	</aop:config>
-
-	<!-- 
-		<bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
-		<property name="csmAuthorizationManager" ref="csmUserProvisioningManager"/>
-		</bean>
-	-->
-
-	<bean id="daoSecurityInterceptorAspectBean"
-		class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
-		<property name="securityInterceptor"
-			ref="daoSecurity" />
-	</bean>
+        <aop:aspect id="daoSecurityInterceptorAspect"
+                    ref="daoSecurityInterceptorAspectBean">
+            <aop:around pointcut-ref="daoSaveOrUpdatePointcut"
+                        method="advise"/>
+        </aop:aspect>
 
 
-	<bean id="daoSecurityTemplate" abstract="true">
-		<property name="authenticationManager"
-			ref="authenticationManager" />
-	</bean>
+    </aop:config>
 
-	<util:map id="joinPointObjectPrivilegeMap"
-		map-class="java.util.LinkedHashMap">
-		
-		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
-			
-		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Study))"
-			value="gov.nih.nci.cabig.caaers.domain.Study:CREATE" />
-			
-		<entry key="execution(* merge(gov.nih.nci.cabig.caaers.domain.Study))"
-			value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE" />			
-			
-		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Participant))"
-			value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
+    <!--
+         <bean id="assignDomainObjectOwnershipBean" class="gov.nih.nci.cabig.caaers.security.CaaersDomainObjectOwnershipAssigner">
+         <property name="csmAuthorizationManager" ref="csmUserProvisioningManager"/>
+         </bean>
+     -->
+
+    <bean id="daoSecurityInterceptorAspectBean"
+          class="gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect">
+        <property name="securityInterceptor"
+                  ref="daoSecurity"/>
+    </bean>
+
+
+    <bean id="daoSecurityTemplate" abstract="true">
+        <property name="authenticationManager"
+                  ref="authenticationManager"/>
+    </bean>
+
+    <util:map id="joinPointObjectPrivilegeMap"
+              map-class="java.util.LinkedHashMap">
+
+        <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport))"
+               value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+
+        <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Study))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+
+        <entry key="execution(* merge(gov.nih.nci.cabig.caaers.domain.Study))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+
+        <entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Participant))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
@@ -203,112 +203,128 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
-			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
-			
-	</util:map>
+               value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
 
-	<bean id="joinPointPrivilegeAndObjectIdGenerator"
-		class="gov.nih.nci.security.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
-		<property name="objectPrivilegeMap"
-			ref="joinPointObjectPrivilegeMap" />
-	</bean>
+    </util:map>
 
-	<bean id="daoAuthorizationCheck" autowire="byType"
-		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
-		<property name="csmAuthorizationCheck">
-			<bean
-				class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
-				<property name="csmUserProvisioningManager"
-					ref="csmUserProvisioningManager" />
+    <bean id="joinPointPrivilegeAndObjectIdGenerator"
+          class="gov.nih.nci.security.acegi.csm.authorization.JoinPointPrivilegeAndObjectIdGenerator">
+        <property name="objectPrivilegeMap"
+                  ref="joinPointObjectPrivilegeMap"/>
+    </bean>
+
+    <bean id="daoAuthorizationCheck" autowire="byType"
+          class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+        <property name="csmAuthorizationCheck">
+            <bean
+                    class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+                <property name="csmUserProvisioningManager"
+                          ref="csmUserProvisioningManager"/>
                 <property name="authorizationSwitch" ref="authorizationSwitch"/>
             </bean>
-		</property>
-		<property name="objectIdGenerator"
-			ref="joinPointPrivilegeAndObjectIdGenerator" />
-		<property name="privilegeGenerator"
-			ref="joinPointPrivilegeAndObjectIdGenerator" />
-	</bean>	 
-	 
-	<bean id="daoSecurity" parent="daoSecurityTemplate"
-		class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
-		<property name="objectDefinitionSource">
-			<value>
+        </property>
+        <property name="objectIdGenerator"
+                  ref="joinPointPrivilegeAndObjectIdGenerator"/>
+        <property name="privilegeGenerator"
+                  ref="joinPointPrivilegeAndObjectIdGenerator"/>
+    </bean>
+
+    <bean id="daoSecurity" parent="daoSecurityTemplate"
+          class="org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor">
+        <property name="objectDefinitionSource">
+            <value>
                 gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
-				gov.nih.nci.cabig.caaers.dao.StudyDao.*=CSM_AUTHN_CHECK
-				gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
-			</value>
-		</property>
-		<property name="accessDecisionManager">
-			<bean class="org.acegisecurity.vote.AffirmativeBased">
-				<property name="allowIfAllAbstainDecisions">
-					<value>false</value>
-				</property>
-				<property name="decisionVoters">
-					<list>
-						<bean
-							class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
-							<property name="authorizationSwitch" ref="authorizationSwitch" />
-							<property name="requiresAuthentication" value="false"/>
-						</bean>
-						<bean
-							class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
-							<property name="processConfigAttribute"
-								value="CSM_AUTHN_CHECK" />
-							<property name="authorizationCheck"
-								ref="daoAuthorizationCheck" />
-						</bean>						
-					</list>
-				</property>
-			</bean>
-		</property>
-       <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property> 
+                gov.nih.nci.cabig.caaers.dao.StudyDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
+            </value>
+        </property>
+        <property name="accessDecisionManager">
+            <bean class="org.acegisecurity.vote.AffirmativeBased">
+                <property name="allowIfAllAbstainDecisions">
+                    <value>false</value>
+                </property>
+                <property name="decisionVoters">
+                    <list>
+                        <bean
+                                class="gov.nih.nci.security.acegi.csm.vote.AuthorizationSwitchVoter">
+                            <property name="authorizationSwitch" ref="authorizationSwitch"/>
+                            <property name="requiresAuthentication" value="false"/>
+                        </bean>
+                        <bean
+                                class="gov.nih.nci.security.acegi.csm.vote.CSMAuthorizationCheckVoter">
+                            <property name="processConfigAttribute"
+                                      value="CSM_AUTHN_CHECK"/>
+                            <property name="authorizationCheck"
+                                      ref="daoAuthorizationCheck"/>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="afterInvocationManager">
+            <ref bean="afterInvocationManager"/>
+        </property>
     </bean>
     <bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
-            <property name="providers">
-                <list>
-                    <ref local="siteSecurityCollectionFilter"/>
-                </list>
-            </property>
-        </bean>
+        <property name="providers">
+            <list>
+                <ref local="siteSecurityBasicAuthCheck"/>
+                <ref local="siteSecurityCollectionFilter"/>
+            </list>
+        </property>
+    </bean>
 
 
     <bean id="studyParticipantAssignmentAspect"
-		class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
-		factory-method="aspectOf">
+          class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
+          factory-method="aspectOf">
 
-	 	<property name="securityInterceptor"
-			ref="daoSecurity" />
+        <property name="securityInterceptor"
+                  ref="daoSecurity"/>
 
-	</bean>
-     <!--> oraganization security beans  start here-->
+    </bean>
+    <!--> oraganization security beans  start here-->
     <bean id="sitePrivilegeAndObjectIdGenerator"
-              class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
-            <property name="accessPrivilege" value="ACCESS"/>
-            <property name="pathSeperator" value="."/>
-        </bean>
+          class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
+        <property name="accessPrivilege" value="ACCESS"/>
+        <property name="pathSeperator" value="."/>
+    </bean>
 
     <bean id="siteSecurityCollectionFilter"
-              class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
-            <property name="processConfigAttribute"
-                      value="CSM_AUTHN_CHECK"/>
-            <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-                      ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+          class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
+        <property name="processConfigAttribute"
+                  value="CSM_AUTHN_CHECK"/>
+        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
+                  ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
 
-        </bean>
+    </bean>
 
-        <bean id="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"
-              class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
-            <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-            <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
-        </bean>
+    <bean id="siteSecurityBasicAuthCheck"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationBasicAuthorizationCheckProvider">
+        <property name="processConfigAttribute"
+                  value="CSM_AUTHN_CHECK"/>
+        <property name="accessPrivilege" ref="ACCESS_PRIVILEGE"/>
+        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
+                  ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+    </bean>
+    <bean id="ACCESS_PRIVILEGE" class="java.lang.String">
+        <constructor-arg value="ACCESS"/>
+    </bean>
 
 
-        <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-                  map-class="java.util.LinkedHashMap">
-            <entry key="gov.nih.nci.cabig.caaers.domain.Study"
-                   value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>
-        </util:map>
+    <bean id="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
+    </bean>
+
+
+    <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
+              map-class="java.util.LinkedHashMap">
+        <entry key="gov.nih.nci.cabig.caaers.domain.Study"
+               value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>
+    </util:map>
 
     <!--> oraganization security beans end here  -->
 
@@ -319,7 +335,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   ref="csmUserProvisioningManager"/>
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
     </bean>
-
 
 
 </beans>

@@ -43,8 +43,10 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements A
             Object[] array = (Object[]) returnedObject;
             filterer = new ArrayFilterer(array);
         } else {
-            throw new AuthorizationServiceException("A Collection or an array (or null) was required as the "
-                    + "returnedObject, but the returnedObject was: " + returnedObject);
+            if (log.isDebugEnabled()) {
+                log.debug("Return object is not a collection, skipping");
+            }
+            return returnedObject;
         }
         // Locate unauthorised Collection elements
         Iterator collectionIter = filterer.iterator();
