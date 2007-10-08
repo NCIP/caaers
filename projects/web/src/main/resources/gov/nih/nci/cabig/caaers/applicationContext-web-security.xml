@@ -159,7 +159,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="privilegeGenerator"
 			ref="sectionPrivilegeAndObjectIdGenerator" />
 	</bean>
-	
+
+    <bean id="siteAuthorizationCheck"
+          class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+        <property name="authorizationSwitch" ref="authorizationSwitch"/>
+        <property name="csmAuthorizationCheck" ref="csmGroupAuthorizationCheck"></property>
+        <property name="objectIdGenerator"
+                  ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="privilegeGenerator"
+                  ref="sitePrivilegeAndObjectIdGenerator"/>
+    </bean>
+
+
     <bean id="gridAuthenticationClient" class="gov.nih.nci.security.acegi.grid.authentication.GridBasicAuthenticationClientImpl">
     	<property name="idpUrl" value="https://localhost:58443/wsrf/services/cagrid/AuthenticationService"/>
 		<property name="ifsUrl" value="https://localhost:28443/wsrf/services/cagrid/Dorian"/>

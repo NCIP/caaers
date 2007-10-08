@@ -129,7 +129,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<aop:config>
 		<!-- pointcuts -->
 		<aop:pointcut id="daoSaveOrUpdatePointcut"
-			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+)) || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))" />
+			expression="execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.save(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
+        || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
+        || execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.search*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.get*(..))
+         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
+                              " />
 
 
 		<!-- advisors -->
@@ -148,7 +153,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 		<aop:aspect id="daoSecurityInterceptorAspect"
 			ref="daoSecurityInterceptorAspectBean">
-			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"
+			<aop:around pointcut-ref="daoSaveOrUpdatePointcut"                                                                          
 				method="advise" />
 		</aop:aspect>		
 
@@ -187,8 +192,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			
 		<entry key="execution(* save(gov.nih.nci.cabig.caaers.domain.Participant))"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE" />
-			
-		<entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
+
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.search*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.get*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.match*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+
+
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
 			
 	</util:map>
@@ -248,9 +262,18 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</property>
 			</bean>
 		</property>
-	</bean>		 
+       <property name="afterInvocationManager"><ref bean="afterInvocationManager"/></property> 
+    </bean>
+    <bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
+            <property name="providers">
+                <list>
+                    <ref local="siteSecurityCollectionFilter"/>
+                </list>
+            </property>
+        </bean>
 
-	<bean id="studyParticipantAssignmentAspect"
+
+    <bean id="studyParticipantAssignmentAspect"
 		class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect"
 		factory-method="aspectOf">
 
@@ -258,10 +281,45 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="daoSecurity" />
 
 	</bean>
-	<bean id="sitePrivilegeAndObjectIdGenerator"
-	              class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
-	            <property name="accessPrivilege" value="ACCESS"/>
-	            <property name="pathSeperator" value="."/>
-       </bean>
+     <!--> oraganization security beans  start here-->
+    <bean id="sitePrivilegeAndObjectIdGenerator"
+              class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
+            <property name="accessPrivilege" value="ACCESS"/>
+            <property name="pathSeperator" value="."/>
+        </bean>
+
+    <bean id="siteSecurityCollectionFilter"
+              class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
+            <property name="processConfigAttribute"
+                      value="CSM_AUTHN_CHECK"/>
+            <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
+                      ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+
+        </bean>
+
+        <bean id="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"
+              class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
+            <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+            <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
+        </bean>
+
+
+        <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
+                  map-class="java.util.LinkedHashMap">
+            <entry key="gov.nih.nci.cabig.caaers.domain.Study"
+                   value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>
+        </util:map>
+
+    <!--> oraganization security beans end here  -->
+
+
+    <bean id="csmGroupAuthorizationCheck"
+          class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
+        <property name="csmUserProvisioningManager"
+                  ref="csmUserProvisioningManager"/>
+        <property name="authorizationSwitch" ref="authorizationSwitch"/>
+    </bean>
+
+
 
 </beans>
