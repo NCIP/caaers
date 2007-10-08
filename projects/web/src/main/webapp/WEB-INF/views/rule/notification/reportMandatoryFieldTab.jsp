@@ -67,12 +67,12 @@
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Radiation intervention"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB">
-					 <rd:renderMandatoryFields key="RADIATION_INTERVENTION_SECTION~RadiationIntervention" />
+					 <rd:renderMandatoryFields key="RADIATION_INTERVENTION_SECTION~RadiationInterventions" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="Surgery intervention" cssClass="paired">
-			    	  <rd:renderMandatoryFields key="SURGERY_INTERVENTION_SECTION~SurgeryIntervention" />
+			    	  <rd:renderMandatoryFields key="SURGERY_INTERVENTION_SECTION~SurgeryInterventions" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -86,10 +86,10 @@
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevice" startIndex="0" endIndex="10"/>
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="0" endIndex="10"/>
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
-			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevice" startIndex="11" />
+			   		 <rd:renderMandatoryFields key="MEDICAL_DEVICE_SECTION~MedicalDevices" startIndex="11" />
 			 	  </td>
 			  </tr>
 			</table>
