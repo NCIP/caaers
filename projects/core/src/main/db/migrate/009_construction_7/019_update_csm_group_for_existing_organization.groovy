@@ -37,12 +37,10 @@ void up() {
 
 
         insert('csm_group',[GROUP_ID: -12,GROUP_NAME:"gov.nih.nci.cabig.caaers.domain.Organization",GROUP_DESC: "Organization Group",application_id: -1], primaryKey: false);
-        insert('csm_protection_element',[protection_element_id: -12,protection_element_name:"gov.nih.nci.cabig.caaers.domain.Organization", object_id: "gov.nih.nci.cabig.caaers.domain.Organization",application_id: -1], primaryKey: false);
-        insert('csm_pg_pe',[pg_pe_id: 11,protection_group_id: -5, protection_element_id:-12], primaryKey: false);
+
         insert('csm_user_group_role_pg',[USER_GROUP_ROLE_PG_ID: -25,GROUP_ID: -12, PROTECTION_GROUP_ID: -5, ROLE_ID: -14], primaryKey: false);
 
-
-
+      
 	}
 
 
