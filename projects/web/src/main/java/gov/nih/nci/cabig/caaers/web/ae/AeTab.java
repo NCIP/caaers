@@ -37,8 +37,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     @Override
-    // TODO: this should be final, but there are non-EAE-flow tabs extending this one that need to be fixed first
-    public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
+    public final InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
         AeInputFieldCreator creator = new AeInputFieldCreator(command);
         createFieldGroups(creator, command);
         return creator.getMap();
@@ -47,8 +46,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     /**
      * Template method for subclasses to instantiate their fields via the {@link AeInputFieldCreator}.
      */
-    // TODO: this should be abstract -- see above
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) { }
+    protected abstract void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command);
 
     /**
      * Will also update the InputField mandatory flag.

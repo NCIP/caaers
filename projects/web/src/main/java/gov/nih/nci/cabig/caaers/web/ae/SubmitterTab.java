@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @author Rhett Sutphin
  * @author Krikor Krumlian
  */
-public class SubmitterTab extends AeTab {
+public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
    // private EvaluationService evaluationService;
 
     public SubmitterTab() {
@@ -94,9 +95,4 @@ public class SubmitterTab extends AeTab {
         	}
         }
     
-
-    @Override
-    public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.SUBMITTER_SECTION;
-    }
 }

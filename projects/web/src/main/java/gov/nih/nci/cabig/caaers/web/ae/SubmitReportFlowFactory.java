@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
  * @author Krikor Krumlian
  * 
  */
+// TODO: this class is unnecessary -- you don't need a custom flow factory unless the flow changes depending on the command
+// Just use a static flow (with setFlow in the controller)
 public class SubmitReportFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
     protected String flowName;
     private Flow<ExpeditedAdverseEventInputCommand> submitReportFlow;

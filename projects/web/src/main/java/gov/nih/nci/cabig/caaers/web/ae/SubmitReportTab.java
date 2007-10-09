@@ -1,24 +1,23 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-
-import java.util.Map;
-
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import java.util.Map;
+
 /**
  * @author Krikor Krumlian
  */
-public class SubmitReportTab extends AeTab {
+public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 
     public SubmitReportTab() {
         super("Submission", "Submit Report", "ae/submitReport");
@@ -69,8 +68,4 @@ public class SubmitReportTab extends AeTab {
     	return EmailValidator.getInstance().isValid(email);
       }
 
-    @Override
-    public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.SUBMIT_REPORT_SECTION;
-    }
 }

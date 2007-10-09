@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Krikor Krumlian
  */
-public class ViewReportTab extends AeTab {
+public class ViewReportTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
 	private EvaluationService evaluationService;
+    private ReportService reportService;
 
     public ViewReportTab() {
         super("Submission", "Submit", "ae/submit");
@@ -70,8 +72,7 @@ public class ViewReportTab extends AeTab {
         this.evaluationService = evaluationService;
     }
 
-    @Override
-    public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.SUBMIT_REPORT_SECTION;
+    public void setReportService(ReportService reportService) {
+        this.reportService = reportService;
     }
 }
