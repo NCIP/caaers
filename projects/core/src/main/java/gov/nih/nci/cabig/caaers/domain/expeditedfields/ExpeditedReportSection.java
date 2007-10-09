@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
-public enum ExpeditedReportSection implements CodedEnum<Integer>{
+public enum ExpeditedReportSection {
     BASICS_SECTION("Basic AE information"),
     ADVERSE_EVENT_SECTION("Adverse events"),
     REPORTER_INFO_SECTION("Reporter Information"),
@@ -37,8 +36,4 @@ public enum ExpeditedReportSection implements CodedEnum<Integer>{
         return null;
     }
 	
-	
-	public Integer getCode() {
-		return ordinal();
-	}
 }
