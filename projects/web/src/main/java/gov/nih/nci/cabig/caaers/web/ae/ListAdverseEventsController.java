@@ -64,8 +64,8 @@ public class ListAdverseEventsController extends SimpleFormController {
         HttpServletRequest request, Object command, Errors errors
     ) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("pageTitle", "List AEs: Select Participant & Study");
-        refdata.put("bodyTitle", "List AEs: Select Participant & Study");
+        refdata.put("pageTitle", "Manage AEs: Select Participant & Study");
+        refdata.put("bodyTitle", "Manage AEs: Select Participant & Study");
         refdata.put("instructions", "Select a participant and study to see all the AEs for that combination.");
         return refdata;
     }

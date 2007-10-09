@@ -26,7 +26,9 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.fullName + " ( " + obj.primaryIdentifierValue + " ) "
+            	var primaryIdentifier = obj.primaryIdentifierValue == null ? "" : 
+            							 " ( " + obj.primaryIdentifierValue + " ) ";
+                return obj.fullName + primaryIdentifier
             }
         }
 
@@ -38,7 +40,9 @@
                 })
             },
             valueSelector: function(obj) {
-                return obj.shortTitle + " ( " + obj.primaryIdentifierValue + " ) "
+            	var primaryIdentifier = obj.primaryIdentifierValue == null ? "" : 
+            							 " ( " + obj.primaryIdentifierValue + " ) ";
+                return obj.shortTitle + primaryIdentifier
             }
         }
 

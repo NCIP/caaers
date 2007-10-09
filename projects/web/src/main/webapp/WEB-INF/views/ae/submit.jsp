@@ -48,7 +48,7 @@
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
-            		<td><div class="label">v${fn:length(report.reportVersions)}</div></td>
+            		<td><div class="label">v${fn:length(report.reportVersions) -1}</div></td>
             		<td><i>
             			<c:if test="${report.dataMissing == 'false'}" >
 							Complete
