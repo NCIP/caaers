@@ -43,6 +43,9 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
 		InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
 		fields.add(amendableField);
+		
+		InputField attributionRequiredField = InputFieldFactory.createBooleanSelectField("reportDefinition.attributionRequired", "Attribution required?", true);
+		fields.add(attributionRequiredField);
 
 		fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));

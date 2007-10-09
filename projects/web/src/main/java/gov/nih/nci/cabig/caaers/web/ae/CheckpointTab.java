@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -9,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -118,22 +120,13 @@ public class CheckpointTab extends AeTab {
         
         if(command.getMandatorySections() != null){
         	//pre-initialize lazy fields in mandatory sections.
+        	BeanWrapper wrapper = new BeanWrapperImpl(command.getAeReport());
             for(ExpeditedReportSection section : command.getMandatorySections()){
-            	switch(section){
-            	case LABS_SECTION:
-            		command.getAeReport().getLabs().get(0);
-            		break;
-            	case PRE_EXISTING_CONDITION_SECTION:
-            		command.getAeReport().getAdverseEventPreExistingConds().get(0);
-            		break;
-            	case PRIOR_THERAPIES_SECTION:
-            		command.getAeReport().getAdverseEventPriorTherapies().get(0);
-            		break;
-            	case MEDICAL_DEVICE_SECTION:
-            		//TODO: 
-            		break;
-            	case MEDICAL_INFO_SCECTION:
-            		break;
+            	TreeNode sectionNode = getExpeditedReportTree().getNodeForSection(section);
+            	for(TreeNode node : sectionNode.getChildren()){
+            		if(node.isList()){
+            			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
+            		}
             	}
             }
         }

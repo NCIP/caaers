@@ -237,19 +237,31 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	}
 	
 	public String getRequiredReportDefinitionNames(){
-		StringBuilder sb = new StringBuilder();
-		for(ReportDefinition def : requiredReportDefinitions){
-			sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
-		}
-		return sb.toString();
+		return getReportDefinitionNames(getRequiredReportDeifnitions());
 	}
-
+	
+	public String getSelectedReportDefinitionNames() {
+		return getReportDefinitionNames(getSelectedReportDefinitions());
+	}
+	
 	public List<ReportDefinition> getRequiredReportDeifnitions() {
 		return requiredReportDefinitions;
 	}
 	
 	public void setRequiredReportDefinition(List<ReportDefinition> defs) {
 		if(defs != null) requiredReportDefinitions.addAll(defs);
+	}
+	
+	public Collection<ReportDefinition> getSubmittedReportDefinitions() {
+		Set<ReportDefinition> defs = new HashSet<ReportDefinition>();
+		if(getAeReport().getReports() != null){
+			for(Report report : getAeReport().getReports()){
+				if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
+					defs.add(report.getReportDefinition());
+				}
+			}
+		}
+		return null;
 	}
 	
     @Override
@@ -261,4 +273,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             // .append("\n    attributionMap: ").append(getAttributionMap())
             .append("\n]").toString();
     }
+    
+    private String getReportDefinitionNames(List<ReportDefinition> defs){
+    	if(defs == null || defs.isEmpty()) return "" ;
+		StringBuilder sb = new StringBuilder();
+		for(ReportDefinition def : defs){
+			sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
+		}
+		return sb.toString();
+	}
 }

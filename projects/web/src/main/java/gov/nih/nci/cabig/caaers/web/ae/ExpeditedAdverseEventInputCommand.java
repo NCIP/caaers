@@ -56,4 +56,11 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 	 List<ReportDefinition> getRequiredReportDeifnitions();
 	 void setRequiredReportDefinition(List<ReportDefinition> def);
 	 String getRequiredReportDefinitionNames();
+	 String getSelectedReportDefinitionNames();
+	 
+	 /**
+	  * Reports which are already submitted.
+	  * @return
+	  */
+	 Collection<ReportDefinition> getSubmittedReportDefinitions(); 
 }
