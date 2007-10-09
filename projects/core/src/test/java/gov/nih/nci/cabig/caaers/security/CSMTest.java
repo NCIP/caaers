@@ -100,7 +100,7 @@ public class CSMTest extends TestCase {
 	public void testStudyCoordinatorPolicy() {
 		try {
 			String group = "caaers_study_cd";
-			String[] privileges = new String[] { "READ", "CREATE", "UPDATE" };
+			String[] privileges = new String[] { "READ","UPDATE" };
 			String[] objectIds = new String[] { "gov.nih.nci.cabig.caaers.domain.Study" };
 
 			verifyPrivilegesForObjectIdsAndGroup(mgr, group, objectIds,
