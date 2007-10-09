@@ -59,6 +59,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private LazyListHelper lazyListHelper;
     private Organization organization;
     private List<ReportMandatoryFieldDefinition> mandatoryFields;
+    private Boolean attributionRequired;
 
     public ReportDefinition(){
         lazyListHelper = new LazyListHelper();
@@ -66,6 +67,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
             new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
         lazyListHelper.add(PlannedNotification.class,
         	new InstantiateFactory<PlannedNotification>(PlannedNotification.class));
+        attributionRequired = false;
     }
 
     ////// LOGIC
@@ -219,6 +221,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
 	public void setAmendable(Boolean amendable) {
 		this.amendable = amendable;
+	}
+	
+	public Boolean getAttributionRequired() {
+		return attributionRequired;
+	}
+	
+	public void setAttributionRequired(Boolean attributionRequired) {
+		this.attributionRequired = attributionRequired;
 	}
 
 	////// OBJECT METHODS
