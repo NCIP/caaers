@@ -15,7 +15,6 @@ public class ParticipantStudyLinkDisplayCell extends AbstractCell {
 
     @Override
     protected String getCellValue(TableModel model, Column column) {
-    	System.out.println("jj " + model.getCurrentRowBean().getClass().getName());
         Participant participant = (Participant) model.getCurrentRowBean();
         
         String cellValue = column.getValueAsString();

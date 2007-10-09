@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.text.ParseException;
@@ -16,10 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -114,6 +119,22 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	@Transactional(readOnly = false)
 	public void save(final Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
+	}
+	
+	@Transactional(readOnly = false)
+	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome){
+		
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		int i =0;
+		for (DomainObjectImportOutcome<Study> outcome : domainObjectImportOutcome) {
+			i++;
+			final Study study = outcome.getImportedDomainObject();
+			session.saveOrUpdate(study);
+			session.evict(study);
+			if(i % 100 == 0){
+				session.flush();
+			}
+		}
 	}
 
 	public List<Study> getBySubnames(final String[] subnames) {

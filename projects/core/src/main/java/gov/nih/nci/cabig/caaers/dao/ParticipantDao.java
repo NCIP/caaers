@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -46,6 +47,23 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	public void save(final Participant participant) {
 		getHibernateTemplate().saveOrUpdate(participant);
 	}
+	
+	@Transactional(readOnly = false)
+	public void batchSave(final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome){
+		
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		int i =0;
+		for (DomainObjectImportOutcome<Participant> outcome : domainObjectImportOutcome) {
+			i++;
+			final Participant participant = outcome.getImportedDomainObject();
+			session.saveOrUpdate(participant);
+			session.evict(participant);
+			if(i % 100 == 0){
+				session.flush();
+			}
+		}
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List<Participant> getAll() {

@@ -59,7 +59,7 @@
 		<input type="hidden" name="_finish" value="true">
 	</div>
 		
-		<c:if test='${fn:length(command.studyErrors) > 0 }'>
+			<c:if test='${fn:length(command.nonImportableStudies) > 0 }'>
 		<h4>The following Study Records have been flagged and will NOT be loaded into caAERS</h4>
 		<table  width="80%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -70,19 +70,20 @@
 						<td> <b>Possible Problem</b></td>																		
 					</tr>
 					
-					<c:forEach var='item' items='${command.studyErrors}'>
+					<c:forEach var='item' items='${command.nonImportableStudies}'>
 						<tr class="results">
-   						<td align="left"><c:out value='${item.key.shortTitle}'/></td>
-   						<td align="left"><c:out value='${item.key.longTitle}'/></td>
-   						<c:forEach var='value' items='${item.value}'>
-   							<td align="left" color="red"><c:out value='${value}'/></td>
+   						<td align="left"><c:out value='${item.importedDomainObject.shortTitle}'/></td>
+   						<td align="left"><c:out value='${item.importedDomainObject.longTitle}'/></td>
+   						<c:forEach var='message' items='${item.messages}'>
+   							<td align="left" color="red"><c:out value='${message.message}'/></td>
    						</c:forEach>
    						</tr>
-					</c:forEach>																				
+					</c:forEach>
+					
 		</table>
 		</c:if>
 		
-		<c:if test='${fn:length(command.studies) > 0 }'>
+		<c:if test='${fn:length(command.importableStudies) > 0 }'>
 		<br>
 		<h4>The following Study Records will be loaded into caAERS</h4>
 		
@@ -95,17 +96,18 @@
 					</tr>																			
 				 
 				    
-					<c:forEach varStatus="status" var="study" items="${command.studies}">
+					<c:forEach varStatus="status" var="item" items="${command.importableStudies}">
 								<tr class="results">						
-									<td align="left"><c:out value="${study.shortTitle}"/></td>	
-									<td align="left"><c:out value="${study.longTitle}"/></td>									
+									<td align="left"><c:out value="${item.importedDomainObject.shortTitle}"/></td>	
+									<td align="left"><c:out value="${item.importedDomainObject.longTitle}"/></td>									
 								</tr>
-					</c:forEach>				
+					</c:forEach>	
+					
 		</table>
 		</c:if>
 		
 		
-		<c:if test='${fn:length(command.participantErrors) > 0 }'>
+		<c:if test='${fn:length(command.nonImportableParticipants) > 0 }'>
 		<h4>The following Participant Records have been flagged and will NOT be loaded into caAERS</h4>
 		<table  width="80%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -116,19 +118,19 @@
 						<td> <b>Possible Problem</b></td>																		
 					</tr>
 					
-					<c:forEach var='item' items='${command.participantErrors}'>
+					<c:forEach var='item' items='${command.nonImportableParticipants}'>
 						<tr class="results">
-   						<td align="left"><c:out value='${item.key.firstName}'/></td>
-   						<td align="left"><c:out value='${item.key.lastName}'/></td>
-   						<c:forEach var='value' items='${item.value}'>
-   							<td align="left" color="red"><c:out value='${value}'/></td>
+   						<td align="left"><c:out value='${item.importedDomainObject.firstName}'/></td>
+   						<td align="left"><c:out value='${item.importedDomainObject.lastName}'/></td>
+   						<c:forEach var='message' items='${item.messages}'>
+   							<td align="left" color="red"><c:out value='${message.message}'/></td>
    						</c:forEach>
    						</tr>
 					</c:forEach>																				
 		</table>
 		</c:if>
 		
-		<c:if test='${fn:length(command.participants) > 0 }'>
+		<c:if test='${fn:length(command.importableParticipants) > 0 }'>
 		<br>
 		<h4>The following Participant Records will be loaded into caAERS</h4>
 		
@@ -141,10 +143,10 @@
 					</tr>																			
 				 
 				    
-					<c:forEach varStatus="status" var="participant" items="${command.participants}">
+					<c:forEach varStatus="status" var="item" items="${command.importableParticipants}">
 								<tr class="results">						
-									<td align="left"><c:out value="${participant.firstName}"/></td>	
-									<td align="left"><c:out value="${participant.lastName}"/></td>									
+									<td align="left"><c:out value="${item.importedDomainObject.firstName}"/></td>	
+									<td align="left"><c:out value="${item.importedDomainObject.lastName}"/></td>									
 								</tr>
 					</c:forEach>				
 		</table>

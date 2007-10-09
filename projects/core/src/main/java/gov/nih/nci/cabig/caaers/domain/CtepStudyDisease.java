@@ -6,6 +6,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Krikor Krumlian
@@ -30,4 +31,15 @@ public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
     public DiseaseTerm getTerm() {
         return super.getTerm();
     }
+	
+	@Transient
+	public DiseaseTerm getDiseaseTerm(){
+		return super.getTerm();
+	}
+	
+	@Transient
+	public void setDiseaseTerm(DiseaseTerm diseaseTerm){
+		super.setTerm(diseaseTerm);
+	}
+	
 }

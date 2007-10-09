@@ -10,7 +10,6 @@ public class StudyLinkDisplayCell extends AbstractCell {
 
     @Override
     protected String getCellValue(TableModel model, Column column) {
-    	System.out.println("jj " + model.getCurrentRowBean().getClass().getName());
         Study study = (Study) model.getCurrentRowBean();
         String cellValue = column.getValueAsString();
         String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";

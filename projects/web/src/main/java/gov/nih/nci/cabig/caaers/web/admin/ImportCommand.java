@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import org.springframework.web.multipart.MultipartFile;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 
 /**
@@ -16,10 +16,12 @@ public class ImportCommand {
 	private MultipartFile participantFile;
 	private MultipartFile studyFile;
 	private String type;
-	private List<Study> studies = new ArrayList<Study>();
-	private List<Participant> participants = new ArrayList<Participant>();
-	private HashMap<Participant,List<String>> participantErrors = new HashMap<Participant,List<String>>();
-	private HashMap<Study,List<String>> studyErrors = new HashMap<Study,List<String>>();
+	
+	private List<DomainObjectImportOutcome<Study>> nonImportableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
+	private List<DomainObjectImportOutcome<Study>> importableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
+	
+	private List<DomainObjectImportOutcome<Participant>> nonImportableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
+	private List<DomainObjectImportOutcome<Participant>> importableParticipants = new ArrayList<DomainObjectImportOutcome<Participant>>();
 	
 	
 	public String getType() {
@@ -46,61 +48,59 @@ public class ImportCommand {
 		this.studyFile = studyFile;
 	}
 
-	public List<Study> getStudies() {
-		return studies;
+	public List<DomainObjectImportOutcome<Study>> getNonImportableStudies() {
+		return nonImportableStudies;
 	}
 
-	public void setStudies(List<Study> studies) {
-		this.studies = studies;
-	}
-
-	public List<Participant> getParticipants() {
-		return participants;
-	}
-
-	public void setParticipants(List<Participant> participants) {
-		this.participants = participants;
+	public void setNonImportableStudies(
+			List<DomainObjectImportOutcome<Study>> nonImportableStudies) {
+		this.nonImportableStudies = nonImportableStudies;
 	}
 	
-
-	public HashMap<Participant, List<String>> getParticipantErrors() {
-		return participantErrors;
+	public void addNonImportableStudy(DomainObjectImportOutcome<Study> domainObjectImportOutcome){
+		getNonImportableStudies().add(domainObjectImportOutcome);
 	}
 
-	public void setParticipantErrors(
-			HashMap<Participant, List<String>> participantErrors) {
-		this.participantErrors = participantErrors;
+	public List<DomainObjectImportOutcome<Study>> getImportableStudies() {
+		return importableStudies;
+	}
+
+	public void setImportableStudies(
+			List<DomainObjectImportOutcome<Study>> importableStudies) {
+		this.importableStudies = importableStudies;
 	}
 	
-	public void addParticipantErros(Participant participant, String errorMessage){
-		if (participantErrors.containsKey(participant)) {
-			participantErrors.get(participant).add(errorMessage);
-		} 
-		else{
-			ArrayList<String> errorMessages = new ArrayList<String>();
-			errorMessages.add(errorMessage);
-			participantErrors.put(participant, errorMessages);		
-		}
+	public void addImportableStudy(DomainObjectImportOutcome<Study> domainObjectImportOutcome){
+		getImportableStudies().add(domainObjectImportOutcome);
 	}
 
-	public HashMap<Study, List<String>> getStudyErrors() {
-		return studyErrors;
+	public List<DomainObjectImportOutcome<Participant>> getImportableParticipants() {
+		return importableParticipants;
 	}
 
-	public void setStudyErrors(HashMap<Study, List<String>> studyErrors) {
-		this.studyErrors = studyErrors;
+	public void setImportableParticipants(
+			List<DomainObjectImportOutcome<Participant>> importableParticipants) {
+		this.importableParticipants = importableParticipants;
 	}
 	
-	public void addStudyErros(Study study, String errorMessage){
-		if (studyErrors.containsKey(study)) {
-			studyErrors.get(study).add(errorMessage);
-		} 
-		else{
-			ArrayList<String> errorMessages = new ArrayList<String>();
-			errorMessages.add(errorMessage);
-			studyErrors.put(study, errorMessages);		
-		}
+	public void addImportableParticipant(DomainObjectImportOutcome<Participant> domainObjectImportOutcome){
+		getImportableParticipants().add(domainObjectImportOutcome);
 	}
+
+	public List<DomainObjectImportOutcome<Participant>> getNonImportableParticipants() {
+		return nonImportableParticipants;
+	}
+
+	public void setNonImportableParticipants(
+			List<DomainObjectImportOutcome<Participant>> nonImportableParticipants) {
+		this.nonImportableParticipants = nonImportableParticipants;
+	}
+	
+	public void addNonImportableParticipant(DomainObjectImportOutcome<Participant> domainObjectImportOutcome){
+		getNonImportableParticipants().add(domainObjectImportOutcome);
+	}
+	
+	
 	
 	
 	

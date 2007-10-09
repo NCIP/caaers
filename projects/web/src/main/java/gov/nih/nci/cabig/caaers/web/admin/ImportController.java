@@ -8,24 +8,19 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
+import gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController;
-import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
+import gov.nih.nci.cabig.caaers.web.admin.ImportCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -50,7 +45,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -64,7 +58,7 @@ import org.springframework.util.FileCopyUtils;
  */
 public class ImportController extends AbstractTabbedFlowFormController<ImportCommand> {
 
-	private static Log log = LogFactory.getLog(CreateParticipantController.class);
+	private static Log log = LogFactory.getLog(ImportController.class);
 
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
@@ -72,8 +66,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private AgentDao agentDao;
 	private MedDRADao meddraDao;
 	private CtcDao ctcDao;
+	private StudyServiceImpl studyServiceImpl;
+	private ParticipantServiceImpl participantServiceImpl;
+	
+	public ImportController() {		
 
-	public ImportController() {
         setCommandClass(ImportCommand.class);
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
@@ -149,16 +146,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			Object command, BindException errors) throws Exception {
 
 		ImportCommand cObject = (ImportCommand)command;
-		for ( int i=0; i < cObject.getStudies().size(); i ++)
-		{
-			Study s = cObject.getStudies().get(i);
-			studyDao.save(s);
+		if (cObject.getImportableStudies().size() > 0){
+			studyDao.batchSave(cObject.getImportableStudies());
 		}
-
-		for ( int j=0; j < cObject.getParticipants().size(); j++)
-		{
-			Participant p = cObject.getParticipants().get(j);
-			participantDao.save(p);
+		
+		if (cObject.getImportableParticipants().size() > 0){
+			participantDao.batchSave(cObject.getImportableParticipants());
 		}
 
 		response.sendRedirect("/caaers/pages/study/search");
@@ -177,6 +170,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("systemAssignedIdentifier", gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier.class);
     	xstream.alias("site", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("studySite", gov.nih.nci.cabig.caaers.domain.StudySite.class);
+    	xstream.alias("studyInvestigator" , gov.nih.nci.cabig.caaers.domain.StudyInvestigator.class);
+    	xstream.alias("siteInvestigator" , gov.nih.nci.cabig.caaers.domain.SiteInvestigator.class);
+    	xstream.alias("investigator" , gov.nih.nci.cabig.caaers.domain.Investigator.class);
+    	xstream.alias("studyPersonnel", gov.nih.nci.cabig.caaers.domain.StudyPersonnel.class);
+    	xstream.alias("researchStaff", gov.nih.nci.cabig.caaers.domain.ResearchStaff.class);
     	xstream.alias("studyFundingSponsor", gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor.class);
     	xstream.alias("studyOrganization", gov.nih.nci.cabig.caaers.domain.StudyOrganization.class);
     	xstream.alias("organization", gov.nih.nci.cabig.caaers.domain.Organization.class);
@@ -184,8 +182,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
     	// study specific
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
+    	xstream.alias("studyAgentINDAssociation", gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation.class);
+    	xstream.alias("investigationalNewDrug", gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug.class);
     	xstream.alias("agent", gov.nih.nci.cabig.caaers.domain.Agent.class);
     	xstream.alias("ctepStudyDisease", gov.nih.nci.cabig.caaers.domain.CtepStudyDisease.class);
+    	xstream.alias("meddraStudyDisease", gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease.class);
+    	xstream.alias("treatmentAssignment", gov.nih.nci.cabig.caaers.domain.TreatmentAssignment.class);
     	xstream.alias("diseaseTerm", gov.nih.nci.cabig.caaers.domain.DiseaseTerm.class);
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
     	xstream.alias("ctcVersion" , gov.nih.nci.cabig.caaers.domain.Ctc.class);
@@ -208,16 +210,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
           if (type.equals("participant")){
         	  while (true)
               {
-              Participant participant = (Participant)in.readObject();
-              createParticipantObjects(participant, command);
+              Participant xstreamParticipant = (Participant)in.readObject();
+              migrateParticipant(xstreamParticipant,command);
               }
           }
 
           if (type.equals("study")){
         	  while (true)
               {
-              Study study = (Study)in.readObject();
-              createStudyObjects(study, command);
+              Study xstreamStudy = (Study)in.readObject();
+              migrateStudy(xstreamStudy, command);
               }
           }
         }
@@ -244,12 +246,32 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	  throw new RuntimeException("IO Exception", ex);
           }
 
-          log.debug("Study List size "  + command.getStudies().size());
-          log.debug("Participant List size "  + command.getParticipants().size());
+          log.debug("Study List size "  + command.getImportableStudies().size());
+          log.debug("Participant List size "  + command.getImportableParticipants().size());
         }
 	}
-
-
+	
+	private void migrateStudy(Study xstreamStudy, ImportCommand command){
+		
+		DomainObjectImportOutcome<Study> studyImportOutcome = studyServiceImpl.createStudyObjects(xstreamStudy);
+		if (studyImportOutcome.isSavable()){
+			command.addImportableStudy(studyImportOutcome);
+		}else{
+			command.addNonImportableStudy(studyImportOutcome);
+		}
+	}
+	
+	private void migrateParticipant(Participant xstreamParticipant, ImportCommand command){
+		
+		DomainObjectImportOutcome<Participant> participantImportOutcome = participantServiceImpl.createParticipantObjects(xstreamParticipant);
+		if (participantImportOutcome.isSavable()){
+			command.addImportableParticipant(participantImportOutcome);
+		}else{
+			command.addNonImportableParticipant(participantImportOutcome);
+		}
+	}
+	
+	/*
 	private void createParticipantObjects(Participant xstreamParticipant,
 			ImportCommand command) {
 
@@ -290,197 +312,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			}
 		}
 	}
-
-
-	/*
-	 * If participant that we are trying to import has the same firstName
-	 * and lastName as a participant in the system then fail
-	 *
-	 */
-	private boolean participantUniquenessCheck(ImportCommand command, Participant participant){
-
-
-		String[] s = {participant.getFirstName(),participant.getLastName() };
-		List<Participant> pars = participantDao.getByUniqueIdentifiers(s);
-		boolean result = true;
-		if (pars != null && pars.size() >= 1){
-			//pars.get(0).getAssignments().get(0).getStudySite().getStudy().getLongTitle()
-			command.addParticipantErros(participant, "This participant already exists in caAERS.");
-			log.debug("We have a validation error");
-			result= false;
-		}
-		return result;
-	}
-
-	/*
-	 * If the participant that we are trying to import has no assignments
-	 * then it has no studies attached to it => fail.
-	 */
-
-	private boolean participantAssignmentCheck(ImportCommand command, Participant participant){
-
-		if (participant.getAssignments().size() == 0 ) {
-			command.addParticipantErros(participant, "This participant is not associated to any Study.");
-			log.debug("We have a validation error");
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/*
-	 *
-	 */
-	private boolean studyUniquenessCheck(ImportCommand command, Study study){
-
-		for (Identifier identifier : study.getIdentifiers())
-		{
-			Study tempStudy = studyDao.getByIdentifier(identifier);
-			if (tempStudy != null) {
-				command.addStudyErros(study, "This Study/Protocol contains the same identifier as a study already in caAERS." );
-				//log.debug("Validation Error");
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private void createStudyObjects(Study xstreamStudy, ImportCommand command)
-	{
-		Study st = new Study();
-		String shortTitle = xstreamStudy.getShortTitle();
-		st.setShortTitle(StringUtils.isNotEmpty(shortTitle) ? shortTitle : "NA");
-		st.setLongTitle(xstreamStudy.getLongTitle());
-		st.setDescription(xstreamStudy.getDescription());
-		st.setPrecis(xstreamStudy.getPrecis());
-		st.setDiseaseCode(xstreamStudy.getDiseaseCode());
-		st.setMonitorCode(xstreamStudy.getMonitorCode());
-		st.setPhaseCode(xstreamStudy.getPhaseCode());
-		//st.setPrimarySponsorCode(xstreamStudy.getPrimarySponsorCode());
-		st.setStatus(xstreamStudy.getStatus());
-		// Integer
-		st.setTargetAccrualNumber(xstreamStudy.getTargetAccrualNumber());
-		// Boolean
-		st.setBlindedIndicator(xstreamStudy.getBlindedIndicator());
-		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
-		st.setRandomizedIndicator(xstreamStudy.getRandomizedIndicator());
-
-		migrateTerminology(st,xstreamStudy);
-		migrateIdentifiers(st,xstreamStudy);
-		migrateStudyOrganizations(st,xstreamStudy);
-
-
-
-		// StudyAgents
-		if (xstreamStudy.getStudyAgents() != null) {
-			for (int i = 0; i < xstreamStudy.getStudyAgents().size(); i++) {
-				StudyAgent studyAgent = xstreamStudy.getStudyAgents().get(i);
-				Agent agent = null;
-				if ( studyAgent.getAgent().getName() != null ){
-					agent = agentDao.getByName(studyAgent.getAgent().getName()) ;
-				}
-				if ( studyAgent.getAgent().getNscNumber() != null && agent == null ){
-					agent = agentDao.getByNscNumber(studyAgent.getAgent().getNscNumber()) ;
-				}
-				if ( agent != null ){
-					st.addStudyAgent(createStudyAgent(agent));
-				}
-				// TODO: ADD error handling with user interaction
-
-			}
-		}
-
-		if (studyUniquenessCheck(command,st)) {
-			command.getStudies().add(st);
-		}
-
-	}
-
-
-	private void migrateIdentifiers(AbstractIdentifiableDomainObject destination, AbstractIdentifiableDomainObject source) {
-
-		// Identifiers
-		if (source.getIdentifiers() != null) {
-			for (int i = 0; i < source.getIdentifiers().size(); i++) {
-				Identifier identifier = source.getIdentifiers()
-						.get(i);
-				if (identifier instanceof OrganizationAssignedIdentifier) {
-					Organization organization = organizationDao
-							.getByName(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
-					((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
-				}
-
-				if (identifier instanceof SystemAssignedIdentifier) {
-					// I don't need to do anything i think
-				}
-				destination.getIdentifiers().add(identifier);
-			}
-		}
-	}
-
-	private void migrateStudyOrganizations(Study destination,Study source){
-
-		if (source.getStudyOrganizations() != null) {
-			for (int i = 0; i < source.getStudyOrganizations().size(); i++) {
-				StudyOrganization studyOrganization = source.getStudyOrganizations().get(i);
-				if (studyOrganization instanceof StudySite) {
-					StudySite studySite = (StudySite) studyOrganization;
-					Organization organization = organizationDao.getByName(studySite.getOrganization().getName());
-					studySite.setOrganization(organization);
-					destination.addStudySite(studySite);
-				}
-				if (studyOrganization instanceof StudyFundingSponsor) {
-					StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
-					Organization organization = organizationDao.getByName(studyFundingSponsor.getOrganization().getName());
-					studyFundingSponsor.setOrganization(organization);
-					destination.addStudyFundingSponsor(studyFundingSponsor);
-				}
-
-			}
-		}
-
-	}
-
-	private void migrateTerminology(Study destination,Study source){
-
-		// Terminology and Version
-		if (source.getTerminology() != null){
-			if(source.getTerminology().getCtcVersion() != null){
-				Ctc ctc = ctcDao.getById(Integer.parseInt(source.getTerminology().getCtcVersion().getName()));
-				Terminology t = destination.getTerminology();
-				t.setTerm(Term.CTC);
-				t.setCtcVersion(ctc);
-			}
-			if(source.getTerminology().getMeddraVersion() != null){
-				Terminology t = destination.getTerminology();
-				t.setTerm(Term.MEDDRA);
-			}
-		}
-
-	}
-
-	/* Phased out
-	private StudySite createStudyOrganization(Organization organization){
-
-		StudySite studySite = new StudySite();
-		studySite.setRoleCode("Site");
-		studySite.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
-		return studySite;
-	}
-
-	private StudyFundingSponsor createStudyFundingSponsor(Organization organization){
-
-		StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
-		studyFundingSponsor.setOrganization(organization == null ? organizationDao.getDefaultOrganization() : organization );
-		return studyFundingSponsor;
-	}*/
-
-	private StudyAgent createStudyAgent(Agent agent){
-
-		StudyAgent studyAgent = new StudyAgent();
-		studyAgent.setAgent(agent);
-		return studyAgent;
-	}
+	*/
+	
 
 
 	private ImportCommand createCommandObject()
@@ -537,14 +370,23 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		this.ctcDao = ctcDao;
 	}
 
+	public StudyServiceImpl getStudyServiceImpl() {
+		return studyServiceImpl;
+	}
 
+	public void setStudyServiceImpl(StudyServiceImpl studyServiceImpl) {
+		this.studyServiceImpl = studyServiceImpl;
+	}
 
+	public ParticipantServiceImpl getParticipantServiceImpl() {
+		return participantServiceImpl;
+	}
 
-
-
-
-
-
-
-
+	public void setParticipantServiceImpl(
+			ParticipantServiceImpl participantServiceImpl) {
+		this.participantServiceImpl = participantServiceImpl;
+	}	
+	
+	
+	
 }

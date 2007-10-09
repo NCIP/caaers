@@ -14,7 +14,6 @@ public class ParticipantLinkDisplayCellExpedited extends AbstractCell {
 
     @Override
     protected String getCellValue(TableModel model, Column column) {
-    	System.out.println("jj " + model.getCurrentRowBean().getClass().getName());
     	ExpeditedAdverseEventReport expeditedReport = (ExpeditedAdverseEventReport) model.getCurrentRowBean();
     	Participant participant = expeditedReport.getParticipant();
     	String cellValue = participant.getPrimaryIdentifier() != null ? participant.getPrimaryIdentifier().getValue() : "n/a";

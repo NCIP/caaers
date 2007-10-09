@@ -1,22 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import edu.nwu.bioinformatics.commons.CollectionUtils;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-
-
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
 
 /**
  * @author Krikor Krumlian
@@ -37,5 +22,17 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
         return getHibernateTemplate().find("from DiseaseTerm dt where dt.category.id =?",
         		new Object[] { parentId });
     }
+    
+    @SuppressWarnings("unchecked")
+    public DiseaseTerm getByTermName(final String name) {
+		List<DiseaseTerm> results = getHibernateTemplate().find("from "+ domainClass().getName() +" where term= ?", name);
+		return results.size() > 0 ? results.get(0) : null;
+	}
+    
+    @SuppressWarnings("unchecked")
+    public DiseaseTerm getByMeddra(final String name) {
+		List<DiseaseTerm> results = getHibernateTemplate().find("from "+ domainClass().getName() +" where medraCode= ?", name);
+		return results.size() > 0 ? results.get(0) : null;
+	}
     
 }
