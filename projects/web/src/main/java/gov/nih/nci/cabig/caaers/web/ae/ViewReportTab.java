@@ -1,19 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
-
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ErrorMessages;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Krikor Krumlian
@@ -69,13 +64,6 @@ public class ViewReportTab extends AeTab {
         return groups;
     }
 
-    @Override
-    protected void validate(
-        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-    }
-    
     ////// CONFIGURATION
 
     public void setEvaluationService(EvaluationService evaluationService) {
