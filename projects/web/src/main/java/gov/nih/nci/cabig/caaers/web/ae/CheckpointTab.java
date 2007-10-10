@@ -129,6 +129,7 @@ public class CheckpointTab extends AeTab {
             	TreeNode sectionNode = getExpeditedReportTree().getNodeForSection(section);
             	if(sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
             	assert (sectionNode != null) : section.toString() + ", is not available in ExpeditedReportTree.";
+            	if(sectionNode.getChildren() == null) continue;
             	for(TreeNode node : sectionNode.getChildren()){
             		if(node.isList()){
             			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
