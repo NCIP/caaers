@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import static org.easymock.EasyMock.expect;
 
@@ -41,7 +41,6 @@ public class EvaluationServiceTest extends CaaersTestCase {
 		service =  new EvaluationServiceImpl();
 
 		service.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
-		service.setOrganizationDao(organizationDao);
 		service.setReportDefinitionDao(reportDefinitionDao);
 
 		service.setReportService(reportService);
@@ -84,14 +83,14 @@ public class EvaluationServiceTest extends CaaersTestCase {
     public void testIsSubmittable() throws Exception{
         ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         List<ExpeditedReportSection> mandatorySections = Arrays.asList(ExpeditedReportSection.MEDICAL_INFO_SCECTION, ExpeditedReportSection.SURGERY_INTERVENTION_SECTION);
-        ErrorMessages messages = new ErrorMessages();
+        ReportSubmittability messages = new ReportSubmittability();
         Report report = new Report();
         report.setAeReport(aeReport);
         aeReport.addReport(report);
         expect(adverseEventEvaluationService.mandatorySectionsForReport(report)).andReturn(mandatorySections);
         expect(reportService.validate(report, mandatorySections)).andReturn(messages);
         replayMocks();
-        ErrorMessages msgs = service.isSubmittable(report);
+        ReportSubmittability msgs = service.isSubmittable(report);
         verifyMocks();
         assertEquals("ErrorMessage object is not same",messages, msgs);
     }

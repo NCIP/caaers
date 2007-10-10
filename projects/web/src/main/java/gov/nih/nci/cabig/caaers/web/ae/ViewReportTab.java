@@ -3,11 +3,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +35,7 @@ public class ViewReportTab extends AeTab {
     @Override
     public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
-        Map<Integer, ErrorMessages> reportMessages = new HashMap<Integer, ErrorMessages>();
+        Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
         for (Report report : command.getAeReport().getReports()) {
             reportMessages.put(report.getId(), evaluationService.isSubmittable(report));
         }
@@ -50,8 +47,8 @@ public class ViewReportTab extends AeTab {
     private void updateReports(ExpeditedAdverseEventInputCommand command){
     	
     		for (Report report : command.getAeReport().getReports()) {
-    			ErrorMessages errorMessages = evaluationService.isSubmittable(report);
-    			report.setDataMissing(errorMessages.hasErrors());
+    			ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+    			report.setDataMissing(!errorMessages.isSubmittable());
 			}
     }
     

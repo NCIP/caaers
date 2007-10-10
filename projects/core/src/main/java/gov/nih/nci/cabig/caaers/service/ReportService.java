@@ -1,13 +1,10 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Collection;
 
 /**
@@ -47,7 +44,7 @@ public interface ReportService {
     * Will tell whether all the mandatory field for this report is duly filled.
     * @return ErrorMessages, if any.
     */
-   ErrorMessages validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
+   ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
 
    /**
     * Will withdraw the latest version of the report.

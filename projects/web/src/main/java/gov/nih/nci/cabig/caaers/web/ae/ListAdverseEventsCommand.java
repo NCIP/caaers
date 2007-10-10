@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
 /**
  * @author Rhett Sutphin
@@ -60,8 +60,8 @@ public class ListAdverseEventsCommand {
     private void updateReports(StudyParticipantAssignment assignment){
     	for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
     		for (Report report : aeReport.getReports()) {
-    			ErrorMessages errorMessages = evaluationService.isSubmittable(report);
-    			report.setDataMissing(errorMessages.hasErrors());
+    			ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+    			report.setDataMissing(!errorMessages.isSubmittable());
 			}
 		}
     }

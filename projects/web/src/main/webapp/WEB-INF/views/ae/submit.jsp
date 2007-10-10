@@ -26,18 +26,17 @@
        
     </script>
     <style type="text/css">
-        ul.completion-messages {
+        td.completion-messages h4 {
+            padding: 6px 0 2px 0;
+        }
+        td.completion-messages ul {
             padding: 0;
             margin: 0;
         }
-        ul.completion-messages li {
+        td.completion-messages ul li {
             padding: 0;
             margin: 0;
             margin-left: 1em;
-        }
-        .deemphasize {
-            font-size: 0.8em;
-            color: #999;
         }
     </style>
 </head>
@@ -55,7 +54,7 @@
     				<th scope="col" align="left"><b>Report</b> </th>
     				<th scope="col" align="left"><b>Report ID</b> </th>
     				<th scope="col" align="left"><b>Report version</b> </th>
-    				<th scope="col" align="left"><b>Data complete?</b> </th>
+    				<th scope="col" align="left"><b>Ready to submit?</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
@@ -64,17 +63,21 @@
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><div class="label">v${fn:length(report.reportVersions) -1}</div></td>
-            		<td>
+            		<td class="completion-messages">
                         <c:choose>
-                            <c:when test="${empty reportMessages[report.id].messages}" >
-                                Complete
+                            <c:when test="${empty reportMessages[report.id].submittable}" >
+                                Yes
                             </c:when>
                             <c:otherwise>
-                                <ul class="completion-messages">
-                                    <c:forEach items="${reportMessages[report.id].messages}" var="msg">
-                                        <li>${msg.text} <c:if test="${not empty msg.property}"><span class="deemphasize">(${msg.property})</span></c:if></li>
+                                Not yet.  Remaining to complete:
+                                <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
+                                    <h4>${sectionEntry.key.displayName} section</h4>
+                                    <c:forEach items="${sectionEntry.value}" var="msg">
+                                        <ul>
+                                            <li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
+                                        </ul>
                                     </c:forEach>
-                                </ul>
+                                </c:forEach>
                             </c:otherwise>
                         </c:choose>
                     </td>

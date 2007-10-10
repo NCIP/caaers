@@ -25,10 +25,10 @@ public interface EvaluationService {
      * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
      * ErrorMessages will be empty
      * @param report - {@link Report}
-     * @return {@link ErrorMessages}
+     * @return {@link ReportSubmittability}
      */
     //return type based on the method name, is misleading,need to find a better name.
-    public ErrorMessages isSubmittable(Report report);
+    ReportSubmittability isSubmittable(Report report);
 
     /**
      * Will return the ReportDefinition that are marked required at rules engine.

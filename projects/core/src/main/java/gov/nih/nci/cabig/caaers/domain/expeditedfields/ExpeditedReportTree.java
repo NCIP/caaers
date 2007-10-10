@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.PropertyValue;
@@ -265,6 +266,15 @@ public class ExpeditedReportTree extends PropertylessNode {
         }
         return node;
     }
+
+    public ExpeditedReportSection getSectionForNode(TreeNode node) {
+        if (node == null) throw new NullPointerException("No node provided");
+        if (node instanceof SectionNode) return ((SectionNode) node).getSection();
+        if (node.getParent() == null) throw new CaaersSystemException(node + " doesn't belong to a section");
+        return getSectionForNode(node.getParent());
+    }
+    
+    ////// TREE CONSTRUCTION HELPERS
 
     private static TreeNode createPersonBlock(String person) {
         return property(

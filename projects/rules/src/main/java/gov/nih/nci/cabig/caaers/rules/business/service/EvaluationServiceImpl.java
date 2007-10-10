@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 
@@ -35,7 +35,6 @@ public class EvaluationServiceImpl implements EvaluationService {
     private ReportDefinitionDao reportDefinitionDao;
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
     private ReportService reportService;
-    private OrganizationDao  organizationDao;
 
     /**
      * @return true if the given adverse event is severe in the context of the provided
@@ -208,10 +207,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
     * ErrorMessages will be empty
     * @param report - {@link Report}
-    * @return {@link ErrorMessages}
+    * @return {@link ReportSubmittability}
     */
     //return type based on the method name, is misleading,need to find a better name.
-   public ErrorMessages isSubmittable(Report report) {
+   public ReportSubmittability isSubmittable(Report report) {
        try {
            return reportService.validate(report,
                adverseEventEvaluationService.mandatorySectionsForReport(report));
@@ -238,10 +237,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.reportService = reportService;
     }
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
-	public void setAdverseEventEvaluationService(
+    public void setAdverseEventEvaluationService(
 			AdverseEventEvaluationService adverseEventEvaluationService) {
 		this.adverseEventEvaluationService = adverseEventEvaluationService;
 	}

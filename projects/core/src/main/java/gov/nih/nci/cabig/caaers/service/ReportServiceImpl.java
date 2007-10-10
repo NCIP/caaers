@@ -13,7 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
@@ -276,19 +276,26 @@ public class ReportServiceImpl  implements ReportService {
 
     @SuppressWarnings("unchecked")
     private void validate(
-       ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, TreeNode node,
-       ErrorMessages messages
+       ExpeditedAdverseEventReport aeReport, List<String> mandatoryFields, ExpeditedReportSection section,
+       ReportSubmittability messages
    ) {
+        TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
+        if (sectionNode == null) throw new CaaersSystemException("There is no section node in the report tree for " + section.name() + ".  This shouldn't be possible.");
+
         List<String> applicableFields = new LinkedList<String>();
         for (String field : mandatoryFields) {
-            TreeNode n = node.find(field);
+            TreeNode n = sectionNode.find(field);
             if (n == null) continue;
             applicableFields.add(field);
        }
        List<UnsatisfiedProperty> unsatisfied = expeditedReportTree.verifyPropertiesPresent(
            applicableFields, aeReport);
        for (UnsatisfiedProperty uProp : unsatisfied) {
-           messages.addErrorMessage(uProp.getTreeNode().getDisplayName(),
+           TreeNode unsatisfiedNode = uProp.getTreeNode();
+
+           messages.addMissingField(
+               section,
+               unsatisfiedNode.getDisplayName(),
                uProp.getBeanPropertyName());
        }
    }
@@ -299,17 +306,15 @@ public class ReportServiceImpl  implements ReportService {
     * @param mandatorySections
     * @return ErrorMessages
     */
-   public ErrorMessages validate(Report report, Collection<ExpeditedReportSection> mandatorySections) {
+   public ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections) {
        // TODO: should validate against complex rules
 
-       ErrorMessages messages = new ErrorMessages();
+       ReportSubmittability messages = new ReportSubmittability();
        List<String> mandatoryFields = createMandatoryFieldList(report);
 
        for (ExpeditedReportSection section : mandatorySections) {
            if (section == null) throw new NullPointerException("The mandatory sections collection must not contain nulls");
-           TreeNode node = expeditedReportTree.getNodeForSection(section);
-           if (node == null) throw new CaaersSystemException("There is no node in the report tree for " + section.name() + ".  This shouldn't be possible.");
-           validate(report.getAeReport(), mandatoryFields, node, messages);
+           validate(report.getAeReport(), mandatoryFields, section, messages);
        }
 
        return messages;

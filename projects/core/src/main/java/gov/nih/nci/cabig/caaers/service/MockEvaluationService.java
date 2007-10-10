@@ -101,7 +101,7 @@ public class MockEvaluationService implements EvaluationService {
     	return null;
     }
 
-    public ErrorMessages isSubmittable(Report report) {
+    public ReportSubmittability isSubmittable(Report report) {
     	// TODO Auto-generated method stub
     	return null;
     }

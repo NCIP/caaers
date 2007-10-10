@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ErrorMessages;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import static org.easymock.classextension.EasyMock.*;
@@ -38,9 +38,9 @@ public class ViewReportTabTest extends AeTabTestCase {
 
     @SuppressWarnings({ "unchecked" })
     public void testRefdataIncludesPerReportErrors() throws Exception {
-        ErrorMessages r17Messages = new ErrorMessages();
-        ErrorMessages r23Messages = new ErrorMessages();
-        r23Messages.addErrorMessage("Terrible, terrible", "75");
+        ReportSubmittability r17Messages = new ReportSubmittability();
+        ReportSubmittability r23Messages = new ReportSubmittability();
+        r23Messages.addMissingField("Terrible, terrible", "75");
 
         expect(evaluationService.isSubmittable(report17)).andReturn(r17Messages);
         expect(evaluationService.isSubmittable(report23)).andReturn(r23Messages);
@@ -51,8 +51,8 @@ public class ViewReportTabTest extends AeTabTestCase {
 
         assertTrue("Report messages map not present", refdata.containsKey("reportMessages"));
         assertTrue("Report messages map not a Map", refdata.get("reportMessages") instanceof Map);
-        Map<Integer, ErrorMessages> actual
-            = (Map<Integer, ErrorMessages>) refdata.get("reportMessages");
+        Map<Integer, ReportSubmittability> actual
+            = (Map<Integer, ReportSubmittability>) refdata.get("reportMessages");
         assertEquals("Should be one message collection per report",
             command.getAeReport().getReports().size(), actual.size());
         assertSame(actual.get(17), r17Messages);
