@@ -23,12 +23,9 @@ public class MessageBroadcastServiceImpl extends JmsServiceImpl implements Messa
 
     public void broadcast(String message) throws BroadcastException {
         // TODO Auto-generated method stub
-        if (!isProvider()) {
-            throw new BroadcastException("no send queue provided");
-        } else {
             log.debug("calling sendJms method...");
             sendJms(message);
-        }
+        
     }
 
     public List<String> getBroadcastStatus() {

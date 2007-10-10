@@ -50,6 +50,9 @@ public class JmsServiceImpl implements MessageListener {
 
     public void sendJms(String xml) throws BroadcastException {
         initialize();
+        if (!isProvider()) {
+            throw new BroadcastException("no send queue provided");
+        }
         /*
         * Create sender and text message.
         */
