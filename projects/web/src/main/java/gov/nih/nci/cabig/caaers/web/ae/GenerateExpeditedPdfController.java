@@ -4,11 +4,11 @@ import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 
@@ -33,49 +33,70 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 		
 		String tempDir = System.getProperty("java.io.tmpdir");
 		String reportId = request.getParameter("aeReport");
-    	try {
+		String format = request.getParameter("format");
    		try {
     			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao)getApplicationContext().getBean("expeditedAdverseEventReportDao");
     			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(reportId));
     			AdverseEventReportSerializer ser = new AdverseEventReportSerializer();
     			String xml = ser.serialize(aeReport);
-
-    			String pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+reportId+".pdf";
+    			//System.out.print(xml);
     			
-    			AdeersReportGenerator gen = new AdeersReportGenerator();
-    			gen.genatePdf(xml,pdfOutFile);
+    			if (format.equals("pdf")) {
     			
-    			
-				File file = new File(pdfOutFile);
-				FileInputStream fileIn = new FileInputStream(file);
-				OutputStream out = response.getOutputStream();
-				response.setContentType( "application/x-download" );
-				response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".pdf" );
-				 
-				byte[] buffer = new byte[2048];
-				int bytesRead = fileIn.read(buffer);
-				while (bytesRead >= 0) {
-				  if (bytesRead > 0)
-				    out.write(buffer, 0, bytesRead);
-				    bytesRead = fileIn.read(buffer);
-				}
-				out.flush();
-				out.close();
-				fileIn.close();
+	    			String pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+reportId+".pdf";
+	    			
+	    			AdeersReportGenerator gen = new AdeersReportGenerator();
+	    			gen.genatePdf(xml,pdfOutFile);
+	    			
+	    			
+					File file = new File(pdfOutFile);
+					FileInputStream fileIn = new FileInputStream(file);
+					OutputStream out = response.getOutputStream();
+					response.setContentType( "application/x-download" );
+					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".pdf" );
+					 
+					byte[] buffer = new byte[2048];
+					int bytesRead = fileIn.read(buffer);
+					while (bytesRead >= 0) {
+					  if (bytesRead > 0)
+					    out.write(buffer, 0, bytesRead);
+					    bytesRead = fileIn.read(buffer);
+					}
+					out.flush();
+					out.close();
+					fileIn.close();
+    			} else {
+	    			String xmlOutFile = tempDir+"/expeditedAdverseEventReport-"+reportId+".xml";
+	    			
+	    			BufferedWriter outw = new BufferedWriter(new FileWriter(xmlOutFile));
+	    			outw.write(xml);
+	    			outw.close();
+	    			
+	    			
+					File file = new File(xmlOutFile);
+					FileInputStream fileIn = new FileInputStream(file);
+					OutputStream out = response.getOutputStream();
+					response.setContentType( "application/x-download" );
+					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".xml" );
+					 
+					byte[] buffer = new byte[2048];
+					int bytesRead = fileIn.read(buffer);
+					while (bytesRead >= 0) {
+					  if (bytesRead > 0)
+					    out.write(buffer, 0, bytesRead);
+					    bytesRead = fileIn.read(buffer);
+					}
+					out.flush();
+					out.close();
+					fileIn.close();    				
+    			}
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				throw new RemoteException ("Error generating PDF ",e);
 			}
-			
-			
-			
-			//input = new BufferedReader( new FileReader(xmlFile) );
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 		return null;
 	}
