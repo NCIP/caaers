@@ -15,7 +15,6 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
     OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
-
     public void testGetById() throws Exception {
         ResearchStaff researchStaff = getDao().getById(-1000);
         assertNotNull("ResearchStaff not found", researchStaff);
@@ -25,7 +24,20 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
     public void testSaveNewResearchStaff() throws Exception {
 
-        
+        interruptSession();
+
+        double name = Math.random();
+
+        Organization organization = new Organization();
+        organization.setGridId("gridId" + name);
+        organization.setName("test org" + name);
+        organization.setNciInstituteCode("nci" + name);
+        organization.setDescriptionText("dec" + name);
+        organizationDao.save(organization);
+
+
+        interruptSession();
+
         Integer savedId;
         {
             ResearchStaff researchStaff = new ResearchStaff();
@@ -35,8 +47,6 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
             researchStaff.setPhoneNumber("123-456-789");
             researchStaff.setNciIdentifier("nci id");
 
-            Organization organization=organizationDao.getById(1);
-            assertNotNull(organization);
             researchStaff.setOrganization(organization);
 
             getDao().save(researchStaff);
