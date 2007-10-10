@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
@@ -44,6 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedList;
+import java.util.Arrays;
 
 import javax.persistence.Transient;
 
@@ -317,8 +321,33 @@ public class ReportServiceImpl  implements ReportService {
            validate(report.getAeReport(), mandatoryFields, section, messages);
        }
 
+       for (AdverseEvent ae : report.getAeReport().getAdverseEvents()) {
+           Attribution max = null;
+           for (AdverseEventAttribution<?> attribution : requiredAttribution(ae)) {
+               if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
+                   max = attribution.getAttribution();
+               }
+           }
+           if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
+               messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
+                   String.format(
+                       "The adverse event %s is not attributed to a cause. " +
+                       "An attribution of possible or higher must be selected for at least one of the causes.",
+                       ae.getAdverseEventTerm().getUniversalTerm()));
+           }
+       }
+
        return messages;
    }
+
+    private List<AdverseEventAttribution<?>> requiredAttribution(AdverseEvent event) {
+        List<AdverseEventAttribution<?>> attributions = new LinkedList<AdverseEventAttribution<?>>();
+        attributions.addAll(event.getDiseaseAttributions());
+        attributions.addAll(event.getConcomitantMedicationAttributions());
+        attributions.addAll(event.getCourseAgentAttributions());
+        attributions.addAll(event.getOtherCauseAttributions());
+        return attributions;
+    }
 
     private List<String> createMandatoryFieldList(Report report){
         List<String> fields = new LinkedList<String>();
