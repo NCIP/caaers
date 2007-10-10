@@ -19,12 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin
  */
 public class CheckpointTab extends AeTab {
     private EvaluationService evaluationService;
+    private static final Log log = LogFactory.getLog(CheckpointTab.class);
     
     public CheckpointTab() {
         super("Is expedited reporting necessary?", "Select Report", "ae/checkpoint");
@@ -122,7 +125,10 @@ public class CheckpointTab extends AeTab {
         	//pre-initialize lazy fields in mandatory sections.
         	BeanWrapper wrapper = new BeanWrapperImpl(command.getAeReport());
             for(ExpeditedReportSection section : command.getMandatorySections()){
+            	assert (section != null) : "A section is null in command.getManatorySections()";
             	TreeNode sectionNode = getExpeditedReportTree().getNodeForSection(section);
+            	if(sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
+            	assert (sectionNode != null) : section.toString() + ", is not available in ExpeditedReportTree.";
             	for(TreeNode node : sectionNode.getChildren()){
             		if(node.isList()){
             			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
