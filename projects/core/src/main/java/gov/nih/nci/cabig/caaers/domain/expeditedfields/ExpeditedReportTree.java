@@ -30,7 +30,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     public ExpeditedReportTree() {
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
-        add(
+        add(section(BASICS_SECTION),
             section(ADVERSE_EVENT_SECTION,
                 // TODO: figure out how to handle the MedDRA alternative here
                 list("adverseEvents", new AdverseEventsDisplayNameCreator(),
