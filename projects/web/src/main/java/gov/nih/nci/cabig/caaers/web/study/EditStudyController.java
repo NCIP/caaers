@@ -100,8 +100,8 @@ public class EditStudyController extends StudyController<Study> {
 		mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
 		updateStudyTherapies(mergedStudy);
 
-		getDao().save(mergedStudy);
-		return mergedStudy;
+		
+		return getDao().merge(mergedStudy);
 	}
 
 	@Override
