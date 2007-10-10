@@ -44,10 +44,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private AdverseEventResponseDescription responseDescription;
     private TreatmentInformation treatmentInformation;
-    //private SurgeryIntervention surgeryIntervention;
-    //private RadiationIntervention radiationIntervention;
     private AdditionalInformation additionalInformation;
-    //private MedicalDevice medicalDevice;
 
 
     private Reporter reporter;
@@ -441,20 +438,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (treatmentInformation != null) treatmentInformation.setReport(this);
     }
 
-    /*
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public SurgeryIntervention getSurgeryIntervention() {
-		if (surgeryIntervention == null) setSurgeryIntervention(new SurgeryIntervention());
-		return surgeryIntervention;
-	}
-
-	public void setSurgeryIntervention(SurgeryIntervention surgeryIntervention) {
-		this.surgeryIntervention = surgeryIntervention;
-		if (surgeryIntervention != null) surgeryIntervention.setReport(this);
-	}
-	*/
-
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public AdditionalInformation getAdditionalInformation() {
@@ -478,34 +461,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.responseDescription = responseDescription;
         if (responseDescription != null) responseDescription.setReport(this);
     }
-
-    /*
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public RadiationIntervention getRadiationIntervention() {
-    	if (radiationIntervention == null) setRadiationIntervention(new RadiationIntervention());
-		return radiationIntervention;
-	}
-
-	public void setRadiationIntervention(RadiationIntervention radiationIntervention) {
-		this.radiationIntervention = radiationIntervention;
-		if (radiationIntervention != null) radiationIntervention.setReport(this);
-	}
-
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public MedicalDevice getMedicalDevice() {
-		if (medicalDevice == null) setMedicalDevice(new MedicalDevice());
-		return medicalDevice;
-	}
-
-	public void setMedicalDevice(MedicalDevice medicalDevice) {
-
-		this.medicalDevice = medicalDevice;
-		if (medicalDevice != null) medicalDevice.setReport(this);
-	}
-	*/
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")
