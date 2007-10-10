@@ -260,11 +260,13 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 	}
 	
 	@Transient
+    @Deprecated
 	public boolean isDataMissing() {
 		return isDataMissing;
 	}
 
-	public void setDataMissing(boolean isDataMissing) {
+    @Deprecated
+    public void setDataMissing(boolean isDataMissing) {
 		this.isDataMissing = isDataMissing;
 	}
 	

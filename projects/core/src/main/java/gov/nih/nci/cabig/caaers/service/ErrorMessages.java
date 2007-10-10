@@ -14,23 +14,35 @@ public class ErrorMessages {
         return messages.size() > 0;
     }
 
+    public List<Message> getMessages() {
+        return messages;
+    }
+
     @Override
     public String toString() {
         return messages.toString();
     }
 
     public static class Message {
-        private String message;
+        private String text;
         private String property;
 
         public Message(String message, String property) {
-            this.message = message;
+            this.text = message;
             this.property = property;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public String getProperty() {
+            return property;
         }
 
         @Override
         public String toString() {
-            return message + ", " + property;
+            return text + ", " + property;
         }
     }
 }

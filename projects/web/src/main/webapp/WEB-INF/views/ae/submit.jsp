@@ -25,6 +25,21 @@
     }
        
     </script>
+    <style type="text/css">
+        ul.completion-messages {
+            padding: 0;
+            margin: 0;
+        }
+        ul.completion-messages li {
+            padding: 0;
+            margin: 0;
+            margin-left: 1em;
+        }
+        .deemphasize {
+            font-size: 0.8em;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
 <tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}">
@@ -38,9 +53,9 @@
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
-    				<th scope="col" align="left"><b>Report Id</b> </th>
+    				<th scope="col" align="left"><b>Report ID</b> </th>
     				<th scope="col" align="left"><b>Report version</b> </th>
-    				<th scope="col" align="left"><b>Data complete</b> </th>
+    				<th scope="col" align="left"><b>Data complete?</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
@@ -49,14 +64,20 @@
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><div class="label">v${fn:length(report.reportVersions) -1}</div></td>
-            		<td><i>
-            			<c:if test="${report.dataMissing == 'false'}" >
-							Complete
-						</c:if>
-						<c:if test="${report.dataMissing == 'true'}" >
-							Incomplete
-						</c:if>	            		
-            		</i></td>
+            		<td>
+                        <c:choose>
+                            <c:when test="${empty reportMessages[report.id].messages}" >
+                                Complete
+                            </c:when>
+                            <c:otherwise>
+                                <ul class="completion-messages">
+                                    <c:forEach items="${reportMessages[report.id].messages}" var="msg">
+                                        <li>${msg.text} <c:if test="${not empty msg.property}"><span class="deemphasize">(${msg.property})</span></c:if></li>
+                                    </c:forEach>
+                                </ul>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
             		<td>
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 							<span class="dueOn" >
