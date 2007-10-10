@@ -18,7 +18,10 @@ public enum ExpeditedReportSection {
     CONCOMITANT_MEDICATION_SECTION("Conmeds"),
     OTHER_CAUSE_SECTION("Other contributing causes"),
     ATTRIBUTION_SECTION("Attribution"),
-    ADDITIONAL_INFO_SECTION("Additional Information");
+    ADDITIONAL_INFO_SECTION("Additional Information"),
+    SUBMIT_REPORT_SECTION("Submit Report")
+    ;
+    
     private String displayName;
 
     private ExpeditedReportSection(String displayName) {
@@ -35,5 +38,4 @@ public enum ExpeditedReportSection {
         }
         return null;
     }
-	
 }
