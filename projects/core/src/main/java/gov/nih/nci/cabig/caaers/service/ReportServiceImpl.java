@@ -306,8 +306,10 @@ public class ReportServiceImpl  implements ReportService {
        List<String> mandatoryFields = createMandatoryFieldList(report);
 
        for (ExpeditedReportSection section : mandatorySections) {
-           validate(report.getAeReport(), mandatoryFields,
-               expeditedReportTree.getNodeForSection(section), messages);
+           if (section == null) throw new NullPointerException("The mandatory sections collection must not contain nulls");
+           TreeNode node = expeditedReportTree.getNodeForSection(section);
+           if (node == null) throw new CaaersSystemException("There is no node in the report tree for " + section.name() + ".  This shouldn't be possible.");
+           validate(report.getAeReport(), mandatoryFields, node, messages);
        }
 
        return messages;

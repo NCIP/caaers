@@ -215,6 +215,8 @@ public class EvaluationServiceImpl implements EvaluationService {
        try {
            return reportService.validate(report,
                adverseEventEvaluationService.mandatorySectionsForReport(report));
+       } catch (RuntimeException re) {
+           throw re;
        } catch (Exception e) {
            throw new CaaersSystemException("Unable to determine mandatory sections", e);
        }

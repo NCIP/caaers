@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -182,7 +183,9 @@ public Collection<ExpeditedReportSection> mandatorySectionsForReport(Report repo
     private Collection<ExpeditedReportSection> sectionNamesToSections(Collection<String> sectionNames) {
         List<ExpeditedReportSection> sections = new LinkedList<ExpeditedReportSection>();
         for (String sectionName : sectionNames) {
-            sections.add(ExpeditedReportSection.getByDisplayName(sectionName));
+            ExpeditedReportSection section = ExpeditedReportSection.getByDisplayName(sectionName);
+            if (section == null) throw new CaaersSystemException("There is no ExpeditedReportSection named '" + sectionName + "'.  This probably indicates your mandatory section rules are out of sync with the software.");
+            sections.add(section);
         }
         return sections;
     }
