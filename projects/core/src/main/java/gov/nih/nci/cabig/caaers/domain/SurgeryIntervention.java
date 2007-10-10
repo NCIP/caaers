@@ -6,7 +6,9 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
+
 
 /**
  * @author Krikor Krumlian
@@ -30,6 +32,16 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
 
     ////// BEAN PROPERTIES
     
+    @Transient
+    public String getTreatmentArm() {
+		return treatmentArm;
+	}
+	
+	public void setTreatmentArm(String treatmentArm) {
+		this.treatmentArm = treatmentArm;
+	}
+    
+	@Transient
     public String getDescription() {
 		return description;
 	}
@@ -53,15 +65,5 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
 
 	public void setAnatomicSite(AnatomicSite anatomicSite) {
 		this.anatomicSite = anatomicSite;
-	}
-	
-	public String getTreatmentArm() {
-		return treatmentArm;
-	}
-	
-	public void setTreatmentArm(String treatmentArm) {
-		this.treatmentArm = treatmentArm;
-	}
-
-	
+	}	
 }

@@ -118,8 +118,17 @@
     				
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
             	<tr>
-            		<td>${ae.ctcTerm.term}</td>
-            		
+            		<td>${ae.ctcTerm.term}
+            			<c:if test="${ae.ctcTerm.otherRequired == 'true'}" >
+            				<center>
+            				<div class="row">
+            					<div class="label">Other (specify)</div>
+            					<div class="value"><form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" /></div>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
+            				</div>	
+            				</center>
+            			</c:if>
+            		</td>
             		<td>
             			<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
             				<form:option value=" " label="Please select" />

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -39,6 +40,23 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
 
     ////// BEAN PROPERTIES
     
+    @Transient
+    public String getTreatmentArm() {
+		return treatmentArm;
+	}
+
+	public void setTreatmentArm(String treatmentArm) {
+		this.treatmentArm = treatmentArm;
+	}
+	@Transient
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+    
 	public String getAdjustment() {
 		return adjustment;
 	}
@@ -53,14 +71,6 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
 
 	public void setDaysElapsed(String daysElapsed) {
 		this.daysElapsed = daysElapsed;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getDosage() {
@@ -103,14 +113,6 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
 
 	public void setAdministration(RadiationAdministration administration) {
 		this.administration = administration;
-	}
-
-	public String getTreatmentArm() {
-		return treatmentArm;
-	}
-
-	public void setTreatmentArm(String treatmentArm) {
-		this.treatmentArm = treatmentArm;
 	}
     
 }

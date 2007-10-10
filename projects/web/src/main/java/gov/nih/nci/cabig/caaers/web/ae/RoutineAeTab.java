@@ -80,10 +80,16 @@ public class RoutineAeTab extends AeRoutTab {
     	if (command.getAeRoutineReport().getEndDate() == null){
     		errors.rejectValue("aeRoutineReport.endDate", "REQUIRED", "Missing From");
     	}
+    	if (command.getAeRoutineReport().getAdverseEvents().isEmpty() ){
+    		errors.rejectValue("aeRoutineReport.adverseEvents", "REQUIRED", "Missing Adverse Events");
+    	}
         if (command.getAeRoutineReport().getAdverseEvents() != null) {
 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
 					.getAdverseEvents().listIterator(); lit.hasNext();) {
 				AdverseEvent ae = lit.next();
+				if (ae.getAdverseEventCtcTerm().getTerm().isOtherRequired() && ae.getDetailsForOther() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].detailsForOther", "REQUIRED", "Missing Other(Specify)");
+		    	}
 				if (ae.getGrade() == null){
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].grade", "REQUIRED", "Missing Grade");
 		    	}
