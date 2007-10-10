@@ -24,7 +24,8 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
     public void testSaveNewResearchStaff() throws Exception {
 
-
+        interruptSession();
+        
         double name = Math.random();
 
         Organization organization = new Organization();

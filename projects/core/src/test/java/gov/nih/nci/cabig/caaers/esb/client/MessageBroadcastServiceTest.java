@@ -13,7 +13,7 @@ public class MessageBroadcastServiceTest extends CaaersTestCase {
             service.broadcast("Wahoo!");
             fail("Exception not thrown");
         } catch (BroadcastException be) {
-            assertEquals("no send queue provided", be.getMessage());
+            assertEquals("JMS Connection Factory not provided..", be.getMessage());
         }
     }
 }
