@@ -26,6 +26,9 @@
        
     </script>
     <style type="text/css">
+        td.completion-messages p {
+            margin-top: 0;
+        }
         td.completion-messages h4 {
             padding: 6px 0 2px 0;
         }
@@ -69,7 +72,7 @@
                                 Yes
                             </c:when>
                             <c:otherwise>
-                                Not yet.  Remaining to complete:
+                                <p>Not yet.  Remaining to complete:</p>
                                 <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
                                     <h4>${sectionEntry.key.displayName} section</h4>
                                     <c:forEach items="${sectionEntry.value}" var="msg">
