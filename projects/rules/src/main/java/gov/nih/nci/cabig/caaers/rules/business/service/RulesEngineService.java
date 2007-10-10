@@ -40,7 +40,7 @@ public interface RulesEngineService {
 	 */
 	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,String studyShortTitle, String institutionName,String subject, String state) throws Exception;
 	
-	
+	public void deleteRuleSet(String ruleSetName ) throws Exception;
 	/**
 	 * getRuleSetForSponsor( String ruleSetName, String sponsorName)
 	 * 

@@ -33,7 +33,16 @@
 			} catch(e) {alert(e)}
 			
 		}
-
+		function deleteRule(name , divId) {
+			try {
+				authorRule.deleteRuleSet(name, function(values) {
+							alert("Successfully Deleted");
+							document.getElementById(divId).innerHTML = "<font color='green'>Enabled</font>";
+					});
+			} catch(e) {alert(e)}
+			
+		}
+		
 		function unDeployRule(name , divId) {
 			try {
 				authorRule.unDeployRuleSet(name, function(values) {
@@ -104,8 +113,12 @@
         <ec:column property="action" title="Action" sortable="false" filterable="false">
             	<a id="deploy" href="javascript:deployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Enable</a>&nbsp;&nbsp;
             	<a id="deploy" href="javascript:unDeployRule('${ruleSet.name}' , 'status-${ruleSet.id}')">Disable</a>&nbsp;&nbsp;
+            	
+            	
             	<!-- <a id="export" href="javascript:exportRule('${ruleSet.name}')">Export</a>-->
-            	<a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>
+            	<a href="<c:url value="/pages/rule/export?ruleSetName=${ruleSet.name}"/>">Export/Download</a>&nbsp;&nbsp;
+            	<a href="<c:url value="/pages/rule/util?ruleSetName=${ruleSet.name}"/>"><font color="red">Delete</font></a>&nbsp;&nbsp;
+            	
         </ec:column>
     </ec:row>
     </c:if>

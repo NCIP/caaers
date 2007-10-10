@@ -368,7 +368,9 @@
     <bean name="/rule/list" id="listRuleController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController">
     </bean>
-
+    <bean name="/rule/util" id="ruleUtilController" autowire="byType"
+        class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController">        
+    </bean> 
     <bean name="/rule/addRule" id="addRuleController" autowire="byType"
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>rule/author/addRule</value></property>
@@ -383,6 +385,8 @@
         class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>rule/author/addColumn</value></property>
     </bean>    
+
+    
 	<!-- TODO: to be removed -->
 	<util:map id="roles" map-class="java.util.LinkedHashMap">
 	  <entry key="Site Study PI" value="Site Study PI" />

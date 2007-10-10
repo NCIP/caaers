@@ -21,6 +21,8 @@ public interface RepositoryService {
      */
     public Boolean createCategory(Category category);
     
+    public void deleteRuleSet(String ruleSet) throws Exception;
+    
     /**
      * Returns the Category associated with the category path passed in as argument
      * */

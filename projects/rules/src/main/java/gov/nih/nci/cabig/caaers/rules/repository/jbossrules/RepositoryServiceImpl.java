@@ -21,6 +21,9 @@ import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.version.VersionException;
 
 import org.apache.log4j.Logger;
 import org.drools.repository.AssetItem;
@@ -258,6 +261,14 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		}
 		
 		return ruleSet;
+	}
+	
+	public void deleteRuleSet(String ruleSetName) throws Exception {
+
+		PackageItem item = getRulesRepository().loadPackage(ruleSetName);
+		item.getNode().remove();
+
+		getRulesRepository().save();
 	}
 
 	public String checkinVersion(Rule rule) {

@@ -63,7 +63,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 				throw new Exception ("Error exporting rule set ", e);
 			}
 	}
-
+	public void deleteRuleSet(String ruleSetName ) throws Exception{
+		repositoryService.deleteRuleSet(ruleSetName);
+	}
 	
 	public RulesEngineServiceImpl(){
 		ruleAuthoringService = new RuleAuthoringServiceImpl();
