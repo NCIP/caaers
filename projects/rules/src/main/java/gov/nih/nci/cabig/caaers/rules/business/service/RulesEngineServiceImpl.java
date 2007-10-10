@@ -766,6 +766,14 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		System.out.println("Rule set id:"+ruleSet.getId());
 		System.out.println("Rule set desc:"+ruleSet.getDescription());
 		
+		//delete rule set if exists
+		try {
+			deleteRuleSet(ruleSet.getName());
+		} catch (Exception e) {
+			//not able to delete which is fine...
+			//e.printStackTrace();
+		}
+		
 		List<Rule> rules = ruleSet.getRule();
 		if(rules.size()==0){
 			throw new Exception("There is nothing to import !");
