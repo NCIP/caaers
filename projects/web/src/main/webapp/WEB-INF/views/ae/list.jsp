@@ -201,10 +201,10 @@
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
 								<td width="20%">v${fn:length(theReport.reportVersions) -1}</td>
 								<td width="10%"><i>
-									<c:if test="${theReport.dataMissing == 'false'}" >
+									<c:if test="${command.reportsSubmittable[theReport.id]}" >
 										Complete
 									</c:if>
-									<c:if test="${theReport.dataMissing == 'true'}" >
+									<c:if test="${not command.reportsSubmittable[theReport.id]}" >
 										Incomplete
 									</c:if>	
 									</i>
@@ -232,7 +232,7 @@
             						</c:if>
 								</td>
 								<td width="50%" id="action${theReport.id}">
-									<c:if test="${theReport.dataMissing == 'false'}" >
+									<c:if test="${not command.reportsSubmittable[theReport.id]}" >
 										<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
 											<center>
 												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	

@@ -12,6 +12,9 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * @author Rhett Sutphin
  */
@@ -25,6 +28,7 @@ public class ListAdverseEventsCommand {
 
     private Study study;
     private Participant participant;
+    Map<Integer, Boolean> reportsSubmittable;
 
     // Alternate parameters
     private String mrn;
@@ -40,6 +44,7 @@ public class ListAdverseEventsCommand {
         this.studyDao = studyDao;
         this.participantDao = participantDao;
         this.evaluationService = evaluationService;
+        reportsSubmittable = new HashMap<Integer, Boolean>();
     }
 
     ////// LOGIC
@@ -49,21 +54,21 @@ public class ListAdverseEventsCommand {
             return assignment;
         } else if (getParticipant() != null && getStudy() != null) {
             assignment = assignmentDao.getAssignment(getParticipant(), getStudy());
-            updateReports(assignment);
+            updateSubmittability();
             return assignment;
         } else {
             return null;
         }
     }
-    
-    // Set a property in the Report object to provide a clean way of accessing this on the JSP
-    private void updateReports(StudyParticipantAssignment assignment){
-    	for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
-    		for (Report report : aeReport.getReports()) {
-    			ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
-    			report.setDataMissing(!errorMessages.isSubmittable());
-			}
-		}
+
+    private void updateSubmittability() {
+        reportsSubmittable.clear();
+        for (ExpeditedAdverseEventReport aeReport : assignment.getAeReports()) {
+            for (Report report : aeReport.getReports()) {
+                ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
+                reportsSubmittable.put(report.getId(), errorMessages.isSubmittable());
+            }
+        }
     }
 
     public Study getStudy() {
@@ -99,6 +104,10 @@ public class ListAdverseEventsCommand {
         param.setType(type);
         param.setValue(value);
         return param;
+    }
+
+    public Map<Integer, Boolean> getReportsSubmittable() {
+        return reportsSubmittable;
     }
 
     ////// BOUND PROPERTIES

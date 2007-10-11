@@ -28,11 +28,6 @@ public class ViewReportTab extends AeTab {
     }
     
     @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-       updateReports(command);
-    }
-
-    @Override
     public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
@@ -43,15 +38,6 @@ public class ViewReportTab extends AeTab {
         return refdata;
     }
 
-    //  Set a property in the Report object to provide a clean way of accessing this on the JSP
-    private void updateReports(ExpeditedAdverseEventInputCommand command){
-    	
-    		for (Report report : command.getAeReport().getReports()) {
-    			ReportSubmittability errorMessages = evaluationService.isSubmittable(report);
-    			report.setDataMissing(!errorMessages.isSubmittable());
-			}
-    }
-    
     private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action, String selected) {
         if ("withdraw".equals(action) ) {
         	

@@ -68,7 +68,7 @@
             		<td><div class="label">v${fn:length(report.reportVersions) -1}</div></td>
             		<td class="completion-messages">
                         <c:choose>
-                            <c:when test="${empty reportMessages[report.id].submittable}" >
+                            <c:when test="${reportMessages[report.id].submittable}" >
                                 Yes
                             </c:when>
                             <c:otherwise>
@@ -118,7 +118,7 @@
             			--%>
             		</td>
             		<td>
-            			<c:if test="${report.dataMissing == 'false'}" >
+            			<c:if test="${not reportMessages[report.id].submittable}" >
 							<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 								<center>
 									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
