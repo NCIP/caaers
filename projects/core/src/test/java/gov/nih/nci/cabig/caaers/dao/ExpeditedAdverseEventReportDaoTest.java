@@ -398,11 +398,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewRadiationIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getRadiationInterventions().get(0).setTreatmentArm("ARM:");
+                report.getRadiationInterventions().get(0).setDaysElapsed("120");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals("ARM:", loaded.getRadiationInterventions().get(0).getTreatmentArm());
+                assertEquals("120", loaded.getRadiationInterventions().get(0).getDaysElapsed());
             }
         });
     }
