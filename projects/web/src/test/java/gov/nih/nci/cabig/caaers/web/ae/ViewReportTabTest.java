@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Map;
@@ -40,7 +41,7 @@ public class ViewReportTabTest extends AeTabTestCase {
     public void testRefdataIncludesPerReportErrors() throws Exception {
         ReportSubmittability r17Messages = new ReportSubmittability();
         ReportSubmittability r23Messages = new ReportSubmittability();
-        r23Messages.addMissingField("Terrible, terrible", "75");
+        r23Messages.addMissingField(ExpeditedReportSection.BASICS_SECTION, "Terrible, terrible", "75");
 
         expect(evaluationService.isSubmittable(report17)).andReturn(r17Messages);
         expect(evaluationService.isSubmittable(report23)).andReturn(r23Messages);
