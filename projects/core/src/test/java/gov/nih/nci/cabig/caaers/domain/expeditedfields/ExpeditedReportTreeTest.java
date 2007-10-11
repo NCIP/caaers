@@ -169,7 +169,7 @@ public class ExpeditedReportTreeTest extends TestCase {
 
     public void testGetSectionForNode() throws Exception {
         assertEquals(ExpeditedReportSection.LABS_SECTION, tree.getSectionForNode(tree.find("labs[].baseline.value")));
-        assertEquals(ExpeditedReportSection.MEDICAL_INFO_SCECTION, tree.getSectionForNode(tree.find("diseaseHistory")));
+        assertEquals(ExpeditedReportSection.MEDICAL_INFO_SECTION, tree.getSectionForNode(tree.find("diseaseHistory")));
     }
 
     private void assertNoUnsatisfiedProperties(String msg, String expectedProp, ExpeditedAdverseEventReport report) {

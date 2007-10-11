@@ -110,7 +110,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                     property("dateRemovedFromProtocol", "Date removed from protocol")
                 )
             ),
-            section(MEDICAL_INFO_SCECTION,
+            section(MEDICAL_INFO_SECTION,
                 property("participantHistory",
                     participantMeasure("height"),
                     participantMeasure("weight"),

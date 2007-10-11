@@ -10,7 +10,7 @@ public enum ExpeditedReportSection {
     SURGERY_INTERVENTION_SECTION("Surgery Intervention"),
     MEDICAL_DEVICE_SECTION("Medical Device"),
     DESCRIPTION_SECTION("Description"),
-    MEDICAL_INFO_SCECTION("Medical"),
+    MEDICAL_INFO_SECTION("Medical"),
     TREATMENT_INFO_SECTION("Treatment"),
     LABS_SECTION("Labs"),
     PRIOR_THERAPIES_SECTION("Therapies"),
