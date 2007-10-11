@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
@@ -177,6 +178,20 @@ public class AttributionTabTest extends AeTabTestCase {
 		 assertEquals("attributionMap[radiation][2][0]", actualGroup0.getFields().get(2).getPropertyName());
     }
 
+    public void testDeviceFieldsIncluded() throws Exception {
+        ensureMedicalDeviceCount(1);
+        ensureAeCount(2);
+
+        Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
+        assertEquals("Wrong number of groups", 1, map.size());
+
+        InputFieldGroup actualGroup0 = map.get("device0");
+        assertNotNull(actualGroup0);
+        assertEquals(2, actualGroup0.getFields().size());
+        assertEquals("attributionMap[device][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[device][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+    }
+
     public void testNoDiseaseFieldsWhenDiseaseBlank() throws Exception {
         ensureAeCount(2);
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
@@ -217,7 +232,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(1);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(4);
+        AttributionTab.AttributionBlock block = getBlocks().get(5);
         assertEquals(1, block.getRows().size());
         assertEquals("Concomitant medication", block.getDisplayName());
     }
@@ -226,7 +241,7 @@ public class AttributionTabTest extends AeTabTestCase {
         ensureConMedCount(2);
         ensureAeCount(2);
 
-        AttributionTab.AttributionBlock block = getBlocks().get(4);
+        AttributionTab.AttributionBlock block = getBlocks().get(5);
         assertEquals(2, block.getRows().size());
         assertEquals("Concomitant medications", block.getDisplayName());
     }
@@ -266,6 +281,12 @@ public class AttributionTabTest extends AeTabTestCase {
     private void ensureSurgeryInterventionCount(int count) {
         while (command.getAeReport().getSurgeryInterventions().size() < count) {
             command.getAeReport().addSurgeryIntervention(new SurgeryIntervention());
+        }
+    }
+
+    private void ensureMedicalDeviceCount(int count) {
+        while (command.getAeReport().getMedicalDevices().size() < count) {
+            command.getAeReport().addMedicalDevice(new MedicalDevice());
         }
     }
 

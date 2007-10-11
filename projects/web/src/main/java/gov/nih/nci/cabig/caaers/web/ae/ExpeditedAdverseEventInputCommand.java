@@ -22,6 +22,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     String DISEASE_ATTRIBUTION_KEY = "disease";
     String SURGERY_ATTRIBUTION_KEY = "surgery";
     String RADIATION_ATTRIBUTION_KEY = "radiation";
+    String DEVICE_ATTRIBUTION_KEY = "device";
 
     ExpeditedAdverseEventReport getAeReport();
 

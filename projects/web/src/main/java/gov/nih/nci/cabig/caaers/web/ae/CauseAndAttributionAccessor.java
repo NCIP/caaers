@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
@@ -17,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.LinkedHashMap;
@@ -46,6 +48,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         SURGERY = new SurgeryAccessor();
     public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution>
         RADIATION = new RadiationAccessor();
+    public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution>
+        DEVICE = new DeviceAccessor();
 
     protected CauseAndAttributionAccessor() {
         KEY_TO_ACCESSOR.put(getKey(), this);
@@ -293,6 +297,34 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         public String getDisplayName(RadiationIntervention radiation) {
             return radiation.getDescription();
+        }
+    }
+
+    private static class DeviceAccessor extends CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> {
+        @Override
+        public String getKey() {
+            return ExpeditedAdverseEventInputCommand.DEVICE_ATTRIBUTION_KEY;
+        }
+
+        @Override
+        protected List<MedicalDevice> getCauseList(ExpeditedAdverseEventReport aeReport) {
+            return aeReport.getMedicalDevices();
+        }
+
+
+        @Override
+        public DeviceAttribution createAttribution() {
+            return new DeviceAttribution();
+        }
+
+        @Override
+        public List<DeviceAttribution> getAttributionsList(AdverseEvent adverseEvent) {
+            return adverseEvent.getDeviceAttributions();
+        }
+
+        @Override
+        public String getDisplayName(MedicalDevice device) {
+            return device.getDeviceType();
         }
     }
 }
