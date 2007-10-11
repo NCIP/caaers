@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
 public class SearchStudyController extends SimpleFormController {
 		    	
 	private StudyService studyService;
+	private ListValues listValues;
 	private ConfigProperty configurationProperty;	
 	
 	public SearchStudyController() {		             
@@ -39,7 +41,8 @@ public class SearchStudyController extends SimpleFormController {
 	
     protected Map<String, Object> referenceData(HttpServletRequest request) throws Exception {
     	Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("studySearchType", getConfigurationProperty().getMap().get("studySearchType"));               
+    	refdata.put("studySearchType", listValues.getStudySearchType());
+        //refdata.put("studySearchType", getConfigurationProperty().getMap().get("studySearchType"));               
 	  	return refdata;
     }
 		
@@ -90,7 +93,9 @@ public class SearchStudyController extends SimpleFormController {
 		} 			
 		request.setAttribute("assembler", viewData);
 		
+		/*
 		String action = request.getParameter("_action");
+		
 		
 		if("addCriteria".equals(action))
 		{
@@ -100,7 +105,8 @@ public class SearchStudyController extends SimpleFormController {
 		{
 			int index = Integer.parseInt(request.getParameter("_selected"));
 			((SearchStudyCommand)oCommand).getSearchCriteria().remove(index);
-		}		
+		}
+		*/		
 		
 		Map map = errors.getModel();
 		map.put("studySearchType",getConfigurationProperty().getMap().get("studySearchType"));  
@@ -118,6 +124,10 @@ public class SearchStudyController extends SimpleFormController {
 
 	public void setStudyService(StudyService studyService) {
 		this.studyService = studyService;
+	}
+	
+	public void setListValues(final ListValues listValues) {
+		this.listValues = listValues;
 	}
 
 	public ConfigProperty getConfigurationProperty() {

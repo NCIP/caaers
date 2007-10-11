@@ -15,13 +15,21 @@ function search(s){
 
 }
 function submitPage(s){
-	//document.getElementById("searchCategory").value=s;
-	document.getElementById("searchForm").submit();
+	if($('studyText').value == ''){
+		$('errorStudy').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
+	}else{
+		$('errorStudy').innerHTML=""
+		document.getElementById("searchForm").submit();
+	}
 }
 
 function submitFormTwo(s){
-	//document.getElementById("searchCategory").value=s;
-	document.getElementById("searchForm2").submit();
+	if($('participantText').value == ''){
+		$('errorParticipant').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
+	}else{
+		$('errorParticipant').innerHTML=""
+		document.getElementById("searchForm2").submit();
+	}
 }
 </script>
 </head>
@@ -46,10 +54,11 @@ In order to assign a Participant to a Study , you need to first search for eithe
 								<div id="foo">
 								<tr><td align="left" class="labels">Search String:</td></tr>
 								<tr><td><form:input path="studyText" size="25" /></td></tr>
+								<tr><td><div id="errorStudy"></div></td></tr>
 								</div>
 							</table>
 							<br>
-							<a href="" onClick="submitPage('study');return false;">Search Studies</a></td>
+							<input class='ibutton' type='button' onClick="submitPage('study');return false;" value='Search Studies'  title='Search Studies'/>
 						</tr>
 					</table>
 	
@@ -76,9 +85,11 @@ In order to assign a Participant to a Study , you need to first search for eithe
 								<tr>
 									<td><form:input path="participantText" size="25" /></td>
 								</tr>
+								<tr><td><div id="errorParticipant"></div></td></tr>
 							</table>
 							<br>
-							<a href="" onClick="submitFormTwo('participant');return false;">Search Participants</a></td>
+							<input class='ibutton' type='button' onClick="submitFormTwo('participant');return false;" value='Search Participants'  title='Search Participants'/>
+							</td>
 
 							</td>
 						</tr>

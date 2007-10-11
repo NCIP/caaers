@@ -41,21 +41,24 @@ public class SearchStudyAjaxFacade {
         row.setHighlightRow(Boolean.TRUE);        
         model.addRow(row);
           
-        Column columnPrimaryIdentifier = model.getColumnInstance();        
+        Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
+        columnPrimaryIdentifier.setTitle("Primary ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
         model.addColumn(columnPrimaryIdentifier);
         
-        Column columnShortTitle = model.getColumnInstance();
+        Column columnShortTitle = model.getColumnInstance(); 
         columnShortTitle.setProperty("shortTitle");
         columnShortTitle.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnShortTitle);
         
         Column columnSponsorCode = model.getColumnInstance();
-        columnSponsorCode.setProperty("sponsorCode");
+        columnSponsorCode.setTitle("Funding Sponsor");
+        columnSponsorCode.setProperty("primarySponsorCode");
         model.addColumn(columnSponsorCode);
         
         Column columnPhaseCode = model.getColumnInstance();
+        columnPhaseCode.setTitle("Phase");
         columnPhaseCode.setProperty("phaseCode");
         model.addColumn(columnPhaseCode);
         
@@ -78,11 +81,9 @@ public class SearchStudyAjaxFacade {
     		sType = typeToken.nextToken();
     		sText = textToken.nextToken();
     		
-    		if ("shortTitle".equals(sType))
+    		if ("st".equals(sType))
     			study.setShortTitle(sText);
-    		else if ("status".equals(sType))
-    			study.setStatus(sText);
-    		else if ("id".equals(sType))
+    		else if ("idtf".equals(sType))
     		{
     			Identifier id = new Identifier();
         		id.setValue(sText);

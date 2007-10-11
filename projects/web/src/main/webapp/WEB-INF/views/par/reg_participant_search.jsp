@@ -58,7 +58,7 @@ function doNothing(){
 <p id="instructions">
 Please use the form above to search for a Participant and assign it to <b>${command.studySites[0].study.shortTitle}</b> and then press Save & Continue to proceed 
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Participant search results">
     <jsp:attribute name="singleFields">
         <ec:table
         items="command.participantSearchResults"
@@ -72,6 +72,7 @@ Please use the form above to search for a Participant and assign it to <b>${comm
         <ec:column property="kk" style="width:10px" filterable="false" sortable="false" title=" ">
             <form:radiobutton path="participantId" value="${participant.id}" />
         </ec:column>
+        <ec:column property="primaryIdentifier" title="Primary ID"/>
         <ec:column property="firstName" title="First Name"/>
         <ec:column property="lastName" title="Last Name" />
         <ec:column property="dateOfBirth" title="Date of Birth" cell="date" parse="yyyy-MM-dd" format="MM/dd/yyyy" />

@@ -37,15 +37,14 @@ public class ListValues {
 	public List<ListValues> getStudySearchType() {
 		List<ListValues> col = new ArrayList<ListValues>();
 		ListValues lov1 = new ListValues("st", "Short Title");
-		ListValues lov2 = new ListValues("lt", "Long Title");
-		ListValues lov3 = new ListValues("idtf", "Identifier");
+		ListValues lov2 = new ListValues("idtf", "Identifier");
+		// ListValues lov2 = new ListValues("lt", "Long Title");
 		// ListValues lov4 = new ListValues("d", "Description");
 		// ListValues lov5 = new ListValues("psc", "Primary Sponsor Code");
 		// ListValues lov6 = new ListValues("pc", "Phase Code");
 
 		col.add(lov1);
 		col.add(lov2);
-		col.add(lov3);
 
 		return col;
 	}
@@ -54,14 +53,15 @@ public class ListValues {
 		List<ListValues> col = new ArrayList<ListValues>();
 		ListValues lov1 = new ListValues("fn", "First Name");
 		ListValues lov2 = new ListValues("ln", "Last Name");
-		ListValues lov3 = new ListValues("g", "gender");
-		ListValues lov4 = new ListValues("r", "race");
-		ListValues lov5 = new ListValues("e", "ethnicity");
+		ListValues lov3 = new ListValues("idtf", "Identifier");
+		//ListValues lov3 = new ListValues("g", "gender");
+		//ListValues lov4 = new ListValues("r", "race");
+		//ListValues lov5 = new ListValues("e", "ethnicity");
 		col.add(lov1);
 		col.add(lov2);
 		col.add(lov3);
-		col.add(lov4);
-		col.add(lov5);
+		//col.add(lov4);
+		//col.add(lov5);
 		return col;
 	}
 

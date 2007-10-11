@@ -35,8 +35,13 @@ function buildTable(form) {
 			text = text + "," + document.getElementById("searchCriteria[" + x + "].searchText").value;			
 		}
 	}
-
-	searchStudy.getTable(null, type, text, showTable);		
+	
+	if(text == ''){
+		$('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
+	}else{
+		$('error').innerHTML=""
+		searchStudy.getTable(null, type, text, showTable);
+	}
 }
 
 function showTable(table) {
@@ -60,19 +65,17 @@ function fireAction(action, selected){
 			<input type="hidden" name="_action" id="_action" value="">
 		</div>
         <div class="content">
-   			 <div class="row" align="center">
-               <div class="label">Add Criteria<a href="javascript:fireAction('addCriteria',-1);"><img
-					src="/caaers/images/checkyes.gif" border="0" alt="Add"></a></div>
-		      </div>
+   			 
         	<c:forEach items="${command.searchCriteria}" varStatus="status">
             <div class="row" name="inputs">
             	<div class="label"> Search By: </div>
-                <div class="value"><form:select path="searchCriteria[${status.index}].searchType">
-					<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
-				</form:select>
-				<form:input path="searchCriteria[${status.index}].searchText" size="25"/>				
-					<a href="javascript:fireAction('removeCriteria', ${status.index});"><img
-					src="/caaers/images/checkno.gif" border="0" alt="remove"></a></div>						
+                <div class="value">
+                	<form:select path="searchCriteria[${status.index}].searchType">
+						<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
+					</form:select>
+					<form:input path="searchCriteria[${status.index}].searchText" size="25"/>
+					<div id="error"></div>
+				</div>						
 			</div>
 		 	</c:forEach>
 			<div class="row">

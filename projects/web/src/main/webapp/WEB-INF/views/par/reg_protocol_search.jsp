@@ -65,7 +65,7 @@ function updateTargetPage(s){
 <p id="instructions">
 Please choose a Study and then press Save & Continue to proceed 
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">
         <tags:tabFields tab="${tab}" />
                     <ec:table items="command.studies" var="study"
@@ -80,14 +80,12 @@ Please choose a Study and then press Save & Continue to proceed
                                 sortable="false" title=" ">
                                 <form:radiobutton path="studyId" value="${study.id}" />
                             </ec:column>
+                            <ec:column property="primaryIdentifier" title="Primary ID" />
                             <ec:column property="shortTitle" title="Short Title" />
-                            <ec:column property="transient1" title="Primary Identifier">	
-                				<c:forEach items="${study.identifiers}" varStatus="status" var="identifier">
-                					<c:if test='${identifier.primaryIndicator == "true" }'>
-                					${identifier.value}
-									</c:if>
-								</c:forEach>	
-                			</ec:column>             
+                            <ec:column property="primarySponsorCode" title="Funding Sponsor" />
+                            <ec:column property="phaseCode" title="Phase" />
+                            <ec:column property="status" title="Status" />
+                            
                         </ec:row>
                     </ec:table>
     </jsp:attribute>

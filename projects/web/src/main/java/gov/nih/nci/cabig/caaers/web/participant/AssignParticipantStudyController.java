@@ -168,6 +168,11 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
 			else if ("ln".equals(ptype)) {
 				participant.setLastName(psearchtext);
 			}
+			else if ("idtf".equals(ptype)) {
+				Identifier identifier = new Identifier();
+				identifier.setValue(psearchtext);
+				participant.addIdentifier(identifier);
+			}
 			else if ("g".equals(ptype)) {
 				participant.setGender(psearchtext);
 			}
