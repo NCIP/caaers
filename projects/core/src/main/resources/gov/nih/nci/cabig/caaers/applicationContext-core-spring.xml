@@ -20,4 +20,22 @@
     </bean>
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+    <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+                        <constructor-arg index="0">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg index="0"><value>yyyy-MM-dd HH:mm:ss.S</value></constructor-arg>
+                            </bean>
+                        </constructor-arg>
+                        <constructor-arg index="1"><value>false</value></constructor-arg>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
 </beans>

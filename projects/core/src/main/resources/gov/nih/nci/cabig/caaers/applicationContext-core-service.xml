@@ -120,5 +120,10 @@
         <property name="subject" value="Account created in caAERS"/>
     </bean>
 
-
+    <bean id="buildInfo" class="gov.nih.nci.cabig.ctms.tools.BuildInfo">
+        <property name="applicationName"><value>caAERS</value></property>
+        <property name="versionNumber"><value>${project.version}</value></property>
+        <!-- provided by maven-buildnumber-plugin -->
+        <property name="timestamp"><value>${buildNumber}</value></property>
+    </bean>
 </beans>
