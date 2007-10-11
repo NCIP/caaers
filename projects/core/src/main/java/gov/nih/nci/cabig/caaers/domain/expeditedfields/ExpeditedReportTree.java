@@ -118,18 +118,18 @@ public class ExpeditedReportTree extends PropertylessNode {
                 ),
                 property("diseaseHistory",
                     codedOrOther(
-                        "ctepStudyDisease", "Disease from study",
-                        "otherPrimaryDisease", "Other disease"
+                        "ctepStudyDisease", "Disease name",
+                        "otherPrimaryDisease", "Other (disease)"
                     ),
                     codedOrOther(
-                        "codedPrimaryDiseaseSite", "Primary disease site",
-                        "otherPrimaryDiseaseSite", "Other primary disease site"
+                        "codedPrimaryDiseaseSite", "Primary site of disease",
+                        "otherPrimaryDiseaseSite", "Other (site of primary disease)"
                     ),
-                    property("diagnosisDate", "Diagnosis date"),
+                    property("diagnosisDate", "Date of initial diagnosis"),
                     list("metastaticDiseaseSites", "Metastatic disease site",
                         codedOrOther(
                             "codedSite", "Site name",
-                            "otherSite", "Other site"
+                            "otherSite", "Other(site of metastatic disease)"
                         )
                     )
                 )
@@ -175,19 +175,17 @@ public class ExpeditedReportTree extends PropertylessNode {
             ),
             section(PRIOR_THERAPIES_SECTION,
                 list("adverseEventPriorTherapies", "Prior Therapy",
-                    codedOrOther(
-                        "priorTherapy", "Therapy",
-                        "other", "Other"
-                    ),
-                    property("startDate", "Start Date"),
-                    property("endDate", "End Date")
+                    property("priorTherapy", "Prior therapy"),
+                    property("other", "Comments (prior therapy)"),        //TODO: change the name of other to "comments"
+                    property("startDate", "Therapy start Date"),
+                    property("endDate", "Therapy end Date")
                 )
             ),
             section(PRE_EXISTING_CONDITION_SECTION,
                 list("adverseEventPreExistingConds", "AdverseEventPreExistingCond",
                     codedOrOther(
                         "preExistingCondition", "Pre-existing condition",
-                        "other", "Other"
+                        "other", "Other (pre-existing)"
                     )
                 )
             ),
