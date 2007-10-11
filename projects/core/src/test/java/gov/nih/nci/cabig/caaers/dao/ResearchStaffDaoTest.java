@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
+import java.util.Calendar;
+
 /**
  * @author Kulasekaran
  */
@@ -26,7 +28,8 @@ public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
 
         interruptSession();
 
-        double name = Math.random();
+        String name = ("" + Calendar.getInstance().getTime().getTime());
+        name = name.substring(name.length() - 5, name.length() - 1);
 
         Organization organization = new Organization();
         organization.setGridId("gridId" + name);
