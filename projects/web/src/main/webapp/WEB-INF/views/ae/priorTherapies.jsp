@@ -8,10 +8,13 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
+    <style type="text/css">
+   		div.row div.label { width: 10em; } 
+	</style>   
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
-    <script type="text/javascript">
+    <script type="text/javascript"><!--
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
         var EnterPriorTherapy = Class.create()
@@ -24,10 +27,10 @@
 
                 if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
 
-                $("select-priorTherapy-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
-                $("select-other-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
+               // $("select-priorTherapy-" + this.index)
+               //     .observe("click", this.updatePriorTherapyOrOther.bind(this))
+               // $("select-other-" + this.index)
+               //     .observe("click", this.updatePriorTherapyOrOther.bind(this))
 
                 AE.createStandardAutocompleter(
                     this.priorTherapyProperty, this.termPopulator.bind(this),
@@ -41,7 +44,7 @@
                 })
 
                 this.showAddAgent({ id: $(this.priorTherapyProperty).value }, index)
-                this.initializePriorTherapyOrOther()
+                //this.initializePriorTherapyOrOther()
             },
 
             termPopulator: function(autocompleter, text) {
@@ -154,7 +157,7 @@
                 deletable: true
             }, 'aeReport.adverseEventPriorTherapies')
         })
-    </script>
+    --></script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section7priortherapies">
