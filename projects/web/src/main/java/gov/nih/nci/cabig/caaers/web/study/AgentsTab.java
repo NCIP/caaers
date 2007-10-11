@@ -95,7 +95,7 @@ public class AgentsTab extends StudyTab {
 			fields.add(otherAgentField);
 
 			InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i + "].indType",
-					"IND usage", indTypeMap);
+					"Enter IND information", indTypeMap);
 			fields.add(indTypeField);
 			if (sa.getStudyAgentINDAssociations() != null) {
 				int j = -1;
