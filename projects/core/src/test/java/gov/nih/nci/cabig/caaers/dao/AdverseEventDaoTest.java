@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -107,6 +108,16 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong intervention", -37, (int) actual.getCause().getId());
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.PROBABLE, actual.getAttribution());
+    }
+
+    public void testLoadDeviceAttributions() throws Exception {
+        AdverseEvent loaded = getDao().getById(-2);
+        assertEquals(1, loaded.getDeviceAttributions().size());
+        DeviceAttribution actual = loaded.getDeviceAttributions().get(0);
+        assertEquals("Wrong attribution", -20, (int) actual.getId());
+        assertEquals("Wrong device", -22, (int) actual.getCause().getId());
+        assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
+        assertEquals("Wrong attribution", Attribution.UNRELATED, actual.getAttribution());
     }
 
     public void testLoadCtcBasedTerm() throws Exception {

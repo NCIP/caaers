@@ -238,7 +238,21 @@
         list_index="0"
         />
         
-    <!--  referenced tables -->   
+    <AE_MEDICAL_DEVICES
+        id="-22"
+        report_id="-17"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-20"
+        cause_id="-22"
+        cause_type="DV"
+        attribution_code="1"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <!--  referenced tables -->
     <ae_labs />    
     <participant_histories />
    

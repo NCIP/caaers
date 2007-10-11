@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.Cascade;
@@ -59,6 +60,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private List<DiseaseAttribution> diseaseAttributions;
     private List<SurgeryAttribution> surgeryAttributions;
     private List<RadiationAttribution> radiationAttributions;
+    private List<DeviceAttribution> deviceAttributions;
 
     ////// BOUND PROPERTIES
 
@@ -178,6 +180,22 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     public void setRadiationAttributions(List<RadiationAttribution> radiationAttributions) {
         this.radiationAttributions = radiationAttributions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="adverse_event_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Where(clause = "cause_type = 'DV'") // it is pretty lame that this is necessary
+    public List<DeviceAttribution> getDeviceAttributions() {
+        if (deviceAttributions == null) {
+            deviceAttributions = new ArrayList<DeviceAttribution>();
+        }
+        return deviceAttributions;
+    }
+
+    public void setDeviceAttributions(List<DeviceAttribution> deviceAttributions) {
+        this.deviceAttributions = deviceAttributions;
     }
 
 

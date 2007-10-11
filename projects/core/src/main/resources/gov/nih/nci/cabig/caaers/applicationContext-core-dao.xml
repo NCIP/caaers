@@ -81,6 +81,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
