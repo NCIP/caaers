@@ -43,6 +43,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 	void down(){
 		execute("DELETE FROM csm_role_privilege  where role_id=-14 ");
 		execute("DELETE FROM csm_role where role_id=-14");
+		execute("DELETE FROM csm_protection_group where parent_protection_group_id=-5");
 		execute("DELETE FROM csm_protection_group where protection_group_id=-5");
 
 	}
