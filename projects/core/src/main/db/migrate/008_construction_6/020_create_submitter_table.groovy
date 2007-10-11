@@ -7,6 +7,7 @@ class SubmitterTable extends edu.northwestern.bioinformatics.bering.Migration {
     }
 
     void down() {
+        dropColumn("report_schedules", "physician_signoff")
         dropColumn("ae_report_people", "report_schedule_id")
     }
 }
