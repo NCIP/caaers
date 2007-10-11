@@ -37,7 +37,6 @@ public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
 
     @OneToOne
     @JoinColumn(name = "coded_site_id")
-    @Cascade(value = { CascadeType.ALL })
     public AnatomicSite getCodedSite() {
         return codedSite;
     }

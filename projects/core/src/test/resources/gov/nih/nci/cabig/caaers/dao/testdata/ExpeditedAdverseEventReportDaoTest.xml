@@ -322,9 +322,12 @@
         diagnosis_date="2007-01-04"
         />
 
+    <ANATOMIC_SITES id="-33" name="Rolling" category="Rock"/>
+
     <METASTATIC_DISEASE_SITES
         id="-5"
         disease_history_id="-53"
+        coded_site_id="-33"
         />
 
     <PARTICIPANT_HISTORIES

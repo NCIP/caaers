@@ -52,7 +52,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
-    private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
+    private AnatomicSiteDao anatomicSiteDao
+        = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
     private ReportDefinitionDao reportDefinitionDao
         = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
 
@@ -513,6 +514,23 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
         assertEquals("Wrong number of AEs when reloaded", 1, reloaded.getAdverseEvents().size());
         assertEquals("Wrong AE when reloaded", -11, (int) reloaded.getAdverseEvents().get(0).getId());
+    }
+
+    public void testDeleteMetastaticDiseaseSiteDoesNotDeleteAnatomicSite() throws Exception {
+        {
+            ExpeditedAdverseEventReport loaded = getDao().getById(-1);
+            assertEquals("Data not as initially expected", 1, loaded.getDiseaseHistory().getMetastaticDiseaseSites().size());
+            assertEquals("Data not as initially expected", -33, (int) loaded.getDiseaseHistory().getMetastaticDiseaseSites().get(0).getCodedSite().getId());
+
+            loaded.getDiseaseHistory().getMetastaticDiseaseSites().remove(0);
+            getDao().save(loaded);
+        }
+
+        interruptSession();
+
+        ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
+        assertEquals("Metastatic site not removed", 0, reloaded.getDiseaseHistory().getMetastaticDiseaseSites().size());
+        assertNotNull("Anatomic site deleted", anatomicSiteDao.getById(-33));
     }
 
     public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
