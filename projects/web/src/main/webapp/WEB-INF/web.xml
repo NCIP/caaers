@@ -105,7 +105,7 @@
         <filter-class>gov.nih.nci.cabig.ctms.web.filters.BeansInRequestFilter</filter-class>
         <init-param>
             <param-name>beanNames</param-name>
-            <param-value>configuration</param-value>
+            <param-value>configuration, buildInfo</param-value>
         </init-param>
     </filter>
 
