@@ -12,7 +12,7 @@
     <tags:renderRow field="${fieldGroup.fields[0]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-priorTherapy-${index}" name="priorTherapyOrOther${index}" type="radio"/>
+                <!-- input id="select-priorTherapy-${index}" name="priorTherapyOrOther${index}" type="radio"/ -->
                 ${fieldGroup.fields[0].displayName}
             </label>
         </jsp:attribute>
@@ -20,7 +20,7 @@
     <tags:renderRow field="${fieldGroup.fields[1]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-other-${index}" name="priorTherapyOrOther${index}" type="radio"/>
+                <!-- input id="select-other-${index}" name="priorTherapyOrOther${index}" type="radio"/-->
                 ${fieldGroup.fields[1].displayName}
             </label>
         </jsp:attribute>
