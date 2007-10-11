@@ -1,28 +1,16 @@
-class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migration {
+class AddSiteCoordinator extends edu.northwestern.bioinformatics.bering.Migration {
+    void up() {
+        insert('csm_group',[group_id: -14,group_name:'caaers_site_cd',group_desc: 'caaers site  coordinator',application_id: -1],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -1,user_group_role_pg_id: -28,protection_group_id: -1],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -2,user_group_role_pg_id: -29,protection_group_id: -1],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -3,user_group_role_pg_id: -30,protection_group_id: -1],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -8,user_group_role_pg_id: -31,protection_group_id: -3],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -9,user_group_role_pg_id: -32,protection_group_id: -3],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -5,user_group_role_pg_id: -33,protection_group_id: -2],primaryKey: false)
+        insert('csm_user_group_role_pg',[group_id: -14,role_id: -6,user_group_role_pg_id: -34,protection_group_id: -2],primaryKey: false)
+    }
 
-void up() {
- insert('csm_group',[group_id: -14,group_name:'caaers_site_cd',group_desc: 'caaers site  coordinator',application_id: -1],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -1,user_group_role_pg_id: -28,protection_group_id: -1],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -2,user_group_role_pg_id: -29,protection_group_id: -1],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -3,user_group_role_pg_id: -30,protection_group_id: -1],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -8,user_group_role_pg_id: -31,protection_group_id: -3],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -9,user_group_role_pg_id: -32,protection_group_id: -3],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -5,user_group_role_pg_id: -33,protection_group_id: -2],primaryKey: false)
-
- insert('csm_user_group_role_pg',[group_id: -14,role_id: -6,user_group_role_pg_id: -34,protection_group_id: -2],primaryKey: false)
-
-
-}
-
-
-	void down(){
-        execute("delete from csm_group where group_id=-14 and group_name='caaers_site_cd'");
+    void down(){
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-28");
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-29");
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-30");
@@ -30,8 +18,6 @@ void up() {
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-32");
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-33");
         execute("delete from csm_user_group_role_pg where group_id=-14 and user_group_role_pg_id=-34");
-        
-	}
-
-
+        execute("delete from csm_group where group_id=-14 and group_name='caaers_site_cd'");
+    }
 }
