@@ -94,8 +94,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private Boolean behavioralTherapyType = Boolean.FALSE;
 
-	private Boolean healthyVolunteer;
-
 	public Study() {
 
 		lazyListHelper = new LazyListHelper();
@@ -634,14 +632,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 		}
 		return null;
-	}
-
-	public Boolean getHealthyVolunteer() {
-		return healthyVolunteer;
-	}
-
-	public void setHealthyVolunteer(Boolean healthyVolunteer) {
-		this.healthyVolunteer = healthyVolunteer;
 	}
 
 }

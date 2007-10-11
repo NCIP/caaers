@@ -280,13 +280,8 @@
                     <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
                         src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
+                    <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
-            <chrome:division title="Prevention Trial">
-        			<c:forEach items="${fieldGroups.healthyVolunteer.fields}" var="field">
-            			<tags:renderRow field="${field}"/>
-        			</c:forEach>
-        			<tags:tabControls tab="${tab}" flow="${flow}"/>
-			</chrome:division>
         </chrome:box>
 
             <chrome:box title="Selected Diseases " id="diseases">

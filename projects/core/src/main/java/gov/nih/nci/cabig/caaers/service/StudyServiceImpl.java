@@ -104,7 +104,6 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		st.setDeviceTherapyType(xstreamStudy.getDeviceTherapyType());
 		st.setSurgeryTherapyType(xstreamStudy.getSurgeryTherapyType());
 		st.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
-		st.setHealthyVolunteer(xstreamStudy.getHealthyVolunteer());
 		
 		migrateTerminology(st,xstreamStudy, studyImportOutcome); //Done
 		migrateIdentifiers(st,xstreamStudy, studyImportOutcome);

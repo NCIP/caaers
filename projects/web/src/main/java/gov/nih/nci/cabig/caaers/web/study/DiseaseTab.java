@@ -27,7 +27,6 @@ public class DiseaseTab extends StudyTab {
 
     private DiseaseTermDao diseaseTermDao;
     private LowLevelTermDao lowLevelTermDao;
-    private InputFieldGroup healthyVolunteerFieldGroup;
     
     private static final String HEALTHY_VOLUNTEER_FIELD_GROUP = "healthyVolunteer";
     
@@ -35,8 +34,6 @@ public class DiseaseTab extends StudyTab {
     public DiseaseTab() {
         super("Study Disease", "Disease", "study/study_diseases");
         
-        healthyVolunteerFieldGroup = new DefaultInputFieldGroup(HEALTHY_VOLUNTEER_FIELD_GROUP);
-        healthyVolunteerFieldGroup.getFields().add(InputFieldFactory.createBooleanSelectField("healthyVolunteer", "Healthy Volunteer", true));
     }
 
     @Override
@@ -49,9 +46,8 @@ public class DiseaseTab extends StudyTab {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String,InputFieldGroup> createFieldGroups(Study command) {
-        InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addInputFieldGroup(healthyVolunteerFieldGroup);
-        return map;
+    	
+        return super.createFieldGroups(command);
     }
     
     private void handleStudyDiseaseAction(Study study, String action, String selected) {
