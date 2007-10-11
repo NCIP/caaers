@@ -20,11 +20,12 @@
 
 <tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="createStudy" />
+<tags:dwrJavascriptLink objects="createAE" />
 <script type="text/javascript">
 
     function fireAction(action, selected){
         if(action == 'addMeddraStudyDisease'){
-           if(!$F('disease-meddra-input')) return;
+           if(!$F('diseaseLlt')) return;
         }
 		
         addDiseasesToCart()
@@ -232,6 +233,16 @@
 
            Event.observe("disease-sub-category", "change", function() { showDiseases() })
            populateSelectsOnLoad();
+           
+           
+            AE.createStandardAutocompleter('diseaseLlt',
+			function(autocompleter, text) {
+					createAE.matchLowLevelTermsByCode(text, function(values) {
+													autocompleter.setChoices(values)
+												})
+				},
+				function(lowLevelTerm) { return lowLevelTerm.fullName });
+           
        })
 
     </script>
@@ -275,9 +286,13 @@
                         path="diseaseTermIds">
                     </form:select>
             </chrome:division>
-            <chrome:division title="MedDRA Terms">
+            <chrome:division title="${meddraVersion} Terms">
 					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
-                    <form:input size="45" id="disease-meddra-input"  path="diseaseLlt" />
+					<form:hidden  path="diseaseLlt" />
+					<input type="text" id="diseaseLlt-input" value="" class="autocomplete-input"/>
+                    <input type="button" id="diseaseLlt-clear" value="Clear"/>
+                    <tags:indicator id="diseaseLlt-indicator"/>
+                    <div id="diseaseLlt-choices" class="autocomplete"></div>
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
                         src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
                     <tags:tabControls tab="${tab}" flow="${flow}"/>    
