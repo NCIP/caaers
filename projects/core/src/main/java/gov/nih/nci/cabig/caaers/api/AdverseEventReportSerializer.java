@@ -18,7 +18,6 @@ import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -364,19 +363,31 @@ public class AdverseEventReportSerializer {
 
 	    	TreatmentAssignment ta = trtInf.getTreatmentAssignment();
 	    	
-	    	TreatmentAssignment taNew = new TreatmentAssignment();
-	    	taNew.setCode(ta.getCode());
-	    	taNew.setDoseLevelOrder(ta.getDoseLevelOrder());
-	    	taNew.setDescription(ta.getDescription());
-	    	taNew.setComments(ta.getComments());
-	    	taNew.setStudy(ta.getStudy());
-	    	
-	    	treatmentInformation.setTreatmentAssignment(taNew);
+	    	if (ta != null ) {
+		    	TreatmentAssignment taNew = new TreatmentAssignment();
+		    	taNew.setCode(ta.getCode());
+		    	taNew.setDoseLevelOrder(ta.getDoseLevelOrder());
+		    	taNew.setDescription(ta.getDescription());
+		    	taNew.setComments(ta.getComments());
+		    	taNew.setStudy(ta.getStudy());
+		    	
+		    	treatmentInformation.setTreatmentAssignment(taNew);
+	    	}
 
 	    	List<CourseAgent> caList = trtInf.getCourseAgents();
 
 	    	for (CourseAgent ca: caList) {
-	    		treatmentInformation.addCourseAgent(ca);
+	    		CourseAgent ca1 = new CourseAgent();
+	    		ca1.setId(ca.getId());
+	    		ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
+	    		ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
+	    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
+	    		ca1.setDose(ca.getDose());
+	    		ca1.setModifiedDose(ca.getModifiedDose());
+	    		ca1.setStudyAgent(ca.getStudyAgent());
+	    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
+	
+	    		treatmentInformation.addCourseAgent(ca1);
 	    	}
 
 
