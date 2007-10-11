@@ -17,7 +17,7 @@ import java.util.Date;
 @Table(name="ae_radiation_interventions")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
-        @Parameter(name="sequence", value="seq_ae_radiation_interventions_id")
+        @Parameter(name="sequence", value="seq_ae_radiation_interventi_id")
     }
 )
 public class RadiationIntervention extends AbstractExpeditedReportCollectionElementChild {
