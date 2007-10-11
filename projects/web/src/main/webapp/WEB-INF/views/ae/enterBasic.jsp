@@ -22,6 +22,9 @@
         .first-item .delete-control {
             display: none;
         }
+        .main-fields .extra {
+    		width: 100%
+		}
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
