@@ -408,6 +408,18 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         });
     }
 
+    public void testSaveNewSurgeryIntervention() throws Exception {
+        doSaveTest(new SaveTester() {
+            public void setupReport(ExpeditedAdverseEventReport report) {
+                report.getSurgeryInterventions().get(0).setAnatomicSite(anatomicSiteDao.getById(-33));
+            }
+
+            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+                assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0).getAnatomicSite().getId());
+            }
+        });
+    }
+
     public void testSaveSkipsPhysicianWhenNotSavable() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
