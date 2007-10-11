@@ -21,7 +21,7 @@ public class MedicalInfoTab extends AeTab {
     private ConfigProperty configurationProperty;
 
     public MedicalInfoTab() {
-        super("Medical info", "Patient Details", "ae/medical");
+        super("Medical information", "Patient Details", "ae/medical");
     }
 
     // TODO: configurationProperty and all things associated with it are abhorrent
@@ -52,8 +52,10 @@ public class MedicalInfoTab extends AeTab {
             ctepStudyDiseaseOptions);
         InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease is not listed in the drop down list, type the appropriate disease name in the Other (disease) field below.");
         InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
+        InputFieldAttributes.setSize(diseaseSite, 33);
         InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");
         InputField otherDiseaseField = InputFieldFactory.createTextField("otherPrimaryDisease", "Other (disease)");
+        InputFieldAttributes.setSize(otherDiseaseField, 50);
         InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");
         InputField diganosisDateField = InputFieldFactory.createDateField("diagnosisDate", "Date of initial diagnosis", false);
         InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");
@@ -67,12 +69,12 @@ public class MedicalInfoTab extends AeTab {
         );
 
         InputField codedSiteField = InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false);
-        InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the <strong>Other(Site of Metastatic Disease)</strong> field");
+        InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the &quot;Other(site of metastatic disease)&quot; field");
 
         creator.createRepeatingFieldGroup("metastatic", "diseaseHistory.metastaticDiseaseSites",
             new SimpleNumericDisplayNameCreator("Metastatic disease site"),
             codedSiteField,
-            InputFieldFactory.createTextField("otherSite", "Other(Site of metastatic disease)", false)
+            InputFieldFactory.createTextField("otherSite", "Other(site of metastatic disease)", false)
         );
     }
 
