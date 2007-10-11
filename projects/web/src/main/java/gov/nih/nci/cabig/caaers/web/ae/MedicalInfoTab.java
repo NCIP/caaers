@@ -96,7 +96,7 @@ public class MedicalInfoTab extends AeTab {
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.MEDICAL_INFO_SCECTION;
+    	return ExpeditedReportSection.MEDICAL_INFO_SECTION;
     }
 
 }
