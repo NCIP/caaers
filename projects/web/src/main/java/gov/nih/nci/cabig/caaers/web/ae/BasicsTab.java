@@ -46,12 +46,15 @@ public abstract class BasicsTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField attributionField = InputFieldFactory.createSelectField(
-            "attributionSummary", "Attribution to lead IND", false, createAttributionOptions());
+            "attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputFieldAttributes.setDetails(attributionField,
-            "Select from the list the most appropriate term describing the relationship of the event to the lead intervention or agent.");
+            "Select from the list the most appropriate term describing the relationship of the event to the study interactions or interventions.");
         InputField exField = InputFieldFactory.createBooleanSelectField(
                 "expected", "Expected", true);
-        InputFieldAttributes.setDetails(exField, "If known, specify whether the AE is expected or not, as determined by the protocol guidelines. If this is a CTEP Sponsored trial, you may refer also to the AdEERS Agent Specific Adverse Event List (ASAEL).");
+        InputFieldAttributes.setDetails(exField, "Specify whether the AE is expected or not. &quot;Unexpected&quot; events " +
+        		"are those that differ in nature, severity or frequency from what is described in the investigator's " +
+        		"brochure or informed consent document. For agents under a CTEP IND, refer also to the AdEERS Agent Specific " +
+        		"Adverse Event List (ASAEL). For commercial agents or agents under a non-CTEP IND, refer also to the package insert.");
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 50);
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
