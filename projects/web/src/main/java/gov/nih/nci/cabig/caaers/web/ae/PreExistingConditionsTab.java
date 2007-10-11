@@ -26,7 +26,7 @@ public class PreExistingConditionsTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField preCondField = InputFieldFactory.createAutocompleterField("preExistingCondition", "Pre-Existing condition", false);
-        InputFieldAttributes.setDetails(preCondField, "If the correct term is not available in this list, type the pre-condition below in the <strong>Other (pre-existing)</strong> field.");
+        InputFieldAttributes.setDetails(preCondField, "If the correct term is not available in this list, type the pre-condition below in the &quot;Other (pre-existing)&quot; field.");
         InputField otherField = InputFieldFactory.createTextField("other", "Other (pre-existing)", false);
         InputFieldAttributes.setSize(otherField, 50);
 
