@@ -55,6 +55,7 @@ p { margin: 1em 0; }
     padding: 3px;
     position: relative;
     bottom: 0;
+    clear: both;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */
