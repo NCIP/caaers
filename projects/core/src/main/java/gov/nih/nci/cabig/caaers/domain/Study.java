@@ -112,7 +112,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		setStudyOrganizations(new ArrayList<StudyOrganization>());
 		setStudyAgentsInternal(new ArrayList<StudyAgent>());
 
-		multiInstitutionIndicator = Boolean.FALSE;
+		
 	}
 
 	// / LOGIC
