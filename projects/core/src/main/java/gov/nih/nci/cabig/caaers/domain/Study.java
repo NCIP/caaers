@@ -206,21 +206,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	@Transient
 	public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
-		// TODO : Convert this to lazy list (if needed)
-		List<StudyCoordinatingCenter> centers = new ArrayList<StudyCoordinatingCenter>();
-		for (StudyOrganization studyOrg : getStudyOrganizations()) {
-			if (studyOrg instanceof StudyCoordinatingCenter) {
-				centers.add((StudyCoordinatingCenter) studyOrg);
-			}
-		}
-		return centers;
-		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
+		return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations, StudyCoordinatingCenter.class);
 	}
 
 	@Transient
 	public StudyCoordinatingCenter getStudyCoordinatingCenter() {
 		return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters().get(0);
-		// return lazyListHelper.getLazyList(StudyCoordinatingCenter.class);
 	}
 
 	@Transient
