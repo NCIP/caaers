@@ -261,9 +261,7 @@
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"></property>
         <property name="userService" ref="userService"/>
     </bean>
-    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao">
-        <property name="organizationServie" ref="organizationService"/>
-    </bean>
+    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
 
 
     <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>

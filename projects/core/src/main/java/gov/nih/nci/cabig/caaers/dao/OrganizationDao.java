@@ -27,8 +27,6 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 
 	private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
-    private OrganizationService organizationService;
-
     @Override
 	public Class<Organization> domainClass() {
 		return Organization.class;
@@ -64,8 +62,6 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 	 */
 	@Transactional(readOnly = false)
 	public void save(final Organization organization) {
-        //FIXME:Saurabh handle edit logic
-        organizationService.createGroupForOrganization(organization);
         getHibernateTemplate().saveOrUpdate(organization);
 	}
 
@@ -95,13 +91,6 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 		});
 
 	}
-
-    @Required
-    public void setOrganizationServie(OrganizationService organizationService){
-        this.organizationService=organizationService;
-    }
-
-
 
 
 }

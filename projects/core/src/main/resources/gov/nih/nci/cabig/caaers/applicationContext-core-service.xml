@@ -37,7 +37,7 @@
     </bean>
 
 
-    <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl">
+    <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl" autowire="byType">
         <property name="csmApplicationContextName" ref="csmApplicationContextName"/>
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>

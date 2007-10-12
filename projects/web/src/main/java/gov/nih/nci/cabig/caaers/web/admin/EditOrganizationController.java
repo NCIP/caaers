@@ -44,7 +44,7 @@ public class EditOrganizationController extends OrganizationController<Organizat
 		if (errors.hasErrors()) {
 			return organization;
 		}
-		getDao().save(organization);
+		organizationService.createOrUpdate(organization);
 		return organization;
 	}
 
@@ -56,24 +56,16 @@ public class EditOrganizationController extends OrganizationController<Organizat
 	@Override
 	protected void layoutTabs(final Flow<Organization> flow) {
 		flow.addTab(new OrganizationTab());
-
 	}
 
-	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
-		Organization organization = (Organization) command;
-		organizationDao.merge(organization);
-		request.setAttribute("flashMessage", "Successfully updated the Organization");
-		ModelAndView modelAndView = new ModelAndView("admin/organization_confirmation");
-		return modelAndView;
-	}
-
-	@Override
-	protected boolean shouldSave(final HttpServletRequest request, final Organization command,
-			final Tab<Organization> tab) {
-		// supress for ajax and delete requests
-		return super.shouldSave(request, command, tab);
-	}
-
+    @Override
+    @SuppressWarnings({ "unchecked" })
+    protected ModelAndView processFinish(
+        final HttpServletRequest request, final HttpServletResponse response,
+        final Object command, final BindException errors
+    ) throws Exception {
+        ModelAndView mv = super.processFinish(request, response, command, errors);
+        mv.getModel().put("flashMessage", "Successfully updated the Organization");
+        return mv;
+    }
 }

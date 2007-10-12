@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.service.OrganizationService;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -24,14 +25,16 @@ import org.springframework.web.servlet.ModelAndView;
  * AbstractTabbedFlowFormController to implement tabbed workflow
  * @author Saurabh
  */
+// TODO:  this "flow" only has one tab in all its forms.  It shouldn't use the complexity of a flow controller
 public abstract class OrganizationController<C extends Organization> extends
 		AutomaticSaveFlowFormController<C, Organization, OrganizationDao> {
 
 	private static final Log log = LogFactory.getLog(OrganizationController.class);
 
 	protected OrganizationDao organizationDao;
+    protected OrganizationService organizationService;
 
-	public OrganizationController() {
+    public OrganizationController() {
 		setCommandClass(Organization.class);
 		Flow<C> flow = new Flow<C>("Create Organization");
 		layoutTabs(flow);
@@ -89,7 +92,7 @@ public abstract class OrganizationController<C extends Organization> extends
 			final Object command, final BindException errors) throws Exception {
 
 		Organization organization = (Organization) command;
-		organizationDao.save(organization);
+		organizationService.createOrUpdate(organization);
 		ModelAndView modelAndView = new ModelAndView("admin/organization_confirmation");
 		modelAndView.addAllObjects(errors.getModel());
 		return modelAndView;

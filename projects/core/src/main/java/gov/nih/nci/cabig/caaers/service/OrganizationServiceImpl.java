@@ -13,14 +13,18 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Transactional
 public class OrganizationServiceImpl implements OrganizationService {
+    private Logger log = Logger.getLogger(getClass());
 
     private UserProvisioningManager userProvisioningManager;
+    private OrganizationDao organizationDao;
 
     private String csmApplicationContextName;
     private String siteProtectionGroupId;
@@ -28,20 +32,28 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private CSMObjectIdGenerator siteObjectIdGenerator;
 
-    private Logger log = Logger.getLogger(OrganizationService.class);
-//
-//    public void save(Organization site) throws CaaersSystemException {
-//        createGroupForOrganization(site);
-//        organizationDao.save(site);
-//    }
+    public void createOrUpdate(Organization organization) {
+        if (organization.getId() == null) {
+            create(organization);
+        } else {
+            organizationDao.save(organization);
+        }
+    }
 
-    /*
+    /**
+     * Create a new organization.  Note that this method must be used when entering a new organization
+     * (not {@link OrganizationDao#save}).  As written, it is not suitable for updating an existing
+     * organization.
+     *
+     * @param site
+     * @throws CaaersSystemException
      */
-//    public void merge(Organization site) throws CaaersSystemException {
-//        organizationDao.save(site);
-//    }
+    public void create(Organization site) throws CaaersSystemException {
+        createGroupForOrganization(site);
+        organizationDao.save(site);
+    }
 
-    public Group createGroupForOrganization(Organization organization) throws CaaersSystemException {
+    private Group createGroupForOrganization(Organization organization) throws CaaersSystemException {
         Group group = new Group();
         try {
             String siteId = siteObjectIdGenerator.generateId(organization);
@@ -55,7 +67,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             userProvisioningManager.createGroup(group);
 
             ProtectionGroup protectionGroup = new ProtectionGroup();
-            protectionGroup.setApplication(userProvisioningManager.getApplication(csmApplicationContextName));
+            protectionGroup.setApplication(app);
             protectionGroup.setParentProtectionGroup(userProvisioningManager.getProtectionGroupById(siteProtectionGroupId));
             protectionGroup.setProtectionGroupName(siteId);
             log.debug("Creating protection group for new organization:" + siteId);
@@ -63,7 +75,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
             log.debug("Creating Protection Element for new organization:" + siteId);
             ProtectionElement protectionElement = new ProtectionElement();
-            protectionElement.setApplication(userProvisioningManager.getApplication(csmApplicationContextName));
+            protectionElement.setApplication(app);
             protectionElement.setObjectId(siteId);
             protectionElement.setProtectionElementName(siteId);
             protectionElement.setProtectionElementDescription("Site Protection Element");
@@ -74,17 +86,19 @@ public class OrganizationServiceImpl implements OrganizationService {
 
             userProvisioningManager.assignGroupRoleToProtectionGroup(protectionGroup.getProtectionGroupId().toString(), group.getGroupId().toString(), new String[]{siteAccessRoleId});
 
-
         } catch (CSObjectNotFoundException e) {
-            e.getStackTrace();
-            log.error("###Error getting info for" + csmApplicationContextName + " application from CSM. Application configuration exception###");
+            log.error("###Error getting info for" + csmApplicationContextName + " application from CSM. Application configuration exception###", e);
             throw new CaaersSystemException("Application configuration problem. Cannot find application '" + csmApplicationContextName + "' in CSM", e);
-        }
-        catch (CSTransactionException e) {
-            log.warn("Could not create group for organization:" + organization.getNciInstituteCode());
+        } catch (CSTransactionException e) {
+            log.warn("Could not create group for organization: " + organization.getNciInstituteCode());
             throw new CaaersSystemException("Cannot create group for organization.", e);
         }
         return group;
+    }
+
+    @Required
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 
     @Required
@@ -92,25 +106,20 @@ public class OrganizationServiceImpl implements OrganizationService {
         this.siteObjectIdGenerator = siteObjectIdGenerator;
     }
 
-
     @Required
     public void setSiteAccessRoleId(String siteAccessRoleId) {
         this.siteAccessRoleId = siteAccessRoleId;
     }
-
 
     @Required
     public void setSiteProtectionGroupId(String siteProtectionGroupId) {
         this.siteProtectionGroupId = siteProtectionGroupId;
     }
 
-
     @Required
     public void setUserProvisioningManager(UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
     }
-
-
 
     @Required
     public void setCsmApplicationContextName(String csmApplicationContextName) {
