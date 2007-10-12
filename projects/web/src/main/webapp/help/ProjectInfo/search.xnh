@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<root>
+    <topics>
+        <topic url="WordDocuments/enterexpeditedreportoverview.htm" window="right" />
+        <topic url="WordDocuments/section1begin.htm" window="right" />
+        <topic url="WordDocuments/section2enteraes.htm" window="right" />
+        <topic url="WordDocuments/section3reporter.htm" window="right" />
+        <topic url="WordDocuments/section4selectreport.htm" window="right" />
+        <topic url="WordDocuments/section5describeevent.htm" window="right" />
+        <topic url="WordDocuments/section6patientdetails.htm" window="right" />
+        <topic url="WordDocuments/section7preexistingconditions.htm" window="right" />
+        <topic url="WordDocuments/section8priortherapies.htm" window="right" />
+        <topic url="WordDocuments/section9conmeds.htm" window="right" />
+        <topic url="WordDocuments/section10othercauses.htm" window="right" />
+        <topic url="WordDocuments/section11courseandagent.htm" window="right" />
+        <topic url="WordDocuments/section12radiation.htm" window="right" />
+        <topic url="WordDocuments/section13surgery.htm" window="right" />
+        <topic url="WordDocuments/section14device.htm" window="right" />
+        <topic url="WordDocuments/section15labs.htm" window="right" />
+        <topic url="WordDocuments/section16attribution.htm" window="right" />
+        <topic url="WordDocuments/section17attachments.htm" window="right" />
+        <topic url="WordDocuments/section18submit.htm" window="right" />
+        <topic url="WordDocuments/glossaryofterms.htm" window="right" />
+        <topic url="WordDocuments/gloss_term1.htm" window="d2hWnd_SecondaryPopup" />
+        <topic url="WordDocuments/gloss_term2.htm" window="d2hWnd_SecondaryPopup" />
+    </topics>
+</root>

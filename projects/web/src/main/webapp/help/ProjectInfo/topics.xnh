@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<topics>
+    <topic id="0" tId="4" url="WordDocuments/enterexpeditedreportoverview.htm" target="right" default="1"><![CDATA[Enter Expedited Report Overview]]><contextids /></topic>
+    <topic id="1" tId="3" url="WordDocuments/enterexpeditedreports.htm" target="right"><![CDATA[Enter Expedited Reports]]><contextids /></topic>
+    <topic id="2" tId="25" url="WordDocuments/glossaryofterms.htm" target="right" glossary="1"><![CDATA[Glossary of Terms]]><contextids /></topic>
+    <topic id="3" tId="14" url="WordDocuments/section10othercauses.htm" target="right"><![CDATA[Section #10: Other Causes]]><contextids /></topic>
+    <topic id="4" tId="15" url="WordDocuments/section11courseandagent.htm" target="right"><![CDATA[Section #11: Course and Agent]]><contextids /></topic>
+    <topic id="5" tId="16" url="WordDocuments/section12radiation.htm" target="right"><![CDATA[Section #12: Radiation]]><contextids /></topic>
+    <topic id="6" tId="17" url="WordDocuments/section13surgery.htm" target="right"><![CDATA[Section #13: Surgery]]><contextids /></topic>
+    <topic id="7" tId="18" url="WordDocuments/section14device.htm" target="right"><![CDATA[Section #14: Device]]><contextids /></topic>
+    <topic id="8" tId="19" url="WordDocuments/section15labs.htm" target="right"><![CDATA[Section #15: Labs]]><contextids /></topic>
+    <topic id="9" tId="20" url="WordDocuments/section16attribution.htm" target="right"><![CDATA[Section #16: Attribution]]><contextids /></topic>
+    <topic id="10" tId="21" url="WordDocuments/section17attachments.htm" target="right"><![CDATA[Section #17: Attachments]]><contextids /></topic>
+    <topic id="11" tId="22" url="WordDocuments/section18submit.htm" target="right"><![CDATA[Section #18: Submit]]><contextids /></topic>
+    <topic id="12" tId="5" url="WordDocuments/section1begin.htm" target="right"><![CDATA[Section #1: Begin]]><contextids /></topic>
+    <topic id="13" tId="6" url="WordDocuments/section2enteraes.htm" target="right"><![CDATA[Section #2: Enter AEs]]><contextids /></topic>
+    <topic id="14" tId="7" url="WordDocuments/section3reporter.htm" target="right"><![CDATA[Section #3: Reporter]]><contextids /></topic>
+    <topic id="15" tId="8" url="WordDocuments/section4selectreport.htm" target="right"><![CDATA[Section #4: Select Report]]><contextids /></topic>
+    <topic id="16" tId="9" url="WordDocuments/section5describeevent.htm" target="right"><![CDATA[Section #5: Describe Event]]><contextids /></topic>
+    <topic id="17" tId="10" url="WordDocuments/section6patientdetails.htm" target="right"><![CDATA[Section #6: Patient Details]]><contextids /></topic>
+    <topic id="18" tId="11" url="WordDocuments/section7preexistingconditions.htm" target="right"><![CDATA[Section #7: Pre-Existing Conditions]]><contextids /></topic>
+    <topic id="19" tId="12" url="WordDocuments/section8priortherapies.htm" target="right"><![CDATA[Section #8: Prior Therapies]]><contextids /></topic>
+    <topic id="20" tId="13" url="WordDocuments/section9conmeds.htm" target="right"><![CDATA[Section #9: Conmeds]]><contextids /></topic>
+    <topic id="21" tId="26" url="WordDocuments/gloss_term1.htm" target="d2hWnd_SecondaryPopup" glossary="1"><![CDATA[Term1]]><contextids /></topic>
+    <topic id="22" tId="27" url="WordDocuments/gloss_term2.htm" target="d2hWnd_SecondaryPopup" glossary="1"><![CDATA[Term2]]><contextids /></topic>
+</topics>
