@@ -130,10 +130,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			i++;
 			final Study study = outcome.getImportedDomainObject();
 			session.saveOrUpdate(study);
+			/*
 			session.evict(study);
 			if(i % 100 == 0){
 				session.flush();
 			}
+			*/
 		}
 	}
 

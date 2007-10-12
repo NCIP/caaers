@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
@@ -37,6 +39,11 @@ public abstract class AbstractImportServiceImpl {
 						((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
 						if (identifier.getType().equals("Sponsor Identifier")){
 							identifier.setPrimaryIndicator(false);
+						}
+						if (source instanceof Study){
+						StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
+						studyCoordinatingCenter.setOrganization(organization);
+						((Study)destination).addStudyOrganization(studyCoordinatingCenter);
 						}
 				}
 
