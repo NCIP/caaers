@@ -1,16 +1,28 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
+import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
@@ -22,7 +34,9 @@ import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -107,6 +121,70 @@ public class ReportServiceTest extends CaaersTestCase {
 
         assertNoAttributionsAreSufficent(attr);
     }
+    
+    public void testFindToAddress(){
+    	
+    	StudyParticipantAssignment assignment = Fixtures.createAssignment();
+    	StudySite site = assignment.getStudySite();
+    	StudyInvestigator studyInvestigator = new StudyInvestigator();
+    	studyInvestigator.setRoleCode("Site Principal Investigator");
+    	SiteInvestigator siteInvestigator = new SiteInvestigator();
+    	Investigator investigator = new Investigator();
+    	investigator.setEmailAddress("biju@kk.com");
+    	siteInvestigator.setInvestigator(investigator);
+    	studyInvestigator.setSiteInvestigator(siteInvestigator);
+    	site.addStudyInvestigators(studyInvestigator);
+    	expeditedData.setAssignment(assignment);
+    	
+    	PlannedEmailNotification penf = new PlannedEmailNotification();
+    	RoleBasedRecipient recipient = new RoleBasedRecipient();
+    	recipient.setRoleName("SPI");
+    	
+    	List<Recipient> recipients = new ArrayList<Recipient>();
+    	recipients.add(recipient);
+    	penf.setRecipients(recipients);
+    	
+    	
+    	ReportDefinition reportDef = Fixtures.createReportDefinition("test");
+    	reportDef.addPlannedNotification(penf);
+    	
+    	Report report = new Report();
+    	report.setReportDefinition(reportDef);
+    	report.setAeReport(expeditedData);
+    	
+    	ReportServiceImpl impl = (ReportServiceImpl) service;
+    	List<String> addresses = impl.findToAddresses(penf, report);
+    	assertEquals(1,addresses.size());
+    	
+    }
+    
+    public void testFindEmailAddress(){
+    	StudyParticipantAssignment assignment = Fixtures.createAssignment();
+    	StudySite site = assignment.getStudySite();
+    	StudyInvestigator studyInvestigator = new StudyInvestigator();
+    	studyInvestigator.setRoleCode("Site Principal Investigator");
+    	SiteInvestigator siteInvestigator = new SiteInvestigator();
+    	Investigator investigator = new Investigator();
+    	investigator.setEmailAddress("biju@kk.com");
+    	siteInvestigator.setInvestigator(investigator);
+    	studyInvestigator.setSiteInvestigator(siteInvestigator);
+    	site.addStudyInvestigators(studyInvestigator);
+    	
+    	ResearchStaff staff = new ResearchStaff();
+    	staff.setEmailAddress("aa@kk.com");
+    	StudyPersonnel studyPersonnel = new StudyPersonnel();
+    	studyPersonnel.setRoleCode("Participant Coordinator");
+    	studyPersonnel.setResearchStaff(staff);
+    	site.addStudyPersonnel(studyPersonnel);
+    	
+    	expeditedData.setAssignment(assignment);
+    	
+    	ReportServiceImpl impl = (ReportServiceImpl) service;
+    	List<String> addresses = impl.findEmailAddress("SPI", expeditedData);
+    	assertEquals(1,addresses.size());
+    	List<String> addresses2 = impl.findEmailAddress("PC", expeditedData);
+    	assertEquals(1,addresses2.size());
+    }
 
     private void assertNoAttributionsAreSufficent(AdverseEventAttribution attr) {
         for (Attribution attribution : Attribution.values()) {
@@ -161,4 +239,6 @@ public class ReportServiceTest extends CaaersTestCase {
             container.getMessages().get(ATTRIBUTION_SECTION).get(0).getText()
         );
     }
+    
+  
 }
