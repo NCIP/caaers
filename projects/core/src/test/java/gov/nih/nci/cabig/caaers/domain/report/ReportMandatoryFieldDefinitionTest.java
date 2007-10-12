@@ -16,7 +16,7 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
 
     public void testIsMandatoryWithNullMandatoryField() throws Exception {
         def.setMandatory(null);
-        assertFalse(def.getMandatory());
+        assertNull(def.getMandatory());
     }
 
     public void testIsMandatoryWithFalseMandatoryField() throws Exception {

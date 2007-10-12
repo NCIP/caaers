@@ -49,7 +49,7 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 	}
 
 	public Boolean getMandatory() {
-		return mandatory != null && mandatory;
+		return mandatory ;
 	}
 
 	public void setMandatory(Boolean mandatory) {
