@@ -193,6 +193,10 @@
                             <property name="code" value="Sponsor Identifier" />
                             <property name="desc" value="Sponsor Identifier" />
                         </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Coordinating Center Identifier" />
+                            <property name="desc" value="Coordinating Center Identifier" />
+                        </bean>
                     </list>
                 </entry>
 
