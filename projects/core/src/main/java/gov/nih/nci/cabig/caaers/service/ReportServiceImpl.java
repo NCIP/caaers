@@ -8,11 +8,17 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
@@ -54,7 +60,8 @@ import javax.persistence.Transient;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This is an service class, which is used to obtain the correct address (toAddress) of a
@@ -67,62 +74,96 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class ReportServiceImpl  implements ReportService {
+	private static final Log log = LogFactory.getLog(ReportServiceImpl.class);
     private NowFactory nowFactory;
     private SchedulerService schedulerService;
     private ReportDao reportDao;
     private ExpeditedReportTree expeditedReportTree;
 
 
-
+    
     public  List<String> findToAddresses(PlannedNotification pnf, Report report){
 		assert pnf != null : "PlannedNotification should not be null";
 		List<String> toAddressList = new ArrayList<String>();
-		String address = null;
-		String type = ReportPerson.EMAIL;
-		if(pnf instanceof PlannedEmailNotification)
-			type = ReportPerson.EMAIL;
-
 		for(Recipient r : pnf.getRecipients()){
 			if(r instanceof ContactMechanismBasedRecipient){
-				address = r.getContact();
-			}else if(r instanceof RoleBasedRecipient){
-				address = findContactMechanismValue(r.getContact(), type, report.getAeReport());
+				if(StringUtils.isNotEmpty(r.getContact())) toAddressList.add(r.getContact());
+			}else if(r instanceof RoleBasedRecipient && pnf instanceof PlannedEmailNotification){
+				toAddressList.addAll(findEmailAddress(r.getContact(), report.getAeReport()));
 			}
-			if(StringUtils.isNotEmpty(address)) toAddressList.add(address);
+			
 		}//for each r
 
 		return toAddressList;
 	}
-
-    // package-level for testing
-    String findContactMechanismValue(
-        String role, String mechanismType, ExpeditedAdverseEventReport aeReport) {
-    	 String address = null;
-    	if(StringUtils.equals("REP", role)){//Reporter
-    		address = aeReport.getReporter().getContactMechanisms().get(mechanismType);
-    	}else if(StringUtils.equals(role, "SUB")){//Submitter
-    		address = aeReport.getReports().get(0).getLastVersion().getSubmitter().getContactMechanisms().get(mechanismType);
-    	}else if(StringUtils.equals(role, "SPI")){//Site Principal Investigator
-
-    	}else if(StringUtils.equals(role, "SI")){//Site Investigator
-
-
-    	}else if(StringUtils.equals(role, "PI")){//Principal Investigator
-
-
-    	}else if(StringUtils.equals(role, "PC")){//Participant Coordinator
-
-
-    	}else if(StringUtils.equals(role, "SC")){//Study Coordinator
-
-
-    	}else if(StringUtils.equals(role, "AEC")){//Adverse Event Coordinator
-
+    
+    
+    List<String> findEmailAddress(String role, ExpeditedAdverseEventReport aeReport){
+    	List<String> addresses = new ArrayList<String>();
+    	String address = null;
+    	try {
+			if(StringUtils.equals("REP", role)){//Reporter
+				address = aeReport.getReporter().getContactMechanisms().get(PersonContact.EMAIL);
+				if(StringUtils.isNotEmpty(address)) addresses.add(address);
+			}else if(StringUtils.equals(role, "SUB")){//Submitter
+				address = aeReport.getReports().get(0).getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
+				if(StringUtils.isNotEmpty(address)) addresses.add(address);
+			}else if(StringUtils.equals(role, "SPI")){//Site Principal Investigator
+				addresses.addAll(findEmailsOfSiteInvestigators(aeReport.getStudy().getStudyOrganizations(), "Site Principal Investigator"));
+			}else if(StringUtils.equals(role, "SI")){//Site Investigator
+				addresses.addAll(findEmailsOfSiteInvestigators(aeReport.getStudy().getStudyOrganizations(), "Site Investigator"));
+			}else if(StringUtils.equals(role, "PI")){//Principal Investigator
+				addresses.addAll(findEmailsOfSiteInvestigators(aeReport.getStudy().getStudyOrganizations(), "Principal Investigator"));
+			}else if(StringUtils.equals(role, "PC")){//Participant Coordinator
+				addresses.addAll(findEmailsOfResearchStaff(aeReport.getStudy().getStudyOrganizations(), "Participant Coordinator"));
+			}else if(StringUtils.equals(role, "SC")){//Study Coordinator
+				addresses.addAll(findEmailsOfResearchStaff(aeReport.getStudy().getStudyOrganizations(), "Study Coordinator"));
+			}else if(StringUtils.equals(role, "AEC")){//Adverse Event Coordinator
+				addresses.addAll(findEmailsOfResearchStaff(aeReport.getStudy().getStudyOrganizations(), "Adverse Event Coordinator"));
+			}
+		} catch (Exception e) {
+			log.warn("Unable to fetch the email address of Role :" + role + ", mechanismType : EMAIL", e);
+		}
+    	return addresses;
+    }
+    
+    List<String> findPhoneNumbers(String role, ExpeditedAdverseEventReport aeReport){
+    	assert false : "Not implemented";
+    	return null;
+    }
+    
+    List<String> findFaxNumbers(String role, ExpeditedAdverseEventReport aeReport){
+    	assert false : "Not implemented";
+		return null;
+    }
+    
+    List<String> findEmailsOfResearchStaff(List<StudyOrganization> orgs, String personnelRole){
+    	List<String> emails = new ArrayList<String>();
+    	String email = null;
+    	for(StudyOrganization org : orgs){
+    		for(StudyPersonnel personnel : org.getStudyPersonnels()){
+    			if(StringUtils.equals(personnel.getRoleCode(), personnelRole)){
+    				email = personnel.getResearchStaff().getEmailAddress();
+    				if(StringUtils.isNotEmpty(email)) emails.add(email);
+    			}
+    		}
     	}
-    	return address;
-
-	}
-
+    	return emails;
+    }
+    
+    List<String> findEmailsOfSiteInvestigators(List<StudyOrganization> orgs, String investigatorRole){
+    	List<String> emails = new ArrayList<String>();
+    	String email = null;
+    	for(StudyOrganization org : orgs){
+    		for(StudyInvestigator studyInvestigator : org.getStudyInvestigators()){
+    			if(StringUtils.equals(studyInvestigator.getRoleCode(), investigatorRole)){
+    				email = studyInvestigator.getSiteInvestigator().getInvestigator().getEmailAddress();
+    				if(StringUtils.isNotEmpty(email)) emails.add(email);
+    			}
+    		}
+    	}
+    	return emails;
+    }
 
 
 	/* (non-Javadoc)
@@ -196,19 +237,24 @@ public class ReportServiceImpl  implements ReportService {
 
         //populate the delivery definitions
         if (repDef.getDeliveryDefinitions() != null) {
-        	String endPoint = null;
             for (ReportDeliveryDefinition rdd : repDef.getDeliveryDefinitions()) {
-             //fetch the contact mechanism for role based entities.
-             endPoint = (rdd.getEntityType() != rdd.ENTITY_TYPE_ROLE)?
-            		rdd.getEndPoint() :
-            		findContactMechanismValue(rdd.getEndPoint(),
-                   		rdd.getEndPointType(),
-                   		aeReport);
-             if(StringUtils.isNotEmpty(endPoint)){
-               	ReportDelivery rd = rdd.createReportDelivery();
-               	rd.setEndPoint(endPoint);
-               	report.addReportDelivery(rd);
-             }
+	             //fetch the contact mechanism for role based entities.
+	             if(rdd.getEndPointType().equals(ReportDeliveryDefinition.ENTITY_TYPE_ROLE)){
+	            	 List<String> addresses = findEmailAddress(rdd.getEndPoint(), aeReport); 
+	            	 for(String address : addresses){
+	            		 if(StringUtils.isNotEmpty(address)){
+	                		 ReportDelivery rd = rdd.createReportDelivery();
+	                		 rd.setEndPoint(address);
+	                		 report.addReportDelivery(rd);
+	                	 } 
+	            	 }
+	             }else{
+	            	 if(StringUtils.isNotEmpty(rdd.getEndPoint())){
+	            		 ReportDelivery rd = rdd.createReportDelivery();
+	            		 rd.setEndPoint(rdd.getEndPoint());
+	            		 report.addReportDelivery(rd);
+	            	 }
+	             }
 
             }//~for rdd
         }//~if
