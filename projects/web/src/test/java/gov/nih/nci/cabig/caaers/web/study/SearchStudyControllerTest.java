@@ -4,6 +4,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +23,7 @@ public class SearchStudyControllerTest extends WebTestCase {
         studyService = registerMockFor(StudyService.class);               
         controller.setStudyService(studyService);
         controller.setConfigurationProperty(new ConfigProperty());
+        controller.setListValues(new ListValues());
     }
     
     public void testViewOnGet() throws Exception {
