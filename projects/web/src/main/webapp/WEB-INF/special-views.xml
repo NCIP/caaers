@@ -26,4 +26,14 @@
         <property name="url"><value>/pages/ae/edit</value></property>
     </bean>
     
+    <bean id="redirectToSearchInStudyTab" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/study/search</value></property>
+    </bean>
+    
+    <bean id="redirectToSearchInParticipantTab" class="org.springframework.web.servlet.view.RedirectView">
+        <property name="contextRelative"><value>true</value></property>
+        <property name="url"><value>/pages/participant/search</value></property>
+    </bean>
+    
 </beans>

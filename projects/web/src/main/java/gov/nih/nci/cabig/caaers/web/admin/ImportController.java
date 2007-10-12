@@ -145,17 +145,19 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
 			Object command, BindException errors) throws Exception {
 
+		String redirectTo = "redirectToSearchInStudyTab";
 		ImportCommand cObject = (ImportCommand)command;
 		if (cObject.getImportableStudies().size() > 0){
 			studyDao.batchSave(cObject.getImportableStudies());
+			redirectTo = "redirectToSearchInStudyTab";
 		}
 		
 		if (cObject.getImportableParticipants().size() > 0){
 			participantDao.batchSave(cObject.getImportableParticipants());
+			redirectTo = "redirectToSearchInParticipantTab";
 		}
-
-		response.sendRedirect("/caaers/pages/study/search");
-    	return null;
+		
+		return new ModelAndView(redirectTo);
 	}
 
 	private void handleLoad(ImportCommand command, String type){

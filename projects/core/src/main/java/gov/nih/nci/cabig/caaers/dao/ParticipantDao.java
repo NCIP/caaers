@@ -57,10 +57,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 			i++;
 			final Participant participant = outcome.getImportedDomainObject();
 			session.saveOrUpdate(participant);
+			/*
 			session.evict(participant);
 			if(i % 100 == 0){
 				session.flush();
 			}
+			*/
 		}
 	}
 	
