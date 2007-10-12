@@ -17,7 +17,7 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
     	if (severity == Severity.ERROR) {
 			isSavable = false;
 		}
-        messages.add(new Message("Message ", severity));
+        messages.add(new Message(msg, severity));
     }
 
     public boolean hasErrors(){
