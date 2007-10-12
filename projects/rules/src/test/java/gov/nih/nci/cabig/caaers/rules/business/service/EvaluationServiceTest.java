@@ -82,7 +82,7 @@ public class EvaluationServiceTest extends CaaersTestCase {
 
     public void testIsSubmittable() throws Exception{
         ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-        List<ExpeditedReportSection> mandatorySections = Arrays.asList(ExpeditedReportSection.MEDICAL_INFO_SCECTION, ExpeditedReportSection.SURGERY_INTERVENTION_SECTION);
+        List<ExpeditedReportSection> mandatorySections = Arrays.asList(ExpeditedReportSection.MEDICAL_INFO_SECTION, ExpeditedReportSection.SURGERY_INTERVENTION_SECTION);
         ReportSubmittability messages = new ReportSubmittability();
         Report report = new Report();
         report.setAeReport(aeReport);
