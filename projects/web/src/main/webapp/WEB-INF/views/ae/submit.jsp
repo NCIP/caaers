@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-<tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}">
+<tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}" pageHelpAnchor="section18submit">
     <jsp:attribute name="instructions">
        Submit a specific Report
     </jsp:attribute>
@@ -65,7 +65,7 @@
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
-            		<td><div class="label">v${fn:length(report.reportVersions) -1}</div></td>
+            		<td><div class="label">${fn:length(report.reportVersions) -1}</div></td>
             		<td class="completion-messages">
                         <c:choose>
                             <c:when test="${reportMessages[report.id].submittable}" >

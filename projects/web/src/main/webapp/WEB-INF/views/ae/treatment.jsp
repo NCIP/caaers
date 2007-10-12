@@ -128,7 +128,7 @@
     </style>
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section5treatmentinformation">
+    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
         <jsp:attribute name="instructions">
             You are entering treatment information for ${command.assignment.participant.fullName} on
             ${command.assignment.studySite.study.shortTitle}.

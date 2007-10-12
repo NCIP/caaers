@@ -27,7 +27,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section8concomitantmedications">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section9conmeds">
     <jsp:attribute name="instructions">
       <tags:instructions code="instruction_ae_conMed" />
       <tags:instructions code="instruction_ae_conMedNote" heading="Note: " />

@@ -14,7 +14,7 @@
     </style>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3eventandresponsedescription">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section5describeevent">
     <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_description" />
     </jsp:attribute>

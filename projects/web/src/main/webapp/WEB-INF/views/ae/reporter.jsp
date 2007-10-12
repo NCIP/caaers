@@ -77,7 +77,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3reporter">
     <jsp:attribute name="instructions">
         <c:choose>
             <c:when test="${oneOrMoreSevere}">

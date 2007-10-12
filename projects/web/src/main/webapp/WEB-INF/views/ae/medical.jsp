@@ -131,7 +131,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section4medicalinformation">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section6patientdetails">
 	<jsp:attribute name="instructions">
 	 <tags:instructions code="instruction_ae_patientDetails" />
 	</jsp:attribute>

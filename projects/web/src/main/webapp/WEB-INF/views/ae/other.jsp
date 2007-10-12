@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section9othercontributingcauses">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section10othercauses">
     <jsp:attribute name="instructions">
      <tags:instructions code="instruction_ae_otherCause" />
     </jsp:attribute>

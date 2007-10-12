@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section17attachments">
     <jsp:attribute name="instructions">
         <tags:instructions code="instruction_ae_additionalInfo" />
     </jsp:attribute>
@@ -28,14 +28,23 @@
         <c:forEach items="${fieldGroups.desc.fields}" var="field" begin="0" end="11">
             <tags:renderRow field="${field}"/>
         </c:forEach>
+
         <div class="row">
+
           <div class="label"><tags:renderLabel field="${fieldGroups.desc.fields[12]}" /></div>
+
          <div class="value">
+
          If the additional information being provided is not listed above, 
+
          type the information being provided in the &quot;Other Information&quot; field. 
+
          Separate each item with a comma &quot;,&quot;.
+
          <tags:renderInputs field="${fieldGroups.desc.fields[12]}"/>
+
          </div>
+
         </div>
     </jsp:attribute>
 </tags:tabForm>

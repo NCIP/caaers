@@ -98,7 +98,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section7preexistingconditions">
         <jsp:attribute name="instructions">
          <tags:instructions code="instruction_ae_preexistingCond" />
         </jsp:attribute>

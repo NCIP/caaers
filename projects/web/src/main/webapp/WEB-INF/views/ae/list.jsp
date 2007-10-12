@@ -199,7 +199,7 @@
 									
 								<td width="20%">${theReport.reportDefinition.name}</td>
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
-								<td width="20%">v${fn:length(theReport.reportVersions) -1}</td>
+								<td width="20%">${fn:length(theReport.reportVersions) -1}</td>
 								<td width="10%"><i>
 									<c:if test="${command.reportsSubmittable[theReport.id]}" >
 										Complete

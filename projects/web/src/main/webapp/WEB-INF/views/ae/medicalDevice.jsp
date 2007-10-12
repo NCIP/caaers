@@ -80,7 +80,7 @@
     </style>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section14device">
     <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_device" />
     </jsp:attribute>

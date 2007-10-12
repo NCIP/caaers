@@ -160,7 +160,7 @@
     --></script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section7priortherapies">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section8priortherapies">
         <jsp:attribute name="instructions">
             <tags:instructions code="instruction_ae_priorTherapy" />
             <tags:instructions code="instruction_ae_priorThrerapyNote" heading="Note: " />
