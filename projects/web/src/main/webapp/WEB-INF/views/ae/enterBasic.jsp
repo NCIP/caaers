@@ -77,6 +77,7 @@
                         }.bind(this)
                     }
                 )
+                AE.registerCalendarPopups(this.div.id)
             },
 
             _index: function() { return +this.div.getAttribute("item-index"); },
