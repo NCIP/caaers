@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -44,14 +45,27 @@ public class CreateStudyController extends StudyController<Study> {
 	}
 
 	/**
-	 * Creates an Study(empty study), with a empty StudySite and Identifier.
+	 * Creates an Study(empty study), with a empty Sponsor,CoordinatingCenter and Identifiers.
 	 */
 	@Override
 	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		Study study = new Study();
-		study.addIdentifier(new OrganizationAssignedIdentifier());
-		StudySite studySite = new StudySite();
-		study.addStudySite(studySite);
+		StudyFundingSponsor sponsor = new StudyFundingSponsor();
+		sponsor.setPrimary(true);
+		study.addStudyFundingSponsor(sponsor);
+		
+		StudyCoordinatingCenter cordinatCenter = new StudyCoordinatingCenter();
+		study.addStudyOrganization(cordinatCenter);
+		
+		OrganizationAssignedIdentifier sponsorIdentifier = new OrganizationAssignedIdentifier();
+		sponsorIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+		study.addIdentifier(sponsorIdentifier);
+		
+		OrganizationAssignedIdentifier ccIdentifier = new OrganizationAssignedIdentifier();
+		ccIdentifier.setPrimaryIndicator(true);
+		ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+		study.addIdentifier(ccIdentifier);
+		
 		return study;
 	}
 
@@ -60,7 +74,7 @@ public class CreateStudyController extends StudyController<Study> {
 			final Object command, final BindException errors) throws Exception {
 		Study study = (Study) command;
 
-		if (study.getOrganizationAssignedIdentifier().getOrganization() != null) {
+		/*if (study.getOrganizationAssignedIdentifier().getOrganization() != null) {
 			// add organization assigned identifier
 			study.addIdentifier(study.getOrganizationAssignedIdentifier());
 
@@ -70,7 +84,8 @@ public class CreateStudyController extends StudyController<Study> {
 			study.addStudyOrganization(studyCoordinatingCenter);
 
 		}
-		if (!study.getIdentifiersLazy().isEmpty()) {
+*/
+		/*if (!study.getIdentifiersLazy().isEmpty()) {
 			for (Identifier identifier : study.getIdentifiersLazy()) {
 				if (identifier.getId() == null) {
 					study.addIdentifier(identifier);
@@ -78,7 +93,7 @@ public class CreateStudyController extends StudyController<Study> {
 
 			}
 		}
-
+*/
 		// check for study therapy
 		updateStudyTherapies(study);
 
