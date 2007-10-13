@@ -30,7 +30,9 @@ public class AgentsTab extends StudyTab {
 	public static int IND_TYPE_CTEP = 1;
 
 	public static int IND_TYPE_OTHER = 2;
-
+	public static int IND_TYPE_NA_COMMERCIAL_AGENT = 3;
+	public static int IND_TYPE_EXEMPT = 4;
+	public static int IND_TYPE_DCP_IND = 5;
 	public static int CTEP_IND = -111;
 
 	private LinkedHashMap<Object, Object> indTypeMap = new LinkedHashMap<Object, Object>();
@@ -38,9 +40,13 @@ public class AgentsTab extends StudyTab {
 	public AgentsTab() {
 		super("Study Agents", "Agents", "study/study_agents");
 		// setAutoPopulateHelpKey(true);
-		indTypeMap.put(AgentsTab.IND_TYPE_NOT_USED, "Not Used");
+		indTypeMap.put(AgentsTab.IND_TYPE_NOT_USED, "N/A");
+		indTypeMap.put(AgentsTab.IND_TYPE_NA_COMMERCIAL_AGENT, "N/A-Commercial Agent");
+		indTypeMap.put(AgentsTab.IND_TYPE_EXEMPT, "IND-Exempt");
 		indTypeMap.put(AgentsTab.IND_TYPE_CTEP, "CTEP IND");
-		indTypeMap.put(AgentsTab.IND_TYPE_OTHER, "Other");
+		indTypeMap.put(AgentsTab.IND_TYPE_DCP_IND, "DCP IND");
+		indTypeMap.put(AgentsTab.IND_TYPE_OTHER, "Other IND Holder");
+
 	}
 
 	@Override
