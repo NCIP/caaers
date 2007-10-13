@@ -13,10 +13,12 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,36 +98,6 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
 		ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
 		ControllerTools.registerEnumEditor(binder, Term.class);
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
-			final int page) throws Exception {
-		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
-
-		Study study = (Study) command;
-
-		if (isSummaryEnabled()) {
-			Map<String, String> summary = new LinkedHashMap<String, String>();
-			if (study.getPrimaryIdentifier() != null) {
-				summary.put("Primary identifier", study.getPrimaryIdentifier().toString());
-			}
-			if (study.getShortTitle() != null) {
-				summary.put("Short title", study.getShortTitle());
-			}
-			if (study.getPrimarySponsorCode() != null) {
-				summary.put("Sponsor", study.getPrimarySponsorCode().toString());
-			}
-			if (study.getPhaseCode() != null) {
-				summary.put("Phase", study.getPhaseCode().toString());
-			}
-			if (page != 7) {
-				refdata.put("studySummary", summary);
-			}
-		}
-
-		return refdata;
 	}
 
 	/**
