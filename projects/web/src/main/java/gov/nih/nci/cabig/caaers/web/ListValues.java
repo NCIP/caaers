@@ -13,7 +13,7 @@ public class ListValues {
 		// TODO Auto-generated constructor stub
 	}
 
-	ListValues(final String code, final String desc) {
+	public ListValues(final String code, final String desc) {
 		this.code = code;
 		this.desc = desc;
 	}
