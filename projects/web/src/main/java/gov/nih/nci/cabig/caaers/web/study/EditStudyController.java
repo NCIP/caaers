@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +75,7 @@ public class EditStudyController extends StudyController<Study> {
 		Study mergedStudy = getDao().merge(study);
 		mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
 		getDao().initialize(mergedStudy);
-
+/*
 
 	     OrganizationAssignedIdentifier organizationAssignedIdentifier=study.getOrganizationAssignedIdentifier();
 		 mergedStudy.addIdentifier(organizationAssignedIdentifier);
@@ -91,7 +94,7 @@ public class EditStudyController extends StudyController<Study> {
 				}
 
 			}
-		}
+		}*/
 		// mergedStudy.setStudyTherapies(study.getStudyTherapies());
 		// now check for study therapies.
 		mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
@@ -101,7 +104,7 @@ public class EditStudyController extends StudyController<Study> {
 		updateStudyTherapies(mergedStudy);
 
 		
-		return getDao().merge(mergedStudy);
+		return mergedStudy;
 	}
 
 	@Override
@@ -123,7 +126,39 @@ public class EditStudyController extends StudyController<Study> {
 		flow.addTab(new IdentifiersTab());
 
 	}
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
+			final int page) throws Exception {
+		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
 
+		Study study = (Study) command;
+		if (isSummaryEnabled()) {
+			List<ListValues> summary = new ArrayList<ListValues>();
+			if (study.getShortTitle() != null) {
+				summary.add(new ListValues("Short title", study.getShortTitle()));
+			}
+			if (study.getPrimaryIdentifier() != null) {
+				summary.add(new ListValues("Primary identifier", study.getPrimaryIdentifier().toString()));
+			}
+			if (study.getPhaseCode() != null) {
+				summary.add(new ListValues("Phase", study.getPhaseCode().toString()));
+			}
+			
+			if (study.getPrimarySponsorCode() != null) {
+				summary.add(new ListValues("Funding sponsor", study.getPrimaryFundingSponsorOrganization().getName()));
+			}
+			if(study.getStudyCoordinatingCenter().getOrganization() != null){
+				summary.add(new ListValues("Coordinating center", study.getStudyCoordinatingCenter().getOrganization().getName()));
+			}
+						
+			//if (page != 1) {
+				refdata.put("studySummary", summary);
+			//}
+		}
+
+		return refdata;
+	}
 	@Override
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
