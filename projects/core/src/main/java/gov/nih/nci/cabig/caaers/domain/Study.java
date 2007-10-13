@@ -78,10 +78,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private String diseaseLlt;
 
-	private List<Identifier> identifiersLazy = new ArrayList<Identifier>();
-
-	private List<Identifier> identifiers = new ArrayList<Identifier>();
-
 	private int studySiteIndex = -1; // represents the studysite, selected in the (add Investigators page)
 
 	private Boolean drugAdministrationTherapyType = Boolean.FALSE;
@@ -324,35 +320,22 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "STU_ID")
 	public List<Identifier> getIdentifiers() {
-		// return lazyListHelper.getInternalList(Identifier.class);
-		return identifiers;
+		return lazyListHelper.getInternalList(Identifier.class);
 	}
 
 	@Override
 	public void setIdentifiers(final List<Identifier> identifiers) {
-		this.identifiers = identifiers;
-		// lazyListHelper.setInternalList(Identifier.class, identifiers);
+		lazyListHelper.setInternalList(Identifier.class, identifiers);
 	}
 
 	@Transient
 	public List<Identifier> getIdentifiersLazy() {
-
-		if (getIdentifiers() != null && !getIdentifiers().isEmpty() && identifiersLazy.isEmpty()) {
-			for (Identifier identifier : getIdentifiers()) {
-				if (identifier.getType().equalsIgnoreCase("Co-ordinating Center Identifier") ||
-					identifier.getType().equalsIgnoreCase("Sponsor Identifier") ) {
-					continue;
-				}
-				identifiersLazy.add(identifier);
-			}
-		}
-		return identifiersLazy;
+		return lazyListHelper.getLazyList(Identifier.class);
 	}
 
 	@Transient
 	public void setIdentifiersLazy(final List<Identifier> identifiers) {
-		identifiersLazy = identifiers;
-		// setIdentifiers(identifiers);
+		setIdentifiers(identifiers);
 	}
 
 	@OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
@@ -624,5 +607,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		}
 		return null;
 	}
-
+	
+	@Transient
+	public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers(){
+		return new ProjectedList<SystemAssignedIdentifier>(getIdentifiersLazy(), SystemAssignedIdentifier.class);
+	}
+	
+	@Transient
+	public List<OrganizationAssignedIdentifier> getOrganizationAssignedIdentifiers(){
+		return new ProjectedList<OrganizationAssignedIdentifier>(getIdentifiersLazy(), OrganizationAssignedIdentifier.class);
+	}
 }
