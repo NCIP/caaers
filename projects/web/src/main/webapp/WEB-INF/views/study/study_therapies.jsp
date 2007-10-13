@@ -15,6 +15,7 @@
 <tags:includeScriptaculous/>
 </head>
 <body>
+<study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyTherapiesForm" hideErrorDetails="true">
     
     <jsp:attribute name="repeatingFields">
@@ -24,19 +25,15 @@
 		</div>
 		
 		<table id="test2" class="single-fields" >
-        	<tr >
+        	<tr>
     				<td> 
     				<c:forEach items="${fieldGroups.studyTherapies.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 	</c:forEach>
     				</td>
-    			</tr>
-    			
-    		</table> 
-		
+    		</tr>
+    	</table> 
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-
-
 				<tags:renderInputs field="${field}" />
 		
 		</c:forEach>

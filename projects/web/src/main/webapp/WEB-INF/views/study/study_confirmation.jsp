@@ -14,10 +14,8 @@
 <title>Confirmation</title>
 </head>
 <body>
-<chrome:box title="Confirmation">
-<form:form>
-
-<chrome:division id="single-fields">
+<chrome:box title="Confirmation" style="width:98%;">
+<chrome:division id="single-fields" >
       <div class="content">
            <div class="row">
                <div>The following study is saved successfully</div>
@@ -31,7 +29,11 @@
               <div class="value">${command.primaryIdentifier}</div>
            </div>
            <div class="row">
-              <div class="label">Sponsor:</div>
+              <div class="label">Coordinating center:</div>
+              <div class="value">${command.studyCoordinatingCenter.organization.name}</div>
+           </div>
+           <div class="row">
+              <div class="label">Funding sponsor:</div>
               <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
            </div>
            <div class="row">
@@ -43,7 +45,6 @@
  		  </div>
        </div>
 </chrome:division>
-</form:form>
 </chrome:box>
 </body>
 </html>

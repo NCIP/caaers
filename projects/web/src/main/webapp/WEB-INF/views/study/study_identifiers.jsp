@@ -4,6 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -36,14 +37,16 @@
             	);
             	
             	}        	
-            	this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
+            	
+            	 //only one primary indicator is possible, by default Coordinating center identifier is primary
+            	 this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
             	 		if(i == this.index) continue;
             	 		$(si[i].indicator).checked = false;
             	 	}
             	 }.bind(this));
-            
+               
             
             },sitePopulator: function(autocompleter, text) {
          		createStudy.matchOrganization(text, function(values) {
@@ -84,14 +87,17 @@
 		            	addParameters: [1],
 		            	addFirstAfter: "system-section",
 		                addCallback: function(newIndex) {
-						var newIndex = 0;
-						var sysSectionLength = $$('.system-section-row').length;
-						var orgSectionLength = $$('.organization-section-row').length;
-						if(sysSectionLength > 0) newIndex = newIndex + sysSectionLength;
-						if(orgSectionLength > 0) newIndex = newIndex + orgSectionLength;  		            
-		                newIndex=newIndex-1;
-             	new jsIdentifier(newIndex);
-             }
+						 var newIndex = 0;
+						 var sysSectionLength = $$('.system-section-row').length;
+						 var orgSectionLength = $$('.organization-section-row').length;
+						 if(sysSectionLength > 0) newIndex = newIndex + sysSectionLength;
+						 if(orgSectionLength > 0) newIndex = newIndex + orgSectionLength;
+						 if($('ssi-empty-row')){
+                				Effect.Fade('si-empty-row');
+               			 }  		            
+		                 newIndex=newIndex-1;
+             			 new jsIdentifier(newIndex);
+             			}
 		            });
 		            //This is added for Add Organization Identifiers buttion
 		             new ListEditor("organization-section-row", createStudy, "Identifier", {
@@ -127,7 +133,7 @@
     				<th class="tableHeader" ><tags:requiredIndicator />Identifier </th>
     				<th class="tableHeader" ><tags:requiredIndicator />Identifier type </th>
     				<th class="tableHeader" ><tags:requiredIndicator />Organization name </th>
-    				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
+    				 <th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
     				<th class="tableHeader" >&nbsp;</th>
     			</tr>
     			<c:set var="cntOrg">0</c:set>
@@ -149,17 +155,20 @@
     				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
     				<th class="tableHeader" >&nbsp;</th>
     			</tr>
+				<c:if  test="${fn:length(command.systemAssignedIdentifiers) lt 1}">
+	   			 <tr id="si-empty-row" class="si-empty-row"><td colspan="4">No system assigned an ID available to this study</td></tr>
+	  			</c:if>    			
     			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
             	 <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}" exclusions="Organization" />
 				  <c:set var="cntSys">${cntSys + 1}</c:set>
-			  </c:if>
-			 </c:forEach>
+			     </c:if>
+			    </c:forEach>
              </table>
            	</chrome:division>
     	
-        	  </jsp:attribute>
+   </jsp:attribute>
    <jsp:attribute name="localButtons"> 
 	 <tags:listEditorAddButton divisionClass="system-section-row" label="Add System Identifier" />   
      <tags:listEditorAddButton divisionClass="organization-section-row" label="Add Organization Identifier" />

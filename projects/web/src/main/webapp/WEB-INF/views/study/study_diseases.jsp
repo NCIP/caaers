@@ -13,7 +13,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
         /* TODO: all these are temporary */
-        .box { float: left; width: 45%; margin: 1em;}
+        #diseases { float: left; width: 48%; margin: 1em;}
+        #all-disease { float: left; width: 48%; margin: 1em;}
 </style>
 
 <title>${tab.longTitle}</title>
@@ -248,11 +249,12 @@
     </script>
 </head>
 <body>
-<study:summary></study:summary>
+<study:summary />
+<div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" cssClass="standard">
         <tags:tabFields tab="${tab}"/>
-        <chrome:box title="${tab.shortTitle}">
+        <chrome:box title="${tab.shortTitle}" id="all-disease">
 
             <div>
                  <input type="hidden" name="_action" value="">
@@ -366,5 +368,6 @@
 
             </chrome:box>
     </form:form>
+ </div>
 </body>
 </html>

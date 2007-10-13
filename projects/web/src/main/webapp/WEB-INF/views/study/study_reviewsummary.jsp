@@ -24,11 +24,11 @@
         <chrome:division>
         	
             <div class="row">
-                <div class="label">Primary Identifier</div>
+                <div class="label">Primary identifier</div>
                 <div class="value">${command.primaryIdentifier.value}</div>
             </div>
             <div class="row">
-                <div class="label">Short Title</div>
+                <div class="label">Short title</div>
                 <div class="value">${command.shortTitle}</div>
             </div>
             <div class="row">
@@ -44,10 +44,13 @@
                 <div class="value">${command.description}</div>
             </div>
             <div class="row">
-                <div class="label">Primary Sponsor</div>
+                <div class="label">Primary sponsor</div>
                 <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
             </div>
-
+			<div class="row">
+                <div class="label">Coordinating center</div>
+                <div class="value">${command.studyCoordinatingCenter.organization.name}</div>
+            </div>
             <div class="row">
                 <div class="label">Phase code</div>
                 <div class="value">${command.phaseCode}</div>

@@ -366,6 +366,22 @@ img.indicator {
 }
 
 /*
+  Left and right panels
+*/
+.rightpanel {
+    float:right;
+    width:48%;
+    margin: 0 14px 14px 0;
+    padding: 5px;
+}
+
+.leftpanel {
+    float: left;
+    width:48%;
+    margin: 0 5px 5px -2em;
+    padding: 5px;
+}
+/*
   Styles for Table Data 
 */
 table.tablecontent {

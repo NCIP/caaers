@@ -47,6 +47,7 @@
 </script>
 </head>
 <body>
+<study:summary />
 <tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="true">
     <jsp:attribute name="repeatingFields">
 		<div>
