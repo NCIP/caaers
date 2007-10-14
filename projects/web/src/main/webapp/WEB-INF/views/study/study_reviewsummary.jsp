@@ -22,8 +22,8 @@
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
         <chrome:division>
-        	
-            <div class="row">
+        	<div class="leftpanel">
+        		<div class="row">
                 <div class="label">Primary identifier</div>
                 <div class="value">${command.primaryIdentifier.value}</div>
             </div>
@@ -51,14 +51,200 @@
                 <div class="label">Coordinating center</div>
                 <div class="value">${command.studyCoordinatingCenter.organization.name}</div>
             </div>
-            <div class="row">
-                <div class="label">Phase code</div>
-                <div class="value">${command.phaseCode}</div>
-            </div>
+            
+        	</div>
+        	<div class="rightpanel">
+        		<div class="row">
+                	<div class="label">Phase code</div>
+                	<div class="value">${command.phaseCode}</div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Status</div>
+                	<div class="value">${command.status}</div>
+            	</div>	
+            	<div class="row">
+                	<div class="label">Terminology</div>
+                	<div class="value">${command.terminology.term}</div>
+            	</div>	
+            	<div class="row">
+                	<div class="label">Terminology Version</div>
+                	<div class="value">
+                
+                	${command.terminology.term eq 'CTC' ? command.terminology.ctcVersion.name : command.terminology.meddraVersion.name} </div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Multi institutional</div>
+                	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'}</div>
+            	</div>	
+            		
+        	</div>
        </chrome:division>
-		<c:if test="${not empty command.identifiers}">
-			<chrome:division title="Identifiers">
-			<table class="tablecontent">
+    <chrome:division title="Therapies">
+    	<table class="tablecontent" width="96%" >
+		<tr >						
+			<th scope="col">Therapy name</th>
+		</tr>	
+		<c:forEach items="${command.studyTherapies}" var="therapy">
+		<tr class="results">
+			<td>${therapy.studyTherapyType.displayName}</td>
+		</tr>
+		</c:forEach>
+		<c:if test="${empty command.studyTherapies}">
+		<tr>
+		 <td>No therapy is selected for this study</td>
+		</tr>
+		</c:if>																		
+		</table>
+    </chrome:division>
+    <chrome:division title="Agents">
+		<table class="tablecontent" width="96%" >
+		<tr >						
+			<th scope="col">Agent name</th>
+			<th scope="col">Agent NSC<br />number</th>
+			<th scop="col">IND type</th>
+			<th scope="col">IND #</th>
+			<th scope="col">Investigational new <br /> drug?</th>	
+		</tr>																			
+	 	    
+		<c:forEach items="${command.studyAgents}" var="studyAgent">
+			<tr>						
+				<td>${studyAgent.agentName}</td>
+				<td>${studyAgent.agent.nscNumber}</td>
+				<td>${studyAgent.indType.displayName }</td>
+				<td>
+					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
+						  <tr><td>${sai.investigationalNewDrug.indNumber eq -111 ? 'CTEP IND' : sai.investigationalNewDrug.indNumber }</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
+				 	 </c:forEach>
+					</table>					
+					</c:if>
+				</td>
+				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
+			</tr>
+		</c:forEach>				
+		<c:if test="${empty command.studyAgents}">
+			<tr class="results">
+				<td colspan="5">No agents are associated to this study</td>
+			</tr>
+		</c:if>
+		</table>
+    </chrome:division>
+         
+    <chrome:division title="Treatment Assignments">
+        	<table class="tablecontent" width="96%" >
+            	<tr>
+                 <th scope="col">Code</th>
+                 <th scope="col">Dose level order</th>
+                 <th scope="col">Description</th>
+                 <th scope="col">Comments</th>
+            	</tr>
+            	<c:forEach items="${command.treatmentAssignments}" var="treatmentAssignment" >
+                    <tr class="results">
+                        <td>${treatmentAssignment.code}</td>
+                        <td>${treatmentAssignment.doseLevelOrder}</td>
+                        <td>${treatmentAssignment.description}</td>
+                        <td>${treatmentAssignment.comments}</td>
+                    </tr>
+            	</c:forEach>
+            	<c:if test="${empty command.treatmentAssignments}">
+            	 <tr class="results">
+            	  <td colspan="4">No treatment assignment code(TAC) is available to this study</td>
+            	 </tr>
+            	</c:if>
+        	</table>
+	</chrome:division>
+		
+		       
+    <chrome:division title="Sites">
+       		<table class="tablecontent" width="96%" >
+				<tr>
+					<th scope="col">Study Site</th>
+				</tr>
+				<c:forEach items="${command.studySites}" var="studySite">
+				<tr class="results">
+					<td>${studySite.organization.name}</td>
+				</tr>
+				</c:forEach>
+				<c:if test="${empty command.studySites}">
+				<tr><td class="results">No sites are associated to this study</td></tr>
+				</c:if>
+			</table>	
+	</chrome:division>
+   	<chrome:division title="Investigators">
+    	<c:set var="invCnt" value="0" />
+        <table class="tablecontent" width="96%" >
+            <tr>
+                <th scope="col">Investigator</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+            <c:forEach items="${command.studyOrganizations}" var="studySite" >
+                <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
+                    <tr class="results">
+                        <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
+                        <td>${studyInvestigator.roleCode}</td>
+                        <td>${studyInvestigator.statusCode}</td>
+                    </tr>
+                    <c:set var="invCnt" value="${invCnt + 1}" />
+                </c:forEach>
+            </c:forEach>
+            <c:if test="${invCnt eq 0}">
+				<tr class="results">
+				 <td colspan="3">No investigator is assigned to this study</td>
+				</tr>
+            </c:if>
+        </table>
+    	</chrome:division>
+   
+    <chrome:division title="Personnel">
+    	<c:set var="staffCnt" value="0" />
+        <table class="tablecontent" width="96%" >
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Role</th>
+                <th scope="col">Status</th>
+            </tr>
+            <c:forEach items="${command.studyOrganizations}" var="studySite" >
+                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
+                    <tr class="results">
+                        <td>${studyPersonnel.researchStaff.fullName}</td>
+                        <td>${studyPersonnel.roleCode}</td>
+                        <td>${studyPersonnel.statusCode}</td>
+                    </tr>
+                    <c:set var="staffCnt" value="${invCnt + 1}" />
+                </c:forEach>
+            </c:forEach>
+            <c:if test="${staffCnt eq 0}">
+				<tr class="results">
+				 <td colspan="3">No personnel(research staff) is assigned to this study</td>
+				</tr>
+            </c:if>
+        </table>
+    </chrome:division>
+
+	<c:if test="${not empty command.ctepStudyDiseases}">
+    <chrome:division title="Diseases">
+        <table class="tablecontent" width="96%" >
+            <br>
+            <tr>
+                <th scope="col">Primary</th>
+                <th scope="col">Disease Term</th>
+            </tr>
+
+            <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
+                <tr class="results">
+                    <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
+                    <td>${studyDisease.term.ctepTerm}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br>
+    </chrome:division>
+    </c:if>
+	
+	<chrome:division title="Identifiers">
+			<table class="tablecontent" width="96%">
 			<tr>
 				<th scope="col">Assigning Authority</th>
 				<th scope="col">Identifier Type</th>
@@ -76,134 +262,15 @@
 				<td>${identifier.value}</td>
 			</tr>
 			</c:forEach>
+			<c:if test="${empty command.identifiersLazy}">
+			<tr>
+			  <td colspan="3">No identifier is assigned to this study</td>
+			</tr>
+			</c:if>
 			</table>
 			<br>
 			</chrome:division>
-		</c:if>
-		
-		<c:if test="${not empty command.studySites}">       
-       		<chrome:division title="Sites">
-       		<table class="tablecontent">
-				<tr>
-					<th scope="col">Study Site</th>
-				</tr>
-				<c:forEach items="${command.studySites}" var="studySite">
-				<tr class="results">
-					<td>${studySite.organization.name}</td>
-				</tr>
-				</c:forEach>
-			</table>	
-	  		<br>
-			</chrome:division>
-	</c:if>
-	<c:if test="${not empty command.studyOrganizations}">    
-    	<chrome:division title="Investigators">
-        <table class="tablecontent">
-            <tr>
-                <th scope="col">Investigator</th>
-                <th scope="col">Role</th>
-                <th scope="col">Status</th>
-            </tr>
-            <c:forEach items="${command.studyOrganizations}" var="studySite" >
-                <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
-                    <tr class="results">
-                        <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
-                        <td>${studyInvestigator.roleCode}</td>
-                        <td>${studyInvestigator.statusCode}</td>
-                    </tr>
-                </c:forEach>
-            </c:forEach>
-        </table>
-    	</chrome:division>
-    </c:if>
-     <c:if test="${not empty command.treatmentAssignments}">
-    <chrome:division title="Treatment Assignments">
-        <table class="tablecontent">
-            <tr>
-                <th scope="col">Code</th>
-                <th scope="col">Dose level order</th>
-                <th scope="col">Description</th>
-                <th scope="col">Comments</th>
-            </tr>
-            <c:forEach items="${command.treatmentAssignments}" var="treatmentAssignment" >
-                    <tr class="results">
-                        <td>${treatmentAssignment.code}</td>
-                        <td>${treatmentAssignment.doseLevelOrder}</td>
-                        <td>${treatmentAssignment.description}</td>
-                        <td>${treatmentAssignment.comments}</td>
-                    </tr>
-            </c:forEach>
-        </table>
-    </chrome:division>
-    </c:if>
-    <c:if test="${not empty command.studyOrganizations}">
-    <chrome:division title="Personnel">
-        <table class="tablecontent">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Role</th>
-                <th scope="col">Status</th>
-            </tr>
-            <c:forEach items="${command.studyOrganizations}" var="studySite" >
-                <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
-                    <tr class="results">
-                        <td>${studyPersonnel.researchStaff.fullName}</td>
-                        <td>${studyPersonnel.roleCode}</td>
-                        <td>${studyPersonnel.statusCode}</td>
-                    </tr>
-                </c:forEach>
-            </c:forEach>
-        </table>
-    </chrome:division>
-    </c:if>
-    <c:if test="${not empty command.studyAgents}">
-    <chrome:division title="Agents">
-		<table class="tablecontent">
-		<tr >						
-			<th scope="col">Agent Name</th>
-			<th scope="col">Agent NSC<br />Number</th>
-			<th scope="col">IND #</th>
-			<th scope="col">Investigational New <br /> Drug?</th>	
-		</tr>																			
-	 	    
-		<c:forEach items="${command.studyAgents}" var="studyAgent">
-			<tr>						
-				<td>${studyAgent.agentName}</td>
-				<td>${studyAgent.agent.nscNumber}</td>
-				<td>
-					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-						  <tr><td>${sai.investigationalNewDrug.indNumber eq -111 ? 'CTEP IND' : sai.investigationalNewDrug.indNumber }</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
-				 	 </c:forEach>
-					</table>					
-					</c:if>
-				</td>
-				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
-			</tr>
-		</c:forEach>				
-		</table>
-    </chrome:division>
-	</c:if>
-	<c:if test="${not empty command.ctepStudyDiseases}">
-    <chrome:division title="Diseases">
-        <table class="tablecontent">
-            <br>
-            <tr>
-                <th scope="col">Primary</th>
-                <th scope="col">Disease Term</th>
-            </tr>
 
-            <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
-                <tr class="results">
-                    <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
-                    <td>${studyDisease.term.ctepTerm}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        <br>
-    </chrome:division>
-    </c:if>
     </jsp:attribute>
 </tags:tabForm>
 

@@ -45,25 +45,7 @@ public class EditStudyController extends StudyController<Study> {
 		if (log.isDebugEnabled()) {
 			log.debug("Retrieved Study :" + String.valueOf(study));
 		}
-
-		// update the INDType of StudyAgents
-		if (study.getStudyAgentsInternal() != null && study.getStudyAgentsInternal().size() > 0) {
-			for (StudyAgent sa : study.getStudyAgentsInternal()) {
-				// update the IND Type.
-				List<StudyAgentINDAssociation> sas = sa.getStudyAgentINDAssociationsInternal();
-				if (sas == null || sas.isEmpty()) {
-					sa.setIndType(0);
-				}
-				else if (sas.get(0).getInvestigationalNewDrug().getIndNumber() == AgentsTab.CTEP_IND) {
-					sa.setIndType(1);
-				}
-				else {
-					sa.setIndType(2);
-				}
-
-			}
-		}
-
+		
 		return study;
 	}
 

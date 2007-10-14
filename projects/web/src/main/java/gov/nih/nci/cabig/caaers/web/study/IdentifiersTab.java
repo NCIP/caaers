@@ -61,7 +61,7 @@ public class IdentifiersTab extends StudyTab {
 			rfgFactory.addField(idField);
 
 			rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
-					collectOptionsFromConfig("identifiersType", "desc", "desc", SPONSOR_IDENTIFIER_CODE)));
+					collectOptionsFromConfig("identifiersType", "desc", "desc")));
 			InputField sysNameField = InputFieldFactory.createTextField("systemName", "System Name", false);
 			InputFieldAttributes.setSize(sysNameField, 50);
 			rfgFactory.addField(sysNameField);

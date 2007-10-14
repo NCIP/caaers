@@ -58,9 +58,9 @@ td#linkPosition a img {
                 if (agentName) $(this.agentPropertyName + "-input").value = agentName
 
                 $("select-agent-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
+                    .observe("click", this.updateAgentOrOther.bind(this))
                 $("select-other-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
+                    .observe("click", this.updateAgentOrOther.bind(this))
             	
             	this.agentInputId = this.agentPropertyName + "-input";
             	if(agentName) $(this.agentInputId).value = agentName;
@@ -74,7 +74,7 @@ td#linkPosition a img {
 					
 					if(event.target.value == 2){
 					  	createStudy.addIND(index, 0, 2,function(html){
-     						new Insertion.After($$(".ind"+index ).last(), html);
+     						new Insertion.After($('studyAgents[' + index + '].indType-row'), html);
      						AE.slideAndShow('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
      						//setup auto completer
     						jsAgents[index].initINDAutoCompleter(0);
@@ -92,8 +92,8 @@ td#linkPosition a img {
 					}
 					
 	 			});
-             this.initializePriorTherapyOrOther();	
-            }, updatePriorTherapyOrOther: function() {
+             this.initializeAgentOrOther();	
+            }, updateAgentOrOther: function() {
                 var isPriorTherapy = $("select-agent-" + this.index).checked
                 var agentRow = $(this.agentPropertyName + "-row")
                 var otherRow = $(this.otherProperty + "-row")
@@ -109,7 +109,7 @@ td#linkPosition a img {
                     $(this.agentInputId).disabled=true
                     
                 }
-            },initializePriorTherapyOrOther: function() {
+            },initializeAgentOrOther: function() {
                 var otherValue = $(this.otherProperty).value
                 if (otherValue.length == 0) {
                     $("select-agent-" + this.index).click()

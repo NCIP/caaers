@@ -18,7 +18,7 @@ cssClass="${sectionClass}" style="${style}" enableDelete="${enableDelete}" delet
 <tags:renderRow field="${fieldGroups[mainGroup].fields[0]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-agent-${index}" name="priorTherapyOrOther${index}" type="radio"/>
+                <input id="select-agent-${index}" name="agentOrOther${index}" type="radio"/>
                 ${fieldGroups[mainGroup].fields[0].displayName}
             </label>
         </jsp:attribute>
@@ -27,14 +27,17 @@ cssClass="${sectionClass}" style="${style}" enableDelete="${enableDelete}" delet
     <tags:renderRow field="${fieldGroups[mainGroup].fields[1]}">
         <jsp:attribute name="label">
             <label>
-                <input id="select-other-${index}" name="priorTherapyOrOther${index}" type="radio"/>
+                <input id="select-other-${index}" name="agentOrOther${index}" type="radio"/>
                 ${fieldGroups[mainGroup].fields[1].displayName}
             </label>
         </jsp:attribute>
     </tags:renderRow>
-    
+<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="status">
+ <c:if test="${status.index gt 1}">
+  <tags:renderRow field="${field}" />
+ </c:if>
+</c:forEach>
 
-<tags:renderRow field="${fieldGroups[mainGroup].fields[2]}"></tags:renderRow>
 
 
  <div id="local-buttons-${index}" class="local-buttons">

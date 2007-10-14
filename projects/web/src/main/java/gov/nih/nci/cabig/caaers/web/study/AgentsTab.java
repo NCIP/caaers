@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -25,14 +26,19 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class AgentsTab extends StudyTab {
+	@Deprecated
 	public static int IND_TYPE_NOT_USED = 0;
-
+	@Deprecated
 	public static int IND_TYPE_CTEP = 1;
-
+	@Deprecated
 	public static int IND_TYPE_OTHER = 2;
+	@Deprecated
 	public static int IND_TYPE_NA_COMMERCIAL_AGENT = 3;
+	@Deprecated
 	public static int IND_TYPE_EXEMPT = 4;
+	@Deprecated
 	public static int IND_TYPE_DCP_IND = 5;
+	@Deprecated
 	public static int CTEP_IND = -111;
 
 	private LinkedHashMap<Object, Object> indTypeMap = new LinkedHashMap<Object, Object>();
@@ -40,12 +46,9 @@ public class AgentsTab extends StudyTab {
 	public AgentsTab() {
 		super("Study Agents", "Agents", "study/study_agents");
 		// setAutoPopulateHelpKey(true);
-		indTypeMap.put(AgentsTab.IND_TYPE_NOT_USED, "N/A");
-		indTypeMap.put(AgentsTab.IND_TYPE_NA_COMMERCIAL_AGENT, "N/A-Commercial Agent");
-		indTypeMap.put(AgentsTab.IND_TYPE_EXEMPT, "IND-Exempt");
-		indTypeMap.put(AgentsTab.IND_TYPE_CTEP, "CTEP IND");
-		indTypeMap.put(AgentsTab.IND_TYPE_DCP_IND, "DCP IND");
-		indTypeMap.put(AgentsTab.IND_TYPE_OTHER, "Other IND Holder");
+		for(INDType indType : INDType.values()){
+			indTypeMap.put(indType.name(), indType.getDisplayName());
+		}
 
 	}
 
