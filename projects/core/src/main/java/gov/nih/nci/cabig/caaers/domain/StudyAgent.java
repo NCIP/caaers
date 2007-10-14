@@ -43,7 +43,7 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	private Participation participation;
 
 	// To be moved to command object
-	private transient int indType;
+	private INDType indType;
 
 	/*
 	 * Constructor -- Initializes participation at create time
@@ -124,13 +124,10 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 		ass.setStudyAgent(this);
 	}
 
-	@Transient
-	public int getIndType() {
+	public INDType getIndType() {
 		return indType;
 	}
-
-	@Transient
-	public void setIndType(int indType) {
+	public void setIndType(INDType indType) {
 		this.indType = indType;
 	}
 

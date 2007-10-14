@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
- * This enumeration represents the status of an EmailNotificaiton.
+ * This enumeration represents the Therapies.
  *
  * @author Biju Joseph
  */
@@ -30,8 +30,7 @@ public enum StudyTherapyType implements CodedEnum<Integer> {
 	}
 
 	public String getDisplayName() {
-		String s = name().toLowerCase();
-		return ("" + s.charAt(0)).toUpperCase() + s.substring(1);
+		return studyTherapyType;
 	}
 
 	public String getName() {
