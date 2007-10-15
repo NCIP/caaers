@@ -98,4 +98,8 @@ public abstract class OrganizationController<C extends Organization> extends
 		return modelAndView;
 	}
 
+    @Required
+    public void setOrganizationService(OrganizationService organizationService) {
+        this.organizationService = organizationService;
+    }
 }
