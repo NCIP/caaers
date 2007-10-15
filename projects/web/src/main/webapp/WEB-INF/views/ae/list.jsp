@@ -232,7 +232,7 @@
             						</c:if>
 								</td>
 								<td width="50%" id="action${theReport.id}">
-									<c:if test="${not command.reportsSubmittable[theReport.id]}" >
+									<c:if test="${command.reportsSubmittable[theReport.id]}" >
 										<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
 											<center>
 												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
