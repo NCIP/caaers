@@ -118,7 +118,7 @@
             			--%>
             		</td>
             		<td>
-            			<c:if test="${not reportMessages[report.id].submittable}" >
+            			<c:if test="${reportMessages[report.id].submittable}" >
 							<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 								<center>
 									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
