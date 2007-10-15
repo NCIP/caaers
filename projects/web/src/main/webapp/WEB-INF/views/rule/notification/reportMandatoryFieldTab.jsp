@@ -51,10 +51,10 @@
 			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION" />
 			 	  </td>
 			 	  <td width="50%">
-		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
-  	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Height" heading="Height" singleRow="true" tabular="true" />
+		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
+  	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Height" heading="Height" singleRow="true" tabular="true" />
   	    	      <chrome:division title="Metastatic disease information">
-					<rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Metastatic disease sites" />
+					<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Metastatic disease sites" />
 				  </chrome:division>
 			 	  </td>
 			  </tr>
