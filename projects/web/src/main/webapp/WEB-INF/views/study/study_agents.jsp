@@ -72,14 +72,14 @@ td#linkPosition a img {
             	//observe on the change event on IND Type (usage) dropdown.
 				Event.observe('studyAgents['  + index + '].indType',"change", function(event){
 					
-					if(event.target.value == 2){
+					if(event.target.value == 'OTHER'){
 					  	createStudy.addIND(index, 0, 2,function(html){
      						new Insertion.After($('studyAgents[' + index + '].indType-row'), html);
      						AE.slideAndShow('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
      						//setup auto completer
     						jsAgents[index].initINDAutoCompleter(0);
 				     	});
-					}else if(event.target.value == 1){
+					}else if(event.target.value == 'CTEP_IND'){
 						createStudy.addIND(index, 0, 1,function(html){
 						var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
 						if(el){

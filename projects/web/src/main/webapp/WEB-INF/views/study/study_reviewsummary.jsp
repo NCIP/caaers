@@ -69,8 +69,8 @@
             	<div class="row">
                 	<div class="label">Terminology Version</div>
                 	<div class="value">
-                
-                	${command.terminology.term eq 'CTC' ? command.terminology.ctcVersion.name : command.terminology.meddraVersion.name} </div>
+                	${command.terminology.term eq 'CTC' ? command.terminology.ctcVersion.name : command.terminology.meddraVersion.name} 
+                	</div>
             	</div>
             	<div class="row">
                 	<div class="label">Multi institutional</div>
