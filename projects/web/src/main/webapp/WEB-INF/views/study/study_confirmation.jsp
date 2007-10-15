@@ -12,10 +12,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Confirmation</title>
+<style type="text/css">
+  /* TODO: all these are temporary */
+  #confirmbox {  width: 98%;}
+</style>
 </head>
 <body>
-<chrome:box title="Confirmation" style="width:98%;">
-<chrome:division id="single-fields" >
+<chrome:box title="Confirmation"  id="confirmbox">
+<chrome:division id="single-fields" style="width:100%">
       <div class="content">
            <div class="row">
                <div>The following study is saved successfully</div>
@@ -41,7 +45,7 @@
               <div class="value">${command.phaseCode}</div>
            </div>
            <div>
- 			<img src="/caaers/images/chrome/spacer.gif" width="400" height="1" />
+ 			<img src="/caaers/images/chrome/spacer.gif" width="900" height="1" />
  		  </div>
        </div>
 </chrome:division>
