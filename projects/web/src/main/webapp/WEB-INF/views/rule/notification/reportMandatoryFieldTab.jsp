@@ -48,7 +48,7 @@
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
-			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION" />
+			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION" />
 			 	  </td>
 			 	  <td width="50%">
 		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SCECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
