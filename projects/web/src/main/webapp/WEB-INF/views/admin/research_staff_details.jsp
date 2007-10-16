@@ -16,12 +16,12 @@
 
     <style type="text/css">
         /* Override default lable length */
-        div.row div.label {
-            width: 9em;
+        div.row div.label2 {
+            width: 16em;
         }
 
-        div.row div.value {
-            margin-left: 10em;
+        div.row div.value2 {
+            margin-left: 17em;
         }
 
         div.content {
@@ -69,23 +69,18 @@
 </chrome:division>
 
 <chrome:division title="Research Staff Details">
-<table id="test2" class="single-fields">
-    <tr>
-        <td>
+<div class="leftpanel">
             <c:forEach begin="0" end="3"
                        items="${fieldGroups.researchStaff.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
-        </td>
+</div>
+<div class="rightpanel">
         <td><c:forEach begin="4" end="6"
                        items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-        </td>
-    </tr>
-
-</table>
-
+</div>
 </chrome:division>
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
@@ -94,10 +89,10 @@
 
 
     <div class="row">
-        <div class="label">
-            Participant cordinator:
+        <div class="label label2">
+            Participant coordinator:
         </div>
-        <div class="value">
+        <div class="value value2">
             <input type="checkbox"
                    onclick="this.checked?$('caaersParticipantCordinator').value='true':$('caaersParticipantCordinator').value='false';" ${isCaaersPartcipantCordinator?'checked':'off' }/>
             <input id="caaersParticipantCordinator" type="hidden" name="caaersParticipantCordinator"/>
@@ -105,10 +100,10 @@
     </div>
 
     <div class="row">
-        <div class="label">
-            Study cordinator:
+        <div class="label label2">
+            Study coordinator:
         </div>
-        <div class="value">
+        <div class="value value2">
             <input type="checkbox"
                    onclick="this.checked?$('caaersStudyCordinator').value='true':$('caaersStudyCordinator').value='false';" ${isCaaersStudyCordinator?'checked':'off'} />
             <input id="caaersStudyCordinator" type="hidden" name="caaersStudyCordinator"/>
@@ -116,10 +111,10 @@
     </div>
 
     <div class="row">
-        <div class="label">
-            Adverse event cordinator:
+        <div class="label label2">
+            Adverse event coordinator:
         </div>
-        <div class="value">
+        <div class="value value2">
             <input type="checkbox"
                    onclick="this.checked?$('caaersAECordinator').value='true':$('caaersAECordinator').value='false';" ${isCaaersAECordinator?'checked':'off'} />
             <input id="caaersAECordinator" type="hidden" name="caaersAECordinator"/>
@@ -127,10 +122,10 @@
     </div>
 
     <div class="row">
-        <div class="label">
-            Site cordinator:
+        <div class="label label2">
+            Site coordinator:
         </div>
-        <div class="value">
+        <div class="value value2">
             <input type="checkbox"
                    onclick="this.checked?$('caaersSiteCordinator').value='true':$('caaersSiteCordinator').value='false';" ${isCaaersSiteCordinator?'checked':'off'} />
             <input id="caaersSiteCordinator" type="hidden" name="caaersSiteCordinator"/>
