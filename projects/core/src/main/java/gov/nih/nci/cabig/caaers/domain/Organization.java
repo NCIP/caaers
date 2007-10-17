@@ -46,6 +46,14 @@ public class Organization extends AbstractMutableDomainObject {
 
     ////// LOGIC
 
+    /*
+     * @See study_details.jsp , study_identifiers.jsp 
+     */
+    @Transient
+    public String getFullName(){
+    	return getName() + ( getNciInstituteCode() == null ? "" : " ( " + getNciInstituteCode() + " ) ");
+    }
+    
 	public void addStudyOrganization(StudyOrganization studyOrg) {
     	this.getStudyOrganizations().add(studyOrg);
     	studyOrg.setOrganization(this);

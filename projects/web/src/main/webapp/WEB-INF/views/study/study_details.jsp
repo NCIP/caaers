@@ -51,24 +51,38 @@
 				 })
 			 },
 			 function(organization) { 
-			   return organization.name 
+				 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+			   return organization.name + nciInstituteCode
+
 			 }
+
 		);
 		AE.createStandardAutocompleter('studyCoordinatingCenter.organization',
+
 			 function(autocompleter, text) {
+
 				createStudy.matchOrganization(text, function(values) {
+
 				  autocompleter.setChoices(values)
+
 				 })
+
 			 },
+
 			 function(organization) { 
-			   return organization.name 
+			   var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+			   return organization.name + nciInstituteCode  
+
 			 }
+
 		);
 
 		//populate the name of the associated organization in sponsor & coordinating center field
 
-		$('primaryFundingSponsorOrganization-input').value = '${command.primaryFundingSponsorOrganization.name}';
-		$('studyCoordinatingCenter.organization-input').value = '${command.studyCoordinatingCenter.organization.name}';
+		$('primaryFundingSponsorOrganization-input').value = '${command.primaryFundingSponsorOrganization.fullName}';
+		$('studyCoordinatingCenter.organization-input').value = '${command.studyCoordinatingCenter.organization.fullName}';
 	});
 
 	</script>
@@ -77,15 +91,21 @@
 <body>
 <study:summary />
 
+
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="true" >
   <jsp:attribute name="repeatingFields">
        		<c:forEach items="${fieldGroups.studyDetails.fields}" var="field" >
 			 <tags:renderRow field="${field}"/>
        		</c:forEach>
+
     <chrome:division title="Adverse event coding terminology" >
+
 		 <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status">
+
 		  <tags:renderRow field="${field}"  />
+
 		 </c:forEach>
+
     </chrome:division>
     <chrome:division title="Coordinating center details" >
 		 <c:forEach items="${fieldGroups.ccFieldGroup.fields}" var="field" varStatus="status">
@@ -93,12 +113,17 @@
 		 </c:forEach>
     </chrome:division>
     <chrome:division title="Funding sponsor details" >
+
 		 <c:forEach items="${fieldGroups.fsFieldGroup.fields}" var="field" varStatus="status">
+
 		  <tags:renderRow field="${field}"  />
+
 		 </c:forEach>
+
     </chrome:division>
   </jsp:attribute>
 
 </tags:tabForm>
+
 </body>
 </html>
