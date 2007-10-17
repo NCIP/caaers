@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -10,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +37,14 @@ public class MedicalInfoTab extends AeTab {
         if (lov == null) throw new CaaersSystemException("No LOV for " + propName);
         return InputFieldFactory.collectOptions(lov, "code", "desc", blankValue);
     }
+    
+    private List<AbstractStudyDisease> optionsForStudyDiseases(Study study){
+    	List<AbstractStudyDisease> diseases = new ArrayList<AbstractStudyDisease>();
+    	diseases.addAll(study.getCtepStudyDiseases());
+    	diseases.addAll(study.getMeddraStudyDiseases());
+    	return diseases;
+    	
+    }
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
@@ -47,10 +58,15 @@ public class MedicalInfoTab extends AeTab {
         );
 
         Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
-            command.getStudy().getCtepStudyDiseases(), "id", "term.term", "");
-        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false,
+        		command.getStudy().getCtepStudyDiseases(), "id", "term.term", "");
+        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "CTC Disease name", false,
             ctepStudyDiseaseOptions);
-        InputFieldAttributes.setDetails(ctepStudyDisease, "If the correct disease is not listed in the drop down list, type the appropriate disease name in the Other (disease) field below.");
+        Map<Object, Object> meddraStudyDiseaseOptions = InputFieldFactory.collectOptions(
+        		command.getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "");
+        InputField meddraStudyDisease = InputFieldFactory.createSelectField("meddraStudyDisease", "MedDRA Disease name", false,
+            meddraStudyDiseaseOptions);
+        
+        InputFieldAttributes.setDetails(meddraStudyDisease, "If the correct disease is not listed in either the CTC or MedDRA drop down lists, type the appropriate disease name in the Other (disease) field below.");
         InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
         InputFieldAttributes.setSize(diseaseSite, 33);
         InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");
@@ -62,6 +78,7 @@ public class MedicalInfoTab extends AeTab {
 
         creator.createFieldGroup("disease", null, "diseaseHistory",
             ctepStudyDisease,
+            meddraStudyDisease,
             otherDiseaseField,
             diseaseSite,
             InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other (site of primary disease)"),

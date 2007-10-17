@@ -312,6 +312,8 @@
     <STUDY_DISEASES
         id="-4"
         study_id="-1"
+        term_type="meddra"
+        meddra_code="1233212"
         />
 
     <DISEASE_HISTORIES

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
@@ -69,6 +70,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     protected StudyAgentDao studyAgentDao;
     protected AgentDao agentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+    protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
     protected ReportDefinitionDao reportDefinitionDao;
@@ -94,6 +96,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class),
             ctcTermDao = registerDaoMockFor(CtcTermDao.class),
             ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class),
+            meddraStudyDiseaseDao = registerDaoMockFor(MeddraStudyDiseaseDao.class),
             participantDao = registerDaoMockFor(ParticipantDao.class),
             priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class),
             preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class),
@@ -119,6 +122,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setAgentDao(agentDao);
         controller.setStudyAgentDao(studyAgentDao);
         controller.setCtepStudyDiseaseDao(ctepStudyDiseaseDao);
+        controller.setMeddraStudyDiseaseDao(meddraStudyDiseaseDao);
         controller.setAnatomicSiteDao(anatomicSiteDao);
         controller.setPriorTherapyDao(priorTherapyDao);
         controller.setReportDefinitionDao(reportDefinitionDao);

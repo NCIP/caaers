@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
@@ -69,6 +70,7 @@ public abstract class AbstractAdverseEventInputController
     protected RoutineAdverseEventReportDao routineReportDao;
     protected StudyAgentDao studyAgentDao;
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+    protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected PriorTherapyDao priorTherapyDao;
     protected CtcCategoryDao ctcCategoryDao;
@@ -104,6 +106,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
@@ -327,8 +330,14 @@ public abstract class AbstractAdverseEventInputController
 			TreatmentAssignmentDao treatmentAssignmentDao) {
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
+    public MeddraStudyDiseaseDao getMeddraStudyDiseaseDao() {
+		return meddraStudyDiseaseDao;
+	}
 
-    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+	public void setMeddraStudyDiseaseDao(MeddraStudyDiseaseDao meddraStudyDiseaseDao) {
+		this.meddraStudyDiseaseDao = meddraStudyDiseaseDao;
+	}
+	public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }
 }

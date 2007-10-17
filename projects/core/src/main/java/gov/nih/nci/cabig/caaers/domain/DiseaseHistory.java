@@ -32,7 +32,8 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     private String otherPrimaryDisease;
     private String otherPrimaryDiseaseSite;
     private Date diagnosisDate;
-    private CtepStudyDisease ctepStudyDisease;
+    //private CtepStudyDisease ctepStudyDisease;
+    private AbstractStudyDisease abstractStudyDisease;
     private AnatomicSite codedPrimaryDiseaseSite;
     private LazyListHelper listHelper = new LazyListHelper();
 
@@ -84,16 +85,44 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         this.otherPrimaryDiseaseSite = otherPrimaryDiseaseSite;
     }
 
+    @Transient
+    public CtepStudyDisease getCtepStudyDisease() {
+        if (this.abstractStudyDisease instanceof CtepStudyDisease){
+        	return (CtepStudyDisease)abstractStudyDisease;
+        }else{
+        	return null;
+        }
+    }
+    
+    @Transient
+    public void setCtepStudyDisease(CtepStudyDisease ctepStudyDisease) {
+    	this.abstractStudyDisease = ctepStudyDisease; 
+    }
+    
+    @Transient
+    public MeddraStudyDisease getMeddraStudyDisease() {
+        if (this.abstractStudyDisease instanceof MeddraStudyDisease){
+        	return (MeddraStudyDisease)abstractStudyDisease;
+        }else{
+        	return null;
+        }
+    }
+    
+    @Transient
+    public void setMeddraStudyDisease(MeddraStudyDisease meddraStudyDisease) {
+    	this.abstractStudyDisease = meddraStudyDisease; 
+    }
+    
     @OneToOne
     @JoinColumn(name="study_disease_id")
     @Cascade(value = { CascadeType.ALL })
-    public CtepStudyDisease getCtepStudyDisease() {
-        return ctepStudyDisease;
-    }
+    public AbstractStudyDisease getAbstractStudyDisease() {
+		return abstractStudyDisease;
+	}
 
-    public void setCtepStudyDisease(CtepStudyDisease ctepStudyDisease) {
-        this.ctepStudyDisease = ctepStudyDisease;
-    }
+	public void setAbstractStudyDisease(AbstractStudyDisease abstractStudyDisease) {
+		this.abstractStudyDisease = abstractStudyDisease;
+	}
 
     @Transient
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSites() {

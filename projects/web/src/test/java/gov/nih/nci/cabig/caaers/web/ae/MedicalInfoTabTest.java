@@ -67,6 +67,7 @@ public class MedicalInfoTabTest extends AeTabTestCase {
     public void testStaticDiseaseFieldsPresent() throws Exception {
         assertFieldProperties("disease",
             "aeReport.diseaseHistory.ctepStudyDisease",
+            "aeReport.diseaseHistory.meddraStudyDisease",
             "aeReport.diseaseHistory.otherPrimaryDisease",
             "aeReport.diseaseHistory.codedPrimaryDiseaseSite",
             "aeReport.diseaseHistory.otherPrimaryDiseaseSite",

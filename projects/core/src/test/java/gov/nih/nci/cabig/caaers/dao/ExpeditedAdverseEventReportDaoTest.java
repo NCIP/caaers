@@ -195,7 +195,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertNotNull("No disease history", actual);
         assertEquals("Wrong history", -53, (int) actual.getId());
         assertEquals("Wrong primary disease site", -1, (int) actual.getCodedPrimaryDiseaseSite().getId());
-        assertEquals("Wrong disease from study", -4, (int) actual.getCtepStudyDisease().getId());
+        assertEquals("Wrong disease from study", -4, (int) actual.getMeddraStudyDisease().getId());
         assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual.getDiagnosisDate());
         assertEquals("Wrong number of metastatic disease sites", 1, actual.getMetastaticDiseaseSites().size());
         assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites().get(0).getId());

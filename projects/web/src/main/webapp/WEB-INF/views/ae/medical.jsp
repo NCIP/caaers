@@ -28,10 +28,32 @@
         name: '${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}'
         </c:if>
     }
+    
+     /*
 
     function chooseDiseaseOrOther() {
         var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
         $('aeReport.diseaseHistory.otherPrimaryDisease').disabled = (term != "");
+        $('aeReport.diseaseHistory.meddraStudyDisease').disabled = (term != "");
+    }
+    */
+    
+   
+    
+     function chooseDiseaseOrOther() {
+        var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
+        var meddraterm = $('aeReport.diseaseHistory.meddraStudyDisease').value;
+        
+        
+        $('aeReport.diseaseHistory.meddraStudyDisease').disabled = (term != "");
+        
+         if (term != "" || meddraterm !=""){
+        	$('aeReport.diseaseHistory.otherPrimaryDisease').disabled = true; 
+         }else{
+         	$('aeReport.diseaseHistory.otherPrimaryDisease').disabled = false; 
+         }
+         
+        $('aeReport.diseaseHistory.ctepStudyDisease').disabled = (meddraterm != "");
     }
 
     var EnterDiseaseSite = Class.create()
@@ -122,6 +144,10 @@
         }, 'aeReport.diseaseHistory.metastaticDiseaseSites')
 
         $('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
+            chooseDiseaseOrOther();
+        })
+        
+        $('aeReport.diseaseHistory.meddraStudyDisease').observe("change", function() {
             chooseDiseaseOrOther();
         })
 
