@@ -252,7 +252,7 @@
 <study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
-    <form:form method="post" name="studyDiseasesForm" cssClass="standard">
+    <form:form method="post" name="studyDiseasesForm" >
         <tags:tabFields tab="${tab}"/>
         <chrome:box title="${tab.shortTitle}" id="all-disease">
 
@@ -278,9 +278,12 @@
                     <br><br>Diseases<br>
                     <select multiple size="1" style="width:400px" id="disease-term">
                         <option value="">Please select a Category first</option>
-                    </select> <span id="disease-selected-name"></span> <a
+                    </select> <span id="disease-selected-name"></span>
+                    <input class='ibutton' type='button' onclick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease'/>
+                    <%--
+                    <a
                         href="javascript:fireAction('addStudyDisease','0');"><img
-                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a> <br>
+                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>--%> <br>
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
@@ -291,56 +294,75 @@
             <chrome:division title="${meddraVersion} Terms">
 					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
 					<form:hidden  path="diseaseLlt" />
-					<input type="text" id="diseaseLlt-input" value="" class="autocomplete-input"/>
+					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete-input"/>
                     <input type="button" id="diseaseLlt-clear" value="Clear"/>
+                    <input class='ibutton' type='button' onclick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
                     <tags:indicator id="diseaseLlt-indicator"/>
                     <div id="diseaseLlt-choices" class="autocomplete"></div>
+                    
+                    <%--
                     <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
                         src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
+                     --%>
                     <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
         </chrome:box>
+        	 
 
             <chrome:box title="Selected Diseases " id="diseases">
+            <!-- CTEP -->
+            <chrome:division title="Ctep">
             <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
             	<c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
  	 			No Diseases Selected
  	 			</c:if>
 			</c:if>
-            <c:forEach items="${command.ctepStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
-            Ctep<hr>
-             <div STYLE="  font-size: 12px; overflow: auto;">
-                    <TABLE border="0"  width="100%" id="studyDetails">
-                        <tr>
-                            <td >Disease Term</td>
-                            <td style="width:55px;" >Primary</td>
-                        </tr>
-                    </TABLE>
-              </div>
-            </c:forEach>
-
-
-
-                    <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
-                    <table border="0" width="96%" id="studyDetails">
-                        <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease"
-                            varStatus="status">
-                            <tr>
-                                <td ><a href="javascript:fireAction('removeStudyDisease',${status.index});">
-								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Add"></a></a>&nbsp;
-                                     ${studyDisease.term.ctepTerm}</td>
-                                <td style="width:35px;">
-                                <form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></td>
-                                </td>
-                            </tr>
-
-                        </c:forEach>
-                    </table>
-                    </DIV>
-                    
-                    
+			<center>
+			<table width="100%" class="tablecontent">
+    			<tr>
+    				<th scope="col" align="left"><b>CTC disease term</b> </th>
+    				<th scope="col" width="10%" align="left"><b>Primary</b> </th>
+    				<th scope="col" width="5%" align="left"></th>
+    			</tr>
+    			 <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease" varStatus="status">
+    			<tr>    				
+            		<td><div class="label">${studyDisease.term.ctepTerm}</div></td>
+            		<td><div class="label"><form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
+            		<td><div class="label"><a href="javascript:fireAction('removeStudyDisease',${status.index});">
+								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            	</tr>
+            	</c:forEach>
+            	 <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
+            	 	<td><div class="label"><i>No terms selected<i></div></td>
+            	 </c:if>
+             </table>
+             </center>
+            </chrome:division> 
+            <!-- MedDRA -->
+            <chrome:division title="MedDRA">   
+            
+            <center>
+			<table width="100%" class="tablecontent">
+    			<tr>
+    				<th scope="col" align="left"><b>MedDRA disease term</b> </th>
+    				<th scope="col" width="5%" align="left"></th>
+    			</tr>
+    			<c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
+    			<tr>    				
+            		<td><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
+            		<td><div class="label"><a href="javascript:fireAction('removeMeddraStudyDisease',${status.index});">
+                                		<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            	</tr>
+            	</c:forEach>
+            	 <c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
+            	 	<td><div class="label"><i>No terms selected<i></div></td>
+            	 </c:if>
+            	
+             </table>
+             </center>
+            
+            <!--
             <c:forEach items="${command.meddraStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
-            MedDRA<hr>
              <div STYLE="  font-size: 12px; overflow: auto;">
                     <TABLE border="0"  width="100%" id="studyDetails">
                         <tr>
@@ -357,15 +379,17 @@
                         <c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease"
                             varStatus="status">
                             <tr>
-                                <td ><a href="javascript:fireAction('removeMeddraStudyDisease',${status.index});">X</a>&nbsp;
+                                <td ><a href="javascript:fireAction('removeMeddraStudyDisease',${status.index});">
+                                		<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>&nbsp;
                                      ${meddraStudyDisease.meddraCode} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ${meddraStudyDisease.term.meddraTerm}</td>
                             </tr>
 
                         </c:forEach>
                     </table>
                     </DIV>
+                    -->
         
-
+			</chrome:division> 
             </chrome:box>
     </form:form>
  </div>
