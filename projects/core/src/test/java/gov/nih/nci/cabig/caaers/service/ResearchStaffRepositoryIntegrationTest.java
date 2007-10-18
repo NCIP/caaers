@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
-import gov.nih.nci.cabig.caaers.dao.StudyIdentifierIntegrationTest;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -25,7 +24,7 @@ import org.springframework.test.AbstractTransactionalDataSourceSpringContextTest
  */
 public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
 
-	private static Logger log = Logger.getLogger(StudyIdentifierIntegrationTest.class);
+	private static Logger log = Logger.getLogger(ResearchStaffRepositoryIntegrationTest.class);
 
 	private CSMObjectIdGenerator siteObjectIdGenerator;
 
