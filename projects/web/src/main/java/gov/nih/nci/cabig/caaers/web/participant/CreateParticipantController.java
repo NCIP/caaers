@@ -4,19 +4,26 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CreateParticipantController extends ParticipantController<NewParticipantCommand> {
 
@@ -28,9 +35,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 
 	private StudySiteDao studySiteDao;
 
-    private ListValues listValues;
+	private ListValues listValues;
 
-    @Override
+	@Override
 	protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
 		flow.addTab(new CreateParticipantTab());
 		flow.addTab(new SelectStudyForParticipantTab());
@@ -42,13 +49,13 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	protected Object formBackingObject(final HttpServletRequest request) throws Exception {
 		log.debug("Entering formBackingObject ...");
 		NewParticipantCommand participantCommand = new NewParticipantCommand();
-        List<Identifier>  identifiers=new ArrayList<Identifier>();
-        OrganizationAssignedIdentifier organizationAssignedIdentifier=new OrganizationAssignedIdentifier();
-        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-        organizationAssignedIdentifier.setType(listValues.getParticipantIdentifierType().get(0).getDesc());
+		List<Identifier> identifiers = new ArrayList<Identifier>();
+		OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
+		organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
+		organizationAssignedIdentifier.setType(listValues.getParticipantIdentifierType().get(0).getDesc());
 
-        //identifiers.add();
-        participantCommand.getParticipant().setIdentifiers(identifiers);
+		// identifiers.add();
+		participantCommand.getParticipant().setIdentifiers(identifiers);
 		return participantCommand;
 	}
 
@@ -65,10 +72,12 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 		if (searchtext != null && type != null && !searchtext.equals("")) {
 			log.debug("Search text : " + searchtext + "Type : " + type);
 			Study study = new Study();
-			StudyOrganization studyOrganization = new StudySite();
-			studyOrganization.setStudy(study);
-			studyOrganization.setOrganization(participantCommand.getOrganization());
-			study.setStudyOrganizations(Arrays.asList(studyOrganization));
+			StudySite studySite = new StudySite();
+			studySite.setStudy(study);
+			studySite.setOrganization(participantCommand.getOrganization());
+			List<StudyOrganization> list = new ArrayList<StudyOrganization>();
+			list.add(studySite);
+			study.setStudyOrganizations(list);
 
 			participantCommand.setStudies(new ArrayList<Study>());
 			if ("st".equals(type)) {
@@ -123,8 +132,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	public void setStudyService(final StudyService studyService) {
 		this.studyService = studyService;
 	}
-    @Required
-    public void setListValues(ListValues listValues) {
-        this.listValues = listValues;
-    }
+
+	@Required
+	public void setListValues(final ListValues listValues) {
+		this.listValues = listValues;
+	}
 }

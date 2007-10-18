@@ -50,7 +50,14 @@
         </property>
     </bean>
 
-
+	
+    <bean id="researchStaffRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ResearchStaffRepository" >
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userService" ref="userService"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+   </bean>
+	
+	
     <!-- ALTERNATIVE
     <bean id="connectionFactory" autowire="byType"
           class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersConnectionFactory"/>

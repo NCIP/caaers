@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.validation.Errors;
 
 /**
  * @author Saurbah Agrawal
@@ -28,29 +27,14 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
 
-		ResearchStaff researchStaff = researchStaffDao.getById(Integer
-				.parseInt(request.getParameter("researchStaffId")));
+		ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request
+				.getParameter("researchStaffId")));
 
-
-
-        if (log.isDebugEnabled()) {
+		if (log.isDebugEnabled()) {
 			log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
 		}
 
 		return researchStaff;
-	}
-
-	@Override
-	protected ResearchStaff save(final ResearchStaff researchStaff, final Errors errors) {
-		if (errors.hasErrors()) {
-			return researchStaff;
-		}
-         //FIXME:Saurabh:update the edit logic for updating user role
-		ResearchStaff mergedResearchStaff = getDao().merge(researchStaff);
-        //populateUserRole(mergedResearchStaff,);
-        getDao().save(mergedResearchStaff);
-		return mergedResearchStaff;
-
 	}
 
 	@Override
