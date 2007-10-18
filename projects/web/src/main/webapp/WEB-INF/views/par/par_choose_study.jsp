@@ -82,15 +82,11 @@ function updateTargetPage(s){
                     sortable="false" title=" ">
                     <form:checkbox path="studySiteArray" value="${study.studySites[0].id}" />
                 </ec:column>
-                <ec:column property="shortTitle" title="Short Title" />
-                
-                <ec:column property="transient1" title="Primary Identifier">	
-                	<c:forEach items="${study.identifiers}" varStatus="status" var="identifier">
-                		<c:if test='${identifier.primaryIndicator == "true" }'>
-                			${identifier.value}
-						</c:if>
-					</c:forEach>	
-                </ec:column>
+               	 <ec:column property="primaryIdentifier" title="Primary ID" />
+				<ec:column property="shortTitle" title="Short Title" />
+				<ec:column property="primarySponsorCode" title="Funding Sponsor" />
+				<ec:column property="phaseCode" title="Phase" />
+				<ec:column property="status" title="Status" />
             </ec:row>
         </ec:table>
     </jsp:attribute>
