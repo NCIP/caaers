@@ -76,10 +76,32 @@
             </c:forEach>
 </div>
 <div class="rightpanel">
-        <td><c:forEach begin="4" end="6"
+        <td>
+        <c:if test="${(empty command.id) or (command.id le 0)}">
+         <c:forEach begin="4" end="6"
                        items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
+    </c:if>
+    <c:if test="${!(empty command.id) and (command.id gt 0)}">
+         <c:forEach begin="4" end="4"
+                       items="${fieldGroups.researchStaff.fields}" var="field">
+            <div class="row">
+    <div class="label">
+        <tags:renderLabel field="${field}"/>
+    </div>
+    <div class="value"><tags:renderInputs field="${field}" disabled="True"/>
+</div>
+            </div>
+        </c:forEach>
+        <c:forEach begin="5" end="6"
+                       items="${fieldGroups.researchStaff.fields}" var="field">
+            <tags:renderRow field="${field}"/>
+        </c:forEach>
+ </c:if>
+        </div>
+        
+        </td>
 </div>
 </chrome:division>
 
