@@ -1,14 +1,15 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,12 +20,11 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -64,7 +64,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	/**
 	 * //TODO - Refactor this code with Hibernate Detached objects !!!
-	 *
+	 * 
 	 * This is a hack to load all collection objects in memory. Useful for editing a Study when you know you will be needing all collections
 	 * To avoid Lazy loading Exception by Hibernate, a call to .size() is done for each collection
 	 * @param id
@@ -87,7 +87,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
 			study.setSurgeryTherapyType(Boolean.TRUE);
 		}
-		if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null){
+		if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
 			study.setBehavioralTherapyType(Boolean.TRUE);
 		}
 		return study;
@@ -120,41 +120,37 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public void save(final Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}
-	
+
 	@Transactional(readOnly = false)
-	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome){
-		
+	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome) {
+
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		int i =0;
+		int i = 0;
 		for (DomainObjectImportOutcome<Study> outcome : domainObjectImportOutcome) {
 			i++;
 			final Study study = outcome.getImportedDomainObject();
 			session.saveOrUpdate(study);
 			/*
-			session.evict(study);
-			if(i % 100 == 0){
-				session.flush();
-			}
-			*/
+			 * session.evict(study); if(i % 100 == 0){ session.flush(); }
+			 */
 		}
 	}
 
 	public List<Study> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
-	
-	
+
 	public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames) {
 		String joins = " join o.identifiers as identifier ";
-		List<String> subStringMatchProperties = Arrays.asList("o.shortTitle", "o.longTitle","identifier.type", "identifier.value");
-		return findBySubname(subnames, null, null, subStringMatchProperties , EXACT_MATCH_PROPERTIES, joins);
+		List<String> subStringMatchProperties = Arrays.asList("o.shortTitle", "o.longTitle", "identifier.type",
+				"identifier.value");
+		return findBySubname(subnames, null, null, subStringMatchProperties, EXACT_MATCH_PROPERTIES, joins);
 	}
 
 	/*
-	public List<Study> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
-		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
-	}
-	*/
+	 * public List<Study> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) { return
+	 * findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS); }
+	 */
 
 	public List<Study> matchStudyByParticipant(final Integer participantId, final String text) {
 
@@ -171,11 +167,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		queryBuf.append(" and ( ");
 		queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
 		params.add('%' + text.toLowerCase() + '%');
-		
+
 		queryBuf.append(" or ");
 		queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ? ");
 		params.add('%' + text.toLowerCase() + '%');
-		
+
 		queryBuf.append(" or ");
 		queryBuf.append("LOWER(").append("identifier.type").append(") LIKE ? ");
 		params.add('%' + text.toLowerCase() + '%');
@@ -303,21 +299,35 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 						Restrictions.like("value", study.getIdentifiers().get(0).getValue() + "%"));
 			}
 			if (study.getStudyOrganizations().size() > 0) {
-				if (study.getStudyOrganizations().get(0) instanceof StudySite) {
-					studyCriteria.createCriteria("studyOrganizations").add(
-							Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
-									.getId())).add(Restrictions.sqlRestriction("type='SST'"));
-				}
-				else {
-					studyCriteria.createCriteria("studyOrganizations").add(
-							Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
-									.getId()));
-
-				}
+				studyCriteria.createCriteria("studyOrganizations").add(
+						Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
+								.getId()));
 
 			}
 			return studyCriteria.list();
 		}
 		return studyCriteria.add(example).list();
 	}
+
+	@SuppressWarnings( { "unchecked" })
+	public List<Study> find(final StudyHavingStudySiteQuery query) {
+		String queryString = query.getQueryString();
+		log.debug("::: " + queryString.toString());
+		return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
+
+			public Object doInHibernate(final Session session) throws HibernateException, SQLException {
+				org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+				Map<String, Object> queryParameterMap = query.getParameterMap();
+				for (String key : queryParameterMap.keySet()) {
+					Object value = queryParameterMap.get(key);
+					hiberanteQuery.setParameter(key, value);
+
+				}
+				return hiberanteQuery.list();
+			}
+
+		});
+
+	}
+
 }

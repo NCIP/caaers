@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -76,7 +77,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 
 		System.out.println("name:" + name);
 
-		organization = createOrganization(name);
+		organization = Fixtures.createOrganization(name);
 		organizationService.create(organization);
 		assertNotNull(organization);
 
@@ -114,7 +115,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 
 		userGroupTypes.add(UserGroupType.caaers_super_user);
 		userGroupTypes.add(UserGroupType.caaers_ae_cd);
-		ResearchStaff researchStaff = createResearchStaff(organization, userGroupTypes, name);
+		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
 		researchStaffRepository.save(researchStaff);
 
@@ -133,13 +134,13 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 
 		userGroupTypes.add(UserGroupType.caaers_participant_cd);
 		userGroupTypes.add(UserGroupType.caaers_site_cd);
-		ResearchStaff researchStaff = createResearchStaff(organization, userGroupTypes, name);
+		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
 		researchStaffRepository.save(researchStaff);
 
 		// now create new research staff with same email address and try to save it..
 
-		ResearchStaff newResearchStaff = createResearchStaff(organization, userGroupTypes, name);
+		ResearchStaff newResearchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 		try {
 			researchStaffRepository.save(newResearchStaff);
 			fail("email address should be unique");
@@ -156,7 +157,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 
 		userGroupTypes.add(UserGroupType.caaers_participant_cd);
 		userGroupTypes.add(UserGroupType.caaers_site_cd);
-		ResearchStaff researchStaff = createResearchStaff(organization, userGroupTypes, name);
+		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
 		researchStaffRepository.save(researchStaff);
 		valaidateResearchStaff(researchStaff, userGroupTypes);
@@ -224,31 +225,6 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		String siteId = siteObjectIdGenerator.generateId(organization);
 		assertEquals(group.getGroupName(), siteId);
 
-	}
-
-	private Organization createOrganization(final String name) {
-		Organization organization = new Organization();
-		organization.setDescriptionText("dec: " + name);
-		organization.setName("name: " + name);
-		organization.setNciInstituteCode("nci " + name);
-		return organization;
-	}
-
-	private ResearchStaff createResearchStaff(final Organization organization,
-			final List<UserGroupType> userGroupTypes, final String name) {
-		ResearchStaff researchStaff = new ResearchStaff();
-		researchStaff.setFirstName("Jeff");
-		researchStaff.setLastName("Someone");
-		researchStaff.setEmailAddress(name + "@def.com");
-		researchStaff.setPhoneNumber("123-5-789");
-		researchStaff.setNciIdentifier("nci id");
-
-		for (UserGroupType userGroupType : userGroupTypes) {
-			researchStaff.addUserGroupType(userGroupType);
-		}
-
-		researchStaff.setOrganization(organization);
-		return researchStaff;
 	}
 
 	private void deleteCsmDetailsForCreatingNewOrganization(final Organization organization) {

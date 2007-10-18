@@ -30,9 +30,15 @@ public class AbstractQuery {
 	}
 
 	public String getQueryString() {
+		String orderByString = "";
+		if (queryString.lastIndexOf("order by") > 0) {
+			orderByString = queryString.substring(queryString.lastIndexOf("order by"), queryString.length()).trim();
+			queryBuffer = new StringBuffer(queryString.substring(0, queryString.lastIndexOf("order by")).trim());
+		}
+		else {
+			queryBuffer = new StringBuffer(queryString.trim());
+		}
 
-		String orderByString = queryString.substring(queryString.lastIndexOf("order by"), queryString.length()).trim();
-		queryBuffer = new StringBuffer(queryString.substring(0, queryString.lastIndexOf("order by")).trim());
 		for (String conditon : conditions) {
 			if (queryBuffer.toString().toUpperCase().indexOf(WHERE) < 0) {
 				queryBuffer.append(" " + WHERE + " " + conditon);
@@ -42,8 +48,10 @@ public class AbstractQuery {
 			}
 
 		}
-		// finally add order by
-		queryBuffer.append(" " + orderByString);
+		if (!orderByString.equalsIgnoreCase("")) {
+			// finally add order by
+			queryBuffer.append(" " + orderByString);
+		}
 
 		return queryBuffer.toString();
 	}
