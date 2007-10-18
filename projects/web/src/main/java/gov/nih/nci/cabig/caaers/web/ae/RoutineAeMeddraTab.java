@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.ListIterator;
 import java.util.Map;
@@ -121,6 +122,14 @@ public class RoutineAeMeddraTab extends AeRoutTab {
         RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
+    	Date startDate = command.getAeRoutineReport().getStartDate();
+    	Date endDate = command.getAeRoutineReport().getEndDate();
+    	
+    	if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)){	
+    		InputField field = fieldGroups.get(REPORT_FIELD_GROUP).getFields().get(1);
+    		errors.rejectValue(field.getPropertyName(), "REQUIRED", "To cannot be earlier than From");	
+		}
+    	
         if (command.getAeRoutineReport().getAdverseEvents() != null) {
 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
 					.getAdverseEvents().listIterator(); lit.hasNext();) {

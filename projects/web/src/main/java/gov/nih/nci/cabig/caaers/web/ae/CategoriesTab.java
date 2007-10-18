@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
@@ -53,12 +54,17 @@ public class CategoriesTab extends AeRoutTab {
         RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
+    	Date startDate = command.getAeRoutineReport().getStartDate();
+    	Date endDate = command.getAeRoutineReport().getEndDate();
        
-			if (command.getAeRoutineReport().getStartDate() == null){
+			if (startDate == null){
 				errors.rejectValue("aeRoutineReport.startDate", "REQUIRED", "Missing From");
 			}
-			if (command.getAeRoutineReport().getEndDate() == null){
+			if (endDate == null){
 				errors.rejectValue("aeRoutineReport.endDate", "REQUIRED", "Missing To");
+			}
+			if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)){	
+				errors.rejectValue("aeRoutineReport.endDate", "REQUIRED", "To cannot be earlier than From");
 			}
     }
 
