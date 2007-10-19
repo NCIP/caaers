@@ -312,11 +312,6 @@
             <chrome:box title="Selected Diseases " id="diseases">
             <!-- CTEP -->
             <chrome:division title="Ctep">
-            <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
-            	<c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
- 	 			No Diseases Selected
- 	 			</c:if>
-			</c:if>
 			<center>
 			<table width="100%" class="tablecontent">
     			<tr>
@@ -360,35 +355,6 @@
             	
              </table>
              </center>
-            
-            <!--
-            <c:forEach items="${command.meddraStudyDiseases}" begin="0" end="0" var="studyDisease" varStatus="status">
-             <div STYLE="  font-size: 12px; overflow: auto;">
-                    <TABLE border="0"  width="100%" id="studyDetails">
-                        <tr>
-                            <td>Disease Term</td>
-                        </tr>
-                    </TABLE>
-              </div>
-            </c:forEach>
-
-
-
-                    <div STYLE=" height: 200px;  font-size: 12px; overflow: auto;">
-                    <table border="0" width="96%" id="studyDetails">
-                        <c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease"
-                            varStatus="status">
-                            <tr>
-                                <td ><a href="javascript:fireAction('removeMeddraStudyDisease',${status.index});">
-                                		<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>&nbsp;
-                                     ${meddraStudyDisease.meddraCode} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp ${meddraStudyDisease.term.meddraTerm}</td>
-                            </tr>
-
-                        </c:forEach>
-                    </table>
-                    </DIV>
-                    -->
-        
 			</chrome:division> 
             </chrome:box>
     </form:form>
