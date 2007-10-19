@@ -23,6 +23,10 @@
         document.viewReport._selected.value=selected;
         document.viewReport.submit();
     }
+    
+    Event.observe(window, "load", function() {
+    	 $('flow-next').value="Go to Manage Reports ";
+    })
        
     </script>
     <style type="text/css">
