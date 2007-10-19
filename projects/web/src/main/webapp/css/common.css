@@ -395,9 +395,8 @@ table.tablecontent {
 }
 
 .tablecontent td, .tablecontent th {
-    padding: 0.5em;
-
-     border: 1px solid #999;
+    padding: 0.2em;
+    border: 1px solid #999;
 }
 
 

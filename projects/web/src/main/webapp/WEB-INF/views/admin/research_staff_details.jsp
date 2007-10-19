@@ -2,15 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
-<link rel="stylesheet" type="text/css"
-      href="<c:url value="/css/extremecomponents.css"/>">
+
 <html>
 <head>
     <tags:stylesheetLink name="tabbedflow"/>
-    <tags:stylesheetLink name="participant"/>
     <tags:includeScriptaculous/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
@@ -28,9 +25,28 @@
             padding: 5px 15px;
         }
     </style>
-    <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 
-    <tags:dwrJavascriptLink objects="search"/>
+    <tags:dwrJavascriptLink objects="createIND"/>
+    <script type="text/javascript">
+    Event.observe(window, "load", function() {
+       if('${command.organization.name}'){
+       	$('organization-input').value = '${command.organization.name}';
+       }
+  	 //initialze the auto completer field.
+	 AE.createStandardAutocompleter('organization', 
+     	function(autocompleter, text) {
+    		createIND.matchOrganization(text, function(values) {
+      	 		autocompleter.setChoices(values)
+      		})
+    	},
+        function(organization) { 
+    		return organization.name 
+    	}
+     );
+     
+    }); 
+
+    </script>
 </head>
 <body>
 <div class="tabpane">
@@ -45,37 +61,28 @@
 <br/>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
-
-
-<jsp:attribute name="singleFields">
-<div>
-    <input type="hidden" name="_action" value="">
-    <input type="hidden" name="_selected" value="">
-</div>
-<input type="hidden" name="_finish" value="true"/>
-
-
-</jsp:attribute>
 <jsp:attribute name="repeatingFields">
+	<input type="hidden" name="_action" value="">
+    <input type="hidden" name="_selected" value="">
+	<input type="hidden" name="_finish" value="true"/>
 
-
-<chrome:division title="Site">
-<c:forEach items="${fieldGroups.site.fields}" var="field">
-<csmauthz:accesscontrol domainObject="${organization}"
+ <chrome:division title="Site">
+	<c:forEach items="${fieldGroups.site.fields}" var="field">
+	  <csmauthz:accesscontrol domainObject="${organization}"
                         hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
-    <tags:renderRow field="${field}"/>
-</csmauthz:accesscontrol>
-</c:forEach>
-</chrome:division>
+      <tags:renderRow field="${field}"/>
+	  </csmauthz:accesscontrol>
+	</c:forEach>
+ </chrome:division>
 
-<chrome:division title="Research Staff Details">
-<div class="leftpanel">
+ <chrome:division title="Research Staff Details">
+  <div class="leftpanel">
             <c:forEach begin="0" end="3"
                        items="${fieldGroups.researchStaff.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
-</div>
-<div class="rightpanel">
+  </div>
+  <div class="rightpanel">
         <td>
         <c:if test="${(empty command.id) or (command.id le 0)}">
          <c:forEach begin="4" end="6"

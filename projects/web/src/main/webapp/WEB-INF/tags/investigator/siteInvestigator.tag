@@ -12,7 +12,7 @@
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
 
-<tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" >
+<tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" style="${not empty style? style : ''}" >
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
 
 				<td>

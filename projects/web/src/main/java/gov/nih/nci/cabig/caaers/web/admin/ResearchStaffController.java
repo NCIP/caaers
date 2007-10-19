@@ -129,10 +129,11 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 			final Object command, final BindException errors) throws Exception {
 
 		ResearchStaff researchStaff = (ResearchStaff) command;
-
 		populateUserRole(researchStaff, request);
-
 		researchStaffRepository.save(researchStaff);
+		if(!errors.hasErrors()){
+			request.setAttribute("statusMessage", "Research staff saved successfully.");
+		}
 		// }
 		// catch (CaaersSystemException e) {
 		// errors.rejectValue("emailAddress", "REQUIRED", "Email address already exists...!");

@@ -43,23 +43,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldGroup siteFieldGroup;
 
 		siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
-
-		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-		options.put("", "Please select");
-		List<Organization> organizations = organizationDao.getAll();
-		if (organizations != null) {
-			options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
-		}
-		siteFieldGroup.getFields().add(
-				InputFieldFactory.createSelectField("organization", "Organization", true, options));
-
-		// Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-		// options.put("", "Please select");
-		// options.putAll(InputFieldFactory.collectOptions(organizationDao.getAll(), "id", "name"));
-		//
-		// researchStaffFieldGroup.getFields().add(
-		// InputFieldFactory.createSelectField("organization", "Site", true, options));
-
+		siteFieldGroup.getFields().add(InputFieldFactory.createAutocompleterField("organization", "Organization",true));
 		researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
 
 		InputField firstNameField = InputFieldFactory.createTextField("firstName", "First name", true);

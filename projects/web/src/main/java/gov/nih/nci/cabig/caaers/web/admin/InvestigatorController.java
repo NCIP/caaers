@@ -99,7 +99,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
 	protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
 		Object subviewName = findInRequest(request, "_subview");
 		if (subviewName != null) {
-			return "admin/ajax/" + subviewName;
+			return "par/ajax/" + subviewName;
 		}
 		else {
 			return super.getViewName(request, command, page);
@@ -133,7 +133,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
 		}
 		else {
 			investigatorDao.save(investigator);
-
+			request.setAttribute("statusMessage", "Successfully saved the investigator");
 			ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
 			modelAndView.addAllObjects(errors.getModel());
 			modelAndView.addObject("investigator", investigator);

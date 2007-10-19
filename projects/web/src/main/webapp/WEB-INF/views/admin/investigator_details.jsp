@@ -1,15 +1,10 @@
-
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="investigator" tagdir="/WEB-INF/tags/investigator"%>
 
 <html>
 <head>
-<tags:stylesheetLink name="participant" />
 <tags:includeScriptaculous />
 <tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
@@ -19,16 +14,38 @@
     </style>
 
 <tags:dwrJavascriptLink objects="createInvestigator" />
-
+<tags:dwrJavascriptLink objects="createIND"/>
 <script language="JavaScript" type="text/JavaScript">
 
 
-var si = [];
 var addInvestigatorEditor;
 var jsInvestigator = Class.create();
-Object.extend(jsInvestigator.prototype, {initialize: function(index) {}});
+Object.extend(jsInvestigator.prototype, {
+		
+	initialize: function(index, orgName) {
+	 this.index = index;
+	 this.orgField = 'siteInvestigators['+ index + '].organization';
+	 this.orgInputField = this.orgField + '-input';
+	 
+	 //initialze the auto completer field.
+	 AE.createStandardAutocompleter(this.orgField, 
+     	this.sitePopulator.bind(this),
+        this.siteSelector.bind(this)
+     );
+     
+	 if(orgName) $(this.orgInputField).value = orgName;
+	 
+	},sitePopulator: function(autocompleter, text) {
+    	createIND.matchOrganization(text, function(values) {
+      	 autocompleter.setChoices(values)
+      })
+    },siteSelector: function(organization) { 
+    	return organization.name 
+    }
+	
+   });
     
-function fireAction(action, selected){
+   function fireAction(action, selected){
 		if(action == 'addInvestigator'){
 			addInvestigatorEditor.add.bind(addInvestigatorEditor)();
 		}else{
@@ -40,27 +57,28 @@ function fireAction(action, selected){
 		}
 	};
 	
-function clearField(field){
+	function clearField(field){
 		field.value="";
 	};
-	
-	
 	  
 Event.observe(window, "load", function() {
-            	<c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
-					new jsInvestigator(${status.index});
-			
-      		</c:forEach>
+  <c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
+	new jsInvestigator(${status.index}, '${si.organization.name}');
+  </c:forEach>
       		
-      		//This is added for Add Site Investigator button
-		            new ListEditor("site-investigator-row", createInvestigator, "SiteInvestigator", {
-		            	addFirstAfter: "site-investigator",
-		                addCallback: function(nextIndex) {new jsInvestigator(nextIndex);}
-		            });
-    });
-	
-
-	</script>
+  //This is added for Add Site Investigator button
+  new ListEditor("site-investigator-row", createInvestigator, "SiteInvestigator", {
+	addFirstAfter: "site-investigator",
+	addCallback: function(nextIndex) {
+	 new jsInvestigator(nextIndex);
+	 if($('empty-inv-row')){
+     	Effect.Fade('empty-inv-row');
+     }
+    }
+   });
+   
+});
+</script>
 
 </head>
 <body>
@@ -74,6 +92,7 @@ Event.observe(window, "load", function() {
         <a href="searchInvestigator">Search Investigator</a>
     </div></li>
   </ul>
+ </div>
   <br />
  
 
@@ -86,46 +105,41 @@ Event.observe(window, "load", function() {
 	    <c:if test="${(empty id) or ( id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
 	</div>
 
-             </jsp:attribute>
+    </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
     
     
     	<chrome:division title="Investigator Details" id="investigator">
-		
-<table id="test2" class="single-fields" class="tablecontent">
-        	<tr>
-    				<td> 
-    				<c:forEach begin="0" end="3"
-						items="${fieldGroups.investigator.fields}" var="field">
-                    <tags:renderRow field="${field}"  />
-                	</c:forEach>
-    				</td>
-    				<td><c:forEach begin="4" end="6"
-						items="${fieldGroups.investigator.fields}" var="field">
-                    <tags:renderRow field="${field}" />
-                	</c:forEach>
-                	<div id="test-row" class="row"></div>
-    				</td>
-    			</tr>
-    			
-    		</table> 
-    
+		<div class="leftpanel">
+			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
+               <tags:renderRow field="${field}"  />
+            </c:forEach>
+		</div>
+		<div class="rightpanel">
+		    <c:forEach begin="4" end="6" items="${fieldGroups.investigator.fields}" var="field">
+              <tags:renderRow field="${field}" />
+            </c:forEach>
+		</div>
+		<div id="test-row" class="row"></div>
 	</chrome:division>
 	<chrome:division title="Associate Organizations">
 	  
-	  <table class="tablecontent">
+	  <table class="tablecontent" width="78%">
     			<tr id="site-investigator">
     				<th class="tableHeader"><tags:requiredIndicator />Organization</th>
     				<th class="tableHeader"><tags:requiredIndicator />Status</th>
     			</tr>
-    			
             	<c:forEach varStatus="status" items="${command.siteInvestigators}">
 					<investigator:siteInvestigator 	title="Associated Sites ${status.index + 1}" enableDelete="${status.index > 0}"
 						sectionClass="site-investigator-row"
 						removeButtonAction="removeInvestigator" index="${status.index}" />
 				</c:forEach>
-            	
-            	</table>
+            	<c:if test="${empty command.siteInvestigators}">
+            		<tr id="empty-inv-row">
+            			<td colspan="2" align="center">The investigator is not assigned to any organization</td>
+            		</tr>
+            	</c:if>
+       </table>
 	
 	</chrome:division>
          
