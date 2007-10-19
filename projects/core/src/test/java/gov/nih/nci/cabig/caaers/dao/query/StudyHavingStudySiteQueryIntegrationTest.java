@@ -51,7 +51,7 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		int count = jdbcTemplate
 				.queryForInt("select count(study.id) from study_organizations studysite inner join studies study on studysite.study_id=study.id where studysite.type='SST' "
 						+ "and (lower(study.short_title) like '%a')");
-		assertEquals(count + 1, studies.size());
+		assertEquals(count, studies.size());
 		assertTrue(studies.size() >= 2);
 		for (Study study : studies) {
 			assertTrue(study.getShortTitle().indexOf("a") >= 0);
