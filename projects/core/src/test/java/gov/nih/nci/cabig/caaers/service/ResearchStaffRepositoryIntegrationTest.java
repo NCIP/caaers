@@ -87,6 +87,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 	protected void onTearDownAfterTransaction() throws Exception {
 		super.onTearDownAfterTransaction();
 		deleteCsmDetailsForCreatingNewOrganization(organization);
+		super.endTransaction();
 	}
 
 	public void testSaveOrganization() throws Exception {
