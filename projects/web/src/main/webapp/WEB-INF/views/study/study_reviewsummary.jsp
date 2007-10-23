@@ -191,7 +191,7 @@
             </c:forEach>
             <c:if test="${invCnt eq 0}">
 				<tr class="results">
-				 <td colspan="3">No investigator is assigned to this study</td>
+				 <td colspan="3">No investigators are assigned to this study</td>
 				</tr>
             </c:if>
         </table>
@@ -217,7 +217,7 @@
             </c:forEach>
             <c:if test="${staffCnt eq 0}">
 				<tr class="results">
-				 <td colspan="3">No personnel(research staff) is assigned to this study</td>
+				 <td colspan="3">No personnels(research staffs) are assigned to this study</td>
 				</tr>
             </c:if>
         </table>

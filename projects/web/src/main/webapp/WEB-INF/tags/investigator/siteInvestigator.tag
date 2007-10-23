@@ -14,16 +14,11 @@
 
 <tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" style="${not empty style? style : ''}" >
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-
-				<td>
-				<tags:renderInputs field="${field}" />
-				</td>
-		
-		
-        
-
+	  <td><tags:renderInputs field="${field}" /></td>
 	</c:forEach>
             <td align="right">
+            <c:if test="${enableDelete}">
         	<a href="javascript:fireAction(${deleteParams},'${sectionClass}-${index}','${cssClass}');"><img 
-	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td>
+	   			src="/caaers/images/checkno.gif" border="0" alt="delete"></a>
+	   		</c:if></td>
             </tr>

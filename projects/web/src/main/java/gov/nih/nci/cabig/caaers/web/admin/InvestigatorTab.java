@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -112,16 +113,19 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 		investigatorFieldGroup.getFields().add(
 				InputFieldFactory.createTextField("nciIdentifier", "NCI Identifier", false));
 
-		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", true);
+		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", 
+				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.EMAIL_VALIDATOR);
 		// InputFieldAttributes.setSize(emailAddressField, 30);
 
 		investigatorFieldGroup.getFields().add(emailAddressField);
 
-		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone", true);
+		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone", 
+				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR);
 		// InputFieldAttributes.setSize(phoneNumberField, 30);
 		investigatorFieldGroup.getFields().add(phoneNumberField);
 
-		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", false);
+		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", 
+				FieldValidator.PHONE_VALIDATOR);
 		// InputFieldAttributes.setSize(faxNumberField, 30);
 		investigatorFieldGroup.getFields().add(faxNumberField);
 

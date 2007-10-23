@@ -1,8 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
@@ -16,21 +22,36 @@ public abstract class AbstractInputField implements InputField {
     private boolean mandatory;
 
     private Map<String, Object> attributes;
-
+    private FieldValidator[] validators;
+    
     protected AbstractInputField() {
         this.attributes = new LinkedHashMap<String, Object>();
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
-        this();
+    	this();
         this.displayName = displayName;
         this.propertyName = propertyName;
-        this.required = required;
+        if(required) this.validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR};
+    }
+    
+    protected AbstractInputField(String propertyName, String displayName, FieldValidator... validators) {
+    	this();
+        this.displayName = displayName;
+        this.propertyName = propertyName;
+        this.validators = validators;
     }
 
     /** This base implementation does a simple not-null check if the field is required. */
     public void validate(BeanWrapper commandBean, Errors errors) {
-        validateRequired(this, commandBean, errors);
+    	if(validators == null) return;
+    	for(FieldValidator validator : validators){
+    		if(!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))){
+    			 errors.rejectValue(this.getPropertyName(),
+    	                    "REQUIRED", validator.getMessagePrefix()+ " " + this.getDisplayName());
+    			 return;
+    		}
+    	}
     }
 
     /**
@@ -63,9 +84,10 @@ public abstract class AbstractInputField implements InputField {
     }
 
     public boolean isRequired() {
-        return required;
+        return ArrayUtils.contains(validators, FieldValidator.NOT_NULL_VALIDATOR);
     }
-
+    
+    @Deprecated
     public void setRequired(boolean required) {
         this.required = required;
     }

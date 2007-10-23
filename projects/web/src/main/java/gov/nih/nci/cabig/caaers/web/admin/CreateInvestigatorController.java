@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import javax.servlet.ServletException;
@@ -27,7 +28,10 @@ public class CreateInvestigatorController extends InvestigatorController<Investi
 	}
 
 	private Investigator createInvestigatorWithDesign() {
+		SiteInvestigator siteInvestigator = new SiteInvestigator();
 		Investigator investigator = new Investigator();
+		siteInvestigator.setInvestigator(investigator);	
+		investigator.addSiteInvestigator(siteInvestigator);
 		return investigator;
 	}
 

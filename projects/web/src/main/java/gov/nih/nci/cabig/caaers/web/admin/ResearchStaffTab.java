@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.validator.EmailValidator;
+import org.apache.commons.validator.GenericValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -62,15 +65,18 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldAttributes.setSize(ncidIdField, 30);
 		researchStaffFieldGroup.getFields().add(ncidIdField);
 
-		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", true);
+		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", 
+				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.EMAIL_VALIDATOR);
 		InputFieldAttributes.setSize(emailAddressField, 30);
 		researchStaffFieldGroup.getFields().add(emailAddressField);
 
-		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone", true);
+		InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone", 
+				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR);
 		InputFieldAttributes.setSize(phoneNumberField, 30);
 		researchStaffFieldGroup.getFields().add(phoneNumberField);
 
-		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", false);
+		InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax", 
+				FieldValidator.PHONE_VALIDATOR);
 		InputFieldAttributes.setSize(faxNumberField, 30);
 		researchStaffFieldGroup.getFields().add(faxNumberField);
 
@@ -81,11 +87,6 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		return map;
 	}
 
-	@Override
-	protected void validate(final ResearchStaff command, final BeanWrapper commandBean,
-			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
-		super.validate(command, commandBean, fieldGroups, errors);
-	}
 
 	private OrganizationDao organizationDao;
 

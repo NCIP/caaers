@@ -69,10 +69,7 @@ function buildTable(form) {
 
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">
-   <p class="instructions">
-    <br />
-     Search for Investigator by choosing any of the listed Criteria. The result will show the details of Investigator.
-   </p> 
+   
    <chrome:box title="Investigator Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> First Name&nbsp; </div>

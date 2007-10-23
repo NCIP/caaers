@@ -119,7 +119,7 @@
 
     <div class="row">
         <div class="label label2">
-            Participant coordinator:
+            Participant coordinator
         </div>
         <div class="value value2">
             <input type="checkbox"
@@ -130,7 +130,7 @@
 
     <div class="row">
         <div class="label label2">
-            Study coordinator:
+            Study coordinator
         </div>
         <div class="value value2">
             <input type="checkbox"
@@ -141,7 +141,7 @@
 
     <div class="row">
         <div class="label label2">
-            Adverse event coordinator:
+            Adverse event coordinator
         </div>
         <div class="value value2">
             <input type="checkbox"
@@ -152,7 +152,7 @@
 
     <div class="row">
         <div class="label label2">
-            Site coordinator:
+            Site coordinator
         </div>
         <div class="value value2">
             <input type="checkbox"
