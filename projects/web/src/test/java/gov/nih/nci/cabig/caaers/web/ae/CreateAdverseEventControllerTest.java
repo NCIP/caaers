@@ -247,8 +247,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         List<Tab<ExpeditedAdverseEventInputCommand>> tabs = flow.getTabs();
         assertTrue("Test expectation violation: tab 0 not begin", tabs.get(0) instanceof BeginTab);
         assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof CtcBasicsTab);
-        assertTrue("Test expectation violation: tab 2 not reporter", tabs.get(2) instanceof ReporterTab);
-        assertTrue("Test expectation violation: tab 3 not checkpoint", tabs.get(3) instanceof CheckpointTab);
+        assertTrue("Test expectation violation: tab 3 not reporter", tabs.get(3) instanceof ReporterTab);
+        assertTrue("Test expectation violation: tab 4 not checkpoint", tabs.get(4) instanceof CheckpointTab);
         for (int i = 4; i < tabs.size(); i++) {
             if (!(tabs.get(i) instanceof TabWithFields)) continue;
             TabWithFields<ExpeditedAdverseEventInputCommand> tab

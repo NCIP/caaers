@@ -89,7 +89,17 @@ public abstract class AbstractInputField implements InputField {
     
     @Deprecated
     public void setRequired(boolean required) {
-        this.required = required;
+    	if(!required) return;
+        if(!ArrayUtils.contains(validators, FieldValidator.NOT_NULL_VALIDATOR)){
+        	if(validators != null && validators.length > 0){
+        		FieldValidator[] oldValidators = validators;
+        		validators = new FieldValidator[oldValidators.length + 1];
+        		System.arraycopy(oldValidators, 0, validators, 1, oldValidators.length);
+        	}else{
+        		validators = new FieldValidator[1];
+        	}
+        	validators[0] = FieldValidator.NOT_NULL_VALIDATOR; //this should be the first
+        }
     }
 
     public String getPropertyName() {
