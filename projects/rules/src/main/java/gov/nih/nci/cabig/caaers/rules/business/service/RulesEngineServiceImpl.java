@@ -67,6 +67,10 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		repositoryService.deleteRuleSet(ruleSetName);
 	}
 	
+	public void deleteRule(String ruleSetName,String ruleName) throws Exception {
+		repositoryService.deleteRule(ruleSetName, ruleName);
+	}
+	
 	public RulesEngineServiceImpl(){
 		ruleAuthoringService = new RuleAuthoringServiceImpl();
 		ruleDeploymentService = new RuleDeploymentServiceImpl();

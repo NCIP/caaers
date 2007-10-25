@@ -41,6 +41,8 @@ public interface RulesEngineService {
 	public RuleSet createRuleSetForInstitutionDefinedStudy(String ruleSetName,String studyShortTitle, String institutionName,String subject, String state) throws Exception;
 	
 	public void deleteRuleSet(String ruleSetName ) throws Exception;
+	
+	public void deleteRule(String ruleSetName,String ruleName) throws Exception;
 	/**
 	 * getRuleSetForSponsor( String ruleSetName, String sponsorName)
 	 * 

@@ -325,10 +325,16 @@ public class RuleAjaxFacade
     	
     }
 
-    public Boolean removeRule(int ruleCount) {
+    public Boolean removeRule(int ruleCount) throws Exception {
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
-    	ruleSet.getRule().get(ruleCount).setMarkedDelete(true);
+    	//ruleSet.getRule().get(ruleCount).setMarkedDelete(true);
+    	
+    	Rule r = ruleSet.getRule().get(ruleCount);
+    	String rName = r.getMetaData().getName();
+    	
+	    rulesEngineService.deleteRule(ruleSet.getName(), rName);
+
     	
     	return ruleSet.getRule().get(ruleCount) != null;
     }

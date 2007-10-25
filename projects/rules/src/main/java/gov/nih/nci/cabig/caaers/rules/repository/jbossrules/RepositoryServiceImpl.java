@@ -267,8 +267,34 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 
 		PackageItem item = getRulesRepository().loadPackage(ruleSetName);
 		item.getNode().remove();
+		
 
 		getRulesRepository().save();
+	}
+	
+	public void deleteRule(String ruleSetName, String ruleName) {
+		PackageItem item = getRulesRepository().loadPackage(ruleSetName);
+		AssetItem ai = item.loadAsset(ruleName);
+		ai.remove();
+		
+		System.out.println("removed .." + ruleName);
+		/*
+		String r = "";
+		
+		Iterator itr = item.getAssets();
+		
+		while (itr.hasNext()) {
+			AssetItem a = (AssetItem) itr.next();
+			if(a.getUUID().equals(ruleName)) {
+				r = a.getName();
+				break;
+			}
+			//a.remove();
+			System.out.println(a.getName());
+		}
+		*/
+		
+		//item.removeAsset(ruleName);		
 	}
 
 	public String checkinVersion(Rule rule) {

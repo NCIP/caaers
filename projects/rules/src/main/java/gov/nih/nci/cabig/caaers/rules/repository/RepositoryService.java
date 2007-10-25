@@ -23,6 +23,8 @@ public interface RepositoryService {
     
     public void deleteRuleSet(String ruleSet) throws Exception;
     
+    public void deleteRule(String ruleSetName, String ruleName) ;
+    
     /**
      * Returns the Category associated with the category path passed in as argument
      * */
