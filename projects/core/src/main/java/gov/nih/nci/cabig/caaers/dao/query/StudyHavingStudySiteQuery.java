@@ -32,5 +32,11 @@ public class StudyHavingStudySiteQuery extends AbstractQuery {
 		andWhere("lower(ss.study.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
 		setParameter(STUDY_IDENTIFIER_VALUE, searchString);
 	}
+	
+	public void filterByIdentifierValueExactMatch(final String Identifiervalue) {
+		String searchString = Identifiervalue.toLowerCase();
+		andWhere("lower(ss.study.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+		setParameter(STUDY_IDENTIFIER_VALUE, searchString);
+	}
 
 }

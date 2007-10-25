@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.service;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -13,6 +15,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 public class ParticipantServiceImpl extends AbstractImportServiceImpl implements ParticipantService{
 	
 	ParticipantDao participantDao;
+	StudySiteDao studySiteDao;
 
 	/**
 	 * Search using a sample. Populate a Participant object
@@ -67,13 +70,25 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 			for (int i = 0; i < source.getAssignments().size(); i++) {
 				StudyParticipantAssignment studyParticipantAssignment = source
 						.getAssignments().get(i);
-				StudySite studySite = null;
+				//StudySite studySite = null;
 
 				for (Identifier identifier : studyParticipantAssignment
 						.getStudySite().getStudy().getIdentifiers()) {
-					Study study = getStudyDao().getByIdentifier(identifier);
-					if (study != null) {
-						studySite = study.getStudySites().get(0);
+					
+					StudySite studySite = studySiteDao.matchByStudyAndOrg(
+							studyParticipantAssignment.getStudySite().getOrganization().getName(), 
+							identifier.getValue());
+					System.out.println("StudySite " + studySite.getId());
+					/*
+					StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
+					query.filterByStudySiteName(studyParticipantAssignment
+							.getStudySite().getOrganization().getName());
+					query.filterByIdentifierValueExactMatch(identifier.getValue());
+					Study study = getStudyDao().find(query).get(0);
+					//Study study = getStudyDao().getByIdentifier(identifier);
+					*/
+					if (studySite != null) {
+						//studySite = study.getStudySites().get(0);
 						destination.getAssignments().add(
 								new StudyParticipantAssignment(destination,
 										studySite));
@@ -96,6 +111,16 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 				participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " already exists. ",severity);
 			}
 		}
+
+		public StudySiteDao getStudySiteDao() {
+			return studySiteDao;
+		}
+
+		public void setStudySiteDao(StudySiteDao studySiteDao) {
+			this.studySiteDao = studySiteDao;
+		}
+		
+		
 		
 		
 		

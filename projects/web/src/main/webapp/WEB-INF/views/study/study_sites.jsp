@@ -57,15 +57,17 @@
          		})
         	},
         	
-        	siteSelector: function(organization) { 
-        		return organization.name 
+        	siteSelector: function(organization) {
+        		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+			   return organization.name + nciInstituteCode   
         	}
         	
     });
     
     Event.observe(window, "load", function() {
     	<c:forEach varStatus="status" items="${command.studySites}" var="ss">
-      		new jsStudySite(${status.index}, '${ss.organization.name}');
+      		new jsStudySite(${status.index}, '${ss.organization.fullName}');
       	</c:forEach>
       	addSiteEditor = new ListEditor('ss-section',createStudy, "StudySite",{
              addFirstAfter: "ss-table-head",

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -122,17 +123,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	}
 
 	@Transactional(readOnly = false)
-	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome) {
-
+	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome){
+		log.debug("Batch saving start time : " + new java.util.Date());
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		int i = 0;
 		for (DomainObjectImportOutcome<Study> outcome : domainObjectImportOutcome) {
-			i++;
 			final Study study = outcome.getImportedDomainObject();
-			session.saveOrUpdate(study);
-			/*
-			 * session.evict(study); if(i % 100 == 0){ session.flush(); }
-			 */
+			session.merge(study);
 		}
 	}
 

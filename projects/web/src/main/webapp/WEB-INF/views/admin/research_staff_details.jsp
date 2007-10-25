@@ -30,7 +30,7 @@
     <script type="text/javascript">
     Event.observe(window, "load", function() {
        if('${command.organization.name}'){
-       	$('organization-input').value = '${command.organization.name}';
+       	$('organization-input').value = '${command.organization.fullName}';
        }
   	 //initialze the auto completer field.
 	 AE.createStandardAutocompleter('organization', 
@@ -40,7 +40,9 @@
       		})
     	},
         function(organization) { 
-    		return organization.name 
+    		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+			   return organization.name + nciInstituteCode  
     	}
      );
      

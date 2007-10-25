@@ -48,24 +48,16 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 		getHibernateTemplate().saveOrUpdate(participant);
 	}
 	
+	
 	@Transactional(readOnly = false)
 	public void batchSave(final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome){
-		
+		log.debug("Time now : " + new java.util.Date());
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-		int i =0;
 		for (DomainObjectImportOutcome<Participant> outcome : domainObjectImportOutcome) {
-			i++;
 			final Participant participant = outcome.getImportedDomainObject();
-			session.saveOrUpdate(participant);
-			/*
-			session.evict(participant);
-			if(i % 100 == 0){
-				session.flush();
-			}
-			*/
+			session.merge(participant);
 		}
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	public List<Participant> getAll() {

@@ -148,12 +148,37 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		String redirectTo = "redirectToSearchInStudyTab";
 		ImportCommand cObject = (ImportCommand)command;
 		if (cObject.getImportableStudies().size() > 0){
-			studyDao.batchSave(cObject.getImportableStudies());
+			
+			int start= 0;
+	        int loopEnd = 0;
+	        int end = cObject.getImportableStudies().size() ;
+	        int increment = 100;  
+	             
+	          while(true){
+	              loopEnd = start + increment < end ? start + increment : start + (end - start);
+	              studyDao.batchSave(cObject.getImportableStudies().subList(start, loopEnd));
+	              studyDao.clearSession();
+	              start = start + increment + 1;
+	           	  if (loopEnd  == end ) { break;}
+	          }
+			//nonTransactionalStudyDao.batchSave(cObject.getImportableStudies());
 			redirectTo = "redirectToSearchInStudyTab";
 		}
 		
 		if (cObject.getImportableParticipants().size() > 0){
-			participantDao.batchSave(cObject.getImportableParticipants());
+			
+			int start= 0;
+	        int loopEnd = 0;
+	        int end = cObject.getImportableParticipants().size() ;
+	        int increment = 100;  
+	             
+	          while(true){
+	              loopEnd = start + increment < end ? start + increment : start + (end - start);
+	              participantDao.batchSave(cObject.getImportableParticipants().subList(start, loopEnd));
+	  			  participantDao.clearSession();
+	              start = start + increment + 1;
+	           	  if (loopEnd  == end ) { break;}
+	             }
 			redirectTo = "redirectToSearchInParticipantTab";
 		}
 		
@@ -387,8 +412,5 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	public void setParticipantServiceImpl(
 			ParticipantServiceImpl participantServiceImpl) {
 		this.participantServiceImpl = participantServiceImpl;
-	}	
-	
-	
-	
+	}
 }

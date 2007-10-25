@@ -35,6 +35,6 @@ public class INDAjaxFacade {
 
 	public List<Organization> matchOrganization(String text){
     	List<Organization> orgs = organizationDao.getBySubnames(new String[]{text});
-    	return ObjectTools.reduceAll(orgs, "id","name");
+    	return ObjectTools.reduceAll(orgs, "id","name","nciInstituteCode");
 	}
 }

@@ -37,10 +37,11 @@ public abstract class AbstractImportServiceImpl {
 				if (identifier instanceof OrganizationAssignedIdentifier) {
 						Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
 						((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
+						
 						if (identifier.getType().equals("Sponsor Identifier")){
 							identifier.setPrimaryIndicator(false);
 						}
-						if (source instanceof Study){
+						if (source instanceof Study && identifier.getType().equals("Coordinating Center Identifier")){
 						StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
 						studyCoordinatingCenter.setOrganization(organization);
 						((Study)destination).addStudyOrganization(studyCoordinatingCenter);

@@ -58,7 +58,9 @@
          			autocompleter.setChoices(values)
          		})
         	},siteSelector: function(organization) { 
-        		return organization.name 
+        		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+        		return organization.name + nciInstituteCode
         	}
         	}
         	
@@ -86,7 +88,7 @@
         	
       		<c:forEach varStatus="status" items="${command.participant.identifiers}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					new jsIdentifier(${status.index}, '${si.organization.name}');
+					new jsIdentifier(${status.index}, '${si.organization.fullName}');
 				</c:if>
 					<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					new jsIdentifier(${status.index});

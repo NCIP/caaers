@@ -269,5 +269,20 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		return dateFormat.parse(date);
 	}
+	
+	/*
+	 * Only used for import , using this in any other instance might introduce confusion 
+	 * 
+	 */
+	@Transactional(readOnly = false)
+	public void clearSession(){
+		
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		log.debug("Entity Count  before clear() : " + session.getStatistics().getEntityCount());
+		log.debug("Collection Count before clear() : " + session.getStatistics().getCollectionCount());
+		session.clear();
+		log.debug("Entity Count  after clear() : " + session.getStatistics().getEntityCount());
+		log.debug("Collection Count after clear() : " + session.getStatistics().getCollectionCount());
+	}
 
 }
