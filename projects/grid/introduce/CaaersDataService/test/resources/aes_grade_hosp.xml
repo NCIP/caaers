@@ -1,0 +1,14 @@
+<!-- Get Aes with Grade > Sev and Hospitaliation is hospitalization-->
+<gov.nih.nci.cagrid.cqlquery.CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+     <Target name="gov.nih.nci.cabig.caaers.domain.AdverseEvent">
+          <ReturnAttributes>
+               <ReturnAttribute>id</ReturnAttribute>
+               <ReturnAttribute>comments</ReturnAttribute>
+               
+          </ReturnAttributes>
+          <Group logicRelation="AND">
+               <Attribute name="grade" value="3" predicate="GREATER_THAN"/>    
+               <Attribute name="hospitalization" value="1" predicate="EQUAL_TO"/> 
+          </Group>
+     </Target>
+</gov.nih.nci.cagrid.cqlquery.CQLQuery>
