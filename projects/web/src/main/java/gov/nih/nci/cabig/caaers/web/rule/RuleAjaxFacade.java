@@ -254,9 +254,14 @@ public class RuleAjaxFacade
     	}
     	
     	if (fieldName.equals("treatmentAssignmentCode")) {
-    		//Study study = studyDao.getByShortTitle(filterCrieteria);
-    		List<TreatmentAssignment> assignments = treatmentAssignmentDao.getAll();
-    		
+    		//System.out.println("TAC filter is -"+filterCrieteria+"-");
+    		List<TreatmentAssignment> assignments = new ArrayList<TreatmentAssignment>();
+    		if (filterCrieteria.equals("")) {
+    			assignments = treatmentAssignmentDao.getAll();
+    		} else {
+    			Study study = studyDao.getByShortTitle(filterCrieteria);
+    			assignments = study.getTreatmentAssignments();
+    		}
     		//cut down objects for serialization
             
             for (TreatmentAssignment treatmentAssignment : assignments) {
@@ -266,6 +271,7 @@ public class RuleAjaxFacade
     	} 
     	return ajaxObjects;
     }
+    
     public String addCondition(int ruleCount) {
     	CreateRuleCommand createRuleCommand = getAuthorRuleCommand();
     	RuleSet ruleSet = (RuleSet)createRuleCommand.getRuleSet();
