@@ -1,0 +1,16 @@
+<!-- Get exp reports -->
+<gov.nih.nci.cagrid.cqlquery.CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+     <Target name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport">
+          <ReturnAttributes>
+               <ReturnAttribute>id</ReturnAttribute>
+               <ReturnAttribute>createdAt</ReturnAttribute>
+          </ReturnAttributes>
+          <!--
+          <Association name="gov.nih.nci.cabig.caaers.domain.TreatmentInformation" roleName="treatmentInformation">
+               <Association name="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment" roleName="treatmentAssignment">
+                         <Attribute name="code" value="TAC%" predicate="LIKE"/>
+               </Association>
+          </Association>
+          -->
+     </Target>
+</gov.nih.nci.cagrid.cqlquery.CQLQuery>
