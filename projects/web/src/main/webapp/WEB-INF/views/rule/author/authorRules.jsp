@@ -866,7 +866,7 @@
 					}
 					
 					if (selectedField.value == 'treatmentAssignmentCode') { 
-						criteria1 = '';
+						criteria1 = '${command.categoryIdentifier}';
 					}
 										
 					authorRule.getAjaxObjects(selectedField.value , criteria1 , function(values) {
@@ -1576,7 +1576,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 					}
 					
 					if (criteria == 'treatmentAssignmentCode') { 
-						criteria1 = '';
+						criteria1 = '${command.categoryIdentifier}';
 					}
 					
 
