@@ -1,3 +1,4 @@
+<!-- Get All studies -->
 <gov.nih.nci.cagrid.cqlquery.CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
      <Target name="gov.nih.nci.cabig.caaers.domain.Study">
           <ReturnAttributes>
