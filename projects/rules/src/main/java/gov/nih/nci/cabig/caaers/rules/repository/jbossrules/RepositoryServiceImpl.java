@@ -273,11 +273,17 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	}
 	
 	public void deleteRule(String ruleSetName, String ruleName) {
-		PackageItem item = getRulesRepository().loadPackage(ruleSetName);
-		AssetItem ai = item.loadAsset(ruleName);
-		ai.remove();
 		
-		System.out.println("removed .." + ruleName);
+		try {
+			PackageItem item = getRulesRepository().loadPackage(ruleSetName);
+			AssetItem ai = item.loadAsset(ruleName);
+			ai.remove();
+		
+			System.out.println("removed .." + ruleName);
+		} catch (Exception e) {
+			// not able to delete rule as the rule was not save , this exception is fine ... 
+			e.printStackTrace();
+		}
 		/*
 		String r = "";
 		
