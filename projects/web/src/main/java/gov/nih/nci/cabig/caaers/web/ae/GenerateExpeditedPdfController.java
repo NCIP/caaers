@@ -25,7 +25,25 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 		setCommandClass(GenerateExpeditedPdfCommand.class);
     }
 	
-	
+	private void generateOutput(String outFile,HttpServletResponse response,String reportId) throws Exception{
+		String tempDir = System.getProperty("java.io.tmpdir");
+		File file = new File(tempDir+File.separator+outFile);
+		FileInputStream fileIn = new FileInputStream(file);
+		OutputStream out = response.getOutputStream();
+		response.setContentType( "application/x-download" );
+		response.setHeader( "Content-Disposition", "attachment; filename="+outFile );
+		 
+		byte[] buffer = new byte[2048];
+		int bytesRead = fileIn.read(buffer);
+		while (bytesRead >= 0) {
+		  if (bytesRead > 0)
+		    out.write(buffer, 0, bytesRead);
+		    bytesRead = fileIn.read(buffer);
+		}
+		out.flush();
+		out.close();
+		fileIn.close();
+	}
 
 	@Override
 	protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object arg2, BindException arg3) throws Exception {
@@ -43,12 +61,13 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			
     			if (format.equals("pdf")) {
     			
-	    			String pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+reportId+".pdf";
+	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportId+".pdf";
 	    			
 	    			AdeersReportGenerator gen = new AdeersReportGenerator();
-	    			gen.genatePdf(xml,pdfOutFile);
+	    			gen.genatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
-	    			
+	    			generateOutput(pdfOutFile,response,reportId);
+	    			/*
 					File file = new File(pdfOutFile);
 					FileInputStream fileIn = new FileInputStream(file);
 					OutputStream out = response.getOutputStream();
@@ -65,14 +84,42 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 					out.flush();
 					out.close();
 					fileIn.close();
-    			} else {
-	    			String xmlOutFile = tempDir+"/expeditedAdverseEventReport-"+reportId+".xml";
+					*/
+    			} else if (format.equals("medwatchpdf")) {
+ 
+	    			String pdfOutFile = "MedWatchReport-"+reportId+".pdf";
 	    			
-	    			BufferedWriter outw = new BufferedWriter(new FileWriter(xmlOutFile));
+	    			AdeersReportGenerator gen = new AdeersReportGenerator();
+	    			gen.genateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
+	    			
+	    			generateOutput(pdfOutFile,response,reportId);
+	    			/*
+					File file = new File(pdfOutFile);
+					FileInputStream fileIn = new FileInputStream(file);
+					OutputStream out = response.getOutputStream();
+					response.setContentType( "application/x-download" );
+					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".pdf" );
+					 
+					byte[] buffer = new byte[2048];
+					int bytesRead = fileIn.read(buffer);
+					while (bytesRead >= 0) {
+					  if (bytesRead > 0)
+					    out.write(buffer, 0, bytesRead);
+					    bytesRead = fileIn.read(buffer);
+					}
+					out.flush();
+					out.close();
+					fileIn.close();
+					*/
+    			} else {
+	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportId+".xml";
+	    			
+	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);
 	    			outw.close();
 	    			
-	    			
+	    			generateOutput(xmlOutFile,response,reportId);
+	    			/*
 					File file = new File(xmlOutFile);
 					FileInputStream fileIn = new FileInputStream(file);
 					OutputStream out = response.getOutputStream();
@@ -88,7 +135,8 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 					}
 					out.flush();
 					out.close();
-					fileIn.close();    				
+					fileIn.close();
+					*/    				
     			}
 				
 			} catch (Exception e) {
