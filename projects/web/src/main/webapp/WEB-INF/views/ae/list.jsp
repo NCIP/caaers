@@ -169,6 +169,7 @@
            			</c:if>
 					<p/>
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=pdf"/>">Generate PDF</a> <br/>
+           			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=medwatchpdf"/>">Generate MedWatch PDF</a> <br/>
                    	<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=xml"/>">Generate XML</a>
            			
 			</td>
