@@ -22,11 +22,11 @@
           class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl"/>
     <bean id="interoperationService" autowire="byType"
           class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
-    <bean id="connectionFactory"
+    <!-- <bean id="connectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="tcp://10.10.10.2:61616"/>
     </bean>
-
+     -->
 
     <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true">
 
@@ -58,10 +58,12 @@
    </bean>
 	
 	
-    <!-- ALTERNATIVE
-    <bean id="connectionFactory" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersConnectionFactory"/>
-    -->
+    
+    <bean id="connectionFactory" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersConnectionFactory">
+          <constructor-arg ref="configuration" />
+    </bean>
+    
 
     <bean id="sendQueueDestination"
           class="org.apache.activemq.command.ActiveMQQueue">
