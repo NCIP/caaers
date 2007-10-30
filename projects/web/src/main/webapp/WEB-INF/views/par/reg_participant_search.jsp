@@ -60,7 +60,7 @@ Please use the form above to search for a Participant and assign it to <b>${comm
 </p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Participant search results">
     <jsp:attribute name="singleFields">
-        <ec:table
+        <ec:table autoIncludeParameters="false"
         items="command.participantSearchResults"
         var="participant"
         action="${pageContext.request.contextPath}/pages/home"

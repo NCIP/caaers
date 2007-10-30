@@ -159,14 +159,18 @@ public class CreateAdverseEventAjaxFacade {
         return reduceAll(studies, "id", "shortTitle");
     }
     */
-
-    public List<Study> matchStudies(String text, Integer participantId) {
+    /*
+     * The extra condition "o.status <> 'Administratively Complete'" as fix for bug 9514
+     */
+    public List<Study> matchStudies(String text, Integer participantId, boolean ignoreCompletedStudy) {
     	List<Study> studies ;
     	if (participantId == null){
-    		studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
+    		studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text),
+    				(ignoreCompletedStudy)? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE +"'":null);
     	}
     	else{
-    		studies = studyDao.matchStudyByParticipant(participantId, text);
+    		studies = studyDao.matchStudyByParticipant(participantId, text, 
+    				(ignoreCompletedStudy)? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE +"'":null);
     	}
         // cut down objects for serialization
         return reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");

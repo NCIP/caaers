@@ -121,5 +121,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 	public void setTreatmentDescriptionType(String type) {
 	  	// TODO Check if this is needed for routine adverse events
 	}
-
+	public boolean getIgnoreCompletedStudy() {
+		return true;
+	}
 }

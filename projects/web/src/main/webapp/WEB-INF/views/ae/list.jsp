@@ -74,15 +74,15 @@
     </script>
 </head>
 <body>
-
 <c:if test="${not empty configuration.map.pscBaseUrl}">
 <p>
     View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/schedule?assignment=${command.assignment.gridId}" class="sso">study calendar</a>.
 </p>
 </c:if>
 
-<h2>Expedited Reports
+<h2>Expedited Reports<c:if test="${command.study.status ne 'Administratively Complete'}">
 <a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
+</c:if>
 </h2>
 
 <!-- STUDY SEARCH RESULTS START HERE -->
@@ -319,7 +319,7 @@
 
 <br>
 <h2>Routine AEs
-<a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
+<c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a></c:if>
 </h2>
 <ec:table
     items="command.assignment.aeRoutineReports"

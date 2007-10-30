@@ -131,4 +131,8 @@ public class ListAdverseEventsCommand {
     public void setMrn(String mrn) {
         this.mrn = mrn;
     }
+    public boolean getIgnoreCompletedStudy() {
+		return false;
+	}
+    
 }

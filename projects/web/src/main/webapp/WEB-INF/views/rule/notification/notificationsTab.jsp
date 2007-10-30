@@ -136,7 +136,8 @@
     	<td>
     	  	<!-- This box contains the Scale -->
     		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
-   				<p>Choose the ${command.reportDefinition.timeScaleUnitType},and configure the notification(s)<br /></p>
+   				<p>You are configuring reminder notifications for <b>${command.reportDefinition.name}</b>.
+   				Choose the ${command.reportDefinition.timeScaleUnitType},and configure the notification(s)</p>
    				
    				<table  border="0" cellpadding="0" cellspacing="0" bordercolor="#0066CC" width="98%">
    					<tr align="center" valign="middle"> 
@@ -192,6 +193,7 @@
 		         	<form:hidden path="pointOnScale" />
 					<form:hidden path="lastPointOnScale" />
 					<form:hidden path="indexToDelete" />
+					<input type="hidden" name="hideErrors"  value="false"/>
 					<input type="hidden" name="_action" value=""/>
 					
 				  </jsp:attribute>

@@ -264,6 +264,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		return null;
 	}
 	
+	public boolean getIgnoreCompletedStudy() {
+		return true;
+	}
+	
     @Override
     public String toString() {
         return new StringBuilder(getClass().getName())

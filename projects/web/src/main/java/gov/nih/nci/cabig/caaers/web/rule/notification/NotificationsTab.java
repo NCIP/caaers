@@ -22,6 +22,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 /***
  * This tab has the details of Email Message.
@@ -64,6 +65,8 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 						i++;
 					}
 				}
+			
+			
 		}else{
 			if(errors.hasErrors()) cmd.setPointOnScale(cmd.getLastPointOnScale());
 		}

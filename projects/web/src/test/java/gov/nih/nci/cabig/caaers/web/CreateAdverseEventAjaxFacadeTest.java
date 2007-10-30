@@ -40,6 +40,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.easymock.EasyMock;
+
 /**
  * @author Rhett Sutphin
  */
@@ -146,11 +148,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchStudies() throws Exception {
         Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jim" })))
+        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jim" }), (String)eq(null)))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
-        List<Study> actualList = facade.matchStudies("jim", null);
+        List<Study> actualList = facade.matchStudies("jim", null,false);
         verifyMocks();
 
         assertEquals("Result not forwarded", 1, actualList.size());
@@ -163,11 +165,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchStudiesMultipleSubnames() throws Exception {
         Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jules", "jim" })))
+        expect(studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jules", "jim" }),(String)eq(null)))
             .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
-        List<Study> actualList = facade.matchStudies("jules jim", null);
+        List<Study> actualList = facade.matchStudies("jules jim", null,false);
         verifyMocks();
 
         assertEquals("Result not forwarded", 1, actualList.size());
@@ -202,11 +204,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         Participant p = setId(7, createParticipant("Sad", "Man"));
         assignParticipant(p, expectedList.get(0), new Organization());
 
-        expect(studyDao.matchStudyByParticipant(7, "y"))
+        expect(studyDao.matchStudyByParticipant(7, "y",null))
         .andReturn(expectedList);
 
         replayMocks();
-        List<Study> actualList = facade.matchStudies("y", 7);
+        List<Study> actualList = facade.matchStudies("y", 7, false);
         verifyMocks();
 
         assertEquals("Wrong number of studies returned", 1, actualList.size());

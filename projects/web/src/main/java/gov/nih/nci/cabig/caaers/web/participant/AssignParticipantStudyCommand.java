@@ -60,9 +60,11 @@ public class AssignParticipantStudyCommand {
 
 	private String participantText;
 
-	private String studyId;
+	private Integer studyId;
+	
+	private Integer studySiteId;
 
-	private String participantId;
+	private Integer participantId;
 
 	// NEWLY ADDED
 	private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
@@ -237,20 +239,20 @@ public class AssignParticipantStudyCommand {
 	 * public String getStudySiteId() { return studySiteId; } public void setStudySiteId(String studySiteId) { this.studySiteId =
 	 * studySiteId; }
 	 */
-	public String getParticipantId() {
+	public Integer getParticipantId() {
 		return participantId;
 	}
-
-	public void setStudyId(final String studyId) {
+	
+	public void setParticipantId(final Integer participantId) {
+		this.participantId = participantId;
+	}
+	
+	public void setStudyId(final Integer studyId) {
 		this.studyId = studyId;
 	}
 
-	public String getStudyId() {
+	public Integer getStudyId() {
 		return studyId;
-	}
-
-	public void setParticipantId(final String participantId) {
-		this.participantId = participantId;
 	}
 
 	public String getParticipantText() {
@@ -316,4 +318,14 @@ public class AssignParticipantStudyCommand {
 	public void setIdentifiers(final List<? extends Identifier> identifiers) {
 		this.identifiers.addAll(identifiers);
 	}
+
+	public Integer getStudySiteId() {
+		return studySiteId;
+	}
+
+	public void setStudySiteId(Integer studySiteId) {
+		this.studySiteId = studySiteId;
+	}
+	
+	
 }

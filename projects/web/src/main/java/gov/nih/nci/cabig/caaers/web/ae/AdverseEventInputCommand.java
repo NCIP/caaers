@@ -20,4 +20,6 @@ public interface AdverseEventInputCommand {
 
     public String getTreatmentDescriptionType();
     public void setTreatmentDescriptionType(String type);
+    
+    public boolean getIgnoreCompletedStudy();
 }

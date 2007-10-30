@@ -35,10 +35,8 @@ public class AssignStudyControllerTest extends WebTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         participantDao = registerMockFor(ParticipantDao.class);
-        studySiteDao   = registerMockFor(StudySiteDao.class);
         controller.setListValues(new ListValues());
         controller.setParticipantDao(participantDao);
-        controller.setStudySiteDao(studySiteDao);
     }
    
     public void testViewOnGoodSubmit() throws Exception {

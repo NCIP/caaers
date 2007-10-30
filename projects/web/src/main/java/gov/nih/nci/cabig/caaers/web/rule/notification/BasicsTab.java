@@ -49,7 +49,9 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
 
 		fields.add(InputFieldFactory.createSelectField("reportDefinition.timeScaleUnitType", "Time Scale UOM", true,
 				createMapFromArray(TimeScaleUnit.values())));
-		fields.add(InputFieldFactory.createTextField("reportDefinition.duration", "Time Till Report Due", true));
+		InputField timeTillReportDueField = InputFieldFactory.createTextField("reportDefinition.duration", "Time Till Report Due", true);
+		InputFieldAttributes.setSize(timeTillReportDueField, 2);
+		fields.add(timeTillReportDueField);
 
 		map.addInputFieldGroup(fieldGroup);
 

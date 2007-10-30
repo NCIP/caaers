@@ -3,39 +3,33 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.validation.Errors;
 /**
  * @author Krikor Krumlian
  */
 public class AssignParticipantController extends AssignParticipantStudyController{
 	
+	@Override
+	@SuppressWarnings(value={"unchecked"})
+	protected Map referenceData(HttpServletRequest request, Object command,
+			Errors errors, int page) throws Exception {
+		Map referenceData =  super.referenceData(request, command, errors, page);
+		referenceData.put("participantSearchType", listValues.getParticipantSearchType());
+		referenceData.put("studySearchType", listValues.getStudySearchType());
+		referenceData.put("assignType", "participant");
+		return referenceData;
+	}
+	
 	public AssignParticipantController() {
         setCommandClass(AssignParticipantStudyCommand.class);
-        setFlow(new Flow<AssignParticipantStudyCommand>("Assign Participant to Study"));
-        
-        getFlow().addTab(new Tab("Choose Study", "Search Participant", "par/reg_participant_search") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                refdata.put("participantSearchType", listValues.getParticipantSearchType());
-                refdata.put("assignType", "participant");
-                return refdata;
-            }
-        });
-        
-        getFlow().addTab(new Tab("Search for Studies", "Search Study", "par/reg_protocol_search") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                refdata.put("studySearchType", listValues.getStudySearchType());
-                refdata.put("assignType", "participant");
-                return refdata;
-            }
-        });
-        
-        getFlow().addTab(new Tab("Review and Submit", "Review and Submit", "par/reg_review_submit") {
-            public Map<String, Object> referenceData() {
-                Map<String, Object> refdata = super.referenceData();
-                return refdata;
-            }
-        });
+        Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Participant to Study");
+        flow.addTab(new AssignParticipantTab());
+        flow.addTab(new AssignStudyTab());
+        flow.addTab(new ReviewAssignmentTab());
+        setFlow(flow);
     }
 
 }

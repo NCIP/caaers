@@ -35,7 +35,7 @@
         var studyAutocompleterProps = {
             basename: "study",
             populator: function(autocompleter, text) {
-                createAE.matchStudies(text, $('participant').value, function(values) {
+                createAE.matchStudies(text, $('participant').value, ${command.ignoreCompletedStudy},function(values) {
                     autocompleter.setChoices(values)
                 })
             },

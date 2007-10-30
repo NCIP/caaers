@@ -14,19 +14,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Search for a Study</title>
 <script>
-function submitPage(s){
-	document.getElementById("command").submit();
-}
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
-function doNothing(){
-}
+	function submitPage(s){
+		document.getElementById("command").submit();
+	}
+	function navRollOver(obj, state) {
+  		document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
+	}
+	function doNothing(){
+	}
 
-function updateTargetPage(s){
+	function updateTargetPage(s){
 		document.checkEligibility.nextView.value=s;
 		document.checkEligibility.submit();
-}
+	}
+
+	function resetSites(btn){
+		var classValue= 'siteStudy_' + btn.value;
+		$$('.sitesRadioBtn').each(function(input){
+		   if(input.classNames().toArray().indexOf(classValue) < 0){
+		   	  input.checked=false;
+		   }
+		});
+	}
+	
+	function resetStudy(study_id){
+		$$('.studyRadioBtn').each(function(input){
+			if(input.classNames().toArray().indexOf(study_id) < 0){
+				input.checked=false;
+			}else{
+				input.checked=true;
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -68,7 +87,7 @@ Please choose a Study and then press Save & Continue to proceed
 <tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">
         <tags:tabFields tab="${tab}" />
-                    <ec:table items="command.studies" var="study"
+                    <ec:table autoIncludeParameters="false" items="command.studies" var="study" 
                         action="${pageContext.request.contextPath}/pages/newParticipant"
                         imagePath="${pageContext.request.contextPath}/images/table/*.gif"
                         filterable="false"
@@ -78,14 +97,22 @@ Please choose a Study and then press Save & Continue to proceed
                         <ec:row highlightRow="true">
                             <ec:column property="kk" style="width:10px" filterable="false"
                                 sortable="false" title=" ">
-                                <form:radiobutton path="studyId" value="${study.id}" />
+                                <form:radiobutton path="studyId" cssClass="studyRadioBtn studyId_${study.id}" value="${study.id}" onclick="javascript:resetSites(this);"/>
                             </ec:column>
                             <ec:column property="primaryIdentifier" title="Primary ID" />
                             <ec:column property="shortTitle" title="Short Title" />
                             <ec:column property="primarySponsorCode" title="Funding Sponsor" />
                             <ec:column property="phaseCode" title="Phase" />
                             <ec:column property="status" title="Status" />
-                            
+                            <ec:column title="Sites" property="status">
+                               <table>
+                               <c:forEach items="${study.studySites}" var="site">
+                               		<tr><td><form:radiobutton  cssClass="sitesRadioBtn siteStudy_${study.id}" 
+                               						path="studySiteId" value="${site.id}" onclick="javascript:resetStudy('studyId_${study.id}');"  />
+                               		${site.organization.name }</td></tr>
+                               </c:forEach>
+                               </table>
+                            </ec:column>
                         </ec:row>
                     </ec:table>
     </jsp:attribute>

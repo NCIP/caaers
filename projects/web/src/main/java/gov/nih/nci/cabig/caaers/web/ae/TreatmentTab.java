@@ -35,7 +35,7 @@ public class TreatmentTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField assignmentField = InputFieldFactory.createSelectField(
             "treatmentAssignment",
-            "Treatment assignment code", collectTreatmentAssignmentCodes(command));
+            "Treatment assignment code", true, collectTreatmentAssignmentCodes(command));
         InputFieldAttributes.setSize(assignmentField, 20);
         InputField descField = InputFieldFactory.createTextArea("treatmentAssignmentDescription",
             "Description of treatment assignment or dose level");

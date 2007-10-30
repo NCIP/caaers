@@ -1360,12 +1360,12 @@ public class SearchStudyAjaxFacade {
 		columnLastName.setProperty("lastName");
 		model.addColumn(columnLastName);
 
-		// Column columnPrimaryIdentifier = model.getColumnInstance();
-		// columnPrimaryIdentifier.setSortable(false);
-		// columnPrimaryIdentifier.setProperty("test");
-		// columnPrimaryIdentifier.setTitle("Primary ID");
-		// columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
-		// model.addColumn(columnPrimaryIdentifier);
+		 Column columnPrimaryIdentifier = model.getColumnInstance();
+		 columnPrimaryIdentifier.setSortable(false);
+		 columnPrimaryIdentifier.setProperty("test");
+		 columnPrimaryIdentifier.setTitle("Primary ID");
+		 columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
+		 model.addColumn(columnPrimaryIdentifier);
 
 		return model.assemble();
 

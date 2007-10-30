@@ -101,7 +101,7 @@
 		<tr >						
 			<th scope="col">Agent name</th>
 			<th scope="col">Agent NSC<br />number</th>
-			<th scop="col">IND type</th>
+			<th scop="col">IND indicator</th>
 			<th scope="col">IND #</th>
 			<th scope="col">Investigational new <br /> drug?</th>	
 		</tr>																			
