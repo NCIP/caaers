@@ -903,7 +903,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 			//check report definitions for this org
 			for (String rd:reportDefinitions) {
 				ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
-				if (reportDefinition == null) {
+				if (reportDefinition == null && !rd.equals("IGNORE")) {
 					System.out.println("need to create .." + rd);
 					ReportDefinition newRd = new ReportDefinition();
 					newRd.setName(rd);
