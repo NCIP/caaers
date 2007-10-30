@@ -135,12 +135,14 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
-
-	public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames) {
+	/*
+	 * Added extraCondition parameter, as a fix for bug 9514
+	 */
+	public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames, String extraConditions) {
 		String joins = " join o.identifiers as identifier ";
 		List<String> subStringMatchProperties = Arrays.asList("o.shortTitle", "o.longTitle", "identifier.type",
 				"identifier.value");
-		return findBySubname(subnames, null, null, subStringMatchProperties, EXACT_MATCH_PROPERTIES, joins);
+		return findBySubname(subnames, extraConditions, null, subStringMatchProperties, EXACT_MATCH_PROPERTIES, joins);
 	}
 
 	/*
@@ -148,7 +150,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS); }
 	 */
 
-	public List<Study> matchStudyByParticipant(final Integer participantId, final String text) {
+	public List<Study> matchStudyByParticipant(final Integer participantId, final String text, final String extraCondition) {
 
 		String joins = " join o.identifiers as identifier join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
 
@@ -157,6 +159,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 				" o ").append(joins);
 
 		queryBuf.append(" where ");
+		queryBuf.append((extraCondition == null)? "" : extraCondition + " and " );
 		queryBuf.append("p.id = ?");
 		params.add(participantId);
 

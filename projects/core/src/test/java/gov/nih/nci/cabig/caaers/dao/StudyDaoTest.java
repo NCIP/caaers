@@ -331,7 +331,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 	public void testMatchStudyByParticipant() throws Exception {
 		List<Study> results;
 		Integer participantId = -100 ;
-		results = getDao().matchStudyByParticipant(participantId,"or");
+		results = getDao().matchStudyByParticipant(participantId,"or", null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
@@ -340,22 +340,22 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		List<Study> results;
 		Integer participantId = -100 ;
 		// Full Identifier Value
-		results = getDao().matchStudyByParticipant(participantId,"1138-43");
+		results = getDao().matchStudyByParticipant(participantId,"1138-43", null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 
 		// Partial  Identifier Value
-		results = getDao().matchStudyByParticipant(participantId,"-43");
+		results = getDao().matchStudyByParticipant(participantId,"-43", null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 
 		// Partial  Identifier type
-		results = getDao().matchStudyByParticipant(participantId,"lo");
+		results = getDao().matchStudyByParticipant(participantId,"lo", null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 
 		// Full  Identifier type
-		results = getDao().matchStudyByParticipant(participantId,"local");
+		results = getDao().matchStudyByParticipant(participantId,"local", null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
@@ -365,13 +365,13 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 
 		// Full Identifier Value
 		String[] str = {"1138-43"};
-		results = getDao().getBySubnamesJoinOnIdentifier(str);
+		results = getDao().getBySubnamesJoinOnIdentifier(str, null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 
 		// Partial  Identifier Value
 		String[] str1 = {"-43"};
-		results = getDao().getBySubnamesJoinOnIdentifier(str1);
+		results = getDao().getBySubnamesJoinOnIdentifier(str1, null);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}

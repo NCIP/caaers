@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -245,6 +246,10 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 			}
 
 		});
+	}
+	
+	public void reassociateUsingLock(Participant o) {
+		getHibernateTemplate().lock(o, LockMode.NONE);
 	}
 
 }

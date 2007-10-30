@@ -32,7 +32,9 @@ import org.hibernate.annotations.Where;
 @Table(name = "studies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_studies_id") })
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
-
+	
+	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
+	
 	private String shortTitle;
 
 	private String longTitle;
