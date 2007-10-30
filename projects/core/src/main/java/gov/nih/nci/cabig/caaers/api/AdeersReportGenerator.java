@@ -58,6 +58,11 @@ public class AdeersReportGenerator  {
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOMedWatchXsltFile);
 	}
+	public void genateMedwatchPdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+		
+		XsltTransformer xsltTrans = new XsltTransformer();
+		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
+	}
 	
 	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject , Integer reportIndex) throws Exception{
 		
