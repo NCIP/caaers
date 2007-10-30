@@ -83,7 +83,13 @@
 	    System.out.println("Value Is:"+"<xsl:value-of select="@actionId"/>");	    
 	    
 		if(adverseEventEvaluationResult != null) {
-			adverseEventEvaluationResult.setMessage("<xsl:value-of select="@actionId"/>");
+			
+			String msg = "";
+			if (adverseEventEvaluationResult.getMessage() != null) {
+				msg = adverseEventEvaluationResult.getMessage() + "||";
+			}
+			
+			adverseEventEvaluationResult.setMessage(msg + "<xsl:value-of select="@actionId"/>");
 		}
 		 else {
 			System.out.println("The Rule Conditions were met. But no action is specified. ");

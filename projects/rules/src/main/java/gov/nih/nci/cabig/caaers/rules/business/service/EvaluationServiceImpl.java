@@ -63,17 +63,36 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData){
     	Map<String,List<String>> map;
     	List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+    	List<String> reportDefinitionNames = new ArrayList<String>();
+    	
     	try {
             map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
         } catch (Exception e) {
             throw new CaaersSystemException("Could not determine the reports necessary for the given expedited adverse event data", e);
         }
-        for(List<String> nameList : map.values()){
-        	for(String name : nameList){
+        
+        Set<String> keys = map.keySet();
+        for (String key : keys) {
+            List<String> reportDefNames = map.get(key);
+            // TO-DO need to clarify this ranking incase of multi actions in rules
+            if (reportDefNames.size() != 0) {
+                String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
+                System.out.println("adding ..." + reportDefName);
+                reportDefinitionNames.add(reportDefName);
+            }
+            
+            //uncomment the above part and comment the below code after figuring oout ranking.
+            //for (String reportDefName : reportDefNames) {
+            	//reportDefinitionNames.add(reportDefName);
+            //}
+        }
+        
+        //for(List<String> nameList : map.values()){
+        	for(String name : reportDefinitionNames){
         		ReportDefinition reportDefinition = reportDefinitionDao.getByName(name);
         		defList.add(reportDefinition);
         	}
-        }
+        //}
         return defList;
     }
 
@@ -91,6 +110,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
      */
+    /*
     @Transactional(readOnly=false)
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
         Map<String,List<String>> map;
@@ -105,16 +125,17 @@ public class EvaluationServiceImpl implements EvaluationService {
         Set<String> keys = map.keySet();
         for (String key : keys) {
             List<String> reportDefNames = map.get(key);
-            /* TO-DO need to clarify this ranking incase of multi actions in rules
+            // TO-DO need to clarify this ranking incase of multi actions in rules
             if (reportDefNames.size() != 0) {
                 String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
+                System.out.println("adding ..." + reportDefName);
                 reportDefinitionNames.add(reportDefName);
             }
-            */
+            
             //uncomment the above part and comment the below code after figuring oout ranking.
-            for (String reportDefName : reportDefNames) {
-            	reportDefinitionNames.add(reportDefName);
-            }
+            //for (String reportDefName : reportDefNames) {
+            	//reportDefinitionNames.add(reportDefName);
+            //}
         }
 
         for (Object reportDefinitionName : reportDefinitionNames) {
@@ -130,6 +151,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
     }
+    */
     /**
      * Will create the Report by calling ReportService, then saves the ExpeditedAdverseEventReport
      */

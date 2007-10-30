@@ -52,8 +52,8 @@ public interface EvaluationService {
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
      */
-    @Deprecated
-    void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
+   // @Deprecated
+    //void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
 
     /**
      * This method will instantiate and saves the optional reports.

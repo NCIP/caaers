@@ -319,6 +319,11 @@ public class AdverseEventReportSerializer {
 	    	adverseEvent.setOtherCauseAttributions(otList);
 	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
 
+	    	
+	    	adverseEvent.setDiseaseAttributions(ae.getDiseaseAttributions());
+	    	adverseEvent.setSurgeryAttributions(ae.getSurgeryAttributions());
+	    	adverseEvent.setRadiationAttributions(ae.getRadiationAttributions());
+	    	adverseEvent.setDeviceAttributions(ae.getDeviceAttributions());
 
 
 			if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
@@ -328,7 +333,7 @@ public class AdverseEventReportSerializer {
 			}
 
 
-
+			
 	    	adverseEvent.setHospitalization(ae.getHospitalization());
 	    	adverseEvent.setGrade(ae.getGrade());
 	    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
@@ -410,5 +415,19 @@ public class AdverseEventReportSerializer {
 //		public void setMappingFile(String mappingFile) {
 	//		this.mappingFile = mappingFile;
 		//}
-
+		
+		public static void main (String[] args) {
+			//
+			AdverseEventReportSerializer aes = new AdverseEventReportSerializer();
+			ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
+			aer.setId(123);
+			
+			try {
+				XmlMarshaller marshaller = new XmlMarshaller();
+				String	xml = marshaller.toXML(aer,aes.getMappingFile());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 }

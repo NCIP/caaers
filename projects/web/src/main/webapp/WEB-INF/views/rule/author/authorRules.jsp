@@ -1732,7 +1732,8 @@ button. Rules created will belong to the selected RuleSet.</p>
 						<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
 									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
-								</c:forEach>	
+								</c:forEach>
+								<form:option value="IGNORE">IGNORE</form:option>
 						</c:when>
 						<c:otherwise>
 							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
@@ -1744,7 +1745,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 					</c:choose>
 					<c:forEach items="${notifications}" var="notification">
 						<form:option value="${notification.id}">${notification.name}</form:option>
-					</c:forEach>
+					</c:forEach>					
 				</form:select></div>
 				<c:if test="${ruleCount} == 0">
 					<br />

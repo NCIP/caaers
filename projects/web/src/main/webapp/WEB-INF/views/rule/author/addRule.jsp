@@ -142,7 +142,8 @@
 							<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">
 									<option value="${reportDefinition.name}">${reportDefinition.name}</option>
-								</c:forEach>								
+								</c:forEach>
+								<option value="IGNORE">IGNORE</option>								
 							</c:when>
 							<c:otherwise>														
 								<option value="ROUTINE_AE">Assess as Routine AE</option>														
