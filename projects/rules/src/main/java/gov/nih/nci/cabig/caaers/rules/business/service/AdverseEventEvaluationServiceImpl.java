@@ -516,6 +516,10 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		if (reportDefinition != null) {
 			inputObjects.add(reportDefinition);
 		}
+		if (ae.getReport().getTreatmentInformation() != null) {
+			inputObjects.add(ae.getReport().getTreatmentInformation());
+		}
+		
 		//inputObjects.add(new AdverseEventEvaluationResult());
 
 		List<Object> outputObjects = null;
