@@ -158,7 +158,8 @@
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyTherapyType','studyTherapyType','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study Therapy " postfix=""/>
-			</field>			
+			</field>
+			<!--			
 			<field name="treatmentAssignmentCode" display-uri="Treatment Assignment Code">
 				<field-value>
 					<input-type>multiselect</input-type>
@@ -168,6 +169,7 @@
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.TreatmentAssignment','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Treatment Assignment Code " postfix=""/>
 			</field>
+			-->
 		</domain-object>
 		<domain-object identifier="reportDefinition" class-name="gov.nih.nci.cabig.caaers.domain.report.ReportDefinition" display-uri="Report Definition">
 			<field name="reportDefinitionName" display-uri="Name">
@@ -179,7 +181,20 @@
 				<expression>factResolver.assertFact(reportDefinition,null,'name','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Report Definition " postfix=""/>
 			</field>
+		</domain-object>
+		
+		<domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Course">
+			<field name="treatmentAssignmentCode" display-uri="Treatment Assignment Code">
+				<field-value>
+					<input-type>multiselect</input-type>
+				</field-value>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.TreatmentAssignment','code','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" Treatment Assignment Code " postfix=""/>
+			</field>
 		</domain-object>		
+		
 	</condition>
 
 </rule-ui>
