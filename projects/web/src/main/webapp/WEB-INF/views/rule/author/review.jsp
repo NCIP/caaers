@@ -91,7 +91,15 @@
 	        		<p>
 	        		&nbsp;&nbsp;ACTION(S) : <br />
 	        		<c:forEach var="ruleac" items="${rule.action}">
-	        			&nbsp;&nbsp; &nbsp;&nbsp;${ruleac} <br />
+	        			<c:choose>
+	        				<c:when test="${ruleac == 'IGNORE'}">
+	        					&nbsp;&nbsp; &nbsp;&nbsp; No Report Required (Study Level Exception Rule) <br />
+	        				</c:when>
+	        				<c:otherwise>
+	        					&nbsp;&nbsp; &nbsp;&nbsp;${ruleac} <br />
+	        				</c:otherwise>
+	        			</c:choose>
+	        			
 	        		</c:forEach>
 
 	        </c:forEach>
