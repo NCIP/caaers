@@ -105,6 +105,34 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.Attribution</objectType>
 		</node>
 	</navigationPath>
+	
+	
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</targetObjectType>
+		<node>
+			<name>adverseEvent</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.AdverseEvent</objectType>
+		</node>
+		<node>
+			<name>report</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</objectType>
+		</node>
+		<node>
+			<name>treatmentInformation</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</objectType>
+		</node>
+		<node>
+			<name>treatmentAssignment</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</objectType>
+		</node>
+	</navigationPath>
+		
+	
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</targetObjectType>
