@@ -143,7 +143,7 @@
 								<c:forEach var="reportDefinition" items="${reportDefinitions}">
 									<option value="${reportDefinition.name}">${reportDefinition.name}</option>
 								</c:forEach>
-								<option value="IGNORE">IGNORE</option>								
+								<option value="IGNORE">No Report Required (Study Level Exception Rule)</option>								
 							</c:when>
 							<c:otherwise>														
 								<option value="ROUTINE_AE">Assess as Routine AE</option>														
