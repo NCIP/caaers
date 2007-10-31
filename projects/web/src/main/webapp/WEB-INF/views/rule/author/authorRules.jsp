@@ -1733,7 +1733,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
 									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
 								</c:forEach>
-								<form:option value="IGNORE">IGNORE</form:option>
+								<form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
 						</c:when>
 						<c:otherwise>
 							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
