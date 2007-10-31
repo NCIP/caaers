@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
+import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import javax.jms.Connection;
@@ -24,7 +25,6 @@ public class CaaersConnectionFactory implements ConnectionFactory {
     
     public CaaersConnectionFactory(Configuration configuration) throws Exception{
     	this.configuration = configuration;
-    	createConnection(null, null);
     }
     
     public Connection createConnection() throws JMSException {
@@ -39,10 +39,12 @@ public class CaaersConnectionFactory implements ConnectionFactory {
     }
 
     protected ConnectionFactory createDelegate(final String url) {
-    	String newUrl = (StringUtils.isEmpty(url))? "tcp://10.10.10.2:61616" : url;
-    	log.info("ESB url :" + newUrl);
+    	if (url == null) {
+    		   throw new CaaersConfigurationException("No ESB Queue URL set.  Please set the property and then restart caAERS.");
+    	}
+
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
-        factory.setBrokerURL(newUrl);
+        factory.setBrokerURL(url);
         return factory;
     }
 
