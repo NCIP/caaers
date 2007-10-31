@@ -113,6 +113,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
         if (partBean.getIdentifier() != null) {
             List<Identifier> identifiersList =  new ArrayList<Identifier>();
             for (IdentifierType identifierType : partBean.getIdentifier()) {
+            
             	Identifier identifier = null;
             	if(identifierType instanceof SystemAssignedIdentifierType){
             		SystemAssignedIdentifierType sysIdentifierType = (SystemAssignedIdentifierType) identifierType;
@@ -130,7 +131,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
             	}
                 identifier.setType(identifierType.getType());
                 identifier.setValue(identifierType.getValue());
-
+                identifier.setPrimaryIndicator(identifierType.getPrimaryIndicator());
                 identifiersList.add(identifier);
             }
             participant.setIdentifiers(identifiersList);
