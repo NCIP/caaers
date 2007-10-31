@@ -263,6 +263,7 @@ public class CreateAdverseEventAjaxFacade {
             interoperationService.pushToStudyCalendar(report);
             return true;
         } catch (CaaersSystemException ex) {
+        	log.warn("Interoperation Service, is not working properly", ex);
             // this happens if the interoperationService isn't correctly configured
             return false;
         } catch (RuntimeException re) {
