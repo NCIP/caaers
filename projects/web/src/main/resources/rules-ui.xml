@@ -182,7 +182,7 @@
 				<grammer prefix=" Report Definition " postfix=""/>
 			</field>
 		</domain-object>
-		
+		<!--
 		<domain-object identifier="adverseEvent" class-name="gov.nih.nci.cabig.caaers.domain.AdverseEvent" display-uri="Course">
 			<field name="treatmentAssignmentCode" display-uri="Treatment Assignment Code">
 				<field-value>
@@ -194,7 +194,7 @@
 				<grammer prefix=" Treatment Assignment Code " postfix=""/>
 			</field>
 		</domain-object>		
-		
+		-->
 	</condition>
 
 </rule-ui>
