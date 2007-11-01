@@ -6,7 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.Length;
@@ -64,11 +66,19 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
 	public String getDescription() {
 		return description;
 	}
-
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
+	@Transient
+	/**
+	 * The below function is only used for UI purpose
+	 */
+	public String getEscapedDescription(){
+		return StringEscapeUtils.escapeJavaScript(description);
+	}
+	
 	public String getComments() {
 		return comments;
 	}
