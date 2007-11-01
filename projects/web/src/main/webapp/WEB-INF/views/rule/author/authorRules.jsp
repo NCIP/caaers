@@ -1260,7 +1260,8 @@ button. Rules created will belong to the selected RuleSet.</p>
 						
 						 class="lineitem"><img
 						src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> <c:choose>
+						style="width:10px;height:10px" align="absmiddle" /> 
+					<c:choose>
 						<c:when test="${columnCount == 0}">
 							<label for="IF">IF</label>
 							<img src="/caaers/images/chrome/spacer.gif"

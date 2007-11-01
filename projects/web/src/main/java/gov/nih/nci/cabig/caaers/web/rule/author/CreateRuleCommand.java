@@ -134,23 +134,55 @@ public class CreateRuleCommand implements RuleInputCommand
 						//System.out.println("is marked delete .. " + col.getIdentifier());
 						cols.add(col);
 					}	
-					
+					/*
 					if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
 						termSelected = true;
 					}
+					*/
+				
 				}
+				
 				for (Column col:cols) {					
 					rule.getCondition().getColumn().remove(col);
 				}
-				// modify category if term selecetd 
-				if (termSelected) {
-					for (Column col:rule.getCondition().getColumn()) {
-						if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
-							col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
-						}
-					}
+				
+				for (Column col:rule.getCondition().getColumn()) {
+					if (col.getFieldConstraint().get(0).getFieldName().equals("term")) {
+						termSelected = true;
+					}					
 				}
 				
+				// modify category if term selecetd 
+				 for (Column col:rule.getCondition().getColumn()) {
+						if (col.getFieldConstraint().get(0).getFieldName().equals("category")) {
+							if (termSelected) {
+								//System.out.println(col.getExpression());
+								if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+									//System.out.println("THIS SCENARIO-A");
+									String expr = col.getExpression();
+									String eval = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getEvaluator();
+									String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().get(0);
+									expr = expr.replaceAll("'0'", "'"+value+"'");
+									expr = expr.replaceAll("'>'", "'"+eval+"'");
+									//System.out.println(expr);
+									col.setExpression(expr);
+							  } else {
+								  col.setExpression("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')");
+							  }
+							} else {
+								if (col.getExpression().equals("factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.CtcCategory','id','0','>')")) {
+									//System.out.println("THIS SCENARIO-B");
+									String expr = col.getExpression();
+									String eval = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getEvaluator();
+									String value = col.getFieldConstraint().get(0).getLiteralRestriction().get(0).getValue().get(0);
+									expr = expr.replaceAll("'0'", "'"+value+"'");
+									expr = expr.replaceAll("'>'", "'"+eval+"'");
+									//System.out.println(expr);
+									col.setExpression(expr);
+							  }							
+						 }
+					}
+				 }
 				
 				//get comma seperated values ....
 				
