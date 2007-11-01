@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -76,7 +78,7 @@
             })
 			//push the description into the array
 			<c:forEach items="${command.aeReport.study.treatmentAssignments}" var="ta">
-        	descArray.push("${ta.description}");
+        	descArray.push("${ta.escapedDescription}");
         	</c:forEach>			
 			
 			// treatment dropdown.
