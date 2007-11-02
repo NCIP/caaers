@@ -67,7 +67,6 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         //TODO: need to see how to manage (this or that) kind mandatory fields
         //TODO: Why not this we handle in createFields() of every tab, so that the looping through the fields
         // here can be avoided.
-        if (!isMandatory(command)) return;
 
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
