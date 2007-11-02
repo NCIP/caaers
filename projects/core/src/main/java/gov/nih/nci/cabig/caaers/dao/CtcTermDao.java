@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly=true)
 public class CtcTermDao extends CaaersDao<CtcTerm> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
-    private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
+    private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
+    private static final List<String> EXACT_MATCH_PROPERTIES = Arrays.asList("term", "ctepCode");
 
     @Override
 	public Class<CtcTerm> domainClass() {
@@ -38,8 +40,14 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
             extraParams.add(ctcCategoryId);
         }
         return findBySubname(subnames, extraConds.toString(), extraParams,
-            SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+            SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
     }
+    
+    @SuppressWarnings("unchecked")
+	public CtcTerm getCtcTerm(final String[] subnames) {
+		List<CtcTerm> ctcTerms = findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_PROPERTIES);
+		return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
+	}
 
     @SuppressWarnings("unchecked")
     public List<CtcTerm> getAll() {

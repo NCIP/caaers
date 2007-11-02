@@ -29,6 +29,24 @@
         long_title="Event Lengthier Title"
         description="Yet another different description"
         />
+        
+    <DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-2"
+    	/>   
+    
+     <DISEASE_TERMINOLOGIES
+    	id="-12"
+    	term_code="1"
+    	study_id="-3"
+    	/>
+    
+     <DISEASE_TERMINOLOGIES
+    	id="-13"
+    	term_code="1"
+    	study_id="-4"
+    	/>	   	   
 
    <TERMINOLOGIES
    		id="-10"

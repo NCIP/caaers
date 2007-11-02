@@ -96,6 +96,8 @@
     <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
 
     <bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType"/>
+    
+    <bean id="routineAdverseEventReportServiceImpl" class="gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl" autowire="byType"/>
 
     <!--  This bean that implements the service  -->
     <bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">

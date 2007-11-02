@@ -51,6 +51,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
@@ -96,7 +97,7 @@
 				<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
 				<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
 				<value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
-				 <value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
+				<value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
                 <value>gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationEntry</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
                 <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>

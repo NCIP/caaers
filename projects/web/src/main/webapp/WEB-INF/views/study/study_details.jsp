@@ -10,9 +10,13 @@
 
 	<title>${tab.longTitle}</title>
     <style type="text/css">
+
      div.row div.label { width: 11em; } 
+
      div.row div.value { margin-left: 12em; }
+
      
+
     </style> 
 	<tags:javascriptLink name="hover-display" />
 
@@ -99,14 +103,17 @@
        		</c:forEach>
 
     <chrome:division title="Adverse event coding terminology" >
-
 		 <c:forEach items="${fieldGroups.scFieldGroup.fields}" var="field" varStatus="status">
-
 		  <tags:renderRow field="${field}"  />
-
 		 </c:forEach>
-
     </chrome:division>
+    
+    <chrome:division title="Disease coding terminology" >
+		 <c:forEach items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+		  <tags:renderRow field="${field}"  />
+		 </c:forEach>
+    </chrome:division>
+    
     <chrome:division title="Coordinating center details" >
 		 <c:forEach items="${fieldGroups.ccFieldGroup.fields}" var="field" varStatus="status">
 		  <tags:renderRow field="${field}"  />

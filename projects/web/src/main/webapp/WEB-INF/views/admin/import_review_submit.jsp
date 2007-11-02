@@ -59,7 +59,7 @@
 		<input type="hidden" name="_finish" value="true">
 	</div>
 		
-			<c:if test='${fn:length(command.nonImportableStudies) > 0 }'>
+		<c:if test='${fn:length(command.nonImportableStudies) > 0 }'>
 		<h4>The following Study Records have been flagged and will NOT be loaded into caAERS</h4>
 		<table  width="80%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -147,6 +147,51 @@
 								<tr class="results">						
 									<td align="left"><c:out value="${item.importedDomainObject.firstName}"/></td>	
 									<td align="left"><c:out value="${item.importedDomainObject.lastName}"/></td>									
+								</tr>
+					</c:forEach>				
+		</table>
+		</c:if>
+		
+		<c:if test='${fn:length(command.nonImportableRoutineAdverseEventReports) > 0 }'>
+		<h4>The following Participant Records have been flagged and will NOT be loaded into caAERS</h4>
+		<table  width="80%" border="1" cellspacing="0" cellpadding="0">
+		<br>
+
+					<tr align="center">						
+						<td> <b>Start Date</b></td>
+						<td> <b>End Date</b></td>
+						<td> <b>Possible Problem</b></td>																		
+					</tr>
+					
+					<c:forEach var='item' items='${command.nonImportableRoutineAdverseEventReports}'>
+						<tr class="results">
+   						<td align="left"><c:out value='${item.importedDomainObject.startDate}'/></td>
+   						<td align="left"><c:out value='${item.importedDomainObject.endDate}'/></td>
+   						<c:forEach var='message' items='${item.messages}'>
+   							<td align="left" color="red"><c:out value='${message.message}'/></td>
+   						</c:forEach>
+   						</tr>
+					</c:forEach>																				
+		</table>
+		</c:if>
+		
+		<c:if test='${fn:length(command.importableRoutineAdverseEventReports) > 0 }'>
+		<br>
+		<h4>The following Routine Adverse Event Records will be loaded into caAERS</h4>
+		
+		<table  width="40%" border="1" cellspacing="0" cellpadding="0">
+		<br>
+
+					<tr align="center">						
+						<td> <b>Start Date</b></td>
+						<td> <b>End Date</b></td>																		
+					</tr>																			
+				 
+				    
+					<c:forEach varStatus="status" var="item" items="${command.importableRoutineAdverseEventReports}">
+								<tr class="results">						
+									<td align="left"><c:out value="${item.importedDomainObject.startDate}"/></td>	
+									<td align="left"><c:out value="${item.importedDomainObject.endDate}"/></td>									
 								</tr>
 					</c:forEach>				
 		</table>

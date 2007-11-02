@@ -23,7 +23,7 @@ import org.hibernate.LazyInitializationException;
 public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<ExpeditedAdverseEventReport> implements
 		MutableDomainObjectDao<ExpeditedAdverseEventReport> {
 	private static final String JOINS = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm "
-			+ " join o.assignment as assignment join assignment.participant as p join p.identifiersInternal as pIdentifier "
+			+ " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier "
 			+ " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
 
 	private ReportDao reportDao;

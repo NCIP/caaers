@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -114,6 +115,7 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		terminology.setTerm(Term.CTC);
 		terminology.setStudy(study);
 		study.setTerminology(terminology);
+		study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		// newStudy.setAmended(false);
 		// study.setProtocolAuthorityId("protocolAuthority for:" + name);
 
@@ -144,6 +146,7 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		terminology.setTerm(Term.CTC);
 		terminology.setStudy(study);
 		study.setTerminology(terminology);
+		study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		// newStudy.setAmended(false);
 		// study.setProtocolAuthorityId("protocolAuthority for:" + name);
 

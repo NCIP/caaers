@@ -10,10 +10,13 @@
 <tags:includeScriptaculous/>
 	<script language="JavaScript" type="text/JavaScript">
 	
-	function toggle(in_id,out_id)
+	function toggle(in_id,out_id,out_second_id)
 	{
 		if ($(out_id).style.display != "none" ){
 			Effect.Shrink(out_id);
+		}
+		if ($(out_second_id).style.display != "none" ){
+			Effect.Shrink(out_second_id);
 		}
 		Effect.toggle(in_id, 'appear');
 		$('type').value = in_id;
@@ -27,15 +30,19 @@
 		}
 		if (  $('type').value == "participant"){
 			$('participant').style.display = ""
-		}		
+		}
+		if (  $('type').value == "routineAeReports"){
+			$('routineAeReport').style.display = ""
+		}
 	}
 	
 	
 	Event.observe(window, "load", function() {
 		
 		showIf()
-		Event.observe("study_button","click",function() { toggle('study','participant') })
-		Event.observe("participant_button","click",function() { toggle('participant','study') })
+		Event.observe("study_button","click",function() { toggle('study','participant','routineAeReport') })
+		Event.observe("participant_button","click",function() { toggle('participant','study','routineAeReport') })
+		Event.observe("routine_ae_report_button","click",function() { toggle('routineAeReport','study','participant') })
 	 	
 		       
     	}           
@@ -56,7 +63,8 @@
 	</div>
 	
 		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
-		<input type="button" id="participant_button" value="Import Participant         ">
+		<input type="button" id="participant_button" value="Import Participant         "><br><br>
+		<input type="button" id="routine_ae_report_button" value="Import Routine AEs         ">
 		
 		 <tags:errors path="*"/>
     	 
@@ -69,23 +77,12 @@
     	<input id="participant_file" type="file" name="participantFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>
-    	
 		
-		<%--		
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study">
-    	 Please select a Study xml file to import<br><br>
-    	<input id="studyFileName" type="hidden" value="${command.studyFileName}" name="studyFileName" />
-        <input id="studyFileNamefake" type="file" name="temp" /> 
-    	<div style="display: none;" id="study-selected">You have selected the following file ${command.studyFileName}</div>
-    	</div>
+		<div style="display: none;position:relative;top:-30px; left:200px;" id = "routineAeReport"> 
+    	<input id="routine_ae_report_file" type="file" name="routineAdverseEventReportFile" />
+		<input id="type" type="hidden" name="type" />
+		</div>
     	
-    	<div style="display: none;position:relative;top:-30px; left:200px;" id = "participant">
-    	 Please select a Participant xml file to import<br><br>
-    	<input id="participantFileName" type="hidden" value="${command.participantFileName}" name="participantFileName" />
-    	<input id="participantFileNamefake" type="file" name="temp" /> 
-    	<div style="display: none;" id="participant-selected">You have selected the following file ${command.participantFileName}</div>
-    	</div>
-    	--%>
 
  </jsp:attribute>
     </tags:tabForm>    

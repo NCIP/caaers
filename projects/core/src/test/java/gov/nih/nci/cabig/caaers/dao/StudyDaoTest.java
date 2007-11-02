@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,6 +65,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
 			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			getDao().save(newStudy);
 			assertNotNull("No ID for newly saved study", newStudy.getId());
@@ -88,6 +90,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
 			newStudy.setTerminology(Fixtures.createMedDRATerminology(newStudy));
+			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			getDao().save(newStudy);
 			assertNotNull("No ID for newly saved study", newStudy.getId());
@@ -236,6 +239,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			// study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
 			study.setTerminology(Fixtures.createCtcV3Terminology(study));
+			study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 
 			// Study Site
 			StudySite studySite = new StudySite();
@@ -279,6 +283,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			study.setPhaseCode("PhaseCode");
 			study.setStatus("Status");
 			study.setTargetAccrualNumber(150);
+			study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			// study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
 			study.setTerminology(Fixtures.createCtcV3Terminology(study));
@@ -453,6 +458,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			StudyAgent sa = new StudyAgent();
 			sa.setAgent(agent);
 			newStudy.addStudyAgent(sa);
+			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			sa.setStudy(newStudy);
 			agent = agentDao.getById(-991);
 			sa = new StudyAgent();
@@ -504,6 +510,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			newStudy.setLongTitle("Long Title Inserted");
 			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 
 			TreatmentAssignment ta = new TreatmentAssignment();
 			ta.setCode("111");
@@ -512,6 +519,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			ta.setDoseLevelOrder(33);
 			ta.setStudy(newStudy);
 			newStudy.addTreatmentAssignment(ta);
+			
 
 			getDao().save(newStudy);
 			assertNotNull("No ID for newly saved study", newStudy.getId());

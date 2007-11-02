@@ -46,6 +46,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private String phaseCode;
 
 	private Terminology terminology;
+	
+	private DiseaseTerminology diseaseTerminology;
 
 	private String status;
 
@@ -303,6 +305,20 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		t.setCtcVersion(ctcVersion);
 	}
 
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public DiseaseTerminology getDiseaseTerminology() {	
+		if (diseaseTerminology == null) {
+			diseaseTerminology = new DiseaseTerminology();
+			diseaseTerminology.setStudy(this);
+		}
+		return diseaseTerminology;
+	}
+
+	public void setDiseaseTerminology(final DiseaseTerminology diseaseTerminology) {
+		this.diseaseTerminology = diseaseTerminology;
+	}
+	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public Terminology getTerminology() {

@@ -248,7 +248,31 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		result = 29 * result + (gender != null ? gender.hashCode() : 0);
 		return result;
 	}
+	
+	@Override
+	@OneToMany
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@JoinColumn(name = "participant_id")
+	public List<Identifier> getIdentifiers() {
+		return lazyListHelper.getInternalList(Identifier.class);
+	}
 
+	@Override
+	public void setIdentifiers(final List<Identifier> identifiers) {
+		lazyListHelper.setInternalList(Identifier.class, identifiers);
+	}
+
+	@Transient
+	public List<Identifier> getIdentifiersInternal() {
+		return lazyListHelper.getLazyList(Identifier.class);
+	}
+
+	@Transient
+	public void setIdentifiersInternal(final List<Identifier> identifiers) {
+		setIdentifiers(identifiers);
+	}
+
+	/*
 	@OneToMany
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "participant_id")
@@ -269,6 +293,6 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	@Override
 	public void setIdentifiers(final List<Identifier> identifiers) {
 		setIdentifiersInternal(identifiers);
-	}
+	}*/
 
 }

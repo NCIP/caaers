@@ -64,9 +64,9 @@ public abstract class AbstractImportServiceImpl {
 		return org;
 	}
 	
-	protected void ifNullObject(DomainObject domainObject, DomainObjectImportOutcome studyImportOutcome, Severity severity){
+	protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome, Severity severity){
 		if(domainObject == null){
-			studyImportOutcome.addErrorMessage(domainObject.getClass().getSimpleName() + "is required or has errors", severity);
+			importOutcome.addErrorMessage(" is required or has errors", severity);
 		}
 	}
 	

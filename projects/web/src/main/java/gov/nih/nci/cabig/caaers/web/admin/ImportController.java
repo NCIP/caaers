@@ -1,24 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
-import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
 import gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl;
+import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.admin.ImportCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -38,7 +35,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -63,11 +59,13 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
 	private OrganizationDao organizationDao;
+	private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 	private AgentDao agentDao;
 	private MedDRADao meddraDao;
 	private CtcDao ctcDao;
 	private StudyServiceImpl studyServiceImpl;
 	private ParticipantServiceImpl participantServiceImpl;
+	private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 	
 	public ImportController() {		
 
@@ -89,8 +87,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             public void validate(ImportCommand command, Errors errors) {
                 boolean participantFile = command.getParticipantFile().isEmpty();
                 boolean studyFile = command.getStudyFile().isEmpty() ;
-                log.debug("Are files empty : " + participantFile + ":" + studyFile);
-                if (participantFile && studyFile) errors.rejectValue("participantFile", "REQUIRED", "Please choose either a stuy or a participant file.");
+                boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile().isEmpty() ;
+                log.debug("Are files empty : " + participantFile + ":" + studyFile + " : " + routineAdverseEventReportFile );
+                if (participantFile && studyFile && routineAdverseEventReportFile) 
+                	errors.rejectValue("participantFile", "REQUIRED", "Please choose either a stuy or a participant file.");
             }
 
             @Override
@@ -182,9 +182,27 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			redirectTo = "redirectToSearchInParticipantTab";
 		}
 		
+		if (cObject.getImportableRoutineAdverseEventReports().size() > 0){
+			
+			int start= 0;
+	        int loopEnd = 0;
+	        int end = cObject.getImportableRoutineAdverseEventReports().size() ;
+	        int increment = 100;  
+	             
+	          while(true){
+	              loopEnd = start + increment < end ? start + increment : start + (end - start);
+	              routineAdverseEventReportDao.batchSave(cObject.getImportableRoutineAdverseEventReports().subList(start, loopEnd));
+	              routineAdverseEventReportDao.clearSession();
+	              //routineAdverseEventReportDao.batchClean(routineAdverseEventReportDao.batchSave(cObject.getImportableRoutineAdverseEventReports().subList(start, loopEnd)));
+	              start = start + increment + 1;
+	           	  if (loopEnd  == end ) { break;}
+	             }
+			redirectTo = "redirectToSearchInParticipantTab";
+		}
+		
 		return new ModelAndView(redirectTo);
 	}
-
+	
 	private void handleLoad(ImportCommand command, String type){
 
 		XStream xstream = new XStream();
@@ -221,34 +239,56 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("terminology" , gov.nih.nci.cabig.caaers.domain.Terminology.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
-
+    	// routineAdverseEventReport specific
+    	xstream.alias("routineAdverseEvent", gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport.class);
+    	xstream.alias("adverseEvent", gov.nih.nci.cabig.caaers.domain.AdverseEvent.class);
+    	xstream.alias("adverseEventCtcTerm", gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm.class);
+    	xstream.alias("adverseEventMeddraLowLevelTerm", gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm.class);
+    	xstream.alias("lowLevelTerm", gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm.class);
+    	xstream.alias("ctcTerm", gov.nih.nci.cabig.caaers.domain.CtcTerm.class);
+    	xstream.alias("grade", gov.nih.nci.cabig.caaers.domain.Grade.class);
+    	xstream.alias("hospitalization", gov.nih.nci.cabig.caaers.domain.Hospitalization.class);
+    	xstream.alias("attribution", gov.nih.nci.cabig.caaers.domain.Attribution.class);
+    	xstream.alias("status", gov.nih.nci.cabig.caaers.domain.Status.class);
+    	
         BufferedReader input = null;
         try {
-
         	File xmlFile = File.createTempFile("file","uploaded");
-        	FileCopyUtils.copy(type.equals("participant") ?
-        			command.getParticipantFile().getInputStream() :
-        				command.getStudyFile().getInputStream(),
-        			new FileOutputStream(xmlFile));
+        	
+        	if (type.equals("participant")){
+        		FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new FileOutputStream(xmlFile));
+        		input = new BufferedReader( new FileReader(xmlFile) );
+        		ObjectInputStream in = xstream.createObjectInputStream(input);
+        		while (true)
+        		{
+        			Participant xstreamParticipant = (Participant)in.readObject();
+        			migrateParticipant(xstreamParticipant,command);
+        		}
+        	}
 
-        	input = new BufferedReader( new FileReader(xmlFile) );
-            ObjectInputStream in = xstream.createObjectInputStream(input);
-
-          if (type.equals("participant")){
-        	  while (true)
-              {
-              Participant xstreamParticipant = (Participant)in.readObject();
-              migrateParticipant(xstreamParticipant,command);
-              }
-          }
-
-          if (type.equals("study")){
-        	  while (true)
-              {
-              Study xstreamStudy = (Study)in.readObject();
-              migrateStudy(xstreamStudy, command);
-              }
-          }
+        	if (type.equals("study")){
+        		FileCopyUtils.copy(command.getStudyFile().getInputStream(),new FileOutputStream(xmlFile));
+        		input = new BufferedReader( new FileReader(xmlFile) );
+        		ObjectInputStream in = xstream.createObjectInputStream(input);
+        		while (true)
+        		{
+        			Study xstreamStudy = (Study)in.readObject();
+        			migrateStudy(xstreamStudy, command);
+        		}
+        	}
+        	
+        	if (type.equals("routineAeReport")){
+        		FileCopyUtils.copy(command.getRoutineAdverseEventReportFile().getInputStream(),new FileOutputStream(xmlFile));
+        		input = new BufferedReader( new FileReader(xmlFile) );
+        		ObjectInputStream in = xstream.createObjectInputStream(input);
+        		while (true)
+        		{
+        			RoutineAdverseEventReport xstreamRoutineAdverseEventReport = (RoutineAdverseEventReport)in.readObject();
+        			migrateRoutineAdverseEventReport(xstreamRoutineAdverseEventReport, command);
+        		}
+        	}
+        	
+        	
         }
         catch (EOFException ex){
             System.out.println("EndOfFile Reached");
@@ -298,51 +338,17 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		}
 	}
 	
-	/*
-	private void createParticipantObjects(Participant xstreamParticipant,
-			ImportCommand command) {
-
-		Participant participant = new Participant();
-		participant.setFirstName(xstreamParticipant.getFirstName());
-		participant.setLastName(xstreamParticipant.getLastName());
-		participant.setMiddleName(xstreamParticipant.getMiddleName());
-		participant.setMaidenName(xstreamParticipant.getMaidenName());
-		participant.setDateOfBirth(xstreamParticipant.getDateOfBirth());
-		participant.setGender(xstreamParticipant.getGender());
-		participant.setRace(xstreamParticipant.getRace());
-		participant.setEthnicity(xstreamParticipant.getRace());
-
-		migrateIdentifiers(participant,xstreamParticipant);
-
-		// Check for study and site association
-		if (xstreamParticipant.getAssignments() != null) {
-			for (int i = 0; i < xstreamParticipant.getAssignments().size(); i++) {
-				StudyParticipantAssignment studyParticipantAssignment = xstreamParticipant
-						.getAssignments().get(i);
-				StudySite studySite = null;
-
-				for (Identifier identifier : studyParticipantAssignment.getStudySite().getStudy().getIdentifiers())
-				{
-					Study study = studyDao.getByIdentifier(identifier);
-					if (study != null) {
-						studySite = study.getStudySites().get(0);
-						participant.getAssignments().add(
-								new StudyParticipantAssignment(participant,studySite));
-						break;
-					}
-				}
-			}
-
-			if (participantUniquenessCheck(command,participant) && participantAssignmentCheck(command,participant) )
-			{
-				command.getParticipants().add(participant);
-			}
+	private void migrateRoutineAdverseEventReport(RoutineAdverseEventReport xstreamRoutineAdverseEventReport, ImportCommand command){
+		
+		DomainObjectImportOutcome<RoutineAdverseEventReport> routineAdverseEventReportImportOutcome = routineAdverseEventReportServiceImpl.createRoutineAdverseEventReportObjects(xstreamRoutineAdverseEventReport);
+		if (routineAdverseEventReportImportOutcome.isSavable()){
+			command.addImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
+		}else{
+			command.addNonImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
 		}
 	}
-	*/
 	
-
-
+	
 	private ImportCommand createCommandObject()
 	{
 		ImportCommand ic = new ImportCommand();
@@ -397,6 +403,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		this.ctcDao = ctcDao;
 	}
 
+	public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
+		return routineAdverseEventReportDao;
+	}
+
+	public void setRoutineAdverseEventReportDao(
+			RoutineAdverseEventReportDao routineAdverseEventReportDao) {
+		this.routineAdverseEventReportDao = routineAdverseEventReportDao;
+	}
+
 	public StudyServiceImpl getStudyServiceImpl() {
 		return studyServiceImpl;
 	}
@@ -413,4 +428,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			ParticipantServiceImpl participantServiceImpl) {
 		this.participantServiceImpl = participantServiceImpl;
 	}
+
+	public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
+		return routineAdverseEventReportServiceImpl;
+	}
+
+	public void setRoutineAdverseEventReportServiceImpl(
+			RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl) {
+		this.routineAdverseEventReportServiceImpl = routineAdverseEventReportServiceImpl;
+	}
+	
 }

@@ -36,9 +36,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 	private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
-	private static final String JOINS = "join o.identifiersInternal as identifier "
+	private static final String JOINS = "join o.identifiers as identifier "
 			+ "join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
-
+	
 	@Override
 	public Class<Participant> domainClass() {
 		return Participant.class;
@@ -74,15 +74,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	public List<Participant> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
-
-	/*
-	public List<Participant> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
-		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
-	}
-	*/
 	
 	public List<Participant> getBySubnamesJoinOnIdentifier(final String[] subnames) {
-		String joins = " join o.identifiersInternal as identifier ";
+		String joins = " join o.identifiers as identifier ";
 		List<String> subStringMatchProperties = Arrays.asList("o.firstName", "o.lastName","identifier.type", "identifier.value");
 		return findBySubname(subnames, null, null, subStringMatchProperties , EMPTY_PROPERTIES, joins);
 	}
@@ -103,7 +97,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 	public List<Participant> matchParticipantByStudy(final Integer studyId, final String text) {
 
-		String joins = " join o.identifiersInternal as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s ";
+		String joins = " join o.identifiers as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s ";
 
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(

@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -36,7 +37,7 @@ public class DetailsTab extends StudyTab {
 
 	private MeddraVersionDao meddraVersionDao;
 
-	InputFieldGroup fieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup,coordinatingCenterFieldGroup;
+	InputFieldGroup fieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup, studyDiseaseCodeFieldGroup,coordinatingCenterFieldGroup;
 
 	public DetailsTab() {
 		super("Basic Details", "Details", "study/study_details");
@@ -113,7 +114,13 @@ public class DetailsTab extends StudyTab {
 					collectOptions(ctcDao.getAll(), "id", "name")));
 			fields.add(InputFieldFactory.createSelectField("terminology.meddraVersion", "MedDRA version", false,
 					collectOptions(meddraVersionDao.getAll(), "id", "name")));
-			
+		}
+		
+		if(studyDiseaseCodeFieldGroup == null){
+			studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
+			List<InputField> fields = studyDiseaseCodeFieldGroup.getFields();
+			fields.add(InputFieldFactory.createSelectField("diseaseTerminology.diseaseCodeTerm", "Disease Terminology", true, InputFieldFactory
+					.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName")));
 		}
 		
 		InputFieldGroupMap map = new InputFieldGroupMap();
@@ -121,6 +128,7 @@ public class DetailsTab extends StudyTab {
 		map.addInputFieldGroup(fundSponsorFieldGroup);
 		map.addInputFieldGroup(coordinatingCenterFieldGroup);
 		map.addInputFieldGroup(studyCodeFieldGroup);
+		map.addInputFieldGroup(studyDiseaseCodeFieldGroup);
 		
 		return map;
 	}

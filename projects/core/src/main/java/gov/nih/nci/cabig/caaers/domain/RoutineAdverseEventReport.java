@@ -8,7 +8,9 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -35,6 +37,7 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
     private Date startDate;
     private Date endDate;
+    private Status status = Status.CURRENT;
     private LazyListHelper lazyListHelper;
 
     public RoutineAdverseEventReport() {
@@ -134,6 +137,11 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         return lazyListHelper.getLazyList(AdverseEvent.class);
     }
 
+	@Transient
+	public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
+		setAdverseEventsInternal(adverseEvents);
+	}
+
    
     ////// BEAN PROPERTIES
 
@@ -181,6 +189,16 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	
+	@Type(type = "status")
+    @Column(name = "status_code")
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     
     
 

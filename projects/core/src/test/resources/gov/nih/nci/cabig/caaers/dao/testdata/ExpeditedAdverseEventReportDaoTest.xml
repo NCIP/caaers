@@ -241,10 +241,17 @@
         category="Head parts"
         />
 
+	<DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-1"
+    	/>  
+    
     <STUDIES
         id="-1"
         short_title="That one"
         />
+         
     <TREATMENT_ASSIGNMENT
         id="-11"
   		code="TAC001"

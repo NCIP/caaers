@@ -119,6 +119,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         // study.setPrimarySponsorCode("SCODE_101");
         // study.setCtcVersion(getCtc());
         study.setTerminology(Fixtures.createCtcV3Terminology(study));
+        study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         dao.save(study);
 
         Integer id = study.getId();
@@ -133,6 +134,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         study.setLongTitle("long title");
         study.setMultiInstitutionIndicator(Boolean.FALSE);
         study.setTerminology(Fixtures.createCtcV3Terminology(study));
+        study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         // study.setPrimarySponsorCode("SCODE_101");
          try {
          dao.merge(study);
