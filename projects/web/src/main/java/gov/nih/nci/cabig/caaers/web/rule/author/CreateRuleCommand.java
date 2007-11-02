@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.author;
 
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -57,6 +59,8 @@ public class CreateRuleCommand implements RuleInputCommand
 	
 	private OrganizationDao organizationDao;
 	
+	private CtcDao ctcDao;
+	
 	private StudyDao studyDao;
 	
 	private RuleSet ruleSet;
@@ -101,7 +105,7 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public CreateRuleCommand(RuleAuthoringService ruleAuthoringService, StudyDao studyDao, 
 			NotificationDao notificationDao, RulesEngineService rulesEngineService,
-			ReportDefinitionDao reportDefinitionDao,OrganizationDao organizationDao) 
+			ReportDefinitionDao reportDefinitionDao,OrganizationDao organizationDao, CtcDao ctcDao) 
 	{
 		setRuleAuthoringService(ruleAuthoringService);
 		setStudyDao(studyDao);
@@ -111,6 +115,7 @@ public class CreateRuleCommand implements RuleInputCommand
 		existingRuleSets = new ArrayList<RuleSet>();
 		setReportDefinitionDao(reportDefinitionDao);
 		setOrganizationDao(organizationDao);
+		this.setCtcDao(ctcDao);
 		//reportDefinitions = reportDefinitionDao.getAll();
 	}
 
@@ -628,6 +633,16 @@ public class CreateRuleCommand implements RuleInputCommand
 		}
 
 	}
+	
+	public List<CtcCategory> getCategories() {
+        List<CtcCategory> categories = ctcDao.getById(3).getCategories();
+        // cut down objects for serialization
+        for (CtcCategory category : categories) {
+            category.setTerms(null);
+        }
+        return categories;
+    }
+	
 	public String[] getReportSectionNames() {
     	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
     	String[] sectionNames = new String[expeditedReportSections.length];
@@ -676,6 +691,10 @@ public class CreateRuleCommand implements RuleInputCommand
 
 	public void setOrganizationName(String organizationName) {
 		this.organizationName = organizationName;
+	}
+
+	public void setCtcDao(CtcDao ctcDao) {
+		this.ctcDao = ctcDao;
 	}
 
 

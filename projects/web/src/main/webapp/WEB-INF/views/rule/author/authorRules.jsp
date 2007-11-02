@@ -74,24 +74,9 @@
 		var callback = false;
 		var newNode = 0;
 		var domainObject = null;
-		var categoryObjects = null;
-		var isCategorySelected = false;
-		
-		//function loadCategoryObjects() {															
-			createAE.getCategories(3, function(categories) {				
-				categoryObjects = categories;							
-	    	}.bind(this)	  )	
-	    //}
-		
-		function checkCategories() {
-			//var i=10;
-	    			do
-					{
-  						alert ("Loading categories ...");
-  						//i=i+1;
-					}
-					while(categoryObjects = null);
- 		}
+
+		var categoryObjects2 = new Array()
+
  		
 		function addRule() {
 				
@@ -1210,24 +1195,15 @@
 
 </head>
 <body>
-<c:forEach varStatus="ruleStatus" items="${command.ruleSet.rule}">
-	<c:set var="ruleCount" value="${ruleStatus.index}" />
-	<c:forEach varStatus="columnStatus" begin="0"
-					items="${command.ruleSet.rule[ruleCount].condition.column}">
-					<c:set var="columnCount" value="${columnStatus.index}" />
-		<c:if test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
-			<script>
-				isCategorySelected = true; 
-			</script>
-			
-		</c:if>
-	</c:forEach>
+
+
+<c:forEach var="cat" items="${command.categories}">
+	<script>
+		categoryObjects2.push('${cat.id}' + '||' + '${cat.name}');
+	</script>
+
 </c:forEach>
-<script>
-	if (isCategorySelected) {
-		checkCategories();
-	}
-</script>
+
 
 <p id="instructions">Rules can be added by using the Add Rule
 button. Rules created will belong to the selected RuleSet.</p>
@@ -1426,7 +1402,22 @@ button. Rules created will belong to the selected RuleSet.</p>
 																			sel.options.length = 0
 																			sel.options.add(new Option("Any", ""))
 																					                    
-																			var index = 0;		                    
+																			var index = 0;	
+																			categoryObjects2.each(function(cat) {
+																				var splitted = cat.split("||");
+																				var name = splitted[1];
+																				var id = splitted[0];
+																				var opt = new Option(name, id)
+																					    sel.options.add(opt)
+																					    index++;
+																					    
+																					    if (id == fieldValue)
+																					    {
+																					    	sel.options[index].selected=true;
+																					    }
+																			})
+																			
+																			/**
 																			categoryObjects.each(function(cat) {
 																				 var name = cat.name
 																				 if (name.length > 45) name = name.substring(0, 45) + "..."
@@ -1440,6 +1431,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 																					    }
 																					    
 																		      })
+																		     */
 																		        
 																	           //})
 																	</script>
