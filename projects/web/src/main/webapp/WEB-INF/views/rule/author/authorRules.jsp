@@ -84,9 +84,11 @@
 	    //}
 		
 		function checkCategories() {
+			var i=10;
 	    			do
 					{
-  						alert ("Loading categories ...");
+  						//alert ("Loading categories ...");
+  						i=i+1;
 					}
 					while(categoryObjects = null);
  		}
