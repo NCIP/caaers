@@ -25,6 +25,10 @@
         .main-fields .extra {
     		width: 100%
 		}
+		.ctcCategoryValueDiv{width:660px; overflow:auto; }
+		.ctcCategoryClass {  overflow:auto;	}
+		 div.row div.label { width: 11em; } 
+		 div.row div.value, div.row div.extra { margin-left: 12em; }
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>

@@ -44,7 +44,23 @@
                 </chrome:box>
             </div>
         </c:if>
-
+		<!-- AE summary  -->
+		<c:if test="${not empty aesummary}">
+		<div> 
+			<div class="leftpanel">
+			  <div class="row">
+			    <div class="label">Participant</div>
+			    <div class="value">${aesummary['Participant']}</div>
+			  </div>
+			</div>
+			<div class="rightpanel">
+			  <div class="row">
+			    <div class="label">Study</div>
+			    <div class="value">${aesummary['Study']}</div>
+			  </div>
+			</div>
+		</div>
+		</c:if>
         <div id="main${hasSummary ? '' : '-no-summary'}-pane" class="pane">
             <decorator:body/>
         </div>

@@ -17,12 +17,14 @@
         <div class="row">
             <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
             <div class="value">
-                <select id="aeReport.adverseEvents[${index}].ctc-category">
+              <div class="ctcCategoryValueDiv">
+                <select id="aeReport.adverseEvents[${index}].ctc-category" class="ctcCategoryClass">
                     <option value="">Any</option>
                     <c:forEach items="${ctcCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
                     </c:forEach>
                 </select>
+              </div>
             </div>
         </div>
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>

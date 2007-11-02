@@ -162,7 +162,7 @@ public abstract class AbstractAdverseEventInputController
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());
         refdata.put(UNFILLED_TAB_KEY, sb.toString());
         if (displaySummary(page)) {
-            refdata.put("summary", cmd.getAeReport().getSummary());
+            refdata.put("aesummary", cmd.getAeReport().getSummary());
         }
         return refdata;
     }
