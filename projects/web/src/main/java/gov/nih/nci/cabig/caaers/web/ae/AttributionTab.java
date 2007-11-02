@@ -23,7 +23,7 @@ public class AttributionTab extends AeTab {
     private static final Map<Object,Object> ATTRIBUTION_OPTIONS = collectAttributionOptions();
 
     protected AttributionTab() {
-        super("Attribution", "Attribution", "ae/attribution");
+        super("Attribution", ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName(), "ae/attribution");
     }
 
     @Override

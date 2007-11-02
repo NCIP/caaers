@@ -20,7 +20,8 @@ public class ReporterTab extends AeTab {
     private EvaluationService evaluationService;
 
     public ReporterTab() {
-        super("Reporter info", "Reporter", "ae/reporter");
+        super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(),
+        	"Reporter", "ae/reporter");
     }
 
     @Override

@@ -11,7 +11,9 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class ConcomitantMedicationsTab extends AeTab {
 
     public ConcomitantMedicationsTab() {
-        super("Concomitant medications", "Conmeds", "ae/conMed");
+        super("Concomitant medications", 
+        		ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION.getDisplayName(), 
+        		"ae/conMed");
     }
 
     @Override

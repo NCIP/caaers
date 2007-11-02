@@ -30,7 +30,8 @@ public class CheckpointTab extends AeTab {
     private static final Log log = LogFactory.getLog(CheckpointTab.class);
     
     public CheckpointTab() {
-        super("Is expedited reporting necessary?", "Select Report", "ae/checkpoint");
+        super("Is expedited reporting necessary?", 
+        		ExpeditedReportSection.CHECKPOINT_SECTION.getDisplayName(), "ae/checkpoint");
     }
 
     @Override

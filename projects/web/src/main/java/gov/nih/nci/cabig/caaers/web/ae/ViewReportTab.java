@@ -18,7 +18,7 @@ public class ViewReportTab extends AeTab {
 	private EvaluationService evaluationService;
 
     public ViewReportTab() {
-        super("Submission", "Submit", "ae/submit");
+        super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(), "ae/submit");
     }
     
     @Override

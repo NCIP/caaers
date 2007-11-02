@@ -28,7 +28,9 @@ import org.springframework.validation.Errors;
 public class TreatmentTab extends AeTab {
 	private ConfigProperty configurationProperty;
     public TreatmentTab() {
-        super("Treatment Information", "Course and Agent", "ae/treatment");
+        super("Treatment Information", 
+        	ExpeditedReportSection.TREATMENT_INFO_SECTION.getDisplayName(),
+        	"ae/treatment");
     }
 
     @Override

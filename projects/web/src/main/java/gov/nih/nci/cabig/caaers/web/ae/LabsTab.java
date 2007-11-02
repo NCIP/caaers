@@ -14,7 +14,7 @@ public class LabsTab extends AeTab {
     private ConfigProperty configurationProperty;
 
     public LabsTab() {
-        super("Diagnostic test and lab results", "Labs", "ae/labs");
+        super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION.getDisplayName(), "ae/labs");
     }
 
     private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName, String displayName) {

@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class MedicalDeviceTab extends AeTab {
 
     public MedicalDeviceTab() {
-        super("Medical Device", "Device", "ae/medicalDevice");
+        super("Medical Device", ExpeditedReportSection.MEDICAL_DEVICE_SECTION.getDisplayName(), "ae/medicalDevice");
     }
 
     @Override

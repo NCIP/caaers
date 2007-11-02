@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 /**
@@ -10,7 +11,7 @@ public class MeddraBasicsTab extends BasicsTab {
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
 
     public MeddraBasicsTab() {
-        super("Enter basic AE information", "AEs", "ae/enterBasicMeddra");
+        super("Enter basic AE information", ExpeditedReportSection.BASICS_SECTION.getDisplayName(), "ae/enterBasicMeddra");
     }
 
     @Override

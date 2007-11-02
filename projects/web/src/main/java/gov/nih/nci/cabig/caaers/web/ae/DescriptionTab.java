@@ -16,7 +16,9 @@ import java.util.LinkedHashMap;
 public class DescriptionTab extends AeTab {
 
     public DescriptionTab() {
-        super("Event and response description", "Describe Event", "ae/description");
+        super("Event and response description",
+        	ExpeditedReportSection.DESCRIPTION_SECTION.getDisplayName(),
+        	"ae/description");
     }
 
     @Override

@@ -12,7 +12,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 public class AdditionalInformationTab extends AeTab {
 
     public AdditionalInformationTab() {
-        super("Additional Information", "Attachments", "ae/additionalInformation");
+        super("Additional Information", ExpeditedReportSection.ADDITIONAL_INFO_SECTION.getDisplayName(), "ae/additionalInformation");
     }
 
     @Override

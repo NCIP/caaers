@@ -10,7 +10,9 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  */
 public class OtherCausesTab extends AeTab {
     public OtherCausesTab() {
-        super("Other contributing causes", "Other Causes", "ae/other");
+        super("Other contributing causes", 
+        		ExpeditedReportSection.OTHER_CAUSE_SECTION.getDisplayName()
+        		, "ae/other");
     }
 
     @Override

@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
  */
 public class SurgeryInterventionTab extends AeTab {
     public SurgeryInterventionTab() {
-        super("Surgery Intervention", "Surgery", "ae/surgeryIntervention");
+        super("Surgery Intervention", ExpeditedReportSection.SURGERY_INTERVENTION_SECTION.getDisplayName(), "ae/surgeryIntervention");
     }
 
     @Override

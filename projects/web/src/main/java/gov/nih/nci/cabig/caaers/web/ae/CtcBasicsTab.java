@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -22,7 +23,7 @@ public class CtcBasicsTab extends BasicsTab {
     private CtcDao ctcDao;
 
     public CtcBasicsTab() {
-        super("Enter basic AE information", "Enter AEs", "ae/enterBasic");
+        super("Enter basic AE information", ExpeditedReportSection.BASICS_SECTION.getDisplayName(), "ae/enterBasic");
     }
 
     @Override
