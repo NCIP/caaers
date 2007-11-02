@@ -2,24 +2,24 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 
 public enum ExpeditedReportSection {
-    BASICS_SECTION("Basic AE information"),
+    BASICS_SECTION("Enter AEs"),
     ADVERSE_EVENT_SECTION("Adverse events"),
-    REPORTER_INFO_SECTION("Reporter Information"),
-    CHECKPOINT_SECTION("Checkpoint"),
-    RADIATION_INTERVENTION_SECTION("Radiation Intervention"),
-    SURGERY_INTERVENTION_SECTION("Surgery Intervention"),
-    MEDICAL_DEVICE_SECTION("Medical Device"),
-    DESCRIPTION_SECTION("Description"),
-    MEDICAL_INFO_SECTION("Medical"),
-    TREATMENT_INFO_SECTION("Treatment"),
+    REPORTER_INFO_SECTION("Reporter"),
+    CHECKPOINT_SECTION("Select Report"),
+    RADIATION_INTERVENTION_SECTION("Radiation"),
+    SURGERY_INTERVENTION_SECTION("Surgery"),
+    MEDICAL_DEVICE_SECTION("Device"),
+    DESCRIPTION_SECTION("Describe Event"),
+    MEDICAL_INFO_SECTION("Patient Details"),
+    TREATMENT_INFO_SECTION("Course and Agent"),
     LABS_SECTION("Labs"),
-    PRIOR_THERAPIES_SECTION("Therapies"),
-    PRE_EXISTING_CONDITION_SECTION("Pre-Existing Conditions"),
+    PRIOR_THERAPIES_SECTION("Prior Therapies"),
+    PRE_EXISTING_CONDITION_SECTION("Pre-existing Conditions"),
     CONCOMITANT_MEDICATION_SECTION("Conmeds"),
-    OTHER_CAUSE_SECTION("Other contributing causes"),
+    OTHER_CAUSE_SECTION("Other Causes"),
     ATTRIBUTION_SECTION("Attribution"),
-    ADDITIONAL_INFO_SECTION("Additional Information"),
-    SUBMIT_REPORT_SECTION("Submit Report")
+    ADDITIONAL_INFO_SECTION("Attachments"),
+    SUBMIT_REPORT_SECTION("Submit")
     ;
     
     private String displayName;
