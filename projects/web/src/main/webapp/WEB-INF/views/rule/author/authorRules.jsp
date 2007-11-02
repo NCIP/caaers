@@ -69,12 +69,28 @@
 </style>
 
 <script type="text/javascript">
-
+		//loadCategoryObjects();
 		var sections = new Array();
 		var callback = false;
 		var newNode = 0;
 		var domainObject = null;
+		var categoryObjects = null;
+		var isCategorySelected = false;
 		
+		//function loadCategoryObjects() {															
+			createAE.getCategories(3, function(categories) {				
+				categoryObjects = categories;							
+	    	}.bind(this)	  )	
+	    //}
+		
+		function checkCategories() {
+	    			do
+					{
+  						alert ("Loading categories ...");
+					}
+					while(categoryObjects = null);
+ 		}
+ 		
 		function addRule() {
 				
 				var organization = '';
@@ -964,6 +980,7 @@
 	{
 				
 				// Check whether category exists
+				//alert (ruleCount);
 				var columns = $('rule-'+(ruleCount + 1)+'-columns');
 				
 				//alert(columns.childNodes.length);
@@ -1191,6 +1208,25 @@
 
 </head>
 <body>
+<c:forEach varStatus="ruleStatus" items="${command.ruleSet.rule}">
+	<c:set var="ruleCount" value="${ruleStatus.index}" />
+	<c:forEach varStatus="columnStatus" begin="0"
+					items="${command.ruleSet.rule[ruleCount].condition.column}">
+					<c:set var="columnCount" value="${columnStatus.index}" />
+		<c:if test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
+			<script>
+				isCategorySelected = true; 
+			</script>
+			
+		</c:if>
+	</c:forEach>
+</c:forEach>
+<script>
+	if (isCategorySelected) {
+		checkCategories();
+	}
+</script>
+
 <p id="instructions">Rules can be added by using the Add Rule
 button. Rules created will belong to the selected RuleSet.</p>
 
@@ -1361,18 +1397,9 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 
 							<script type="text/javascript">
-																		//alert ("calling cats....");
-																		function wait(delay){
-																				string="pauseforalert("+delay+");";
-																				setTimeout(string,delay);
-																		}
-																		function pauseforalert(delay){
-																				alert("Ok "+delay/1000+" seconds have elapsed");
-																		}
-
-																		var fieldValue;
+																	var fieldValue;
 																		var readableValue;
-																		createAE.getCategories(3, function(categories) {
+																		//createAE.getCategories(3, function(categories) {
 																	
 																			var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
 																			var spanId = newId + '.span';
@@ -1398,7 +1425,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 																			sel.options.add(new Option("Any", ""))
 																					                    
 																			var index = 0;		                    
-																			categories.each(function(cat) {
+																			categoryObjects.each(function(cat) {
 																				 var name = cat.name
 																				 if (name.length > 45) name = name.substring(0, 45) + "..."
 																					    var opt = new Option(name, cat.id)
@@ -1410,24 +1437,23 @@ button. Rules created will belong to the selected RuleSet.</p>
 																					    	sel.options[index].selected=true;
 																					    }
 																					    
-																		               })
+																		      })
 																		        
-																	           })
+																	           //})
 																	</script>
 
 
 						</c:when>
 					
-						<c:when
-							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
+						<c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
 
-
+							
 
 							<script type="text/javascript">
 												// force 1sec delay for ajax to make sure categories are loaded.. this is just  TEMP FIX 
-											   setTimeout("loadTermsBasedOnCategory()",1000);	
+											//   setTimeout("loadTermsBasedOnCategory()",1000);	
 
-
+												loadTermsBasedOnCategory()
 												function loadTermsBasedOnCategory() {
 
 																		var newId = 'ruleSet.rule[' + ${ruleCount} + '].condition.column[' + ${columnCount} + '].fieldConstraint[0].literalRestriction[0].value'; 
@@ -1438,9 +1464,9 @@ button. Rules created will belong to the selected RuleSet.</p>
 																		$(spanId).innerHTML="";
 																		
 																		// Check whether category exists
-																	//	alert (categoryValue);
+																		
 																		var categoryValue = getCategoryValue(${ruleCount});
-																		//alert (categoryValue);
+																	//	alert (categoryValue);
 																	
 																		createAE.getTermsByCategory(categoryValue, function(terms) {
 						                   
