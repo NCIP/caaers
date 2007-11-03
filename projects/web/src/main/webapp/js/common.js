@@ -278,6 +278,9 @@ Object.extend(ListEditor.prototype, {
             this.applyIndexChanges(changes)
 
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
+            
+            if (this.options.removeCallback) this.options.removeCallback(indexToDelete)
+            
         }.bind(this)])
     },
 
