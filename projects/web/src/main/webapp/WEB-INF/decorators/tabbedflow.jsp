@@ -47,13 +47,11 @@
 		<!-- AE summary  -->
 		<c:if test="${not empty aesummary}">
 		<div> 
-			<div class="leftpanel">
+			<div class="pane">
 			  <div class="row">
 			    <div class="label">Participant</div>
 			    <div class="value">${aesummary['Participant']}</div>
 			  </div>
-			</div>
-			<div class="rightpanel">
 			  <div class="row">
 			    <div class="label">Study</div>
 			    <div class="value">${aesummary['Study']}</div>
