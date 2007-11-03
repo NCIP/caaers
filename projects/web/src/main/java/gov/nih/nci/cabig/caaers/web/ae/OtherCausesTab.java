@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.ae.AeTab.SimpleNumericDisplayNameCreator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -20,7 +21,9 @@ public class OtherCausesTab extends AeTab {
         InputField otherField = InputFieldFactory.createTextArea("text", "Cause", false);
         InputFieldAttributes.setColumns(otherField, 50);
 
-        creator.createRepeatingFieldGroup("otherCause", "otherCauses", otherField);
+        creator.createRepeatingFieldGroup("otherCause", "otherCauses",
+        		new SimpleNumericDisplayNameCreator("Other Cause"),
+        		otherField);
     }
 
     @Override

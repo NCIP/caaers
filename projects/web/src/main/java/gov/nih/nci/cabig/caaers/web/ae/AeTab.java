@@ -67,7 +67,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         //TODO: need to see how to manage (this or that) kind mandatory fields
         //TODO: Why not this we handle in createFields() of every tab, so that the looping through the fields
         // here can be avoided.
-
+ 
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
 
@@ -89,6 +89,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      * @return
      */
     private boolean isMandatory(MandatoryProperties mandatoryProps, InputField field) {
+    	if(mandatoryProps == null) return false;
         boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.", ""));
         if (field.getCategory() == InputField.Category.COMPOSITE) {
             for (InputField subfield : CompositeField.getSubfields(field))

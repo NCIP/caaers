@@ -103,7 +103,18 @@ public class CheckpointTab extends AeTab {
     	command.setSelectedReportDefinitionNames(request.getParameter("selectedReportDefinitionNames"));
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
+    /**
+     * We do the following things here
+     *  1.  Find the newly checked report definitions
+     *  2.  Remove the unselected report definitions
+     *  3.  Create the  reports (by calling evaluation service)
+     *  4.  Save the AEReport
+     *  5.  Fetch the mandatorySections based on the reports selected
+     *  6.  Pre-instantiate the mandatory section's repeating fields (biz rule)
+     *  7.  Refresh the mandatory fields map.
+     */
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
     	
     	List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
@@ -116,28 +127,14 @@ public class CheckpointTab extends AeTab {
         if (command.getAeReport().getReports().size() > 0) {
             command.save();
         }
-        //find the mandatory sections.
-        if (command.getMandatoryProperties() == null) {
-            command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-            command.refreshMandatoryProperties();
-        }
+        //find the new mandatory sections
+        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         
-        if(command.getMandatorySections() != null){
-        	//pre-initialize lazy fields in mandatory sections.
-        	BeanWrapper wrapper = new BeanWrapperImpl(command.getAeReport());
-            for(ExpeditedReportSection section : command.getMandatorySections()){
-            	assert (section != null) : "A section is null in command.getManatorySections()";
-            	TreeNode sectionNode = getExpeditedReportTree().getNodeForSection(section);
-            	if(sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
-            	assert (sectionNode != null) : section.toString() + ", is not available in ExpeditedReportTree.";
-            	if(sectionNode.getChildren() == null) continue;
-            	for(TreeNode node : sectionNode.getChildren()){
-            		if(node.isList()){
-            			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
-            		}
-            	}
-            }
-        }
+        //pre-init the mandatory section fields
+        command.initializeMandatorySectionFields(getExpeditedReportTree());
+        
+        //refresh the mandatory fields
+        command.refreshMandatoryProperties();
     }
     
     private List<ReportDefinition> newlySelectedReportDefinitions(ExpeditedAdverseEventInputCommand command){

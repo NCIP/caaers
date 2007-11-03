@@ -16,8 +16,9 @@
         Element.observe(window, "load", function() {
             new ListEditor("otherCause", createAE, "OtherCause", {
                 addParameters: [aeReportId],
-                addFirstAfter: "single-fields"
-            })
+                addFirstAfter: "single-fields",
+                deletable: true
+            }, 'aeReport.otherCauses')
         })
     </script>
     <style type="text/css">

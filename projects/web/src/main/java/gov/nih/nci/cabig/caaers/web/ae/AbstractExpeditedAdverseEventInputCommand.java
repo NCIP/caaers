@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
@@ -28,6 +29,8 @@ import java.util.Set;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
@@ -159,7 +162,37 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             }
         }
     }
-
+    
+    /** 
+     * The repeating fields available in the mandatory sections will be pre-initialized here.
+     */
+    public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
+    	if(mandatorySections == null || mandatorySections.isEmpty()){
+    		log.info("No mandatory sections available, so no fields will be pre initialized");
+    		return;
+    	}
+    	
+    	//pre-initialize lazy fields in mandatory sections.
+    	BeanWrapper wrapper = new BeanWrapperImpl(getAeReport());
+        for(ExpeditedReportSection section :getMandatorySections()){
+        	assert (section != null) : "A section is null in command.getManatorySections()";
+        	
+        	TreeNode sectionNode = tree.getNodeForSection(section);
+        	if(sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
+        	
+        	assert (sectionNode != null) : section.toString() + ", is not available in ExpeditedReportTree.";
+        	if(sectionNode.getChildren() == null) continue;
+        	
+        	for(TreeNode node : sectionNode.getChildren()){
+        		if(node.isList()){
+        			log.info("Initialized '" + node.getPropertyName() + "' in section " + section.name());
+        			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
+        		}
+        	}
+        }
+    	
+    }
+    
     public MandatoryProperties getMandatoryProperties() {
         return mandatoryProperties;
     }

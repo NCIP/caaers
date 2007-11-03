@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.ArrayList;
@@ -43,7 +44,13 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     //TODO: the caller should use the equivalent method in report service.
     @Deprecated
     void refreshMandatoryProperties();
-
+    
+    /**
+     * Pre-initalize the mandatory lazy added fields in mandatory sections. 
+     * (This is a biz-rule)
+     */
+    void initializeMandatorySectionFields(ExpeditedReportTree tree);
+    
     MandatoryProperties getMandatoryProperties();
     
 	 List<ReportDefinition> getAllReportDefinitions();
