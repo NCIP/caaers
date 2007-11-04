@@ -170,7 +170,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private String summaryLine(Study study) {
         if (study == null) return null;
-        StringBuilder sb = new StringBuilder(study.getShortTitle());
+        StringBuilder sb = new StringBuilder(study.getLongTitle());
         appendPrimaryIdentifier(study, sb);
         return sb.toString();
     }
