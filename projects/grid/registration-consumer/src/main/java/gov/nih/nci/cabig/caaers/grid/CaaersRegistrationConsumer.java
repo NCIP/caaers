@@ -50,7 +50,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
     protected synchronized ApplicationContext getApplicationContext() {
         if (applicationContext == null) {
             applicationContext = new ClassPathXmlApplicationContext(
-                new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" });
+                new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
+                		"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-api.xml",
+                		"classpath*:gov/nih/nci/cabig/caaers/applicationContext-spring.xml",
+                		"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+                		"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
+                		"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml"});
+            	
             //authorizationOnByDefault = SecurityTestUtils.enableAuthorization(false, applicationContext);
             
             AuthorizationSwitch sw = (AuthorizationSwitch) applicationContext.getBean("authorizationSwitch");
