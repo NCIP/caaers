@@ -195,7 +195,7 @@
 </tags:noform>			
 
 </div>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section4selectreport">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section4selectreport" willSave="true">
 
 	<jsp:attribute name="instructions">
 
