@@ -42,7 +42,7 @@
 				<operator name="==" display-uri="Equal To" readable-text="is "/>
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>		
-				<grammer prefix=" Cause " postfix=""/>
+				<grammer prefix=" Hospitalization " postfix=""/>
 			</field>
 			<field name="expected" display-uri="Expected">
 				<field-value>
