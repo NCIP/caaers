@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -19,6 +20,8 @@ import java.util.Map;
 /**
  * @author Kulasekaran
  * @author Rhett Sutphin
+ * @author Krikor Krumlian
+ * 
  */
 public class MedicalInfoTab extends AeTab {
     private ConfigProperty configurationProperty;
@@ -57,16 +60,25 @@ public class MedicalInfoTab extends AeTab {
                 false, optionsFromConfigurationProperty("bpsRefData", "Please select"))
         );
 
-        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory.collectOptions(
-        		command.getStudy().getCtepStudyDiseases(), "id", "term.term", "");
-        InputField ctepStudyDisease = InputFieldFactory.createSelectField("ctepStudyDisease", "CTC Disease name", false,
-            ctepStudyDiseaseOptions);
-        Map<Object, Object> meddraStudyDiseaseOptions = InputFieldFactory.collectOptions(
-        		command.getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "");
-        InputField meddraStudyDisease = InputFieldFactory.createSelectField("meddraStudyDisease", "MedDRA Disease name", false,
-            meddraStudyDiseaseOptions);
+        InputField studyDisease = null;
+        // Business Rule default to CTEP , if MedDRA then return MedDRA
+        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory
+				.collectOptions(command.getStudy().getCtepStudyDiseases(),
+						"id", "term.term", "");
+		studyDisease = InputFieldFactory.createSelectField("ctepStudyDisease",
+				"Disease name", false, ctepStudyDiseaseOptions);
         
-        InputFieldAttributes.setDetails(meddraStudyDisease, "If the correct disease is not listed in either the CTC or MedDRA drop down lists, type the appropriate disease name in the Other (disease) field below.");
+        if (((ExpeditedAdverseEventInputCommand)command).getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
+    		
+        	 Map<Object, Object> meddraStudyDiseaseOptions = InputFieldFactory.collectOptions(
+             		command.getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "");
+        	 studyDisease = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false,
+                 meddraStudyDiseaseOptions);
+		}
+        
+       
+        
+        InputFieldAttributes.setDetails(studyDisease, "If the correct disease is not listed in the drop down lists, type the appropriate disease name in the Other (disease) field below.");
         InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
         InputFieldAttributes.setSize(diseaseSite, 33);
         InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");
@@ -77,8 +89,7 @@ public class MedicalInfoTab extends AeTab {
         InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");
 
         creator.createFieldGroup("disease", null, "diseaseHistory",
-            ctepStudyDisease,
-            meddraStudyDisease,
+        		studyDisease,
             otherDiseaseField,
             diseaseSite,
             InputFieldFactory.createTextField("otherPrimaryDiseaseSite", "Other (site of primary disease)"),

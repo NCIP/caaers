@@ -29,7 +29,10 @@
            if(!$F('diseaseLlt')) return;
         }
 		
-        addDiseasesToCart()
+		if(action == 'addStudyDisease'){
+			addDiseasesToCart()
+        }
+
       	document.getElementById('command')._target.name='_noname';
         document.studyDiseasesForm._action.value=action;
         document.studyDiseasesForm._selected.value=selected;
@@ -226,6 +229,7 @@
        }
 
        Event.observe(window, "load", function() {
+       	   <c:if test="${diseaseTerminology == 'CTEP' }">
            $('disease-sel').style.display='none';
            $('disease-sel-hidden').style.display='none';
 
@@ -234,8 +238,9 @@
 
            Event.observe("disease-sub-category", "change", function() { showDiseases() })
            populateSelectsOnLoad();
+           </c:if>
            
-           
+            <c:if test="${diseaseTerminology == 'MEDDRA' }">
             AE.createStandardAutocompleter('diseaseLlt',
 			function(autocompleter, text) {
 					createAE.matchLowLevelTermsByCode(text, function(values) {
@@ -243,6 +248,7 @@
 												})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
+			</c:if>	
            
        })
 
@@ -261,6 +267,7 @@
                  <input type="hidden" name="_selected" value="">
                  <c:if test="${(not empty command.id) and ( command.id gt 0) }"></c:if>
             </div>
+            <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP Disease Terms" id="disease">
                     Search for a Disease Category<br>
                     <input:hidden id="disease" />
@@ -290,7 +297,11 @@
                     </select> <form:select id="disease-sel-hidden" size="1"
                         path="diseaseTermIds">
                     </form:select>
+                    <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
+            </c:if>
+            
+            <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
 					<form:hidden  path="diseaseLlt" />
@@ -306,11 +317,13 @@
                      --%>
                     <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
+            </c:if>
         </chrome:box>
         	 
 
             <chrome:box title="Selected Diseases " id="diseases">
             <!-- CTEP -->
+            <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="Ctep">
 			<center>
 			<table width="100%" class="tablecontent">
@@ -332,8 +345,10 @@
             	 </c:if>
              </table>
              </center>
-            </chrome:division> 
+            </chrome:division>
+            </c:if>
             <!-- MedDRA -->
+            <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="MedDRA">   
             
             <center>
@@ -355,7 +370,8 @@
             	
              </table>
              </center>
-			</chrome:division> 
+			</chrome:division>
+			</c:if>
             </chrome:box>
     </form:form>
  </div>

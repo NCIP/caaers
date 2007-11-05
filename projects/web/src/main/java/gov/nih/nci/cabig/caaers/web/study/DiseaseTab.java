@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Study;	
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -45,6 +47,7 @@ public class DiseaseTab extends StudyTab {
     	Map<String, Object> refdata = super.referenceData(command);
     	refdata.put("meddraVersion", command.getTerminology().getMeddraVersion() != null ?
     			command.getTerminology().getMeddraVersion().getName() : meddraVersionDao.getAll().get(0).getName() );
+    	refdata.put("diseaseTerminology", command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP ? "CTEP" : "MEDDRA");
         return refdata;
     }
 
@@ -57,7 +60,8 @@ public class DiseaseTab extends StudyTab {
     }
     
     private void handleStudyDiseaseAction(Study study, String action, String selected) {
-        if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 ) {
+        if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 
+        		&& study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA ) {
             String diseaseCode = study.getDiseaseLlt();
             MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
             //meddraStudyDisease.setMeddraCode(diseaseCode);
@@ -70,7 +74,8 @@ public class DiseaseTab extends StudyTab {
         }
 
 
-        if ("addStudyDisease".equals(action)) {
+        if ("addStudyDisease".equals(action) 
+        		 && study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP ) {
             String[] diseases = study.getDiseaseTermIds();
             log.debug("Study Diseases Size : " + study.getCtepStudyDiseases().size());
             for (String diseaseId : diseases) {
