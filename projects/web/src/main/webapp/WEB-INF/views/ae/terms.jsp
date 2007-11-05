@@ -122,7 +122,7 @@
             			<c:if test="${ae.ctcTerm.otherRequired == 'true'}" >
             				<center>
             				<div class="row">
-            					<div class="label">Other (specify)</div>
+            					<div class="label">Other (verbatim)</div>
             					<div class="value"><form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" /></div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
             				</div>	
