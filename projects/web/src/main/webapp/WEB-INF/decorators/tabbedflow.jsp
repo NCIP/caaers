@@ -49,12 +49,12 @@
 		<div> 
 			<div class="pane">
 			  <div class="row">
-			    <div class="label">Participant</div>
-			    <div class="value">${aesummary['Participant']}</div>
+			    <div class="summarylabel">Participant</div>
+			    <div class="summaryvalue">${aesummary['Participant']}</div>
 			  </div>
 			  <div class="row">
-			    <div class="label">Study</div>
-			    <div class="value">${aesummary['Study']}</div>
+			    <div class="summarylabel">Study</div>
+			    <div class="summaryvalue">${aesummary['Study']}</div>
 			  </div>
 			</div>
 		</div>

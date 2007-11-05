@@ -19,3 +19,17 @@ div.row div.extra {
     float: left;
     width: 45em;
 }
+
+/* summary panel */
+div.row div.summarylabel {
+  font-weight: bold;
+  float: left;
+  margin-left: 0.3em;
+  text-align: right;
+  width: 6em;
+}
+
+div.row div.summaryvalue {
+  font-weight: normal;
+  margin-left: 7em;	
+}
