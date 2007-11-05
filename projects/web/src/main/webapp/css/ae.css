@@ -26,10 +26,10 @@ div.row div.summarylabel {
   float: left;
   margin-left: 0.3em;
   text-align: right;
-  width: 6em;
+  width: 5em;
 }
 
 div.row div.summaryvalue {
   font-weight: normal;
-  margin-left: 7em;	
+  margin-left: 6em;	
 }
