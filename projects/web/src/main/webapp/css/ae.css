@@ -28,7 +28,9 @@ div.row div.summarylabel {
   text-align: right;
   width: 5em;
 }
-
+/* TODO : In case if summary other than AE is to be displayed using this,
+ * we need to move this up to common location.
+ */
 div.row div.summaryvalue {
   font-weight: normal;
   margin-left: 6em;	
