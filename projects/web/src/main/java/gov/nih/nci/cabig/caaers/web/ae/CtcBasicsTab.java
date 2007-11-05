@@ -42,18 +42,26 @@ public class CtcBasicsTab extends BasicsTab {
             "Type a portion of the CTC term you are looking for.  If you select a category, only terms in that category will be shown.");
         creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents", ctcTermField);
 
+        InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther", "Other (verbatim)", false);
+        InputFieldAttributes.setColumns(otherVerbatimField, 49);
+        InputField otherLowLevelTermField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", false);
+        
         creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents",
-            InputFieldFactory.createTextArea("detailsForOther", "Other (specify)", false)
+        		otherLowLevelTermField,
+        		otherVerbatimField
+        		
         );
     }
 
     @Override
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
         CtcTerm ctcTerm = ae.getAdverseEventCtcTerm().getCtcTerm();
-
-        if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null) {
-            InputField field = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+        if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null) {
+        	InputField field0 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
+            errors.rejectValue(field0.getPropertyName(), "REQUIRED", "Missing " + field0.getDisplayName());
+            
+            InputField field1 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(1);
+            errors.rejectValue(field1.getPropertyName(), "REQUIRED", "Missing " + field1.getDisplayName());
         }
     }
 

@@ -17,6 +17,7 @@
         <div class="row">
             <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
             <div class="value">
+
               <div class="ctcCategoryValueDiv">
                 <select id="aeReport.adverseEvents[${index}].ctc-category" class="ctcCategoryClass">
                     <option value="">Any</option>
@@ -24,11 +25,30 @@
                         <option value="${cat.id}">${cat.name}</option>
                     </c:forEach>
                 </select>
+
               </div>
             </div>
         </div>
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-        <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none"/>
+        
+        <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
+        <jsp:attribute name="label">
+            <label>
+                <input id="select-meddra-${index}" name="meddraOrVerbatim${index}" type="radio"/>
+                ${fieldGroups[ctcOtherGroup].fields[0].displayName}
+            </label>
+        </jsp:attribute>
+   		</tags:renderRow>
+   		
+   		<tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[1]}" style="display: none">
+        <jsp:attribute name="label">
+            <label>
+                <input id="select-other-${index}" name="meddraOrVerbatim${index}" type="radio"/>
+                ${fieldGroups[ctcOtherGroup].fields[1].displayName}
+            </label>
+        </jsp:attribute>
+    </tags:renderRow>
+        
     </div>
 
     <div id="main-fields-${index}" class="main-fields">

@@ -77,8 +77,10 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
     public void testOtherRequiredIfTermRequiresIt() throws Exception {
         ae0.getAdverseEventCtcTerm().getCtcTerm().setOtherRequired(true);
+        ae0.setLowLevelTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (specify)");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].lowLevelTerm", "Other (MedDRA)");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (verbatim)");
     }
 
     @SuppressWarnings({ "unchecked" })

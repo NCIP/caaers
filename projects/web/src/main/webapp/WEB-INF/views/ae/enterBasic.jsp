@@ -48,6 +48,7 @@
                 },
                 fullName: '${ae.adverseEventCtcTerm.term.fullName}',
                 fullNameWithMedDRA : '${ae.adverseEventCtcTerm.term.fullNameWithMedDRA}',
+                lowLevelTermField : '${ae.lowLevelTerm.fullName}',
                 otherRequired: ${ae.adverseEventCtcTerm.term.otherRequired}
             }
             </c:if>
@@ -73,6 +74,27 @@
                 this.resetTermText()
 
                 Event.observe(this._ctcCategoryId(), "change", this.clearSelectedTerm.bindAsEventListener(this))
+                
+                if (this.initialCtcTerm != null ){
+                	if (this.initialCtcTerm.lowLevelTermField)  $(this._detailsForOtherLltInpId()).value = this.initialCtcTerm.lowLevelTermField
+                }
+                
+                // Taking care of meddra or other 
+                this.initializeMeddraOrOther(this.initialCtcTerm)
+                
+                
+                Event.observe(this._selectMeddraId(), "click", this.updateMeddraOrOther.bindAsEventListener(this))
+                Event.observe(this._selectOtherId(), "click", this.updateMeddraOrOther.bindAsEventListener(this))
+                
+             
+               
+                
+                AE.createStandardAutocompleter(this._detailsForOtherLltId(),
+					function(autocompleter, text) {
+						createAE.matchLowLevelTermsByCode(text, function(values) {
+													autocompleter.setChoices(values)})
+				},
+				function(lowLevelTerm) { return lowLevelTerm.fullName });
 
                 AE.createStandardAutocompleter(
                     this._ctcTermId(), this.termPopulator.bind(this), termValueSelector, {
@@ -86,15 +108,20 @@
 
             _index: function() { return +this.div.getAttribute("item-index"); },
 
-            _aeProperty:            function() { return "aeReport.adverseEvents[" + this._index() + "]" },
-            _ctcDetailsId:          function() { return this._aeProperty() + ".ctc-details" },
-            _ctcCategoryId:         function() { return this._aeProperty() + ".ctc-category" },
-            _ctcTermId:             function() { return this._aeProperty() + ".adverseEventCtcTerm.ctcTerm" },
-            _ctcTermInputId:        function() { return this._ctcTermId() + "-input" },
-            _ctcTermChoicesId:      function() { return this._ctcTermId() + "-choices" },
-            _ctcTermIndicatorId:    function() { return this._ctcTermId() + "-indicator" },
-            _detailsForOtherId:     function() { return this._aeProperty() + ".detailsForOther" },
-            _detailsForOtherRowId:  function() { return this._aeProperty() + ".detailsForOther-row" },
+            _aeProperty:              function() { return "aeReport.adverseEvents[" + this._index() + "]" },
+            _ctcDetailsId:            function() { return this._aeProperty() + ".ctc-details" },
+            _ctcCategoryId:           function() { return this._aeProperty() + ".ctc-category" },
+            _ctcTermId:               function() { return this._aeProperty() + ".adverseEventCtcTerm.ctcTerm" },
+            _ctcTermInputId:          function() { return this._ctcTermId() + "-input" },
+            _ctcTermChoicesId:        function() { return this._ctcTermId() + "-choices" },
+            _ctcTermIndicatorId:      function() { return this._ctcTermId() + "-indicator" },
+            _detailsForOtherId:       function() { return this._aeProperty() + ".detailsForOther" },
+            _detailsForOtherRowId:    function() { return this._aeProperty() + ".detailsForOther-row" },
+            _detailsForOtherLltId:    function() { return this._aeProperty() + ".lowLevelTerm" },
+            _detailsForOtherLltInpId: function() { return this._detailsForOtherLltId() + "-input" },
+            _detailsForOtherLltRowId: function() { return this._aeProperty() + ".lowLevelTerm-row" },
+            _selectMeddraId:          function() { return "select-meddra-" + this._index() },
+            _selectOtherId:           function() { return "select-other-" + this._index() },
 
             resetTermText: function() {
                 if (this.initialCtcTerm) {
@@ -104,7 +131,68 @@
                     $(this._ctcTermInputId()).value = termValueSelector(this.initialCtcTerm)
                 }
             },
-
+            
+            updateMeddraOrOther: function() {
+            	var isMeddra     = $(this._selectMeddraId()).checked
+                var meddraRow    = $(this._detailsForOtherLltRowId())
+                var meddraRowInp = $(this._detailsForOtherLltInpId())
+                var meddra       = $(this._detailsForOtherLltId())
+                var otherRow     = $(this._detailsForOtherRowId())
+                var other        = $(this._detailsForOtherId())
+                
+                if (isMeddra) {
+                	
+                    meddraRowInp.disabled=""
+                    other.value=""
+                    otherRow.addClassName("disabled")
+                    otherRow.getElementsByClassName("value")[0].disableDescendants()
+                    
+                } else {
+                    meddraRowInp.disabled="true"
+                    meddra.value=""
+                    otherRow.removeClassName("disabled")
+                    otherRow.getElementsByClassName("value")[0].enableDescendants()
+                }
+            	
+            },
+            
+            initializeMeddraOrOther: function(ctcTerm) {
+            	var meddraRow    = $(this._detailsForOtherLltRowId())
+                var otherRow     = $(this._detailsForOtherRowId())
+                var meddraRowInp = $(this._detailsForOtherLltInpId())
+                var other        = $(this._detailsForOtherId())
+                
+            	if (this.initialCtcTerm != null ){
+            		var meddra = ctcTerm.lowLevelTermField
+            		 if (meddra.length == 0) {
+            		 	meddraRowInp.disabled="true"
+                    	meddra.value=""
+                    	otherRow.removeClassName("disabled")
+                    	otherRow.getElementsByClassName("value")[0].enableDescendants()
+            		 	
+            		 	
+                	 } else {
+                	 	$(this._selectMeddraId()).click()
+                	 	
+                	 	meddraRowInp.disabled=""
+                    	other.value=""
+                    	otherRow.addClassName("disabled")
+                    	otherRow.getElementsByClassName("value")[0].disableDescendants()
+                	 	
+                    }
+                }else{
+                	$(this._selectMeddraId()).click()
+                	
+                	meddraRowInp.disabled=""
+                    other.value=""
+                    otherRow.addClassName("disabled")
+                    otherRow.getElementsByClassName("value")[0].disableDescendants()
+                	
+                }
+            },
+            
+            
+            
             clearSelectedTerm: function() {
                 $(this._ctcTermInputId()).value = ""
                 $(this._ctcTermId()).value = ""
@@ -123,12 +211,17 @@
                 if (newCtcTerm.otherRequired) {
                     if ($(this._ctcDetailsId()).visible()) {
                         AE.slideAndShow(this._detailsForOtherRowId())
+                        AE.slideAndShow(this._detailsForOtherLltRowId())
+                        
                     } else {
                         $(this._detailsForOtherRowId()).show()
+                        $(this._detailsForOtherLltRowId()).show()
                     }
                 } else {
                     AE.slideAndHide(this._detailsForOtherRowId())
+                    AE.slideAndHide(this._detailsForOtherLltRowId())
                     $(this._detailsForOtherId()).value = ""
+                    $(this._detailsForOtherLltId()).value = ""
                 }
 
                 this.updateGrades(newCtcTerm.id)

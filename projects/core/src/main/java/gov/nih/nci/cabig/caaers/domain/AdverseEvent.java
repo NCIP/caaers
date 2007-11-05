@@ -51,6 +51,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private String comments;
     private Date startDate;
     private Date endDate;
+    private LowLevelTerm lowLevelTerm;
 
     private ExpeditedAdverseEventReport report;
     private RoutineAdverseEventReport routineReport;
@@ -64,6 +65,17 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     ////// BOUND PROPERTIES
 
+    @OneToOne
+	@JoinColumn(name = "low_level_term_id")
+	public LowLevelTerm getLowLevelTerm() {
+		return lowLevelTerm;
+	}
+
+	public void setLowLevelTerm(LowLevelTerm lowLevelTerm) {
+		this.lowLevelTerm = lowLevelTerm;
+	}
+    
+    
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
