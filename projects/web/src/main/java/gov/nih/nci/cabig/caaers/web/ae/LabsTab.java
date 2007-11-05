@@ -34,15 +34,16 @@ public class LabsTab extends AeTab {
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+    	InputField labNameField = InputFieldFactory.createAutocompleterField("name", "Lab test name");
+    	InputFieldAttributes.setSize(labNameField, 60);
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
-        InputFieldAttributes.setSize(otherField, 50);
+        InputFieldAttributes.setSize(otherField, 60);
 
         creator.createRepeatingFieldGroup("lab", "labs",
             createNameCreator(),
-            InputFieldFactory.createAutocompleterField("name", "Lab test name"),
+            labNameField,
             otherField,
-            InputFieldFactory.createSelectField("units",
-                "Units", false,
+            InputFieldFactory.createSelectField("units","Units", false,
                 InputFieldFactory.collectOptions(configurationProperty.getMap().get("labUnitsRefData"),
                     "code", "desc", "Please select")),
             createLabValueField("baseline", "Baseline"),

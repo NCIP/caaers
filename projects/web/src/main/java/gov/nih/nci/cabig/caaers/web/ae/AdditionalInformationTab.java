@@ -18,7 +18,11 @@ public class AdditionalInformationTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField otherInfoField = createTextArea("otherInformation", "Other Information", false);
-        InputFieldAttributes.setColumns(otherInfoField,45);
+        InputFieldAttributes.setColumns(otherInfoField,70);
+        InputFieldAttributes.setRows(otherInfoField,5);
+        InputFieldAttributes.setDetails(otherInfoField, "If the additional information being provided" +
+        		" is not listed above,type the information being provided in the &quot;" +
+        		"Other Information&quot; field.Separate each item with a comma &quot;,&quot;.");
 
         creator.createFieldGroup("desc", null, "additionalInformation",
             createBooleanSelectField("autopsyReport", "Autopsy Report", false),

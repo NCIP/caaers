@@ -31,12 +31,23 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         EditExpeditedAdverseEventCommand command
             = new EditExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
+    
         /* TODO: make this work
         command.setAeReport(getDao().getById(
             ServletRequestUtils.getRequiredIntParameter(request, "aeReport")));
         */
 
         return command;
+    }
+    
+    @Override
+    protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
+    	super.onBindOnNewForm(request, cmd);
+    	//In edit flow from begining the tab must be hilighted.
+    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand)cmd;
+        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+    	command.refreshMandatoryProperties();
+
     }
 
     @Override
@@ -45,10 +56,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	super.onBind(request, command, errors);
         log.debug("onBind");
         EditExpeditedAdverseEventCommand cmd = (EditExpeditedAdverseEventCommand)command;
-    	//In edit flow from begining the tab must be hilighted.
-        cmd.setMandatorySections(evaluationService.mandatorySections(cmd.getAeReport()));
-    	cmd.refreshMandatoryProperties();
-    	
     	// Amendment implementation
     	// Test this
     	 if (request.getParameter("reportId") != null) {

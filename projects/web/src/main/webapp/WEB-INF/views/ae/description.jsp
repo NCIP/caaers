@@ -7,10 +7,9 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <style type="text/css">
-        textarea {
-            width: 30em;
-            height: 12em;
-        }
+        
+        div.row div.label { width: 18em; } 
+		div.row div.value, div.row div.extra { margin-left: 19em; }
     </style>
 </head>
 <body>

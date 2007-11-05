@@ -151,12 +151,8 @@ public abstract class AbstractAdverseEventInputController
         for(Tab<ExpeditedAdverseEventInputCommand> tab  : getFlow(cmd).getTabs()){
         	if(tab instanceof AeTab){
         		AeTab aeTab = (AeTab) tab;
-        		if(aeTab.isMandatory(cmd)){
-        			sbSections.append(",").append(tab.getShortTitle());
-        			if(aeTab.hasEmptyMandatoryFields(cmd)){
-            			sb.append(",").append(tab.getShortTitle());
-            		}	
-        		}
+        		sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
+        		sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
         	}
         }
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());

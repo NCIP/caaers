@@ -8,10 +8,11 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <style type="text/css">
-   		div.row div.label { width: 10em; } 
-	</style>   
     <tags:stylesheetLink name="ae"/>
+     <style type="text/css">
+   		div.row div.label { width: 14em; } 
+		div.row div.value, div.row div.extra { margin-left: 15em; }
+	</style>  
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
     <script type="text/javascript"><!--
