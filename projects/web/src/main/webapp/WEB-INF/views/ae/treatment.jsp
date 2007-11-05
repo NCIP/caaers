@@ -122,10 +122,10 @@
     </script>
     <style type="text/css">
         div.row div.label {
-            width: 18em;
+            width: 21em;
         }
         div.row div.value {
-            margin-left: 19em;
+            margin-left: 22em;
         }
     </style>
 </head>
