@@ -38,8 +38,6 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     public static final String DEFAULT_POSTGRESQL_DIALECT
         = "edu.northwestern.bioinformatics.bering.dialect.hibernate.ImprovedPostgreSQLDialect";
     public static final String SCHEMA_PROPERTY_NAME = "datasource.schema";
-    //public static final String RULES_REPO_PROPERTY_NAME = "rules.repository";
-    //public static final String DEFAULT_RULES_REPO_LOCATION = "file://c:/rules_repo/repo";
 
     private Properties properties;
     private Properties defaults;
@@ -207,16 +205,4 @@ public class DataSourceSelfDiscoveringPropertiesFactoryBean extends DatabaseConf
     	return db;   	
     	
     }
-    /*
-    private String selectRepository() {
-    	String location = DEFAULT_RULES_REPO_LOCATION;
-    	String osName = System.getProperty("os.name");
-    	
-    	if (!osName.toLowerCase().contains("windows")) {    		
-    		location = "file:/tmp/rules_repo/repo";
-    	}
-    	
-    	return location;
-    }
-    */
 }
