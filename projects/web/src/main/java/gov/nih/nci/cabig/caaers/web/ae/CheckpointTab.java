@@ -54,6 +54,7 @@ public class CheckpointTab extends AeTab {
 
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+    	
     	//evalutate available report definitions per session.
     	if(command.getAllReportDefinitions() == null || command.getAllReportDefinitions().isEmpty()){
     		command.setAllReportDefinitions(evaluationService.applicableReportDefinitions(command.getAssignment()));

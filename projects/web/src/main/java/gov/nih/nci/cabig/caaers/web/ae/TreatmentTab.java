@@ -86,7 +86,8 @@ public class TreatmentTab extends AeTab {
         );
         InputField commentsField =InputFieldFactory.createTextArea(
             "comments", "Comments", false);
-        InputFieldAttributes.setColumns(commentsField, 45);
+        InputFieldAttributes.setColumns(commentsField, 70);
+        InputFieldAttributes.setRows(commentsField, 4);
 
         creator.createRepeatingFieldGroup("courseAgent", "treatmentInformation.courseAgents",
             new SimpleNumericDisplayNameCreator("Study agent"),

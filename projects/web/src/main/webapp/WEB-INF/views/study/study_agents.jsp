@@ -69,9 +69,27 @@ td#linkPosition a img {
             		this.agentPopulator.bind(this),
             		this.agentSelector.bind(this)
             	);
+            	
+            	
+            	//disable part of lead IND if necessary
+            	var indTypeValue = $('studyAgents['  + index + '].indType').value;
+            	if(indTypeValue == 'NA' || indTypeValue == 'NA_COMMERCIAL' || indTypeValue == 'IND_EXEMPT'){
+					  $('studyAgents[' + this.index + '].partOfLeadIND').value='false';
+					  $('studyAgents[' + this.index + '].partOfLeadIND').disable();
+				}
+            	
             	//observe on the change event on IND Type (usage) dropdown.
 				Event.observe('studyAgents['  + index + '].indType',"change", function(event){
 					
+					//disable the part of lead IND
+					if(event.target.value == 'NA' || event.target.value == 'NA_COMMERCIAL' || event.target.value == 'IND_EXEMPT'){
+					  $('studyAgents[' + index + '].partOfLeadIND').value='false';
+					  $('studyAgents[' + index + '].partOfLeadIND').disable();
+					}else{
+					  $('studyAgents[' + index + '].partOfLeadIND').enable();
+					}
+					
+					//enable disable lead IND
 					if(event.target.value == 'OTHER'){
 					  	createStudy.addIND(index, 0, 2,function(html){
      						new Insertion.After($('studyAgents[' + index + '].indType-row'), html);

@@ -103,7 +103,8 @@
 			<th scope="col">Agent NSC<br />number</th>
 			<th scop="col">IND indicator</th>
 			<th scope="col">IND #</th>
-			<th scope="col">Investigational new <br /> drug?</th>	
+			<th scope="col">Investigational new <br /> drug?</th>
+			<th scope="col">Part of <br />lead IND?</th>	
 		</tr>																			
 	 	    
 		<c:forEach items="${command.studyAgents}" var="studyAgent">
@@ -121,6 +122,7 @@
 					</c:if>
 				</td>
 				<td>${studyAgent.investigationalNewDrugIndicator ? 'Yes' : 'No'}</td>
+				<td>${studyAgent.partOfLeadIND ? 'Yes' : 'No' }</td>
 			</tr>
 		</c:forEach>				
 		<c:if test="${empty command.studyAgents}">

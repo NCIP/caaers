@@ -56,7 +56,9 @@ public abstract class BasicsTab extends AeTab {
         		"brochure or informed consent document. For agents under a CTEP IND, refer also to the AdEERS Agent Specific " +
         		"Adverse Event List (ASAEL). For commercial agents or agents under a non-CTEP IND, refer also to the package insert.");
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
-        InputFieldAttributes.setColumns(commentsField, 50);
+        InputFieldAttributes.setColumns(commentsField, 70);
+        InputFieldAttributes.setRows(commentsField, 5);
+        
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
             InputFieldFactory.createLongSelectField("grade", "Grade", true,
                     InputFieldFactory.collectOptions(EXPEDITED_GRADES, "name", null)),
