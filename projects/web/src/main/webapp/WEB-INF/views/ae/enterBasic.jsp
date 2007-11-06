@@ -290,16 +290,7 @@
         <tags:instructions code="instruction_ae_enterBasics" />
         <tags:instructions code="instruction_ae_enterBasicsNote" heading="Note: " />
         </jsp:attribute>
-        <jsp:attribute name="singleFields">
-            <div class="report-fields">
-                <div class="row">
-                    <div class="label">CTC version</div>
-                    <div class="value">
-                        ${command.assignment.studySite.study.terminology.ctcVersion.name}
-                    </div>
-                </div>
-            </div>
-        </jsp:attribute>
+      
         <jsp:attribute name="repeatingFields">
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
                 <ae:oneAdverseEvent index="${status.index}"/>

@@ -15,6 +15,10 @@
 <chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
         <div class="row">
+           <div class="label">CTC version</div>
+           <div class="value">${command.assignment.studySite.study.terminology.ctcVersion.name}</div>
+        </div>
+        <div class="row">
             <div class="label"><label for="aeReport.adverseEvents[${index}].ctc-category">CTC category</label></div>
             <div class="value">
 

@@ -13,12 +13,13 @@
     <c:otherwise>Adverse event ${index + 1}</c:otherwise>
 </c:choose></c:set>
 <chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
-    <div id="ctc-details-${index}" class="ctc-details">
-        
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-        
+    <div class="row">
+      <div class="label">MedDRA Version</div>
+      <div class="value">${command.assignment.studySite.study.terminology.meddraVersion.name}</div>
     </div>
-
+    <div id="ctc-details-${index}" class="ctc-details">
+        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
+    </div>
     <div id="main-fields-${index}" class="main-fields">
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
             <tags:renderRow field="${field}"/>
