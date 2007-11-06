@@ -119,7 +119,7 @@ public class DetailsTab extends StudyTab {
 		if(studyDiseaseCodeFieldGroup == null){
 			studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
 			List<InputField> fields = studyDiseaseCodeFieldGroup.getFields();
-			fields.add(InputFieldFactory.createSelectField("diseaseTerminology.diseaseCodeTerm", "Disease Terminology", true, InputFieldFactory
+			fields.add(InputFieldFactory.createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology", true, InputFieldFactory
 					.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName")));
 		}
 		

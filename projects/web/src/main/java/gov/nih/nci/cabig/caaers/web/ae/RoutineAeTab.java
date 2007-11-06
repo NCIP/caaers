@@ -87,8 +87,9 @@ public class RoutineAeTab extends AeRoutTab {
 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
 					.getAdverseEvents().listIterator(); lit.hasNext();) {
 				AdverseEvent ae = lit.next();
-				if (ae.getAdverseEventCtcTerm().getTerm().isOtherRequired() && ae.getDetailsForOther() == null){
-		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].detailsForOther", "REQUIRED", "Missing Other(Specify)");
+				if (ae.getAdverseEventCtcTerm().getTerm().isOtherRequired() && ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].detailsForOther", "REQUIRED", "Missing Other(Verbatim)");
+		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].lowLevelTerm", "REQUIRED", "Missing Other(MedDRA)");
 		    	}
 				if (ae.getGrade() == null){
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].grade", "REQUIRED", "Missing Grade");

@@ -244,6 +244,26 @@
         <br>
     </chrome:division>
     </c:if>
+    
+    <c:if test="${not empty command.meddraStudyDiseases}">
+    <chrome:division title="Diseases">
+        <table class="tablecontent" width="96%" >
+            <br>
+            <tr>
+            	<th scope="col">Disease Term</th>
+                <th scope="col">Meddra Code</th>
+            </tr>
+
+            <c:forEach items="${command.meddraStudyDiseases}" var="studyDisease">
+                <tr class="results">
+                	<td>${studyDisease.term.meddraTerm}</td>
+                    <td>${studyDisease.term.meddraCode}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br>
+    </chrome:division>
+    </c:if>
 	
 	<chrome:division title="Identifiers">
 			<table class="tablecontent" width="96%">

@@ -44,6 +44,7 @@ public class CtcBasicsTab extends BasicsTab {
 
         InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther", "Other (verbatim)", false);
         InputFieldAttributes.setColumns(otherVerbatimField, 49);
+        InputFieldAttributes.setDetails(otherVerbatimField,"The CTC term chosen requires  a MedDRA based term or a free text entry ");
         InputField otherLowLevelTermField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other (MedDRA)", false);
         
         creator.createRepeatingFieldGroup(CtcBasicsTab.CTC_OTHER_FIELD_GROUP, "adverseEvents",

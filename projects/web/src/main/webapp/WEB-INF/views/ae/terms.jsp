@@ -27,7 +27,37 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         var initialCategory ='';
 
+		
+		  var EnterMeddra = Class.create()
+        Object.extend(EnterMeddra.prototype, {
+            initialize: function(index, llt) {
+                this.index = index
+                var cmProperty = "aeRoutineReport.adverseEvents[" + index + "]";
+                this.meddraProperty = cmProperty + ".lowLevelTerm"
+                this.lowLevelTerm = llt;
+                //this.otherProperty = cmProperty + ".other"
+				console.debug(this.lowLevelTerm.fullName)
+                	if (this.lowLevelTerm) $(this.meddraProperty + "-input").value = this.lowLevelTerm
+               
+               	 AE.createStandardAutocompleter(this.meddraProperty,
+					function(autocompleter, text) {
+						createAE.matchLowLevelTermsByCode(text, function(values) {
+													autocompleter.setChoices(values)})
+				},
+				function(lowLevelTerm) { return lowLevelTerm.fullName });
+               
+            }
+        })
+
+
+
         Element.observe(window, "load", function() {
+	        
+	        <c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status" var="adverseEvent">
+	        	<c:if test="${adverseEvent.ctcTerm.otherRequired == 'true'}" >
+           		new EnterMeddra(${status.index}, '${adverseEvent.lowLevelTerm.fullName}')
+           		</c:if>
+            </c:forEach>
 	        
 	        showTerms()
 	        Event.observe("cats", "change", function() { showTerms() })
@@ -126,7 +156,24 @@
             					<div class="value"><form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" /></div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
             				</div>	
+            				
+            				<div class="row">
+            					<div class="label">Other (MedDRA)</div>
+            					<div class="value">
+            						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
+            						
+            						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete-input"/>
+                    				<tags:indicator id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-indicator"/>
+                    				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>
+            					</div>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm"/>
+            				</div>	
+            				
             				</center>
+            				
+            				
+            				
+            				
             			</c:if>
             		</td>
             		<td>

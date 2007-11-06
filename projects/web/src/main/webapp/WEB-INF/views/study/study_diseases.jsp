@@ -324,7 +324,7 @@
             <chrome:box title="Selected Diseases " id="diseases">
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
-            <chrome:division title="Ctep">
+            <chrome:division title="CTEP">
 			<center>
 			<table width="100%" class="tablecontent">
     			<tr>
