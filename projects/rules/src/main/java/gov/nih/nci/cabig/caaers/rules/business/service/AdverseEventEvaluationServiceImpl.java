@@ -531,6 +531,10 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 
 			log.error("Unable to fire the rule : " + bindURI );
 			log.error("Rule might have been be un deployed  , please look at the exception . " , ex);
+			System.out.println("MESSAGE -- " + ex.getMessage() + "-- MESSAGE") ;
+			if (ex.getMessage().indexOf("local class incompatible") != -1) {
+				throw new Exception (ex.getMessage(),ex);
+			}
 
 			/**
 			 * Don't do anything, it means there are no rules for this package
