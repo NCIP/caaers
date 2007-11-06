@@ -142,16 +142,14 @@
                 
                 if (isMeddra) {
                 	
-                    meddraRowInp.disabled=""
+                    meddraRowInp.removeAttribute('readOnly')
                     other.value=""
-                    otherRow.addClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
-                    
+                    other.setAttribute('readOnly',true);
                 } else {
-                    meddraRowInp.disabled="true"
+                	meddraRowInp.value=""
+                    meddraRowInp.setAttribute('readOnly',true);
                     meddra.value=""
-                    otherRow.removeClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].enableDescendants()
+                    other.removeAttribute('readOnly');
                 }
             	
             },
@@ -165,28 +163,26 @@
             	if (this.initialCtcTerm != null ){
             		var meddra = ctcTerm.lowLevelTermField
             		 if (meddra.length == 0) {
-            		 	meddraRowInp.disabled="true"
+            		 	meddraRowInp.value=""
+                    	meddraRowInp.setAttribute('readOnly',true);
                     	meddra.value=""
-                    	otherRow.removeClassName("disabled")
-                    	otherRow.getElementsByClassName("value")[0].enableDescendants()
+                    	other.removeAttribute('readOnly');
             		 	
             		 	
                 	 } else {
                 	 	$(this._selectMeddraId()).click()
                 	 	
-                	 	meddraRowInp.disabled=""
+                	 	meddraRowInp.removeAttribute('readOnly')
                     	other.value=""
-                    	otherRow.addClassName("disabled")
-                    	otherRow.getElementsByClassName("value")[0].disableDescendants()
+                    	other.setAttribute('readOnly',true);
                 	 	
                     }
                 }else{
                 	$(this._selectMeddraId()).click()
                 	
-                	meddraRowInp.disabled=""
+                	meddraRowInp.removeAttribute('readOnly')
                     other.value=""
-                    otherRow.addClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
+                    other.setAttribute('readOnly',true);
                 	
                 }
             },
@@ -272,6 +268,7 @@
                 // onReset fires _before_ the reset; delay action so it happens afterward
                 setTimeout(postReset, 150)
             })
+            
             aesEditor = new ListEditor("ae-section", createAE, "AdverseEvent", {
                 addParameters: [aeReportId],
                 addCallback: function(nextIndex) {
