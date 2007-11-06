@@ -1747,7 +1747,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 					<c:choose>
 						<c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
 								<c:forEach var="reportSectionName" items="${command.reportSectionNames}">
-									<form:option value="${reportSectionName}">${reportSectionName}</form:option>
+									<form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
 								</c:forEach>
 						</c:when>
 						<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
