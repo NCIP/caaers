@@ -136,7 +136,7 @@
 						<c:choose>
 							<c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
 								<c:forEach var="reportSectionName" items="${command.reportSectionNames}">
-									<option value="${reportSectionName}">${reportSectionName}</option>
+									<option value="${reportSectionName}">${reportSectionName.displayName}</option>
 								</c:forEach>
 							</c:when>
 							<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
