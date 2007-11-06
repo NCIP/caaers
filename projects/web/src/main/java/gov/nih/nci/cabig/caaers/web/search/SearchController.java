@@ -31,187 +31,186 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public abstract class SearchController extends SimpleFormController {
 
-	private StudyService studyService;
+ private StudyService studyService;
 
-	private ConfigProperty configurationProperty;
+ private ConfigProperty configurationProperty;
 
-	private ListValues listValues;
+ private ListValues listValues;
 
-	private CtcCategoryDao ctcCategoryDao;
+ private CtcCategoryDao ctcCategoryDao;
 
-	private StudyDao studyDao;
+ private StudyDao studyDao;
 
-	private ParticipantDao participantDao;
+ private ParticipantDao participantDao;
 
-	private OrganizationDao organizationDao;
+ private OrganizationDao organizationDao;
 
-	private ResearchStaffDao researchStaffDao;
+ private ResearchStaffDao researchStaffDao;
 
-	private ExpeditedAdverseEventReportDao expeditedDao;
+ private ExpeditedAdverseEventReportDao expeditedDao;
 
-	private RoutineAdverseEventReportDao routineDao;
+ private RoutineAdverseEventReportDao routineDao;
 
-	private AdverseEventDao adverseEventDao;
+ private AdverseEventDao adverseEventDao;
 
-	private InvestigatorDao investigatorDao;
+ private InvestigatorDao investigatorDao;
 
-	public SearchController() {
-		setCommandClass(SearchStudyCommand.class);
-		setFormView("search/study_search");
-		setSuccessView("search/study_search");
-	}
+ public SearchController() {
+  setCommandClass(SearchStudyCommand.class);
+  setFormView("search/study_search");
+  setSuccessView("search/study_search");
+ }
 
-	@Override
-	protected Map<String, Object> referenceData(final HttpServletRequest request) throws Exception {
-		Map<String, Object> refdata = new HashMap<String, Object>();
-		refdata.put("genders", listValues.getParticipantGender());
-		refdata.put("ethnicity", listValues.getParticipantEthnicity());
-		refdata.put("ctcCategories", ctcCategoryDao.getAll());
-		return refdata;
-	}
+ @Override
+ protected Map<String, Object> referenceData(final HttpServletRequest request) throws Exception {
+  Map<String, Object> refdata = new HashMap<String, Object>();
+  refdata.put("genders", listValues.getParticipantGender());
+  refdata.put("ethnicity", listValues.getParticipantEthnicity());
+  refdata.put("ctcCategories", ctcCategoryDao.getAll());
+  return refdata;
+ }
 
-	// TODO: I really do not like the way I am implementing this I need to find a better way
-	protected void buildSearchResultTable(final HttpServletRequest request, final String prop, final String value,
-			final int x) throws Exception {
+ // TODO: I really do not like the way I am implementing this I need to find a better way
+ protected void buildSearchResultTable(final HttpServletRequest request, final String prop, final String value,
+   final int x) throws Exception {
 
-		SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao,
-				expeditedDao, routineDao, organizationDao);
-		searchFacade.setResearchStaffDao(researchStaffDao);
-		searchFacade.setInvestigatorDao(investigatorDao);
-		Context context = null;
-		context = new HttpServletRequestContext(request);
+  SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao,
+    expeditedDao, routineDao, organizationDao);
+  searchFacade.setResearchStaffDao(researchStaffDao);
+  searchFacade.setInvestigatorDao(investigatorDao);
+  Context context = new HttpServletRequestContext(request);
 
-		TableModel model = new TableModelImpl(context);
-		Object viewData = null;
-		try {
-			switch (x) {
-			case 0:
-				// viewData = searchFacade.build(model, new ArrayList());
-				viewData = searchFacade.getTable(null, prop, value, request);
-				break;
-			case 1:
-				viewData = searchFacade.getParticipantTable(null, prop, value, request);
-				break;
-			case 2:
-				viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
-				break;
-			case 3:
-				viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
-				break;
-			case 4:
-				viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
-				break;
-			case 5:
-				viewData = searchFacade.getINDTable(null, prop, value, request);
-				break;
-			case 6:
-				viewData = searchFacade.getOrganizationTable(null, prop, value, request);
-				break;
+  TableModel model = new TableModelImpl(context);
+  Object viewData = null;
+  try {
+   switch (x) {
+   case 0:
+    // viewData = searchFacade.build(model, new ArrayList());
+    viewData = searchFacade.getTable(null, prop, value, request);
+    break;
+   case 1:
+    viewData = searchFacade.getParticipantTable(null, prop, value, request);
+    break;
+   case 2:
+    viewData = searchFacade.getAdverseEventTable(null, prop, value, request);
+    break;
+   case 3:
+    viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
+    break;
+   case 4:
+    viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
+    break;
+   case 5:
+    viewData = searchFacade.getINDTable(null, prop, value, request);
+    break;
+   case 6:
+    viewData = searchFacade.getOrganizationTable(null, prop, value, request);
+    break;
 
-			case 7:
-				viewData = searchFacade.getResearchStaffTable(null, prop, value, request);
-				break;
+   case 7:
+    viewData = searchFacade.getResearchStaffTable(null, prop, value, request);
+    break;
 
-			case 8:
-				viewData = searchFacade.buildParticipantTable(null, prop, value, request);
-				break;
-			case 9:
-				viewData = searchFacade.getInvestigatorTable(null, prop, value, request);
-				break;
+   case 8:
+    viewData = searchFacade.buildParticipantTable(null, prop, value, request);
+    break;
+   case 9:
+    viewData = searchFacade.getInvestigatorTable(null, prop, value, request);
+    break;
 
-			default:
-				viewData = searchFacade.build(model, new ArrayList());
-				break;
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+   default:
+    viewData = searchFacade.build(model, new ArrayList());
+    break;
+   }
+  }
+  catch (Exception e) {
+   e.printStackTrace();
+  }
 
-		request.setAttribute("assembler", viewData);
-	}
+  request.setAttribute("assembler", viewData);
+ }
 
-	public StudyService getStudyService() {
-		return studyService;
-	}
+ public StudyService getStudyService() {
+  return studyService;
+ }
 
-	public void setStudyService(final StudyService studyService) {
-		this.studyService = studyService;
-	}
+ public void setStudyService(final StudyService studyService) {
+  this.studyService = studyService;
+ }
 
-	public ConfigProperty getConfigurationProperty() {
-		return configurationProperty;
-	}
+ public ConfigProperty getConfigurationProperty() {
+  return configurationProperty;
+ }
 
-	public void setConfigurationProperty(final ConfigProperty configurationProperty) {
-		this.configurationProperty = configurationProperty;
-	}
+ public void setConfigurationProperty(final ConfigProperty configurationProperty) {
+  this.configurationProperty = configurationProperty;
+ }
 
-	public ListValues getListValues() {
-		return listValues;
-	}
+ public ListValues getListValues() {
+  return listValues;
+ }
 
-	public void setListValues(final ListValues listValues) {
-		this.listValues = listValues;
-	}
+ public void setListValues(final ListValues listValues) {
+  this.listValues = listValues;
+ }
 
-	public void setCtcCategoryDao(final CtcCategoryDao ctcCategoryDao) {
-		this.ctcCategoryDao = ctcCategoryDao;
-	}
+ public void setCtcCategoryDao(final CtcCategoryDao ctcCategoryDao) {
+  this.ctcCategoryDao = ctcCategoryDao;
+ }
 
-	public CtcCategoryDao getCtcCategoryDao() {
-		return ctcCategoryDao;
-	}
+ public CtcCategoryDao getCtcCategoryDao() {
+  return ctcCategoryDao;
+ }
 
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
+ public StudyDao getStudyDao() {
+  return studyDao;
+ }
 
-	public void setStudyDao(final StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
+ public void setStudyDao(final StudyDao studyDao) {
+  this.studyDao = studyDao;
+ }
 
-	public AdverseEventDao getAdverseEventDao() {
-		return adverseEventDao;
-	}
+ public AdverseEventDao getAdverseEventDao() {
+  return adverseEventDao;
+ }
 
-	public void setAdverseEventDao(final AdverseEventDao adverseEventDao) {
-		this.adverseEventDao = adverseEventDao;
-	}
+ public void setAdverseEventDao(final AdverseEventDao adverseEventDao) {
+  this.adverseEventDao = adverseEventDao;
+ }
 
-	public ExpeditedAdverseEventReportDao getExpeditedDao() {
-		return expeditedDao;
-	}
+ public ExpeditedAdverseEventReportDao getExpeditedDao() {
+  return expeditedDao;
+ }
 
-	public void setExpeditedDao(final ExpeditedAdverseEventReportDao expeditedDao) {
-		this.expeditedDao = expeditedDao;
-	}
+ public void setExpeditedDao(final ExpeditedAdverseEventReportDao expeditedDao) {
+  this.expeditedDao = expeditedDao;
+ }
 
-	public ParticipantDao getParticipantDao() {
-		return participantDao;
-	}
+ public ParticipantDao getParticipantDao() {
+  return participantDao;
+ }
 
-	public void setParticipantDao(final ParticipantDao participantDao) {
-		this.participantDao = participantDao;
-	}
+ public void setParticipantDao(final ParticipantDao participantDao) {
+  this.participantDao = participantDao;
+ }
 
-	public void setOrganizationDao(final OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+ public void setOrganizationDao(final OrganizationDao organizationDao) {
+  this.organizationDao = organizationDao;
+ }
 
-	public RoutineAdverseEventReportDao getRoutineDao() {
-		return routineDao;
-	}
+ public RoutineAdverseEventReportDao getRoutineDao() {
+  return routineDao;
+ }
 
-	public void setRoutineDao(final RoutineAdverseEventReportDao routineDao) {
-		this.routineDao = routineDao;
-	}
+ public void setRoutineDao(final RoutineAdverseEventReportDao routineDao) {
+  this.routineDao = routineDao;
+ }
 
-	public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}
+ public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
+  this.researchStaffDao = researchStaffDao;
+ }
 
-	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
+ public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
+  this.investigatorDao = investigatorDao;
+ }
 }
