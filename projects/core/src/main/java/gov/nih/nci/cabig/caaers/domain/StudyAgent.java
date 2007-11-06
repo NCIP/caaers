@@ -42,9 +42,10 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 	@Embedded
 	private Participation participation;
 
-	// To be moved to command object
 	private INDType indType;
-
+	
+	private Boolean partOfLeadIND;
+	
 	/*
 	 * Constructor -- Initializes participation at create time
 	 */
@@ -137,6 +138,16 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 
 	public void setOtherAgent(String otherAgent) {
 		this.otherAgent = otherAgent;
+	}
+	
+	
+
+	public Boolean getPartOfLeadIND() {
+		return partOfLeadIND;
+	}
+
+	public void setPartOfLeadIND(Boolean partOfLeadIND) {
+		this.partOfLeadIND = partOfLeadIND;
 	}
 
 	@Transient

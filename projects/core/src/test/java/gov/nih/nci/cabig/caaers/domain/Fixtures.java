@@ -1,9 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
+import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
+import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,6 +32,7 @@ public class Fixtures {
 	public static Study createStudy(final String shortTitle) {
 		Study s = new Study();
 		s.setShortTitle(shortTitle);
+		s.setLongTitle(shortTitle);
 		return s;
 	}
 
@@ -87,15 +92,42 @@ public class Fixtures {
 		return person;
 	}
 
-	public static ReportDefinition createReportDefinition(final String name) {
-		ReportDefinition def = new ReportDefinition();
-		def.setName(name);
-		Organization org = new Organization();
-		org.setName("Test");
-		def.setOrganization(org);
-		return def;
-	}
-
+    public static ReportDefinition createReportDefinition(String name) {
+        ReportDefinition def = new ReportDefinition();
+        def.setName(name);
+        Organization org = new Organization();
+        org.setName("Test");
+        def.setOrganization(org);
+        def.addPlannedNotification(createPlannedEmailNotification());
+        return def;
+    }
+    
+    public static PlannedEmailNotification createPlannedEmailNotification(){
+    	PlannedEmailNotification penf = new PlannedEmailNotification();
+    	penf.setIndexOnTimeScale(1);
+    	penf.setSubjectLine("Test subject");
+    	return penf;
+    }
+    
+    public static Report createReport(String name){
+    	ReportDefinition def = createReportDefinition(name);
+    	Report rep = new Report();
+    	rep.setReportDefinition(def);
+    	rep.addScheduledNotification(createScheduledEmailNotification());
+    	return rep;
+    }
+    
+    public static ScheduledEmailNotification createScheduledEmailNotification(){
+    	ScheduledEmailNotification senf = new ScheduledEmailNotification();
+    	senf.setId(-332);
+    	senf.setBody("this is my body");
+    	senf.setFromAddress("biju@test.com");
+    	senf.setDeliveryStatus(DeliveryStatus.CREATED);
+    	senf.setScheduledOn(new NowFactory().getNow());
+    	senf.setToAddress("biju.joseph@semanticbits.com");
+    	return senf;
+    }
+    
 	public static void createReportVersion(final Report report) {
 		ReportVersion reportVersion = new ReportVersion();
 		reportVersion.setCreatedOn(new Timestamp(106));
