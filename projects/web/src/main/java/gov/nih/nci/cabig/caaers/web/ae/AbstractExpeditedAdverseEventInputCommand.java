@@ -201,7 +201,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         			//first time, the user did not override system pre selection.
         			int i = 0; 
         			for(StudyAgent agent : getAeReport().getStudy().getStudyAgents()){
-        				if(agent!= null && agent.getPartOfLeadIND()){
+        				if(agent.getPartOfLeadIND()!= null && agent.getPartOfLeadIND()){
         					CourseAgent courseAgent = courseAgents.get(i);
         					courseAgent.setStudyAgent(agent);
         					i++;
