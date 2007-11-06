@@ -9,22 +9,8 @@
 
 <ae:fieldGroupDivision fieldGroupFactoryName="priorTherapy" index="${index}" style="${style}">
     <tags:errors path="aeReport.adverseEventPriorTherapies[${index}]"/>
-    <tags:renderRow field="${fieldGroup.fields[0]}">
-        <jsp:attribute name="label">
-            <label>
-                <!-- input id="select-priorTherapy-${index}" name="priorTherapyOrOther${index}" type="radio"/ -->
-                ${fieldGroup.fields[0].displayName}
-            </label>
-        </jsp:attribute>
-    </tags:renderRow>
-    <tags:renderRow field="${fieldGroup.fields[1]}">
-        <jsp:attribute name="label">
-            <label>
-                <!-- input id="select-other-${index}" name="priorTherapyOrOther${index}" type="radio"/-->
-                ${fieldGroup.fields[1].displayName}
-            </label>
-        </jsp:attribute>
-    </tags:renderRow>
+    <tags:renderRow field="${fieldGroup.fields[0]}" />
+    <tags:renderRow field="${fieldGroup.fields[1]}" />
     <tags:renderRow field="${fieldGroup.fields[2]}"/>
     <tags:renderRow field="${fieldGroup.fields[3]}"/>
 

@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.*;
 
+import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
+
 import java.util.Map;
 
 /**
@@ -51,6 +53,10 @@ public class InputFieldAttributes {
     public static void setDetails(InputField field, String details) {
         field.getAttributes().put(DETAILS, details);
     }
-
+    
+    public static void enableAutoCompleterClearButton(InputField field){
+    	field.getAttributes().put(InputField.ENABLE_CLEAR, true);
+    }
+    
     private InputFieldAttributes() { }
 }

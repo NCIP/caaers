@@ -11,6 +11,7 @@
     <tags:renderRow field="${fieldGroup.fields[0]}">
         <jsp:attribute name="label">
             <label>
+            	<c:if test="${fieldGroup.fields[0].required or fieldGroup.fields[0].attributes.mandatory}"><tags:requiredIndicator/></c:if>
                 <input id="select-priorTherapy-${index}" name="agentOrOther${index}" type="radio"/>
                 ${fieldGroup.fields[0].displayName}
             </label>
