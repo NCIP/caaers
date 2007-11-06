@@ -643,13 +643,15 @@ public class CreateRuleCommand implements RuleInputCommand
         return categories;
     }
 	
-	public String[] getReportSectionNames() {
+	public ExpeditedReportSection[] getReportSectionNames() {
     	ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
+    	/*
     	String[] sectionNames = new String[expeditedReportSections.length];
     	for (int i=0;i<expeditedReportSections.length;i++ ){
-    		sectionNames[i] = expeditedReportSections[i].getDisplayName();
+    		sectionNames[i] = expeditedReportSections[i].name();
     	}
-    	return sectionNames;
+    	*/
+    	return expeditedReportSections;
 	}
 	
 	public RuleUi getRuleUi() {
