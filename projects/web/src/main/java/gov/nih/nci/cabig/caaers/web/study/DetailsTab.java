@@ -62,13 +62,13 @@ public class DetailsTab extends StudyTab {
 			InputFieldAttributes.setSize(shortTitleField, 50);
 			fields.add(shortTitleField);
 			InputField longTitleField = InputFieldFactory.createTextArea("longTitle", "Long title", true);
-			InputFieldAttributes.setColumns(longTitleField,50);
+			InputFieldAttributes.setColumns(longTitleField,70);
 			fields.add(longTitleField);
 			InputField precisField = InputFieldFactory.createTextArea("precis", "Precis", false);
-			InputFieldAttributes.setColumns(precisField, 50);
+			InputFieldAttributes.setColumns(precisField, 70);
 			fields.add(precisField);
 			InputField descField = InputFieldFactory.createTextArea("description", "Description", false);
-			InputFieldAttributes.setColumns(descField, 50);
+			InputFieldAttributes.setColumns(descField, 70);
 			
 			fields.add(descField);
 					fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true, collectOptionsFromConfig(
