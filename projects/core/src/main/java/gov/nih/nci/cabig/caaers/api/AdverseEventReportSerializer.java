@@ -79,14 +79,9 @@ public class AdverseEventReportSerializer {
 
 			XmlMarshaller marshaller = new XmlMarshaller();
 
-			try {
-				ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
-				xml = marshaller.toXML(aer,getMappingFile());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-                // TODO: this is a pointless rethrow.  Why not just throw e?  Or don't catch it.
-                throw new Exception (e.getMessage(),e);
-			}
+			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
+			xml = marshaller.toXML(aer,getMappingFile());
+		
 
 			return xml;
 	   }
@@ -198,204 +193,241 @@ public class AdverseEventReportSerializer {
 
 	    	return aer;
 	   }
-	   private Reporter getReporter(Reporter rptr) {
+	   private Reporter getReporter(Reporter rptr) throws Exception {
 	    	Reporter reporter = new Reporter();
-	    	reporter.setFirstName(rptr.getFirstName());
-	    	reporter.setLastName(rptr.getLastName());
-	    	reporter.setContactMechanisms(rptr.getContactMechanisms());
+	    	try {
+		    	reporter.setFirstName(rptr.getFirstName());
+		    	reporter.setLastName(rptr.getLastName());
+		    	reporter.setContactMechanisms(rptr.getContactMechanisms());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getReporter() "+e.getMessage() , e);
+	    	}
 
 
 	    	return reporter;
 	    }
 
-	    private Physician getPhysician(Physician psn) {
+	    private Physician getPhysician(Physician psn) throws Exception {
 	    	Physician physician = new Physician();
-	    	physician.setFirstName(psn.getFirstName());
-	    	physician.setLastName(psn.getLastName());
-	    	physician.setContactMechanisms(psn.getContactMechanisms());
-
+	    	try {
+	    		physician.setFirstName(psn.getFirstName());
+	    		physician.setLastName(psn.getLastName());
+	    		physician.setContactMechanisms(psn.getContactMechanisms());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getPhysician() "+e.getMessage() , e);
+	    	}
 
 	    	return physician;
 	    }
 
-	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) {
+	    private ParticipantHistory getParticipantHistory(ParticipantHistory ph) throws Exception {
 	    	ParticipantHistory participantHistory = new ParticipantHistory();
-	    	participantHistory.getHeight().setQuantity(ph.getHeight().getQuantity());
-	    	participantHistory.getHeight().setUnit(ph.getHeight().getUnit());
-	    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
-	    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
-	    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
-
+	    	try {
+		    	participantHistory.getHeight().setQuantity(ph.getHeight().getQuantity());
+		    	participantHistory.getHeight().setUnit(ph.getHeight().getUnit());
+		    	participantHistory.getWeight().setQuantity(ph.getWeight().getQuantity());
+		    	participantHistory.getWeight().setUnit(ph.getWeight().getUnit());
+		    	participantHistory.setBaselinePerformanceStatus(ph.getBaselinePerformanceStatus());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getParticipantHistory() "+e.getMessage() , e);
+	    	}
 	    	return participantHistory;
 	    }
 
-	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd) {
+	    private AdverseEventResponseDescription getAdverseEventResponseDescription(AdverseEventResponseDescription aerd) throws Exception {
 	    	AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
-
-	    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
-	    	adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
-	    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
-	    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
-	    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
-
+	    	try {
+		    	adverseEventResponseDescription.setEventDescription(aerd.getEventDescription());
+		    	adverseEventResponseDescription.setDateRemovedFromProtocol(aerd.getDateRemovedFromProtocol());
+		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
+		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
+		    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getAdverseEventResponseDescription() "+e.getMessage() , e);
+	    	}
 
 	    	return adverseEventResponseDescription;
 
 	    }
 
-	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh) {
+	    private DiseaseHistory getDiseaseHistory(DiseaseHistory dh) throws Exception {
 	    	DiseaseHistory diseaseHistory = new DiseaseHistory();
-	    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
-	    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
-	    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
-	    	diseaseHistory.setCodedPrimaryDiseaseSite(dh.getCodedPrimaryDiseaseSite());
-	    	diseaseHistory.setAbstractStudyDisease(dh.getCtepStudyDisease() == null ?
-	    			dh.getMeddraStudyDisease() : dh.getCtepStudyDisease());
-	    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
-
-	    	for (MetastaticDiseaseSite site: mdsList) {
-	    		diseaseHistory.addMetastaticDiseaseSite(site);
+	    	try {
+		    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
+		    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
+		    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
+		    	diseaseHistory.setCodedPrimaryDiseaseSite(dh.getCodedPrimaryDiseaseSite());
+		    	diseaseHistory.setAbstractStudyDisease(dh.getCtepStudyDisease() == null ?
+		    			dh.getMeddraStudyDisease() : dh.getCtepStudyDisease());
+		    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
+	
+		    	for (MetastaticDiseaseSite site: mdsList) {
+		    		diseaseHistory.addMetastaticDiseaseSite(site);
+		    	}
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getDiseaseHistory() "+e.getMessage() , e);
 	    	}
 	    	return diseaseHistory;
 	    }
 
-	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) {
+	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) throws Exception {
 	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
-	    	studyParticipantAssignment.setParticipant(getParticipant(spa.getParticipant()));
-	    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
-
-	    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
-
+	    	try {
+		    	studyParticipantAssignment.setParticipant(getParticipant(spa.getParticipant()));
+		    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
+	
+		    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getStudyParticipantAssignment() "+e.getMessage() , e);
+	    	}
 	    	return studyParticipantAssignment;
 	    }
 
-	    private Participant getParticipant(Participant p) {
+	    private Participant getParticipant(Participant p) throws Exception {
 	    	Participant participant = new Participant();
-	    	participant.setInstitutionalPatientNumber(p.getInstitutionalPatientNumber());
-	    	participant.setInstitution(p.getInstitution());
-	    	participant.setFirstName(p.getFirstName());
-	    	participant.setMaidenName(p.getMaidenName());
-	    	participant.setMiddleName(p.getMiddleName());
-	    	participant.setLastName(p.getLastName());
-	    	participant.setDateOfBirth(p.getDateOfBirth());
-	    	participant.setGender(p.getGender());
-	    	participant.setRace(p.getRace());
-	    	participant.setEthnicity(p.getEthnicity());
-
+	    	try {
+		    	participant.setInstitutionalPatientNumber(p.getInstitutionalPatientNumber());
+		    	participant.setInstitution(p.getInstitution());
+		    	participant.setFirstName(p.getFirstName());
+		    	participant.setMaidenName(p.getMaidenName());
+		    	participant.setMiddleName(p.getMiddleName());
+		    	participant.setLastName(p.getLastName());
+		    	participant.setDateOfBirth(p.getDateOfBirth());
+		    	participant.setGender(p.getGender());
+		    	participant.setRace(p.getRace());
+		    	participant.setEthnicity(p.getEthnicity());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getParticipant() "+e.getMessage() , e);
+	    	}
 	    	return participant;
 	    }
 
-	    private StudySite getStudySite(StudySite ss) {
+	    private StudySite getStudySite(StudySite ss) throws Exception {
 	    	StudySite studySite = new StudySite();
 	    	//studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
 	    	//studySite.setRoleCode(ss.getRoleCode());
-	    	studySite.setStatusCode(ss.getStatusCode());
-	    	studySite.setStartDate(ss.getStartDate());
-	    	studySite.setEndDate(ss.getEndDate());
-
-	    	studySite.setStudy(ss.getStudy());
-	    	studySite.setOrganization(ss.getOrganization());
-	    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
-
+	    	try { 
+		    	studySite.setStatusCode(ss.getStatusCode());
+		    	studySite.setStartDate(ss.getStartDate());
+		    	studySite.setEndDate(ss.getEndDate());
+	
+		    	studySite.setStudy(ss.getStudy());
+		    	studySite.setOrganization(ss.getOrganization());
+		    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getStudySite() "+e.getMessage() , e);
+	    	}
 	    	//System.out.println("STUDY INVES INTERNAL >>>>>>>>>>>>>>> " + ss.getStudyInvestigatorsInternal().size());
 	    	return studySite;
 	    }
 
-	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) {
+	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) throws Exception {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
-	    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
-	    	adverseEvent.setExpected(ae.getExpected());
-	    	adverseEvent.setComments(ae.getComments());
-	    	adverseEvent.setStartDate(ae.getStartDate());
-	    	adverseEvent.setEndDate(ae.getEndDate());
-	    	adverseEvent.setConcomitantMedicationAttributions(ae.getConcomitantMedicationAttributions());
-
-	    	List<OtherCauseAttribution> otList = new ArrayList<OtherCauseAttribution>();
-
-	    	for (OtherCauseAttribution ot : ae.getOtherCauseAttributions()) {
-	    		otList.add(getOtherCauseAttribution(ot));
+	    	try {
+		    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
+		    	adverseEvent.setExpected(ae.getExpected());
+		    	adverseEvent.setComments(ae.getComments());
+		    	adverseEvent.setStartDate(ae.getStartDate());
+		    	adverseEvent.setEndDate(ae.getEndDate());
+		    	adverseEvent.setConcomitantMedicationAttributions(ae.getConcomitantMedicationAttributions());
+	
+		    	List<OtherCauseAttribution> otList = new ArrayList<OtherCauseAttribution>();
+	
+		    	for (OtherCauseAttribution ot : ae.getOtherCauseAttributions()) {
+		    		otList.add(getOtherCauseAttribution(ot));
+		    	}
+	
+		    	adverseEvent.setOtherCauseAttributions(otList);
+		    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
+	
+		    	
+		    	adverseEvent.setDiseaseAttributions(ae.getDiseaseAttributions());
+		    	adverseEvent.setSurgeryAttributions(ae.getSurgeryAttributions());
+		    	adverseEvent.setRadiationAttributions(ae.getRadiationAttributions());
+		    	adverseEvent.setDeviceAttributions(ae.getDeviceAttributions());
+	
+	
+				if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
+					adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
+				} else {
+					adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
+				}
+	
+	
+				
+		    	adverseEvent.setHospitalization(ae.getHospitalization());
+		    	adverseEvent.setGrade(ae.getGrade());
+		    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
+		    	adverseEvent.setExpected(ae.getExpected());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getAdverseEvent() "+e.getMessage() , e);
 	    	}
-
-	    	adverseEvent.setOtherCauseAttributions(otList);
-	    	adverseEvent.setCourseAgentAttributions(ae.getCourseAgentAttributions());
-
-	    	
-	    	adverseEvent.setDiseaseAttributions(ae.getDiseaseAttributions());
-	    	adverseEvent.setSurgeryAttributions(ae.getSurgeryAttributions());
-	    	adverseEvent.setRadiationAttributions(ae.getRadiationAttributions());
-	    	adverseEvent.setDeviceAttributions(ae.getDeviceAttributions());
-
-
-			if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
-				adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
-			} else {
-				adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
-			}
-
-
-			
-	    	adverseEvent.setHospitalization(ae.getHospitalization());
-	    	adverseEvent.setGrade(ae.getGrade());
-	    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
-	    	adverseEvent.setExpected(ae.getExpected());
-
 
 	    	return adverseEvent;
 	    }
 
 
-	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) {
+	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) throws Exception {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
-	    	otherCauseAttribution.setAttribution(oca.getAttribution());
-	    	otherCauseAttribution.setCause(getOtherCause(oca.getCause()));
-
+	    	try {
+	    		otherCauseAttribution.setAttribution(oca.getAttribution());
+	    		otherCauseAttribution.setCause(getOtherCause(oca.getCause()));
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getOtherCauseAttribution() "+e.getMessage() , e);
+	    	}
 	    	return otherCauseAttribution;
 	    }
 
 
-	    private OtherCause getOtherCause(OtherCause oc) {
+	    private OtherCause getOtherCause(OtherCause oc) throws Exception {
 	    	OtherCause otherCause = new OtherCause();
-	    	otherCause.setText(oc.getText());
-
+		    try {
+		    	otherCause.setText(oc.getText());
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getOtherCause() "+e.getMessage() , e);
+	    	}
 	    	return otherCause;
 
 	    }
 
-	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf) {
+	    private TreatmentInformation getTreatmentInformation(TreatmentInformation trtInf) throws Exception {
 	    	TreatmentInformation treatmentInformation = new TreatmentInformation();
-	    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
-	    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
-	    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
-
-	    	TreatmentAssignment ta = trtInf.getTreatmentAssignment();
-	    	
-	    	if (ta != null ) {
-		    	TreatmentAssignment taNew = new TreatmentAssignment();
-		    	taNew.setCode(ta.getCode());
-		    	taNew.setDoseLevelOrder(ta.getDoseLevelOrder());
-		    	taNew.setDescription(ta.getDescription());
-		    	taNew.setComments(ta.getComments());
-		    	taNew.setStudy(ta.getStudy());
-		    	
-		    	treatmentInformation.setTreatmentAssignment(taNew);
-	    	}
-
-	    	List<CourseAgent> caList = trtInf.getCourseAgents();
-
-	    	for (CourseAgent ca: caList) {
-	    		CourseAgent ca1 = new CourseAgent();
-	    		ca1.setId(ca.getId());
-	    		ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
-	    		ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
-	    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
-	    		ca1.setDose(ca.getDose());
-	    		ca1.setModifiedDose(ca.getModifiedDose());
-	    		ca1.setStudyAgent(ca.getStudyAgent());
-	    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
+	    	try {
+		    	treatmentInformation.setFirstCourseDate(trtInf.getFirstCourseDate());
+		    	treatmentInformation.setAdverseEventCourse(trtInf.getAdverseEventCourse());
+		    	treatmentInformation.setTotalCourses(trtInf.getTotalCourses());
 	
-	    		treatmentInformation.addCourseAgent(ca1);
+		    	TreatmentAssignment ta = trtInf.getTreatmentAssignment();
+		    	
+		    	if (ta != null ) {
+			    	TreatmentAssignment taNew = new TreatmentAssignment();
+			    	taNew.setCode(ta.getCode());
+			    	taNew.setDoseLevelOrder(ta.getDoseLevelOrder());
+			    	taNew.setDescription(ta.getDescription());
+			    	taNew.setComments(ta.getComments());
+			    	taNew.setStudy(ta.getStudy());
+			    	
+			    	treatmentInformation.setTreatmentAssignment(taNew);
+		    	}
+	
+		    	List<CourseAgent> caList = trtInf.getCourseAgents();
+	
+		    	for (CourseAgent ca: caList) {
+		    		CourseAgent ca1 = new CourseAgent();
+		    		ca1.setId(ca.getId());
+		    		ca1.setLastAdministeredDate(ca.getLastAdministeredDate());
+		    		ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
+		    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
+		    		ca1.setDose(ca.getDose());
+		    		ca1.setModifiedDose(ca.getModifiedDose());
+		    		ca1.setStudyAgent(ca.getStudyAgent());
+		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
+		
+		    		treatmentInformation.addCourseAgent(ca1);
+		    	}
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getTreatmentInformation() "+e.getMessage() , e);
 	    	}
-
 
 	    	return treatmentInformation;
 	    }
@@ -425,6 +457,7 @@ public class AdverseEventReportSerializer {
 			try {
 				XmlMarshaller marshaller = new XmlMarshaller();
 				String	xml = marshaller.toXML(aer,aes.getMappingFile());
+				System.out.print(xml);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
