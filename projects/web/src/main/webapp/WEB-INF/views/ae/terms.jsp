@@ -35,9 +35,16 @@
                 var cmProperty = "aeRoutineReport.adverseEvents[" + index + "]";
                 this.meddraProperty = cmProperty + ".lowLevelTerm"
                 this.lowLevelTerm = llt;
-                //this.otherProperty = cmProperty + ".other"
-				console.debug(this.lowLevelTerm.fullName)
-                	if (this.lowLevelTerm) $(this.meddraProperty + "-input").value = this.lowLevelTerm
+                this.selectMeddra = $("select-meddra-" + this.index)
+                this.selectOther = $("select-other-" + this.index)
+                this.adverseEvent = cmProperty
+
+                if (this.lowLevelTerm) $(this.meddraProperty + "-input").value = this.lowLevelTerm
+                
+                this.initializeMeddraOrOther(this.lowLevelTerm, cmProperty, this.index)
+                
+                Event.observe(this.selectMeddra, "click", this.updateMeddraOrOther.bindAsEventListener(this))
+                Event.observe(this.selectOther, "click", this.updateMeddraOrOther.bindAsEventListener(this))
                
                	 AE.createStandardAutocompleter(this.meddraProperty,
 					function(autocompleter, text) {
@@ -46,7 +53,56 @@
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
                
-            }
+            },   
+            
+             updateMeddraOrOther: function() {
+            	var isMeddra     = this.selectMeddra.checked
+                var meddraRowInp = $(this.adverseEvent + ".lowLevelTerm-input")
+                var meddraRow    = $(this.adverseEvent + ".lowLevelTerm")
+                var other        = $(this.adverseEvent + ".detailsForOther")
+                
+                if (isMeddra) {
+                	
+                    other.setAttribute('readOnly',true);
+                    other.value=""
+                    meddraRowInp.removeAttribute('readOnly');
+                } else {
+                	meddraRowInp.setAttribute('readOnly',true);
+                	meddraRow.value=""
+                	meddraRowInp.value=""
+                	other.removeAttribute('readOnly');
+                }
+            	
+            },
+                               
+            initializeMeddraOrOther: function(lowLevelTerm, cmProperty,  index) {
+                var meddraRow    = $(cmProperty + ".lowLevelTerm")
+                var meddraRowInp = $(cmProperty + ".lowLevelTerm-input")
+                var other        = $(cmProperty + ".detailsForOther")
+                var selectMeddra =$("select-meddra-" + index)
+                var selectOther =$("select-other-" + index)
+                
+                if (this.lowLevelTerm == null ){
+                	other.setAttribute('readOnly',true);
+                    other.value=""
+                    meddraRowInp.removeAttribute('readOnly');
+                    selectMeddra.click()
+                
+                }else{
+            	if (this.lowLevelTerm.length > 0 ){
+                    other.setAttribute('readOnly',true);
+                    other.value=""
+                    meddraRowInp.removeAttribute('readOnly');
+                    selectMeddra.click()
+                }else{
+                	meddraRowInp.setAttribute('readOnly',true);
+                	meddraRow.value=""
+                	meddraRowInp.value=""
+                	other.removeAttribute('readOnly');
+                	selectOther.click()
+                }
+                }
+            },
         })
 
 
@@ -151,15 +207,11 @@
             		<td>${ae.ctcTerm.term}
             			<c:if test="${ae.ctcTerm.otherRequired == 'true'}" >
             				<center>
-            				<div class="row">
-            					<div class="label">Other (verbatim)</div>
-            					<div class="value"><form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" /></div>
-            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
-            				</div>	
             				
             				<div class="row">
-            					<div class="label">Other (MedDRA)</div>
+            					<div class="label"><input id="select-meddra-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (MedDRA)</div>
             					<div class="value">
+            						
             						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
             						
             						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete-input"/>
@@ -167,6 +219,14 @@
                     				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>
             					</div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm"/>
+            				</div>	
+            				
+            				<div class="row">
+            					<div class="label"><input id="select-other-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (verbatim)</div>
+            					<div class="value">            						
+            						<form:input path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther" />
+            					</div>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
             				</div>	
             				
             				</center>
