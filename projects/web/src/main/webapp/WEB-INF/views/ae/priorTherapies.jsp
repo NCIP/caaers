@@ -156,7 +156,7 @@
                     createAgentListEditor("ptAgent" + index, index);
                 },
                 deletable: true
-            }, 'aeReport.otherCauses')
+            }, 'aeReport.adverseEventPriorTherapies')
         })
     --></script>
 </head>

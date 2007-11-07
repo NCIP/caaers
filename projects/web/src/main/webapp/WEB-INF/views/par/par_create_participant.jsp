@@ -52,6 +52,12 @@
             	 	}
             	 }.bind(this));
             
+               //fix for #9917 - Organization name reset
+               Event.observe($('command'),"reset", function(event){
+                  event.target.reset(); //explicitly call reset.
+                  Event.stop(event); //stop the event propagation
+               	  if(this.orgName) $(this.organizationInputId).value = this.orgName;
+               }.bind(this));
             
             },sitePopulator: function(autocompleter, text) {
          		createParticipant.matchOrganization(text, function(values) {
@@ -149,7 +155,7 @@
 <chrome:division  title="Site"  >
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
 <c:forEach items="${fieldGroups.site.fields}" var="field">
-                    <tags:renderRow field="${field}"  />
+  <tags:renderRow field="${field}"  />
 </c:forEach>     	
 </c:if>
 <c:if test="${!(empty command.participant.id) and (command.participant.id gt 0)}">
