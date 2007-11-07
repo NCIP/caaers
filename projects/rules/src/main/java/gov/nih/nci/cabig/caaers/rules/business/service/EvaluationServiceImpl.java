@@ -233,14 +233,18 @@ public class EvaluationServiceImpl implements EvaluationService {
     */
     //return type based on the method name, is misleading,need to find a better name.
    public ReportSubmittability isSubmittable(Report report) {
-       try {
+	   
+	   return reportService.validate(report);
+	   
+       /* -- commented based on the new biz rule
+        * try {
            return reportService.validate(report,
                adverseEventEvaluationService.mandatorySectionsForReport(report));
        } catch (RuntimeException re) {
            throw re;
        } catch (Exception e) {
            throw new CaaersSystemException("Unable to determine mandatory sections", e);
-       }
+       }*/
    }
 
      ////// CONFIGURATION

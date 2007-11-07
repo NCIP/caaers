@@ -278,7 +278,7 @@ public Collection<ExpeditedReportSection> mandatorySectionsForReport(Report repo
     private Collection<ExpeditedReportSection> sectionNamesToSections(Collection<String> sectionNames) {
         List<ExpeditedReportSection> sections = new LinkedList<ExpeditedReportSection>();
         for (String sectionName : sectionNames) {
-            ExpeditedReportSection section = ExpeditedReportSection.getByDisplayName(sectionName);
+            ExpeditedReportSection section = ExpeditedReportSection.valueOf(sectionName);
             if (section == null) throw new CaaersSystemException("There is no ExpeditedReportSection named '" + sectionName + "'.  This probably indicates your mandatory section rules are out of sync with the software.");
             sections.add(section);
         }
