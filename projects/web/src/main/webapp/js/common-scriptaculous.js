@@ -20,8 +20,8 @@ AE.slideAndShow = function(element, options) {
     var e = $(element);
     if (e) new Effect.Parallel(
         [
-            new Effect.BlindDown(e, {sync:true}),
-            new Effect.Appear(e, {sync:true})
+            new Effect.BlindDown(e, {sync:true,  to:1.01}),
+            new Effect.Appear(e, {sync:true,  to:1.01}),
         ], $H(options).merge({
             duration: 1.0
         })
