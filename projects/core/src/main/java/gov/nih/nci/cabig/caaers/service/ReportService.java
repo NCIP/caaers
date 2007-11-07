@@ -39,6 +39,12 @@ public interface ReportService {
     * delegating the call to SchedulerService.
     */
    void deleteReport(Report report);
+   /**
+    * Will tell whether all the mandatory field for this report is duly filled.
+    * This method will validate against all the sections defined in {@link ExpeditedReportSection}
+    * @return ErrorMessages, if any.
+    */
+   ReportSubmittability validate(Report report);
 
     /**
     * Will tell whether all the mandatory field for this report is duly filled.

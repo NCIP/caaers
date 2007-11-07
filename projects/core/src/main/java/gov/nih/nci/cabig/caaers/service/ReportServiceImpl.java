@@ -349,6 +349,10 @@ public class ReportServiceImpl  implements ReportService {
                uProp.getBeanPropertyName());
        }
    }
+    
+    public ReportSubmittability validate(Report report) {
+    	return validate(report, Arrays.asList(ExpeditedReportSection.values()));
+    }
 
    /**
     * Will tell whether all the mandatory field for this report is duly filled.

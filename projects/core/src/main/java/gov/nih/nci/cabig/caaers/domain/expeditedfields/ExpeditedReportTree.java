@@ -199,7 +199,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                 )
             ),
             section(ATTRIBUTION_SECTION), //TODO: how to fill this??
-            section(ADDITIONAL_INFO_SECTION)//TODO: additional info section
+            section(ADDITIONAL_INFO_SECTION),//TODO: additional info section
+            section(SUBMIT_REPORT_SECTION)// TODO: just a space filler section
         );
     }
 
