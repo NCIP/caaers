@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.web.rule.DefaultTab;
 import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,18 @@ public class ReviewTab extends DefaultTab {
 	    		
 	    		rule.getMetaData().setName("Rule-"+count);
 	    		rule.setReadableRule(readable);
+	    		
+	    		
+	    		List<String> readableActions = new ArrayList<String>();
+	    		if (rs.getDescription().equals("Mandatory Sections Rules")) {
+		    		for (String action:rule.getAction()) {
+		    			readableActions.add(ExpeditedReportSection.valueOf(action).getDisplayName());
+		    		}
+    			} else {
+    				readableActions = rule.getAction();
+    			}
+    				
+	    		rule.setReadableAction(readableActions);
     			rules.add(rule);
     			count++;
     		}
