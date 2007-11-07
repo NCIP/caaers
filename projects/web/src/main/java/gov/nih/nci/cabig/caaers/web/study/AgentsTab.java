@@ -123,7 +123,7 @@ public class AgentsTab extends StudyTab {
 				}
 			}// ~if
 			
-			InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "[" + i + "].partOfLeadIND", "Is part of lead IND ?");
+			InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "[" + i + "].partOfLeadIND", "Lead IND ?");
 			fields.add(partOfLeadIND);
 			map.addInputFieldGroup(fieldGrp);
 		}
