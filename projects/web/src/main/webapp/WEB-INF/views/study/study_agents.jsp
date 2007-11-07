@@ -76,6 +76,7 @@ td#linkPosition a img {
             	if(indTypeValue == 'NA' || indTypeValue == 'NA_COMMERCIAL' || indTypeValue == 'IND_EXEMPT'){
 					  $('studyAgents[' + this.index + '].partOfLeadIND').value='false';
 					  $('studyAgents[' + this.index + '].partOfLeadIND').disable();
+					  $('studyAgents[' + this.index + '].partOfLeadIND-row').hide();
 				}
             	
             	//observe on the change event on IND Type (usage) dropdown.
@@ -85,7 +86,9 @@ td#linkPosition a img {
 					if(event.target.value == 'NA' || event.target.value == 'NA_COMMERCIAL' || event.target.value == 'IND_EXEMPT'){
 					  $('studyAgents[' + index + '].partOfLeadIND').value='false';
 					  $('studyAgents[' + index + '].partOfLeadIND').disable();
+					  $('studyAgents[' + index + '].partOfLeadIND-row').hide();
 					}else{
+					  $('studyAgents[' + index + '].partOfLeadIND-row').show();
 					  $('studyAgents[' + index + '].partOfLeadIND').enable();
 					}
 					
