@@ -90,7 +90,7 @@
 	        		</chrome:division>
 	        		<p>
 	        		&nbsp;&nbsp;ACTION(S) : <br />
-	        		<c:forEach var="ruleac" items="${rule.action}">
+	        		<c:forEach var="ruleac" items="${rule.readableAction}">
 	        			<c:choose>
 	        				<c:when test="${ruleac == 'IGNORE'}">
 	        					&nbsp;&nbsp; &nbsp;&nbsp; No Report Required (Study Level Exception Rule) <br />
