@@ -71,6 +71,7 @@
 			<xs:element maxOccurs="unbounded" minOccurs="0" name="rule-attribute" type="rules:rule-attribute"/>        
 			<xs:element name="condition" type="rules:condition" minOccurs="0"/>
 			<xs:element name="action" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>  
+			<xs:element name="readableAction" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>  
 			<xs:element name="metaData" type="rules:metaData" minOccurs="0" />
 			<xs:element name="readableRule" type="rules:readableRule" minOccurs="0" />
 		</xs:sequence>
