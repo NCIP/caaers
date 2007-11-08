@@ -261,8 +261,12 @@ Object.extend(ListEditor.prototype, {
             alert("There is no function named 'remove' in the selected DWR namespace")
             return;
         }
-
-        removeFn.apply(this, [this.collectionProperty, indexToDelete, function(changes) {
+        
+        var delArgs = [this.collectionProperty,indexToDelete]
+        if(this.options.removeParameters){
+          delArgs = delArgs.concat(this.options.removeParameters);
+        }
+        delArgs = delArgs.concat([function(changes) {
             if (changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)
@@ -281,7 +285,9 @@ Object.extend(ListEditor.prototype, {
             
             if (this.options.removeCallback) this.options.removeCallback(indexToDelete)
             
-        }.bind(this)])
+        }.bind(this)]);
+
+        removeFn.apply(this, delArgs)
     },
 
     reorder: function(original, target) {
