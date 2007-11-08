@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -43,6 +45,7 @@ public class Terminology extends AbstractMutableDomainObject {
 	
 	@OneToOne
 	@JoinColumn(name = "ctc_id")
+	@Cascade(value = { CascadeType.LOCK })
 	public Ctc getCtcVersion() {
 		return ctcVersion;
 	}

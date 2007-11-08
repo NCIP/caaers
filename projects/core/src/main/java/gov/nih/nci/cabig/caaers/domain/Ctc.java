@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.List;
 
 /**
@@ -29,6 +33,7 @@ public class Ctc extends AbstractImmutableDomainObject {
 
     @OneToMany(mappedBy = "ctc")
     @OrderBy // by ID for consistency
+    @Cascade(value = { CascadeType.LOCK })
     public List<CtcCategory> getCategories() {
         return categories;
     }
