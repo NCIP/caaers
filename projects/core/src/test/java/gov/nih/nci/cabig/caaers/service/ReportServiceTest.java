@@ -212,6 +212,7 @@ public class ReportServiceTest extends CaaersTestCase {
         Report report = new Report();
         report.setReportDefinition(new ReportDefinition());
         report.setAeReport(expeditedData);
+        report.getReportDefinition().setAttributionRequired(true);
         // TODO:
         // report.setAttributionMandatory(true);
         return report;
