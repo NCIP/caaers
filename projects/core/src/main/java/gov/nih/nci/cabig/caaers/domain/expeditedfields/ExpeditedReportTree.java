@@ -146,7 +146,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                     ),
                     property("totalCourses", "Total number of courses to date"),
                     //TODO : Need a display name creator????
-                    list("courseAgents", "Course Agent",
+                    list("courseAgents", "Study Agent",
                         property("studyAgent", "Study Agent"),
                         property("dose",
                         		property("amount", "Total dose administered this course"),
