@@ -108,8 +108,8 @@
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents" />
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Course Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents" />
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
