@@ -190,9 +190,28 @@ public class EvaluationServiceImpl implements EvaluationService {
         for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy().getStudyOrganizations()) {
         	orgIdSet.add(studyOrganization.getOrganization().getId());
         }
+        
+        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
+        
         for(Integer orgId : orgIdSet){
-        	reportDefinitions.addAll(reportDefinitionDao.getAll(orgId));
-        }
+        	//fetch all report definitions of organization.
+        	List<ReportDefinition> reportDefsOfOrgList = reportDefinitionDao.getAll(orgId);
+        	if(reportDefsOfOrgList == null) continue;
+        	TreeSet<ReportDefinition> reportDefTreeSet = new TreeSet<ReportDefinition>(c);
+        	for(ReportDefinition reportDef : reportDefsOfOrgList){
+        		if(reportDef.getAmendable()){
+            		reportDefTreeSet.add(reportDef);
+            	}else{
+            		reportDefinitions.add(reportDef);
+            	}
+        	}//~for reportDefsOfOrgList
+        	
+        	//add the highest ranked one in the list.
+        	if(!reportDefTreeSet.isEmpty()){
+        		reportDefinitions.add(reportDefTreeSet.last());
+        	}
+        	
+        }//~for orgIDSet
         return reportDefinitions;
     }
     
