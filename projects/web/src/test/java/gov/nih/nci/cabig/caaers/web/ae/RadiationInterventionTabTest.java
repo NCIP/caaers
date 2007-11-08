@@ -1,7 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
 /**
  * @author Krikor Krumlian
  */
@@ -9,7 +17,13 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 public class RadiationInterventionTabTest extends AeTabTestCase {
     @Override
     protected RadiationInterventionTab createTab() {
-        return new RadiationInterventionTab();
+    	ConfigProperty configProperty = new ConfigProperty();
+    	Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
+    	map.put("doseUMORefData", new ArrayList<Lov>());
+    	configProperty.setMap(map);
+    	RadiationInterventionTab tab = new RadiationInterventionTab();
+    	tab.setConfigurationProperty(configProperty);
+    	return tab;
     }
     
     public void testFieldProperties() throws Exception {
