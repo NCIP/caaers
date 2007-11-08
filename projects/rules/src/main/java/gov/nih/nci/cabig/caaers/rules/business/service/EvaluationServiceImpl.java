@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Collection;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,36 +64,34 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData){
     	Map<String,List<String>> map;
     	List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
-    	List<String> reportDefinitionNames = new ArrayList<String>();
     	
     	try {
             map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
         } catch (Exception e) {
             throw new CaaersSystemException("Could not determine the reports necessary for the given expedited adverse event data", e);
         }
+        //this comparator is used to find the highest ranked report definition
+        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
         
         Set<String> keys = map.keySet();
         for (String key : keys) {
             List<String> reportDefNames = map.get(key);
-            // TO-DO need to clarify this ranking incase of multi actions in rules
-            if (reportDefNames.size() != 0) {
-                String reportDefName = extractTopPriorityReportDefintionName(reportDefNames);
-                System.out.println("adding ..." + reportDefName);
-                reportDefinitionNames.add(reportDefName);
+            if(reportDefNames == null) continue;
+
+            TreeSet<ReportDefinition> reportDefTreeSet = new TreeSet<ReportDefinition>(c);
+            for(String reportDefName : reportDefNames){
+            	ReportDefinition reportDef = reportDefinitionDao.getByName(reportDefName);
+            	if(reportDef.getAmendable()){
+            		reportDefTreeSet.add(reportDef);
+            	}else{
+            		defList.add(reportDef);
+            	}
             }
             
-            //uncomment the above part and comment the below code after figuring oout ranking.
-            //for (String reportDefName : reportDefNames) {
-            	//reportDefinitionNames.add(reportDefName);
-            //}
+            if(!reportDefTreeSet.isEmpty()) {
+            	defList.add(reportDefTreeSet.last());
+            }
         }
-        
-        //for(List<String> nameList : map.values()){
-        	for(String name : reportDefinitionNames){
-        		ReportDefinition reportDefinition = reportDefinitionDao.getByName(name);
-        		defList.add(reportDefinition);
-        	}
-        //}
         return defList;
     }
 
@@ -196,18 +195,12 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         return reportDefinitions;
     }
-
-    private String extractTopPriorityReportDefintionName(List<String> list){
-        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-        for (String reportDefName : list) {
-            ReportDefinition rd = reportDefinitionDao.getByName(reportDefName);
-            if (rd != null) {
-                reportDefs.add(rd);
-            }
-        }
+    
+    @Deprecated
+    private String extractTopPriorityReportDefinition(List<ReportDefinition> reportDefs){
 
         // XXX: You could do this without the array conversion using Collections.sort
-        Comparator<ReportDefinition> c = new ReportDefinitionComparator();
+    	 Comparator<ReportDefinition> c = new ReportDefinitionComparator();
         ReportDefinition[] reportDefArray = new ReportDefinition[reportDefs.size()];
         java.util.Arrays.sort(reportDefs.toArray(reportDefArray), c);
 
