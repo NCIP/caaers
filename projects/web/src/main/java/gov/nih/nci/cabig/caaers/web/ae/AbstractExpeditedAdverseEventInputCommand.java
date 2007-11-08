@@ -168,7 +168,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     /** 
      * The repeating fields available in the mandatory sections will be pre-initialized here.
      */
-    public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
+    
+    @SuppressWarnings("unchecked")
+	public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
     	if(mandatorySections == null || mandatorySections.isEmpty()){
     		log.info("No mandatory sections available, so no fields will be pre initialized");
     		return;
