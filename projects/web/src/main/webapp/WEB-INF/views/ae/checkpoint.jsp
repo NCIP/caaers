@@ -30,7 +30,7 @@
       	
       	if($('manualselect2')){
       	 Event.observe('manualselect2', "click", function() {
-      	 	 var answer = confirm('Are you sure!');
+      	 	 var answer = confirm('Are you sure about bypassing the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
       	 	 if(answer){
       	 	   $('manualselect2').disabled=true
       	 	   $('report-list').hide();
@@ -159,10 +159,10 @@
             	  <!-- required reports -->
             	  <c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
             	   <c:if test="${(empty command.requiredReportDefinitionNames) or (fn:contains(command.requiredReportDefinitionNames, field.propertyName))}">
-                   <div class="row">
-                    <div class="label"><tags:renderInputs field="${field}"/></div>
-                    <div class="value"><tags:renderLabel field="${field}"/></div>
-                   </div>
+                     <div class="row">
+                      <div class="label"><tags:renderInputs field="${field}"/></div>
+                      <div class="value"><tags:renderLabel field="${field}"/></div>
+                     </div>
                    </c:if>
             	  </c:forEach>
         	</div>
