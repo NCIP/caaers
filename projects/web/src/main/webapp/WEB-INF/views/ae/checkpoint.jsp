@@ -30,7 +30,7 @@
       	
       	if($('manualselect2')){
       	 Event.observe('manualselect2', "click", function() {
-      	 	 var answer = confirm('Are you sure about bypassing the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
+      	 	 var answer = confirm('Are you sure you want to bypass the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
       	 	 if(answer){
       	 	   $('manualselect2').disabled=true
       	 	   $('report-list').hide();
