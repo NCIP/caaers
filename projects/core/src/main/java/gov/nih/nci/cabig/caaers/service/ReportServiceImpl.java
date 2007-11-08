@@ -370,23 +370,25 @@ public class ReportServiceImpl  implements ReportService {
            if (section == null) throw new NullPointerException("The mandatory sections collection must not contain nulls");
            validate(report.getAeReport(), mandatoryFields, section, messages);
        }
-
-       for (AdverseEvent ae : report.getAeReport().getAdverseEvents()) {
-           Attribution max = null;
-           for (AdverseEventAttribution<?> attribution : requiredAttribution(ae)) {
-               if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
-                   max = attribution.getAttribution();
-               }
-           }
-           if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
-               messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
-                   String.format(
-                       "The adverse event %s is not attributed to a cause. " +
-                       "An attribution of possible or higher must be selected for at least one of the causes.",
-                       ae.getAdverseEventTerm().getUniversalTerm()));
-           }
+       
+       //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
+       if( report.getReportDefinition().getAttributionRequired()){
+    	   for (AdverseEvent ae : report.getAeReport().getAdverseEvents()) {
+    		   Attribution max = null;
+    		   for (AdverseEventAttribution<?> attribution : requiredAttribution(ae)) {
+    			   if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
+    				   max = attribution.getAttribution();
+    			   }
+    		   }
+    		   if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
+    			   messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
+    					   String.format(
+    							   "The adverse event %s is not attributed to a cause. " +
+    							   "An attribution of possible or higher must be selected for at least one of the causes.",
+    							   ae.getAdverseEventTerm().getUniversalTerm()));
+    		   }
+    	   }
        }
-
        return messages;
    }
 
