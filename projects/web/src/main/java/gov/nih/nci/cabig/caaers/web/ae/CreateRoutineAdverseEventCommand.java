@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,10 +164,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     		return isPopulated;
     	}
     	catch(Exception e){
-    		throw new RuntimeException("Class Not found Exception", e);
-    	}
-    	finally {
-    		return isPopulated;
+    		throw new CaaersSystemException("There was an error evaluating Routine AEs. The entered AEs will not be saved");
     	}
     }
 
