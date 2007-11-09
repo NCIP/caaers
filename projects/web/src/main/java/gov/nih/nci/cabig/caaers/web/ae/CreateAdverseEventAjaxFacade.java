@@ -40,6 +40,8 @@ import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -243,7 +245,7 @@ public class CreateAdverseEventAjaxFacade {
     public List<Lov> matchLabTestNames(String testName){
     	List<Lov> lovs = new ArrayList<Lov>();
     	for(Lov lov : configProperty.getMap().get("labTestNamesRefData")){
-    		if(lov.getDesc().contains(testName)) lovs.add(lov);
+    		if(StringUtils.containsIgnoreCase(lov.getDesc(), testName)) lovs.add(lov);
     	}
     	return ObjectTools.reduceAll(lovs, "code", "desc");
     }
