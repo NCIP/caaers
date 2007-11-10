@@ -427,7 +427,7 @@ public class RuleUtil {
 	
 	public static String[] charSeparatedStringToStringArray(String aString, String chr){
 	    String[] splittArray = null;
-	    if (aString != null || !aString.equalsIgnoreCase("")){
+	    if (aString != null && !aString.equalsIgnoreCase("")){
 	         splittArray = aString.split(chr);
 	         
 	    }
@@ -437,7 +437,7 @@ public class RuleUtil {
 	public static List charSeparatedStringToStringList(String aString, String chr){
 	    List<String> splittList = new ArrayList<String>();
 	    String[] splittArray = null;
-	    if (aString != null || !aString.equalsIgnoreCase("")){
+	    if (aString != null && !aString.equalsIgnoreCase("")){
 	         splittArray = aString.split(chr);
 	         
 	    }
