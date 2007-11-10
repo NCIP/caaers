@@ -64,6 +64,11 @@ public class CtcBasicsTab extends BasicsTab {
             InputField field1 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(1);
             errors.rejectValue(field1.getPropertyName(), "REQUIRED", "Missing " + field1.getDisplayName());
         }
+        // Inforce business Rule
+        if (ctcTerm != null && !ctcTerm.isOtherRequired()) {
+        	ae.setLowLevelTerm(null);
+        	ae.setDetailsForOther(null);
+        }
     }
 
     ////// CONFIGURATION

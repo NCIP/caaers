@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -56,6 +57,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected StudyAgentDao studyAgentDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected LowLevelTermDao lowLevelTermDao;
+    protected TreatmentAssignmentDao treatmentAssignmentDao;
     protected NowFactory nowFactory;
     private final Log log = LogFactory.getLog(getClass());
 
@@ -77,6 +79,7 @@ public abstract class AbstractRoutineAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -219,6 +222,17 @@ public abstract class AbstractRoutineAdverseEventInputController
     public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
         this.routineReportDao = routineReportDao;
     }
+
+	public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+		return treatmentAssignmentDao;
+	}
+
+	public void setTreatmentAssignmentDao(
+			TreatmentAssignmentDao treatmentAssignmentDao) {
+		this.treatmentAssignmentDao = treatmentAssignmentDao;
+	}
+    
+    
     
     
 }

@@ -96,7 +96,13 @@
    		term_code="1"
    		ctc_id="3"
    		study_id="-1"
-   		/>		       
+   		/>	
+   		
+   	<DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-1"
+    	/>  		       
         
     <IDENTIFIERS
         id="-201"
@@ -104,7 +110,12 @@
         value="nci_test"
         type="MRN"
         organization_id="-1001"
-        discriminator_column="1"/>  
+        discriminator_column="1"/> 
+       
+     <treatment_assignment
+     	id="-1"
+     	code="boston"
+     	study_id="-1" />    
 
 	 <PARTICIPANTS
         id="-101"

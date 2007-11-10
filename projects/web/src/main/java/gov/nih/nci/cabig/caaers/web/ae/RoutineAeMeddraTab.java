@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -18,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -48,6 +51,7 @@ public class RoutineAeMeddraTab extends AeRoutTab {
             "aeRoutineReport.startDate", "From:", true));
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
                 "aeRoutineReport.endDate", "To:", true));
+  
         
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeRoutineReport.adverseEvents");
         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true,
@@ -71,6 +75,7 @@ public class RoutineAeMeddraTab extends AeRoutTab {
         meddraTermFieldFactory.addField(lowLevelTermField);
 
     }
+    
     
     private Map<Object, Object> createExpectedOptions() {
         Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
@@ -104,11 +109,27 @@ public class RoutineAeMeddraTab extends AeRoutTab {
             InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name", "displayName"));
         return attributionOptions;
     }
+    
+    private Map<Object, Object> createOptions(RoutineAdverseEventInputCommand command) {
+        Map<Object, Object> assignmentsOptions = new LinkedHashMap<Object, Object>();
+        assignmentsOptions.put("", "Please select");
+        List<TreatmentAssignment> taList = command.getAeRoutineReport().getStudy().getTreatmentAssignments();
+    	if(taList != null){
+    		for(TreatmentAssignment ta : taList ){
+    			assignmentsOptions.put(ta.getId(), ta.getCode());
+    		}
+    	}
+
+        return assignmentsOptions;
+    }
 
     @Override
     @SuppressWarnings("unchecked")
     public InputFieldGroupMap createFieldGroups(RoutineAdverseEventInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
+        reportFieldGroup.getFields().add(InputFieldFactory.createSelectField("aeRoutineReport.treatmentAssignment", "Treatment assignment code", false,
+        		createOptions(command)));
+        
         map.addInputFieldGroup(reportFieldGroup);
         int aeCount = command.getAeRoutineReport().getAdverseEvents().size();
         map.addRepeatingFieldGroupFactory(mainFieldFactory, aeCount);

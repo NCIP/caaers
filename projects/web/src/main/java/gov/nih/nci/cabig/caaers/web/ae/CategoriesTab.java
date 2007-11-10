@@ -28,6 +28,7 @@ public class CategoriesTab extends AeRoutTab {
     public Map<String, Object> referenceData(RoutineAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData();
         refdata.put("ctcCats" , getCategories(command));
+        refdata.put("treatmentAssignments", command.getStudy().getTreatmentAssignments());
         return refdata;
     }
 

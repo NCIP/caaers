@@ -7,20 +7,13 @@
 <html>
 <head>
     <title>${tab.longTitle}</title>
-    <style type="text/css">
-    .left-align {
-    padding-right: 1.2em;
-    float: left;
-    font: arial 10px;
-    width: 17em;
-	}
-	</style>
 
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+        var descArray = new Array();
         
         function afterCheck(checkBoxId){
 	     	//alert ($(checkBoxId).checked)   
@@ -38,8 +31,51 @@
 
 		     	}
         }
+        
+         Element.observe(window, "load", function() {
+         	
+         	//push the description into the array
+			<c:forEach items="${treatmentAssignments}" var="ta">
+        		descArray.push("${ta.escapedDescription}");
+        	</c:forEach>	
+        	
+        	// treatment dropdown.
+			$('aeRoutineReport.treatmentAssignment').observe("change", function(event){
+				selIndex = $('aeRoutineReport.treatmentAssignment').selectedIndex;
+				if(selIndex > 0){
+					$('aeRoutineReport.treatmentAssignmentDescription').value = descArray[selIndex-1];
+				}else{
+					$('aeRoutineReport.treatmentAssignmentDescription').clear();
+				}
+			}); 
+			
+			 //set the initial value of the description text area. 
+            	selIndex = $('aeRoutineReport.treatmentAssignment').selectedIndex;
+				if(selIndex > 0){
+					$('aeRoutineReport.treatmentAssignmentDescription').value = descArray[selIndex-1];
+				}else{
+					$('aeRoutineReport.treatmentAssignmentDescription').clear();
+				}
+         
+         })
        
     </script>
+    <style type="text/css">
+    
+    .left-align {
+    padding-right: 1.2em;
+    float: left;
+    font: arial 10px;
+    width: 17em;
+	}
+	
+	div.row div.label {
+    	width: 16em;
+    }
+    div.row div.value {
+    	margin-left: 18em;
+    }
+	</style>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}">
@@ -48,11 +84,40 @@
         ${studySummaryLine}.
     </jsp:attribute>
     <jsp:attribute name="singleFields">
-   <b>Periods of Observation </b><br>
-   <div style="margin-left: 7.5em;">
-   <b><tags:requiredIndicator/>From:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.startDate"/>
-   <b><tags:requiredIndicator/>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
-   </div>
+   <chrome:division title="Periods of Observation " id="observation_period">
+   		<div class="row">
+        	<div class="label">
+                <tags:requiredIndicator/>From	
+            </div>
+            <div class="value">
+            	<tags:dateInput path="aeRoutineReport.startDate"/>
+            	<tags:requiredIndicator/><b>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
+            </div>
+        </div>
+   </chrome:division>
+   
+   <chrome:division title="Treatment Assignment Code" id="treatment_assignment_code">
+   		<div class="row">
+        	<div class="label">
+                Treatment assignment code	
+            </div>
+            <div class="value">
+            	<form:select path="aeRoutineReport.treatmentAssignment">
+            		<form:option value=" " label="Please select" />
+            		<form:options items="${treatmentAssignments}" itemValue="id" itemLabel="code"/>
+        		</form:select>        
+            </div>
+        </div>
+        
+        <div class="row" >
+        	<div class="label">
+                Description	
+            </div>
+            <div class="value">
+            	<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="45" name="fake" disabled="true"></textarea>  
+            </div>
+        </div>
+   </chrome:division>
    <hr> 
     <c:forEach items="${ctcCats}" varStatus="status" var="category">
     		<c:if test='${status.index % 10 == 0}'>

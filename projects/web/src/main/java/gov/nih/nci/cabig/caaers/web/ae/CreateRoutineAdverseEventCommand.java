@@ -78,6 +78,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	this.aeReport = new ExpeditedAdverseEventReport();
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
+        this.aeReport.getTreatmentInformation().setTreatmentAssignment(getAeRoutineReport().getTreatmentAssignment());
     }
 
     public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {

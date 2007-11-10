@@ -15,6 +15,7 @@
     <tags:dwrJavascriptLink objects="createAE"/>
      <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+        var descArray = new Array();
 
         var LowLevelTerm = Class.create()
         Object.extend(LowLevelTerm.prototype, {
@@ -53,7 +54,30 @@
                 addCallback: function(nextIndex) {
                     new LowLevelTerm(nextIndex);
                 }
-             })    
+             }) 
+             
+             //push the description into the array
+			<c:forEach items="${command.aeRoutineReport.study.treatmentAssignments}" var="ta">
+        		descArray.push("${ta.escapedDescription}");
+        	</c:forEach>	
+        	
+        	// treatment dropdown.
+			$('aeRoutineReport.treatmentAssignment').observe("change", function(event){
+				selIndex = $('aeRoutineReport.treatmentAssignment').selectedIndex;
+				if(selIndex > 0){
+					$('aeRoutineReport.treatmentAssignmentDescription').value = descArray[selIndex-1];
+				}else{
+					$('aeRoutineReport.treatmentAssignmentDescription').clear();
+				}
+			}); 
+			
+			 //set the initial value of the description text area. 
+            	selIndex = $('aeRoutineReport.treatmentAssignment').selectedIndex;
+				if(selIndex > 0){
+					$('aeRoutineReport.treatmentAssignmentDescription').value = descArray[selIndex-1];
+				}else{
+					$('aeRoutineReport.treatmentAssignmentDescription').clear();
+				}
 
         }) 
     </script>
@@ -66,8 +90,7 @@
         </jsp:attribute>
         <jsp:attribute name="singleFields">
         	
-            <div class="report-fields">
-            	<b>Periods of Observation </b><br>
+             <chrome:division title="Periods of Observation " id="observation_period">
             	<div class="row">
             	<div class="label"><tags:renderLabel field="${fieldGroups.report.fields[0]}"/></div>
             	<div class="value">
@@ -76,7 +99,24 @@
                 	<tags:renderInputs field="${fieldGroups.report.fields[1]}"/>
             	</div>
         		</div>
-            </div>
+            </chrome:division>
+             <chrome:division title="Periods of Observation " id="observation_period">
+            	<div class="row">
+            	<div class="label"><tags:renderLabel field="${fieldGroups.report.fields[2]}"/></div>
+            	<div class="value">
+                	<tags:renderInputs field="${fieldGroups.report.fields[2]}"/>
+            	</div>
+        		</div>
+        		
+        		<div class="row" >
+        		<div class="label">
+               	 	Description	
+           		 </div>
+            	<div class="value">
+            		<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="45" name="fake" disabled="true"></textarea>  
+            	</div>
+       			</div>
+            </chrome:division>
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">
         	<center>

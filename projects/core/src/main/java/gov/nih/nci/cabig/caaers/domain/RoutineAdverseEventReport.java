@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
@@ -38,6 +39,7 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     private Date startDate;
     private Date endDate;
     private Status status = Status.CURRENT;
+    private TreatmentAssignment treatmentAssignment;
     private LazyListHelper lazyListHelper;
 
     public RoutineAdverseEventReport() {
@@ -199,10 +201,18 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
-    
 
-   
-	
+    @OneToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="treatment_assignment_id")
+    @Cascade(value={CascadeType.LOCK})
+	public TreatmentAssignment getTreatmentAssignment() {
+		return treatmentAssignment;
+	}
+
+	public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
+		this.treatmentAssignment = treatmentAssignment;
+	}
+    
+    
     
 }
