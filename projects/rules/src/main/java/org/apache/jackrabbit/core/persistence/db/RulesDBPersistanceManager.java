@@ -1,7 +1,7 @@
 package org.apache.jackrabbit.core.persistence.db;
 
 
-import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
 import java.util.Properties;
 
@@ -16,7 +16,7 @@ public class RulesDBPersistanceManager extends SimpleDbPersistenceManager {
 		
 
 
-DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+DataSourceSelfDiscoveringPropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
 		

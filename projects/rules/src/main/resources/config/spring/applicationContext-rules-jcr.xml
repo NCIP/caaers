@@ -18,7 +18,7 @@
 		class="gov.nih.nci.cabig.caaers.tools.spring.PropertyPlaceholderConfigurer">
 		<property name="properties">
 			<bean
-				class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
+				class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
 				<property name="databaseConfigurationName">
 					<value>datasource</value>
 				</property>

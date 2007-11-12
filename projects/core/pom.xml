@@ -298,7 +298,7 @@
                 <artifactId>property-factory-maven-plugin</artifactId>
                 <configuration>
                     <beanXml><![CDATA[
-                        <bean class="gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean">
+                        <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
                             <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
                         </bean>
                     ]]></beanXml>

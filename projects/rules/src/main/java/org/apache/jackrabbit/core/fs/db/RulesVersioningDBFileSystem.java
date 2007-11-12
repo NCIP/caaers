@@ -1,6 +1,6 @@
 package org.apache.jackrabbit.core.fs.db;
 
-import gov.nih.nci.cabig.caaers.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
 import java.util.Properties;
 
@@ -11,7 +11,7 @@ public class RulesVersioningDBFileSystem extends DbFileSystem{
 	public RulesVersioningDBFileSystem() {
 		
 
-		DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+		DataSourceSelfDiscoveringPropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
 		

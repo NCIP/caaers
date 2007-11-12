@@ -34,7 +34,7 @@ public class CSMPolicyUpdater {
 
 		try {
 			
-			DataSourceSelfDiscoveringPropertiesFactoryBean b = new DataSourceSelfDiscoveringPropertiesFactoryBean();
+			CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 			String databaseConfigName = System.getProperty("db");
 			if(databaseConfigName != null){
 				b.setDatabaseConfigurationName(databaseConfigName);
