@@ -52,4 +52,17 @@
           class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName"><value>login</value></property>
     </bean>
+
+    <bean name="/user/resetPassword" id="resetPasswordController" autowire="byType"
+	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+      <property name="viewName"><value>user/resetPassword</value></property>
+    </bean>
+    <bean name="/user/emailSent" id="emailSentController" autowire="byType"
+	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+      <property name="viewName"><value>user/emailSent</value></property>
+    </bean>
+    <bean name="/user/changePassword" id="changePasswordController" autowire="byType"
+	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+      <property name="viewName"><value>user/changePassword</value></property>
+    </bean>
 </beans>
