@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers;
 
-import gov.nih.nci.cabig.caaers.CommonsConfigurationException;
+import gov.nih.nci.cabig.ctms.CommonsConfigurationException;
 
 /**
  * @author Rhett Sutphin

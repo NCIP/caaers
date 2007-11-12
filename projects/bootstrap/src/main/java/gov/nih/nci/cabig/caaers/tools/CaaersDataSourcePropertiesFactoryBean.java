@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.tools;
 
+import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+
 /**
  * This class searches through the following directories, looking for a file named
  * ${databaseConfigurationName}.properties:

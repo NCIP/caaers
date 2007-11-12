@@ -1,16 +1,17 @@
 package gov.nih.nci.cabig.caaers.tools;
 
 import junit.framework.TestCase;
-import junit.framework.Assert;
 
 import java.io.File;
 import java.util.Properties;
+
+import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 
 /**
  * @author Rhett Sutphin
  */
 public class CaaersDataSourcePropertiesFactoryBeanTest extends TestCase {
-    private DataSourceSelfDiscoveringPropertiesFactoryBean factoryBean;
+    private CaaersDataSourcePropertiesFactoryBean factoryBean;
 
     @Override
     protected void setUp() throws Exception {
