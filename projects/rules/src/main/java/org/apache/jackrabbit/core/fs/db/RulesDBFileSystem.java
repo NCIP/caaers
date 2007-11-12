@@ -14,7 +14,7 @@ public class RulesDBFileSystem extends DbFileSystem{
 	public RulesDBFileSystem() {
 		
 
-		DataSourceSelfDiscoveringPropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+		CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
 		

@@ -17,7 +17,7 @@ public class RulesVersioningDBPersistanceManager extends SimpleDbPersistenceMana
 		
 
 
-DataSourceSelfDiscoveringPropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
 		

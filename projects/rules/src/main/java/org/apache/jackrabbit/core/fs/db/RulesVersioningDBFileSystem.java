@@ -11,7 +11,7 @@ public class RulesVersioningDBFileSystem extends DbFileSystem{
 	public RulesVersioningDBFileSystem() {
 		
 
-		DataSourceSelfDiscoveringPropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+		CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
 		
 		Properties props = b.getProperties();
 		
