@@ -15,7 +15,7 @@
 	<tx:annotation-driven proxy-target-class="true" />
 
 	<bean id="rulesPropertyConfigurer"
-		class="gov.nih.nci.cabig.caaers.tools.spring.PropertyPlaceholderConfigurer">
+		class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
 		<property name="properties">
 			<bean
 				class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
