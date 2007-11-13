@@ -45,10 +45,6 @@ public class RoutineAeTab extends AeRoutTab {
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
     		  ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
-    		  
-    		  //setting the start and end date of individual AE
-    		  ae.setStartDate(c.getAeRoutineReport().getStartDate());
-    		  ae.setEndDate(c.getAeRoutineReport().getEndDate());
     		  c.getAeRoutineReport().addAdverseEvent(ae);
     		  }
     	  }
