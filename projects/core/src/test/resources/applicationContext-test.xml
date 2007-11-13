@@ -147,7 +147,7 @@
                 </property>
                 <property name="hibernateProperties">
                     <bean
-                            class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+                            class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
 
 
                         <property name="properties">

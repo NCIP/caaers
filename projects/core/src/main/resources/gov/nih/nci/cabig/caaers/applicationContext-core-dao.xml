@@ -210,7 +210,7 @@
     -->
     <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
     
-    <bean id="hibernateProperties" class="gov.nih.nci.cabig.caaers.tools.spring.HibernatePropertiesFactoryBean">
+    <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
         <property name="dialectName"><value>s[hibernate.dialect]</value>  
         <!-- <value>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</value> -->
          </property>
