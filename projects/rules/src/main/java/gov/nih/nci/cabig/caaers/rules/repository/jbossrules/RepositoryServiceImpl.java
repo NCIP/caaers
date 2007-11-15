@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
+import javax.rules.admin.RuleExecutionSet;
 
 import org.apache.log4j.Logger;
 import org.drools.repository.AssetItem;
@@ -59,6 +61,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	private JcrTemplate template;
 
 	private Repository repository;
+	
+	RulesCache rc = RulesCache.getInstance();
 
 	public Boolean createCategory(Category category) 
 	{
@@ -230,35 +234,46 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			return null;
 		}
 		
-		PackageItem item = getRulesRepository().loadPackage(name);
-		RuleSet ruleSet = new RuleSet();
-		ruleSet.setId(item.getUUID());
-		ruleSet.getImport().add(item.getHeader());
-		// ruleSet.header = item.getHeader();
-		// ruleSet.externalURI = item.getExternalURI();
-		ruleSet.setDescription(item.getDescription());
-		ruleSet.setName(item.getName());
-		ruleSet.setSubject(item.getSubject());
-		ruleSet.setCoverage(item.getCoverage());
-		
-		
-		// ruleSet.lastModified = item.getLastModified().getTime();
-		// ruleSet.lasContributor = item.getLastContributor();
-		// ruleSet.state = item.getStateDescription();
+		RuleSet ruleSet;
+    	if (rc.getRuleSet(name) != null){
+    		ruleSet= rc.getRuleSet(name);
+    	} else {
+    		PackageItem item = getRulesRepository().loadPackage(name);
 
-		//make 2 assets , one is rule set info asset. and rule set asset 
-		//when we create rule set , acll the method add asset 
-		//when we load the the rules load asset (string name);
-		//
-		
-		AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
+    		ruleSet = new RuleSet();
+    		ruleSet.setId(item.getUUID());
+    		ruleSet.getImport().add(item.getHeader());
+    		// ruleSet.header = item.getHeader();
+    		// ruleSet.externalURI = item.getExternalURI();
+    		ruleSet.setDescription(item.getDescription());
+    		ruleSet.setName(item.getName());
+    		ruleSet.setSubject(item.getSubject());
+    		ruleSet.setCoverage(item.getCoverage());
+    		
+    		
+    		// ruleSet.lastModified = item.getLastModified().getTime();
+    		// ruleSet.lasContributor = item.getLastContributor();
+    		// ruleSet.state = item.getStateDescription();
 
-		while (iterator.hasNext()) 
-		{
-			AssetItem ruleItem = (AssetItem) iterator.next();
-			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
-			ruleSet.getRule().add(rule);
-		}
+    		//make 2 assets , one is rule set info asset. and rule set asset 
+    		//when we create rule set , acll the method add asset 
+    		//when we load the the rules load asset (string name);
+    		//
+    		long t2 = System.currentTimeMillis();
+    		AssetItemIterator iterator = (AssetItemIterator) item.getAssets();
+    		
+    		while (iterator.hasNext()) 
+    		{
+    			AssetItem ruleItem = (AssetItem) iterator.next();
+    			//long t3=System.currentTimeMillis();
+    			Rule rule = (Rule) XMLUtil.unmarshal(ruleItem.getContent());
+    			//System.out.println("EACH UNMARSHAL ELAPSED " + (System.currentTimeMillis()-t3));
+    			ruleSet.getRule().add(rule);
+    		}
+    		System.out.println("LOAD RULES UNMARSHAL ELAPSED " + (System.currentTimeMillis()-t2));
+    		rc.putRuleSet(name, ruleSet);
+    	}
+    	
 		
 		return ruleSet;
 	}
@@ -270,6 +285,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		
 
 		getRulesRepository().save();
+		rc.ruleSetDeployed(ruleSetName);
+		rc.ruleSetModified(ruleSetName);
 	}
 	
 	public void deleteRule(String ruleSetName, String ruleName) {
@@ -373,6 +390,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) {
 		CompiledPackageItem compiledPackageItem = ((RulesRepositoryEx) getRulesRepository())
 				.createCompiledPackage(name, ruleSetInfo.getContent());
+		rc.ruleSetDeployed(name);
+		rc.ruleSetModified(name);
 		return compiledPackageItem.getUUID();
 	}
 
@@ -423,6 +442,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	public void deregisterRuleExecutionSet(String bindUri) {
 		((RulesRepositoryEx) getRulesRepository())
 				.removeCompiledPackage(bindUri);
+		rc.ruleSetDeployed(bindUri);
+		rc.ruleSetModified(bindUri);
 	}
 
 	/**
