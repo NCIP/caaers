@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
 
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
  * */
 public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepository {
 
-
+	RulesCache rc = RulesCache.getInstance();
     public RuleExecutionSetRepositoryImpl() {
     }
 
@@ -50,9 +51,16 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
      * @return the <code>RuleExecutionSet</code> bound to the given URI.
      */
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
-    	RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
-    	RuleExecutionSet ruleExecutionSet = (RuleExecutionSet)ruleSetInfo.getContent();
-    	return ruleExecutionSet;
+    	RuleExecutionSet res = null;
+    	
+    	if (rc.getRuleExecutionSet(bindUri)!=null){
+    		res= rc.getRuleExecutionSet(bindUri);
+    	} else {
+    		RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
+    		res = (RuleExecutionSet)ruleSetInfo.getContent();
+    		rc.putRuleExecutionSet(bindUri, res);
+    	}
+    	return res;
     }
 
     /**
