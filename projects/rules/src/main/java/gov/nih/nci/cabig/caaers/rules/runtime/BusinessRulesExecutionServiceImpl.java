@@ -65,14 +65,13 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
 			customProperties.put(Global.ACTION_DISPATCHER.getCode(), new ActionDispatcher());
 			customProperties.put(Global.RULE_CONTEXT.getCode(), ruleContext);
 			//customProperties.put(Global.ADVERSE_EVENT_RESULT.getCode(), new AdverseEventEvaluationResult());
-			
-			
-			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindingURI, customProperties);
+			StatelessRuleSession statelessRuleSession = getStatelessRuleSession(bindingURI, customProperties);	
 			outputObjects = (List) statelessRuleSession.executeRules(objects);
+			
 			statelessRuleSession.release();
 			
 		} catch (Exception e) {
-			throw new Exception ("Execption while executing Rules", e);
+			throw new Exception (e.getMessage(), e);
 			//System.out.println("We should log this exception or what!");
 			
 		}
