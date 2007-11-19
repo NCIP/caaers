@@ -264,10 +264,35 @@
         </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <!-- all deps have to go here (even for profile executions) -->
-                <dependencies>
-                    <dependency>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-source-code</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+									<ant antfile="${basedir}/build.xml" target="security" inheritall="false" />
+
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>ant</groupId>
+						<artifactId>ant-antlr</artifactId>
+						<version>1.6.5</version>
+					</dependency>
+					<dependency>
+						<groupId>antlr</groupId>
+						<artifactId>antlrall</artifactId>
+						<version>2.7.4</version>
+					</dependency>
+					
+					        <dependency>
                         <groupId>dbunit</groupId>
                         <artifactId>dbunit</artifactId>
                         <version>2.1</version>
@@ -291,8 +316,20 @@
                         <version>10.2.0.2.0</version>
                         <scope>runtime</scope>
                     </dependency>
-                </dependencies>
-            </plugin>
+            
+				</dependencies>
+			</plugin>
+            
+            <plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+            
             <plugin>
                 <groupId>gov.nih.nci.cabig.ctms</groupId>
                 <artifactId>property-factory-maven-plugin</artifactId>
