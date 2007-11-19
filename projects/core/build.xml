@@ -12,6 +12,14 @@
     <property name="jar-name.unit-test" value="${basedir}/../../caaers-core-testing.jar"/>
     <property name="dbunit-dtd-filename" value="build/dbunit-caaers.dtd"/>
 
+	
+		
+		<property name="src-dir.resources" value="${src-dir.resources}" />
+		<property name="src-dir.generated-code" value="${src-dir.main}/generated-code" />
+		<property name="core.target.generated-code" value="target/generated-code/xjc" />
+	<property name="core.target.classes" value="target/classes/" />
+
+	
     <!-- CLASSPATHS -->
     
     <path id="cp.compiled-source">
@@ -30,6 +38,7 @@
         </fileset>
     </path>
 
+	
     <path id="cp.main">
         <path refid="cp.compiled-source"/>
         <path refid="cp.csm"/>
@@ -55,6 +64,7 @@
         </fileset>
     </path>
 
+		
     <!-- BASE TARGETS -->
 
     <target name="default-properties">
@@ -398,7 +408,44 @@ done so already, please perform the following manual actions.
 	</target>
 
     <target name="reports" depends="test.unit.report"/>
+	
+	
 
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+				<classpath>
+					<fileset dir="lib/main/jaxb" includes="*.jar" />
+				</classpath>
+	</taskdef>
+	
+	<target name="security">
+		<property name="build.compiler" value="extJavac"/>
+	    	<delete dir="${core.target.generated-code}"/>
+	    	<mkdir dir="${core.target.generated-code}" />
+		    <mkdir dir="${core.target.classes}" />
+			<xjc destdir="${core.target.generated-code}">
+				
+				<arg line="-extension"/>
+				<arg line="-npa"/>
+				
+				<arg line="-Xcollection-setter-injector"/>
+				
+				<schema  dir="${src-dir.resources}/schema/" includes="passwordpolicy.xsd"/>
+				
+				<binding dir="${src-dir.resources}/schema/" includes="*.xjb"/>
+				
+			</xjc>
+
+		<javac destdir="${core.target.classes}" classpathref="cp.main" debug="true" source="1.5">
+		    <src path="${core.target.generated-code}"/>
+		</javac>
+
+
+		</target>
+
+
+
+
+	
 
 </project>
 
