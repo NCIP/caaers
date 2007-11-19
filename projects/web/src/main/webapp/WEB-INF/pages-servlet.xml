@@ -241,6 +241,11 @@
     <bean name="/admin/configure" id="configurationController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 
+    <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+      <property name="viewName"><value>admin/password_policy_configure</value></property>
+    </bean>
+
 	<bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
            <property name="sessionForm"><value>true</value></property>
