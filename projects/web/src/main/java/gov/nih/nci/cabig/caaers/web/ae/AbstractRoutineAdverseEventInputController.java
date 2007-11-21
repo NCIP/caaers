@@ -1,29 +1,33 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.web.ae.RoutineAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,11 +37,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * @author Krikor Krumlian
@@ -59,6 +58,8 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected LowLevelTermDao lowLevelTermDao;
     protected TreatmentAssignmentDao treatmentAssignmentDao;
     protected NowFactory nowFactory;
+    protected EvaluationService evaluationService;
+    
     private final Log log = LogFactory.getLog(getClass());
 
     protected AbstractRoutineAdverseEventInputController() {
@@ -231,8 +232,13 @@ public abstract class AbstractRoutineAdverseEventInputController
 			TreatmentAssignmentDao treatmentAssignmentDao) {
 		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
-    
-    
-    
+
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
+	}
+
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
+	}
     
 }
