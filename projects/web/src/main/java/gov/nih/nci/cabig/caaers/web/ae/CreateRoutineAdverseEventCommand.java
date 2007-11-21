@@ -1,22 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +39,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private RoutineAdverseEventReportDao routineReportDao;
     private StudyParticipantAssignmentDao assignmentDao;
 
-    private AdverseEventEvaluationService adverseEventEvaluationService;
+    private EvaluationService evaluationService;
     private Map<String, List<List<Attribution>>> attributionMap;
     private NowFactory nowFactory;
 
@@ -49,10 +47,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private String[] ctcCatIds;
     private String[] cats;
     private String[] ctcTermIds;
-
+    
+    
     public CreateRoutineAdverseEventCommand(
         StudyParticipantAssignmentDao assignmentDao, RoutineAdverseEventReportDao routineReportDao,
-        ExpeditedAdverseEventReportDao reportDao, NowFactory nowFactory
+        ExpeditedAdverseEventReportDao reportDao, NowFactory nowFactory, EvaluationService evaluationService
     ) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
@@ -60,11 +59,11 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.routineReportDao = routineReportDao;
         this.categories = new ArrayList<CtcCategory>();
         this.nowFactory = nowFactory;
-        this.adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+        this.evaluationService = evaluationService;
     }
 
     ////// LOGIC
-
+    //TODO Needs refactoring, as the same info is fetched from DB on every call. 
     public StudyParticipantAssignment getAssignment() {
         if (getParticipant() != null && getStudy() != null) {
             return assignmentDao.getAssignment(getParticipant(), getStudy());
@@ -78,7 +77,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     	this.aeReport = new ExpeditedAdverseEventReport();
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-        this.aeReport.getTreatmentInformation().setTreatmentAssignment(getAeRoutineReport().getTreatmentAssignment());
+        this.aeReport.getTreatmentInformation().setTreatmentAssignment(this.aeRoutineReport.getTreatmentAssignment());
     }
 
     public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {
@@ -100,15 +99,32 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
      * @see gov.nih.nci.cabig.caaers.web.ae.AdverseEventInputCommand#save()
      */
     public void save() {
-        getAssignment().addRoutineReport(getAeRoutineReport());
+    	StudyParticipantAssignment assignment = getAssignment();
+    	
+    	assignment.addRoutineReport(aeRoutineReport);
+        
+        //create the expedited report, container for AEs
         prepareExpeditedReport();
-        boolean isExpedited = findExpedited(getAeRoutineReport());
-        routineReportDao.save(getAeRoutineReport());
-
-        if (isExpedited) {
-			reportDao.save(this.aeReport);
-		}
-
+        
+        //check if the event reported is an SAE.
+        for(AdverseEvent ae : aeRoutineReport.getAdverseEvents()){
+    	   if(evaluationService.isSevere(assignment, ae)){
+    		   if(log.isDebugEnabled()){
+    			   log.debug("The AE " + String.valueOf(ae) +  " is identified as SAE, for the assignment " +  String.valueOf(assignment));
+    		   }
+    		   this.aeReport.addAdverseEvent(ae);
+    	   }
+       }
+       //save the routine ae reprot 
+       routineReportDao.save(getAeRoutineReport());
+       
+       //if there are SAEs, then save the aeReport,then identify mandatory report schedules
+       if(!aeReport.getAdverseEvents().isEmpty()){
+    	   reportDao.save(aeReport);
+    	   List<ReportDefinition> reportDefs = evaluationService.findRequiredReportDefinitions(aeReport);
+    	   evaluationService.addOptionalReports(aeReport, reportDefs);
+       }
+       
     }
 
     ////// BOUND PROPERTIES
@@ -147,30 +163,6 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             }
         }
         updateReportAssignmentLink();
-    }
-
-	@SuppressWarnings("finally")
-	public boolean findExpedited(RoutineAdverseEventReport raer ){
-		log.debug("Checking for expedited AEs");
-    	boolean isPopulated = false;
-    	try {
-    	for(AdverseEvent ae : raer.getAdverseEvents() )
-    	{
-    		String message = adverseEventEvaluationService.assesAdverseEvent(ae,study);
-    		if (message.equals("SERIOUS_ADVERSE_EVENT")){
-    			aeReport.addAdverseEvent(ae);
-    			isPopulated = true;
-    		}
-    	}
-    		return isPopulated;
-    	}
-    	catch(Exception e){
-    		throw new CaaersSystemException("There was an error evaluating Routine AEs. The entered AEs will not be saved");
-    	}
-    }
-
-    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        this.aeReport = aeReport;
     }
 
 
@@ -222,4 +214,13 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     public boolean getIgnoreCompletedStudy() {
     	return true;
     }
+    
+    public EvaluationService getEvaluationService() {
+		return evaluationService;
+	}
+    public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
+	}
+    
+    
 }
