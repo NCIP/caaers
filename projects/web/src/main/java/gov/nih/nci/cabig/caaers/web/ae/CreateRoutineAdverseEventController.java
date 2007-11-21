@@ -1,11 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -40,7 +39,7 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-    	CreateRoutineAdverseEventCommand caec = new CreateRoutineAdverseEventCommand(assignmentDao, routineReportDao, reportDao, nowFactory);
+    	CreateRoutineAdverseEventCommand caec = new CreateRoutineAdverseEventCommand(assignmentDao, routineReportDao, reportDao, nowFactory, evaluationService);
         return caec;
     }
     
