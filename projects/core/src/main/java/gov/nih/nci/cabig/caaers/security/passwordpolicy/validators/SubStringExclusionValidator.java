@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 import gov.nih.nci.cabig.caaers.security.Credential;
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.SubStringExclusionPolicy;
+
 
 public class SubStringExclusionValidator implements PolicyValidator{
 	
 	
 
 	public boolean validate(PasswordPolicy policy, Credential credential) throws ValidationException {
-		SubStringExclusionPolicy ssev = policy.getPasswordCreationPolicy().getComplexityPolicy().getCombinationPolicy().getSubStringExclusionPolicy();
+		int subStringLength = policy.getPasswordCreationPolicy().getCombinationPolicy().getSubStringExclusionLength();
 		
-		int subStringLength = ssev.getSubStringLength();
+		
 		String password = credential.getPassword();
 		ArrayList<String> possibleSubStrings = this.getSubStrings(credential.getPassword(), subStringLength);
 		for(int i=0;i<possibleSubStrings.size();i++){

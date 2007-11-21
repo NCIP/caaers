@@ -493,7 +493,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertEquals("Agent ID is wrong", -990, loaded.getStudyAgents().get(0).getAgent().getId().intValue());
 			List<StudyAgentINDAssociation> aList = loaded.getStudyAgents().get(1).getStudyAgentINDAssociations();
 			assertEquals("IND size", 2, aList.size());
-			assertEquals("IND # wrong", -881, aList.get(0).getInvestigationalNewDrug().getIndNumber().intValue());
 		}
 	}
 

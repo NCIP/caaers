@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
 
 import gov.nih.nci.cabig.caaers.security.Credential;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.HistoryPolicy;
+
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
 
 public class PasswordHistoryValidator implements PolicyValidator{
@@ -12,9 +12,9 @@ public class PasswordHistoryValidator implements PolicyValidator{
 		 * Here retrieve the previous passwords and compare for the uniqueness
 		 */
 		String password = credential.getPassword();
-		HistoryPolicy hp = policy.getPasswordCreationPolicy().getHistoryPolicy();
 		
-		int pastHistoryToBeChecked = hp.getCount();
+		
+		int pastHistoryToBeChecked = policy.getPasswordCreationPolicy().getPreviousPasswordCount();
 		
 		return true;
 	}

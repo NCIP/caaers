@@ -22,11 +22,20 @@ public class PasswordCreationPolicyValidator implements PolicyValidator{
 		
 		PasswordCreationPolicy pcp = policy.getPasswordCreationPolicy();
 		
-		if(pcp.getHistoryPolicy()!=null){
+		if(pcp.getPreviousPasswordCount()>0){
 			validators.add(new PasswordHistoryValidator());
 		}
-		if(pcp.getComplexityPolicy()!=null){
-			validators.add(new PasswordComplexityValidator());
+		if(pcp.getMinimumLength()>0){
+			validators.add(new PasswordLengthValidator());
+		}
+		if(pcp.getMinimumAge()!=null){
+			if(pcp.getMinimumAge().getValue()>0){
+				validators.add(new MinimumAgeValidator());
+			}
+			
+		}
+		if(pcp.getCombinationPolicy()!=null){
+			validators.add(new CombinationValidator());
 		}
 		StringBuffer exceptions = new StringBuffer();
 		for(int i=0; i<validators.size();i++){

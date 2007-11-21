@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
 
 import gov.nih.nci.cabig.caaers.security.Credential;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.MinLengthPolicy;
+
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
 
 public class PasswordLengthValidator implements PolicyValidator{
@@ -14,9 +14,9 @@ public class PasswordLengthValidator implements PolicyValidator{
 		// TODO Auto-generated method stub
 		
 		String password = credential.getPassword();
-		MinLengthPolicy mlp = policy.getPasswordCreationPolicy().getComplexityPolicy().getMinLengthPolicy();
+		int minLength = policy.getPasswordCreationPolicy().getMinimumLength();
 		
-		int minLength = mlp.getLength();
+		
 		
 		if(password.length()<minLength){
 			throw new ValidationException("The minimum length of password should be of "+minLength+" characters");

@@ -11,9 +11,9 @@ public class CombinationValidator implements PolicyValidator{
 	public boolean validate(PasswordPolicy policy,Credential credential) throws ValidationException {
 		// TODO Auto-generated method stub
 		
-		CombinationPolicy cp = policy.getPasswordCreationPolicy().getComplexityPolicy().getCombinationPolicy();
+		CombinationPolicy cp = policy.getPasswordCreationPolicy().getCombinationPolicy();
 		
-		int minRequired= cp.getMinRequired();
+		int minRequired= cp.getMinimumRequired();
 		
 		int requirementsMet = 0;
 		
@@ -22,33 +22,33 @@ public class CombinationValidator implements PolicyValidator{
 		int j=0;
 		
 		ArrayList<PolicyValidator> validators = new ArrayList<PolicyValidator>();
-		if(cp.isBaseTenDigit()){
+		if(cp.isBaseTenDigitRequired()){
 			validators.add(new BaseTenDigitValidator());
 			j++;
 			requirements.append("\t"+j+") The password should have atleast one numeral digit{0-9}");
 			requirements.append("\n");
 		}
-		if(cp.isLowercaseAlphabet()){
+		if(cp.isLowerCaseAlphabetRequired()){
 			validators.add(new LowerCaseAlphabetValidator());
 			j++;
 			requirements.append("\t"+j+") The password should have at least one lower case letter");
 			requirements.append("\n");
 		}
-		if(cp.isNonAlphaNumeric()){
+		if(cp.isNonAlphaNumericRequired()){
 			validators.add(new SpecialCharacterValidator());
 			j++;
 			requirements.append("\t"+j+") The password should have at least one special charcter");
 			requirements.append("\n");
 		}
-		if(cp.isUpperCaseAlphabet()){
+		if(cp.isNonAlphaNumericRequired()){
 			validators.add(new UpperCaseAlphabetValidator());
 			j++;
 			requirements.append("\t"+j+") The password should have at least one upper case letter");
 			requirements.append("\n");
 		}
-		if(cp.getSubStringExclusionPolicy()!=null){
+		if(cp.getSubStringExclusionLength()>0){
 			validators.add(new SubStringExclusionValidator());
-			int k = cp.getSubStringExclusionPolicy().getSubStringLength();
+			int k = cp.getSubStringExclusionLength();
 			j++;
 			requirements.append("\t"+j+") The password should not have sub string with "+k+" letters from user name");
 			requirements.append("\n");
