@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+	<!--  overriding the authorization -->
+	<!-- 
+	<bean id="authorizationSwitch"
+		class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
+		factory-method="getInstance">
+		<property name="on" value="false" />
+	</bean>
+
+	<bean id="authenticationManager"
+		class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="csmAuthenticationProvider" />
+				<ref local="gridAuthenticationProvider" />
+				<ref local="globusCredentialAuthenticationProvider" />
+				<bean
+					class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+					<property name="key" value="anonymousAuthKey" />
+				</bean>
+			</list>
+		</property>
+
+	</bean>
+	<bean id="gridUserDetailsService"
+		class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService">
+		<property name="gridGroupSearch" ref="gridGroupSearch" />
+	</bean>
+
+	<bean id="globusCredentialAuthenticationProvider"
+		class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider">
+
+		<property name="userDetailsService"
+			ref="gridUserDetailsService" />
+
+
+		<property name="validator" ref="gridProxyValidator" />
+
+	</bean>
+
+	<bean id="gridProxyValidator"
+		class="gov.nih.nci.security.acegi.grid.authentication.GridProxyValidatorImpl" />
+
+	<bean id="gridGroupSearch"
+		class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupSearch">
+		<property name="userProvisioningManager"
+			ref="csmUserProvisioningManager" />
+		<property name="csmApplicationContextName"
+			ref="csmApplicationContextName" />
+		<property name="gridGrouperTimeout" value="10000" />
+		<property name="gridGrouperClientFactory"
+			ref="gridGrouperClientFactory" />
+	</bean>
+
+	<bean id="gridGrouperClientFactory"
+		class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGrouperClientFactory" />
+
+
+	<bean id="gridAuthenticationClient"
+		class="gov.nih.nci.security.acegi.grid.authentication.GridBasicAuthenticationClientImpl">
+		<property name="idpUrl"
+			value="https://localhost:58443/wsrf/services/cagrid/AuthenticationService" />
+		<property name="ifsUrl"
+			value="https://localhost:28443/wsrf/services/cagrid/Dorian" />
+		<property name="proxyLifetimeHours" value="12" />
+		<property name="proxyLifetimeMinutes" value="0" />
+		<property name="proxyLifetimeSeconds" value="0" />
+		<property name="delegationPathLength" value="0" />
+	</bean>
+	<bean id="gridAuthenticationProvider"
+		class="gov.nih.nci.security.acegi.grid.authentication.GridAuthenticationProvider">
+
+
+		<property name="userDetailsService"
+			ref="gridUserDetailsService" />
+
+		<property name="authenticationClient"
+			ref="gridAuthenticationClient" />
+
+		<property name="validator" ref="gridProxyValidator" />
+
+		<property name="userCache" ref="userCache" />
+
+	</bean>
+	<bean id="userCache"
+		class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<bean
+				class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<bean
+						class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" />
+				</property>
+				<property name="cacheName" value="userCache" />
+
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="csmAuthenticationProvider"
+		class="gov.nih.nci.security.acegi.csm.authentication.CSMAuthenticationProvider">
+
+		<property name="csmAuthenticationManager">
+			<bean class="gov.nih.nci.security.SecurityServiceProvider"
+				factory-method="getAuthenticationManager">
+				<constructor-arg ref="csmApplicationContextName" />
+			</bean>
+		</property>
+
+		<property name="userDetailsService">
+			<bean
+				class="gov.nih.nci.security.acegi.csm.authorization.CSMUserDetailsService">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+			</bean>
+		</property>
+
+		<property name="userCache" ref="userCache" />
+	</bean>
+	 -->
+</beans>
