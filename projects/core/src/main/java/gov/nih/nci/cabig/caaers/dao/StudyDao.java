@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -52,7 +53,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName()
 			+ " s where shortTitle = :st";
-
+	
 	@Override
 	public Class<Study> domainClass() {
 		return Study.class;
@@ -133,7 +134,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	}
 
 	public List<Study> getBySubnames(final String[] subnames) {
-		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+		return findBySubname(subnames, null, null, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 	/*
 	 * Added extraCondition parameter, as a fix for bug 9514
@@ -162,7 +163,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		queryBuf.append((extraCondition == null)? "" : extraCondition + " and " );
 		queryBuf.append("p.id = ?");
 		params.add(participantId);
-
+		
 		queryBuf.append(" and ( ");
 		queryBuf.append("LOWER(").append("o.shortTitle").append(") LIKE ?");
 		params.add('%' + text.toLowerCase() + '%');
@@ -191,10 +192,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(
 				" o ").append(JOINS);
 
-		/*
-		 * if (true) { queryBuf.append(firstClause ? " where " : " and "); queryBuf.append(" ss.class = StudySite "); firstClause = false; }
-		 */
-
+		
 		if (props.get("studyIdentifier") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
 			queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ?");
@@ -252,6 +250,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			params.add(stringToDate(p));
 			firstClause = false;
 		}
+		
 		log.debug("::: " + queryBuf.toString());
 		getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
@@ -264,7 +263,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Study> getByUniqueIdentifiers(final String[] subnames) {
-		return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
+		return findBySubname(subnames, null, null, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
 	}
 
 	public Study getByIdentifier(final Identifier identifier) {
@@ -276,7 +275,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * made that short title is unique.
 	 */
 	public Study getByShortTitle(final String shortTitle) {
-		List<Study> studies = findBySubname(new String[] { shortTitle }, null, EXACT_MATCH_TITLE_PROPERTIES);
+		List<Study> studies = findBySubname(new String[] { shortTitle },null, null,null, EXACT_MATCH_TITLE_PROPERTIES);
 		if (studies != null && studies.size() > 0) {
 			return studies.get(0);
 		}
@@ -288,7 +287,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> searchByExample(final Study study, final boolean isWildCard) {
 		Example example = Example.create(study).excludeZeroes().ignoreCase();
 		Criteria studyCriteria = getSession().createCriteria(Study.class);
-
+		
 		if (isWildCard) {
 			example.excludeProperty("multiInstitutionIndicator");
 			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
@@ -309,7 +308,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	}
 
 	@SuppressWarnings( { "unchecked" })
-	public List<Study> find(final StudyHavingStudySiteQuery query) {
+	public List<Study> find(final AbstractQuery query) {
 		String queryString = query.getQueryString();
 		log.debug("::: " + queryString.toString());
 		return (List<Study>) getHibernateTemplate().execute(new HibernateCallback() {
@@ -328,5 +327,15 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		});
 
 	}
-
+	
+	/**
+	 * This will remove a study from the database
+	 * @param study
+	 */
+	@Transactional(readOnly=false)
+	public void deleteInprogressStudy(final Study study){
+		if(study.getLoadStatus() != LoadStatus.INPROGRESS.getCode()) throw new CaaersSystemException("Only study with INPROGRESS loadStatus can be deleted");
+		getHibernateTemplate().delete(study);
+	}
+   
 }
