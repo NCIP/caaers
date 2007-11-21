@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,12 +29,14 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_participant_assignments_id")
     }
 )
+//@Where(clause="load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Participant participant;
     private StudySite studySite;
     private Date dateOfEnrollment;
     private List<ExpeditedAdverseEventReport> aeReports;
     private List<RoutineAdverseEventReport> aeRoutineReports;
+    private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
@@ -107,6 +110,13 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
         this.aeRoutineReports = aeRoutineReports;
     }
+    
+    public Integer getLoadStatus() {
+		return loadStatus;
+	}
+    public void setLoadStatus(Integer loadStatus) {
+		this.loadStatus = loadStatus;
+	}
     
     ////// OBJECT METHODS
 

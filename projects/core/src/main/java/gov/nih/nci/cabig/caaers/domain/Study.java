@@ -34,6 +34,7 @@ import org.hibernate.annotations.Where;
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
 	
 	public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
+	public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 	
 	private String shortTitle;
 
@@ -93,7 +94,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private Boolean surgeryTherapyType = Boolean.FALSE;
 
 	private Boolean behavioralTherapyType = Boolean.FALSE;
-
+	
+	private Integer loadStatus = LoadStatus.COMPLETE.getCode();
+	
 	public Study() {
 
 		lazyListHelper = new LazyListHelper();
@@ -532,24 +535,25 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		}
 		return null;
 	}
-
+    
+	public Integer getLoadStatus() {
+		return loadStatus;
+	}
+    
+    public void setLoadStatus(Integer loadStatus) {
+		this.loadStatus = loadStatus;
+	}
+    
+    
 	// ------------------------------------------------------------------------------------------------------------
 
 	// TODO Below methods are to be removed.....
-	/*
-	 * public void addStudyDisease(StudyDisease studyDisease) { studyDisease.setStudy(this); studyDiseases.add(studyDisease); }
-	 */
 
 	// TODO check how to get rid of this???? (Admin module require this method)
 	public void setPrimarySponsorCode(final String sponsorCode) {
 		throw new UnsupportedOperationException("'setPrimarySponsorCode', one should not access this method!");
 	}
 
-	/*
-	 * @OneToMany (mappedBy="study", fetch=FetchType.LAZY) @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN}) public List<StudyDisease>
-	 * getStudyDiseases() { return studyDiseases; } public void setStudyDiseases(List<StudyDisease> studyDiseases) { this.studyDiseases =
-	 * studyDiseases; }
-	 */
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })

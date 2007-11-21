@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
@@ -27,6 +28,7 @@ import java.util.List;
 @Entity
 @Table
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participants_id") })
+//@Where(clause="load_status > 0")
 public class Participant extends AbstractIdentifiableDomainObject {
 	private String institutionalPatientNumber;
 
@@ -47,6 +49,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	private String race;
 
 	private String ethnicity;
+	private Integer loadStatus = LoadStatus.COMPLETE.getCode();
+	
 
 	private final LazyListHelper lazyListHelper;
 
@@ -204,6 +208,13 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
 	public void setAssignments(final List<StudyParticipantAssignment> assignments) {
 		this.assignments = assignments;
+	}
+	
+	public Integer getLoadStatus() {
+		return loadStatus;
+	}
+	public void setLoadStatus(Integer loadStatus) {
+		this.loadStatus = loadStatus;
 	}
 
 	@Override
