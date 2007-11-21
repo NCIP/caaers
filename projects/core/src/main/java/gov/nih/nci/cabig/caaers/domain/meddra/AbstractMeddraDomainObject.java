@@ -1,13 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 /**
  * @author Krikor Krumlian

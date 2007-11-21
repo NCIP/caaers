@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 public class OrganizationAssignedIdentifier extends Identifier {
 	public static final String SPONSOR_IDENTIFIER_TYPE = "Sponsor Identifier";
 	public static final String COORDINATING_CENTER_IDENTIFIER_TYPE = "Coordinating Center Identifier";
-
+	
 	private Organization organization;
 
 	/**

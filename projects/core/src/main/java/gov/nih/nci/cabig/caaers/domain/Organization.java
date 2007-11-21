@@ -1,26 +1,24 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * @author Krikor Krumlian
