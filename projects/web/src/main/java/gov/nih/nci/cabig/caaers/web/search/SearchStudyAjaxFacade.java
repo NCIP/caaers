@@ -1263,7 +1263,7 @@ public class SearchStudyAjaxFacade {
 
 		List<Participant> participants = new ArrayList<Participant>();
 		ParticipantQuery participantQuery = new ParticipantQuery();
-
+		participantQuery.leftJoinFetchOnIdentifiers();
 		while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
 			sType = typeToken.nextToken();
 			sText = textToken.nextToken();
