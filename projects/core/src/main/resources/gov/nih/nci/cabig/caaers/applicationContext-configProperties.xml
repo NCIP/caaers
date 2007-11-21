@@ -199,6 +199,24 @@
                         </bean>
                     </list>
                 </entry>
+                <!--  Participant Identifiers -->
+                <entry key="participantIdentifiersType">
+                    <list>
+                    	<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="MRN" />
+                            <property name="desc" value="Medical Record Number" />
+                       </bean>
+                        
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="CC" />
+                            <property name="desc" value="Cooperative Group Identifier" />
+ 			           </bean>
+                       <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Other" />
+                            <property name="desc" value="Other" />
+ 			           </bean>
+                    </list>
+                </entry>
 
                 <!-- codes for Study Site -->
 
