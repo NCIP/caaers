@@ -8,21 +8,28 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.sql.DataSource;
+
 import org.acegisecurity.AccessDeniedException;
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseDataSourceConnection;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 import org.springframework.test.AbstractTransactionalSpringContextTests;
-
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * @author joshua

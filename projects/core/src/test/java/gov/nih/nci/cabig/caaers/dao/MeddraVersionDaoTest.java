@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 
 

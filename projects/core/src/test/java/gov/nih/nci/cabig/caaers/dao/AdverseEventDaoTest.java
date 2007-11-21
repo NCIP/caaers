@@ -1,27 +1,27 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-
-import java.util.Calendar;
-
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+
+import java.util.Calendar;
 
 /**
  * @author Rhett Sutphin

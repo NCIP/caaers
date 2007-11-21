@@ -1,21 +1,23 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
-import gov.nih.nci.security.exceptions.CSTransactionException;
+import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
-import org.easymock.classextension.EasyMock;
-import static org.easymock.classextension.EasyMock.*;
+import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+import gov.nih.nci.security.exceptions.CSTransactionException;
+
 import org.easymock.IArgumentMatcher;
+import org.easymock.classextension.EasyMock;
 import org.springframework.beans.BeanWrapperImpl;
 
 /**

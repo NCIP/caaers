@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.domain.DelayUnits.*;
+import static gov.nih.nci.cabig.caaers.domain.DelayUnits.DAYS;
+import static gov.nih.nci.cabig.caaers.domain.DelayUnits.HOURS;
+import static gov.nih.nci.cabig.caaers.domain.DelayUnits.MINUTES;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.math.BigDecimal;

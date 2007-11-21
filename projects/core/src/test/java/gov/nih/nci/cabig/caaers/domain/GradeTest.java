@@ -1,7 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import static gov.nih.nci.cabig.caaers.domain.Grade.DEATH;
+import static gov.nih.nci.cabig.caaers.domain.Grade.LIFE_THREATENING;
+import static gov.nih.nci.cabig.caaers.domain.Grade.MILD;
+import static gov.nih.nci.cabig.caaers.domain.Grade.MODERATE;
+import static gov.nih.nci.cabig.caaers.domain.Grade.SEVERE;
+import static gov.nih.nci.cabig.caaers.domain.Grade.getByCode;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import static gov.nih.nci.cabig.caaers.domain.Grade.*;
 
 /**
  * @author Rhett Sutphin

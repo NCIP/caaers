@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;

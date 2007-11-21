@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 import java.util.Date;
 

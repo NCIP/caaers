@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.tools.spring;
 
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import org.springframework.context.ApplicationContext;
-import org.easymock.classextension.EasyMock;
-import static org.easymock.classextension.EasyMock.*;
 
 import java.util.Arrays;
+
+import org.springframework.context.ApplicationContext;
 
 /**
  * @author Rhett Sutphin

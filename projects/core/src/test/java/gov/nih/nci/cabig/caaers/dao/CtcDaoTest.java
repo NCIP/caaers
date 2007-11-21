@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertContains;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertNotContains;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.Ctc;

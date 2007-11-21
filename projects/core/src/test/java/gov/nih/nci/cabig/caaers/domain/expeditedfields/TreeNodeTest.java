@@ -1,11 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import junit.framework.TestCase;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.*;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.codedOrOther;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.list;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.property;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode.section;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;

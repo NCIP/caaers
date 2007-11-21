@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_NOTIFICATION_RULES;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -24,9 +24,9 @@ import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
 /**

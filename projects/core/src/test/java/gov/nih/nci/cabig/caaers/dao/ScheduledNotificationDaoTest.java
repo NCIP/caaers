@@ -3,16 +3,15 @@
  */
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

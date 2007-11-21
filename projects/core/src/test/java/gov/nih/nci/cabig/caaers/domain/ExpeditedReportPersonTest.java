@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 /**
  * @author Rhett Sutphin

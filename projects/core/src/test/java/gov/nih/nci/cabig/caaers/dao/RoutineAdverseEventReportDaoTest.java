@@ -1,25 +1,23 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
+import edu.nwu.bioinformatics.commons.DateUtils;
+import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Timestamp;
-
-import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
-import edu.nwu.bioinformatics.commons.DateUtils;
 
 /**
  * @author Krikor Krumlian

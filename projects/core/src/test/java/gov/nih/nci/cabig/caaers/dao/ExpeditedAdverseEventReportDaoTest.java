@@ -1,49 +1,43 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersTestCase.*;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertDayOfDate;
+import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.prependMessage;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import edu.nwu.bioinformatics.commons.DateUtils;
+import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Lab;
-import gov.nih.nci.cabig.caaers.domain.LabValue;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
-import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Date;
 import java.util.Map;
-import java.sql.Timestamp;
-import java.math.BigDecimal;
-
-import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.*;
-import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
-import edu.nwu.bioinformatics.commons.DateUtils;
 
 /**
  * @author Rhett Sutphin
