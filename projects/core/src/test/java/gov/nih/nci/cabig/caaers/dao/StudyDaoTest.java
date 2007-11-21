@@ -6,7 +6,9 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_STUDIES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
@@ -17,11 +19,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -150,13 +150,13 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		example.setShortTitle("orte");
 
 		List<Study> actual = getDao().searchByExample(example, true);
-		assertEquals("Wrong number of matches", 2, actual.size());
+		assertEquals("Wrong number of matches", 1, actual.size());
 		Set<Integer> ids = new HashSet<Integer>();
 		for (Study study : actual) {
 			ids.add(study.getId());
 		}
 		assertTrue(ids.contains(-3));
-		assertTrue(ids.contains(-4));
+		
 	}
 
 	public void testGetByIdentifierByTypeAndValue() throws Exception {
@@ -546,5 +546,43 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertEquals("Treatment Assigments are not removed properly", 0, loaded.getTreatmentAssignments().size());
 		}
 
+	}
+	
+	public void testSearchWithStudyQuery(){
+		 StudyQuery query = new StudyQuery();
+		 query.filterByIdentifierValue("1138-421");
+		 List<Study> studies = getDao().find(query);
+		 assertNotNull("There should be study corresponding to identifier 1138-421" );
+		 assertEquals("There should be exactly one study with identifier 1138-421" , 1, studies.size());
+	}
+	
+	public void testSearchWithStudyQueryHavingIdentifierTypeAndValue(){
+		 StudyQuery query = new StudyQuery();
+		 query.filterByIdentifierValue("1138-421");
+		 query.filterByIdentifierType("uniqueness");
+		 List<Study> studies = getDao().find(query);
+		 assertNotNull("There should be study corresponding to identifier 1138-421" );
+		 assertEquals("There should be exactly one study with identifier 1138-421" , 1, studies.size());
+	}
+	
+	public void testDeleteInprogressStudy(){
+		 StudyQuery query = new StudyQuery();
+		 query.filterByIdentifierValue("1138-421");
+		 List<Study> studies = getDao().find(query);
+		 Study study = studies.get(0);
+		 study.setLoadStatus(0);
+		 getDao().deleteInprogressStudy(study);
+		 interruptSession();
+		 Study studyReloaded = getDao().getById(study.getId());
+		 assertNull("Study should be null", studyReloaded);
+		
+	}
+	
+	public void testRetrieveInprogresStudy(){
+		StudyQuery query = new StudyQuery();
+		query.filterByInprogressStudyies();
+		 List<Study> studies = getDao().find(query);
+		 Study study = studies.get(0);
+		assertNotNull("No study returned", study);
 	}
 }
