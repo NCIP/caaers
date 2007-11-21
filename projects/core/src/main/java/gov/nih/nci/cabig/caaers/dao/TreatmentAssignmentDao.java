@@ -1,13 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+
+import java.util.List;
 
 public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignment> {
 

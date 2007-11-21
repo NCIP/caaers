@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 import java.util.Date;
+
+import javax.persistence.Embeddable;
 
 /**
  * @author Rhett Sutphin

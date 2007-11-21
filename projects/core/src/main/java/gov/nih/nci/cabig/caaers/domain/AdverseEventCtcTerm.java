@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 
 /**
  * @author Krikor Krumlian

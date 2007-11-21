@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.attribution;
 
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 
 import javax.persistence.DiscriminatorValue;

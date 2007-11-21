@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain.attribution;
 
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 
-import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Rhett Sutphin
