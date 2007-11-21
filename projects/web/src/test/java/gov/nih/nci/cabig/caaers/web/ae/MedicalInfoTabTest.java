@@ -1,19 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin

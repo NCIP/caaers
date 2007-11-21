@@ -7,17 +7,22 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 /**
  * @author Kulasekaran
  * @author Rhett Sutphin
  */
 public class ReporterTab extends AeTab {
-    private EvaluationService evaluationService;
+    private static final Log log = LogFactory.getLog(ReporterTab.class);
+    
+	private EvaluationService evaluationService;
+    
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(),

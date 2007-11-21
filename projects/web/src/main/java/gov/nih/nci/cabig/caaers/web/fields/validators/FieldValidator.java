@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-import org.apache.commons.lang.math.NumberUtils;
 
 
 public abstract class FieldValidator {

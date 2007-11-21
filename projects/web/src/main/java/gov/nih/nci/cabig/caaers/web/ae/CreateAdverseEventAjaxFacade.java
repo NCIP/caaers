@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
@@ -34,12 +36,20 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -48,14 +58,6 @@ import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
-
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Collections;
-import java.util.ArrayList;
 
 /**
  * @author Rhett Sutphin

@@ -2,30 +2,29 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
-import java.util.Arrays;
 
 /**
  * This class is part of the implementation of AttributionMap and AttributionTab.

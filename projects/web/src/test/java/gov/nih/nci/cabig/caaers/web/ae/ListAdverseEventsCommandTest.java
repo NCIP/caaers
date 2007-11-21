@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 
 import org.easymock.classextension.EasyMock;

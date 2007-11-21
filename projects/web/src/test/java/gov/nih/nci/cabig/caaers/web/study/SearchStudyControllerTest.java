@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.service.StudyService;
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import org.springframework.web.servlet.ModelAndView;
 

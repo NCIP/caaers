@@ -3,27 +3,23 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.INDType;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +29,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 

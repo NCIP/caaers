@@ -1,18 +1,16 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
-import java.util.Date;
-import java.util.Calendar;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
-import edu.nwu.bioinformatics.commons.DateUtils;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockServletContext;
 
 /**
  * @author Rhett Sutphin

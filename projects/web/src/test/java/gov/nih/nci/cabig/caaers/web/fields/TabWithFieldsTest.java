@@ -1,13 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.reportMatcher;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+
+import java.util.Map;
+
 import org.easymock.IArgumentMatcher;
-import static org.easymock.classextension.EasyMock.*;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin

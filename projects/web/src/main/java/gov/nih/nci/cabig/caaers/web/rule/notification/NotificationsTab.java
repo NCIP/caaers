@@ -4,11 +4,11 @@ import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,7 +22,6 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 
 /***
  * This tab has the details of Email Message.

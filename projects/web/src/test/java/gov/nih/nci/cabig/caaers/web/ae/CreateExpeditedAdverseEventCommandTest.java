@@ -1,20 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createReportDefinition;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import org.easymock.EasyMock;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.easymock.EasyMock;
 
 /**
  * This class also contains tests for the shared behavior in AbstractExpeditedAdverseEventInputCommand

@@ -1,17 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.assignParticipant;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createOrganization;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createParticipant;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudy;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;

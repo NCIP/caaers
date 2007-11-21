@@ -1,23 +1,24 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 

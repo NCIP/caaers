@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.tools;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import com.sun.org.omg.CORBA.Initializer;
 
 /**
  * @author Rhett Sutphin

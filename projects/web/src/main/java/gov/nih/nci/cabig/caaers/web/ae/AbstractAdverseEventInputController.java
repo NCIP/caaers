@@ -5,8 +5,8 @@ import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
@@ -29,8 +29,15 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.Date;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -39,12 +46,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin

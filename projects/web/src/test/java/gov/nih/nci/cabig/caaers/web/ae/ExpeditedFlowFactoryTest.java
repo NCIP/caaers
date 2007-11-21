@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import static org.easymock.EasyMock.*;
 
 /**
  * @author Rhett Sutphin

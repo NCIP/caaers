@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createBooleanSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 
 
 /**

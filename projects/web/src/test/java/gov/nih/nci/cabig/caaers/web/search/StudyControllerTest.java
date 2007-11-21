@@ -1,10 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.search.StudyController;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Krikor Krumlian

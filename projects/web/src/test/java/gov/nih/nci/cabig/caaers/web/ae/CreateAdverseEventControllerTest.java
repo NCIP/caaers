@@ -1,6 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createAssignment;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.notNull;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
@@ -8,8 +14,8 @@ import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
@@ -25,7 +31,6 @@ import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseDate;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -41,12 +46,6 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.apache.commons.collections15.map.LazyMap;
-import static org.easymock.classextension.EasyMock.*;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,6 +53,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.collections15.map.LazyMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Rhett Sutphin

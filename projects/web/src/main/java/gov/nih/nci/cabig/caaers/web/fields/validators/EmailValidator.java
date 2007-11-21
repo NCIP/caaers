@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.GenericValidator;
 
 public class EmailValidator extends FieldValidator {

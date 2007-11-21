@@ -1,13 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.aryEq;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;

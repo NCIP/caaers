@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import org.springframework.validation.ObjectError;
 
 /**
  * @author Rhett Sutphin

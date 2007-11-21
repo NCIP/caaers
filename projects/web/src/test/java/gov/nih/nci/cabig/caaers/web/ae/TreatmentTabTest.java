@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -12,8 +13,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin

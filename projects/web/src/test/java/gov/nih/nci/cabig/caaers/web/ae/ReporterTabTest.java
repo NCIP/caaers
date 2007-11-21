@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.same;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 /**
  * @author Rhett Sutphin

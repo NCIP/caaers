@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;

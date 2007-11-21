@@ -1,16 +1,20 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.collectOptions;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createDateField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextField;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Arrays;
 
 
 /**

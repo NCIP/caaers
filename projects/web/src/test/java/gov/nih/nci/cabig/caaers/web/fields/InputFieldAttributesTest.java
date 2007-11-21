@@ -1,12 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import junit.framework.TestCase;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.COLS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.DETAILS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.OPTIONS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.SIZE;
+import gov.nih.nci.cabig.caaers.web.fields.InputField.Category;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.*;
+import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin

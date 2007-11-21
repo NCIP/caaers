@@ -5,15 +5,16 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.validation.Errors;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Set;
+
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
  * @author Rhett Sutphin

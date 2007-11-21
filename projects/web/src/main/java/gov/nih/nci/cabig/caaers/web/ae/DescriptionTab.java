@@ -1,14 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.collectOptions;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createBooleanSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createDateField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 
-import java.util.Map;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin

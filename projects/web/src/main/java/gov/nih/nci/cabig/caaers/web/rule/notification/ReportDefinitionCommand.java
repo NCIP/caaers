@@ -41,7 +41,10 @@ public class ReportDefinitionCommand  {
 	//flow support variables
 	private String indexToDelete; //index in the list to be deleted
 	private String tempProperty;
-
+	
+	//hide validation errors
+	private boolean hideErrors;
+	
 	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao){
 		this.rpDef = rpDef;
 		this.rpDefDao = rpDefDao;
@@ -163,6 +166,14 @@ public class ReportDefinitionCommand  {
 	}
 	public void setTempProperty(String tempProperty){
 		this.tempProperty = tempProperty;
+	}
+	
+	public void setHideErrors(boolean hideErrors) {
+		this.hideErrors = hideErrors;
+	}
+	
+	public boolean getHideErrors(){
+		return this.hideErrors;
 	}
 
 	 class PlannedEmailNotificationFactory<T extends PlannedNotification> implements Factory<T>{

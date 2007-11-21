@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.web.ae.AeTab.SimpleNumericDisplayNameCreator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;

@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.*;
-
-import gov.nih.nci.cabig.caaers.web.rule.AutocompleterField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.COLS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.DETAILS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.OPTIONS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.ROWS;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.SIZE;
 
 import java.util.Map;
 

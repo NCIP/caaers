@@ -3,8 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
-import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
 import junit.framework.TestCase;
 
 import org.acegisecurity.Authentication;
@@ -13,7 +13,6 @@ import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

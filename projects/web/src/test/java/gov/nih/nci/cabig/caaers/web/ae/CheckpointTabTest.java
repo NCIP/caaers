@@ -2,23 +2,18 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.createReportDefinition;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
-import static org.easymock.classextension.EasyMock.expect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import org.easymock.EasyMock;
 
 /**
  * @author Rhett Sutphin

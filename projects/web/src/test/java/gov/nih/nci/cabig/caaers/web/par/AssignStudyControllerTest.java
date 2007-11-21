@@ -1,26 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.par;
 
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.validation.BindException;
-import org.easymock.classextension.EasyMock;
-
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
-import static org.easymock.classextension.EasyMock.*;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.Arrays;
-
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.notNull;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController;
 import gov.nih.nci.cabig.caaers.web.participant.AssignParticipantStudyCommand;
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
+
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Krikor Krumlian

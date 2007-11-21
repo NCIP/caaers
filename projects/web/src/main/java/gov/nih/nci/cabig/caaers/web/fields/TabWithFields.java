@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.Map;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The central class in the <code>fields</code> package.  Subclasses

@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.io.IOException;
 import java.util.List;

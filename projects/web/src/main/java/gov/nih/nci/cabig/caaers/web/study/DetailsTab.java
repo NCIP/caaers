@@ -2,10 +2,10 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -14,7 +14,6 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * @author Rhett Sutphin

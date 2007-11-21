@@ -1,31 +1,23 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 import gov.nih.nci.cabig.ctms.web.tabs.StaticTabConfigurer;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
-
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.validation.Errors;
-import org.springframework.validation.BindingResult;
-import org.easymock.classextension.EasyMock;
-import static org.easymock.classextension.EasyMock.*;
+import java.util.List;
 
 /**
  * @author Kulasekaran

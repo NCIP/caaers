@@ -1,12 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.*;
-
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.AUTOCOMPLETER;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.DATE;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.LONGSELECT;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.SELECT;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXTAREA;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
-import java.util.Map;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;

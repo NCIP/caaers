@@ -4,22 +4,18 @@ import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Study;	
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
-
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin

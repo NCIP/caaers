@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import static org.easymock.classextension.EasyMock.*;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
 import java.util.Map;
 

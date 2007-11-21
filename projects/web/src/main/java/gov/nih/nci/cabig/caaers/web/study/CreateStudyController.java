@@ -1,15 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

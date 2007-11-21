@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+
 import org.springframework.validation.ObjectError;
 
 /**
