@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 /**
  *
  *

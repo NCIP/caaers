@@ -179,10 +179,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	/**
-	 * @param reportScheduleDao the reportScheduleDao to set
+	 * @param reportDao the reportScheduleDao to set
 	 */
-	public void setReportScheduleDao(ReportDao reportScheduleDao) {
-		this.reportScheduleDao = reportScheduleDao;
+	public void setReportScheduleDao(ReportDao reportDao) {
+		this.reportScheduleDao = reportDao;
 	}
 
 	public void logReportSchedule(Report s){

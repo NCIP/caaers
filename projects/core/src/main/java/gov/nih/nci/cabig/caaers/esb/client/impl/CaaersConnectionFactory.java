@@ -8,7 +8,6 @@ import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

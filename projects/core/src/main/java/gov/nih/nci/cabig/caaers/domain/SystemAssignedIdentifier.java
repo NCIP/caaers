@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("2")
 public class SystemAssignedIdentifier extends Identifier {
+	
+	public static final String MRN_IDENTIFIER_TYPE = "MRN";
 
 	private String systemName;
 

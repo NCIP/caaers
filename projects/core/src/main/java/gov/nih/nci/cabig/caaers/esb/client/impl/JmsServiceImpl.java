@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -12,12 +15,9 @@ import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
-import java.util.List;
-import java.util.Vector;
-import java.util.ArrayList;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**

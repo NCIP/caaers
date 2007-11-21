@@ -3,11 +3,9 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.User;
 
-import java.util.Date;
-import java.sql.Timestamp;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.io.UnsupportedEncodingException;
 
 /**
  * @author Jared Flatow

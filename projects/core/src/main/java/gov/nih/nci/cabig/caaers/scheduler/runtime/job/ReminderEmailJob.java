@@ -3,11 +3,9 @@ package gov.nih.nci.cabig.caaers.scheduler.runtime.job;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 /**
