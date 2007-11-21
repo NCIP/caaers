@@ -12,6 +12,7 @@
         long_title="Long Title"
         description="Description"
         grid_id=""
+        load_status="1"
         />
     <STUDIES
         id="-3"
@@ -19,6 +20,7 @@
         short_title="Shorter"
         long_title="Lengthy Title" description="Different description"
         grid_id=""
+        load_status="1"
         />
 
     <STUDIES
@@ -28,6 +30,7 @@
         short_title="Shortest"
         long_title="Event Lengthier Title"
         description="Yet another different description"
+        load_status="0"
         />
         
     <DISEASE_TERMINOLOGIES
@@ -262,5 +265,6 @@
     <investigational_new_drugs />
     <ind_holders />
 	<study_agent_inds />
-
+	<research_staffs />
+	<treatment_assignment />
 </dataset>

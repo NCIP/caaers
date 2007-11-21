@@ -260,4 +260,5 @@
     <ae_report_people />
      <contact_mechanisms />
      <study_amendments />
+     <ae_prior_therapies />
 </dataset>
