@@ -80,73 +80,6 @@ public String assesAdverseEvent(AdverseEvent ae, Study study) throws Exception{
 			}
 		}
 		return CAN_NOT_DETERMINED;
-		
-/*
-	Map<String,List<String>> map = new HashMap<String,List<String>>();
-
-	List<String> reportDefinitionsForSponsor = new ArrayList<String>();
-	
-	boolean ignore = false ;
-	String message = evaluateSponsorTarget(ae,study, null , RuleType.REPORT_SCHEDULING_RULES.getName());
-	
-	System.out.println("message is " + message);
-	
-	if (!message.equals(CAN_NOT_DETERMINED)) {
-
-		String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-		for (int i=0;i<messages.length;i++) {
-			if (messages[i].equals("IGNORE")) {
-				ignore = true;					
-				break;
-			} else {
-				reportDefinitionsForSponsor.add(messages[i]);
-			}
-		}
-	}	
-
-	System.out.println("ignore is " + ignore);
-	if (ignore)  {
-		reportDefinitionsForSponsor.clear();
-	}
-
-	for(StudyOrganization so : study.getStudyOrganizations() )
-	{
-		List<String> reportDefinitionsForInstitution = new ArrayList<String>();
-
-			message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null , RuleType.REPORT_SCHEDULING_RULES.getName());
-			if (!message.equals(CAN_NOT_DETERMINED)) {
-				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-				for (int i=0;i<messages.length;i++) {
-					if (messages[i].equals("IGNORE")) {
-						ignore = true;					
-						break;
-					} else {
-						reportDefinitionsForInstitution.add(messages[i]);
-					}					
-				}
-				//break;
-			}
-
-		if (ignore)  {
-			reportDefinitionsForInstitution.clear();
-		}
-		ignore = false;
-		//chek for key
-		List<String> existingList = map.get(so.getOrganization().getName());
-		if (existingList != null ) {
-			reportDefinitionsForInstitution.addAll(existingList);
-		}
-
-		map.put(so.getOrganization().getName(), reportDefinitionsForInstitution);
-	}
-	
-	if (map.size()  > 0) {
-		return SERIOUS_ADVERSE_EVENT;
-	}
-	return CAN_NOT_DETERMINED;
-	*/
 }
 
 
@@ -157,7 +90,8 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 	List<AdverseEvent> aes = aeReport.getAdverseEvents();
 	List<String> reportDefinitionsForSponsor = new ArrayList<String>();
 	
-	boolean ignore = false ;
+	//boolean ignore = false ;
+	
 	for(AdverseEvent ae : aes )
 	{
 		String message = evaluateSponsorTarget(ae,aeReport.getStudy(), null , RuleType.REPORT_SCHEDULING_RULES.getName());
@@ -166,6 +100,16 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 		
 		if (!message.equals(CAN_NOT_DETERMINED)) {
 
+			if (message.indexOf("IGNORE") < 0 ) {
+				//add the report definitions to the map
+				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
+				for (int i=0;i<messages.length;i++) {
+						reportDefinitionsForSponsor.add(messages[i]);
+				}
+			}
+			
+			
+			/*
 			String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
 
 			for (int i=0;i<messages.length;i++) {
@@ -176,9 +120,13 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 					reportDefinitionsForSponsor.add(messages[i]);
 				}
 			}
+			*/
+			
+			
+			
 		}
 	}
-	
+	/*
 	System.out.println("ignore is " + ignore);
 	if (ignore)  {
 		reportDefinitionsForSponsor.clear();
@@ -186,6 +134,7 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 	System.out.println("list size is " + reportDefinitionsForSponsor.size());
 	
 	ignore = false;
+	*/
 	map.put(aeReport.getStudy().getPrimaryFundingSponsorOrganization().getName(), reportDefinitionsForSponsor);
 
 	Study study = aeReport.getStudy();
@@ -198,7 +147,18 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 
 		for(AdverseEvent ae : aes ) {
 			String message = evaluateInstitutionTarget(ae, study, so.getOrganization(), null , RuleType.REPORT_SCHEDULING_RULES.getName());
+			
 			if (!message.equals(CAN_NOT_DETERMINED)) {
+				
+				if (message.indexOf("IGNORE") < 0 ) {
+					//add the report definitions to the map
+					String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
+					for (int i=0;i<messages.length;i++) {
+						reportDefinitionsForInstitution.add(messages[i]);
+					}
+				}				
+				
+				/*
 				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
 
 				for (int i=0;i<messages.length;i++) {
@@ -209,13 +169,15 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 						reportDefinitionsForInstitution.add(messages[i]);
 					}					
 				}
-				//break;
+				*/
 			}
 		}
+		/*
 		if (ignore)  {
 			reportDefinitionsForInstitution.clear();
 		}
 		ignore = false;
+		*/
 		//chek for key
 		List<String> existingList = map.get(so.getOrganization().getName());
 		if (existingList != null ) {
