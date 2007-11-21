@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
@@ -23,8 +24,11 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade.IndexChange;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
@@ -72,6 +77,9 @@ public class CreateStudyAjaxFacade {
 	private OrganizationDao organizationDao;
 
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
+	
+	private StudyDao studyDao;
+	
 
 	public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
 		String[] arr = new String[] { text };
@@ -213,11 +221,6 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudyAgent(final int index) {
-		Study study = getStudyCommand(getHttpServletRequest());
-		return study.getStudyAgents().remove(index) != null;
-	}
-
 	/**
 	 * A row of IND is needed to display
 	 */
@@ -245,31 +248,6 @@ public class CreateStudyAjaxFacade {
 		return html;
 	}
 
-	// TODO : remove the commented method
-	// // using existing list editor
-	// public String addChooseStudySite(int index, int siteIndex, String context) {
-	// HttpServletRequest request = getHttpServletRequest();
-	// Study study = getStudyCommand(request);
-	// study.setStudySiteIndex(siteIndex);
-	// if (siteIndex < 0) {
-	// return " "; // a space, incase of a reset of the select box.
-	// }
-	// String subView = "";
-	// if (StringUtils.equals("Personnel", context)) {
-	// subView = "studySitePersonnelsSection";
-	// study.getStudySites().get(siteIndex).getStudyPersonnels().get(0); // make sure one item is there
-	// }
-	// else {
-	// subView = "studySiteInvestigatorsSection";
-	// study.getStudySites().get(siteIndex).getStudyInvestigators().get(0); // make sure on entry is there.
-	// }
-	// request.setAttribute(AJAX_INDEX_PARAMETER, siteIndex);
-	// request.setAttribute(AJAX_SUBVIEW_PARAMETER, subView);
-	// request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-	//
-	// String url = getCurrentPageContextRelative(WebContextFactory.get());
-	// return getOutputFromJsp(url);
-	// }
 
 	public String addInvestigator(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
@@ -279,11 +257,7 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteInvestigator(final int index) {
-		Study study = getStudyCommand(getHttpServletRequest());
-		return study.getStudySites().get(study.getStudySiteIndex()).getStudyInvestigators().remove(index) != null;
-	}
-
+	
 	public String addStudyPersonnel(final int index) {
 		HttpServletRequest request = getHttpServletRequest();
 		getStudyCommand(request);
@@ -292,10 +266,54 @@ public class CreateStudyAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 
-	public boolean deleteStudyPersonnel(final int index) {
-		Study study = getStudyCommand(getHttpServletRequest());
-		return study.getStudySites().get(study.getStudySiteIndex()).getStudyPersonnels().remove(index) != null;
-	}
+	 /**
+     * Deletes an element in a list property of the current session command, shifting everything
+     * else around as appropriate.
+     *
+     * <p>
+     * Note that other than the extract command bit, this is entirely non-ae-flow-specific.
+     * </p>
+     *
+     * @return A list of changes indicating which elements of the list were moved and where to.
+     *      This list will be empty if the requested change is invalid or if the change is a no-op.
+     *      The element to remove will be represented by a move to a negative index.
+     */
+    @SuppressWarnings({ "unchecked" })
+    public List<IndexChange> remove(String listProperty, int indexToDelete, String displayName) {
+    	HttpServletRequest request = getHttpServletRequest();
+        Study command = getStudyCommand(request);
+        List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
+        if (indexToDelete >= list.size()) {
+            log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
+            return Collections.emptyList();
+        }
+        if (indexToDelete < 0) {
+            log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
+            return Collections.emptyList();
+        }
+        List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
+        list.remove(indexToDelete);
+        saveIfAlreadyPersistent(command);
+        return changes;
+    }
+
+    private List<IndexChange> createDeleteChangeList(int indexToDelete, int length, String displayName) {
+        List<IndexChange> changes = new ArrayList<IndexChange>();
+        changes.add(new IndexChange(indexToDelete, null));
+        for (int i = indexToDelete + 1 ; i < length ; i++) {
+        	IndexChange change = new IndexChange(i, i - 1);
+        	change.setCurrentDisplayName(displayName + " " + (i+ 1));
+            changes.add(change);
+        }
+        return changes;
+    }
+
+    private void saveIfAlreadyPersistent(Study study) {
+        if (study.getId() != null) {
+           this.studyDao.save(study);
+        }
+    }
+
 
 	private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex,
 			final String subview) {
@@ -408,5 +426,12 @@ public class CreateStudyAjaxFacade {
 	public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
 	}
-
+	
+	public StudyDao getStudyDao() {
+		return studyDao;
+	}
+	
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
 }
