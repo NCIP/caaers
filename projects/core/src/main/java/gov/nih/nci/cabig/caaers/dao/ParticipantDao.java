@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -244,6 +243,11 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	
 	public void reassociateUsingLock(Participant o) {
 		getHibernateTemplate().lock(o, LockMode.NONE);
+	}
+	
+	@Transactional(readOnly=false)
+	public void deleteInprogressParticipant(Participant p){
+		getHibernateTemplate().delete(p);
 	}
 
 }
