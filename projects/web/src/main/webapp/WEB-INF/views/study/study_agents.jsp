@@ -183,8 +183,10 @@ td#linkPosition a img {
              addCallback: function(nextIndex) {
                 	//initilze auto completer and calendar
           			new jsStudyAgent(nextIndex);
-             }
-      	});  
+             },
+             deletable: true,
+             removeParameters:['Study Agent']
+      	},"studyAgents");  
                  
       })
       
@@ -222,8 +224,7 @@ td#linkPosition a img {
 		</p>
 		<c:forEach var="sa" varStatus="status" items="${command.studyAgents}"> 
 		<study:oneStudyAgent title="Study Agent ${status.index + 1}"
-				sectionClass="sa-section" removeButtonAction="removeStudyAgent"
-				enableDelete="true" index="${status.index}">
+				sectionClass="sa-section" index="${status.index}">
 		  </study:oneStudyAgent>		
 		</c:forEach>
 		

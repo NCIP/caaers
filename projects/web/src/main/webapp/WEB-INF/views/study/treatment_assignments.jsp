@@ -27,20 +27,14 @@
 			document.studyTreatmentAssignmentsForm.submit();
 		}
 	}
-	
-	function clearField(field){
-		field.value="";
-	}
-	
 	  
     Event.observe(window, "load", function() {
-    
-    
-      		//This is added for Add Sysetem TreatmentAssignments button
-		            new ListEditor("si-section", createStudy, "TreatmentAssignment", {
-		            	addFirstAfter: "identifierbookmark",
-		                addCallback: function(nextIndex) {  }
-		            });
+  	  //This is added for Add Sysetem TreatmentAssignments button
+	  new ListEditor("si-section", createStudy, "TreatmentAssignment", {
+		addFirstAfter: "identifierbookmark",
+		deletable: true,
+        removeParameters:['Treatment Assignment']
+	   },'treatmentAssignments');
 		               	
     });
 	
@@ -50,22 +44,18 @@
 <study:summary />
 <tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="true">
     <jsp:attribute name="repeatingFields">
-		<div>
-			<input type="hidden" name="_action" value="">
-			<input type="hidden" name="_selected" value="">
-			</div>
-		<c:forEach varStatus="status" items="${command.treatmentAssignments}">	
-				  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" enableDelete="true" 
-					sectionClass="si-section" removeButtonAction="removeTreatmentAssignment" index="${status.index}" identifier="${command.treatmentAssignments[status.index]}" />
+		 <input type="hidden" name="_action" value="">
+		 <input type="hidden" name="_selected" value="">
+		<c:forEach varStatus="status" items="${command.treatmentAssignments}">
+		  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" 
+				sectionClass="si-section" index="${status.index}" identifier="${command.treatmentAssignments[status.index]}" />
 		</c:forEach>	
-		
 		    <span id="identifierbookmark"></span>
-		
     </jsp:attribute>
 	<jsp:attribute name="localButtons"> 
-	      	<chrome:division title="">          	
-	      		<tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />   
-            </chrome:division>                                                                                                                                                                                                                                                             
+	   <chrome:division title="">          	
+	   	<tags:listEditorAddButton divisionClass="si-section" label="Add Treatment Assignment" />   
+       </chrome:division>                                                                                                                                                                                                                                                             
 	</jsp:attribute>
 	
 </tags:tabForm>
