@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,13 +17,18 @@ public class AbstractQuery {
 
 	private StringBuffer queryBuffer;
 
-	private final List<String> conditions = new LinkedList<String>();
+	private final List<String> andConditions = new LinkedList<String>();
+	private final List<String> orConditions = new LinkedList<String>();
+	
+	private final List<String> joins = new ArrayList<String>();
 
 	private final Map<String, Object> queryParameterMap;
 
 	private static String WHERE = "WHERE";
 
 	private static String AND = "AND";
+	
+	private static String OR = "OR";
 
 	public AbstractQuery(final String queryString) {
 		this.queryString = queryString;
@@ -38,8 +44,12 @@ public class AbstractQuery {
 		else {
 			queryBuffer = new StringBuffer(queryString.trim());
 		}
-
-		for (String conditon : conditions) {
+		
+		for(String join : joins){
+			queryBuffer.append(join);
+		}
+		
+		for (String conditon : andConditions) {
 			if (queryBuffer.toString().toUpperCase().indexOf(WHERE) < 0) {
 				queryBuffer.append(" " + WHERE + " " + conditon);
 			}
@@ -48,6 +58,31 @@ public class AbstractQuery {
 			}
 
 		}
+		
+		if(!orConditions.isEmpty()){
+			boolean groupOR = andConditions.size() > 0 || queryBuffer.toString().toUpperCase().indexOf(WHERE) > 0;
+			
+			if(groupOR){
+				queryBuffer.append(" " + AND + " (");
+			}
+			
+			int orIndx = 0;
+			for (String conditon : orConditions) {
+				if(orIndx == 0 && groupOR){
+					queryBuffer.append(" " + conditon);
+				} else {
+					queryBuffer.append(" " + OR + " " + conditon);
+				}
+				orIndx++;
+			}
+			
+			if(groupOR){
+				queryBuffer.append(" )");
+			}
+		}
+		
+		
+		
 		if (!orderByString.equalsIgnoreCase("")) {
 			// finally add order by
 			queryBuffer.append(" " + orderByString);
@@ -75,11 +110,38 @@ public class AbstractQuery {
 	 * @param condition the condition
 	 */
 	protected void andWhere(final String condition) {
-		conditions.add(condition);
+		andConditions.add(condition);
 	}
+	
 
 	public Map<String, Object> getParameterMap() {
 		return queryParameterMap;
 	}
-
+	
+	/**
+	 * Joins an object to the query
+	 * select * from Study s join s.identifiers as id where s.shortTitle='study'
+	 * @param join
+	 */
+	protected void join(String objectQuery) {
+		addToJoinsList(" join " + objectQuery);
+		
+	}
+	
+	/**
+	 * Joins an object to the query
+	 * select * from Study s left join s.identifiers as id where s.shortTitle='study'
+	 * @param join
+	 */
+	protected void leftJoin(String objectQuery){
+		addToJoinsList(" left join " + objectQuery);
+	}
+	
+	protected void leftJoinFetch(String objectQuery){
+		addToJoinsList(" left join fetch " + objectQuery);
+	}
+	
+	private void addToJoinsList(String object){
+		if(!joins.contains(object)) joins.add(object);
+	}
 }
