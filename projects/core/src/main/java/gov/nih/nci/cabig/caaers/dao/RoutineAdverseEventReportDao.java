@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +12,6 @@ import java.util.Map;
 
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
-
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 /**
  * @author Krikor Krumlian

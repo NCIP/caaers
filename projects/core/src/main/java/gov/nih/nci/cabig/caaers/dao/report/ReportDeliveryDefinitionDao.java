@@ -1,20 +1,14 @@
 package gov.nih.nci.cabig.caaers.dao.report;
 
+import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+
 import java.util.Collection;
 import java.util.List;
 
-
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
-
-import edu.nwu.bioinformatics.commons.CollectionUtils;
-
-
-import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
-import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 /**
  * 
  * 
