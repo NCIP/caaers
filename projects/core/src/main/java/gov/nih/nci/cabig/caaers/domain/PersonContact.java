@@ -1,28 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.CollectionOfElements;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.MapKey;
-
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.JoinTable;
-import javax.persistence.Column;
-import javax.persistence.AttributeOverride;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.MapKey;
 
 /**
  * @author Krikor Krumlian

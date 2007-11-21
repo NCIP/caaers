@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Lob;
 import javax.persistence.Transient;
 /**
  * 

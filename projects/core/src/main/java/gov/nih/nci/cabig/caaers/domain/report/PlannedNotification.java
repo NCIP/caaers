@@ -4,8 +4,6 @@ import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;

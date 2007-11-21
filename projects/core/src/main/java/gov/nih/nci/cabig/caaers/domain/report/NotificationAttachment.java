@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;

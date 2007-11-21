@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.*;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.*;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
+import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 public enum ReportFormat implements CodedEnum<Integer>{

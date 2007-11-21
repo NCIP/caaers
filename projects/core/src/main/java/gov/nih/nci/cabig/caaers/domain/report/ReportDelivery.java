@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
