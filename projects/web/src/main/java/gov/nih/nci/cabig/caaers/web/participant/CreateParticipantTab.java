@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -31,6 +33,7 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 	private OrganizationDao organizationDao;
 
 	private ListValues listValues;
+	private ConfigProperty configurationProperty;
 
 	private static final String PARTICIPANT_FIELD_GROUP = "participant";
 
@@ -94,7 +97,7 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 		rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
 
 		options = new LinkedHashMap<Object, Object>();
-		List<ListValues> list = listValues.getParticipantIdentifierType();
+		List<Lov> list = configurationProperty.getMap().get("participantIdentifiersType");
 		options.put("", "Please select");
 		options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
 
@@ -206,5 +209,11 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 	public void setListValues(final ListValues listValues) {
 		this.listValues = listValues;
 	}
-
+	
+	public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 }
