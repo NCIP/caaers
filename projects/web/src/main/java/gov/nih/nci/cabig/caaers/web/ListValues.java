@@ -116,7 +116,9 @@ public class ListValues {
 		col.add(lov8);
 		return col;
 	}
-
+	
+	@Deprecated 
+	/** Use the 'participantIdentifiersType' in applicationContext-configProperties.xml */
 	public List<ListValues> getParticipantIdentifierType() {
 		List<ListValues> col = new ArrayList<ListValues>();
 		ListValues lov1 = new ListValues("Medical Record Number", "Medical Record Number");
