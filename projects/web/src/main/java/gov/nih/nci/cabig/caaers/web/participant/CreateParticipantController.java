@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -37,7 +38,8 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	private StudySiteDao studySiteDao;
 
 	private ListValues listValues;
-
+	private ConfigProperty configurationProperty;
+	
 	@Override
 	protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
 		flow.addTab(new CreateParticipantTab());
@@ -53,7 +55,7 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 		List<Identifier> identifiers = new ArrayList<Identifier>();
 		OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
 		organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-		organizationAssignedIdentifier.setType(listValues.getParticipantIdentifierType().get(0).getDesc());
+		organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
 
 		// identifiers.add();
 		participantCommand.getParticipant().setIdentifiers(identifiers);
@@ -138,5 +140,13 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	@Required
 	public void setListValues(final ListValues listValues) {
 		this.listValues = listValues;
+	}
+	
+	public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+	@Required
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
 	}
 }
