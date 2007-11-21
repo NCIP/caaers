@@ -2,13 +2,9 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.Agent;
 
-
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 /**

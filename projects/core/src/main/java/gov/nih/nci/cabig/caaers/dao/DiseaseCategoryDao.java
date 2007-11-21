@@ -1,21 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import edu.nwu.bioinformatics.commons.CollectionUtils;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-
-
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 /**

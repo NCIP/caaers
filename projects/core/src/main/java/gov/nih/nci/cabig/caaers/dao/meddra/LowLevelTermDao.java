@@ -1,24 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao.meddra;
 
-import edu.nwu.bioinformatics.commons.CollectionUtils;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-
-
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 
 /**
