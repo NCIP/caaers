@@ -3,147 +3,137 @@
  */
 package gov.nih.nci.cabig.caaers.grid;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.reportMatcher;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.api.StudyService;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cagrid.common.Utils;
 import gov.nih.nci.ccts.grid.Registration;
 import gov.nih.nci.ccts.grid.client.RegistrationConsumerClient;
-import gov.nih.nci.ccts.grid.common.RegistrationConsumer;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.easymock.IArgumentMatcher;
-import org.globus.wsrf.encoding.DeserializationException;
-import org.springframework.context.ApplicationContext;
-import org.xml.sax.SAXException;
+import javax.sql.DataSource;
+
+import junit.framework.TestCase;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
  *
  */
-public class CaaersRegistrationConsumerTest extends CaaersTestCase {
+public class CaaersRegistrationConsumerTest extends TestCase {
     private String clientConfigFile;
     private String registrationResourceName;
     private String serviceUrl;
+    
 
-    private RegistrationConsumer consumer;
-    private ApplicationContext applicationContext;
-    private StudyService studyService;
-
+    
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        this.clientConfigFile = System.getProperty("caaers.test.clientConfigFile",
-            "/gov/nih/nci/cabig/ctms/client/client-config.wsdd");
-        this.registrationResourceName = System.getProperty("caaers.test.sampleRegistrationFile",
-            "/SampleRegistrationMessage.xml");
-        this.serviceUrl = System.getProperty("caaers.test.serviceUrl",
-           // "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer");
-        	"http://10.10.10.2:8015/wsrf/services/cagrid/RegistrationConsumer");
-
-        applicationContext = registerMockFor(ApplicationContext.class);
-        consumer = new CaaersRegistrationConsumer() {
-            @Override protected synchronized ApplicationContext getApplicationContext() { return applicationContext; }
-        };
-        studyService = registerMockFor(StudyService.class);
-        expect(applicationContext.getBean(CaaersRegistrationConsumer.STUDY_SERVICE_BEAN_NAME))
-            .andReturn(studyService).anyTimes();
-    }
-
-    public void testCreateRegistrationLocal() throws Exception {
-        expect(studyService.assignParticipant(studyMatcher(), participantMatcher(), organizationMatcher(), eq("gridStudy")))
-            .andReturn(new StudyParticipantAssignment());
-
-        Registration reg = getRegistration();
-
-        replayMocks();
-        consumer.register(reg);
-        verifyMocks();
-    }
-
-    private static class TestRegistrationMatcher<T extends MutableDomainObject> implements IArgumentMatcher {
-        private String name;
-        private String expectedGridId;
-
-        protected TestRegistrationMatcher(String name, String expectedGridId) {
-            this.name = name;
-            this.expectedGridId = expectedGridId;
-        }
-
-        public final boolean matches(Object argument) {
-            T actual = (T) argument;
-            assertMatches(actual);
-            return true;
-        }
-
-        protected void assertMatches(T actual) {
-            assertEquals("Wrong gridId", expectedGridId, actual.getGridId());
-        }
-
-        public final void appendTo(StringBuffer buffer) {
-            buffer.append("Test registration's ").append(name);
-        }
-    }
-
-    private static Study studyMatcher() {
-        reportMatcher(new TestRegistrationMatcher<Study>("study", "gridStudy"));
-        return null;
-    }
-
-    private static Organization organizationMatcher() {
-        reportMatcher(new TestRegistrationMatcher<Organization>("site", "gridSite"));
-        return null;
-    }
-
-    private static Participant participantMatcher() {
-        reportMatcher(new TestRegistrationMatcher<Participant>("particpant", "gridParticipant") {
-            @Override public void assertMatches(Participant actual) {
-                super.assertMatches(actual);
-                assertEquals("Wrong gender", "M", actual.getGender());
-                assertEquals("Wrong first name", "Rudolph", actual.getFirstName());
-                assertEquals("Wrong last name", "Clooney", actual.getLastName());
-                assertEquals("Wrong number of identifiers", 1, actual.getIdentifiers().size());
-            }
-        });
-        return null;
-    }
-
-    /*
-     * TODO: this test needs to be able to run in isolation (i.e., w/o another server) somehow.
-     */
-    
-    public void testCreateRegistrationRemote() throws DeserializationException, SAXException {
-        Registration reg = getRegistration();
-        try {
-            RegistrationConsumerClient client = new RegistrationConsumerClient(this.serviceUrl);
-            client.register(reg);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            fail("Error making call: " + ex.getMessage());
-        }
+    protected void setUp() throws Exception {
+    	// TODO Auto-generated method stub
+    	 this.clientConfigFile = "/gov/nih/nci/ccts/grid/client/client-config.wsdd"; //"C:/devtools/workspace/REF-RegistrationConsumer/src/gov/nih/nci/ccts/grid/client/client-config.wsdd";	
+         this.registrationResourceName = "/SampleRegistrationMessage.xml"; //"C:/devtools/workspace/REF-RegistrationConsumer/test/resources/SampleRegistrationMessage.xml";
+         this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer"; 
     }
     
+    @Override
+    protected void tearDown() throws Exception {
+    	// TODO Auto-generated method stub
+    	super.tearDown();
+    }
+    
+	protected String[] getConfigLocations() {
+		//return new String[]{"classpath:applicationContext-grid.xml"};
+		
+		//<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
+		//<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+		//<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
+		//<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
+		
+		//<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-registrationConsumer.xml"/>
+		
+		
+		return new String[] { "classpath:applicationContext-grid.xml","classpath*:applicationContext-test.xml",
+				//"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+				//"classpath*:gov/nih/nci/cabig/caaers/applicationContext-test-security.xml",
+				//"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
+		 //"classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
+		};
 
-    private Registration getRegistration() throws DeserializationException, SAXException {
-    	Registration reg = null;
-        InputStream config = getClass().getResourceAsStream(clientConfigFile);
-        Reader reader = new InputStreamReader(getClass().getResourceAsStream(registrationResourceName));
-        try {
-			reg = (Registration) Utils.deserializeObject(reader, Registration.class);
+	}
+    
+	public void testCommitRemote() throws Exception {
+		try {
+			RegistrationConsumerClient regClient = new RegistrationConsumerClient(serviceUrl);
+			Registration reg = obtainRegistrationDTO();
+			regClient.commit(reg);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
 		}
-        return reg;
+	}
+	
+	
+	
+	
+	
+	public void testRollbackRemote() throws Exception{
+		try {
+			RegistrationConsumerClient regClient = new RegistrationConsumerClient(serviceUrl);
+			Registration reg = obtainRegistrationDTO();
+			regClient.rollback(reg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	public void testRegisterRemote() throws Exception{
+		try {
+			RegistrationConsumerClient regClient = new RegistrationConsumerClient(serviceUrl);
+			Registration reg = obtainRegistrationDTO();
+			regClient.register(reg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	public void testRegistrationLocal() throws Exception{
+		try{
+			
+			org.springframework.context.ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext-grid.xml"});
+			CaaersRegistrationConsumer consumer = (CaaersRegistrationConsumer) ctx.getBean("registrationConsumer");
+			Registration reg = obtainRegistrationDTO();
+			consumer.register(reg);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+    
+    
+    
+    public Registration obtainRegistrationDTO() throws Exception{
+    	Registration registration = null;
+    	try {
+    		Reader reader = new InputStreamReader(getClass().getResourceAsStream(registrationResourceName));
+    		InputStream fis = getClass().getResourceAsStream(clientConfigFile);
+    		registration = (Registration) Utils.deserializeObject(reader, Registration.class,fis);
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    			throw e;
+    		}
+    		return registration;
+    }
+    
+    protected void onSetUpInTransaction() throws Exception {
+    	 this.setUp();
     }
 }
