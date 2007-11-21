@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.dao.query;
 
 public class ParticipantQuery extends AbstractQuery {
 
-	private static String queryString = "SELECT distinct p from Participant p left join fetch p.identifiersInternal order by p.id";
+	private static String queryString = "SELECT distinct p from Participant p order by p.id";
 
 	private static String FIRST_NAME = "firstName";
 
@@ -11,10 +11,20 @@ public class ParticipantQuery extends AbstractQuery {
 	private static String IDENTIFIER_VALUE = "identifier";
 
 	public ParticipantQuery() {
-
 		super(queryString);
 	}
-
+	/**
+	 * SELECT distinct p from Participant p  left join fetch p.identifiers
+	 */
+	public void leftJoinFetchOnIdentifiers(){
+		leftJoinFetch("p.identifiers");
+	}
+	/**
+	 * select distinct p from Participant p join p.identifiers
+	 */
+	public void joinOnIdentifiers(){
+		join("p.identifiers");
+	}
 	public void filterByFirstName(final String firstName) {
 		String searchString = "%" + firstName.toLowerCase() + "%";
 		andWhere("lower(p.firstName) LIKE :" + FIRST_NAME);
@@ -29,8 +39,12 @@ public class ParticipantQuery extends AbstractQuery {
 
 	public void filterByIdentifierValue(final String value) {
 		String searchString = "%" + value.toLowerCase() + "%";
-		andWhere("lower(p.identifiersInternal.value) LIKE :" + IDENTIFIER_VALUE);
+		andWhere("lower(p.identifiers.value) LIKE :" + IDENTIFIER_VALUE);
 		setParameter(IDENTIFIER_VALUE, searchString);
 	}
-
+	
+	public void filterByIdentifierValueExactMatch(final String value) {
+		andWhere("p.identifiers.value = :" + IDENTIFIER_VALUE);
+		setParameter(IDENTIFIER_VALUE, value);
+	}
 }

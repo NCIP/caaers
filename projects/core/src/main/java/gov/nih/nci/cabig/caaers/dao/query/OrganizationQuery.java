@@ -24,5 +24,10 @@ public class OrganizationQuery extends AbstractQuery {
 		andWhere("lower(o.nciInstituteCode) LIKE :" + NCI_CODE);
 		setParameter(NCI_CODE, searchString);
 	}
+	
+	public void filterByNciCodeExactMatch(final String nciCode){
+		andWhere("o.nciInstituteCode = :" + NCI_CODE);
+		setParameter(NCI_CODE, nciCode);
+	}
 
 }
