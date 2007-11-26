@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
@@ -23,6 +24,9 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +34,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.StatementCallback;
 
 /**
  * @author Sujith Vellat Thayyilthodi
@@ -54,7 +61,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 	}
 
 	public void testGetByGridId() throws Exception {
-		Study study = getDao().getByGridId("gridStudy");
+		Study study = getDao().getByGridId("f2321");
 		assertNotNull("Study not found", study);
 	}
 
@@ -549,39 +556,75 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 	
 	public void testSearchWithStudyQuery(){
 		 StudyQuery query = new StudyQuery();
-		 query.filterByIdentifierValue("1138-421");
+		 query.filterByIdentifierValueExactMatch("1138-42");
 		 List<Study> studies = getDao().find(query);
-		 assertNotNull("There should be study corresponding to identifier 1138-421" );
-		 assertEquals("There should be exactly one study with identifier 1138-421" , 1, studies.size());
+		 for(Study study : studies){
+			 System.out.println("Short title :" + study.getShortTitle());
+		 }
+		 assertNotNull("There should be study corresponding to identifier 1138-42" );
+		 assertEquals("There should be exactly one study with identifier 1138-42" , 1, studies.size());
 	}
 	
 	public void testSearchWithStudyQueryHavingIdentifierTypeAndValue(){
 		 StudyQuery query = new StudyQuery();
-		 query.filterByIdentifierValue("1138-421");
-		 query.filterByIdentifierType("uniqueness");
+		 query.filterByIdentifierValue("1138-42");
+		 query.filterByIdentifierType("local");
 		 List<Study> studies = getDao().find(query);
-		 assertNotNull("There should be study corresponding to identifier 1138-421" );
-		 assertEquals("There should be exactly one study with identifier 1138-421" , 1, studies.size());
+		 assertNotNull("There should be study corresponding to identifier 1138-421" ,studies.get(0));
+		 assertEquals("There should be two identifiers for the study with identifier 1138-421" , 2, studies.size());
+	}
+	
+	public void testUnableToLoadInprogressStudy() throws Exception{
+			Study study = getDao().getById(-4);
+			assertNull("Study should be null", study);
+	}
+	
+	public void testAbleToLoadAfterCommitingStudy() throws Exception {
+		getDao().commitInprogressStudy("3333");
+		interruptSession();
+		Study study = getDao().getById(-4);
+		assertNotNull("Study should not be null", study);
 	}
 	
 	public void testDeleteInprogressStudy(){
-		 StudyQuery query = new StudyQuery();
-		 query.filterByIdentifierValue("1138-421");
-		 List<Study> studies = getDao().find(query);
-		 Study study = studies.get(0);
-		 study.setLoadStatus(0);
-		 getDao().deleteInprogressStudy(study);
-		 interruptSession();
-		 Study studyReloaded = getDao().getById(study.getId());
-		 assertNull("Study should be null", studyReloaded);
-		
+		{
+		 //load the study
+		 Study study = (Study)getJdbcTemplate().execute(new StatementCallback(){
+	          	public Object doInStatement(Statement st) throws SQLException,
+	          			DataAccessException {
+	          			ResultSet rs = st.executeQuery("select * from studies where id = -4");
+	          			if(rs.next()) {
+	          				Study s = new Study();
+	          				s.setShortTitle("Shortest");
+	          				return s;
+	          			}
+	          		return null;
+	          	}
+	          });
+		 
+		 assertNotNull("An inprogress study with id -4 should be there in DB", study);
+		 //delete study
+		 getDao().deleteInprogressStudy("3333");
+		}
+		interruptSession();
+		{
+			//load the study
+			 Study study = (Study)getJdbcTemplate().execute(new StatementCallback(){
+		          	public Object doInStatement(Statement st) throws SQLException,
+		          			DataAccessException {
+		          			ResultSet rs = st.executeQuery("select * from studies where id = -4");
+		          			if(rs.next()) {
+		          				Study s = new Study();
+		          				s.setShortTitle("Shortest");
+		          				return s;
+		          			}
+		          		return null;
+		          	}
+		          });
+			 
+			 assertNull("An inprogress study with id -4 should not be there in DB", study);
+		}
 	}
 	
-	public void testRetrieveInprogresStudy(){
-		StudyQuery query = new StudyQuery();
-		query.filterByInprogressStudyies();
-		 List<Study> studies = getDao().find(query);
-		 Study study = studies.get(0);
-		assertNotNull("No study returned", study);
-	}
+	
 }
