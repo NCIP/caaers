@@ -35,7 +35,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 	
 	
 	
-	public DomainObjectImportOutcome createParticipantObjects(Participant xstreamParticipant) {
+	public DomainObjectImportOutcome<Participant> createParticipantObjects(Participant xstreamParticipant) {
 
 		Participant participant = new Participant();
 		DomainObjectImportOutcome<Participant> participantImportOutcome = new DomainObjectImportOutcome<Participant>();

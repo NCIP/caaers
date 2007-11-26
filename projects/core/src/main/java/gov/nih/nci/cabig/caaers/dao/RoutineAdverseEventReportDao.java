@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.text.ParseException;
@@ -13,6 +12,9 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
+
 /**
  * @author Krikor Krumlian
  */
@@ -20,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdverseEventReport> implements
 		MutableDomainObjectDao<RoutineAdverseEventReport> {
 
+	private NowFactory nowFactory;
+	
 	private static final String JOINS = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm "
 			+ " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier "
 			+ " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
@@ -29,6 +33,7 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 		return RoutineAdverseEventReport.class;
 	}
 	
+	/*
 	@Transactional(readOnly = false)
 	public List batchSave(final List<DomainObjectImportOutcome<RoutineAdverseEventReport>> domainObjectImportOutcome){
 		log.debug("Time now : " + new java.util.Date());
@@ -36,15 +41,24 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		for (DomainObjectImportOutcome<RoutineAdverseEventReport> outcome : domainObjectImportOutcome) {
 			final RoutineAdverseEventReport report = outcome.getImportedDomainObject();
-			session.saveOrUpdate(report);
-			for (AdverseEvent ae : report.getAdverseEvents()) {
-				getHibernateTemplate().saveOrUpdate(ae);
+			if (report.getStatus() == Status.LEGACY){
+				session.saveOrUpdate(report);
+				for (AdverseEvent ae : report.getAdverseEvents()) {
+					getHibernateTemplate().saveOrUpdate(ae);
+				}
+			}
+			if (report.getStatus() == Status.CURRENT){
+				ExpeditedAdverseEventReport expeditedAe = getExpedited(report);
+				session.saveOrUpdate(report);
+				for (AdverseEvent ae : report.getAdverseEvents()) {
+					getHibernateTemplate().saveOrUpdate(ae);
+				}
 			}
 			routineReports.add(report);
 			System.out.println(report.getId());
 		}
 		return routineReports;
-	}
+	}*/
 	
 	@Transactional(readOnly = false)
 	public void batchClean(final List<RoutineAdverseEventReport> reports){

@@ -69,10 +69,20 @@ public abstract class AbstractImportServiceImpl {
 		}
 	}
 	
+	protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome, Severity severity, String message){
+		if(domainObject == null){
+			importOutcome.addErrorMessage(message, severity);
+		}
+	}
+	
 	protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome, Severity severity){
 		if(list.isEmpty()){
 			studyImportOutcome.addErrorMessage("is required or has errors",severity);
 		}
+	}
+	
+	protected void errorInBusinessLogic(DomainObjectImportOutcome importOutcome, Severity severity, String message){
+		importOutcome.addErrorMessage(message , severity);
 	}
 	
 	public OrganizationDao getOrganizationDao() {

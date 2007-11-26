@@ -19,6 +19,17 @@ public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignm
 				 new String[]{"tac", "studyId"},
 				 new Object[]{"%" + code + "%",studyId});
 	}
+	
+	
+	@SuppressWarnings(value="unchecked")
+	public TreatmentAssignment getAssignmentsByStudyIdExactMatch(String code, int studyId){
+		 List<TreatmentAssignment> tas =  getHibernateTemplate().findByNamedParam("from TreatmentAssignment ta where " +
+		 		" ta.code like :tac " +
+		 		" and ta.study.id = :studyId",
+				 new String[]{"tac", "studyId"},
+				 new Object[]{ code ,studyId});
+		 return tas.size() > 0 ? tas.get(0) : null;
+	}
 
 	@SuppressWarnings(value="unchecked")
 	public List<TreatmentAssignment> getAll(){

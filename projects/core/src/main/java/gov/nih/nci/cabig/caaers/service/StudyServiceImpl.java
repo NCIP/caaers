@@ -77,7 +77,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	 *  Given a study object which has been serialized from an xml format
 	 *  is recreated here and made ready to be saved. 
 	 */
-	public DomainObjectImportOutcome createStudyObjects(Study xstreamStudy)
+	public DomainObjectImportOutcome<Study> createStudyObjects(Study xstreamStudy)
 	{
 		Study st = new Study();
 		DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();

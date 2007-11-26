@@ -153,7 +153,7 @@
 		</c:if>
 		
 		<c:if test='${fn:length(command.nonImportableRoutineAdverseEventReports) > 0 }'>
-		<h4>The following Participant Records have been flagged and will NOT be loaded into caAERS</h4>
+		<h4>The following Routine AE Records have been flagged and will NOT be loaded into caAERS</h4>
 		<table  width="80%" border="1" cellspacing="0" cellpadding="0">
 		<br>
 
@@ -165,11 +165,13 @@
 					
 					<c:forEach var='item' items='${command.nonImportableRoutineAdverseEventReports}'>
 						<tr class="results">
-   						<td align="left"><c:out value='${item.importedDomainObject.startDate}'/></td>
-   						<td align="left"><c:out value='${item.importedDomainObject.endDate}'/></td>
-   						<c:forEach var='message' items='${item.messages}'>
-   							<td align="left" color="red"><c:out value='${message.message}'/></td>
-   						</c:forEach>
+   						<td align="left"><tags:formatDate value="${item.importedDomainObject.startDate}" /></td>
+   						<td align="left"><tags:formatDate value="${item.importedDomainObject.endDate}" /></td>
+   						<td align="left" color="red">
+   							<c:forEach var='message' items='${item.messages}'>
+   								- <c:out value='${message.message}'/><br>
+   							</c:forEach>
+   						</td>
    						</tr>
 					</c:forEach>																				
 		</table>
@@ -177,7 +179,7 @@
 		
 		<c:if test='${fn:length(command.importableRoutineAdverseEventReports) > 0 }'>
 		<br>
-		<h4>The following Routine Adverse Event Records will be loaded into caAERS</h4>
+		<h4>The following Routine AE Records will be loaded into caAERS</h4>
 		
 		<table  width="40%" border="1" cellspacing="0" cellpadding="0">
 		<br>
@@ -190,8 +192,8 @@
 				    
 					<c:forEach varStatus="status" var="item" items="${command.importableRoutineAdverseEventReports}">
 								<tr class="results">						
-									<td align="left"><c:out value="${item.importedDomainObject.startDate}"/></td>	
-									<td align="left"><c:out value="${item.importedDomainObject.endDate}"/></td>									
+									<td align="left"><tags:formatDate value="${item.importedDomainObject.startDate}" /></td>	
+									<td align="left"><tags:formatDate value="${item.importedDomainObject.endDate}" /></td>									
 								</tr>
 					</c:forEach>				
 		</table>

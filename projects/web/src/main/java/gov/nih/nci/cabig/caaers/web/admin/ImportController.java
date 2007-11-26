@@ -6,18 +6,27 @@ import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -53,16 +62,19 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
 	private static Log log = LogFactory.getLog(ImportController.class);
 
+	private NowFactory nowFactory;
 	private StudyDao studyDao;
 	private ParticipantDao participantDao;
 	private OrganizationDao organizationDao;
 	private RoutineAdverseEventReportDao routineAdverseEventReportDao;
+	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	private AgentDao agentDao;
 	private MedDRADao meddraDao;
 	private CtcDao ctcDao;
 	private StudyServiceImpl studyServiceImpl;
 	private ParticipantServiceImpl participantServiceImpl;
 	private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
+	private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
 	
 	public ImportController() {		
 
@@ -87,7 +99,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile().isEmpty() ;
                 log.debug("Are files empty : " + participantFile + ":" + studyFile + " : " + routineAdverseEventReportFile );
                 if (participantFile && studyFile && routineAdverseEventReportFile) 
-                	errors.rejectValue("participantFile", "REQUIRED", "Please choose either a stuy or a participant file.");
+                	errors.rejectValue("participantFile", "REQUIRED", "Please choose either a study or a participant file.");
             }
 
             @Override
@@ -181,6 +193,21 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		
 		if (cObject.getImportableRoutineAdverseEventReports().size() > 0){
 			
+			for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : cObject.getImportableRoutineAdverseEventReports()) {
+				if (importOutcome.getImportedDomainObject().getStatus() == Status.CURRENT) {
+					// expedited reporting ? , create ExpeditedReport save routineReport,expeditedReport 
+					ExpeditedAdverseEventReport expeditedReport = getExpedited(importOutcome.getImportedDomainObject());
+					routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
+					if (expeditedReport != null) {
+						expeditedAdverseEventReportDao.save(expeditedReport);
+					}
+				}else{
+					// Status = Legacy => save routineAe 
+					routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
+				}
+			}
+			
+			/*
 			int start= 0;
 	        int loopEnd = 0;
 	        int end = cObject.getImportableRoutineAdverseEventReports().size() ;
@@ -195,6 +222,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	           	  if (loopEnd  == end ) { break;}
 	             }
 			redirectTo = "redirectToSearchInParticipantTab";
+			*/
 		}
 		
 		return new ModelAndView(redirectTo);
@@ -345,6 +373,30 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		}
 	}
 	
+	public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer ){
+		log.debug("Checking for expedited AEs");
+		Study study = raer.getStudy();
+		
+		//Create the expedited Report
+		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+		aeReport.setAssignment(raer.getAssignment());
+		aeReport.setCreatedAt(nowFactory.getNowTimestamp());
+		
+    	try {
+			for (AdverseEvent ae : raer.getAdverseEvents()) {
+				
+				String message = adverseEventEvaluationService.assesAdverseEvent(ae, study);
+				if (message.equals("SERIOUS_ADVERSE_EVENT")) {
+					aeReport.addAdverseEvent(ae);
+				}
+			}
+			return aeReport.getAdverseEvents().isEmpty() ? null : aeReport;
+		}
+    	catch(Exception e){
+    		throw new CaaersSystemException("There was an error evaluating Routine AEs",e);
+    	}
+    }
+	
 	
 	private ImportCommand createCommandObject()
 	{
@@ -434,5 +486,24 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl) {
 		this.routineAdverseEventReportServiceImpl = routineAdverseEventReportServiceImpl;
 	}
+
+	public NowFactory getNowFactory() {
+		return nowFactory;
+	}
+
+	public void setNowFactory(NowFactory nowFactory) {
+		this.nowFactory = nowFactory;
+	}
+
+	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+		return expeditedAdverseEventReportDao;
+	}
+
+	public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}	
+	
+	
 	
 }

@@ -1,13 +1,16 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import java.util.List;
+import java.util.HashMap;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -15,6 +18,10 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
@@ -26,8 +33,9 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 	StudyParticipantAssignmentDao studyParticipantAssignmentDoa;
 	LowLevelTermDao lowLevelTermDao;
 	CtcTermDao ctcTermDao;
+	TreatmentAssignmentDao treatmentAssignmentDao;
 	
-	public DomainObjectImportOutcome createRoutineAdverseEventReportObjects(RoutineAdverseEventReport xstreamRoutineAdverseEventReport) {
+	public DomainObjectImportOutcome<RoutineAdverseEventReport> createRoutineAdverseEventReportObjects(RoutineAdverseEventReport xstreamRoutineAdverseEventReport) {
 
 		RoutineAdverseEventReport routineAdverseEventReport = new RoutineAdverseEventReport();
 		DomainObjectImportOutcome<RoutineAdverseEventReport> routineAdverseEventReportImportOutcome = new DomainObjectImportOutcome<RoutineAdverseEventReport>();
@@ -38,30 +46,56 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 
 		//migrateIdentifiers(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
 		migrateAssignments(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
-		 
-		Term term = studyCtcOrMeddraBased(routineAdverseEventReport);
-		// STATUS = CURRENT 
-		if (routineAdverseEventReport.getStatus() != null && routineAdverseEventReport.getStatus() == Status.CURRENT ) {
+		
+		if (routineAdverseEventReportImportOutcome.isSavable()) {
 			
-			if (term != null && term == Term.CTC ){
-				migrateCtcBasedAdverseEvents(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
+			migrateTreatmentAssignment(routineAdverseEventReport,
+									   xstreamRoutineAdverseEventReport,
+									   routineAdverseEventReportImportOutcome);
+
+			Terminology terminology = studyCtcOrMeddraBased(routineAdverseEventReport);
+			// STATUS = CURRENT
+			if (routineAdverseEventReport.getStatus() != null
+					&& routineAdverseEventReport.getStatus() == Status.CURRENT) {
+
+				if (terminology.getTerm() != null
+						&& terminology.getTerm() == Term.CTC) {
+					migrateCtcBasedAdverseEvents(routineAdverseEventReport,
+							xstreamRoutineAdverseEventReport,
+							routineAdverseEventReportImportOutcome, terminology
+									.getCtcVersion());
+				}
+				if (terminology.getTerm() != null
+						&& terminology.getTerm() == Term.MEDDRA) {
+					migrateMeddraBasedAdverseEvents(routineAdverseEventReport,
+							xstreamRoutineAdverseEventReport,
+							routineAdverseEventReportImportOutcome);
+				}
 			}
-			if (term != null && term == Term.MEDDRA ){
-				migrateMeddraBasedAdverseEvents(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
-			}
-		}
-		// STATUS = LEGACY
-		if (routineAdverseEventReport.getStatus() != null && routineAdverseEventReport.getStatus() == Status.LEGACY ) {
-			
-			if (term != null && term == Term.CTC ){
-				migrateCtcBasedAdverseEventsRelaxed(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
-			}
-			if (term != null && term == Term.MEDDRA ){
-				migrateMeddraBasedAdverseEventsRelaxed(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
+			// STATUS = LEGACY
+			if (routineAdverseEventReport.getStatus() != null
+					&& routineAdverseEventReport.getStatus() == Status.LEGACY) {
+
+				if (terminology.getTerm() != null
+						&& terminology.getTerm() == Term.CTC) {
+					migrateCtcBasedAdverseEventsRelaxed(
+							routineAdverseEventReport,
+							xstreamRoutineAdverseEventReport,
+							routineAdverseEventReportImportOutcome, terminology
+									.getCtcVersion());
+				}
+				if (terminology.getTerm() != null
+						&& terminology.getTerm() == Term.MEDDRA) {
+					migrateMeddraBasedAdverseEventsRelaxed(
+							routineAdverseEventReport,
+							xstreamRoutineAdverseEventReport,
+							routineAdverseEventReportImportOutcome);
+				}
 			}
 		}
 			
 		routineAdverseEventReportImportOutcome.setImportedDomainObject(routineAdverseEventReport);
+		System.out.println("Number of messages : " + routineAdverseEventReportImportOutcome.getMessages().size());
 		//participantUniquenessCheck(routineAdverseEventReport,routineAdverseEventReportImportOutcome,Severity.ERROR);
 		
 		return routineAdverseEventReportImportOutcome;
@@ -71,13 +105,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		/*
 		 *  Get the Term of the selected Study to find out if MedDRA or CRC based.
 		 */
-		private Term studyCtcOrMeddraBased(RoutineAdverseEventReport routineAdverseEventReport){
-			Term term = null;
+		private Terminology studyCtcOrMeddraBased(RoutineAdverseEventReport routineAdverseEventReport){
+			Terminology terminology = null;
 			
 			if (routineAdverseEventReport.getAssignment() != null) {
-				term = routineAdverseEventReport.getAssignment().getStudySite().getStudy().getTerminology().getTerm();
+				terminology = routineAdverseEventReport.getAssignment().getStudySite().getStudy().getTerminology();
 			}
-			return term;
+			return terminology;
 		}
 		
 		
@@ -101,8 +135,12 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 						studyParticipantAssignment.getStudySite()
 								.getOrganization().getName(), identifier
 								.getValue());
+				
 				if (studySite != null) {
-					System.out.println("StudySite " + studySite.getId());
+					System.out.println("StudySite id : " + studySite.getId());
+					System.out.println("Orgs in study " + studySite.getStudy().getStudyOrganizations().size());
+					// This is here so the studyOrgaizations are initialized if not hibernate throws a lazy initialization exceptions
+					studySite.getStudy().getStudyOrganizations().size();
 					break;
 				}
 			}
@@ -127,11 +165,35 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		}
 		ifNullObject(destination.getAssignment(), routineAdverseEventReportImportOutcome,
 				Severity.ERROR);
-	}
+		}
 		
-		private void migrateCtcBasedAdverseEvents(RoutineAdverseEventReport destination,
+		private void migrateTreatmentAssignment(RoutineAdverseEventReport destination,
 				RoutineAdverseEventReport source,
 				DomainObjectImportOutcome routineAdverseEventReportImportOutcome) {
+			
+			TreatmentAssignment treatmentAssignment = null ;
+			
+			if (source.getTreatmentAssignment() != null) {
+				String code = source.getTreatmentAssignment().getCode();
+				if (code != null) {
+					treatmentAssignment = treatmentAssignmentDao.getAssignmentsByStudyIdExactMatch(code, destination.getStudy().getId());
+					ifNullObject(treatmentAssignment, routineAdverseEventReportImportOutcome,Severity.ERROR,
+							"The treatment Assignment code  " + code + "is not valid ");
+					destination.setTreatmentAssignment(treatmentAssignment);
+				}
+			}
+		}
+		
+		
+		
+		
+		/*
+		 * This method is used to import legacy routine AEs - It has relaxed Rules
+		 */
+		private void migrateCtcBasedAdverseEventsRelaxed(RoutineAdverseEventReport destination,
+				RoutineAdverseEventReport source,
+				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
+				Ctc ctcVersion) {
 			
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
 				String ctepCode = adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode();
@@ -148,6 +210,45 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					ctcTerm = ctcTermDao.getCtcTerm(cc);
 				}
 				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, false);
+				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
+				
+				ae.setGrade(adverseEvent.getGrade());
+				ae.setHospitalization(adverseEvent.getHospitalization());
+				ae.setExpected(adverseEvent.getExpected());
+				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
+				
+				destination.addAdverseEvent(ae);
+			}
+			
+			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
+			
+		}
+		
+		private void migrateCtcBasedAdverseEvents(RoutineAdverseEventReport destination,
+				RoutineAdverseEventReport source,
+				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
+				Ctc ctcVersion) {
+			
+			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
+				String ctepCode = adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode();
+				String term = adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm();
+				String termConcatCtepCode = term == null ? ctepCode == null ? "N/A" : ctepCode :term;
+				CtcTerm ctcTerm = null;
+				AdverseEvent ae = new AdverseEvent();
+				
+				if (ctepCode != null) {
+					String[] cc = { ctepCode };
+					ctcTerm = ctcTermDao.getCtcTerm(cc);
+				}
+				if (term != null) {
+					String[] cc = { term };
+					ctcTerm = ctcTermDao.getCtcTerm(cc);
+				}
+				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided " + termConcatCtepCode + " is not valid ");
+				
+				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, true);
+				
 				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 				
 				ae.setGrade(adverseEvent.getGrade());
@@ -189,48 +290,14 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setExpected(adverseEvent.getExpected());
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
-				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade missing");
+				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization missing");
+				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expected missing");
+				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution missing");
 				
 				destination.addAdverseEvent(ae);
 				System.out.println("Hospitalization : " + adverseEvent.getHospitalization());
 				System.out.println("Meddra Term Id : " + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
-			}
-			
-			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
-			
-		}
-		
-		
-		private void migrateCtcBasedAdverseEventsRelaxed(RoutineAdverseEventReport destination,
-				RoutineAdverseEventReport source,
-				DomainObjectImportOutcome routineAdverseEventReportImportOutcome) {
-			
-			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
-				String ctepCode = adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode();
-				String term = adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm();
-				CtcTerm ctcTerm = null;
-				AdverseEvent ae = new AdverseEvent();
-				
-				if (ctepCode != null) {
-					String[] cc = { ctepCode };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
-				}
-				if (term != null) {
-					String[] cc = { term };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
-				}
-				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
-				
-				ae.setGrade(adverseEvent.getGrade());
-				ae.setHospitalization(adverseEvent.getHospitalization());
-				ae.setExpected(adverseEvent.getExpected());
-				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
-				
-				destination.addAdverseEvent(ae);
 			}
 			
 			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
@@ -269,6 +336,65 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		}
 		
 		
+		private void ctcTermValidity(CtcTerm ctcTerm, 
+									 Ctc ctcVersion,
+									 AdverseEvent adverseEvent, 
+									 AdverseEvent ae, 
+									 DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
+									 boolean isCurrent){
+			if (ctcTerm != null ){
+				// Is provided CtcTerm same version as Ctc version specified in Study ?
+				System.out.println(" The CTC version of the provided Term :" + ctcTerm.getCategory().getCtc().getName());
+				if (! ctcTerm.getCategory().getCtc().getName().equals(ctcVersion.getName())){
+					errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
+							"There is a discrepency between the CTC versions, The Ctc Term : " + 
+							ctcTerm.getFullName() + " is " + ctcTerm.getCategory().getCtc().getName() + " whereas the study expects " + 
+							ctcVersion.getName());
+				}
+				
+				if (isCurrent) {
+				// Get Contextual grades for this specific Term
+				HashMap<Grade,CtcGrade> contextualGrades = new HashMap<Grade,CtcGrade>();
+				for (CtcGrade ctcContextualGrade : ctcTerm.getContextualGrades()) {
+					contextualGrades.put(ctcContextualGrade.getGrade(), ctcContextualGrade);	
+				}
+				
+				// grade provided does not match any in the contextual list ? 
+				if (! contextualGrades.containsKey(adverseEvent.getGrade())){
+					String grades = "" ; 
+					for (Grade key : contextualGrades.keySet()) {
+						grades = grades + key.getName() + " ";							
+					}    	
+					errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
+							"The grade you provided for " + ctcTerm.getFullName() + " is not allowed use one of those : " + grades);
+				}
+				}
+				
+				// does the CtcTerm require other(verbatim) or other(MedDRA) ? 
+				if (ctcTerm.isOtherRequired()) {
+					String meddraCode = adverseEvent.getLowLevelTerm().getMeddraCode();
+					LowLevelTerm lowLevelTerm =null;
+
+					if (meddraCode != null) {
+						List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(meddraCode);
+						lowLevelTerm = terms.isEmpty() == false ? terms.get(0) : null;
+						if (lowLevelTerm == null) {
+							errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
+									"The MedDRA Code " + meddraCode  + " you provided for " + ctcTerm.getFullName() + " is not valid");
+						}else{
+							ae.setLowLevelTerm(lowLevelTerm);
+						}
+					}
+					ae.setDetailsForOther(adverseEvent.getDetailsForOther());
+					if (isCurrent){
+						if (ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
+							errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
+									"The provided CTC term " + ctcTerm.getFullName() + " requires Other information ");
+						}
+					}
+				}	
+			}
+		}
 		
 		private void participantUniquenessCheck(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
 			
@@ -310,5 +436,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
 			this.lowLevelTermDao = lowLevelTermDao;
 		}
+		public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+			return treatmentAssignmentDao;
+		}
+		public void setTreatmentAssignmentDao(
+				TreatmentAssignmentDao treatmentAssignmentDao) {
+			this.treatmentAssignmentDao = treatmentAssignmentDao;
+		}
+		
 		
 }
