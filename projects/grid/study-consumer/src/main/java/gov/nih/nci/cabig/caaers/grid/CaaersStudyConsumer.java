@@ -64,26 +64,25 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public void commit(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
 		
-		if(studyDto == null) throw new InvalidStudyException();
-		Study caaersStudy = null;
+		if(studyDto == null) {
+			InvalidStudyException e = new InvalidStudyException();
+			e.setFaultReason("Null input");
+			e.setFaultString("Null input");
+			throw e;
+		}
+		
 		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
 		
 		try{
-			caaersStudy = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-			if(caaersStudy == null){
-				log.error("No study exist with grid id :" + studyDto.getGridId());
-				throw new InvalidStudyException();
-			}
-			//update load status of the study
-			caaersStudy.setLoadStatus(LoadStatus.COMPLETE.getCode());
+			studyDao.commitInprogressStudy(ccIdentifier);
 			
-			studyDao.save(caaersStudy);
-			
-		}catch(InvalidStudyException rethrow){
-			throw rethrow;
+		
 		}catch(Exception exp){
 			log.error("Exception while trying to commit the study", exp);
-			throw new RemoteException("Error while commit study", exp);
+			InvalidStudyException e = new InvalidStudyException();
+			e.setFaultReason("Exception while comitting study,"  + exp.getMessage());
+			e.setFaultString("Exception while comitting study," + exp.getMessage());
+			throw e;
 		}
 
 	}
@@ -94,31 +93,24 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public void rollback(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
 		
-		if(studyDto == null) throw new InvalidStudyException();
+		if(studyDto == null) {
+			InvalidStudyException e = new InvalidStudyException();
+			e.setFaultReason("Null input");
+			e.setFaultString("Null input");
+			throw e;
+		}
 		
-		Study caaersStudy = null;
 		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
 		
 		try{
-			
-			caaersStudy = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-			if(caaersStudy == null){
-				log.error("No study exist with grid id :" + studyDto.getGridId());
-				throw new InvalidStudyException();
-			}
-			
-			if(caaersStudy.getLoadStatus() != LoadStatus.INPROGRESS.getCode()){
-				throw new RemoteException("Only studies that are in INPROGRESS(0) status can be deleted. The current status of the study in caAERS is " + caaersStudy.getLoadStatus());
-			}
-		    
-			//delete the study
-			studyDao.deleteInprogressStudy(caaersStudy);
-			
-		}catch(InvalidStudyException rethrow){
-			throw rethrow;
+			studyDao.deleteInprogressStudy(ccIdentifier);
+		
 		}catch(Exception exp){
-			log.error("Exception while trying to delete the study", exp);
-			throw new RemoteException("Error while deleting study", exp);
+			log.error("Exception while trying to rollback the study", exp);
+			InvalidStudyException e = new InvalidStudyException();
+			e.setFaultReason("Exception while comitting study,"  + exp.getMessage());
+			e.setFaultString("Exception while comitting study," + exp.getMessage());
+			throw e;
 		}
 	}
 	
