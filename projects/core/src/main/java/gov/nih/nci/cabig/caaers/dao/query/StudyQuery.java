@@ -42,10 +42,6 @@ public class StudyQuery extends AbstractQuery {
 		join("p.identifiers as pIdentifier");
 	}
 	
-	public void filterByInprogressStudyies(){
-		andWhere("s.loadStatus = 0");
-	}
-	
 	//s.status <> 'adminstratively complete'
 	public void filterByNonAdministrativelyComplete(){
 		andWhere("s.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE  + "'" );

@@ -28,7 +28,7 @@ import java.util.List;
 @Entity
 @Table
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participants_id") })
-//@Where(clause="load_status > 0")
+@Where(clause="load_status > 0")
 public class Participant extends AbstractIdentifiableDomainObject {
 	private String institutionalPatientNumber;
 

@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -333,9 +334,44 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * @param study
 	 */
 	@Transactional(readOnly=false)
-	public void deleteInprogressStudy(final Study study){
-		if(study.getLoadStatus() != LoadStatus.INPROGRESS.getCode()) throw new CaaersSystemException("Only study with INPROGRESS loadStatus can be deleted");
-		getHibernateTemplate().delete(study);
+	public void deleteInprogressStudy(final String ccIdentifier){
+		Object objStudyId = fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier);
+		if(objStudyId == null) throw new CaaersSystemException("No study exist with Coordinating Center Identifier :" + ccIdentifier);
+		
+		//delete study invs
+		getSession().createSQLQuery("delete from study_investigators where study_sites_id in (" + 
+             " select id from study_organizations where study_id = " + objStudyId.toString() + ")").executeUpdate();
+		
+		//delete study orgs
+		getSession().createSQLQuery("delete from study_organizations where study_id = " +
+				 objStudyId.toString() ).executeUpdate();
+		
+		//delete identifiers
+		getSession().createSQLQuery("delete from identifiers where stu_id = " +
+				 objStudyId.toString() ).executeUpdate();
+		
+		//delete study
+		getSession().createSQLQuery("delete from studies where id = " +
+				 objStudyId.toString() ).executeUpdate();
+		
 	}
-   
+	
+	@Transactional(readOnly=false)
+	public void commitInprogressStudy(final String ccIdentifier) {
+		Object objStudyId = fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier);
+		if(objStudyId == null) throw new CaaersSystemException("No study exist with Coordinating Center Identifier :" + ccIdentifier);
+		
+		//update load status
+		getSession().createSQLQuery("update studies set load_status = 1 where id = " +
+				 objStudyId.toString() ).executeUpdate();
+		
+	}
+    
+	private Object fetchStudyIdByCoordinatingCenterIdentifier(String ccIdentifier){
+		return getSession().createSQLQuery("select s.id from studies s " +
+				" join identifiers i on s.id = i.stu_id " +
+				" where i.type = '" + OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE + "'" + 
+				" and i.value = '" + ccIdentifier + "'" ).uniqueResult();
+	}
+	
 }

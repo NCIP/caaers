@@ -29,7 +29,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_participant_assignments_id")
     }
 )
-//@Where(clause="load_status > 0")
+@Where(clause="load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Participant participant;
     private StudySite studySite;

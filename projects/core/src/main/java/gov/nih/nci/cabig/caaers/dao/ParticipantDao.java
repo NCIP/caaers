@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -246,8 +249,45 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	}
 	
 	@Transactional(readOnly=false)
-	public void deleteInprogressParticipant(Participant p){
-		getHibernateTemplate().delete(p);
+	public void deleteInprogressParticipant(String mrn ){
+	    Object objParticipantId = fetchParticipantIdByMRN(mrn);
+	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
+	    
+		//delete identifiers
+		getSession().createSQLQuery("delete from identifiers where participant_id = " + 
+				    objParticipantId.toString()).executeUpdate();
+			
+		//delete assignment
+		getSession().createSQLQuery("delete from participant_assignments where participant_id = " + 
+				    objParticipantId.toString()).executeUpdate();
+		//delete participant
+		getSession().createSQLQuery("delete from participants where id = " + 
+		    objParticipantId.toString()).executeUpdate();
+		
 	}
+	
 
+	@Transactional(readOnly=false)
+	public void commitParticipant(String mrn){
+		Object objParticipantId = fetchParticipantIdByMRN(mrn);
+	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
+		//update participants
+		getSession().createSQLQuery("update participants set load_status = 1 where id = " + 
+				    objParticipantId.toString()).executeUpdate();
+			
+		//update participants
+		getSession().createSQLQuery("update participant_assignments set load_status = 1 where participant_id = " + 
+				    objParticipantId.toString()).executeUpdate();
+			
+	}
+	
+	private Object fetchParticipantIdByMRN(String mrn){
+		Query query = getSession().createSQLQuery("select p.id from identifiers i " +
+				"join participants p on  i.participant_id = p.id " +
+				"where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
+		return query.uniqueResult();
+		
+	}
+	
+	
 }
