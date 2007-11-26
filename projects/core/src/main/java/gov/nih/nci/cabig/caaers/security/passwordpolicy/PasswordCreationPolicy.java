@@ -1,109 +1,40 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
 public class PasswordCreationPolicy {
-
+    private Duration _minPasswordAge;
+    private int _passwordHistorySize;
+    private int _minPasswordLength;
+    private CombinationPolicy _combinationPolicy;
 	
-	private Duration minimumAge;
-	private int previousPasswordCount;
-	private int minimumLength;
-	private String hashingAlgorithm;
-	private CombinationPolicy combinationPolicy;
-	
-	public PasswordCreationPolicy(){
+    public Duration getMinPasswordAge() {
+	return _minPasswordAge;
+    }
+    
+    public void setMinPasswordAge(Duration minPasswordAge) {
+	_minPasswordAge = minPasswordAge;
+    }
+    
+    public int getPasswordHistorySize() {
+	return _passwordHistorySize;
+    }
+    
+    public void setPasswordHistorySize(int passwordHistorySize) {
+	_passwordHistorySize = passwordHistorySize;
+    }
+    
+    public int getMinPasswordLength() {
+	return _minPasswordLength;
+    }
 
-	}
+    public void setMinPasswordLength(int minPasswordLength) {
+	_minPasswordLength = minPasswordLength;
+    }
 
-
-	
-
-	
-	/**
-	 * 
-	 * @exception Throwable
-	 */
-	public void finalize()
-	  throws Throwable {
-
-	}
-
-
-
-
-
-	public Duration getMinimumAge() {
-		return minimumAge;
-	}
-
-
-
-
-
-	public void setMinimumAge(Duration minimumAge) {
-		this.minimumAge = minimumAge;
-	}
-
-
-
-
-
-	public int getPreviousPasswordCount() {
-		return previousPasswordCount;
-	}
-
-
-
-
-
-	public void setPreviousPasswordCount(int previousPasswordCount) {
-		this.previousPasswordCount = previousPasswordCount;
-	}
-
-
-
-
-
-	public int getMinimumLength() {
-		return minimumLength;
-	}
-
-
-
-
-
-	public void setMinimumLength(int minimumLength) {
-		this.minimumLength = minimumLength;
-	}
-
-
-
-
-
-	public String getHashingAlgorithm() {
-		return hashingAlgorithm;
-	}
-
-
-
-
-
-	public void setHashingAlgorithm(String hashingAlgorithm) {
-		this.hashingAlgorithm = hashingAlgorithm;
-	}
-
-
-
-
-
-	public CombinationPolicy getCombinationPolicy() {
-		return combinationPolicy;
-	}
-
-
-
-
-
-	public void setCombinationPolicy(CombinationPolicy combinationPolicy) {
-		this.combinationPolicy = combinationPolicy;
-	}
-
+    public CombinationPolicy getCombinationPolicy() {
+	return _combinationPolicy;
+    }
+    
+    public void setCombinationPolicy(CombinationPolicy combinationPolicy) {
+	_combinationPolicy = combinationPolicy;
+    }
 }

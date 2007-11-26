@@ -1,14 +1,11 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
 
-public class ValidationException extends Exception{
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8625024692592257767L;
-	
-	public ValidationException(String message){
-		super(message);
-	}
-     
+public class ValidationException extends CaaersSystemException {
+    private static final long serialVersionUID = 8625024692592257767L;
+    
+    public ValidationException(String message){
+	super(message);
+    }
 }

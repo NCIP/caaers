@@ -2,37 +2,31 @@ package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
 public class PasswordPolicy {
 
-	private PasswordCreationPolicy passwordCreationPolicy;
-	private LoginPolicy loginPolicy;
+    private PasswordCreationPolicy _passwordCreationPolicy;
+    private LoginPolicy _loginPolicy;
+    private String _hashAlgorithm;
 
-	public PasswordPolicy(){
+    public PasswordCreationPolicy getPasswordCreationPolicy() {
+	return _passwordCreationPolicy;
+    }
 
-	}
+    public void setPasswordCreationPolicy(PasswordCreationPolicy passwordCreationPolicy) {
+	_passwordCreationPolicy = passwordCreationPolicy;
+    }
+    
+    public LoginPolicy getLoginPolicy() {
+	return _loginPolicy;
+    }
 
-	/**
-	 * 
-	 * @exception Throwable
-	 */
-	public void finalize()
-	  throws Throwable {
+    public void setLoginPolicy(LoginPolicy loginPolicy) {
+	_loginPolicy = loginPolicy;
+    }
 
-	}
+    public String getHashAlgorithm() {
+	return _hashAlgorithm;
+    }
 
-	public PasswordCreationPolicy getPasswordCreationPolicy() {
-		return passwordCreationPolicy;
-	}
-
-	public void setPasswordCreationPolicy(
-			PasswordCreationPolicy passwordCreationPolicy) {
-		this.passwordCreationPolicy = passwordCreationPolicy;
-	}
-
-	public LoginPolicy getLoginPolicy() {
-		return loginPolicy;
-	}
-
-	public void setLoginPolicy(LoginPolicy loginPolicy) {
-		this.loginPolicy = loginPolicy;
-	}
-
+    public void setHashAlgorithm(String hashAlgorithm) {
+	_hashAlgorithm = hashAlgorithm;
+    }
 }

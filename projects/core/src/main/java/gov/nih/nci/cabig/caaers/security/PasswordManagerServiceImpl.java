@@ -1,11 +1,13 @@
-package gov.nih.nci.cabig.caaers.service;
+package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.User;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.sql.Timestamp;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Jared Flatow
@@ -17,6 +19,9 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     private static final String HASH_ALGORITHM = "MD5";
     private static final String FORCED_CHARSET = "UTF-8";
 
+    public static final PasswordManagerService Singleton = new PasswordManagerServiceImpl();
+    private PasswordManagerServiceImpl() {}
+
     public String requestToken(User user) throws CaaersSystemException {
 	/* if user exists {
 	   user.token_time = TimeStamp(new Date().getTime()); */
@@ -26,6 +31,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 
     public void setPassword(User user, String password, String token) throws CaaersSystemException {
 	/* if user exists {
+	   _policyService.validatePasswordAgainstPolicy(user.password_policy)
+	     PasswordCreationPolicyValidator.validate(user.password_policy)
 	     earliest_token_time = TimeStamp(new Date().getTime() - TOKEN_TIMEOUT_MS);
 	     if (user.token_time.after(earliest_token_time)) {
 	       if (token == user.token) {

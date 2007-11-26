@@ -2,72 +2,58 @@ package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
 public class CombinationPolicy {
 
-	private int minimumRequired;
-	private boolean upperCaseAlphabetRequired;
-	private boolean lowerCaseAlphabetRequired;
-	private boolean nonAlphaNumericRequired;
-	private boolean baseTenDigitRequired;
-	private int subStringExclusionLength;
+    private int _minimumRequired;
+    private boolean _upperCaseAlphabetRequired;
+    private boolean _lowerCaseAlphabetRequired;
+    private boolean _nonAlphaNumericRequired;
+    private boolean _baseTenDigitRequired;
+    private int _maxSubstringLength;
+    
+    public int getMinimumRequired() {
+	return _minimumRequired;
+    }
+    
+    public void setMinimumRequired(int minimumRequired) {
+	_minimumRequired = minimumRequired;
+    }
+    
+    public boolean isUpperCaseAlphabetRequired() {
+	return _upperCaseAlphabetRequired;
+    }
+    
+    public void setUpperCaseAlphabetRequired(boolean upperCaseAlphabetRequired) {
+	_upperCaseAlphabetRequired = upperCaseAlphabetRequired;
+    }
+    
+    public boolean isLowerCaseAlphabetRequired() {
+	return _lowerCaseAlphabetRequired;
+    }
 
-	public CombinationPolicy(){
+    public void setLowerCaseAlphabetRequired(boolean lowerCaseAlphabetRequired) {
+	_lowerCaseAlphabetRequired = lowerCaseAlphabetRequired;
+    }
+    
+    public boolean isNonAlphaNumericRequired() {
+	return _nonAlphaNumericRequired;
+    }
+    
+    public void setNonAlphaNumericRequired(boolean nonAlphaNumericRequired) {
+	_nonAlphaNumericRequired = nonAlphaNumericRequired;
+    }
 
-	}
+    public boolean isBaseTenDigitRequired() {
+	return _baseTenDigitRequired;
+    }
 
-	/**
-	 * 
-	 * @exception Throwable
-	 */
-	public void finalize()
-	  throws Throwable {
+    public void setBaseTenDigitRequired(boolean baseTenDigitRequired) {
+	_baseTenDigitRequired = baseTenDigitRequired;
+    }
 
-	}
+    public int getMaxSubstringLength() {
+	return _maxSubstringLength;
+    }
 
-	public int getMinimumRequired() {
-		return minimumRequired;
-	}
-
-	public void setMinimumRequired(int minimumRequired) {
-		this.minimumRequired = minimumRequired;
-	}
-
-	public boolean isUpperCaseAlphabetRequired() {
-		return upperCaseAlphabetRequired;
-	}
-
-	public void setUpperCaseAlphabetRequired(boolean upperCaseAlphabetRequired) {
-		this.upperCaseAlphabetRequired = upperCaseAlphabetRequired;
-	}
-
-	public boolean isLowerCaseAlphabetRequired() {
-		return lowerCaseAlphabetRequired;
-	}
-
-	public void setLowerCaseAlphabetRequired(boolean lowerCaseAlphabetRequired) {
-		this.lowerCaseAlphabetRequired = lowerCaseAlphabetRequired;
-	}
-
-	public boolean isNonAlphaNumericRequired() {
-		return nonAlphaNumericRequired;
-	}
-
-	public void setNonAlphaNumericRequired(boolean nonAlphaNumericRequired) {
-		this.nonAlphaNumericRequired = nonAlphaNumericRequired;
-	}
-
-	public boolean isBaseTenDigitRequired() {
-		return baseTenDigitRequired;
-	}
-
-	public void setBaseTenDigitRequired(boolean baseTenDigitRequired) {
-		this.baseTenDigitRequired = baseTenDigitRequired;
-	}
-
-	public int getSubStringExclusionLength() {
-		return subStringExclusionLength;
-	}
-
-	public void setSubStringExclusionLength(int subStringExclusionLength) {
-		this.subStringExclusionLength = subStringExclusionLength;
-	}
-
+    public void setMaxSubstringLength(int maxSubstringLength) {
+	_maxSubstringLength = maxSubstringLength;
+    }    
 }

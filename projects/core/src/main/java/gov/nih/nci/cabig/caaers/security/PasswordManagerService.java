@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.service;
+package gov.nih.nci.cabig.caaers.security;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.User;
