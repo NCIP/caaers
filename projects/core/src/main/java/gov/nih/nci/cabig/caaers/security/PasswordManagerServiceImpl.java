@@ -14,37 +14,33 @@ import java.io.UnsupportedEncodingException;
  */
 public class PasswordManagerServiceImpl implements PasswordManagerService {
 
+    // store these in PasswordPolicy
     private static final long TOKEN_TIMEOUT_MS = 48*60*60*1000;
-
     private static final String HASH_ALGORITHM = "MD5";
     private static final String FORCED_CHARSET = "UTF-8";
 
     public static final PasswordManagerService Singleton = new PasswordManagerServiceImpl();
     private PasswordManagerServiceImpl() {}
 
-    public String requestToken(User user) throws CaaersSystemException {
-	/* if user exists {
-	   user.token_time = TimeStamp(new Date().getTime()); */
-	return hash("random_string"); // user.salt + random_string
-	/* } else throw new CaaersSystemException("User does not exist"); */
+    public String requestToken(String userName) throws CaaersSystemException {
+	CaaersUser user = null; // ClassImplementingCaaersUser.getUser(userName);
+	user.setTokenTime(new Timestamp(new Date().getTime()));
+	user.setToken(hash(user.getSalt() + user.getTokenTime().toString() + "random_string"));
+	return user.getToken();
     }
 
-    public void setPassword(User user, String password, String token) throws CaaersSystemException {
-	/* if user exists {
-	   _policyService.validatePasswordAgainstPolicy(user.password_policy)
-	     PasswordCreationPolicyValidator.validate(user.password_policy)
-	     earliest_token_time = TimeStamp(new Date().getTime() - TOKEN_TIMEOUT_MS);
-	     if (user.token_time.after(earliest_token_time)) {
-	       if (token == user.token) {
-	         password = hash(user.salt + password); 
-	         if (password not in user.password_history && !password.equals(user.password)) {
-		   user.password_history.add(password)
-		   user.password = password
-		 } else throw new CaaersSystemException("User password invalid: violation of password recycling policy");
-	       } else throw new CaaersSystemException("Invalid set password token.");
-	     } else throw new CaaersSystemException("Set password token has timed out.");
-	   } else throw new CaaersSystemException("User does not exist.");
-	*/
+    public void setPassword(String userName, String password, String token) throws CaaersSystemException {
+	CaaersUser user = null; // ClassImplementingCaaersUser.getUser(userName);
+	Timestamp earliestTokenTime = new Timestamp(new Date().getTime() - TOKEN_TIMEOUT_MS);
+	if (user.getTokenTime().after(earliestTokenTime)) {
+	    if (token.equals(user.getToken())) {
+		if (PasswordPolicyServiceImpl.Singleton.validatePasswordAgainstCreationPolicy(new Credential(userName, password))) { // credential take user
+		    user.addPasswordToHistory(PasswordPolicyServiceImpl.Singleton.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
+		    user.setPassword(hash(user.getSalt() + password));
+		    user.setTokenTime(earliestTokenTime);
+		}
+	    } else throw new CaaersSystemException("Invalid set password token.");
+	} else throw new CaaersSystemException("Set password token has timed out.");
     }
 
     private String hash(String string) throws CaaersSystemException {
