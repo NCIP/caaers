@@ -80,6 +80,7 @@
         study_site_id="-10"
         participant_id="-5"
         date_of_enrollment="2006-09-30"
+        load_status="1"
         />
     <AE_REPORTS
         id="-1"

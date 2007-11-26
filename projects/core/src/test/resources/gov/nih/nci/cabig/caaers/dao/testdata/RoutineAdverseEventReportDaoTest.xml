@@ -53,6 +53,7 @@
         study_site_id="-10"
         participant_id="-101"
         date_of_enrollment="2006-09-30"
+        load_status="1"
         />
         
     <AE_ROUTINE_REPORTS
@@ -89,6 +90,7 @@
      <STUDIES
         id="-1"
         short_title="That one"
+        load_status="1"
         /> 
         
      <TERMINOLOGIES
@@ -128,7 +130,8 @@
         ethnicity="ethnicity"
         race="race"
         middle_name="m"
-        maiden_name="m"/>
+        maiden_name="m"
+        load_status="1" />
     <IDENTIFIERS
         id="-200"
         participant_id="-101"

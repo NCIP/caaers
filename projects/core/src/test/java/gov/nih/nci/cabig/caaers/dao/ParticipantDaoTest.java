@@ -5,15 +5,22 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_PARTICIPANTS;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.StatementCallback;
 
 /**
  * @author Krikor Krumlian
@@ -103,12 +110,93 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         }
     }
 
+    public void testSaveNewParticipantWithLoadStatusInprogress() throws Exception {
+       final Integer savedId;
+        {
+            Participant participant = new Participant();
+            participant.setFirstName("Jeff");
+            participant.setLastName("Someone");
+            participant.setGender("Male");
+            participant.setDateOfBirth(new Date());
+            participant.setEthnicity("ethnicity");
+            participant.setRace("race");
+            participant.setLoadStatus(LoadStatus.INPROGRESS.getCode());
+            getDao().save(participant);
+            savedId = participant.getId();
+            assertNotNull("The saved participant id", savedId);
+        }
+        
+        interruptSession();
+        Participant retrievedParticipant = (Participant)getJdbcTemplate().execute(new StatementCallback(){
+        	public Object doInStatement(Statement st) throws SQLException,
+        			DataAccessException {
+        			ResultSet rs = st.executeQuery("select * from participants where id = " + savedId.toString() );
+        			rs.next();
+        			Participant p = new Participant();
+        			p.setFirstName(rs.getString("first_name"));
+        		return p;
+        	}
+        });
+        
+        assertEquals("The name of the retrieved should be Jeff", "Jeff", retrievedParticipant.getFirstName());
+    }
+    
+    
+    public void testCommitParticipant() throws Exception {
+    	{
+    		Participant participant = getDao().getById(-99);
+    		assertNull("Participant (-99) should be null ", participant);
+    		getDao().commitParticipant("11111");
+    	}
+    	interruptSession();
+    	{
+    		Participant participant = getDao().getById(-99);
+    		assertNotNull("Participant (-99) should not be null ", participant);
+    	}
+    }
+    
+    public void testDeleteInprogressParticipant() throws Exception {
+    	getDao().deleteInprogressParticipant("11111");
+    	interruptSession();
+    	  Participant retrievedParticipant = (Participant)getJdbcTemplate().execute(new StatementCallback(){
+          	public Object doInStatement(Statement st) throws SQLException,
+          			DataAccessException {
+          			ResultSet rs = st.executeQuery("select * from participants where id = -99");
+          			if(rs.next()) {
+          				Participant p = new Participant();
+          				p.setFirstName(rs.getString("first_name"));
+          				return p;
+          			}
+          		return null;
+          	}
+          });
+    	  assertNull("There should not be a participant with id -99", retrievedParticipant);
+    }
+    
     public void testGetBySubnameMatchesFirstName() throws Exception {
         List<Participant> matches = getDao().getBySubnames(new String[] { "icha" });
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
-
+    
+    public void testGetBySubnameAfterUpdatingLoadStatus() throws Exception {
+    	final int participantId = -99;
+    	Participant participant = getDao().getById(-99);
+    	assertNull("Participant (-99) should be null ", participant);
+    	getJdbcTemplate().execute(new StatementCallback(){
+         	public Object doInStatement(Statement st) throws SQLException,DataAccessException {
+         		st.addBatch("update participant_assignments set load_status = 1 where participant_id = " + participantId);
+         		st.addBatch("update participants set load_status = 1 where id = " + participantId);
+         		return st.executeBatch();
+         		
+         	}
+         });
+    	interruptSession();
+    	Participant participantLoaded = getDao().getById(-99);
+    	assertNotNull("Now it should load (-99) participant",participantLoaded);
+    }
+    
+    
     public void testGetBySubnameMatchesLastName() throws Exception {
         List<Participant> matches = getDao().getBySubnames(new String[] { "cot" });
         assertEquals("Wrong number of matches", 1, matches.size());
@@ -294,6 +382,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
     	assertEquals("Wrong number of results", 1, results.size());
     	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
     }
+    
     
     
     

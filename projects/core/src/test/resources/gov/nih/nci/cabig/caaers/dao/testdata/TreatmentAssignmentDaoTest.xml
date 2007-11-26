@@ -6,6 +6,7 @@
         long_title="Long Title" 
         description="Description"
         grid_id=""
+        load_status="1"
         />
         <treatment_assignment id="-11"
         code="TAC-12345"

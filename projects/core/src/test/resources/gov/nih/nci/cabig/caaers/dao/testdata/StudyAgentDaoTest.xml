@@ -7,7 +7,7 @@
         id="-2"
         short_title="Zeppo"
         long_title="Zeppelin"
-        />
+        load_status="1" />
     
      <TERMINOLOGIES
    		id="-11"

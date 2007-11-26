@@ -43,10 +43,12 @@
         participant_id="-4"
         study_site_id="-4"
         date_of_enrollment="2004-01-05"
+        load_status="1"
         />
     <agents id="-101"/>
     <agents id="-102"/>
-    <studies id="-100" short_title="Min"/>
+    <studies id="-100" short_title="Min" 
+    load_status="1"/>
     
      <TERMINOLOGIES
    		id="-11"

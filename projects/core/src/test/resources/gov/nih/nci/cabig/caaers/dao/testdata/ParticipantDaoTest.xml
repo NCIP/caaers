@@ -7,6 +7,19 @@
     <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <PARTICIPANTS
+        id="-99"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_date="2006-01-02"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="0" /> <!--  loadStatus = 0 means it is not comitted yet -->
+    <PARTICIPANTS
         id="-100"
         instituitional_patient_number="P001"
         institution="Hospital"
@@ -17,7 +30,8 @@
         ethnicity="ethnicity"
         race="race"
         middle_name="m"
-        maiden_name="m"/>
+        maiden_name="m" 
+        load_status="1" />
     <PARTICIPANTS
         id="-101"
         instituitional_patient_number="P002"
@@ -29,7 +43,8 @@
         ethnicity="ethnicity"
         race="race"
         middle_name="m"
-        maiden_name="m"/>
+        maiden_name="m"
+        load_status="1" />
     <IDENTIFIERS
         id="-200"
         participant_id="-100"
@@ -47,6 +62,7 @@
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
+    	load_status="1"
     	/>
     
     <STUDIES 
@@ -55,6 +71,7 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
+    	load_status="1"
     	/>
     
      <DISEASE_TERMINOLOGIES
@@ -106,7 +123,31 @@
         id="-10"
         date_of_enrollment="2006-12-12"
         participant_id="-100"
-        study_site_id="-3000"/>
+        study_site_id="-3000" 
+        load_status="1" />
+        
+        <PARTICIPANT_ASSIGNMENTS
+        id="-11"
+        date_of_enrollment="2006-12-12"
+        participant_id="-99"
+        study_site_id="-3000" 
+        load_status="0" />
+        
+        <IDENTIFIERS
+        id="-210"
+        value="11111"
+        type="MRN"
+        participant_id="-99"
+        system_name="system name"
+        discriminator_column="1"/>	
+       
+       <IDENTIFIERS
+        id="-211"
+        value="nci_test2"
+        type="MRNs"
+        participant_id="-99"
+        system_name="system name2"
+        discriminator_column="1"/>	
         
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    

@@ -14,7 +14,9 @@
         ethnicity="ethnicity"
         race="race"
         middle_name="m"
-        maiden_name="m"/>
+        maiden_name="m"
+        load_status="1"
+        />
     <PARTICIPANTS
         id="-101"
         instituitional_patient_number="P002"
@@ -26,7 +28,9 @@
         ethnicity="ethnicity"
         race="race"
         middle_name="m"
-        maiden_name="m"/>
+        maiden_name="m"
+        load_status="1"
+        />
     <ORGANIZATIONS
         id="-1001"
         name="New Site"
@@ -37,7 +41,8 @@
     	short_title="New Study"
     	long_title="Long Title" 
     	description="Description" 
-    	grid_id="gridStudy"/>
+    	grid_id="gridStudy"
+    	load_status="1" />
     
     <STUDIES 
     	id="-2000" 
@@ -45,7 +50,9 @@
     	short_title="Short Title"
     	long_title="Long Title" 
     	description="Description" 
-    	grid_id=""/>
+    	grid_id=""
+    	load_status="1"
+    	/>
     	
      <TERMINOLOGIES
    		id="-11"
@@ -77,7 +84,8 @@
         id="-10"
         date_of_enrollment="2006-12-12"
         participant_id="-100"
-        study_site_id="-3000"/>
+        study_site_id="-3000"
+        load_status="1" />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />		

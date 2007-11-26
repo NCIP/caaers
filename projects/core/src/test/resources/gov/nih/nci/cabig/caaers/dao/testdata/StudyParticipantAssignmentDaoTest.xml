@@ -9,6 +9,7 @@
     <STUDIES
         id="-4"
         short_title="A history of ghosts"
+        load_status="1"
         />
         
      <TERMINOLOGIES
@@ -31,12 +32,14 @@
     <PARTICIPANTS
         id="-5"
         last_name="Tourmaline"
+        load_status="1"
         />
     <PARTICIPANT_ASSIGNMENTS
         id="-13"
         study_site_id="-10"
         participant_id="-5"
         date_of_enrollment="2004-09-30"
+        load_status="1"
         />
     <AE_REPORTS
         id="-99"
