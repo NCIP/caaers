@@ -91,36 +91,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
-			Participant participant = fetchParticipant(mrn);
-			if(participant == null) {
-				InvalidRegistrationException exp = new InvalidRegistrationException();
-				exp.setFaultString("Unable to find a participant with MRN :" + mrn);
-				exp.setFaultReason("Unable to find a participant with MRN :" + mrn);
-				throw exp;
-			}
+			participantDao.commitParticipant(mrn);
 			
-			StudyParticipantAssignment assignment = null;
-			String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
-			
-			for(StudyParticipantAssignment spa : participant.getAssignments()){
-				if(StringUtils.equals(siteNCICode, spa.getStudySite().getOrganization().getNciInstituteCode())){
-					assignment = spa;
-					break;
-				}
-			}
-			
-			if(assignment == null) {
-				InvalidRegistrationException exp = new InvalidRegistrationException();
-				exp.setFaultString("Unable to find study participant assignment for participant with MRN :" + mrn +", on Study site identified by NCI institute code " + siteNCICode );
-				exp.setFaultReason("Unable to find study participant assignment for participant with MRN :" + mrn +", on Study site identified by NCI institute code " + siteNCICode );
-				throw exp;
-			}
-			
-			assignment.setLoadStatus(1);
-			participant.setLoadStatus(1);
-			participantDao.save(participant);
 		}catch(Exception exp){
+			InvalidRegistrationException e = new InvalidRegistrationException();
+			e.setFaultReason("Error while comitting, " + exp.getMessage());
+			e.setFaultString("Error while comitting, " + exp.getMessage());
 			exp.printStackTrace();
+			throw e;
 		}finally{
 			postProcess(stubWebRequest);
 		}
@@ -185,38 +163,14 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
-			Participant participant = fetchParticipant(mrn);
-			if(participant == null) {
-				InvalidRegistrationException exp = new InvalidRegistrationException();
-				exp.setFaultString("Unable to find a participant with MRN :" + mrn);
-				exp.setFaultReason("Unable to find a participant with MRN :" + mrn);
-				throw exp;
-			}
+			participantDao.deleteInprogressParticipant(mrn);
 			
-			StudyParticipantAssignment assignment = null;
-			String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
-			
-			for(StudyParticipantAssignment spa : participant.getAssignments()){
-				if(StringUtils.equals(siteNCICode, spa.getStudySite().getOrganization().getNciInstituteCode())){
-					assignment = spa;
-					break;
-				}
-			}
-			
-			if(assignment == null) {
-				InvalidRegistrationException exp = new InvalidRegistrationException();
-				exp.setFaultString("Unable to find study participant assignment for participant with MRN :" + mrn +", on Study site identified by NCI institute code " + siteNCICode );
-				exp.setFaultReason("Unable to find study participant assignment for participant with MRN :" + mrn +", on Study site identified by NCI institute code " + siteNCICode );
-				throw exp;
-			}
-			
-			if(participant.getLoadStatus() == 0){
-				participantDao.deleteInprogressParticipant(participant);
-			}else if(assignment.getLoadStatus() == 0){
-				assignment.getStudySite().getStudyParticipantAssignments().remove(assignment);
-				participant.getAssignments().remove(assignment); //removes the assignment
-				participantDao.save(participant);
-			}
+		}catch(Exception exp){
+			InvalidRegistrationException e = new InvalidRegistrationException();
+			e.setFaultReason("Error while comitting, " + exp.getMessage());
+			e.setFaultString("Error while comitting, " + exp.getMessage());
+			exp.printStackTrace();
+			throw e;
 			
 		}finally{
 			postProcess(stubWebRequest);
