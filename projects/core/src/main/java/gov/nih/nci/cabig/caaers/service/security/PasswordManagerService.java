@@ -1,7 +1,6 @@
-package gov.nih.nci.cabig.caaers.security;
+package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.User;
 
 /**
  * @author Jared Flatow

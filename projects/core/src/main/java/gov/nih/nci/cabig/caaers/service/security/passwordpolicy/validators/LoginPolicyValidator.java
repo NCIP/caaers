@@ -1,9 +1,8 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
+package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.user.Credential;
-
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.LoginPolicy;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 
 /**
  * @author Jared Flatow

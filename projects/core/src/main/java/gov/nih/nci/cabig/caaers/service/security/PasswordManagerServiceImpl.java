@@ -1,8 +1,9 @@
-package gov.nih.nci.cabig.caaers.security;
+package gov.nih.nci.cabig.caaers.service.security;
 
-import gov.nih.nci.cabig.caaers.user.CaaersUser;
-import gov.nih.nci.cabig.caaers.user.Credential;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.security.user.CaaersUser;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 
 import java.util.Date;
 import java.sql.Timestamp;

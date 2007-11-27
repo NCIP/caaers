@@ -1,19 +1,19 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy;
+package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class PasswordCreationPolicy {
-    private long minPasswordAge;
+    private int minPasswordAge;
     private int passwordHistorySize;
     private int minPasswordLength;
     private CombinationPolicy combinationPolicy;
 	
-    public long getMinPasswordAge() {
+    public int getMinPasswordAge() {
 	return minPasswordAge;
     }
     
-    public void setMinPasswordAge(long minPasswordAge) {
+    public void setMinPasswordAge(int minPasswordAge) {
 	this.minPasswordAge = minPasswordAge;
     }
     

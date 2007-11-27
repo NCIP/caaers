@@ -1,7 +1,9 @@
-package gov.nih.nci.cabig.caaers.user;
+package gov.nih.nci.cabig.caaers.domain.security.user;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -9,12 +11,18 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+
 /**
  * @author Jared Flatow
  */
 @Entity
 @Table(name="caaers_user")
-public class CaaersUser {
+@GenericGenerator(name="id-generator", strategy="native",
+		  parameters={@Parameter(name="sequence", value="seq_caaers_user_id")})
+public class CaaersUser extends AbstractMutableDomainObject {
 
     private String name;
     private String salt;
@@ -65,25 +73,34 @@ public class CaaersUser {
 	this.tokenTime = tokenTime;
     }
 
-    public void setPassword(String hashedPassword) {
-	// csm_user
+    @Column(name="password_last_set")
+    private Timestamp getPasswordLastSet() {
+	return passwordLastSet;
     }
 
-    public boolean isPassword(String hashedPassword) {
-	// compare to csm_user
-	return false;
+    private void setPasswordLastSet(Timestamp passwordLastSet) {
+	this.passwordLastSet = passwordLastSet;
+    }
+
+    @Transient
+    public long getPasswordAge() {
+	// current time - last set
+	return new Date().getTime() - getPasswordLastSet().getTime();
+    }
+
+    @Column(name="password_history")
+    private String getPasswordHistory() {
+	return passwordHistory;
+    }
+
+    private void setPasswordHistory(String passwordHistory) {
+	this.passwordHistory = passwordHistory;
     }
 
     public void addPasswordToHistory(int maxHistorySize) {
 	// expand password history
 	// if >= length -> chop to length - 1
 	// add password
-    }
-
-    @Transient
-    public long getPasswordAge() {
-	// current time - last set
-	return 0;
     }
 
     @Column(name="num_failed_logins")
@@ -93,5 +110,15 @@ public class CaaersUser {
 
     public void setFailedLoginAttempts(int numFailedLogins) {
 	this.numFailedLogins = numFailedLogins;
+    }
+
+    public void setPassword(String hashedPassword) {
+	// csm_user
+	this.setPasswordLastSet(new Timestamp(new Date().getTime()));
+    }
+
+    public boolean isPassword(String hashedPassword) {
+	// compare to csm_user
+	return false;
     }
 }

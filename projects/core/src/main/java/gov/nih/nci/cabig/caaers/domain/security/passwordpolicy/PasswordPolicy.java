@@ -1,4 +1,6 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy;
+package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
+
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -7,13 +9,17 @@ import javax.persistence.Embedded;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 @Entity
 @Table(name="password_policy")
-public class PasswordPolicy {
+@GenericGenerator(name="id-generator", strategy="native",
+		  parameters={@Parameter(name="sequence", value="seq_password_policy_id")})
+public class PasswordPolicy extends AbstractMutableDomainObject {
 
     private PasswordCreationPolicy passwordCreationPolicy;
     private LoginPolicy loginPolicy;
-    private String hashAlgorithm;
 
     @Embedded
     @AttributeOverrides({
@@ -45,14 +51,5 @@ public class PasswordPolicy {
 
     public void setLoginPolicy(LoginPolicy loginPolicy) {
 	this.loginPolicy = loginPolicy;
-    }
-
-    @Column(name="hash_algorithm")
-    public String getHashAlgorithm() {
-	return hashAlgorithm;
-    }
-
-    public void setHashAlgorithm(String hashAlgorithm) {
-	this.hashAlgorithm = hashAlgorithm;
     }
 }

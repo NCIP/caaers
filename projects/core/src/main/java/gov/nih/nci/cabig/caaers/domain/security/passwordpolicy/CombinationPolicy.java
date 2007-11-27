@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy;
+package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
 

@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
+package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 

@@ -1,10 +1,9 @@
-package gov.nih.nci.cabig.caaers.security;
-
-import gov.nih.nci.cabig.caaers.user.Credential;
+package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.validators.ValidationException;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
 
 public interface PasswordPolicyService {
     /**

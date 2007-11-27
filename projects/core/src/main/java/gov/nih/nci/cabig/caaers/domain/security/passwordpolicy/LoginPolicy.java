@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.security.passwordpolicy;
+package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
 
@@ -6,8 +6,8 @@ import javax.persistence.Embeddable;
 public class LoginPolicy {
     
     private int allowedFailedLoginAttempts;
-    private long lockOutDuration;
-    private long maxPasswordAge;
+    private int lockOutDuration;
+    private int maxPasswordAge;
     
     public int getAllowedFailedLoginAttempts() {
 	return allowedFailedLoginAttempts;
@@ -17,19 +17,19 @@ public class LoginPolicy {
 	this.allowedFailedLoginAttempts = allowedFailedLoginAttempts;
     }
 
-    public long getLockOutDuration() {
+    public int getLockOutDuration() {
 	return lockOutDuration;
     }
     
-    public void setLockOutDuration(long lockOutDuration) {
+    public void setLockOutDuration(int lockOutDuration) {
 	this.lockOutDuration = lockOutDuration;
     }
     
-    public long getMaxPasswordAge() {
+    public int getMaxPasswordAge() {
 	return maxPasswordAge;
     }
     
-    public void setMaxPasswordAge(long maxPasswordAge) {
+    public void setMaxPasswordAge(int maxPasswordAge) {
 	this.maxPasswordAge = maxPasswordAge;
     }
 }
