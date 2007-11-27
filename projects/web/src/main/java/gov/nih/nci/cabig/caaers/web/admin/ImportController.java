@@ -262,6 +262,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("category", gov.nih.nci.cabig.caaers.domain.DiseaseCategory.class);
     	xstream.alias("ctcVersion" , gov.nih.nci.cabig.caaers.domain.Ctc.class);
     	xstream.alias("terminology" , gov.nih.nci.cabig.caaers.domain.Terminology.class);
+    	xstream.alias("diseaseTerminology" , gov.nih.nci.cabig.caaers.domain.DiseaseTerminology.class);
+    	xstream.alias("diseaseCodeTerm" , gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	// routineAdverseEventReport specific

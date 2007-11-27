@@ -51,7 +51,6 @@
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
-                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
@@ -93,6 +92,7 @@
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
                 <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
 				<value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
 				<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
 				<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>

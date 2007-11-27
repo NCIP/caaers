@@ -97,6 +97,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		st.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
 		
 		migrateTerminology(st,xstreamStudy, studyImportOutcome); //Done
+		migrateDiseaseTerminology(st,xstreamStudy, studyImportOutcome); //Done
 		migrateIdentifiers(st,xstreamStudy, studyImportOutcome);
 		migrateStudyOrganizations(st,xstreamStudy, studyImportOutcome);
 		migrateOrganizationAssignedIdentifier(st,xstreamStudy, studyImportOutcome);
@@ -221,6 +222,17 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 			}
 		}
 		ifNullObject(source.getTerminology(),studyImportOutcome, Severity.ERROR);
+	}
+	
+	private void migrateDiseaseTerminology(Study destination,Study source, DomainObjectImportOutcome studyImportOutcome){
+		
+		// Terminology and Version 
+		destination.setDiseaseTerminology(source.getDiseaseTerminology());
+		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR);
+		if (destination.getDiseaseTerminology() != null ){
+			destination.getDiseaseTerminology().setStudy(destination);
+			ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(),studyImportOutcome, Severity.ERROR);
+		}
 	}
 	
 	
