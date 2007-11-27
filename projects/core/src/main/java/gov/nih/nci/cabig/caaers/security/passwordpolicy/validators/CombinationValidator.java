@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy.validators;
 
-import gov.nih.nci.cabig.caaers.security.Credential;
+import gov.nih.nci.cabig.caaers.user.Credential;
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
 

@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.user.Credential;
+
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.security.passwordpolicy.validators.PasswordCreationPolicyValidator;

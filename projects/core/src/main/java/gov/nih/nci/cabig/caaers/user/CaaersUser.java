@@ -1,12 +1,13 @@
-package gov.nih.nci.cabig.caaers.security;
+package gov.nih.nci.cabig.caaers.user;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.security.passwordpolicy.Duration;
 
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Transient;
 
 /**
  * @author Jared Flatow
@@ -15,45 +16,62 @@ import javax.persistence.Table;
 @Table(name="caaers_user")
 public class CaaersUser {
 
-    private String _name;
-    private String _salt;
-    private String _token;
-    private Timestamp _tokenTime;
-    private Timestamp _passwordLastSet;
-    private String _passwordHistory;
-    private int _numFailedLogins;
+    private String name;
+    private String salt;
+    private String token;
+    private Timestamp tokenTime;
+    private Timestamp passwordLastSet;
+    private String passwordHistory;
+    private int numFailedLogins;
 
     public static CaaersUser getUser(String userName) throws CaaersSystemException {
 	// throw exception if doesn't exist
 	return null;
     }
 
+    @Column(name="name")
     public String getName() {
-	return _name;
+	return name;
     }
 
     public void setName(String name) {
-	_name = name;
+	this.name = name;
     }
 
+    @Column(name="salt")
+    public String getSalt() {
+	return salt;
+    }
+
+    public void setSalt(String salt) {
+	this.salt = salt;
+    }
+
+    @Column(name="token")
     public String getToken() {
-	return _token;
+	return token;
     }
 
     public void setToken(String token) {
-	_token = token;
+	this.token = token;
     }
 
+    @Column(name="token_time")
     public Timestamp getTokenTime() {
-	return _tokenTime;
+	return tokenTime;
     }
 
     public void setTokenTime(Timestamp tokenTime) {
-	_tokenTime = tokenTime;
+	this.tokenTime = tokenTime;
     }
 
     public void setPassword(String hashedPassword) {
 	// csm_user
+    }
+
+    public boolean isPassword(String hashedPassword) {
+	// compare to csm_user
+	return false;
     }
 
     public void addPasswordToHistory(int maxHistorySize) {
@@ -62,29 +80,18 @@ public class CaaersUser {
 	// add password
     }
 
-    public boolean isPassword(String hashedPassword) {
-	// compare to csm_user
-	return false;
+    @Transient
+    public long getPasswordAge() {
+	// current time - last set
+	return 0;
     }
 
-    public Duration getPasswordAge() {
-	// current time - last set converted to duration
-	return null;
-    }
-
+    @Column(name="num_failed_logins")
     public int getFailedLoginAttempts() {
-	return _numFailedLogins;
+	return numFailedLogins;
     }
 
     public void setFailedLoginAttempts(int numFailedLogins) {
-	_numFailedLogins = numFailedLogins;
-    }
-
-    public String getSalt() {
-	return _salt;
-    }
-
-    public void setSalt(String salt) {
-	_salt = salt;
+	this.numFailedLogins = numFailedLogins;
     }
 }

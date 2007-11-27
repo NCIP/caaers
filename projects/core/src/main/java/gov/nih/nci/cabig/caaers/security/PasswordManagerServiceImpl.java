@@ -1,7 +1,8 @@
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.user.CaaersUser;
+import gov.nih.nci.cabig.caaers.user.Credential;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.User;
 
 import java.util.Date;
 import java.sql.Timestamp;
@@ -34,7 +35,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	Timestamp earliestTokenTime = new Timestamp(new Date().getTime() - TOKEN_TIMEOUT_MS);
 	if (user.getTokenTime().after(earliestTokenTime)) {
 	    if (token.equals(user.getToken())) {
-		if (PasswordPolicyServiceImpl.Singleton.validatePasswordAgainstCreationPolicy(new Credential(userName, password))) { // credential take user
+		if (PasswordPolicyServiceImpl.Singleton.validatePasswordAgainstCreationPolicy(new Credential(user, password))) { // credential take user
 		    user.addPasswordToHistory(PasswordPolicyServiceImpl.Singleton.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
 		    user.setPassword(hash(user.getSalt() + password));
 		    user.setTokenTime(earliestTokenTime);
