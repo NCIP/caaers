@@ -371,7 +371,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		return getSession().createSQLQuery("select s.id from studies s " +
 				" join identifiers i on s.id = i.stu_id " +
 				" where i.type = '" + OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE + "'" + 
-				" and i.value = '" + ccIdentifier + "'" ).uniqueResult();
+				" and i.value = '" + ccIdentifier + "' " +
+				" and s.load_status = " + LoadStatus.INPROGRESS.getCode() ).uniqueResult();
 	}
 	
 }

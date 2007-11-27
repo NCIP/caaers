@@ -253,16 +253,20 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	    Object objParticipantId = fetchParticipantIdByMRN(mrn);
 	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
 	    
-		//delete identifiers
+		//delete identifiers only if participant's load = 0
 		getSession().createSQLQuery("delete from identifiers where participant_id = " + 
-				    objParticipantId.toString()).executeUpdate();
+				    objParticipantId.toString() + " and participant_id in( " +
+				     " select p.id from participants p where p.id =" + 
+				     objParticipantId.toString() + 
+				    ")").executeUpdate();
 			
 		//delete assignment
 		getSession().createSQLQuery("delete from participant_assignments where participant_id = " + 
-				    objParticipantId.toString()).executeUpdate();
+				    objParticipantId.toString()+ " and load_status = 0").executeUpdate();
+
 		//delete participant
 		getSession().createSQLQuery("delete from participants where id = " + 
-		    objParticipantId.toString()).executeUpdate();
+		    objParticipantId.toString() + " and load_status = 0").executeUpdate();
 		
 	}
 	
@@ -283,8 +287,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	
 	private Object fetchParticipantIdByMRN(String mrn){
 		Query query = getSession().createSQLQuery("select p.id from identifiers i " +
-				"join participants p on  i.participant_id = p.id " +
-				"where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
+				" join participants p on  i.participant_id = p.id " +
+				" where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
 		return query.uniqueResult();
 		
 	}

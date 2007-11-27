@@ -9,6 +9,7 @@ import com.semanticbits.aenotification.AENotification;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
@@ -34,7 +35,20 @@ public class InteroperationServiceImpl implements InteroperationService {
 		//getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
 		getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
 	}
+	
+	public void pushToStudyCalendar(RoutineAdverseEventReport roReport) throws CaaersSystemException {
+		AENotification aeNotification = new AENotification();
+		aeNotification.setRegistrationGridId(
+				roReport.getAssignment().getGridId());
+		Date detectionDate = roReport.getAdverseEvents().get(0).getStartDate();
+		if(detectionDate == null) detectionDate = roReport.getStartDate();
+		aeNotification.setDetectionDate(new java.sql.Date(detectionDate.getTime()));
+        aeNotification.setDescription(roReport.getNotificationMessage());
+		//getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
+		getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+	}
 
+	
 	private String secure(String message) {
 		StringBuffer secureMessage = new StringBuffer();
 		secureMessage.append("<message>");

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 /**
@@ -15,5 +16,12 @@ public class MockInteroperationService implements InteroperationService {
     public void pushToStudyCalendar(ExpeditedAdverseEventReport aeReport) {
         int rand = (int) Math.floor(Math.random() * 4);
         if (rand == 3) throw new CaaersSystemException("You lose");
+    }
+    
+    public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
+    		throws CaaersSystemException {
+    	int rand = (int) Math.floor(Math.random() * 4);
+        if (rand == 3) throw new CaaersSystemException("You lose");
+    	
     }
 }
