@@ -1,59 +1,62 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class CombinationPolicy {
 
-    private int _minimumRequired;
-    private boolean _upperCaseAlphabetRequired;
-    private boolean _lowerCaseAlphabetRequired;
-    private boolean _nonAlphaNumericRequired;
-    private boolean _baseTenDigitRequired;
-    private int _maxSubstringLength;
-    
+    private int minimumRequired;
+    private boolean upperCaseAlphabetRequired;
+    private boolean lowerCaseAlphabetRequired;
+    private boolean nonAlphaNumericRequired;
+    private boolean baseTenDigitRequired;
+    private int maxSubstringLength;
+
     public int getMinimumRequired() {
-	return _minimumRequired;
+	return minimumRequired;
     }
     
     public void setMinimumRequired(int minimumRequired) {
-	_minimumRequired = minimumRequired;
+	this.minimumRequired = minimumRequired;
     }
     
     public boolean isUpperCaseAlphabetRequired() {
-	return _upperCaseAlphabetRequired;
+	return upperCaseAlphabetRequired;
     }
     
     public void setUpperCaseAlphabetRequired(boolean upperCaseAlphabetRequired) {
-	_upperCaseAlphabetRequired = upperCaseAlphabetRequired;
+	this.upperCaseAlphabetRequired = upperCaseAlphabetRequired;
     }
     
     public boolean isLowerCaseAlphabetRequired() {
-	return _lowerCaseAlphabetRequired;
+	return lowerCaseAlphabetRequired;
     }
 
     public void setLowerCaseAlphabetRequired(boolean lowerCaseAlphabetRequired) {
-	_lowerCaseAlphabetRequired = lowerCaseAlphabetRequired;
+	this.lowerCaseAlphabetRequired = lowerCaseAlphabetRequired;
     }
     
     public boolean isNonAlphaNumericRequired() {
-	return _nonAlphaNumericRequired;
+	return nonAlphaNumericRequired;
     }
     
     public void setNonAlphaNumericRequired(boolean nonAlphaNumericRequired) {
-	_nonAlphaNumericRequired = nonAlphaNumericRequired;
+	this.nonAlphaNumericRequired = nonAlphaNumericRequired;
     }
 
     public boolean isBaseTenDigitRequired() {
-	return _baseTenDigitRequired;
+	return baseTenDigitRequired;
     }
 
     public void setBaseTenDigitRequired(boolean baseTenDigitRequired) {
-	_baseTenDigitRequired = baseTenDigitRequired;
+	this.baseTenDigitRequired = baseTenDigitRequired;
     }
 
     public int getMaxSubstringLength() {
-	return _maxSubstringLength;
+	return maxSubstringLength;
     }
 
     public void setMaxSubstringLength(int maxSubstringLength) {
-	_maxSubstringLength = maxSubstringLength;
+	this.maxSubstringLength = maxSubstringLength;
     }    
 }

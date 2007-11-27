@@ -1,40 +1,43 @@
 package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class PasswordCreationPolicy {
-    private Duration _minPasswordAge;
-    private int _passwordHistorySize;
-    private int _minPasswordLength;
-    private CombinationPolicy _combinationPolicy;
+    private long minPasswordAge;
+    private int passwordHistorySize;
+    private int minPasswordLength;
+    private CombinationPolicy combinationPolicy;
 	
-    public Duration getMinPasswordAge() {
-	return _minPasswordAge;
+    public long getMinPasswordAge() {
+	return minPasswordAge;
     }
     
-    public void setMinPasswordAge(Duration minPasswordAge) {
-	_minPasswordAge = minPasswordAge;
+    public void setMinPasswordAge(long minPasswordAge) {
+	this.minPasswordAge = minPasswordAge;
     }
     
     public int getPasswordHistorySize() {
-	return _passwordHistorySize;
+	return passwordHistorySize;
     }
     
     public void setPasswordHistorySize(int passwordHistorySize) {
-	_passwordHistorySize = passwordHistorySize;
+	this.passwordHistorySize = passwordHistorySize;
     }
     
     public int getMinPasswordLength() {
-	return _minPasswordLength;
+	return minPasswordLength;
     }
 
     public void setMinPasswordLength(int minPasswordLength) {
-	_minPasswordLength = minPasswordLength;
+	this.minPasswordLength = minPasswordLength;
     }
 
     public CombinationPolicy getCombinationPolicy() {
-	return _combinationPolicy;
+	return combinationPolicy;
     }
     
     public void setCombinationPolicy(CombinationPolicy combinationPolicy) {
-	_combinationPolicy = combinationPolicy;
+	this.combinationPolicy = combinationPolicy;
     }
 }

@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Duration {
     
     private TimeScaleUnit _unitOfMeasure;
