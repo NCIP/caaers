@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -28,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -75,6 +77,7 @@ public class CreateAdverseEventAjaxFacade {
     private CtcDao ctcDao;
     private LowLevelTermDao lowLevelTermDao;
     private ExpeditedAdverseEventReportDao aeReportDao;
+    private RoutineAdverseEventReportDao roReportDao;
     private ResearchStaffDao researchStaffDao;
     private AnatomicSiteDao anatomicSiteDao;
     private InteroperationService interoperationService;
@@ -263,6 +266,21 @@ public class CreateAdverseEventAjaxFacade {
 
     public boolean pushAdverseEventToStudyCalendar(int aeReportId) {
         ExpeditedAdverseEventReport report = aeReportDao.getById(aeReportId);
+        try {
+            interoperationService.pushToStudyCalendar(report);
+            return true;
+        } catch (CaaersSystemException ex) {
+        	log.warn("Interoperation Service, is not working properly", ex);
+            // this happens if the interoperationService isn't correctly configured
+            return false;
+        } catch (RuntimeException re) {
+            log.error("Unexpected error in communicating with study calendar", re);
+            return false;
+        }
+    }
+    
+    public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
+        RoutineAdverseEventReport report = roReportDao.getById(aeReportId);
         try {
             interoperationService.pushToStudyCalendar(report);
             return true;
@@ -605,7 +623,12 @@ public class CreateAdverseEventAjaxFacade {
     public void setReportService(ReportService reportService) {
         this.reportService = reportService;
     }
-
+    
+    @Required
+    public void setRoutineAdverseEventReportDao(RoutineAdverseEventReportDao roReportDao) {
+		this.roReportDao = roReportDao;
+	}
+    
     public static class IndexChange {
         private Integer original, current;
         private String currentDisplayName;

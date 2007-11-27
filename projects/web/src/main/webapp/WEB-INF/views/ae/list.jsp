@@ -61,13 +61,36 @@
                 }
             })
         }
-
+		
+		function notifyPscRoutineEvent(aeReportId) {
+            AE.showIndicator("notify-indicator-routine-" + aeReportId)
+            createAE.pushRoutineAdverseEventToStudyCalendar(aeReportId, function(result) {
+                AE.hideIndicator("notify-indicator-routine-" + aeReportId)
+                var unit = $("notify-unit-routine-" + aeReportId)
+                if (result) {
+                    Element.update(unit, "Notified")
+                    Element.addClassName(unit, "success")
+                } else {
+                    Element.update(unit, "Notification failed")
+                    Element.addClassName(unit, "failure")
+                }
+            })
+        }
+		
         Event.observe(window, "load", function() {
             $$("a.notify").each(function(a) {
                 Event.observe(a, "click", function(e) {
                     Event.stop(e);
                     var aeReportId = Event.element(e).id.substring(7)
                     notifyPsc(aeReportId)
+                })
+            })
+            
+            $$("a.notify-routine").each(function(a) {
+                Event.observe(a, "click", function(e) {
+                    Event.stop(e);
+                    var roReportId = Event.element(e).id.substring(14)
+                    notifyPscRoutineEvent(roReportId)
                 })
             })
         })
@@ -345,6 +368,12 @@
             <tags:formatDate value="${routineReport.startDate}"/>
         </ec:column>
         <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
+        <ec:column title="Actions" sortable="false" filterable="false" property="dc">
+           <span class="notify-unit" id="notify-unit-routine${report.id}">
+            <a id="notify-routine${report.id}" class="notify-routine" href="#">notify PSC</a>
+            <tags:indicator id="notify-indicator-routine-${report.id}"/>
+           </span>
+        </ec:column>
     </ec:row>
 </ec:table>
 </body>

@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -26,6 +27,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -58,6 +60,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private ExpeditedAdverseEventReportDao aeReportDao;
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private InteroperationService interoperationService;
+    private RoutineAdverseEventReportDao routineReportDao;
 
     @Override
     protected void setUp() throws Exception {
@@ -69,6 +72,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
         interoperationService = registerMockFor(InteroperationService.class);
         treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class);
+        routineReportDao = registerDaoMockFor(RoutineAdverseEventReportDao.class);
 
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
@@ -79,6 +83,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setTreatmentAssignmentDao(treatmentAssignmentDao);
         facade.setInteroperationService(interoperationService);
         facade.setExpeditedReportTree(new ExpeditedReportTree());
+        facade.setRoutineAdverseEventReportDao(routineReportDao);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -278,7 +283,16 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertTrue(facade.pushAdverseEventToStudyCalendar(expectedId));
         verifyMocks();
     }
-
+    
+    public void testPushRoutineAEToPsc() throws Exception {
+    	int expectedId = 50;
+    	RoutineAdverseEventReport report = setId(expectedId, new RoutineAdverseEventReport());
+    	expect(routineReportDao.getById(50)).andReturn(report);
+    	interoperationService.pushToStudyCalendar(report);
+    	replayMocks();
+    	assertTrue(facade.pushRoutineAdverseEventToStudyCalendar(expectedId));
+    	verifyMocks();
+    }
     public void testPushToPscAndFail() throws Exception {
         int expectedId = 510;
         ExpeditedAdverseEventReport report = setId(expectedId, new ExpeditedAdverseEventReport());
@@ -290,6 +304,19 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertFalse(facade.pushAdverseEventToStudyCalendar(expectedId));
         verifyMocks();
     }
+    
+    public void testPushRoutineAEToPscAndFail() throws Exception {
+        int expectedId = 50;
+        RoutineAdverseEventReport report = setId(expectedId, new RoutineAdverseEventReport());
+        expect(routineReportDao.getById(50)).andReturn(report);
+        interoperationService.pushToStudyCalendar(report);
+        expectLastCall().andThrow(new CaaersSystemException("Turbo bad"));
+
+        replayMocks();
+        assertFalse(facade.pushRoutineAdverseEventToStudyCalendar(expectedId));
+        verifyMocks();
+    }
+
 
     public void testPushToPscAndFailWithArbitraryException() throws Exception {
         int expectedId = 510;
