@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -29,12 +28,11 @@ import gov.nih.nci.ccts.grid.StudyOrganizationType;
 import gov.nih.nci.ccts.grid.StudySiteType;
 import gov.nih.nci.ccts.grid.SystemAssignedIdentifierType;
 import gov.nih.nci.ccts.grid.common.StudyConsumerI;
-import gov.nih.nci.ccts.grid.stubs.types.InvalidStudyException;
-import gov.nih.nci.ccts.grid.stubs.types.StudyCreationException;
+import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
+import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -42,10 +40,6 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.access.BeanFactoryLocator;
-import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
 import org.springframework.beans.factory.annotation.Required;
 
 
@@ -130,8 +124,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		
 		Study study = null;
 		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-		study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-		if(study != null){
+		if(studyDao.isInprogressStudyExist(ccIdentifier)){
 			log.info("Already a study with the same Coordinating Center Identifier (" + ccIdentifier +") exists.Returning without processing the request.");
 			return;
 		}
