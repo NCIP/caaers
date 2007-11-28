@@ -274,36 +274,21 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	}
 
 	@Transient
-	public List<Identifier> getIdentifiersInternal() {
+	public List<Identifier> getIdentifiersLazy() {
 		return lazyListHelper.getLazyList(Identifier.class);
 	}
 
 	@Transient
-	public void setIdentifiersInternal(final List<Identifier> identifiers) {
+	public void setIdentifiersLazy(final List<Identifier> identifiers) {
 		setIdentifiers(identifiers);
 	}
-
-	/*
-	@OneToMany
-	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	@JoinColumn(name = "participant_id")
-	public List<Identifier> getIdentifiersInternal() {
-		return lazyListHelper.getInternalList(Identifier.class);
-	}
-
-	public void setIdentifiersInternal(final List<Identifier> identifiers) {
-		lazyListHelper.setInternalList(Identifier.class, identifiers);
-	}
-
-	@Override
+	
 	@Transient
-	public List<Identifier> getIdentifiers() {
-		return lazyListHelper.getLazyList(Identifier.class);
+	public Identifier getPrimaryIdentifier(){
+		for(Identifier id : getIdentifiersLazy()){
+			if(id.isPrimary()) return id;
+		}
+		return null;
 	}
-
-	@Override
-	public void setIdentifiers(final List<Identifier> identifiers) {
-		setIdentifiersInternal(identifiers);
-	}*/
 
 }

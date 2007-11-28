@@ -217,7 +217,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 	public Participant initialize(final Participant participant) {
 		HibernateTemplate ht = getHibernateTemplate();
-		ht.initialize(participant.getIdentifiersInternal());
+		ht.initialize(participant.getIdentifiers());
 		ht.initialize(participant.getAssignments());
 		ht.initialize(participant.getStudies());
 
@@ -250,46 +250,61 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	
 	@Transactional(readOnly=false)
 	public void deleteInprogressParticipant(String mrn ){
-	    Object objParticipantId = fetchParticipantIdByMRN(mrn);
+	    final Object objParticipantId = fetchParticipantIdByMRN(mrn);
 	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
 	    
-		//delete identifiers only if participant's load = 0
-		getSession().createSQLQuery("delete from identifiers where participant_id = " + 
-				    objParticipantId.toString() + " and participant_id in( " +
-				     " select p.id from participants p where p.id =" + 
-				     objParticipantId.toString() + 
-				    ")").executeUpdate();
-			
-		//delete assignment
-		getSession().createSQLQuery("delete from participant_assignments where participant_id = " + 
-				    objParticipantId.toString()+ " and load_status = 0").executeUpdate();
+	    getHibernateTemplate().execute(new HibernateCallback(){
+	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    		//delete identifiers only if participant's load = 0
+	    		session.createSQLQuery("delete from identifiers where participant_id = " + 
+	    				    objParticipantId.toString() + " and participant_id in( " +
+	    				     " select p.id from participants p where p.id =" + 
+	    				     objParticipantId.toString() + 
+	    				    ")").executeUpdate();
+	    			
+	    		//delete assignment
+	    		session.createSQLQuery("delete from participant_assignments where participant_id = " + 
+	    				    objParticipantId.toString()+ " and load_status = 0").executeUpdate();
 
-		//delete participant
-		getSession().createSQLQuery("delete from participants where id = " + 
-		    objParticipantId.toString() + " and load_status = 0").executeUpdate();
-		
+	    		//delete participant
+	    		session.createSQLQuery("delete from participants where id = " + 
+	    		    objParticipantId.toString() + " and load_status = 0").executeUpdate();
+	    		return null;
+	    	}
+	    });
+	    
 	}
 	
 
 	@Transactional(readOnly=false)
 	public void commitParticipant(String mrn){
-		Object objParticipantId = fetchParticipantIdByMRN(mrn);
+		final Object objParticipantId = fetchParticipantIdByMRN(mrn);
 	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
-		//update participants
-		getSession().createSQLQuery("update participants set load_status = 1 where id = " + 
-				    objParticipantId.toString()).executeUpdate();
-			
-		//update participants
-		getSession().createSQLQuery("update participant_assignments set load_status = 1 where participant_id = " + 
-				    objParticipantId.toString()).executeUpdate();
-			
+
+	    getHibernateTemplate().execute(new HibernateCallback(){
+	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    		//update participants
+	    		session.createSQLQuery("update participants set load_status = 1 where id = " + 
+	    				    objParticipantId.toString()).executeUpdate();
+	    			
+	    		//update participants
+	    		session.createSQLQuery("update participant_assignments set load_status = 1 where participant_id = " + 
+	    				    objParticipantId.toString()).executeUpdate();
+
+	    		return null;
+	    	}
+	    });
 	}
 	
-	private Object fetchParticipantIdByMRN(String mrn){
-		Query query = getSession().createSQLQuery("select p.id from identifiers i " +
-				" join participants p on  i.participant_id = p.id " +
-				" where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
-		return query.uniqueResult();
+	private Object fetchParticipantIdByMRN(final String mrn){
+	    return getHibernateTemplate().execute(new HibernateCallback(){
+	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    		Query query = session.createSQLQuery("select p.id from identifiers i " +
+	    				" join participants p on  i.participant_id = p.id " +
+	    				" where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
+	    		return query.uniqueResult();
+	    	}
+	    });
 		
 	}
 	

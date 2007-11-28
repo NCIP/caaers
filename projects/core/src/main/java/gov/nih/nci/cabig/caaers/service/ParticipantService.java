@@ -11,4 +11,13 @@ public interface ParticipantService {
 		 * @throws Runtime exception 
 		 */
 	  public List <Participant> search (Participant participant) throws Exception;
+	  
+	  /**
+	   * Will return the body surface area
+	   * @param height
+	   * @param weight
+	   * @return
+	   */
+	  public double bodySuraceArea(double height, String heightUOM, double weight, String weightUOM);
+	  
 }

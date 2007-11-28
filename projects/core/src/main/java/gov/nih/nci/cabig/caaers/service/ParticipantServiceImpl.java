@@ -25,6 +25,18 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 		return participantDao.searchByExample(participant);
 	}
 	
+	/**
+	 * Will calculate the body surface area using Mosteller formula
+	 */
+	public double bodySuraceArea(double height, String heightUOM, double weight, String weightUOM) {
+		double newHeight = height;
+		double newWeight = weight;
+		
+		if(heightUOM.equalsIgnoreCase("Inch")) newHeight = height * 2.54;
+		if(weightUOM.equalsIgnoreCase("Pound")) newWeight = weight / 2.20462262185;
+		return Math.sqrt((newHeight * newWeight) / 3600);
+	}
+	
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}
