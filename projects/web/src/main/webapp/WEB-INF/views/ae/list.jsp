@@ -369,10 +369,12 @@
         </ec:column>
         <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
         <ec:column title="Actions" sortable="false" filterable="false" property="dc">
-           <span class="notify-unit" id="notify-unit-routine${report.id}">
-            <a id="notify-routine${report.id}" class="notify-routine" href="#">notify PSC</a>
-            <tags:indicator id="notify-indicator-routine-${report.id}"/>
+         <c:if test="${routineReport.notificationMessagePossible}">
+           <span class="notify-unit" id="notify-unit-routine-${routineReport.id}">
+            <a id="notify-routine${routineReport.id}" class="notify-routine" href="#">notify PSC</a>
+            <tags:indicator id="notify-indicator-routine-${routineReport.id}"/>
            </span>
+         </c:if>
         </ec:column>
     </ec:row>
 </ec:table>
