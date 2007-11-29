@@ -87,6 +87,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 	}
 	//@Transactional(readOnly=false)
 	public void commit(Registration registration) throws RemoteException,InvalidRegistrationException {
+		log.info("Begining of registration-commit");
 		WebRequest stubWebRequest = null;
 		try{
 			stubWebRequest = preProcess();
@@ -102,6 +103,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		}finally{
 			postProcess(stubWebRequest);
 		}
+		log.info("End of registration-commit");
 	}
 	
 	/**
@@ -111,6 +113,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 	//@Transactional(readOnly=false)
 	public Registration register(Registration registration)	throws RemoteException, InvalidRegistrationException,
 			RegistrationConsumptionException {
+		log.info("Begining of registration-register");
 		WebRequest stubWebRequest = null;
 		try{
 			stubWebRequest = preProcess();
@@ -154,12 +157,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		}finally{
 			postProcess(stubWebRequest);
 		}
-		
+		log.info("End of registration-register");
 	}
 	
 	//@Transactional(readOnly=false)
 	public void rollback(Registration registration) throws RemoteException,InvalidRegistrationException {
 		WebRequest stubWebRequest = null;
+		log.info("Begining of registration-rollback");
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
@@ -175,7 +179,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		}finally{
 			postProcess(stubWebRequest);
 		}
-		
+		log.info("End of registration-rollback");
 		
 	}
 	
