@@ -91,7 +91,7 @@
             </div>
             <div class="value">
             	<tags:dateInput path="aeRoutineReport.startDate"/>
-            	<tags:requiredIndicator/><b>To:&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
+            	&nbsp;&nbsp;&nbsp;<tags:requiredIndicator/><b>To&nbsp;&nbsp;&nbsp;</b>  <tags:dateInput path="aeRoutineReport.endDate"/>
             </div>
         </div>
    </chrome:division>
@@ -117,8 +117,8 @@
             	<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="45" name="fake" disabled="true"></textarea>  
             </div>
         </div>
-   </chrome:division>
-   <hr> 
+   </chrome:division> 
+   <chrome:division title="CTC categories" id="ctc_category">
     <c:forEach items="${ctcCats}" varStatus="status" var="category">
     		<c:if test='${status.index % 10 == 0}'>
     		    </div>
@@ -127,8 +127,8 @@
             <span onClick="afterCheck('${category.name}')" class=""><form:checkbox  id="${category.name}" path="ctcCatIds" value="${category.id}" /></span>
     	    <span  id="${status.index}" style="font:10px arial;" onClick="check('${category.name}','${status.index}')">${category.name}</span><br>
     </c:forEach>
-    </jsp:attribute>
- 
+    </chrome:division> 
+ </jsp:attribute>
    
 </tags:tabForm>
 </body>

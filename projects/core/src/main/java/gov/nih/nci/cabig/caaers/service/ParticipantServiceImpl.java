@@ -88,16 +88,10 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 					StudySite studySite = studySiteDao.matchByStudyAndOrg(
 							studyParticipantAssignment.getStudySite().getOrganization().getName(), 
 							identifier.getValue());
-					System.out.println("StudySite " + studySite.getId());
-					/*
-					StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
-					query.filterByStudySiteName(studyParticipantAssignment
-							.getStudySite().getOrganization().getName());
-					query.filterByIdentifierValueExactMatch(identifier.getValue());
-					Study study = getStudyDao().find(query).get(0);
-					//Study study = getStudyDao().getByIdentifier(identifier);
-					*/
+					
+	
 					if (studySite != null) {
+						log.info("StudySite was found id :  " + studySite.getId());
 						//studySite = study.getStudySites().get(0);
 						destination.getAssignments().add(
 								new StudyParticipantAssignment(destination,

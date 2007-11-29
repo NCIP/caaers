@@ -100,7 +100,7 @@
             	</div>
         		</div>
             </chrome:division>
-             <chrome:division title="Periods of Observation " id="observation_period">
+            <chrome:division title="Treatment Assignment Code" id="treatment_assignment_code">
             	<div class="row">
             	<div class="label"><tags:renderLabel field="${fieldGroups.report.fields[2]}"/></div>
             	<div class="value">

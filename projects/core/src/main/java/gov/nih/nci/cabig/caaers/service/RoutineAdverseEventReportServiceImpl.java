@@ -43,6 +43,11 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		routineAdverseEventReport.setStartDate(xstreamRoutineAdverseEventReport.getStartDate());
 		routineAdverseEventReport.setEndDate(xstreamRoutineAdverseEventReport.getEndDate());
 		routineAdverseEventReport.setStatus(xstreamRoutineAdverseEventReport.getStatus());
+		
+		ifNullObject(xstreamRoutineAdverseEventReport.getStatus(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Status is either Empty or Not Valid");
+		ifNullObject(xstreamRoutineAdverseEventReport.getStartDate(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Start Date is either Empty or Not Valid");
+		ifNullObject(xstreamRoutineAdverseEventReport.getEndDate(), routineAdverseEventReportImportOutcome,Severity.ERROR, "End Date is either Empty or Not Valid");
+
 
 		//migrateIdentifiers(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
 		migrateAssignments(routineAdverseEventReport,xstreamRoutineAdverseEventReport, routineAdverseEventReportImportOutcome);
@@ -95,7 +100,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		}
 			
 		routineAdverseEventReportImportOutcome.setImportedDomainObject(routineAdverseEventReport);
-		System.out.println("Number of messages : " + routineAdverseEventReportImportOutcome.getMessages().size());
+		//System.out.println("Number of messages : " + routineAdverseEventReportImportOutcome.getMessages().size());
 		//participantUniquenessCheck(routineAdverseEventReport,routineAdverseEventReportImportOutcome,Severity.ERROR);
 		
 		return routineAdverseEventReportImportOutcome;
@@ -137,8 +142,8 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 								.getValue());
 				
 				if (studySite != null) {
-					System.out.println("StudySite id : " + studySite.getId());
-					System.out.println("Orgs in study " + studySite.getStudy().getStudyOrganizations().size());
+					log.debug("StudySite id : " + studySite.getId());
+					log.debug("Orgs in study " + studySite.getStudy().getStudyOrganizations().size());
 					// This is here so the studyOrgaizations are initialized if not hibernate throws a lazy initialization exceptions
 					studySite.getStudy().getStudyOrganizations().size();
 					break;
@@ -150,7 +155,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 
 				participant = participantDao.getByIdentifier(identifier);
 				if (participant != null) {
-					System.out.println("Participant " + participant.getId());
+					//System.out.println("Participant " + participant.getId());
 					break;
 				}
 			}
@@ -164,7 +169,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			}
 		}
 		ifNullObject(destination.getAssignment(), routineAdverseEventReportImportOutcome,
-				Severity.ERROR);
+				Severity.ERROR," Study/Participant could not be found ");
 		}
 		
 		private void migrateTreatmentAssignment(RoutineAdverseEventReport destination,
@@ -209,7 +214,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					String[] cc = { term };
 					ctcTerm = ctcTermDao.getCtcTerm(cc);
 				}
-				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The CtcTerm you provided is not valid");
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, false);
 				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 				
@@ -221,7 +226,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				destination.addAdverseEvent(ae);
 			}
 			
-			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
+			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"A list of AdverseEvents could not be found");
 			
 		}
 		
@@ -256,15 +261,15 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setExpected(adverseEvent.getExpected());
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
-				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR);
-				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid");
+				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid");
+				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid");
+				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid");
 				
 				destination.addAdverseEvent(ae);
 			}
 			
-			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
+			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"AdverseEvents are either Empty or Not Valid");
 			
 		}
 		
@@ -282,7 +287,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(meddraCode);
 					lowLevelTerm = terms.isEmpty() == false ? terms.get(0) : null;
 				}
-				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"LowLevelTerm is either Empty or Not Valid");
 
 				ae.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(lowLevelTerm);
 				ae.setGrade(adverseEvent.getGrade());
@@ -290,17 +295,17 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setExpected(adverseEvent.getExpected());
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
-				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade missing");
-				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization missing");
-				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expected missing");
-				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution missing");
+				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid");
+				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid");
+				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid");
+				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid");
 				
 				destination.addAdverseEvent(ae);
-				System.out.println("Hospitalization : " + adverseEvent.getHospitalization());
-				System.out.println("Meddra Term Id : " + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
+				//System.out.println("Hospitalization : " + adverseEvent.getHospitalization());
+				//System.out.println("Meddra Term Id : " + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
 			}
 			
-			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
+			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR, "AdverseEvents are either Empty or Not Valid");
 			
 		}
 		
@@ -318,7 +323,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(meddraCode);
 					lowLevelTerm = terms.isEmpty() == false ? terms.get(0) : null;
 				}
-				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR);
+				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"LowLevelTerm is either Empty or Not Valid");
 
 				ae.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(lowLevelTerm);
 				ae.setGrade(adverseEvent.getGrade());
@@ -328,10 +333,10 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				
 				destination.addAdverseEvent(ae);
 
-				System.out.println("ter" + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
+				//System.out.println("ter" + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
 			}
 			
-			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR);
+			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"AdverseEvents are either Empty or Not Valid");
 			
 		}
 		
@@ -344,7 +349,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 									 boolean isCurrent){
 			if (ctcTerm != null ){
 				// Is provided CtcTerm same version as Ctc version specified in Study ?
-				System.out.println(" The CTC version of the provided Term :" + ctcTerm.getCategory().getCtc().getName());
+				//System.out.println(" The CTC version of the provided Term :" + ctcTerm.getCategory().getCtc().getName());
 				if (! ctcTerm.getCategory().getCtc().getName().equals(ctcVersion.getName())){
 					errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
 							"There is a discrepency between the CTC versions, The Ctc Term : " + 
@@ -396,6 +401,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			}
 		}
 		
+		/*
 		private void participantUniquenessCheck(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
 			
 			String[] s = { participant.getFirstName(),participant.getLastName() };
@@ -404,6 +410,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " already exists. ",severity);
 			}
 		}
+		*/
 		
 		public ParticipantDao getParticipantDao() {
 			return participantDao;

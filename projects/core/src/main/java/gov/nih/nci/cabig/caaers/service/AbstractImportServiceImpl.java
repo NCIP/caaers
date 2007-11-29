@@ -13,11 +13,15 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public abstract class AbstractImportServiceImpl {
 	
 	private OrganizationDao organizationDao;
 	private StudyDao studyDao;
+	protected final Log log = LogFactory.getLog(getClass());
 	
 	
 	/*
@@ -78,6 +82,12 @@ public abstract class AbstractImportServiceImpl {
 	protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome, Severity severity){
 		if(list.isEmpty()){
 			studyImportOutcome.addErrorMessage("is required or has errors",severity);
+		}
+	}
+	
+	protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome, Severity severity,String message){
+		if(list.isEmpty()){
+			studyImportOutcome.addErrorMessage(message,severity);
 		}
 	}
 	
