@@ -2,19 +2,20 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.getByClassAndCode;
 import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
-import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * @author Rhett Sutphin
  */
 public enum PostAdverseEventStatus implements CodedEnum<Integer> {
-    INTERVENTION_CONTINUES(1, "Intervention for AE continues"),
-    RECOVERING(2),
-    RECOVERED_WITH_SEQUELAE(3),
-    RECOVERED_WITHOUT_SEQUELAE(4),
-    NOT_RECOVERED(4),
-    DEAD(5)
+	
+	INTERVENTION_CONTINUES(1, "Intervention for AE continues"),
+    RECOVERING(2,"Recovering/Resolving"),
+    RECOVERED_WITH_SEQUELAE(3,"Recovered/Resolved with Sequelae"),
+    RECOVERED_WITHOUT_SEQUELAE(4,"Recovered/Resolved without Sequelae"),
+    NOT_RECOVERED(4, "Not recovered/Not resolved"),
+    DEAD(5, "Fatal/Died")
+    
     ;
 
     private int code;
@@ -39,6 +40,6 @@ public enum PostAdverseEventStatus implements CodedEnum<Integer> {
     }
 
     public String getDisplayName() {
-        return displayName == null ? sentenceCasedName(this) : displayName;
+        return displayName;
     }
 }
