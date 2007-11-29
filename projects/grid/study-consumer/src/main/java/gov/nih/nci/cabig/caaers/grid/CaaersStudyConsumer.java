@@ -57,6 +57,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	
 	public void commit(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
+		log.info("Begining of studyConsumer : commit");
 		
 		if(studyDto == null) {
 			InvalidStudyException e = new InvalidStudyException();
@@ -78,6 +79,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 			e.setFaultString("Exception while comitting study," + exp.getMessage());
 			throw e;
 		}
+		log.info("End of studyConsumer : commit");
 
 	}
 	
@@ -86,7 +88,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	 */
 	public void rollback(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
-		
+		log.info("Begining of studyConsumer : rollback");
 		if(studyDto == null) {
 			InvalidStudyException e = new InvalidStudyException();
 			e.setFaultReason("Null input");
@@ -106,6 +108,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 			e.setFaultString("Exception while comitting study," + exp.getMessage());
 			throw e;
 		}
+		log.info("End of studyConsumer : rollback");
 	}
 	
 	
@@ -119,7 +122,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	 */
 	public void createStudy(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException, StudyCreationException {
-
+		log.info("Begining of studyConsumer : createStudy");
 		if(studyDto == null) throw new InvalidStudyException();
 		
 		Study study = null;
@@ -135,6 +138,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		populateStudyDetails(studyDto, study);
 		studyDao.save(study);
 		log.info("Created the study :" + study.getId());
+		log.info("End of studyConsumer : createStudy");
 	}
 	
 	/**
@@ -147,7 +151,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		String ccIdentifier = null;
 		for(IdentifierType idType : studyDto.getIdentifier()){
 			if(idType instanceof OrganizationAssignedIdentifierType &&
-				StringUtils.equals(idType.getValue(), OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
+				StringUtils.equals(idType.getType(), OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
 				ccIdentifier = idType.getValue();
 				break;
 			}
@@ -426,4 +430,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public ConfigProperty getConfigurationProperty() {
 		return configurationProperty;
 	}
+	
+	
+	
 }
