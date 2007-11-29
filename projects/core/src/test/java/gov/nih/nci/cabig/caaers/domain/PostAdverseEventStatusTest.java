@@ -17,8 +17,8 @@ public class PostAdverseEventStatusTest extends CaaersTestCase {
     public void testDisplayNames() throws Exception {
         assertEquals("Intervention for AE continues", 
             INTERVENTION_CONTINUES.getDisplayName());
-        assertEquals("Not recovered", NOT_RECOVERED.getDisplayName());
-        assertEquals("Dead", DEAD.getDisplayName());
+        assertEquals("Not recovered/Not resolved", NOT_RECOVERED.getDisplayName());
+        assertEquals("Fatal/Died", DEAD.getDisplayName());
     }
     
     public void testGetByCode() throws Exception {
