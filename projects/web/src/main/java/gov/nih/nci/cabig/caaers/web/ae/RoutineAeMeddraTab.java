@@ -47,9 +47,9 @@ public class RoutineAeMeddraTab extends AeRoutTab {
         
         reportFieldGroup = new DefaultInputFieldGroup(REPORT_FIELD_GROUP);
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
-            "aeRoutineReport.startDate", "From:", true));
+            "aeRoutineReport.startDate", "From", true));
         reportFieldGroup.getFields().add(InputFieldFactory.createDateField(
-                "aeRoutineReport.endDate", "To:", true));
+                "aeRoutineReport.endDate", "To", true));
   
         
         mainFieldFactory = new RepeatingFieldGroupFactory(MAIN_FIELD_GROUP, "aeRoutineReport.adverseEvents");

@@ -120,7 +120,7 @@
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>Name</b> </th>
-    			<th scope="col" align="left"><b>Last Name</b> </th>
+    			<th scope="col" align="left"><b>Assigned to Study</b> </th>
     			<th scope="col" align="left"><b>Possible Problem</b> </th>
     		</tr>
     		<c:forEach var='item' items='${command.nonImportableParticipants}'>

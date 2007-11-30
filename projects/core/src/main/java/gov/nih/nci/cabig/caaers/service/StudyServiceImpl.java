@@ -211,27 +211,28 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				Terminology t = destination.getTerminology();
 				t.setTerm(Term.CTC);
 				t.setCtcVersion(ctc);
-				ifNullObject(ctc,studyImportOutcome, Severity.ERROR);
+				ifNullObject(ctc,studyImportOutcome, Severity.ERROR,"CTC is either Empty or Not Valid");
+				
 			}
 			if(source.getTerminology().getMeddraVersion() != null){
 				MeddraVersion meddraVersion = meddraVersionDao.getById(Integer.parseInt(source.getTerminology().getMeddraVersion().getName()));
 				Terminology t = destination.getTerminology();
 				t.setTerm(Term.MEDDRA);
 				t.setMeddraVersion(meddraVersion);
-				ifNullObject(meddraVersion,studyImportOutcome, Severity.ERROR);
+				ifNullObject(meddraVersion,studyImportOutcome, Severity.ERROR,"MedDRA Version is either Empty or Not Valid");
 			}
 		}
-		ifNullObject(source.getTerminology(),studyImportOutcome, Severity.ERROR);
+		ifNullObject(source.getTerminology(),studyImportOutcome, Severity.ERROR,"Terminology is either Empty or Not Valid");
 	}
 	
 	private void migrateDiseaseTerminology(Study destination,Study source, DomainObjectImportOutcome studyImportOutcome){
 		
 		// Terminology and Version 
 		destination.setDiseaseTerminology(source.getDiseaseTerminology());
-		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR);
+		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR,"Disease Terminology is either Empty or Not Valid");
 		if (destination.getDiseaseTerminology() != null ){
 			destination.getDiseaseTerminology().setStudy(destination);
-			ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(),studyImportOutcome, Severity.ERROR);
+			ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(),studyImportOutcome, Severity.ERROR,"Disease Code Term is either Empty or Not Valid");
 		}
 	}
 	

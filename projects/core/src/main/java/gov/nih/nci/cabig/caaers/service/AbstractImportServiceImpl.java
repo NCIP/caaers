@@ -57,7 +57,7 @@ public abstract class AbstractImportServiceImpl {
 				destination.getIdentifiers().add(identifier);
 			}
 		}
-		ifNullOrEmptyList(source.getIdentifiers(),studyImportOutcome,Severity.ERROR);
+		ifNullOrEmptyList(source.getIdentifiers(),studyImportOutcome,Severity.ERROR, "Identifiers are either Empty or Not Valid");
 	}
 	
 	

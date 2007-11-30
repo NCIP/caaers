@@ -82,6 +82,14 @@
     <jsp:attribute name="instructions">
         Please select the CTC Categories for ${participantSummaryLine} on
         ${studySummaryLine}.
+        <div class="row">
+        	<div class="label">
+                CTC Version	
+            </div>
+            <div class="value">
+            	${term}
+            </div>
+        </div>    
     </jsp:attribute>
     <jsp:attribute name="singleFields">
    <chrome:division title="Periods of Observation " id="observation_period">
@@ -114,7 +122,7 @@
                 Description	
             </div>
             <div class="value">
-            	<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="45" name="fake" disabled="true"></textarea>  
+            	<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="65" name="fake" disabled="true"></textarea>  
             </div>
         </div>
    </chrome:division> 

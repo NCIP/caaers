@@ -98,11 +98,14 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 										studySite));
 						break;
 					}
+					
+					ifNullObject(studySite, participantImportOutcome,Severity.ERROR, "Study is either Empty or Not Valid");
+					
 				}
 			}
 		}
 		ifNullOrEmptyList(source.getAssignments(), participantImportOutcome,
-				Severity.ERROR);
+				Severity.ERROR, "Assignments are either Empty or Not Valid");
 		}
 		
 		

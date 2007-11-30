@@ -113,15 +113,30 @@ public abstract class AbstractRoutineAdverseEventInputController
     	        	command.getAeRoutineReport().addAdverseEvent(new AdverseEvent());
     	        }
 		}
+    	
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         refdata.put("participantSummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
         refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getStudySummaryLine());
+        refdata.put("term",  getTerm(command));
         if (displaySummary(page)) {
             refdata.put("summary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
         }
         return refdata;
     }
     
+    private String getTerm( RoutineAdverseEventInputCommand command){
+    	String studyTerminology = "";
+    	if (command.getStudy() != null ) {
+    		Term term = command.getStudy().getTerminology().getTerm();
+    		if (term == Term.MEDDRA) {
+    			studyTerminology = " " + command.getStudy().getTerminology().getMeddraVersion().getName();
+			}
+    		if (term == Term.CTC) {
+    			studyTerminology = " " + command.getStudy().getTerminology().getCtcVersion().getName();
+			}
+		}
+    	return studyTerminology;
+    }
 
     @Override
     protected boolean shouldSave(HttpServletRequest request, RoutineAdverseEventInputCommand command, Tab<RoutineAdverseEventInputCommand> tab) {

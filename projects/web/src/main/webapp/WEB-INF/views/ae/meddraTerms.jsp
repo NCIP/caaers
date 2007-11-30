@@ -81,12 +81,29 @@
 
         }) 
     </script>
+    <style type="text/css">
+    
+	div.row div.label {
+    	width: 16em;
+    }
+    div.row div.value {
+    	margin-left: 18em;
+    }
+	</style>
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enterbasicaeinformation">
         <jsp:attribute name="instructions">
             You are entering AEs  for ${participantSummaryLine} on
             ${studySummaryLine}.
+             <div class="row">
+        	<div class="label">
+                MedDRA Version	
+            </div>
+            <div class="value">
+            	${term}
+            </div>
+        </div>    
         </jsp:attribute>
         <jsp:attribute name="singleFields">
         	
@@ -95,8 +112,8 @@
             	<div class="label"><tags:renderLabel field="${fieldGroups.report.fields[0]}"/></div>
             	<div class="value">
                 	<tags:renderInputs field="${fieldGroups.report.fields[0]}"/>
-                	<strong><tags:renderLabel field="${fieldGroups.report.fields[1]}"/></strong>
-                	<tags:renderInputs field="${fieldGroups.report.fields[1]}"/>
+                	&nbsp;&nbsp;&nbsp;<strong><tags:renderLabel field="${fieldGroups.report.fields[1]}"/></strong>
+                	&nbsp;&nbsp;&nbsp;<tags:renderInputs field="${fieldGroups.report.fields[1]}"/>
             	</div>
         		</div>
             </chrome:division>
@@ -113,7 +130,7 @@
                	 	Description	
            		 </div>
             	<div class="value">
-            		<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="45" name="fake" disabled="true"></textarea>  
+            		<textarea id="aeRoutineReport.treatmentAssignmentDescription" rows="2" cols="65" name="fake" disabled="true"></textarea>  
             	</div>
        			</div>
             </chrome:division>
