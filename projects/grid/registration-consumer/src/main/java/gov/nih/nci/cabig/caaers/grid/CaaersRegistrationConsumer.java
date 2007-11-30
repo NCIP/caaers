@@ -88,6 +88,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 	//@Transactional(readOnly=false)
 	public void commit(Registration registration) throws RemoteException,InvalidRegistrationException {
 		log.info("Begining of registration-commit");
+		System.out.println("-- RegistrationConsumer :commit called");
 		WebRequest stubWebRequest = null;
 		try{
 			stubWebRequest = preProcess();
@@ -114,6 +115,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 	public Registration register(Registration registration)	throws RemoteException, InvalidRegistrationException,
 			RegistrationConsumptionException {
 		log.info("Begining of registration-register");
+		System.out.println("-- RegistrationConsumer : register");
 		WebRequest stubWebRequest = null;
 		try{
 			stubWebRequest = preProcess();
@@ -139,31 +141,41 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 
 			}
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
+			if(participantDao.isInprogressParticipantExist(mrn)){
+				log.info("Already a participant with Inprogress load status exist, So returning without processing further");
+				return registration;
+			}
+			
 			Participant participant = fetchParticipant(mrn);
+			
 			if(participant == null){
 				participant = createParticipant(registration);
 				StudyParticipantAssignment assignment = createStudyParticipantAssignment(participant, site);
 			}else{
+				if(studyParticipantAssignmentDao.isAssignmentExist(participant, site)){
+					log.info("Already this participant is associated to the study, so returning without processing");
+					return registration;
+				}
 				StudyParticipantAssignment assignment = fetchAssignment(participant, site);
 				if(assignment == null){
 					assignment = createStudyParticipantAssignment(participant, site);
 					
-				}else{
-					log.info("Already this participant is associated to the study");
 				}
 			}
 			participantDao.save(participant);
+			log.info("End of registration-register");
 			return registration;
 		}finally{
 			postProcess(stubWebRequest);
 		}
-		log.info("End of registration-register");
+		
 	}
 	
 	//@Transactional(readOnly=false)
 	public void rollback(Registration registration) throws RemoteException,InvalidRegistrationException {
 		WebRequest stubWebRequest = null;
 		log.info("Begining of registration-rollback");
+		System.out.println("-- RegistrationConsumer -- rollback");
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());

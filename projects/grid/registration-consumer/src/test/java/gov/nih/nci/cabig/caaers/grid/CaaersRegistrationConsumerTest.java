@@ -38,7 +38,8 @@ public class CaaersRegistrationConsumerTest extends TestCase {
     	// TODO Auto-generated method stub
     	 this.clientConfigFile = "/gov/nih/nci/ccts/grid/client/client-config.wsdd"; //"C:/devtools/workspace/REF-RegistrationConsumer/src/gov/nih/nci/ccts/grid/client/client-config.wsdd";	
          this.registrationResourceName = "/SampleRegistrationMessage.xml"; //"C:/devtools/workspace/REF-RegistrationConsumer/test/resources/SampleRegistrationMessage.xml";
-         this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer"; 
+         //this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer";
+         this.serviceUrl = "http://10.10.10.2:8015/wsrf/services/cagrid/StudyConsumer";
     }
     
     @Override
