@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -64,7 +65,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		Study study = getDao().getByGridId("f2321");
 		assertNotNull("Study not found", study);
 	}
-
+	
 	public void testSaveWithCtc() throws Exception {
 		Integer savedId;
 		{
@@ -585,6 +586,46 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		Study study = getDao().getById(-4);
 		assertNotNull("Study should not be null", study);
 	}
+	
+
+	public void testSaveStudyInInprogressStatus() throws Exception {
+		Integer savedId;
+		
+			Study newStudy = new Study();
+			newStudy.setShortTitle("Short Title Inserted");
+			newStudy.setLongTitle("Long Title Inserted");
+			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+			newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
+			getDao().save(newStudy);
+			assertNotNull("No ID for newly saved study", newStudy.getId());
+			savedId = newStudy.getId();
+		
+		System.out.println(savedId);
+		
+
+		interruptSession();
+		System.out.println("loadstatus :" + newStudy.getLoadStatus());
+		assertNotNull("Study must be saved", savedId);
+		final int studyId = savedId.intValue();
+		Study study = (Study)getJdbcTemplate().execute(new StatementCallback(){
+          	public Object doInStatement(Statement st) throws SQLException,
+          			DataAccessException {
+          			ResultSet rs = st.executeQuery("select * from studies where load_status = 0 and id = " + studyId);
+          			if(rs.next()) {
+          				Study s = new Study();
+          				s.setId(rs.getInt(1));
+          				s.setShortTitle("Shortest");
+          				return s;
+          			}
+          		return null;
+          	}
+          });
+		System.out.println(study.getId());
+		assertEquals("Study Id should be same", studyId, study.getId().intValue());
+	}
+
 	
 	public void testDeleteInprogressStudy(){
 		{
