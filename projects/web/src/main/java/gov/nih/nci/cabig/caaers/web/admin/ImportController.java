@@ -191,6 +191,13 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			redirectTo = "redirectToSearchInParticipantTab";
 		}
 		
+		if (cObject.getNonImportableParticipants().size() > 0){
+			redirectTo = "redirectToSearchInParticipantTab";
+		}
+		if (cObject.getNonImportableRoutineAdverseEventReports().size() > 0){
+			redirectTo = "redirectToAeList";
+		}
+		
 		if (cObject.getImportableRoutineAdverseEventReports().size() > 0){
 			
 			for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : cObject.getImportableRoutineAdverseEventReports()) {
@@ -206,23 +213,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 					routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
 				}
 			}
-			
-			/*
-			int start= 0;
-	        int loopEnd = 0;
-	        int end = cObject.getImportableRoutineAdverseEventReports().size() ;
-	        int increment = 100;  
-	             
-	          while(true){
-	              loopEnd = start + increment < end ? start + increment : start + (end - start);
-	              routineAdverseEventReportDao.batchSave(cObject.getImportableRoutineAdverseEventReports().subList(start, loopEnd));
-	              routineAdverseEventReportDao.clearSession();
-	              //routineAdverseEventReportDao.batchClean(routineAdverseEventReportDao.batchSave(cObject.getImportableRoutineAdverseEventReports().subList(start, loopEnd)));
-	              start = start + increment + 1;
-	           	  if (loopEnd  == end ) { break;}
-	             }
+			redirectTo = "redirectToAeList";
+		}
+		
+		if (cObject.getNonImportableParticipants().size() > 0 && 
+				cObject.getImportableParticipants().size() == 0 ){
 			redirectTo = "redirectToSearchInParticipantTab";
-			*/
+		}
+		if (cObject.getNonImportableRoutineAdverseEventReports().size() > 0 &&
+				cObject.getImportableRoutineAdverseEventReports().size() == 0 ){
+			redirectTo = "redirectToAeList";
 		}
 		
 		return new ModelAndView(redirectTo);

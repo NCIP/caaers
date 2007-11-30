@@ -152,11 +152,24 @@ public class DetailsTab extends StudyTab {
 		}
 		
 		//set the sponsor assigned identifier.
+		// TODO : the below logic seems flawed as the identifiers might not be in the same order as thought to be
+		/*
 		OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier)command.getIdentifiers().get(0);
 		identifier.setOrganization(command.getPrimaryFundingSponsorOrganization());
 		
-		identifier = (OrganizationAssignedIdentifier)command.getIdentifiers().get(1);
-		identifier.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
+		OrganizationAssignedIdentifier identifier1 = (OrganizationAssignedIdentifier)command.getIdentifiers().get(1);
+		identifier1.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
+		*/
+		
+		for (int i=0; i<=1; i++){
+			OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier)command.getIdentifiers().get(0);
+			if (identifier.getType().equals("Sponsor Identifier")){
+				identifier.setOrganization(command.getPrimaryFundingSponsorOrganization());
+			}
+			if (identifier.getType().equals("Coordinating Center Identifier")){
+				identifier.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
+			}
+		}
 	}
 
 	public CtcDao getCtcDao() {
