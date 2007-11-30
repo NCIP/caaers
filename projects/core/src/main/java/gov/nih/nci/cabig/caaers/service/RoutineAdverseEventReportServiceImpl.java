@@ -162,7 +162,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			if (studySite != null && participant != null) {
 				spa = studyParticipantAssignmentDoa.getAssignment(participant,
 						studySite);
-				System.out.println("StudyParticipantAssignment " + spa.getId());
+				//System.out.println("StudyParticipantAssignment " + spa.getId());
 			}
 			if (spa != null) {
 				destination.setAssignment(spa);
