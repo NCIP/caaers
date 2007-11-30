@@ -134,6 +134,14 @@
         load_status="0" />
         
         <IDENTIFIERS
+        id="-208"
+        value="11112"
+        type="MRN"
+        participant_id="-100"
+        system_name="system name"
+        discriminator_column="1"/>
+        
+        <IDENTIFIERS
         id="-210"
         value="11111"
         type="MRN"

@@ -4,11 +4,17 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -47,4 +53,22 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
     public void reassociate(StudyParticipantAssignment assignment) {
     	getHibernateTemplate().lock(assignment, LockMode.NONE);
     }
+    
+    
+
+	public Boolean isAssignmentExist(final Participant participant, final StudySite site){
+	    return (Boolean)getHibernateTemplate().execute(new HibernateCallback(){
+	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    		Query query = session.createSQLQuery("select id from participant_assignments where "+
+	    				" participant_id = " + participant.getId().toString() + 
+	    				" and study_site_id = " + site.getId().toString());
+	    		Object result = query.uniqueResult();
+	    		
+	    		return (result != null); 
+	    		
+	    	}
+	    });
+		
+	}
+    
 }

@@ -31,4 +31,22 @@ public class StudyParticipantAssignmentDaoTest extends DaoTestCase<StudyParticip
         StudyParticipantAssignment actual = getDao().getAssignment(p, s);
         assertEquals("Wrong assignment found", -13, (int) actual.getId());
     }
+    
+    public void testIsAssignmentExistTest() throws Exception {
+    	Study   s = studyDao.getById(-4);
+    	Participant p = new Participant();
+    	p.setId(-9);
+    	boolean exist = getDao().isAssignmentExist(p, s.getStudySites().get(0));
+    	assertTrue("Assignment should exist",exist);
+    	
+    	p = participantDao.getById(-5);
+    	exist = getDao().isAssignmentExist(p, s.getStudySites().get(0));
+    	assertTrue("Assignment should exist",exist);
+    	 
+    	 
+    	p = participantDao.getById(-99);
+    	exist = getDao().isAssignmentExist(p, s.getStudySites().get(0));
+    	assertFalse("Assignment should not exist",exist);
+    	 
+    }
 }

@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
@@ -29,12 +31,21 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 	 * Will calculate the body surface area using Mosteller formula
 	 */
 	public double bodySuraceArea(double height, String heightUOM, double weight, String weightUOM) {
-		double newHeight = height;
-		double newWeight = weight;
 		
-		if(heightUOM.equalsIgnoreCase("Inch")) newHeight = height * 2.54;
-		if(weightUOM.equalsIgnoreCase("Pound")) newWeight = weight / 2.20462262185;
-		return Math.sqrt((newHeight * newWeight) / 3600);
+		ParticipantHistory participantHistory = new ParticipantHistory();
+		ParticipantHistory.Measure ht = new ParticipantHistory.Measure();
+		ht.setQuantity(new BigDecimal(height));
+		ht.setUnit(heightUOM);
+		
+		participantHistory.setHeight(ht);
+		
+		ParticipantHistory.Measure wt = new ParticipantHistory.Measure();
+		wt.setQuantity(new BigDecimal(weight));
+		wt.setUnit(weightUOM);
+		
+		participantHistory.setWeight(wt);
+		
+		return participantHistory.getBodySurfaceArea();
 	}
 	
 	public ParticipantDao getParticipantDao() {

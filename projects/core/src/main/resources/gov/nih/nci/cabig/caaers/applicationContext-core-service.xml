@@ -57,7 +57,7 @@
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
    </bean>
 	
-	
+	<!-- 
     
     <bean id="connectionFactory" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersConnectionFactory">
@@ -90,6 +90,17 @@
         <constructor-arg>
             <ref bean="recvQueueDestination"/>
         </constructor-arg>
+    </bean>
+ 	-->
+ 	
+    <bean id="messageBroadcastService" lazy-init="true"
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
+          <property name="configuration" ref="configuration" />
+          <property name="messageTypesMapping">
+             <map>
+                <entry key="AENotification" value="SCHEDULE_MODIFICATION" />
+             </map>
+          </property>
     </bean>
 
     <!-- XXX: may want to put this in a different app context -->

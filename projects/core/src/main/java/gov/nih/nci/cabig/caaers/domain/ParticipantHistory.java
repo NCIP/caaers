@@ -6,6 +6,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -61,7 +62,18 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     public void setBaselinePerformanceStatus(String baselinePerformance) {
         this.baselinePerformanceStatus = baselinePerformance;
     }
-
+    
+    @Transient
+    public double getBodySurfaceArea(){
+    	if(weight == null || height == null) return 0;
+    	if(weight.quantity == null || height.quantity == null) return 0;
+    	if(weight.unit == null || height.unit == null) return 0;
+    	
+    	double wt = (weight.unit.equalsIgnoreCase("Pound")) ? weight.quantity.doubleValue()/2.20462262185: weight.quantity.doubleValue();
+    	double ht = (height.unit.equalsIgnoreCase("Inch"))  ? height.quantity.doubleValue() *  2.54 : height.quantity.doubleValue();
+    	return Math.sqrt((wt * ht) / 3600);
+    }
+    
     @Embeddable
     public static class Measure {
         private BigDecimal quantity;

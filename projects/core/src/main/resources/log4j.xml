@@ -33,9 +33,9 @@
   <logger name="org.apache.commons.digester"><level value="info"/></logger>
   <logger name="org.apache.catalina">        <level value="info"/></logger>
   <logger name="org.apache.jasper">          <level value="info"/></logger>
-  
+  <logger name="gov.nih.nci"><level value="debug"/></logger>
   <root>
-    <priority value="debug"/>
+    <priority value="error"/>
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>
   </root>

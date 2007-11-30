@@ -41,6 +41,23 @@
         date_of_enrollment="2004-09-30"
         load_status="1"
         />
+           <PARTICIPANTS
+        id="-99"
+        last_name="Tourmaline9"
+        load_status="1"
+        />
+         <PARTICIPANTS
+        id="-9"
+        last_name="Tourmaline9"
+        load_status="1"
+        />
+    <PARTICIPANT_ASSIGNMENTS
+        id="-18"
+        study_site_id="-10"
+        participant_id="-9"
+        date_of_enrollment="2004-09-30"
+        load_status="0"
+        />
     <AE_REPORTS
         id="-99"
         assignment_id="-13"

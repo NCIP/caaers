@@ -35,13 +35,13 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         assertNotNull("Participant not found", participant);
         assertEquals("Wrong last name", "Scott", participant.getLastName());
         assertEquals("Wrong first name", "Dilbert", participant.getFirstName());
-        assertEquals("Wrong number of identifiers", 1, participant.getIdentifiers().size());
+        assertEquals("Wrong number of identifiers", 2, participant.getIdentifiers().size());
     }
     
     public void testGetIsReadOnly() throws Exception {
         {
             Participant participant = getDao().getById(-100);
-            assertEquals("Wrong number of identifiers initially", 1, participant.getIdentifiers().size());
+            assertEquals("Wrong number of identifiers initially", 2, participant.getIdentifiers().size());
             participant.getIdentifiers().clear();
         }
 
@@ -49,7 +49,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
 
         {
             Participant participant = getDao().getById(-100);
-            assertEquals("Identifiers incorrectly purged", 1, participant.getIdentifiers().size());
+            assertEquals("Identifiers incorrectly purged", 2, participant.getIdentifiers().size());
         }
     }
 
@@ -383,6 +383,16 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
     	assertEquals("Wrong match", "Dilbert",results.get(0).getFirstName());
     }
     
+    
+    public void testIsInprogressParticipantExist() throws Exception {
+    	boolean exist = false;
+    	
+    	exist = getDao().isInprogressParticipantExist("11111");
+    	assertTrue("Participant with MRN 11111, must be in Inprogress status", exist);
+    	
+    	exist = getDao().isInprogressParticipantExist("11112");
+    	assertFalse("Participant with MRN 11112, must be in complete status", exist);
+    }
     
     
     

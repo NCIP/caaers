@@ -33,5 +33,16 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
     	assertNotNull("Participant is null", participants);
     	
     }
-
+    public void testFindBodySurfaceArea() throws Exception { 
+    	double wt = 3234;
+    	double ht = 4424;
+    	double bsa = Math.sqrt((ht * wt) /3600);
+    	double calBsa = participantService.bodySuraceArea(ht, "Centimeter", wt, "Kilogram");
+    	double nwt = (wt /2.20462262185);
+    	double nht = (ht * 2.54);
+    	
+    	double bsa2 = Math.sqrt(( nht * nwt ) / 3600);
+    	double calBsa2 = participantService.bodySuraceArea(ht, "Inch", wt, "Pound");
+    	assertEquals("BodySurfaceArea is wrong",bsa2, calBsa2);
+    }
 }

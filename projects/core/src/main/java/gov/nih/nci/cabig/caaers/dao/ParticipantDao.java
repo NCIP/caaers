@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -250,25 +251,23 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	
 	@Transactional(readOnly=false)
 	public void deleteInprogressParticipant(String mrn ){
-	    final Object objParticipantId = fetchParticipantIdByMRN(mrn);
-	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
+	    final Participant p = fetchParticipantIdAndLoadStatusByMRN(mrn);
+	    if(p == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
 	    
 	    getHibernateTemplate().execute(new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
-	    		//delete identifiers only if participant's load = 0
-	    		session.createSQLQuery("delete from identifiers where participant_id = " + 
-	    				    objParticipantId.toString() + " and participant_id in( " +
-	    				     " select p.id from participants p where p.id =" + 
-	    				     objParticipantId.toString() + 
-	    				    ")").executeUpdate();
+	    		if(p.getLoadStatus() == LoadStatus.INPROGRESS.getCode()){
 	    			
-	    		//delete assignment
-	    		session.createSQLQuery("delete from participant_assignments where participant_id = " + 
-	    				    objParticipantId.toString()+ " and load_status = 0").executeUpdate();
+	    			//delete identifiers of participant
+	    			session.createSQLQuery("delete from identifiers where participant_id = " + p.getId().toString()).executeUpdate();
 
-	    		//delete participant
-	    		session.createSQLQuery("delete from participants where id = " + 
-	    		    objParticipantId.toString() + " and load_status = 0").executeUpdate();
+		    		//delete participant
+		    		session.createSQLQuery("delete from participants where id = " + p.getId().toString()).executeUpdate();
+
+	    		}   			
+	    		//delete assignment, if load_status of assignment is 0
+	    		session.createSQLQuery("delete from participant_assignments where participant_id = " + 
+	    				    p.getId().toString() + " and load_status = 0").executeUpdate();
 	    		return null;
 	    	}
 	    });
@@ -278,31 +277,44 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 	@Transactional(readOnly=false)
 	public void commitParticipant(String mrn){
-		final Object objParticipantId = fetchParticipantIdByMRN(mrn);
-	    if(objParticipantId == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
+		final Participant p = fetchParticipantIdAndLoadStatusByMRN(mrn);
+	    if(p == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
 
 	    getHibernateTemplate().execute(new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
 	    		//update participants
 	    		session.createSQLQuery("update participants set load_status = 1 where id = " + 
-	    				    objParticipantId.toString()).executeUpdate();
+	    				    p.getId().toString()).executeUpdate();
 	    			
 	    		//update participants
 	    		session.createSQLQuery("update participant_assignments set load_status = 1 where participant_id = " + 
-	    				    objParticipantId.toString()).executeUpdate();
+	    				    p.getId().toString()).executeUpdate();
 
 	    		return null;
 	    	}
 	    });
 	}
 	
-	private Object fetchParticipantIdByMRN(final String mrn){
-	    return getHibernateTemplate().execute(new HibernateCallback(){
+	public boolean isInprogressParticipantExist(String mrn){
+		Participant p = fetchParticipantIdAndLoadStatusByMRN(mrn);
+		if(p == null) return false;
+		return p.getLoadStatus().equals(LoadStatus.INPROGRESS.getCode());
+	}
+	
+	private Participant fetchParticipantIdAndLoadStatusByMRN(final String mrn){
+	    return (Participant)getHibernateTemplate().execute(new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
-	    		Query query = session.createSQLQuery("select p.id from identifiers i " +
+	    		Query query = session.createSQLQuery("select p.id, p.load_status from identifiers i " +
 	    				" join participants p on  i.participant_id = p.id " +
 	    				" where i.value = '" + mrn + "' and i.type='" + SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE + "'");
-	    		return query.uniqueResult();
+	    		Object[] result = (Object[])query.uniqueResult();
+	    		
+	    		if(result == null) return null;
+	    		
+	    		Participant p = new Participant();
+	    		p.setId(Integer.valueOf(result[0].toString()));
+	    		p.setLoadStatus(Integer.valueOf(result[1].toString()));
+	    		return p;
 	    	}
 	    });
 		
