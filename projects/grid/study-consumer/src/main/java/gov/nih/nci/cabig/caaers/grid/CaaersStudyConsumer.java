@@ -58,6 +58,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public void commit(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
 		log.info("Begining of studyConsumer : commit");
+		System.out.println("-- StudyConsumer : commit");
 		
 		if(studyDto == null) {
 			InvalidStudyException e = new InvalidStudyException();
@@ -89,6 +90,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public void rollback(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException {
 		log.info("Begining of studyConsumer : rollback");
+		System.out.println("-- StudyConsumer : rollback");
 		if(studyDto == null) {
 			InvalidStudyException e = new InvalidStudyException();
 			e.setFaultReason("Null input");
@@ -123,6 +125,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	public void createStudy(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException, StudyCreationException {
 		log.info("Begining of studyConsumer : createStudy");
+		System.out.println("-- StudyConsumer : createStudy");
 		if(studyDto == null) throw new InvalidStudyException();
 		
 		Study study = null;
@@ -308,7 +311,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	 */
 	void populateInvestigators(StudyOrganization studyOrganization, StudyInvestigatorType[] invTypes) throws StudyCreationException{
 		if(ArrayUtils.isEmpty(invTypes)){
-			log.info("No investigators are available in the input");
+			log.info("No investigators are available in the input message");
 			return;
 		}
 		
@@ -320,7 +323,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 			if(StringUtils.isEmpty(invNCICode)){
 				log.error("Investigator details are missing!");
 				StudyCreationException exp = new StudyCreationException();
-				exp.setFaultReason("Missing investigator details in xml : InvestigatorType.healthcareSiteInvesitagor.investigatorType[0].nciIdentifier");
+				exp.setFaultReason("Missing investigator details in input : InvestigatorType.healthcareSiteInvesitagor.investigatorType[0].nciIdentifier");
 				exp.setFaultString("Invalid input, missing investigator information");
 				throw exp;
 			}
@@ -376,10 +379,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		
 		if(orgList == null || orgList.isEmpty()){
 			log.error("No organization exists  nciCode :" + nciCode);
-			throw new CaaersSystemException("No organization exists with nciCode :" + nciCode);
+			throw new CaaersSystemException("No organization exist with nciCode :" + nciCode);
 		}
 		if(orgList.size() > 1){
-			log.error("Multiple organizations exist in DB with same NCI code :" + nciCode);
+			log.error("Multiple organizations exist with same NCI code :" + nciCode);
 		}
 		
 		return orgList.get(0);

@@ -1,22 +1,13 @@
 package gov.nih.nci.cabig.caaers.grid;
 
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import org.apache.axis.EngineConfiguration;
-import org.apache.axis.client.AxisClient;
-import org.apache.axis.configuration.FileProvider;
-
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.ccts.grid.Registration;
 import gov.nih.nci.ccts.grid.Study;
 import gov.nih.nci.ccts.grid.client.StudyConsumerClient;
-import gov.nih.nci.ccts.grid.common.StudyConsumerI;
+
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.Reader;
+
 import junit.framework.TestCase;
 
 public class CaaersStudyConsumerTest extends TestCase {
@@ -30,14 +21,10 @@ public class CaaersStudyConsumerTest extends TestCase {
 	protected void setUp() throws Exception {
 	 super.setUp();
 	 this.configLoction = "C:/devtools/workspace/REF-StudyRegistration/src/gov/nih/nci/ccts/grid/client/client-config.wsdd";	
-     this.studyResourceName = "C:/devtools/workspace//REF-StudyRegistration/test/resources/SampleRegistrationMessage.xml";
-      /*System.getProperty("caaers.test.sampleStudyFile",
-        "C:/devtools/workspace/REF-StudyRegistration/test/resources/SampleStudyMessage.xml");*/
+     this.studyResourceName = "C:/devtools/workspace//REF-StudyRegistration/test/resources/SampleStudyMessage.xml";
+     //this.serviceUrl = "http://10.10.10.2:8015/wsrf/services/cagrid/StudyConsumer";
      this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/StudyConsumer"; 
-    	 /*System.getProperty("caaers.test.serviceUrl",
-           	"http://localhost:8080/wsrf/services/cagrid/StudyConsumer");*/
 	 studyConsumer = new CaaersStudyConsumer();
-	// studyConsumer.setStudyDao((StudyDao)studyConsumer.getBeanFactory().getBean("studyDao"));
 	}
 
 	protected void tearDown() throws Exception {
@@ -76,6 +63,26 @@ public class CaaersStudyConsumerTest extends TestCase {
 			throw e;
 		}
 	}
+	
+	public void testCreateDeleteInLoopRemote() throws Exception {
+		int cnt = 0;
+		for(int i = 0; i < 15 ; i++){
+			try {
+				StudyConsumerClient studyClient = new StudyConsumerClient(serviceUrl);
+				Study study = obtainStudyDTO();
+				String idValue = study.getIdentifier(0).getValue();
+				study.getIdentifier(0).setValue(idValue + i);
+				studyClient.createStudy(study);
+				studyClient.rollback(study);
+				
+				cnt++;
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}	
+		}
+		assertEquals("Count should be 14", 14, cnt); 
+	}
 
 	public void testFindCoordinatingCenterIdentifier() {
 		fail("Not yet implemented");
@@ -110,7 +117,7 @@ public class CaaersStudyConsumerTest extends TestCase {
 		try {
 		Reader reader = new FileReader(studyResourceName);
 		FileInputStream fis = new FileInputStream(configLoction);
-			studyDTO = (Study) Utils.deserializeObject(reader, Study.class,fis);
+			studyDTO = (Study) gov.nih.nci.cagrid.common.Utils.deserializeObject(reader, Study.class,fis);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
