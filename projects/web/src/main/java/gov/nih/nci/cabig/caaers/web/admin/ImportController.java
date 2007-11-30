@@ -282,11 +282,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         try {
         	File xmlFile = File.createTempFile("file","uploaded");
         	
+        	
         	if (type.equals("participant")){
+        		int totalNumberofRecords = 5000;
+        		int currentNumber = 1;
         		FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true)
+        		while (true && currentNumber++ <= totalNumberofRecords)
         		{
         			Participant xstreamParticipant = (Participant)in.readObject();
         			migrateParticipant(xstreamParticipant,command);
@@ -294,10 +297,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	}
 
         	if (type.equals("study")){
+        		int totalNumberofRecords = 5000;
+        		int currentNumber = 1;
         		FileCopyUtils.copy(command.getStudyFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true)
+        		while (true && currentNumber++ <= totalNumberofRecords)
         		{
         			Study xstreamStudy = (Study)in.readObject();
         			migrateStudy(xstreamStudy, command);
@@ -305,10 +310,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	}
         	
         	if (type.equals("routineAeReport")){
+        		int maxNumberofRoutineReports = 100;
+        		int currentNumberofRoutineReports = 1;
         		FileCopyUtils.copy(command.getRoutineAdverseEventReportFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true)
+        		while (true && currentNumberofRoutineReports++ <= maxNumberofRoutineReports)
         		{
         			RoutineAdverseEventReport xstreamRoutineAdverseEventReport = (RoutineAdverseEventReport)in.readObject();
         			migrateRoutineAdverseEventReport(xstreamRoutineAdverseEventReport, command);
