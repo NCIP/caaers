@@ -202,7 +202,7 @@
         
         <dependency>
             <groupId>gov.nih.nci</groupId>
-            <artifactId>esb-client</artifactId>
+            <artifactId>c3pr-esb-client</artifactId>
             <version>1.0</version>
         </dependency>
         
