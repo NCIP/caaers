@@ -1,9 +1,9 @@
 <project name="run-tools file" basedir="." default="runClient">
      <target name="runClient" depends="checkGlobus, defineClasspaths" description="Run the sample Client">
-        <property name="service.url" value="https://localhost:8443/wsrf-ds/services/cagrid/Caaers" />
-     	<property name="dorian.url" value="https://localhost:8443/wsrf-ds/services/cagrid/Caaers" />
-     	<property name="uid" value="https://localhost:8443/wsrf-ds/services/cagrid/Caaers" />
-     	<property name="pwd" value="https://localhost:8443/wsrf-ds/services/cagrid/Caaers" />
+        <property name="service.url" value="data service url " />
+     	<property name="dorian.url" value="dorian url" />
+     	<property name="uid" value="userid" />
+     	<property name="pwd" value="password" />
      		
         <echo message="Connecting to service: ${service.url}" />
         <java classname="gov.nih.nci.cagrid.caaers.client.ClientTest" classpathref="run.classpath" fork="no">
