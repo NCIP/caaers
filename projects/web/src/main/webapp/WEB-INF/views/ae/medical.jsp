@@ -29,31 +29,26 @@
         </c:if>
     }
     
-     /*
-
-    function chooseDiseaseOrOther() {
-        var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
-        $('aeReport.diseaseHistory.otherPrimaryDisease').disabled = (term != "");
-        $('aeReport.diseaseHistory.meddraStudyDisease').disabled = (term != "");
-    }
-    */
     
-   
+   function findBSA(){
+   	  var ht = $F('aeReport.participantHistory.height.quantity');
+   	  var htUOM = $F('aeReport.participantHistory.height.unit');
+   	  var wt = $F('aeReport.participantHistory.weight.quantity');
+   	  var wtUOM = $F('aeReport.participantHistory.weight.unit');
+   	  createAE.calculateBodySurfaceArea(ht, htUOM, wt, wtUOM,function(bsa){
+   	    if(bsa > 0) Element.update($('bsa-value'), bsa);
+   	  });
+   }
     
      function chooseDiseaseOrOther() {
-        var term = $('aeReport.diseaseHistory.ctepStudyDisease').value;
-        var meddraterm = $('aeReport.diseaseHistory.meddraStudyDisease').value;
+        var term = '';
+        if($('aeReport.diseaseHistory.ctepStudyDisease')){
+          term = $F('aeReport.diseaseHistory.ctepStudyDisease')
+        }else if($('aeReport.diseaseHistory.meddraStudyDisease')) {
+          term = $F('aeReport.diseaseHistory.meddraStudyDisease');
+        }
+        $('aeReport.diseaseHistory.otherPrimaryDisease').disabled = (term != '');
         
-        
-        $('aeReport.diseaseHistory.meddraStudyDisease').disabled = (term != "");
-        
-         if (term != "" || meddraterm !=""){
-        	$('aeReport.diseaseHistory.otherPrimaryDisease').disabled = true; 
-         }else{
-         	$('aeReport.diseaseHistory.otherPrimaryDisease').disabled = false; 
-         }
-         
-        $('aeReport.diseaseHistory.ctepStudyDisease').disabled = (meddraterm != "");
     }
 
     var EnterDiseaseSite = Class.create()
@@ -142,16 +137,26 @@
             },
             deletable: true
         }, 'aeReport.diseaseHistory.metastaticDiseaseSites')
-
-        $('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
-            chooseDiseaseOrOther();
-        })
-        
-        $('aeReport.diseaseHistory.meddraStudyDisease').observe("change", function() {
-            chooseDiseaseOrOther();
-        })
-
+		
+		if($('aeReport.diseaseHistory.ctepStudyDisease')){
+        	$('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
+            	chooseDiseaseOrOther();
+        	})
+        }
+        if($('aeReport.diseaseHistory.meddraStudyDisease')){
+        	$('aeReport.diseaseHistory.meddraStudyDisease').observe("change", function() {
+            	chooseDiseaseOrOther();
+        	})
+		}
         chooseDiseaseOrOther()
+        
+        //observe the onChange and onBlur on height and weight
+        Event.observe('aeReport.participantHistory.height.quantity','blur' ,findBSA);
+   	    Event.observe('aeReport.participantHistory.height.unit','change',findBSA);
+   	    Event.observe('aeReport.participantHistory.weight.quantity','blur',findBSA);
+   	    Event.observe('aeReport.participantHistory.weight.unit','change',findBSA);
+       
+        findBSA();
     })
 
     </script>
@@ -189,64 +194,20 @@
         <div class="label">Gender</div>
         <div class="value">${command.participant.gender}</div>
     </div>
-
-    <c:forEach items="${fieldGroups['participant'].fields}" var="field">
-        <tags:renderRow field="${field}"/>
-    </c:forEach>
-
+	
+	<tags:renderRow field="${fieldGroups['participant'].fields[0]}"/>
+	<tags:renderRow field="${fieldGroups['participant'].fields[1]}"/>
+	<div class="row">
+        <div class="label">Body surface area</div>
+        <div class="value"><span id="bsa-value">  </span></div>
+    </div>
+	<tags:renderRow field="${fieldGroups['participant'].fields[2]}"/>
+	
+	
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Disease information" id="diseaseInfo">
-            <%--
-                <div class="row">
-                    <div class="label">Disease Name</div>
-                    <div class="value">
-
-                        <select id="aeReport.diseaseHistory.studyDisease" name="aeReport.diseaseHistory.studyDisease" onChange="javascript:chooseDisease();">
-                            <option value="">please select--</option>
-                            <c:forEach var="studyDisease" varStatus="status" items="${command.study.ctepStudyDiseases}">
-                            	<option value="${studyDisease.id}" ${command.aeReport.diseaseHistory.ctepStudyDisease.id == studyDisease.id  ? 'SELECTED' : ''}>${studyDisease.term.term} </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-
-                <p class="instructions">
-                    If appropriate Disease Name is not on the list above, provide appropriate Disease Name in the "Disease Name Not Listed" field.</p>
-                <div class="row">
-                    <div class="label">Disease Name Not Listed</div>
-                    <div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseCode"/> </div>
-                </div>
-
-                <div class="row">
-                    <div class="label">Primary Site of Disease</div>
-                    <div class="value">
-                            <form:hidden path="aeReport.diseaseHistory.anatomicSite"/>
-                            <input type="text" size="38" id="aeReport.diseaseHistory.anatomicSite-input" value="${command.aeReport.diseaseHistory.anatomicSite.name}"/>
-                            <input type="button" id="aeReport.diseaseHistory.anatomicSite-clear" value="Clear"/>
-                            <tags:indicator id="aeReport.diseaseHistory.anatomicSite-indicator"/>
-                            <tags:errors path="aeReport.diseaseHistory.anatomicSite"/>
-                            <div id="aeReport.diseaseHistory.anatomicSite-choices" class="autocomplete"></div>
-                            <p id="aeReport.diseaseHistory.anatomicSite-selected" style="display:none">
-                                You've selected the anatomic <span id="aeReport.diseaseHistory.anatomicSite-selected-name"></span>.
-                            </p>
-                    </div>
-                </div>
-
-                <p class="instructions">
-                        If the appropriate site is not listed, type the specific site in the "Other Primary Site of Disease" field.
-                </p>
-
-                <div class="row">
-                    <div class="label">Other Primary Site of Disease</div>
-                    <div class="value"> <form:input size="38" path="aeReport.diseaseHistory.otherPrimaryDiseaseSiteCode"/> </div>
-                </div>
-
-                <div class="row">
-                    <div class="label">Date of initial diagnosis</div>
-                    <div class="value"> <tags:dateInput path="aeReport.diseaseHistory.dateOfInitialPathologicDiagnosis"/> </div>
-                </div>
-                --%>
+           
             <c:forEach items="${fieldGroups['disease'].fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>

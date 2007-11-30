@@ -39,6 +39,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
+import gov.nih.nci.cabig.caaers.service.ParticipantService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -88,6 +89,7 @@ public class CreateAdverseEventAjaxFacade {
     private ExpeditedReportTree expeditedReportTree;
     private ConfigProperty configProperty;
     private ReportService reportService;
+    private ParticipantService participantService;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -343,7 +345,11 @@ public class CreateAdverseEventAjaxFacade {
     public String addPriorTherapyAgent(int index, int parentIndex, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
     }
-
+    
+    public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM){
+    	return participantService.bodySuraceArea(ht, htUOM, wt, wtUOM);
+    }
+    
     /**
      * Reorders the list property of the current session command, moving the element at
      * <code>objectIndex</code> to <code>targetIndex</code> and shifting everything else
@@ -627,6 +633,11 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setRoutineAdverseEventReportDao(RoutineAdverseEventReportDao roReportDao) {
 		this.roReportDao = roReportDao;
+	}
+    
+    @Required
+    public void setParticipantService(ParticipantService participantService) {
+		this.participantService = participantService;
 	}
     
     public static class IndexChange {
