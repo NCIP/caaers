@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -17,6 +18,8 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name="id-generator", strategy="native",
 		  parameters={@Parameter(name="sequence", value="seq_password_policy_id")})
 public class PasswordPolicy extends AbstractMutableDomainObject {
+
+    private static final long TOKEN_TIMEOUT_MS = 48*60*60*1000;
 
     private PasswordCreationPolicy passwordCreationPolicy;
     private LoginPolicy loginPolicy;
@@ -51,5 +54,10 @@ public class PasswordPolicy extends AbstractMutableDomainObject {
 
     public void setLoginPolicy(LoginPolicy loginPolicy) {
 	this.loginPolicy = loginPolicy;
+    }
+
+    @Transient
+    public long getTokenTimeout() {
+	return TOKEN_TIMEOUT_MS;
     }
 }

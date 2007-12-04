@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.service.security;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.security.user.CaaersUser;
-import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.service.UserService;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 
 import java.util.Date;
 import java.sql.Timestamp;
@@ -11,47 +11,47 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.UnsupportedEncodingException;
 
+import org.springframework.beans.factory.annotation.Required;
+
 /**
  * @author Jared Flatow
  */
 public class PasswordManagerServiceImpl implements PasswordManagerService {
 
-    // store these in PasswordPolicy
-    private static final long TOKEN_TIMEOUT_MS = 48*60*60*1000;
-    private static final String HASH_ALGORITHM = "MD5";
-    private static final String FORCED_CHARSET = "UTF-8";
-
-    public static final PasswordManagerService Singleton = new PasswordManagerServiceImpl();
-    private PasswordManagerServiceImpl() {}
+    private PasswordPolicyService passwordPolicyService;
+    private UserService userService;
 
     public String requestToken(String userName) throws CaaersSystemException {
-	CaaersUser user = null; // ClassImplementingCaaersUser.getUser(userName);
-	user.setTokenTime(new Timestamp(new Date().getTime()));
-	user.setToken(hash(user.getSalt() + user.getTokenTime().toString() + "random_string"));
-	return user.getToken();
+	return userService.userCreateToken(userName);
     }
 
     public void setPassword(String userName, String password, String token) throws CaaersSystemException {
-	CaaersUser user = null; // ClassImplementingCaaersUser.getUser(userName);
-	Timestamp earliestTokenTime = new Timestamp(new Date().getTime() - TOKEN_TIMEOUT_MS);
-	if (user.getTokenTime().after(earliestTokenTime)) {
-	    if (token.equals(user.getToken())) {
-		if (PasswordPolicyServiceImpl.Singleton.validatePasswordAgainstCreationPolicy(new Credential(user, password))) { // credential take user
-		    user.addPasswordToHistory(PasswordPolicyServiceImpl.Singleton.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
-		    user.setPassword(hash(user.getSalt() + password));
-		    user.setTokenTime(earliestTokenTime);
-		}
-	    } else throw new CaaersSystemException("Invalid set password token.");
-	} else throw new CaaersSystemException("Set password token has timed out.");
+	validateToken(userName, token);
+	validateAndSetPassword(userName, password);
+    }
+    
+    private boolean validateToken(String userName, String token) throws CaaersSystemException {
+	User user = userService.getUserByName(userName);
+	if (user.getTokenTime().after(new Timestamp(new Date().getTime() - passwordPolicyService.getPasswordPolicy().getTokenTimeout())) 
+	    && token.equals(user.getToken())) return true;
+	throw new CaaersSystemException("Invalid token.");	
     }
 
-    private String hash(String string) throws CaaersSystemException {
-	try {
-	    return new String(MessageDigest.getInstance(HASH_ALGORITHM).digest(string.getBytes(FORCED_CHARSET)), FORCED_CHARSET);
-	} catch (NoSuchAlgorithmException e) {
-	    throw new CaaersSystemException(HASH_ALGORITHM + " not supported on system.");
-	} catch (UnsupportedEncodingException e) {
-	    throw new CaaersSystemException(FORCED_CHARSET + " not supported on system.");
-	}
+    private boolean validateAndSetPassword(String userName, String password) throws CaaersSystemException {
+	passwordPolicyService.validatePasswordAgainstCreationPolicy(userName, password);
+	userService.userChangePassword(userName, password,
+				       passwordPolicyService.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
+	return true;
+    }
+
+    @Required
+    public void setPasswordPolicyService(PasswordPolicyService passwordPolicyService) {
+	this.passwordPolicyService = passwordPolicyService;
+    }
+
+    @Required
+    public void setUserService(UserService userService) {
+	this.userService = userService;
     }
 }
+

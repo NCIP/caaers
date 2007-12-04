@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.service.security.user;
 
-import gov.nih.nci.cabig.caaers.domain.security.user.CaaersUser;
-
 public class Credential {
-    private CaaersUser _user;
+    private String _userName;
     private String _password;
     
-    public Credential(CaaersUser user, String password){
-	_user = user;
+    public Credential(String userName, String password){
+	_userName = userName;
 	_password = password;
     }
     
@@ -16,6 +14,6 @@ public class Credential {
     }
         
     public String getUserName() {
-	return _user.getName();
+	return _userName;
     }
 }

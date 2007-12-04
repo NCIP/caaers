@@ -2,10 +2,21 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.sql.Timestamp;
+
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Transient;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+
+import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.IndexColumn;
 
 /**
  * @author Saurabh Agrawal
@@ -15,16 +26,19 @@ public abstract class User extends AbstractMutableDomainObject {
 
     private String loginId;
     private List<UserGroupType> userGroupTypes;
-
     private String emailAddress;
-
     private String phoneNumber;
-
     private String faxNumber;
     private String firstName;
     private String middleName;
-
     private String lastName;
+
+    private String salt;
+    private String token;
+    private Timestamp tokenTime;
+    private Timestamp passwordLastSet;
+    private int numFailedLogins;
+    private List<String> passwordHistory;
 
     public User() {
         userGroupTypes = new ArrayList<UserGroupType>();
@@ -62,6 +76,83 @@ public abstract class User extends AbstractMutableDomainObject {
     public void setFaxNumber(final String faxNumber) {
         this.faxNumber = faxNumber;
     }
+
+    /* begin password stuff */
+
+    @Column(name="salt")
+    public String getSalt() {
+	return salt;
+    }
+
+    public void setSalt(String salt) {
+	this.salt = salt;
+    }
+
+    @Column(name="token")
+    public String getToken() {
+	return token;
+    }
+
+    public void setToken(String token) {
+	this.token = token;
+    }
+
+    public void resetToken() {
+	this.tokenTime = new Timestamp(0);
+    }
+
+    @Column(name="token_time")
+    public Timestamp getTokenTime() {
+	return tokenTime;
+    }
+
+    public void setTokenTime(Timestamp tokenTime) {
+	this.tokenTime = tokenTime;
+    }
+
+    @Column(name="password_last_set")
+    public Timestamp getPasswordLastSet() {
+	return passwordLastSet;
+    }
+
+    public void setPasswordLastSet(Timestamp passwordLastSet) {
+	this.passwordLastSet = passwordLastSet;
+    }
+
+    @Transient
+    public long getPasswordAge() {
+	return new Date().getTime() - getPasswordLastSet().getTime();
+    }
+
+    // one-to-many
+    @CollectionOfElements
+    @JoinTable(name="password_history",
+	       joinColumns=@JoinColumn(name="user_id"))
+    @IndexColumn(name="list_index")
+    @Column(name="password")
+    public List<String> getPasswordHistory() {
+	return passwordHistory;
+    }
+
+    public void setPasswordHistory(List<String> passwordHistory) {
+	this.passwordHistory = passwordHistory;
+    }
+
+    public void addPasswordToHistory(String password, int maxHistorySize) {
+	passwordHistory.add(password);
+	if (passwordHistory.size() > maxHistorySize && maxHistorySize > 0) passwordHistory.remove(0); 
+    }
+
+    @Column(name="num_failed_logins")
+    public int getFailedLoginAttempts() {
+	return numFailedLogins;
+    }
+
+    public void setFailedLoginAttempts(int numFailedLogins) {
+	this.numFailedLogins = numFailedLogins;
+    }
+
+    /* end password stuff */
 
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
 
 public interface PasswordPolicyService {
@@ -30,5 +29,5 @@ public interface PasswordPolicyService {
      */
     public String publishPasswordPolicy(String xsltFileName);
 	
-    public boolean validatePasswordAgainstCreationPolicy(Credential credential) throws CaaersSystemException;
+    public boolean validatePasswordAgainstCreationPolicy(String userName, String password) throws CaaersSystemException;
 }

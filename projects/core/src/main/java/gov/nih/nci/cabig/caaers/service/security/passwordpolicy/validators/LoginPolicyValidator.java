@@ -9,9 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
  */
 public class LoginPolicyValidator implements PasswordPolicyValidator {
 
-    public static final PasswordPolicyValidator Singleton = new LoginPolicyValidator();
-    private LoginPolicyValidator() {}
-
     public boolean validate(PasswordPolicy policy, Credential credential) throws ValidationException {
 	LoginPolicy loginPolicy = policy.getLoginPolicy();
 

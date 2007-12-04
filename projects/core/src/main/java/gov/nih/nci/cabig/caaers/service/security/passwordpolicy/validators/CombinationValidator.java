@@ -5,10 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 
 public class CombinationValidator implements PasswordPolicyValidator{
-
-    public static final CombinationValidator Singleton = new CombinationValidator();
-    private CombinationValidator() {}
-
     public boolean validate(PasswordPolicy policy,Credential credential) throws ValidationException {
 	CombinationPolicy combinationPolicy = policy.getPasswordCreationPolicy().getCombinationPolicy();
 

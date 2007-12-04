@@ -6,15 +6,14 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 
 public class PasswordCreationPolicyValidator implements PasswordPolicyValidator {
     
-    public static final PasswordPolicyValidator Singleton = new PasswordCreationPolicyValidator();
-    private PasswordCreationPolicyValidator() {}
+    private PasswordPolicyValidator combinationValidator;
     
     public boolean validate(PasswordPolicy policy, Credential credential) throws ValidationException {
 	PasswordCreationPolicy passwordCreationPolicy = policy.getPasswordCreationPolicy();
 	
 	return validateMinPasswordAge(passwordCreationPolicy, credential)
 	    && validatePasswordHistorySize(passwordCreationPolicy, credential)
-	    && CombinationValidator.Singleton.validate(policy, credential);	
+	    && combinationValidator.validate(policy, credential);	
     }  
 
     private boolean validateMinPasswordAge(PasswordCreationPolicy policy, Credential credential)
@@ -36,5 +35,9 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
 	if (credential.getPassword().length() >= policy.getMinPasswordLength()) return true;
 	throw new ValidationException("The minimum length of password must be at least "
 				      + policy.getMinPasswordLength() + " characters");
-    }    
+    }
+
+    public void setCombinationPolicyValidator(PasswordPolicyValidator combinationValidator) {
+	this.combinationValidator = combinationValidator;
+    }
 }
