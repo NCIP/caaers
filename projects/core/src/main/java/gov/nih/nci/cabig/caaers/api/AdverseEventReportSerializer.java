@@ -12,12 +12,14 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -96,6 +98,8 @@ public class AdverseEventReportSerializer {
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
+	    	aer.setId(hibernateAdverseEventReport.getId());
+	    	
 	    	//aer.setStatus(hibernateAdverseEventReport.getStatus());
 	    	
 
@@ -312,7 +316,9 @@ public class AdverseEventReportSerializer {
 		    	studySite.setEndDate(ss.getEndDate());
 	
 		    	studySite.setStudy(ss.getStudy());
-		    	studySite.setOrganization(ss.getOrganization());
+		    	//studySite.setOrganization(ss.getOrganization());
+		    	studySite.setOrganization(getOrganization(ss.getOrganization()));
+		    	
 		    	studySite.setStudyInvestigators(ss.getStudyInvestigators());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getStudySite() "+e.getMessage() , e);
@@ -320,7 +326,23 @@ public class AdverseEventReportSerializer {
 	    	//System.out.println("STUDY INVES INTERNAL >>>>>>>>>>>>>>> " + ss.getStudyInvestigatorsInternal().size());
 	    	return studySite;
 	    }
-
+	    
+	    private Organization getOrganization(Organization org) {
+	    	Organization organization = new Organization();
+	    	organization.setId(org.getId());
+	    	organization.setName(org.getName());
+	    	organization.setNciInstituteCode(org.getNciInstituteCode());
+	    	organization.setDescriptionText(org.getDescriptionText());
+	    	
+	    	List<SiteInvestigator> siList = new ArrayList<SiteInvestigator>();
+	    	
+	    	for (SiteInvestigator si:org.getSiteInvestigators()) {
+	    		siList.add(si);
+	    	}
+	    	organization.setSiteInvestigators(siList);
+	    	
+	    	return organization;
+	    }
 	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) throws Exception {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
 	    	try {
