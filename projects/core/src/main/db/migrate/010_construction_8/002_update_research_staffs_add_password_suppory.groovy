@@ -5,7 +5,7 @@ class UpdateResearchStaffsAddPasswordSupport extends edu.northwestern.bioinforma
         addColumn("research_staffs", "token", "string", limit: 127)
         addColumn("research_staffs", "token_time", "timestamp")
         addColumn("research_staffs", "password_last_set", "timestamp")
-        addColumn("research_staffs", "num_failed_logins", "integer")
+        addColumn("research_staffs", "num_failed_logins", "integer", defaultValue: 0)
         createTable("password_history") { t ->
             t.includePrimaryKey = false
             t.addColumn("user_id", "integer", nullable: false)
