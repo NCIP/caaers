@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
+import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
@@ -58,7 +60,14 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
-    	aegen.generateAndSendPdfReport(command.getAeReport() , reportIndex); 
+    	
+    	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
+		String xml = aeser.serialize(command.getAeReport());
+		Report report = command.getAeReport().getReports().get(((int)reportIndex));
+		
+    	aegen.generateAndNotify(command.getAeReport().getId()+"", report , xml);
+    	
+    	
     	
     	ModelAndView modelAndView;
     	if (command.getFrom()!= null && command.getFrom().equals("list") ){
