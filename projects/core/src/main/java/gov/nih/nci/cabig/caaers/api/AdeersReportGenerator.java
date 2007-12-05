@@ -28,6 +28,7 @@ public class AdeersReportGenerator  {
 	private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
 	private String pdfOutFile = "/tmp/aeReport.pdf";
 	protected Configuration configuration;
+	//protected MessageBroadcastServiceImpl messageBroadcastService;
 	
 	
 	public AdeersReportGenerator () { };
@@ -63,7 +64,7 @@ public class AdeersReportGenerator  {
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
 	}
-	
+	@Deprecated
 	public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject , Integer reportIndex) throws Exception{
 		
 		List<String> emails = new ArrayList<String>();
@@ -97,6 +98,63 @@ public class AdeersReportGenerator  {
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
 					pdfOutFile,emails.toArray(new String[0]));
 		}
+	}
+	
+	public void generateAndNotify(String aeReportId, Report report, String xml) throws Exception {
+		List<String> emails = new ArrayList<String>();
+		List<String> eprs = new ArrayList<String>();
+
+		//Report report = adverseEventReportDataObject.getReports().get(((int)reportIndex));
+		
+		for (ReportDelivery delivery: report.getReportDeliveries()) {
+			if (delivery.getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
+				String ep = delivery.getEndPoint();
+				emails.add(ep);
+			}
+			if (delivery.getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL)) {
+				String ep = delivery.getEndPoint();
+				eprs.add(ep);
+			}
+		}
+		
+		// CCs
+		String[] emailAddresses = report.getLastVersion().getEmailAsArray();
+		if (emailAddresses != null) {
+			for (String email : emailAddresses) {
+				emails.add(email.trim());
+			}
+		} 
+		
+		if (emails.size()>0 ){
+			String tempDir = System.getProperty("java.io.tmpdir");
+			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+aeReportId+".pdf";
+
+			genatePdf(xml);
+			
+			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
+					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
+					pdfOutFile,emails.toArray(new String[0]));
+		}	
+		//sb.append("<EXTERNAL_SYSTEMS>https://eapps.ctisinc.com/adeersws10gtest/services/AEReportXMLService</EXTERNAL_SYSTEMS>");
+		/*
+		if (eprs.size()>0) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("<EXTERNAL_SYSTEMS>");
+			for (String epr:eprs) {
+				sb.append(epr + ",");
+			}
+			
+			sb.append("<EXTERNAL_SYSTEMS>");
+			
+			xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>"+sb.toString());
+			messageBroadcastService.initialize();
+			messageBroadcastService.broadcast(xml);				
+		}
+		*/
+		
+		
+		//
+		
 	}
 	
 	private void sendMail(String mailHost, String user, String pwd, String from,String attachment, String[] to) throws Exception {
@@ -140,6 +198,11 @@ public class AdeersReportGenerator  {
 
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
+	}
+	/*
+	public void setMessageBroadcastService(
+			MessageBroadcastServiceImpl messageBroadcastService) {
+		this.messageBroadcastService = messageBroadcastService;
 	}
 	/*
 	public static void main(String[] args) {
