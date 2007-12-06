@@ -44,7 +44,11 @@
         </create>   
         <create creator="spring" javascript="createIND">
             <param name="beanName" value="indAjaxFacade"/>
-        </create>       
+        </create>
+        <create creator="spring" javascript="importRoutineAe">
+            <param name="beanName" value="importAjaxFacade"/>
+        </create>
+               
         <create creator="new" javascript="date">
             <param name="class" value="java.util.Date"/>
         </create>

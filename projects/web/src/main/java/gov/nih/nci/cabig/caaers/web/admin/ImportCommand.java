@@ -17,6 +17,7 @@ public class ImportCommand {
 	private MultipartFile participantFile;
 	private MultipartFile studyFile;
 	private MultipartFile routineAdverseEventReportFile;
+	private String schemaValidationResult;
 	private String type;
 	
 	private List<DomainObjectImportOutcome<Study>> nonImportableStudies = new ArrayList<DomainObjectImportOutcome<Study>>();
@@ -138,6 +139,12 @@ public class ImportCommand {
 	public void addNonImportableRoutineAdverseEventReport(DomainObjectImportOutcome<RoutineAdverseEventReport> domainObjectImportOutcome){
 		getNonImportableRoutineAdverseEventReports().add(domainObjectImportOutcome);
 	}
-	
-	
+
+	public String getSchemaValidationResult() {
+		return schemaValidationResult;
+	}
+
+	public void setSchemaValidationResult(String schemaValidationResult) {
+		this.schemaValidationResult = schemaValidationResult;
+	}
 }

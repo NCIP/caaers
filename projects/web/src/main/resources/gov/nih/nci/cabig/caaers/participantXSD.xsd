@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="participants">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="participant" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="participant" type="participantType"/>
+    <xs:complexType name="participantType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element type="xs:string" name="firstName" minOccurs="1" maxOccurs="1"/>
+                    <xs:element type="xs:string" name="lastName" maxOccurs="1" minOccurs="1"/>
+                    <xs:element type="xs:string" name="maidenName" maxOccurs="1" minOccurs="0"/>
+                    <xs:element type="xs:string" name="middleName" maxOccurs="1" minOccurs="0"/>
+                    <xs:element type="xs:date" name="dateOfBirth" maxOccurs="1" minOccurs="1" nillable="true" />
+                    <xs:element type="genderType" name="gender" maxOccurs="1" minOccurs="0" />
+                    <xs:element type="raceType" name="race" maxOccurs="1" minOccurs="0"/>
+                    <xs:element type="ethnicityType" name="ethnicity" maxOccurs="1" minOccurs="0" />
+                    
+                    <xs:element name="identifiers" minOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="organizationAssignedIdentifier"  minOccurs="1" maxOccurs="unbounded"/>
+                                <xs:element ref="systemAssignedIdentifier"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="assignments" minOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="assignment" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="study" type="study"/>
+    <xs:complexType name="study">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="identifier" type="reducedIdentifierType" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="assignment" type="assignment"/>
+    <xs:complexType name="assignment">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element ref="studySite"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="studySite" type="studySite"/>
+    <xs:complexType name="studySite">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element ref="study" minOccurs="1" maxOccurs="1"/>
+                    <xs:element ref="organization" minOccurs="1" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="organization" type="organization"/>
+    <xs:complexType name="organization">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string" minOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="organizationAssignedIdentifier" type="organizationAssignedIdentifier"/>
+    <xs:complexType name="organizationAssignedIdentifier">
+        <xs:complexContent>
+            <xs:extension base="identifierType">
+                <xs:sequence>
+                    <xs:element ref="organization"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="systemAssignedIdentifier" type="systemAssignedIdentifier"/>
+    <xs:complexType name="systemAssignedIdentifier">
+        <xs:complexContent>
+            <xs:extension base="identifierType">
+                <xs:sequence>
+                    <xs:element name="systemName" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="identifierType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="type" type="participantIdentifierType"/>
+                    <xs:element name="value" type="xs:string"/>
+                    <xs:element name="primaryIndicator" type="xs:boolean" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="reducedIdentifierType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="value" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="DomainObject">
+        <xs:attribute name="id" type="xs:positiveInteger"/>
+    </xs:complexType>
+
+
+    <xs:complexType name="MutableDomainObject">
+        <xs:complexContent>
+            <xs:extension base="DomainObject">
+                <xs:attribute name="version" type="xs:positiveInteger"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="participantIdentifierType">
+        <xs:annotation>
+            <xs:documentation>
+                Medical Record Number - MRN, Cooperative Group Identifier - CC 
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MRN"/>
+            <xs:enumeration value="CC"/>
+            <xs:enumeration value="Other"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="genderType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Male"/>
+            <xs:enumeration value="Female"/>
+            <xs:enumeration value="Not Reported"/>
+            <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType> 
+    
+    <xs:simpleType name="raceType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Asian"/>
+            <xs:enumeration value="White"/>
+            <xs:enumeration value="Black or African American"/>
+            <xs:enumeration value="American Indian or Alaska Native"/>
+            <xs:enumeration value="Native Hawaiian or other Pacific Islander"/>
+            <xs:enumeration value="Native Hawaiian or other Pacific Islander"/>
+            <xs:enumeration value="Not Reported"/>
+            <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="ethnicityType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Hispanic or Latino"/>
+            <xs:enumeration value="Non Hispanic or Latino"/>
+            <xs:enumeration value="Not Reported"/>
+            <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

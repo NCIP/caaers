@@ -9,23 +9,51 @@
 <head>
 <tags:includeScriptaculous/>
 <style type="text/css">
-        div.label {
-            width: 35%;
-        }
-        div.submit {
-            text-align: right;
-        }
-        form {
-            width: 80%;
-        }
-        td.display {
-	        background-color: white;
-        }
         
-    </style>
+		div.row div.label { width: 28em; } 
+		div.row div.value, div.row div.extra { margin-left: 30em; }
+		
+    	.graph { 
+        position: relative; /* IE is dumb */
+        width: 200px; 
+        border: 1px solid #3876C1; 
+        padding: 2px; 
+    	}
+    	.graph .bar { 
+        display: block;
+        position: relative;
+        background: #3876C1; 
+        text-align: center; 
+        color: #333; 
+        height: 1em; 
+        line-height: 1em;            
+    	}
+    	.graph .bar span { position: absolute; left: 1em; }
+</style>
 
-	<script language="JavaScript" type="text/JavaScript">
+<tags:dwrJavascriptLink objects="importRoutineAe"/>
+<script language="JavaScript" type="text/JavaScript">
 
+	function startImport(totalNumberOfRecords,barId,statusId,type){
+		
+		numberOfRecordsProcessed = 0;
+		i = 0;
+		loops = Math.ceil(parseInt(totalNumberOfRecords)/5)
+		while(  i < loops ){
+
+			importRoutineAe.saveObjectBlock(i++, type, function(values) {
+				theReturnedValue = values ;
+				numberOfRecordsProcessed = numberOfRecordsProcessed +  parseInt(theReturnedValue);
+				percentage = parseInt(numberOfRecordsProcessed * 100 / parseInt(totalNumberOfRecords))
+				$(barId).style.width = percentage + "%"
+				$(barId).innerHTML = percentage + "%"
+				//$(barId).innerHTML = numberOfRecordsProcessed + " of " + totalNumberOfRecords;
+			})
+		}
+		$(statusId).innerHTML = "Importing ..."
+		$(statusId).innerHTML = "Import complete , please press Save at the bottom of the screen to continue"
+	}
+	
 	function validatePage(){
 		return true;
 	}
@@ -46,11 +74,8 @@
 </script>
 
 </head>
-<body> <br>
-<%--
-<chrome:body title="Review & Submit">
+<body>
 
-    <form:form method="post" cssClass="standard" name="studySiteForm"> --%>
     <tags:tabForm tab="${tab}" flow="${flow}" title="Review & Submit">
     <jsp:attribute name="singleFields">
 	<div>		
@@ -59,8 +84,28 @@
 		<input type="hidden" name="_finish" value="true">
 	</div>
 		
-		<c:if test='${fn:length(command.nonImportableStudies) > 0 }'>
-			<chrome:division title="Study records will NOT be loaded" id="study_will_not_load">
+		
+		<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0 }'>
+		
+		<br/><br/>
+		<div class="row">
+			<div class="label">
+				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study')" />	
+           </div>
+		   <div class="value">
+		   		<div class="graph">
+    				<strong id="bar3" class="bar" style="width: 0%;">0%</strong>
+    			</div>
+    			
+		   </div>
+       </div>
+       <div class="row">
+       		<div class="label"></div>
+       		<div class="value" id="importStatus3" >Start import by pressing the above button</div>
+       <br/><br/>
+
+		<chrome:division title="Study records will NOT be loaded" id="study_will_not_load">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -82,11 +127,13 @@
    				</td>
    			</tr>
    			</c:forEach>
+   			<c:if test='${fn:length(command.nonImportableStudies) == 0 }'>
+   				<tr class="results"><td align="left"><i>None</i></td></tr> 
+   			</c:if>
    		</table>	
    		</chrome:division>
-		</c:if>
 		
-		<c:if test='${fn:length(command.importableStudies) > 0 }'>
+		
 		<chrome:division title="Study records will be loaded" id="study_will_load">
 		
 		<table id="test" width="100%" class="tablecontent">
@@ -114,7 +161,27 @@
 		</c:if>
 		
 		
-		<c:if test='${fn:length(command.nonImportableParticipants) > 0 }'>
+		<c:if test='${fn:length(command.nonImportableParticipants) > 0 || fn:length(command.importableParticipants) > 0 }'>
+		
+		<br/><br/>
+		<div class="row">
+			<div class="label">
+				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableParticipants)},'bar2','importStatus2','participant')" />	
+           </div>
+		   <div class="value">
+		   		<div class="graph">
+    				<strong id="bar2" class="bar" style="width: 0%;">0%</strong>
+    			</div>
+    			
+		   </div>
+       </div>
+       <div class="row">
+       		<div class="label"></div>
+       		<div class="value" id="importStatus2" >Start import by pressing the above button</div>
+       <br/><br/>
+
+		
 		<chrome:division title="Participant records will NOT be loaded" id="particpant_will_not_load">
 		
 		<table id="test" width="100%" class="tablecontent">
@@ -127,7 +194,11 @@
 			<tr class="results">
    				<td align="left">
    					<c:out value="${item.importedDomainObject.firstName}" />
-   					<c:out value="${item.importedDomainObject.lastName}" />   				
+   					<c:out value="${item.importedDomainObject.lastName}" />
+   					<c:out value=" ( " />
+   						<c:out value="${item.importedDomainObject.primaryIdentifierValue != null ? 
+							 		item.importedDomainObject.primaryIdentifierValue :  'NA'}" />
+						<c:out value =" ) " />	
    				</td>
    				<td align="left">
    					<c:forEach var='assignment' items='${item.importedDomainObject.assignments}'>
@@ -145,11 +216,14 @@
    				</td>
    			</tr>
    			</c:forEach>
+   			<c:if test='${fn:length(command.nonImportableParticipants) == 0 }'>
+   				<tr class="results"><td align="left"><i>None</i></td></tr> 
+   			</c:if>
    		</table>	
    		</chrome:division>
-		</c:if>
 		
-		<c:if test='${fn:length(command.importableParticipants) > 0 }'>
+		
+		
 		
 		<chrome:division title="Participant records will be loaded" id="particpant_will_load">
 		
@@ -163,7 +237,11 @@
 			<tr class="results">
    				<td align="left">
    					<c:out value="${item.importedDomainObject.firstName}" />
-   					<c:out value="${item.importedDomainObject.lastName}" />   				
+   					<c:out value="${item.importedDomainObject.lastName}" />
+   					<c:out value=" ( " />
+   					<c:out value="${item.importedDomainObject.primaryIdentifierValue != null ? 
+							 		item.importedDomainObject.primaryIdentifierValue :  'NA'}" />
+					<c:out value =" ) " />	
    				</td>
    				<td align="left">
    					<c:forEach var='assignment' items='${item.importedDomainObject.assignments}'>
@@ -181,11 +259,32 @@
    			</c:forEach>
    		</table>	
    		</chrome:division>
+		
 		</c:if>
 		
-		<c:if test='${fn:length(command.nonImportableRoutineAdverseEventReports) > 0 }'>
-		<h4>The following Routine AE Records have been flagged and will NOT be loaded into caAERS</h4>
-					
+		<c:if test='${fn:length(command.nonImportableRoutineAdverseEventReports) > 0 || fn:length(command.importableRoutineAdverseEventReports) > 0 }'>
+		
+		<br/><br/>
+		<div class="row">
+			<div class="label">
+				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableRoutineAdverseEventReports)},'bar','importStatus','routineAe')" />	
+           </div>
+		   <div class="value">
+		   		<div class="graph">
+    				<strong id="bar" class="bar" style="width: 0%;">0%</strong>
+    			</div>
+    			
+		   </div>
+       </div>
+       <div class="row">
+       		<div class="label"></div>
+       		<div class="value" id="importStatus" >Start import by pressing the above button</div>
+       <br/><br/>
+
+		
+		<chrome:division title="NonImportable Routine AEs ( will not be loaded into caAERS due to errors )" >
+		<br/>
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
     			<th scope="col" align="left"><b>Periods of Observation</b> </th>
@@ -222,12 +321,15 @@
    				</td>
    			</tr>
    			</c:forEach>
-   		</table>	
-		</c:if>
+   			<c:if test='${fn:length(command.nonImportableRoutineAdverseEventReports) == 0 }'>
+   				<tr class="results"><td align="left"><i>None</i></td></tr> 
+   			</c:if>
+   		</table>
+   		<br />
+   		</chrome:division>
 		
-		<c:if test='${fn:length(command.importableRoutineAdverseEventReports) > 0 }'>
-		<br>
-		<h4>The following Routine AE Records will be loaded into caAERS</h4>
+		<chrome:division title="Importable Routine AEs ( Will be loaded into caAERS)" >
+		<br/>
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -265,12 +367,17 @@
    				</td>
    			</tr>
    			</c:forEach>
-   		</table>	
+   		</table>
+   		</chrome:division>
 		</c:if>
-		<%--
-        </form:form>
-    
-</chrome:body> --%>
+		
+		<c:if test='${command.schemaValidationResult != null  }'>
+			The provided xml is invaid, Fix the errors and try again.
+			<p>
+				<c:out value="${command.schemaValidationResult}" />
+			</p>
+   		</c:if>
+		
 </jsp:attribute>
 </tags:tabForm>
 </body>

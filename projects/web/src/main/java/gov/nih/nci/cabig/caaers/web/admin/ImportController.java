@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
@@ -43,6 +42,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import javax.xml.validation.Schema;
+import javax.xml.validation.Validator;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.FileCopyUtils;
@@ -50,6 +65,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
@@ -76,11 +92,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 	private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
 	
+	 
+	
 	public ImportController() {		
 
         setCommandClass(ImportCommand.class);
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
+        //System.out.println(this.getClass().getResource("."));
+        //System.out.println(getApplicationContext().getResource("classpath*:routineAeXSD.xsd"));
 
         Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");
 
@@ -89,8 +109,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
                 refdata.put("action", "New");
+                refdata.put("willSave", false);
                 return refdata;
             }
+            
+           
 
             @Override
             public void validate(ImportCommand command, Errors errors) {
@@ -100,6 +123,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 log.debug("Are files empty : " + participantFile + ":" + studyFile + " : " + routineAdverseEventReportFile );
                 if (participantFile && studyFile && routineAdverseEventReportFile) 
                 	errors.rejectValue("participantFile", "REQUIRED", "Please choose either a study or a participant file.");
+                
             }
 
             @Override
@@ -130,8 +154,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {
 		super.initBinder(request, binder);
-		binder.registerCustomEditor(Date.class, ControllerTools
-				.getDateEditor(true));
+		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
 	}
 
 	/**
@@ -156,76 +179,88 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
 		String redirectTo = "redirectToSearchInStudyTab";
 		ImportCommand cObject = (ImportCommand)command;
-		if (cObject.getImportableStudies().size() > 0){
-			
-			int start= 0;
-	        int loopEnd = 0;
-	        int end = cObject.getImportableStudies().size() ;
-	        int increment = 100;  
-	             
-	          while(true){
-	              loopEnd = start + increment < end ? start + increment : start + (end - start);
-	              studyDao.batchSave(cObject.getImportableStudies().subList(start, loopEnd));
-	              studyDao.clearSession();
-	              start = start + increment + 1;
-	           	  if (loopEnd  == end ) { break;}
-	          }
-			//nonTransactionalStudyDao.batchSave(cObject.getImportableStudies());
+		if ("study".equals(cObject.getType())){
 			redirectTo = "redirectToSearchInStudyTab";
 		}
 		
-		if (cObject.getImportableParticipants().size() > 0){
-			
-			int start= 0;
-	        int loopEnd = 0;
-	        int end = cObject.getImportableParticipants().size() ;
-	        int increment = 100;  
-	             
-	          while(true){
-	              loopEnd = start + increment < end ? start + increment : start + (end - start);
-	              participantDao.batchSave(cObject.getImportableParticipants().subList(start, loopEnd));
-	  			  participantDao.clearSession();
-	              start = start + increment + 1;
-	           	  if (loopEnd  == end ) { break;}
-	             }
+		if ("participant".equals(cObject.getType())){
 			redirectTo = "redirectToSearchInParticipantTab";
 		}
 		
-		if (cObject.getNonImportableParticipants().size() > 0){
-			redirectTo = "redirectToSearchInParticipantTab";
-		}
-		if (cObject.getNonImportableRoutineAdverseEventReports().size() > 0){
-			redirectTo = "redirectToAeList";
-		}
-		
-		if (cObject.getImportableRoutineAdverseEventReports().size() > 0){
-			
-			for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : cObject.getImportableRoutineAdverseEventReports()) {
-				if (importOutcome.getImportedDomainObject().getStatus() == Status.CURRENT) {
-					// expedited reporting ? , create ExpeditedReport save routineReport,expeditedReport 
-					ExpeditedAdverseEventReport expeditedReport = getExpedited(importOutcome.getImportedDomainObject());
-					routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-					if (expeditedReport != null) {
-						expeditedAdverseEventReportDao.save(expeditedReport);
-					}
-				}else{
-					// Status = Legacy => save routineAe 
-					routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-				}
-			}
-			redirectTo = "redirectToAeList";
-		}
-		
-		if (cObject.getNonImportableParticipants().size() > 0 && 
-				cObject.getImportableParticipants().size() == 0 ){
-			redirectTo = "redirectToSearchInParticipantTab";
-		}
-		if (cObject.getNonImportableRoutineAdverseEventReports().size() > 0 &&
-				cObject.getImportableRoutineAdverseEventReports().size() == 0 ){
+		if ("routineAeReport".equals(cObject.getType())){
 			redirectTo = "redirectToAeList";
 		}
 		
 		return new ModelAndView(redirectTo);
+	}
+	
+	//helper
+	private MultipartFile getMultipartFile(String type, ImportCommand command){
+		if ("participant".equals(type)){
+			return command.getParticipantFile();
+		}
+		if ("study".equals(type)){
+			return command.getStudyFile();
+		}
+		if ("routineAeReport".equals(type)){
+			return command.getRoutineAdverseEventReportFile();
+		}
+		return null;
+	}
+	
+	// helper
+	private String getXSDLocation(String type){
+		if ("study".equals(type)){
+			return "classpath:gov/nih/nci/cabig/caaers/studyXSD.xsd";
+		}
+		if ("participant".equals(type)){
+			return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
+		}
+		if ("routineAeReport".equals(type)){
+			return "classpath:gov/nih/nci/cabig/caaers/routineAeXSD.xsd";
+		}
+		return null;
+	}
+	
+	private void validateAgainstSchema(File xmlFile ,ImportCommand command, String xsdUrl){
+		 try {
+	        	// parse an XML document into a DOM tree
+	    	    DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	    	    Document document = parser.parse(xmlFile);
+
+	    	    // create a SchemaFactory capable of understanding WXS schemas
+	    	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+	    	    // load a WXS schema, represented by a Schema instance
+	    	    //Source schemaFile = new StreamSource(new File("/Users/krikor/Documents/RD/cabig/caAERS/svn/docs/import/0.8/routineAeXSD.xsd"));
+	    	    Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl).getFile());
+	    	    Schema schema = factory.newSchema(schemaFile);
+
+	    	    // create a Validator instance, which can be used to validate an instance document
+	    	    Validator validator = schema.newValidator();
+
+	    	    // validate the DOM tree
+	    	    
+	    	    validator.validate(new DOMSource(document));
+	        	//return xmlFile;
+		 }
+		 catch (FileNotFoundException ex) {
+			 throw new CaaersSystemException("File Not found Exception", ex);
+		 }
+		 catch (IOException ioe) {
+	    	 command.setSchemaValidationResult(ioe.getMessage());
+	    	 throw new CaaersSystemException(ioe);
+	     }
+	     catch (SAXParseException spe){
+	    	 command.setSchemaValidationResult("Line : " + spe.getLineNumber() + " - " + spe.getMessage()); 
+	     }
+	     catch (SAXException e) {
+	    	 command.setSchemaValidationResult(e.toString());
+	    	 throw new CaaersSystemException(e);
+		 }
+	     catch (ParserConfigurationException pce) {
+	    	 throw new CaaersSystemException("Parser configuration exception ", pce);
+	     }
 	}
 	
 	private void handleLoad(ImportCommand command, String type){
@@ -267,7 +302,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	// routineAdverseEventReport specific
-    	xstream.alias("routineAdverseEvent", gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport.class);
+    	xstream.alias("routineAdverseEventCollection", gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport.class);
     	xstream.alias("adverseEvent", gov.nih.nci.cabig.caaers.domain.AdverseEvent.class);
     	xstream.alias("adverseEventCtcTerm", gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm.class);
     	xstream.alias("adverseEventMeddraLowLevelTerm", gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm.class);
@@ -281,15 +316,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         BufferedReader input = null;
         try {
         	File xmlFile = File.createTempFile("file","uploaded");
-        	
+        	FileCopyUtils.copy(getMultipartFile(type,command).getInputStream(),new FileOutputStream(xmlFile));
+        	validateAgainstSchema(xmlFile , command, getXSDLocation(type));
         	
         	if (type.equals("participant")){
         		int totalNumberofRecords = 5000;
         		int currentNumber = 1;
-        		FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new FileOutputStream(xmlFile));
+        		//FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true && currentNumber++ <= totalNumberofRecords)
+        		while (true && currentNumber++ <= totalNumberofRecords && command.getSchemaValidationResult() == null)
         		{
         			Participant xstreamParticipant = (Participant)in.readObject();
         			migrateParticipant(xstreamParticipant,command);
@@ -299,10 +335,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	if (type.equals("study")){
         		int totalNumberofRecords = 5000;
         		int currentNumber = 1;
-        		FileCopyUtils.copy(command.getStudyFile().getInputStream(),new FileOutputStream(xmlFile));
+        		//FileCopyUtils.copy(command.getStudyFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true && currentNumber++ <= totalNumberofRecords)
+        		while (true && currentNumber++ <= totalNumberofRecords && command.getSchemaValidationResult() == null)
         		{
         			Study xstreamStudy = (Study)in.readObject();
         			migrateStudy(xstreamStudy, command);
@@ -310,19 +346,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	}
         	
         	if (type.equals("routineAeReport")){
-        		int maxNumberofRoutineReports = 100;
+        		int maxNumberofRoutineReports = 1000;
         		int currentNumberofRoutineReports = 1;
-        		FileCopyUtils.copy(command.getRoutineAdverseEventReportFile().getInputStream(),new FileOutputStream(xmlFile));
         		input = new BufferedReader( new FileReader(xmlFile) );
         		ObjectInputStream in = xstream.createObjectInputStream(input);
-        		while (true && currentNumberofRoutineReports++ <= maxNumberofRoutineReports)
-        		{
+        		while (true && currentNumberofRoutineReports++ <= maxNumberofRoutineReports && command.getSchemaValidationResult() == null)
+        		{	
         			RoutineAdverseEventReport xstreamRoutineAdverseEventReport = (RoutineAdverseEventReport)in.readObject();
         			migrateRoutineAdverseEventReport(xstreamRoutineAdverseEventReport, command);
         		}
         	}
-        	
-        	
         }
         catch (EOFException ex){
             System.out.println("EndOfFile Reached");
@@ -351,6 +384,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
           log.debug("Participant List size "  + command.getImportableParticipants().size());
         }
 	}
+	
 	
 	private void migrateStudy(Study xstreamStudy, ImportCommand command){
 		

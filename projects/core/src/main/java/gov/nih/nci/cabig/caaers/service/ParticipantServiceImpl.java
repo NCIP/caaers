@@ -70,7 +70,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 		participant.setDateOfBirth(xstreamParticipant.getDateOfBirth());
 		participant.setGender(xstreamParticipant.getGender());
 		participant.setRace(xstreamParticipant.getRace());
-		participant.setEthnicity(xstreamParticipant.getRace());
+		participant.setEthnicity(xstreamParticipant.getEthnicity());
 
 		//migrateIdentifiers(participant,xstreamParticipant);
 		migrateIdentifiers(participant,xstreamParticipant, participantImportOutcome);
