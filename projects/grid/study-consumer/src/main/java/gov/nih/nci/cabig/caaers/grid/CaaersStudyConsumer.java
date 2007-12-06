@@ -59,7 +59,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 			InvalidStudyException {
 		log.info("Begining of studyConsumer : commit");
 		System.out.println("-- StudyConsumer : commit");
-		
+		/*
 		if(studyDto == null) {
 			InvalidStudyException e = new InvalidStudyException();
 			e.setFaultReason("Null input");
@@ -79,7 +79,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 			e.setFaultReason("Exception while comitting study,"  + exp.getMessage());
 			e.setFaultString("Exception while comitting study," + exp.getMessage());
 			throw e;
-		}
+		}*/
 		log.info("End of studyConsumer : commit");
 
 	}
@@ -99,9 +99,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		}
 		
 		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
+		Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 		
 		try{
-			studyDao.deleteInprogressStudy(ccIdentifier);
+			if(study != null) studyDao.delete(study);
 		
 		}catch(Exception exp){
 			log.error("Exception while trying to rollback the study", exp);
@@ -130,14 +131,14 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 		
 		Study study = null;
 		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-		if(studyDao.isInprogressStudyExist(ccIdentifier)){
+		study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+		if(study != null){
 			log.info("Already a study with the same Coordinating Center Identifier (" + ccIdentifier +") exists.Returning without processing the request.");
 			return;
 		}
 		
 		study = new Study();
 		study.setGridId(studyDto.getGridId());
-		study.setLoadStatus(LoadStatus.INPROGRESS.getCode());
 		populateStudyDetails(studyDto, study);
 		studyDao.save(study);
 		log.info("Created the study :" + study.getId());
@@ -234,7 +235,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 				OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
 				id.setGridId(orgIdType.getGridId());
 				id.setPrimaryIndicator(orgIdType.getPrimaryIndicator());
-				id.setType(id.COORDINATING_CENTER_IDENTIFIER_TYPE);
+				id.setType(orgIdType.getType());
 				id.setValue(orgIdType.getValue());
 				id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
 				study.addIdentifier(id);

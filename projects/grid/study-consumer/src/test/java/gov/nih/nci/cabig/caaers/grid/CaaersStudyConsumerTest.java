@@ -23,8 +23,9 @@ public class CaaersStudyConsumerTest extends TestCase {
 	 this.configLoction = "C:/devtools/workspace/REF-StudyRegistration/src/gov/nih/nci/ccts/grid/client/client-config.wsdd";	
      this.studyResourceName = "C:/devtools/workspace//REF-StudyRegistration/test/resources/SampleStudyMessage.xml";
      //this.serviceUrl = "http://10.10.10.2:8015/wsrf/services/cagrid/StudyConsumer";
-     this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/StudyConsumer"; 
-	 studyConsumer = new CaaersStudyConsumer();
+     //this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/StudyConsumer";
+     this.serviceUrl = "http://cbvapp-d1017.nci.nih.gov:18080/wsrf/services/cagrid/StudyConsumer";  
+     studyConsumer = new CaaersStudyConsumer();
 	}
 
 	protected void tearDown() throws Exception {
