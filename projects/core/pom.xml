@@ -31,7 +31,12 @@
 		   <version>0.9.9</version>
 		</dependency>
 		
-		
+        <dependency>
+		   <groupId>jdom</groupId>
+		   <artifactId>jdom</artifactId>
+		   <version>1.0</version>
+		</dependency>
+				
         <dependency>
 		   <groupId>org.apache.xmlgraphics</groupId>
 		   <artifactId>fop</artifactId>
