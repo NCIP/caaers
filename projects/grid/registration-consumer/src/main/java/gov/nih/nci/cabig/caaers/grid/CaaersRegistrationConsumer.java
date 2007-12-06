@@ -89,7 +89,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 	public void commit(Registration registration) throws RemoteException,InvalidRegistrationException {
 		log.info("Begining of registration-commit");
 		System.out.println("-- RegistrationConsumer :commit called");
-		WebRequest stubWebRequest = null;
+		/*WebRequest stubWebRequest = null;
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
@@ -103,7 +103,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 			throw e;
 		}finally{
 			postProcess(stubWebRequest);
-		}
+		}*/
 		log.info("End of registration-commit");
 	}
 	
@@ -141,26 +141,23 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 
 			}
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
-			if(participantDao.isInprogressParticipantExist(mrn)){
-				log.info("Already a participant with Inprogress load status exist, So returning without processing further");
-				return registration;
-			}
-			
 			Participant participant = fetchParticipant(mrn);
 			
 			if(participant == null){
 				participant = createParticipant(registration);
-				StudyParticipantAssignment assignment = createStudyParticipantAssignment(participant, site);
+				createStudyParticipantAssignment(registration.getGridId(),participant, site);
 			}else{
-				if(studyParticipantAssignmentDao.isAssignmentExist(participant, site)){
-					log.info("Already this participant is associated to the study, so returning without processing");
-					return registration;
+				
+				log.info("The participant identified by MRN :" + mrn +", already available, so using existing participant");
+				if(participant.isAssignedToStudySite(site)){
+					log.info("Already this participant is associated to the study, so throwing exception");
+					RegistrationConsumptionException exp = new RegistrationConsumptionException();
+					exp.setFaultString("Participant with MRN : " + mrn +", is already associated to the Study (Coordinating Center Identifier :" + ccIdentifier + ")");
+					exp.setFaultReason("Participant with MRN : " + mrn +", is already associated to the Study (Coordinating Center Identifier :" + ccIdentifier + ")");
+					throw exp;
 				}
-				StudyParticipantAssignment assignment = fetchAssignment(participant, site);
-				if(assignment == null){
-					assignment = createStudyParticipantAssignment(participant, site);
+				createStudyParticipantAssignment(registration.getGridId(),participant, site);
 					
-				}
 			}
 			participantDao.save(participant);
 			log.info("End of registration-register");
@@ -179,12 +176,36 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		try{
 			stubWebRequest = preProcess();
 			String mrn = findMedicalRecordNumber(registration.getParticipant());
-			participantDao.deleteInprogressParticipant(mrn);
+			Participant participant = fetchParticipant(mrn);
+			if(participant.getAssignments().size() <= 1){
+				log.info("The participant is assigned to only one study, so removing the participant");
+				participantDao.delete(participant);
+			}else{
+				log.info("Removing only the assignment");
+				
+				String ccIdentifier = findCoordinatingCenterIdentifier(registration);
+				Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+				
+				if(study == null){
+					RegistrationConsumptionException exp = new RegistrationConsumptionException();
+					exp.setFaultString("Study identified by Coordinating Center Identifier '" + ccIdentifier +"' doesn't exist");
+					exp.setFaultReason("Study identified by Coordinating Center Identifier '" + ccIdentifier +"' doesn't exist");
+					throw exp;
+				}
+				
+				String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
+				StudySite site = findStudySite(study, siteNCICode);
+				
+				StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
+				participant.getAssignments().remove(assignment);
+				participantDao.save(participant);
+			}
+			
 			
 		}catch(Exception exp){
 			InvalidRegistrationException e = new InvalidRegistrationException();
-			e.setFaultReason("Error while comitting, " + exp.getMessage());
-			e.setFaultString("Error while comitting, " + exp.getMessage());
+			e.setFaultReason("Error while rolling back, " + exp.getMessage());
+			e.setFaultString("Error while rolling back, " + exp.getMessage());
 			exp.printStackTrace();
 			throw e;
 			
@@ -206,7 +227,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
         participant.setFirstName(partBean.getFirstName());
         participant.setLastName(partBean.getLastName());
         participant.setRace(partBean.getRaceCode());
-        participant.setLoadStatus(0); //load status of participant should be 0
         
         populateIdentifiers(participant, partBean.getIdentifier());
         List<Identifier> participantIdentifiers = participant.getIdentifiers();
@@ -365,17 +385,12 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 		return participants.get(0);
 	}
 	
-	
-	StudyParticipantAssignment fetchAssignment(Participant participant, StudySite site){
-		return studyParticipantAssignmentDao.getAssignment(participant, site);
-	}
-	
 
-	StudyParticipantAssignment createStudyParticipantAssignment(Participant participant, StudySite site){
+	StudyParticipantAssignment createStudyParticipantAssignment(String assignmentGridId,Participant participant, StudySite site){
 		StudyParticipantAssignment assignment = new StudyParticipantAssignment(participant, site);
+		assignment.setGridId(assignmentGridId);
 		participant.addAssignment(assignment);
 		site.addAssignment(assignment);
-		assignment.setLoadStatus(0);
 		return assignment;
 	}
 	
