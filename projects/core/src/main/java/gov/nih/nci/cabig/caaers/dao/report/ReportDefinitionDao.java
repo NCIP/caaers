@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @since       1.0
  */
 @Transactional(readOnly=true)
-public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition>{
+public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> 
+ implements MutableDomainObjectDao<ReportDefinition>{
 
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.dao.CaaersDao#domainClass()

@@ -104,30 +104,15 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 		return new ProjectedList<RoleBasedRecipient>(recipients, RoleBasedRecipient.class);
 	}
 
-	@Transient
-	public void setRoleBasedRecipients(String[] roleRecipients){
-		if(roleRecipients == null) return;
-		List<RoleBasedRecipient> xRecipients = getRoleBasedRecipients();
-		if(xRecipients != null) recipients.removeAll(xRecipients);
-
-		for(String role : roleRecipients){
-			recipients.add(new RoleBasedRecipient(role));
-		}
-
-	}
-
+	
 	@Transient
 	public List<ContactMechanismBasedRecipient> getContactMechanismBasedRecipients(){
 		return new ProjectedList<ContactMechanismBasedRecipient>(recipients, ContactMechanismBasedRecipient.class);
 	}
 
-	public void setContactMechanismBasedRecipients(String[] contactRecipients){
-		if(contactRecipients == null) return;
-		List<ContactMechanismBasedRecipient> xRecipients = getContactMechanismBasedRecipients();
-		if(xRecipients != null) recipients.removeAll(xRecipients);
-		for(String contact : contactRecipients){
-			recipients.add(new ContactMechanismBasedRecipient(contact));
-		}
+	public void addRecipient(Recipient rr){
+		getRecipients().add(rr);
 	}
-
+	
+	
 }

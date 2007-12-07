@@ -250,6 +250,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	}
 	
 	@Transactional(readOnly=false)
+	public void delete(Participant p){
+		getHibernateTemplate().delete(p);
+	}
+	
+	/*
+	@Transactional(readOnly=false)
 	public void deleteInprogressParticipant(String mrn ){
 	    final Participant p = fetchParticipantIdAndLoadStatusByMRN(mrn);
 	    if(p == null) throw new CaaersSystemException("No participants exist with the given mrn :" + mrn);
@@ -267,7 +273,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	    		}   			
 	    		//delete assignment, if load_status of assignment is 0
 	    		session.createSQLQuery("delete from participant_assignments where participant_id = " + 
-	    				    p.getId().toString() + " and load_status = 0").executeUpdate();
+	    				    p.getId().toString() ).executeUpdate();
 	    		return null;
 	    	}
 	    });
@@ -298,7 +304,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	public boolean isInprogressParticipantExist(String mrn){
 		Participant p = fetchParticipantIdAndLoadStatusByMRN(mrn);
 		if(p == null) return false;
-		return p.getLoadStatus().equals(LoadStatus.INPROGRESS.getCode());
+		return true; //
 	}
 	
 	private Participant fetchParticipantIdAndLoadStatusByMRN(final String mrn){
@@ -319,6 +325,6 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	    });
 		
 	}
-	
+	*/
 	
 }

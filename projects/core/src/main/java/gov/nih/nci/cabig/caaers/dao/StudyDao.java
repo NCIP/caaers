@@ -329,10 +329,15 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 	}
 	
-	/**
+	@Transactional(readOnly=false)
+	public void delete(Study study){
+		getHibernateTemplate().delete(study);
+	}
+	
+/*	*//**
 	 * This will remove a study from the database
 	 * @param study
-	 */
+	 *//*
 	@Transactional(readOnly=false)
 	public void deleteInprogressStudy(final String ccIdentifier){
 		final Object objStudyId = fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier);
@@ -387,11 +392,10 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 				return session.createSQLQuery("select s.id from studies s " +
 						" join identifiers i on s.id = i.stu_id " +
 						" where i.type = '" + OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE + "'" + 
-						" and i.value = '" + ccIdentifier + "' " +
-						" and s.load_status = " + LoadStatus.INPROGRESS.getCode() ).uniqueResult();
+						" and i.value = '" + ccIdentifier + "' "  ).uniqueResult();
 			}
 		});
 		
 	}
-	
+	*/
 }

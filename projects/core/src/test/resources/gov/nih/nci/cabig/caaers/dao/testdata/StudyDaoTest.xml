@@ -264,7 +264,6 @@
    		 <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881" />
    		<ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882" />
 
-   		<study_amendments id="-640" amendment_version="1" irb_approval_date="01-01-2000" stu_id="-3"/>
 
      	<!--  due to FK references -->
      	<ctc_categories />

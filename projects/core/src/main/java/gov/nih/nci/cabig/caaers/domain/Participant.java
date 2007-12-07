@@ -112,7 +112,24 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		}
 		return collected;
 	}
-
+	
+	/**
+	 * Will tell whether this participant is assigned to the give site.
+	 * @param site
+	 * @return
+	 */
+	public boolean isAssignedToStudySite(StudySite site){
+		return getStudyParticipantAssignment(site) != null;
+	}
+	
+	public StudyParticipantAssignment getStudyParticipantAssignment(StudySite site){
+		for(StudyParticipantAssignment assignment : getAssignments()){
+			if(assignment.getStudySite().getId().equals(site.getId()))
+				 return assignment;
+		}
+		return null;
+	}
+	
 	// //// BEAN PROPERTIES
 
 	@Column(name = "instituitional_patient_number")

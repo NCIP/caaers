@@ -580,12 +580,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			assertNull("Study should be null", study);
 	}
 	
-	public void testAbleToLoadAfterCommitingStudy() throws Exception {
-		getDao().commitInprogressStudy("3333");
-		interruptSession();
-		Study study = getDao().getById(-4);
-		assertNotNull("Study should not be null", study);
-	}
+	
 	
 
 	public void testSaveStudyInInprogressStatus() throws Exception {
@@ -625,47 +620,16 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		System.out.println(study.getId());
 		assertEquals("Study Id should be same", studyId, study.getId().intValue());
 	}
-
 	
-	public void testDeleteInprogressStudy(){
-		{
-		 //load the study
-		 Study study = (Study)getJdbcTemplate().execute(new StatementCallback(){
-	          	public Object doInStatement(Statement st) throws SQLException,
-	          			DataAccessException {
-	          			ResultSet rs = st.executeQuery("select * from studies where id = -4");
-	          			if(rs.next()) {
-	          				Study s = new Study();
-	          				s.setShortTitle("Shortest");
-	          				return s;
-	          			}
-	          		return null;
-	          	}
-	          });
-		 
-		 assertNotNull("An inprogress study with id -4 should be there in DB", study);
-		 //delete study
-		 getDao().deleteInprogressStudy("3333");
-		}
+	
+	public void testDeleteStudy(){
+		Study study = getDao().getById(-3);
+		getDao().delete(study);
 		interruptSession();
-		{
-			//load the study
-			 Study study = (Study)getJdbcTemplate().execute(new StatementCallback(){
-		          	public Object doInStatement(Statement st) throws SQLException,
-		          			DataAccessException {
-		          			ResultSet rs = st.executeQuery("select * from studies where id = -4");
-		          			if(rs.next()) {
-		          				Study s = new Study();
-		          				s.setShortTitle("Shortest");
-		          				return s;
-		          			}
-		          		return null;
-		          	}
-		          });
-			 
-			 assertNull("An inprogress study with id -4 should not be there in DB", study);
-		}
+		study = getDao().getById(-3);
+		assertNull("Study identified by id -3 must be null", study);
 	}
+
 	
 	
 }

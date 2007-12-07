@@ -139,7 +139,7 @@
         type="MRN"
         participant_id="-100"
         system_name="system name"
-        discriminator_column="1"/>
+        discriminator_column="2"/>
         
         <IDENTIFIERS
         id="-210"
@@ -147,7 +147,7 @@
         type="MRN"
         participant_id="-99"
         system_name="system name"
-        discriminator_column="1"/>	
+        discriminator_column="2"/>	
        
        <IDENTIFIERS
         id="-211"
@@ -155,7 +155,7 @@
         type="MRNs"
         participant_id="-99"
         system_name="system name2"
-        discriminator_column="1"/>	
+        discriminator_column="2"/>	
         
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    

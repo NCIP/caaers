@@ -141,38 +141,6 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
         assertEquals("The name of the retrieved should be Jeff", "Jeff", retrievedParticipant.getFirstName());
     }
     
-    
-    public void testCommitParticipant() throws Exception {
-    	{
-    		Participant participant = getDao().getById(-99);
-    		assertNull("Participant (-99) should be null ", participant);
-    		getDao().commitParticipant("11111");
-    	}
-    	interruptSession();
-    	{
-    		Participant participant = getDao().getById(-99);
-    		assertNotNull("Participant (-99) should not be null ", participant);
-    	}
-    }
-    
-    public void testDeleteInprogressParticipant() throws Exception {
-    	getDao().deleteInprogressParticipant("11111");
-    	interruptSession();
-    	  Participant retrievedParticipant = (Participant)getJdbcTemplate().execute(new StatementCallback(){
-          	public Object doInStatement(Statement st) throws SQLException,
-          			DataAccessException {
-          			ResultSet rs = st.executeQuery("select * from participants where id = -99");
-          			if(rs.next()) {
-          				Participant p = new Participant();
-          				p.setFirstName(rs.getString("first_name"));
-          				return p;
-          			}
-          		return null;
-          	}
-          });
-    	  assertNull("There should not be a participant with id -99", retrievedParticipant);
-    }
-    
     public void testGetBySubnameMatchesFirstName() throws Exception {
         List<Participant> matches = getDao().getBySubnames(new String[] { "icha" });
         assertEquals("Wrong number of matches", 1, matches.size());
@@ -384,16 +352,29 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
     }
     
     
-    public void testIsInprogressParticipantExist() throws Exception {
-    	boolean exist = false;
-    	
-    	exist = getDao().isInprogressParticipantExist("11111");
-    	assertTrue("Participant with MRN 11111, must be in Inprogress status", exist);
-    	
-    	exist = getDao().isInprogressParticipantExist("11112");
-    	assertFalse("Participant with MRN 11112, must be in complete status", exist);
+    public void testDeleteParticipant(){
+    	Participant participant = getDao().getById(-100);
+    	assertNotNull("Participant (-100) should not be null ", participant);
+    	getDao().delete(participant);
+    	interruptSession();
+    	participant = getDao().getById(-100);
+    	assertNull("Participant should be null", participant);
     }
     
-    
+    public void testDeleteAssignments(){
+    	Participant participant = getDao().getById(-100);
+    	assertNotNull("Participant (-100) should not be null ", participant);
+    	
+    	StudyParticipantAssignment spa = participant.getAssignments().get(0);
+    	int oldSize = participant.getAssignments().size();
+    	
+    	participant.getAssignments().remove(spa);
+    	getDao().save(participant);
+    	interruptSession();
+    	participant = getDao().getById(-100);
+    	assertNotNull("Participant (-100) should be null ", participant);
+    	int newSize = participant.getAssignments().size();
+    	assertEquals("The size of the participant assignment should be one less", oldSize - 1 , newSize);
+    }
     
 }

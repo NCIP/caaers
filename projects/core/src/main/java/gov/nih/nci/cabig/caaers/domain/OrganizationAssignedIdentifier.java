@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 /**
  * @author Saurabh Agrawal
  */
@@ -23,6 +26,7 @@ public class OrganizationAssignedIdentifier extends Identifier {
 	 */
 	@ManyToOne
 	@JoinColumn(name = "organization_id", nullable = false)
+	@Cascade(value={CascadeType.LOCK})
 	public Organization getOrganization() {
 		return organization;
 	}

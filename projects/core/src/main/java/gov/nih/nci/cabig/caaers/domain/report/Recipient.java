@@ -12,8 +12,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -41,4 +43,9 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 public abstract class Recipient extends AbstractMutableDomainObject {
 	@Transient
 	public abstract String getContact();
+	
+	@Override
+	public boolean equals(Object obj) {
+		return StringUtils.equals(getContact(), ((Recipient)obj).getContact());
+	}
 }
