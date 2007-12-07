@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
@@ -30,6 +31,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Terminology;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
@@ -98,6 +100,8 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		migrateTerminology(st,xstreamStudy, studyImportOutcome); //Done
 		migrateDiseaseTerminology(st,xstreamStudy, studyImportOutcome); //Done
+		migrateFundingSponsor(st,xstreamStudy,studyImportOutcome);
+		migrateCoordinatingCenter(st,xstreamStudy,studyImportOutcome);
 		migrateIdentifiers(st,xstreamStudy, studyImportOutcome);
 		migrateStudyOrganizations(st,xstreamStudy, studyImportOutcome);
 		migrateOrganizationAssignedIdentifier(st,xstreamStudy, studyImportOutcome);
@@ -111,6 +115,51 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		return studyImportOutcome;
 	}
+	
+	private void migrateFundingSponsor(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){ 
+		
+		OrganizationAssignedIdentifier  organizationAssignedIdentifier = source.getFundingSponsor().getOrganizationAssignedIdentifier();
+		StudyFundingSponsor studyFundingSponsor = source.getFundingSponsor().getStudyFundingSponsor();
+		
+		// Setup organizationAssignedIdentifier
+		Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
+		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
+		organizationAssignedIdentifier.setOrganization(organization);
+		organizationAssignedIdentifier.setType("Sponsor Identifier");
+		organizationAssignedIdentifier.setPrimaryIndicator(false);
+		destination.getIdentifiers().add(organizationAssignedIdentifier);
+		
+		
+		// Setup fundingSponsor
+		studyFundingSponsor.setOrganization(organization);
+		//	Migrate Study investigators and Study Personnels
+		migrateStudyInvestigators(studyFundingSponsor,organization, studyImportOutcome);
+		migrateStudyPersonnels(studyFundingSponsor,organization, studyImportOutcome);
+		destination.addStudyFundingSponsor(studyFundingSponsor);	
+	}
+	
+	private void migrateCoordinatingCenter(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){ 
+		
+		OrganizationAssignedIdentifier  organizationAssignedIdentifier = source.getCoordinatingCenter().getOrganizationAssignedIdentifier();
+		StudyCoordinatingCenter studyCoordinatingCenter = source.getCoordinatingCenter().getStudyCoordinatingCenter();
+		
+		// Setup organizationAssignedIdentifier
+		Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
+		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
+		organizationAssignedIdentifier.setOrganization(organization);
+		organizationAssignedIdentifier.setType("Coordinating Center Identifier");
+		organizationAssignedIdentifier.setPrimaryIndicator(true);
+		destination.getIdentifiers().add(organizationAssignedIdentifier);
+		
+		// Setup StudyCoordinatingCenter
+		studyCoordinatingCenter.setOrganization(organization);
+		//	Migrate Study investigators and Study Personnels
+		migrateStudyInvestigators(studyCoordinatingCenter,organization, studyImportOutcome);
+		migrateStudyPersonnels(studyCoordinatingCenter,organization, studyImportOutcome);
+		
+		((Study)destination).addStudyOrganization(studyCoordinatingCenter);
+	}
+	
 	
 	
 	private void migrateTreatmentAssignments(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){ 
@@ -247,8 +296,8 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 					Organization organization = getOrganization(studySite.getOrganization().getName());
 					studySite.setOrganization(organization);
 					// Migrate Study investigators and Study Personnels
-					migrateStudyInvestigators(studySite,organization);
-					migrateStudyPersonnels(studySite,organization);
+					migrateStudyInvestigators(studySite,organization, studyImportOutcome);
+					migrateStudyPersonnels(studySite,organization, studyImportOutcome);
 					
 					destination.addStudySite(studySite);	
 				} 
@@ -257,8 +306,8 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 					Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
 					studyFundingSponsor.setOrganization(organization);
 					//	Migrate Study investigators and Study Personnels
-					migrateStudyInvestigators(studyFundingSponsor,organization);
-					migrateStudyPersonnels(studyFundingSponsor,organization);
+					migrateStudyInvestigators(studyFundingSponsor,organization, studyImportOutcome);
+					migrateStudyPersonnels(studyFundingSponsor,organization, studyImportOutcome);
 					
 					destination.addStudyFundingSponsor(studyFundingSponsor);	
 				} 
@@ -268,9 +317,10 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 	}
 	
-	private void migrateStudyInvestigators(StudyOrganization studyOrganization, Organization organization){
+	private void migrateStudyInvestigators(StudyOrganization studyOrganization, Organization organization, DomainObjectImportOutcome studyImportOutcome){
 		
 		for ( StudyInvestigator studyInvestigator: studyOrganization.getStudyInvestigators()){
+			
 			Investigator investigator = studyInvestigator.getSiteInvestigator().getInvestigator();
 			// TODO  : search should be done on something else too 
 			String[] investigatorFirstAndLast = {investigator.getFirstName(), investigator.getLastName() };
@@ -279,25 +329,32 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				studyInvestigator.setSiteInvestigator(siteInvestigators.get(0));
 				studyInvestigator.setStudyOrganization(studyOrganization);	
 			}else{
-				studyOrganization.getStudyInvestigators().remove(studyInvestigator);
+				//studyOrganization.getStudyInvestigators().remove(studyInvestigator);
+				ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected investigator " +
+						investigator.getFirstName() + " " + investigator.getLastName() + " is not Valid ");
 			}
 		}
 	}
 	
 
 	private void migrateStudyPersonnels(StudyOrganization studyOrganization,
-			Organization organization ) {
+			Organization organization, DomainObjectImportOutcome studyImportOutcome ) {
 
 		for (StudyPersonnel studyPersonnel : studyOrganization.getStudyPersonnels()) {
 			ResearchStaff researchStaffer = studyPersonnel.getResearchStaff();
 			// TODO : search should be done on something else too
 			String[] investigatorFirstAndLast = {researchStaffer.getFirstName(),researchStaffer.getLastName() };
-			ResearchStaff researchStaff = researchStaffDao.getBySubnames(
-					investigatorFirstAndLast, organization.getId()).get(0);
-			studyPersonnel.setResearchStaff(researchStaff);
-			studyPersonnel.setStudyOrganization(studyOrganization);
+			List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(investigatorFirstAndLast, organization.getId());
+			
+			if (researchStaffs.size() > 0 ) {
+				ResearchStaff researchStaff = researchStaffs.get(0);
+				studyPersonnel.setResearchStaff(researchStaff);
+				studyPersonnel.setStudyOrganization(studyOrganization);
+			}else{
+				ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected personnel " +
+						researchStaffer.getFirstName() + " " + researchStaffer.getLastName() + " is not Valid ");
+			}
 		}
-
 	}
 	
 	
@@ -402,14 +459,5 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
 		this.meddraVersionDao = meddraVersionDao;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

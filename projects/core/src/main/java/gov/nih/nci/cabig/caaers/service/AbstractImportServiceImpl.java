@@ -42,12 +42,12 @@ public abstract class AbstractImportServiceImpl {
 						((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
 						
 						if (identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
-							identifier.setPrimaryIndicator(false);
+							//identifier.setPrimaryIndicator(false);
 						}
 						if (source instanceof Study && identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
-						StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
-						studyCoordinatingCenter.setOrganization(organization);
-						((Study)destination).addStudyOrganization(studyCoordinatingCenter);
+						//StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
+						//studyCoordinatingCenter.setOrganization(organization);
+						//((Study)destination).addStudyOrganization(studyCoordinatingCenter);
 						}
 				}
 
@@ -57,7 +57,7 @@ public abstract class AbstractImportServiceImpl {
 				destination.getIdentifiers().add(identifier);
 			}
 		}
-		ifNullOrEmptyList(source.getIdentifiers(),studyImportOutcome,Severity.ERROR, "Identifiers are either Empty or Not Valid");
+		ifNullOrEmptyList(destination.getIdentifiers(),studyImportOutcome,Severity.ERROR, "Identifiers are either Empty or Not Valid");
 	}
 	
 	

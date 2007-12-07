@@ -34,10 +34,11 @@
 <tags:dwrJavascriptLink objects="importRoutineAe"/>
 <script language="JavaScript" type="text/JavaScript">
 
-	function startImport(totalNumberOfRecords,barId,statusId,type){
+	function startImport(totalNumberOfRecords,barId,statusId,type,button){
 		
 		numberOfRecordsProcessed = 0;
 		i = 0;
+		$(button).disabled=true
 		loops = Math.ceil(parseInt(totalNumberOfRecords)/5)
 		while(  i < loops ){
 
@@ -90,8 +91,8 @@
 		<br/><br/>
 		<div class="row">
 			<div class="label">
-				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
-				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study')" />	
+				<input id='button3' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study','button3')" />	
            </div>
 		   <div class="value">
 		   		<div class="graph">
@@ -166,8 +167,8 @@
 		<br/><br/>
 		<div class="row">
 			<div class="label">
-				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
-				   	onclick="startImport(${fn:length(command.importableParticipants)},'bar2','importStatus2','participant')" />	
+				<input id='button2' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableParticipants)},'bar2','importStatus2','participant','button2')" />	
            </div>
 		   <div class="value">
 		   		<div class="graph">
@@ -267,8 +268,8 @@
 		<br/><br/>
 		<div class="row">
 			<div class="label">
-				<input class='ibutton' type='button' value='Import'  title='Import Routine AEs'
-				   	onclick="startImport(${fn:length(command.importableRoutineAdverseEventReports)},'bar','importStatus','routineAe')" />	
+				<input id='button' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				   	onclick="startImport(${fn:length(command.importableRoutineAdverseEventReports)},'bar','importStatus','routineAe','button')" />	
            </div>
 		   <div class="value">
 		   		<div class="graph">

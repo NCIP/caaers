@@ -70,6 +70,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
+import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 /**
  * @author Krikor Krumlian
@@ -281,10 +282,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("studyPersonnel", gov.nih.nci.cabig.caaers.domain.StudyPersonnel.class);
     	xstream.alias("researchStaff", gov.nih.nci.cabig.caaers.domain.ResearchStaff.class);
     	xstream.alias("studyFundingSponsor", gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor.class);
+    	xstream.alias("studyCoordinatingCenter", gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter.class);
     	xstream.alias("studyOrganization", gov.nih.nci.cabig.caaers.domain.StudyOrganization.class);
     	xstream.alias("organization", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
     	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
+    	xstream.registerConverter(new CustomStringConverter());
     	// study specific
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
     	xstream.alias("studyAgentINDAssociation", gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation.class);
@@ -299,6 +302,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("terminology" , gov.nih.nci.cabig.caaers.domain.Terminology.class);
     	xstream.alias("diseaseTerminology" , gov.nih.nci.cabig.caaers.domain.DiseaseTerminology.class);
     	xstream.alias("diseaseCodeTerm" , gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm.class);
+    	xstream.alias("fundingSponsor",gov.nih.nci.cabig.caaers.domain.FundingSponsor.class);
+    	xstream.alias("coordinatingCenter",gov.nih.nci.cabig.caaers.domain.CoordinatingCenter.class);
     	// participant specific
     	xstream.alias("participant", gov.nih.nci.cabig.caaers.domain.Participant.class);
     	// routineAdverseEventReport specific
@@ -546,6 +551,20 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
 		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}	
+	
+	
+	public class CustomStringConverter extends AbstractSingleValueConverter {
+
+        public boolean canConvert(Class clazz) {
+                return clazz.equals(String.class);
+        }
+
+        public Object fromString(String str) {
+        		return str.trim();
+        }
+}
+	
+	
 	
 	
 	

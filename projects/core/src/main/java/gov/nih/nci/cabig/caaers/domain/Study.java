@@ -98,6 +98,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	
 	private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 	
+	// Used to facilitate import of a coordinating center / funding sponsor
+	private FundingSponsor fundingSponsor;
+	private CoordinatingCenter coordinatingCenter;
+	
 	public Study() {
 
 		lazyListHelper = new LazyListHelper();
@@ -640,4 +644,25 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public List<OrganizationAssignedIdentifier> getOrganizationAssignedIdentifiers(){
 		return new ProjectedList<OrganizationAssignedIdentifier>(getIdentifiersLazy(), OrganizationAssignedIdentifier.class);
 	}
+
+	@Transient
+	public CoordinatingCenter getCoordinatingCenter() {
+		return coordinatingCenter;
+	}
+
+	@Transient
+	public FundingSponsor getFundingSponsor() {
+		return fundingSponsor;
+	}
+
+	public void setCoordinatingCenter(CoordinatingCenter coordinatingCenter) {
+		this.coordinatingCenter = coordinatingCenter;
+	}
+
+	public void setFundingSponsor(FundingSponsor fundingSponsor) {
+		this.fundingSponsor = fundingSponsor;
+	}
+	
+	
+
 }
