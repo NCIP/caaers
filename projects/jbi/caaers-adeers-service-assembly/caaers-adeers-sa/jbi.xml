@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" version="1.0">
+    <service-assembly>
+        <identification>
+            <name>caaers-adeers-sa</name>
+            <description>caAERS :: Adeers :: AE Report :: Assembly</description>
+        </identification>
+        <!-- <service-unit>
+            <identification>
+                <name>caaers-adeers-http-su-3.1.2-incubating</name>
+                <description>Web Service Artifact</description>
+            </identification>
+            <target>
+                <artifacts-zip>caaers-adeers-http-su-3.1.2-incubating.zip</artifacts-zip>
+                <component-name>servicemix-http</component-name>
+            </target>
+        </service-unit>-->
+        <service-unit>
+            <identification>
+                <name>caaers-adeers-eip-su-3.1.2-incubating</name>
+                <description>Pipeline for caAERS to Adeers</description>
+            </identification>
+            <target>
+                <artifacts-zip>caaers-adeers-eip-su-3.1.2-incubating.zip</artifacts-zip>
+                <component-name>servicemix-eip</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
+                <name>caaers-adeers-xslt-su-3.1.2-incubating</name>
+                <description>XSLT transformer to transform caaers xml to adeers xml</description>
+            </identification>
+            <target>
+                <artifacts-zip>caaers-adeers-xslt-su-3.1.2-incubating.zip</artifacts-zip>
+                <component-name>servicemix-lwcontainer</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
+                <name>caaers-adeers-webservice-su-3.1.2-incubating</name>
+                <description>JAVA code to call adeers web service</description>
+            </identification>
+            <target>
+                <artifacts-zip>caaers-adeers-webservice-su-3.1.2-incubating.zip</artifacts-zip>
+                <component-name>servicemix-lwcontainer</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
+                <name>caaers-adeers-jms-su-3.1.2-incubating</name>
+                <description>JMS input and output queues for caAERS</description>
+            </identification>
+            <target>
+                <artifacts-zip>caaers-adeers-jms-su-3.1.2-incubating.zip</artifacts-zip>
+                <component-name>servicemix-jms</component-name>
+            </target>
+        </service-unit>
+    </service-assembly>
+</jbi>

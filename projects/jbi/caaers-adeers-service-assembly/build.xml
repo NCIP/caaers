@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project name="caaers-adeers-ae" default="all" basedir=".">
+
+    <!--build directories-->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="comp.build.dir" value="${build.dir}/components"/>
+    <property name="su.build.dir" value="${build.dir}/serviceunits"/>
+    <property name="http.comp.build.dir" value="${comp.build.dir}/http"/>
+    <property name="webservice.comp.build.dir" value="${comp.build.dir}/webservice"/>
+    <property name="eip.comp.build.dir" value="${comp.build.dir}/eip"/>
+    <property name="xslt.comp.build.dir" value="${comp.build.dir}/xslt"/>
+    <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
+
+    <property name="servicemix.toolkit.dir" value="/Applications/apache-servicemix-3.1.2"/>
+
+    <!--sa archive -->
+    <property name="caaers-adeers.sa.build.dir" value="${build.dir}/assembly"/>
+    <property name="caaers-adeers.sa.archive" value="caaers-adeers-sa-3.1.2-incubating.zip"/>
+
+    <property name="src.resources.dir" value="src/main/resources"/>
+    <property name="src.java.dir" value="src/main/java"/>
+    <property name="sa.dir" value="caaers-adeers-sa"/>
+
+    <path id="build.classpath">
+        <pathelement path="${servicemix.toolkit.dir}/conf"/>
+        <fileset dir="${servicemix.toolkit.dir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${servicemix.toolkit.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${caaers-adeers.sa.build.dir}"/>
+        <mkdir dir="${comp.build.dir}"/>
+        <mkdir dir="${http.comp.build.dir}"/>
+        <mkdir dir="${eip.comp.build.dir}"/>
+        <mkdir dir="${xslt.comp.build.dir}"/>
+        <mkdir dir="${jms.comp.build.dir}"/>
+        <mkdir dir="${webservice.comp.build.dir}"/>
+        <mkdir dir="${http.comp.build.dir}/META-INF"/>
+        <mkdir dir="${eip.comp.build.dir}/META-INF"/>
+        <mkdir dir="${xslt.comp.build.dir}/META-INF"/>
+        <mkdir dir="${xslt.comp.build.dir}/lib"/>
+        <mkdir dir="${jms.comp.build.dir}/META-INF"/>
+        <mkdir dir="${webservice.comp.build.dir}/META-INF"/>
+
+        <mkdir dir="${su.build.dir}/META-INF"/>
+
+    </target>
+
+    <target name="build-su" depends="init" description="Build the service unit">
+        <copy todir="${eip.comp.build.dir}">
+            <fileset dir="caaers-adeers-eip-su/${src.resources.dir}" includes="*.*"/>
+        </copy>
+        <copy todir="${eip.comp.build.dir}/META-INF">
+            <fileset dir="caaers-adeers-eip-su" includes="*.xml"/>
+        </copy>
+        <zip destfile="${su.build.dir}/caaers-adeers-eip-su-3.1.2-incubating.zip">
+            <fileset dir="${eip.comp.build.dir}"/>
+        </zip>
+
+        <copy todir="${webservice.comp.build.dir}">
+            <fileset dir="caaers-adeers-webservice-su/${src.resources.dir}" includes="*.*"/>
+        </copy>
+        <copy todir="${webservice.comp.build.dir}/META-INF">
+            <fileset dir="caaers-adeers-webservice-su" includes="*.xml"/>
+        </copy>
+        <copy todir="${webservice.comp.build.dir}/lib">
+            <fileset dir="caaers-adeers-webservice-su/lib" includes="*.*"/>
+        </copy>        
+        <javac srcdir="caaers-adeers-webservice-su/${src.java.dir}"
+            destdir="${webservice.comp.build.dir}" debug="on" source="1.5" target="1.5">
+            <classpath refid="build.classpath"/>
+        </javac>
+        <zip destfile="${su.build.dir}/caaers-adeers-webservice-su-3.1.2-incubating.zip">
+            <fileset dir="${webservice.comp.build.dir}"/>
+        </zip>
+
+        <copy todir="${http.comp.build.dir}">
+            <fileset dir="caaers-adeers-http-su/${src.resources.dir}" includes="*.*"/>
+        </copy>
+        <copy todir="${http.comp.build.dir}/META-INF">
+            <fileset dir="caaers-adeers-http-su" includes="*.xml"/>
+        </copy>
+        <zip destfile="${su.build.dir}/caaers-adeers-http-su-3.1.2-incubating.zip">
+            <fileset dir="${http.comp.build.dir}"/>
+        </zip>
+
+        <copy todir="${xslt.comp.build.dir}">
+            <fileset dir="caaers-adeers-xslt-su/${src.resources.dir}" includes="*.*"/>
+        </copy>
+        <copy todir="${xslt.comp.build.dir}/META-INF">
+            <fileset dir="caaers-adeers-xslt-su" includes="*.xml"/>
+        </copy>
+        <copy todir="${xslt.comp.build.dir}/lib">
+            <fileset dir="caaers-adeers-xslt-su/lib" includes="*.*"/>
+        </copy>
+        <zip destfile="${su.build.dir}/caaers-adeers-xslt-su-3.1.2-incubating.zip">
+            <fileset dir="${xslt.comp.build.dir}"/>
+        </zip>
+
+        <copy todir="${jms.comp.build.dir}">
+            <fileset dir="caaers-adeers-jms-su/${src.resources.dir}"/>
+        </copy>
+        <zip destfile="${su.build.dir}/caaers-adeers-jms-su-3.1.2-incubating.zip">
+            <fileset dir="${jms.comp.build.dir}"/>
+        </zip>
+    </target>
+
+    <target name="build-sa" depends="build-su" description="Build the service assembly">
+        <copy file="${sa.dir}/jbi.xml" todir="${su.build.dir}/META-INF"/>
+        <zip destfile="${caaers-adeers.sa.build.dir}/${caaers-adeers.sa.archive}"
+            basedir="${su.build.dir}"> </zip>
+    </target>
+
+    <target name="all" depends="build-sa" description="Main target to build the project"> </target>
+
+
+
+</project>
