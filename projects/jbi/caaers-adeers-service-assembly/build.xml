@@ -17,7 +17,7 @@
     limitations under the License.
 
 -->
-<project name="caaers-adeers-ae" default="all" basedir=".">
+<project name="caaers-adeers-sa" default="all" basedir=".">
 
     <!--build directories-->
     <property name="build.dir" value="${basedir}/build"/>
@@ -45,6 +45,9 @@
             <include name="**/*.jar"/>
         </fileset>
         <fileset dir="${servicemix.toolkit.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="caaers-adeers-webservice-su/lib">
             <include name="*.jar"/>
         </fileset>
     </path>
@@ -92,7 +95,7 @@
         </copy>
         <copy todir="${webservice.comp.build.dir}/lib">
             <fileset dir="caaers-adeers-webservice-su/lib" includes="*.*"/>
-        </copy>        
+        </copy>
         <javac srcdir="caaers-adeers-webservice-su/${src.java.dir}"
             destdir="${webservice.comp.build.dir}" debug="on" source="1.5" target="1.5">
             <classpath refid="build.classpath"/>
