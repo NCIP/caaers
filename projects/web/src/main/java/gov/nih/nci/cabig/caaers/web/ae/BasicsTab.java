@@ -33,6 +33,9 @@ public abstract class BasicsTab extends AeTab {
 
     public BasicsTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
+        setAutoPopulateHelpKey(true);
+        addHelpKeyExclusion("ctc-category", "grade", 
+        		 "startDate", "endDate","hospitalization", "comments" );
     }
 
     private Map<Object, Object> createAttributionOptions() {
@@ -47,14 +50,14 @@ public abstract class BasicsTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         InputField attributionField = InputFieldFactory.createSelectField(
             "attributionSummary", "Attribution to study", false, createAttributionOptions());
-        InputFieldAttributes.setDetails(attributionField,
-            "Select from the list the most appropriate term describing the relationship of the event to the study interactions or interventions.");
+       /* InputFieldAttributes.setDetails(attributionField,
+            "Select from the list the most appropriate term describing the relationship of the event to the study interactions or interventions.");*/
         InputField exField = InputFieldFactory.createBooleanSelectField(
                 "expected", "Expected", true);
-        InputFieldAttributes.setDetails(exField, "Specify whether the AE is expected or not. &quot;Unexpected&quot; events " +
+       /* InputFieldAttributes.setDetails(exField, "Specify whether the AE is expected or not. &quot;Unexpected&quot; events " +
         		"are those that differ in nature, severity or frequency from what is described in the investigator's " +
         		"brochure or informed consent document. For agents under a CTEP IND, refer also to the AdEERS Agent Specific " +
-        		"Adverse Event List (ASAEL). For commercial agents or agents under a non-CTEP IND, refer also to the package insert.");
+        		"Adverse Event List (ASAEL). For commercial agents or agents under a non-CTEP IND, refer also to the package insert.");*/
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
         InputFieldAttributes.setRows(commentsField, 5);

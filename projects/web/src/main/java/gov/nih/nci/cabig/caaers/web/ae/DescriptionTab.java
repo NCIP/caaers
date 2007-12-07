@@ -23,6 +23,8 @@ public class DescriptionTab extends AeTab {
         super("Event and response description",
         	ExpeditedReportSection.DESCRIPTION_SECTION.getDisplayName(),
         	"ae/description");
+        setAutoPopulateHelpKey(true);
+        addHelpKeyExclusion("presentStatus","recoveryDate","retreated");
     }
 
     @Override
@@ -33,7 +35,7 @@ public class DescriptionTab extends AeTab {
             "Description", false);
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
-        InputFieldAttributes.setDetails(desc,"Type in a narrative describing the following: (1) presentation of the event, (2), clinical findings, (3) the treatment of the events, and (4) the timing of events related to agent administration or investigational intervention.");
+        /*InputFieldAttributes.setDetails(desc,"Type in a narrative describing the following: (1) presentation of the event, (2), clinical findings, (3) the treatment of the events, and (4) the timing of events related to agent administration or investigational intervention.");*/
 
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
@@ -42,7 +44,7 @@ public class DescriptionTab extends AeTab {
 
         InputField removedDateField = createDateField(baseProp + ".dateRemovedFromProtocol",
             "Date removed from protocol", false);
-        InputFieldAttributes.setDetails(removedDateField, "If the participant was removed from the protocol, enter the date here.  Otherwise, leave it blank.");
+        /*InputFieldAttributes.setDetails(removedDateField, "If the participant was removed from the protocol, enter the date here.  Otherwise, leave it blank.");*/
 
         creator.createFieldGroup("desc",
             desc,

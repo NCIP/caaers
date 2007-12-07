@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
@@ -10,6 +11,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
+import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
 import java.util.LinkedHashMap;
@@ -26,12 +28,14 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-public abstract class AbstractReportDefinitionController extends AbstractTabbedFlowFormController<ReportDefinitionCommand>{
+public abstract class AbstractReportDefinitionController extends AutomaticSaveFlowFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao>{
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-
-	protected ReportDefinitionDao reportDefinitionDao;
+	
 	private ConfigProperty configurationProperty;
+	
+	protected ReportDefinitionDao reportDefinitionDao;
+
 	protected Map<String, String> roles;
 	protected OrganizationDao organizationDao;
 
@@ -49,7 +53,7 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
         ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
         NotificationsTab secondTab = new NotificationsTab();
         ReviewTab thirdTab = new ReviewTab();
-
+        
         getFlow().addTab(firstTab);
         getFlow().addTab(deliveryDefTab);
         getFlow().addTab(mandatoryFieldTab);
@@ -98,11 +102,14 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 
 	@Override
 	protected boolean suppressValidation(HttpServletRequest request, Object command) {
-		Object isAjax = findInRequest(request, AJAX_REQUEST_PARAMETER);
-		if(isAjax != null) return true;
-		return super.suppressValidation(request, command);
+		return isAjaxRequest(request) ? true :  super.suppressValidation(request, command);
 	}
-
+	
+	
+	protected boolean isAjaxRequest(HttpServletRequest request){
+		return findInRequest(request, AJAX_REQUEST_PARAMETER) != null;
+	}
+	
 	protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList, TreeNode node) {
 		if(StringUtils.isNotEmpty(node.getPropertyPath())){
 			ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node.getPropertyPath());
@@ -115,18 +122,16 @@ public abstract class AbstractReportDefinitionController extends AbstractTabbedF
 	}
 
 
-	protected Map<Object, Object> collectRoleOptions(){
-        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.put("" , "Please select");
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"),
-        		"code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"),
-        		"code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"),
-        		"code", "desc"));
-
-        return options;
-    }
+	
+	@Override
+	protected ReportDefinitionDao getDao() {
+		return reportDefinitionDao;
+	}
+	
+	@Override
+	protected ReportDefinition getPrimaryDomainObject(ReportDefinitionCommand cmd) {
+		return cmd.getReportDefinition();
+	}
 
 	///BEAN PROPERTIES
 	public ReportDefinitionDao getReportDefinitionDao() {

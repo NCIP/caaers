@@ -154,10 +154,16 @@
                     new EnterPriorTherapy(index);
                     AE.registerCalendarPopups("priorTherapy-" + index);
                     createAgentListEditor("ptAgent" + index, index);
+                    //-- update help  
+      				captureHelpControlEvents();
                 },
                 deletable: true
             }, 'aeReport.adverseEventPriorTherapies')
         })
+        
+        
+        
+        
     --></script>
 </head>
 <body>

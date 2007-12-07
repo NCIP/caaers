@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,12 +27,13 @@ import org.apache.commons.collections15.list.LazyList;
  * @since 1.0
  */
 public class ReportDefinitionCommand  {
-
+	
+	private ConfigProperty configurationProperty;
+	
 	// page -4
 	private String pointOnScale = "0"; // the selected point in the time scale
 	private String lastPointOnScale;
 	private String indexToFetch = "0";
-	private Map<Object, Object> roles;
 
 	private Map<String, Integer> mandatoryFieldMap;
 
@@ -45,9 +48,12 @@ public class ReportDefinitionCommand  {
 	//hide validation errors
 	private boolean hideErrors;
 	
-	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao){
+	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao,
+			ConfigProperty configurationProperty){
+		
 		this.rpDef = rpDef;
 		this.rpDefDao = rpDefDao;
+		this.configurationProperty = configurationProperty;
 		initializeMandatoryFieldMap();
 	}
 
@@ -73,9 +79,29 @@ public class ReportDefinitionCommand  {
 	}
 
 
+	protected Map<Object, Object> collectRoleOptions(){
+        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("" , "Please select");
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"),
+        		"code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"),
+        		"code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"),
+        		"code", "desc"));
+
+        return options;
+    }
 
 	///BEAN PROPERTIES
-
+	
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
+	
+	public ConfigProperty getConfigurationProperty() {
+		return configurationProperty;
+	}
+	
 	/**
 	 * Will tell the index of the PlannedNotification to be deleted.
 	 */
@@ -126,16 +152,9 @@ public class ReportDefinitionCommand  {
 	}
 
 	public Map<Object, Object> getRoles() {
-		return roles;
+		return collectRoleOptions();
 	}
-	/**
-	 * The roles, a map injected from spring config file, consits of the
-	 * roles to which notification can be sent.
-	 * @param roles
-	 */
-	public void setRoles(Map<Object, Object> roles) {
-		this.roles = roles;
-	}
+	
 
 
 	public Map<String, Integer> getMandatoryFieldMap() {

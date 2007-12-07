@@ -62,18 +62,41 @@
 		</chrome:division>
 		<!--  Mandatory Fields  -->
 		<chrome:division title="Report Mandatory Fields">
-		
+		   <table width="100%" class="tablecontent">
+			<tr>
+				<th width="35%">Section</th>
+				<th width="65%">Field</th>
+			</tr>
+			
+			<c:forEach items="${FIELDS.mandatoryFields}" var="section">
+				<tr>
+					<td><div class="label">${section.key}</div></td>
+					
+					<td>
+						<table class="tablecontent" width="100%">
+							<c:forEach items="${section.value}" var="x">
+								<tr>
+									<td width="60%">${x.key}</td>
+									<td width="40%">${x.value eq true ? "Mandatory" : "Optional"}</td>
+								</tr>
+							</c:forEach>
+						</table>
+					</td>
+				</tr>
+			</c:forEach>
+			
+		   </table>
 		</chrome:division> 
 		<!-- Notification Details -->	
 		<chrome:division title="Notification(s)">
-		  <c:forEach items="${FIELDS.pnfKeySet}" var="pnfKey" varStatus="pnfStatus">
-			<chrome:division title="Notification ${pnfStatus.index + 1} of ${command.reportDefinition.timeScaleUnitType.displayName} : ${command.reportDefinition.plannedNotifications[pnfStatus.index].indexOnTimeScale}">
-		    	<c:forEach items="${FIELDS['Planned Notification'][pnfKey]}" var="pair" >
-		    		<rd:renderPair pair="${pair}" preformatedValue="${pair.key eq 'Message'}"/>
-			    </c:forEach>
-
-		    </chrome:division>
-		  </c:forEach>
+		 <c:forEach items="${FIELDS.PENF}" var="entry">
+		 	<chrome:division title="${entry.key}" >
+		 		<c:forEach items="${entry.value}" var="pair">
+		 			<rd:renderPair pair="${pair}" preformatedValue="${pair.key eq 'Message'}" />
+		 		</c:forEach>
+		 	</chrome:division>
+		 </c:forEach>
+		
 		</chrome:division>
         <input id="markFinish" type="hidden" name="_finish"/>
 	</jsp:attribute>

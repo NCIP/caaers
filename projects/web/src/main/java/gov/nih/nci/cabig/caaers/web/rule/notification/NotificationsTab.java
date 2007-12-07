@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.Recipient;
+import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -63,7 +64,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 						}
 						i++;
 					}
-				}
+			}
 			
 			
 		}else{
@@ -131,16 +132,31 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
 
 	/*The binding of recipients are done here*/
 	@Override
-	public void onBind(HttpServletRequest request,
-			ReportDefinitionCommand cmd, Errors errors) {
+	public void onBind(HttpServletRequest request,ReportDefinitionCommand cmd, Errors errors) {
 		super.onBind(request, cmd, errors);
 		int size = cmd.getEmailNotifications().size();
     	for(int i = 0; i < size; i++){
     		String[] roleRecipients = request.getParameterValues("emailNotifications[" +  i + "].roleBasedRecipients");
     		String[] contactRecipients = request.getParameterValues("emailNotifications[" +  i + "].contactMechanismBasedRecipients");
     		PlannedNotification plannedNotification = cmd.getEmailNotifications().get(i);
-    		plannedNotification.setRoleBasedRecipients(roleRecipients);
-    		plannedNotification.setContactMechanismBasedRecipients(contactRecipients);
+    		
+    		List<Recipient> recipients = plannedNotification.getRecipients();
+    		recipients.clear();
+    		
+    		if(roleRecipients != null){
+    			for(String r : roleRecipients){
+    				Recipient roleRecipient = new RoleBasedRecipient(r);
+    				if(!recipients.contains(roleRecipient))	plannedNotification.addRecipient(roleRecipient);
+    			}
+    		}
+    		
+    		if(contactRecipients != null){
+    			for(String r : contactRecipients){
+    				Recipient cRecipient = new ContactMechanismBasedRecipient(r);
+    				if(!recipients.contains(cRecipient)) plannedNotification.addRecipient(cRecipient);
+    			}
+    		}
+
     	}
 	}
 

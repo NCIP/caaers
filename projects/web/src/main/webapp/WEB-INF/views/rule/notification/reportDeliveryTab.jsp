@@ -73,7 +73,7 @@
 </head>
 <body>
     <chrome:division>
-	    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" hideErrorDetails="true">
+	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="true">
 	     <jsp:attribute name="instructions">
         	You are entering final report delivery information for <b>${command.reportDefinition.name}</b>.
    		 </jsp:attribute>

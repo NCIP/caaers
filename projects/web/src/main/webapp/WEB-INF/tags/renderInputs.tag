@@ -45,7 +45,7 @@
     </c:otherwise>
 </c:choose>
  	<c:if test="${not empty field.attributes.help}">
- 		<tags:inlineHelp path="${field.propertyName}"><spring:message code="${field.attributes.help}" text="No help available" /></tags:inlineHelp>
+ 		<tags:inlineHelp path="${field.propertyName}"><spring:message code="${field.attributes.help}" text="No help available ${field.attributes.help}" /></tags:inlineHelp>
     </c:if>
 <tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>

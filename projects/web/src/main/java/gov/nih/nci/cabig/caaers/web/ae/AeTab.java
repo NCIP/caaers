@@ -169,6 +169,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
                     : Arrays.asList(field.getPropertyName());
                 for (String prop : props) {
                     setMandatoryAttribute(listNode.find(prop), field);
+                    setHelpKeyAttribute(field);
                 }
                 factory.addField(field);
             }
@@ -206,6 +207,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             for (InputField field : fields) {
                 String treePropName = (baseProperty == null ? "" : baseProperty + '.') + field.getPropertyName();
                 setMandatoryAttribute(expeditedReportTree.find(treePropName), field);
+                setHelpKeyAttribute(field);
                 group.addField(field);
             }
             map.addInputFieldGroup(group);

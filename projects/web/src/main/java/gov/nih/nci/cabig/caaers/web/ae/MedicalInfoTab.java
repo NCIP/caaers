@@ -28,6 +28,9 @@ public class MedicalInfoTab extends AeTab {
 
     public MedicalInfoTab() {
         super("Medical information", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/medical");
+        super.addHelpKeyExclusion("height","weight","quantity","unit","baselinePerformanceStatus",
+        		"otherPrimaryDiseaseSite","otherSite");
+        super.setAutoPopulateHelpKey(true);
     }
 
     // TODO: configurationProperty and all things associated with it are abhorrent
@@ -78,15 +81,15 @@ public class MedicalInfoTab extends AeTab {
         
        
         
-        InputFieldAttributes.setDetails(studyDisease, "If the correct disease is not listed in the drop down lists, type the appropriate disease name in the Other (disease) field below.");
+        /*InputFieldAttributes.setDetails(studyDisease, "If the correct disease is not listed in the drop down lists, type the appropriate disease name in the Other (disease) field below.");*/
         InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
         InputFieldAttributes.setSize(diseaseSite, 33);
-        InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");
+        /*InputFieldAttributes.setDetails(diseaseSite, "If the appropriate site cannot be found in the list above, type the primary site of the disease in the Other (site of primary disease) field below.");*/
         InputField otherDiseaseField = InputFieldFactory.createTextField("otherPrimaryDisease", "Other (disease)");
         InputFieldAttributes.setSize(otherDiseaseField, 50);
-        InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");
+        /*InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");*/
         InputField diganosisDateField = InputFieldFactory.createDateField("diagnosisDate", "Date of initial diagnosis", false);
-        InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");
+        /*InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");*/
 
         creator.createFieldGroup("disease", null, "diseaseHistory",
         		studyDisease,
@@ -97,7 +100,7 @@ public class MedicalInfoTab extends AeTab {
         );
 
         InputField codedSiteField = InputFieldFactory.createAutocompleterField("codedSite", "Site Name", false);
-        InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the &quot;Other(site of metastatic disease)&quot; field");
+        /*InputFieldAttributes.setDetails(codedSiteField, "If the appropriate site is not listed, type the specific site in the &quot;Other(site of metastatic disease)&quot; field");*/
 
         creator.createRepeatingFieldGroup("metastatic", "diseaseHistory.metastaticDiseaseSites",
             new SimpleNumericDisplayNameCreator("Metastatic disease site"),

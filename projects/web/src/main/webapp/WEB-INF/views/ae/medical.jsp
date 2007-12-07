@@ -134,6 +134,7 @@
             addParameters: [aeReportId],
             addCallback: function(index) {
                 new EnterDiseaseSite(index);
+                captureHelpControlEvents();
             },
             deletable: true
         }, 'aeReport.diseaseHistory.metastaticDiseaseSites')

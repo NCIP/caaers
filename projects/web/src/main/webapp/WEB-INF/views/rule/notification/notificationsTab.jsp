@@ -182,7 +182,7 @@
     	<div id="div_matter">
 	   			<!-- This box contains the body-->
     	
-    			<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" 
+    			<tags:tabForm tab="${tab}" flow="${flow}" 
     				title="Configure Notification for ${command.reportDefinition.timeScaleUnitType} : ${command.pointOnScale}">
     			  
 				  <jsp:attribute name="singleFields">

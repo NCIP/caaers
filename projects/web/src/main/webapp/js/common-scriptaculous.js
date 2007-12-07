@@ -146,7 +146,8 @@ AE.helpToggle = function(field) {
     }
 }
 
-Event.observe(window, "load", function() {
+function captureHelpControlEvents(){
+
     $$(".inline-help-control").each(function(control) {
         var id = control.id
         var field = id.substr(0, id.length - 13)
@@ -154,4 +155,8 @@ Event.observe(window, "load", function() {
             AE.helpToggle(field)
         })
     })
+}
+
+Event.observe(window, "load", function() {
+	captureHelpControlEvents();
 });

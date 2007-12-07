@@ -29,7 +29,7 @@
     
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
+    <tags:tabForm tab="${tab}" flow="${flow}">
 		<jsp:attribute name="singleFields">
 			<div>
 			<tags:renderRow field="${fieldGroups.reportDefinitionOrganization.fields[0]}" />

@@ -25,6 +25,10 @@ public class ReportDefinitionAjaxFacade {
 	public static final String AJAX_INDEX_PARAMETER = "index";
 	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
 	public static final String AJAX_ORIGINAL_INDEX_PARAMETER = "originalIndex";
+	
+	public static final String CREATE_FLOW_COMMAND_KEY =  CreateReportDefinitionController.class.getName() +".FORM.command";
+	public static final String EDIT_FLOW_COMMAND_KEY = EditReportDefinitionController.class.getName() + ".FORM.command";
+	
 	private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
 
 	private OrganizationDao orgDao;
@@ -76,10 +80,10 @@ public class ReportDefinitionAjaxFacade {
 
 	/// HELPER METHODS
 	public ReportDefinitionCommand getCommand(HttpServletRequest request){
-		String commandName = CreateReportDefinitionController.class.getName() +".FORM.command";
+		String commandName = CREATE_FLOW_COMMAND_KEY;
 		ReportDefinitionCommand cmd = (ReportDefinitionCommand) request.getSession().getAttribute(commandName);
 		if(cmd == null){
-			commandName = EditReportDefinitionController.class.getName() + ".FORM.command";
+			commandName = EDIT_FLOW_COMMAND_KEY;
 			cmd = (ReportDefinitionCommand) request.getSession().getAttribute(commandName);
 		}
 		request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME,cmd);

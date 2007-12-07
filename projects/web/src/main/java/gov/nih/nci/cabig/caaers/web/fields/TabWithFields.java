@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
@@ -20,9 +23,11 @@ import org.springframework.validation.Errors;
  */
 public abstract class TabWithFields<C> extends Tab<C> {
 	private boolean autoPopulateHelpKey;
+	private List<String> helpExclusionList;
 	
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
+        helpExclusionList = new ArrayList<String>();
     }
 
     /**
@@ -72,14 +77,26 @@ public abstract class TabWithFields<C> extends Tab<C> {
      * array notations<code>[x]</code> in propertyName removed .  
      */
     protected void populateHelpAttributeOnFields(Map<String, InputFieldGroup> groupMap){
-    	String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
+    	
     	if(groupMap == null || groupMap.isEmpty()) return;
     	for(InputFieldGroup group : groupMap.values()){
     		for(InputField field : group.getFields()){
-    			field.getAttributes().put(InputField.HELP, 
-    					helpKeyPrefix + "." + field.getPropertyName().replaceAll("(\\[\\d+\\])",""));
+    			setHelpKeyAttribute(field);
     		}
     	}
+    }
+    
+    
+    final protected void setHelpKeyAttribute(InputField field){
+    	if(!autoPopulateHelpKey) return;
+    	String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
+    	String[] nameSubset = null;
+		nameSubset = field.getPropertyName().split("\\.");
+		if(helpExclusionList.contains(nameSubset[nameSubset.length - 1])){
+			return;
+		}
+		field.getAttributes().put(InputField.HELP, 
+				helpKeyPrefix + "." + field.getPropertyName().replaceAll("(\\[\\d+\\])",""));
     }
     
     ///BEAN PROPERTIES
@@ -91,6 +108,8 @@ public abstract class TabWithFields<C> extends Tab<C> {
 	public void setAutoPopulateHelpKey(boolean autoPopulateHelpKey) {
 		this.autoPopulateHelpKey = autoPopulateHelpKey;
 	}
-
+	public void addHelpKeyExclusion(String... properties){
+		helpExclusionList.addAll(Arrays.asList(properties));
+	}
     
 }

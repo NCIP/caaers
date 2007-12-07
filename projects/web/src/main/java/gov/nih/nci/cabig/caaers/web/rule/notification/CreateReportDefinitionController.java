@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Required;
 
-
+ 
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
@@ -23,7 +24,12 @@ public class CreateReportDefinitionController  extends AbstractReportDefinitionC
 	public String getFlowName() {
 		return "Create Report Definition";
 	}
-
+    
+    @Override
+    protected boolean shouldSave(HttpServletRequest request,ReportDefinitionCommand command, Tab<ReportDefinitionCommand> tab) {
+    	return false;
+    }
+    
 	/**
 	 * In the create flow of report definition, we should make sure that
 	 * there exists at least one ReportDeliveryDefinition.
@@ -36,8 +42,8 @@ public class CreateReportDefinitionController  extends AbstractReportDefinitionC
 		populateMandatoryFields(mandatoryFields, expeditedReportTree);
 		reportDef.setMandatoryFields(mandatoryFields);
 
-		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao);
-		rpDefCmd.setRoles(collectRoleOptions());
+		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao, getConfigurationProperty());
+	
 		return rpDefCmd;
 	}
 

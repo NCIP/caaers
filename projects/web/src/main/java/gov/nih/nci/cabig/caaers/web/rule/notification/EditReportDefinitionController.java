@@ -5,6 +5,8 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,13 +34,22 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 	public String getFlowName() {
 		return "Edit Report Definition";
 	}
-
+	
+	@Override
+	protected boolean shouldSave(HttpServletRequest request,ReportDefinitionCommand command, Tab<ReportDefinitionCommand> tab) {
+		return !isAjaxRequest(request);
+	}
+	
 	/**
 	 * The request parameter should contain <code>repDefId</code>, which is
 	 * used to obtain the {@link ReportDefinition} from the DB.
 	 */
 	@Override
 	public Object formBackingObject(HttpServletRequest req) throws Exception {
+		req.getSession().removeAttribute(getReplacedCommandSessionAttributeName(req));
+		req.getSession().removeAttribute(ReportDefinitionAjaxFacade.CREATE_FLOW_COMMAND_KEY);
+
+		
 		//fetch report definition Id
 		Integer rpDefId = Integer.valueOf(req.getParameter("repDefId"));
 		//feth the ReportDefinition by Id
@@ -46,8 +57,7 @@ public class EditReportDefinitionController  extends AbstractReportDefinitionCon
 		//initialize all the lazy collections in rpDef
 		reportDefinitionDao.initialize(rpDef);
 		reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
-		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao);
-		rpDefCmd.setRoles(collectRoleOptions());
+		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty());
 
 		//find the index of the first planned notificaiton
 		List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();
