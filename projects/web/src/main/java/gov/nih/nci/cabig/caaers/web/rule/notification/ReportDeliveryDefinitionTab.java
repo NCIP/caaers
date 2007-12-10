@@ -37,6 +37,13 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         InputField eNameField = InputFieldFactory.createTextField("entityName","Name", true);
         InputFieldAttributes.setSize(eNameField, 30);
         rfgFactory.addField(eNameField);
+        
+        InputField uName = InputFieldFactory.createTextField("userName", "Username");
+        rfgFactory.addField(uName);
+        
+        InputField pwd = InputFieldFactory.createTextField("password", "Password");
+        rfgFactory.addField(pwd);
+        
         InputField addressField = InputFieldFactory.createTextField("endPoint","Address", true);
         InputFieldAttributes.setSize(addressField, 50);
         rfgFactory.addField(addressField);
