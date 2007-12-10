@@ -16,7 +16,12 @@
 <title>${tab.longTitle}</title>
 <tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="searchStudy"/>
-
+<style type="text/css">
+        /* Override default lable length */
+       	div.row div.label { width: 9em; } 
+        div.row div.value { margin-left: 10em; }
+        .endpanes {	clear: both; }
+</style>
 <script>
    
 function buildTable(form) {		
@@ -40,12 +45,18 @@ function buildTable(form) {
 		$('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
 	}else{
 		$('error').innerHTML=""
+		
+		//showing indicator and hiding pervious results. (#10826)
+		$('indicator').className='';
+		$('assembler_table').hide();
+		
 		searchStudy.getTable(null, type, text, showTable);
 	}
 }
 
 function showTable(table) {
 	document.getElementById('tableDiv').innerHTML=table;
+	$('indicator').className='indicator';
 }
  
 function fireAction(action, selected){	
@@ -78,13 +89,18 @@ function fireAction(action, selected){
 				</div>						
 			</div>
 		 	</c:forEach>
-			<div class="row">
-			     <div class="lable"><input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
-			</div>
+
         </div>
     </form:form>
 </chrome:box>
-<br>
+
+<div class="endpanes" />
+<div class="row" style="float:right;">
+	<input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
+	<tags:indicator id="indicator" />
+</div>
+
+<div class="endpanes" />
 <chrome:box title="Results">
 <form:form>
      <chrome:division id="single-fields">
