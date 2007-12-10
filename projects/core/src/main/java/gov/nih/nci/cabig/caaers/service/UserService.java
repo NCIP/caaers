@@ -3,9 +3,6 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
-/**
- * Created by IntelliJ IDEA. User: admin Date: Sep 14, 2007 Time: 4:59:56 PM To change this template use File | Settings | File Templates.
- */
 public interface UserService {
 
     // public void saveResearchStaff(ResearchStaff staff) throws CaaersSystemException;
@@ -17,9 +14,9 @@ public interface UserService {
      */
     void createOrUpdateCSMUserAndGroupsForResearchStaff(gov.nih.nci.cabig.caaers.domain.ResearchStaff researchStaff);
     
-    public User getUserByName(String userName);
-    public void userChangePassword(String userName, String password, int maxHistorySize);
-    public boolean userHasPassword(String userName, String password);
-    public boolean userHadPassword(String userName, String password);
-    public String userCreateToken(String userName);
+    public User getUserByName(String userName) throws CaaersSystemException;
+    public void userChangePassword(String userName, String password, int maxHistorySize) throws CaaersSystemException;
+    public boolean userHasPassword(String userName, String password) throws CaaersSystemException;
+    public boolean userHadPassword(String userName, String password) throws CaaersSystemException;
+    public String userCreateToken(String userName) throws CaaersSystemException;
 }

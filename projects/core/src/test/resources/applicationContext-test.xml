@@ -183,12 +183,12 @@
         <property name="authorizationDAO" ref="csmAuthorizationDao"/>
     </bean>
 
-     <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true">
-
+     <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
         <property name="mailSender" ref="mailer"/>
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+	<property name="userDao" ref="userDao"/>
     </bean>
 
     <bean id="researchStaffRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ResearchStaffRepository" >

@@ -24,24 +24,14 @@ This applicationContext contains the definition of the concrete services
 	class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 
   <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.passwordManagerServiceImpl" autowire="byName"/>
-  <bean id="passwordPolicyService"  class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName">
-    <property name="passwordCreationPolicyValidator">
-      <bean class="gov.nih.nci.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyValidator" autowire="byName">
-	<property name="combinationPolicyValidator">
-	  <bean class="gov.nih.nci.caaers.service.security.passwordpolicy.validators.combinationPolicyValidator" autowire="byName"/>
-	</property>	
-      </bean>
-    </property>
-    <property name="loginPolicyValidator">
-      <bean class="gov.nih.nci.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator" autowire="byName"/>
-    </property>
-  </bean>
+  <bean id="passwordPolicyService"  class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 
-  <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true">
+  <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
     <property name="mailSender" ref="mailer"/>
     <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
     <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+    <property name="userDao" ref="userDao"/>
   </bean>
 
 

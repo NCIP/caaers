@@ -17,7 +17,7 @@ public class CombinationValidator implements PasswordPolicyValidator{
 
     private boolean validateLowerCaseAlphabet(CombinationPolicy policy, Credential credential)
 	throws ValidationException {
-	if (policy.isLowerCaseAlphabetRequired() && !credential.getPassword().matches("\\p{javaLowerCase}")) {
+	if (policy.isLowerCaseAlphabetRequired() && !credential.getPassword().matches(".*[\\p{javaLowerCase}].*")) {
 	    throw new ValidationException("The password should have at least one lower case letter");
 	}
 	return true;
@@ -25,7 +25,7 @@ public class CombinationValidator implements PasswordPolicyValidator{
 
     private boolean validateUpperCaseAlphabet(CombinationPolicy policy, Credential credential)
 	throws ValidationException {
-	if (policy.isUpperCaseAlphabetRequired() && !credential.getPassword().matches("\\p{javaUpperCase}")) {
+	if (policy.isUpperCaseAlphabetRequired() && !credential.getPassword().matches(".*[\\p{javaUpperCase}].*")) {
 	    throw new ValidationException("The password should have at least one upper case letter");		    
 	}
 	return true;
@@ -33,7 +33,7 @@ public class CombinationValidator implements PasswordPolicyValidator{
     
     private boolean validateNonAlphaNumeric(CombinationPolicy policy, Credential credential)
 	throws ValidationException {
-	if (policy.isNonAlphaNumericRequired() && !credential.getPassword().matches("\\P{Alnum}")) {
+	if (policy.isNonAlphaNumericRequired() && credential.getPassword().matches("[\\p{Alnum}]+")) {
 	    throw new ValidationException("The password should have at least one special charcter");
 	}
 	return true;
@@ -41,7 +41,7 @@ public class CombinationValidator implements PasswordPolicyValidator{
 
     private boolean validateBaseTenDigit(CombinationPolicy policy, Credential credential)
 	throws ValidationException {
-	if (policy.isBaseTenDigitRequired() && !credential.getPassword().matches("\\p{Digit}")) {
+	if (policy.isBaseTenDigitRequired() && !credential.getPassword().matches(".*[\\p{Digit}].*")) {
 	    throw new ValidationException("The password should have at least one numeral digit{0-9}");
 	}
 	return true;

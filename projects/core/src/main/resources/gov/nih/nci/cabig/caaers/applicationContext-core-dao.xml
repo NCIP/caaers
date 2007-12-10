@@ -262,6 +262,8 @@ This applicationContext contains the definition of the DAOs
   <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
   <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
   <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
+  <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
+  <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
   <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
   
   

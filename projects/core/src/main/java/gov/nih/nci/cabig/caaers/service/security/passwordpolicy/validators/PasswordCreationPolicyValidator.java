@@ -1,33 +1,45 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators;
 
+import gov.nih.nci.cabig.caaers.service.UserService;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 
+import org.springframework.beans.factory.annotation.Required;
+
 public class PasswordCreationPolicyValidator implements PasswordPolicyValidator {
     
     private PasswordPolicyValidator combinationValidator;
-    
+    private UserService userService;
+
+    public PasswordCreationPolicyValidator() {
+	combinationValidator = new CombinationValidator();
+    }
+
     public boolean validate(PasswordPolicy policy, Credential credential) throws ValidationException {
 	PasswordCreationPolicy passwordCreationPolicy = policy.getPasswordCreationPolicy();
 	
 	return validateMinPasswordAge(passwordCreationPolicy, credential)
-	    && validatePasswordHistorySize(passwordCreationPolicy, credential)
+	    && validatePasswordHistory(passwordCreationPolicy, credential)
+	    && validateMinPasswordLength(passwordCreationPolicy, credential)
 	    && combinationValidator.validate(policy, credential);	
     }  
 
     private boolean validateMinPasswordAge(PasswordCreationPolicy policy, Credential credential)
 	throws ValidationException {
-	policy.getMinPasswordAge();
-	// TODO
+	if (userService.getUserByName(credential.getUserName()).getPasswordAge() < policy.getMinPasswordAge()) {
+	    throw new ValidationException("Password was changed too recently.");
+	}
 	return true;
     }
 
-    private boolean validatePasswordHistorySize(PasswordCreationPolicy policy, Credential credential) 
+    private boolean validatePasswordHistory(PasswordCreationPolicy policy, Credential credential) 
 	throws ValidationException {
-	policy.getPasswordHistorySize();
-	// TODO
-	return false;
+	if (userService.userHasPassword(credential.getUserName(), credential.getPassword())
+	    || userService.userHadPassword(credential.getUserName(), credential.getPassword())) {
+	    throw new ValidationException("Must choose a password that has not been used recently.");
+	}
+	return true;
     }
 
     private boolean validateMinPasswordLength(PasswordCreationPolicy policy, Credential credential)
@@ -37,7 +49,7 @@ public class PasswordCreationPolicyValidator implements PasswordPolicyValidator 
 				      + policy.getMinPasswordLength() + " characters");
     }
 
-    public void setCombinationPolicyValidator(PasswordPolicyValidator combinationValidator) {
-	this.combinationValidator = combinationValidator;
-    }
+    public void setUserService(UserService userService) {
+	this.userService = userService;
+    }    
 }

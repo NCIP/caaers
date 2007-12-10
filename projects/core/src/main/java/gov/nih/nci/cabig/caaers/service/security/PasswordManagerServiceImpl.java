@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.service.UserService;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 
 import java.util.Date;
 import java.sql.Timestamp;
@@ -38,7 +39,7 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     }
 
     private boolean validateAndSetPassword(String userName, String password) throws CaaersSystemException {
-	passwordPolicyService.validatePasswordAgainstCreationPolicy(userName, password);
+	passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName, password));	    
 	userService.userChangePassword(userName, password,
 				       passwordPolicyService.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
 	return true;

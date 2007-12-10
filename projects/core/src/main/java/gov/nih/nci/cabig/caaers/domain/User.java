@@ -41,7 +41,10 @@ public abstract class User extends AbstractMutableDomainObject {
     private List<String> passwordHistory;
 
     public User() {
+	salt = "";
+	passwordLastSet = new Timestamp(0);
         userGroupTypes = new ArrayList<UserGroupType>();
+	passwordHistory = new ArrayList<String>();
     }
 
 
@@ -124,7 +127,6 @@ public abstract class User extends AbstractMutableDomainObject {
 	return new Date().getTime() - getPasswordLastSet().getTime();
     }
 
-    // one-to-many
     @CollectionOfElements
     @JoinTable(name="password_history",
 	       joinColumns=@JoinColumn(name="user_id"))
@@ -140,7 +142,7 @@ public abstract class User extends AbstractMutableDomainObject {
 
     public void addPasswordToHistory(String password, int maxHistorySize) {
 	passwordHistory.add(password);
-	if (passwordHistory.size() > maxHistorySize && maxHistorySize > 0) passwordHistory.remove(0); 
+	while (passwordHistory.size() > maxHistorySize && maxHistorySize > 0) passwordHistory.remove(0); 
     }
 
     @Column(name="num_failed_logins")

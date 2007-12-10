@@ -12,6 +12,9 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 
+import gov.nih.nci.cabig.caaers.dao.UserDao;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -26,6 +29,7 @@ import org.springframework.mail.SimpleMailMessage;
 public class UserServiceImpl implements UserService {
 
     private UserProvisioningManager userProvisioningManager;
+    private UserDao userDao;
     private CSMObjectIdGenerator siteObjectIdGenerator;
     private MailSender mailSender;
     private SimpleMailMessage accountCreatedTemplateMessage;
@@ -122,35 +126,54 @@ public class UserServiceImpl implements UserService {
 	return returnGroup.getGroupId().toString();
     }
 
-    public User getUserByName(String userName) {
-	return null;
+    // jf
+    private gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) 
+	throws CaaersSystemException {
+	gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
+	if (csmUser == null) throw new CaaersSystemException("No such CSM user.");
+	return csmUser;
+    }
+
+    private void saveCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) throws CaaersSystemException {
+	try {
+	    userProvisioningManager.modifyUser(csmUser);
+	} catch (CSTransactionException e) {
+	    throw new CaaersSystemException("Couldn't save CSM user: ", e);
+	}
+    }
+
+    public User getUserByName(String userName) throws CaaersSystemException {
+	User user = userDao.getByEmailAddress(userName);
+	if (user == null) throw new CaaersSystemException("No such user.");
+	return user;
     }
 
     public String userCreateToken(String userName) throws CaaersSystemException {
 	User user = getUserByName(userName);
 	user.setTokenTime(new Timestamp(new Date().getTime()));
 	user.setToken(encryptString(user.getSalt() + user.getTokenTime().toString() + "random_string"));
+	userDao.save(user);
 	return user.getToken();
     }
 
-    public void userChangePassword(String userName, String password, int maxHistorySize) {
-	/*
-	  csmUser.setPassword(caaersuser.getSalt() + password);	   
-	  caaersuser.resetToken();
-	  caaersuser.setPasswordLastSet(new Timestamp(new Date().getTime()));
-	  add to history (maxHistorySize)
-	*/
+    public void userChangePassword(String userName, String password, int maxHistorySize) throws CaaersSystemException {
+	User user = getUserByName(userName);
+	gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(userName);
+	user.resetToken();
+	user.setPasswordLastSet(new Timestamp(new Date().getTime()));
+	user.addPasswordToHistory(csmUser.getPassword(), maxHistorySize);
+	csmUser.setPassword(user.getSalt() + password);
+	userDao.save(user);
+	saveCSMUser(csmUser);
     }
 
-    public boolean userHasPassword(String userName, String password) {
-	// is the password the user's password
-	// return encryptString(password).equals(csmUser.getPassword());
-	return true;
+    public boolean userHasPassword(String userName, String password) throws CaaersSystemException {
+	return encryptString(getUserByName(userName).getSalt() 
+			     + password).equals(getCSMUserByName(userName).getPassword());
     }
 
-    public boolean userHadPassword(String userName, String password) {
-	// is the password in the user's history
-	return true;
+    public boolean userHadPassword(String userName, String password) throws CaaersSystemException {
+	return getUserByName(userName).getPasswordHistory().contains(encryptString(password));
     }
 
     private String encryptString(String string) throws CaaersSystemException {
@@ -160,6 +183,8 @@ public class UserServiceImpl implements UserService {
 	    throw new CaaersSystemException(e);
 	}
     }
+
+    // end
 
     @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
@@ -179,5 +204,10 @@ public class UserServiceImpl implements UserService {
     @Required
     public void setSiteObjectIdGenerator(final CSMObjectIdGenerator siteObjectIdGenerator) {
 	this.siteObjectIdGenerator = siteObjectIdGenerator;
+    }
+
+    @Required
+    public void setUserDao(final UserDao userDao) {
+	this.userDao = userDao;
     }
 }
