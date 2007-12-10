@@ -40,6 +40,9 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject{
 	private int entityType;
 	private String endPoint;
 	private String endPointType;
+	private String userName;
+	private String password;
+	
 
 	//LOGIC
 	public ReportDelivery createReportDelivery(){
@@ -122,6 +125,19 @@ public class ReportDeliveryDefinition extends AbstractMutableDomainObject{
 	 */
 	public void setEntityType(int entityType) {
 		this.entityType = entityType;
+	}
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }
