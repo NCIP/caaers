@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -77,7 +78,7 @@
 	</c:forEach>
  </chrome:division>
 
- <chrome:division title="Research Staff Details">
+ <chrome:division title="Details">
   <div class="leftpanel">
             <c:forEach begin="0" end="3"
                        items="${fieldGroups.researchStaff.fields}" var="field">
