@@ -123,8 +123,10 @@
 				<jsp:attribute name="singleFields">
 					<table width="100%" class="tablecontent">
 						<tr id="system-table-head" class="system-table-head">
-							<th width="35%" class="tableHeader"><tags:requiredIndicator /> Name</th>
-							<th width="60%" class="tableHeader"><tags:requiredIndicator /> URL</th>
+							<th width="20%" class="tableHeader"><tags:requiredIndicator /> Name</th>
+							<th width="15%" class="tableHeader">Username</th>
+							<th width="15%" class="tableHeader">Password</th>
+							<th width="45%" class="tableHeader"><tags:requiredIndicator /> URL</th>
 							<th width="5%" class="tableHeader">&nbsp;</th>
 						</tr>
 						<c:set var="sIndex">0</c:set>
