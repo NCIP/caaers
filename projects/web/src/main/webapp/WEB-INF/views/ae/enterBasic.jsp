@@ -13,7 +13,8 @@
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
         .longselect {
-            width: 28em;
+        	width: 40em;
+            white-space: nowrap;
         }
         .longselect label {
             padding-left: 3.0em;
