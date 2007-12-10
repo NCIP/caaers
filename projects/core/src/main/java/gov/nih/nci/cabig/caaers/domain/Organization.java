@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganization;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
@@ -153,7 +154,8 @@ public class Organization extends AbstractMutableDomainObject {
 	}
 
 
-	public String getNciInstituteCode() {
+    @UniqueNciIdentifierForOrganization(message = "Nci  Identifier already exits in the datbase...!")
+    public String getNciInstituteCode() {
 		return nciInstituteCode;
 	}
 

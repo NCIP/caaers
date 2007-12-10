@@ -28,7 +28,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 	private static final String SITE_FIELD_GROUP = "site";
 
 	public ResearchStaffTab() {
-		super("Research Staff Details", "Research Staff Details", "admin/research_staff_details");
+		super("Research Staff Details", "Details", "admin/research_staff_details");
 		setAutoPopulateHelpKey(true);
 	}
 

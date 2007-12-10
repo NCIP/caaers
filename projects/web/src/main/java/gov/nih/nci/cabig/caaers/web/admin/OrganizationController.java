@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.service.OrganizationService;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -33,6 +34,8 @@ public abstract class OrganizationController<C extends Organization> extends
 
 	protected OrganizationDao organizationDao;
     protected OrganizationService organizationService;
+
+    protected WebControllerValidator webControllerValidator;
 
     public OrganizationController() {
 		setCommandClass(Organization.class);
@@ -98,8 +101,19 @@ public abstract class OrganizationController<C extends Organization> extends
 		return modelAndView;
 	}
 
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+        webControllerValidator.validate(request, command, errors);
+    }
+
     @Required
     public void setOrganizationService(OrganizationService organizationService) {
         this.organizationService = organizationService;
+    }
+
+    @Required
+    public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
+        this.webControllerValidator = webControllerValidator;
     }
 }

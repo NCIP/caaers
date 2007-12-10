@@ -168,7 +168,11 @@
 
     <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
+                                                                    
+
     <!--  PARTICIPANT   -->
+
+
     <bean name="/participant/create" id="createParticipantController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
     </bean>
@@ -263,10 +267,12 @@
 	<bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
            <property name="sessionForm"><value>true</value></property>
+        <property name="webControllerValidator" ref="webControllerValidator"/>
      </bean>
      
      <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
+     <property name="webControllerValidator" ref="webControllerValidator"/>
      </bean>
      
 
@@ -280,6 +286,7 @@
 
 <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
+    <property name="webControllerValidator" ref="webControllerValidator"/>
      </bean>
      
           
@@ -297,7 +304,8 @@
     <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
            <property name="sessionForm"><value>true</value></property>
-	</bean>
+     <property name="webControllerValidator" ref="webControllerValidator"/>   
+    </bean>
 	<bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
     </bean>
@@ -419,8 +427,8 @@
     <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
         class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
     </bean>
-  
-	
-		
-     
+
+
+
+
 </beans>

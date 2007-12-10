@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.service.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -48,7 +49,9 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
 	private OrganizationDao organizationDao;
 
-	// private ResearchStaffDao researchStaffDao;
+    protected WebControllerValidator webControllerValidator;
+
+    // private ResearchStaffDao researchStaffDao;
 
 	public void setOrganizationDao(final OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
@@ -182,4 +185,15 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 		}
 
 	}
+
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+        webControllerValidator.validate(request, command, errors);
+    }
+    
+    @Required
+    public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
+        this.webControllerValidator = webControllerValidator;
+    }
 }
