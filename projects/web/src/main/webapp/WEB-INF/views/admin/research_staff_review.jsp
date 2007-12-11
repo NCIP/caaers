@@ -43,7 +43,7 @@ function submitPage(s){
     	<div class="leftpanel">
     	 <div class="row">
 	     	<div class="label">Organization:</div>
-	     	<div class="value">${researchStaff.organization.name}</div>
+	     	<div class="value">${researchStaff.organization.fullName}</div>
 	   	  </div>
     	  <div class="row">
 	            <div class="label">First Name:</div>
