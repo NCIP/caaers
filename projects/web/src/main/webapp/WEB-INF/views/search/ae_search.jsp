@@ -54,7 +54,7 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 Search for Adverse Events by choosing any of the listed Criteria. The result set will only show 
-the Study & Sponsor Identifier associated with this AE as well as AE's type, Ctc Term , category , grade, medDRA code and Detection Date
+the Study & Protocol Authority Identifier associated with this AE as well as AE's type, Ctc Term , category , grade, medDRA code and Detection Date
 
 
 <chrome:box title="AE Criteria" cssClass="paired" autopad="true">
