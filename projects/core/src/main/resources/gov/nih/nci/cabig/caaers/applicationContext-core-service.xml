@@ -23,7 +23,7 @@ This applicationContext contains the definition of the concrete services
   <bean id="interoperationService" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 
-  <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.passwordManagerServiceImpl" autowire="byName"/>
+  <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
   <bean id="passwordPolicyService"  class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 
   <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">

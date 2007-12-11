@@ -31,9 +31,9 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 	validateAndSetPassword(userName, password);
     }
     
-    private boolean validateToken(String userName, String token) throws CaaersSystemException {
+    private boolean validateToken(String userName, String token) throws CaaersSystemException {	
 	User user = userService.getUserByName(userName);
-	if (user.getTokenTime().after(new Timestamp(new Date().getTime() - passwordPolicyService.getPasswordPolicy().getTokenTimeout())) 
+	if (user.getTokenTime().after(new Timestamp(new Date().getTime() - passwordPolicyService.getPasswordPolicy().getTokenTimeout()))
 	    && token.equals(user.getToken())) return true;
 	throw new CaaersSystemException("Invalid token.");	
     }

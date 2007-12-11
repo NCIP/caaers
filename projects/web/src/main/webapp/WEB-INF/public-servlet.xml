@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-    
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>   
    <bean id="loginViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass">
             <value>org.springframework.web.servlet.view.InternalResourceView</value>
@@ -54,15 +54,13 @@
     </bean>
 
     <bean name="/user/resetPassword" id="resetPasswordController" autowire="byType"
-	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-      <property name="viewName"><value>user/resetPassword</value></property>
-    </bean>
+	  class="gov.nih.nci.cabig.caaers.web.user.ResetPasswordController"/>
+
     <bean name="/user/emailSent" id="emailSentController" autowire="byType"
 	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
       <property name="viewName"><value>user/emailSent</value></property>
     </bean>
+
     <bean name="/user/changePassword" id="changePasswordController" autowire="byType"
-	  class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-      <property name="viewName"><value>user/changePassword</value></property>
-    </bean>
+	  class="gov.nih.nci.cabig.caaers.web.user.ChangePasswordController"/>
 </beans>

@@ -4,35 +4,33 @@
 
 <html>
 <head>
-	<title>Reset Password</title>
-	<style type="text/css">
-        	.box {
-        	    width: 30em;
-        	    margin: 0 auto;
-        	}
-        	.submit {
-        	    float: right;
-        	    margin-top: 1em;
-        	}
-	</style>
+  <title>Reset Password</title>
+  <style type="text/css">
+    .box {
+     width: 30em;
+     margin: 0 auto;
+    }
+    .submit {
+     float: right;
+     margin-top: 1em;
+    }
+  </style>
 </head>
 <body>
-<chrome:box title="Please enter your username" autopad="true">
-   <form method="POST" id="resetPassword" action="<c:url value=""/>">
-	<c:if test="${not empty param.reset_pwd_error}">
-		<p class="errors">User not found in database.</p>
-	</c:if>
-	<div class="row">
-		<div class="label">Username</div>
-		<div class="value">
-			<input type="text" name="email_address" 
-				value=""/>
-		</div>
-		<div class="submit">
-			<input type="submit" value="Reset Password"/>
-		</div>
+  <chrome:box title="Please enter your username" autopad="true">
+  <c:url value="/public/user/resetPassword" var="action"/>
+    <form:form action="${action}">
+      <p class="errors">${reset_pwd_error}</p>
+      <div class="row">
+	<div class="label">Username</div>
+	<div class="value">
+	  <form:input path="userName"/>
 	</div>
-   </form>
-</chrome:box>
+	<div class="submit">
+	  <input type="submit" value="Reset Password"/>
+	</div>
+      </div>
+    </form:form>
+  </chrome:box>
 </body>
 </html>

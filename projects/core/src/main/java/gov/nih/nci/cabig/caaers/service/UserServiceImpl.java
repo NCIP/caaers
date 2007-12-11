@@ -151,7 +151,8 @@ public class UserServiceImpl implements UserService {
     public String userCreateToken(String userName) throws CaaersSystemException {
 	User user = getUserByName(userName);
 	user.setTokenTime(new Timestamp(new Date().getTime()));
-	user.setToken(encryptString(user.getSalt() + user.getTokenTime().toString() + "random_string"));
+	user.setToken(encryptString(user.getSalt() + user.getTokenTime().toString() 
+				    + "random_string").replaceAll("\\W", "Q"));
 	userDao.save(user);
 	return user.getToken();
     }

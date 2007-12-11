@@ -42,8 +42,6 @@ public abstract class User extends AbstractMutableDomainObject {
     private List<String> passwordHistory;
 
     public User() {
-	salt = "";
-	passwordLastSet = new Timestamp(0);
         userGroupTypes = new ArrayList<UserGroupType>();
 	passwordHistory = new ArrayList<String>();
     }
@@ -86,7 +84,7 @@ public abstract class User extends AbstractMutableDomainObject {
 
     @Column(name="salt")
     public String getSalt() {
-	return salt;
+	return salt == null ? "" : salt;
     }
 
     public void setSalt(String salt) {
@@ -117,7 +115,7 @@ public abstract class User extends AbstractMutableDomainObject {
 
     @Column(name="password_last_set")
     public Timestamp getPasswordLastSet() {
-	return passwordLastSet;
+	return passwordLastSet == null ? new Timestamp(0) : passwordLastSet;
     }
 
     public void setPasswordLastSet(Timestamp passwordLastSet) {

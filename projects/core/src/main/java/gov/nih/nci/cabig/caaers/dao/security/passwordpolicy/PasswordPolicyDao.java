@@ -16,7 +16,8 @@ public class PasswordPolicyDao extends GridIdentifiableDao<PasswordPolicy> imple
     public Class<PasswordPolicy> domainClass() {
 	return PasswordPolicy.class;
     }
-
+    
+    @Transactional(readOnly=false)
     public void save(final PasswordPolicy passwordPolicy) {
 	getHibernateTemplate().saveOrUpdate(passwordPolicy);
     }  
