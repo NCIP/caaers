@@ -38,11 +38,7 @@
          				})
 		 			 }
 		 		}, function(obj){
-		 		      if($F('holderType') == 'org'){
-		 			  	return obj.name;
-		 			  } else {
-		 			    return obj.fullName;
-		 			  }
+		 		     return obj.fullName;
 		 	});
 		 });	
 	</script>
