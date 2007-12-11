@@ -52,10 +52,13 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
  <div class="value">
   <select name="substitutions" id="substitutions" onchange="insertReplacement(this, ${index})">
    <option value="">Substitution....</option>
-   <option value="nCIProtocolNumber">NCI Protocol Number</option>
-   <option value="ticketNumber">Ticket Number</option>
+   <%--
+    <option value="nCIProtocolNumber">NCI Protocol Number</option> 
+    <option value="ticketNumber">Ticket Number</option>
+    <option value="amendmentNumber">Amendment Number</option>
+   --%>
+   
    <option value="patientId">Patient ID</option>
-   <option value="amendmentNumber">Amendment Number</option>
    <option value="reportId">Report ID</option>
    <option value="reportURL">URL To Report</option>
    <option value="study.shortTitle">Study Short Title</option>
