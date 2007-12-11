@@ -184,17 +184,15 @@ public class ReportServiceImpl  implements ReportService {
 		//TODO : properly populate the following....
 		//TODO: add appropriate null-checks
 		Map<Object, Object> map = new HashMap<Object, Object>();
-		// map.put("nCIProtocolNumber", report.getAeReport().getStudy().getPrimaryIdentifier().getValue());
-		// map.put("reportId", report.getAeReport().getId());
-		map.put("nCIProtocolNumber","xxxxxx");//NCI Protocol Number
-		map.put("ticketNumber","xxxxxx");//Ticket Number
-		StudyParticipantAssignment a = report.getAeReport().getAssignment();
-		Participant p = (a != null)? a.getParticipant() : null;
-		Identifier patientId = (p != null) ? p.getPrimaryIdentifier() : null;
-		map.put("patientId", ((patientId != null))? patientId.getValue() : "xxxxx");//Patient ID
-		map.put("amendmentNumber","xxxxxx");//Amendment Number
-		map.put("reportId","xxxxxx");//Report ID
-		map.put("reportURL","xxxxxx");//URL To Report
+		
+		//map.put("nCIProtocolNumber","xxxxxx");//NCI Protocol Number
+		//map.put("ticketNumber","xxxxxx");//Ticket Number
+		//map.put("amendmentNumber","xxxxxx");//Amendment Number
+		
+		String primaryIdentifier = report.getAeReport().getAssignment().getParticipant().getPrimaryIdentifierValue();
+		map.put("patientId", primaryIdentifier == null ? "xxxx" : primaryIdentifier);//Patient ID
+		map.put("reportId",report.getAeReport().getId());//Report ID
+		map.put("reportURL","caaers/pages/ae/edit?aeReport=" + report.getAeReport().getId());//URL To Report
 		map.put("report", report);
 		map.put("study", report.getAeReport().getStudy());
 		return map;
