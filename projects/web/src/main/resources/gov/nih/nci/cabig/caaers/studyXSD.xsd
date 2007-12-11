@@ -530,7 +530,7 @@
             <xs:enumeration value="ClinicalTrials.gov Identifier"/>
             <xs:enumeration value="Grid Identifier"/>
             <xs:enumeration value="C3D Identifier"/>
-            <xs:enumeration value="Sponsor Identifier"/>
+            <xs:enumeration value="Protocol Authority Identifier"/>
             <xs:enumeration value="Coordinating Center Identifier"/>
         </xs:restriction>
     </xs:simpleType>
