@@ -40,7 +40,7 @@ Object.extend(jsInvestigator.prototype, {
       	 autocompleter.setChoices(values)
       })
     },siteSelector: function(organization) { 
-    	return organization.name 
+    	return organization.name + " (" + organization.nciInstituteCode + ")";
     }
 	
    });
@@ -63,7 +63,7 @@ Object.extend(jsInvestigator.prototype, {
 	  
 Event.observe(window, "load", function() {
   <c:forEach varStatus="status" items="${command.siteInvestigators}" var="si">
-	new jsInvestigator(${status.index}, '${si.organization.name}');
+	new jsInvestigator(${status.index}, '${si.organization.fullName}');
   </c:forEach>
       		
   //This is added for Add Site Investigator button
