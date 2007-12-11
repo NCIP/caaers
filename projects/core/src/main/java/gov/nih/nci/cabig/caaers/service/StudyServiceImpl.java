@@ -125,7 +125,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
 		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
 		organizationAssignedIdentifier.setOrganization(organization);
-		organizationAssignedIdentifier.setType("Sponsor Identifier");
+		organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
 		organizationAssignedIdentifier.setPrimaryIndicator(false);
 		destination.getIdentifiers().add(organizationAssignedIdentifier);
 		
