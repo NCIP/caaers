@@ -41,6 +41,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         CheckpointTab tab = new CheckpointTab();
         tab.setEvaluationService(evaluationService);
         tab.setReportService(reportService);
+        tab.setNumber(4);
         return tab;
     }
 

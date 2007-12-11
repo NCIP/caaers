@@ -86,13 +86,19 @@ public class CheckpointTab extends AeTab {
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors ) {
-        boolean anyReports = command.getAeReport().getReports().size() > 0;
-        for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
-            anyReports |= reportSelected(command, def);
-        }
-        if (!anyReports) {
-            errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
-        }
+
+    	//only do validate, if we are moving forward or if the AE report is already persistent
+    	if( (command.getNextPage() >= getNumber()) || command.getAeReport().getId() != null ){
+    	
+    		boolean anyReports = command.getAeReport().getReports().size() > 0;
+    		for (ReportDefinition def : command.getOptionalReportDefinitionsMap().keySet()) {
+    			anyReports |= reportSelected(command, def);
+    		}
+    		if (!anyReports) {
+    			errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
+    		}
+    	
+    	}
     }
     
     @Override
@@ -116,25 +122,31 @@ public class CheckpointTab extends AeTab {
      */
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
     	
-    	List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
-    	removeUnselectedReports(command);
-    	
-    	if(newlySelectedDefs != null){
-    		evaluationService.addOptionalReports(command.getAeReport(), newlySelectedDefs);
+    	//only do postProcess, if we are moving forward or if the AE report is already persistent
+    	if( (command.getNextPage() >= getNumber()) || command.getAeReport().getId() != null ){
+
+        	List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
+        	removeUnselectedReports(command);
+        	
+        	if(newlySelectedDefs != null){
+        		evaluationService.addOptionalReports(command.getAeReport(), newlySelectedDefs);
+        	}
+        	
+            if (command.getAeReport().getReports().size() > 0) {
+                command.save();
+            }
+            //find the new mandatory sections
+            command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+            
+            //pre-init the mandatory section fields
+            command.initializeMandatorySectionFields(getExpeditedReportTree());
+            
+            //refresh the mandatory fields
+            command.refreshMandatoryProperties();
     	}
     	
-        if (command.getAeReport().getReports().size() > 0) {
-            command.save();
-        }
-        //find the new mandatory sections
-        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-        
-        //pre-init the mandatory section fields
-        command.initializeMandatorySectionFields(getExpeditedReportTree());
-        
-        //refresh the mandatory fields
-        command.refreshMandatoryProperties();
     }
+    
     
     private List<ReportDefinition> newlySelectedReportDefinitions(ExpeditedAdverseEventInputCommand command){
     	List<ReportDefinition> selectedReportDefs = command.getSelectedReportDefinitions();

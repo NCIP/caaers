@@ -69,4 +69,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 	  * @return
 	  */
 	 Collection<ReportDefinition> getSubmittedReportDefinitions(); 
+	 
+	 void setNextPage(int page);
+	 int getNextPage();
+	 
 }

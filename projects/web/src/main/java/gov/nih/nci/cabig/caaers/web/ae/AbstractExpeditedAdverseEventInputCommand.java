@@ -56,7 +56,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private String treatmentDescriptionType;
     private List<ReportDefinition> allReportDefinitions;
     private List<ReportDefinition> requiredReportDefinitions; //report definitions identified by rules engine
-
+    private int nextPage;
+    
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
@@ -325,6 +326,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	
 	public boolean getIgnoreCompletedStudy() {
 		return true;
+	}
+	
+	public int getNextPage() {
+		return nextPage;
+	}
+	public void setNextPage(int page) {
+		this.nextPage = page;
 	}
 	
     @Override

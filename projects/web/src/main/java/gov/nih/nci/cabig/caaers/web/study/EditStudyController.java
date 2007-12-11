@@ -57,27 +57,7 @@ public class EditStudyController extends StudyController<Study> {
 		Study mergedStudy = getDao().merge(study);
 		mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
 		getDao().initialize(mergedStudy);
-/*
 
-	     OrganizationAssignedIdentifier organizationAssignedIdentifier=study.getOrganizationAssignedIdentifier();
-		 mergedStudy.addIdentifier(organizationAssignedIdentifier);
-
-        StudyCoordinatingCenter studyCoordinatingCenter = mergedStudy.getStudyCoordinatingCenter();
-
-        if (!studyCoordinatingCenter.getOrganization().getId().equals(organizationAssignedIdentifier.getOrganization().getId())) {
-				studyCoordinatingCenter.setOrganization(organizationAssignedIdentifier.getOrganization());
-				mergedStudy.addStudyOrganization(studyCoordinatingCenter);
-		}
-
-		if (!study.getIdentifiersLazy().isEmpty()) {
-			for (Identifier identifier : study.getIdentifiersLazy()) {
-				if (identifier.getId() == null) {
-					mergedStudy.addIdentifier(identifier);
-				}
-
-			}
-		}*/
-		// mergedStudy.setStudyTherapies(study.getStudyTherapies());
 		// now check for study therapies.
 		mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
 		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
