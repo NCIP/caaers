@@ -87,7 +87,7 @@ function submitPage(s){
 	  </tr>
 	  <c:forEach items="${investigator.siteInvestigators}" var="siteInvestigator">
 		<tr class="results">
-			<td>${siteInvestigator.organization}</td>
+			<td>${siteInvestigator.organization.fullName}</td>
 		    <td>${siteInvestigator.statusCode eq 'ACT' ? 'Active' : 'Inactive' }</td>
 		</tr>
 	  </c:forEach>
