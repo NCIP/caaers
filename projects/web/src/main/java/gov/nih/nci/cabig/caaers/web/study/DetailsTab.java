@@ -163,10 +163,10 @@ public class DetailsTab extends StudyTab {
 		
 		for (int i=0; i<=1; i++){
 			OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier)command.getIdentifiers().get(0);
-			if (identifier.getType().equals("Sponsor Identifier")){
+			if (identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
 				identifier.setOrganization(command.getPrimaryFundingSponsorOrganization());
 			}
-			if (identifier.getType().equals("Coordinating Center Identifier")){
+			if (identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
 				identifier.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
 			}
 		}

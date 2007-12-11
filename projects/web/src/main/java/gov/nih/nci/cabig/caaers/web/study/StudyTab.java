@@ -29,8 +29,6 @@ public abstract class StudyTab extends TabWithFields<Study> {
     private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
 
-    //This is used to filter the sponsor identifier.
-    public static final String SPONSOR_IDENTIFIER_CODE="Sponsor Identifier";
 
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
