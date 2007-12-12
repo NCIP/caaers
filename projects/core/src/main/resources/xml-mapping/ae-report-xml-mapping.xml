@@ -229,6 +229,19 @@
     <field name="endDate" type="date">
       <bind-xml name="endDate"/>
     </field>
+    <field name="priorTherapyAgents" type="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent" collection="arraylist">
+      <bind-xml name="PriorTherapyAgent"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent">
+    <map-to xml="PriorTherapyAgent"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
+      <bind-xml name="Agent"/>
+    </field>
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.PriorTherapy">
@@ -567,6 +580,9 @@
     <map-to xml="AdverseEvent"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
+    </field>
+    <field name="gridId" type="string">
+      <bind-xml name="gridId" node="element"/>
     </field>
     <field name="startDate" type="date">
       <bind-xml name="startDate" node="element"/>
@@ -939,6 +955,9 @@
     </field>
     <field name="name" type="string">
       <bind-xml name="name" node="element"/>
+    </field>
+    <field name="other" type="string">
+      <bind-xml name="other" node="element"/>
     </field>
     <field name="units" type="string">
       <bind-xml name="units" node="element"/>
