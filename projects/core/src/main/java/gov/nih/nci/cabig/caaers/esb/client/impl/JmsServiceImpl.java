@@ -59,6 +59,7 @@ public class JmsServiceImpl implements MessageListener  {
 	    	session = null;
 	    	try {
 				initialize();
+				sendJms(xml);
 			} catch (JMSException e1) {
 				throw new BroadcastException(e1.getMessage(),e1);
 			}
