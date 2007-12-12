@@ -2,6 +2,11 @@
 
 <beans>
     <!-- Redirect views -->
+    <bean id="redirectToTaskController" class="org.springframework.web.servlet.view.RedirectView">
+            <property name="contextRelative"><value>true</value></property>
+            <property name="url"><value>/pages/task</value></property>
+    </bean>  
+
     <bean id="redirectToAeList" class="org.springframework.web.servlet.view.RedirectView">
         <property name="contextRelative"><value>true</value></property>
         <property name="url"><value>/pages/ae/list</value></property>
