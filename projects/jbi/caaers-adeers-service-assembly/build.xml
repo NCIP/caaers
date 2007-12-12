@@ -29,7 +29,7 @@
     <property name="xslt.comp.build.dir" value="${comp.build.dir}/xslt"/>
     <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
 
-    <property name="servicemix.toolkit.dir" value="/Applications/apache-servicemix-3.1.2"/>
+    <property name="servicemix.toolkit.dir" value="/home/c3pr/esb"/>
 
     <!--sa archive -->
     <property name="caaers-adeers.sa.build.dir" value="${build.dir}/assembly"/>
