@@ -27,7 +27,7 @@
     		
     	<tr>
     			
-    		<th scope="col" align="left"><b>Email</b></th>
+    		<th scope="col" align="left"><b>Email / URL </b></th>
     	</tr>
     	
     	
@@ -39,6 +39,9 @@
     		
     		</tr>
     	</c:forEach>
+
+    		    	
+    	    	
     	</table>
 
     	<br>
