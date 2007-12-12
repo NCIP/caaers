@@ -31,10 +31,14 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		System.out.println("EXTERNAL EPRS " + this.externalEPRs);
 		String adeersEPR = externalEPRs.split(",")[0];
 		
+		String url=adeersEPR.split("::")[0];
+		String uid=adeersEPR.split("::")[1];
+		String pwd=adeersEPR.split("::")[2];
+		
     	System.setProperty("javax.net.ssl.trustStore", "/Users/sakkala/temp/certs/caaers_keystore");
     	AEReportXMLServiceSoapBindingStub binding;
         try {
-            binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(adeersEPR).getAEReportXMLService();
+            binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
         }
         catch (javax.xml.rpc.ServiceException jre) {
             if(jre.getLinkedCause()!=null)
@@ -43,8 +47,8 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         }
         // Time out after a minute
         binding.setTimeout(60000);
-        binding.setUsername("Adeersc");
-        binding.setPassword("password_1");
+        binding.setUsername(uid);
+        binding.setPassword(pwd);
   
         	
         StringReader reader = new StringReader(aeReport);
