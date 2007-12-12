@@ -71,7 +71,7 @@ public class MessageNotificationService {
 			sender.setHost(mailHost);
 			MimeMessage message = sender.createMimeMessage();
 			//message.setFrom(new InternetAddress(from));
-			message.setSubject("Adeers Report Submission");
+			message.setSubject("AdEERS report submission results");
 			message.setFrom(new InternetAddress(from));
 			
 //			 use the true flag to indicate you need a multipart message

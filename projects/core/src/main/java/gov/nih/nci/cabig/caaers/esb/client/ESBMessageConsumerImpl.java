@@ -51,7 +51,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		
 		//buld error messages
 		StringBuffer sb = new StringBuffer();
-		sb.append("Report was successfully submitted to Adeers \n");
+		sb.append("AdEERS report submission results \n\n");
 		sb.append("Report ID  : " + caaersAeReportId+"\n");
 		//sb.append("Job ID  : " +"\n");
 	
@@ -66,7 +66,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			}
 			
 			if (exceptions.size() > 0) {
-				sb.append("EXCEPTIONS");
+				sb.append("EXCEPTIONS\n");
 				sb.append("----------");
 				sb.append("\n\n");
 			}
