@@ -35,7 +35,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String uid=adeersEPR.split("::")[1];
 		String pwd=adeersEPR.split("::")[2];
 		
-    	System.setProperty("javax.net.ssl.trustStore", "/Users/sakkala/temp/certs/caaers_keystore");
+    	System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caaers_keystore");
     	AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
