@@ -58,9 +58,15 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		
 		try {
 			List<Element> exceptions = jobInfo.getChildren("jobExceptions");
+			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue());
+			
+			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
+				sb.append("REPORT URL	:	" + jobInfo.getChild("reportURL").getValue());
+			}
+			
 			if (exceptions.size() > 0) {
-				sb.append("		EXCEPTIONS		");
-				sb.append("		----------		");
+				sb.append("EXCEPTIONS");
+				sb.append("----------");
 				sb.append("\n\n");
 			}
 			
@@ -74,7 +80,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			e.printStackTrace();
 		}
 		
-		String errorMessages = sb.toString();
+		String messages = sb.toString();
 		
 		//get caaers ID
 		
@@ -84,7 +90,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		System.out.println("calling msessageNotifyService 10..");
 		
 		try {
-			messageNotificationService.sendNotificationToReporter(errorMessages, caaersAeReportId);
+			messageNotificationService.sendNotificationToReporter(messages, caaersAeReportId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
