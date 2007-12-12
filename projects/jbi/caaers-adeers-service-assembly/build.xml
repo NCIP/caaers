@@ -29,7 +29,7 @@
     <property name="xslt.comp.build.dir" value="${comp.build.dir}/xslt"/>
     <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
 
-    <property name="servicemix.toolkit.dir" value="/home/caaers_dev/esb-lib"/>
+    <property name="servicemix.toolkit.dir" value="/usr/local/tomcats/caaers/dev/esb-lib"/>
 
     <!--sa archive -->
     <property name="caaers-adeers.sa.build.dir" value="${build.dir}/assembly"/>
