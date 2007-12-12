@@ -33,16 +33,14 @@
                 <xs:sequence>
                     <xs:element type="customStringType" name="shortTitle" />
                     <xs:element type="customStringType" name="longTitle" />
-                    <xs:element type="xs:string" name="precis" minOccurs="0"/>
-                    <xs:element type="xs:string" name="description" minOccurs="0"/>
+                    <xs:element type="customStringType" name="precis" minOccurs="0"/>
+                    <xs:element type="customStringType" name="description" minOccurs="0"/>
                     <xs:element type="studyPhaseType" name="phaseCode" />
                     <xs:element type="statusType" name="status"/>
                     <xs:element type="xs:boolean" name="multiInstitutionIndicator"/>
                     <xs:element ref="terminology"/>
                     <xs:element ref="diseaseTerminology"/>
-                    
-                    
-                    
+                               
                     <xs:element type="xs:boolean" name="drugAdministrationTherapyType"  minOccurs="0"/>
                     <xs:element type="xs:boolean" name="deviceTherapyType"  minOccurs="0"/>
                     <xs:element type="xs:boolean" name="radiationTherapyType"  minOccurs="0"/>
@@ -50,7 +48,7 @@
                     <xs:element type="xs:boolean" name="behavioralTherapyType"  minOccurs="0"/>
                     
                     <xs:element name="fundingSponsor" type="fundingSponsorType" />
-                    <xs:element ref="coordinatingCenter"/>
+                    <xs:element name="coordinatingCenter" type="coordinatingCenterType"/>
                     
                     <xs:element name="studyOrganizations">
                         <xs:complexType>
@@ -69,8 +67,8 @@
                         </xs:complexType>
                     </xs:element>
 
-                    <!--
-                    <xs:element name="treatmentAssignments" minOccurs="0" maxOccurs="1">
+                    
+                    <xs:element name="treatmentAssignments" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="treatmentAssignment" maxOccurs="unbounded"/>
@@ -78,8 +76,7 @@
                         </xs:complexType>
                     </xs:element>
                     
-
-                    <xs:element name="studyAgents" minOccurs="0" maxOccurs="1">
+                    <xs:element name="studyAgents" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="studyAgent" maxOccurs="unbounded"/>
@@ -87,32 +84,32 @@
                         </xs:complexType>
                     </xs:element>
 
-                    <xs:element name="ctepStudyDiseases" minOccurs="0" maxOccurs="1">
+                    <xs:choice minOccurs="0">
+                    <xs:element name="ctepStudyDiseases">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="ctepStudyDisease" maxOccurs="unbounded"/>
+                                <xs:element ref="ctepStudyDisease"  maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     
-                    <xs:element name="meddraStudyDiseases" minOccurs="0" maxOccurs="1">
+                    <xs:element name="meddraStudyDiseases">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="meddraStudyDisease" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
+                    </xs:choice>
                     
-                    <xs:element type="xs:boolean" name="healthyVolunteer"  minOccurs="0"  maxOccurs="1" nillable="true"/>
-                    -->
 
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="studyFundingSponsor" type="studyFundingSponsor"/>
-    <xs:complexType name="studyFundingSponsor">
+    <xs:element name="studyFundingSponsor" type="studyFundingSponsorType"/>
+    <xs:complexType name="studyFundingSponsorType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
 
@@ -121,16 +118,14 @@
                     <xs:element name="studyInvestigators" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyInvestigator" minOccurs="1"
-                                    maxOccurs="unbounded"/>
+                                <xs:element ref="studyInvestigator" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="studyPersonnels" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyPersonnel" minOccurs="1"
-                                    maxOccurs="unbounded"/>
+                                <xs:element ref="studyPersonnel" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
@@ -140,8 +135,8 @@
     </xs:complexType>
 
 
-    <xs:element name="studySite" type="studySite"/>
-    <xs:complexType name="studySite">
+    <xs:element name="studySite" type="studySiteType"/>
+    <xs:complexType name="studySiteType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
@@ -149,16 +144,14 @@
                     <xs:element name="studyInvestigators" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyInvestigator" minOccurs="1"
-                                    maxOccurs="unbounded"/>
+                                <xs:element ref="studyInvestigator" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
                     <xs:element name="studyPersonnels" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyPersonnel" minOccurs="1"
-                                    maxOccurs="unbounded"/>
+                                <xs:element ref="studyPersonnel" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
@@ -176,7 +169,7 @@
                     <xs:element name="studyInvestigators" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyInvestigator" minOccurs="1"
+                                <xs:element ref="studyInvestigator" 
                                     maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
@@ -184,7 +177,7 @@
                     <xs:element name="studyPersonnels" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyPersonnel" minOccurs="1"
+                                <xs:element ref="studyPersonnel" 
                                     maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
@@ -196,39 +189,38 @@
     
     
     
-    <xs:element name="studyInvestigator" type="studyInvestigator"/>
-    <xs:complexType name="studyInvestigator">
+    <xs:element name="studyInvestigator" type="studyInvestigatorType"/>
+    <xs:complexType name="studyInvestigatorType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="roleCode" type="roleCodeType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="statusCode" type="statusCodeType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element ref="siteInvestigator" minOccurs="1" maxOccurs="1"/>
-                    <!-- <xs:element ref="studyOrganization"/>  -->
+                    <xs:element name="roleCode" type="roleCodeType"/>
+                    <xs:element name="statusCode" type="statusCodeType"/>
+                    <xs:element ref="siteInvestigator"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="studyPersonnel" type="studyPersonnel"/>
-    <xs:complexType name="studyPersonnel">
+    <xs:element name="studyPersonnel" type="studyPersonnelType"/>
+    <xs:complexType name="studyPersonnelType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="roleCode" type="roleCodeType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element name="statusCode" type="statusCodeType" minOccurs="1" maxOccurs="1"/>
-                    <xs:element ref="researchStaff" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="roleCode" type="personnelRoleCodeType" />
+                    <xs:element name="statusCode" type="statusCodeType"/>
+                    <xs:element ref="researchStaff"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="siteInvestigator" type="siteInvestigator"/>
-    <xs:complexType name="siteInvestigator">
+    <xs:element name="siteInvestigator" type="siteInvestigatorType"/>
+    <xs:complexType name="siteInvestigatorType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element ref="investigator" minOccurs="1" maxOccurs="1"/>
+                    <xs:element ref="investigator" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -246,62 +238,62 @@
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="researchStaff " type="researchStaff"/>
-    <xs:complexType name="researchStaff">
+    <xs:element name="researchStaff" type="researchStaffType"/>
+    <xs:complexType name="researchStaffType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="firstName" type="xs:string" minOccurs="1"/>
-                    <xs:element name="lastName" type="xs:string" minOccurs="1"/>
+                    <xs:element name="firstName" type="customStringType"/>
+                    <xs:element name="lastName" type="customStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="organization" type="organization"/>
-    <xs:complexType name="organization">
+    <xs:element name="organization" type="organizationType"/>
+    <xs:complexType name="organizationType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="name" type="customStringType" minOccurs="1"/>
+                    <xs:element name="name" type="customStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="treatmentAssignment" type="treatmentAssignment"/>
-    <xs:complexType name="treatmentAssignment">
+    <xs:element name="treatmentAssignment" type="treatmentAssignmentType"/>
+    <xs:complexType name="treatmentAssignmentType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="code" type="xs:string" minOccurs="1"/>
-                    <xs:element name="doseLevelOrder" type="xs:string" minOccurs="0"/>
-                    <xs:element name="description" type="xs:string" minOccurs="1"/>
-                    <xs:element name="comments" type="xs:string" minOccurs="0"/>
+                    <xs:element name="code" type="customStringType"/>
+                    <xs:element name="doseLevelOrder" type="customStringType" minOccurs="0"/>
+                    <xs:element name="description" type="customStringType"/>
+                    <xs:element name="comments" type="customStringType" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
 
-    <xs:element name="studyAgent" type="studyAgent"/>
-    <xs:complexType name="studyAgent">
+    <xs:element name="studyAgent" type="studyAgentType"/>
+    <xs:complexType name="studyAgentType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
-
                 <xs:sequence>
                     <xs:choice>
                         <xs:element ref="agent"/>
-                        <xs:element name="otherAgent" type="xs:string" minOccurs="0"/>
+                        <xs:element name="otherAgent" type="customStringType"/>
                     </xs:choice>
+                    <xs:element type="indType" name="indType"/>
+                    <xs:element type="xs:boolean" name="partOfLeadIND" minOccurs="0" />
                     <xs:element name="studyAgentINDAssociations" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="studyAgentINDAssociation" maxOccurs="unbounded"/>
+                                <xs:element ref="studyAgentINDAssociation"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
-                    <xs:element ref="Participation" minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -311,15 +303,16 @@
     <xs:complexType name="agentType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="name" type="xs:string" minOccurs="1"/>
-                </xs:sequence>
+                <xs:choice>
+                    <xs:element name="name" type="customStringType"/>
+                    <xs:element name="nscNumber" type="customStringType"/>
+                </xs:choice>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="studyAgentINDAssociation" type="studyAgentINDAssociation"/>
-    <xs:complexType name="studyAgentINDAssociation">
+    <xs:element name="studyAgentINDAssociation" type="studyAgentINDAssociationType"/>
+    <xs:complexType name="studyAgentINDAssociationType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">     
                <xs:sequence>
@@ -334,43 +327,34 @@
     <xs:complexType name="investigationalNewDrugType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
-                
                 <xs:sequence>
-                    <xs:element name="indNumber" type="xs:integer" minOccurs="1"/>
-                    <xs:element name="studyAgentINDAssociations" minOccurs="0">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="studyAgentINDAssociation" maxOccurs="unbounded"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                    
+                    <xs:element name="indNumber" type="xs:integer"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     
     
-    <xs:element name="meddraStudyDisease" type="meddraStudyDisease"/>
-    <xs:complexType name="meddraStudyDisease">
+    <xs:element name="meddraStudyDisease" type="meddraStudyDiseaseType"/>
+    <xs:complexType name="meddraStudyDiseaseType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 
                 <xs:sequence>
-                    <xs:element name="meddraCode" type="xs:string" minOccurs="1"/>
+                    <xs:element name="meddraCode" type="customStringType" />
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
 
-    <xs:element name="ctepStudyDisease" type="ctepStudyDisease"/>
-    <xs:complexType name="ctepStudyDisease">
+    <xs:element name="ctepStudyDisease" type="ctepStudyDiseaseType"/>
+    <xs:complexType name="ctepStudyDiseaseType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element ref="diseaseTerm" minOccurs="1"/>
-                    <xs:element name="leadDisease" type="xs:boolean" minOccurs="1"/>
+                    <xs:element ref="diseaseTerm"/>
+                    <xs:element name="leadDisease" type="xs:boolean"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -378,15 +362,14 @@
     
     
 
-    <xs:element name="diseaseTerm" type="diseaseTerm"/>
-    <xs:complexType name="diseaseTerm">
+    <xs:element name="diseaseTerm" type="diseaseTermType"/>
+    <xs:complexType name="diseaseTermType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="term" type="xs:string" minOccurs="0"/>
-                    <xs:element name="ctepTerm" type="xs:string" minOccurs="0"/>
-                    <xs:element name="medraCode" type="xs:string" minOccurs="0"/>
-                  </xs:sequence>
+                <xs:choice>
+                    <xs:element name="term" type="customStringType"/>
+                    <xs:element name="meddraCode" type="customStringType"/>
+                </xs:choice>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
@@ -394,7 +377,7 @@
     <xs:element name="organizationAssignedIdentifier" type="organizationAssignedIdentifierType"/>
     <xs:complexType name="organizationAssignedIdentifierType">
         <xs:complexContent>
-            <xs:extension base="identifier">
+            <xs:extension base="identifierType">
                 <xs:sequence>
                     <xs:element ref="organization"/>
                 </xs:sequence>
@@ -405,16 +388,16 @@
     <xs:element name="systemAssignedIdentifier" type="systemAssignedIdentifierType"/>
     <xs:complexType name="systemAssignedIdentifierType">
         <xs:complexContent>
-            <xs:extension base="identifier">
+            <xs:extension base="identifierType">
                 <xs:sequence>
-                    <xs:element name="systemName" type="xs:string"/>
+                    <xs:element name="systemName" type="customStringType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="identifier" type="identifier"/>
-    <xs:complexType name="identifier">
+    <xs:element name="identifier" type="identifierType"/>
+    <xs:complexType name="identifierType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
@@ -436,7 +419,6 @@
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="coordinatingCenter" type="coordinatingCenterType"/>
     <xs:complexType name="coordinatingCenterType">
         <xs:sequence>
             <xs:element name="organizationAssignedIdentifier" type="reducedIdentifierType"/>
@@ -444,7 +426,6 @@
         </xs:sequence>
     </xs:complexType>
     
-    <xs:element name="fundingSponsor" type="fundingSponsorType"/>
     <xs:complexType name="fundingSponsorType">
         <xs:sequence>
             <xs:element name="organizationAssignedIdentifier" type="reducedIdentifierType"/>
@@ -453,50 +434,42 @@
     </xs:complexType>
 
 
-    <xs:element name="diseaseTerminology" type="diseaseTerminology"/>
-    <xs:complexType name="diseaseTerminology">
+    <xs:element name="diseaseTerminology" type="diseaseTerminologyType"/>
+    <xs:complexType name="diseaseTerminologyType">
         <xs:sequence>
-            <xs:element type="diseaseCodeType" name="diseaseCodeTerm" maxOccurs="1" minOccurs="1" nillable="false"/>
+            <xs:element type="diseaseCodeType" name="diseaseCodeTerm"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="terminology" type="terminology"/>
-    <xs:complexType name="terminology">
-        <xs:sequence>
-            <xs:element ref="ctcVersion" minOccurs="0" maxOccurs="1"/>
-            <xs:element ref="meddraVersion" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
+    <xs:element name="terminology" type="terminologyType"/>
+    <xs:complexType name="terminologyType">
+        <xs:choice>
+            <xs:element ref="ctcVersion"/>
+            <xs:element ref="meddraVersion"/>
+        </xs:choice>
     </xs:complexType>
 
  
-    <xs:element name="ctcVersion" type="ctcVersion"/>
-    <xs:complexType name="ctcVersion">
+    <xs:element name="ctcVersion" type="ctcVersionType"/>
+    <xs:complexType name="ctcVersionType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="name" type="studyCtcVersion" minOccurs="1"/>
+                    <xs:element name="name" type="studyCtcVersion"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     
-    <xs:element name="meddraVersion" type="meddraVersion"/>
-    <xs:complexType name="meddraVersion">
+    <xs:element name="meddraVersion" type="meddraVersionType"/>
+    <xs:complexType name="meddraVersionType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="name" type="studyMeddraVersion" minOccurs="1"/>
+                    <xs:element name="name" type="studyMeddraVersion"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
-    </xs:complexType>
-
-    <xs:element name="Participation" type="Participation"/>
-    <xs:complexType name="Participation">
-        <xs:sequence>
-            <xs:element name="startDate" type="xs:date" minOccurs="0"/>
-            <xs:element name="endDate" type="xs:date" minOccurs="0"/>
-        </xs:sequence>
     </xs:complexType>
 
     <!-- FIXED Types  -->
@@ -556,6 +529,14 @@
         </xs:restriction>
     </xs:simpleType>
     
+    <xs:simpleType name="personnelRoleCodeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Participant Coordinator"/>
+            <xs:enumeration value="Study Coordinator"/>
+            <xs:enumeration value="Adverse Event Coordinator"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
     
     <xs:simpleType name="statusCodeType">
         <xs:restriction base="xs:string">
@@ -567,7 +548,18 @@
     <xs:simpleType name="diseaseCodeType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="CTEP"/>
-            <xs:enumeration value="MedDRA"/>
+            <xs:enumeration value="MEDDRA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="indType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NA"/>
+            <xs:enumeration value="NA_COMMERCIAL"/>
+            <xs:enumeration value="IND_EXEMPT"/>
+            <xs:enumeration value="DCP_IND"/>
+            <xs:enumeration value="OTHER"/>
+            <xs:enumeration value="CTEP_IND"/>
         </xs:restriction>
     </xs:simpleType>
     

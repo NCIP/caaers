@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Krikor Krumlian
@@ -42,6 +43,17 @@ public class DiseaseTerm extends AbstractImmutableDomainObject {
     public void setMedraCode(String medraCode) {
         this.medraCode = medraCode;
     }
+    
+    @Transient
+    public String getMeddraCode() {
+        return medraCode;
+    }
+
+    public void setMeddraCode(String meddraCode) {
+        this.medraCode = meddraCode;
+    }
+    
+    
 
     @ManyToOne
     public DiseaseCategory getCategory() {

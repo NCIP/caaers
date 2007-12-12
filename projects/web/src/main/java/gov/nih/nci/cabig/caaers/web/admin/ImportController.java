@@ -100,9 +100,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         setCommandClass(ImportCommand.class);
         setAllowDirtyForward(false);
         setAllowDirtyBack(false);
-        //System.out.println(this.getClass().getResource("."));
-        //System.out.println(getApplicationContext().getResource("classpath*:routineAeXSD.xsd"));
-
+       
         Flow<ImportCommand> flow = new Flow<ImportCommand>("Import Data");
 
         flow.addTab(new Tab<ImportCommand>("Import ", "Import ", "admin/import") {
@@ -110,14 +108,13 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			public Map<String, Object> referenceData() {
                 Map<String, Object> refdata = super.referenceData();
                 refdata.put("action", "New");
-                refdata.put("willSave", false);
+                //refdata.put("willSave", false);
                 return refdata;
             }
             
-           
-
             @Override
             public void validate(ImportCommand command, Errors errors) {
+            	System.out.println("Validating");
                 boolean participantFile = command.getParticipantFile().isEmpty();
                 boolean studyFile = command.getStudyFile().isEmpty() ;
                 boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile().isEmpty() ;

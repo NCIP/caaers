@@ -68,7 +68,7 @@
 		
 		 <tags:errors path="*"/>
     	 
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study"> 
+		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study">
     	<input id="study_file" type="file" name="studyFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>

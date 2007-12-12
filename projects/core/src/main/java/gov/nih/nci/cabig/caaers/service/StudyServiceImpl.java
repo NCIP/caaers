@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
@@ -28,12 +29,18 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Terminology;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.INDType;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 
 import java.util.List;
 
@@ -52,6 +59,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	private ResearchStaffDao researchStaffDao;
 	private DiseaseTermDao diseaseTermDao;
 	private LowLevelTermDao lowLevelTermDao;
+	private InvestigationalNewDrugDao investigationalNewDrugDao;
 	//TODO hook esb call
 	// ProtocolBroadcastService esbCreateProtocol;
 
@@ -98,8 +106,9 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		st.setSurgeryTherapyType(xstreamStudy.getSurgeryTherapyType());
 		st.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
 		
-		migrateTerminology(st,xstreamStudy, studyImportOutcome); //Done
-		migrateDiseaseTerminology(st,xstreamStudy, studyImportOutcome); //Done
+		migrateTherapies(st,xstreamStudy,studyImportOutcome);
+		migrateTerminology(st,xstreamStudy, studyImportOutcome);
+		migrateDiseaseTerminology(st,xstreamStudy, studyImportOutcome);
 		migrateFundingSponsor(st,xstreamStudy,studyImportOutcome);
 		migrateCoordinatingCenter(st,xstreamStudy,studyImportOutcome);
 		migrateIdentifiers(st,xstreamStudy, studyImportOutcome);
@@ -115,6 +124,46 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		return studyImportOutcome;
 	}
+	
+	
+	
+	private void migrateTherapies(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){	
+
+		if (source.getDrugAdministrationTherapyType()) {
+			StudyTherapy drugAdministrationTherapy = new StudyTherapy();
+			drugAdministrationTherapy.setStudy(destination);
+			drugAdministrationTherapy.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
+			destination.getStudyTherapies().add(drugAdministrationTherapy);
+		}
+		
+		if (source.getDeviceTherapyType()) {
+			StudyTherapy deviceTherapy = new StudyTherapy();
+			deviceTherapy.setStudy(destination);
+			deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
+			destination.getStudyTherapies().add(deviceTherapy);
+		}
+		
+		if (source.getRadiationTherapyType()) {
+			StudyTherapy radiationTherapy = new StudyTherapy();
+			radiationTherapy.setStudy(destination);
+			radiationTherapy.setStudyTherapyType(StudyTherapyType.RADIATION);
+			destination.getStudyTherapies().add(radiationTherapy);
+		}
+		if (source.getSurgeryTherapyType()) {
+			StudyTherapy surgeryTherapy = new StudyTherapy();
+			surgeryTherapy.setStudy(destination);
+			surgeryTherapy.setStudyTherapyType(StudyTherapyType.SURGERY);
+			destination.getStudyTherapies().add(surgeryTherapy);
+		}
+		
+		if (source.getBehavioralTherapyType()) {
+			StudyTherapy behavioralTherapy = new StudyTherapy();
+			behavioralTherapy.setStudy(destination);
+			behavioralTherapy.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
+			destination.getStudyTherapies().add(behavioralTherapy);
+		}
+	}
+	
 	
 	private void migrateFundingSponsor(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){ 
 		
@@ -147,7 +196,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
 		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
 		organizationAssignedIdentifier.setOrganization(organization);
-		organizationAssignedIdentifier.setType("Coordinating Center Identifier");
+		organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 		organizationAssignedIdentifier.setPrimaryIndicator(true);
 		destination.getIdentifiers().add(organizationAssignedIdentifier);
 		
@@ -199,11 +248,34 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				if ( studyAgent.getOtherAgent() != null && agent == null) {
 					target.setOtherAgent(studyAgent.getOtherAgent());
 				}
-				//TODO: this is incomplete 
-				//for( StudyAgentINDAssociation indAssociation :studyAgent.getStudyAgentINDAssociations()){
-					//indAssociation.getInvestigationalNewDrug().getIndNumber();
-					//target.addStudyAgentINDAssociation(ass)
-				//}
+				ifNullObject(agent,studyImportOutcome, Severity.ERROR," Provdided Agent is not Valid ");
+				target.setIndType(studyAgent.getIndType());
+				if (target.getIndType() == INDType.DCP_IND || target.getIndType() == INDType.CTEP_IND){
+					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
+					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
+				}
+				if (target.getIndType() == INDType.OTHER ){
+					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
+					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
+					ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(),studyImportOutcome, Severity.ERROR,"With the selected IND Type it is " +
+							"required to provide an investigational new drug ");
+					
+					for( StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()){
+						String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
+						String[] inds = {indNumber};
+						List<InvestigationalNewDrug> investigationalNewDrugs = investigationalNewDrugDao.findByIds(inds);
+						
+						if (investigationalNewDrugs.size() > 0 ) {
+							InvestigationalNewDrug ind = investigationalNewDrugs.get(0);
+							indAssociation.setInvestigationalNewDrug(ind);
+							target.addStudyAgentINDAssociation(indAssociation);
+						}else{
+							ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected investigational new drug " 
+									+ indNumber + " is not Valid ");
+						}
+					}
+				}
+				
 				destination.addStudyAgent(target);
 				// TODO: ADD error handling with user interaction
 			}
@@ -213,40 +285,58 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	private void migrateCtepStudyDiseases(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome){
 		
 		//CtepStudyDiseases
-		if (source.getCtepStudyDiseases() != null){
+		if (source.getCtepStudyDiseases() != null && source.getCtepStudyDiseases().size() > 0){
 			
-			for (CtepStudyDisease ctepStudyDisease : source.getCtepStudyDiseases()) {
-				CtepStudyDisease destinationCtepStudyDisease = new CtepStudyDisease();
-				DiseaseTerm diseaseTerm = null; 
-				if (ctepStudyDisease.getTerm() != null && ctepStudyDisease.getTerm().getTerm() != null) {
-					diseaseTerm = diseaseTermDao.getByTermName(ctepStudyDisease.getTerm().getTerm());
-				}
-				if (ctepStudyDisease.getTerm() != null && diseaseTerm == null && ctepStudyDisease.getTerm().getMedraCode() != null) {
-					diseaseTerm = diseaseTermDao.getByMeddra(ctepStudyDisease.getTerm().getMedraCode());
-				}
-				destinationCtepStudyDisease.setTerm(diseaseTerm);
-				destinationCtepStudyDisease.setLeadDisease(ctepStudyDisease.getLeadDisease() == null ? Boolean.FALSE : ctepStudyDisease.getLeadDisease() );
-				destination.addCtepStudyDisease(destinationCtepStudyDisease);
+			if (destination.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP){
+			
+				for (CtepStudyDisease ctepStudyDisease : source.getCtepStudyDiseases()) {
+					CtepStudyDisease destinationCtepStudyDisease = new CtepStudyDisease();
+					DiseaseTerm diseaseTerm = null; 
+					String term = null;
+					if (ctepStudyDisease.getTerm() != null && ctepStudyDisease.getTerm().getTerm() != null) {
+						term = ctepStudyDisease.getTerm().getTerm();
+						diseaseTerm = diseaseTermDao.getByTermName(ctepStudyDisease.getTerm().getTerm());
+					}
+					if (ctepStudyDisease.getTerm() != null && diseaseTerm == null && ctepStudyDisease.getTerm().getMedraCode() != null) {
+						term = ctepStudyDisease.getTerm().getMedraCode();
+						diseaseTerm = diseaseTermDao.getByMeddra(ctepStudyDisease.getTerm().getMedraCode());
+					}
+				
+					ifNullObject(diseaseTerm,studyImportOutcome, Severity.ERROR,"The selected disease Term " +
+							term  + " is not Valid ");
+				
+					destinationCtepStudyDisease.setTerm(diseaseTerm);
+					destinationCtepStudyDisease.setLeadDisease(ctepStudyDisease.getLeadDisease() == null ? Boolean.FALSE : ctepStudyDisease.getLeadDisease() );
+					destination.addCtepStudyDisease(destinationCtepStudyDisease);
+			}
+			}else{
+				ifNullObject(null,studyImportOutcome, Severity.ERROR," Selected terminology is not CTEP ");
 			}
 		}
 	}
 	
 	private void migrateMeddraStudyDiseases(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome){
 		
-		//CtepStudyDiseases
-		if (source.getMeddraStudyDiseases() != null){
-			
-			for (MeddraStudyDisease meddraStudyDisease : source.getMeddraStudyDiseases()) {
-				MeddraStudyDisease destinationMeddraStudyDisease = new MeddraStudyDisease();
-				LowLevelTerm lowLevelTerm = null; 
-				if (meddraStudyDisease.getMeddraCode()!= null) {
-					 lowLevelTerm = lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode()).size() > 0 ?
-							 lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode()).get(0) : null; 
-				}
+		//MeddraStudyDiseases
+		if (source.getMeddraStudyDiseases() != null && source.getMeddraStudyDiseases().size() >0){
+			if (destination.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA){
+				for (MeddraStudyDisease meddraStudyDisease : source.getMeddraStudyDiseases()) {
+					MeddraStudyDisease destinationMeddraStudyDisease = new MeddraStudyDisease();
+					LowLevelTerm lowLevelTerm = null; 
+					if (meddraStudyDisease.getMeddraCode()!= null) {
+						lowLevelTerm = lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode()).size() > 0 ?
+								lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode()).get(0) : null; 
+					}
 				
-				destinationMeddraStudyDisease.setTerm(lowLevelTerm == null ? null : lowLevelTerm);
-				destinationMeddraStudyDisease.setMeddraCode(meddraStudyDisease.getMeddraCode());
-				destination.addMeddraStudyDisease(destinationMeddraStudyDisease);
+					ifNullObject(lowLevelTerm,studyImportOutcome, Severity.ERROR,"The selected MedDRA code " +
+							meddraStudyDisease.getMeddraCode()  + " is not Valid ");
+					
+					destinationMeddraStudyDisease.setTerm(lowLevelTerm == null ? null : lowLevelTerm);
+					destinationMeddraStudyDisease.setMeddraCode(meddraStudyDisease.getMeddraCode());
+					destination.addMeddraStudyDisease(destinationMeddraStudyDisease);
+				}
+			}else{
+				ifNullObject(null,studyImportOutcome, Severity.ERROR," Selected terminology is not MedDRA ");
 			}
 		}
 	}
@@ -459,5 +549,16 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	public void setMeddraVersionDao(MeddraVersionDao meddraVersionDao) {
 		this.meddraVersionDao = meddraVersionDao;
 	}
+
+	public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
+		return investigationalNewDrugDao;
+	}
+
+	public void setInvestigationalNewDrugDao(
+			InvestigationalNewDrugDao investigationalNewDrugDao) {
+		this.investigationalNewDrugDao = investigationalNewDrugDao;
+	}
+	
+	
 	
 }

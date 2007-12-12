@@ -35,22 +35,11 @@ public abstract class AbstractImportServiceImpl {
 		// Identifiers
 		if (source.getIdentifiers() != null) {
 			for (int i = 0; i < source.getIdentifiers().size(); i++) {
-				Identifier identifier = (Identifier) source.getIdentifiers()
-						.get(i);
+				Identifier identifier = (Identifier) source.getIdentifiers().get(i);
 				if (identifier instanceof OrganizationAssignedIdentifier) {
-						Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
-						((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
-						
-						if (identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)){
-							//identifier.setPrimaryIndicator(false);
-						}
-						if (source instanceof Study && identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
-						//StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
-						//studyCoordinatingCenter.setOrganization(organization);
-						//((Study)destination).addStudyOrganization(studyCoordinatingCenter);
-						}
+					Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
+					((OrganizationAssignedIdentifier) identifier).setOrganization(organization);	
 				}
-
 				if (identifier instanceof SystemAssignedIdentifier) {
 					// I don't need to do anything i think
 				}
