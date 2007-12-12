@@ -58,7 +58,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		
 		try {
 			List<Element> exceptions = jobInfo.getChildren("jobExceptions");
-			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n");
+			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
 			
 			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
 				sb.append("TICKET NUMBER :	" + jobInfo.getChild("ticketNumber").getValue()+"\n");
