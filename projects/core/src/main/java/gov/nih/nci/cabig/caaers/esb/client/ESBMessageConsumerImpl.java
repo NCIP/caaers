@@ -53,15 +53,16 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Report was successfully submitted to Adeers \n");
 		sb.append("Report ID  : " + caaersAeReportId+"\n");
-		sb.append("Job ID  : " +"\n");
+		//sb.append("Job ID  : " +"\n");
 	
 		
 		try {
 			List<Element> exceptions = jobInfo.getChildren("jobExceptions");
-			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue());
+			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n");
 			
 			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
-				sb.append("REPORT URL	:	" + jobInfo.getChild("reportURL").getValue());
+				sb.append("TICKET NUMBER :	" + jobInfo.getChild("ticketNumber").getValue()+"\n");
+				sb.append("REPORT URL	 :	" + jobInfo.getChild("reportURL").getValue()+"\n");
 			}
 			
 			if (exceptions.size() > 0) {
