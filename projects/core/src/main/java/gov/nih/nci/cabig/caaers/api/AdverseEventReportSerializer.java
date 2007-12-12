@@ -168,8 +168,9 @@ public class AdverseEventReportSerializer {
 	    	// build AEs
 	    	List<AdverseEvent> aeList = hibernateAdverseEventReport.getAdverseEvents();
 
-	    	for (AdverseEvent ae: aeList) {
-	    		aer.addAdverseEvent(getAdverseEvent(ae));
+	    	for (int i=0; i<aeList.size(); i++) {
+	    		AdverseEvent ae = (AdverseEvent)aeList.get(i);
+	    		aer.addAdverseEvent(getAdverseEvent(ae,i));
 	    	}
 
 	    	//build therapies
@@ -343,7 +344,7 @@ public class AdverseEventReportSerializer {
 	    	
 	    	return organization;
 	    }
-	    private AdverseEvent getAdverseEvent(AdverseEvent ae ) throws Exception {
+	    private AdverseEvent getAdverseEvent(AdverseEvent ae , int seq) throws Exception {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
 	    	try {
 		    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
@@ -381,6 +382,14 @@ public class AdverseEventReportSerializer {
 		    	adverseEvent.setGrade(ae.getGrade());
 		    	adverseEvent.setAttributionSummary(ae.getAttributionSummary());
 		    	adverseEvent.setExpected(ae.getExpected());
+		    	
+		    	if (seq == 0 ) {
+		    		adverseEvent.setGridId("PRY"+ae.getGridId());
+		    	} else {
+		    		adverseEvent.setGridId("PRN"+ae.getGridId());
+		    	}
+		    	
+		    	
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getAdverseEvent() "+e.getMessage() , e);
 	    	}
