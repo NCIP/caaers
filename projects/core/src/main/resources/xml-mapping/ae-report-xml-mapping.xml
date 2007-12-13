@@ -1035,9 +1035,11 @@
     <field name="ethnicity" type="string">
       <bind-xml name="ethnicity" node="element"/>
     </field>
+  
     <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
       <bind-xml name="Identifier"/>
-    </field>    
+    </field>  
+  
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
@@ -1182,9 +1184,11 @@
     <field name="ctcVersion" type="gov.nih.nci.cabig.caaers.domain.Ctc">
       <bind-xml name="Ctc"/>
     </field>
+   
     <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
       <bind-xml name="Identifier"/>
     </field>
+   
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
