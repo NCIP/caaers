@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
@@ -20,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -301,13 +303,22 @@ public class AdverseEventReportSerializer {
 		    	participant.setGender(p.getGender());
 		    	participant.setRace(p.getRace());
 		    	participant.setEthnicity(p.getEthnicity());
-		    	participant.setIdentifiers(p.getIdentifiers());
+		    	//participant.setIdentifiers(p.getIdentifiers())
+		    	for (Identifier id:p.getIdentifiers()) {
+		    		participant.addIdentifier(getIdentifier(id));
+		    	}
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getParticipant() "+e.getMessage() , e);
 	    	}
 	    	return participant;
 	    }
-
+	    private Identifier getIdentifier(Identifier id) {
+	    	Identifier identifier = new Identifier();
+	    	identifier.setPrimaryIndicator(id.getPrimaryIndicator());
+	    	identifier.setType(id.getType());
+	    	identifier.setValue(id.getValue());
+	    	return identifier;
+	    }
 	    private StudySite getStudySite(StudySite ss) throws Exception {
 	    	StudySite studySite = new StudySite();
 	    	//studySite.setIrbApprovalDate(ss.getIrbApprovalDate());
@@ -316,8 +327,15 @@ public class AdverseEventReportSerializer {
 		    	studySite.setStatusCode(ss.getStatusCode());
 		    	studySite.setStartDate(ss.getStartDate());
 		    	studySite.setEndDate(ss.getEndDate());
-	
-		    	studySite.setStudy(ss.getStudy());
+		    	
+		    	//buld identifiers , to resolve sesion error 
+		    	Study s = ss.getStudy();
+		    	List<Identifier> ids = s.getIdentifiers();
+		    	s.setIdentifiers(new ArrayList<Identifier>());
+		    	for (Identifier id:ids) {
+		    		s.addIdentifier(getIdentifier(id));
+		    	}
+		    	studySite.setStudy(s);
 		    	//studySite.setOrganization(ss.getOrganization());
 		    	studySite.setOrganization(getOrganization(ss.getOrganization()));
 		    	
