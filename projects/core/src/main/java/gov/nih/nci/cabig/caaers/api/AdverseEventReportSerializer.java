@@ -301,6 +301,7 @@ public class AdverseEventReportSerializer {
 		    	participant.setGender(p.getGender());
 		    	participant.setRace(p.getRace());
 		    	participant.setEthnicity(p.getEthnicity());
+		    	participant.setIdentifiers(p.getIdentifiers());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getParticipant() "+e.getMessage() , e);
 	    	}
