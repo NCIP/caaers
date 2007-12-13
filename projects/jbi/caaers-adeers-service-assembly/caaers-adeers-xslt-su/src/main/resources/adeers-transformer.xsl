@@ -275,9 +275,16 @@
                 <xsl:value-of select="AdverseEventResponseDescription/eventDescription"/>
             </EVENT_DESCRIPTION>
             </xsl:if>
-            <!-- TODO -->
-            <PRESENT_STATUS>Fatal/Died</PRESENT_STATUS>
-            <!--<xsl:value-of select="AdverseEventResponseDescription/presentStatus"/>-->
+            <!-- TODO NEED TO FIX IT , THIS IS JUST A HACK-->
+            <PRESENT_STATUS>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE continues</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+            </PRESENT_STATUS>
+
 
 
             <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
