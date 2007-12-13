@@ -1035,6 +1035,9 @@
     <field name="ethnicity" type="string">
       <bind-xml name="ethnicity" node="element"/>
     </field>
+    <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
+      <bind-xml name="Identifier"/>
+    </field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
@@ -1179,9 +1182,24 @@
     <field name="ctcVersion" type="gov.nih.nci.cabig.caaers.domain.Ctc">
       <bind-xml name="Ctc"/>
     </field>
+    <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
+      <bind-xml name="Identifier"/>
+    </field>
   </class>
 
-
+  <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
+    <map-to xml="Identifier"/>
+    <field name="type" type="string">
+      <bind-xml name="type" node="element"/>
+    </field>
+    <field name="value" type="string">
+      <bind-xml name="value" node="element"/>
+    </field>
+    <field name="primaryIndicator" type="boolean">
+      <bind-xml name="primaryIndicator" node="element"/>
+    </field>
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.Hospitalization" verify-constructable="false">
     <map-to xml="Hospitalization" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
     <field name="code" type="integer">
