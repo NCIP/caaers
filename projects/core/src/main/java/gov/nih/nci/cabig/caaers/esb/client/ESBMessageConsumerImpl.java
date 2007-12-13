@@ -71,10 +71,15 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 				sb.append("\n\n");
 			}
 			
-			for (Element ex:exceptions){				
+			for (Element ex:exceptions) {				
 				sb.append(ex.getChild("code").getValue() + "  -  " + ex.getChild("description").getValue());
 				sb.append("\n");
 			}
+
+			if (jobInfo.getChild("comments") != null) {
+				sb.append("COMMENTS		 :	" + jobInfo.getChild("comments").getValue()+"\n");
+			}
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
