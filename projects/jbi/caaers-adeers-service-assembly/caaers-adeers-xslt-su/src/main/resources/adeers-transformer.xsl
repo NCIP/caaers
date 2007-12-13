@@ -107,7 +107,13 @@
 
         </INSTITUTION_INFORMATION>
         <PROTOCOL_INFORMATION>
-            <xsl:attribute name="NCI_PROTOCOL_NUMBER"><!-- no info -->7028</xsl:attribute>
+            <xsl:attribute name="NCI_PROTOCOL_NUMBER">
+                <xsl:for-each select="StudyParticipantAssignment/StudySite/Study/Identifier">
+                    <xsl:if test="primary-indicator='true'">
+                        <xsl:value-of select="value"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:attribute>
         </PROTOCOL_INFORMATION>
         <TREATMENT_ASSIGNMENT_INFORMATION>
             <xsl:if test="TreatmentInformation/TreatmentAssignment/code != '' ">
@@ -317,7 +323,13 @@
 
         </DESCRIPTION_OF_EVENT>
         <PATIENT_INFORMATION>
-            <xsl:attribute name="PATIENT_ID">001</xsl:attribute>
+            <xsl:attribute name="PATIENT_ID">
+                <xsl:for-each select="StudyParticipantAssignment/Participant/Identifier">
+                    <xsl:if test="primary-indicator='true'">
+                        <xsl:value-of select="value"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:attribute>
             <BIRTH_DATE>
                 <xsl:call-template name="standard_date_yymm">
                     <xsl:with-param name="date"
