@@ -109,7 +109,7 @@
         <PROTOCOL_INFORMATION>
             <xsl:attribute name="NCI_PROTOCOL_NUMBER">
                 <xsl:for-each select="StudyParticipantAssignment/StudySite/Study/Identifier">
-                    <xsl:if test="primary-indicator='true'">
+                    <xsl:if test="primaryIndicator='true'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
                 </xsl:for-each>
@@ -314,7 +314,7 @@
             <!--TODO-->
             <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
             <DEATH_DATE>
-                <xsl:call-template name="standard_date_yymm">
+                <xsl:call-template name="standard_date">
                     <xsl:with-param name="date"
                         select="AdverseEventResponseDescription/recoveryDate"/>
                 </xsl:call-template>
@@ -325,7 +325,7 @@
         <PATIENT_INFORMATION>
             <xsl:attribute name="PATIENT_ID">
                 <xsl:for-each select="StudyParticipantAssignment/Participant/Identifier">
-                    <xsl:if test="primary-indicator='true'">
+                    <xsl:if test="primaryIndicator='true'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
                 </xsl:for-each>
