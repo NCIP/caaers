@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -60,12 +61,20 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
+    	command.reassociate();
+    	
+    	ExpeditedAdverseEventReport aeReport = command.getAeReport();
     	
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-		String xml = aeser.serialize(command.getAeReport());
-		Report report = command.getAeReport().getReports().get(((int)reportIndex));
+		String xml = aeser.serialize(aeReport);
 		
-    	aegen.generateAndNotify(command.getAeReport().getId()+"", report , xml);
+		
+		
+		
+		
+		Report report = aeReport.getReports().get(((int)reportIndex));
+		
+    	aegen.generateAndNotify(aeReport.getId()+"", report , xml);
     	
     	
     	
@@ -75,7 +84,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             model.put("study", command.getStudy().getId());
             modelAndView =  new ModelAndView("redirectToAeList", model);
     	}else{
-    		Map<String, Object> model = new ModelMap("aeReport", command.getAeReport().getId());
+    		Map<String, Object> model = new ModelMap("aeReport", aeReport.getId());
             model.put("action", "reportSubmission");
     		modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
     	}
