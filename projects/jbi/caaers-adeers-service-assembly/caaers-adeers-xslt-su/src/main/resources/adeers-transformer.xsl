@@ -127,32 +127,32 @@
         </TREATMENT_ASSIGNMENT_INFORMATION>
         <COURSE_INFORMATION>
             <xsl:if test="TreatmentInformation/firstCourseDate != ''">
-            <START_DATE_OF_FIRST_COURSE>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date" select="TreatmentInformation/firstCourseDate"/>
-                </xsl:call-template>
-                <!--2002-09-24-->
-            </START_DATE_OF_FIRST_COURSE>
+                <START_DATE_OF_FIRST_COURSE>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date" select="TreatmentInformation/firstCourseDate"/>
+                    </xsl:call-template>
+                    <!--2002-09-24-->
+                </START_DATE_OF_FIRST_COURSE>
             </xsl:if>
             <xsl:if test="TreatmentInformation/AdverseEventCourse/date != ''">
-            <START_DATE_OF_AE_COURSE>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                        select="TreatmentInformation/AdverseEventCourse/date"/>
-                </xsl:call-template>
-            </START_DATE_OF_AE_COURSE>
+                <START_DATE_OF_AE_COURSE>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date"
+                            select="TreatmentInformation/AdverseEventCourse/date"/>
+                    </xsl:call-template>
+                </START_DATE_OF_AE_COURSE>
             </xsl:if>
             <xsl:if test="TreatmentInformation/AdverseEventCourse/number != ''">
-            <COURSE_NUMBER_OF_AE>
-                <xsl:value-of select="TreatmentInformation/AdverseEventCourse/number"/>
-            </COURSE_NUMBER_OF_AE>
+                <COURSE_NUMBER_OF_AE>
+                    <xsl:value-of select="TreatmentInformation/AdverseEventCourse/number"/>
+                </COURSE_NUMBER_OF_AE>
             </xsl:if>
             <xsl:if test="TreatmentInformation/totalCourses != ''">
-            <TOTAL_NUMBER_OF_COURSES>
-                <xsl:value-of select="TreatmentInformation/totalCourses"/>
-            </TOTAL_NUMBER_OF_COURSES>
+                <TOTAL_NUMBER_OF_COURSES>
+                    <xsl:value-of select="TreatmentInformation/totalCourses"/>
+                </TOTAL_NUMBER_OF_COURSES>
             </xsl:if>
-            
+
             <INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
             <!-- no info -->
         </COURSE_INFORMATION>
@@ -271,61 +271,70 @@
         -->
         <DESCRIPTION_OF_EVENT>
             <xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
-            <EVENT_DESCRIPTION>
-                <xsl:value-of select="AdverseEventResponseDescription/eventDescription"/>
-            </EVENT_DESCRIPTION>
+                <EVENT_DESCRIPTION>
+                    <xsl:value-of select="AdverseEventResponseDescription/eventDescription"/>
+                </EVENT_DESCRIPTION>
             </xsl:if>
             <!-- TODO NEED TO FIX IT , THIS IS JUST A HACK-->
             <PRESENT_STATUS>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE continues</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'"
+                    >Intervention for AE continues</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERING'"
+                    >Recovering/Resolving</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'"
+                    >Recovered/Resolved with Sequelae</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'"
+                    >Recovered/Resolved without Sequelae</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not
+                    recovered/Not resolved</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'"
+                >Fatal/Died</xsl:if>
             </PRESENT_STATUS>
 
 
 
             <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
-            <DATE_OF_RECOVERY_OR_DEATH>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                        select="AdverseEventResponseDescription/recoveryDate"/>
-                </xsl:call-template>
-            </DATE_OF_RECOVERY_OR_DEATH>
+                <DATE_OF_RECOVERY_OR_DEATH>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date"
+                            select="AdverseEventResponseDescription/recoveryDate"/>
+                    </xsl:call-template>
+                </DATE_OF_RECOVERY_OR_DEATH>
             </xsl:if>
             <xsl:if test="AdverseEventResponseDescription/retreated != ''">
-            <RETREATED>
-                <xsl:if test="AdverseEventResponseDescription/retreated = 'true'">Yes</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/retreated = 'false'">No</xsl:if>
-            </RETREATED>
+                <RETREATED>
+                    <xsl:if test="AdverseEventResponseDescription/retreated = 'true'">Yes</xsl:if>
+                    <xsl:if test="AdverseEventResponseDescription/retreated = 'false'">No</xsl:if>
+                </RETREATED>
             </xsl:if>
-            
+
             <REMOVED_FROM_PROTOCOL_TRT>
                 <xsl:choose>
                     <xsl:when test="AdverseEventResponseDescription/dateRemovedFromProtocol">Yes</xsl:when>
                     <xsl:otherwise>No</xsl:otherwise>
                 </xsl:choose>
             </REMOVED_FROM_PROTOCOL_TRT>
-            
+
             <xsl:if test="AdverseEventResponseDescription/dateRemovedFromProtocol != ''">
-            <REMOVED_FROM_PROTOCOL_TRT_DATE>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                        select="AdverseEventResponseDescription/dateRemovedFromProtocol"/>
-                </xsl:call-template>
-            </REMOVED_FROM_PROTOCOL_TRT_DATE>
+                <REMOVED_FROM_PROTOCOL_TRT_DATE>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date"
+                            select="AdverseEventResponseDescription/dateRemovedFromProtocol"/>
+                    </xsl:call-template>
+                </REMOVED_FROM_PROTOCOL_TRT_DATE>
             </xsl:if>
-            
+
             <!--TODO-->
             <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
-            <DEATH_DATE>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                        select="AdverseEventResponseDescription/recoveryDate"/>
-                </xsl:call-template>
-            </DEATH_DATE>
+                <DEATH_DATE>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date"
+                            select="AdverseEventResponseDescription/recoveryDate"/>
+                    </xsl:call-template>
+                </DEATH_DATE>
             </xsl:if>
 
         </DESCRIPTION_OF_EVENT>
@@ -354,86 +363,86 @@
                 <xsl:value-of select="StudyParticipantAssignment/Participant/gender"/>
             </GENDER>
             <xsl:if test="ParticipantHistory/height/quantity != ''">
-            <HEIGHT>
-                <xsl:value-of select="ParticipantHistory/height/quantity"/>
-            </HEIGHT>
+                <HEIGHT>
+                    <xsl:value-of select="ParticipantHistory/height/quantity"/>
+                </HEIGHT>
             </xsl:if>
             <xsl:if test="ParticipantHistory/weight/quantity != ''">
-            <WEIGHT>
-                <xsl:value-of select="ParticipantHistory/weight/quantity"/>
-            </WEIGHT>
+                <WEIGHT>
+                    <xsl:value-of select="ParticipantHistory/weight/quantity"/>
+                </WEIGHT>
             </xsl:if>
-            
+
             <xsl:if test="ParticipantHistory/baselinePerformanceStatus != ''">
                 <BASELINE_PERFORMANCE_STATUS>
                     <xsl:variable name="bps" select="ParticipantHistory/baselinePerformanceStatus"/>
                     <xsl:value-of select="substring($bps, 1, 1)"/>
                 </BASELINE_PERFORMANCE_STATUS>
             </xsl:if>
-            
+
             <xsl:if test="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term != ''">
-            <DISEASE_NAME>
-                <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"/>
-            </DISEASE_NAME>
+                <DISEASE_NAME>
+                    <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"/>
+                </DISEASE_NAME>
             </xsl:if>
             <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
-            <PRIMARY_SITE_OF_DISEASE>
-                <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
-            </PRIMARY_SITE_OF_DISEASE>
+                <PRIMARY_SITE_OF_DISEASE>
+                    <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
+                </PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-            
-                
+
+
             <xsl:if test="DiseaseHistory/otherPrimaryDisease != ''">
-            <DISEASE_NAME_NOT_LISTED>
-                <xsl:value-of select="DiseaseHistory/otherPrimaryDisease"/>
-            </DISEASE_NAME_NOT_LISTED>
+                <DISEASE_NAME_NOT_LISTED>
+                    <xsl:value-of select="DiseaseHistory/otherPrimaryDisease"/>
+                </DISEASE_NAME_NOT_LISTED>
             </xsl:if>
-            
+
             <xsl:if test="DiseaseHistory/diagnosisDate != ''">
-            <DATE_OF_INITIAL_DIAGNOSIS>
-                <xsl:call-template name="standard_date_yymm">
-                    <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
-                </xsl:call-template>
-                <!--2002-09-->
-            </DATE_OF_INITIAL_DIAGNOSIS>
+                <DATE_OF_INITIAL_DIAGNOSIS>
+                    <xsl:call-template name="standard_date_yymm">
+                        <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
+                    </xsl:call-template>
+                    <!--2002-09-->
+                </DATE_OF_INITIAL_DIAGNOSIS>
             </xsl:if>
-            
+
             <xsl:if test="DiseaseHistory/otherPrimaryDiseaseSite != ''">
-            <OTHER_PRIMARY_SITE_OF_DISEASE>
-                <xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseSite"/>
-            </OTHER_PRIMARY_SITE_OF_DISEASE>
+                <OTHER_PRIMARY_SITE_OF_DISEASE>
+                    <xsl:value-of select="DiseaseHistory/otherPrimaryDiseaseSite"/>
+                </OTHER_PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-            
+
         </PATIENT_INFORMATION>
         <xsl:for-each select="AdverseEventPriorTherapy">
             <PRIOR_THERAPY>
                 <xsl:if test="PriorTherapy/text != ''">
-                <THERAPY_NAME>
-                    <xsl:value-of select="PriorTherapy/text"/>
-                </THERAPY_NAME>
+                    <THERAPY_NAME>
+                        <xsl:value-of select="PriorTherapy/text"/>
+                    </THERAPY_NAME>
                 </xsl:if>
                 <xsl:if test="startDate != ''">
-                <THERAPY_START_DATE>
-                    <xsl:call-template name="standard_date_yymm">
-                        <xsl:with-param name="date" select="startDate"/>
-                    </xsl:call-template>
-                    <!--2007-09-->
-                </THERAPY_START_DATE>
+                    <THERAPY_START_DATE>
+                        <xsl:call-template name="standard_date_yymm">
+                            <xsl:with-param name="date" select="startDate"/>
+                        </xsl:call-template>
+                        <!--2007-09-->
+                    </THERAPY_START_DATE>
                 </xsl:if>
                 <xsl:if test="endDate != ''">
-                <THERAPY_END_DATE>
-                    <xsl:call-template name="standard_date_yymm">
-                        <xsl:with-param name="date" select="endDate"/>
-                    </xsl:call-template>
-                    <!--2002-09-->
-                </THERAPY_END_DATE>
+                    <THERAPY_END_DATE>
+                        <xsl:call-template name="standard_date_yymm">
+                            <xsl:with-param name="date" select="endDate"/>
+                        </xsl:call-template>
+                        <!--2002-09-->
+                    </THERAPY_END_DATE>
                 </xsl:if>
                 <xsl:if test="other != ''">
-                <THERAPY_COMMENTS>
-                    <xsl:value-of select="other"/>
-                </THERAPY_COMMENTS>
+                    <THERAPY_COMMENTS>
+                        <xsl:value-of select="other"/>
+                    </THERAPY_COMMENTS>
                 </xsl:if>
-                
+
                 <xsl:for-each select="PriorTherapyAgent">
                     <CHEMO_AGENT_NAME>
                         <xsl:value-of select="Agent/name"/>
@@ -444,65 +453,66 @@
         <xsl:for-each select="AdverseEventPreExistingCond">
             <PRE_EXISTING_CONDITION>
                 <xsl:if test="PreExistingCondition/text != ''">
-                <CONDITION_NAME>
-                    <xsl:value-of select="PreExistingCondition/text"/>
-                </CONDITION_NAME>
+                    <CONDITION_NAME>
+                        <xsl:value-of select="PreExistingCondition/text"/>
+                    </CONDITION_NAME>
                 </xsl:if>
                 <xsl:if test="other != ''">
-                <OTHER_CONDITION_NAME>
-                    <xsl:value-of select="other"/>
-                </OTHER_CONDITION_NAME>
+                    <OTHER_CONDITION_NAME>
+                        <xsl:value-of select="other"/>
+                    </OTHER_CONDITION_NAME>
                 </xsl:if>
-                
+
             </PRE_EXISTING_CONDITION>
         </xsl:for-each>
         <xsl:for-each select="DiseaseHistory/MetastaticDiseaseSite">
             <SITE_OF_METASTATIC_DISEASE>
                 <xsl:if test="AnatomicSite/name != ''">
-                <SITE_NAME>
-                    <xsl:value-of select="AnatomicSite/name"/>
-                </SITE_NAME>
+                    <SITE_NAME>
+                        <xsl:value-of select="AnatomicSite/name"/>
+                    </SITE_NAME>
                 </xsl:if>
                 <xsl:if test="otherSite != ''">
-                <OTHER_SITE_NAME>
-                    <xsl:value-of select="otherSite"/>
-                </OTHER_SITE_NAME>
+                    <OTHER_SITE_NAME>
+                        <xsl:value-of select="otherSite"/>
+                    </OTHER_SITE_NAME>
                 </xsl:if>
-                
+
             </SITE_OF_METASTATIC_DISEASE>
         </xsl:for-each>
+        <xsl:for-each select="TreatmentInformation/CourseAgent">
         <PROTOCOL_AGENT>
             <xsl:attribute name="AGENT_NAME">
-                <xsl:value-of select="TreatmentInformation/CourseAgent/StudyAgent/Agent/name"/>
+                <xsl:value-of select="StudyAgent/Agent/name"/>
             </xsl:attribute>
             <xsl:attribute name="NSC_NUMBER">
-                <xsl:value-of select="TreatmentInformation/CourseAgent/StudyAgent/Agent/nscNumber"/>
+                <xsl:value-of select="StudyAgent/Agent/nscNumber"/>
             </xsl:attribute>
-            <xsl:variable name="totalDose" select="TreatmentInformation/CourseAgent/Dose/amount"/>
-            
-            <xsl:if test="TreatmentInformation/CourseAgent/Dose/amount != ''">
-            <TOTAL_DOSE_ADMINISTERED>
-                <xsl:value-of select="TreatmentInformation/CourseAgent/Dose/amount"/>
-            </TOTAL_DOSE_ADMINISTERED>
-            </xsl:if>
-            <xsl:if test="TreatmentInformation/CourseAgent/lastAdministeredDate != ''">
-            <LAST_ADMINISTERED_DATE>
-                <xsl:call-template name="standard_date">
-                    <xsl:with-param name="date"
-                        select="TreatmentInformation/CourseAgent/lastAdministeredDate"/>
-                </xsl:call-template>
-            </LAST_ADMINISTERED_DATE>
-            </xsl:if>
-            <xsl:if test="TreatmentInformation/CourseAgent/Dose/units != ''">
-            <DOSE_UOM>
-                <xsl:value-of select="TreatmentInformation/CourseAgent/Dose/units"/>
-            </DOSE_UOM>
-            </xsl:if>
-            
+            <xsl:variable name="totalDose" select="Dose/amount"/>
 
-            <xsl:if test="TreatmentInformation/CourseAgent/ModifiedDose/amount">
+            <xsl:if test="Dose/amount != ''">
+                <TOTAL_DOSE_ADMINISTERED>
+                    <xsl:value-of select="Dose/amount"/>
+                </TOTAL_DOSE_ADMINISTERED>
+            </xsl:if>
+            <xsl:if test="lastAdministeredDate != ''">
+                <LAST_ADMINISTERED_DATE>
+                    <xsl:call-template name="standard_date">
+                        <xsl:with-param name="date"
+                            select="lastAdministeredDate"/>
+                    </xsl:call-template>
+                </LAST_ADMINISTERED_DATE>
+            </xsl:if>
+            <xsl:if test="Dose/units != ''">
+                <DOSE_UOM>
+                    <xsl:value-of select="Dose/units"/>
+                </DOSE_UOM>
+            </xsl:if>
+
+
+            <xsl:if test="ModifiedDose/amount">
                 <xsl:variable name="adjusted"
-                    select="TreatmentInformation/CourseAgent/ModifiedDose/amount"/>
+                    select="ModifiedDose/amount"/>
                 <xsl:if test="$adjusted &gt; $totalDose">
                     <AGENT_ADJUSTMENT>Dose increased</AGENT_ADJUSTMENT>
                 </xsl:if>
@@ -514,25 +524,27 @@
                 </xsl:if>
             </xsl:if>
             <xsl:choose>
-                <xsl:when test="TreatmentInformation/administrationDelayAmount">
+                <xsl:when test="administrationDelayAmount">
                     <AGENT_DELAYED>Yes</AGENT_DELAYED>
                 </xsl:when>
                 <xsl:otherwise>
                     <AGENT_DELAYED>No</AGENT_DELAYED>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="TreatmentInformation/administrationDelayAmount">
+            <xsl:if test="administrationDelayAmount">
                 <DELAY>
-                    <xsl:value-of select="TreatmentInformation/administrationDelayAmount"/>
+                    <xsl:value-of select="administrationDelayAmount"/>
                 </DELAY>
             </xsl:if>
-            <xsl:if test="TreatmentInformation/administrationDelayUnits">
+            <xsl:if test="administrationDelayUnits">
                 <DELAY_UOM>
-                    <xsl:value-of select="TreatmentInformation/administrationDelayUnits"/>
+                    <xsl:value-of select="administrationDelayUnits"/>
                 </DELAY_UOM>
             </xsl:if>
 
         </PROTOCOL_AGENT>
+        </xsl:for-each>
+        
         <xsl:for-each select="ConcomitantMedication">
             <CONCOMITANT_MEDICATION>
                 <xsl:attribute name="CONCOMITANT_MEDICATION_NAME">
@@ -563,7 +575,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
 
-                
+
                 <CATEGORY>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
                 </CATEGORY>
