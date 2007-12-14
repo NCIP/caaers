@@ -537,11 +537,12 @@
                 </DELAY>
             </xsl:if>
             <xsl:if test="administrationDelayUnits">
+                <!-- modify case. Eg: HOURS to Hours -->
                 <DELAY_UOM>
-                    <xsl:value-of select="administrationDelayUnits"/>
+                    <xsl:value-of select="concat(translate(substring(administrationDelayUnits,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),translate(substring(administrationDelayUnits,2),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))"/>
                 </DELAY_UOM>
             </xsl:if>
-
+        
         </PROTOCOL_AGENT>
         </xsl:for-each>
         
