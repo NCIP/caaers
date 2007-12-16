@@ -8,7 +8,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                    <xs:element ref="routineAdverseEventCollection"/>
+                    <xs:element ref="routineAdverseEventCollection" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
