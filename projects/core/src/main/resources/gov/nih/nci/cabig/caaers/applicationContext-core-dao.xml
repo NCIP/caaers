@@ -296,18 +296,24 @@ This applicationContext contains the definition of the DAOs
 
    <!-- validator beans starts here-->
     <bean id="webControllerValidator"
-              class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
-    
+          class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
+
     <bean id="uniqueNciIdentifierForOrganizationValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
         <property name="organizationDao" ref="organizationDao"/>
     </bean>
 
     <bean id="uniqueEmailAddressForResearchStaffValidator"
-              class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueEmailAddressForResearchStaffValidator">
-            <property name="researchStaffDao" ref="researchStaffDao"/>
-        </bean>
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueEmailAddressForResearchStaffValidator">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
+    <bean id="uniqueIdentifierValidator"
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipantValidator">
+        <property name="participantDao" ref="participantDao"/>
+    </bean>
 
+    <bean id="uniqueObjectInCollectionValidator"
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator"/>
 
     <!-- validator beans end here-->
 

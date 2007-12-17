@@ -12,9 +12,8 @@ import org.springframework.validation.BindException;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -31,23 +30,29 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             BeanWrapperImpl beanWrapperImpl = new BeanWrapperImpl(command);
 
             Enumeration<String> propertyNames = request.getParameterNames();
-            Set<String> collectionProperties = new HashSet<String>();
+            Map<String, String> collectionProperties = new HashMap<String, String>();
             while (propertyNames.hasMoreElements()) {
                 String propertyName = propertyNames.nextElement();
-                validateProperty(beanWrapperImpl, propertyName, errors);
+                String propertyNameWhereErrorWillBeDisplayed = propertyName;
+                if (beanWrapperImpl.isReadableProperty(propertyName))
+                    validateProperty(propertyName, beanWrapperImpl, propertyName, errors, propertyName);
 
                 //now check for collection properties
-                String collectionPropertyName = PropertyUtil.getNestedMethodNameForColletionProperty(propertyName);
-                if (collectionPropertyName != null) {
-                    collectionProperties.add(collectionPropertyName);
+                String collectionPropertyName = PropertyUtil.getColletionPropertyName(propertyName);
+
+                if (collectionPropertyName != null && beanWrapperImpl.isReadableProperty(collectionPropertyName) && collectionProperties.get(propertyName) == null) {
+                    collectionProperties.put(collectionPropertyName, propertyName);
                 }
 
             }
 
             //now validate the collection
-            for (String collectionPropertyName : collectionProperties) {
-                logger.info("Found collection property:" + collectionPropertyName);
-                validateProperty(beanWrapperImpl, collectionPropertyName, errors);
+            for (String collectionPropertyName : collectionProperties.keySet()) {
+
+                String propertyNameWhereErrorWillBeDisplayed = collectionProperties.get(collectionPropertyName);
+                //logger.info("Found collection property:" + collectionPropertyName + " and property name where error messages(if any) will be displayed:" + propertyNameWhereErrorWillBeDisplayed);
+                String readMethodName = PropertyUtil.getCollectionMethodName(propertyNameWhereErrorWillBeDisplayed);
+                validateCollectionProperty(readMethodName, beanWrapperImpl, collectionPropertyName, errors, propertyNameWhereErrorWillBeDisplayed);
 
             }
 
@@ -55,27 +60,55 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
 
     }
 
-    private void validateProperty(final BeanWrapperImpl beanWrapperImpl, final String propertyName, final BindException errors) {
-        if (beanWrapperImpl.isReadableProperty(propertyName)) {
+    private void validateCollectionProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, BindException errors, String propertyNameWhereErrorWillBeDisplayed) {
+        if (readMethodName != null) {
 
-            Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(propertyName).getReadMethod()
+            Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
                     .getAnnotations();
+            Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
+            validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+//            //validate for UniqueObjectInCollection validator also
+//            validate(annotationsArray, beanWrapperImpl.getPropertyValue(readMethodName), propertyNameWhereErrorWillBeDisplayed, errors);
+        }
 
-            for (Annotation validatorAnnotation : annotationsArray) {
-                Validator<Annotation> validator = createValidator(validatorAnnotation);
-                Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
-                logger.info("Found read property having validation annotation. property-name:" + propertyName + "  property-value:" + objectToValidate);
+    }
 
-                if (validator != null && !validator.validate(objectToValidate)) {
+    /**
+     *
+     * @param readMethodName method name which has the annotation present. it will be the same as property name for normal (non collection) properties. 
+     * @param beanWrapperImpl
+     * @param propertyName name of the property
+     * @param errors
+     * @param propertyNameWhereErrorWillBeDisplayed name of the proeprty where errros should be displayed.
+     */
+    private void validateProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, BindException errors, String propertyNameWhereErrorWillBeDisplayed) {
+        if (readMethodName != null) {
+
+            Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
+                    .getAnnotations();
+            Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
+            validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+        }
+
+    }
+
+
+    private void validate(Annotation[] annotationsArray, Object propertyValue, String errorPropertyName, BindException errors) {
+        for (Annotation validatorAnnotation : annotationsArray) {
+            Validator<Annotation> validator = createValidator(validatorAnnotation);
+            //Object propertyValue = beanWrapperImpl.getPropertyValue(propertyName);
+
+            if (validator != null) {
+                logger.info("Found read property   property-value:" + propertyValue + " with validator :" + validator.getClass().getName() + ". Errors (if any) will be displayed on property-name:" + errorPropertyName);
+                if (!validator.validate(propertyValue)) {
                     String errorCode = validator.message();
-                    logger.info("Found error code:" + errorCode + " for property:" + propertyName + " value:"
-                            + objectToValidate + " & annotation:" + validatorAnnotation.toString());
+                    logger.info("Found error code:" + errorCode + " for property:" + errorPropertyName + " value:"
+                            + propertyValue + " & validator:" + validator.getClass().getName());
 
-                    errors.rejectValue(propertyName, "REQUIRED", errorCode);
+                    errors.rejectValue(errorPropertyName, "REQUIRED", errorCode);
                 }
             }
         }
-
     }
 
     /**
@@ -93,7 +126,7 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             }
 
             Map<String, Validator> validatorClasses = applicationContext.getBeansOfType(validatorClass.value());
-            if (!validatorClasses.isEmpty()) {
+            if (validatorClasses != null && !validatorClasses.isEmpty()) {
                 Validator validator = validatorClasses.get(validatorClasses.keySet().iterator().next());
                 validator.initialize(annotation);
                 logger.info("found validator " + validator.getClass() + " for annotation:" + annotation.toString());

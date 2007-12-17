@@ -8,6 +8,8 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Where;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipant;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 
 import javax.persistence.Entity;
 import javax.persistence.Column;
@@ -281,7 +283,9 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	@OneToMany
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "participant_id")
-	public List<Identifier> getIdentifiers() {
+	@UniqueIdentifierForParticipant
+    @UniqueObjectInCollection
+    public List<Identifier> getIdentifiers() {
 		return lazyListHelper.getInternalList(Identifier.class);
 	}
 
@@ -291,7 +295,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	}
 
 	@Transient
-	public List<Identifier> getIdentifiersLazy() {
+    @UniqueIdentifierForParticipant
+    public List<Identifier> getIdentifiersLazy() {
 		return lazyListHelper.getLazyList(Identifier.class);
 	}
 
