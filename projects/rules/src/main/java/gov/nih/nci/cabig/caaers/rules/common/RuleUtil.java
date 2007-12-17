@@ -11,11 +11,12 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class RuleUtil {
 	
 	
-	
+	private static final Log log = LogFactory.getLog(RuleUtil.class);
 	
 	public static Category getSponsorSpecificCategory(RuleAuthoringService authService, String sponsorName, String ruleSetName) throws Exception{
 		Category cat = null;
@@ -359,7 +360,7 @@ public class RuleUtil {
 		
 		exist = base_cat==null?false:true;
 		if(exist){
-			System.out.println("Path:"+base_cat.getPath());
+			log.debug("Path:"+base_cat.getPath());
 		}
 		return exist;
 	}

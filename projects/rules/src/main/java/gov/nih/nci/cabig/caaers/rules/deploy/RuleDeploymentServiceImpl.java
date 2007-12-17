@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
-import gov.nih.nci.cabig.caaers.rules.common.RuleType;
+import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
@@ -17,8 +16,11 @@ import java.util.Map;
 import javax.jws.WebService;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
-import javax.rules.admin.RuleExecutionSetDeregistrationException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.drools.rule.Package;
 
 /**
  * 
@@ -28,6 +30,8 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
         serviceName = "RuleDeploymentService" , endpointInterface = "gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"
 )
 public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymentService {
+	
+	private static final Log log = LogFactory.getLog(RuleDeploymentServiceImpl.class);
 	
 	public RuleDeploymentServiceImpl() {
 		super();
@@ -45,59 +49,44 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		throw new RemoteException("Not Implemented");
 	}
 	
+	public void registerRuleXml(String bindUri, String ruleXml) throws RemoteException{
+		try {
+			Package rulePackage = XMLUtil.unmarshalToPackage(ruleXml);
+			registerPackage(bindUri, rulePackage);
+		} catch (Exception e) {
+			log.error("Error occured while registering the rules [bindUri :" + bindUri + ", ruleXml :\r\n" + ruleXml + "\r\n]",e );
+			throw new RemoteException("Error while registering rules", e);
+		}
+	}
 	
 	/* (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleDeploymentService#registerPackage(java.lang.String, java.lang.String)
 	 */
 	public void registerRuleSet(String bindUri, String ruleSetName) throws RemoteException {
-		final Map<String, Object> properties = new HashMap<String, Object>();
-		properties.put("source", "xml");
-		
-		//The repository configurations can be passed in AS  PROPERTIES
-		
+		//obtain the rule xml from repository
 		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName);
-
-
-
+		
+		//transform the rule xml to a Package , then register the Package to rule exceution service
 		try {
 			RuleAdapter ruleAdapter = null;
 			ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.CaAERSJBossXSLTRuleAdapter").newInstance();
-			/*
-			if(ruleSetDesc.equalsIgnoreCase(RuleType.AE_ASSESMENT_RULES.getName())||ruleSetDesc.equalsIgnoreCase(RuleType.REPORT_SCHEDULING_RULES.getName())){
-				ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.CaAERSJBossXSLTRuleAdapter").newInstance();
-			}else{
-			   ruleAdapter  = (RuleAdapter)Class.forName("gov.nih.nci.cabig.caaers.rules.common.adapter.JBossXSLTRuleAdapter").newInstance();
-			}
-			*/
+			
 			Object ruleSetObj = ruleAdapter.adapt(ruleSet);
-			//Please note that we can only pass the Package here to the RuleExecution set.
-			//Since we still use drools implementation of LocalRuleExecutionSetProvider
-			final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider.createRuleExecutionSet(ruleSetObj, properties);
+			registerPackage(bindUri, ruleSetObj);
 			
-			RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri, ruleExecutionSet, properties);
-			
-		} catch (RuleExecutionSetCreateException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (RuleExecutionSetRegisterException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (InstantiationException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (IllegalAccessException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (ClassNotFoundException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
+		} catch (Exception e) {
+			log.error("Error while registering ruleSet, with name :" + ruleSetName +", bindUri :" + bindUri, e);
+			throw new RemoteException(e.getMessage(), e);
+		} 
+		
 	}
 
-	public void deregisterRuleSet(String bindUri) {
+	public void deregisterRuleSet(String bindUri) throws RemoteException {
 		try {
 			RuleServiceContext.getInstance().ruleAdministrator.deregisterRuleExecutionSet(bindUri,null);
-		} catch (RuleExecutionSetDeregistrationException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
+		} catch (Exception e) {
+			log.error("Error while undeploying rules", e);
+			throw new RemoteException("Error while undeploying rules," + e.getMessage(), e);
 		} 
 	}
 
@@ -109,6 +98,16 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 	private RepositoryService getRepositoryService() {
 		return (RepositoryServiceImpl)RuleServiceContext.getInstance().repositoryService;
 	}
+	
+	protected void registerPackage(String bindUri, Object rulePackage) throws RuleExecutionSetRegisterException, RuleExecutionSetCreateException, RemoteException{
+		final Map<String, Object> properties = new HashMap<String, Object>();
+		properties.put("source", "xml");
+		
+		//Please note that we can only pass the Package here to the RuleExecution set.
+		//Since we still use drools implementation of LocalRuleExecutionSetProvider
+		final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider.createRuleExecutionSet(rulePackage, properties);
+		RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri, ruleExecutionSet, properties);
 
+	}
 
 }

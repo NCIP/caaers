@@ -17,8 +17,10 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class DefaultEmailNotificationHandler implements NotificationHandler {
-	
+	private static final Log log = LogFactory.getLog(DefaultEmailNotificationHandler.class);
 	private SmtpConfig smtpConfig;
 	
 	private EmailInfo emailInfo;
@@ -26,12 +28,12 @@ public class DefaultEmailNotificationHandler implements NotificationHandler {
 	private ApplicationContext applicationContext;
 	
 	public void performNotify(ActionContext actionContext, RuleContext ruleContext) {
-		System.out.print("Going to invoke the Notification Service");
+		log.info("Going to invoke the Notification Service");
 		
 		try {
 			testSendSMTPMAil(Integer.valueOf(actionContext.getAction().getActionId()), ruleContext);
 		} catch (Exception e) {
-			System.out.println("Notification failed -- Exception " + e.getMessage()); 
+			log.error("Notification failed -- Exception " + e.getMessage(), e); 
 		}
 		/**
 		 * 1. Where is the Email Service?

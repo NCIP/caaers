@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.rules.common;
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -26,11 +29,18 @@ import com.thoughtworks.xstream.io.xml.DomDriver;*/
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.drools.compiler.PackageBuilder;
+import org.drools.compiler.PackageBuilderConfiguration;
+import org.drools.rule.Package;
 public class XMLUtil {
-
+	private static final Log log = LogFactory.getLog(XMLUtil.class);
+	
 	public static Object unmarshal(String xml) {
 		try {
 			Unmarshaller unmarshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createUnmarshaller();
+			log.debug("reading the rule:"+xml);
 			return unmarshaller.unmarshal(new StringReader(xml));
 		} catch (JAXBException e) {
 			throw new RuleException(e.getMessage(), e);
@@ -42,10 +52,35 @@ public class XMLUtil {
 		try {
 			Marshaller marshaller = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.rules.brxml").createMarshaller();
 			marshaller.marshal(object, writer);
+			log.debug("Before writing:"+writer.toString());
 			return writer.toString();
 		} catch (JAXBException e) {
 			throw new RuleException(e.getMessage(), e);
 		}		
+	}
+	
+	/**
+	 * This utility method will convert the rule-xml to a Drools Package object
+	 * @param xml
+	 * @return
+	 */
+	public static Package unmarshalToPackage(String xml){
+		PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
+		conf.setCompiler( PackageBuilderConfiguration.JANINO );
+		Package droolsPackage = new Package();
+		
+		//merge the rule xml into the package
+		try {
+			Reader ruleReader = null;
+			ruleReader = new StringReader(xml);
+			PackageBuilder packageBuilder = new PackageBuilder(conf);
+			packageBuilder.addPackageFromXml(ruleReader);
+			droolsPackage = packageBuilder.getPackage();
+		} catch (Exception e) {
+			log.error("Error while converting xml form of rules into package\r\n XML rules :\r\n" + xml, e);
+			throw new RuleException(e.getMessage(), e);
+		}
+		return droolsPackage;
 	}
 
 /*	public static String marshal(Rule rule) {

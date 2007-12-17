@@ -14,5 +14,9 @@ public class AdverseEventEvaluationResult {
 	public String getMessage(){
 		return message;
 	}
-
+	
+	@Override
+	public String toString() {
+		return "Message :" + message;
+	}
 }

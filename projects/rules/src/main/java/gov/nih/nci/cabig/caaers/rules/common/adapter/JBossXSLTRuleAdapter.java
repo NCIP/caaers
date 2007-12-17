@@ -50,84 +50,17 @@ import org.jibx.runtime.JiBXException;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class JBossXSLTRuleAdapter implements RuleAdapter {
-
-	public Object adapt(RuleSet ruleSet) {
-		List<String> imports = ruleSet.getImport();
-		
-		System.out.println("Size of imports:"+imports.size());
-		for(String s: imports){
-			System.out.println(s);
+	private static final Log log = LogFactory.getLog(JBossXSLTRuleAdapter.class);
+	
+	public Package adapt(RuleSet ruleSet){
+		if(true){
+			throw new RuntimeException("Deprecated, dont use JBossXSLTRuleAdapter, instead use CaAERSJBossXSLTRuleAdapter");
 		}
-		
-		String xml = XMLUtil.marshal(ruleSet);
-		System.out.println("Marshalled:"+xml);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-		System.setProperty("javax.xml.transform.TransformerFactory",
-				"org.apache.xalan.processor.TransformerFactoryImpl");
-		TransformerFactory transformerFactory = TransformerFactory
-				.newInstance();
-		try {
-			//Templates translet = transformerFactory.newTemplates(new StreamSource("C:\\projects\\caAERS\\head\\trunk\\projects\\rules\\src\\main\\resources\\jboss_rules.xsl"));
-			
-			//Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("jboss_rules.xsl")));
-			
-			
-
-			Templates translet = transformerFactory.newTemplates(new StreamSource( Thread.currentThread().getContextClassLoader().getResourceAsStream("new_jobss_rules.xsl")));
-
-			
-			Transformer transformer = translet.newTransformer();
-			
-			//For Testing Purpose
-			if(Boolean.TRUE.equals(System.getProperty("caaers.rules.debug"))) {
-				transformer
-						.transform(
-								new StreamSource(new StringReader(xml)),
-								new StreamResult(
-										new FileOutputStream(
-												"C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml")));
-			}
-			
-			transformer.transform(new StreamSource(new StringReader(xml)),
-					new StreamResult(outputStream));			
-			
-		} catch (TransformerConfigurationException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (FileNotFoundException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (TransformerException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
- 
-		
-		PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
-		conf.setCompiler( PackageBuilderConfiguration.JANINO );
-		//conf.setJavaLanguageLevel( "1.4" );
-		
-		Package droolsPackage = new Package();
-		try {
-			Reader ruleReader = null;
-			
-			//For Testing Purpose
-			if(Boolean.TRUE.equals(System.getProperty("caaers.rules.debug"))) {
-				ruleReader = new InputStreamReader(
-					new FileInputStream ("C:\\Docume~1\\SUJITH\\Desktop\\RuleSet_Drools.xml"));
-			}
-			ruleReader = new InputStreamReader(new ByteArrayInputStream(outputStream.toByteArray()));
-			
-			outputStream.writeTo(System.out);
-			//System.out.println(outputStream.toByteArray());
-			PackageBuilder packageBuilder = new PackageBuilder(conf);
-			packageBuilder.addPackageFromXml(ruleReader);
-			droolsPackage = packageBuilder.getPackage();
-		} catch (IOException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (DroolsParserException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
-
-		return droolsPackage;
+		return null;
 	}
+	
 }

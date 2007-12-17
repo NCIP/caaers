@@ -43,6 +43,13 @@ public interface RuleDeploymentService {
 	 * */
 	public abstract void registerRuleSet(String bindUri, String ruleSetName) throws RemoteException;
 	
+	/**
+	 * Register the RuleSet, deploy the drools package
+	 * @param bindUri
+	 * @param ruleXml
+	 * @throws RemoteException
+	 */
+	void registerRuleXml(String bindUri, String ruleXml) throws RemoteException;
 	
 	/**
 	 * De-Register the Rule Set. I mean UN-deploy a drools package if you are a JBoss Rules fan...
