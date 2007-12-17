@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -16,19 +17,19 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.LinkedHashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -317,14 +318,41 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 
 }
 
-
-
-/**
- *  fire the rules at institution defined defined study level..
- *  if not rules specified , then fire institution level rules.
- *
+ /**
+  * This method will evaluate the rules that are bound in the below URI.
+  *  URI naming convention :"gov.nih.nci.cabig.caaers.rules.sponsor." + <fundingsponsorOrgName> + "." + <section_name>"
   */
+ public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, 
+		 ExpeditedReportSection section) throws Exception {
 
+	 //create the input objects
+	 ValidationErrors errors = new ValidationErrors();
+	 Study study = aeReport.getStudy();
+	 
+	 //1. fetch the bindUri
+	 String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), "",
+			 "SPONSOR",RuleType.REPORT_VALIDATION_RULES_DESCRIPTION_SECTION.getName());
+	 
+	 //2. fire the rules
+	 List<Object> input = new ArrayList<Object>();
+	 input.add(aeReport);
+	 input.add(study);
+	 input.add(errors);
+	 
+	 List<Object> output = fireRules(input, bindURI);
+	 if(output != null){
+		 for(Iterator it = output.iterator(); it.hasNext();){
+			 Object o = it.next();
+			 if(o instanceof ValidationErrors){
+				  errors = (ValidationErrors) o;
+				  break;
+			 }
+		 }
+	 }
+	 
+	 //3. fetch the errors from  
+	return errors;
+ }
 
 
 // RULE METHODS
@@ -459,38 +487,54 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		return bindURI;
 	}
 
-
-
 	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, Organization organization, ReportDefinition reportDefinition, String bindURI) throws Exception{
-
+		//holder for the returned object
 		AdverseEventEvaluationResult evaluationForSponsor = new AdverseEventEvaluationResult();
+		
+		//add AE, Study, Organization, ReportDefinition, TreatmentInformation to the input
 		List<Object> inputObjects = new ArrayList<Object>();
 		inputObjects.add(ae);
+		
 		FactResolver f = new FactResolver();
 		inputObjects.add(f);
-
-		if (study != null ) {
-			inputObjects.add(study);
+		
+		if (study != null ) inputObjects.add(study);
+		if (organization != null) inputObjects.add(organization);
+		if (reportDefinition != null) inputObjects.add(reportDefinition);
+		if (ae.getReport() != null && 
+				ae.getReport().getTreatmentInformation() != null) inputObjects.add(ae.getReport().getTreatmentInformation());
+	
+		
+		//fire the rules and AdverseEventEvaluationResult from the output.
+		List<Object> outputObjects = fireRules(inputObjects, bindURI);
+		if(outputObjects != null){
+			//no_rules_found
+			evaluationForSponsor.setMessage("no_rules_found");
+			return evaluationForSponsor;
 		}
-		if (organization != null) {
-			inputObjects.add(organization);
-		}
-		if (reportDefinition != null) {
-			inputObjects.add(reportDefinition);
-		}
-		if (ae.getReport() != null) {
-			if (ae.getReport().getTreatmentInformation() != null) {
-				inputObjects.add(ae.getReport().getTreatmentInformation());
-			}
+		for(Iterator<Object> it = outputObjects.iterator(); it.hasNext();){
+			Object o = it.next(); 
+			if(o instanceof AdverseEventEvaluationResult)	return (AdverseEventEvaluationResult) o;
+				
 		}
 		
-		//inputObjects.add(new AdverseEventEvaluationResult());
+		//return the empty AdverseEventEvaluationResult.
+		return evaluationForSponsor;
+		
+	}
+
+	/** 
+	 * Will fire the rules bound on the bindURI.
+	 * @param inputObjects
+	 * @param bindURI
+	 * @return
+	 * @throws Exception
+	 */
+	private List<Object> fireRules(List<Object> inputObjects, String bindURI) throws Exception {
 
 		List<Object> outputObjects = null;
 		try{
-
 			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
-
 		} catch(Exception ex){
 
 			log.error("Unable to fire the rule : " + bindURI );
@@ -500,35 +544,9 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 				throw new Exception (ex.getMessage(),ex);
 			}
 
-			/**
-			 * Don't do anything, it means there are no rules for this package
-			 */
-			//throw new RuleException("There are no rule configured for this sponsor",ex);
-			//return evaluationForSponsor;
 		}
 
-		if (outputObjects == null) {
-			//no_rules_found
-			evaluationForSponsor = new AdverseEventEvaluationResult();
-			evaluationForSponsor.setMessage("no_rules_found");
-			return evaluationForSponsor;
-		}
-
-		Iterator<Object> it = outputObjects.iterator();
-
-		while(it.hasNext()){
-			Object obj = it.next();
-
-			if(obj instanceof AdverseEventEvaluationResult) {
-				evaluationForSponsor = (AdverseEventEvaluationResult)obj;
-				//System.out.println("----" + evaluationForSponsor.getMessage());
-				break;
-			}
-
-
-		}
-
-		return evaluationForSponsor;
+		return outputObjects;
 	}
 
 

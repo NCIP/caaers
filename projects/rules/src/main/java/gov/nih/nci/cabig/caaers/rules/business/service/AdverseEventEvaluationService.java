@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,20 @@ public interface AdverseEventEvaluationService {
 
 	Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData) throws Exception;
 	/**
-	 * Will retun the mandatory sections available for a specific report
+	 * Will return the mandatory sections available for a specific report
 	 * @param report
 	 * @return
 	 * @throws Exception
 	 */
 	Collection<ExpeditedReportSection> mandatorySectionsForReport(Report report) throws Exception;
+	
+	/**
+	 * This method will execute the business rules set for SAE flow, at funding sponsor level.
+	 * 
+	 * @param aeReport
+	 * @param section
+	 * @return
+	 * @throws Exception
+	 */
+	ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection section) throws Exception;
 }

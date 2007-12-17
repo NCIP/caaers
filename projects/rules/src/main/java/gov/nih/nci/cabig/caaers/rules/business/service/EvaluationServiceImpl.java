@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -238,6 +239,16 @@ public class EvaluationServiceImpl implements EvaluationService {
        } catch (Exception e) {
            throw new CaaersSystemException("Unable to determine mandatory sections", e);
        }*/
+   }
+   
+   public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
+		   ExpeditedReportSection section) {
+	   try {
+		return adverseEventEvaluationService.validateReportingBusinessRules(aeReport, section);
+	} catch (Exception e) {
+		log.error("Error while evaluating business rules", e);
+		throw new CaaersSystemException("Error while evaluating business rules", e);
+	}
    }
 
      ////// CONFIGURATION
