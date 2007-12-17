@@ -40,7 +40,9 @@ public class JmsServiceImpl implements MessageListener  {
 	    /*
 	     * Create sender and text message.
 	     */
+		
 	    try {
+	    	initialize();
 	        TextMessage message = session.createTextMessage();
 	        System.out.println("XML Payload....");
 			message.setText(xml);
