@@ -60,11 +60,10 @@
                 <ref bean="participantTaskGroup"/>
                 <ref bean="personalTaskGroup"/>
                 <ref bean="medraTaskGroup"/>
-                <ref bean="organizationTaskGroup"/>
+                <ref bean="organizationTaskGroup"/> 
             </list>
         </property>
-
-    </bean>
+ </bean>
 
     <bean id="advanceSearchTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
           p:displayName="Analysis and Review">
@@ -353,10 +352,12 @@
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
+        <property name="webControllerValidator" ref="webControllerValidator"/>
     </bean>
 
     <bean name="/participant/edit" id="editParticipantController" autowire="byType"
     	  class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
+          <property name="webControllerValidator" ref="webControllerValidator"/>
     </bean>
 
     <bean name="/participant/assign" id="assignController" autowire="byName"

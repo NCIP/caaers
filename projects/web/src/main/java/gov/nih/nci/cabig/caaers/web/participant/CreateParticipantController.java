@@ -56,9 +56,7 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 		OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
 		organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
 		organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
-
-		// identifiers.add();
-		participantCommand.getParticipant().setIdentifiers(identifiers);
+		participantCommand.getParticipant().addIdentifier(organizationAssignedIdentifier);
 		return participantCommand;
 	}
 

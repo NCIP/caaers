@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
@@ -31,7 +32,7 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 		AutomaticSaveFlowFormController<C, Participant, ParticipantDao> {
 
 	private static Log log = LogFactory.getLog(CreateParticipantController.class);
-
+     protected WebControllerValidator webControllerValidator;
 	private OrganizationDao organizationDao;
 
 	public ParticipantController() {
@@ -141,7 +142,12 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 		return refdata;
 	}
 
-	/**
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+        webControllerValidator.validate(request,command,errors);
+    }
+
+    /**
 	 * Override this in sub controller if summary is needed
 	 * @return
 	 */
@@ -162,4 +168,9 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 	public void setParticipantDao(final ParticipantDao participantDao) {
 		this.participantDao = participantDao;
 	}
+
+    @Required
+    public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
+        this.webControllerValidator = webControllerValidator;
+    }
 }
