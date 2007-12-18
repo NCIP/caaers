@@ -638,7 +638,10 @@
       type="gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm">
       <bind-xml name="AdverseEventMeddraLowLevelTerm"/>
     </field>
-
+    <field name="lowLevelTerm"
+      type="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
+      <bind-xml name="LowLevelTerm"/>
+    </field>
     <field name="attributionSummary" type="gov.nih.nci.cabig.caaers.domain.Attribution">
       <bind-xml name="attributionSummary"/>
     </field>
@@ -651,6 +654,13 @@
     </field>
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
+    <map-to xml="LowLevelTerm"/>
+    <field name="fullName" type="string">
+      <bind-xml name="fullName" node="element"/>
+    </field>
+ </class>
+ 
 
     <class name="gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution"
       extends="gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution">
