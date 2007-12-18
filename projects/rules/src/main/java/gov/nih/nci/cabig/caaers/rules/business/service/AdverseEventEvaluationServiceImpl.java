@@ -9,6 +9,8 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.rules.RuleException;
+import gov.nih.nci.cabig.caaers.rules.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.common.RuleType;
@@ -16,7 +18,6 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
-import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
@@ -33,12 +34,13 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
 	//Replace with spring injection
-	private BusinessRulesExecutionService businessRulesExecutionService = new BusinessRulesExecutionServiceImpl();
-	private RulesEngineService rulesEngineService= new RulesEngineServiceImpl();
+	private BusinessRulesExecutionService businessRulesExecutionService;
+	private RulesEngineService rulesEngineService; 
 
 	public static final String CAN_NOT_DETERMINED = "CAN_NOT_DETERMINED";
 	public static final String SERIOUS_ADVERSE_EVENT = "SERIOUS_ADVERSE_EVENT";
@@ -322,8 +324,9 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
   * This method will evaluate the rules that are bound in the below URI.
   *  URI naming convention :"gov.nih.nci.cabig.caaers.rules.sponsor." + <fundingsponsorOrgName> + "." + <section_name>"
   */
+ @SuppressWarnings(value="unchecked")
  public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, 
-		 ExpeditedReportSection section) throws Exception {
+		 ExpeditedReportSection section) {
 
 	 //create the input objects
 	 ValidationErrors errors = new ValidationErrors();
@@ -339,18 +342,22 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 	 input.add(study);
 	 input.add(errors);
 	 
-	 List<Object> output = fireRules(input, bindURI);
-	 if(output != null){
-		 for(Iterator it = output.iterator(); it.hasNext();){
+	 try {
+		List<Object> output = fireRules(input, bindURI);
+		if(output != null){
+		   for(Iterator it = output.iterator(); it.hasNext();){
 			 Object o = it.next();
 			 if(o instanceof ValidationErrors){
 				  errors = (ValidationErrors) o;
 				  break;
 			 }
-		 }
+		  }
+		}
+	 } catch (RuleSetNotFoundException e) {
+		log.debug("There exist no reporting validation business rules for this AE, ignoring exception", e);
 	 }
 	 
-	 //3. fetch the errors from  
+	//3. fetch the errors from  
 	return errors;
  }
 
@@ -530,18 +537,18 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 	 * @return
 	 * @throws Exception
 	 */
-	private List<Object> fireRules(List<Object> inputObjects, String bindURI) throws Exception {
+	private List<Object> fireRules(List<Object> inputObjects, String bindURI){
 
 		List<Object> outputObjects = null;
 		try{
 			outputObjects = businessRulesExecutionService.fireRules(bindURI, inputObjects);
+		}catch(RuleException e){
+			throw e;
 		} catch(Exception ex){
-
 			log.error("Unable to fire the rule : " + bindURI );
 			log.error("Rule might have been be un deployed  , please look at the exception . " , ex);
-			System.out.println("MESSAGE -- " + ex.getMessage() + "-- MESSAGE") ;
 			if (ex.getMessage().indexOf("local class incompatible") != -1) {
-				throw new Exception (ex.getMessage(),ex);
+				throw new RuleException (ex.getMessage(),ex);
 			}
 
 		}
@@ -549,6 +556,22 @@ private String getBindURI(String sponsorOrInstitutionName, String studyName, Str
 		return outputObjects;
 	}
 
-
+	///Object Methods
+	public BusinessRulesExecutionService getBusinessRulesExecutionService() {
+		return businessRulesExecutionService;
+	}
+	@Required
+	public void setBusinessRulesExecutionService(
+			BusinessRulesExecutionService businessRulesExecutionService) {
+		this.businessRulesExecutionService = businessRulesExecutionService;
+	}
+	
+	public RulesEngineService getRulesEngineService() {
+		return rulesEngineService;
+	}
+	@Required
+	public void setRulesEngineService(RulesEngineService rulesEngineService) {
+		this.rulesEngineService = rulesEngineService;
+	}
 
 }

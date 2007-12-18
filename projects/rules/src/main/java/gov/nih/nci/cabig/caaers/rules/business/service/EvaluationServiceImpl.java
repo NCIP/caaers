@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly=true)
 public class EvaluationServiceImpl implements EvaluationService {
-    private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+    private AdverseEventEvaluationService adverseEventEvaluationService;
     private static final Log log = LogFactory.getLog(EvaluationServiceImpl.class);
 
     private ReportDefinitionDao reportDefinitionDao;

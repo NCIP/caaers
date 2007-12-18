@@ -94,5 +94,12 @@ public class EvaluationServiceTest extends CaaersTestCase {
         verifyMocks();
         assertEquals("ErrorMessage object is not same",messages, msgs);
     }
+    
+    public void testLoadingFromApplicationContextXml(){
+    	EvaluationServiceImpl es = (EvaluationServiceImpl)getDeployedApplicationContext().getBean("evaluationService");
+    	AdverseEventEvaluationServiceImpl aes = (AdverseEventEvaluationServiceImpl)es.getAdverseEventEvaluationService();
+    	assertNotNull("business rules execution service should not be null", aes.getBusinessRulesExecutionService());
+    	assertNotNull("rules engine service should not be null", aes.getRulesEngineService());
+    }
 
 }

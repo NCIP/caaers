@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.rules.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import junit.framework.TestCase;
@@ -152,8 +153,11 @@ public class BusinessRulesExecutionServiceTest extends TestCase {
 			errors = retrieveValidationErrors(output);
 			System.out.println(errors);
 			assertEquals("There should not be validation error", 0, errors.getErrorCount());
+		}catch(RuleSetNotFoundException rsnf){
+			rsnf.printStackTrace();
 		}catch(Exception e){
 			e.printStackTrace();
+			fail("An exception occured while execution of rule");
 		}finally{
 			unregisterRule(bindUri);
 		}

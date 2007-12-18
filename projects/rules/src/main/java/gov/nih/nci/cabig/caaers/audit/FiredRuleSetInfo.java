@@ -27,6 +27,9 @@ public class FiredRuleSetInfo {
 			ruleNames = new ArrayList<String>();
 			RulesEngineService res = new RulesEngineServiceImpl();
 			RuleSet rs= res.getRuleSet(bindUri);
+			
+			if(rs == null) return ruleNames;
+			
 			List<Rule> rules = rs.getRule();
 			for(int i=0; i<rules.size();i++){
 				Rule rule = (Rule)rules.get(i);

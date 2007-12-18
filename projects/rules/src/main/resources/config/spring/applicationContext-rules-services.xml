@@ -26,9 +26,12 @@
 
     <bean id="evaluationService" autowire="byType"
         class="gov.nih.nci.cabig.caaers.rules.business.service.EvaluationServiceImpl"/>
-    <!--
-    <bean id="evaluationService" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.service.MockEvaluationService"/>
-        />
-    -->
+        
+    <bean id="adverseEventEvaluationService" class="gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl" autowire="no">
+    	<property name="rulesEngineService" ref="ruleEngineService" />
+    	<property name="businessRulesExecutionService" ref="businessRulesExecutionService" />
+    </bean>
+    
+    <bean id="businessRulesExecutionService" class="gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl" autowire="byName" />
+  
 </beans>
