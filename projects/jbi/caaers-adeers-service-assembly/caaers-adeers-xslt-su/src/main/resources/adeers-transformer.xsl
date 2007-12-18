@@ -327,7 +327,7 @@
                 </REMOVED_FROM_PROTOCOL_TRT_DATE>
             </xsl:if>
 
-            <!--TODO-->
+
             <xsl:if test="AdverseEventResponseDescription/recoveryDate != ''">
                 <DEATH_DATE>
                     <xsl:call-template name="standard_date">
@@ -335,6 +335,9 @@
                             select="AdverseEventResponseDescription/recoveryDate"/>
                     </xsl:call-template>
                 </DEATH_DATE>
+            </xsl:if>
+            <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'">
+                <AUTOPSY_PERFORMED>No</AUTOPSY_PERFORMED>
             </xsl:if>
 
         </DESCRIPTION_OF_EVENT>
