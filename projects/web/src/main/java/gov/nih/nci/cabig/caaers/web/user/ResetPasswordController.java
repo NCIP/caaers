@@ -26,14 +26,14 @@ public class ResetPasswordController extends SimpleFormController {
 
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-	return new UserName(request.getServerName(), request.getServerPort(), request.getContextPath());
+	return new UserName(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
     }
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
 	UserName userName = (UserName) command;
 	String token = passwordManagerService.requestToken(userName.getUserName());
-	userService.sendUserEmail(userName.getUserName(), userName.getURL() + "token=" + token);
+	userService.sendUserEmail(userName.getUserName(), userName.getURL() + "&token=" + token);
 	return new ModelAndView("user/emailSent");
     }
 
@@ -48,13 +48,12 @@ public class ResetPasswordController extends SimpleFormController {
     }
 
     public class UserName {
-	private static final String PROTOCOL = "http";
 	private static final String CHANGE_PATH = "/public/user/changePassword?";
 	private String userName;
 	private String url;
 
-	public UserName(String serverName, int serverPort, String contextPath) {
-	    url = PROTOCOL + "://" + serverName + ":" + serverPort + contextPath + CHANGE_PATH;
+	public UserName(String scheme, String serverName, int serverPort, String contextPath) {
+	    url = scheme + "://" + serverName + ":" + serverPort + contextPath + CHANGE_PATH;
 	}
 
 	public String getUserName() {

@@ -128,12 +128,9 @@ This applicationContext contains the definition of the concrete services
       <ref bean="reportDao"/>
     </property>
   </bean>
-  <!-- TODO: Remove the below mail settings after demo -->
-  <bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-    <property name="host" value="s[smtp.host]"/>
-    <property name="port" value="s[smtp.port]"/>
-    <property name="username" value="s[smtp.username]"/>
-    <property name="password" value="s[smtp.password]"/>
+
+  <bean id="mailer" class="gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender">
+    <property name="configuration" ref="configuration"/>
   </bean>
 
 

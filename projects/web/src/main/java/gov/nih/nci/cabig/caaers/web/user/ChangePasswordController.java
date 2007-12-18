@@ -32,13 +32,12 @@ public class ChangePasswordController extends SimpleFormController {
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
-	ModelAndView modelAndView = new ModelAndView("/public/login", errors.getModel());
+	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
 	ChangePasswordCommand cmd = (ChangePasswordCommand) command;
 	try {
 	    passwordManagerService.setPassword(cmd.getUserName(), cmd.confirmedPassword(), cmd.getToken());
 	    return modelAndView.addObject("updated", true);
 	} catch (CaaersSystemException e) {
-	    modelAndView = new ModelAndView(getFormView(), errors.getModel());
 	    return modelAndView.addObject("change_pwd_error", e);
 	}
     }
