@@ -56,6 +56,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private Boolean blindedIndicator;
 
 	private Boolean multiInstitutionIndicator;
+	
+	private Boolean adeersReporting;
 
 	private Boolean randomizedIndicator;
 
@@ -662,7 +664,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public void setFundingSponsor(FundingSponsor fundingSponsor) {
 		this.fundingSponsor = fundingSponsor;
 	}
+
 	
-	
+	public Boolean getAdeersReporting() {
+		return adeersReporting;
+	}
+
+	public void setAdeersReporting(Boolean adeersSubmission) {
+		this.adeersReporting = adeersSubmission;
+	}
 
 }

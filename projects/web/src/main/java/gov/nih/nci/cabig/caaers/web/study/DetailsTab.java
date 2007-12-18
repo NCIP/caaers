@@ -77,6 +77,7 @@ public class DetailsTab extends StudyTab {
 			options.put(Boolean.FALSE, "No");
 			options.put(Boolean.TRUE, "Yes");
 			fields.add(InputFieldFactory.createSelectField("multiInstitutionIndicator", "Multi Institutional",true, options));
+			fields.add(InputFieldFactory.createSelectField("adeersReporting", "AdEERS  reporting required",true, options));
 		}
 		
 		if(fundSponsorFieldGroup == null){

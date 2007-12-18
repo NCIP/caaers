@@ -9,7 +9,11 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -25,6 +29,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,6 +62,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private List<ReportDefinition> allReportDefinitions;
     private List<ReportDefinition> requiredReportDefinitions; //report definitions identified by rules engine
     private int nextPage;
+
+    protected Map<String,Boolean> outcomes;
+    private Date outcomeDate;
+    private String otherOutcome;
     
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
         this.reportDao = reportDao;
@@ -64,6 +73,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.expeditedReportTree = expeditedReportTree;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
         this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
+        this.outcomes = new LinkedHashMap<String, Boolean>();
+        
     }
 
     public abstract StudyParticipantAssignment getAssignment();
@@ -335,7 +346,72 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		this.nextPage = page;
 	}
 	
-    @Override
+	
+	
+    public Map<String, Boolean> getOutcomes() {
+		return outcomes;
+	}
+
+	public void setOutcomes(Map<String, Boolean> outcomes) {
+		this.outcomes = outcomes;
+	}
+
+	public void updateOutcomes(){
+		
+		// populate checkboxes with data from db 
+		// not all checkboxes are populated from db - as we need to allow dynamic updates to 
+		// support changes that might happen in the Primary Adverse event. 
+		HashMap<String,Boolean> dbOutcomeHolder = new HashMap<String,Boolean>();
+		for (Outcome outcome : aeReport.getOutcomes()) {
+			if (outcome.getOutcomeType() != OutcomeType.DEATH && 
+				outcome.getOutcomeType() != OutcomeType.LIFE_THREATENING && 
+				outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION ) 
+			{
+				dbOutcomeHolder.put(outcome.getOutcomeType().getCode().toString(), Boolean.TRUE);
+			}
+			if (outcome.getOutcomeType() == OutcomeType.DEATH ){
+				this.outcomeDate = outcome.getDate();
+			}
+			if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS ){
+				this.otherOutcome = outcome.getOther();
+			}
+		}
+		
+		Grade grade = aeReport.getAdverseEvents().size() >0 ? aeReport.getAdverseEvents().get(0).getGrade() : null;
+		Hospitalization hospitalization =  aeReport.getAdverseEvents().size() >0 ? aeReport.getAdverseEvents().get(0).getHospitalization() : null;
+		
+		for (OutcomeType outcomeType : OutcomeType.values()) {
+			boolean choice = Boolean.FALSE;
+			if(grade != null && grade.getName().equals(outcomeType.getName())){
+				choice = Boolean.TRUE;
+			}
+			if(hospitalization != null && hospitalization.getName().contains(outcomeType.getName())){
+				choice = Boolean.TRUE;
+			}
+			if(dbOutcomeHolder.get(outcomeType.getCode().toString()) != null){
+				choice = Boolean.TRUE;
+			}
+			outcomes.put(outcomeType.getCode().toString(),choice);
+		}
+	}
+
+	public Date getOutcomeDate() {
+		return outcomeDate;
+	}
+
+	public void setOutcomeDate(Date outcomeDate) {
+		this.outcomeDate = outcomeDate;
+	}
+
+	public String getOtherOutcome() {
+		return otherOutcome;
+	}
+
+	public void setOtherOutcome(String otherOutcome) {
+		this.otherOutcome = otherOutcome;
+	}
+
+	@Override
     public String toString() {
         return new StringBuilder(getClass().getName())
             .append("[\n    aeReport: ").append(getAeReport())

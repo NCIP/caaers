@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,13 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     String DEVICE_ATTRIBUTION_KEY = "device";
 
     ExpeditedAdverseEventReport getAeReport();
+    
+    public Map<String, Boolean> getOutcomes();
+    public void setOutcomes(Map<String, Boolean> outcomes);
+    public void updateOutcomes();
+    public Date getOutcomeDate();
+	//public void setOutcomeDate(Date outcomeDate); 
+	public String getOtherOutcome();
 
     /* attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs
      * in AdverseEventReport and AdverseEvent */

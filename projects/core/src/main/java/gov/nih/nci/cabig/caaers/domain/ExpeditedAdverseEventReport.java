@@ -68,6 +68,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(AdverseEventPriorTherapy.class);
         addReportChildLazyList(AdverseEventPreExistingCond.class);
+        addReportChildLazyList(Outcome.class);
     }
 
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
@@ -270,6 +271,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapies() {
         return lazyListHelper.getLazyList(AdverseEventPriorTherapy.class);
     }
+    
+    public void addOutcomes(Outcome outcome) {
+        getOutcomesInternal().add(outcome);
+        if (outcome != null) outcome.setReport(this);
+    }
+
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    @Transient
+    public List<Outcome> getOutcomes() {
+        return lazyListHelper.getLazyList(Outcome.class);
+    }
 
     public void addOtherCause(OtherCause otherCause) {
         getOtherCausesInternal().add(otherCause);
@@ -425,6 +437,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal) {
         lazyListHelper.setInternalList(AdverseEventPriorTherapy.class, adverseEventPriorTherapiesInternal);
     }
+    
+    //  This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name="report_id", nullable=false)
+    @IndexColumn(name="list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<Outcome> getOutcomesInternal() {
+        return lazyListHelper.getInternalList(Outcome.class);
+    }
+
+    public void setOutcomesInternal(
+        List<Outcome> outcomesInternal) {
+        lazyListHelper.setInternalList(Outcome.class, outcomesInternal);
+    }
+    
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })

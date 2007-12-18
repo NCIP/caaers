@@ -56,4 +56,7 @@
 	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="diseaseCodeTerm">
 	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm</param>
 	</typedef>
+	<typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="outcomeType">
+	 <param name="enumClass">gov.nih.nci.cabig.caaers.domain.OutcomeType</param>
+	</typedef>
 </hibernate-mapping>

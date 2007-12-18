@@ -126,6 +126,7 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		organizationDao.save(organization);
 		studySite1.setOrganization(organization);
 		study.addStudySite(studySite1);
+		study.setAdeersReporting(Boolean.TRUE);
 
 		SystemAssignedIdentifier systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("val1");
 		OrganizationAssignedIdentifier organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier(

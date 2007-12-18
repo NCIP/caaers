@@ -141,6 +141,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         // loaded
         assignment = createAssignment();
         assignment.getStudySite().getStudy().setId(4);
+        assignment.getStudySite().getStudy().setAdeersReporting(Boolean.TRUE);
 
         passFirstPage();
     }

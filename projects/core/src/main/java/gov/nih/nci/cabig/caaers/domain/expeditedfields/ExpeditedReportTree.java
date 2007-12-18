@@ -18,6 +18,7 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SUBMIT_REPORT_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SURGERY_INTERVENTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.TREATMENT_INFO_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OUTCOME_SECTION;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
@@ -218,7 +219,8 @@ public class ExpeditedReportTree extends PropertylessNode {
             ),
             section(ATTRIBUTION_SECTION), //TODO: how to fill this??
             section(ADDITIONAL_INFO_SECTION),//TODO: additional info section
-            section(SUBMIT_REPORT_SECTION)// TODO: just a space filler section
+            section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
+            section(OUTCOME_SECTION)// TODO: just a space filler section
         );
     }
 

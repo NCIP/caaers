@@ -128,6 +128,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
 	<value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>                
 	<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
+	<value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
 	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
       </list>
     </property>
