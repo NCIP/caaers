@@ -14,11 +14,12 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.rules.RuleSetNotFoundException;
+import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import junit.framework.TestCase;
 
-public class BusinessRulesExecutionServiceTest extends TestCase {
+public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	
 	RuleDeploymentServiceImpl deploymetService;
 	BusinessRulesExecutionServiceImpl executionService;
@@ -161,18 +162,6 @@ public class BusinessRulesExecutionServiceTest extends TestCase {
 		}finally{
 			unregisterRule(bindUri);
 		}
-	}
-	
-	public String getFileContext(String fileName) throws Exception{
-		File testFile = new ClassPathResource(fileName,BusinessRulesExecutionServiceTest.class).getFile();
-		BufferedReader ds = new BufferedReader(new FileReader(testFile));
-		String line = null;
-		StringBuffer xml = new StringBuffer();
-		while((line = ds.readLine()) != null){
-			xml.append(line);
-		}
-		assertTrue("Content of the xml should not be null", xml.toString().length() > 0);
-		return xml.toString();
 	}
 	
 	

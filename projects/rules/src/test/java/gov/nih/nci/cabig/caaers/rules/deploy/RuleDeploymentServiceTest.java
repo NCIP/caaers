@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
+import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
 
 import java.io.BufferedReader;
@@ -16,7 +17,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import junit.framework.TestCase;
 
-public class RuleDeploymentServiceTest extends TestCase {
+public class RuleDeploymentServiceTest extends RulesTestCase {
 	RuleDeploymentServiceImpl deploymentService;
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -49,21 +50,10 @@ public class RuleDeploymentServiceTest extends TestCase {
 	
 	public void testRegisterRuleXml() throws Exception{
 		String xml = getFileContext("test_rule.xml");
-		deploymentService.registerRuleXml("CTEP_EGx_RULE", xml);
+		String bindUri = "gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.description_section";
+		deploymentService.registerRuleXml(bindUri, xml);
 		
-		String xml2 = getFileContext("test_rule2.xml");
-		deploymentService.registerRuleXml("CTEP_EG2_RULE", xml2);
 	}
 	
-	public String getFileContext(String fileName) throws Exception{
-		File testFile = new ClassPathResource(fileName,RuleDeploymentServiceTest.class).getFile();
-		BufferedReader ds = new BufferedReader(new FileReader(testFile));
-		String line = null;
-		StringBuffer xml = new StringBuffer();
-		while((line = ds.readLine()) != null){
-			xml.append(line);
-		}
-		assertTrue("Content of the xml should not be null", xml.toString().length() > 0);
-		return xml.toString();
-	}
+	
 }
