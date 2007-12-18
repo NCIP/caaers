@@ -40,4 +40,9 @@ public class CtepStudyDisease extends AbstractStudyDisease<DiseaseTerm> {
 		super.setTerm(diseaseTerm);
 	}
 	
+	@Transient
+	@Override
+	public String getTermName() {
+		return getTerm().getFullName();
+	}
 }

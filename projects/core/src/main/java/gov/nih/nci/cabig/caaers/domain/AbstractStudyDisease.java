@@ -67,4 +67,8 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends Abstr
     public void setTerm(T term) {
         this.term = term;
     }
+    @Transient
+    public abstract String getTermName();
+    @Transient
+    public void setTermName(String name){}
 }
