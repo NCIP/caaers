@@ -6,6 +6,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * @author Krikor Krumlian
@@ -30,4 +31,10 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
     public LowLevelTerm getTerm() {
         return super.getTerm();
     }
+	
+	@Override
+	@Transient
+	public String getTermName() {
+		return getTerm().getFullName();
+	}
 }

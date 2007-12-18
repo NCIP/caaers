@@ -64,6 +64,11 @@ public class DiseaseTerm extends AbstractImmutableDomainObject {
         this.category = category;
     }
     
+    @Transient
+    public String getFullName(){
+    	return term;
+    }
+    
     public boolean equals(Object o) {
 		if (this == o)
 			return true;
