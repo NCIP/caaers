@@ -394,7 +394,7 @@ public class AdverseEventReportSerializer {
 				} else {
 					adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
 				}
-	
+				adverseEvent.setLowLevelTerm(ae.getLowLevelTerm());
 	
 				
 		    	adverseEvent.setHospitalization(ae.getHospitalization());
