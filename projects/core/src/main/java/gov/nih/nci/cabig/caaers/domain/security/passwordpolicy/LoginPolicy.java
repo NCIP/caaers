@@ -32,4 +32,10 @@ public class LoginPolicy {
     public void setMaxPasswordAge(int maxPasswordAge) {
 	this.maxPasswordAge = maxPasswordAge;
     }
+
+    public String toString() {
+	return "Maximum password age is " + maxPasswordAge + " (seconds).\n" 
+	    + "Number of allowed login attempts is " + allowedFailedLoginAttempts + ".\n"
+	    + "The lockout duration is " + lockOutDuration + " (seconds).\n";
+    }
 }

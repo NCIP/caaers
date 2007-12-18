@@ -4,606 +4,607 @@
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
-	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basename"><value>help</value></property>
-    </bean>
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basename"><value>help</value></property>
+  </bean>
 
-    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+  <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="location"><value>/WEB-INF/special-views.xml</value></property>
-    </bean>
+  <bean id="xmlViewResolver" class="org.springframework.web.servlet.view.XmlViewResolver">
+    <property name="location"><value>/WEB-INF/special-views.xml</value></property>
+  </bean>
 
-    <bean id="irViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-        p:viewClass="org.springframework.web.servlet.view.InternalResourceView"
-        p:prefix="/WEB-INF/views/" p:suffix=".jsp"/>
-    
-    <bean id="multipartResolver"
-    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  <bean id="irViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+	p:viewClass="org.springframework.web.servlet.view.InternalResourceView"
+	p:prefix="/WEB-INF/views/" p:suffix=".jsp"/>
+  
+  <bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <!-- one of the properties available; the maximum file size in bytes -->
     <property name="maxUploadSize" value="10000000"/>
-	</bean>    
+  </bean>    
   
-    <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
-        <property name="interceptors">
-            <list>
-            <!--
-                <ref bean="loginCheckInterceptor"/>
-                -->
-                <ref bean="sectionInterceptor"/>
-            </list>
-        </property>
-    </bean>
-    
-    <bean id="urlResolver" class="gov.nih.nci.cabig.ctms.tools.spring.BeanNameControllerUrlResolver">
-        <property name="servletName"><value>pages</value></property>
-    </bean>
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" lazy-init="true">
+    <property name="interceptors">
+      <list>
+	<!--
+	    <ref bean="loginCheckInterceptor"/>
+	-->
+	<ref bean="sectionInterceptor"/>
+      </list>
+    </property>
+  </bean>
+  
+  <bean id="urlResolver" class="gov.nih.nci.cabig.ctms.tools.spring.BeanNameControllerUrlResolver">
+    <property name="servletName"><value>pages</value></property>
+  </bean>
 
 
-    <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
-        <property name="taskGroups">
-            <list>
-                <ref bean="routineReportTaskGroup"/>
-                <ref bean="expeditedReportTaskGroup"/>
-                <ref bean="advanceSearchTaskGroup"/>
-                <ref bean="ruleTaskGroup"/>
-                <ref bean="reportCalendarTaskGroup"/>
-                <ref bean="userTaskGroup"/>
-                <ref bean="studyTaskGroup"/>
-                <ref bean="participantTaskGroup"/>
-                <ref bean="personalTaskGroup"/>
-                <ref bean="medraTaskGroup"/>
-                <ref bean="organizationTaskGroup"/> 
-            </list>
-        </property>
- </bean>
+  <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
+    <property name="taskGroups">
+      <list>
+	<ref bean="routineReportTaskGroup"/>
+	<ref bean="expeditedReportTaskGroup"/>
+	<ref bean="advanceSearchTaskGroup"/>
+	<ref bean="ruleTaskGroup"/>
+	<ref bean="reportCalendarTaskGroup"/>
+	<ref bean="userTaskGroup"/>
+	<ref bean="studyTaskGroup"/>
+	<ref bean="participantTaskGroup"/>
+	<ref bean="personalTaskGroup"/>
+	<ref bean="medraTaskGroup"/>
+	<ref bean="organizationTaskGroup"/> 
+      </list>
+    </property>
+  </bean>
 
-    <bean id="advanceSearchTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Analysis and Review">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Review AEs" p:linkName="adverseEventController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Review Expedited Reports" p:linkName="reportController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Review Routine AEs" p:linkName="routineReportController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="List Studies" p:linkName="studyController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="List Participants" p:linkName="participantController"/>
+  <bean id="advanceSearchTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Analysis and Review">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Review AEs" p:linkName="adverseEventController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Review Expedited Reports" p:linkName="reportController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Review Routine AEs" p:linkName="routineReportController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="List Studies" p:linkName="studyController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="List Participants" p:linkName="participantController"/>
 
-            </list>
-        </property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="routineReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Routine Reports">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
+  <bean id="routineReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Routine Reports">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
 
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Enter routine report" p:linkName="createAdverseEventController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
-            </list>
-        </property>
-    </bean>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Enter routine report" p:linkName="createAdverseEventController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="expeditedReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Expedited Reports">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
-            </list>
-        </property>
-    </bean>
+  <bean id="expeditedReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Expedited Reports">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="ruleTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Rules">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Manage Rules" p:linkName="createRuleController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="List Rules" p:linkName="listRuleController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Import Rules" p:linkName="importRuleController"/>
+  <bean id="ruleTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Rules">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Manage Rules" p:linkName="createRuleController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="List Rules" p:linkName="listRuleController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Import Rules" p:linkName="importRuleController"/>
 
-            </list>
-        </property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="reportCalendarTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Report Calendar Template">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
-            </list>
-        </property>
-    </bean>
-
-
-    <bean id="participantTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Participants">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Import Participant" p:linkName="importController"/>
-
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Create Participant" p:linkName="createParticipantController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="studyTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Studies ">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Import Studies" p:linkName="importController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Create Study" p:linkName="createStudyController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Search Studies" p:linkName="searchStudyController"/>
-
-            </list>
-        </property>
-    </bean>
-
-    <bean id="medraTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Codesets and Pick List">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
-
-            </list>
-        </property>
-    </bean>
-
-    <bean id="organizationTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Organizations ">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Create Sites" p:linkName="createOrganizationController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Search/Edit Sites" p:linkName="searchOrganizationController"/>
-
-            </list>
-        </property>
-    </bean>
-
-    <bean id="userTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="User Management ">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Create Users" p:linkName="createResearchStaffController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Search/Edit Users" p:linkName="searchResearchStaffController"/>
+  <bean id="reportCalendarTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Report Calendar Template">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
+      </list>
+    </property>
+  </bean>
 
 
-            </list>
-        </property>
-    </bean>
+  <bean id="participantTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Participants">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Import Participant" p:linkName="importController"/>
 
-    <bean id="personalTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-          p:displayName="Study Personal">
-        <property name="taskList">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Manage Investigator" p:linkName="createInvestigatorController"/>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                      p:displayName="Manage Research Staff" p:linkName="createResearchStaffController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Create Participant" p:linkName="createParticipantController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
+      </list>
+    </property>
+  </bean>
 
+  <bean id="studyTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Studies ">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Import Studies" p:linkName="importController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Create Study" p:linkName="createStudyController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Search Studies" p:linkName="searchStudyController"/>
 
-            </list>
-        </property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
-        <property name="sections">
-            <list>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Adverse Events" p:mainController="listAdverseEventsController">
-                    <property name="pathMapping"><value>/ae/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
-                        </list>
-                    </property>
-                </bean>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Studies" p:mainController="searchStudyController">
-                    <property name="pathMapping"><value>/study/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Study" p:linkName="createStudyController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Search Studies" p:linkName="searchStudyController"/>
-                        </list>
-                    </property>
-                </bean>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Participants" p:mainController="createParticipantController">
-                    <property name="pathMapping"><value>/participant/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Participant" p:linkName="createParticipantController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
-                        </list>
-                    </property>
-                </bean>
-                  
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Rules" p:mainController="createRuleController">
-                    <property name="pathMapping"><value>/rule/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Manage Rules" p:linkName="createRuleController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="List Rules" p:linkName="listRuleController"/>
-                            <!--  
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
-                            
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Export Rules" p:linkName="exportRuleController"/>
-                                -->
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Import Rules" p:linkName="importRuleController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="List Report Definitions" p:linkName="listNotificationController"/>                                
-                        </list>
-                    </property>
-                </bean>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Administration" p:mainController="configurationController">
-                    <property name="pathMapping"><value>/admin/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Configure caAERS" p:linkName="configurationController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Investigator" p:linkName="createInvestigatorController"/>            
-							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Import" p:linkName="importController"/> 
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
-							<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="IND#" p:linkName="createINDController"/>                                                                                
-                        <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
-                        
-                        </list>
-                    </property>
-                </bean>
-                <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-                    p:displayName="Advanced Search" p:mainController="studyController">
-                    <property name="pathMapping"><value>/search/**</value></property>
-                    <property name="tasks">
-                        <list>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Study search" p:linkName="studyController"/> 
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Participant search" p:linkName="participantController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="AE search" p:linkName="adverseEventController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Expedited Report search" p:linkName="reportController"/>
-                            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-                                p:displayName="Routine AE search" p:linkName="routineReportController"/>
-                        </list>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
+  <bean id="medraTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Codesets and Pick List">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
 
-    <bean id="noCacheTemplate" abstract="true">
-        <property name="cacheSeconds"><value>0</value></property>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
+  <bean id="organizationTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Organizations ">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Create Sites" p:linkName="createOrganizationController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Search/Edit Sites" p:linkName="searchOrganizationController"/>
 
-    <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
+      </list>
+    </property>
+  </bean>
 
-                                                                    
+  <bean id="userTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="User Management ">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Create Users" p:linkName="createResearchStaffController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Search/Edit Users" p:linkName="searchResearchStaffController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
+      </list>
+    </property>
+  </bean>
 
-    <!--  PARTICIPANT   -->
+  <bean id="personalTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
+	p:displayName="Study Personal">
+    <property name="taskList">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Manage Investigator" p:linkName="createInvestigatorController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+	      p:displayName="Manage Research Staff" p:linkName="createResearchStaffController"/>
 
 
-    <bean name="/participant/create" id="createParticipantController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
-        <property name="webControllerValidator" ref="webControllerValidator"/>
-    </bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean name="/participant/edit" id="editParticipantController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
-          <property name="webControllerValidator" ref="webControllerValidator"/>
-    </bean>
-
-    <bean name="/participant/assign" id="assignController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
-    	  <property name="sessionForm"><value>true</value></property>
-  	</bean>
-	
-	<bean name="/participant/view" id="viewParticipantController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
-    </bean>
-    
-    <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
-    </bean>
-
-    <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
-    </bean>
-
-    <bean name="/study/create" id="createStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController">
+  <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
+    <property name="sections">
+      <list>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Adverse Events" p:mainController="listAdverseEventsController">
+	  <property name="pathMapping"><value>/ae/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
+	    </list>
+	  </property>
+	</bean>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Studies" p:mainController="searchStudyController">
+	  <property name="pathMapping"><value>/study/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Create Study" p:linkName="createStudyController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Search Studies" p:linkName="searchStudyController"/>
+	    </list>
+	  </property>
+	</bean>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Participants" p:mainController="createParticipantController">
+	  <property name="pathMapping"><value>/participant/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Create Participant" p:linkName="createParticipantController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
+	    </list>
+	  </property>
 	</bean>
 	
-	<bean name="/study/view" id="viewStudyController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController" >
-    </bean>
-    
-    <bean name="/study/search" id="searchStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
-          <property name="sessionForm" value="true"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Rules" p:mainController="createRuleController">
+	  <property name="pathMapping"><value>/rule/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Manage Rules" p:linkName="createRuleController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="List Rules" p:linkName="listRuleController"/>
+	      <!--  
+		   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		   p:displayName="Deploy Rules" p:linkName="deployRuleController"/>
+		   
+		   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		   p:displayName="Export Rules" p:linkName="exportRuleController"/>
+	      -->
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Import Rules" p:linkName="importRuleController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="List Report Definitions" p:linkName="listNotificationController"/>                                
+	    </list>
+	  </property>
 	</bean>
-	
-	<bean name="/study/edit" id="editStudyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
-	</bean>    
-	<bean name="/study/studyAgentIND" id="studyAgentINDController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
-    </bean>    
-	
-    <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
-        
-     <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>    
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Administration" p:mainController="configurationController">
+	  <property name="pathMapping"><value>/admin/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Configure caAERS" p:linkName="configurationController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Investigator" p:linkName="createInvestigatorController"/>            
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Research Staff" p:linkName="createResearchStaffController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Import" p:linkName="importController"/> 
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Import MedDRA" p:linkName="importMeddraController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="IND#" p:linkName="createINDController"/>                                                                                
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Organization" p:linkName="createOrganizationController"/>                                                                               
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Configure Password Policy" p:linkName="passwordPolicyConfigurationController"/>
+	    </list>
+	  </property>
+	</bean>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
+	      p:displayName="Advanced Search" p:mainController="studyController">
+	  <property name="pathMapping"><value>/search/**</value></property>
+	  <property name="tasks">
+	    <list>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Study search" p:linkName="studyController"/> 
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Participant search" p:linkName="participantController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="AE search" p:linkName="adverseEventController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Expedited Report search" p:linkName="reportController"/>
+	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Routine AE search" p:linkName="routineReportController"/>
+	    </list>
+	  </property>
+	</bean>
+      </list>
+    </property>
+  </bean>
 
-    <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
-        
-     <bean name="/ae/submitReport" id="submitReportController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
-        
-    <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController"/>    
-        
-        
+  <bean id="noCacheTemplate" abstract="true">
+    <property name="cacheSeconds"><value>0</value></property>
+  </bean>
 
-    <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
-        
-    <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>    
+  <bean id="listValues" class="gov.nih.nci.cabig.caaers.web.ListValues" autowire="byName"/>
 
-    <bean name="/admin/configure" id="configurationController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
+  <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
-    <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController"/>
+  
 
-	<bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
-           <property name="sessionForm"><value>true</value></property>
-     </bean>
-	
-	     <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
-     </bean>
-     
+  <!--  PARTICIPANT   -->
 
-	<bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
-     </bean>     
-     
-	<bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
-           <property name="sessionForm"><value>true</value></property>
-        <property name="webControllerValidator" ref="webControllerValidator"/>
-     </bean>
-     
-     <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
-     <property name="webControllerValidator" ref="webControllerValidator"/>
-     </bean>
-     
 
-	<bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController">
-     </bean>
-
-	<bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController">
-     </bean>
-
-<bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
+  <bean name="/participant/create" id="createParticipantController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
     <property name="webControllerValidator" ref="webControllerValidator"/>
-     </bean>
-     
-          
-    <bean name="/admin/import" id="importController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.ImportController"/>
-          
-    <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
-    	  class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" >
-    </bean>            
+  </bean>
 
-	<bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >
-    </bean>
-    
-    <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
-           <property name="sessionForm"><value>true</value></property>
-     <property name="webControllerValidator" ref="webControllerValidator"/>   
-    </bean>
-	<bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
-    	  class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
-    </bean>
-    <bean name="/admin/createIND" id="createINDController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
-    <bean name="/admin/searchIND" id="searchINDController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
-    
-    
-    <bean name="/search/study" id="studyController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
-          
-    <bean name="/search/participant" id="participantController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
-          
-    <bean name="/participant/search" id="searchParticipantController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
-    
-          
-    <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 
-          
-    <bean name="/search/report" id="reportController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
-          
-     <bean name="/search/routineReport" id="routineReportController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
-    
-    <bean name="/help" id="helpController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/participant/edit" id="editParticipantController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
+    <property name="webControllerValidator" ref="webControllerValidator"/>
+  </bean>
 
-    <bean name="/ae/notImplemented" id="aesNotImplementedController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/participant/assign" id="assignController" autowire="byName"
+	class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
+    <property name="sessionForm"><value>true</value></property>
+  </bean>
+  
+  <bean name="/participant/view" id="viewParticipantController" autowire="byName"
+	class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
+  </bean>
+  
+  <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
+	class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
+  </bean>
 
-    <bean name="/study/notImplemented" id="studiesNotImplementedController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName"
+	class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
+  </bean>
 
-    <bean name="/participant/notImplemented" id="participantsNotImplementedController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/study/create" id="createStudyController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController">
+  </bean>
+  
+  <bean name="/study/view" id="viewStudyController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController" >
+  </bean>
+  
+  <bean name="/study/search" id="searchStudyController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
+    <property name="sessionForm" value="true"/>
+  </bean>
+  
+  <bean name="/study/edit" id="editStudyController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
+  </bean>    
+  <bean name="/study/studyAgentIND" id="studyAgentINDController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
+  </bean>    
+  
+  <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
+  
+  <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>    
 
-    <bean name="/report/notImplemented" id="reportsNotImplementedController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
+  
+  <bean name="/ae/submitReport" id="submitReportController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
+  
+  <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController"/>    
+  
+  
 
-    <bean name="/admin/notImplemented" id="adminNotImplementedController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>standardNotImplemented</value></property>
-    </bean>
+  <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
+  
+  <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>    
 
-    <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
+  <bean name="/admin/configure" id="configurationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 
-    <bean name="/rule/export" id="exportRuleController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController">
-    </bean>	
+  <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController"/>
 
-    <bean name="/rule/import" id="importRuleController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleController">
-    </bean>	
-    
-    <bean name="/rule/create" id="createRuleController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController">
-    </bean>
+  <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">
+    <property name="sessionForm"><value>true</value></property>
+  </bean>
+  
+  <bean name="/admin/editInvestigator" id="editInvestigatorController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.EditInvestigatorController">
+  </bean>
+  
 
-    <bean name="/rule/list" id="listRuleController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController">
-    </bean>
-    <bean name="/rule/util" id="ruleUtilController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController">        
-    </bean> 
-    <bean name="/rule/addRule" id="addRuleController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>rule/author/addRule</value></property>
-    </bean>
-    
-    <bean name="/rule/createOptions" id="createOptionsController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>rule/author/createOptions</value></property>
-    </bean>
+  <bean name="/admin/searchInvestigator" id="searchInvestigatorController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.SearchInvestigatorController">
+  </bean>     
+  
+  <bean name="/admin/createOrganization" id="createOrganizationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.CreateOrganizationController">
+    <property name="sessionForm"><value>true</value></property>
+    <property name="webControllerValidator" ref="webControllerValidator"/>
+  </bean>
+  
+  <bean name="/admin/editOrganization" id="editOrganizationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.EditOrganizationController">
+    <property name="webControllerValidator" ref="webControllerValidator"/>
+  </bean>
+  
 
-    <bean name="/rule/addColumn" id="addRuleConditionController" autowire="byType"
-        class="org.springframework.web.servlet.mvc.ParameterizableViewController">
-        <property name="viewName"><value>rule/author/addColumn</value></property>
-    </bean>    
+  <bean name="/admin/searchOrganization" id="searchOrganizationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.SearchOrganizationController">
+  </bean>
 
-    
-	<!-- TODO: to be removed -->
-	<util:map id="roles" map-class="java.util.LinkedHashMap">
-	  <entry key="Site Study PI" value="Site Study PI" />
-	  <entry key="Study Chair" value="Study Chair" />
-	  <entry key="Reporter" value="Reporter" />
-	  <entry key="Treating Physician" value="Treating Physician" />
-	  <entry key="Sponsor" value="Sponsor" />
-	  <entry key="IRB" value="IRB" />	
-	</util:map>
+  <bean name="/admin/searchResearchStaff" id="searchResearchStaffController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController">
+  </bean>
 
-    <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
-		 <property name="roles" ref="roles" />
-    </bean>
-	
-	<bean name="/rule/notification/edit" autowire="byType"
-		class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController"> 
-		<property name="roles" ref="roles" />
-	</bean>
-	
-    <bean name="/rule/notification/list" id="listNotificationController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController">
-    </bean>
-    
-    <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
-        class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
-    </bean>
+  <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
+    <property name="webControllerValidator" ref="webControllerValidator"/>
+  </bean>
+  
+  
+  <bean name="/admin/import" id="importController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.ImportController"/>
+  
+  <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
+	class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" >
+  </bean>            
+
+  <bean name="/admin/viewInvestigator" id="viewInvestigatorController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.ViewInvestigatorController" >
+  </bean>
+  
+  <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
+    <property name="sessionForm"><value>true</value></property>
+    <property name="webControllerValidator" ref="webControllerValidator"/>   
+  </bean>
+  <bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
+  </bean>
+  <bean name="/admin/createIND" id="createINDController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>
+  <bean name="/admin/searchIND" id="searchINDController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.SearchINDController"/>
+  
+  
+  <bean name="/search/study" id="studyController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
+  
+  <bean name="/search/participant" id="participantController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
+  
+  <bean name="/participant/search" id="searchParticipantController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
+  
+  
+  <bean name="/search/adverseEvent" id="adverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.AdverseEventController"/> 
+  
+  <bean name="/search/report" id="reportController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.ReportController"/>
+  
+  <bean name="/search/routineReport" id="routineReportController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.search.RoutineReportController"/>                         
+  
+  <bean name="/help" id="helpController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/ae/notImplemented" id="aesNotImplementedController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/study/notImplemented" id="studiesNotImplementedController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/participant/notImplemented" id="participantsNotImplementedController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/report/notImplemented" id="reportsNotImplementedController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/admin/notImplemented" id="adminNotImplementedController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>standardNotImplemented</value></property>
+  </bean>
+
+  <bean name="/ae/sample" autowire="byType" class="gov.nih.nci.cabig.caaers.web.SampleController"/>
+
+  <bean name="/rule/export" id="exportRuleController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.author.ExportRuleController">
+  </bean>	
+
+  <bean name="/rule/import" id="importRuleController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.author.ImportRuleController">
+  </bean>	
+  
+  <bean name="/rule/create" id="createRuleController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController">
+  </bean>
+
+  <bean name="/rule/list" id="listRuleController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.author.ListRuleController">
+  </bean>
+  <bean name="/rule/util" id="ruleUtilController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.author.RuleUtilController">        
+  </bean> 
+  <bean name="/rule/addRule" id="addRuleController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>rule/author/addRule</value></property>
+  </bean>
+  
+  <bean name="/rule/createOptions" id="createOptionsController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>rule/author/createOptions</value></property>
+  </bean>
+
+  <bean name="/rule/addColumn" id="addRuleConditionController" autowire="byType"
+	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+    <property name="viewName"><value>rule/author/addColumn</value></property>
+  </bean>    
+
+  
+  <!-- TODO: to be removed -->
+  <util:map id="roles" map-class="java.util.LinkedHashMap">
+    <entry key="Site Study PI" value="Site Study PI" />
+    <entry key="Study Chair" value="Study Chair" />
+    <entry key="Reporter" value="Reporter" />
+    <entry key="Treating Physician" value="Treating Physician" />
+    <entry key="Sponsor" value="Sponsor" />
+    <entry key="IRB" value="IRB" />	
+  </util:map>
+
+  <bean name="/rule/notification/create" id="createNotificationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.notification.CreateReportDefinitionController">
+    <property name="roles" ref="roles" />
+  </bean>
+  
+  <bean name="/rule/notification/edit" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.notification.EditReportDefinitionController"> 
+    <property name="roles" ref="roles" />
+  </bean>
+  
+  <bean name="/rule/notification/list" id="listNotificationController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.notification.ListNotificationController">
+  </bean>
+  
+  <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
+  </bean>
 
 
 

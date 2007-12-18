@@ -31,6 +31,18 @@
     .required_item_heading {
      clear: both;
     }
+
+    .updated {
+     border: #494 solid;
+     border-width: 1px 0;
+     background-color: #8C8;
+     padding: 1em 2em;
+     text-align: center;
+     margin: 1em 30%;
+     color: #fff;
+     font-weight: bold;
+     font-size: 1.1em;
+    }
   </style>
 </head>
 <body> 
@@ -98,10 +110,7 @@
 	  
 	  <div class="nested_section">
 	    <div class="row">
-	      <div class="required_label">Minimum number of complexity requirements:</div>
-	      <div class="required_value">
-		<form:input path="passwordCreationPolicy.combinationPolicy.minimumRequired" size="3"/>
-	      </div>
+	      <div class="required_label">Meets the following complexity requirements:</div>
 	    </div>
 	  </div>
 
@@ -158,7 +167,7 @@
 	<input type="submit" value="Save"/>
       </div>
 
-      <c:if test="${param.updated}">
+      <c:if test="${updated}">
 	<p class="updated">Settings saved</p>
       </c:if>
     </form:form>

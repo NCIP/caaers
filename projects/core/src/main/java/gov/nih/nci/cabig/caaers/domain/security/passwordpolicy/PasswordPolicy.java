@@ -60,4 +60,8 @@ public class PasswordPolicy extends AbstractMutableDomainObject {
     public long getTokenTimeout() {
 	return TOKEN_TIMEOUT_MS;
     }
+
+    public String toString() {
+	return loginPolicy.toString() + "\n" + passwordCreationPolicy.toString();
+    }
 }

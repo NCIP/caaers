@@ -19,4 +19,5 @@ public interface UserService {
     public boolean userHasPassword(String userName, String password) throws CaaersSystemException;
     public boolean userHadPassword(String userName, String password) throws CaaersSystemException;
     public String userCreateToken(String userName) throws CaaersSystemException;
+    public void sendUserEmail(String userName, String message);
 }

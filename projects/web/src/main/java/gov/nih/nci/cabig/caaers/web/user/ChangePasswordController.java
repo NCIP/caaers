@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.user;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +18,8 @@ import org.springframework.validation.BindException;
 public class ChangePasswordController extends SimpleFormController {
 
     private PasswordManagerService passwordManagerService;
-    
+    private PasswordPolicyService passwordPolicyService;
+
     public ChangePasswordController() {
 	setFormView("user/changePassword");
 	setBindOnNewForm(true);
@@ -30,12 +32,13 @@ public class ChangePasswordController extends SimpleFormController {
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
-	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
+	ModelAndView modelAndView = new ModelAndView("/public/login", errors.getModel());
 	ChangePasswordCommand cmd = (ChangePasswordCommand) command;
 	try {
 	    passwordManagerService.setPassword(cmd.getUserName(), cmd.confirmedPassword(), cmd.getToken());
 	    return modelAndView.addObject("updated", true);
 	} catch (CaaersSystemException e) {
+	    modelAndView = new ModelAndView(getFormView(), errors.getModel());
 	    return modelAndView.addObject("change_pwd_error", e);
 	}
     }
@@ -43,6 +46,11 @@ public class ChangePasswordController extends SimpleFormController {
     @Required
     public void setPasswordManagerService(PasswordManagerService passwordManagerService) {
 	this.passwordManagerService = passwordManagerService;
+    }
+
+    @Required
+    public void setPasswordPolicyService(PasswordPolicyService passwordPolicyService) {
+	this.passwordPolicyService = passwordPolicyService;
     }
 
     public class ChangePasswordCommand {
@@ -83,6 +91,6 @@ public class ChangePasswordController extends SimpleFormController {
 	public String confirmedPassword() throws CaaersSystemException {
 	    if (password.equals(passwordConfirm)) return password;
 	    throw new CaaersSystemException("The two passwords entered are not the same,");
-	}
+	}	
     }
 }

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
+import gov.nih.nci.cabig.caaers.service.UserService;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.validation.BindException;
 public class ResetPasswordController extends SimpleFormController {
 
     private PasswordManagerService passwordManagerService;
+    private UserService userService;
     
     public ResetPasswordController() {
 	setFormView("user/resetPassword");
@@ -24,13 +26,14 @@ public class ResetPasswordController extends SimpleFormController {
 
 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-	return new UserName();
+	return new UserName(request.getServerName(), request.getServerPort(), request.getContextPath());
     }
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
-	String token = passwordManagerService.requestToken(((UserName) command).getUserName());
-	// send an email to the user with a link to changePassword
+	UserName userName = (UserName) command;
+	String token = passwordManagerService.requestToken(userName.getUserName());
+	userService.sendUserEmail(userName.getUserName(), userName.getURL() + "token=" + token);
 	return new ModelAndView("user/emailSent");
     }
 
@@ -39,8 +42,20 @@ public class ResetPasswordController extends SimpleFormController {
 	this.passwordManagerService = passwordManagerService;
     }
 
+    @Required
+    public void setUserService(UserService userService) {
+	this.userService = userService;
+    }
+
     public class UserName {
+	private static final String PROTOCOL = "http";
+	private static final String CHANGE_PATH = "/public/user/changePassword?";
 	private String userName;
+	private String url;
+
+	public UserName(String serverName, int serverPort, String contextPath) {
+	    url = PROTOCOL + "://" + serverName + ":" + serverPort + contextPath + CHANGE_PATH;
+	}
 
 	public String getUserName() {
 	    return userName;
@@ -48,6 +63,11 @@ public class ResetPasswordController extends SimpleFormController {
 
 	public void setUserName(String userName) {
 	    this.userName = userName;
-	}       
+	    this.url += "userName=" + userName;
+	}
+
+	public String getURL() {
+	    return url;
+	}
     }
 }

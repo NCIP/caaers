@@ -33,13 +33,13 @@
       <div class="row">
 	<div class="label">New Password</div>
 	<div class="value">
-	  <form:input path="password"/>
+	  <form:password path="password"/>
 	</div>
       </div>
       <div class="row">
 	<div class="label">Confirm Password</div>
 	<div class="value">
-	  <form:input path="passwordConfirm"/>
+	  <form:password path="passwordConfirm"/>
 	</div>
       </div>
       <div class="row">

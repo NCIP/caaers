@@ -59,4 +59,13 @@ public class CombinationPolicy {
     public void setMaxSubstringLength(int maxSubstringLength) {
 	this.maxSubstringLength = maxSubstringLength;
     }    
+
+    public String toString() {
+	return "The password must:\n"
+	    + (upperCaseAlphabetRequired ? "Contain at least one uppercase letter.\n" : "")
+	    + (lowerCaseAlphabetRequired ? "Contain at least one lowercase letter.\n" : "")
+	    + (nonAlphaNumericRequired ? "Contain at least one non-alphanumeric character.\n" : "")
+	    + (baseTenDigitRequired ? "Contain at least one base ten digit.\n" : "")
+	    + "The password may not contain a substring longer than " + maxSubstringLength + " characters from the username.\n";
+    }
 }
