@@ -2,7 +2,7 @@ class CreateAeOutcomeTable extends edu.northwestern.bioinformatics.bering.Migrat
     void up() {
         
         createTable("outcomes") { t ->
-        	t.addColumn("date", "date")
+        	t.addColumn("incident_date", "date")
         	t.addColumn("outcome_type_code", "integer")
             t.addColumn("other", "string")
             t.addVersionColumn()

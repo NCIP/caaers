@@ -37,6 +37,7 @@ public class Outcome extends AbstractExpeditedReportCollectionElementChild {
 		this.outcomeType = outcomeType;
 	}
 
+	@Column(name = "incident_date")
 	public Date getDate() {
 		return date;
 	}
