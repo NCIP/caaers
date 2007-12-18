@@ -481,71 +481,71 @@
             </SITE_OF_METASTATIC_DISEASE>
         </xsl:for-each>
         <xsl:for-each select="TreatmentInformation/CourseAgent">
-        <PROTOCOL_AGENT>
-            <xsl:attribute name="AGENT_NAME">
-                <xsl:value-of select="StudyAgent/Agent/name"/>
-            </xsl:attribute>
-            <xsl:attribute name="NSC_NUMBER">
-                <xsl:value-of select="StudyAgent/Agent/nscNumber"/>
-            </xsl:attribute>
-            <xsl:variable name="totalDose" select="Dose/amount"/>
+            <PROTOCOL_AGENT>
+                <xsl:attribute name="AGENT_NAME">
+                    <xsl:value-of select="StudyAgent/Agent/name"/>
+                </xsl:attribute>
+                <xsl:attribute name="NSC_NUMBER">
+                    <xsl:value-of select="StudyAgent/Agent/nscNumber"/>
+                </xsl:attribute>
+                <xsl:variable name="totalDose" select="Dose/amount"/>
 
-            <xsl:if test="Dose/amount != ''">
-                <TOTAL_DOSE_ADMINISTERED>
-                    <xsl:value-of select="Dose/amount"/>
-                </TOTAL_DOSE_ADMINISTERED>
-            </xsl:if>
-            <xsl:if test="lastAdministeredDate != ''">
-                <LAST_ADMINISTERED_DATE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date"
-                            select="lastAdministeredDate"/>
-                    </xsl:call-template>
-                </LAST_ADMINISTERED_DATE>
-            </xsl:if>
-            <xsl:if test="Dose/units != ''">
-                <DOSE_UOM>
-                    <xsl:value-of select="Dose/units"/>
-                </DOSE_UOM>
-            </xsl:if>
+                <xsl:if test="Dose/amount != ''">
+                    <TOTAL_DOSE_ADMINISTERED>
+                        <xsl:value-of select="Dose/amount"/>
+                    </TOTAL_DOSE_ADMINISTERED>
+                </xsl:if>
+                <xsl:if test="lastAdministeredDate != ''">
+                    <LAST_ADMINISTERED_DATE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="lastAdministeredDate"/>
+                        </xsl:call-template>
+                    </LAST_ADMINISTERED_DATE>
+                </xsl:if>
+                <xsl:if test="Dose/units != ''">
+                    <DOSE_UOM>
+                        <xsl:value-of select="Dose/units"/>
+                    </DOSE_UOM>
+                </xsl:if>
 
 
-            <xsl:if test="ModifiedDose/amount">
-                <xsl:variable name="adjusted"
-                    select="ModifiedDose/amount"/>
-                <xsl:if test="$adjusted &gt; $totalDose">
-                    <AGENT_ADJUSTMENT>Dose increased</AGENT_ADJUSTMENT>
+                <xsl:if test="ModifiedDose/amount">
+                    <xsl:variable name="adjusted" select="ModifiedDose/amount"/>
+                    <xsl:if test="$adjusted &gt; $totalDose">
+                        <AGENT_ADJUSTMENT>Dose increased</AGENT_ADJUSTMENT>
+                    </xsl:if>
+                    <xsl:if test="$adjusted = $totalDose">
+                        <AGENT_ADJUSTMENT>Dose not changed</AGENT_ADJUSTMENT>
+                    </xsl:if>
+                    <xsl:if test="$adjusted &lt; $totalDose">
+                        <AGENT_ADJUSTMENT>Dose reduced</AGENT_ADJUSTMENT>
+                    </xsl:if>
                 </xsl:if>
-                <xsl:if test="$adjusted = $totalDose">
-                    <AGENT_ADJUSTMENT>Dose not changed</AGENT_ADJUSTMENT>
+                <xsl:choose>
+                    <xsl:when test="administrationDelayAmount">
+                        <AGENT_DELAYED>Yes</AGENT_DELAYED>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <AGENT_DELAYED>No</AGENT_DELAYED>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="administrationDelayAmount">
+                    <DELAY>
+                        <xsl:value-of select="administrationDelayAmount"/>
+                    </DELAY>
                 </xsl:if>
-                <xsl:if test="$adjusted &lt; $totalDose">
-                    <AGENT_ADJUSTMENT>Dose reduced</AGENT_ADJUSTMENT>
+                <xsl:if test="administrationDelayUnits">
+                    <!-- modify case. Eg: HOURS to Hours -->
+                    <DELAY_UOM>
+                        <xsl:value-of
+                            select="concat(translate(substring(administrationDelayUnits,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),translate(substring(administrationDelayUnits,2),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))"
+                        />
+                    </DELAY_UOM>
                 </xsl:if>
-            </xsl:if>
-            <xsl:choose>
-                <xsl:when test="administrationDelayAmount">
-                    <AGENT_DELAYED>Yes</AGENT_DELAYED>
-                </xsl:when>
-                <xsl:otherwise>
-                    <AGENT_DELAYED>No</AGENT_DELAYED>
-                </xsl:otherwise>
-            </xsl:choose>
-            <xsl:if test="administrationDelayAmount">
-                <DELAY>
-                    <xsl:value-of select="administrationDelayAmount"/>
-                </DELAY>
-            </xsl:if>
-            <xsl:if test="administrationDelayUnits">
-                <!-- modify case. Eg: HOURS to Hours -->
-                <DELAY_UOM>
-                    <xsl:value-of select="concat(translate(substring(administrationDelayUnits,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),translate(substring(administrationDelayUnits,2),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'))"/>
-                </DELAY_UOM>
-            </xsl:if>
-        
-        </PROTOCOL_AGENT>
+
+            </PROTOCOL_AGENT>
         </xsl:for-each>
-        
+
         <xsl:for-each select="ConcomitantMedication">
             <CONCOMITANT_MEDICATION>
                 <xsl:attribute name="CONCOMITANT_MEDICATION_NAME">
@@ -586,8 +586,14 @@
                 <SELECT_AE>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/select"/>
                 </SELECT_AE>
-
-                <!--<OTHER_ADVERSE_EVENT> SAMPL </OTHER_ADVERSE_EVENT>-->
+                
+                <xsl:if test="detailsForOther != ''">
+                    <OTHER_ADVERSE_EVENT><xsl:value-of select="detailsForOther"/></OTHER_ADVERSE_EVENT>
+                </xsl:if>
+                <xsl:if test="LowLevelTerm/fullName != ''">
+                    <OTHER_ADVERSE_EVENT><xsl:value-of select="LowLevelTerm/fullName"/></OTHER_ADVERSE_EVENT>
+                </xsl:if>                
+                
                 <AE_START_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date" select="startDate"/>
