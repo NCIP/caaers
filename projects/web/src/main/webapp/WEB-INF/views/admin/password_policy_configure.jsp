@@ -35,7 +35,7 @@
 </head>
 <body> 
   <chrome:box title="Password Policy Configuration" autopad="true">
-    <c:url value="/pages/admin/password_policy_configure" var="action" />
+    <c:url value="/pages/admin/passwordPolicyConfigure" var="action" />
     <form:form action="${action}">
 
       <chrome:division title="Login Policy">

@@ -30,9 +30,9 @@ public class PasswordPolicyConfigurationController extends SimpleFormController 
 
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
-	if (errors.hasErrors()) return new ModelAndView(getFormView(), errors.getModel());
+	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
 	passwordPolicyService.setPasswordPolicy((PasswordPolicy) command);
-	return new ModelAndView("redirectToPasswordPolicyConfiguration", "updated", true);
+	return modelAndView.addObject("updated", true);
     }
 
     @Required
