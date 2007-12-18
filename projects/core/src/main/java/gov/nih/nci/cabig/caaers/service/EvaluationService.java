@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 
 import java.util.List;
@@ -76,7 +77,15 @@ public interface EvaluationService {
      */
     // TODO: it might more sense for this to go in ReportService
     List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment);
-
+    
+    /**
+     * Runs through the Business rules set at "FundingSponsor" level, for the section.
+     * 
+     * @param aeReport
+     * @param sectionName
+     * @return - {@link ValidationErrors}, that contains the errors.
+     */
+    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection sectionName);
 
 
 }

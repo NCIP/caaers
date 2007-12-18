@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +106,12 @@ public class MockEvaluationService implements EvaluationService {
     	// TODO Auto-generated method stub
     	return null;
     }
-
+    public ValidationErrors validateReportingBusinessRules(
+		ExpeditedAdverseEventReport aeReport,
+		ExpeditedReportSection sectionName) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
     ////// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
