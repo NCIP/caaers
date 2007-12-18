@@ -26,5 +26,12 @@ public class XMLUtilTest extends RulesTestCase {
 		org.drools.rule.Package p = XMLUtil.unmarshalToPackage(xml);
 		assertNotNull("Package cannot be null", p);
 	}
+	
+	public void testUnmarshalToPackageTest() throws Exception{
+		String xml = getFileContext("test_rule2.xml");
+		org.drools.rule.Package p = XMLUtil.unmarshalToPackage(xml);
+		System.out.println(p);
+		assertNotNull("Package cannot be null", p);
+	}
 
 }
