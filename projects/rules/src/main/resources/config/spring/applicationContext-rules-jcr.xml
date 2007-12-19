@@ -36,6 +36,11 @@
 			<value>true</value>
 		</property>
 	</bean>
+	
+	<!--  This bean will clear off the files in rules workspace -->
+	<bean id="repositoryCleaner" class="gov.nih.nci.cabig.caaers.rules.repository.RepositoryCleaner">
+		<constructor-arg value="s[rules.repository]" />
+	</bean>
 
 	<bean id="jcrSessionFactory"
 		class="org.springmodules.jcr.JcrSessionFactory" autowire="byType">
