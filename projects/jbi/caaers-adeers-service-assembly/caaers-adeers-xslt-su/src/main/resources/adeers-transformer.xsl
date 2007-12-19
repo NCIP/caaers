@@ -782,7 +782,7 @@
                 <ADDITIONAL_INFO_NAME>Summary Report Sent to IRB</ADDITIONAL_INFO_NAME>
             </xsl:if>
 
-            <xsl:if test="AdditionalInformation/otherInformation = 'true'">
+            <xsl:if test="AdditionalInformation/otherInformation != ''">
                 <ADDITIONAL_INFO_OTHER>
                     <xsl:value-of select="AdditionalInformation/otherInformation"/>
                 </ADDITIONAL_INFO_OTHER>
