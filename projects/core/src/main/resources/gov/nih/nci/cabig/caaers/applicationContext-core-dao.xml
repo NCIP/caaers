@@ -129,6 +129,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>                
 	<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
 	<value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
+	<value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
 	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
       </list>
     </property>
@@ -288,12 +289,14 @@ This applicationContext contains the definition of the DAOs
   <bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao" /> 
   <bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao" /> 
   <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao" />
+  <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao" />
   <!--Rules/Scheduler/Notification DAOs-->
   <bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao" />
   <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao" />
   <bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao" />
   <bean id="reportDeliveryDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"  />
   <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao" />
+  
 
    <!-- validator beans starts here-->
     <bean id="webControllerValidator"
