@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.repository;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * This bean when startup will delete the workspace directory of Rules. 
@@ -19,7 +20,8 @@ public class RepositoryCleaner {
 		//run this only once per JVM/classloader
 		if(lock == null){
 			try{
-				File f = new File(path);
+				URL url = new URL(path);
+				File f = new File(url.getFile());
 				RepositoryCleaner.deleteDirectoryContents(f);
 			}catch(Exception e){
 				//ignore
@@ -38,15 +40,11 @@ public class RepositoryCleaner {
 	    if( path.exists() ) {
 	      File[] files = path.listFiles();
 	      for(int i=0; i<files.length; i++) {
-	         if(files[i].isDirectory()) {
-	           deleteDirectoryContents(files[i]);
-	         }
-	         else {
-	           files[i].delete();
-	         }
+	    	  if(files[i].isDirectory()) deleteDirectoryContents(files[i]);
+	    	  files[i].delete();
 	      }
 	    }
-	   
+	    
 	}
 
 }
