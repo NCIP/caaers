@@ -143,8 +143,17 @@
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Study Agent IND Holder " postfix=""/>
-				
 			</field>
+			<field name="adeersReporting" display-uri="AdEERS Reporting">
+				<field-value>
+					<input-type>select</input-type>
+				</field-value>
+				<valid-value value="true" display-uri="Yes" readable-text="Yes "/>
+				<valid-value value="false" display-uri="No" readable-text="No "/>
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<expression>factResolver.assertFact(study,null,'adeersReporting','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" AdEERS Reporting " postfix=""/>
+			</field>			
 			<field name="studyTherapy" display-uri="Therapy">
 				<field-value>
 					<input-type>multiselect</input-type>
@@ -195,6 +204,26 @@
 			</field>
 		</domain-object>		
 
+		<domain-object identifier="aeReport" class-name="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" display-uri="Expedited Adverse Event Report">
+			<field name="outcomeIdentifier" display-uri="Outcome Identifier">
+				<field-value>
+					<input-type>multiselect</input-type>
+				</field-value>
+				<valid-value value="1" display-uri="Death" readable-text="death"/>
+				<valid-value value="2" display-uri="Life-threatening" readable-text="life-threatening"/>
+				<valid-value value="3" display-uri="Hospitalization - intial or prolonged" readable-text="hospitalization - intial or prolonged "/>
+				<valid-value value="4" display-uri="Disability or Permanent Damage" readable-text="disability or permanent damage"/>
+				<valid-value value="5" display-uri="Congenital Anomaly/Birth Defect" readable-text="congenital anomaly/birth defect"/>
+				<valid-value value="6" display-uri="Other Serious (Important Medical Events)" readable-text="other serious (important medical events) "/>				
+				<valid-value value="7" display-uri="Required Intervention to Prevent Permanent Impairment/Damage (Devices)" readable-text="required intervention to prevent permanent impairment/damage (Devices) "/>		
+				
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				<expression>factResolver.assertFact(aeReport,'gov.nih.nci.cabig.caaers.domain.OutcomeType','code','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" Outcome Identifier " postfix=""/>
+			</field>
+		</domain-object>
+		
 	</condition>
 
 </rule-ui>
