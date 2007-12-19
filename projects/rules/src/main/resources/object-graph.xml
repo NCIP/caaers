@@ -190,4 +190,23 @@
 			<objectType>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</objectType>
 		</node>
 	</navigationPath>
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.OutcomeType</targetObjectType>
+		<node>
+			<name>aeReport</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</objectType>
+		</node>
+		<node>
+			<name>outcomes</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Outcome</objectType>
+		</node>
+		<node>
+			<name>outcomeType</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.OutcomeType</objectType>
+		</node>
+	</navigationPath>
 </objectGraph>
