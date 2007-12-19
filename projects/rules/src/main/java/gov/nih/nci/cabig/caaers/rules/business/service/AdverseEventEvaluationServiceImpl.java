@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
+import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -35,7 +35,6 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
-
 public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluationService {
 
 	//Replace with spring injection
@@ -112,32 +111,9 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 			}
 			
 			
-			/*
-			String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-			for (int i=0;i<messages.length;i++) {
-				if (messages[i].equals("IGNORE")) {
-					ignore = true;					
-					break;
-				} else {
-					reportDefinitionsForSponsor.add(messages[i]);
-				}
-			}
-			*/
-			
-			
-			
 		}
 	}
-	/*
-	System.out.println("ignore is " + ignore);
-	if (ignore)  {
-		reportDefinitionsForSponsor.clear();
-	}
-	System.out.println("list size is " + reportDefinitionsForSponsor.size());
 	
-	ignore = false;
-	*/
 	map.put(aeReport.getStudy().getPrimaryFundingSponsorOrganization().getName(), reportDefinitionsForSponsor);
 
 	Study study = aeReport.getStudy();
@@ -161,26 +137,10 @@ public Map<String,List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventR
 					}
 				}				
 				
-				/*
-				String[] messages = RuleUtil.charSeparatedStringToStringArray(message,"\\|\\|");
-
-				for (int i=0;i<messages.length;i++) {
-					if (messages[i].equals("IGNORE")) {
-						ignore = true;					
-						break;
-					} else {
-						reportDefinitionsForInstitution.add(messages[i]);
-					}					
-				}
-				*/
+				
 			}
 		}
-		/*
-		if (ignore)  {
-			reportDefinitionsForInstitution.clear();
-		}
-		ignore = false;
-		*/
+		
 		//chek for key
 		List<String> existingList = map.get(so.getOrganization().getName());
 		if (existingList != null ) {
@@ -333,8 +293,7 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 	 Study study = aeReport.getStudy();
 	 
 	 //1. fetch the bindUri
-	 String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), "",
-			 "SPONSOR",RuleType.REPORT_VALIDATION_RULES_DESCRIPTION_SECTION.getName());
+	 String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE,RuleType.REPORT_VALIDATION_RULES_DESCRIPTION_SECTION.getName());
 	 
 	 //2. fire the rules
 	 List<Object> input = new ArrayList<Object>();
@@ -366,7 +325,7 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 
 private String sponsorLevelRules(AdverseEvent ae, Study study, ReportDefinition reportDefinition, String ruleTypeName) throws Exception{
 	String message = null;
-	String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), "","SPONSOR",ruleTypeName);
+	String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), "",CategoryConfiguration.SPONSOR_BASE,ruleTypeName);
 
 	RuleSet ruleSetForSponsor = rulesEngineService.getRuleSetForSponsor(ruleTypeName, study.getPrimaryFundingSponsorOrganization().getName());
 
@@ -392,7 +351,7 @@ private String sponsorLevelRules(AdverseEvent ae, Study study, ReportDefinition 
 
 private String sponsorDefinedStudyLevelRules(AdverseEvent ae, Study study, ReportDefinition reportDefinition, String ruleTypeName) throws Exception{
 	String message = null;
-	String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), study.getShortTitle(),"SPONSOR_DEFINED_STUDY",ruleTypeName);
+	String bindURI = getBindURI(study.getPrimaryFundingSponsorOrganization().getName(), study.getShortTitle(),CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE,ruleTypeName);
 
 	RuleSet ruleSetForSponsorDefinedStudy = rulesEngineService.getRuleSetForSponsorDefinedStudy(ruleTypeName, study.getShortTitle(), study.getPrimaryFundingSponsorOrganization().getName());
 	if(ruleSetForSponsorDefinedStudy==null){
@@ -422,7 +381,7 @@ private String institutionDefinedStudyLevelRules(AdverseEvent ae, Study study , 
 	String studyShortTitle = study.getShortTitle();
 	String organizationName = organization.getName();
 
-	String bindURI = getBindURI(organizationName, studyShortTitle,"INSTITUTION_DEFINED_STUDY",ruleTypeName);
+	String bindURI = getBindURI(organizationName, studyShortTitle,CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE,ruleTypeName);
 
 	RuleSet ruleSetForInstitutionDefinedStudy = rulesEngineService.getRuleSetForInstitutionDefinedStudy(ruleTypeName, studyShortTitle, organizationName);
 	if(ruleSetForInstitutionDefinedStudy==null){
@@ -449,7 +408,7 @@ private String institutionLevelRules(AdverseEvent ae,  Study study, Organization
 	String message = null;
 
 	String organizationName = organization.getName();
-	String bindURI = getBindURI(organizationName, "","INSTITUTION",ruleTypeName);
+	String bindURI = getBindURI(organizationName, "",CategoryConfiguration.INSTITUTION_BASE,ruleTypeName);
 	RuleSet ruleSetForInstiution = rulesEngineService.getRuleSetForInstitution(ruleTypeName, organizationName);
 
 	if(ruleSetForInstiution==null){
@@ -471,27 +430,25 @@ private String institutionLevelRules(AdverseEvent ae,  Study study, Organization
 	return message;
 }
 
-private String getBindURI(String sponsorOrInstitutionName, String studyName, String type, String ruleSetName){
-		String bindURI = null;
-		if (type.equalsIgnoreCase("SPONSOR")){
-			bindURI = CategoryConfiguration.SPONSOR_BASE.getPackagePrefix() + "." +RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
+	private String getBindURI(String sponsorOrInstitutionName, String studyName, final CategoryConfiguration type, String ruleSetName){
+		//include the package name
+		StringBuffer sb = new StringBuffer(type.getPackagePrefix());
+		
+		//include study name
+		if(SPONSOR_DEFINED_STUDY_BASE.equals(type) || INSTITUTION_DEFINED_STUDY_BASE.equals(type)){
+			sb.append(".")
+			  .append(RuleUtil.getStringWithoutSpaces(studyName));
 		}
-
-		if(type.equalsIgnoreCase("INSTITUTION")){
-			bindURI = CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
+		
+		//include sponsor/institution name
+		if (SPONSOR_BASE.equals(type) || INSTITUTION_BASE.equals(type) || SPONSOR_DEFINED_STUDY_BASE.equals(type) || INSTITUTION_DEFINED_STUDY_BASE.equals(type)){
+			sb.append(".")
+			  .append(RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName));
 		}
-
-		if(type.equalsIgnoreCase("SPONSOR_DEFINED_STUDY")){
-			bindURI = CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(studyName)+"."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
-		}
-
-
-		if(type.equalsIgnoreCase("INSTITUTION_DEFINED_STUDY")){
-			bindURI = CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix() + "."+RuleUtil.getStringWithoutSpaces(studyName)+"."+RuleUtil.getStringWithoutSpaces(sponsorOrInstitutionName)+"."+RuleUtil.getStringWithoutSpaces(ruleSetName);
-		}
-
-
-		return bindURI;
+		
+		//always include the ruleSetName
+		return sb.append(".").append(RuleUtil.getStringWithoutSpaces(ruleSetName)).toString();
+	
 	}
 
 	private AdverseEventEvaluationResult getEvaluationObject(AdverseEvent ae, Study study, Organization organization, ReportDefinition reportDefinition, String bindURI) throws Exception{
