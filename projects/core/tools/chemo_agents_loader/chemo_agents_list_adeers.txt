@@ -1,0 +1,92 @@
+Chemo-Agent Name
+Hexalen
+Proleukin
+Cytadren
+Arimidex
+TheraCys, TICE
+Casodex
+Blenoxane
+Myleran
+Xeloda
+Paraplatin
+BiCNU
+Gliadel Wafers
+Leukeran
+Leustatin
+TACE
+Platinol
+Cytoxan, Neosar
+Cytosar-U
+DTIC-Dome
+Cosmegen
+Cerubidine
+DES
+Taxotere
+Adriamycin, RUBEX
+Doxil
+Drolban
+Emcyt
+Estinyl
+VePesid
+Neuprogen
+FUDR
+Fludara
+Adrucil, Efudex, Fluroplex
+Halotestin
+Eulexin
+Gemzar
+Zoladex
+Hydrea
+Delalutin
+Idamycin
+Ifex
+Intron A, Roferon A
+Actimmune
+Camptosar
+Elspar
+Femara
+Lupron
+Ergamisol
+CeeNU
+Mustargen
+Provera, Depo-Provera
+Megace
+Alkeran
+Purinethol
+Folex, Mexate
+Various
+Various
+Mithracin
+Mutamycin
+Lysodren
+Novantrone
+Nilandron
+Neumaga
+Taxol
+Nipent
+Vercyte
+Photofrin
+Various
+Deltasone
+Matulane
+Rituxan
+Leukine
+Zanosar
+Sclerosol
+Nolvadex
+Triethyl Melamine
+Vumon
+Teslac
+Various
+Thioguanine
+Thiotepa
+Hycamtin
+Fareston
+Herceptin
+Vesanoid
+Various
+Uracil Mustard
+Valstar
+Velban
+Oncovin, Vincasar
+Navelbine
