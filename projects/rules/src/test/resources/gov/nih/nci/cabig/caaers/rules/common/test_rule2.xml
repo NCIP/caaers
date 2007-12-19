@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<package xmlns="http://drools.org/drools-3.0" xmlns:drools="http://drools.org/drools-3.0" xmlns:rules="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd" name="gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules">
+<package xmlns="http://drools.org/drools-3.0" xmlns:drools="http://drools.org/drools-3.0" xmlns:rules="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd" name="gov.nih.nci.cabig.caaers.rules.reporting.sae_reporting_rules">
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>

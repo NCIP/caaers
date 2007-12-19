@@ -50,7 +50,7 @@ public class RuleDeploymentServiceTest extends RulesTestCase {
 	
 	public void testRegisterRuleXml() throws Exception{
 		String xml = getFileContext("test_rule.xml");
-		String bindUri = "gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.description_section";
+		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting.description_section";
 		deploymentService.registerRuleXml(bindUri, xml);
 		
 	}

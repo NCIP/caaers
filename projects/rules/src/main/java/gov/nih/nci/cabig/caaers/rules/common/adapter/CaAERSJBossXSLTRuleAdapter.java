@@ -77,7 +77,7 @@ public class CaAERSJBossXSLTRuleAdapter implements RuleAdapter{
 			log.error("Exception while transforming to New Scheme: " + e.getMessage(), e);
 		}
 		
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		StringWriter writer = new StringWriter();
 
 		System.setProperty("javax.xml.transform.TransformerFactory","org.apache.xalan.processor.TransformerFactoryImpl");
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -94,7 +94,7 @@ public class CaAERSJBossXSLTRuleAdapter implements RuleAdapter{
 				log.debug("After transforming using [new_jboss_rules.xsl]:\r\n" + strWriter.toString());
 			}
 			
-			transformer.transform(new StreamSource(new StringReader(xml)),	new StreamResult(outputStream));			
+			transformer.transform(new StreamSource(new StringReader(xml)),	new StreamResult(writer));			
 			
 		}catch(Exception e){
 			log.error("Error while transforming using new_jboss_rules.xsl", e);
@@ -102,7 +102,7 @@ public class CaAERSJBossXSLTRuleAdapter implements RuleAdapter{
 		}
  
 		//create the rules package
-		return XMLUtil.unmarshalToPackage(xml);
+		return XMLUtil.unmarshalToPackage(writer.toString());
 	}
 
 }
