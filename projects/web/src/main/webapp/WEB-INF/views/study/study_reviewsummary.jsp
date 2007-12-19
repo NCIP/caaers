@@ -75,6 +75,10 @@
             	<div class="row">
                 	<div class="label">Multi institutional</div>
                 	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'}</div>
+            	</div>
+            	<div class="row">
+                	<div class="label">AdEERS reporting</div>
+                	<div class="value">${command.adeersReporting ? 'Yes' : 'No'}</div>
             	</div>	
             		
         	</div>

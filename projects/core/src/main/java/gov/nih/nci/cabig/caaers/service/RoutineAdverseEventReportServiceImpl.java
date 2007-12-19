@@ -377,7 +377,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				
 				// does the CtcTerm require other(verbatim) or other(MedDRA) ? 
 				if (ctcTerm.isOtherRequired()) {
-					String meddraCode = adverseEvent.getLowLevelTerm().getMeddraCode();
+					String meddraCode = adverseEvent.getLowLevelTerm() != null ? adverseEvent.getLowLevelTerm().getMeddraCode() : null;
 					LowLevelTerm lowLevelTerm =null;
 
 					if (meddraCode != null) {

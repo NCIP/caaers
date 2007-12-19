@@ -98,8 +98,9 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		st.setPrecis(xstreamStudy.getPrecis());
 		st.setPhaseCode(xstreamStudy.getPhaseCode());
 		st.setStatus(xstreamStudy.getStatus());
-		
 		st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
+		st.setAdeersReporting(xstreamStudy.getAdeersReporting());
+		
 		st.setDrugAdministrationTherapyType(xstreamStudy.getDrugAdministrationTherapyType());
 		st.setRadiationTherapyType(xstreamStudy.getRadiationTherapyType());
 		st.setDeviceTherapyType(xstreamStudy.getDeviceTherapyType());

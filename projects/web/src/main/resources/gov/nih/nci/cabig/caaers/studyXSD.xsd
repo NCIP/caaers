@@ -38,6 +38,7 @@
                     <xs:element type="studyPhaseType" name="phaseCode" />
                     <xs:element type="statusType" name="status"/>
                     <xs:element type="xs:boolean" name="multiInstitutionIndicator"/>
+                    <xs:element type="xs:boolean" name="adeersReporting"/>
                     <xs:element ref="terminology"/>
                     <xs:element ref="diseaseTerminology"/>
                                
