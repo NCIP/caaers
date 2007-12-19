@@ -686,17 +686,23 @@
         </xsl:for-each>
         <xsl:for-each select="Lab">
             <LAB_RESULT>
-                <xsl:attribute name="LAB_NAME">
-                    <xsl:value-of select="name"/>
-                </xsl:attribute>
+                <xsl:if test="name != ''">
+                    <xsl:attribute name="LAB_NAME">
+                        <xsl:value-of select="name"/>
+                    </xsl:attribute>
+                </xsl:if>
+                
                 <!-- no
                 <LAB_CATEGORY>
                     <xsl:value-of select="name"/>
                 </LAB_CATEGORY>
-                 -->
-                <OTHER_LAB>
-                    <xsl:value-of select="other"/>
-                </OTHER_LAB>
+                -->
+                <xsl:if test="other != ''">
+                    <OTHER_LAB>
+                        <xsl:value-of select="other"/>
+                    </OTHER_LAB>                    
+                </xsl:if>
+
                 <BASELINE_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date" select="baseline/date"/>
