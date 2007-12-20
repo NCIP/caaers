@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBe
 public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscoveringPropertiesFactoryBean {
     public static final String QUARTZ_DELEGATE_PROPERTY_NAME= "jdbc.quartz.delegateClassName";
     public static final String SCHEMA_PROPERTY_NAME = "datasource.schema";
+    public static final String AUTH_MODE_PROPERTY_NAME = "authenticationMode";
 
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
@@ -32,7 +33,7 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
         if(quartzDelegateClass != null) properties.setProperty(QUARTZ_DELEGATE_PROPERTY_NAME, quartzDelegateClass);
         String schema = selectSchema();
         if(schema != null) properties.setProperty(SCHEMA_PROPERTY_NAME, schema);
-        //properties.setProperty(RULES_REPO_PROPERTY_NAME, selectRepository());
+        if(properties.getProperty(AUTH_MODE_PROPERTY_NAME) == null) properties.setProperty(AUTH_MODE_PROPERTY_NAME, "local");
     }
 
     /**
