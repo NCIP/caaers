@@ -255,6 +255,21 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
 					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
 				}
+				if (target.getIndType() == INDType.CTEP_IND){
+					// Ok so we have to provide the id here , well i can't see a different way to do this , defenitly ugly
+					// TODO: see how to enhance. 
+					String[] inds = {"-111"};
+					List<InvestigationalNewDrug> investigationalNewDrugs = investigationalNewDrugDao.findByIds(inds);
+					StudyAgentINDAssociation indAssociation = new StudyAgentINDAssociation();
+					if (investigationalNewDrugs.size() > 0 ) {
+						InvestigationalNewDrug ind = investigationalNewDrugs.get(0);
+						indAssociation.setInvestigationalNewDrug(ind);
+						target.addStudyAgentINDAssociation(indAssociation);
+					}else{
+						ifNullObject(null,studyImportOutcome, Severity.ERROR,"The investigational new drug for a CTEP IND" 
+								+ " is not Valid ");
+					}
+				}
 				if (target.getIndType() == INDType.OTHER ){
 					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
 					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());

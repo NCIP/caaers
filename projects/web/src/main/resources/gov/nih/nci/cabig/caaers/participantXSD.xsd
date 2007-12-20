@@ -18,19 +18,19 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element type="xs:string" name="firstName" minOccurs="1" maxOccurs="1"/>
-                    <xs:element type="xs:string" name="lastName" maxOccurs="1" minOccurs="1"/>
-                    <xs:element type="xs:string" name="maidenName" maxOccurs="1" minOccurs="0"/>
-                    <xs:element type="xs:string" name="middleName" maxOccurs="1" minOccurs="0"/>
-                    <xs:element type="xs:date" name="dateOfBirth" maxOccurs="1" minOccurs="1" nillable="true" />
-                    <xs:element type="genderType" name="gender" maxOccurs="1" minOccurs="0" />
-                    <xs:element type="raceType" name="race" maxOccurs="1" minOccurs="0"/>
-                    <xs:element type="ethnicityType" name="ethnicity" maxOccurs="1" minOccurs="0" />
+                    <xs:element type="customStringType" name="firstName"/>
+                    <xs:element type="customStringType" name="lastName"/>
+                    <xs:element type="xs:string" name="maidenName" minOccurs="0"/>
+                    <xs:element type="xs:string" name="middleName" minOccurs="0"/>
+                    <xs:element type="xs:date" name="dateOfBirth"/>
+                    <xs:element type="genderType" name="gender" minOccurs="0" />
+                    <xs:element type="raceType" name="race" minOccurs="0"/>
+                    <xs:element type="ethnicityType" name="ethnicity" minOccurs="0" />
                     
-                    <xs:element name="identifiers" minOccurs="1">
+                    <xs:element name="identifiers">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="organizationAssignedIdentifier"  minOccurs="1" maxOccurs="unbounded"/>
+                                <xs:element ref="organizationAssignedIdentifier" maxOccurs="unbounded"/>
                                 <xs:element ref="systemAssignedIdentifier"  minOccurs="0" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
@@ -127,7 +127,7 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="type" type="participantIdentifierType"/>
-                    <xs:element name="value" type="xs:string"/>
+                    <xs:element name="value" type="customStringType"/>
                     <xs:element name="primaryIndicator" type="xs:boolean" />
                 </xs:sequence>
             </xs:extension>
@@ -198,6 +198,13 @@
             <xs:enumeration value="Non Hispanic or Latino"/>
             <xs:enumeration value="Not Reported"/>
             <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="customStringType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
     </xs:simpleType>
 

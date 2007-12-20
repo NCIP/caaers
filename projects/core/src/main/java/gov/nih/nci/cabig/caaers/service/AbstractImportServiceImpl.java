@@ -23,7 +23,6 @@ public abstract class AbstractImportServiceImpl {
 	private StudyDao studyDao;
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	
 	/*
 	 * This is common for participant and study
 	 */
@@ -47,6 +46,26 @@ public abstract class AbstractImportServiceImpl {
 			}
 		}
 		ifNullOrEmptyList(destination.getIdentifiers(),studyImportOutcome,Severity.ERROR, "Identifiers are either Empty or Not Valid");
+	}
+	
+	/*
+	 * This is common for participant and study , make the first instance of primary indicators 
+	 * hold and set the rest to false
+	 * 
+	 */
+	protected void firstPrimaryIndicatorInIdentifiers(
+			AbstractIdentifiableDomainObject destination,
+			DomainObjectImportOutcome studyImportOutcome) {
+
+		boolean isPrimaryIndicatorAvailable = Boolean.FALSE;
+		for (Identifier identifier : destination.getIdentifiers()) {
+			if (identifier.getPrimaryIndicator() && !isPrimaryIndicatorAvailable ) {
+				isPrimaryIndicatorAvailable = Boolean.TRUE;
+			}else{
+				identifier.setPrimaryIndicator(Boolean.FALSE);
+			}
+			
+		}
 	}
 	
 	

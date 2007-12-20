@@ -123,13 +123,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 		
 		private void participantUniquenessCheck(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
 			
-			/*
-			String[] s = { participant.getFirstName(),participant.getLastName() };
-			List<Participant> pars = participantDao.getByUniqueIdentifiers(s);
-			if (pars != null && pars.size() >= 1){
-				participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " already exists. ",severity);
-			}
-			*/
+			firstPrimaryIndicatorInIdentifiers(participant,participantImportOutcome);
 			
 			for (Identifier identifier : participant.getIdentifiers()) 
 			{	
