@@ -210,7 +210,32 @@
             <artifactId>c3pr-esb-client</artifactId>
             <version>1.0</version>
         </dependency>
-        
+                
+	        <!-- Below dependencies were added as part of Single-SignOn integration-->
+	        <dependency>
+	            <groupId>gov.nih.nci.cagrid</groupId>
+	            <artifactId>cagrid-cds-client</artifactId>
+	            <version>1.2</version>
+	            <scope>compile</scope>
+	        </dependency>
+	        <dependency>
+	            <groupId>gov.nih.nci.cagrid</groupId>
+	            <artifactId>cagrid-cds-common</artifactId>
+	            <version>1.2</version>
+	            <scope>compile</scope>
+	        </dependency>
+	        <dependency>
+	            <groupId>gov.nih.nci.cagrid</groupId>
+	            <artifactId>cagrid-cds-stubs</artifactId>
+	            <version>1.2</version>
+	            <scope>compile</scope>
+	        </dependency>        
+	        <dependency>
+	            <groupId>gov.nih.nci.cagrid</groupId>
+	            <artifactId>cagrid-casclient</artifactId>
+	            <version>2.0.11</version>
+	            <scope>compile</scope>
+	        </dependency>         
         <!-- RUNTIME-ONLY DEPS -->
 
         <dependency>
