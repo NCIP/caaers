@@ -1,14 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.runtime;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.core.io.ClassPathResource;
-
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -17,23 +8,28 @@ import gov.nih.nci.cabig.caaers.rules.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import junit.framework.TestCase;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	
 	RuleDeploymentServiceImpl deploymetService;
 	BusinessRulesExecutionServiceImpl executionService;
 	
+	
+	@Override
+	public Class<BusinessRulesExecutionServiceTest> getTestClass() {
+		return BusinessRulesExecutionServiceTest.class;
+	}
+	
 	protected void setUp() throws Exception {
 		super.setUp();
 		deploymetService = new RuleDeploymentServiceImpl();
 		executionService = new BusinessRulesExecutionServiceImpl();
-		try {
-			File file = new File("C:\\rules_repo\\repo\\.lock");
-			file.delete();
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	protected void tearDown() throws Exception {

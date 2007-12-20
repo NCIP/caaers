@@ -16,8 +16,9 @@ public class FiredRuleSetInfoBuilder {
 		firedRuleSetInfo.setRole(role);
 		
 		if(role.equalsIgnoreCase("sponsor")){
-			
 			buildForSponsor(str1, firedRuleSetInfo);
+		}else if(role.equals("reporting")){
+			//TODO: Vinay, or Srini should take care of this.
 		}else{
 			buildForInstitution(str1, firedRuleSetInfo);
 		}

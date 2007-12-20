@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 
 import javax.jws.WebService;
 
+import org.drools.rule.Package;
+
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
@@ -50,6 +52,14 @@ public interface RuleDeploymentService {
 	 * @throws RemoteException
 	 */
 	void registerRuleXml(String bindUri, String ruleXml) throws RemoteException;
+	
+	/**
+	 * This method will register a package, in the bindUri.
+	 * @param bindUri
+	 * @param rulePackage
+	 * @throws RemoteException
+	 */
+	void registerRulePackage(String bindUri, Package rulePackage) throws RemoteException;
 	
 	/**
 	 * De-Register the Rule Set. I mean UN-deploy a drools package if you are a JBoss Rules fan...

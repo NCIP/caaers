@@ -4,7 +4,10 @@ import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import junit.framework.TestCase;
 
 public class XMLUtilTest extends RulesTestCase {
-
+   @Override
+   public Class<? extends RulesTestCase> getTestClass() {
+	return XMLUtilTest.class;
+   }
 	protected void setUp() throws Exception {
 		super.setUp();
 	}

@@ -1,24 +1,14 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
 import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
-import gov.nih.nci.cabig.caaers.utils.XMLUtil;
-
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.StringReader;
-
-import org.apache.axis.utils.ClasspathUtils;
-import org.apache.axis.utils.XMLUtils;
-import org.springframework.core.io.ClassPathResource;
-
-import junit.framework.TestCase;
 
 public class RuleDeploymentServiceTest extends RulesTestCase {
 	RuleDeploymentServiceImpl deploymentService;
+	
+	@Override
+	public Class<? extends RulesTestCase> getTestClass() {
+		return RuleDeploymentServiceTest.class;
+	}
 	protected void setUp() throws Exception {
 		super.setUp();
 		deploymentService = new RuleDeploymentServiceImpl();

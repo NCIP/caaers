@@ -38,8 +38,8 @@
 	</bean>
 	
 	<!--  This bean will clear off the files in rules workspace -->
-	<bean id="repositoryCleaner" class="gov.nih.nci.cabig.caaers.rules.repository.RepositoryCleaner">
-		<constructor-arg value="s[rules.repository]" />
+	<bean id="repositoryCleaner" class="gov.nih.nci.cabig.caaers.rules.repository.RepositoryCleaner"  >
+		<constructor-arg value="s[rules.repository]"  />
 	</bean>
 
 	<bean id="jcrSessionFactory"
@@ -49,19 +49,13 @@
 
 
 
-	<!-- configuring the default repository -->
-	<!--
-		<bean id="repository" class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean" autowire="byType">
-		<property name="homeDir" value="/repo"/>
-		<property name="configuration" value="classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo.xml"/>
-		</bean>
-	-->
+	
 
 	<!-- configuring a 'transient' repository (automatically starts when a session is opened 
 		and shutdowns when all sessions are closed) -->
 
 	<bean id="repository"
-		class="org.springmodules.jcr.jackrabbit.TransientRepositoryFactoryBean">
+		class="org.springmodules.jcr.jackrabbit.TransientRepositoryFactoryBean" depends-on="repositoryCleaner">
 		<property name="configuration"
 			value="classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-postgresql.xml" />
 		<property name="homeDir" value="s[rules.repository]" />
@@ -102,20 +96,13 @@
 		<property name="allowCreate" value="true" />
 	</bean>
 
-	<!--	
-		<bean id="jcrService" parent="txProxyTemplate" autowire="byType">
-		<property name="target">
-		<bean class="gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl" autowire="byType">
-		<property name="template" ref="jcrTemplate"/>
-		</bean>
-		</property>
-		</bean>
-	-->
 
 	<bean id="jcrService"
 		class="gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl"
 		autowire="byType">
 		<property name="template" ref="jcrTemplate" />
 	</bean>
+	
+	
 
 </beans>
