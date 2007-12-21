@@ -654,6 +654,7 @@
                         </ATTRIBUTION>
                     </ATTRIBUTION_FOR_AE>
                 </xsl:for-each>
+                <!--
                 <xsl:for-each select="SurgeryAttribution">
                     <ATTRIBUTION_FOR_AE>
                         <CAUSE_NAME/>
@@ -681,7 +682,7 @@
                         </ATTRIBUTION>
                     </ATTRIBUTION_FOR_AE>
                 </xsl:for-each>
-
+                -->
             </ADVERSE_EVENT_CTC>
         </xsl:for-each>
         <xsl:for-each select="Lab">
