@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
    
 public class FiredRuleSetInfo {
@@ -17,6 +18,7 @@ public class FiredRuleSetInfo {
 	private String ruleSetName;
 	private List<String> ruleNames;
 	private String bindUri;
+	private java.util.Date exeDate = new Date();
 	
 	public FiredRuleSetInfo(String bindUri){
 		this.bindUri =bindUri;
@@ -76,6 +78,12 @@ public class FiredRuleSetInfo {
 	}
 	public void setStudyName(String studyName) {
 		this.studyName = studyName;
+	}
+	public void setExecutionDate(Date date){
+		this.exeDate = date;
+	}
+	public Date getExecutionDate() {
+		return exeDate; 
 	}
 	
 	public int getMaxWidth(){
@@ -137,7 +145,7 @@ public class FiredRuleSetInfo {
 		if(j>i) {
 			i=j;
 		}
-		j= 5+"24 July 2007 12:03 EST".length();
+		j= 5+ exeDate.toString().length();
 		if(j>i) {
 			i=j;
 		}

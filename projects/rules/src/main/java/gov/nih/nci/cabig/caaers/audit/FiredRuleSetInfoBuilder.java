@@ -9,19 +9,25 @@ public class FiredRuleSetInfoBuilder {
 		FiredRuleSetInfo firedRuleSetInfo = new FiredRuleSetInfo(bindUri);
 		
 		String baseString = CategoryConfiguration.CAAERS_BASE.getPackagePrefix();
-		String str1 = bindUri.substring(baseString.length()+1, bindUri.length());
+		String str1 = bindUri.substring(baseString.length()+1);
 		
 		int i= str1.indexOf(".");
-		String role = str1.substring(0,i);
-		firedRuleSetInfo.setRole(role);
-		
-		if(role.equalsIgnoreCase("sponsor")){
-			buildForSponsor(str1, firedRuleSetInfo);
-		}else if(role.equals("reporting")){
-			//TODO: Vinay, or Srini should take care of this.
+		if(i < 0){
+			//this is a system wide rule, defined at CAAERS_BASE
+			firedRuleSetInfo.setRuleSetName(str1);
+			firedRuleSetInfo.setRuleSetType("System Rules [" + baseString + "]");
+			
 		}else{
-			buildForInstitution(str1, firedRuleSetInfo);
+			String role = str1.substring(0,i);
+			firedRuleSetInfo.setRole(role);
+
+			if(role.equalsIgnoreCase("sponsor")){
+				buildForSponsor(str1, firedRuleSetInfo);
+			}else{
+				buildForInstitution(str1, firedRuleSetInfo);
+			}
 		}
+		
 				
 		return firedRuleSetInfo;
 	}

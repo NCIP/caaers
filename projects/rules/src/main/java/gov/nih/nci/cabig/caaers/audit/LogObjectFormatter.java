@@ -183,8 +183,8 @@ public class LogObjectFormatter {
 		builder.append(this.blank(rest-2));
 		builder.append(columnSeperator());
 		builder.append(this.blank(2));
-		builder.append("23 JULY 07");
-		rest = headerWidth-(colWidth+2+"23 JULY 07".length());
+		builder.append(dc.getFiredRuleSetInfo().getExecutionDate().toString());
+		rest = headerWidth-(colWidth+2+dc.getFiredRuleSetInfo().getExecutionDate().toString().length());
 		builder.append(this.blank(rest-4));
 		builder.append(columnSeperator());
 		builder.append("\n");
