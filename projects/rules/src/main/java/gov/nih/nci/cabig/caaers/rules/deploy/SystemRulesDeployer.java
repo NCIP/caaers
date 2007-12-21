@@ -22,33 +22,28 @@ public class SystemRulesDeployer {
 	public SystemRulesDeployer(RuleDeploymentService ruleDeploymentService) {
 		if(log.isInfoEnabled()) log.info("Begining system rule loading......");
 		try{
-			//1. fetch existing rules which are registered, load them into a TreeMap.
-			java.util.TreeMap<String, RuleSetInfo> map = new TreeMap<String, RuleSetInfo>();
-			RuleSetInfo[] ruleInfoSets = ruleDeploymentService.listRegistrations();
-			if(ruleInfoSets != null){
-				for(RuleSetInfo ruleInfo : ruleInfoSets){
-					map.put(ruleInfo.getBindUri(), ruleInfo);
-				}
-			}
 			
-			
-			//2. create the base pattern.
+			//1. create the base pattern.
 			String pattern = "classpath*:" + 
 			    SystemRulesDeployer.class.getPackage().getName().replace(".", "/") + 
 			    "/*.xml";
 			
-			//3. Load the rule files, that are to be loaded in repository
+			//2. Load the rule files, that are to be loaded in repository
 			// and load them only if they are not already loaded.
 			for(Resource resource : getResources(pattern)){
 				if(log.isDebugEnabled()) log.debug("Loading rule file :" + resource.getURL().toString());
-				String ruleXml = getFileContext(resource.getInputStream());
-				org.drools.rule.Package rulePackage = XMLUtil.unmarshalToPackage(ruleXml);
-				String ruleBindUri = rulePackage.getName();
-				if(!map.containsKey(ruleBindUri)){
+				try {
+					String ruleXml = getFileContext(resource.getInputStream());
+					org.drools.rule.Package rulePackage = XMLUtil.unmarshalToPackage(ruleXml);
+					String ruleBindUri = rulePackage.getName();
+					
 					if(log.isDebugEnabled()) log.debug("Registering at bindUri : " + ruleBindUri + "\r\n\r\n" + ruleXml);
 					ruleDeploymentService.registerRulePackage(ruleBindUri, rulePackage);
 					if(log.isDebugEnabled()) log.debug("Sucessfully deployed rule at bindUri :" + ruleBindUri);
-				}
+				} catch (RuntimeException e) {
+					log.debug("It seems the system rule is already available, so ignoring", e);
+				}	
+				
 			}
 			
 		}catch(Exception e){

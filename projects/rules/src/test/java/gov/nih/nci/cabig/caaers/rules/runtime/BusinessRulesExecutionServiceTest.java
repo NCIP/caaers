@@ -47,8 +47,9 @@ public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	Error Message : DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
 	 */
 	public void testEventDescriptionRule1() throws Exception{
-		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting.description_section";
+		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_description_section";
 		try{
+			try{unregisterRule(bindUri);}catch(Exception e){}
 			registerRule(bindUri, "event_description_rule_1.xml");
 			
 			//----------------
@@ -86,8 +87,9 @@ public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	Error Message : DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
 	 */
 	public void testEventDescriptionRule1_WithoutRecoveryDate() throws Exception{
-		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting.description_section";
+		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_description_section";
 		try{
+			try{unregisterRule(bindUri);}catch(Exception e){}
 			registerRule(bindUri, "event_description_rule_1.xml");
 			
 			//----------------
@@ -128,8 +130,9 @@ public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	Error Message : DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
 	 */
 	public void testEventDescriptionRule1_WithoutRecoveryDateAndNotRecoverdPresentStatus() throws Exception{
-		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting.description_section";
+		String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_description_section";
 		try{
+			try{unregisterRule(bindUri);}catch(Exception e){}
 			registerRule(bindUri, "event_description_rule_1.xml");
 			
 			//----------------
@@ -156,7 +159,7 @@ public class BusinessRulesExecutionServiceTest extends RulesTestCase {
 			e.printStackTrace();
 			fail("An exception occured while execution of rule");
 		}finally{
-			//unregisterRule(bindUri);
+			unregisterRule(bindUri);
 		}
 	}
 	

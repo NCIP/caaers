@@ -54,7 +54,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			Package rulePackage = XMLUtil.unmarshalToPackage(ruleXml);
 			registerPackage(bindUri, rulePackage);
 		} catch (Exception e) {
-			log.error("Error occured while registering the rules [bindUri :" + bindUri + ", ruleXml :\r\n" + ruleXml + "\r\n]",e );
+			log.info("Error occured while registering the rules [bindUri :" + bindUri + ", ruleXml :\r\n" + ruleXml + "\r\n]",e );
 			throw new RemoteException("Error while registering rules", e);
 		}
 	}
@@ -64,7 +64,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		try {
 			registerPackage(bindUri, rulePackage);
 		} catch (Exception e) {
-			log.error("Error occured while registering the rules [bindUri :" + bindUri + ", rulePackage :\r\n" + rulePackage + "\r\n]",e );
+			log.info("Error occured while registering the rules [bindUri :" + bindUri + ", rulePackage :\r\n" + rulePackage + "\r\n]",e );
 			throw new RemoteException("Error while registering rules", e);
 		}
 		
@@ -86,7 +86,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			registerPackage(bindUri, ruleSetObj);
 			
 		} catch (Exception e) {
-			log.error("Error while registering ruleSet, with name :" + ruleSetName +", bindUri :" + bindUri, e);
+			log.info("Error while registering ruleSet, with name :" + ruleSetName +", bindUri :" + bindUri, e);
 			throw new RemoteException(e.getMessage(), e);
 		} 
 		
@@ -96,7 +96,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 		try {
 			RuleServiceContext.getInstance().ruleAdministrator.deregisterRuleExecutionSet(bindUri,null);
 		} catch (Exception e) {
-			log.error("Error while undeploying rules", e);
+			log.info("Error while undeploying rules", e);
 			throw new RemoteException("Error while undeploying rules," + e.getMessage(), e);
 		} 
 	}
