@@ -282,7 +282,7 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 
  /**
   * This method will evaluate the rules that are bound in the below URI.
-  *  URI naming convention :"gov.nih.nci.cabig.caaers.rules.sponsor." + <fundingsponsorOrgName> + "." + <section_name>"
+  *  URI naming convention :"gov.nih.nci.cabig.caaers.rules." +  + <section_name>"
   */
  @SuppressWarnings(value="unchecked")
  public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, 
@@ -293,7 +293,7 @@ private String evaluateInstitutionTarget(AdverseEvent ae, Study study , Organiza
 	 Study study = aeReport.getStudy();
 	 
 	 //1. fetch the bindUri
-	 String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE,RuleType.REPORT_VALIDATION_RULES_DESCRIPTION_SECTION.getName());
+	 String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE,"reporting_" + section.name());
 	 
 	 //2. fire the rules
 	 List<Object> input = new ArrayList<Object>();
