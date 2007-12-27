@@ -125,24 +125,34 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 	 */
 	public void createStudy(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
 			InvalidStudyException, StudyCreationException {
-		log.info("Begining of studyConsumer : createStudy");
-		System.out.println("-- StudyConsumer : createStudy");
-		if(studyDto == null) throw new InvalidStudyException();
-		
-		Study study = null;
-		String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-		study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-		if(study != null){
-			log.info("Already a study with the same Coordinating Center Identifier (" + ccIdentifier +") exists.Returning without processing the request.");
-			return;
+		try{
+			log.info("Begining of studyConsumer : createStudy");
+			System.out.println("-- StudyConsumer : createStudy");
+			if(studyDto == null) throw new InvalidStudyException();
+			
+			Study study = null;
+			String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
+			study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+			if(study != null){
+				log.info("Already a study with the same Coordinating Center Identifier (" + ccIdentifier +") exists.Returning without processing the request.");
+				return;
+			}
+			
+			study = new Study();
+			study.setGridId(studyDto.getGridId());
+			populateStudyDetails(studyDto, study);
+			studyDao.save(study);
+			log.info("Created the study :" + study.getId());
+			log.info("End of studyConsumer : createStudy");	
+		}catch(InvalidStudyException e){
+			throw e;
+		}catch(StudyCreationException e){
+			throw e;
+		}catch(Exception e){
+			log.error("Error while creating study", e);
+			throw new RemoteException("Unable to create study", e);
 		}
 		
-		study = new Study();
-		study.setGridId(studyDto.getGridId());
-		populateStudyDetails(studyDto, study);
-		studyDao.save(study);
-		log.info("Created the study :" + study.getId());
-		log.info("End of studyConsumer : createStudy");
 	}
 	
 	/**
