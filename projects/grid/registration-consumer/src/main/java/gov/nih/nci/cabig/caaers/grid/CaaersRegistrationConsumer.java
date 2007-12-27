@@ -162,6 +162,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer{
 			participantDao.save(participant);
 			log.info("End of registration-register");
 			return registration;
+		}catch(InvalidRegistrationException e){
+			throw e;
+		}catch(RegistrationConsumptionException e){
+			throw e;
+		}catch(Exception e){
+			log.error("Error while registering", e);
+			throw new RemoteException("Error while registering", e);
 		}finally{
 			postProcess(stubWebRequest);
 		}
