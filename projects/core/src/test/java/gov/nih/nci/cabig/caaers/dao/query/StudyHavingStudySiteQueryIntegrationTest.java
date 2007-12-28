@@ -12,8 +12,10 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 
 import java.util.List;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -96,17 +98,26 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 
 	}
 
-	@Override
+    @Override
 	protected void onSetUpInTransaction() throws Exception {
 		super.onSetUpInTransaction();
-		study = createStudy("a");
+        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
+                        ("admin", "localhost", new Date(), "/pages/task"));
+
+        study = createStudy("a");
 		studyDao.save(study);
 		anotherStudy = createStudy("b");
 		studyDao.save(anotherStudy);
+    }
 
-	}
+    @Override
+    protected void onTearDownAfterTransaction() throws Exception {
+        super.onTearDownAfterTransaction();
+        DataAuditInfo.setLocal(null);
+        super.endTransaction();
+    }
 
-	private Study createStudy(final String name) {
+    private Study createStudy(final String name) {
 		study = new Study();
 		study.setLongTitle("long title" + name);
 		study.setShortTitle("short title" + name);
