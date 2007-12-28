@@ -77,13 +77,12 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		name = "" + Calendar.getInstance().getTime().getTime();
 		name = name.substring(name.length() - 5, name.length() - 1);
 
-		System.out.println("name:" + name);
+        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
+                ("admin", "localhost", new Date(), "/pages/task"));
 
-		organization = Fixtures.createOrganization(name);
+        organization = Fixtures.createOrganization(name);
 		organizationService.create(organization);
 		assertNotNull(organization);
-        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
-                       ("admin", "localhost", new Date(), "/pages/task"));
 
 	}
 
