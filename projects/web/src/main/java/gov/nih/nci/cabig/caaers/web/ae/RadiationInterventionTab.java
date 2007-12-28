@@ -50,7 +50,7 @@ public class RadiationInterventionTab extends AeTab {
         InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit",
                 "Unit of measure",
                 false,
-                InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select"));
+                InputFieldFactory.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"));
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions",
             new SimpleNumericDisplayNameCreator("Radiation"),
