@@ -76,7 +76,7 @@ public class TreatmentTab extends AeTab {
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units",
             "Unit of measure",
             false,
-            InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select"));
+            InputFieldFactory.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"), "code", "desc", "Please Select"));
         CompositeField adminDelayField = new CompositeField(null,
             new DefaultInputFieldGroup(null, "Administration delay")
                 .addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false))
@@ -107,7 +107,7 @@ public class TreatmentTab extends AeTab {
             .addField(InputFieldFactory.createSelectField("units",
             		"units",
             		true,
-            		InputFieldFactory.collectOptions(configurationProperty.getMap().get("doseUMORefData"), "code", "desc", "Please Select")));
+            		InputFieldFactory.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"), "code", "desc", "Please Select")));
         if(!hideRoute){
             group.addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
         }
