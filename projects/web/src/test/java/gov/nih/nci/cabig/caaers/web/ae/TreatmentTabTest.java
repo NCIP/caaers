@@ -25,7 +25,7 @@ public class TreatmentTabTest extends AeTabTestCase {
     protected TreatmentTab createTab() {
     	ConfigProperty configProperty = new ConfigProperty();
     	Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
-    	map.put("doseUMORefData", new ArrayList<Lov>());
+    	map.put("agentDoseUMORefData", new ArrayList<Lov>());
     	configProperty.setMap(map);
     	TreatmentTab tab = new TreatmentTab();
     	tab.setConfigurationProperty(configProperty);
