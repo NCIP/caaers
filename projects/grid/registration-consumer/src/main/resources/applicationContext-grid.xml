@@ -15,4 +15,9 @@
 		
 	<bean id="registrationConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType"/>
 
+    <bean id="registrationConsumerGridServiceUrl" class="java.lang.String">
+        <constructor-arg value="s[grid.registrationconsumer.url]"/>
+    </bean>
+
+
 </beans>
