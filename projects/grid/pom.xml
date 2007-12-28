@@ -9,7 +9,7 @@
         <version>0.9-SNAPSHOT</version>
     </parent>
     <modules>
-        <module>introduce</module>
+        <module>study-consumer</module>
         <module>registration-consumer</module>
     </modules>
 
