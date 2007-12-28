@@ -39,7 +39,7 @@ public class LabsTabTest extends AeTabTestCase {
 
     public void testFieldProperties() throws Exception {
         assertFieldProperties("lab3",
-            "aeReport.labs[3].name",
+            "aeReport.labs[3].labTerm",
             "aeReport.labs[3].other",
             "aeReport.labs[3].units",
             "aeReport.labs[3].baseline.value",
@@ -47,7 +47,10 @@ public class LabsTabTest extends AeTabTestCase {
             "aeReport.labs[3].nadir.value",
             "aeReport.labs[3].nadir.date",
             "aeReport.labs[3].recovery.value",
-            "aeReport.labs[3].recovery.date"
+            "aeReport.labs[3].recovery.date",
+            "aeReport.labs[3].site",
+            "aeReport.labs[3].labDate",
+            "aeReport.labs[3].infectiousAgent"
         );
     }
 //TODO: This test is no longer valid.

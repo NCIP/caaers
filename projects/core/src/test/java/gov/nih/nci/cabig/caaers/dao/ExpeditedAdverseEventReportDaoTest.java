@@ -72,7 +72,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
         Lab l1 = loaded.getLabs().get(1);
         assertSame("Wrong report", loaded, l1.getReport());
-        assertEquals("Wrong name", "Extent", l1.getName());
         assertEquals("Wrong units", "hectares/liter", l1.getUnits());
         assertLabValue("Wrong baseline", "3.66", 2003, Calendar.APRIL, 17, l1.getBaseline());
         assertLabValue("Wrong nadir", "0.4", 2007, Calendar.MARCH, 14, l1.getNadir());

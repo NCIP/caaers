@@ -15,8 +15,12 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -90,6 +94,8 @@ public class CreateAdverseEventAjaxFacade {
     private ConfigProperty configProperty;
     private ReportService reportService;
     private ParticipantService participantService;
+    private LabCategoryDao labCategoryDao;
+    private LabTermDao labTermDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -246,6 +252,40 @@ public class CreateAdverseEventAjaxFacade {
         } else {
             return reduceAll(list, "grade", "text");
         }
+    }
+    
+    public List<LabTerm> matchLabTerms(String text, Integer labCategoryId) {
+        List<LabTerm> terms = labTermDao.getBySubname(extractSubnames(text), labCategoryId);
+        // cut down objects for serialization
+        for (LabTerm term : terms) {
+            term.getCategory().setTerms(null);
+            term.getCategory().getLabVersion().setCategories(null);
+        }
+        return terms;
+    }
+
+    public List<LabTerm> getLabTermsByCategory(Integer labCategoryId) {
+        List<LabTerm> terms;
+        if (labCategoryId == 0) {
+            terms = labTermDao.getAll();
+        } else {
+            terms = labCategoryDao.getById(labCategoryId).getTerms();
+        }
+        // cut down objects for serialization
+        for (LabTerm term : terms) {
+            term.getCategory().setTerms(null);
+            term.getCategory().getLabVersion().setCategories(null);
+        }
+        return terms;
+    }
+
+    public List<LabCategory> getLabCategories() {
+        List<LabCategory> categories = labCategoryDao.getAll();
+        // cut down objects for serialization
+        for (LabCategory category : categories) {
+            category.setTerms(null);
+        }
+        return categories;
     }
 
     //will return the labTestNamesRefData Lov's matching the testName.
@@ -639,6 +679,26 @@ public class CreateAdverseEventAjaxFacade {
     public void setParticipantService(ParticipantService participantService) {
 		this.participantService = participantService;
 	}
+    
+    @Required
+	public LabCategoryDao getLabCategoryDao() {
+		return labCategoryDao;
+	}
+
+	public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
+		this.labCategoryDao = labCategoryDao;
+	}
+
+	@Required
+	public LabTermDao getLabTermDao() {
+		return labTermDao;
+	}
+
+	public void setLabTermDao(LabTermDao labTermDao) {
+		this.labTermDao = labTermDao;
+	}
+    
+    
     
     public static class IndexChange {
         private Integer original, current;

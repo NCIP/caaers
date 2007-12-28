@@ -130,6 +130,9 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
 	<value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
 	<value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
+	<value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
+	<value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
+	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
 	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
       </list>
     </property>
@@ -271,6 +274,8 @@ This applicationContext contains the definition of the DAOs
   <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
   <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
   <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
+  <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
+  <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
   
   
   <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>

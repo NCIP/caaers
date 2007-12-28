@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersError;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 
@@ -119,28 +120,32 @@ public class ExpeditedReportTreeTest extends TestCase {
 
     public void testListPropertyIsSatisfied() throws Exception {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+        LabTerm labTerm = new LabTerm();
+        labTerm.setTerm("Test");
 
         assertNoUnsatisfiedProperties("Reported not present for empty list",
-            "labs[].name", report);
+            "labs[].labTerm", report);
         report.addLab(new Lab());
         assertUnsatisfiedProperties("Reported present for null prop",
-            "labs[].name", report, "labs[0].name");
-        report.getLabs().get(0).setName("Eliza");
+            "labs[].labTerm", report, "labs[0].labTerm");
+        report.getLabs().get(0).setLabTerm(labTerm);
         assertNoUnsatisfiedProperties(
             "Reported not present for set prop",
-            "labs[].name", report);
+            "labs[].labTerm", report);
     }
 
     public void testListPropertyIsNotSatisfiedWhenOneInstanceIsMissing() throws Exception {
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
+        LabTerm labTerm = new LabTerm();
+        labTerm.setTerm("Test");
 
         assertNoUnsatisfiedProperties("Reported not present for empty list",
-            "labs[].name", report);
-        report.getLabs().get(0).setName("Eliza");
-        report.getLabs().get(1).setName(null);
+            "labs[].labTerm", report);
+        report.getLabs().get(0).setLabTerm(labTerm);
+        report.getLabs().get(1).setLabTerm(null);
         assertUnsatisfiedProperties(
             "Wrong unsatisfied properties found",
-            "labs[].name", report, "labs[1].name");
+            "labs[].labTerm", report, "labs[1].labTerm");
     }
 
     public void testCodedOrOtherSatisfiedByCoded() throws Exception {

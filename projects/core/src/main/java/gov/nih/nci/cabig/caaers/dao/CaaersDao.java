@@ -105,7 +105,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		}
 
 		StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(" o where ");
-		if (extraConditions != null) {
+		if (extraConditions != null && extraConditions.length() > 0) {
 			query.append(extraConditions).append(" and ");
 		}
 		List<Object> params = new LinkedList<Object>();

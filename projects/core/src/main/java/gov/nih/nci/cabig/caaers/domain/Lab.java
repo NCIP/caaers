@@ -5,10 +5,18 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
@@ -21,23 +29,40 @@ import org.hibernate.annotations.Parameter;
     }
 )
 public class Lab extends AbstractExpeditedReportCollectionElementChild {
-    private String name;
+    private LabTerm labTerm;
+    //private String name;
     private String other;
     private String units;  // TODO: source this from caDSR
 
     private LabValue baseline;
     private LabValue nadir;
     private LabValue recovery;
+    
+    private String site;
+    private Date labDate;
+    private String infectiousAgent;
+    
 
     ////// BEAN PROPERTIES
+    
+    @OneToOne
+	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@JoinColumn(name = "lab_term_id")
+	public LabTerm getLabTerm() {
+		return labTerm;
+	}
 
+	public void setLabTerm(LabTerm labTerm) {
+		this.labTerm = labTerm;
+	}
+    /*
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
+    }*/
 
     public String getUnits() {
         return units;
@@ -94,5 +119,29 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 	}
     public void setOther(String other) {
 		this.other = other;
+	}
+
+	public String getInfectiousAgent() {
+		return infectiousAgent;
+	}
+
+	public void setInfectiousAgent(String infectiousAgent) {
+		this.infectiousAgent = infectiousAgent;
+	}
+
+	public Date getLabDate() {
+		return labDate;
+	}
+
+	public void setLabDate(Date labDate) {
+		this.labDate = labDate;
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
 	}
 }

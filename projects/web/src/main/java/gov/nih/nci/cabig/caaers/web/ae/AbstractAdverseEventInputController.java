@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -77,6 +79,8 @@ public abstract class AbstractAdverseEventInputController
     protected CtcCategoryDao ctcCategoryDao;
     protected PreExistingConditionDao preExistingConditionDao;
     protected TreatmentAssignmentDao treatmentAssignmentDao;
+    protected LabTermDao labTermDao;
+    protected LabCategoryDao labCategoryDao;
 
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
@@ -115,6 +119,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
         ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
+        ControllerTools.registerDomainObjectEditor(binder, labTermDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -338,4 +343,19 @@ public abstract class AbstractAdverseEventInputController
 	public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }
+	public LabTermDao getLabTermDao() {
+		return labTermDao;
+	}
+	public void setLabTermDao(LabTermDao labTermDao) {
+		this.labTermDao = labTermDao;
+	}
+
+	public LabCategoryDao getLabCategoryDao() {
+		return labCategoryDao;
+	}
+	public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
+		this.labCategoryDao = labCategoryDao;
+	}
+	
+	
 }

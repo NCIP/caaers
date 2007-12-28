@@ -14,45 +14,94 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 		var EnterLab = Class.create();
 		Object.extend(EnterLab.prototype, {
-		  initialize: function(index, nameValue) {
+		  initialize: function(index, nameValue, categoryId) {
 		  	this.index = index;
 		  	this.baseName = 'aeReport.labs[' + index + ']'; 
-		  	this.testName = $(this.baseName + '.name');
-		  	this.testNameInput = $(this.baseName + '.name-input');
+		  	this.testName = $(this.baseName + '.labTerm');
+		  	this.testNameInput = $(this.baseName + '.labTerm-input');
+		  	this.categoryInput = $(this.baseName + '.lab-category');
+		  	this.categoryId = (categoryId == null || categoryId.length) == 0 ? null : categoryId ;
 		  	this.other = $(this.baseName + '.other');;
 		  	if(nameValue){
 		  		this.testNameInput.value = nameValue;
+		  	}
+		  	if(this.categoryId){
+		  		for (i=0; i < this.categoryInput.options.length; i++){
+		  			if (this.categoryInput.options[i].value == this.categoryId){
+		  				this.categoryInput.options[i].selected=true;
+		  				
+		  				if (this.categoryInput.options[i].value == "105"){
+		  						AE.slideAndShow($('microbiology-'+index))
+		  					}else{
+		  						AE.slideAndHide($('microbiology-'+index))
+		  					}
+		  				
+		  				break
+		  			}	
+		  		}
 		  	}
 		  	
 		  	AE.registerCalendarPopups("lab-" + this.index)
 		  	//register autocompleter.
 		  	AE.createStandardAutocompleter(
-                this.baseName + '.name', 
+                this.baseName + '.labTerm', 
                 function(autocompleter, text) {
-                	createAE.matchLabTestNames(text, function(values){
+                	cat = $('aeReport.labs[' + index + '].lab-category')
+                	catId = ""
+                	for (i=0; i < cat.length; i++){
+		  			if (cat.options[i].selected == true){
+		  				catId = cat.options[i].value
+		  			}	
+		  			}
+                	createAE.matchLabTerms(text, catId , function(values){
                 		autocompleter.setChoices(values)	
                 	});
                 },
-                function(lov) { 
-                   	return lov.desc 
+                function(labTerm) {
+                   	return labTerm.term 
                 },
                 {
                   afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-            		$('aeReport.labs[' + index + '].name').value = selectedChoice.desc;
+                  	$('aeReport.labs[' + index + '].labTerm').value=selectedChoice.id
+                  	categoryInput = $('aeReport.labs[' + index + '].lab-category');
+                  	for (i=0; i < categoryInput.options.length; i++){
+		  				if (categoryInput.options[i].value == selectedChoice.category.id){
+		  					categoryInput.options[i].selected=true;
+		  					if (categoryInput.options[i].value == "105"){
+		  						AE.slideAndShow($('microbiology-'+index))
+		  					}else{
+		  						$('aeReport.labs[' + index + '].site').value=""
+		  						$('aeReport.labs[' + index + '].labDate').value=""
+		  						$('aeReport.labs[' + index + '].infectiousAgent').value=""
+		  						AE.slideAndHide($('microbiology-'+index))
+		  					}
+		  					break
+		  				}	
+		  			}
+		  			
         		  }
                 });
-                
+             
+             
+            //register the radio buttons.
+		  	this.categoryInput.observe("change", function(event){
+		  		this.testNameInput.value=""
+		  	}.bindAsEventListener(this)); 
+             
 		  	//register the radio buttons.
 		  	$('labname-' + this.index).observe("click", function(event){
-		  		this.testNameInput.enable();
-		  		this.other.disable();
+			  	this.categoryInput.disabled=false;
+		  		this.testNameInput.removeAttribute('readOnly')
+                this.other.setAttribute('readOnly',true);
 		  		this.other.clear();
 		  	}.bindAsEventListener(this));
 		  	$('labother-' + this.index).observe("click", function(event){
-		  		this.other.enable();
-		  		this.testName.clear();
+		  		this.categoryInput.options[0].selected=true;
+		  		this.categoryInput.disabled=true;
+		  		this.other.removeAttribute('readOnly')
+                this.testNameInput.setAttribute('readOnly',true);
 		  		this.testNameInput.clear();
-		  		this.testNameInput.disable();
+		  		
 		  	}.bindAsEventListener(this));
 		  	
 		  	this.initializeNameOrOther();
@@ -72,13 +121,13 @@
                 addParameters: [aeReportId],
                 addFirstAfter: "single-fields",
                 addCallback: function(index) {
-                    new EnterLab(index);
+                    new EnterLab(index,null);
                 },
                 deletable: true,
                 reorderable: true
             }, 'aeReport.labs')
             <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
-            	new EnterLab(${status.index},"${lab.name}");
+            	new EnterLab(${status.index},"${lab.labTerm.term}","${lab.labTerm.category.id}");
             </c:forEach>
             
         })

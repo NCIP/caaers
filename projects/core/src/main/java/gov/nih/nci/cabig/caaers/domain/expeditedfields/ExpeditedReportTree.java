@@ -184,11 +184,14 @@ public class ExpeditedReportTree extends PropertylessNode {
             ),
             section(LABS_SECTION,
                 list("labs", new LabsDisplayNameCreator(),
-               		codedOrOther("name", "Lab test name", "other", "Other test name"),
+               		codedOrOther("labTerm", "Lab test name", "other", "Other test name"),
                     property("units", "Units"),
                     labValue("baseline", "Baseline"),
                     labValue("nadir", "Worst"),
-                    labValue("recovery", "Recovery")
+                    labValue("recovery", "Recovery"),
+                    property("site", "Site"),
+                    property("labDate", "date"),
+                    property("infectiousAgent", "Infectious agent")
                 )
             ),
             section(PRIOR_THERAPIES_SECTION,
