@@ -19,7 +19,7 @@ public class RadiationInterventionTabTest extends AeTabTestCase {
     protected RadiationInterventionTab createTab() {
     	ConfigProperty configProperty = new ConfigProperty();
     	Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
-    	map.put("doseUMORefData", new ArrayList<Lov>());
+    	map.put("radiationDoseUMORefData", new ArrayList<Lov>());
     	configProperty.setMap(map);
     	RadiationInterventionTab tab = new RadiationInterventionTab();
     	tab.setConfigurationProperty(configProperty);
