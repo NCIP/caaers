@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -15,6 +16,7 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -80,6 +82,8 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		organization = Fixtures.createOrganization(name);
 		organizationService.create(organization);
 		assertNotNull(organization);
+        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
+                       ("admin", "localhost", new Date(), "/pages/task"));
 
 	}
 
@@ -87,7 +91,8 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 	protected void onTearDownAfterTransaction() throws Exception {
 		super.onTearDownAfterTransaction();
 		deleteCsmDetailsForCreatingNewOrganization(organization);
-		super.endTransaction();
+		DataAuditInfo.setLocal(null);
+        super.endTransaction();
 	}
 
 	public void testSaveOrganization() throws Exception {

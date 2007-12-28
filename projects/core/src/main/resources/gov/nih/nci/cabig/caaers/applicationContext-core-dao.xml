@@ -166,7 +166,7 @@ This applicationContext contains the definition of the DAOs
     <property name="interceptors">
       <list>
 	<ref local="gridIdentifierInterceptor"/>
-	<!-- ref local="auditInterceptor" /-->
+	<ref local="auditInterceptor" />
       </list>
     </property>
   </bean>
@@ -200,6 +200,9 @@ This applicationContext contains the definition of the DAOs
       <ref local="auditSessionFactory" />
     </property>
   </bean>
+    <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
+            <property name="sessionFactory" ref="auditSessionFactory"></property>
+   </bean>
   
   
   <!-- auditing beans definition end here -->
@@ -233,8 +236,9 @@ This applicationContext contains the definition of the DAOs
   </bean>
   
   <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
-  
-  <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" autowire="byType"/>
+
+  <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" autowire="byType" >
+   </bean>
   
   <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
     <property name="checkWriteOperations"><value>false</value></property>
@@ -321,5 +325,5 @@ This applicationContext contains the definition of the DAOs
 
     <!-- validator beans end here-->
 
-    
+
 </beans>

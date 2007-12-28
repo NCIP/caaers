@@ -4,6 +4,7 @@ import edu.nwu.bioinformatics.commons.ComparisonUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,13 +17,7 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import javax.naming.NamingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -42,6 +37,8 @@ public abstract class CaaersTestCase extends CoreTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
+                ("admin", "localhost", new Date(), "/pages/task"));
         // JAP: need this to ensure that security aspect
         // is initialized by Spring before it is applied
         // by AspectJ.
@@ -54,6 +51,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
         SecurityTestUtils.switchToSuperuser();
     }
 
+
     @Override
     protected void tearDown() throws Exception {
         SecurityTestUtils.switchToNoUser();
@@ -62,6 +60,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
         // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
         // SecurityTestUtils.deleteCSMPolicy(dataSource);
         super.tearDown();
+        DataAuditInfo.setLocal(null);
     }
 
     public synchronized static ApplicationContext getDeployedApplicationContext() {
