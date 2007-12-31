@@ -19,6 +19,11 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
     public static final String QUARTZ_DELEGATE_PROPERTY_NAME= "jdbc.quartz.delegateClassName";
     public static final String SCHEMA_PROPERTY_NAME = "datasource.schema";
     public static final String AUTH_MODE_PROPERTY_NAME = "authenticationMode";
+    public static final String WEBSSO_BASE_URL = "webSSO.server.baseUrl";
+    public static final String WEBSSO_SERVER_TRUST_CERTIFICATE = "webSSO.server.trustCert";
+    public static final String WEBSSO_HOST_CERTIFICATE = "hostCertificate";
+    public static final String WEBSSO_HOST_KEY = "hostKey";
+    public static final String WEBSSO_CAS_ACEGI_SECURITY_URL = "webSSO.cas.acegi.security.url" ;
 
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
@@ -34,6 +39,11 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
         String schema = selectSchema();
         if(schema != null) properties.setProperty(SCHEMA_PROPERTY_NAME, schema);
         if(properties.getProperty(AUTH_MODE_PROPERTY_NAME) == null) properties.setProperty(AUTH_MODE_PROPERTY_NAME, "local");
+        if(properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(WEBSSO_BASE_URL, "http://dummyurl.com/url");
+        if(properties.getProperty(WEBSSO_SERVER_TRUST_CERTIFICATE) == null) properties.setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, "dummyTrustCerts");
+        if(properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(WEBSSO_HOST_CERTIFICATE, "dummyHostCert");
+        if(properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(WEBSSO_HOST_KEY, "dummykey");
+        if(properties.getProperty(WEBSSO_CAS_ACEGI_SECURITY_URL) == null) properties.setProperty(WEBSSO_CAS_ACEGI_SECURITY_URL, "http://dummy.com/casurl/");
     }
 
     /**
