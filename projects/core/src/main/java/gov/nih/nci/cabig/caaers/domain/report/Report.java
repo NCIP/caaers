@@ -58,6 +58,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private Date submittedOn;
     private Submitter submitter;
     private Boolean physicianSignoff;
+    private String assignedIdentifer;
 
     private ReportStatus status = ReportStatus.PENDING;
     private List<ReportVersion> reportVersions;
@@ -280,5 +281,15 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         sb.append("]");
         return sb.toString();
     }
+
+	public String getAssignedIdentifer() {
+		return assignedIdentifer;
+	}
+
+
+	public void setAssignedIdentifer(String assignedIdentifer) {
+		this.assignedIdentifer = assignedIdentifer;
+	}
+	
 }
 
