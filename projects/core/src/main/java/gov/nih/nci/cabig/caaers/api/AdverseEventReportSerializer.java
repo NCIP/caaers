@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
@@ -140,7 +141,8 @@ public class AdverseEventReportSerializer {
 	    	List<RadiationIntervention> radiationInterventionList = hibernateAdverseEventReport.getRadiationInterventions();
 
 	    	for (RadiationIntervention radiationIntervention: radiationInterventionList) {
-	    		aer.addRadiationIntervention(radiationIntervention);
+	    		
+	    		aer.addRadiationIntervention(getRadiationIntervention(radiationIntervention));
 	    	}
 	    	
 	    	//	build SurgeryInterventions
@@ -199,6 +201,26 @@ public class AdverseEventReportSerializer {
 
 
 	    	return aer;
+	   }
+	   
+	   private RadiationIntervention getRadiationIntervention(RadiationIntervention ri) throws Exception {
+		   RadiationIntervention radiationIntervention = new RadiationIntervention();
+		   try {
+			   radiationIntervention.setId(ri.getId());
+			   radiationIntervention.setDosage(ri.getDosage());
+			   radiationIntervention.setDosageUnit(ri.getDosageUnit());
+			   radiationIntervention.setLastTreatmentDate(ri.getLastTreatmentDate());
+			   radiationIntervention.setFractionNumber(ri.getFractionNumber());
+			   radiationIntervention.setDaysElapsed(ri.getDaysElapsed());
+			   radiationIntervention.setAdjustment(ri.getAdjustment());
+			   radiationIntervention.setAdministration(ri.getAdministration());
+			   
+			   
+	    	} catch (Exception e) {
+	    		throw new Exception ("Error building getRadiationIntervention() "+e.getMessage() , e);
+	    	}
+		   
+		   return radiationIntervention;
 	   }
 	   private Reporter getReporter(Reporter rptr) throws Exception {
 	    	Reporter reporter = new Reporter();
