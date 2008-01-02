@@ -13,12 +13,11 @@ public enum RadiationAdministration implements CodedEnum<Integer> {
     BT_LDR(2, "Brachytherapy LDR"),
     BT_NOS(3, "Brachytherapy NOS"),
     EB_NOS(4, "External Beam NOS"),
-    EB_2D(5,  "External Bean, 2D"),
-    EB_3D(6,  "External Bean, 3D"),
-    EB_IMRT(7, "External Bean, IMRT"),
-    EB_PROTON(8, "External Bean, Proton"),
-    SYSTEMIC_RADIOTHERAPY(9, "Systemic radiotherapy")
-    ;
+    EB_2D(5,  "External Beam, 2D"),
+    EB_3D(6,  "External Beam, 3D"),
+    EB_IMRT(7, "External Beam, IMRT"),
+    EB_PROTON(8, "External Beam, Proton"),
+    SYSTEMIC_RADIOTHERAPY(9, "Systemic radiotherapy");
 
     private int code;
     private String displayName;
