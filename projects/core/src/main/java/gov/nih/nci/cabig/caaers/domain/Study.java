@@ -52,19 +52,20 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private DiseaseTerminology diseaseTerminology;
 
 	private String status;
-
+	//TODO: Remove
 	private Boolean blindedIndicator;
 
 	private Boolean multiInstitutionIndicator;
 	
 	private Boolean adeersReporting;
 
+	//TODO: Remove
 	private Boolean randomizedIndicator;
-
+	//TODO: Remove
 	private String diseaseCode;
-
+	//TODO: Remove
 	private String monitorCode;
-
+	//TODO: Remove
 	private Integer targetAccrualNumber;
 
 	private List<StudyOrganization> studyOrganizations;
@@ -260,6 +261,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Transient
 	public void setStudyAgents(final List<StudyAgent> studyAgents) {
 		setStudyAgentsInternal(studyAgents);
+	}
+	
+	public boolean hasTherapyOfType(StudyTherapyType therapyType){
+		if(getStudyTherapies() != null){
+			for(StudyTherapy therapy : getStudyTherapies()){
+				if(therapy.getStudyTherapyType().equals(therapyType)) return true;
+			}
+		}
+		return false;
 	}
 
 	// / BEAN PROPERTIES

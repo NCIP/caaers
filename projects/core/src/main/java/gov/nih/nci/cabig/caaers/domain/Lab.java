@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -144,4 +145,31 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 	public void setSite(String site) {
 		this.site = site;
 	}
+    
+    @Override
+    public int hashCode() {
+    	return ("" + name + other).hashCode() ;
+    }
+    
+    
+    @Override
+    public boolean equals(Object obj) {
+    	if(obj == this) return true;
+    	
+    	if(obj == null) return false;
+    	
+    	if(!(obj instanceof Lab)) return false;
+    	
+    	Lab l = (Lab)obj;
+    	if(!StringUtils.equals(name, l.name)) return false;
+    	if(!StringUtils.equals(other, l.other)) return false;
+   
+    	if(l.units != null && !units.equals(l.units)) return false;
+    	if(l.baseline != null && !baseline.equals(l.baseline)) return false;
+    	
+    	if(l.recovery != null && !recovery.equals(l.recovery)) return false;
+    	if(l.nadir != null && !nadir.equals(l.nadir)) return false;
+    	
+    	return true;
+    }
 }

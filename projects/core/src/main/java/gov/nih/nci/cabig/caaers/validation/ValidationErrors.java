@@ -9,8 +9,10 @@ public class ValidationErrors {
 	public ValidationErrors(){
 		errors = new ArrayList<ValidationError>();
 	}
-	public void addValidationError(String code, String msg){
-		errors.add(new ValidationError(code, msg));
+	
+	
+	public void addValidationError(String code, String msg, Object... r1){
+		errors.add(new ValidationError(code, msg, r1));
 	}
 	public String toString(){
 		return errors.toString();
@@ -20,6 +22,9 @@ public class ValidationErrors {
 		return errors.size();
 	}
 	
+	public boolean hasErrors(){
+		return errors.size() > 0;
+	}
 	public List<ValidationError> getErrors() {
 		return errors;
 	}

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
@@ -10,6 +11,8 @@ import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -62,7 +65,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     private List<SurgeryAttribution> surgeryAttributions;
     private List<RadiationAttribution> radiationAttributions;
     private List<DeviceAttribution> deviceAttributions;
-
+    
     ////// BOUND PROPERTIES
 
     @OneToOne
@@ -346,5 +349,32 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+    
+    /**
+     * This method will return a list consisting of all the attributions.
+     * @return List consisting of AdverseEventAttribution objects
+     */
+    @Transient
+    public boolean isAttributedWith(Attribution... attributions) {
+    	return containsAttribution(courseAgentAttributions, attributions) || 
+    	containsAttribution(concomitantMedicationAttributions,attributions) ||
+    	containsAttribution(otherCauseAttributions,attributions) ||
+    	containsAttribution(diseaseAttributions,attributions) ||
+    	containsAttribution(surgeryAttributions,attributions) ||
+    	containsAttribution(radiationAttributions,attributions) ||
+    	containsAttribution(deviceAttributions,attributions) ;
+    
+
+    }
+    
+    private boolean containsAttribution(List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList, Attribution...attributions){
+    	if(attributionList == null || attributionList.isEmpty()) return false;
+    	for(AdverseEventAttribution<? extends DomainObject> aea : attributionList){
+    		for(Attribution att : attributions){
+    			if(aea.getAttribution().equals(att)) return true;
+    		}
+    	}
+    	return false;
     }
 }
