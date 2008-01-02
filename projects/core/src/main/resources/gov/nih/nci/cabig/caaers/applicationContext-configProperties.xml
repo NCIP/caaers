@@ -1361,7 +1361,20 @@
                         </bean>
                     </list>
                 </entry>
-                
+
+                <entry key="stateRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="AL" />
+                            <property name="desc" value="Alabama" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="VA" />
+                            <property name="desc" value="Virginia" />
+                        </bean>
+                    </list>
+                </entry>
+                                
             </map>
         </property>
     </bean>
