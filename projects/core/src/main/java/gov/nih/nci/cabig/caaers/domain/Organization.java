@@ -42,6 +42,9 @@ public class Organization extends AbstractMutableDomainObject {
     private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
     private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
     private List<ReportDefinition> reportDefinitions;
+    private String city;
+    private String state;
+    private String country;
 
     ////// LOGIC
 
@@ -85,9 +88,35 @@ public class Organization extends AbstractMutableDomainObject {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @Column(name = "city")
+    public String getCity() {
+		return city;
+	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+	@Column(name = "country")
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	@Column(name = "state")
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyOrganization> getStudyOrganizations() {
