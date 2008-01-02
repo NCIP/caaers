@@ -47,9 +47,7 @@ public class RadiationInterventionTab extends AeTab {
         
         InputField codeField = createTextField("treatmentArm", "Treatment arm", false);
         InputFieldAttributes.setDetails(codeField, code);
-        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit",
-                "Unit of measure",
-                false,
+        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit","Unit of measure",false,
                 InputFieldFactory.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"));
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions",
@@ -62,7 +60,9 @@ public class RadiationInterventionTab extends AeTab {
             createDateField("lastTreatmentDate", "Date of last treatment",  false),
             createTextField("fractionNumber", "Schedule number of fractions", false),
             createTextField("daysElapsed", " Number of elapsed days", false),
-            createTextField("adjustment", "Adjustment", false)
+            //createTextField("adjustment", "Adjustment", false)
+            createSelectField("adjustment", "Adjustment", false, 
+            		InputFieldFactory.collectOptions(configurationProperty.getMap().get("radiationAdjustmentRefData"), "code", "desc", "Please Select"))
         );
     }
     
