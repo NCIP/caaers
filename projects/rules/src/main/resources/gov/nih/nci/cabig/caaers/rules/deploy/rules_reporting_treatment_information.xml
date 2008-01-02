@@ -4,6 +4,7 @@
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
 	<import name="java.util.List" />
+	<import name="java.util.HashSet" />
 	<import name="gov.nih.nci.cabig.caaers.rules.common.DateUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.common.NumberUtil" />
@@ -188,5 +189,35 @@
 			<!--  Error message is already populated -->
        </rhs>
 	</rule>
-			
+	<!-- ==========================================================================
+	RuleName : PAG_UK_CHK
+	Rule : Protocol Agents must be unique"
+	Error Code : PAG_UK_ERR
+	Error Message : PROTOCOL_AGENT must be unique
+	============================================================================= -->
+	<rule name="PAG_UK_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator(){
+					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+						TreatmentInformation ti = aeReport.getTreatmentInformation();
+						if(ti == null) return SUCCESS;
+						if(ti.getCourseAgents() == null) return SUCCESS;
+						int i = 0;
+						HashSet hSet = new HashSet();
+						for(CourseAgent ca : ti.getCourseAgents()){
+							i++;
+							if(!hSet.add(ca.getStudyAgent().getId())){
+								errors.addValidationError("PAG_UK_ERR", "Protocol Agents must be unique", i,ca.getStudyAgent().getAgentName() );
+							}
+						}
+						return errors.hasErrors() ? FAIL : SUCCESS;
+					}
+		  }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!--  Error message is already populated -->
+       </rhs>
+	</rule>	
 </package>

@@ -3,7 +3,7 @@
 
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
-	<import name="java.util.List" />
+	<import name="java.util.HashSet" />
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.common.NumberUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
@@ -93,5 +93,34 @@
 			<!-- Already Populated Error Message-->
        	</rhs>
 	</rule>
-	
+	<!-- ==========================================================================
+	RuleName : "AER_UK_CHK"
+	Logic : Adverse Events CTC must be unique
+	Error Code : AER_UK_ERR
+	Error Message :  ADVERSE_EVENT_CTC must be unique
+	============================================================================= -->
+	<rule name="AER_UK_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					HashSet hSet = new HashSet();
+					for(AdverseEvent ae : aeReport.getAdverseEvents()){
+						i++;
+						if(ae.getAdverseEventTerm() instanceof AdverseEventCtcTerm ){
+							if(!hSet.add(ae.getAdverseEventCtcTerm().getId())){
+							 errors.addValidationError("AER_UK_ERR","Adverse Events CTC must be unique", i, ae.getAdverseEventCtcTerm().getCtcTerm().getFullName());
+							}
+						}
+					}
+					return false;
+				}
+		  	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
 </package>
