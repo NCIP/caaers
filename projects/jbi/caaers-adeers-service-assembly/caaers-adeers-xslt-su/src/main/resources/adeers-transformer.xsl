@@ -15,6 +15,8 @@
         <EXTERNAL_SYSTEMS>
             <xsl:value-of select="EXTERNAL_SYSTEMS"/>
         </EXTERNAL_SYSTEMS>
+        <REPORT_ID><xsl:value-of select="REPORT_ID"/></REPORT_ID>
+        
         
         <REPORTER_INFORMATION>
             <xsl:attribute name="FIRST_NAME">
