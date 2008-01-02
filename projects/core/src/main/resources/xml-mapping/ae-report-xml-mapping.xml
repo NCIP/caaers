@@ -963,8 +963,8 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
-    <field name="name" type="string">
-      <bind-xml name="name" node="element"/>
+    <field name="labTerm" type="gov.nih.nci.cabig.caaers.domain.LabTerm">
+      <bind-xml name="labTerm"/>
     </field>
     <field name="other" type="string">
       <bind-xml name="other" node="element"/>
@@ -983,6 +983,26 @@
     </field>
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.LabTerm">
+    <map-to xml="LabTerm"/>
+
+    <field name="term" type="string">
+      <bind-xml name="term" node="element"/>
+    </field>
+    <field name="category" type="gov.nih.nci.cabig.caaers.domain.LabCategory">
+      <bind-xml name="category"/>
+    </field>
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.LabCategory">
+    <map-to xml="LabCategory"/>
+
+    <field name="name" type="string">
+      <bind-xml name="name" node="element"/>
+    </field>
+
+  </class>
+    
   <class name="gov.nih.nci.cabig.caaers.domain.LabValue">
     <map-to xml="LabValue"/>
 
