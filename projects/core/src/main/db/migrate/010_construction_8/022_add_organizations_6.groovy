@@ -53,7 +53,7 @@ class OrganizationCodes extends edu.northwestern.bioinformatics.bering.Migration
       insert('csm_pg_pe',[pg_pe_id:6013 ,protection_group_id: -5013, protection_element_id:-5013], primaryKey: false);
       insert('organizations', [ id: 104999, nci_institute_code: "NCI", name: "National Cancer Institute", city: "Rockville", state: "MD", country: "USA"], primaryKey: false) 
       insert('csm_group',[GROUP_ID: -5014,GROUP_NAME:"gov.nih.nci.cabig.caaers.domain.Organization.NCI1",GROUP_DESC:"NCI group",application_id: -1], primaryKey: false); 
-      insert('csm_protection_element',[protection_element_id: -5014,protection_element_name:"gov.nih.nci.cabig.caaers.domain.Organization.NCI1",object_id: "gov.nih.nci.cabig.caaers.domain.Organization.NCI",application_id: -1], primaryKey: false); 
+      insert('csm_protection_element',[protection_element_id: -5014,protection_element_name:"gov.nih.nci.cabig.caaers.domain.Organization.NCI1",object_id: "gov.nih.nci.cabig.caaers.domain.Organization.NCI1",application_id: -1], primaryKey: false); 
       insert('CSM_PROTECTION_GROUP',[PROTECTION_GROUP_ID: -5014,PROTECTION_GROUP_NAME:"gov.nih.nci.cabig.caaers.domain.Organization.NCI1", PARENT_PROTECTION_GROUP_ID:-5, application_id: -1, LARGE_ELEMENT_COUNT_FLAG:0], primaryKey: false);
       insert('csm_pg_pe',[pg_pe_id:6014 ,protection_group_id: -5014, protection_element_id:-5014], primaryKey: false);
       insert('organizations', [ id: 105000, nci_institute_code: "NCIBAL", name: "National Cancer Institute Baltimore Cancer Research Center", city: "Rockville", state: "MD", country: "USA"], primaryKey: false) 
