@@ -8,12 +8,14 @@
     </xsl:template>
 
     <xsl:template match="AdverseEventReport">
+        
         <CAEERS_AEREPORT_ID>
             <xsl:value-of select="id"/>
         </CAEERS_AEREPORT_ID>
         <EXTERNAL_SYSTEMS>
             <xsl:value-of select="EXTERNAL_SYSTEMS"/>
         </EXTERNAL_SYSTEMS>
+        
         <REPORTER_INFORMATION>
             <xsl:attribute name="FIRST_NAME">
                 <xsl:value-of select="Reporter/firstName"/>
@@ -156,11 +158,43 @@
             <INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
             <!-- no info -->
         </COURSE_INFORMATION>
-        <!--
+        
+        <xsl:if test="RadiationIntervention/administration != '' ">
         <RADIATION_INTERVENTION>
-            <TYPE_OF_RADIATION_ADMINISTRATION>
-                <xsl:value-of select="RadiationIntervention/administration"/>
-            </TYPE_OF_RADIATION_ADMINISTRATION>
+            <xsl:choose>
+                <xsl:when test="RadiationIntervention/administration = 'BT_HDR' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy HDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'BT_LDR' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy LDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'BT_NOS' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'EB_NOS' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>External Beam NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'EB_2D' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 2D</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'EB_3D' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 3D</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'EB_IMRT' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'EB_PROTON' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, Proton</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:when test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
+                    <TYPE_OF_RADIATION_ADMINISTRATION>Systemic radiotherapy</TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:when>
+                <xsl:otherwise>
+                    <TYPE_OF_RADIATION_ADMINISTRATION><xsl:value-of select="RadiationIntervention/administration"/></TYPE_OF_RADIATION_ADMINISTRATION>
+                </xsl:otherwise>
+            </xsl:choose>
+            
+            
             <TOTAL_DOSE_TO_DATE>
                 <xsl:value-of select="RadiationIntervention/dosage"/>
             </TOTAL_DOSE_TO_DATE>
@@ -169,19 +203,33 @@
                     <xsl:with-param name="date" select="RadiationIntervention/lastTreatmentDate"/>
                 </xsl:call-template>
             </DATE_OF_LAST_TREATMENT>
+            
+            <xsl:if test="RadiationIntervention/fractionNumber != '' ">
             <SCHEDULE_NUMBER_OF_FRACTIONS>
                 <xsl:value-of select="RadiationIntervention/fractionNumber"/>
             </SCHEDULE_NUMBER_OF_FRACTIONS>
+            </xsl:if>
+            
+            <xsl:if test="RadiationIntervention/daysElapsed != '' ">
             <SCHEDULE_NUMBER_OF_ELAPSED_DAYS>
                 <xsl:value-of select="RadiationIntervention/daysElapsed"/>
             </SCHEDULE_NUMBER_OF_ELAPSED_DAYS>
+            </xsl:if>
+            
             <UNIT_OF_MEASURE>
                 <xsl:value-of select="RadiationIntervention/dosageUnit"/>
             </UNIT_OF_MEASURE>
+            
+            <xsl:if test="RadiationIntervention/adjustment != '' ">
             <ADJUSTMENT>
                 <xsl:value-of select="RadiationIntervention/adjustment"/>
             </ADJUSTMENT>
+            </xsl:if>
+            
         </RADIATION_INTERVENTION>
+        </xsl:if>
+        
+        <xsl:if test="SurgeryIntervention/AnatomicSite/name !=''">
         <SURGERY_INTERVENTION>
             <SITE_OF_INTERVENTION>
                 <xsl:value-of select="SurgeryIntervention/AnatomicSite/name"/>
@@ -192,6 +240,9 @@
                 </xsl:call-template>
             </DATE_OF_INTERVENTION>
         </SURGERY_INTERVENTION>
+        </xsl:if>
+        
+        <xsl:if test="MedicalDevice/brandName !=''">
         <SUSPECT_MEDICAL_DEVICE>
             <BRAND_NAME>
                 <xsl:value-of select="MedicalDevice/brandName"/>
@@ -232,12 +283,25 @@
                 <xsl:value-of select="MedicalDevice/otherNumber"/>
             </OTHER_NUMBER>
             <AE_DEVICE_OPERATOR>
-                <DEVICE_OPERATOR>
-                    <xsl:value-of select="MedicalDevice/DeviceOperator"/>
-                </DEVICE_OPERATOR>
+                <xsl:choose>
+                    <xsl:when test="MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
+                        <DEVICE_OPERATOR>Health Professional</DEVICE_OPERATOR>
+                    </xsl:when>
+                    <xsl:when test="MedicalDevice/DeviceOperator = 'PATIENT'">
+                        <DEVICE_OPERATOR>Lay User/Patient</DEVICE_OPERATOR>
+                    </xsl:when>
+                    <xsl:when test="MedicalDevice/DeviceOperator = 'OTHER'">
+                        <DEVICE_OPERATOR>Other</DEVICE_OPERATOR>
+                    </xsl:when>                    
+                    <xsl:otherwise>
+                        <DEVICE_OPERATOR><xsl:value-of select="MedicalDevice/DeviceOperator"/></DEVICE_OPERATOR>
+                    </xsl:otherwise>
+                </xsl:choose>                
+                <!--
                 <DEVICE_OPERATOR_OTHER>
                     <xsl:value-of select="MedicalDevice/otherDeviceOperator"/>
                 </DEVICE_OPERATOR_OTHER>
+                -->
             </AE_DEVICE_OPERATOR>
             <IMPLANTED_DATE>
                 <xsl:call-template name="standard_date">
@@ -249,26 +313,49 @@
                     <xsl:with-param name="date" select="MedicalDevice/explantedDate"/>
                 </xsl:call-template>
             </EXPLANTED_DATE>
-            <IS_SINGLE_USE_DEVICE>
-                <xsl:value-of select="MedicalDevice/brandName"/>
-            </IS_SINGLE_USE_DEVICE>
-           
+            <xsl:choose>
+                <xsl:when test="MedicalDevice/DeviceReprocessed = 'YES'">
+                    <IS_SINGLE_USE_DEVICE>Yes</IS_SINGLE_USE_DEVICE>
+                </xsl:when>
+                <xsl:otherwise>
+                    <IS_SINGLE_USE_DEVICE>No</IS_SINGLE_USE_DEVICE>
+                </xsl:otherwise>
+            </xsl:choose>
+
+
             <REPROCESSOR_NAME>
                 <xsl:value-of select="MedicalDevice/reprocessorName"/>
             </REPROCESSOR_NAME>
             <REPROCESSOR_ADDRESS>
                 <xsl:value-of select="MedicalDevice/reprocessorAddress"/>
             </REPROCESSOR_ADDRESS>
-            <EVAL_DEVICE>
-                <xsl:value-of select="MedicalDevice/EvaluationAvailability"/>
-            </EVAL_DEVICE>
+            <xsl:choose>
+                <xsl:when test="MedicalDevice/EvaluationAvailability = 'YES'">
+                    <EVAL_DEVICE>Yes</EVAL_DEVICE>
+                </xsl:when>
+                <xsl:when test="MedicalDevice/EvaluationAvailability = 'NO'">
+                    <EVAL_DEVICE>No</EVAL_DEVICE>
+                </xsl:when>
+                <xsl:when test="MedicalDevice/EvaluationAvailability = 'RETURNED'">
+                    <EVAL_DEVICE>Returned</EVAL_DEVICE>
+                </xsl:when>
+                <xsl:when test="MedicalDevice/EvaluationAvailability = 'UNKNOWN'">
+                    <EVAL_DEVICE>Unknown</EVAL_DEVICE>
+                </xsl:when>                
+                <xsl:otherwise>
+                    <EVAL_DEVICE><xsl:value-of select="MedicalDevice/EvaluationAvailability"/></EVAL_DEVICE>
+                </xsl:otherwise>
+            </xsl:choose>
+
             <RETURNED_DATE>
                 <xsl:call-template name="standard_date">
                     <xsl:with-param name="date" select="MedicalDevice/returnedDate"/>
                 </xsl:call-template>
             </RETURNED_DATE>
         </SUSPECT_MEDICAL_DEVICE>
-        -->
+        </xsl:if>
+        
+
         <DESCRIPTION_OF_EVENT>
             <xsl:if test="AdverseEventResponseDescription/eventDescription != ''">
                 <EVENT_DESCRIPTION>
@@ -277,12 +364,21 @@
             </xsl:if>
             <!-- TODO NEED TO FIX IT , THIS IS JUST A HACK-->
             <PRESENT_STATUS>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
-                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'"
+                    >Intervention for AE Continues</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'RECOVERING'"
+                    >Recovering/Resolving</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'"
+                    >Recovered/Resolved with Sequelae</xsl:if>
+                <xsl:if
+                    test="AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'"
+                    >Recovered/Resolved without Sequelae</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not
+                    recovered/Not resolved</xsl:if>
+                <xsl:if test="AdverseEventResponseDescription/presentStatus = 'DEAD'"
+                >Fatal/Died</xsl:if>
             </PRESENT_STATUS>
 
 
@@ -374,9 +470,9 @@
                 </BASELINE_PERFORMANCE_STATUS>
             </xsl:if>
 
-            <xsl:if test="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term != ''">
+            <xsl:if test="DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm != ''">
                 <DISEASE_NAME>
-                    <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"/>
+                    <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
                 </DISEASE_NAME>
             </xsl:if>
             <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
@@ -580,14 +676,18 @@
                 <SELECT_AE>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/select"/>
                 </SELECT_AE>
-                
+
                 <xsl:if test="detailsForOther != ''">
-                    <OTHER_ADVERSE_EVENT><xsl:value-of select="detailsForOther"/></OTHER_ADVERSE_EVENT>
+                    <OTHER_ADVERSE_EVENT>
+                        <xsl:value-of select="detailsForOther"/>
+                    </OTHER_ADVERSE_EVENT>
                 </xsl:if>
                 <xsl:if test="LowLevelTerm/fullName != ''">
-                    <OTHER_ADVERSE_EVENT><xsl:value-of select="LowLevelTerm/fullName"/></OTHER_ADVERSE_EVENT>
-                </xsl:if>                
-                
+                    <OTHER_ADVERSE_EVENT>
+                        <xsl:value-of select="LowLevelTerm/fullName"/>
+                    </OTHER_ADVERSE_EVENT>
+                </xsl:if>
+
                 <AE_START_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date" select="startDate"/>
@@ -645,8 +745,8 @@
                 <xsl:for-each select="DiseaseAttribution">
                     <ATTRIBUTION_FOR_AE>
                         <CAUSE_NAME>
-                            <xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"
-                            />
+                            <xsl:value-of
+                                select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
                         </CAUSE_NAME>
                         <TYPE_OF_CAUSE>DISEASE</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
@@ -654,10 +754,12 @@
                         </ATTRIBUTION>
                     </ATTRIBUTION_FOR_AE>
                 </xsl:for-each>
-                <!--
+
                 <xsl:for-each select="SurgeryAttribution">
                     <ATTRIBUTION_FOR_AE>
-                        <CAUSE_NAME/>
+                        <CAUSE_NAME>
+                            <xsl:value-of select="SurgeryIntervention/AnatomicSite/name"/>
+                        </CAUSE_NAME>
                         <TYPE_OF_CAUSE>SURGERY</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
                             <xsl:value-of select="substring(attribution, 4, 20)"/>
@@ -666,42 +768,49 @@
                 </xsl:for-each>
                 <xsl:for-each select="RadiationAttribution">
                     <ATTRIBUTION_FOR_AE>
-                        <CAUSE_NAME/>
+                        <CAUSE_NAME>
+                            <xsl:value-of select="RadiationIntervention/administration"/>
+                        </CAUSE_NAME>
                         <TYPE_OF_CAUSE>RADIATION</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
                             <xsl:value-of select="substring(attribution, 4, 20)"/>
                         </ATTRIBUTION>
                     </ATTRIBUTION_FOR_AE>
                 </xsl:for-each>
+
                 <xsl:for-each select="DeviceAttribution">
                     <ATTRIBUTION_FOR_AE>
-                        <CAUSE_NAME/>
+                        <CAUSE_NAME>
+                            <xsl:value-of select="MedicalDevice/brandName"/>
+                        </CAUSE_NAME>
                         <TYPE_OF_CAUSE>DEVICE</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
                             <xsl:value-of select="substring(attribution, 4, 20)"/>
                         </ATTRIBUTION>
                     </ATTRIBUTION_FOR_AE>
                 </xsl:for-each>
-                -->
+
             </ADVERSE_EVENT_CTC>
         </xsl:for-each>
         <xsl:for-each select="Lab">
             <LAB_RESULT>
-                <xsl:if test="name != ''">
+                <xsl:if test="labTerm/term != ''">
                     <xsl:attribute name="LAB_NAME">
-                        <xsl:value-of select="name"/>
+                        <xsl:value-of select="labTerm/term"/>
                     </xsl:attribute>
                 </xsl:if>
-                
-                <!-- no
+
+                <xsl:if test="labTerm/category/name != ''">
                 <LAB_CATEGORY>
-                    <xsl:value-of select="name"/>
+                    <xsl:value-of select="labTerm/category/name"/>
                 </LAB_CATEGORY>
-                -->
+                </xsl:if>
+                
+                
                 <xsl:if test="other != ''">
                     <OTHER_LAB>
                         <xsl:value-of select="other"/>
-                    </OTHER_LAB>                    
+                    </OTHER_LAB>
                 </xsl:if>
 
                 <BASELINE_DATE>
