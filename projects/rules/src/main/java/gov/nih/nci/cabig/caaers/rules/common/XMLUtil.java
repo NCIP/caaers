@@ -66,7 +66,8 @@ public class XMLUtil {
 	 */
 	public static Package unmarshalToPackage(String xml){
 		PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
-		conf.setCompiler( PackageBuilderConfiguration.JANINO );
+		conf.setCompiler( PackageBuilderConfiguration.ECLIPSE );
+		conf.setJavaLanguageLevel("1.5");
 		Package droolsPackage = new Package();
 		
 		//merge the rule xml into the package

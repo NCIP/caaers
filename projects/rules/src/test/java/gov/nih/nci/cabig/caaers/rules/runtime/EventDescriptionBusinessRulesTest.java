@@ -38,7 +38,7 @@ public class EventDescriptionBusinessRulesTest extends
 			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 			aeReport.getResponseDescription().setRecoveryDate(new Date());
 			ValidationErrors errors = fireRules(aeReport);
-			System.out.println(errors);
+			
 			assertEquals("There should not be any validation error", 0, errors.getErrorCount());
 		}catch(Exception e){
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class EventDescriptionBusinessRulesTest extends
 			aeReport.getResponseDescription().setDateRemovedFromProtocol(null);
 			ValidationErrors errors = fireRules(aeReport);
 			
-			System.out.println(errors);
+			
 			assertNotSame("There should be at least 1 validation error", 1, errors.getErrorCount());
 			errors.getErrorAt(0).getMessage().equals("'Date of Recovery or Death' must be provided if 'Present Status' has " +
 					"one of following values:'Fatal/Died'," +
@@ -88,7 +88,7 @@ public class EventDescriptionBusinessRulesTest extends
 			aeReport.getResponseDescription().setRecoveryDate(null);
 			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.NOT_RECOVERED);
 			ValidationErrors errors = fireRules(aeReport);	
-			System.out.println(errors);
+			
 			assertEquals("There should not be validation error", 0, errors.getErrorCount());
 		}catch(Exception e){
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class EventDescriptionBusinessRulesTest extends
 			ExpeditedAdverseEventReport aeReport = createAEReport();
 			aeReport.getResponseDescription().setPresentStatus(null);
 			ValidationErrors errors = fireRules(aeReport);
-			System.out.println(errors);
+			
 			
 			assertEquals("There should be validation error", 1, errors.getErrorCount());
 			assertEquals("The error code should be : DSC_BR1B_ERR", errors.getErrorAt(0).getCode(), "DSC_BR1B_ERR");
@@ -141,7 +141,7 @@ public class EventDescriptionBusinessRulesTest extends
 			aeReport.getResponseDescription().setPresentStatus(null);
 			aeReport.getResponseDescription().setRecoveryDate(null);
 			ValidationErrors errors = fireRules(aeReport);
-			System.out.println(errors);
+			
 			
 			assertEquals("There should not be validation error", 0, errors.getErrorCount());
 		}catch(Exception e){
@@ -167,7 +167,7 @@ public class EventDescriptionBusinessRulesTest extends
 			ExpeditedAdverseEventReport aeReport = createAEReport();
 			aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.NOT_RECOVERED);
 			ValidationErrors errors = fireRules(aeReport);
-			System.out.println(errors);
+			
 			
 			assertEquals("There should not be validation error", 1, errors.getErrorCount());
 			assertEquals("The error code should be same","DSC_BR1B_ERR", errors.getErrorAt(0).getCode());
@@ -189,7 +189,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 		aeReport.getResponseDescription().setRetreated(Boolean.FALSE); //No
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should not be any error, when Retreated is no", 0, errors.getErrorCount());
 	}
 	
@@ -206,7 +206,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.RECOVERED_WITHOUT_SEQUELAE);
 		aeReport.getResponseDescription().setRetreated(Boolean.FALSE); //No
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should not be any error, when Retreated is no and status is RECOVERED", 0, errors.getErrorCount());
 	}
 	
@@ -222,7 +222,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 		aeReport.getResponseDescription().setRetreated(Boolean.TRUE); //No
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should  error, when Retreated is no", 1, errors.getErrorCount());
 		assertEquals("Error code must me 'DSC_BR2_ERR'", "DSC_BR2_ERR", errors.getErrorAt(0).getCode());
 	}
@@ -239,7 +239,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 		aeReport.getResponseDescription().setRetreated(null); //No
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should be error, when present status is DEAD ", 1, errors.getErrorCount());
 		assertEquals("Error code must me 'DSC_BR2_ERR'", "DSC_BR2_ERR", errors.getErrorAt(0).getCode());
 	}
@@ -256,7 +256,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE);
 		aeReport.getResponseDescription().setRetreated(Boolean.TRUE); //No
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should not be any error, when Retreated is YES and present status is not DEAD", 0, errors.getErrorCount());
 	}
 	
@@ -271,7 +271,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(new Date());
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should not be any error, when DateRemovedFromProtocol is not null, and present status is  DEAD", 0, errors.getErrorCount());
 	}
 	
@@ -286,7 +286,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(null);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should be error, when DateRemovedFromProtocol is  null, and present status is  DEAD", 1, errors.getErrorCount());
 		assertEquals("Error code should be DSC_BR3_ERR", "DSC_BR3_ERR" , errors.getErrorAt(0).getCode());
 	}
@@ -303,7 +303,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE);
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(null);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("There should not be error, when DateRemovedFromProtocol is  null, and present status is  RECOVERING", 0 , errors.getErrorCount());
 	}
 	
@@ -324,7 +324,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
 		aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No errors when dateRemoved less than DateOfRecovery", 0, errors.getErrorCount());
 		
 	}
@@ -346,7 +346,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
 		aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No errors when dateRemoved less than DateOfRecovery and status not DEAD", 0, errors.getErrorCount());
 	}
 	
@@ -367,7 +367,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
 		aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("Error should be there when dateRemoved Greater than DateOfRecovery and status is DEAD", 1, errors.getErrorCount());
 		assertEquals("Error message should be same", "DSC_BR5_ERR", errors.getErrorAt(0).getCode());
 	}
@@ -389,7 +389,7 @@ public class EventDescriptionBusinessRulesTest extends
 		aeReport.getResponseDescription().setDateRemovedFromProtocol(removedDate);
 		aeReport.getResponseDescription().setRecoveryDate(recoveryDate);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No errors when dateRemoved greater than DateOfRecovery and status not DEAD", 0, errors.getErrorCount());
 	
 	}

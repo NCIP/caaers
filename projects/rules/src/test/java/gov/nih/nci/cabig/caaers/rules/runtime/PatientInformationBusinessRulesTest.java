@@ -29,7 +29,7 @@ public class PatientInformationBusinessRulesTest extends
 	public void testOtherDiseaseName_WhenDiseaseTermIsSolidTumorNOS() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No errors when OtherDiseaseName is present", 0, errors.getErrorCount());
 	}
 	/**
@@ -46,7 +46,7 @@ public class PatientInformationBusinessRulesTest extends
 		diseaseTerm.setTerm("Hematopoietic malignancy, NOS");
 		aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No errors when OtherDiseaseName is present", 0, errors.getErrorCount());
 	}
 	
@@ -68,7 +68,7 @@ public class PatientInformationBusinessRulesTest extends
 		diseaseTerm.setTerm("Hematopoietic malignancy, NOS");
 		aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("Errors when OtherDiseaseName is not present", 1, errors.getErrorCount());
 		assertEquals("Error code should be same", "PAT_BR2A_ERR" , errors.getErrorAt(0).getCode());
 	}
@@ -87,7 +87,7 @@ public class PatientInformationBusinessRulesTest extends
 		diseaseTerm.setTerm("xxxHematopoietic malignancy, NOS");
 		aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No Errors when OtherDiseaseName is not present and diseaseTerm is not Hemtopoietc.....", 0, errors.getErrorCount());
 	}
 	
@@ -107,7 +107,7 @@ public class PatientInformationBusinessRulesTest extends
 		diseaseTerm.setTerm("abc NOS");
 		aeReport.getDiseaseHistory().getAbstractStudyDisease().setTerm(diseaseTerm);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("Errors when OtherDiseaseName is present and disease is not Hematopoietic...", 1, errors.getErrorCount());
 		assertEquals("Error code must be same", "PAT_BR2B_ERR" , errors.getErrorAt(0).getCode());
 	}
@@ -122,7 +122,7 @@ public class PatientInformationBusinessRulesTest extends
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite("OtherSite");
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No Errors when OtherPrimarySiteOfDisease is only present", 0, errors.getErrorCount());
 	}
 
@@ -139,7 +139,7 @@ public class PatientInformationBusinessRulesTest extends
 		diseaseSite.setName("orignal disease site");
 		aeReport.getDiseaseHistory().setCodedPrimaryDiseaseSite(diseaseSite);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No Errors when CodedPrimaryDiseaseSite is only present", 0, errors.getErrorCount());
 		
 	}
@@ -156,7 +156,7 @@ public class PatientInformationBusinessRulesTest extends
 		aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite(null);
 		aeReport.getDiseaseHistory().setCodedPrimaryDiseaseSite(null);
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("No Errors when both other and coded disease site is not present", 0, errors.getErrorCount());
 	}
 	
@@ -174,9 +174,60 @@ public class PatientInformationBusinessRulesTest extends
 		aeReport.getDiseaseHistory().setCodedPrimaryDiseaseSite(diseaseSite);
 		aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite("some site");
 		ValidationErrors errors = fireRules(aeReport);
-		System.out.println(errors);
+		
 		assertEquals("Errors when OtherDiseaseSite and CodedDiseaseSite is present ", 1, errors.getErrorCount());
 		assertEquals("Error code must be same", "PAT_BR3B_ERR" , errors.getErrorAt(0).getCode());
 
+	}
+	
+	/**
+	 * RuleName : SMD_BR1_CHK
+	Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+	Error Code : SMD_BR1_ERR
+	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+	 */
+	public void testNoMetastaticDisease() throws Exception {
+		fail("Not implemented");
+	}
+	
+
+	/**
+	 * RuleName : SMD_BR1_CHK
+	Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+	Error Code : SMD_BR1_ERR
+	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+	 */
+	public void testMetastaticDiseaseWithOnlySiteName() throws Exception {
+		fail("Not implemented");
+	}
+
+	/**
+	 * RuleName : SMD_BR1_CHK
+	Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+	Error Code : SMD_BR1_ERR
+	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+	 */
+	public void testMetastaticDiseaseWithOnlyOtherSiteName() throws Exception {
+		fail("Not implemented");
+	}
+	
+	/**
+	 * RuleName : SMD_BR1_CHK
+	Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+	Error Code : SMD_BR1_ERR
+	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+	 */
+	public void testMetastaticDiseaseWithBothDiseaseNameAndOtherSiteName() throws Exception {
+		fail("Not implemented");
+	}
+	
+	/**
+	 * RuleName : SMD_BR1_CHK
+	Logic : 'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.
+	Error Code : SMD_BR1_ERR
+	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
+	 */
+	public void testOneOutOfTwoHasBothMetastaticDiseaseAndOtherSite() throws Exception {
+		fail("Not implemented");	
 	}
 }

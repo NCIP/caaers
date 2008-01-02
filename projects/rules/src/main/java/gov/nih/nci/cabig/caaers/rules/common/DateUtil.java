@@ -21,9 +21,8 @@ public class DateUtil {
      *         o1 > 02  return -1
      */
     public static int compare(Object o1, Object o2) {
-    	if(o1 == null) return 1;
-    	if(o2 == null) return -1;
-    	if( !((o1 instanceof Date) && (o2 instanceof Date)) ) return -1;
+    	if(o1 == null || !(o1 instanceof Date)) return 1;
+    	if(o2 == null || !(o2 instanceof Date)) return -1;
 
     	Date d1 = (Date)o1;
     	Date d2 = (Date)o2;
