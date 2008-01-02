@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
@@ -56,14 +57,7 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 	public void setLabTerm(LabTerm labTerm) {
 		this.labTerm = labTerm;
 	}
-    /*
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }*/
+    
 
     public String getUnits() {
         return units;
@@ -146,9 +140,16 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 		this.site = site;
 	}
     
+	
+	@Transient
+	public String getName() {
+		if(getLabTerm() != null) return getLabTerm().getTerm();
+		return null;
+	}
+	
     @Override
     public int hashCode() {
-    	return ("" + name + other).hashCode() ;
+    	return ("" + getName() + other).hashCode() ;
     }
     
     
@@ -161,7 +162,6 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     	if(!(obj instanceof Lab)) return false;
     	
     	Lab l = (Lab)obj;
-    	if(!StringUtils.equals(name, l.name)) return false;
     	if(!StringUtils.equals(other, l.other)) return false;
    
     	if(l.units != null && !units.equals(l.units)) return false;
