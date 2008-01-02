@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -14,6 +15,8 @@ import java.util.Arrays;
  */
 public class MedicalDeviceTab extends AeTab {
 
+	private ConfigProperty configurationProperty;
+	
     public MedicalDeviceTab() {
         super("Medical Device", ExpeditedReportSection.MEDICAL_DEVICE_SECTION.getDisplayName(), "ae/medicalDevice");
     }
@@ -36,7 +39,9 @@ public class MedicalDeviceTab extends AeTab {
     	InputField manCity = InputFieldFactory.createTextField("manufacturerCity", "Manufacturer city", false);
     	InputFieldAttributes.setColumns(manCity, 30);
     	
-    	InputField manState = InputFieldFactory.createTextField("manufacturerState", "Manufacturer state", false);
+    	//InputField manState = InputFieldFactory.createTextField("manufacturerState", "Manufacturer state", false);
+    	InputField manState = InputFieldFactory.createSelectField("manufacturerState", "Manufacturer state", false,
+    			InputFieldFactory.collectOptions(configurationProperty.getMap().get("stateRefData"), "code", "desc", "Please Select"));
     	InputFieldAttributes.setColumns(manState, 30);
     	
     	InputField modelNumber = InputFieldFactory.createTextField("modelNumber", "Model number", false);
@@ -89,4 +94,7 @@ public class MedicalDeviceTab extends AeTab {
     public ExpeditedReportSection section() {
         return ExpeditedReportSection.MEDICAL_DEVICE_SECTION;
     }
+	public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 }
