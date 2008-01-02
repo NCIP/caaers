@@ -1345,6 +1345,23 @@
 					</list>
 				</entry>
 
+                <entry key="radiationAdjustmentRefData">
+                    <list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Continue Radiation as planned" />
+                            <property name="desc" value="Continue Radiation as planned" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Decrease Total Dose" />
+                            <property name="desc" value="Decrease Total Dose" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="Discontinue Radiation" />
+                            <property name="desc" value="Discontinue Radiation" />
+                        </bean>
+                    </list>
+                </entry>
+                
             </map>
         </property>
     </bean>
