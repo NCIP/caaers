@@ -104,7 +104,9 @@ public class AdeersReportGenerator  {
 	public void generateAndNotify(String aeReportId, Report report, String xml) throws Exception {
 		List<String> emails = new ArrayList<String>();
 		List<String> eprs = new ArrayList<String>();
-
+		
+		int reportId = report.getId();
+		
 		//Report report = adverseEventReportDataObject.getReports().get(((int)reportIndex));
 		StringBuilder sb = new StringBuilder();
 		sb.append("<EXTERNAL_SYSTEMS>");
@@ -123,6 +125,7 @@ public class AdeersReportGenerator  {
 			}
 		}
 		sb.append("</EXTERNAL_SYSTEMS>");
+		sb.append("<REPORT_ID>" + reportId +"</REPORT_ID>");
 		
 		// CCs
 		String[] emailAddresses = report.getLastVersion().getEmailAsArray();
