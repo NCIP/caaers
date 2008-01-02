@@ -1,21 +1,36 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 
 
 public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 	
-	 	private MessageNotificationService messageNotificationService;
-	    
+	 private MessageNotificationService messageNotificationService;
 
+	private ReportDao reportDao;
+
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
 	
 	private Element getJobInfo(String message) {
 		
@@ -48,11 +63,13 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		
 		Element jobInfo = getJobInfo(message);
 		String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID").getValue();
+		String reportId = jobInfo.getChild("REPORT_ID").getValue();
 		
 		//buld error messages
 		StringBuffer sb = new StringBuffer();
 		sb.append("AdEERS report submission results \n\n");
-		sb.append("Report ID  : " + caaersAeReportId+"\n");
+		sb.append("Expedited Report ID  : " + caaersAeReportId+"\n");
+		sb.append("Report ID  : " + reportId+"\n");
 		//sb.append("Job ID  : " +"\n");
 	
 		
@@ -63,6 +80,15 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
 				sb.append("TICKET NUMBER :	" + jobInfo.getChild("ticketNumber").getValue()+"\n");
 				sb.append("REPORT URL	 :	" + jobInfo.getChild("reportURL").getValue()+"\n");
+				//ExpeditedAdverseEventReport aer = null;
+				//List<Report> reports = aer.getReports();
+				
+				//get by reportId
+				Report r = reportDao.getById(Integer.parseInt(reportId));
+				r.setAssignedIdentifer(jobInfo.getChild("ticketNumber").getValue());
+				reportDao.save(r);
+				
+				
 			}
 			
 			if (exceptions.size() > 0) {
@@ -103,11 +129,78 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		}
 	}
 
-    public static void main ( String ars ) {
-    	
+    public static void main ( String[] ars ) {
+    	try {
+    		  SAXParserFactory factory = SAXParserFactory.newInstance();
+    		  factory.setNamespaceAware( true);
+    		  factory.setValidating( true);
+    		  
+    		  SAXParser parser = factory.newSAXParser();
+    		  parser.setProperty( "http://java.sun.com/xml/jaxp/properties/schemaLanguage", 
+    		                      "http://www.w3.org/2001/XMLSchema");
+    		  parser.setProperty( "http://java.sun.com/xml/jaxp/properties/schemaSource", 
+    		                      "file:/Users/sakkala/tech/adeers/test.xsd");
+    		  
+    		
+
+    		  XMLReader reader = parser.getXMLReader();
+    		  
+    		  StringReader reader1 = new StringReader("<test>asdes</test>");
+    	        
+    	        //System.out.println("SUBMITTING TO WEB SERVICE ...");
+    	        //Source attachment = new StreamSource(reader1,"");
+    		  ErrorHandler handler = new Validator();
+    		  reader.setErrorHandler(handler);
+    		  reader.parse( new InputSource( reader1 ));
+    		  
+    		 
+    		  System.out.println("yello...");
+    		  
+    		 // org.xml.sax.helpers.
+
+    		} catch ( Exception e) {
+    		  e.printStackTrace();
+    		}
     }
+
 	public void setMessageNotificationService(MessageNotificationService messageNotificationService) {
 		this.messageNotificationService = messageNotificationService;
 	}
 
+}
+
+ class Validator implements ErrorHandler {
+	public void warning(SAXParseException exception) throws SAXException {
+        // Bring things to a crashing halt
+        System.out.println("**Parsing Warning**" +
+                           "  Line:    " + 
+                              exception.getLineNumber() + "" +
+                           "  URI:     " +                               exception.getSystemId() + "" +
+                           "  Message: " +                               exception.getMessage());        
+        throw new SAXException("Warning encountered");
+    }
+    public void error(SAXParseException exception) throws SAXException {
+        // Bring things to a crashing halt
+        System.out.println("**Parsing Error**" +
+                           "  Line:    " + 
+                              exception.getLineNumber() + "" +
+                           "  URI:     " + 
+                              exception.getSystemId() + "" +
+                           "  Message: " + 
+                              exception.getMessage());        
+        throw new SAXException("Error encountered");
+    }
+    public void fatalError(SAXParseException exception) throws SAXException {
+        // Bring things to a crashing halt
+        System.out.println("**Parsing Fatal Error**" +
+                           "  Line:    " + 
+                              exception.getLineNumber() + "" +
+                           "  URI:     " + 
+                              exception.getSystemId() + "" +
+                           "  Message: " + 
+                              exception.getMessage());        
+        throw new SAXException("Fatal Error encountered");
+    }
+	
+	
 }
