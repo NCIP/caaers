@@ -1,26 +1,30 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
+import gov.nih.nci.cabig.caaers.validation.ValidationError;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
-import java.util.Arrays;
 
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -31,6 +35,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     private ExpeditedReportTree expeditedReportTree;
     protected ReportService reportService;
+    protected EvaluationService evaluationService;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -119,12 +124,25 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     public abstract ExpeditedReportSection section();
+    
+    @Override
+    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, 
+    		Map<String, InputFieldGroup> fieldGroups,Errors errors) {
+    	super.validate(command, commandBean, fieldGroups, errors);
+    	if(section().isAssociatedToBusinessRules()){
+    		ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
+        	for(ValidationError vError : validationErrors.getErrors()){
+        		errors.reject(vError.getCode(), vError.getMessage());	
+        	}		
+    	}
+    }
 
+    ////// CONFIGURATION
+    
     public ExpeditedReportTree getExpeditedReportTree() {
         return expeditedReportTree;
     }
 
-    ////// CONFIGURATION
 
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
@@ -132,6 +150,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     public void setReportService(ReportService reportService) {
         this.reportService = reportService;
+    }
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
     }
 
     //////

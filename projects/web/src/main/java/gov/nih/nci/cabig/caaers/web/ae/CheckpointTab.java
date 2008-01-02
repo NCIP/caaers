@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -24,7 +23,6 @@ import org.springframework.validation.Errors;
  * @author Rhett Sutphin
  */
 public class CheckpointTab extends AeTab {
-    private EvaluationService evaluationService;
     private static final Log log = LogFactory.getLog(CheckpointTab.class);
     
     public CheckpointTab() {
@@ -170,9 +168,5 @@ public class CheckpointTab extends AeTab {
         return val == null ? false : val;
     }
 
-    ////// CONFIGURATION
-
-    public void setEvaluationService(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
-    }
+   
 }
