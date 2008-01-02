@@ -19,6 +19,7 @@ import caaers.client.ReportingMode;
 public class AdeersWebServiceImpl implements AdeersWebService {
 	private String caaersAeReportId = "";
 	private String externalEPRs = "";
+	private String reportId = "";
 	
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -35,8 +36,9 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String uid=adeersEPR.split("::")[1];
 		String pwd=adeersEPR.split("::")[2];
 		
-    	System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caaers_keystore");
-    	AEReportXMLServiceSoapBindingStub binding;
+    	System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caAERs-AdEERS");
+		//System.setProperty("javax.net.ssl.trustStore", "/Users/sakkala/temp/certs/caAERs-AdEERS");
+		AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
         }
@@ -61,7 +63,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 
         
         //attach the id to the returned message
-        s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID></ns1:AEReportJobInfo>");
+        s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+reportId+"</REPORT_ID></ns1:AEReportJobInfo>");
         //System.out.println(s);
         
         return s;
@@ -79,10 +81,15 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		ei = aeReportWithCaaersId.indexOf("</EXTERNAL_SYSTEMS>");
 		externalEPRs = aeReportWithCaaersId.substring(si+18, ei);
 		
+		si = aeReportWithCaaersId.indexOf("<REPORT_ID>");
+		ei = aeReportWithCaaersId.indexOf("</REPORT_ID>");
+		reportId = aeReportWithCaaersId.substring(si+11, ei);
+		
 
 
 		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
 		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+externalEPRs+"</EXTERNAL_SYSTEMS>", "");
+		aeReport = aeReport.replaceAll("<REPORT_ID>"+reportId+"</REPORT_ID>", "");
 		return aeReport;
 	}
 	
