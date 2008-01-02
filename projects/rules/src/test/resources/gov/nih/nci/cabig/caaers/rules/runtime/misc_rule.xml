@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_misc"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.rules.common.DateUtil" />
+	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="gov.nih.nci.cabig.caaers.rules.common.NumberUtil" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.MiscObject" />
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	<function return-type="void" name="myFunc">
+        
+    <body>
+        System.out.println("hello world");
+    </body>
+</function>
+	
+	<!-- ==========================================================================
+	RuleName : TAI_BR2_CHK
+	Rule : Either and only “Treatment Assignment Code” or “Describe Treatment Assignment” must be provided
+	Error Code : TAI_BR2_ERR
+	Error Message : Either and only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
+	============================================================================= -->
+	<rule name="TAI_BR2_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new MiscObject(){
+			  public boolean validate(Object o){
+			  		System.out.println("I validate" + o);
+	 				return false;
+ 			  }
+			}.validate(aeReport)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("TAI_BR2_ERR","Either and only 'Treatment assignment code' or 'Description of treatment assignment or dose level' must be provided");
+       </rhs>
+	</rule>
+</package>

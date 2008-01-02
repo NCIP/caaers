@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_adverse_event_section"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	
+	<!-- ==========================================================================
+	RuleName : SEC_BR1_CHK
+	Rule : Either Course Information and/or Radiation Intervention must be provided for AGENTS + RADIATION pathways
+	Error Code : SEC_BR1_ERR
+	Error Message :  Either COURSE_INFORMATION and/or RADIATION_INTERVENTION must be provided.
+	============================================================================= -->
+	<rule name="SEC_BR1_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION)</eval>
+			<eval>( 
+					(aeReport.getRadiationInterventions().size()  &lt; 1) 
+					&amp;&amp; 
+			  		(
+			  		 (
+			  		  NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentAssignment") == null 
+			  		  &amp;&amp;
+			  	      NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentDescription") == null
+			  	     )
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") == null
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") == null 
+			    	)
+			      )
+			 </eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR1_ERR","Either Course Information and/or Radiation Intervention must be provided for AGENTS + RADIATION pathways");
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : SEC_BR2_CHK
+	Rule : Either Course Information and/or Surgery Intervention must be provided for AGENTS + SURGERY pathways
+	Error Code : SEC_BR2_ERR
+	Error Message : Either COURSE_INFORMATION and/or SURGERY_INTERVENTION must be provided.
+	============================================================================= -->
+	<rule name="SEC_BR2_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
+			<eval>( 
+					(aeReport.getSurgeryInterventions().size() &lt; 1) 
+					&amp;&amp; 
+			  		(
+			  		 (
+			  		  NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentAssignment") == null 
+			  		  &amp;&amp;
+			  	      NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentDescription") == null
+			  	     )
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") == null
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") == null 
+			    	)
+			      )</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR2_ERR","Either Course Information and/or Surgery Intervention must be provided for AGENTS + SURGERY pathways");
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : SEC_BR3_CHK
+	Rule : Either Surgery Intervention and/or Radiation Intervention must be provided for SURGERY + RADIATION pathways
+	Error Code : SEC_BR3_ERR
+	Error Message :  Either SURGERY_INTERVENTION and/or RADIATION_INTERVENTION must be provided.
+	============================================================================= -->
+	<rule name="SEC_BR3_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
+			<eval>( 
+					(aeReport.getSurgeryInterventions().size() &lt; 1) 
+					&amp;&amp; 
+			  		(aeReport.getRadiationInterventions().size()  &lt; 1) 
+			      )</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR3_ERR","Either Surgery Intervention and/or Radiation Intervention must be provided for SURGERY + RADIATION pathways");
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : SEC_BR4_CHK
+	Rule : Either Course Information and/or Surgery Intervention and/or Radiation Intervention must be provided for AGENTS + SURGERY + RADIATION pathways
+	Error Code : SEC_BR4_ERR
+	Error Message : Either COURSE_INFORMATION and/or RADIATION_INTERVENTION and/or SURGERY_INTERVENTION must be provided.
+	============================================================================= -->
+	<rule name="SEC_BR4_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
+			<eval>( 
+					(aeReport.getSurgeryInterventions().size() &lt; 1) 
+					&amp;&amp; 
+			  		(aeReport.getRadiationInterventions().size()  &lt; 1) 
+			  		&amp;&amp;
+			  		(
+			  		 (
+			  		  NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentAssignment") == null 
+			  		  &amp;&amp;
+			  	      NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentDescription") == null
+			  	     )
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") == null
+			  	     ||NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") == null 
+			    	)
+			      )</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR4_ERR","Either Course Information and/or Surgery Intervention and/or Radiation Intervention must be provided for AGENTS + SURGERY + RADIATION pathways");
+       	</rhs>
+	</rule>
+</package>	

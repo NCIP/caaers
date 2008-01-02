@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_prior_therapies_section"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+
+	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
+	<import name="org.apache.commons.lang.StringUtils" />
+	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
+	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
+	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+	
+	<!-- ==========================================================================
+	RuleName : PTY_BR1_CHK
+	Logic : "Comments (prior therapy) must be provided if 'Prior therapy' is 'No Prior Therapy'"
+	Error Code : PTY_BR1_ERR
+	Error Message : COMMENTS must be provided (including appropriate Prior Therapy) if PRIOR_THERAPY is "No Prior Therapy NOS"
+	============================================================================= -->
+	<rule name="PTY_BR1_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+	
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+						if(StringUtils.equalsIgnoreCase("No prior therapy", pt.getName()) &amp;&amp; pt.getOther() == null ){
+							errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is 'No Prior Therapy'", ++i);
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+		    }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			
+       	</rhs>
+	</rule>
+	
+</package>
