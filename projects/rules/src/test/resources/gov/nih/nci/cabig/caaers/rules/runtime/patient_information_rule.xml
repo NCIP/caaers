@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_medical_info_section" xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+	<import name="gov.nih.nci.cabig.caaers.validation.*" />
 	<import name="gov.nih.nci.cabig.caaers.rules.common.DateUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
