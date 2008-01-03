@@ -471,7 +471,7 @@ private String institutionLevelRules(AdverseEvent ae,  Study study, Organization
 		
 		//fire the rules and AdverseEventEvaluationResult from the output.
 		List<Object> outputObjects = fireRules(inputObjects, bindURI);
-		if(outputObjects != null){
+		if(outputObjects == null){
 			//no_rules_found
 			evaluationForSponsor.setMessage("no_rules_found");
 			return evaluationForSponsor;
