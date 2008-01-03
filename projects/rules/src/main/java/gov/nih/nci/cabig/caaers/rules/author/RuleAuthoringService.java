@@ -36,7 +36,7 @@ public interface RuleAuthoringService extends java.rmi.Remote {
 	
 	public void updateRuleSet(RuleSet ruleSet) throws RemoteException;
 	
-	public RuleSet getRuleSet(String ruleSetId) throws RemoteException;
+	public RuleSet getRuleSet(String ruleSetId,boolean cached) throws RemoteException;
 
 	public Rule getRule(String ruleId) throws RemoteException;
 	

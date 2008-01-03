@@ -53,13 +53,13 @@ public class RuleExecutionSetRepositoryImpl implements RuleExecutionSetRepositor
     public RuleExecutionSet getRuleExecutionSet(final String bindUri) {
     	RuleExecutionSet res = null;
     	
-    	if (rc.getRuleExecutionSet(bindUri)!=null){
-    		res= rc.getRuleExecutionSet(bindUri);
-    	} else {
+    	//if (rc.getRuleExecutionSet(bindUri)!=null){
+    	//	res= rc.getRuleExecutionSet(bindUri);
+    	//} else {
     		RuleSetInfo ruleSetInfo = getRepositoryService().getRegisteredRuleset(bindUri);
     		res = (RuleExecutionSet)ruleSetInfo.getContent();
-    		rc.putRuleExecutionSet(bindUri, res);
-    	}
+    		//rc.putRuleExecutionSet(bindUri, res);
+    	//}
     	return res;
     }
 

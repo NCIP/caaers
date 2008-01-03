@@ -183,8 +183,8 @@ public class RuleAuthoringServiceImpl implements RuleAuthoringService
 		this.repositoryService.createRuleSet(ruleSet);
 	}
 
-	public RuleSet getRuleSet(String ruleSetName) throws RemoteException {
-		return this.repositoryService.getRuleSet(ruleSetName);
+	public RuleSet getRuleSet(String ruleSetName,boolean cached) throws RemoteException {
+		return this.repositoryService.getRuleSet(ruleSetName,cached);
 	}
 	
 	public Rule getRule(String ruleId) throws RemoteException {

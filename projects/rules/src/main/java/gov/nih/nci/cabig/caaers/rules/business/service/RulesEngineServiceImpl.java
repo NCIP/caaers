@@ -48,7 +48,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	public void exportRule(String ruleSetName, String locationToExport)  throws Exception {
 		
 		try {	
-				RuleSet rs=repositoryService.getRuleSet(ruleSetName);
+				RuleSet rs=repositoryService.getRuleSet(ruleSetName,false);
 				String str = XMLUtil.marshal(rs);
 				File outFile = new File(locationToExport+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml");
 				FileWriter out;
@@ -377,12 +377,12 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return rule;
 	}
 
-	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName) throws Exception{
+	public RuleSet getRuleSetForInstitution(String ruleSetName, String institutionName, boolean cached) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.INSTITUTION_BASE.getPackagePrefix(), institutionName, ruleSetName);
 		
-			ruleSet = ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName,cached);
 		
 		return ruleSet;
 	}
@@ -422,12 +422,12 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return ruleSets;
 	}
 
-	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName) throws Exception{
+	public RuleSet getRuleSetForSponsor(String ruleSetName, String sponsorName,boolean cached) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getPackageName(CategoryConfiguration.SPONSOR_BASE.getPackagePrefix(), sponsorName, ruleSetName);
 		
-		ruleSet = ruleAuthoringService.getRuleSet(packageName);
+		ruleSet = ruleAuthoringService.getRuleSet(packageName,cached);
 		
 		return ruleSet;
 	}
@@ -469,23 +469,23 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		return ruleSets;
 	}
 
-	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception{
+	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName,boolean cached) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getStudySponsorSpecificPackageName(CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, sponsorName, ruleSetName);
 		
-			ruleSet = ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName,cached);
 		
 		return ruleSet;
 		
 	}
 
-	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception{
+	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName,boolean cached) throws Exception{
 		// TODO Auto-generated method stub
 		RuleSet ruleSet = null;
 		String packageName = RuleUtil.getStudyInstitutionSpecificPackageName(CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE.getPackagePrefix(), studyShortTitle, institutionName, ruleSetName);
 		
-			ruleSet = ruleAuthoringService.getRuleSet(packageName);
+			ruleSet = ruleAuthoringService.getRuleSet(packageName,cached);
 		
 		return ruleSet;
 		
@@ -713,9 +713,9 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 	}
 
 
-	public RuleSet getRuleSet(String packageName) throws Exception {
+	public RuleSet getRuleSet(String packageName,boolean cached) throws Exception {
 		// TODO Auto-generated method stub
-		return ruleAuthoringService.getRuleSet(packageName);
+		return ruleAuthoringService.getRuleSet(packageName,cached);
 	}
 
 
@@ -725,7 +725,7 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		Iterator<RuleSet> it = list.iterator();
 		while(it.hasNext()){
 			RuleSet rs = it.next();
-			rs=repositoryService.getRuleSet(rs.getName());
+			rs=repositoryService.getRuleSet(rs.getName(),false);
 			String str = XMLUtil.marshal(rs);
 			File outFile = new File(locationToExport+File.separator+RuleUtil.getStringWithoutSpaces(rs.getName())+".xml");
 			FileWriter out = new FileWriter(outFile);
@@ -936,5 +936,23 @@ public class RulesEngineServiceImpl implements RulesEngineService{
 		this.organizationDao = organizationDao;
 	}
 
-   
+	public RuleSet getRuleSet(String packageName) throws Exception {
+		return getRuleSet(packageName,true);
+	}
+	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName) throws Exception {
+		return getRuleSetForSponsor(  ruleSetName,  sponsorName, true);
+	}
+	
+	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName) throws Exception {
+		return getRuleSetForInstitution(  ruleSetName,  institutionName, true);
+	}
+	
+	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception {
+		return getRuleSetForSponsorDefinedStudy( ruleSetName,  studyShortTitle,  sponsorName , true);
+	}
+	
+	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception {
+		return getRuleSetForInstitutionDefinedStudy( ruleSetName,  studyShortTitle,  institutionName ,true);
+	}
+
 }

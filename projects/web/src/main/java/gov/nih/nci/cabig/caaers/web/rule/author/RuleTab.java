@@ -84,12 +84,13 @@ public class RuleTab extends DefaultTab
     	// Retrieve RuleSet based on the one choosen by the user
 			try 
 			{
+				System.out.println("----- LEVEL in RuleTab ----" +createRuleCommand.getLevel());
 				RulesEngineService rulesEngineService = createRuleCommand.getRulesEngineService();
 				
 				if (CreateRuleCommand.SPONSOR_LEVEL.equals(createRuleCommand.getLevel()))
 				{
-
-						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						System.out.println("Getting sponsor level rules ....");
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName(),false);
 						createRuleCommand.setOrganizationName(createRuleCommand.getSponsorName());
 						if (ruleSet != null && ruleSet.getRule().size() > 0)
 						{	
@@ -131,13 +132,15 @@ public class RuleTab extends DefaultTab
 					
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
-					ruleSet = rulesEngineService.getRuleSetForSponsorDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName());
+					ruleSet = rulesEngineService.getRuleSetForSponsorDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getSponsorName(),false);
 
 					boolean areSponsorRules = false;
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName());
+						// dont get from cache ...
+						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName(),false);
+						
 						areSponsorRules = true;
 					}
 					
@@ -191,7 +194,7 @@ public class RuleTab extends DefaultTab
 					createRuleCommand.setOrganizationName(createRuleCommand.getInstitutionName());
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 
-					ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
+					ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName(),false);
 
 					
 					
@@ -237,13 +240,13 @@ public class RuleTab extends DefaultTab
 				else if (CreateRuleCommand.INSTITUTION_DEFINED_STUDY_LEVEL.equals(createRuleCommand.getLevel())) {
 					String packageName = createRuleCommand.constructPackageName(createRuleCommand.getLevel());
 					createRuleCommand.setOrganizationName(createRuleCommand.getInstitutionName());
-					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName());
+					ruleSet = rulesEngineService.getRuleSetForInstitutionDefinedStudy(createRuleCommand.getRuleSetName(), createRuleCommand.getCategoryIdentifier(), createRuleCommand.getInstitutionName(),false);
 
 					boolean areSponsorRules = false;
 					// Check whether ruleset exists? Otherwise retrieve inst ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName());
+						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName(),false);
 						areSponsorRules = true;
 					}
 					

@@ -63,7 +63,7 @@ public interface RepositoryService {
      * @return Well, its pretty obvious if you think about it for a minute. Really.
      * @throws RemoteException 
      */
-    public RuleSet getRuleSet(String name);
+    public RuleSet getRuleSet(String name,boolean cached);
 
     /**
      * This loads up all the stuff for a 

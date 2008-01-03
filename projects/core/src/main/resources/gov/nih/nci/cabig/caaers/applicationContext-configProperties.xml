@@ -1456,7 +1456,115 @@
                             <property name="code" value="MN" />
                             <property name="desc" value="Minnesota" />
                         </bean>
-                    </list>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="MS" />
+                            <property name="desc" value="Mississippi" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="MO" />
+                            <property name="desc" value="Missouri" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="MT" />
+                            <property name="desc" value="Montana" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NE" />
+                            <property name="desc" value="Nebraska" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NV" />
+                            <property name="desc" value="Nevada" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NH" />
+                            <property name="desc" value="New Hampshire" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NJ" />
+                            <property name="desc" value="New Jersey" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NM" />
+                            <property name="desc" value="New Mexico" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NY" />
+                            <property name="desc" value="New York" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="NC" />
+                            <property name="desc" value="North Carolina" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="ND" />
+                            <property name="desc" value="North Dakota" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="OH" />
+                            <property name="desc" value="Ohio" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="OK" />
+                            <property name="desc" value="Oklahoma" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="OR" />
+                            <property name="desc" value="Oregon" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="PA" />
+                            <property name="desc" value="Pennsylvania" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="RI" />
+                            <property name="desc" value="Rhode Island" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="SC" />
+                            <property name="desc" value="South Carolina" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="SD" />
+                            <property name="desc" value="South Dakota" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="TN" />
+                            <property name="desc" value="Tennessee" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="TX" />
+                            <property name="desc" value="Texas" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="UT" />
+                            <property name="desc" value="Utah" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="VT" />
+                            <property name="desc" value="Vermont" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="VA" />
+                            <property name="desc" value="Virginia" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="WA" />
+                            <property name="desc" value="Washington" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="WV" />
+                            <property name="desc" value="West Virginia" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="WI" />
+                            <property name="desc" value="Wisconsin" />
+                        </bean>
+                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
+                            <property name="code" value="WY" />
+                            <property name="desc" value="Wyoming" />
+                        </bean>
+                     </list>
                 </entry>
                                 
             </map>

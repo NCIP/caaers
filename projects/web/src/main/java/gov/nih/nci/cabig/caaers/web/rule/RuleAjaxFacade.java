@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
@@ -269,6 +271,16 @@ public class RuleAjaxFacade
 			
             }
     	} 
+    	/*
+    	if (fieldName.equals("outcomeIdentifier")) {
+    		OutcomeType[] outcomeTypes = OutcomeType.values();
+    		for (int i=0 ; i<outcomeTypes.length; i++) {
+    			OutcomeType outcomeType = outcomeTypes[i];
+    			ajaxObjects.add(new RuleAjaxObject(outcomeType.getCode()+"",outcomeType.getDisplayName()));
+    		}
+    		
+    	}
+    	*/
     	return ajaxObjects;
     }
     
@@ -414,6 +426,9 @@ public class RuleAjaxFacade
         	PackageItem item = repositoryService.getRulesRepository().loadPackage(bindUri);
         	item.updateCoverage("Enabled");
         	repositoryService.getRulesRepository().save();
+        	
+        	//getRuleDeploymentService().registerRuleSet(bindUri, ruleSetName);
+        	
     	} 
     	catch (Exception e) 
     	{

@@ -209,6 +209,8 @@ public class CreateRuleCommand implements RuleInputCommand
 			
 			String subject  = "";
 			
+			System.out.println("------- LEVEL ----- " + getLevel());
+			
 			if(SPONSOR_DEFINED_STUDY_LEVEL.equals(getLevel())) 
 			{
 				subject = "Sponsor defined rules for a study||" + getSponsorName() + "||" + getCategoryIdentifier();
@@ -257,6 +259,9 @@ public class CreateRuleCommand implements RuleInputCommand
 	    		rulesEngineService.saveRulesForInstitutionDefinedStudy(ruleSet, categoryIdentifier, institutionName);
 	    		
 	    	}
+	    	
+	    	//deploy and undeploy 
+	    	
 		} 
 		catch (Exception ex) 
 		{

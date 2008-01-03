@@ -227,17 +227,20 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	 * (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.rules.repository.RepositoryService#getRuleSet(java.lang.String)
 	 */
-	public RuleSet getRuleSet(String name) 
+	public RuleSet getRuleSet(String name,boolean cached) 
 	{
+		
 		if (!getRulesRepository().containsPackage(name))
 		{
 			return null;
 		}
 		
 		RuleSet ruleSet;
-    	if (rc.getRuleSet(name) != null){
+    	if (rc.getRuleSet(name) != null && cached){
+    		System.out.println("GET from cache: " +name);
     		ruleSet= rc.getRuleSet(name);
     	} else {
+    		System.out.println("DO NOT GET from cache: " +name);
     		PackageItem item = getRulesRepository().loadPackage(name);
 
     		ruleSet = new RuleSet();
@@ -271,7 +274,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
     			ruleSet.getRule().add(rule);
     		}
     		System.out.println("LOAD RULES UNMARSHAL ELAPSED " + (System.currentTimeMillis()-t2));
-    		rc.putRuleSet(name, ruleSet);
+    	//	rc.putRuleSet(name, ruleSet);
     	}
     	
 		
@@ -386,7 +389,8 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		
 		return rulesRepository;
 	}
-
+	
+	// THIS METHOD IS NOT BEING USED 
 	public String registerRuleSet(String name, RuleSetInfo ruleSetInfo) {
 		CompiledPackageItem compiledPackageItem = ((RulesRepositoryEx) getRulesRepository())
 				.createCompiledPackage(name, ruleSetInfo.getContent());
@@ -438,7 +442,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 			throw new RulesRepositoryException(e.getMessage(), e);
 		}
 	}
-
+//	 THIS METHOD IS NOT BEING USED
 	public void deregisterRuleExecutionSet(String bindUri) {
 		((RulesRepositoryEx) getRulesRepository())
 				.removeCompiledPackage(bindUri);

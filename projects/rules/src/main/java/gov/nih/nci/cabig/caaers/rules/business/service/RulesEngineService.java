@@ -52,6 +52,7 @@ public interface RulesEngineService {
 	 *
 	 */
 	
+	public RuleSet getRuleSet(String packageName,boolean cached) throws Exception;
 	public RuleSet getRuleSet(String packageName) throws Exception;
 	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName) throws Exception;
 	
@@ -60,6 +61,14 @@ public interface RulesEngineService {
 	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName) throws Exception;
 	
 	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName) throws Exception;
+	
+	public RuleSet getRuleSetForSponsor( String ruleSetName, String sponsorName, boolean cached) throws Exception;
+	
+	public RuleSet  getRuleSetForInstitution( String ruleSetName, String institutionName, boolean cached) throws Exception;
+	
+	public RuleSet getRuleSetForSponsorDefinedStudy(String ruleSetName, String studyShortTitle, String sponsorName, boolean cached) throws Exception;
+	
+	public RuleSet getRuleSetForInstitutionDefinedStudy(String ruleSetName, String studyShortTitle, String institutionName, boolean cached) throws Exception;
 	
 	
 	

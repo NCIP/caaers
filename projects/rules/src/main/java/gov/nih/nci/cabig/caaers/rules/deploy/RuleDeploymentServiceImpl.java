@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
 import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
 
@@ -33,6 +34,9 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 	
 	private static final Log log = LogFactory.getLog(RuleDeploymentServiceImpl.class);
 	
+	RulesCache rc = RulesCache.getInstance();
+	
+	
 	public RuleDeploymentServiceImpl() {
 		super();
 	}
@@ -57,6 +61,7 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			log.info("Error occured while registering the rules [bindUri :" + bindUri + ", ruleXml :\r\n" + ruleXml + "\r\n]",e );
 			throw new RemoteException("Error while registering rules", e);
 		}
+		
 	}
 	
 	public void registerRulePackage(String bindUri, Package rulePackage)
@@ -74,8 +79,12 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 	 * @see gov.nih.nci.cabig.caaers.rules.runtime.RuleDeploymentService#registerPackage(java.lang.String, java.lang.String)
 	 */
 	public void registerRuleSet(String bindUri, String ruleSetName) throws RemoteException {
+		
+		rc.ruleSetDeployed(bindUri);
+		rc.ruleSetModified(bindUri);
+		
 		//obtain the rule xml from repository
-		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName);
+		RuleSet ruleSet = getRepositoryService().getRuleSet(ruleSetName,false);
 		
 		//transform the rule xml to a Package , then register the Package to rule exceution service
 		try {
@@ -90,6 +99,10 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			throw new RemoteException(e.getMessage(), e);
 		} 
 		
+
+		
+		rc.putRuleSet(bindUri, ruleSet);
+		
 	}
 
 	public void deregisterRuleSet(String bindUri) throws RemoteException {
@@ -99,6 +112,10 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 			log.info("Error while undeploying rules", e);
 			throw new RemoteException("Error while undeploying rules," + e.getMessage(), e);
 		} 
+		
+		rc.ruleSetDeployed(bindUri);
+		rc.ruleSetModified(bindUri);
+		
 	}
 
 	public RuleSetInfo[] listRegistrations() throws RemoteException {
