@@ -47,7 +47,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 	
 	private Submitter submitter;
     private Boolean physicianSignoff;
-    private String email;
+    private String ccEmails;
     private String reportVersionId;
 	private ReportStatus reportStatus;
 	
@@ -139,20 +139,21 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 		this.physicianSignoff = physicianSignoff;
 	}
 
-	public String getEmail() {
-		return email;
+	@Column(name = "email")
+	public String getCcEmails() {
+		return ccEmails;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCcEmails(String email) {
+		this.ccEmails = email;
 	}
 
 	@Transient
 	public String[] getEmailAsArray(){
-		if (this.email == null) {
+		if (this.ccEmails == null) {
 			return null;
 		}
-		String[] emails = this.email.split(",");
+		String[] emails = this.ccEmails.split(",");
 		return emails;
 	}
 
