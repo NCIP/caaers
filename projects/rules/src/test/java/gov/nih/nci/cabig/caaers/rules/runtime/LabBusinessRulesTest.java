@@ -5,6 +5,7 @@ import java.util.Date;
 import edu.nwu.bioinformatics.commons.DateUtils;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -74,9 +75,9 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	 */
 	public void testLabWithOnlyOther() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getLabs().get(0).setName(null);
+		aeReport.getLabs().get(0).setLabTerm(null);
 		aeReport.getLabs().get(0).setOther("other1");
-		aeReport.getLabs().get(1).setName(null);
+		aeReport.getLabs().get(1).setLabTerm(null);
 		aeReport.getLabs().get(1).setOther("other2");
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "When only OtherName are there for labs");
@@ -348,8 +349,10 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 	 */
 	public void testDuplicateLabs() throws Exception{
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getLabs().get(0).setName("kk");
-		aeReport.getLabs().get(1).setName("kk");
+		LabTerm labTerm = new LabTerm();
+		labTerm.setTerm("kk");
+		aeReport.getLabs().get(0).setLabTerm(labTerm);
+		aeReport.getLabs().get(1).setLabTerm(labTerm);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "LAB_UK_ERR");
 		assertSameErrorCount(errors, 1);
@@ -381,12 +384,14 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 		r21.setDate(DateUtils.createDate(2007, 11, 11));
 		r21.setValue("abcd2");
 		
+		LabTerm labTerm = new LabTerm();
+		labTerm.setTerm("kk");
 		
-		aeReport.getLabs().get(0).setName("kk");
+		aeReport.getLabs().get(0).setLabTerm(labTerm);
 		aeReport.getLabs().get(0).setBaseline(bl1);
 		aeReport.getLabs().get(0).setRecovery(r1);
 		
-		aeReport.getLabs().get(1).setName("kk");
+		aeReport.getLabs().get(1).setLabTerm(labTerm);
 		aeReport.getLabs().get(0).setBaseline(bl2);
 		aeReport.getLabs().get(0).setRecovery(r21);
 		

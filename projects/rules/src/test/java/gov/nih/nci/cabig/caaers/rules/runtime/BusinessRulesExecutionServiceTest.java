@@ -19,14 +19,13 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Lab;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
@@ -241,11 +240,16 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		
 		//populate lab information
 		Lab l1 = new Lab();
-		l1.setName("LabName");
+		LabTerm labTerm = new LabTerm();
+		labTerm.setTerm("labName");
+		l1.setLabTerm(labTerm);
+		//l1.setName("LabName");
 		aeReport.addLab(l1);
 		
 		Lab l2 = new Lab();
-		l2.setName("LabName2");
+		labTerm.setTerm("labName2");
+		l2.setLabTerm(labTerm);
+		//l2.setName("LabName2");
 		aeReport.addLab(l2);
 		
 		return aeReport;
