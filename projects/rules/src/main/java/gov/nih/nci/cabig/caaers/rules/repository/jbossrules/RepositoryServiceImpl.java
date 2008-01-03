@@ -274,7 +274,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
     			ruleSet.getRule().add(rule);
     		}
     		System.out.println("LOAD RULES UNMARSHAL ELAPSED " + (System.currentTimeMillis()-t2));
-    	//	rc.putRuleSet(name, ruleSet);
+    		rc.putRuleSet(name, ruleSet);
     	}
     	
 		
