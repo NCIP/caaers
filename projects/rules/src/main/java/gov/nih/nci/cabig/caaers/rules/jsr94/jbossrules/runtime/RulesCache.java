@@ -27,8 +27,10 @@ public class RulesCache implements RuleSetModificationListener,RuleExecutionSetM
 	}
 	
 	public void putRuleSet(String uri, RuleSet ruleSet){
-		System.out.println ("put in map "+uri);
-		ruleSetCache.put(uri, ruleSet);
+		if(!ruleSetCache.containsKey(uri)){
+			System.out.println ("put in map "+uri);
+			ruleSetCache.put(uri, ruleSet);
+		}
 	}
 	
 	public RuleSet getRuleSet(String uri){
