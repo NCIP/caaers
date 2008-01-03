@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
@@ -38,6 +39,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -96,6 +98,7 @@ public class CreateAdverseEventAjaxFacade {
     private ParticipantService participantService;
     private LabCategoryDao labCategoryDao;
     private LabTermDao labTermDao;
+    private ChemoAgentDao chemoAgentDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -113,6 +116,12 @@ public class CreateAdverseEventAjaxFacade {
         return lowLevelTermDao.getBySubnames(extractSubnames(text));
     }
 
+    public List<ChemoAgent> matchChemoAgents(String text) {
+    	String[] excerpts = {text};
+        List<ChemoAgent> agents = chemoAgentDao.getBySubname(excerpts);
+        return agents;
+    }
+    
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents,"id", "name", "nscNumber","description");
@@ -460,20 +469,30 @@ public class CreateAdverseEventAjaxFacade {
      */
     @SuppressWarnings({ "unchecked" })
     public List<IndexChange> remove(String listProperty, int indexToDelete) {
+    	System.out.println("field : " + listProperty);
+    	System.out.println("index : " + indexToDelete);
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
+        System.out.println("here : 1");
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
+            System.out.println("here : 2");
             return Collections.emptyList();
         }
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
+            System.out.println("here : 3");
             return Collections.emptyList();
         }
+        System.out.println("here : 4");
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
+        System.out.println("here : 5");
         list.remove(indexToDelete);
+        System.out.println("here : 6");
         addDisplayNames(listProperty, changes);
+        System.out.println("here : 7");
         saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+        System.out.println("here : 8");
         return changes;
     }
 
@@ -697,6 +716,17 @@ public class CreateAdverseEventAjaxFacade {
 	public void setLabTermDao(LabTermDao labTermDao) {
 		this.labTermDao = labTermDao;
 	}
+	
+	@Required
+	public ChemoAgentDao getChemoAgentDao() {
+		return chemoAgentDao;
+	}
+
+	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+		this.chemoAgentDao = chemoAgentDao;
+	}
+	
+	
     
     
     

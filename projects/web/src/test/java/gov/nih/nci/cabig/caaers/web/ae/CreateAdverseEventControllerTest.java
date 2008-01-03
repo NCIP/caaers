@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -84,6 +85,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     protected LowLevelTermDao lowLevelTermDao;
     protected TreatmentAssignmentDao treatmentAssignmentDao;
     protected LabTermDao labTermDao;
+    protected ChemoAgentDao chemoAgentDao;
 
     private StudyParticipantAssignment assignment;
 
@@ -113,6 +115,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             studyAgentDao = registerDaoMockFor(StudyAgentDao.class),
             treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class),
             labTermDao = registerDaoMockFor(LabTermDao.class),
+            chemoAgentDao = registerDaoMockFor(ChemoAgentDao.class),
             expeditedReportTree = new ExpeditedReportTree()
         );
         ConfigProperty configProperty = new ConfigProperty();
@@ -140,6 +143,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setTabConfigurer(tabConfigurer);
         controller.setExpeditedReportTree(expeditedReportTree);
         controller.setLabTermDao(labTermDao);
+        controller.setChemoAgentDao(chemoAgentDao);
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded

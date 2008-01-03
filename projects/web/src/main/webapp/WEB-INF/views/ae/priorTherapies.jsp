@@ -108,7 +108,7 @@
                 this.index = index
                 this.parentIndex = parentIndex
                 var cmProperty = "aeReport.adverseEventPriorTherapies[" + parentIndex + "].priorTherapyAgents[" + index + "]";
-                this.priorTherapyProperty = cmProperty + ".agent"
+                this.priorTherapyProperty = cmProperty + ".chemoAgent"
 
                 if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
 
@@ -120,7 +120,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchAgents(text, function(values) {
+                createAE.matchChemoAgents(text, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
@@ -134,8 +134,9 @@
                 addParameters: [parentIndex , aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapyAgent(index, parentIndex)
-                }
-            })
+                },
+                deletable: true
+            },'aeReport.adverseEventPriorTherapies[' + parentIndex + '].priorTherapyAgents')
         }
 
         Element.observe(window, "load", function() {
@@ -143,7 +144,7 @@
             new EnterPriorTherapy(${status.index}, '${aePriorTherapy.priorTherapy.text}')
             createAgentListEditor("ptAgent${status.index}",${status.index})
             	<c:forEach items="${aePriorTherapy.priorTherapyAgents}" varStatus="s" var="priorTherapyAgent">
-            		new EnterPriorTherapyAgent(${s.index},${status.index},'${priorTherapyAgent.agent.name}')	
+            		new EnterPriorTherapyAgent(${s.index},${status.index},'${priorTherapyAgent.chemoAgent.name}')	
             	</c:forEach>
             </c:forEach>
 

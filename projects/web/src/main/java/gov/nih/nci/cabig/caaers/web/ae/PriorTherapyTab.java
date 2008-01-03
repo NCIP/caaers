@@ -41,11 +41,13 @@ public class PriorTherapyTab extends AeTab {
             priorTherapyField,
             otherField,
             startDateField,
-            endDateField,
-            InputFieldFactory.createAutocompleterField("priorTherapyAgents.agent", "Agent", false)
+            endDateField
+            
         );
 
-        creator.createRepeatingFieldGroup("ptAgent", "adverseEventPriorTherapies");
+        creator.createRepeatingFieldGroup("ptAgent", "adverseEventPriorTherapies",
+        		InputFieldFactory.createAutocompleterField("priorTherapyAgents.chemoAgent", "Agent", false)	
+        );
         // There were no fields in this group when I converted it.  Don't know what it's for.  RMS20071005.
     }
 

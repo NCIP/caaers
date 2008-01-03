@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject; 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -15,7 +16,7 @@ import javax.persistence.Transient;
  * @author Rhett Sutphin
  */
 @Entity
-@Table(name = "prior_theray_agents")
+@Table(name = "prior_therapy_agents")
 @GenericGenerator(name="id-generator", strategy = "native",
     parameters = {
         @Parameter(name="sequence", value="seq_prior_therapy_agents_id")
@@ -23,14 +24,14 @@ import javax.persistence.Transient;
 )
 public class PriorTherapyAgent extends AbstractMutableDomainObject{
 	private AdverseEventPriorTherapy adverseEventPriorTherapy;
-    private Agent agent;
+    private ChemoAgent chemoAgent;
 
     ////// LOGIC
 
     @Transient
     public String getName() {
-        if (getAgent() != null) {
-            return getAgent().getName();
+        if (getChemoAgent() != null) {
+            return getChemoAgent().getName();
         } else {
             return null;
         }
@@ -39,12 +40,13 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject{
     ////// BOUND PROPERTIES
 
     @ManyToOne
-    public Agent getAgent() {
-        return agent;
+    @JoinColumn(name="chemo_agent_id")
+    public ChemoAgent getChemoAgent() {
+        return chemoAgent;
     }
 
-    public void setAgent(Agent agent) {
-        this.agent = agent;
+    public void setChemoAgent(ChemoAgent agent) {
+        this.chemoAgent = agent;
     }
     
     // This is annotated this way so that the IndexColumn in the parent

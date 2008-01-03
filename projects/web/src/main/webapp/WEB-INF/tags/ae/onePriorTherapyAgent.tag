@@ -2,12 +2,15 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="parentIndex" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 
-<div class="ptAgent${parentIndex}" id="ptAgent${parentIndex}-${index}" <tags:attribute name="style" value="${style}"/> >
+
+<chrome:division title="Agent ${index +1}" cssClass="ptAgent${parentIndex}" id="ptAgent${parentIndex}-${index}" style="${style}">
+
     <div class="row" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}]-row" >
         <div class="label">
             Agent
@@ -15,14 +18,14 @@
 
         <div class="value">
 
-            <input size="50" type="text" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-input"/>
-            <tags:indicator id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-indicator"/>
+            <input size="50" type="text" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-input"/>
+            <tags:indicator id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-indicator"/>
 
-            <div id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent-choices" class="autocomplete" style="display: none"></div>
+            <div id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-choices" class="autocomplete" style="display: none"></div>
 
-            <form:hidden path="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].agent"/>
+            <form:hidden path="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"/>
 
         </div>
     </div>
-</div>
-
+</chrome:division>
+	
