@@ -19,13 +19,20 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
@@ -94,6 +101,10 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	}
 	
 	public ExpeditedAdverseEventReport createAEReport(){
+		Participant p = Fixtures.createParticipant("Biju", "Joseph");
+		Study s = Fixtures.createStudy("Test");
+		Organization org = Fixtures.createOrganization("Test");
+		StudyParticipantAssignment assignment = Fixtures.assignParticipant(p, s, org);
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		aeReport.setId(-5);
 		//update adverseEvents
@@ -240,16 +251,15 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		
 		//populate lab information
 		Lab l1 = new Lab();
-		LabTerm labTerm = new LabTerm();
-		labTerm.setTerm("labName");
-		l1.setLabTerm(labTerm);
-		//l1.setName("LabName");
+		LabTerm t = new LabTerm();
+		t.setTerm("LabName");
+		l1.setLabTerm(t);
 		aeReport.addLab(l1);
 		
 		Lab l2 = new Lab();
-		labTerm.setTerm("labName2");
-		l2.setLabTerm(labTerm);
-		//l2.setName("LabName2");
+		LabTerm t2 = new LabTerm();
+		t2.setTerm("LabName2");
+		l2.setLabTerm(t2);
 		aeReport.addLab(l2);
 		
 		return aeReport;

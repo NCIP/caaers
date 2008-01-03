@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
+import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
@@ -65,12 +66,12 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
 	}
 	
 	public void registerRulePackage(String bindUri, Package rulePackage)
-			throws RemoteException {
+			throws RuleException {
 		try {
 			registerPackage(bindUri, rulePackage);
 		} catch (Exception e) {
 			log.info("Error occured while registering the rules [bindUri :" + bindUri + ", rulePackage :\r\n" + rulePackage + "\r\n]",e );
-			throw new RemoteException("Error while registering rules", e);
+			throw new RuleException("Error while registering rules", e);
 		}
 		
 	}
