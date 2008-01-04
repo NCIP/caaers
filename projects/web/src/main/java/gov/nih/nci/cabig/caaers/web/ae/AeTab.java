@@ -32,7 +32,7 @@ import org.springframework.validation.Errors;
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
     protected static final String MANDATORY_FIELD_ATTR = "mandatory";
-
+    
     private ExpeditedReportTree expeditedReportTree;
     protected ReportService reportService;
     protected EvaluationService evaluationService;

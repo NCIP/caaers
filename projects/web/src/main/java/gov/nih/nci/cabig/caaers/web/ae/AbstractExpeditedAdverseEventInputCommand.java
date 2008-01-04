@@ -43,6 +43,7 @@ import org.springframework.beans.BeanWrapperImpl;
  * @author Rhett Sutphin
  */
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
+	
     private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
 
     private ExpeditedAdverseEventReport aeReport;
@@ -410,7 +411,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	public void setOtherOutcome(String otherOutcome) {
 		this.otherOutcome = otherOutcome;
 	}
-
+	
+	public Integer getZERO() {
+		return ExpeditedAdverseEventInputCommand.ZERO;
+	}
+	
 	@Override
     public String toString() {
         return new StringBuilder(getClass().getName())

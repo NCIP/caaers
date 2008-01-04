@@ -86,6 +86,7 @@ public abstract class BasicsTab extends AeTab {
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
+    	super.validate(command, commandBean, fieldGroups, errors);
         // TODO: validate that there is at least one AE
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae =  lit.next();

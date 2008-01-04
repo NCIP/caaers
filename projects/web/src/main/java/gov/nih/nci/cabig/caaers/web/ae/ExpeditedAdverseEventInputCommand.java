@@ -16,6 +16,7 @@ import java.util.Map;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputCommand {
+	Integer ZERO = new Integer(0);
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
     String OTHER_CAUSES_ATTRIBUTION_KEY = "other";
