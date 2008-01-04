@@ -62,5 +62,9 @@ public class ReportSubmittability {
         public String getProperty() {
             return property;
         }
+        @Override
+        public String toString() {
+        	return text + ":" + property;
+        }
     }
 }

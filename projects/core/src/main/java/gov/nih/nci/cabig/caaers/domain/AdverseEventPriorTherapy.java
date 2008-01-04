@@ -121,7 +121,39 @@ public class AdverseEventPriorTherapy extends AbstractExpeditedReportCollectionE
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + ((other == null) ? 0 : other.hashCode());
+		result = prime * result	+ ((priorTherapy == null) ? 0 : priorTherapy.hashCode());
+		result = prime * result	+ ((startDate == null) ? 0 : startDate.hashCode());
+		
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		
+		final AdverseEventPriorTherapy other = (AdverseEventPriorTherapy) obj;
+		if (endDate == null) {
+			if (other.endDate != null) return false;
+		} else if (!endDate.equals(other.endDate))	return false;
+		if (this.other == null) {
+			if (other.other != null) return false;
+		} else if (!this.other.equals(other.other)) return false;
+		if (priorTherapy == null) {
+			if (other.priorTherapy != null) return false;
+		} else if (!priorTherapy.equals(other.priorTherapy))return false;
+		if (startDate == null) {
+			if (other.startDate != null) return false;
+		} else if (!startDate.equals(other.startDate)) return false;
+		return true;
+	}
 	
 }
