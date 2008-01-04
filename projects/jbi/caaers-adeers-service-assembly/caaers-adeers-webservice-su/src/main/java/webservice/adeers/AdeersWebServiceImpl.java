@@ -29,15 +29,22 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	private String submitAEDataXMLAsAttachment(String aeReportWithCaaersId) throws Exception {
 		 
 		String aeReport = detach(aeReportWithCaaersId);	
-		System.out.println("EXTERNAL EPRS " + this.externalEPRs);
+		//System.out.println("EXTERNAL EPRS " + this.externalEPRs);
 		String adeersEPR = externalEPRs.split(",")[0];
 		
 		String url=adeersEPR.split("::")[0];
 		String uid=adeersEPR.split("::")[1];
 		String pwd=adeersEPR.split("::")[2];
 		
-    	System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caAERs-AdEERS");
+		String clientTrustStore = "caAERs-AdEERS";
+		String userDir = System.getProperty("user.home");
+		String fileSeparator = System.getProperty("file.separator");
+		String clientAbsoluteTrustStore = userDir + fileSeparator + clientTrustStore;
+		
+    	//System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caAERs-AdEERS");
 		//System.setProperty("javax.net.ssl.trustStore", "/Users/sakkala/temp/certs/caAERs-AdEERS");
+		System.setProperty("javax.net.ssl.trustStore", clientAbsoluteTrustStore);
+		
 		AEReportXMLServiceSoapBindingStub binding;
         try {
             binding = (AEReportXMLServiceSoapBindingStub)   new AEReportXMLService_ServiceLocator(url).getAEReportXMLService();
@@ -55,7 +62,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         	
         StringReader reader = new StringReader(aeReport);
         
-        System.out.println("SUBMITTING TO WEB SERVICE ...");
+        System.out.println("SUBMITTING TO WEB SERVICE ..." + clientAbsoluteTrustStore);
         Source attachment = new StreamSource(reader,"");
         //call the web service                
         binding.submitAEDataXMLAsAttachment(ReportingMode.SYNCHRONOUS, attachment);
