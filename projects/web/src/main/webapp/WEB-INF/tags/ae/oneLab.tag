@@ -60,8 +60,9 @@
 
     </div>
 
+	<div id="not-microbiology-${index}">
     <tags:renderRow field="${fieldGroup.fields[2]}" />
-
+ 
     <c:forEach begin="3" end="8" step="2" var="i">
         <div class="row">
             <div class="label"><tags:renderLabel field="${fieldGroup.fields[i]}"/></div>
@@ -72,6 +73,7 @@
             </div>
         </div>
     </c:forEach>
+    </div>
     
     <div id="microbiology-${index}" style="display: none">
     <tags:renderRow field="${fieldGroup.fields[9]}" />

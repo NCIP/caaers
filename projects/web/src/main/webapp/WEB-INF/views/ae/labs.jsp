@@ -31,9 +31,11 @@
 		  				this.categoryInput.options[i].selected=true;
 		  				
 		  				if (this.categoryInput.options[i].value == "105"){
+		  						AE.slideAndHide($('not-microbiology-'+index))
 		  						AE.slideAndShow($('microbiology-'+index))
-		  					}else{
-		  						AE.slideAndHide($('microbiology-'+index))
+		  						
+		  					}else{		  						
+		  						
 		  					}
 		  				
 		  				break
@@ -68,12 +70,23 @@
 		  				if (categoryInput.options[i].value == selectedChoice.category.id){
 		  					categoryInput.options[i].selected=true;
 		  					if (categoryInput.options[i].value == "105"){
+		  						AE.slideAndHide($('not-microbiology-'+index))
 		  						AE.slideAndShow($('microbiology-'+index))
+		  						$('aeReport.labs[' + index + '].units').options[0].selected=true
+		  						$('aeReport.labs[' + index + '].baseline.value').value=""
+		  						$('aeReport.labs[' + index + '].baseline.date').value=""
+		  						$('aeReport.labs[' + index + '].nadir.value').value=""
+		  						$('aeReport.labs[' + index + '].nadir.date').value=""
+		  						$('aeReport.labs[' + index + '].recovery.value').value=""
+		  						$('aeReport.labs[' + index + '].recovery.date').value=""
 		  					}else{
+		  						if ($('not-microbiology-'+index).style.display != ""){
 		  						$('aeReport.labs[' + index + '].site').value=""
 		  						$('aeReport.labs[' + index + '].labDate').value=""
 		  						$('aeReport.labs[' + index + '].infectiousAgent').value=""
 		  						AE.slideAndHide($('microbiology-'+index))
+		  						AE.slideAndShow($('not-microbiology-'+index))
+		  						}
 		  					}
 		  					break
 		  				}	
@@ -101,6 +114,11 @@
 		  		this.other.removeAttribute('readOnly')
                 this.testNameInput.setAttribute('readOnly',true);
 		  		this.testNameInput.clear();
+		  		this.testName.value=''
+		  		if ($('not-microbiology-'+index).style.display != ""){
+		  		AE.slideAndHide($('microbiology-'+index))
+		  		AE.slideAndShow($('not-microbiology-'+index))
+		  		}
 		  		
 		  	}.bindAsEventListener(this));
 		  	
