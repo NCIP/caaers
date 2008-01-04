@@ -46,7 +46,7 @@ public class PriorTherapyTab extends AeTab {
         );
 
         creator.createRepeatingFieldGroup("ptAgent", "adverseEventPriorTherapies",
-        		InputFieldFactory.createAutocompleterField("priorTherapyAgents.chemoAgent", "Agent", true)	
+        		InputFieldFactory.createAutocompleterField("priorTherapyAgents.chemoAgent", "Agent", false)	
         );
     }
 
