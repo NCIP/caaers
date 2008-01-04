@@ -18,7 +18,8 @@
 
 -->
 <project name="caaers-adeers-sa" default="all" basedir=".">
-
+	
+	<property environment="env"/>
     <!--build directories-->
     <property name="build.dir" value="${basedir}/build"/>
     <property name="comp.build.dir" value="${build.dir}/components"/>
@@ -29,7 +30,7 @@
     <property name="xslt.comp.build.dir" value="${comp.build.dir}/xslt"/>
     <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
 
-    <property name="servicemix.toolkit.dir" value="/home/caaers_dev/apache-servicemix-3.1.2"/>
+    <property name="servicemix.toolkit.dir" value="${env.SERVICEMIX_HOME}"/>
 
     <!--sa archive -->
     <property name="caaers-adeers.sa.build.dir" value="${build.dir}/assembly"/>
