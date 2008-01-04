@@ -48,7 +48,9 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     private StudyParticipantAssignmentDao assignmentDao
         = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
     private AnatomicSiteDao anatomicSiteDao
-        = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
+    = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
+    private InterventionSiteDao interventionSiteDao
+        = (InterventionSiteDao) getApplicationContext().getBean("interventionSiteDao");
     private ReportDefinitionDao reportDefinitionDao
         = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
 
@@ -405,11 +407,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewSurgeryIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getSurgeryInterventions().get(0).setAnatomicSite(anatomicSiteDao.getById(-33));
+                report.getSurgeryInterventions().get(0).setInterventionSite(interventionSiteDao.getById(-33));
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0).getAnatomicSite().getId());
+                assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0).getInterventionSite().getId());
             }
         });
     }

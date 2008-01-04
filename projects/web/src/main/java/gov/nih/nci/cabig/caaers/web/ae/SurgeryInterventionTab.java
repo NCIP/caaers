@@ -35,7 +35,7 @@ public class SurgeryInterventionTab extends AeTab {
             new SimpleNumericDisplayNameCreator("Surgery"),
             codeField,
             descField,
-            InputFieldFactory.createAutocompleterField("anatomicSite", "Intervention site", false),
+            InputFieldFactory.createAutocompleterField("interventionSite", "Intervention site", false),
             InputFieldFactory.createDateField("interventionDate", "Date of intervention",  false)
         );
     }

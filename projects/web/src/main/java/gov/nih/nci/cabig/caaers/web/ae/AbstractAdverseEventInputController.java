@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -83,6 +84,7 @@ public abstract class AbstractAdverseEventInputController
     protected LabTermDao labTermDao;
     protected ChemoAgentDao chemoAgentDao;
     protected LabCategoryDao labCategoryDao;
+    protected InterventionSiteDao interventionSiteDao;
 
     protected NowFactory nowFactory;
     protected EvaluationService evaluationService;
@@ -123,6 +125,7 @@ public abstract class AbstractAdverseEventInputController
         ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         ControllerTools.registerDomainObjectEditor(binder, labTermDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+        ControllerTools.registerDomainObjectEditor(binder, interventionSiteDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -366,8 +369,12 @@ public abstract class AbstractAdverseEventInputController
 	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
 		this.chemoAgentDao = chemoAgentDao;
 	}
-	
-	
-	
-	
+
+	public InterventionSiteDao getInterventionSiteDao() {
+		return interventionSiteDao;
+	}
+
+	public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
+		this.interventionSiteDao = interventionSiteDao;
+	}
 }

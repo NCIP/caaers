@@ -91,7 +91,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                 list("surgeryInterventions", "SurgeryIntervention",
                     property("treatmentArm", "Treatment arm"),
                     property("description", "Treatment arm description"),
-                    property("anatomicSite", "Intervention site"),
+                    property("interventionSite", "Intervention site"),
                     property("interventionDate", "Intervention date")
                 )
             ),

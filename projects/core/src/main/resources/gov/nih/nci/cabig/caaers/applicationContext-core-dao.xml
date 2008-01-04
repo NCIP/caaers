@@ -133,6 +133,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
 	<value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
 	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
+	<value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
 	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
       </list>
     </property>
@@ -276,6 +277,7 @@ This applicationContext contains the definition of the DAOs
   <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
   <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
   <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
+  <bean id="interventionSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InterventionSiteDao"/>
   
   
   <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>

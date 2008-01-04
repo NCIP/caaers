@@ -24,7 +24,7 @@ public class SurgeryInterventionTabTest extends AeTabTestCase {
             "surgeryIntervention7",
             "aeReport.surgeryInterventions[7].treatmentArm",
             "aeReport.surgeryInterventions[7].description",
-            "aeReport.surgeryInterventions[7].anatomicSite",
+            "aeReport.surgeryInterventions[7].interventionSite",
             "aeReport.surgeryInterventions[7].interventionDate"
         );
     }

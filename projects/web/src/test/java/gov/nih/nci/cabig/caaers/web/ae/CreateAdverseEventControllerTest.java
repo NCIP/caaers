@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -36,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -86,6 +88,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     protected TreatmentAssignmentDao treatmentAssignmentDao;
     protected LabTermDao labTermDao;
     protected ChemoAgentDao chemoAgentDao;
+    protected InterventionSiteDao interventionSiteDao;
 
     private StudyParticipantAssignment assignment;
 
@@ -116,6 +119,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
             treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class),
             labTermDao = registerDaoMockFor(LabTermDao.class),
             chemoAgentDao = registerDaoMockFor(ChemoAgentDao.class),
+            interventionSiteDao = registerDaoMockFor(InterventionSiteDao.class),
             expeditedReportTree = new ExpeditedReportTree()
         );
         ConfigProperty configProperty = new ConfigProperty();
@@ -144,6 +148,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         controller.setExpeditedReportTree(expeditedReportTree);
         controller.setLabTermDao(labTermDao);
         controller.setChemoAgentDao(chemoAgentDao);
+        controller.setInterventionSiteDao(interventionSiteDao);
 
         // This can't be a constant b/c it has to be created after the application context is
         // loaded

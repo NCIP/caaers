@@ -29,22 +29,22 @@
     	
     	 var EnterAnatomicSite = Class.create()
         Object.extend(EnterAnatomicSite.prototype, {
-            initialize: function(index, anatomicSiteName) {
+            initialize: function(index, interventionSiteName) {
                 this.index = index
                 var cmProperty = "aeReport.surgeryInterventions[" + index + "]";
-                this.anatomicSiteProperty = cmProperty + ".anatomicSite"
+                this.interventionSiteProperty = cmProperty + ".interventionSite"
 
-                if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
+                if (interventionSiteName) $(this.interventionSiteProperty + "-input").value = interventionSiteName
 						
        
                 AE.createStandardAutocompleter(
-                    this.anatomicSiteProperty, this.termPopulator.bind(this),
-                    function(anatomicSiteCondition) { return anatomicSiteCondition.name })
+                    this.interventionSiteProperty, this.termPopulator.bind(this),
+                    function(interventionSiteCondition) { return interventionSiteCondition.name })
 
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchAnatomicSite(text, function(values) {
+                createAE.matchInterventionSites(text, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
@@ -54,7 +54,7 @@
         Element.observe(window, "load", function() {
         	
         	<c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgeryIntervention">
-            new EnterAnatomicSite(${status.index}, '${surgeryIntervention.anatomicSite.name}')
+            new EnterAnatomicSite(${status.index}, '${surgeryIntervention.interventionSite.name}')
             </c:forEach>
            
 

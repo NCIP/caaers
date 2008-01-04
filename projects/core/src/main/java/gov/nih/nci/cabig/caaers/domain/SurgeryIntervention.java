@@ -24,7 +24,7 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
    
     private String treatmentArm;
     private String description;
-    private AnatomicSite anatomicSite;
+    private InterventionSite interventionSite;
     private Date interventionDate;
 	
 
@@ -59,11 +59,11 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
 	}
 	
 	@ManyToOne
-	public AnatomicSite getAnatomicSite() {
-		return anatomicSite;
+	public InterventionSite getInterventionSite() {
+		return interventionSite;
 	}
 
-	public void setAnatomicSite(AnatomicSite anatomicSite) {
-		this.anatomicSite = anatomicSite;
+	public void setInterventionSite(InterventionSite interventionSite) {
+		this.interventionSite = interventionSite;
 	}	
 }

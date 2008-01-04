@@ -34,6 +34,9 @@
         ctep_code="10043882"
         other_required="0"
         />
+    
+    <INTERVENTION_SITES id="-33" name="Rolling"/>    
+        
     <ctc_grades/> <!-- to delete in case of existing refs -->
     <agents id="-101"/>
     
@@ -334,6 +337,7 @@
         />
 
     <ANATOMIC_SITES id="-33" name="Rolling" category="Rock"/>
+    
 
     <METASTATIC_DISEASE_SITES
         id="-5"

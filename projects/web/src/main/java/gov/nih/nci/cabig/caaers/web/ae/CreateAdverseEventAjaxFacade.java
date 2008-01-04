@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
@@ -40,6 +41,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -99,6 +101,7 @@ public class CreateAdverseEventAjaxFacade {
     private LabCategoryDao labCategoryDao;
     private LabTermDao labTermDao;
     private ChemoAgentDao chemoAgentDao;
+    private InterventionSiteDao interventionSiteDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -120,6 +123,12 @@ public class CreateAdverseEventAjaxFacade {
     	String[] excerpts = {text};
         List<ChemoAgent> agents = chemoAgentDao.getBySubname(excerpts);
         return agents;
+    }
+    
+    public List<InterventionSite> matchInterventionSites(String text) {
+    	String[] excerpts = {text};
+        List<InterventionSite> sites = interventionSiteDao.getBySubname(excerpts);
+        return sites;
     }
     
     public List<Agent> matchAgents(String text) {
@@ -725,6 +734,16 @@ public class CreateAdverseEventAjaxFacade {
 	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
 		this.chemoAgentDao = chemoAgentDao;
 	}
+
+	@Required
+	public InterventionSiteDao getInterventionSiteDao() {
+		return interventionSiteDao;
+	}
+
+	public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
+		this.interventionSiteDao = interventionSiteDao;
+	}
+	
 	
 	
     
