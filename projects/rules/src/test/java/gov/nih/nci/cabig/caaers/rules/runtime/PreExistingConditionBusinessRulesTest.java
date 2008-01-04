@@ -86,7 +86,6 @@ public class PreExistingConditionBusinessRulesTest extends
 	public void testOneOutOfTwoHasBothPreConditionAndOther() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		aeReport.getAdverseEventPreExistingConds().get(0).setPreExistingCondition(null);
-		aeReport.getAdverseEventPreExistingConds().get(1).setPreExistingCondition(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertSameErrorCount(errors, 1);
 		assertCorrectErrorCode(errors, "PEC_BR1_ERR");

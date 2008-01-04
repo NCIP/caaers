@@ -106,6 +106,7 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		Organization org = Fixtures.createOrganization("Test");
 		StudyParticipantAssignment assignment = Fixtures.assignParticipant(p, s, org);
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		aeReport.setAssignment(assignment);
 		aeReport.setId(-5);
 		//update adverseEvents
 		AdverseEvent ae1 = new AdverseEvent();
@@ -223,12 +224,14 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		
 		//populate prior therapy
 		PriorTherapy p1 = new PriorTherapy();
+		p1.setId(14);
 		p1.setText("Xyz");
 		AdverseEventPriorTherapy ap1 = new AdverseEventPriorTherapy();
 		ap1.setPriorTherapy(p1);
 		aeReport.addAdverseEventPriorTherapies(ap1);
 		PriorTherapy p2 = new PriorTherapy();
-		p2.setText("Xyz");
+		p2.setId(19);
+		p2.setText("Xyzz");
 		AdverseEventPriorTherapy ap2 = new AdverseEventPriorTherapy();
 		ap2.setPriorTherapy(p2);
 		aeReport.addAdverseEventPriorTherapies(ap2);

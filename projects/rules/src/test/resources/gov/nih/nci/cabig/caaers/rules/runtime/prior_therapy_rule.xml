@@ -4,6 +4,8 @@
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
 	<import name="org.apache.commons.lang.StringUtils" />
+	<import name="org.apache.commons.lang.ArrayUtils" />
+	<import name="java.util.HashSet" />
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
 	
@@ -25,8 +27,9 @@
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
 					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+						i++;
 						if(StringUtils.equalsIgnoreCase("No prior therapy", pt.getName()) &amp;&amp; pt.getOther() == null ){
-							errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is 'No Prior Therapy'", ++i);
+							errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is 'No Prior Therapy'", i);
 						}
 					}
 					return errors.hasErrors() ? FAIL : SUCCESS;
@@ -38,5 +41,73 @@
 			
        	</rhs>
 	</rule>
+	<!-- ==========================================================================
+	RuleName : PTY_BR4A_CHK
+	Logic : ‘Prior Therapy Agents’ must be provided if "Prior_Therapy" is 
+			‘Bone Marrow Transplant’
+			‘Chemotherapy (NOS)’
+			‘Chemotherapy multiple agents systemic’
+			‘Chemotherapy single agent systemic’
+			‘Immunotherapy’
+			‘Hormonal Therapy’
+	Error Code : PTY_BR4B_ERR
+	Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
+	============================================================================= -->
+	<rule name="PTY_BR4A_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				int i = 0;
+				for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					i++;
+					if(ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
+							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
+						if(pt.getPriorTherapyAgents().size() &lt; 1) {
+							errors.addValidationError("PTY_BR4B_ERR", "'Prior Therapy Agents' must be provided if 'Prior_Therapy' is " +
+									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Immunotherapy', 'Hormonal Therapy'", i);
+						}
+					}
+					
+				}
+				return errors.hasErrors() ? FAIL : SUCCESS;
+			}
+		 }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+			
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : PTY_UK_CHK
+	Logic : Prior Therapy must be unique
+	Error Code : PTY_UK_ERR
+	Error Message : PRIOR_THERAPY must be unique
+	============================================================================= -->
+	<rule name="PTY_UK_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
 	
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					HashSet hSet = new HashSet();
+					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					    i++;
+						if(!hSet.add(pt)){
+							errors.addValidationError("PTY_UK_ERR","Prior Therapy must be unique", i);
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+		    }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+			
+       	</rhs>
+	</rule>
 </package>

@@ -13,7 +13,7 @@ public class AdverseEventBusinessRulesTest extends
 	@Override
 	public String getBindUri() {
 		// TODO Auto-generated method stub
-		return "gov.nih.nci.cabig.caaers.rules.reporting_adverse_event_section";
+		return "gov.nih.nci.cabig.caaers.rules.reporting_basics_section";
 	}
 
 	@Override

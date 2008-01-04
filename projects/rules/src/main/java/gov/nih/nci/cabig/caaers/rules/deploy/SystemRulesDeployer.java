@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
-import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.TreeMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,7 +34,9 @@ public class SystemRulesDeployer {
 					String ruleXml = getFileContext(resource.getInputStream());
 					org.drools.rule.Package rulePackage = XMLUtil.unmarshalToPackage(ruleXml);
 					String ruleBindUri = rulePackage.getName();
-					
+					//unregister the rules
+					try{ ruleDeploymentService.deregisterRuleSet(ruleBindUri);}catch(Exception ignore) {}
+					//register the rules
 					if(log.isDebugEnabled()) log.debug("Registering at bindUri : " + ruleBindUri + "\r\n\r\n" + ruleXml);
 					ruleDeploymentService.registerRulePackage(ruleBindUri, rulePackage);
 					if(log.isDebugEnabled()) log.debug("Sucessfully deployed rule at bindUri :" + ruleBindUri);

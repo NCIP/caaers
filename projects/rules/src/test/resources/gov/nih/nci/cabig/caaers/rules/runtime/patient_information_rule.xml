@@ -84,17 +84,18 @@
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator() {
-					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-						int i = 0;
-						for(AdverseEventPreExistingCond pc : aeReport.getAdverseEventPreExistingConds()){
-							i++;
-							if(pc.getOther() != null &amp;&amp; pc.getPreExistingCondition() != null){
-								errors.addValidationError("PEC_BR1_ERR", "Either and only 'Pre-existing condition' or 'Other(pre-existing)' must be provided", i);
-							}
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
+					for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()){
+						i++;
+						if(ds.getCodedSite() != null &amp;&amp; ds.getOtherSite() != null){
+							errors.addValidationError("SMD_BR1_ERR", "'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.", i);
 						}
-						return errors.hasErrors() ? FAIL : SUCCESS;
 					}
-	    		 }.validate(aeReport, errors)</eval>
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+	   		 }.validate(aeReport, errors)</eval>
 		</lhs>
 		<rhs>
 			<!-- Already Populated Error Message-->

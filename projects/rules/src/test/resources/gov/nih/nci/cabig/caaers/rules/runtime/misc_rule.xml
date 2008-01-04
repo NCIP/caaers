@@ -1,40 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_misc"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+<?xml version="1.0" encoding="iso-8859-1"?>
 
-	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
-	<import name="gov.nih.nci.cabig.caaers.rules.common.DateUtil" />
-	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
-	<import name="gov.nih.nci.cabig.caaers.rules.common.NumberUtil" />
-	<import name="gov.nih.nci.cabig.caaers.rules.runtime.MiscObject" />
-	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
-	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
-	<function return-type="void" name="myFunc">
-        
-    <body>
-        System.out.println("hello world");
-    </body>
-</function>
-	
-	<!-- ==========================================================================
-	RuleName : TAI_BR2_CHK
-	Rule : Either and only “Treatment Assignment Code” or “Describe Treatment Assignment” must be provided
-	Error Code : TAI_BR2_ERR
-	Error Message : Either and only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-	============================================================================= -->
-	<rule name="TAI_BR2_CHK">
-		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>new MiscObject(){
-			  public boolean validate(Object o){
-			  		System.out.println("I validate" + o);
-	 				return false;
- 			  }
-			}.validate(aeReport)</eval>
-		</lhs>
-		<rhs>
-			<!-- Populate Error Message-->
-			errors.addValidationError("TAI_BR2_ERR","Either and only 'Treatment assignment code' or 'Description of treatment assignment or dose level' must be provided");
-       </rhs>
-	</rule>
-</package>
+	<package xmlns="http://drools.org/drools-3.0" xmlns:drools="http://drools.org/drools-3.0" xmlns:rules="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd" name="gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules">
+
+		<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
+		<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
+		
+		
+		<import name="gov.nih.nci.cabig.caaers.domain.*"/>
+
+		<rule name="Rule-1">
+<lhs>
+<column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"/>
+<column identifier="factResolver" object-type="gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver"/>
+<column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study"/>
+<column identifier="adverseEventEvaluationResult" object-type="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult"/>
+<eval>factResolver.assertFact(adverseEvent,"gov.nih.nci.cabig.caaers.domain.Grade","code","3","&gt;=") == true 
+							</eval>
+<eval>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","name","Cancer Therapy Evaluation Program","==") == true 
+							</eval>
+</lhs>
+<rhs>
+	    System.out.println("Value Is:"+"CTEP 24 Hour SAE Notification||CTEP 10 Calendar Day SAE Report");	    
+	    
+		if(adverseEventEvaluationResult != null) {
+			
+			String msg = "";
+			if (adverseEventEvaluationResult.getMessage() != null) {
+				msg = adverseEventEvaluationResult.getMessage() + "||";
+			}
+			
+			adverseEventEvaluationResult.setMessage(msg + "CTEP 24 Hour SAE Notification||CTEP 10 Calendar Day SAE Report");
+			System.out.println("**********");
+			System.out.println("**********" + msg);
+			System.out.println("**********");
+		}
+		 else {
+			System.out.println("The Rule Conditions were met. But no action is specified. ");
+		}
+	</rhs>
+</rule>
+
+	</package>
