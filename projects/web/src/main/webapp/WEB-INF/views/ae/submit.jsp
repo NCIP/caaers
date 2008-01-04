@@ -55,7 +55,29 @@
     <jsp:attribute name="singleFields">
     	<input type="hidden" name="_action" value="">
         <input type="hidden" name="_selected" value="">
-    
+        
+    	<c:if test="${not reportMessages[command.ZERO].submittable}">
+    		<table class="tablecontent" width="75%">
+    			<tr>
+    				<th scope="col" align="left"><b>Report Validation Errors</b></th>
+    			</tr>
+    			<tr>
+    				<td class="completion-messages">
+    				
+    				 <c:forEach items="${reportMessages[command.ZERO].messages}" var="sectionEntry">
+                       <h4>${sectionEntry.key.displayName} section</h4>
+                       <c:forEach items="${sectionEntry.value}" var="msg">
+                          <ul>
+                           <li>${msg.text} <c:if test="${not empty msg.property}"><!-- (${msg.property}) --></c:if></li>
+                         </ul>
+                       </c:forEach>
+                     </c:forEach>
+    				</td>
+    			</tr>
+    		</table>
+    		<p> &nbsp; </p>
+    	</c:if>
+    	
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
@@ -72,7 +94,7 @@
             		<td><div class="label">${fn:length(report.reportVersions) -1}</div></td>
             		<td class="completion-messages">
                         <c:choose>
-                            <c:when test="${reportMessages[report.id].submittable}" >
+                            <c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
                                 Yes
                             </c:when>
                             <c:otherwise>
@@ -122,7 +144,7 @@
             			--%>
             		</td>
             		<td>
-            			<c:if test="${reportMessages[report.id].submittable}" >
+            			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
 							<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
 								<center>
 									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
