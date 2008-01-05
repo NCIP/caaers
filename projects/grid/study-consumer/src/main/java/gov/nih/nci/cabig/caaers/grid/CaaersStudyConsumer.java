@@ -188,6 +188,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         study.setPrecis(studyDto.getPrecisText());
         study.setDescription(studyDto.getDescriptionText());
         study.setStatus(Study.STATUS_ACTIVE);
+        study.setAdeersReporting(Boolean.FALSE);
         study.setPhaseCode(studyDto.getPhaseCode());
         study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto.getMultiInstitutionIndicator()));
 
