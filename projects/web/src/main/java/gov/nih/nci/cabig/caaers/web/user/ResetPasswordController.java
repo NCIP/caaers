@@ -33,7 +33,7 @@ public class ResetPasswordController extends SimpleFormController {
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
 	UserName userName = (UserName) command;
 	String token = passwordManagerService.requestToken(userName.getUserName());
-	userService.sendUserEmail(userName.getUserName(), userName.getURL() + "&token=" + token);
+	userService.sendUserEmail(userName.getUserName(), "Reset caAERS Password", userName.getURL() + "&token=" + token);
 	return new ModelAndView("user/emailSent");
     }
 

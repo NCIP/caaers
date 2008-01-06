@@ -177,14 +177,15 @@ public class UserServiceImpl implements UserService {
 	return getUserByName(userName).getPasswordHistory().contains(encryptString(password));
     }
 
-    public void sendUserEmail(String userName, String message) {
+    public void sendUserEmail(String userName, String subject, String text) {
 	try {
-	    SimpleMailMessage msg = new SimpleMailMessage();
-	    msg.setTo(getUserByName(userName).getEmailAddress());
-	    msg.setText(message);
-	    mailSender.send(msg);
+	    SimpleMailMessage message = new SimpleMailMessage();
+	    message.setTo(getUserByName(userName).getEmailAddress());
+	    message.setSubject(subject);
+	    message.setText(text);
+	    mailSender.send(message);
 	} catch (MailException e) {
-	    throw new CaaersSystemException("Could not send email to user: " + message, e);
+	    throw new CaaersSystemException("Could not send email to user.", e);
 	}
     }
     
