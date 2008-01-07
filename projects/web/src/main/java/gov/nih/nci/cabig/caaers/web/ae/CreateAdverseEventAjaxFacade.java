@@ -478,30 +478,20 @@ public class CreateAdverseEventAjaxFacade {
      */
     @SuppressWarnings({ "unchecked" })
     public List<IndexChange> remove(String listProperty, int indexToDelete) {
-    	System.out.println("field : " + listProperty);
-    	System.out.println("index : " + indexToDelete);
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
-        System.out.println("here : 1");
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
-            System.out.println("here : 2");
             return Collections.emptyList();
         }
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
-            System.out.println("here : 3");
             return Collections.emptyList();
         }
-        System.out.println("here : 4");
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
-        System.out.println("here : 5");
         list.remove(indexToDelete);
-        System.out.println("here : 6");
         addDisplayNames(listProperty, changes);
-        System.out.println("here : 7");
         saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
-        System.out.println("here : 8");
         return changes;
     }
 
