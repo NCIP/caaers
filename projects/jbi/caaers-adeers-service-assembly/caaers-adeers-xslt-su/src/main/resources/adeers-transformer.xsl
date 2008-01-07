@@ -231,10 +231,10 @@
         </RADIATION_INTERVENTION>
         </xsl:if>
         
-        <xsl:if test="SurgeryIntervention/AnatomicSite/name !=''">
+        <xsl:if test="SurgeryIntervention/InterventionSite/name !=''">
         <SURGERY_INTERVENTION>
             <SITE_OF_INTERVENTION>
-                <xsl:value-of select="SurgeryIntervention/AnatomicSite/name"/>
+                <xsl:value-of select="SurgeryIntervention/InterventionSite/name"/>
             </SITE_OF_INTERVENTION>
             <DATE_OF_INTERVENTION>
                 <xsl:call-template name="standard_date">
@@ -537,7 +537,7 @@
 
                 <xsl:for-each select="PriorTherapyAgent">
                     <CHEMO_AGENT_NAME>
-                        <xsl:value-of select="Agent/name"/>
+                        <xsl:value-of select="ChemoAgent/name"/>
                     </CHEMO_AGENT_NAME>
                 </xsl:for-each>
             </PRIOR_THERAPY>
