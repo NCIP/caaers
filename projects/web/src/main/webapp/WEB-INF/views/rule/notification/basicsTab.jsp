@@ -19,10 +19,14 @@
          		reportDef.matchOrganization(text, function(values) {
          			autocompleter.setChoices(values)
          		})
-        	}, function(organization) { return organization.name });
+        	}, function(organization) { 
+        		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+            							 " ( " + organization.nciInstituteCode + " ) ";
+        		return organization.name + nciInstituteCode;
+        	});
         
         //populate the name of the associated organization in 'organization-input' field	
-      	$('reportDefinition.organization-input').value = '${command.reportDefinition.organization.name}';
+      	$('reportDefinition.organization-input').value = '${command.reportDefinition.organization.fullName}';
       });
       
     </script>

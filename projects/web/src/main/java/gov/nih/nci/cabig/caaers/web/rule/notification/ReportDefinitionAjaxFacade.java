@@ -75,7 +75,7 @@ public class ReportDefinitionAjaxFacade {
 		return getOutputFromJsp(url);
 	}
 	public List<Organization> matchOrganization(String text){
-		return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name");
+		return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name", "nciInstituteCode");
 	}
 
 	/// HELPER METHODS

@@ -30,7 +30,7 @@
          <a href="<c:url value="/pages/rule/notification/edit?repDefId=${rct.id}" />">${rct.name}</a>
         </ec:column>
         <ec:column property="description" title="Description"/>
-        <ec:column property="organization" title="Organization">${rct.organization.name}</ec:column>
+        <ec:column property="organization" title="Organization">${rct.organization.fullName}</ec:column>
         <ec:column property="duration" title="Final Report Due">${rct.duration} ${rct.timeScaleUnitType.displayName}(s)</ec:column>
   
     </ec:row>
