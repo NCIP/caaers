@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -138,6 +139,22 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
             if (report.isRequired()) count++;
         }
         return count;
+    }
+    
+    /*
+     * Checks whether all reports in the SAE are complete or not
+     * 
+     */
+    @Transient
+    public String getAreAllReportsSubmitted(){
+    	Boolean areAllReportsSubmitted = true;
+    	for (Report report : reports){
+    		if (report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED){
+    			areAllReportsSubmitted = false;
+    			break;
+    		}
+    	}
+    	return areAllReportsSubmitted.toString();
     }
 
     @Transient

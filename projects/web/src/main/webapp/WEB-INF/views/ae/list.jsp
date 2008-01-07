@@ -62,20 +62,35 @@
             })
         }
 		
+
 		function notifyPscRoutineEvent(aeReportId) {
+
             AE.showIndicator("notify-indicator-routine-" + aeReportId)
+
             createAE.pushRoutineAdverseEventToStudyCalendar(aeReportId, function(result) {
+
                 AE.hideIndicator("notify-indicator-routine-" + aeReportId)
+
                 var unit = $("notify-unit-routine-" + aeReportId)
+
                 if (result) {
+
                     Element.update(unit, "Notified")
+
                     Element.addClassName(unit, "success")
+
                 } else {
+
                     Element.update(unit, "Notification failed")
+
                     Element.addClassName(unit, "failure")
+
                 }
+
             })
+
         }
+
 		
         Event.observe(window, "load", function() {
             $$("a.notify").each(function(a) {
@@ -85,13 +100,21 @@
                     notifyPsc(aeReportId)
                 })
             })
+
             
+
             $$("a.notify-routine").each(function(a) {
+
                 Event.observe(a, "click", function(e) {
+
                     Event.stop(e);
+
                     var roReportId = Event.element(e).id.substring(14)
+
                     notifyPscRoutineEvent(roReportId)
+
                 })
+
             })
         })
     </script>
@@ -106,6 +129,7 @@
 <h2>Expedited Reports<c:if test="${command.study.status ne 'Administratively Complete'}">
 <a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
 </c:if>
+
 </h2>
 
 <!-- STUDY SEARCH RESULTS START HERE -->
@@ -152,8 +176,9 @@
 					</c:if>
 			</td>
 			<td align="left">
+					<c:if test="${report.areAllReportsSubmitted == false}">
 					<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
-            			
+            		</c:if>	
                     			<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="termStatus">
                     				<c:choose>
 									<c:when test="${termStatus.index == 0}">
@@ -165,7 +190,9 @@
 									</c:choose>
     							</c:forEach>
                 		
+                	<c:if test="${report.areAllReportsSubmitted == false}">	
             		</a>
+            		</c:if>
 			</td>
 			<td width="10%">
 				<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="gradeStatus">
@@ -368,13 +395,21 @@
             <tags:formatDate value="${routineReport.startDate}"/>
         </ec:column>
         <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
+
         <ec:column title="Actions" sortable="false" filterable="false" property="dc">
+
          <c:if test="${routineReport.notificationMessagePossible}">
+
            <span class="notify-unit" id="notify-unit-routine-${routineReport.id}">
+
             <a id="notify-routine${routineReport.id}" class="notify-routine" href="#">notify PSC</a>
+
             <tags:indicator id="notify-indicator-routine-${routineReport.id}"/>
+
            </span>
+
          </c:if>
+
         </ec:column>
     </ec:row>
 </ec:table>
