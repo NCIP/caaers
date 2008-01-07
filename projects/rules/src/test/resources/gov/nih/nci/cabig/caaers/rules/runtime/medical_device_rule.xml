@@ -75,7 +75,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("ADO_BR1_ERR","'Device Operator Description' must be provided if 'Device Operator' is 'Other'");
+			errors.addValidationError("ADO_BR1_ERR","'Device Operator Description' must be provided if (and only if) 'Device Operator' is 'Other'");
        	</rhs>
 	</rule>
 	
