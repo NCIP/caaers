@@ -20,6 +20,7 @@
 				$('add-radiationIntervention-button').type="hidden";
 			}
 			
+			
             new ListEditor("radiationIntervention", createAE, "RadiationIntervention", {
                 addFirstAfter: "single-fields",
                 addParameters: [aeReportId],
@@ -27,8 +28,13 @@
                 	AE.registerCalendarPopups("radiationIntervention-" + index)
                 	$('add-radiationIntervention-button').type="hidden";
                 	
-                }
-            })
+                },
+                removeCallback: function(index) {
+                	$('add-radiationIntervention-button').type="button";
+                	
+                },
+                deletable: true
+            }, 'aeReport.radiationInterventions')
         })
     
     </script>

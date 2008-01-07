@@ -47,8 +47,13 @@
                 	AE.registerCalendarPopups("medicalDevice-" + index)
                 	$('add-medicalDevice-button').type="hidden";
                 	
-                }
-            })
+                },
+                removeCallback: function(index) {
+                	$('add-medicalDevice-button').type="button";
+                	
+                },
+                 deletable: true
+            }, 'aeReport.medicalDevices')
         })
     
     	

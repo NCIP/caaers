@@ -70,8 +70,9 @@
                 	new EnterAnatomicSite(index);
                 	$('add-surgeryIntervention-button').type="hidden";
                 	
-                }
-            })
+                },
+                 deletable: true
+            }, 'aeReport.surgeryInterventions')
         })
     
     </script>
