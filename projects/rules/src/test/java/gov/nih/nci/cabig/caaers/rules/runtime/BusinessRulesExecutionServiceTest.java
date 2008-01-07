@@ -19,7 +19,6 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
@@ -30,14 +29,13 @@ import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
@@ -277,6 +275,20 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 	public ValidationErrors fireRules(ExpeditedAdverseEventReport aeReport) throws Exception{
 		List<Object> input = new ArrayList<Object>();
 		input.add(aeReport);
+		ValidationErrors errors = new ValidationErrors();
+		input.add(errors);
+		
+		List<Object> output = executionService.fireRules(getBindUri(), input);
+		errors = retrieveValidationErrors(output);
+		printErrors(errors);
+		return errors;
+	}
+	public ValidationErrors fireRules(ExpeditedAdverseEventReport aeReport,Study study) throws Exception{
+		List<Object> input = new ArrayList<Object>();
+		input.add(aeReport);
+		input.add(study);
+		FactResolver factResolver = new FactResolver();
+		input.add(factResolver);
 		ValidationErrors errors = new ValidationErrors();
 		input.add(errors);
 		
