@@ -55,6 +55,8 @@ This applicationContext contains the definition of the concrete services
     <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
   </bean>
   
+  <bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider" />
+  
   <bean id="messageBroadcastService" lazy-init="true"
 	class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
     <property name="configuration" ref="configuration" />
@@ -63,6 +65,7 @@ This applicationContext contains the definition of the concrete services
 	<entry key="AENotification" value="SCHEDULE_MODIFICATION" />
       </map>
     </property>
+    <property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
   </bean>
 
 <bean id="connectionFactory"
