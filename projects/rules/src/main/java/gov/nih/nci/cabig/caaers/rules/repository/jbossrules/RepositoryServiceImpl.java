@@ -236,10 +236,12 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 		}
 		
 		RuleSet ruleSet;
-    	if (rc.getRuleSet(name) != null && cached){
+    	
+		if (rc.getRuleSet(name) != null && cached){
     		System.out.println("GET from cache: " +name);
     		ruleSet= rc.getRuleSet(name);
     	} else {
+    	
     		System.out.println("DO NOT GET from cache: " +name);
     		PackageItem item = getRulesRepository().loadPackage(name);
 
@@ -295,6 +297,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements
 	public void deleteRule(String ruleSetName, String ruleName) {
 		
 		try {
+			System.out.println("DELETING RULE SET FROM : " + ruleSetName);
 			PackageItem item = getRulesRepository().loadPackage(ruleSetName);
 			AssetItem ai = item.loadAsset(ruleName);
 			ai.remove();
