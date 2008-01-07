@@ -246,44 +246,82 @@
         
         <xsl:if test="MedicalDevice/brandName !=''">
         <SUSPECT_MEDICAL_DEVICE>
+        	
+            <xsl:if test="MedicalDevice/brandName != ''">
             <BRAND_NAME>
                 <xsl:value-of select="MedicalDevice/brandName"/>
             </BRAND_NAME>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/commonName != ''">
             <COMMON_NAME>
                 <xsl:value-of select="MedicalDevice/commonName"/>
             </COMMON_NAME>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/deviceType != ''">
             <TYPE_OF_DEVICE>
                 <xsl:value-of select="MedicalDevice/deviceType"/>
             </TYPE_OF_DEVICE>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/manufacturerName != ''">
             <MANUFACTURER_NAME>
                 <xsl:value-of select="MedicalDevice/manufacturerName"/>
             </MANUFACTURER_NAME>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/manufacturerCity != ''">
             <MANUFACTURER_CITY>
                 <xsl:value-of select="MedicalDevice/manufacturerCity"/>
             </MANUFACTURER_CITY>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/manufacturerState != ''">
             <MANUFACTURER_STATE>
                 <xsl:value-of select="MedicalDevice/manufacturerState"/>
             </MANUFACTURER_STATE>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/modelNumber != ''">
             <MODEL_NUMBER>
                 <xsl:value-of select="MedicalDevice/modelNumber"/>
             </MODEL_NUMBER>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/lotNumber != ''">
             <LOT_NUMBER>
                 <xsl:value-of select="MedicalDevice/lotNumber"/>
             </LOT_NUMBER>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/catalogNumber != ''">
             <CATALOG_NUMBER>
                 <xsl:value-of select="MedicalDevice/catalogNumber"/>
             </CATALOG_NUMBER>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/expirationDate != ''">
             <EXPIRATION_DATE>
                 <xsl:call-template name="standard_date">
                     <xsl:with-param name="date" select="MedicalDevice/expirationDate"/>
                 </xsl:call-template>
             </EXPIRATION_DATE>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/serialNumber != ''">
             <SERIAL_NUMBER>
                 <xsl:value-of select="MedicalDevice/serialNumber"/>
             </SERIAL_NUMBER>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/otherNumber != ''">
             <OTHER_NUMBER>
                 <xsl:value-of select="MedicalDevice/otherNumber"/>
             </OTHER_NUMBER>
+            </xsl:if>
+            
+            
             <AE_DEVICE_OPERATOR>
                 <xsl:choose>
                     <xsl:when test="MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
@@ -305,16 +343,24 @@
                 </DEVICE_OPERATOR_OTHER>
                 -->
             </AE_DEVICE_OPERATOR>
+            
+            <xsl:if test="MedicalDevice/implantedDate != ''">
             <IMPLANTED_DATE>
                 <xsl:call-template name="standard_date">
                     <xsl:with-param name="date" select="MedicalDevice/implantedDate"/>
                 </xsl:call-template>
             </IMPLANTED_DATE>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/explantedDate != ''">
             <EXPLANTED_DATE>
                 <xsl:call-template name="standard_date">
                     <xsl:with-param name="date" select="MedicalDevice/explantedDate"/>
                 </xsl:call-template>
             </EXPLANTED_DATE>
+            </xsl:if>
+            
+            
             <xsl:choose>
                 <xsl:when test="MedicalDevice/DeviceReprocessed = 'YES'">
                     <IS_SINGLE_USE_DEVICE>Yes</IS_SINGLE_USE_DEVICE>
@@ -324,13 +370,19 @@
                 </xsl:otherwise>
             </xsl:choose>
 
-
+            <xsl:if test="MedicalDevice/reprocessorName != ''">
             <REPROCESSOR_NAME>
                 <xsl:value-of select="MedicalDevice/reprocessorName"/>
             </REPROCESSOR_NAME>
+            </xsl:if>
+            
+            <xsl:if test="MedicalDevice/reprocessorAddress != ''">
             <REPROCESSOR_ADDRESS>
                 <xsl:value-of select="MedicalDevice/reprocessorAddress"/>
             </REPROCESSOR_ADDRESS>
+            </xsl:if>
+            
+            
             <xsl:choose>
                 <xsl:when test="MedicalDevice/EvaluationAvailability = 'YES'">
                     <EVAL_DEVICE>Yes</EVAL_DEVICE>
@@ -348,12 +400,15 @@
                     <EVAL_DEVICE><xsl:value-of select="MedicalDevice/EvaluationAvailability"/></EVAL_DEVICE>
                 </xsl:otherwise>
             </xsl:choose>
-
+            
+            <xsl:if test="MedicalDevice/returnedDate != ''">
             <RETURNED_DATE>
                 <xsl:call-template name="standard_date">
                     <xsl:with-param name="date" select="MedicalDevice/returnedDate"/>
                 </xsl:call-template>
             </RETURNED_DATE>
+            </xsl:if>
+            
         </SUSPECT_MEDICAL_DEVICE>
         </xsl:if>
         
