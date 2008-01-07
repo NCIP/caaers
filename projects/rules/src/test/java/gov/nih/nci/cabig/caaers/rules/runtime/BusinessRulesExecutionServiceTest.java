@@ -254,6 +254,7 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		
 		//populate lab information
 		Lab l1 = new Lab();
+		
 		LabTerm t = new LabTerm();
 		t.setTerm("LabName");
 		l1.setLabTerm(t);

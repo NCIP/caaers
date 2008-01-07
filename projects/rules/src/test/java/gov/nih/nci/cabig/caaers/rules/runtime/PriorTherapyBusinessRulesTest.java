@@ -2,7 +2,12 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 
 import java.util.Date;
 
+import edu.nwu.bioinformatics.commons.DateUtils;
+
+import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 public class PriorTherapyBusinessRulesTest extends
@@ -43,6 +48,7 @@ public class PriorTherapyBusinessRulesTest extends
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
 		aeReport.getAdverseEventPriorTherapies().get(0).setOther("Other");
+		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
 		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
 		aeReport.getAdverseEventPriorTherapies().get(1).setOther("Other1");
 		ValidationErrors errors = fireRules(aeReport);
@@ -58,7 +64,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testNoPriorTherapy_Without_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
 		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(0).setEndDate(new Date());
+		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
 		System.out.println(aeReport.getAdverseEventPriorTherapies().get(0).getName());
 		aeReport.getAdverseEventPriorTherapies().get(0).setOther(null);
 		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
@@ -79,7 +85,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testOneOutOfTwoPriorTherapy_IsWithout_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
 		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(0).setEndDate(new Date());
+		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
 		aeReport.getAdverseEventPriorTherapies().get(0).setOther("Other");
 		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
 		aeReport.getAdverseEventPriorTherapies().get(1).setOther(null);
@@ -141,12 +147,24 @@ public class PriorTherapyBusinessRulesTest extends
 			‘Chemotherapy single agent systemic’
 			‘Immunotherapy’
 			‘Hormonal Therapy’
-	Error Code : PTY_BR4B_ERR
+	Error Code : PTY_BR4A_ERR
 	Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
 	 */
 	
 	public void testBMTPriorTherapy_With_PriorTherapyAgents() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i = 0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(3);
+			PriorTherapyAgent pta = new PriorTherapyAgent();
+			ChemoAgent ca = new ChemoAgent();
+			ca.setId(2 + i);
+			ca.setName("chemoagent " + i++);
+			pta.setChemoAgent(ca);
+			aet.getPriorTherapyAgents().add(pta);
+		}
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "when bone marrow transplant has priortherapy agents with chemo agents");
 	}
 	
 	/**
@@ -158,12 +176,215 @@ public class PriorTherapyBusinessRulesTest extends
 			‘Chemotherapy single agent systemic’
 			‘Immunotherapy’
 			‘Hormonal Therapy’
-	Error Code : PTY_BR4B_ERR
+	Error Code : PTY_BR4A_ERR
 	Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
 	 */
 	
 	public void testBMTPriorTherapy_Without_PriorTherapyAgents() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i = 0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(3);
+		}
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "PTY_BR4A_ERR");
+		assertSameErrorCount(errors, 2);
+
 	}
 	
+	/**
+	 * 	RuleName : PTY_BR4B_CHK
+		Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is not
+			‘Bone Marrow Transplant’
+			‘Chemotherapy (NOS)’
+			‘Chemotherapy multiple agents systemic’
+			‘Chemotherapy single agent systemic’
+			‘Immunotherapy’
+			‘Hormonal Therapy’
+		Error Code : PTY_BR4B_ERR
+		Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
+
+	 */
+	
+	public void testXYZPriorTherapy_With_PriorTherapyAgents() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i = 0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(23);
+			PriorTherapyAgent pta = new PriorTherapyAgent();
+			ChemoAgent ca = new ChemoAgent();
+			ca.setId(2 + i);
+			ca.setName("chemoagent " + i++);
+			pta.setChemoAgent(ca);
+			aet.getPriorTherapyAgents().add(pta);
+		}
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "PTY_BR4B_ERR");
+		assertSameErrorCount(errors, 2);
+	}
+	/**
+	 * RuleName : PTY_BR3_CHK
+	Logic :  “Therapy End Date” must not be provided if “Therapy Start Date” is not provided
+	Error Code : PTY_BR3_ERR
+	Error Message : THERAPY_END_DATE must be not be provided if THERAPY_START_DATE is not provided.
+	 * 
+	 * 
+	 * 	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+
+	 */
+	public void testPriorTherapyNoStartDate_NoEndDate() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors when no startdate and enddate");
+	}
+	
+	/**
+	 * RuleName : PTY_BR3_CHK
+	Logic :  “Therapy End Date” must not be provided if “Therapy Start Date” is not provided
+	Error Code : PTY_BR3_ERR
+	Error Message : THERAPY_END_DATE must be not be provided if THERAPY_START_DATE is not provided.
+	 * @throws Exception
+	 */
+	public void testPriorTherapyNoStartDate_ButEndDate() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+			aet.setEndDate(new Date());
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "PTY_BR3_ERR");
+		assertSameErrorCount(errors, 2);
+	}
+	
+	/**
+	 * 	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+	 */
+	
+	public void testPriorTherapyStartOnly() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+			aet.setStartDate(new Date());
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors when only startdate ");
+	}
+	
+	/**
+	 * 	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+	 */
+	
+	public void testPriorTherapyStart_LT_EndDate() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+			aet.setStartDate(DateUtils.createDate(2007, 11, 9));
+			aet.setEndDate(DateUtils.createDate(2007, 11, 11));
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors when only startdate is less than end date ");
+	}
+	/**
+	 * 	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+	 */
+	public void testPriorTherapyStartDate_GT_EndDate() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+			aet.setStartDate(DateUtils.createDate(2007, 11, 19));
+			aet.setEndDate(DateUtils.createDate(2007, 11, 11));
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertSameErrorCount(errors, 2);
+		assertCorrectErrorCode(errors, "PTY_BR2_ERR");
+
+	}
+	/**
+	 * 	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+	 */
+	public void testOneOutOfTwoPriorTherapyStartDate_GT_EndDate() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i =0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(83);
+			aet.setStartDate(DateUtils.createDate(2007, 11, 9));
+			if(i < 1){
+				aet.setEndDate(DateUtils.createDate(2007, 11, 11));
+			}else{
+				aet.setEndDate(DateUtils.createDate(2007, 10, 1));
+			}
+			
+			i++;
+		}	
+		ValidationErrors errors = fireRules(aeReport);
+		assertSameErrorCount(errors, 1);
+		assertCorrectErrorCode(errors, "PTY_BR2_ERR");
+		assertEquals("Incorrect replacement variable", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+
+	}
+
+	/**
+	 * RuleName : PTA_UK_CHK
+	Logic : Prior Therapy Agents must be unique
+	Error Code : PTA_UK_ERR
+	Error Message : CHEMO_AGENT_NAME must be unique
+	 */
+	public void testUniqueChemoAgents() throws Exception{
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i = 0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(3);
+			PriorTherapyAgent pta = new PriorTherapyAgent();
+			ChemoAgent ca = new ChemoAgent();
+			ca.setId(2 + i);
+			ca.setName("chemoagent " + i++);
+			pta.setChemoAgent(ca);
+			aet.getPriorTherapyAgents().add(pta);
+		}
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "when all has priortherapy agents with unique chemo agents");
+
+	}
+	
+	/**
+	 * RuleName : PTA_UK_CHK
+	Logic : Prior Therapy Agents must be unique
+	Error Code : PTA_UK_ERR
+	Error Message : CHEMO_AGENT_NAME must be unique
+	 */
+	public void testDuplicateChemoAgents() throws Exception{
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		int i = 0;
+		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+			aet.getPriorTherapy().setId(3);
+			PriorTherapyAgent pta = new PriorTherapyAgent();
+			ChemoAgent ca = new ChemoAgent();
+			ca.setId(2 + i);
+			ca.setName("chemoagent");
+			pta.setChemoAgent(ca);
+			aet.getPriorTherapyAgents().add(pta);
+		}
+		ValidationErrors errors = fireRules(aeReport);
+		assertSameErrorCount(errors, 1);
+		assertCorrectErrorCode(errors, "PTA_UK_ERR");
+
+	}
 }

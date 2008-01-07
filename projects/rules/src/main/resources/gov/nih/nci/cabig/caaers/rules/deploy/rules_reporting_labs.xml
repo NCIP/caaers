@@ -27,8 +27,82 @@
 					int i = 0;
 					for(Lab l : aeReport.getLabs()){
 						i++;
-						if(l.getName() != null &amp;&amp; l.getOther() != null){
-							errors.addValidationError("LAB_BR1_ERR", "'Lab test name' must not be provided if 'Other'  is provided and vice versa", i);
+						if( ( l.getLabTerm() != null &amp;&amp; (l.getName() != null || l.getLabTerm().getCategory() !=null)) &amp;&amp; l.getOther() != null){
+							errors.addValidationError("LAB_BR1_ERR", "'Lab test name' and 'Lab category' must not be provided if 'Other'  is provided and vice versa", i);
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+	    	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : LAB_BR2A_CHK
+	Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must not be provided if “Lab Category” is ‘Microbiology’.
+	Error Code : LAB_BR2A_ERR
+	Error Message : "BASELINE_DATE,  BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM, RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must not be provided if LAB_CATEGORY is ""Microbiology"".
+	============================================================================= -->
+	<rule name="LAB_BR2A_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+			
+				private boolean isLabValueEmpty(LabValue lv){
+					if(lv == null) return true;
+					return (lv.getValue() == null) &amp;&amp; (lv.getDate() == null);
+				}
+				
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(Lab l : aeReport.getLabs()){
+						i++;
+						if(NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
+							if( !(isLabValueEmpty(l.getBaseline()) &amp;&amp; 
+							  isLabValueEmpty(l.getNadir()) &amp;&amp; 
+							  isLabValueEmpty(l.getRecovery()) ) ){
+							
+								errors.addValidationError("LAB_BR2A_ERR", "'Baseline' , 'Worst' and 'Recovery' values must not be provided when Lab category is 'Microbiology'" , i);
+							}
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+	    	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : LAB_BR2B_CHK
+	Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must  be provided if “Lab Category” is not ‘Microbiology’.
+	Error Code : LAB_BR2B_ERR
+	Error Message : "BASELINE_DATE,  BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM, RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must be provided if LAB_CATEGORY is not ""Microbiology"".
+	============================================================================= -->
+	<rule name="LAB_BR2B_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+			
+				private boolean isLabValueEmpty(LabValue lv){
+					if(lv == null) return true;
+					return (lv.getValue() == null) &amp;&amp; (lv.getDate() == null);
+				}
+				
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(Lab l : aeReport.getLabs()){
+						i++;
+						if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
+							if(isLabValueEmpty(l.getBaseline()) || isLabValueEmpty(l.getNadir()) || isLabValueEmpty(l.getRecovery()) ){
+								errors.addValidationError("LAB_BR2B_ERR", "'Baseline' , 'Worst' and 'Recovery' values must be provided when Lab category is not 'Microbiology'" , i);
+							}
 						}
 					}
 					return errors.hasErrors() ? FAIL : SUCCESS;
@@ -99,7 +173,67 @@
 			<!-- Already Populated Error Message-->
        	</rhs>
 	</rule>
+	<!-- ==========================================================================
+	RuleName : LAB_BR5A_CHK
+	Logic :" “Site”,“Date” & “Infectious Agent” must be provided if “Lab Category” is ‘Microbiology’.
+	Error Code : LAB_BR5A_ERR
+	Error Message : "MICROBIOLOGY_SITE, MICROBIOLOGY_DATE AND MICROBIOLOGY_INF_AGENT must be provided if LAB_CATEGORY is ""Microbiology"
+	============================================================================= -->
+	<rule name="LAB_BR5A_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+			
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(Lab l : aeReport.getLabs()){
+						i++;
+						if(NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
+							if(l.getSite() == null || l.getInfectiousAgent() == null || l.getLabDate() == null){
+								errors.addValidationError("LAB_BR5A_ERR", "'Site','Date' and 'Infectious Agent' must be provided if 'Lab Category' is 'Microbiology'", i);
+							}
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+	    	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
 	
+	<!-- ==========================================================================
+	RuleName : LAB_BR5B_CHK
+	Logic :" “Site”,“Date” & “Infectious Agent” must not be provided if “Lab Category” is  not ‘Microbiology’.
+	Error Code : LAB_BR5B_ERR
+	Error Message : "MICROBIOLOGY_SITE, MICROBIOLOGY_DATE AND MICROBIOLOGY_INF_AGENT must not be provided if LAB_CATEGORY is not "Microbiology"
+	============================================================================= -->
+	<rule name="LAB_BR5B_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+			
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(Lab l : aeReport.getLabs()){
+						i++;
+						if(!NullSafeFieldExtractor.extractField(l, "labTerm.category.name").equals("Microbiology")){
+							if(l.getSite() != null || l.getInfectiousAgent() != null || l.getLabDate() != null){
+								errors.addValidationError("LAB_BR5B_ERR", "'Site','Date' and 'Infectious Agent' must not be provided if 'Lab Category' is not 'Microbiology'", i);
+							}
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+	    	}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>
 	<!-- ==========================================================================
 	RuleName : LAB_UK_CHK
 	Logic :Lab Results must be unique

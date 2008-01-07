@@ -6,6 +6,7 @@
 	<import name="org.apache.commons.lang.StringUtils" />
 	<import name="org.apache.commons.lang.ArrayUtils" />
 	<import name="java.util.HashSet" />
+	<import name="gov.nih.nci.cabig.caaers.rules.common.DateUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
 	
@@ -41,6 +42,66 @@
 			
        	</rhs>
 	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : PTY_BR3_CHK
+	Logic :  “Therapy End Date” must not be provided if “Therapy Start Date” is not provided
+	Error Code : PTY_BR3_ERR
+	Error Message : THERAPY_END_DATE must be not be provided if THERAPY_START_DATE is not provided.
+	============================================================================= -->
+	<rule name="PTY_BR3_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+	
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+						i++;
+						if(pt.getStartDate() == null &amp;&amp; pt.getEndDate() != null){
+						 errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date' is not provided", i);
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+		    }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			
+       	</rhs>
+	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : PTY_BR2_CHK
+	Logic :  'Therapy End Date' must not be later than 'Therapy Start Date'
+	Error Code : PTY_BR2_ERR
+	Error Message : THERAPY_END_DATE must be later than or equal THERAPY_START_DATE
+	============================================================================= -->
+	<rule name="PTY_BR2_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+	
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+					int i = 0;
+					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+						i++;
+						if(pt.getEndDate() != null &amp;&amp; DateUtil.compare(pt.getStartDate(), pt.getEndDate()) &lt; 0){
+						 errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start Date'", i);
+						}
+					}
+					return errors.hasErrors() ? FAIL : SUCCESS;
+				}
+		    }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			
+       	</rhs>
+	</rule>
 	<!-- ==========================================================================
 	RuleName : PTY_BR4A_CHK
 	Logic : ‘Prior Therapy Agents’ must be provided if "Prior_Therapy" is 
@@ -50,7 +111,7 @@
 			‘Chemotherapy single agent systemic’
 			‘Immunotherapy’
 			‘Hormonal Therapy’
-	Error Code : PTY_BR4B_ERR
+	Error Code : PTY_BR4A_ERR
 	Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
 	============================================================================= -->
 	<rule name="PTY_BR4A_CHK">
@@ -65,11 +126,49 @@
 					if(ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
 							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
 						if(pt.getPriorTherapyAgents().size() &lt; 1) {
-							errors.addValidationError("PTY_BR4B_ERR", "'Prior Therapy Agents' must be provided if 'Prior_Therapy' is " +
+							errors.addValidationError("PTY_BR4A_ERR", "'Prior Therapy Agents' must be provided if 'Prior_Therapy' is " +
 									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Immunotherapy', 'Hormonal Therapy'", i);
 						}
 					}
 					
+				}
+				return errors.hasErrors() ? FAIL : SUCCESS;
+			}
+		 }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+			
+       	</rhs>
+	</rule>
+	<!-- ==========================================================================
+	RuleName : PTY_BR4B_CHK
+	Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is not
+			‘Bone Marrow Transplant’
+			‘Chemotherapy (NOS)’
+			‘Chemotherapy multiple agents systemic’
+			‘Chemotherapy single agent systemic’
+			‘Immunotherapy’
+			‘Hormonal Therapy’
+	Error Code : PTY_BR4B_ERR
+	Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
+	============================================================================= -->
+	<rule name="PTY_BR4B_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				int i = 0;
+				for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					i++;
+					if(!ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
+							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
+						if(pt.getPriorTherapyAgents().size() &gt; 0) {
+							errors.addValidationError("PTY_BR4B_ERR", "'Prior Therapy Agents' must not be provided if 'Prior_Therapy' is not " +
+									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Immunotherapy', 'Hormonal Therapy'", i);
+						}
+					}
 				}
 				return errors.hasErrors() ? FAIL : SUCCESS;
 			}
@@ -110,4 +209,38 @@
 			
        	</rhs>
 	</rule>
+	
+	<!-- ==========================================================================
+	RuleName : PTA_UK_CHK
+	Logic : Prior Therapy Agents must be unique
+	Error Code : PTA_UK_ERR
+	Error Message : CHEMO_AGENT_NAME must be unique
+	============================================================================= -->
+	<rule name="PTA_UK_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+			public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				int i = 0;
+				HashSet hSet = new HashSet();
+				for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+					i++;
+					if(aet.getPriorTherapyAgents() == null) continue;
+					for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()){
+						if(!hSet.add(pta.getChemoAgent())){
+							errors.addValidationError("PTA_UK_ERR", "Prior therapy agents must be unique", i);
+						}
+					}
+				}
+				return errors.hasErrors() ? FAIL : SUCCESS;
+			}
+	    }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+			
+       	</rhs>
+	</rule>
+	
 </package>
