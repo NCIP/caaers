@@ -35,22 +35,22 @@
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
             	<tr>
             		<td>
-            			${ae.adverseEventTerm.universalTerm}
+            			<c:out value="${ae.adverseEventTerm.universalTerm}" />
             		</td>
             		<td>
-            			${ae.grade}
-            		</td>
-            		
-            		<td>
-            			${ae.attributionSummary}
+            			<c:out value="${ae.grade}" />
             		</td>
             		
             		<td>
-            			${ae.hospitalization}
+            			<c:out value="${ae.attributionSummary}" />
             		</td>
             		
             		<td>
-            			${ae.expected}
+            			<c:out value="${ae.hospitalization}"/>
+            		</td>
+            		
+            		<td>
+            			<c:out value="${ae.expected == true ? 'Yes' : 'No' }" />
             		</td>	
             	</tr>	 
             </c:forEach>
