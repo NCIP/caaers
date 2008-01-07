@@ -204,6 +204,20 @@ public class TreatmentInformationBusinessRulesTest extends
 		
 		assertEquals("There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",0 , errors.getErrorCount());
 	}
+	/**
+	 * RuleName : CIN_BR1_CHK
+		Logic : Course Number of AE must not be greater than Total number of Courses.
+		Error Code CIN_BR1_ERR
+		Error Message : COURSE_NUMBER_OF_AE must not be greater than TOTAL_NUMBER_OF_COURSES
+	 */
+	public void testCourseNumberOfAE_EQ_TotalNumberOfCourses() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		aeReport.getTreatmentInformation().setTotalCourses(5);
+		aeReport.getTreatmentInformation().getAdverseEventCourse().setNumber(5);
+		ValidationErrors errors = fireRules(aeReport);
+		
+		assertEquals("There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",0 , errors.getErrorCount());
+	}
 	
 
 	/**

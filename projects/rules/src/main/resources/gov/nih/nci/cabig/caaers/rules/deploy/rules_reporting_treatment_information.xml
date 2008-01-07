@@ -88,7 +88,7 @@
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NumberUtil.compare(NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.adverseEventCourse.number"), 
-				      NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.totalCourses")) &lt; 1</eval>
+				      NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.totalCourses")) &lt; 0</eval>
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
