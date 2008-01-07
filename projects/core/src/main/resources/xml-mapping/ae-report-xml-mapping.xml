@@ -239,11 +239,18 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
-    <field name="agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
-      <bind-xml name="Agent"/>
+    <field name="chemoAgent" type="gov.nih.nci.cabig.caaers.domain.ChemoAgent">
+      <bind-xml name="ChemoAgent"/>
     </field>
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.ChemoAgent">
+    <map-to xml="ChemoAgent"/>
+    <field name="name" type="string">
+      <bind-xml name="string" node="element"/>
+    </field>
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.PriorTherapy">
     <map-to xml="PriorTherapy"/>
     <field name="id" type="integer">
@@ -324,11 +331,20 @@
     <field name="interventionDate" type="date">
       <bind-xml name="interventionDate" node="element"/>
     </field>
-    <field name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
-      <bind-xml name="AnatomicSite"/>
+    <field name="interventionSite" type="gov.nih.nci.cabig.caaers.domain.InterventionSite">
+      <bind-xml name="InterventionSite"/>
     </field>
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.InterventionSite">
+    <map-to xml="InterventionSite"/>
+
+    <field name="name" type="string">
+      <bind-xml name="name" node="element"/>
+    </field>
+
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.RadiationIntervention">
     <map-to xml="RadiationIntervention"/>
 
