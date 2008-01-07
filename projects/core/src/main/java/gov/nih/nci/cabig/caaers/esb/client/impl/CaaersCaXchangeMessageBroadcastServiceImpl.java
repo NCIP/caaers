@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.esb.client.impl;
 
+import edu.duke.cabig.c3pr.esb.CaXchangeMessageResponseHandlerSet;
 import edu.duke.cabig.c3pr.esb.impl.CaXchangeMessageBroadcasterImpl;
 import gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
@@ -26,6 +27,7 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 			broadCaster.setCaXchangeURL(configuration.get(Configuration.ESB_URL));
 			broadCaster.setMessageTypesMapping(messageTypesMapping);
 			broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
+			broadCaster.setMessageResponseHandlers(new CaXchangeMessageResponseHandlerSet());
 			broadCaster.broadcast(message);
 			log.info("Broadcasted the message to PSC( url :" + broadCaster.getCaXchangeURL() +")");
 		} catch (Throwable e) {
