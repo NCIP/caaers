@@ -59,4 +59,43 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject{
     public void setAdverseEventPriorTherapy(AdverseEventPriorTherapy adverseEventPriorTherapy) {
         this.adverseEventPriorTherapy = adverseEventPriorTherapy;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((adverseEventPriorTherapy == null) ? 0
+						: adverseEventPriorTherapy.hashCode());
+		result = prime * result
+				+ ((chemoAgent == null) ? 0 : chemoAgent.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final PriorTherapyAgent other = (PriorTherapyAgent) obj;
+		if (adverseEventPriorTherapy == null) {
+			if (other.adverseEventPriorTherapy != null)
+				return false;
+		} else if (!adverseEventPriorTherapy
+				.equals(other.adverseEventPriorTherapy))
+			return false;
+		if (chemoAgent == null) {
+			if (other.chemoAgent != null)
+				return false;
+		} else if (!chemoAgent.equals(other.chemoAgent))
+			return false;
+		return true;
+	}
+    
+    ///OBJECT Methods
+    
 }
