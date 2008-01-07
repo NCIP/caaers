@@ -1,0 +1,50 @@
+"Category","Name"
+Bone Marrow Biopsy,Bone Marrow Cellularity
+Bone Marrow Biopsy,Bone Marrow blasts
+Bone Marrow Biopsy,Peripheral Blasts count
+Chemistry,Albumin - blood
+Chemistry,Amylase - blood
+Chemistry,Amylase - blood
+Chemistry,Bilirubin direct - blood
+Chemistry,Bilirubin total - blood
+Chemistry,Blood Urea Nitrogen (BUN)
+Chemistry,Calcium - blood (Ca)
+Chemistry,Carbon dioxide - blood (CO2)
+Chemistry,Chloride - blood
+Chemistry,Cholesterol - blood
+Chemistry,Creatine phosphokinase - blood (CK)
+Chemistry,Creatinine - serum (Cr)
+Chemistry,Creatinine clearance (CrCl)
+Chemistry,Glucose - blood
+Chemistry,Glutamic-oxaloacetic transferase (AST SGOT)
+Chemistry,Glutamic-pyruvate transferase (ALT SGPT)
+Chemistry,Lactate dehydrogenase - blood (LDH)
+Chemistry,Lipase
+Chemistry,Magnesium - blood (Mg)
+Chemistry,Phosphorus
+Chemistry,Potassium - blood (K)
+Chemistry,Protein NOS (Total)
+Chemistry,Sodium - blood
+Chemistry,Triglycerides
+Chemistry,Urine analysis
+Coagulation,Activated partial thromboplastin time (APTT)
+Coagulation,Fibrin D-dimer
+Coagulation,Fibrin degradation products (FDP)
+Coagulation,Fibrinogen - blood
+Coagulation,International normalised ratio (INR)
+Coagulation,Prothrombin time (PT)
+Hematologic,ANC
+Hematologic,Blood neutrophils (ANC)
+Hematologic,Hematocrit (Hct)
+Hematologic,Hemoglobin (Hb)
+Hematologic,Hemoglobin (fetal)
+Hematologic,Platelet count (PLT)
+Hematologic,White blood cell count (WBC)
+Microbiology,Bacterial infection NOS
+Microbiology,Fungal infection NOS
+Microbiology,Viral infection NOS
+Respiratory,Blood bicarbonate
+Respiratory,Blood carbon dioxide
+Respiratory,Oxygen saturation
+Respiratory,pH NOS
+Respiratory,pO2
