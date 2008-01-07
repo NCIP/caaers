@@ -79,6 +79,20 @@ public class MedicalDeviceBusinessRulesTest extends
 	 * Error Code : SME_BR2_ERR 
 	 * Error Message : Either MODEL_NUMBER, SERIAL_NUMBER, CATALOG_NUMBER or LOT_NUMBER must be provided.
 	 */
+	public void testNo_Devices() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		aeReport.getMedicalDevices().clear();
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "When no devices present");
+	}
+	
+	
+	/**
+	 * RuleName : SME_BR2_CHK 
+	 * Logic : Either 'Model#', 'Serial#', 'Catalog#' or 'Lot#' must be provided 
+	 * Error Code : SME_BR2_ERR 
+	 * Error Message : Either MODEL_NUMBER, SERIAL_NUMBER, CATALOG_NUMBER or LOT_NUMBER must be provided.
+	 */
 	public void testNo_Model_Serial_Catalog_Lot_Number() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		aeReport.getMedicalDevices().get(0).setModelNumber(null);

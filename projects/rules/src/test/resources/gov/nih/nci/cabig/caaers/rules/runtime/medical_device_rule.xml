@@ -21,6 +21,7 @@
 		<lhs>
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getMedicalDevices().isEmpty()</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].brandName") == null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].commonName") == null</eval>
 		</lhs>
@@ -39,6 +40,7 @@
 		<lhs>
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getMedicalDevices().isEmpty()</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].modelNumber") == null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].catalogNumber") == null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].lotNumber") == null</eval>
