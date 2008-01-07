@@ -138,8 +138,19 @@ public class RuleTab extends DefaultTab
 					// Check whether ruleset exists? Otherwise retrieve sponsor ruleset
 					if (ruleSet == null)
 					{
+						
+						RuleSet rs  = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName(),false);
+						
+						ruleSet = new RuleSet();
+						ruleSet.setDescription(createRuleCommand.getRuleSetName());
+						ruleSet.setRule(rs.getRule());
+						
+						ruleSet.setName(packageName);
+			    		//ruleSet.setSubject(item.getSubject());
+			    		//ruleSet.setCoverage(item.getCoverage());
+						
 						// dont get from cache ...
-						ruleSet = rulesEngineService.getRuleSetForSponsor(createRuleCommand.getRuleSetName(), createRuleCommand.getSponsorName(),false);
+						
 						
 						areSponsorRules = true;
 					}
@@ -246,7 +257,15 @@ public class RuleTab extends DefaultTab
 					// Check whether ruleset exists? Otherwise retrieve inst ruleset
 					if (ruleSet == null)
 					{
-						ruleSet = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName(),false);
+						RuleSet rs = rulesEngineService.getRuleSetForInstitution(createRuleCommand.getRuleSetName(), createRuleCommand.getInstitutionName(),false);
+						
+						ruleSet = new RuleSet();
+						ruleSet.setDescription(createRuleCommand.getRuleSetName());
+						ruleSet.setRule(rs.getRule());
+						
+						ruleSet.setName(packageName);
+						
+						
 						areSponsorRules = true;
 					}
 					
