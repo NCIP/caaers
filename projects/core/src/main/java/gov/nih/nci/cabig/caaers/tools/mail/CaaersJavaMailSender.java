@@ -45,14 +45,6 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl {
 	    message.setFrom(fromAddress);
 	super.send(message);
     }
-
-    /*
-      @Override
-      public void send(SimpleMailMessage[] messages) {
-      for (SimpleMailMessage message : messages)
-      send(message);
-      }
-    */
     
     @Required
     public void setConfiguration(Configuration configuration) {

@@ -17,9 +17,9 @@
     </licenses>
     -->
     <scm>
-        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/0.9-stable</url>
-        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/0.9-stable</connection>
-        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/0.9-stable</developerConnection>
+        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</connection>
+        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</developerConnection>
     </scm>
     <repositories>
         <repository>
@@ -57,7 +57,7 @@
     </modules>
 
     <properties>
-        <ctms-commons.version>0.7-SNAPSHOT</ctms-commons.version>
+        <ctms-commons.version>0.7</ctms-commons.version>
     </properties>
 
     <!-- Specify versions once for commonly-used deps -->
