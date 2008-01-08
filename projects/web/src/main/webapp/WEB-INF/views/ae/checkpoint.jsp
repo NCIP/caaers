@@ -158,7 +158,7 @@
   	 	 	<div id="report-list" class="report-list">
             	  <!-- required reports -->
             	  <c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
-            	   <c:if test="${(empty command.requiredReportDefinitionNames) or (fn:contains(command.requiredReportDefinitionNames, field.propertyName))}">
+            	   <c:if test="${(empty command.requiredReportDefinitionNames) or (fn:contains(command.requiredReportDefinitionNames, field.propertyName)) or (fn:contains(command.selectedReportDefinitionNames, field.propertyName))}">
                      <div class="row">
                       <div class="label"><tags:renderInputs field="${field}"/></div>
                       <div class="value"><tags:renderLabel field="${field}"/></div>
