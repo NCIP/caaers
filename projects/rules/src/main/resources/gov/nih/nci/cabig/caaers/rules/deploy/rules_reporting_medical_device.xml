@@ -21,9 +21,8 @@
 		<lhs>
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>!aeReport.getMedicalDevices().isEmpty()</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].brandName") == null</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].commonName") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].brandName") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].commonName") == null</eval>
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
@@ -40,11 +39,10 @@
 		<lhs>
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>!aeReport.getMedicalDevices().isEmpty()</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].modelNumber") == null</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].catalogNumber") == null</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].lotNumber") == null</eval>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].serialNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].modelNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].catalogNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].lotNumber") == null</eval>
+			<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].serialNumber") == null</eval>
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
@@ -64,12 +62,12 @@
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<or>
 			 <and>
-				<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
-				<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") == null</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") == null</eval>
 			 </and>
 			 <and>
-				<eval>!NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
-				<eval>NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") != null</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; !NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
+				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") != null</eval>
 			 </and>
 			</or>
 		</lhs>
