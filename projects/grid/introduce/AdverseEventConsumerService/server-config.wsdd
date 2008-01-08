@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:aggr="http://mds.globus.org/aggregator/types" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="defaultServerConfig">
-  <service name="SERVICE-INSTANCE-PREFIX/AdverseEventConsumer" provider="Handler" use="literal" style="document">
+    <handler name="auditInfoRequestHandler"
+             type="java:edu.northwestern.bioinformatics.studycalendar.grid.AuditInfoRequestHandler"/>
+    <handler name="auditInfoResponseHandler"
+             type="java:edu.northwestern.bioinformatics.studycalendar.grid.AuditInfoResponseHandler"/>
+    <service name="SERVICE-INSTANCE-PREFIX/AdverseEventConsumer" provider="Handler" use="literal" style="document">
     <parameter name="className" value="gov.nih.nci.cabig.ctms.grid.ae.service.globus.AdverseEventConsumerProviderImpl" />
     <wsdlFile>share/schema/AdverseEventConsumer/AdverseEventConsumer_service.wsdl</wsdlFile>
     <parameter name="securityDescriptor" value="ETC-PATH/AdverseEventConsumer-security-desc.xml" />
@@ -13,6 +17,12 @@
     <parameter name="springClasspathExpression" value="classpath:applicationContext-grid-ae.xml" />
     <parameter name="adverseEventConsumerBeanName" value="adverseEventConsumer" />
     <parameter name="csmPDP-beansFile" value="ETC-PATH/pdp-config.xml" />
+    <requestFlow>
+        <handler type="auditInfoRequestHandler"/>
+    </requestFlow>
+    <responseFlow>
+        <handler type="auditInfoResponseHandler"/>
+    </responseFlow>
   </service>
   <typeMapping name="AggregatorContent" qname="aggr:AggregatorContent" type="java:org.globus.mds.aggregator.types.AggregatorContent" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" />
 </deployment>
