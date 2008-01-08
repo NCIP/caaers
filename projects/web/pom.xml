@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.9-SNAPSHOT</version>
+        <version>0.10-SNAPSHOT</version>
     </parent>
     <repositories>
         <!-- It appears that this repo is mirrored a ibiblio now, so we don't need it.
