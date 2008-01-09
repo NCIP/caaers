@@ -367,6 +367,7 @@
 <h2>Routine AEs
 <c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a></c:if>
 </h2>
+<% int ind= 0; %>
 <ec:table
     items="command.assignment.aeRoutineReports"
     var="routineReport" imagePath="${ecImagePath}"
@@ -380,8 +381,11 @@
             <c:choose>
                 <c:when test="${not empty routineReport.adverseEvents[0].adverseEventTerm}">
                 	<c:forEach items="${routineReport.adverseEvents}" var="adverseEvent">
-                		${adverseEvent.adverseEventTerm.universalTerm}<br />
-                
+                		<table width="100%" class="tablecontent">
+                		<tr>
+                		<td width="95%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>${adverseEvent.adverseEventTerm.universalTerm}</td>
+ 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >${adverseEvent.grade.code}</td></tr>
+ 						</table>	
     				</c:forEach>
                     
                 </c:when>
@@ -389,12 +393,12 @@
                     [Incomplete AE]
                 </c:otherwise>
             </c:choose>
+            <% ind++; %>
             </a>
         </ec:column>
         <ec:column property="startDate" title="Start date">
             <tags:formatDate value="${routineReport.startDate}"/>
         </ec:column>
-        <ec:column property="adverseEvents[0].grade.code" title="Grade"/>
 
         <ec:column title="Actions" sortable="false" filterable="false" property="dc">
 

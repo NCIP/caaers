@@ -6,17 +6,30 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<head>
+	<script>
+		function fireAction(action, selected){
+			document.getElementById('command')._target.name='_noname';
+			document.saveRoutineForm._action.value=action;
+			document.saveRoutineForm._selected.value=selected;
+			$('finish').remove();
+			document.saveRoutineForm.submit();
+	}
+	</script>
+</head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}">
+    <tags:tabForm tab="${tab}" flow="${flow}" formName="saveRoutineForm">
         <jsp:attribute name="instructions">
             
             You have added ${fn:length(command.aeRoutineReport.adverseEvents)} AE(s). 
             To save the set of AE(s) that you entered, click on Save button. 
-            <%--
-            To save the set of AEs that you entered, click on Save button. 
-            To exit the current flow after saving, click on Save and Continue button. 
-            This will return you to the list of AEs for the selected study and participant combination.
-            --%>
+           	<div>
+           		<input type="hidden" name="_action" value="">
+           		<input type="hidden" name="_selected" value="">
+            </div>
+            <div id="finish">
+           		<input type="hidden" name="_finish"/>
+            </div>
             
         </jsp:attribute>
         
@@ -30,6 +43,7 @@
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Attribution:</b> </th>
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Hospitalization:</b> </th>
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Expected:</b> </th>
+    				<th scope="col" align="left"> </th>
     			</tr>
     				
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
@@ -51,7 +65,11 @@
             		
             		<td>
             			<c:out value="${ae.expected == true ? 'Yes' : 'No' }" />
-            		</td>	
+            		</td>
+            		<td>
+            			<a href="javascript:fireAction('removeTerm',${status.index});">
+								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
+            		</td>
             	</tr>	 
             </c:forEach>
             </table>
@@ -60,7 +78,7 @@
         </jsp:attribute>
         
         <jsp:attribute name="singleFields">
-            <input type="hidden" name="_finish"/>
+            
         </jsp:attribute>
     </tags:tabForm>
 </body>

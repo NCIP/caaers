@@ -25,35 +25,34 @@ public class MedicalDeviceTab extends AeTab {
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         
     	InputField brandName = InputFieldFactory.createTextField("brandName", "Brand name", false);
-    	InputFieldAttributes.setColumns(brandName, 30);
+    	InputFieldAttributes.setSize(brandName, 45);
     	
     	InputField commonName = InputFieldFactory.createTextField("commonName", "Common name", false);
-    	InputFieldAttributes.setColumns(commonName, 30);
+    	InputFieldAttributes.setSize(commonName, 45);
     	
     	InputField deviceType = InputFieldFactory.createTextField("deviceType", "Device type", false);
-    	InputFieldAttributes.setColumns(deviceType, 30);
+    	InputFieldAttributes.setSize(deviceType, 45);
     	
     	InputField manName = InputFieldFactory.createTextField("manufacturerName", "Manufacturer name", false);
-    	InputFieldAttributes.setColumns(manName, 30);
+    	InputFieldAttributes.setSize(manName, 45);
     	
     	InputField manCity = InputFieldFactory.createTextField("manufacturerCity", "Manufacturer city", false);
-    	InputFieldAttributes.setColumns(manCity, 30);
+    	InputFieldAttributes.setSize(manCity, 45);
     	
-    	//InputField manState = InputFieldFactory.createTextField("manufacturerState", "Manufacturer state", false);
     	InputField manState = InputFieldFactory.createSelectField("manufacturerState", "Manufacturer state", false,
     			InputFieldFactory.collectOptions(configurationProperty.getMap().get("stateRefData"), "code", "desc", "Please Select"));
-    	InputFieldAttributes.setColumns(manState, 30);
+    	InputFieldAttributes.setSize(manState, 45);
     	
     	InputField modelNumber = InputFieldFactory.createTextField("modelNumber", "Model number", false);
     	
     	InputField otherDeviceOperator =  InputFieldFactory.createTextField("otherDeviceOperator", "Other device operator", false);
-    	InputFieldAttributes.setColumns(otherDeviceOperator, 30);
+    	InputFieldAttributes.setSize(otherDeviceOperator, 45);
     	
     	InputField reprocessorName = InputFieldFactory.createTextField("reprocessorName", " Reprocessor name", false);
-    	InputFieldAttributes.setColumns(reprocessorName, 30);
+    	InputFieldAttributes.setSize(reprocessorName, 45);
     	
     	InputField reprocessorAddress = InputFieldFactory.createTextField("reprocessorAddress", " Reprocessor address", false);
-    	InputFieldAttributes.setColumns(reprocessorAddress, 50);
+    	InputFieldAttributes.setSize(reprocessorAddress, 45);
     	
     	
     	creator.createRepeatingFieldGroup("medicalDevice", "medicalDevices",

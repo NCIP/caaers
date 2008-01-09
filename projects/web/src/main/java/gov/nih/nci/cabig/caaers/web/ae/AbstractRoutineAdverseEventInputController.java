@@ -64,7 +64,7 @@ public abstract class AbstractRoutineAdverseEventInputController
 
     protected AbstractRoutineAdverseEventInputController() {
         setAllowDirtyForward(false);
-        setAllowDirtyBack(false);
+        setAllowDirtyBack(true);
         setFlowFactory(createFlowFactory());
     }
 

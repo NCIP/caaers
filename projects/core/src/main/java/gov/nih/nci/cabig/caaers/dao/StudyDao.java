@@ -288,6 +288,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> searchByExample(final Study study, final boolean isWildCard) {
 		Example example = Example.create(study).excludeZeroes().ignoreCase();
 		Criteria studyCriteria = getSession().createCriteria(Study.class);
+		studyCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		if (isWildCard) {
 			example.excludeProperty("multiInstitutionIndicator");

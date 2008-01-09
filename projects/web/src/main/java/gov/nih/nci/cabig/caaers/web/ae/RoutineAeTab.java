@@ -34,8 +34,7 @@ public class RoutineAeTab extends AeRoutTab {
     
     @Override
     public void postProcess(HttpServletRequest request, RoutineAdverseEventInputCommand command, Errors errors) {
-    	handleTermAction(command, request.getParameter("_action"),
-            request.getParameter("_selected"));
+    	handleTermAction(command, request.getParameter("_action"),request.getParameter("_selected"));
     }
     
     private void handleTermAction(RoutineAdverseEventInputCommand c, String action, String selected){
@@ -80,9 +79,7 @@ public class RoutineAeTab extends AeRoutTab {
     	if (command.getAeRoutineReport().getEndDate() == null){
     		errors.rejectValue("aeRoutineReport.endDate", "REQUIRED", "Missing From");
     	}
-    	if (command.getAeRoutineReport().getAdverseEvents().isEmpty() ){
-    		errors.rejectValue("aeRoutineReport.adverseEvents", "REQUIRED", "Missing Adverse Events");
-    	}
+    	
         if (command.getAeRoutineReport().getAdverseEvents() != null) {
 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
 					.getAdverseEvents().listIterator(); lit.hasNext();) {
