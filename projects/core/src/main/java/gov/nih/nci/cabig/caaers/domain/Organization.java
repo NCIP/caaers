@@ -115,10 +115,11 @@ public class Organization extends AbstractMutableDomainObject {
 	public void setState(String state) {
 		this.state = state;
 	}
-
+	
+	//Cascade limited to DELETE, Fix for #11452
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
     @OrderBy // order by ID for testing consistency
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	@Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     public List<StudyOrganization> getStudyOrganizations() {
 		return studyOrganizations;
 	}
@@ -162,9 +163,9 @@ public class Organization extends AbstractMutableDomainObject {
 	public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
 		this.researchStaffs = researchStaffs;
 	}
-
+	//Cascade limited to DELETE, Fix for #11452
     @OneToMany(mappedBy="organization", fetch=FetchType.LAZY)
-    @Cascade(value={CascadeType.ALL ,CascadeType.DELETE_ORPHAN})
+    @Cascade(value={CascadeType.DELETE ,CascadeType.DELETE_ORPHAN})
 	public List<ReportDefinition> getReportDefinitions() {
 		return reportDefinitions;
 	}
