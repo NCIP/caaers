@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -83,18 +84,19 @@ public class IdentifiersTab extends StudyTab {
 	protected void validate(final Study command, final BeanWrapper commandBean,
 			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 		super.validate(command, commandBean, fieldGroups, errors);
-
+		HashSet<String> set = new HashSet<String>();
 		List<Identifier> identifiers = command.getIdentifiersLazy();
 		for (int i = 0; i < identifiers.size(); i++) {
 			Identifier identifier = identifiers.get(i);
+			if(!set.add(identifier.getType())){
+				errors.rejectValue("identifiersLazy[" + i + "].type","REQUIRED", "Duplicate, already an identifier of this type is present");
+			}
+			
 			if (identifier instanceof OrganizationAssignedIdentifier
 					&& ((OrganizationAssignedIdentifier) identifier).getOrganization() == null) {
-				errors
-						.rejectValue("identifiersLazy[" + i + "].organization", "REQUIRED",
-								"Organization is required..!");
+				errors.rejectValue("identifiersLazy[" + i + "].organization", "REQUIRED","Organization is required..!");
 
-			}
-			else if (identifier instanceof SystemAssignedIdentifier
+			}else if (identifier instanceof SystemAssignedIdentifier
 					&& (((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier)
 							.getSystemName().equals(""))) {
 
