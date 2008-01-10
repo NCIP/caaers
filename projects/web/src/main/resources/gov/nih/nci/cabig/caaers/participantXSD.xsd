@@ -57,7 +57,7 @@
                     <xs:element name="identifiers" minOccurs="1" maxOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element name="identifier" type="reducedIdentifierType" maxOccurs="unbounded"/>
+                                <xs:element name="identifier" type="reducedIdentifierType"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>

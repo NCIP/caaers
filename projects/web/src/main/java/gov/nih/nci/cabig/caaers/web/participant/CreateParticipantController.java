@@ -81,18 +81,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 
 			if ("st".equals(type)) {
 				query.filterByStudyShortTile(searchtext);
-				// study.setShortTitle(searchtext);
 			}
-			// else if ("lt".equals(type)) {
-			// study.setLongTitle(searchtext);
-			// }
 			else if ("idtf".equals(type)) {
-				// Identifier identifier = new Identifier();
-				// identifier.setValue(searchtext);
-				// study.addIdentifier(identifier);
 				query.filterByIdentifierValue(searchtext);
-				// studies = studyDao.searchByExample(study, true);
-
 			}
 			studies = studyDao.find(query);
 			participantCommand.setStudies(studies);

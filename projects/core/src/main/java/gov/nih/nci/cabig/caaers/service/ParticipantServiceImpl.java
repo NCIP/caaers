@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.ArrayList;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
@@ -88,6 +89,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 			DomainObjectImportOutcome participantImportOutcome) {
 
 		if (source.getAssignments() != null) {
+			ArrayList<String> studySites = new ArrayList<String>();
 			for (int i = 0; i < source.getAssignments().size(); i++) {
 				StudyParticipantAssignment studyParticipantAssignment = source
 						.getAssignments().get(i);
@@ -96,14 +98,15 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 				for (Identifier identifier : studyParticipantAssignment
 						.getStudySite().getStudy().getIdentifiers()) {
 					
+					log.debug("Size of identifiers : " +studyParticipantAssignment.getStudySite().getStudy().getIdentifiers());
 					StudySite studySite = studySiteDao.matchByStudyAndOrg(
 							studyParticipantAssignment.getStudySite().getOrganization().getName(), 
 							identifier.getValue());
 					
 	
-					if (studySite != null) {
+					if (studySite != null && !studySites.contains(studySite.getId().toString())) {
+						studySites.add(studySite.getId().toString());
 						log.info("StudySite was found id :  " + studySite.getId());
-						//studySite = study.getStudySites().get(0);
 						destination.getAssignments().add(
 								new StudyParticipantAssignment(destination,
 										studySite));

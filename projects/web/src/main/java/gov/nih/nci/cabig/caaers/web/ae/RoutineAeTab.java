@@ -34,10 +34,10 @@ public class RoutineAeTab extends AeRoutTab {
     
     @Override
     public void postProcess(HttpServletRequest request, RoutineAdverseEventInputCommand command, Errors errors) {
-    	handleTermAction(command, request.getParameter("_action"),request.getParameter("_selected"));
+    	handleAction(command, request.getParameter("_action"),request.getParameter("_selected"),errors);
     }
     
-    private void handleTermAction(RoutineAdverseEventInputCommand c, String action, String selected){
+    private void handleAction(RoutineAdverseEventInputCommand c, String action, String selected,Errors errors){
     	
     	  if ("addTerm".equals(action)) {
     		  for (String ctcTermId : c.getCtcTermIds()) {
@@ -46,6 +46,8 @@ public class RoutineAeTab extends AeRoutTab {
     		  ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
     		  c.getAeRoutineReport().addAdverseEvent(ae);
     		  }
+    	  }else{
+    		  postProcessValidate(c, errors);
     	  }
     }
 
@@ -67,11 +69,7 @@ public class RoutineAeTab extends AeRoutTab {
     }
     
     
-    @Override
-    protected void validate(
-        RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
+    protected void postProcessValidate(RoutineAdverseEventInputCommand command, Errors errors) {
     	int index = 0;
     	if (command.getAeRoutineReport().getStartDate() == null){
     		errors.rejectValue("aeRoutineReport.startDate", "REQUIRED", "Missing From");
