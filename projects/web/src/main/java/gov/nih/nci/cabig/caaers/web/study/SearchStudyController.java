@@ -108,7 +108,7 @@ public class SearchStudyController extends SimpleFormController {
 		*/		
 		
 		Map map = errors.getModel();
-		map.put("studySearchType",getConfigurationProperty().getMap().get("studySearchType"));  
+		map.put("studySearchType",listValues.getStudySearchType());  
     	ModelAndView modelAndView= new ModelAndView(getSuccessView(), map);
      	
     	// needed for saving session state
