@@ -87,7 +87,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="true">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
 		<p id="instructions">&nbsp;&nbsp;
 		Click on the Add Study Site button below in order to associate a study site to this study.

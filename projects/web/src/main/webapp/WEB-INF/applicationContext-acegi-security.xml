@@ -107,14 +107,14 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="gridUserDetailsService" class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService">
+	<bean id="gridUserDetailsService" class="gov.nih.nci.security.acegi.grid.authorization.GridUserDetailsService" lazy-init="true">
 		<property name="gridGroupSearch" ref="gridGroupSearch"/>
 	</bean>
-	<bean id="globusCredentialAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider">
+	<bean id="globusCredentialAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GlobusCredentialAuthenticationProvider" lazy-init="true">
 		<property name="userDetailsService" ref="gridUserDetailsService"/>
 		<property name="validator" ref="gridProxyValidator"/>
 	</bean>
-	<bean id="gridAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GridAuthenticationProvider">
+	<bean id="gridAuthenticationProvider" class="gov.nih.nci.security.acegi.grid.authentication.GridAuthenticationProvider" lazy-init="true">
 		<property name="userDetailsService" ref="gridUserDetailsService"/>
 		<property name="authenticationClient" ref="gridAuthenticationClient"/>
 		<property name="validator" ref="gridProxyValidator"/>
@@ -167,7 +167,7 @@
 	<bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor"/>
 	<bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor"/>
 	<!--webSSO config-->
-	<bean id="webSSOAuthenticationProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter">
+	<bean id="webSSOAuthenticationProcessingFilter" class="org.acegisecurity.ui.cas.CasProcessingFilter" lazy-init="true">
 		<property name="authenticationManager">
 			<ref bean="authenticationManager"/>
 		</property>
@@ -181,13 +181,13 @@
 			<value>/j_acegi_cas_security_check</value>
 		</property>
 	</bean>
-	<bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint">
+	<bean id="webSSOAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.cas.CasProcessingFilterEntryPoint" lazy-init="true">
 		<property name="loginUrl" value="s[webSSO.server.baseUrl]"/>
 		<property name="serviceProperties">
 			<ref bean="serviceProperties"/>
 		</property>
 	</bean>
-	<bean id="webSSOAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider">
+	<bean id="webSSOAuthenticationProvider" class="org.acegisecurity.providers.cas.CasAuthenticationProvider" lazy-init="true">
 		<property name="casAuthoritiesPopulator">
 			<ref local="casAuthoritiesPopulator"/>
 		</property>
@@ -204,34 +204,34 @@
 			<value>my_password_for_this_auth_provider_only</value>
 		</property>
 	</bean>
-	<bean id="casProxyTicketValidator" class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator">
+	<bean id="casProxyTicketValidator" class="org.acegisecurity.providers.cas.ticketvalidator.CasProxyTicketValidator" lazy-init="true">
 		<property name="casValidate" value="s[webSSO.server.baseUrl]/proxyValidate"/>
 		<property name="serviceProperties">
 			<ref local="serviceProperties"/>
 		</property>
 		<property name="trustStore" value="s[webSSO.server.trustCert]"/>
 	</bean>
-	<bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties">
+	<bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties" lazy-init="true">
 		<property name="service" value="s[webSSO.cas.acegi.security.url]"/>
 		<property name="sendRenew">
 			<value>false</value>
 		</property>
 	</bean>
-	<bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.caaers.security.WebSSOAuthoritiesPopulator">
+	<bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.caaers.security.WebSSOAuthoritiesPopulator" lazy-init="true">
 		<property name="hostCertificate" value="s[hostCertificate]"/>
 		<property name="hostKey" value="s[hostKey]"/>
 		<property name="userDetailsService">
 			<ref local="csmUserDetailsService"/>
 		</property>
 	</bean>
-	<bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets">
+	<bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" lazy-init="true">
            </bean>
-	<bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache">
+	<bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache" lazy-init="true">
 		<property name="cache">
 			<ref local="ticketCacheBackend"/>
 		</property>
 	</bean>
-	<bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+	<bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
 		<property name="cacheManager">
 			<ref local="cacheManager"/>
 		</property>
@@ -239,5 +239,5 @@
 			<value>ticketCache</value>
 		</property>
 	</bean>
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
 </beans>

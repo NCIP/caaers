@@ -36,14 +36,18 @@ class SitesTab extends StudyTab {
         String action = request.getParameter("_action");
 
         if ("removeSite".equals(action)) {
+        	
         	int index = Integer.parseInt(request.getParameter("_selected"));
         	StudySite site = command.getStudySites().get(index);
-        	if(CollectionUtils.isEmpty(site.getStudyInvestigators()) &&
-        	   CollectionUtils.isEmpty(site.getStudyPersonnels())){
-        		command.getStudySites().remove(index);
-        		return;
+        	
+        	if(CollectionUtils.isNotEmpty(site.getStudyInvestigators())){
+        		errors.reject("site.notempty", "The site is associated to investigators, so unable to delete");	
         	}
-        	errors.reject("site.notempty", "Site that is being deleted is associated to investigators and research staffs");
+        	if(CollectionUtils.isNotEmpty(site.getStudyPersonnels())){
+        		errors.reject("site.notempty", "The site is associated to research staffs, so unable to delete");
+        	}
+        	
+        	if(!errors.hasErrors()) command.getStudySites().remove(index);
         }
     }
 
