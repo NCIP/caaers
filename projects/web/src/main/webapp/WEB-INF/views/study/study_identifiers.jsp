@@ -141,7 +141,8 @@
     			<c:set var="cntOrg">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status">
 				  <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" disableDelete="${status.index < 2}" />
+					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" 
+					identifiers="true" disableDelete="${status.index < 2}" />
 					<c:set var="cntOrg">${cntOrg + 1}</c:set>
 				  </c:if>
 				</c:forEach>
@@ -163,7 +164,8 @@
     			<c:set var="cntSys">0</c:set>
             	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
             	 <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}" exclusions="Organization" />
+				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}"
+				  identifiers="true" exclusions="Organization" />
 				  <c:set var="cntSys">${cntSys + 1}</c:set>
 			     </c:if>
 			    </c:forEach>

@@ -69,26 +69,7 @@ public class CreateStudyController extends StudyController<Study> {
 			final Object command, final BindException errors) throws Exception {
 		Study study = (Study) command;
 
-		/*if (study.getOrganizationAssignedIdentifier().getOrganization() != null) {
-			// add organization assigned identifier
-			study.addIdentifier(study.getOrganizationAssignedIdentifier());
 
-			StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
-			studyCoordinatingCenter.setOrganization(study.getOrganizationAssignedIdentifier().getOrganization());
-			studyCoordinatingCenter.setStudy(study);
-			study.addStudyOrganization(studyCoordinatingCenter);
-
-		}
-*/
-		/*if (!study.getIdentifiersLazy().isEmpty()) {
-			for (Identifier identifier : study.getIdentifiersLazy()) {
-				if (identifier.getId() == null) {
-					study.addIdentifier(identifier);
-				}
-
-			}
-		}
-*/
 		// check for study therapy
 		updateStudyTherapies(study);
 
