@@ -36,10 +36,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 		return researchStaff;
 	}
 
-	@Override
-	protected boolean isSummaryEnabled() {
-		return true;
-	}
+
 
 	@Override
 	protected void layoutTabs(final Flow<ResearchStaff> flow) {
