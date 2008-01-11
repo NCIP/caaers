@@ -37,9 +37,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
     }
 
     @Override
-    public void validate(
-        T command, Errors errors
-    ) {
+    public void validate( T command, Errors errors) {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");

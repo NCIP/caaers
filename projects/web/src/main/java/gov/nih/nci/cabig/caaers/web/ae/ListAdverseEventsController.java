@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -58,7 +59,20 @@ public class ListAdverseEventsController extends SimpleFormController {
             || paramNames.contains("assignment");
         return hasParticipant && hasStudy;
     }
-
+    
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
+    	super.onBindAndValidate(request, command, errors);
+    	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+    	 boolean noStudy = listAECmd.getStudy() == null;
+         boolean noParticipant = listAECmd.getParticipant() == null;
+    	if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
+        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing participant");
+        if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
+            errors.reject("REQUIRED", "The participant is not assigned to the provided study");
+        }
+    }
+    
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(
