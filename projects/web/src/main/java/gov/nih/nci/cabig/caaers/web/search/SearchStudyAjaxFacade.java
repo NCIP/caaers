@@ -284,7 +284,7 @@ public class SearchStudyAjaxFacade {
 
 		Column columnPrimaryIdentifier = model.getColumnInstance();
 		columnPrimaryIdentifier.setSortable(false);
-		columnPrimaryIdentifier.setProperty("test");
+		columnPrimaryIdentifier.setProperty("primaryIdentifier.value");
 		columnPrimaryIdentifier.setTitle("Primary ID");
 		columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
 		model.addColumn(columnPrimaryIdentifier);
