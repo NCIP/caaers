@@ -19,7 +19,7 @@ public class StudyTherapiesTab extends StudyTab {
 	private InputFieldGroup fieldGroup;
 
 	public StudyTherapiesTab() {
-		super("Study Identifiers", "Therapies", "study/study_therapies");
+		super("Study Therapies", "Therapies", "study/study_therapies");
 		setAutoPopulateHelpKey(true);
 	}
 
