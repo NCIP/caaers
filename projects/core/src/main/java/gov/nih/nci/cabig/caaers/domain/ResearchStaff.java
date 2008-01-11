@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -31,23 +32,15 @@ public class ResearchStaff extends User {
 
 	private Organization organization;
 
+	//LOGIC
+	@Transient
+	public boolean isAssociatedToUserGroup(UserGroupType groupType){
+		return getUserGroupTypes().contains(groupType);
+	}
+	
 	public void addStudyPersonnel(final StudyPersonnel studyPersonnel) {
 		getStudyPersonnels().add(studyPersonnel);
 	}
-
-	/*
-	 * // This doesn't work (there's no 'staff_id' column in the assoc. table and there never was). // Fortunately, it's also never used, so
-	 * there's no problem. Presumably it will need to be // used at some point -- at that point, it should be fixed, possibly by refactoring
-	 * this class // to descend from Person. RMS20070621. @OneToMany @JoinColumn(name="staff_id") @Cascade(value = { CascadeType.ALL,
-	 * CascadeType.DELETE_ORPHAN}) public List<ContactMechanism> getContactMechanims() { return contactMechanims; } public void
-	 * setContactMechanims(List<ContactMechanism> contactMechanims) { this.contactMechanims = contactMechanims; } //
-	 */
-
-	// business methods
-
-    /*
-      * public void addSiteInvestigator(SiteInvestigator studyInvestigator) { getSiteInvestigators().add(studyInvestigator); }
-      */
 
 	// bean methods
 

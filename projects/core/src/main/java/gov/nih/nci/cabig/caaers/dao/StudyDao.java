@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -291,8 +288,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		studyCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		if (isWildCard) {
-			example.excludeProperty("multiInstitutionIndicator");
-			example.excludeProperty("doNotUse").enableLike(MatchMode.ANYWHERE);
+			example.excludeProperty("multiInstitutionIndicator").enableLike(MatchMode.ANYWHERE);
 			studyCriteria.add(example);
 			if (study.getIdentifiers().size() > 0) {
 				studyCriteria.createCriteria("identifiers").add(
