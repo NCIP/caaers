@@ -191,10 +191,10 @@ ${command.organization}
     			
             	<c:forEach items="${command.participant.identifiers}" varStatus="status">
 					<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-					<par:parIdentifier  title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					<par:parIdentifier  title="Participant Identifier ${status.index + 1}" disableDelete="${fn:length(command.participant.identifiers) lt 2}" 
 					sectionClass="organization-section-row" removeButtonAction="removeIdentifier" index="${status.index}" identifier="${command.participant.identifiers[status.index]}" />
 					</c:if>
-					            	</c:forEach>
+				</c:forEach>
             	
             	</table>
             	</chrome:division>
@@ -212,7 +212,7 @@ ${command.organization}
             	<c:forEach items="${command.participant.identifiers}" varStatus="status" >
             	<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 		
-					<par:parIdentifier title="Participant Identifier ${status.index + 1}" enableDelete="${status.index > 0}" 
+					<par:parIdentifier title="Participant Identifier ${status.index + 1}" disableDelete="${fn:length(command.participant.identifiers) lt 2}" 
 					sectionClass="system-section-row" removeButtonAction="removeIdentifier" 
 					index="${status.index}"  identifier="${command.participant.identifiers[status.index]}" /> 
 					

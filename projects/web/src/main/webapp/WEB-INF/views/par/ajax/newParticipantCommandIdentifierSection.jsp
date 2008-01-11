@@ -2,7 +2,7 @@
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par"%>
 <tags:noform>
 
-    <par:parIdentifier  title="Participant Identifier ${index + 1}" enableDelete="${index > 0}"
+    <par:parIdentifier  title="Participant Identifier ${index + 1}" disableDelete="${index lt 1}"
 			sectionClass="${type eq 1 ? 'system-section-row' : 'organization-section-row'}" 
 			removeButtonAction="removeIdentifier" index="${index}"  identifier="${command.participant.identifiers[index]}"
 			 style="display:none"  />
