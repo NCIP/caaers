@@ -364,9 +364,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		// support changes that might happen in the Primary Adverse event. 
 		HashMap<String,Boolean> dbOutcomeHolder = new HashMap<String,Boolean>();
 		for (Outcome outcome : aeReport.getOutcomes()) {
-			if (outcome.getOutcomeType() != OutcomeType.DEATH && 
-				outcome.getOutcomeType() != OutcomeType.LIFE_THREATENING && 
-				outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION ) 
+			if ( outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION ) 
 			{
 				dbOutcomeHolder.put(outcome.getOutcomeType().getCode().toString(), Boolean.TRUE);
 			}
@@ -383,9 +381,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		
 		for (OutcomeType outcomeType : OutcomeType.values()) {
 			boolean choice = Boolean.FALSE;
-			if(grade != null && grade.getName().equals(outcomeType.getName())){
-				choice = Boolean.TRUE;
-			}
 			if(hospitalization != null && hospitalization.getName().contains(outcomeType.getName())){
 				choice = Boolean.TRUE;
 			}

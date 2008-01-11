@@ -65,8 +65,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         		meddraFlow.getTabCount() == 18 || meddraFlow.getTabCount() == 17)){
         	meddraFlow = createEmptyFlow();
              addPreBasicTabs(meddraFlow);
-             meddraFlow.addTab(new MeddraBasicsTab());
-             meddraFlow.addTab(new OutcomeTab());
+             meddraFlow.addTab(new MeddraBasicsOutcomeTab());
              addPostBasicTabs(meddraFlow);
         }
         return meddraFlow;
@@ -84,8 +83,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         		ctepFlow.getTabCount() == 18 || ctepFlow.getTabCount() == 17)){
         	 ctepFlow = createEmptyFlow();
              addPreBasicTabs(ctepFlow);
-             ctepFlow.addTab(new CtcBasicsTab());
-             ctepFlow.addTab(new OutcomeTab());
+             ctepFlow.addTab(new CtcBasicsOutcomeTab());
              addPostBasicTabs(ctepFlow);
         }
         

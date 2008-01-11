@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -8,8 +9,11 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.Arrays;
@@ -102,4 +106,74 @@ public abstract class BasicsTab extends AeTab {
 
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
     }
+    
+    protected void outcomeHelpKeyExclusion(){
+    	 addHelpKeyExclusion( 
+           		 "outcomes[1]","outcomes[2]", "outcomes[3]",  "outcomes[4]",
+           		 "outcomes[5]", "outcomes[6]","outcomes[7]", "outcomeDate","otherOutcome");
+    }
+    
+    protected InputFieldGroup getOutcomeInputFieldGroup(ExpeditedAdverseEventInputCommand command){
+    	
+    	 InputFieldGroup optional = new DefaultInputFieldGroup("outcomes");
+         for (String code : command.getOutcomes().keySet()) {
+         	OutcomeType outcomeType = OutcomeType.getByCode(Integer.parseInt(code));
+             optional.getFields().add(InputFieldFactory.createCheckboxField(
+                 "outcomes[" + code + ']',
+                 outcomeType.getDisplayName()
+             ));
+             if ( outcomeType == OutcomeType.DEATH ){
+             optional.getFields().add(InputFieldFactory.createDateField(
+                     "outcomeDate", "date", false));
+             }
+             if ( outcomeType == OutcomeType.OTHER_SERIOUS ){
+                 optional.getFields().add(InputFieldFactory.createTextField(
+                         "otherOutcome", "", false));
+                 }
+         }
+         return optional;
+    }
+    
+    protected void postProcessOutcomes(ExpeditedAdverseEventInputCommand command){
+    	// override disabled checkboxes on the UI - better way to do this is using images. I prefer not 
+		// to use JS manipulation as that would allow hacking if someone wants. 
+		Hospitalization hospitalization =  command.getAeReport().getAdverseEvents().size() >0 ? 
+				command.getAeReport().getAdverseEvents().get(0).getHospitalization() : null;
+    	
+		boolean isHospitalization = (hospitalization != null && hospitalization.getName().contains(OutcomeType.HOSPITALIZATION.getName())) ? true : false;
+		
+		command.getOutcomes().put("3",isHospitalization );
+		
+    	ArrayList<String> codes = new ArrayList<String>();
+    	// remove
+    	for ( Iterator<Outcome> outcomes = command.getAeReport().getOutcomes().iterator(); outcomes.hasNext(); ) {
+    		Outcome outcome =  outcomes.next();
+    		String code = outcome.getOutcomeType().getCode().toString();
+    		codes.add(code);
+    		boolean x = command.getOutcomes().get(code);
+    		if (x == false ){
+    			outcomes.remove();
+    		}
+    	}
+    	//add
+    	for (String code : command.getOutcomes().keySet()) {
+			if (!codes.contains(code) && command.getOutcomes().get(code) == true){
+				Outcome outcome = new Outcome();
+				outcome.setOutcomeType(OutcomeType.getByCode(Integer.parseInt(code)));
+				command.getAeReport().addOutcomes(outcome);
+			}
+		}
+    	
+    	// Add the date & other if exist
+    	for (Outcome outcome : command.getAeReport().getOutcomes()) {
+    		if (outcome.getOutcomeType() == OutcomeType.DEATH) {
+				outcome.setDate(command.getOutcomeDate());
+			}
+    		if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS) {
+				outcome.setOther(command.getOtherOutcome());
+    		}
+    	}
+    	
+    }
 }
+

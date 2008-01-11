@@ -65,19 +65,11 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
-    	//command.reassociate();
-    	
-    	
     	
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 		String xml = aeser.serialize(aeReport);
 		
-		
-		
-		
-		
 		Report report = aeReport.getReports().get(((int)reportIndex));
-		
     	aegen.generateAndNotify(aeReport.getId()+"", report , xml);
     	
     	
