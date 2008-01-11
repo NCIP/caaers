@@ -27,11 +27,6 @@ public class CreateResearchStaffController extends ResearchStaffController<Resea
 		return researchStaff;
 	}
 
-	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
-
-		return super.processFinish(request, response, command, errors);
-	}
+	
 
 }

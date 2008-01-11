@@ -126,8 +126,8 @@
         </div>
         <div class="value value2">
             <input type="checkbox"
-                   onclick="this.checked?$('caaersParticipantCordinator').value='true':$('caaersParticipantCordinator').value='false';" ${isCaaersPartcipantCordinator?'checked':'off' }/>
-            <input id="caaersParticipantCordinator" type="hidden" name="caaersParticipantCordinator"/>
+                   onclick="this.checked?$('caaers_participant_cd').value='true':$('caaers_participant_cd').value='false';" ${caaers_participant_cd ? 'checked':'' }/>
+            <input id="caaers_participant_cd" type="hidden" name="caaers_participant_cd"/>
         </div>
     </div>
 
@@ -137,8 +137,8 @@
         </div>
         <div class="value value2">
             <input type="checkbox"
-                   onclick="this.checked?$('caaersStudyCordinator').value='true':$('caaersStudyCordinator').value='false';" ${isCaaersStudyCordinator?'checked':'off'} />
-            <input id="caaersStudyCordinator" type="hidden" name="caaersStudyCordinator"/>
+                   onclick="this.checked?$('caaers_study_cd').value='true':$('caaers_study_cd').value='false';" ${caaers_study_cd ? 'checked':''} />
+            <input id="caaers_study_cd" type="hidden" name="caaers_study_cd"/>
         </div>
     </div>
 
@@ -148,8 +148,8 @@
         </div>
         <div class="value value2">
             <input type="checkbox"
-                   onclick="this.checked?$('caaersAECordinator').value='true':$('caaersAECordinator').value='false';" ${isCaaersAECordinator?'checked':'off'} />
-            <input id="caaersAECordinator" type="hidden" name="caaersAECordinator"/>
+                   onclick="this.checked?$('caaers_ae_cd').value='true':$('caaers_ae_cd').value='false';" ${caaers_ae_cd ? 'checked':''} />
+            <input id="caaers_ae_cd" type="hidden" name="caaers_ae_cd" value="${caaers_ae_cd}"/>
         </div>
     </div>
 
@@ -159,8 +159,8 @@
         </div>
         <div class="value value2">
             <input type="checkbox"
-                   onclick="this.checked?$('caaersSiteCordinator').value='true':$('caaersSiteCordinator').value='false';" ${isCaaersSiteCordinator?'checked':'off'} />
-            <input id="caaersSiteCordinator" type="hidden" name="caaersSiteCordinator"/>
+                   onclick="this.checked?$('caaers_site_cd').value='true':$('caaers_site_cd').value='false';" ${caaers_site_cd ? 'checked' :''} />
+            <input id="caaers_site_cd" type="hidden" name="caaers_site_cd" value="${caaers_site_cd}"/>
         </div>
     </div>
 

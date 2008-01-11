@@ -27,8 +27,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
 	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
 
-		ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request
-				.getParameter("researchStaffId")));
+		ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request.getParameter("researchStaffId")));
 
 		if (log.isDebugEnabled()) {
 			log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
