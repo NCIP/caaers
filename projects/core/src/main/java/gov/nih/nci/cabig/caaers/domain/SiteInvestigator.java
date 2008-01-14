@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 @Entity
 @Table (name = "site_investigators")
@@ -89,5 +90,55 @@ public class SiteInvestigator extends AbstractMutableDomainObject {
 	
 	public void setStatusDate(Date statusDate) {
 		this.statusDate = statusDate;
-	}        
+	}
+	
+	///OBJECT METHODS
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((emailAddress == null) ? 0 : emailAddress.hashCode());
+		result = prime * result
+				+ ((investigator == null) ? 0 : investigator.hashCode());
+		result = prime * result
+				+ ((organization == null) ? 0 : organization.hashCode());
+		result = prime * result
+				+ ((statusDate == null) ? 0 : statusDate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final SiteInvestigator other = (SiteInvestigator) obj;
+		if (emailAddress == null) {
+			if (other.emailAddress != null)
+				return false;
+		} else if (!emailAddress.equals(other.emailAddress))
+			return false;
+		if (investigator == null) {
+			if (other.investigator != null)
+				return false;
+		} else if (!investigator.equals(other.investigator))
+			return false;
+		if (organization == null) {
+			if (other.organization != null)
+				return false;
+		} else if (!organization.equals(other.organization))
+			return false;
+		if (statusDate == null) {
+			if (other.statusDate != null)
+				return false;
+		} else if (!statusDate.equals(other.statusDate))
+			return false;
+		return true;
+	}   
+	
+	
 }

@@ -22,20 +22,10 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 )
 public class StudyInvestigator extends AbstractMutableDomainObject implements StudyOrganizationChild{
 
-	private String signatureText;
 	private String roleCode;
 	private String statusCode;
 	private SiteInvestigator siteInvestigator;
 	private StudyOrganization studyOrganization;
-
-	@Column(name = "signature_text")
-	public String getSignatureText() {
-		return signatureText;
-	}
-
-	public void setSignatureText(String signatureText) {
-		this.signatureText = signatureText;
-	}
 
 	@ManyToOne
     @JoinColumn(name = "site_investigators_id")
@@ -74,4 +64,51 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements St
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
+
+	///OBJECT METHODS
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((roleCode == null) ? 0 : roleCode.hashCode());
+		result = prime
+				* result
+				+ ((siteInvestigator == null) ? 0 : siteInvestigator.hashCode());
+		result = prime * result
+				+ ((statusCode == null) ? 0 : statusCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final StudyInvestigator other = (StudyInvestigator) obj;
+		if (roleCode == null) {
+			if (other.roleCode != null)
+				return false;
+		} else if (!roleCode.equals(other.roleCode))
+			return false;
+		if (siteInvestigator == null) {
+			if (other.siteInvestigator != null)
+				return false;
+		} else if (!siteInvestigator.equals(other.siteInvestigator))
+			return false;
+		if (statusCode == null) {
+			if (other.statusCode != null)
+				return false;
+		} else if (!statusCode.equals(other.statusCode))
+			return false;
+		return true;
+	}
+
+	
+	
+	
 }
