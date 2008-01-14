@@ -76,8 +76,7 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements St
 		result = prime
 				* result
 				+ ((siteInvestigator == null) ? 0 : siteInvestigator.hashCode());
-		result = prime * result
-				+ ((statusCode == null) ? 0 : statusCode.hashCode());
+		
 		return result;
 	}
 
@@ -100,11 +99,7 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements St
 				return false;
 		} else if (!siteInvestigator.equals(other.siteInvestigator))
 			return false;
-		if (statusCode == null) {
-			if (other.statusCode != null)
-				return false;
-		} else if (!statusCode.equals(other.statusCode))
-			return false;
+		
 		return true;
 	}
 

@@ -64,4 +64,50 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
 	public void setStatusCode(String statusCode) {
 		this.statusCode = statusCode;
 	}
+	
+	
+	///OBJECT METHODS
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((researchStaff == null) ? 0 : researchStaff.hashCode());
+		result = prime * result
+				+ ((roleCode == null) ? 0 : roleCode.hashCode());
+		result = prime
+				* result
+				+ ((studyOrganization == null) ? 0 : studyOrganization
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final StudyPersonnel other = (StudyPersonnel) obj;
+		if (researchStaff == null) {
+			if (other.researchStaff != null)
+				return false;
+		} else if (!researchStaff.equals(other.researchStaff))
+			return false;
+		if (roleCode == null) {
+			if (other.roleCode != null)
+				return false;
+		} else if (!roleCode.equals(other.roleCode))
+			return false;
+		if (studyOrganization == null) {
+			if (other.studyOrganization != null)
+				return false;
+		} else if (!studyOrganization.equals(other.studyOrganization))
+			return false;
+		return true;
+	}
+	
+	
 }
