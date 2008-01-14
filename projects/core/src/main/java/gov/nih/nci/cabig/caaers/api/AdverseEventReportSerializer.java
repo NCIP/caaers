@@ -15,10 +15,10 @@ import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
-import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
@@ -197,7 +197,12 @@ public class AdverseEventReportSerializer {
 	    	for (OtherCause oc: ocList) {
 	    		aer.addOtherCause(oc);
 	    	}
-
+	    	
+	    	List<Outcome> outcomes = hibernateAdverseEventReport.getOutcomes();
+	    	
+	    	for (Outcome oc: outcomes) {
+	    		aer.addOutcomes(oc);
+	    	}
 
 
 	    	return aer;
