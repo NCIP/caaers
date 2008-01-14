@@ -111,6 +111,12 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 					out.close();
 					fileIn.close();
 					*/
+    			} else if (format.equals("dcp")) {
+    				String pdfOutFile = "dcp-"+reportId+".pdf";
+    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				gen.genateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
+    				
+    				generateOutput(pdfOutFile,response,reportId);
     			} else {
 	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportId+".xml";
 	    			
