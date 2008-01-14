@@ -8,7 +8,9 @@ import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServ
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class AdeersReportGenerator  {
 	private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
 	private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
 	private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
+	private String xslFODCPXsltFile = "xslt/Caaers2DCP-pdf-SAEForm.xslt";
 	private String pdfOutFile = "/tmp/aeReport.pdf";
 	protected Configuration configuration;
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
@@ -60,6 +63,13 @@ public class AdeersReportGenerator  {
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOMedWatchXsltFile);
 	}
+	
+	public void genateDcpSaeForm(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+		
+		XsltTransformer xsltTrans = new XsltTransformer();
+		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFODCPXsltFile);
+	}
+	
 	public void genateMedwatchPdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
@@ -217,18 +227,29 @@ public class AdeersReportGenerator  {
 			CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService) {
 		this.messageBroadcastService = messageBroadcastService;
 	}
-	/*
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String str1="";
+		try {
 		AdeersReportGenerator aeg = new AdeersReportGenerator();
-		List<String> emails = new ArrayList<String>();
-		emails.add("srakkala@yahoo.com");
-		emails.add("srini.akkala@semanticbits.com");
-		//sendMail("support@caaers.gov", pdfOutFile,emails.toArray(new String[0]));
-		aeg.sendMail("support@semanticbits.com", "/tmp/aeReport.pdf", emails.toArray(new String[0]));
-
+		FileReader input = new FileReader("/Users/sakkala/Desktop/expeditedAdverseEventReport-9.xml");
+		BufferedReader bufRead = new BufferedReader(input);
+		String line = bufRead.readLine();
+		
+		while (line != null) {
+			str1 = str1 + line; 
+			line = bufRead.readLine();
+		}
+		//System.out.println(str1);
+	
+			aeg.genateDcpSaeForm(str1,"/tmp/dcp.pdf");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	*/
+	
 	
 
 }
