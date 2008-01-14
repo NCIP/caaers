@@ -67,19 +67,25 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		
 		//buld error messages
 		StringBuffer sb = new StringBuffer();
-		sb.append("AdEERS report submission results \n\n");
-		sb.append("Expedited Report ID  : " + caaersAeReportId+"\n");
-		sb.append("Report ID  : " + reportId+"\n");
-		//sb.append("Job ID  : " +"\n");
-	
+		
 		
 		try {
 			List<Element> exceptions = jobInfo.getChildren("jobExceptions");
-			sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
+			//sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
 			
 			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
-				sb.append("TICKET NUMBER :	" + jobInfo.getChild("ticketNumber").getValue()+"\n");
-				sb.append("REPORT URL	 :	" + jobInfo.getChild("reportURL").getValue()+"\n");
+				sb.append("Report # " + caaersAeReportId +" has been successfully submitted to AdEERS. \n\n");
+				
+				sb.append("TICKET NUMBER : \n");
+				sb.append("---------------\n");
+				sb.append("Your AdEERS ticket number is " + jobInfo.getChild("ticketNumber").getValue()+"\n\n");
+				
+				sb.append("VIEWING THE REPORT IN ADEERS:\n");
+				sb.append("-------------------------------\n");
+				
+				sb.append("To access the report in AdEERS, simply point your browser to the following URL:\n\n");
+				
+				sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
 				//ExpeditedAdverseEventReport aer = null;
 				//List<Report> reports = aer.getReports();
 				
@@ -92,9 +98,17 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			}
 			
 			if (exceptions.size() > 0) {
+				sb.append("Report # " + caaersAeReportId +" was NOT successfully submitted to AdEERS. \n\n");
+				sb.append("The following problem was encountered:. \n");
+				for (Element ex:exceptions) {	
+					sb.append(ex.getChild("description").getValue() +"\n");
+				}
+				sb.append("\n");
+				sb.append("Please correct the problem and submit the report again.\n\n");
+				sb.append("See below for a technical description of the error:\n\n");
+				
 				sb.append("EXCEPTIONS\n");
-				sb.append("----------");
-				sb.append("\n\n");
+				sb.append("----------\n");
 			}
 			
 			for (Element ex:exceptions) {				
@@ -103,7 +117,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			}
 
 			if (jobInfo.getChild("comments") != null) {
-				sb.append("COMMENTS		 :	" + jobInfo.getChild("comments").getValue()+"\n");
+				sb.append("COMMENTS : " + jobInfo.getChild("comments").getValue()+"\n");
 			}
 			
 			
@@ -131,7 +145,32 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 
     public static void main ( String[] ars ) {
     	try {
-    		  SAXParserFactory factory = SAXParserFactory.newInstance();
+    		StringBuffer sb = new StringBuffer();
+    		sb.append("Report # " + 100 +" was NOT successfully submitted to AdEERS. \n\n");
+			sb.append("The following problem was encountered:. \n");
+			//for (Element ex:exceptions) {	
+				sb.append("desc 1" +"\n");
+				sb.append("desc 2" +"\n");
+			//}
+			sb.append("\n");
+			sb.append("Please correct the problem and submit the report again.\n\n");
+			sb.append("See below for a technical description of the error:\n\n");
+			
+			sb.append("EXCEPTIONS\n");
+			sb.append("----------\n");  
+			
+			//for (Element ex:exceptions) {				
+				sb.append(100 + "  -  " + "desc1");
+				sb.append("\n");
+				sb.append(200 + "  -  " + "desc2");
+				sb.append("\n");
+				//}
+
+			//if (jobInfo.getChild("comments") != null) {
+				sb.append("coooooments"+"\n");
+			//}			
+    		/*
+    		SAXParserFactory factory = SAXParserFactory.newInstance();
     		  factory.setNamespaceAware( true);
     		  factory.setValidating( true);
     		  
@@ -153,8 +192,9 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
     		  reader.setErrorHandler(handler);
     		  reader.parse( new InputSource( reader1 ));
     		  
-    		 
-    		  System.out.println("yello...");
+    		 */
+    		  System.out.println(sb.toString());
+    		  
     		  
     		 // org.xml.sax.helpers.
 
