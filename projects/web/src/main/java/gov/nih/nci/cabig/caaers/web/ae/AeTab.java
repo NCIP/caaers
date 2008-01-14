@@ -131,7 +131,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	super.validate(command, commandBean, fieldGroups, errors);
     	if(section().isAssociatedToBusinessRules()){
     		ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
-        	for(ValidationError vError : validationErrors.getErrors()){
+    		for(ValidationError vError : validationErrors.getErrors()){
         		errors.reject(vError.getCode(), vError.getMessage());	
         	}		
     	}

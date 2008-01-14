@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
@@ -67,7 +69,9 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         request.setParameter("assignment", expectedGridId);
         expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
         mockCommand.setAssignment(expectedAssignment);
-
+        expect(mockCommand.getStudy()).andReturn(new Study());
+        expect(mockCommand.getParticipant()).andReturn(new Participant());
+        expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
         replayMocks();
         controller.handleRequest(request, response);
         verifyMocks();

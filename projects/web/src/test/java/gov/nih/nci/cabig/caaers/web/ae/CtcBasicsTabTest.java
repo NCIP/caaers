@@ -9,12 +9,17 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.List;
 import java.util.Map;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -36,11 +41,16 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
+        
     }
 
     @Override
     protected CtcBasicsTab createTab() {
-        return new CtcBasicsTab();
+    	CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
+    	 EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
+     	 ctcBasicsTab.setEvaluationService(evaluationServiceMock);
+         EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),ExpeditedReportSection.BASICS_SECTION )).andReturn(new ValidationErrors());
+        return ctcBasicsTab; 
     }
 
     @SuppressWarnings("unchecked")

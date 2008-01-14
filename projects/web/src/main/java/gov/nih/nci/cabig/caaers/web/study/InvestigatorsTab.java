@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -9,11 +11,13 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -81,6 +85,24 @@ class InvestigatorsTab extends StudyTab {
 		}
 		return map;
 	}
-
+	
+	
+	@Override
+	protected void validate(Study study, BeanWrapper commandBean,Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+		super.validate(study, commandBean, fieldGroups, errors);
+		int soIndex = -1;
+		
+		for(StudyOrganization studyOrg : study.getStudyOrganizations()) {
+			soIndex++;
+			int siIndex = -1;
+			HashSet<StudyInvestigator> hSet = new HashSet<StudyInvestigator>();
+			for(StudyInvestigator si : studyOrg.getStudyInvestigators()){
+				siIndex++;
+				if(!hSet.add(si)) {
+					errors.rejectValue("studyOrganizations[" + soIndex +"].studyInvestigators[" + siIndex + "].siteInvestigator", "DUPLICATE","Duplicate entry");
+				}
+			}
+		}
+	}
 
 }

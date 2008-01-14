@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import junit.framework.TestCase;
 
 import org.easymock.classextension.EasyMock;
@@ -26,12 +27,15 @@ public class CreateOrganizationControllerTest extends TestCase {
 	private ServletRequestDataBinder binder;
 
 	private Organization organization;
-
+	
+	private WebControllerValidator validator;
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		organizationDao = EasyMock.createMock(OrganizationDao.class);
+		validator = EasyMock.createMock(WebControllerValidator.class);
 		controller = new CreateOrganizationController();
+		controller.setWebControllerValidator(validator);
 		controller.setOrganizationDao(organizationDao);
 		request = new MockHttpServletRequest();
 		response = new MockHttpServletResponse();
