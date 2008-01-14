@@ -163,12 +163,11 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="termsForm">
 
+<tags:tabForm tab="${tab}" flow="${flow}" formName="termsForm">
  			
     <jsp:attribute name="instructions">
-        You are entering routine AEs for ${participantSummaryLine} on
-        ${studySummaryLine}.
+        <tags:instructions code="instructions_routine_ae_routineAe" heading="Instructions: " /> 
         <div>
            <input type="hidden" name="_action" value="">
            <input type="hidden" name="_selected" value="">

@@ -3,10 +3,12 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+	<tags:stylesheetLink name="ae"/>
 	<script>
 		function fireAction(action, selected){
 			document.getElementById('command')._target.name='_noname';

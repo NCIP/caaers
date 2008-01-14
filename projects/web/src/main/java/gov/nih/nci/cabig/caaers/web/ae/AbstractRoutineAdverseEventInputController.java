@@ -119,7 +119,7 @@ public abstract class AbstractRoutineAdverseEventInputController
         refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getStudySummaryLine());
         refdata.put("term",  getTerm(command));
         if (displaySummary(page)) {
-            refdata.put("summary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
+            refdata.put("routineAeSummary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
         }
         return refdata;
     }
@@ -145,7 +145,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     }
 
     protected boolean displaySummary(int page) {
-        return false;
+        return true;
     }
 
     /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */

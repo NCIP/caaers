@@ -129,9 +129,7 @@
 <h2>Expedited Reports<c:if test="${command.study.status ne 'Administratively Complete'}">
 <a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
 </c:if>
-
 </h2>
-
 <!-- STUDY SEARCH RESULTS START HERE -->
 <div class="eXtremeTable" >
 <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
@@ -139,8 +137,7 @@
 		<thead>
 		<tr align="center" class="label">
 			<td class="tableHeader"></td>
-			<td class="tableHeader">Term</td>		
-			<td class="tableHeader">AE grade</td>
+			<td class="tableHeader">Term ( * refers to Primary AE data )</td>
 			<td class="tableHeader">Primary AE start date</td>
 			<td class="tableHeader">Actions</td>
 		</tr>
@@ -178,36 +175,31 @@
 			<td align="left">
 					<c:if test="${report.areAllReportsSubmitted == false}">
 					<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
-            		</c:if>	
+            		</c:if>
+            			<table width="100%" class="tablecontent">
                     			<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="termStatus">
                     				<c:choose>
 									<c:when test="${termStatus.index == 0}">
-										*${adverseEvent.adverseEventTerm.universalTerm}<br />
+										<tr>
+										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>* ${adverseEvent.adverseEventTerm.universalTerm}<br /></td>
+										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >* grade  ${adverseEvent.grade.code}</td>
+										</tr>
 									</c:when>
 									<c:otherwise>
-										${adverseEvent.adverseEventTerm.universalTerm}<br />
+										<tr>
+										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>${adverseEvent.adverseEventTerm.universalTerm}<br /></td>
+										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >&nbsp;&nbsp;grade  ${adverseEvent.grade.code}</td>
+										</tr>
 									</c:otherwise>
 									</c:choose>
     							</c:forEach>
                 		
+                		</table>
                 	<c:if test="${report.areAllReportsSubmitted == false}">	
             		</a>
             		</c:if>
 			</td>
-			<td width="10%">
-				<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="gradeStatus">
-					<c:choose>
-					<c:when test="${gradeStatus.index == 0}">
-						*<c:out value="${adverseEvent.grade.code}" /><br />
-					</c:when>
-					<c:otherwise>
-						<c:out value="${adverseEvent.grade.code}" /><br />
-					</c:otherwise>
-					</c:choose>
-                	
-    			</c:forEach>
-				
-			</td>
+			
 			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
 			
 			<td>
@@ -384,8 +376,8 @@
                 	<c:forEach items="${routineReport.adverseEvents}" var="adverseEvent">
                 		<table width="100%" class="tablecontent">
                 		<tr>
-                		<td width="95%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>${adverseEvent.adverseEventTerm.universalTerm}</td>
- 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >${adverseEvent.grade.code}</td></tr>
+                		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>${adverseEvent.adverseEventTerm.universalTerm}</td>
+ 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td></tr>
  						</table>	
     				</c:forEach>
                     

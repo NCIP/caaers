@@ -64,4 +64,10 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
         command.save();
         return null;
     }
+    
+    @Override
+    protected boolean displaySummary(int page) {
+        return page != 0;
+    }
+    
 }

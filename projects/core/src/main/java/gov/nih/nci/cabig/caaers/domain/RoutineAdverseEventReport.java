@@ -95,11 +95,6 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Participant", getParticipantSummaryLine());
         summary.put("Study", getStudySummaryLine());
-        String primaryAeLine = null;
-        if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
-            primaryAeLine = getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm();
-        }
-        summary.put("Primary AE", primaryAeLine);
         summary.put("Adverse event count", Integer.toString(getAdverseEvents().size()));
 
         return summary;
