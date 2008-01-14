@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 public class PatientInformationBusinessRulesTest extends
@@ -187,7 +188,10 @@ public class PatientInformationBusinessRulesTest extends
 	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
 	 */
 	public void testNoMetastaticDisease() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors should be there when there are no metastatic diseases");
 	}
 	
 
@@ -198,7 +202,14 @@ public class PatientInformationBusinessRulesTest extends
 	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
 	 */
 	public void testMetastaticDiseaseWithOnlySiteName() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		AnatomicSite diseaseSite = new AnatomicSite();
+		diseaseSite.setName("orignal disease site");
+		MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+		site.setCodedSite(diseaseSite);
+		aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors should be there when there only site name in metastatic disease");
 	}
 
 	/**
@@ -208,7 +219,12 @@ public class PatientInformationBusinessRulesTest extends
 	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
 	 */
 	public void testMetastaticDiseaseWithOnlyOtherSiteName() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+		site.setOtherSite("test");
+		aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "No errors should be there when there only other site name in metastatic disease");
 	}
 	
 	/**
@@ -218,7 +234,16 @@ public class PatientInformationBusinessRulesTest extends
 	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
 	 */
 	public void testMetastaticDiseaseWithBothDiseaseNameAndOtherSiteName() throws Exception {
-		fail("Not implemented");
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		AnatomicSite diseaseSite = new AnatomicSite();
+		diseaseSite.setName("orignal disease site");
+		MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+		site.setCodedSite(diseaseSite);
+		site.setOtherSite("test");
+		aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "SMD_BR1_ERR");
+		assertSameErrorCount(errors, 1);
 	}
 	
 	/**
@@ -228,6 +253,25 @@ public class PatientInformationBusinessRulesTest extends
 	Error Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must be provided.
 	 */
 	public void testOneOutOfTwoHasBothMetastaticDiseaseAndOtherSite() throws Exception {
-		fail("Not implemented");	
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		AnatomicSite diseaseSite = new AnatomicSite();
+		diseaseSite.setName("orignal disease site");
+		MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+		site.setCodedSite(diseaseSite);
+		aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+		
+		
+		diseaseSite = new AnatomicSite();
+		diseaseSite.setName("orignal disease site");
+		site = new MetastaticDiseaseSite();
+		site.setCodedSite(diseaseSite);
+		site.setOtherSite("test");
+		aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "SMD_BR1_ERR");
+		assertSameErrorCount(errors, 1);
+		assertSame("Replacement should be correct", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+		
+		
 	}
 }
