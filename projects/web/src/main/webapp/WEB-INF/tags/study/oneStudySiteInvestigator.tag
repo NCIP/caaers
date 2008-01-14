@@ -10,7 +10,7 @@
 	   Click on the Add Investigator button to associate investigator to this study site.	
 	<br />
 	</p>
-	<table width="100%" class="tablecontent" valign="middle">
+	<table width="100%" class="tablecontent" valign="top">
 	  <tr id="ssi-table-head" class="ssi-table-head">
 		<th width="55%" class="tableHeader"><tags:requiredIndicator />Investigator</th>
 		<th width="20%" class="tableHeader"><tags:requiredIndicator />Role</th>
