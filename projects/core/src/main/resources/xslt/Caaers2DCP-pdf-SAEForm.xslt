@@ -254,7 +254,10 @@
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			Event Onset Date:
+						  			Event Onset Date: 
+				                    <xsl:call-template name="standard_date">
+				                        <xsl:with-param name="date" select="AdverseEventReport/AdverseEvent/startDate"/>
+				                    </xsl:call-template>						  			
 						  		</fo:block>      				
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			(Month/Day/Year)  
@@ -263,7 +266,11 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2" number-rows-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									Primary Event (diagnosis):
-									
+									<xsl:for-each select="AdverseEventReport/AdverseEvent">
+										<xsl:if test="substring(gridId,1,3) = 'PRY'">
+                        					<fo:block xsl:use-attribute-sets="normal" > <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/> </fo:block> 
+                    					</xsl:if>
+									</xsl:for-each>
 						  		</fo:block>      							
       						</fo:table-cell>
       					</fo:table-row>
@@ -296,18 +303,27 @@
 						  		</fo:block>    
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>  							
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									Primary Treatment of Event:							
+									Primary Treatment of Event:			
+									<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>				
 						  		</fo:block> 
       						</fo:table-cell>
       					</fo:table-row>      					
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									Attending Physician (Name):							
+									Attending Physician (Name):		
+									<xsl:value-of select="AdverseEventReport/Physician/firstName"/>
+									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+									<xsl:value-of select="AdverseEventReport/Physician/lastName"/>					
 						  		</fo:block>    
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>  							
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									Phone/FAX No.:						
+									Phone/FAX No.:	
+									<xsl:for-each select="AdverseEventReport/Physician/ContactMechanism">
+					                    <xsl:if test="key = 'phone'">
+					                        <xsl:value-of select="value"/>
+					                    </xsl:if>
+					                </xsl:for-each>
 						  		</fo:block> 
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>  							
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -323,7 +339,11 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									Describe Event (if applicable, include dates of hospitalization for event):						
-						  		</fo:block>    						  		
+						  		</fo:block>    	
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventDescription"/>
+						  		</fo:block>
+						  							  		
       						</fo:table-cell>
       					</fo:table-row> 
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -363,7 +383,10 @@
 					<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			1.  Investigator Name
+						  			1.  Investigator Name :
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/SiteInvestigator/Investigator/firstName"/>
+						  			<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Organization/SiteInvestigator/Investigator/lastName"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 
@@ -416,6 +439,9 @@
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			2. Study Drug
 						  		</fo:block>      				
+						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/CourseAgent/StudyAgent/Agent/name"/>
+						  		</fo:block>
       						</fo:table-cell>		  			
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="6">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
@@ -434,13 +460,17 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="8">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			3.  Start Date of Study Drug (Month/Day/Year):
+						  		    <xsl:call-template name="standard_date">
+				                        <xsl:with-param name="date" select="AdverseEventReport/TreatmentInformation/firstCourseDate"/>
+				                    </xsl:call-template>						  			
 						  		</fo:block>      				
       						</fo:table-cell>		  			
 		  			</fo:table-row >		  			
 		  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="8">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			4. Was blind broken due to event? <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>                           
+						  			4. Was blind broken due to event? 
+						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>                           
 						  			[ ] No    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>                             
 						  			[ ] Yes   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 						  			[ ] NA
@@ -501,9 +531,11 @@
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			6.  Was patient taking any other medications concomitantly at the time of the event?	
 						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  			[  ] No   
+						  			[ <xsl:if test="AdverseEventReport/ConcomitantMedication/name = ''">
+						  			x </xsl:if>] No   
 						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  			[  ] Yes  
+						  			[ <xsl:if test="AdverseEventReport/ConcomitantMedication/name != ''">
+						  			x </xsl:if>] Yes  
 						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 						  			>>  If yes, complete below. 
    
@@ -540,9 +572,8 @@
 					<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			 --
-						  		</fo:block>      				
-						  					
+						  			 
+						  		</fo:block>  
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -580,6 +611,17 @@
 						  		</fo:block>      							
       						</fo:table-cell>
       					</fo:table-row>
+      					<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
+							<fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+							  		
+							  			<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			 	<xsl:value-of select="name"/>
+							  			</fo:block>  
+							  		
+	      						</fo:table-cell>
+	       					</fo:table-row>
+      					</xsl:for-each>      					
 	  			</fo:table-body>
 		  		</fo:table>
 		  		
@@ -650,6 +692,42 @@
 						  		</fo:block>      				
       						</fo:table-cell> 
 		  			</fo:table-row >
+		  			<xsl:for-each select="AdverseEventReport/Lab">
+			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="substring(baseline/date,6,2)"/>
+							  		</fo:block>      				
+	      						</fo:table-cell>		  			
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="substring(baseline/date,9,2)"/>
+							  		</fo:block>      				
+	      						</fo:table-cell>
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="substring(baseline/date,1,4)"/>
+							  		</fo:block>      				
+	      						</fo:table-cell>
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="labTerm/term"/>
+							  			<xsl:value-of select="other"/>
+							  		</fo:block>      				
+	      						</fo:table-cell>
+	       						<fo:table-cell xsl:use-attribute-sets="small-cell" >
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="baseline/value"/>   <xsl:value-of select="units"/>
+							  		</fo:block>      				
+	      						</fo:table-cell>     						
+	       						<fo:table-cell xsl:use-attribute-sets="small-cell" >
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			
+							  		</fo:block>      				
+	      						</fo:table-cell> 
+			  			</fo:table-row >
+			  		</xsl:for-each>
+		  			
 	  			</fo:table-body>
 		  		</fo:table>
 
@@ -678,6 +756,29 @@
 							  		</fo:block>      				
 	      						</fo:table-cell>    						
 			  			</fo:table-row >					
+			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell" >
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="center"> 
+							  			
+							  		</fo:block>      				
+	      						</fo:table-cell>		  			
+	      						<fo:table-cell xsl:use-attribute-sets="small-cell" >
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="left"> 
+							  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+							  		</fo:block>
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="left">	
+							  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
+							  		</fo:block>
+							  		
+							  			<xsl:for-each select="AdverseEventReport/AdverseEventPreExistingCond">
+							  				<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="left">	
+							  					<xsl:value-of select="PreExistingCondition/text"/>
+							  					<xsl:value-of select="other"/>
+							  				</fo:block>
+							  			</xsl:for-each>
+							  		      				
+	      						</fo:table-cell>    						
+			  			</fo:table-row >
 	  				</fo:table-body>
 		  		</fo:table>
 				<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> 
@@ -687,12 +788,19 @@
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:variable name="grade" select="AdverseEventReport/AdverseEvent/grade"/>
+							  			
 										3. 	NCI Toxicity GRADE of the Event (use NCI Common Toxicity Criteria): 
-										[  ] 1    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] 2    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] 3    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] 4    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] 5
+										[ <xsl:if test="substring($grade,1,1)=1">x</xsl:if>] 1
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										[ <xsl:if test="substring($grade,1,1)=2">x</xsl:if>] 2
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										[ <xsl:if test="substring($grade,1,1)=3">x</xsl:if>] 3
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										[ <xsl:if test="substring($grade,1,1)=4">x</xsl:if>] 4
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										[ <xsl:if test="substring($grade,1,1)=5">x</xsl:if>] 5
+										
 									</fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 										If not gradable by NCI CTC, check one of the following:  
@@ -710,17 +818,56 @@
 										4. Why Serious?
 									</fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Results in death	<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										[  ] Is life-threatening   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>    
-										[  ] Requires inpatient hospitalization or prolongation of existing hospitalization
-							  		</fo:block>      
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='DEATH'">
+									  				[ x ] Results in death <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>
+
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='LIFE_THREATENING'">
+									  				[ x ] Is life-threatening   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text> 
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>
+									  
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='HOSPITALIZATION'">
+									  				[ x ] Requires inpatient hospitalization or prolongation of existing hospitalization
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>
+									  </fo:block>
+									  <fo:block xsl:use-attribute-sets="normal" margin-left="2mm">
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='DISABILITY'">
+									  				[ x ] Results in persistent or significant disability/incapacity <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>	
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>
+
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='CONGENITAL_ANOMALY'">
+									  				[ x ] Is a congenital anomaly/birth defect	
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>
+									</fo:block> 
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Results in persistent or significant disability/incapacity <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>	
-										[  ] Is a congenital anomaly/birth defect
-							  		</fo:block> 
-									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Other, specify:
-							  		</fo:block> 							  									  						
+									  <xsl:for-each select="AdverseEventReport/Outcome">
+									  		<xsl:choose>
+									  			<xsl:when test="OutcomeType='OTHER_SERIOUS'">
+									  				[ x ] Other, specify: <xsl:value-of select="other"/>
+									  			</xsl:when>
+									  		</xsl:choose>	
+									  </xsl:for-each>									  
+									</fo:block>    									  									  									  									  							  									  						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >					
 			  			<fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -753,11 +900,16 @@
 										6.	Investigator's opinion of the relationship between the event and the study drug  (If more than one event is being reported, list secondary events and corresponding relationship to study drug in the comments section below.) Check applicable box:
 									</fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Not related     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						                 [  ] Unlikely     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>             
-								         [ ] Possible     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-				                        [ ] Probable     <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>                          
-								         [ ] Definite
+									<xsl:variable name="attribution" select="AdverseEventReport/AdverseEvent/attributionSummary"/>
+									[ <xsl:if test="substring($attribution,1,1)=1">x</xsl:if>] Not related
+									<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+									[ <xsl:if test="substring($attribution,1,1)=2">x</xsl:if>] Unlikely
+						            <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>  
+						            [ <xsl:if test="substring($attribution,1,1)=3">x</xsl:if>] Possible           
+								    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+								    [ <xsl:if test="substring($attribution,1,1)=4">x</xsl:if>] Probable
+				                    <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>  
+				                    [ <xsl:if test="substring($attribution,1,1)=5">x</xsl:if>] Definite                       
 							  		</fo:block>      							  									  						
 	      						</fo:table-cell>		  			
 			  			</fo:table-row >
