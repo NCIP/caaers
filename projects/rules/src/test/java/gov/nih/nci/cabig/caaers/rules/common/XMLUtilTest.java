@@ -16,12 +16,19 @@ public class XMLUtilTest extends RulesTestCase {
 		super.tearDown();
 	}
 
-	public void testUnmarshal() {
-		fail("Not yet implemented");
+	public void testUnmarshal() throws Exception{
+		String xml = getFileContext("test_rule2.xml");
+		Object p = XMLUtil.unmarshal(xml);
+		assertNotNull("Object cannot be null", p);
+
 	}
 
-	public void testMarshal() {
-		fail("Not yet implemented");
+	public void testMarshal() throws Exception{
+		String xml = getFileContext("test_rule2.xml");
+		Object p = XMLUtil.unmarshal(xml);
+		assertNotNull("Object cannot be null", p);
+		String xml2 = XMLUtil.marshal(p);
+		assertTrue("completed", true);
 	}
 
 	public void testUnmarshalToPackage() throws Exception{
@@ -30,11 +37,6 @@ public class XMLUtilTest extends RulesTestCase {
 		assertNotNull("Package cannot be null", p);
 	}
 	
-	public void testUnmarshalToPackageTest() throws Exception{
-		String xml = getFileContext("test_rule2.xml");
-		org.drools.rule.Package p = XMLUtil.unmarshalToPackage(xml);
-		System.out.println(p);
-		assertNotNull("Package cannot be null", p);
-	}
+	
 
 }
