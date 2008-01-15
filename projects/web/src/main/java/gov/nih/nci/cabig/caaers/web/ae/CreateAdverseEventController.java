@@ -49,4 +49,12 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     protected boolean displaySummary(int page) {
         return page != 0;
     }
+    
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	if(super.suppressValidation(request, command)) return true;
+    	CreateExpeditedAdverseEventCommand aeCommand = (CreateExpeditedAdverseEventCommand) command;
+    	if(aeCommand.getAeReport().getId() != null) return false;
+    	return super.getCurrentPage(request) > aeCommand.getNextPage(); 
+    }
 }
