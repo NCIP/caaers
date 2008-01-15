@@ -1172,9 +1172,11 @@
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>
+    <!--
     <field name="signatureText" type="string">
       <bind-xml name="signatureText" node="element"/>
     </field>
+    -->
     <field name="roleCode" type="string">
       <bind-xml name="roleCode" node="element"/>
     </field>
