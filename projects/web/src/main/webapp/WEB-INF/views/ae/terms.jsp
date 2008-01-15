@@ -213,7 +213,7 @@
             						
             						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
             						
-            						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete-input"/>
+            						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete"/>
                     				<tags:indicator id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-indicator"/>
                     				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>
             					</div>

@@ -31,6 +31,7 @@ div.autocomplete {
     border-top-width: 0;
     margin: 0;
     padding: 0;
+    white-space: normal;
 }
 div.autocomplete ul {
     list-style-type: none;

@@ -305,7 +305,7 @@
             <chrome:division title="${meddraVersion} Terms">
 					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
 					<form:hidden  path="diseaseLlt" />
-					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete-input"/>
+					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete"/>
                     <input type="button" id="diseaseLlt-clear" value="Clear"/>
                     <input class='ibutton' type='button' onclick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
                     <tags:indicator id="diseaseLlt-indicator"/>

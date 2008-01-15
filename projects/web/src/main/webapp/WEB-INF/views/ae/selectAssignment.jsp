@@ -7,7 +7,7 @@
 <head>
     <title>${pageTitle}</title>
     <style type="text/css">
-        .autocomplete-input {
+        .autocomplete {
             width: 75%
         }
     </style>
@@ -95,7 +95,7 @@
                     <p>Enter a portion of a participant's name or another registered identifier.</p>
                     <form:hidden path="participant"/>
                     <tags:requiredIndicator/>
-                    <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete-input"/>
+                    <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
                     <input type="button" id="participant-clear" value="Clear"/>
                     <tags:indicator id="participant-indicator"/>
                     <div id="participant-choices" class="autocomplete"></div>
@@ -108,7 +108,7 @@
                     <p>Enter a portion of a study's name or another registered identifier.</p>
                     <form:hidden path="study"/>
                     <tags:requiredIndicator/>
-                    <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete-input"/>
+                    <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
                     <input type="button" id="study-clear" value="Clear"/>
                     <tags:indicator id="study-indicator"/>
                     <tags:errors path="study"/>

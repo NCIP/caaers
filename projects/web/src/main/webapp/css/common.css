@@ -359,6 +359,8 @@ div.row div.value {
   font-weight: normal;
   /* default; should be changed whenever .label width is changed */
   margin-left: 11em;
+  /* In Mac the Help (?) button is wrapping */
+  white-space:nowrap;
 }
 
 img.indicator {
