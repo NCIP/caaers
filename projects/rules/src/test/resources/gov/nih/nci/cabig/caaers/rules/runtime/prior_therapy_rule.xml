@@ -27,7 +27,7 @@
 	
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
-					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
 						if(StringUtils.equalsIgnoreCase("No prior therapy", pt.getName()) &amp;&amp; pt.getOther() == null ){
 							errors.addValidationError("PTY_BR1_ERR","Comments (prior therapy) must be provided if 'Prior therapy' is 'No Prior Therapy'", i);
@@ -57,7 +57,7 @@
 	
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
-					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
 						if(pt.getStartDate() == null &amp;&amp; pt.getEndDate() != null){
 						 errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date' is not provided", i);
@@ -87,7 +87,7 @@
 	
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
-					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
 						if(pt.getEndDate() != null &amp;&amp; DateUtil.compare(pt.getStartDate(), pt.getEndDate()) &lt; 0){
 						 errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start Date'", i);
@@ -121,7 +121,7 @@
 			<eval>new ExpeditedAdverseEventValidator() {
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 				int i = 0;
-				for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+				for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 					i++;
 					if(ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
 							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
@@ -160,7 +160,7 @@
 			<eval>new ExpeditedAdverseEventValidator() {
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 				int i = 0;
-				for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+				for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 					i++;
 					if(!ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
 							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
@@ -194,7 +194,7 @@
 				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 					int i = 0;
 					HashSet hSet = new HashSet();
-					for(AdverseEventPriorTherapy pt : aeReport.getAdverseEventPriorTherapies()){
+					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 					    i++;
 						if(!hSet.add(pt)){
 							errors.addValidationError("PTY_UK_ERR","Prior Therapy must be unique", i);
@@ -224,7 +224,7 @@
 			public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 				int i = 0;
 				HashSet hSet = new HashSet();
-				for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+				for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 					i++;
 					if(aet.getPriorTherapyAgents() == null) continue;
 					for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()){

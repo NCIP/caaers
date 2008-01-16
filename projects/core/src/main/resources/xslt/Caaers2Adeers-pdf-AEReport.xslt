@@ -1234,9 +1234,9 @@
 		     						</fo:table-cell>      						      						      						
 			  			    </fo:table-row> 
 	  			    		  			
-		  	      			<!--  <xsl:apply-templates select="AdverseEventReport/AdverseEventPriorTherapy"/> -->
+		  	      			<!--  <xsl:apply-templates select="AdverseEventReport/SAEReportPriorTherapy"/> -->
 		  	      			
-						<xsl:for-each select="AdverseEventReport/AdverseEventPriorTherapy">
+						<xsl:for-each select="AdverseEventReport/SAEReportPriorTherapy">
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 

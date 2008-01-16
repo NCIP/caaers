@@ -147,8 +147,4 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
         assertEquals("Joe Shabadoo (MRN1138)", summary.get("Participant"));
     }
 
-    public void testSummaryIncludesFirstAETerm() throws Exception {
-        Map<String, String> summary = report.getSummary();
-        assertEquals("Term - Select", summary.get("Primary AE"));
-    }
 }

@@ -386,7 +386,7 @@
             </xsl:if>
             
         </PATIENT_INFORMATION>
-        <xsl:for-each select="AdverseEventPriorTherapy">
+        <xsl:for-each select="SAEReportPriorTherapy">
             <PRIOR_THERAPY>
                 <xsl:if test="PriorTherapy/text != ''">
                 <THERAPY_NAME>

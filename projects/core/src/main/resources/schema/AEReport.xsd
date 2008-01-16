@@ -19,7 +19,7 @@
         <xsd:element name="ConcomitantMedication" type="caaers:ConcomitantMedication" maxOccurs="unbounded"/>       
         <xsd:element name="AdverseEvent" type="caaers:AdverseEvent" maxOccurs="unbounded"/>        
         <xsd:element name="Lab" type="caaers:Lab" maxOccurs="unbounded"/> 
-        <xsd:element name="AdverseEventPriorTherapy" type="caaers:AdverseEventPriorTherapy" maxOccurs="unbounded"/>        
+        <xsd:element name="SAEReportPriorTherapy" type="caaers:SAEReportPriorTherapy" maxOccurs="unbounded"/>        
       </xsd:sequence>
     </xsd:complexType>
 
@@ -33,7 +33,7 @@
   	</xsd:sequence>
   </xsd:complexType>
   
-  <xsd:complexType name="AdverseEventPriorTherapy">
+  <xsd:complexType name="SAEReportPriorTherapy">
 	  <xsd:sequence>
   		<xsd:element name="PriorTherapy" type="caaers:PriorTherapy"/>
    		<xsd:element name="other" type="xsd:string"/>

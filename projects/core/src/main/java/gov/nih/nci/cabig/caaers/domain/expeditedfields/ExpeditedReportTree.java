@@ -195,7 +195,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                 )
             ),
             section(PRIOR_THERAPIES_SECTION,
-                list("adverseEventPriorTherapies", "Prior Therapy",
+                list("saeReportPriorTherapies", "Prior Therapy",
                     property("priorTherapy", "Prior therapy"),
                     property("other", "Comments (prior therapy)"),        //TODO: change the name of other to "comments"
                     property("startDate", "Therapy start Date"),

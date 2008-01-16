@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -178,10 +178,10 @@ public class AdverseEventReportSerializer {
 	    	}
 
 	    	//build therapies
-	    	List<AdverseEventPriorTherapy> thList = hibernateAdverseEventReport.getAdverseEventPriorTherapies();
+	    	List<SAEReportPriorTherapy> thList = hibernateAdverseEventReport.getSaeReportPriorTherapies();
 
-	    	for (AdverseEventPriorTherapy therapy: thList) {
-	    		aer.addAdverseEventPriorTherapies(therapy);
+	    	for (SAEReportPriorTherapy therapy: thList) {
+	    		aer.addSaeReportPriorTherapies(therapy);
 	    	}
 
 	    	//Build pre existing conditions

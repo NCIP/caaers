@@ -4,7 +4,7 @@ import java.util.Date;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
@@ -46,11 +46,11 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testNoPriorTherapy_With_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(0).setOther("Other");
-		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
-		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(1).setOther("Other1");
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
+		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).setOther("Other1");
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "When other comments is provided for a non 'No Prior Therapy'");
 	}
@@ -63,12 +63,12 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testNoPriorTherapy_Without_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
-		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
-		System.out.println(aeReport.getAdverseEventPriorTherapies().get(0).getName());
-		aeReport.getAdverseEventPriorTherapies().get(0).setOther(null);
-		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(1).setOther(null);
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
+		System.out.println(aeReport.getSaeReportPriorTherapies().get(0).getName());
+		aeReport.getSaeReportPriorTherapies().get(0).setOther(null);
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).setOther(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_BR1_ERR");
 		assertSameErrorCount(errors, 2);
@@ -84,11 +84,11 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testOneOutOfTwoPriorTherapy_IsWithout_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
-		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(0).setStartDate(new Date());
-		aeReport.getAdverseEventPriorTherapies().get(0).setOther("Other");
-		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
-		aeReport.getAdverseEventPriorTherapies().get(1).setOther(null);
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
+		aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).setOther(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_BR1_ERR");
 		assertSameErrorCount(errors, 1);
@@ -116,8 +116,8 @@ public class PriorTherapyBusinessRulesTest extends
 	Error Message : PRIOR_THERAPY must be unique	 */
 	public void testDuplicatePriorTherapy() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPriorTherapies().get(0).getPriorTherapy().setText("ll");
-		aeReport.getAdverseEventPriorTherapies().get(1).getPriorTherapy().setText("ll");
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("ll");
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("ll");
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_UK_ERR");
 		assertSameErrorCount(errors, 1);
@@ -130,7 +130,7 @@ public class PriorTherapyBusinessRulesTest extends
 	Error Message : PRIOR_THERAPY must be unique	 */
 	public void testTwoOutOfThreeSamePriorTherapy() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.addAdverseEventPriorTherapies(aeReport.getAdverseEventPriorTherapies().get(1));
+		aeReport.addSaeReportPriorTherapies(aeReport.getSaeReportPriorTherapies().get(1));
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_UK_ERR");
 		assertSameErrorCount(errors, 1);
@@ -154,7 +154,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testBMTPriorTherapy_With_PriorTherapyAgents() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i = 0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(3);
 			PriorTherapyAgent pta = new PriorTherapyAgent();
 			ChemoAgent ca = new ChemoAgent();
@@ -183,7 +183,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testBMTPriorTherapy_Without_PriorTherapyAgents() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i = 0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(3);
 		}
 		ValidationErrors errors = fireRules(aeReport);
@@ -209,7 +209,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testXYZPriorTherapy_With_PriorTherapyAgents() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i = 0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(23);
 			PriorTherapyAgent pta = new PriorTherapyAgent();
 			ChemoAgent ca = new ChemoAgent();
@@ -237,7 +237,7 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testPriorTherapyNoStartDate_NoEndDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 		}	
 		ValidationErrors errors = fireRules(aeReport);
@@ -253,7 +253,7 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testPriorTherapyNoStartDate_ButEndDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 			aet.setEndDate(new Date());
 		}	
@@ -271,7 +271,7 @@ public class PriorTherapyBusinessRulesTest extends
 	
 	public void testPriorTherapyStartOnly() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 			aet.setStartDate(new Date());
 		}	
@@ -288,7 +288,7 @@ public class PriorTherapyBusinessRulesTest extends
 	
 	public void testPriorTherapyStart_LT_EndDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 			aet.setStartDate(DateUtils.createDate(2007, 11, 9));
 			aet.setEndDate(DateUtils.createDate(2007, 11, 11));
@@ -304,7 +304,7 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testPriorTherapyStartDate_GT_EndDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 			aet.setStartDate(DateUtils.createDate(2007, 11, 19));
 			aet.setEndDate(DateUtils.createDate(2007, 11, 11));
@@ -323,7 +323,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testOneOutOfTwoPriorTherapyStartDate_GT_EndDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i =0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(83);
 			aet.setStartDate(DateUtils.createDate(2007, 11, 9));
 			if(i < 1){
@@ -350,7 +350,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testUniqueChemoAgents() throws Exception{
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i = 0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(3);
 			PriorTherapyAgent pta = new PriorTherapyAgent();
 			ChemoAgent ca = new ChemoAgent();
@@ -373,7 +373,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testDuplicateChemoAgents() throws Exception{
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		int i = 0;
-		for(AdverseEventPriorTherapy aet : aeReport.getAdverseEventPriorTherapies()){
+		for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
 			aet.getPriorTherapy().setId(3);
 			PriorTherapyAgent pta = new PriorTherapyAgent();
 			ChemoAgent ca = new ChemoAgent();

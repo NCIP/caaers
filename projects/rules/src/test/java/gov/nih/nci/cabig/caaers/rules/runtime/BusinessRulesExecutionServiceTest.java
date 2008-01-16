@@ -4,7 +4,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
@@ -224,15 +224,15 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		PriorTherapy p1 = new PriorTherapy();
 		p1.setId(14);
 		p1.setText("Xyz");
-		AdverseEventPriorTherapy ap1 = new AdverseEventPriorTherapy();
+		SAEReportPriorTherapy ap1 = new SAEReportPriorTherapy();
 		ap1.setPriorTherapy(p1);
-		aeReport.addAdverseEventPriorTherapies(ap1);
+		aeReport.addSaeReportPriorTherapies(ap1);
 		PriorTherapy p2 = new PriorTherapy();
 		p2.setId(19);
 		p2.setText("Xyzz");
-		AdverseEventPriorTherapy ap2 = new AdverseEventPriorTherapy();
+		SAEReportPriorTherapy ap2 = new SAEReportPriorTherapy();
 		ap2.setPriorTherapy(p2);
-		aeReport.addAdverseEventPriorTherapies(ap2);
+		aeReport.addSaeReportPriorTherapies(ap2);
 		
 		//populate pre-existing condition.
 		PreExistingCondition pc1 = new PreExistingCondition();

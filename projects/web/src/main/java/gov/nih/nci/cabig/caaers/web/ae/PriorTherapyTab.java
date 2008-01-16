@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import java.util.Map;
 import java.util.ListIterator;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -36,7 +36,7 @@ public class PriorTherapyTab extends AeTab {
         InputField endDateField = InputFieldFactory.createDateField("endDate", "Therapy end date", false);
         /*InputFieldAttributes.setDetails(endDateField, "If known, enter end date for prior therapy.");*/
 
-        creator.createRepeatingFieldGroup("priorTherapy", "adverseEventPriorTherapies",
+        creator.createRepeatingFieldGroup("priorTherapy", "saeReportPriorTherapies",
             new SimpleNumericDisplayNameCreator("Prior therapy"),
             priorTherapyField,
             otherField,
@@ -45,7 +45,7 @@ public class PriorTherapyTab extends AeTab {
             
         );
 
-        creator.createRepeatingFieldGroup("ptAgent", "adverseEventPriorTherapies",
+        creator.createRepeatingFieldGroup("ptAgent", "saeReportPriorTherapies",
         		InputFieldFactory.createAutocompleterField("priorTherapyAgents.chemoAgent", "Agent", false)	
         );
     }
@@ -55,13 +55,13 @@ public class PriorTherapyTab extends AeTab {
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
-        for (ListIterator<AdverseEventPriorTherapy> it = command.getAeReport().getAdverseEventPriorTherapies().listIterator(); it.hasNext();) {
-            AdverseEventPriorTherapy aePriorTherapy = it.next();
+        for (ListIterator<SAEReportPriorTherapy> it = command.getAeReport().getSaeReportPriorTherapies().listIterator(); it.hasNext();) {
+            SAEReportPriorTherapy aePriorTherapy = it.next();
             validatePriorTherapy(aePriorTherapy, it.previousIndex(), errors);
         }
     }
 
-    private void validatePriorTherapy(AdverseEventPriorTherapy aePriorTherapy, int index, Errors errors) {
+    private void validatePriorTherapy(SAEReportPriorTherapy aePriorTherapy, int index, Errors errors) {
 //        if (aePriorTherapy.getPriorTherapy() == null && aePriorTherapy.getOther() == null) {
 //            errors.rejectValue(
 //                String.format("aeReport.adverseEventPriorTherapies[%d]", index),

@@ -22,10 +22,10 @@
         Object.extend(EnterPriorTherapy.prototype, {
             initialize: function(index, priorTherapyName) {
                 this.index = index
-                var cmProperty = "aeReport.adverseEventPriorTherapies[" + index + "]";
+                var cmProperty = "aeReport.saeReportPriorTherapies[" + index + "]";
                 this.priorTherapyProperty = cmProperty + ".priorTherapy"
                 this.otherProperty = cmProperty + ".other"
-
+				
                 if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
 
                // $("select-priorTherapy-" + this.index)
@@ -107,7 +107,7 @@
             initialize: function(index, parentIndex, priorTherapyName) {
                 this.index = index
                 this.parentIndex = parentIndex
-                var cmProperty = "aeReport.adverseEventPriorTherapies[" + parentIndex + "].priorTherapyAgents[" + index + "]";
+                var cmProperty = "aeReport.saeReportPriorTherapies[" + parentIndex + "].priorTherapyAgents[" + index + "]";
                 this.priorTherapyProperty = cmProperty + ".chemoAgent"
 
                 if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
@@ -130,17 +130,17 @@
 
         function createAgentListEditor(id, parentIndex) {
             new ListEditor(id, createAE, "PriorTherapyAgent", {
-                addFirstAfter: "aeReport.adverseEventPriorTherapies[" + parentIndex + "].endDate-row",
+                addFirstAfter: "aeReport.saeReportPriorTherapies[" + parentIndex + "].endDate-row",
                 addParameters: [parentIndex , aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapyAgent(index, parentIndex)
                 },
                 deletable: true
-            },'aeReport.adverseEventPriorTherapies[' + parentIndex + '].priorTherapyAgents')
+            },'aeReport.saeReportPriorTherapies[' + parentIndex + '].priorTherapyAgents')
         }
 
         Element.observe(window, "load", function() {
-        <c:forEach items="${command.aeReport.adverseEventPriorTherapies}" varStatus="status" var="aePriorTherapy">
+        <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status" var="aePriorTherapy">
             new EnterPriorTherapy(${status.index}, '${aePriorTherapy.priorTherapy.text}')
             createAgentListEditor("ptAgent${status.index}",${status.index})
             	<c:forEach items="${aePriorTherapy.priorTherapyAgents}" varStatus="s" var="priorTherapyAgent">
@@ -159,7 +159,7 @@
       				captureHelpControlEvents();
                 },
                 deletable: true
-            }, 'aeReport.adverseEventPriorTherapies')
+            }, 'aeReport.saeReportPriorTherapies')
         })
         
         
@@ -175,7 +175,7 @@
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">
-        <c:forEach items="${command.aeReport.adverseEventPriorTherapies}" varStatus="status" var="aePriorTherapy">
+        <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status" var="aePriorTherapy">
             <ae:onePriorTherapy index="${status.index}" agentCount="${fn:length(aePriorTherapy.priorTherapyAgents)}"/>
         </c:forEach>
         </jsp:attribute>

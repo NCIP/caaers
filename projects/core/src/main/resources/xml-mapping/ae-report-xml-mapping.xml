@@ -63,9 +63,9 @@
     <field name="labs" type="gov.nih.nci.cabig.caaers.domain.Lab" collection="arraylist">
       <bind-xml name="Lab"/>
     </field>
-    <field name="adverseEventPriorTherapiesInternal"
-      type="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy" collection="arraylist">
-      <bind-xml name="AdverseEventPriorTherapy"/>
+    <field name="saeReportPriorTherapiesInternal"
+      type="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy" collection="arraylist">
+      <bind-xml name="SAEReportPriorTherapy"/>
     </field>
 
     <field name="summary" collection="map">
@@ -244,8 +244,8 @@
     </field>
   </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy">
-    <map-to xml="AdverseEventPriorTherapy"/>
+  <class name="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy">
+    <map-to xml="SAEReportPriorTherapy"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>

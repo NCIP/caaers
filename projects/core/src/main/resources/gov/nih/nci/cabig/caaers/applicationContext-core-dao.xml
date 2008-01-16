@@ -83,7 +83,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
 	<value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
+	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
 	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
@@ -230,7 +230,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
 	<value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventPriorTherapy</value>
+	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
 	<value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
 	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>

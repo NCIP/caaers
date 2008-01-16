@@ -11,19 +11,19 @@
 
 <chrome:division title="Agent ${index +1}" cssClass="ptAgent${parentIndex}" id="ptAgent${parentIndex}-${index}" style="${style}">
 
-    <div class="row" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}]-row" >
+    <div class="row" id="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}]-row" >
         <div class="label">
             Agent
         </div>
 
         <div class="value">
 
-            <input size="50" type="text" id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-input"/>
-            <tags:indicator id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-indicator"/>
+            <input size="50" type="text" id="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-input"/>
+            <tags:indicator id="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-indicator"/>
 
-            <div id="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-choices" class="autocomplete" style="display: none"></div>
+            <div id="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-choices" class="autocomplete" style="display: none"></div>
 
-            <form:hidden path="aeReport.adverseEventPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"/>
+            <form:hidden path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"/>
 
         </div>
     </div>

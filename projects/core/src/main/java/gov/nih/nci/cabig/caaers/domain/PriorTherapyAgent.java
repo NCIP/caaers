@@ -22,7 +22,7 @@ import javax.persistence.Transient;
     }
 )
 public class PriorTherapyAgent extends AbstractMutableDomainObject{
-	private AdverseEventPriorTherapy adverseEventPriorTherapy;
+	private SAEReportPriorTherapy saeReportPriorTherapy;
     private ChemoAgent chemoAgent;
 
     ////// LOGIC
@@ -52,12 +52,12 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject{
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ae_prior_therapy_id", insertable=false, updatable=false, nullable=false)
-    public AdverseEventPriorTherapy getAdverseEventPriorTherapy() {
-        return adverseEventPriorTherapy;
+    public SAEReportPriorTherapy getSaeReportPriorTherapy() {
+        return saeReportPriorTherapy;
     }
 
-    public void setAdverseEventPriorTherapy(AdverseEventPriorTherapy adverseEventPriorTherapy) {
-        this.adverseEventPriorTherapy = adverseEventPriorTherapy;
+    public void setSaeReportPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) {
+        this.saeReportPriorTherapy = saeReportPriorTherapy;
     }
 
 	@Override
@@ -66,8 +66,8 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject{
 		int result = 1;
 		result = prime
 				* result
-				+ ((adverseEventPriorTherapy == null) ? 0
-						: adverseEventPriorTherapy.hashCode());
+				+ ((saeReportPriorTherapy == null) ? 0
+						: saeReportPriorTherapy.hashCode());
 		result = prime * result
 				+ ((chemoAgent == null) ? 0 : chemoAgent.hashCode());
 		return result;
@@ -82,11 +82,11 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject{
 		if (getClass() != obj.getClass())
 			return false;
 		final PriorTherapyAgent other = (PriorTherapyAgent) obj;
-		if (adverseEventPriorTherapy == null) {
-			if (other.adverseEventPriorTherapy != null)
+		if (saeReportPriorTherapy == null) {
+			if (other.saeReportPriorTherapy != null)
 				return false;
-		} else if (!adverseEventPriorTherapy
-				.equals(other.adverseEventPriorTherapy))
+		} else if (!saeReportPriorTherapy
+				.equals(other.saeReportPriorTherapy))
 			return false;
 		if (chemoAgent == null) {
 			if (other.chemoAgent != null)

@@ -8,7 +8,7 @@
 <%@attribute name="agentCount" type="java.lang.Integer" %>
 
 <ae:fieldGroupDivision fieldGroupFactoryName="priorTherapy" index="${index}" style="${style}">
-    <tags:errors path="aeReport.adverseEventPriorTherapies[${index}]"/>
+    <tags:errors path="aeReport.saeReportPriorTherapies[${index}]"/>
     <tags:renderRow field="${fieldGroup.fields[0]}" />
     <tags:renderRow field="${fieldGroup.fields[1]}" />
     <tags:renderRow field="${fieldGroup.fields[2]}"/>

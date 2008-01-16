@@ -28,7 +28,7 @@ import java.util.List;
         @Parameter(name="sequence", value="seq_ae_prior_therapies_id")
     }
 )
-public class AdverseEventPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
+public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
     private PriorTherapy priorTherapy;
     private String other;
     private Date startDate;
@@ -36,14 +36,14 @@ public class AdverseEventPriorTherapy extends AbstractExpeditedReportCollectionE
     
     private LazyListHelper lazyListHelper;
     
-    public AdverseEventPriorTherapy() {
+    public SAEReportPriorTherapy() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(PriorTherapyAgent.class);
     }
 
     private <T> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass,
-            new AdverseEventPriorTherapyFactory<T>(klass, this));
+            new SAEReportPriorTherapyFactory<T>(klass, this));
     }
 
     ////// LOGIC
@@ -80,7 +80,7 @@ public class AdverseEventPriorTherapy extends AbstractExpeditedReportCollectionE
 	
 	public void addPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
 		getPriorTherapyAgentsInternal().add(priorTherapyAgent);
-	        if (priorTherapyAgent != null) priorTherapyAgent.setAdverseEventPriorTherapy(this);
+	        if (priorTherapyAgent != null) priorTherapyAgent.setSaeReportPriorTherapy(this);
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class AdverseEventPriorTherapy extends AbstractExpeditedReportCollectionE
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 		
-		final AdverseEventPriorTherapy other = (AdverseEventPriorTherapy) obj;
+		final SAEReportPriorTherapy other = (SAEReportPriorTherapy) obj;
 		if (endDate == null) {
 			if (other.endDate != null) return false;
 		} else if (!endDate.equals(other.endDate))	return false;

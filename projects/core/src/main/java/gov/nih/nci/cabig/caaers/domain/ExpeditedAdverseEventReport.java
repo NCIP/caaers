@@ -67,7 +67,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(SurgeryIntervention.class);
         addReportChildLazyList(ConcomitantMedication.class);
         addReportChildLazyList(OtherCause.class);
-        addReportChildLazyList(AdverseEventPriorTherapy.class);
+        addReportChildLazyList(SAEReportPriorTherapy.class);
         addReportChildLazyList(AdverseEventPreExistingCond.class);
         addReportChildLazyList(Outcome.class);
     }
@@ -278,15 +278,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         return lazyListHelper.getLazyList(AdverseEventPreExistingCond.class);
     }
 
-    public void addAdverseEventPriorTherapies(AdverseEventPriorTherapy adverseEventPriorTherapy) {
-        getAdverseEventPriorTherapiesInternal().add(adverseEventPriorTherapy);
-        if (adverseEventPriorTherapy != null) adverseEventPriorTherapy.setReport(this);
+    public void addSaeReportPriorTherapies(SAEReportPriorTherapy saeReportPriorTherapy) {
+        getSaeReportPriorTherapiesInternal().add(saeReportPriorTherapy);
+        if (saeReportPriorTherapy != null) saeReportPriorTherapy.setReport(this);
     }
 
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
-    public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapies() {
-        return lazyListHelper.getLazyList(AdverseEventPriorTherapy.class);
+    public List<SAEReportPriorTherapy> getSaeReportPriorTherapies() {
+        return lazyListHelper.getLazyList(SAEReportPriorTherapy.class);
     }
     
     public void addOutcomes(Outcome outcome) {
@@ -446,13 +446,13 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @JoinColumn(name="report_id", nullable=false)
     @IndexColumn(name="list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<AdverseEventPriorTherapy> getAdverseEventPriorTherapiesInternal() {
-        return lazyListHelper.getInternalList(AdverseEventPriorTherapy.class);
+    public List<SAEReportPriorTherapy> getSaeReportPriorTherapiesInternal() {
+        return lazyListHelper.getInternalList(SAEReportPriorTherapy.class);
     }
 
-    public void setAdverseEventPriorTherapiesInternal(
-        List<AdverseEventPriorTherapy> adverseEventPriorTherapiesInternal) {
-        lazyListHelper.setInternalList(AdverseEventPriorTherapy.class, adverseEventPriorTherapiesInternal);
+    public void setSaeReportPriorTherapiesInternal(
+        List<SAEReportPriorTherapy> saeReportPriorTherapiesInternal) {
+        lazyListHelper.setInternalList(SAEReportPriorTherapy.class, saeReportPriorTherapiesInternal);
     }
     
     //  This is annotated this way so that the IndexColumn will work with
