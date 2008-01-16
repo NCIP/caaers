@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
@@ -34,10 +34,10 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         super.setUp();
 
         ctcae3 = Fixtures.createCtcaeV3();
-        Terminology t
+        AeTerminology t
             = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite().getStudy());
-        command.getAssignment().getStudySite().getStudy().setTerminology(t);
-        command.getAssignment().getStudySite().getStudy().getTerminology().setCtcVersion(Fixtures.createCtcaeV3());
+        command.getAssignment().getStudySite().getStudy().setAeTerminology(t);
+        command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(Fixtures.createCtcaeV3());
 
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());

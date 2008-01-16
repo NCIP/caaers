@@ -39,7 +39,7 @@
                     <xs:element type="statusType" name="status"/>
                     <xs:element type="xs:boolean" name="multiInstitutionIndicator"/>
                     <xs:element type="xs:boolean" name="adeersReporting"/>
-                    <xs:element ref="terminology"/>
+                    <xs:element ref="aeTerminology"/>
                     <xs:element ref="diseaseTerminology"/>
                                
                     <xs:element type="xs:boolean" name="drugAdministrationTherapyType"  minOccurs="0"/>
@@ -442,8 +442,8 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="terminology" type="terminologyType"/>
-    <xs:complexType name="terminologyType">
+    <xs:element name="aeTerminology" type="aeTerminologyType"/>
+    <xs:complexType name="aeTerminologyType">
         <xs:choice>
             <xs:element ref="ctcVersion"/>
             <xs:element ref="meddraVersion"/>

@@ -11,7 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 
 import java.util.List;
@@ -122,10 +122,10 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		study.setLongTitle("long title" + name);
 		study.setShortTitle("short title" + name);
 
-		Terminology terminology = new Terminology();
-		terminology.setTerm(Term.CTC);
-		terminology.setStudy(study);
-		study.setTerminology(terminology);
+		AeTerminology aeTerminology = new AeTerminology();
+		aeTerminology.setTerm(Term.CTC);
+		aeTerminology.setStudy(study);
+		study.setAeTerminology(aeTerminology);
 		study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		// newStudy.setAmended(false);
 		// study.setProtocolAuthorityId("protocolAuthority for:" + name);
@@ -154,10 +154,10 @@ public class StudyHavingStudySiteQueryIntegrationTest extends AbstractTransactio
 		study.setLongTitle("long title" + name);
 		study.setShortTitle("short title" + name);
 
-		Terminology terminology = new Terminology();
-		terminology.setTerm(Term.CTC);
-		terminology.setStudy(study);
-		study.setTerminology(terminology);
+		AeTerminology aeTerminology = new AeTerminology();
+		aeTerminology.setTerm(Term.CTC);
+		aeTerminology.setStudy(study);
+		study.setAeTerminology(aeTerminology);
 		study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		// newStudy.setAmended(false);
 		// study.setProtocolAuthorityId("protocolAuthority for:" + name);

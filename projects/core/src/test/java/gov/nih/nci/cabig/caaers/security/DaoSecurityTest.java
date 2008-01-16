@@ -126,7 +126,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         study.setAdeersReporting(Boolean.TRUE);
         // study.setPrimarySponsorCode("SCODE_101");
         // study.setCtcVersion(getCtc());
-        study.setTerminology(Fixtures.createCtcV3Terminology(study));
+        study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         dao.save(study);
 
@@ -142,7 +142,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         study.setLongTitle("long title");
         study.setAdeersReporting(Boolean.TRUE);
         study.setMultiInstitutionIndicator(Boolean.FALSE);
-        study.setTerminology(Fixtures.createCtcV3Terminology(study));
+        study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         // study.setPrimarySponsorCode("SCODE_101");
          try {

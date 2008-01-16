@@ -62,7 +62,7 @@ public class RuleTab extends DefaultTab
     	if (!"".equals(studyShortTitle)) {
     			Study study =  createRuleCommand.getStudyDao().getByShortTitle(studyShortTitle);
     			if (study != null ) {
-    				createRuleCommand.setTerminology(study.getTerminology().getTerm().getDisplayName());
+    				createRuleCommand.setTerminology(study.getAeTerminology().getTerm().getDisplayName());
     			}
     	} else {
     		createRuleCommand.setTerminology("");

@@ -47,7 +47,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	private String phaseCode;
 
-	private Terminology terminology;
+	private AeTerminology aeTerminology;
 	
 	private DiseaseTerminology diseaseTerminology;
 
@@ -314,13 +314,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Deprecated
 	@Transient
 	public Ctc getCtcVersion() {
-		return getTerminology().getCtcVersion();
+		return getAeTerminology().getCtcVersion();
 	}
 
 	@Deprecated
 	@Transient
 	public void setCtcVersion(final Ctc ctcVersion) {
-		Terminology t = getTerminology();
+		AeTerminology t = getAeTerminology();
 		t.setTerm(Term.CTC);
 		t.setCtcVersion(ctcVersion);
 	}
@@ -341,16 +341,16 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public Terminology getTerminology() {
-		if (terminology == null) {
-			terminology = new Terminology();
-			terminology.setStudy(this);
+	public AeTerminology getAeTerminology() {
+		if (aeTerminology == null) {
+			aeTerminology = new AeTerminology();
+			aeTerminology.setStudy(this);
 		}
-		return terminology;
+		return aeTerminology;
 	}
 
-	public void setTerminology(final Terminology terminology) {
-		this.terminology = terminology;
+	public void setAeTerminology(final AeTerminology aeTerminology) {
+		this.aeTerminology = aeTerminology;
 	}
 
 	@Override

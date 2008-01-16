@@ -91,7 +91,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
 	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
 	<value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
+	<value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
 	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
 	<value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
 	<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>

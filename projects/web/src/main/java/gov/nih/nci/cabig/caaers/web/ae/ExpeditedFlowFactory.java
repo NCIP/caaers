@@ -43,7 +43,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     }
 
     public Flow<ExpeditedAdverseEventInputCommand> createFlow(ExpeditedAdverseEventInputCommand command) {
-        if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+        if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
             return getMeddraFlow(command);
         } else {
             return getCtepFlow(command);

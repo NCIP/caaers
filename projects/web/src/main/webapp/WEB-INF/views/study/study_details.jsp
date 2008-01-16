@@ -28,22 +28,22 @@
 
 	Event.observe(window, "load", function() {
 
-		Event.observe("terminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })
+		Event.observe("aeTerminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })
 
 		showMeddraTerms()
 		function showCtcTerms(){
-				if ($('terminology.term').options[0].selected ){
-					Effect.toggle($('terminology.ctcVersion-row'), 'slide');
-					Effect.toggle($('terminology.meddraVersion-row'), 'slide');
+				if ($('aeTerminology.term').options[0].selected ){
+					Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
+					Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
 				}
 		}
 		function showMeddraTerms(){
-				if ($('terminology.term').options[1].selected){
-					$('terminology.ctcVersion').options[0].selected=true
-                        Effect.toggle($('terminology.ctcVersion-row'), 'slide');
-					Effect.toggle($('terminology.meddraVersion-row'), 'slide');
+				if ($('aeTerminology.term').options[1].selected){
+					$('aeTerminology.ctcVersion').options[0].selected=true
+                        Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
+					Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
 				}else{
-					$('terminology.meddraVersion-row').style.display="none"
+					$('aeTerminology.meddraVersion-row').style.display="none"
 				}
 		}
 

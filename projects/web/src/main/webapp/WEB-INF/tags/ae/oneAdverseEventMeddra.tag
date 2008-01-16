@@ -15,7 +15,7 @@
 <chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
     <div class="row">
       <div class="label">MedDRA Version</div>
-      <div class="value">${command.assignment.studySite.study.terminology.meddraVersion.name}</div>
+      <div class="value">${command.assignment.studySite.study.aeTerminology.meddraVersion.name}</div>
     </div>
     <div id="ctc-details-${index}" class="ctc-details">
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>

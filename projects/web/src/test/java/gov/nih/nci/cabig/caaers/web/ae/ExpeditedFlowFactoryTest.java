@@ -19,7 +19,7 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         study = Fixtures.createStudy("Kilo");
-        study.getTerminology().setTerm(Term.CTC);
+        study.getAeTerminology().setTerm(Term.CTC);
         study.setAdeersReporting(Boolean.TRUE);
 
         command = registerMockFor(ExpeditedAdverseEventInputCommand.class);
@@ -39,7 +39,7 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     }
     
     public void testTabCountIfAdeersReportingNotRequiredMeddra() throws Exception {
-    	study.getTerminology().setTerm(Term.MEDDRA);
+    	study.getAeTerminology().setTerm(Term.MEDDRA);
     	study.setAdeersReporting(Boolean.FALSE);
     	Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertEquals(17, flow.getTabCount());
@@ -47,7 +47,7 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     }
 
     public void testMeddraBasicsTabUsedWhenAppropriate() throws Exception {
-        study.getTerminology().setTerm(Term.MEDDRA);
+        study.getAeTerminology().setTerm(Term.MEDDRA);
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertTrue("Wrong basics tab", flow.getTab(0) instanceof MeddraBasicsTab);
     }

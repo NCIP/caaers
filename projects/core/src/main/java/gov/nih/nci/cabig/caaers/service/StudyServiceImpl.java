@@ -32,7 +32,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -359,32 +359,32 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	
 	private void migrateTerminology(Study destination,Study source, DomainObjectImportOutcome studyImportOutcome){
 		
-		// Terminology and Version 
-		if (source.getTerminology() != null){
-			if(source.getTerminology().getCtcVersion() != null){
-				Ctc ctc = ctcDao.getById(Integer.parseInt(source.getTerminology().getCtcVersion().getName()));
-				Terminology t = destination.getTerminology();
+		// AeTerminology and Version 
+		if (source.getAeTerminology() != null){
+			if(source.getAeTerminology().getCtcVersion() != null){
+				Ctc ctc = ctcDao.getById(Integer.parseInt(source.getAeTerminology().getCtcVersion().getName()));
+				AeTerminology t = destination.getAeTerminology();
 				t.setTerm(Term.CTC);
 				t.setCtcVersion(ctc);
 				ifNullObject(ctc,studyImportOutcome, Severity.ERROR,"CTC is either Empty or Not Valid");
 				
 			}
-			if(source.getTerminology().getMeddraVersion() != null){
-				MeddraVersion meddraVersion = meddraVersionDao.getById(Integer.parseInt(source.getTerminology().getMeddraVersion().getName()));
-				Terminology t = destination.getTerminology();
+			if(source.getAeTerminology().getMeddraVersion() != null){
+				MeddraVersion meddraVersion = meddraVersionDao.getById(Integer.parseInt(source.getAeTerminology().getMeddraVersion().getName()));
+				AeTerminology t = destination.getAeTerminology();
 				t.setTerm(Term.MEDDRA);
 				t.setMeddraVersion(meddraVersion);
 				ifNullObject(meddraVersion,studyImportOutcome, Severity.ERROR,"MedDRA Version is either Empty or Not Valid");
 			}
 		}
-		ifNullObject(source.getTerminology(),studyImportOutcome, Severity.ERROR,"Terminology is either Empty or Not Valid");
+		ifNullObject(source.getAeTerminology(),studyImportOutcome, Severity.ERROR,"AeTerminology is either Empty or Not Valid");
 	}
 	
 	private void migrateDiseaseTerminology(Study destination,Study source, DomainObjectImportOutcome studyImportOutcome){
 		
-		// Terminology and Version 
+		// AeTerminology and Version 
 		destination.setDiseaseTerminology(source.getDiseaseTerminology());
-		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR,"Disease Terminology is either Empty or Not Valid");
+		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR,"Disease AeTerminology is either Empty or Not Valid");
 		if (destination.getDiseaseTerminology() != null ){
 			destination.getDiseaseTerminology().setStudy(destination);
 			ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(),studyImportOutcome, Severity.ERROR,"Disease Code Term is either Empty or Not Valid");

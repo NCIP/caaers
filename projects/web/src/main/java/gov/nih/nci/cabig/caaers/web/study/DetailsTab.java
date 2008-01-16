@@ -104,13 +104,13 @@ public class DetailsTab extends StudyTab {
 		if(studyCodeFieldGroup == null){
 			studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
 			List<InputField> fields = studyCodeFieldGroup.getFields();
-			fields.add(InputFieldFactory.createSelectField("terminology.term", "Terminology", true, InputFieldFactory
+			fields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology", true, InputFieldFactory
 					.collectOptions(Arrays.asList(Term.values()), null, "displayName")));
 		
 			// TODO: Add validation for when terminology.term = Term.CTC
-			fields.add(InputFieldFactory.createSelectField("terminology.ctcVersion", "CTC version", false,
+			fields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion", "CTC version", false,
 					collectOptions(ctcDao.getAll(), "id", "name")));
-			fields.add(InputFieldFactory.createSelectField("terminology.meddraVersion", "MedDRA version", false,
+			fields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion", "MedDRA version", false,
 					collectOptions(meddraVersionDao.getAll(), "id", "name")));
 		}
 		
@@ -134,12 +134,12 @@ public class DetailsTab extends StudyTab {
 	@Override
 	protected void validate(final Study command, final BeanWrapper commandBean,
 			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
-		if (command.getTerminology().getTerm() == Term.MEDDRA && command.getTerminology().getMeddraVersion() == null) {
+		if (command.getAeTerminology().getTerm() == Term.MEDDRA && command.getAeTerminology().getMeddraVersion() == null) {
 			InputField field = fieldGroups.get("scFieldGroup").getFields().get(1);
 			errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
 		}
 
-		if (command.getTerminology().getTerm() == Term.CTC && command.getTerminology().getCtcVersion() == null) {
+		if (command.getAeTerminology().getTerm() == Term.CTC && command.getAeTerminology().getCtcVersion() == null) {
 			InputField field = fieldGroups.get("scFieldGroup").getFields().get(0);
 			errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
 		}

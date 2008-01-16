@@ -18,7 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.Terminology;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
@@ -58,20 +58,20 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 									   xstreamRoutineAdverseEventReport,
 									   routineAdverseEventReportImportOutcome);
 
-			Terminology terminology = studyCtcOrMeddraBased(routineAdverseEventReport);
+			AeTerminology aeTerminology = studyCtcOrMeddraBased(routineAdverseEventReport);
 			// STATUS = CURRENT
 			if (routineAdverseEventReport.getStatus() != null
 					&& routineAdverseEventReport.getStatus() == Status.CURRENT) {
 
-				if (terminology.getTerm() != null
-						&& terminology.getTerm() == Term.CTC) {
+				if (aeTerminology.getTerm() != null
+						&& aeTerminology.getTerm() == Term.CTC) {
 					migrateCtcBasedAdverseEvents(routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
-							routineAdverseEventReportImportOutcome, terminology
+							routineAdverseEventReportImportOutcome, aeTerminology
 									.getCtcVersion());
 				}
-				if (terminology.getTerm() != null
-						&& terminology.getTerm() == Term.MEDDRA) {
+				if (aeTerminology.getTerm() != null
+						&& aeTerminology.getTerm() == Term.MEDDRA) {
 					migrateMeddraBasedAdverseEvents(routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
 							routineAdverseEventReportImportOutcome);
@@ -81,16 +81,16 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			if (routineAdverseEventReport.getStatus() != null
 					&& routineAdverseEventReport.getStatus() == Status.LEGACY) {
 
-				if (terminology.getTerm() != null
-						&& terminology.getTerm() == Term.CTC) {
+				if (aeTerminology.getTerm() != null
+						&& aeTerminology.getTerm() == Term.CTC) {
 					migrateCtcBasedAdverseEventsRelaxed(
 							routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
-							routineAdverseEventReportImportOutcome, terminology
+							routineAdverseEventReportImportOutcome, aeTerminology
 									.getCtcVersion());
 				}
-				if (terminology.getTerm() != null
-						&& terminology.getTerm() == Term.MEDDRA) {
+				if (aeTerminology.getTerm() != null
+						&& aeTerminology.getTerm() == Term.MEDDRA) {
 					migrateMeddraBasedAdverseEventsRelaxed(
 							routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
@@ -110,13 +110,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		/*
 		 *  Get the Term of the selected Study to find out if MedDRA or CRC based.
 		 */
-		private Terminology studyCtcOrMeddraBased(RoutineAdverseEventReport routineAdverseEventReport){
-			Terminology terminology = null;
+		private AeTerminology studyCtcOrMeddraBased(RoutineAdverseEventReport routineAdverseEventReport){
+			AeTerminology aeTerminology = null;
 			
 			if (routineAdverseEventReport.getAssignment() != null) {
-				terminology = routineAdverseEventReport.getAssignment().getStudySite().getStudy().getTerminology();
+				aeTerminology = routineAdverseEventReport.getAssignment().getStudySite().getStudy().getAeTerminology();
 			}
-			return terminology;
+			return aeTerminology;
 		}
 		
 		

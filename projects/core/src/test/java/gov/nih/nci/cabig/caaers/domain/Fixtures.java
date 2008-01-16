@@ -139,16 +139,16 @@ public class Fixtures {
 	report.addReportVersion(reportVersion);
     }
 
-    public static Terminology createCtcV3Terminology(final Study s) {
-	Terminology t = s.getTerminology();
+    public static AeTerminology createCtcV3Terminology(final Study s) {
+	AeTerminology t = s.getAeTerminology();
 	Ctc v3 = setId(3, new Ctc());
 	t.setTerm(Term.CTC);
 	t.setCtcVersion(v3);
 	return t;
     }
 
-    public static Terminology createMedDRATerminology(final Study s) {
-	Terminology t = s.getTerminology();
+    public static AeTerminology createMedDRATerminology(final Study s) {
+	AeTerminology t = s.getAeTerminology();
 	t.setTerm(Term.MEDDRA);
 	return t;
     }

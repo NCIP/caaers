@@ -72,7 +72,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			Study newStudy = new Study();
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
-			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
 			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			newStudy.setAdeersReporting(Boolean.TRUE);
@@ -86,9 +86,9 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		{
 			Study reloaded = getDao().getById(savedId);
 			assertNotNull("Saved Study not found", reloaded);
-			assertNotNull("Terminology is null", reloaded.getTerminology());
-			assertNotNull("Ctc Version is null", reloaded.getTerminology().getCtcVersion());
-			assertEquals("Term should be Ctc", Term.CTC, reloaded.getTerminology().getTerm());
+			assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
+			assertNotNull("Ctc Version is null", reloaded.getAeTerminology().getCtcVersion());
+			assertEquals("Term should be Ctc", Term.CTC, reloaded.getAeTerminology().getTerm());
 		}
 	}
 
@@ -98,7 +98,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			Study newStudy = new Study();
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
-			newStudy.setTerminology(Fixtures.createMedDRATerminology(newStudy));
+			newStudy.setAeTerminology(Fixtures.createMedDRATerminology(newStudy));
 			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			newStudy.setAdeersReporting(Boolean.TRUE);
@@ -112,9 +112,9 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		{
 			Study reloaded = getDao().getById(savedId);
 			assertNotNull("Saved Study not found", reloaded);
-			assertNotNull("Terminology is null", reloaded.getTerminology());
-			assertNull("Ctc Version should be null", reloaded.getTerminology().getCtcVersion());
-			assertEquals("Term should be MedDRA", Term.MEDDRA, reloaded.getTerminology().getTerm());
+			assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
+			assertNull("Ctc Version should be null", reloaded.getAeTerminology().getCtcVersion());
+			assertEquals("Term should be MedDRA", Term.MEDDRA, reloaded.getAeTerminology().getTerm());
 		}
 	}
 
@@ -248,7 +248,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			study.setTargetAccrualNumber(150);
 			// study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setTerminology(Fixtures.createCtcV3Terminology(study));
+			study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
 			study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			study.setAdeersReporting(Boolean.TRUE);
 
@@ -297,7 +297,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			// study.setType("Type");
 			study.setMultiInstitutionIndicator(true);
-			study.setTerminology(Fixtures.createCtcV3Terminology(study));
+			study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
 			study.setAdeersReporting(Boolean.TRUE);
 			// study.setCtcVersion(ctc);
 
@@ -462,7 +462,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			Study newStudy = new Study();
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
-			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			newStudy.setAdeersReporting(Boolean.TRUE);
 			// study agent
@@ -520,7 +520,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			Study newStudy = new Study();
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
-			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setAdeersReporting(Boolean.TRUE);
@@ -595,7 +595,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 			Study newStudy = new Study();
 			newStudy.setShortTitle("Short Title Inserted");
 			newStudy.setLongTitle("Long Title Inserted");
-			newStudy.setTerminology(Fixtures.createCtcV3Terminology(newStudy));
+			newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
 			newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 			newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 			newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());

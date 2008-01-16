@@ -25,7 +25,7 @@ import org.hibernate.annotations.Type;
         @Parameter(name = "sequence", value = "seq_terminologies_id")
     }
 )
-public class Terminology extends AbstractMutableDomainObject {
+public class AeTerminology extends AbstractMutableDomainObject {
     private Term term;
     private Ctc ctcVersion;
     private MeddraVersion meddraVersion;

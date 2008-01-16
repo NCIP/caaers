@@ -64,12 +64,12 @@
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology</div>
-                	<div class="value">${command.terminology.term}</div>
+                	<div class="value">${command.aeTerminology.term}</div>
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology Version</div>
                 	<div class="value">
-                	${command.terminology.term eq 'CTC' ? command.terminology.ctcVersion.name : command.terminology.meddraVersion.name} 
+                	${command.aeTerminology.term eq 'CTC' ? command.aeTerminology.ctcVersion.name : command.aeTerminology.meddraVersion.name} 
                 	</div>
             	</div>
             	<div class="row">

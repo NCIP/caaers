@@ -108,7 +108,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     ) throws Exception {
     	//If Study MedDRA based create an AdverseEvent , else Don't  
     	RoutineAdverseEventInputCommand command = ((RoutineAdverseEventInputCommand)oCommand);
-    	if (command.getStudy() != null && command.getStudy().getTerminology().getTerm() == Term.MEDDRA) {
+    	if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
     		 if (command.getAeRoutineReport().getAdverseEvents().size() == 0) {
     	        	command.getAeRoutineReport().addAdverseEvent(new AdverseEvent());
     	        }
@@ -127,12 +127,12 @@ public abstract class AbstractRoutineAdverseEventInputController
     private String getTerm( RoutineAdverseEventInputCommand command){
     	String studyTerminology = "";
     	if (command.getStudy() != null ) {
-    		Term term = command.getStudy().getTerminology().getTerm();
+    		Term term = command.getStudy().getAeTerminology().getTerm();
     		if (term == Term.MEDDRA) {
-    			studyTerminology = " " + command.getStudy().getTerminology().getMeddraVersion().getName();
+    			studyTerminology = " " + command.getStudy().getAeTerminology().getMeddraVersion().getName();
 			}
     		if (term == Term.CTC) {
-    			studyTerminology = " " + command.getStudy().getTerminology().getCtcVersion().getName();
+    			studyTerminology = " " + command.getStudy().getAeTerminology().getCtcVersion().getName();
 			}
 		}
     	return studyTerminology;
