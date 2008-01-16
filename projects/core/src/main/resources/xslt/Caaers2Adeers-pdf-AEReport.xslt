@@ -1281,7 +1281,7 @@
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Pre-Existing Conditions
 		  		</fo:block>
-				<xsl:for-each select="AdverseEventReport/AdverseEventPreExistingCond">
+				<xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  			<xsl:value-of select="PreExistingCondition/text"/><xsl:value-of select="other"/>
 						  		</fo:block> 				

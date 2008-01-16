@@ -89,7 +89,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
 	<value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
 	<value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
+	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
 	<value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
 	<value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
 	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
@@ -236,7 +236,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
 	<value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
 	<value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond</value>
+	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
 	<value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
 	<value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
 	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>

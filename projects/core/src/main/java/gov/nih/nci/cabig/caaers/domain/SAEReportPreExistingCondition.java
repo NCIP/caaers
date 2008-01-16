@@ -18,7 +18,7 @@ import javax.persistence.Transient;
         @Parameter(name="sequence", value="seq_ae_pre_existing_conds")
     }
 )
-public class AdverseEventPreExistingCond extends AbstractExpeditedReportCollectionElementChild {
+public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollectionElementChild {
     private PreExistingCondition preExistingCondition;
     private String other;
 

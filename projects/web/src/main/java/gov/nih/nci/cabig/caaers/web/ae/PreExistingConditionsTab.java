@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import java.util.Map;
 import java.util.ListIterator;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -33,7 +33,7 @@ public class PreExistingConditionsTab extends AeTab {
         InputField otherField = InputFieldFactory.createTextField("other", "Other (pre-existing)", false);
         InputFieldAttributes.setSize(otherField, 50);
 
-        creator.createRepeatingFieldGroup("conmed", "adverseEventPreExistingConds",
+        creator.createRepeatingFieldGroup("conmed", "saeReportPreExistingConditions",
             new SimpleNumericDisplayNameCreator("Pre-existing condition"),
             preCondField,
             otherField
@@ -45,16 +45,16 @@ public class PreExistingConditionsTab extends AeTab {
         ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
         Map<String, InputFieldGroup> fieldGroups, Errors errors
     ) {
-        for (ListIterator<AdverseEventPreExistingCond> it = command.getAeReport().getAdverseEventPreExistingConds().listIterator(); it.hasNext();) {
-        	AdverseEventPreExistingCond preCondition = it.next();
-            validateAdverseEventPreExistingCond(preCondition, it.previousIndex(), errors);
+        for (ListIterator<SAEReportPreExistingCondition> it = command.getAeReport().getSaeReportPreExistingConditions().listIterator(); it.hasNext();) {
+        	SAEReportPreExistingCondition preCondition = it.next();
+            validateSaeReportPreExistingCondition(preCondition, it.previousIndex(), errors);
         }
     }
 
-    private void validateAdverseEventPreExistingCond(AdverseEventPreExistingCond preCondition, int index, Errors errors) {
+    private void validateSaeReportPreExistingCondition(SAEReportPreExistingCondition preCondition, int index, Errors errors) {
         if (preCondition.getPreExistingCondition() == null && preCondition.getOther() == null) {
             errors.rejectValue(
-                String.format("aeReport.adverseEventPreExistingConds[%d]", index),
+                String.format("aeReport.saeReportPreExistingConditions[%d]", index),
                 "REQUIRED",
                 "Either a known pre Existing Condition or other is required"
             );

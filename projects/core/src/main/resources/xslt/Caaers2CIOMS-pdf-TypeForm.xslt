@@ -662,7 +662,7 @@
 							  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
 							  		</fo:block>
 							  		
-							  			<xsl:for-each select="AdverseEventReport/AdverseEventPreExistingCond">
+							  			<xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
 							  				<fo:block xsl:use-attribute-sets="normal" margin-left="2mm" text-align-last="left">	
 							  					<xsl:value-of select="PreExistingCondition/text"/>
 							  					<xsl:value-of select="other"/>

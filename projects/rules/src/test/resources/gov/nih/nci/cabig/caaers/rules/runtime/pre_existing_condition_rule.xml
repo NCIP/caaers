@@ -25,7 +25,7 @@
 			<eval>new ExpeditedAdverseEventValidator() {
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						int i = 0;
-						for(AdverseEventPreExistingCond pc : aeReport.getAdverseEventPreExistingConds()){
+						for(SAEReportPreExistingCondition pc : aeReport.getSaeReportPreExistingConditions()){
 							i++;
 							if(pc.getOther() != null &amp;&amp; pc.getPreExistingCondition() != null){
 								errors.addValidationError("PEC_BR1_ERR", "Either and only 'Pre-existing condition' or 'Other(pre-existing)' must be provided", i);

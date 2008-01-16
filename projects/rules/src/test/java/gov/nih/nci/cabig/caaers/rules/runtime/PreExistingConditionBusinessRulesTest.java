@@ -24,7 +24,7 @@ public class PreExistingConditionBusinessRulesTest extends
 	 */
 	public void testNoPreConditionAndNoOther() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPreExistingConds().clear();
+		aeReport.getSaeReportPreExistingConditions().clear();
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "when there are no pre-conditions and other");
 	}
@@ -38,8 +38,8 @@ public class PreExistingConditionBusinessRulesTest extends
 	 */
 	public void testPreConditionOnly() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPreExistingConds().get(0).setOther(null);
-		aeReport.getAdverseEventPreExistingConds().get(1).setOther(null);
+		aeReport.getSaeReportPreExistingConditions().get(0).setOther(null);
+		aeReport.getSaeReportPreExistingConditions().get(1).setOther(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "when there are  other");
 
@@ -54,8 +54,8 @@ public class PreExistingConditionBusinessRulesTest extends
 	 */
 	public void testOtherOnly() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPreExistingConds().get(0).setPreExistingCondition(null);
-		aeReport.getAdverseEventPreExistingConds().get(1).setPreExistingCondition(null);
+		aeReport.getSaeReportPreExistingConditions().get(0).setPreExistingCondition(null);
+		aeReport.getSaeReportPreExistingConditions().get(1).setPreExistingCondition(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "when there are  pre conditions only");
 	
@@ -85,7 +85,7 @@ public class PreExistingConditionBusinessRulesTest extends
 	 */
 	public void testOneOutOfTwoHasBothPreConditionAndOther() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEventPreExistingConds().get(0).setPreExistingCondition(null);
+		aeReport.getSaeReportPreExistingConditions().get(0).setPreExistingCondition(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertSameErrorCount(errors, 1);
 		assertCorrectErrorCode(errors, "PEC_BR1_ERR");

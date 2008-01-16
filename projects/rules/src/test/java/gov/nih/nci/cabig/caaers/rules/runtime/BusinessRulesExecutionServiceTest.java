@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.Agent;
@@ -237,17 +237,17 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		//populate pre-existing condition.
 		PreExistingCondition pc1 = new PreExistingCondition();
 		pc1.setText("abcd");
-		AdverseEventPreExistingCond aePc = new AdverseEventPreExistingCond();
+		SAEReportPreExistingCondition aePc = new SAEReportPreExistingCondition();
 		aePc.setOther("Other");
 		aePc.setPreExistingCondition(pc1);
-		aeReport.addAdverseEventPreExistingCond(aePc);
+		aeReport.addSaeReportPreExistingCondition(aePc);
 		
 		PreExistingCondition pc2 = new PreExistingCondition();
 		pc2.setText("abcd");
-		AdverseEventPreExistingCond aePc2 = new AdverseEventPreExistingCond();
+		SAEReportPreExistingCondition aePc2 = new SAEReportPreExistingCondition();
 		aePc2.setPreExistingCondition(pc2);
 		aePc2.setOther("Other");
-		aeReport.addAdverseEventPreExistingCond(aePc2);
+		aeReport.addSaeReportPreExistingCondition(aePc2);
 		
 		
 		//populate lab information

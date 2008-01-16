@@ -7,7 +7,7 @@
 <%@attribute name="style"%>
 
 <ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" style="${style}">
-    <tags:errors path="aeReport.adverseEventPreExistingConds[${index}]"/>
+    <tags:errors path="aeReport.saeReportPreExistingConditions[${index}]"/>
     <tags:renderRow field="${fieldGroup.fields[0]}">
         <jsp:attribute name="label">
             <label>

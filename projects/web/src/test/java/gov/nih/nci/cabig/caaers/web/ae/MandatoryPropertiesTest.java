@@ -50,8 +50,8 @@ public class MandatoryPropertiesTest extends TestCase {
     }
 
     public void testIsMandatoryForBothPartsOfCodedOrOther() throws Exception {
-        mandatory.add(tree.find("adverseEventPreExistingConds[].preExistingCondition"));
-        assertTrue(mandatory.isMandatory("adverseEventPreExistingConds[0].preExistingCondition"));
-        assertTrue(mandatory.isMandatory("adverseEventPreExistingConds[0].other"));
+        mandatory.add(tree.find("saeReportPreExistingConditions[].preExistingCondition"));
+        assertTrue(mandatory.isMandatory("saeReportPreExistingConditions[0].preExistingCondition"));
+        assertTrue(mandatory.isMandatory("saeReportPreExistingConditions[0].other"));
     }
 }

@@ -82,9 +82,9 @@
     <field name="treatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
       <bind-xml name="TreatmentInformation"/>
     </field>
-    <field name="adverseEventPreExistingConds"
-      type="gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond" collection="arraylist">
-      <bind-xml name="AdverseEventPreExistingCond"/>
+    <field name="saeReportPreExistingConditions"
+      type="gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition" collection="arraylist">
+      <bind-xml name="SAEReportPreExistingCondition"/>
     </field>
     <field name="otherCauses" type="gov.nih.nci.cabig.caaers.domain.OtherCause"
       collection="arraylist">
@@ -174,8 +174,8 @@
     </field>
   </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.AdverseEventPreExistingCond">
-    <map-to xml="AdverseEventPreExistingCond"/>
+  <class name="gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition">
+    <map-to xml="SAEReportPreExistingCondition"/>
     <field name="id" type="integer">
       <bind-xml name="id" node="element"/>
     </field>

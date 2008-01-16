@@ -206,7 +206,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                 )
             ),
             section(PRE_EXISTING_CONDITION_SECTION,
-                list("adverseEventPreExistingConds", "AdverseEventPreExistingCond",
+                list("saeReportPreExistingConditions", "SAEReportPreExistingCondition",
                     codedOrOther(
                         "preExistingCondition", "Pre-existing condition",
                         "other", "Other (pre-existing)"

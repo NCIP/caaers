@@ -30,7 +30,7 @@
         Object.extend(EnterPriorTherapy.prototype, {
             initialize: function(index, preExisitingConditionName) {
                 this.index = index
-                var cmProperty = "aeReport.adverseEventPreExistingConds[" + index + "]";
+                var cmProperty = "aeReport.saeReportPreExistingConditions[" + index + "]";
                 this.priorTherapyProperty = cmProperty + ".preExistingCondition"
                 this.otherProperty = cmProperty + ".other"
 
@@ -82,7 +82,7 @@
         })
 
         Element.observe(window, "load", function() {
-            <c:forEach items="${command.aeReport.adverseEventPreExistingConds}" varStatus="status" var="aePreExistingCond">
+            <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status" var="aePreExistingCond">
             new EnterPriorTherapy(${status.index}, '${aePreExistingCond.preExistingCondition.text}')
             </c:forEach>
 
@@ -94,7 +94,7 @@
                     captureHelpControlEvents();
                 },
                 deletable: true
-            }, 'aeReport.adverseEventPreExistingConds')
+            }, 'aeReport.saeReportPreExistingConditions')
         })
     </script>
 </head>
@@ -105,7 +105,7 @@
         </jsp:attribute>
       
         <jsp:attribute name="repeatingFields">
-        <c:forEach items="${command.aeReport.adverseEventPreExistingConds}" varStatus="status">
+        <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
             <ae:onePreExistingCond index="${status.index}"/>
         </c:forEach>    
         </jsp:attribute>

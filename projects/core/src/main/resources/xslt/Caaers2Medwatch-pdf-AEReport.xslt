@@ -610,7 +610,7 @@
 						7. Other Relevant History, Including Pre-existing Medical Conditions (e.g. allergies, race, pregnancy, smoking and alchohol use,liver / kidney problems, etc.)
 					</fo:block>
 					<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-					<xsl:for-each select="AdverseEventReport/AdverseEventPreExistingCond">
+					<xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
 							  		<fo:block xsl:use-attribute-sets="normal" > 
 							  			<xsl:value-of select="PreExistingCondition/text"/><xsl:value-of select="other"/>
 							  		</fo:block> 				
