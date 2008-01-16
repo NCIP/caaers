@@ -32,12 +32,7 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 	private static Log log = LogFactory.getLog(CreateParticipantController.class);
 
 	private StudyDao studyDao;
-
-	private StudyService studyService;
-
 	private StudySiteDao studySiteDao;
-
-	private ListValues listValues;
 	private ConfigProperty configurationProperty;
 	
 	@Override
@@ -45,14 +40,12 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 		flow.addTab(new CreateParticipantTab());
 		flow.addTab(new SelectStudyForParticipantTab());
 		flow.addTab(new ReviewParticipantTab());
-		// getFlow().addTab(new Tab("Confirmation", "Confirmation", "par/par_confirmation"));
 	}
 
 	@Override
 	protected Object formBackingObject(final HttpServletRequest request) throws Exception {
 		log.debug("Entering formBackingObject ...");
 		NewParticipantCommand participantCommand = new NewParticipantCommand();
-		List<Identifier> identifiers = new ArrayList<Identifier>();
 		OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
 		organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
 		organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
@@ -121,15 +114,6 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 		this.studyDao = studyDao;
 	}
 
-	@Required
-	public void setStudyService(final StudyService studyService) {
-		this.studyService = studyService;
-	}
-
-	@Required
-	public void setListValues(final ListValues listValues) {
-		this.listValues = listValues;
-	}
 	
 	public ConfigProperty getConfigurationProperty() {
 		return configurationProperty;

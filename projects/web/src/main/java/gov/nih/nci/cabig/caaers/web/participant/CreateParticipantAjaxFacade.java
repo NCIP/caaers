@@ -39,7 +39,6 @@ public class CreateParticipantAjaxFacade {
 
 	public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME + ".to-replace";
 
-	// public static final String EDIT_PARTICIPANT_FORM_NAME = E.class.getName() + ".FORM.command";
 
 	private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
 

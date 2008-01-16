@@ -66,7 +66,7 @@
 					</form:select></td>
                 <td><form:input path="studyText" size="25" /></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-                <td><input type="submit" alignment="center" value="go" name="${targetPage}" alt="GO" align="middle" width="22"
+                <td><input type="submit" value="go" name="${targetPage}" alt="GO" align="middle" width="22"
 						height="10" border="0"></td>
             </tr>
             <tr>
@@ -82,7 +82,7 @@
 </chrome:box>
 
 <p id="instructions">
-Please choose a Study and then press Save & Continue to proceed 
+Please choose a Study and then press Save &amps; Continue to proceed 
 </p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">

@@ -26,62 +26,56 @@ function submitPage(s){
 
 
 <tags:tabForm tab="${tab}" flow="${flow}"
-	title="${command.participant.lastName}, ${command.participant.firstName}" willSave="false">
-	
+	title="${command.participant.lastName}, ${command.participant.firstName}"
+	willSave="false">
+
 	<jsp:attribute name="repeatingFields">
-    <c:if test="${(empty command.participant.id) or ( command.participant.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
+    	<c:if test="${(empty command.participant.id) or ( command.participant.id le 0) }">
+			<input type="hidden" name="_finish" value="true" />
+		</c:if>
     <chrome:division title="Assigned to Studies">
 		<table class="tablecontent">
-			<tr>
-				<th scope="col">Study Short Title</th>
-				<th scope="col">Site</th>
-			</tr>
-      	<c:forEach var="studySite" items="${command.studySites}"
-				varStatus="status"> 
-			<tr class="results">
-			
-					<td>${studySite.study.shortTitle}</td>
-				<td>${studySite.organization.name}</td>
-			</tr>
-			</c:forEach>
-			</table>
-			<br>
-    
-
-</chrome:division>  
-
-     <chrome:division title="Participant Details">
-    
+		 <tr>
+			<th scope="col">Study Short Title</th>
+			<th scope="col">Site</th>
+		 </tr>
+      	 <c:forEach var="studySite" items="${command.studySites}" varStatus="status"> 
+		 <tr class="results">
+			<td>${studySite.study.shortTitle}</td>
+			<td>${studySite.organization.name}</td>
+		</tr>
+		</c:forEach>
+	   </table>
+	   <br>
+	</chrome:division>  
+    <chrome:division title="Subject Details">
         <br>
-        
-		<table id="test2" class="single-fields" >
-        	<tr>
-    	<td>
-         <div class="leftpane">
+		<table id="test2" class="single-fields">
+       	<tr>
+    		<td>
+         	<div class="leftpane">
 	        <div class="row">
-	            <div class="label">First Name:</div>
+	            <div class="label">First name:</div>
 	            <div class="value">${command.participant.firstName}</div>
 	        </div>
-	        
-	         <div class="row">
-	            <div class="label">Last Name:</div>
+            <div class="row">
+	            <div class="label">Last name:</div>
 	            <div class="value">${command.participant.lastName}</div>
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label">Maiden Name:</div>
+	            <div class="label">Maiden name:</div>
 	            <div class="value">${command.participant.maidenName}</div>
 	        </div>
 	        
 	        <div class="row">
-	            <div class="label">Middle Name:</div>
+	            <div class="label">Middle name:</div>
 	            <div class="value">${command.participant.middleName}</div>
 	        </div>
 	       </td> <td>
 	         <div class="row">
-	            <div class="label">Date of Birth:</div>
-	            <div class="value"><tags:formatDate
-				value="${command.participant.dateOfBirth}" /></div>
+	            <div class="label">Date of birth:</div>
+	            <div class="value"><tags:formatDate	value="${command.participant.dateOfBirth}" /></div>
 	        </div>
 	        
 	        <div class="row">
@@ -103,7 +97,7 @@ function submitPage(s){
 	     </td>
 	    </tr>
 	    </table> 
-	      </chrome:division>
+	  </chrome:division>
 	
 		<c:if test="${not empty command.participant.identifiers}">
 			<chrome:division title="Identifiers">
@@ -113,7 +107,8 @@ function submitPage(s){
 				<th scope="col">Identifier Type</th>
 				<th scope="col">Identifier</th>
 			</tr>
-			<c:forEach items="${command.participant.identifiers}" var="identifier">
+			<c:forEach items="${command.participant.identifiers}"
+						var="identifier">
 			<tr class="results">
 				<c:if
 								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">

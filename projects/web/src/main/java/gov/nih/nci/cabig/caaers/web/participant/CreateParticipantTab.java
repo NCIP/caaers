@@ -27,7 +27,7 @@ import org.springframework.validation.Errors;
 public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
 	public CreateParticipantTab() {
-		super("Enter Participant Information", "Details", "par/par_create_participant");
+		super("Enter Subject Information", "Details", "par/par_create_participant");
 	}
 
 	private OrganizationDao organizationDao;

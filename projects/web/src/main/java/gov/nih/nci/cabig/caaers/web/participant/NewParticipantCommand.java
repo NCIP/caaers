@@ -46,46 +46,6 @@ public class NewParticipantCommand {
 		this.participant = participant;
 	}
 
-	// public static NewParticipantCommand createNewParticipantCommand(final Participant participant) {
-	//
-	// NewParticipantCommand newParticipantCommand = new NewParticipantCommand();
-	// // newParticipantCommand.setInstitutionalPatientNumber(participant.getInstituitionalPatientNumber());
-	//
-	// List<StudyParticipantAssignment> assignments = participant.getAssignments();
-	// for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
-	// newParticipantCommand.addStudySite(studyParticipantAssignment.getStudySite());
-	// }
-	//
-	// newParticipantCommand.setOrganization(assignments.get(0).getStudySite().getOrganization());
-	// // for (int i = 0; i < participant.getStudies()studySites.size(); i++) {
-	// // newParticipantCommand.getAssignmts().add(new StudyParticipantAssignment(participant, studySites.get(i)));
-	// // }
-	// return newParticipantCommand;
-	// }
-
-	// private void addStudySite(final StudySite studySite) {
-	// studySites.add(studySite);
-	// }
-
-	// public Participant createParticipant() {
-	// Participant participant = new Participant();
-	// participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
-	// participant.setInstitution(getInstitution());
-	// participant.setFirstName(getFirstName());
-	// participant.setMaidenName(getMaidenName());
-	// participant.setMiddleName(getMiddleName());
-	// participant.setLastName(getLastName());
-	// participant.setDateOfBirth(getDateOfBirth());
-	// participant.setGender(getGender());
-	// participant.setRace(getRace());
-	// participant.setEthnicity(getEthnicity());
-	// participant.setIdentifiers(getIdentifiers());
-	//
-	// for (int i = 0; i < studySites.size(); i++) {
-	// participant.getAssignments().add(new StudyParticipantAssignment(participant, studySites.get(i)));
-	// }
-	// return participant;
-	// }
 
 	public String[] getStudySiteArray() {
 		return studySiteArray;

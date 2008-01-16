@@ -162,8 +162,8 @@
 ${command.organization}
 </c:if>
 </chrome:division>
-		<chrome:division  title="Partcipant Details"  >			
-		<table id="test2" class="single-fields" >
+		<chrome:division  title="Subject Details"  >			
+		<table id="test2" class="single-fields" width="100%">
         	<tr >
     				<td> 
     				<c:forEach begin="0" end="3" items="${fieldGroups.participant.fields}" var="field">
@@ -180,7 +180,7 @@ ${command.organization}
     		
     		</chrome:division>
     
-            	<chrome:division  title="Study ID Assigned by Organization"  >
+            <chrome:division  title="Subject ID Assigned by Organization"  >
         	<table id="test" class="tablecontent">
     			<tr id="organization-section">
     				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>
@@ -200,7 +200,7 @@ ${command.organization}
             	</chrome:division>
     
     
-            <chrome:division title="Study ID Assigned by a System">
+            <chrome:division title="Subject ID Assigned by a System">
         	<table id="test1" class="tablecontent" >
     			<tr id="system-section">
     				<th  class="tableHeader"><tags:requiredIndicator />Identifier</th>

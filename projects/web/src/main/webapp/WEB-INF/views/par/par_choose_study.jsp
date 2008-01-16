@@ -34,42 +34,35 @@ function updateTargetPage(s){
 <!-- TOP NAVIGATION STARTS HERE -->
 
 <chrome:box autopad="true">
+  	<p class="instructions">
+  	  Choose the item, then type in a minimum of two characters then click <b>Go</b> for search
+  	</p>
     <form:form id="searchForm" method="post">
-    <div>
+    	<div>
     		<input type="hidden" name="_action" value="go">
-	</div>
-        
+		</div>
         <table border="0" cellspacing="0" cellpadding="0" class="search">
             <tr>
-            </tr>
-            <tr>
-                <td class="searchType">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-                <td><form:select path="searchType">
-						<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
-					</form:select></td>
+                <td>
+                	<tags:requiredIndicator />&nbsp;
+                		<form:select path="searchType">
+							<form:options items="${searchType}" itemLabel="desc"itemValue="code" />
+					</form:select>
+				</td>
                 <td><form:input path="searchText" size="25" /></td>
                 <td><input type="submit" value="go" name="_target1" alt="GO"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" class="notation">
-                    <span class="labels">(<span class="red">*</span><em>Required
-                        Information</em>)</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    ^ Minimum two characters for search.
-                </td>
             </tr>
         </table>
     </form:form>
 </chrome:box>
 
 <tags:tabForm tab="${tab}" flow="${flow}" willSave="false">
+	<jsp:attribute name="instructions">
+	 <c:if test="${fn:length(command.studies) gt 0}">
+	 	Please choose one or more study from the below listing.
+	 </c:if>
+	</jsp:attribute>
     <jsp:attribute name="singleFields">
-    <div>
-    		<input type="hidden" name="_action" value="">
-	</div>
         <ec:table items="command.studies" var="study"
             action="${pageContext.request.contextPath}/pages/newParticipant"
             imagePath="${pageContext.request.contextPath}/images/table/*.gif"
@@ -89,6 +82,7 @@ function updateTargetPage(s){
 				<ec:column property="status" title="Status" />
             </ec:row>
         </ec:table>
+        <input type="hidden" name="_action" value="" />
     </jsp:attribute>
 </tags:tabForm>
 </body>

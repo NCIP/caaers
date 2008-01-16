@@ -78,7 +78,7 @@
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="List Studies" p:linkName="studyController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="List Participants" p:linkName="participantController"/>
+	      p:displayName="List Subjects" p:linkName="participantController"/>
 
       </list>
     </property>
@@ -140,18 +140,18 @@
 
 
   <bean id="participantTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-	p:displayName="Participants">
+	p:displayName="Subjects">
     <property name="taskList">
       <list>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Import Participant" p:linkName="importController"/>
+	      p:displayName="Import Subject" p:linkName="importController"/>
 
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Create Participant" p:linkName="createParticipantController"/>
+	      p:displayName="Create Subject" p:linkName="createParticipantController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
+	      p:displayName="Search/Edit Subject" p:linkName="searchParticipantController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
+	      p:displayName="Assign Subjects to Studies" p:linkName="assignController"/>
       </list>
     </property>
   </bean>
@@ -253,16 +253,16 @@
 	  </property>
 	</bean>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Participants" p:mainController="createParticipantController">
+	      p:displayName="Subjects" p:mainController="createParticipantController">
 	  <property name="pathMapping"><value>/participant/**</value></property>
 	  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Create Participant" p:linkName="createParticipantController"/>
+		    p:displayName="Create Subject" p:linkName="createParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Search/Edit Participant" p:linkName="searchParticipantController"/>
+		    p:displayName="Search/Edit Subject" p:linkName="searchParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Assign Participants to Studies" p:linkName="assignController"/>
+		    p:displayName="Assign Subjects to Studies" p:linkName="assignController"/>
 	    </list>
 	  </property>
 	</bean>
@@ -324,7 +324,7 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Study search" p:linkName="studyController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Participant search" p:linkName="participantController"/>
+		    p:displayName="Subject search" p:linkName="participantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="AE search" p:linkName="adverseEventController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"

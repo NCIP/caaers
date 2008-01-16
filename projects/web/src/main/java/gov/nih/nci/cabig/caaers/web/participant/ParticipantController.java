@@ -37,11 +37,11 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 
 	public ParticipantController() {
 		setCommandClass(NewParticipantCommand.class);
-		Flow<C> flow = new Flow<C>("Create Participant");
+		Flow<C> flow = new Flow<C>("Create Subject");
 
 		layoutTabs(flow);
 		setFlow(flow);
-		setAllowDirtyBack(false);
+		setAllowDirtyBack(true);
 		setAllowDirtyForward(false);
 
 	}
@@ -52,16 +52,6 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
 		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
-	}
-
-	@Override
-	protected boolean suppressValidation(final HttpServletRequest request) {
-
-		Object go = findInRequest(request, "_action");
-		if (go instanceof String && ((String) go).equalsIgnoreCase("go")) {
-			return true;
-		}
-		return super.suppressValidation(request);
 	}
 
 	@Override
