@@ -19,10 +19,9 @@
             </c:if>
         </span>
         <span class="next">
-            <input type="reset" value="Reset tab"/>
 
-            <c:if test="${not isLast}">
-                <input type="submit" id="flow-update" class="tab${tabNumber}" value="${willSave ? 'Save' : 'Update'}"/>
+            <c:if test="${not isLast  and willSave}">
+                <input type="submit" id="flow-update" class="tab${tabNumber}" value="Save"/>
             </c:if>
 
             <c:set var="continueLabel" value="${isLast || willSave ? 'Save' : ''}"/>
