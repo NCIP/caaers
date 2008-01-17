@@ -66,33 +66,33 @@
 		function notifyPscRoutineEvent(aeReportId) {
 
             AE.showIndicator("notify-indicator-routine-" + aeReportId)
-
             createAE.pushRoutineAdverseEventToStudyCalendar(aeReportId, function(result) {
-
                 AE.hideIndicator("notify-indicator-routine-" + aeReportId)
-
                 var unit = $("notify-unit-routine-" + aeReportId)
-
                 if (result) {
-
                     Element.update(unit, "Notified")
-
                     Element.addClassName(unit, "success")
-
                 } else {
-
                     Element.update(unit, "Notification failed")
-
                     Element.addClassName(unit, "failure")
-
                 }
-
             })
-
+        }
+        
+        function executeAction(aeReportId,url){
+			
+			var actions = $("actions-"+aeReportId)
+			 for ( i=0; i < actions.length; i++)
+               {
+                  if (actions.options[i].selected && actions.options[i].value != "none") {
+                     window.open(url + "&format="+ actions.options[i].value,"_self")
+                   }
+               }
         }
 
 		
         Event.observe(window, "load", function() {
+            
             $$("a.notify").each(function(a) {
                 Event.observe(a, "click", function(e) {
                     Event.stop(e);
@@ -101,20 +101,12 @@
                 })
             })
 
-            
-
             $$("a.notify-routine").each(function(a) {
-
                 Event.observe(a, "click", function(e) {
-
                     Event.stop(e);
-
                     var roReportId = Event.element(e).id.substring(14)
-
                     notifyPscRoutineEvent(roReportId)
-
                 })
-
             })
         })
     </script>
@@ -202,19 +194,31 @@
 			
 			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
 			
-			<td>
+			<td width="20%">
+					
+					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.id}'/>')">
+     					<OPTION selected label="none" value="none">None</OPTION>
+     					<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+     					<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch PDF</OPTION>
+     					<OPTION label="dcp" value="dcp">DCP SAE form</OPTION>
+     					<OPTION label="xml" value="xml">caAERS XML</OPTION>
+					</SELECT>
+					
+					|
+					
 					<c:if test="${report.notificationMessagePossible}">
                 		<span class="notify-unit" id="notify-unit-${report.id}">
                     	<a id="notify-${report.id}" class="notify" href="#">notify PSC</a>
                     	<tags:indicator id="notify-indicator-${report.id}"/>
                 		</span>
            			</c:if>
-					<p/>
+					
+					<%--
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=pdf"/>">AdEERS PDF</a> <br/>
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=medwatchpdf"/>">MedWatch PDF</a> <br/>
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=dcp"/>">DCP SAE form</a> <br/>
                    	<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=xml"/>">caAERS XML</a>
-           			
+           			--%>
 			</td>
 			
 		</tr>
