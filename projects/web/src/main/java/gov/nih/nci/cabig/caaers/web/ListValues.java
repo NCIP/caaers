@@ -67,7 +67,7 @@ public class ListValues {
 
 	public List<ListValues> getParticipantGender() {
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov1 = new ListValues("", "---");
 		ListValues lov2 = new ListValues("Male", "Male");
 		ListValues lov3 = new ListValues("Female", "Female");
 		ListValues lov4 = new ListValues("Not Reported", "Not Reported");
@@ -82,7 +82,7 @@ public class ListValues {
 
 	public List<ListValues> getParticipantEthnicity() {
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov1 = new ListValues("", "---");
 		ListValues lov2 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
 		ListValues lov3 = new ListValues("Non Hispanic or Latino", "Non Hispanic or Latino");
 		ListValues lov4 = new ListValues("Not Reported", "Not Reported");
@@ -97,7 +97,7 @@ public class ListValues {
 
 	public List<ListValues> getParticipantRace() {
 		List<ListValues> col = new ArrayList<ListValues>();
-		ListValues lov1 = new ListValues("---", "---");
+		ListValues lov1 = new ListValues("", "---");
 		ListValues lov2 = new ListValues("Asian", "Asian");
 		ListValues lov3 = new ListValues("White", "White");
 		ListValues lov4 = new ListValues("Black or African American", "Black or African American");

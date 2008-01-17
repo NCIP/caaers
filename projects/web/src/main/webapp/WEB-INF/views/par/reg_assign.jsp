@@ -6,8 +6,6 @@
 <html>
 <head>
 <title>Search for a Study or Participant </title>
-<tags:javascriptLink name="validation" />
-<tags:javascriptLink name="commons-validation" />
 <script type="text/javascript">
 	function navRollOver(obj, state) {
   		document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';

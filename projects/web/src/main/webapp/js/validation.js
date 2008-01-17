@@ -69,11 +69,11 @@ var ValidationManager = {
 	registeredInvokes: new Array(),
 	ERROR_STRATEGY:"text",
 	ERROR_HIGHTLIGHT_COLOR:"red",
-	ERROR_MSG_REQUIRED:"Missing",
-	ERROR_MSG_PATTERN:"Incorrect format",
-	ERROR_MSG_MINLENGTH:"too short",
-	ERROR_MSG_MAXLENGTH:"too long",
-	ERROR_MSG_PHONE:"invalid phone number",
+	ERROR_MSG_REQUIRED:"Missing ",
+	ERROR_MSG_PATTERN:"Invalid ",
+	ERROR_MSG_MINLENGTH:"too short ",
+	ERROR_MSG_MAXLENGTH:"too long ",
+	ERROR_MSG_PHONE:"Invalid ",
 
 	validateForm: function(submit){
 		formVar=submit?Event.element(submit):this
@@ -145,7 +145,7 @@ var ValidationManager = {
 		for(i=0 ; i<strategies.length ; i++){
 		errorStrategy1=strategies[i]
 			if(errorStrategy1=="text"){
-				new Insertion.After(element, " <ul id='"+element.name+"-msg'class='errors'><li>"+msg+"</li></ul>")
+				new Insertion.Bottom(element.parentNode, " <ul id='"+element.name+"-msg'class='errors'><li>"+msg+element.title+"</li></ul>")
 			}
 			if(errorStrategy1=="highlight") {
 				element.style._backgroundColor=element.style._backgroundColor?element.style._backgroundColor:element.style.backgroundColor

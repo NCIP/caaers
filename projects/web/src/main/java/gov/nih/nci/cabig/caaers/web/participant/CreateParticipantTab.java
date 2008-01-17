@@ -103,9 +103,9 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
 		rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
 
-		rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", false));
+		rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
 		rfgFactory.addField(InputFieldFactory
-				.createAutocompleterField("organization", "Organization Identifier", false));
+				.createAutocompleterField("organization", "Organization Identifier", true));
 		rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
 		InputFieldGroupMap map = new InputFieldGroupMap();

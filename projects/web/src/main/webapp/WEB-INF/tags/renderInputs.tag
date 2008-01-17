@@ -7,12 +7,12 @@
 <%@attribute name="size"%>
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <c:choose>
-    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}"/></c:when>
-    <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}"/></c:when>
-    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}"/></c:when>
+    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
+    <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&' : ''}validate-DATE[(mm/dd/yyyy)]" /></c:when>
+    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
     <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox path="${field.propertyName}" disabled="${disabled}"/></c:when>
-    <c:when test="${field.categoryName == 'select'}">
-        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" />
+    <c:when test="${field.categoryName == 'select'}" >
+        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}"/>
     </c:when>
     <c:when test="${field.categoryName == 'composite'}">
         <c:forEach items="${field.attributes.subfields}" var="subfield">
@@ -23,7 +23,7 @@
         </c:forEach>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text" id="${field.propertyName}-input" class="autocomplete"  ${disabled ? "disabled" : ""}/>
+        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text" id="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${field.required ? 'validate-NOTEMPTY' : ''}"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
         <c:if test="${field.attributes.enableClear and not disabled}"><input type="button" id="${field.propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${field.propertyName}-input').clear();$('${field.propertyName}').clear();" /></c:if>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
