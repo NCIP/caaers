@@ -106,7 +106,7 @@ public class TreatmentTab extends AeTab {
             .addField(InputFieldFactory.createTextField("amount", "", required))
             .addField(InputFieldFactory.createSelectField("units",
             		"units",
-            		true,
+            		false,
             		InputFieldFactory.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"), "code", "desc", "Please Select")));
         if(!hideRoute){
             group.addField(InputFieldFactory.createTextField("route", "route", false /* never required */));
