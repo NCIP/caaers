@@ -29,12 +29,8 @@ public class ReminderEmailJob extends ScheduledNotificationJobTemplate {
 
 		try{
 			JavaMailSenderImpl mailer = (JavaMailSenderImpl)applicationContext.getBean("mailer");
-			mailer.setPort(configuration.get(Configuration.SMTP_PORT));
-			mailer.setHost(configuration.get(Configuration.SMTP_ADDRESS));
 			String username = configuration.get(Configuration.SMTP_USER);
-			String password = configuration.get(Configuration.SMTP_PASSWORD);
 			if(StringUtils.isNotEmpty(username)) mailer.setUsername(username);
-			if(StringUtils.isNotEmpty(password)) mailer.setPassword(password);
 
             mailer.send(msg);
             return DeliveryStatus.DELIVERED;
