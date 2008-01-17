@@ -31,13 +31,13 @@ public class ReminderEmailJob extends ScheduledNotificationJobTemplate {
 			JavaMailSenderImpl mailer = (JavaMailSenderImpl)applicationContext.getBean("mailer");
 			String username = configuration.get(Configuration.SMTP_USER);
 			if(StringUtils.isNotEmpty(username)) mailer.setUsername(username);
-
+			System.out.println("--- before send()");
             mailer.send(msg);
+            System.out.println("---- after send ()");
             return DeliveryStatus.DELIVERED;
-        }catch(MailException ex) {
-            logger.error(ex);
-        }catch(RuntimeException ex){
-        	logger.error(ex);
+        }catch(Exception ex) {
+        	ex.printStackTrace();
+        	logger.error("Error while trying to email", ex);
         }
         return DeliveryStatus.ERROR;
 	}
