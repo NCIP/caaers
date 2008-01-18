@@ -29,9 +29,9 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	Error Message : Either and only LAB_CATEGORY and LAB_NAME or OTHER_LAB must be provided.
 	
 	RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :"“Baseline Date” must not be greater “Nadir/Worst Date”"
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message : BASELINE_DATE must not be greater WORST_DATE
 	
 	RuleName : LAB_UK_CHK
 	Logic :Lab Results must be unique
@@ -181,16 +181,16 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	
 	/**
 	 * RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :"“Baseline Date” must not be greater .“Nadir/Worst Date” "
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message :BASELINE_DATE  must not be greater WORST_DATE
 	
 	 * RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message : WORST_DATE must not be greater than RECOVERY_LAST_DATE 
 	
-			RuleName : LAB_BR2B_CHK
+	RuleName : LAB_BR2B_CHK
 	Logic : “Baseline”, “Nadir/Worst”, “Recovery” or “Latest” fields must  be provided if “Lab Category” is not ‘Microbiology’.
 	Error Code : LAB_BR2B_ERR
 	Error Message : "BASELINE_DATE,  BASELINE_VALUE, BASELINE_UOM, WORST_DATE, WORST_VALUE, WORST_UOM, RECOVERY_LATEST_DATE, RECOVERY_LATEST_VALUE and RECOVERY_LATEST_UOM must be provided if LAB_CATEGORY is not ""Microbiology"".
@@ -212,25 +212,25 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	
 	/**
 	 * RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :"“Baseline Date” must not be greater “Nadir/Worst Date”."
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message :BASELINE_DATE  must not be greater WORST_DATE
 	 */
 	/**
 	 * @throws Exception
 	 */
-	public void testLabsHavingBaselineDateGTWorstDate() throws Exception {
+	public void testLabsHavingBaselineDateLTWorstDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue bv1 = new LabValue();
 		bv1.setValue("33");
-		bv1.setDate(DateUtils.createDate(2007, 12, 1));
+		bv1.setDate(DateUtils.createDate(2005, 12, 1));
 		aeReport.getLabs().get(0).setBaseline(bv1);
 		aeReport.getLabs().get(1).setBaseline(bv1);
 		
 		LabValue wv1 = new LabValue();
 		wv1.setValue("33");
-		wv1.setDate(DateUtils.createDate(2007, 1, 3));
+		wv1.setDate(DateUtils.createDate(2006, 1, 3));
 		
 		aeReport.getLabs().get(0).setNadir(wv1);
 		aeReport.getLabs().get(1).setNadir(wv1);
@@ -248,16 +248,16 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	}
 	/**
 	 * RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :"“Baseline Date” must not be greater “Nadir/Worst Date” ."
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message :  BASELINE_DATE must not be greater WORST_DATE
 	 */
-	public void testLabsHavingBaselineDateLTWorstDate() throws Exception {
+	public void testLabsHavingBaselineDateGTWorstDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue bv1 = new LabValue();
 		bv1.setValue("33");
-		bv1.setDate(DateUtils.createDate(2007, 1, 1));
+		bv1.setDate(DateUtils.createDate(2008, 1, 1));
 		aeReport.getLabs().get(0).setBaseline(bv1);
 		aeReport.getLabs().get(1).setBaseline(bv1);
 		
@@ -270,7 +270,7 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 		
 		LabValue rv1 = new LabValue();
 		rv1.setValue("33");
-		rv1.setDate(DateUtils.createDate(2005, 1, 2));
+		rv1.setDate(DateUtils.createDate(2008, 1, 2));
 	
 
 		aeReport.getLabs().get(0).setRecovery(rv1);
@@ -285,11 +285,11 @@ public class LabBusinessRulesTest extends BusinessRulesExecutionServiceTest {
 	
 	/**
 	 * RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :" “Baseline Date” must not be greater.“Nadir/Worst Date”"
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message : BASELINE_DATE must not be greater WORST_DATE
 	 */
-	public void testLabsOneOutOfTwoHavingBaselineDateLTWorstDate() throws Exception {
+	public void testLabsOneOutOfTwoHavingBaselineDateGTWorstDate() throws Exception {
 ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue bv1 = new LabValue();
@@ -309,7 +309,7 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue rv1 = new LabValue();
 		rv1.setValue("33");
-		rv1.setDate(DateUtils.createDate(2005, 1, 2));
+		rv1.setDate(DateUtils.createDate(2008, 1, 2));
 	
 
 		aeReport.getLabs().get(0).setRecovery(rv1);
@@ -319,14 +319,14 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "LAB_BR3_ERR");
 		assertSameErrorCount(errors, 1);
-		assertEquals("Replcement incorrect", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
+		assertEquals("Replcement incorrect", 1, errors.getErrorAt(0).getReplacementVariables()[0]);
 	}
 	
 	/**
-	 * RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	 *RuleName : LAB_BR4_CHK
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message : WORST_DATE must not be greater than RECOVERY_LAST_DATE 
 	 */
 	public void testRecoverDateOnly() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -345,17 +345,17 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 	
 	
 	/**
-	 * RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	 *RuleName : LAB_BR4_CHK
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message : WORST_DATE must not be greater than RECOVERY_LAST_DATE 
 	 */
 	public void testWorstDateEqualToRecoveryDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue bv1 = new LabValue();
 		bv1.setValue("33");
-		bv1.setDate(DateUtils.createDate(2008, 1, 1));
+		bv1.setDate(DateUtils.createDate(2005, 1, 1));
 		aeReport.getLabs().get(0).setBaseline(bv1);
 		aeReport.getLabs().get(1).setBaseline(bv1);
 		
@@ -377,23 +377,23 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 	}
 	/**
 	 * RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message : WORST_DATE must not be greater than RECOVERY_LAST_DATE 
 	 */
-	public void testWorstDateLTRecoveryDate() throws Exception {
+	public void testWorstDateGTRecoveryDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 
 		LabValue bv1 = new LabValue();
 		bv1.setValue("33");
-		bv1.setDate(DateUtils.createDate(2008, 1, 1));
+		bv1.setDate(DateUtils.createDate(2004, 1, 1));
 		aeReport.getLabs().get(0).setBaseline(bv1);
 		aeReport.getLabs().get(1).setBaseline(bv1);
 		
 		LabValue rv1 = new LabValue();
 		rv1.setValue("33");
-		rv1.setDate(DateUtils.createDate(2007, 1, 3));
+		rv1.setDate(DateUtils.createDate(2005, 1, 3));
 		aeReport.getLabs().get(0).setRecovery(rv1);
 		aeReport.getLabs().get(1).setRecovery(rv1);
 		
@@ -411,16 +411,16 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 	}
 	/**
 	 * RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date” .
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message : WORST_DATE must not be greater than RECOVERY_LAST_DATE 
 	 */
-	public void testOneOutOfTwoHavingWorstDateLTRecoveryDate() throws Exception {
+	public void testOneOutOfTwoHavingWorstDateGTRecoveryDate() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 
 		LabValue bv1 = new LabValue();
 		bv1.setValue("33");
-		bv1.setDate(DateUtils.createDate(2008, 1, 1));
+		bv1.setDate(DateUtils.createDate(2004, 1, 1));
 		aeReport.getLabs().get(0).setBaseline(bv1);
 		aeReport.getLabs().get(1).setBaseline(bv1);
 		
@@ -432,7 +432,7 @@ ExpeditedAdverseEventReport aeReport = createAEReport();
 		
 		LabValue wv1 = new LabValue();
 		wv1.setValue("33");
-		wv1.setDate(DateUtils.createDate(2006, 1, 3));
+		wv1.setDate(DateUtils.createDate(2008, 1, 3));
 		LabValue wv2 = new LabValue();
 		wv2.setValue("33");
 		wv2.setDate(DateUtils.createDate(2007, 1, 3));

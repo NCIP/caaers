@@ -116,9 +116,9 @@
 	
 	<!-- ==========================================================================
 	RuleName : LAB_BR3_CHK
-	Logic :"“Nadir/Worst Date” must not be greater “Baseline Date”."
+	Logic :“Baseline Date” must not be greater “Nadir/Worst Date”."
 	Error Code : LAB_BR3_ERR
-	Error Message : WORST_DATE must not be greater BASELINE_DATE
+	Error Message : BASELINE_DATE must not be greater WORST_DATE.
 	============================================================================= -->
 	<rule name="LAB_BR3_CHK">
 		<lhs>
@@ -131,8 +131,8 @@
 						i++;
 						if(l.getBaseline().getDate() == null  || l.getNadir().getDate() == null) continue;
 					
-						if(DateUtil.compare(l.getNadir().getDate(),l.getBaseline().getDate() ) &lt; 0){
-							errors.addValidationError("LAB_BR3_ERR", "'Worst value(Date)' must not be greater 'Baseline value(Date)'.", i);
+						if(DateUtil.compare(l.getBaseline().getDate() ,l.getNadir().getDate()) &lt; 0){
+							errors.addValidationError("LAB_BR3_ERR", " 'Baseline value(Date)' must not be greater than 'Worst value(Date)'.", i);
 						}
 					}
 					return errors.hasErrors() ? FAIL : SUCCESS;
@@ -146,9 +146,9 @@
 	
 	<!-- ==========================================================================
 	RuleName : LAB_BR4_CHK
-	Logic :"“Recovery Date” must not be greater than “Nadir/Worst Date”.
+	Logic :"“Nadir/Worst Date” must not be greater than “Recovery Date”.
 	Error Code : LAB_BR4_ERR
-	Error Message : RECOVERY_LAST_DATE must not be greater than WORST_DATE
+	Error Message :WORST_DATE must not be greater than RECOVERY_LAST_DATE
 	============================================================================= -->
 	<rule name="LAB_BR4_CHK">
 		<lhs>
@@ -161,8 +161,8 @@
 						i++;
 						if(l.getRecovery().getDate() == null  || l.getNadir().getDate() == null) continue;
 					
-						if(DateUtil.compare(l.getRecovery().getDate(),l.getNadir().getDate() ) &lt; 0){
-							errors.addValidationError("LAB_BR4_ERR", "'Recovery value(Date)' must not be greater 'Worst value(Date)'.", i);
+						if(DateUtil.compare(l.getNadir().getDate(),l.getRecovery().getDate()) &lt; 0){
+							errors.addValidationError("LAB_BR4_ERR", "'Worst value(Date)' must not be greater than 'Recovery value(Date)'.", i);
 						}
 					}
 					return errors.hasErrors() ? FAIL : SUCCESS;
