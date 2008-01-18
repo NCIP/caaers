@@ -20,6 +20,7 @@
 	    if(action == 'addStudyPersonnel'){
 		  
 	    }else{
+	       ValidationManager.validate = false; //dont validate in delete
 		   var form = document.getElementById('command')
 		   form._target.name='_noname';
 		   form._action.value=action;

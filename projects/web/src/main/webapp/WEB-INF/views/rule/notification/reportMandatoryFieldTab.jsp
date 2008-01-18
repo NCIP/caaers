@@ -136,7 +136,7 @@
 		</chrome:division>
 		
 		<chrome:division title="Pre-Existing Condictions">
-		<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~AdverseEventPreExistingConds" />
+		<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~SAEReportPreExistingConditions" />
 		</chrome:division>
 		
 		<chrome:division title="Concomitant Medications">

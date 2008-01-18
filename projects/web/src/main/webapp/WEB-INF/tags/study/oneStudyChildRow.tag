@@ -10,7 +10,7 @@
 <%@attribute name="exclusions" %>
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
-<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}">
+<tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="fstatus">
 		<c:if test="${not fn:contains(exclusions, field.displayName)}">
 		<td><tags:renderInputs field="${field}" disabled="${ identifiers and (index lt 2) and (fstatus.index ne 4)}"/></td>

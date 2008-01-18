@@ -64,6 +64,7 @@
         	
     );
     function fireDelete(selected, trClass){
+    	ValidationManager.validate = false; //do not validate on delete
 		var ssfrm = $('command');
 		ssfrm._target.name='_noname';
 		ssfrm._action.value='removeIdentifier';
