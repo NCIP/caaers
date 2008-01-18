@@ -42,7 +42,10 @@
             	 this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
-            	 		if(i == this.index) continue;
+            	 		if(i == this.index){
+            	 			$(si[i].indicator).checked = true; 
+            	 			continue;
+            	 		}
             	 		$(si[i].indicator).checked = false;
             	 	}
             	 }.bind(this));
