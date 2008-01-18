@@ -84,7 +84,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 		InputFieldAttributes.setSize(lastNameField, 30);
 		researchStaffFieldGroup.getFields().add(lastNameField);
 
-		InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "NCI Identifier", true);
+		InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "NCI Identifier", false);
 		InputFieldAttributes.setSize(ncidIdField, 30);
 		researchStaffFieldGroup.getFields().add(ncidIdField);
 
