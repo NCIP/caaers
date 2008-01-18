@@ -64,6 +64,7 @@
 
 var ValidationManager = Class.create()
 var ValidationManager = {
+	validate:true, //only if this flag is true, it will validate
 	debug: false,
 	currentFormVar:"",
 	registeredInvokes: new Array(),
@@ -112,7 +113,7 @@ var ValidationManager = {
 		}
 	},
 	submitPostProcess: function(formElement, validationFlag){return validationFlag},
-	submitPreProcess: function(formElement){return true},
+	submitPreProcess: function(formElement){return ValidationManager.validate;},
 	afterPrepareFeilds: function(formElement){return true},
 	
 	prepareField: function(element){
