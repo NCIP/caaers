@@ -185,10 +185,6 @@ public class ReportServiceImpl  implements ReportService {
 		//TODO: add appropriate null-checks
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		
-		//map.put("nCIProtocolNumber","xxxxxx");//NCI Protocol Number
-		//map.put("ticketNumber","xxxxxx");//Ticket Number
-		//map.put("amendmentNumber","xxxxxx");//Amendment Number
-		
 		String primaryIdentifier = report.getAeReport().getAssignment().getParticipant().getPrimaryIdentifierValue();
 		map.put("patientId", primaryIdentifier == null ? "xxxx" : primaryIdentifier);//Patient ID
 		map.put("reportId",report.getAeReport().getId());//Report ID

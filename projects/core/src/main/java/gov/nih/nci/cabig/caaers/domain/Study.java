@@ -199,7 +199,18 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 			primarySponsor.setOrganization(org);
 		}
 	}
-
+	
+	/**
+	 * Will return the primary identifier associated to this study.
+	 */
+	@Transient
+	public Identifier getPrimaryIdentifier() {
+		for(Identifier id : getIdentifiersLazy()){
+			if(id.isPrimary()) return id;
+		}
+		return null;
+	}
+	
 	public void addStudyAgent(final StudyAgent studyAgent) {
 		getStudyAgents().add(studyAgent);
 		studyAgent.setStudy(this);
