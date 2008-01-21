@@ -93,12 +93,13 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 			for (int i = 0; i < source.getAssignments().size(); i++) {
 				StudyParticipantAssignment studyParticipantAssignment = source
 						.getAssignments().get(i);
-				//StudySite studySite = null;
+				String theIdentifier = "";
 
 				for (Identifier identifier : studyParticipantAssignment
 						.getStudySite().getStudy().getIdentifiers()) {
 					
 					log.debug("Size of identifiers : " +studyParticipantAssignment.getStudySite().getStudy().getIdentifiers());
+					theIdentifier = identifier.getValue();
 					StudySite studySite = studySiteDao.matchByStudyAndOrg(
 							studyParticipantAssignment.getStudySite().getOrganization().getName(), 
 							identifier.getValue());
@@ -113,7 +114,8 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 						break;
 					}
 					
-					ifNullObject(studySite, participantImportOutcome,Severity.ERROR, "Study is either Empty or Not Valid");
+					ifNullObject(studySite, participantImportOutcome,Severity.ERROR, "The Study with Identifier \" " + theIdentifier + 
+							" \" is either nonexistant or does not match the provided Site");
 					
 				}
 			}
