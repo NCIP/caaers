@@ -156,4 +156,41 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
 		if(agent != null) return agent.getName();
 		return "no-agent-name";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((agent == null) ? 0 : agent.hashCode());
+		result = prime * result
+				+ ((otherAgent == null) ? 0 : otherAgent.hashCode());
+		return result;
+	}
+
+	///OBJECT METHODS
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final StudyAgent other = (StudyAgent) obj;
+		if (agent == null) {
+			if (other.agent != null)
+				return false;
+		} else if (!agent.equals(other.agent))
+			return false;
+		if (otherAgent == null) {
+			if (other.otherAgent != null)
+				return false;
+		} else if (!otherAgent.equals(other.otherAgent))
+			return false;
+		return true;
+	}
+	
+
+	
 }
