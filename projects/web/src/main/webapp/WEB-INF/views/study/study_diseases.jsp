@@ -13,8 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
         /* TODO: all these are temporary */
-        #diseases { float: left; width: 48%; margin: 1em;}
-        #all-disease { float: left; width: 48%; margin: 1em;}
+        .leftpanel { margin:1px 0px 5px;}
 </style>
 
 <title>${tab.longTitle}</title>
@@ -259,18 +258,15 @@
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
     <form:form method="post" name="studyDiseasesForm" >
-        <tags:tabFields tab="${tab}"/>
-        <chrome:box title="${tab.shortTitle}" id="all-disease">
-
-            <div>
-                 <input type="hidden" name="_action" value="">
-                 <input type="hidden" name="_selected" value="">
-                 <c:if test="${(not empty command.id) and ( command.id gt 0) }"></c:if>
-            </div>
+      <input type="hidden" name="_action" value="">
+      <input type="hidden" name="_selected" value="">
+      <tags:tabFields tab="${tab}"/>
+      <div class="leftpanel">
+      <chrome:box title="${tab.shortTitle}" id="all-disease">
+		
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP Disease Terms" id="disease">
                     Search for a Disease Category<br>
-                    <input:hidden id="disease" />
                     <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
                     <tags:indicator id="disease-indicator" />
                     <div id="disease-choices" class="autocomplete"></div>
@@ -287,10 +283,7 @@
                         <option value="">Please select a Category first</option>
                     </select> <span id="disease-selected-name"></span>
                     <input class='ibutton' type='button' onclick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease'/>
-                    <%--
-                    <a
-                        href="javascript:fireAction('addStudyDisease','0');"><img
-                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>--%> <br>
+                   <br>
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
@@ -311,17 +304,15 @@
                     <tags:indicator id="diseaseLlt-indicator"/>
                     <div id="diseaseLlt-choices" class="autocomplete"></div>
                     
-                    <%--
-                    <a href="javascript:fireAction('addMeddraStudyDisease','0');"><img
-                        src="<c:url value="/images/checkyes.gif"/>" border="0" alt="Add"></a>
-                     --%>
                     <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
             </c:if>
+            
         </chrome:box>
-        	 
-
-            <chrome:box title="Selected Diseases " id="diseases">
+        </div>   
+        <div class="rightpanel">
+        <chrome:box title="Selected Diseases " id="diseases">
+           
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">
@@ -372,7 +363,8 @@
              </center>
 			</chrome:division>
 			</c:if>
-            </chrome:box>
+        </chrome:box>
+        </div>
     </form:form>
  </div>
 </body>
