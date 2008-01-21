@@ -5,7 +5,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <html>
 <head>
-<title>Search for a Study or Participant </title>
+<title>Search for a Study or Subject </title>
 <script type="text/javascript">
 	function navRollOver(obj, state) {
   		document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
@@ -15,8 +15,8 @@
 </script>
 </head>
 <body>
-<p id="instructions">In order to assign a Participant to a Study ,
-you need to first search for either a participant or a study.</p>
+<p id="instructions">In order to assign a Subject to a Study ,
+you need to first search for either a subject or a study.</p>
 <form:form id="searchForm" name="searchForm" action="/caaers/pages/participant/assignStudy" method="post" cssClass="standard">
 	<chrome:box autopad="true" cssClass="paired" title="Select Study"
 		id="study-search">
@@ -57,11 +57,11 @@ you need to first search for either a participant or a study.</p>
 <form:form id="searchForm2" name="searchForm2"
 	action="/caaers/pages/participant/assignParticipant" method="post"
 	cssClass="standard">
-	<chrome:box autopad="true" cssClass="paired" title="Select Participant"
+	<chrome:box autopad="true" cssClass="paired" title="Select Subject"
 		id="participant-search">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr valign="top">
-				<td width="99%"><strong>1. Search Participant by:</strong>
+				<td width="99%"><strong>1. Search Subject by:</strong>
 				 <form:select path="participantType" cssClass="validate-NOTEMPTY">
 					<form:options items="${participantSearchType}" itemLabel="desc"	itemValue="code"  />
 				</form:select> <br>
@@ -83,7 +83,7 @@ you need to first search for either a participant or a study.</p>
 					</tr>
 				</table>
 				<br>
-				<input class='ibutton' type='submit' value='Search Participants' title='Search Participants' /></td>
+				<input class='ibutton' type='submit' value='Search Subjects' title='Search Subjects' /></td>
 				</td>
 			</tr>
 		</table>

@@ -97,7 +97,7 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 		    </div>
 </chrome:box>
 
-<chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>

@@ -53,7 +53,7 @@
 </head>
 <body>
 <p id="instructions">
-        Import Studies/Protocols or Participants into caAERS
+        Import Studies/Protocols or Subjects into caAERS
 </p>
     <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
@@ -63,7 +63,7 @@
 	</div>
 	
 		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
-		<input type="button" id="participant_button" value="Import Participant         "><br><br>
+		<input type="button" id="participant_button" value="Import Subject         "><br><br>
 		<input type="button" id="routine_ae_report_button" value="Import Routine AEs         ">
 		
 		 <tags:errors path="*"/>

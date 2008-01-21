@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Search for a Participant</title>
+<title>Search for a Subject</title>
 <script>
 function submitPage(s){
 	document.getElementById("searchCategory").value=s;
@@ -56,9 +56,9 @@ function doNothing(){
 
 
 <p id="instructions">
-Please use the form above to search for a Participant and assign it to <b>${command.studySites[0].study.shortTitle}</b> and then press Save & Continue to proceed 
+Please use the form above to search for a Subject and assign it to <b>${command.studySites[0].study.shortTitle}</b> and then press Save & Continue to proceed 
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}" title="Participant search results">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Subject search results">
     <jsp:attribute name="singleFields">
         <ec:table autoIncludeParameters="false"
         items="command.participantSearchResults"

@@ -92,7 +92,7 @@
             <tags:tabFields tab="${tab}"/>
             <div class="autoclear">
                 <chrome:box title="Select participant" id="participant-entry" cssClass="paired" autopad="true">
-                    <p>Enter a portion of a participant's name or another registered identifier.</p>
+                    <p>Enter a portion of a subject's name or another registered identifier.</p>
                     <form:hidden path="participant"/>
                     <tags:requiredIndicator/>
                     <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
@@ -101,7 +101,7 @@
                     <div id="participant-choices" class="autocomplete"></div>
                     <tags:errors path="participant"/>
                     <p id="participant-selected" style="display: none">
-                        You have selected the participant <span id="participant-selected-name"></span>.
+                        You have selected the subject <span id="participant-selected-name"></span>.
                     </p>
                 </chrome:box>
                 <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">

@@ -183,7 +183,7 @@
        <br/><br/>
 
 		
-		<chrome:division title="Participant records will NOT be loaded" id="particpant_will_not_load">
+		<chrome:division title="Subject records will NOT be loaded" id="particpant_will_not_load">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -226,7 +226,7 @@
 		
 		
 		
-		<chrome:division title="Participant records will be loaded" id="particpant_will_load">
+		<chrome:division title="Subject records will be loaded" id="particpant_will_load">
 		
 		<table id="test" width="100%" class="tablecontent">
     		<tr>
@@ -290,7 +290,7 @@
     		<tr>
     			<th scope="col" align="left"><b>Periods of Observation</b> </th>
     			<th scope="col" align="left"><b>Study assigned to</b> </th>
-    			<th scope="col" align="left"><b>Participant assigned to</b> </th>
+    			<th scope="col" align="left"><b>Subject assigned to</b> </th>
     			<th scope="col" align="left"><b>Possible Problem</b> </th>
     		</tr>
     		<c:forEach var='item' items='${command.nonImportableRoutineAdverseEventReports}'>
@@ -336,7 +336,7 @@
     		<tr>
     			<th scope="col" align="left"><b>Periods of Observation</b> </th>
     			<th scope="col" align="left"><b>Study assigned to</b> </th>
-    			<th scope="col" align="left"><b>Participant assigned to</b> </th>
+    			<th scope="col" align="left"><b>Subject assigned to</b> </th>
     			<th scope="col" align="left"><b>Possible Problem</b> </th>
     		</tr>
     		<c:forEach var='item' items='${command.importableRoutineAdverseEventReports}'>

@@ -55,12 +55,12 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 	<p class="instructions">
-    <br />Search for Participants by choosing any of the listed Criteria. The result set will show a list of Participants. 
+    <br />Search for Subjects by choosing any of the listed Criteria. The result set will show a list of Subjects. 
    </p> 
    
 
 
-<chrome:box title="Participant Criteria" cssClass="mpaired" autopad="false" >
+<chrome:box title="Subject Criteria" cssClass="mpaired" autopad="false" >
 
 		      <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
@@ -82,7 +82,7 @@ function buildTable(form) {
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Participant'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Subject'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
@@ -92,7 +92,7 @@ function buildTable(form) {
 <form:form id="assembler" >
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
-	<chrome:box title="Participant Search Results">
+	<chrome:box title="Subject Search Results">
      	<chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 

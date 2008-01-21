@@ -49,7 +49,7 @@
 		<div> 
 			<div class="pane">
 			  <div class="row">
-			    <div class="summarylabel">Participant</div>
+			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${aesummary['Participant']}</div>
 			  </div>
 			  <div class="row">
@@ -64,7 +64,7 @@
 		<div> 
 			<div class="pane">
 			  <div class="row">
-			    <div class="summarylabel">Participant</div>
+			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${routineAeSummary['Participant']}</div>
 			  </div>
 			  <div class="row">

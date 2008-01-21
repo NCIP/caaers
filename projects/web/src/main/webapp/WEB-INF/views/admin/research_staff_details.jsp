@@ -122,7 +122,7 @@
 
     <div class="row">
         <div class="label label2">
-            Participant coordinator
+            Subject coordinator
         </div>
         <div class="value value2">
             <input type="checkbox"

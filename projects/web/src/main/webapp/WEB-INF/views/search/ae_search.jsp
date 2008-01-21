@@ -104,7 +104,7 @@ the Study & Protocol Authority Identifier associated with this AE as well as AE'
 </chrome:box>
 
 
-<chrome:box title="Participant Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
 		        <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>
