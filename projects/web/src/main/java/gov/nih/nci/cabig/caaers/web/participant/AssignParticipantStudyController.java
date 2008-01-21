@@ -35,9 +35,19 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
 		return AssignController.class.getName() + ".FORM." + getCommandName();
 	}
 
+	/**
+	 * Validation needs to be supressed when, 
+	 *  - We go back in the flow.
+	 *  - We the page displayed is the result of study/participant search.
+	 */
 	@Override
 	protected boolean suppressValidation(HttpServletRequest request,Object command) {
-		return request.getParameter("studyType") != null || request.getParameter("participantType") != null;
+		int curPage = getCurrentPage(request);
+		int targetPage = getTargetPage(request, curPage);
+	
+		return (request.getParameter("studyType") != null) || 
+			   (request.getParameter("participantType") != null) || 
+			   (targetPage < curPage);
 	}
 	
 	@Override
