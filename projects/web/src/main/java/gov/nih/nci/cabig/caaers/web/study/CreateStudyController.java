@@ -67,11 +67,8 @@ public class CreateStudyController extends StudyController<Study> {
 	@Override
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
+		super.processFinish(request, response, command, errors);
 		Study study = (Study) command;
-
-
-		// check for study therapy
-		updateStudyTherapies(study);
 
 		// saveResearchStaff the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)

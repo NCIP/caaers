@@ -63,9 +63,6 @@ public class EditStudyController extends StudyController<Study> {
 		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
 		mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
 		mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
-		updateStudyTherapies(mergedStudy);
-
-		
 		return mergedStudy;
 	}
 

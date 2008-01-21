@@ -88,24 +88,17 @@ function buildTable(form) {
 <div class="endpanes" />
  </form:form>
 <br>			
-
 <br>
 <form:form id="assembler" >
-
-
-<div>			
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
-</div>
-
-
-<chrome:box title="Participant Search Results">
-     <chrome:division id="single-fields">
+	<chrome:box title="Participant Search Results">
+     	<chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
 		</div>
-	</chrome:division>
-</chrome:box>
+		</chrome:division>
+	</chrome:box>
 </form:form>
 </div>
 </body>

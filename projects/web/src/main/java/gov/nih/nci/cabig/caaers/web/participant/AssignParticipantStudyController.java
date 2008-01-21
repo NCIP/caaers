@@ -35,7 +35,10 @@ public class AssignParticipantStudyController extends AbstractTabbedFlowFormCont
 		return AssignController.class.getName() + ".FORM." + getCommandName();
 	}
 
-
+	@Override
+	protected boolean suppressValidation(HttpServletRequest request,Object command) {
+		return request.getParameter("studyType") != null || request.getParameter("participantType") != null;
+	}
 	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command,

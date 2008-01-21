@@ -36,11 +36,13 @@ function submitPage(s){
     <chrome:division title="Assigned to Studies">
 		<table class="tablecontent">
 		 <tr>
+		 	<th scope="col">Study Primary ID</th>
 			<th scope="col">Study Short Title</th>
 			<th scope="col">Site</th>
 		 </tr>
       	 <c:forEach var="studySite" items="${command.studySites}" varStatus="status"> 
 		 <tr class="results">
+		 	<td>${studySite.study.primaryIdentifier ne null ? studySite.study.primaryIdentifier.value : '' }</td>
 			<td>${studySite.study.shortTitle}</td>
 			<td>${studySite.organization.name}</td>
 		</tr>
@@ -107,15 +109,12 @@ function submitPage(s){
 				<th scope="col">Identifier Type</th>
 				<th scope="col">Identifier</th>
 			</tr>
-			<c:forEach items="${command.participant.identifiers}"
-						var="identifier">
+			<c:forEach items="${command.participant.identifiers}" var="identifier">
 			<tr class="results">
-				<c:if
-								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+				<c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<td>${identifier.organization}</td>
 				</c:if>
-				<c:if
-								test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				<c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					<td>${identifier.systemName}</td>
 				</c:if>
 				<td>${identifier.type}</td>

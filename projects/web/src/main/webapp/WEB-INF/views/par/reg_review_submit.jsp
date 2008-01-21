@@ -6,6 +6,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://www.extremecomponents.org" prefix="ec"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css"
@@ -28,79 +29,85 @@ function submitPage(s){
    Please review the information and press Save to assign the Participant <b>${command.participants[0].lastName}, ${command.participants[0].firstName}</b>
    to Study <b>${command.studySites[0].study.shortTitle}</b>
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}" title="${command.participants[0].lastName}, ${command.participants[0].firstName}">
+<tags:tabForm tab="${tab}" flow="${flow}" title="${command.participants[0].lastName}, ${command.participants[0].firstName}" >
     <jsp:attribute name="singleFields">
         <input type="hidden" id="_finish" name="_finish"/>
-
-        <br>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="split-pane">
-    	<tr>
-    	<td width="30%" valign="top" class="contentAreaL">
-        <table border="0" cellspacing="0" cellpadding="0"
-               class="table1">
-               <strong>Participant Details</strong>
-            <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-            </tr>
-            <tr>
-                <td class="label">First Name:</td>
-                <td width="75%" valign="top">${command.participants[0].firstName}</td>
-            </tr>
-            <tr>
-                <td class="label">Last Name:</td>
-                <td width="75%" valign="top">${command.participants[0].lastName}</td>
-            </tr>
-            <tr>
-                <td class="label">Middle Name:</td>
-                <td>${command.participants[0].middleName}</td>
-            </tr>
-            <tr>
-                <td class="label">Maiden Name:</td>
-                <td valign="top">${command.participants[0].maidenName}</td>
-            </tr>
-            <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-            </tr>
-            <tr>
-                <td class="label">Birth Date:</td>
-                <td><tags:formatDate value="${command.participants[0].dateOfBirth}"/></td>
-            </tr>
-            <tr>
-                <td class="label">Ethnicity:</td>
-                <td>${command.participants[0].ethnicity}</td>
-            </tr>
-            <tr>
-                <td class="label">Race:</td>
-                <td>${command.participants[0].race}</td>
-            </tr>
-            <tr>
-                <td class="label">Gender:</td>
-                <td>${command.participants[0].gender}</td>
-            </tr>
-        </table>
-        </td>
-        <td width="50%" valign="top" class="contentAreaL">
-        <table border="0" cellspacing="0" cellpadding="0"
-               class="table1">
-               <strong>Assign to Study</strong>
-               <tr>
-                <td><img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1"
-                         class="heightControl"></td>
-               </tr>
-               <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
-					<tr><td class="label">Study Short Title:</td><td><c:out value="${studySite.study.shortTitle}"/></td></tr>
-					<tr><td class="label">Study Long Title:</td><td><c:out value="${studySite.study.longTitle}"/></td></tr>
-					<tr><td class="label">Site:</td><td><c:out value="${studySite.organization.name}"/></td></tr>
-					</tr>
-			   </c:forEach>
-        </table>
-        </td>
-        </tr>
-   </table>
+		<table cellpadding="0" border="0" cellspacing="4" width="100%">
+			<tr valign="top">
+				<td valign="top" width="50%">
+				<chrome:division title="Subject Details">
+		      		<div class="row">
+      					<div class="label">First name</div>
+      					<div class="value">${command.participants[0].firstName}</div>
+      				</div>
+      		
+      		<div class="row">
+      			<div class="label">Last name</div>
+      			<div class="value">${command.participants[0].lastName}</div>
+      		</div>
+      		
+      		<div class="row">
+      			<div class="label">Middle name</div>
+      			<div class="value">${command.participants[0].middleName}</div>
+      		</div>
+      		
+      		<div class="row">
+      			<div class="label">Maiden name</div>
+      			<div class="value">${command.participants[0].maidenName}</div>
+      		</div>
+      		
+      		
+      		<div class="row">
+      			<div class="label">Birth date</div>
+      			<div class="value"><fmt:formatDate value="${command.participants[0].dateOfBirth}" pattern="MM/dd/yyyy"/></div>
+      		</div>
+      		
+      		<div class="row">
+      			<div class="label">Ethnicity</div>
+      			<div class="value">${command.participants[0].ethnicity}</div>
+      		</div>
+      		
+      		<div class="row">
+      			<div class="label">Race</div>
+      			<div class="value">${command.participants[0].race}</div>
+      		</div>
+      		
+      		<div class="row">
+      			<div class="label">Gender</div>
+      			<div class="value">${command.participants[0].gender}</div>
+      		</div>
+			</chrome:division>	
+				</td>
+				
+				<td valign="top" width="50%">
+					<chrome:division title="Study Details">
+					   <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
+      					<div class="row">
+      						<div class="label">Study primary ID</div>
+      						<div class="value">${studySite.study.primaryIdentifier ne null ? studySite.study.primaryIdentifier.value : ''}</div>
+      					</div>
+      		
+      					<div class="row">
+      						<div class="label">Study short title</div>
+      						<div class="value">${studySite.study.shortTitle}</div>
+      					</div>
+      					<div class="row">
+      						<div class="label">Study long title</div>
+      						<div class="value">${studySite.study.longTitle}</div>
+      					</div>
+      		
+      					<div class="row">
+      						<div class="label">Site</div>
+      						<div class="value">${studySite.organization.name}</div>
+      					</div>
+      					<img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
+							height="1" class="heightControl">
+					   </c:forEach>
+					</chrome:division>
+				</td>
+			</tr>
+		</table>
+        
     </jsp:attribute>
 </tags:tabForm>
 

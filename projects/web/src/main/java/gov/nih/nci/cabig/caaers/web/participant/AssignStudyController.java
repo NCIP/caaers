@@ -37,5 +37,4 @@ public class AssignStudyController extends AssignParticipantStudyController{
        
     }
 	
-
 }

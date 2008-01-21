@@ -49,10 +49,8 @@ public class AssignController extends SimpleFormController {
 		setSuccessView("reg_protocol_search");
 	}
 
-	protected ModelAndView onSubmit(HttpServletRequest request,
-			HttpServletResponse response, Object oCommand, BindException errors)
+	protected ModelAndView onSubmit(HttpServletRequest request,	HttpServletResponse response, Object oCommand, BindException errors)
 			throws Exception {
-
 		return null;
 	}
 }
