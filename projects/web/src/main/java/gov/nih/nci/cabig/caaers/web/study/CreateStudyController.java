@@ -65,16 +65,28 @@ public class CreateStudyController extends StudyController<Study> {
 	}
 
 	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
-		super.processFinish(request, response, command, errors);
+	protected ModelAndView processFinish(final HttpServletRequest request, 
+			final HttpServletResponse response, final Object command, 
+			final BindException errors) throws Exception {
+		
 		Study study = (Study) command;
-
 		// saveResearchStaff the study by calling merge, as the study might be assocated
 		// to different copy of same object (eg: Organization, with same id)
 		// in different screens (hibernate session)
 		studyDao.merge(study);
-
-		return new ModelAndView("forward:view?type=confirm", errors.getModel());
+		
+		ModelAndView mv =  new ModelAndView("forward:view?type=confirm", errors.getModel());
+	
+		return mv;
 	}
+	
+	@Override
+	protected boolean suppressValidation(HttpServletRequest request,Object command) {
+	   	//supress validation when target page is less than current page.
+	   	int curPage = getCurrentPage(request);
+		int targetPage = getTargetPage(request, curPage);
+		if(targetPage < curPage) return true;
+	    return super.suppressValidation(request, command);
+	}
+	
 }

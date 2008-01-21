@@ -105,19 +105,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		return false;
 	}
 
-	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
-
-		Study study = (Study) command;
-		studyDao.save(study);
-
-		ModelAndView modelAndView = new ModelAndView("study_confirmation");
-		modelAndView.addAllObjects(errors.getModel());
-		response.sendRedirect("view?studyName=" + study.getShortTitle() + "&type=confirm");
-		return null;
-	}
-
+	
 	@Override
 	protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
 		Object subviewName = findInRequest(request, "_subview");

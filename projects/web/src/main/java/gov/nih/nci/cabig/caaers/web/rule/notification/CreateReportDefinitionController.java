@@ -30,6 +30,15 @@ public class CreateReportDefinitionController  extends AbstractReportDefinitionC
     	return false;
     }
     
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	//supress validation when target page is less than current page.
+    	int curPage = getCurrentPage(request);
+		int targetPage = getTargetPage(request, curPage);
+		if(targetPage < curPage) return true;
+    	return super.suppressValidation(request, command);
+    }
+    
 	/**
 	 * In the create flow of report definition, we should make sure that
 	 * there exists at least one ReportDeliveryDefinition.

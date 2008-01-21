@@ -121,7 +121,6 @@ public class EditStudyController extends StudyController<Study> {
 	@Override
 	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
 			final Object command, final BindException errors) throws Exception {
-		super.processFinish(request, response, command, errors);
 		Study study = (Study) command;
         studyDao.merge(study);
 		return new ModelAndView(new RedirectView("search"));

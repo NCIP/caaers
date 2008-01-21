@@ -103,7 +103,16 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 			participantCommand.setStudySites(studySites);
 		}
 	}
-
+	
+	 @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	//supress validation when target page is less than current page.
+    	int curPage = getCurrentPage(request);
+		int targetPage = getTargetPage(request, curPage);
+		if(targetPage < curPage) return true;
+    	return super.suppressValidation(request, command);
+    }
+	
 	@Required
 	public void setStudySiteDao(final StudySiteDao studySiteDao) {
 		this.studySiteDao = studySiteDao;
