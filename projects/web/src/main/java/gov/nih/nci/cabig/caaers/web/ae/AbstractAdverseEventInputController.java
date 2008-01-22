@@ -175,7 +175,12 @@ public abstract class AbstractAdverseEventInputController
         }
         return refdata;
     }
-
+    
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
+    }
+    
     @Override
     protected boolean shouldSave(
         HttpServletRequest request, ExpeditedAdverseEventInputCommand command,

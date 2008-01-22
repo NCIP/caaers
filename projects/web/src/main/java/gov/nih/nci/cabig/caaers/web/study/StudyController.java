@@ -36,6 +36,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Base Controller class to handle the basic work flow in the Creation / Updation of a Study Design This uses
  * AbstractTabbedFlowFormController to implement tabbed workflow
  * @author Priyatam
+ * @author Biju Joseph
  */
 public abstract class StudyController<C extends Study> extends AutomaticSaveFlowFormController<C, Study, StudyDao> {
 	private static final Log log = LogFactory.getLog(StudyController.class);
@@ -138,10 +139,13 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 			return true;
 		}
 		String action = (String) findInRequest(request, "_action");
-		if (StringUtils.isNotEmpty(action)) {
+		if(StringUtils.isNotEmpty(action) && !StringUtils.containsIgnoreCase(action, "add")){
 			return true;
 		}
+			
 		return super.suppressValidation(request, command);
+		
+		
 	}
 
 	@Override
