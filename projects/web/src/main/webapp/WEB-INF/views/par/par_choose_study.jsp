@@ -50,7 +50,7 @@ function updateTargetPage(s){
 					</form:select>
 				</td>
                 <td><form:input path="searchText" size="25" /></td>
-                <td><input type="submit" value="go" name="_target1" alt="GO"></td>
+                <td><input type="submit" value="Search" name="_target1" alt="SEARCH"></td>
             </tr>
         </table>
     </form:form>

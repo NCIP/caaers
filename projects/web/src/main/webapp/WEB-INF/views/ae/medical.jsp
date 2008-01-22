@@ -219,7 +219,7 @@
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="metastatic" label="Add a metastatic site"/>
+        <tags:listEditorAddButton divisionClass="metastatic" label="Add a metastatic site" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

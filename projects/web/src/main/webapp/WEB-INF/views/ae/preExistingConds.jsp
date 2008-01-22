@@ -111,7 +111,7 @@
         </jsp:attribute>
         
          <jsp:attribute name="localButtons">
-         <tags:listEditorAddButton divisionClass="conmed" label="Add a Pre-Existing Condition"/>
+         <tags:listEditorAddButton divisionClass="conmed" label="Add a Pre-Existing Condition" buttonCssClass="ae-list-editor-button"/>
          </jsp:attribute>
     </tags:tabForm>
 </body>

@@ -66,7 +66,7 @@
 					</form:select></td>
                 <td><form:input path="studyText" size="25" /></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-                <td><input type="submit" value="go" name="${targetPage}" alt="GO" align="middle" width="22"
+                <td><input type="submit" value="Search" name="${targetPage}" alt="SEARCH" align="middle" width="22"
 						height="10" border="0"></td>
             </tr>
             <tr>

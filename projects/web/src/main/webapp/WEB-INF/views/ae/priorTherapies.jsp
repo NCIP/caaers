@@ -181,7 +181,7 @@
         </jsp:attribute>
         
         <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="priorTherapy" label="Add a Therapy"/>
+        <tags:listEditorAddButton divisionClass="priorTherapy" label="Add a Therapy" buttonCssClass="ae-list-editor-button"/>
         </jsp:attribute>
     </tags:tabForm>
 </body>

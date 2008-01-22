@@ -34,3 +34,7 @@ div.row div.summaryvalue {
   font-weight: normal;
   margin-left: 6em;	
 }
+
+input[type="button"].ae-list-editor-button {
+	background-color : orange;
+}

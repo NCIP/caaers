@@ -58,7 +58,7 @@
             </c:if>
         </c:forEach>
 
-        var AESections = [ ]
+        var AESections = new Array();
 
         function ctcVersion() {
             return ctcVersion;
@@ -72,7 +72,7 @@
         Object.extend(AESection.prototype, {
             initialize: function(div, ctcTerm) {
                 this.div = $(div)
-                AESections.concat(this);
+                AESections.push(this);
                 this.initialCtcTerm = ctcTerm;
 
                 this.resetTermText()
@@ -305,7 +305,7 @@
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
-            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE"/>
+            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>
         </jsp:attribute>
     </tags:tabForm>
 </body>

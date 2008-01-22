@@ -174,7 +174,7 @@
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
-            <tags:listEditorAddButton divisionClass="courseAgent" label="Add a study agent"/>
+            <tags:listEditorAddButton divisionClass="courseAgent" label="Add a study agent" buttonCssClass="ae-list-editor-button"/>
         </jsp:attribute>
     </tags:tabForm>
 </body>

@@ -39,7 +39,7 @@ function doNothing(){
 					</form:select></td>
                 <td><form:input path="participantText" size="30" /></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-                <td><input type="submit" alignment="center" value="go" name="${targetPage}" alt="GO" align="middle" width="22"
+                <td><input type="submit" alignment="center" value="Search" name="${targetPage}" alt="SEARCH" align="middle" width="22"
 						height="10" border="0">&nbsp;&nbsp;&nbsp;&nbsp;</td>
             </tr>
             <tr>

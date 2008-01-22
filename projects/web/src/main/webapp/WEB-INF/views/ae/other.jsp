@@ -38,7 +38,7 @@
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause"/>
+        <tags:listEditorAddButton divisionClass="otherCause" label="Add a cause" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>

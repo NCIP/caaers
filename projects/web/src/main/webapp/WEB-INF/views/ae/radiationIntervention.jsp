@@ -59,7 +59,7 @@
         </c:forEach>
     </jsp:attribute>
     <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="radiationIntervention" label="Add a radiation"/>
+        <tags:listEditorAddButton divisionClass="radiationIntervention" label="Add a radiation" buttonCssClass="ae-list-editor-button"/>
     </jsp:attribute>
 </tags:tabForm>
 </body>
