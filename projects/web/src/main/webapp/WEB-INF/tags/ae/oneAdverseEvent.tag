@@ -34,7 +34,13 @@
             </div>
         </div>
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-        
+        <a href="javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}')">Show
+            All</a>
+
+        <div id="table${index}"
+             style="position: absolute; display: none;width:400px; left: 520px;  ">
+        </div>
+
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">
             <label>
