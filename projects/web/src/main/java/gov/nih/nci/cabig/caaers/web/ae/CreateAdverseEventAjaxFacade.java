@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -69,6 +70,13 @@ import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
+import org.extremecomponents.table.context.Context;
+import org.extremecomponents.table.context.HttpServletRequestContext;
+import org.extremecomponents.table.core.TableModel;
+import org.extremecomponents.table.core.TableModelImpl;
+import org.extremecomponents.table.bean.Table;
+import org.extremecomponents.table.bean.Row;
+import org.extremecomponents.table.bean.Column;
 
 /**
  * @author Rhett Sutphin
@@ -76,7 +84,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class CreateAdverseEventAjaxFacade {
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
     private static Class<?>[] CONTROLLERS = {
-        CreateAdverseEventController.class, EditAdverseEventController.class
+            CreateAdverseEventController.class, EditAdverseEventController.class
     };
 
     private StudyDao studyDao;
@@ -120,36 +128,35 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<ChemoAgent> matchChemoAgents(String text) {
-    	String[] excerpts = {text};
+        String[] excerpts = {text};
         List<ChemoAgent> agents = chemoAgentDao.getBySubname(excerpts);
         return agents;
     }
-    
+
     public List<InterventionSite> matchInterventionSites(String text) {
-    	String[] excerpts = {text};
+        String[] excerpts = {text};
         List<InterventionSite> sites = interventionSiteDao.getBySubname(excerpts);
         return sites;
     }
-    
+
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
-        return ObjectTools.reduceAll(agents,"id", "name", "nscNumber","description");
+        return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
 
 
-    public ResearchStaff getResearchStaff(String text) {
+    public ResearchStaff cogetResearchStaff(String text) {
         ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
         return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
 
     public List<Participant> matchParticipants(String text, Integer studyId) {
-    	List<Participant> participants;
-    	if (studyId == null){
-    		participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
-    	}
-    	else {
-    		participants = participantDao.matchParticipantByStudy(studyId, text);
-    	}
+        List<Participant> participants;
+        if (studyId == null) {
+            participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
+        } else {
+            participants = participantDao.matchParticipantByStudy(studyId, text);
+        }
         // cut down objects for serialization
         return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
     }
@@ -196,15 +203,14 @@ public class CreateAdverseEventAjaxFacade {
      * The extra condition "o.status <> 'Administratively Complete'" as fix for bug 9514
      */
     public List<Study> matchStudies(String text, Integer participantId, boolean ignoreCompletedStudy) {
-    	List<Study> studies ;
-    	if (participantId == null){
-    		studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text),
-    				(ignoreCompletedStudy)? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE +"'":null);
-    	}
-    	else{
-    		studies = studyDao.matchStudyByParticipant(participantId, text, 
-    				(ignoreCompletedStudy)? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE +"'":null);
-    	}
+        List<Study> studies;
+        if (participantId == null) {
+            studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text),
+                    (ignoreCompletedStudy) ? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'" : null);
+        } else {
+            studies = studyDao.matchStudyByParticipant(participantId, text,
+                    (ignoreCompletedStudy) ? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'" : null);
+        }
         // cut down objects for serialization
         return reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
     }
@@ -236,12 +242,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
-        List<CtcTerm> terms;
-        if (ctcCategoryId == 0) {
-            terms = ctcTermDao.getAll();
-        } else {
-            terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
-        }
+        List<CtcTerm> terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
@@ -249,6 +250,80 @@ public class CreateAdverseEventAjaxFacade {
         }
         return terms;
     }
+
+    public List<CtcTerm> getTermByTermId(String ctcTermId) throws Exception {
+        List<CtcTerm> terms = new ArrayList<CtcTerm>();
+        CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
+        ctcTerm.getCategory().setTerms(null);
+        terms.add(ctcTerm);
+
+        return terms;
+    }
+
+    public String buildTermsTableByCategory(final Map parameterMap,Integer ctcCategoryId, String tableId, HttpServletRequest request) throws Exception {
+        if (ctcCategoryId == null || ctcCategoryId == 0) {
+            return "";
+        }
+        List<CtcTerm> terms = getTermsByCategory(ctcCategoryId);
+        Context context = null;
+        if (parameterMap == null) {
+			context = new HttpServletRequestContext(request);
+		}
+		else {
+			context = new HttpServletRequestContext(request, parameterMap);
+		}
+
+        TableModel model = new TableModelImpl(context);
+        // LimitFactory limitFactory = new TableLimitFactory(context);
+        // Limit limit = new TableLimit(limitFactory);
+        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
+        // model.setLimit(limit);
+
+        try {
+            return buildTermsTable(model, ctcCategoryId,tableId, terms).toString();
+        }
+        catch (Exception e) {
+            log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
+        }
+
+        return "";
+
+    }
+
+    public Object buildTermsTable(final TableModel model, Integer ctcCategoryId,String tableId, final List<CtcTerm> terms) throws Exception {
+        Table table = model.getTableInstance();
+        table.setTableId(tableId);
+
+       // String index = tableId.substring(tableId.indexOf('[') + 1, tableId.indexOf(']'));
+
+        table.setForm("command");
+        table.setItems(terms);
+
+        table.setTitle("");
+        table.setStyle("overflow:auto");
+        table.setOnInvokeAction("buildTable('command',"+ctcCategoryId.intValue()+",'"+tableId+"')");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setFilterable(false);
+        table.setSortable(false);
+        table.setShowPagination(true);
+        model.addTable(table);
+
+
+        Row row = model.getRowInstance();
+        row.setHighlightRow(Boolean.TRUE);
+        model.addRow(row);
+
+        Column columnTerm = model.getColumnInstance();
+        columnTerm.setProperty("fullName");
+        columnTerm.setTitle("CTC term");
+        columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.CtcTermLinkDisplayCell");
+        model.addColumn(columnTerm);
+
+
+        return model.assemble();
+
+    }
+
 
     public List<CtcCategory> getCategories(int ctcVersionId) {
         List<CtcCategory> categories = ctcDao.getById(ctcVersionId).getCategories();
@@ -271,7 +346,7 @@ public class CreateAdverseEventAjaxFacade {
             return reduceAll(list, "grade", "text");
         }
     }
-    
+
     public List<LabTerm> matchLabTerms(String text, Integer labCategoryId) {
         List<LabTerm> terms = labTermDao.getBySubname(extractSubnames(text), labCategoryId);
         // cut down objects for serialization
@@ -307,17 +382,17 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     //will return the labTestNamesRefData Lov's matching the testName.
-    public List<Lov> matchLabTestNames(String testName){
-    	List<Lov> lovs = new ArrayList<Lov>();
-    	for(Lov lov : configProperty.getMap().get("labTestNamesRefData")){
-    		if(StringUtils.containsIgnoreCase(lov.getDesc(), testName)) lovs.add(lov);
-    	}
-    	return ObjectTools.reduceAll(lovs, "code", "desc");
+    public List<Lov> matchLabTestNames(String testName) {
+        List<Lov> lovs = new ArrayList<Lov>();
+        for (Lov lov : configProperty.getMap().get("labTestNamesRefData")) {
+            if (StringUtils.containsIgnoreCase(lov.getDesc(), testName)) lovs.add(lov);
+        }
+        return ObjectTools.reduceAll(lovs, "code", "desc");
     }
 
-    public List<TreatmentAssignment> matchTreatmentAssignment(String text, int studyId){
-    	List<TreatmentAssignment> treatmentAssignments = treatmentAssignmentDao.getAssignmentsByStudyId(text, studyId);
-    	 return ObjectTools.reduceAll(treatmentAssignments, "id", "code", "description");
+    public List<TreatmentAssignment> matchTreatmentAssignment(String text, int studyId) {
+        List<TreatmentAssignment> treatmentAssignments = treatmentAssignmentDao.getAssignmentsByStudyId(text, studyId);
+        return ObjectTools.reduceAll(treatmentAssignments, "id", "code", "description");
     }
 
     private String[] extractSubnames(String text) {
@@ -330,7 +405,7 @@ public class CreateAdverseEventAjaxFacade {
             interoperationService.pushToStudyCalendar(report);
             return true;
         } catch (CaaersSystemException ex) {
-        	log.warn("Interoperation Service, is not working properly", ex);
+            log.warn("Interoperation Service, is not working properly", ex);
             // this happens if the interoperationService isn't correctly configured
             return false;
         } catch (RuntimeException re) {
@@ -338,14 +413,14 @@ public class CreateAdverseEventAjaxFacade {
             return false;
         }
     }
-    
+
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
         RoutineAdverseEventReport report = roReportDao.getById(aeReportId);
         try {
             interoperationService.pushToStudyCalendar(report);
             return true;
         } catch (CaaersSystemException ex) {
-        	log.warn("Interoperation Service, is not working properly", ex);
+            log.warn("Interoperation Service, is not working properly", ex);
             // this happens if the interoperationService isn't correctly configured
             return false;
         } catch (RuntimeException re) {
@@ -353,15 +428,15 @@ public class CreateAdverseEventAjaxFacade {
             return false;
         }
     }
-    
+
     public String withdrawReportVersion(int aeReportId, int reportId) {
         ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
         for (Report report : aeReport.getReports()) {
-        	if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
-        		reportService.withdrawLastReportVersion(report);
-     	        break;
-     		}
-		}
+            if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
+                reportService.withdrawLastReportVersion(report);
+                break;
+            }
+        }
         aeReportDao.save(aeReport);
         return "Success";
     }
@@ -377,6 +452,7 @@ public class CreateAdverseEventAjaxFacade {
     /**
      * Returns the HTML for the section of the basic AE entry form for
      * the adverse event with the given index
+     *
      * @param index
      * @return
      */
@@ -387,6 +463,7 @@ public class CreateAdverseEventAjaxFacade {
     /**
      * Returns the HTML for the section of the other causes form for
      * the other cause with the given index
+     *
      * @param index
      * @return
      */
@@ -397,30 +474,31 @@ public class CreateAdverseEventAjaxFacade {
     /**
      * Returns the HTML for the section of the other causes form for
      * the other cause with the given index
+     *
      * @param index
      * @return
      */
     public String addPriorTherapyAgent(int index, int parentIndex, Integer aeReportId) {
         return renderIndexedAjaxView("priorTherapyAgentFormSection", index, parentIndex, aeReportId);
     }
-    
-    public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM){
-    	return participantService.bodySuraceArea(ht, htUOM, wt, wtUOM);
+
+    public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM) {
+        return participantService.bodySuraceArea(ht, htUOM, wt, wtUOM);
     }
-    
+
     /**
      * Reorders the list property of the current session command, moving the element at
      * <code>objectIndex</code> to <code>targetIndex</code> and shifting everything else
      * around as appropriate.
-     *
+     * <p/>
      * <p>
      * Note that other than the extract command bit, this is entirely non-ae-flow-specific.
      * </p>
      *
      * @return A list of changes indicating which elements of the list were moved and where to.
-     *      This list will be empty if the requested change is invalid or if the change is a no-op.
+     *         This list will be empty if the requested change is invalid or if the change is a no-op.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public List<IndexChange> reorder(String listProperty, int objectIndex, int targetIndex) {
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
@@ -452,11 +530,11 @@ public class CreateAdverseEventAjaxFacade {
         List<IndexChange> list = new ArrayList<IndexChange>();
         if (original < target) {
             list.add(new IndexChange(original, target));
-            for (int i = original + 1 ; i <= target ; i++) {
+            for (int i = original + 1; i <= target; i++) {
                 list.add(new IndexChange(i, i - 1));
             }
         } else {
-            for (int i = target ; i < original ; i++) {
+            for (int i = target; i < original; i++) {
                 list.add(new IndexChange(i, i + 1));
             }
             list.add(new IndexChange(original, target));
@@ -467,16 +545,16 @@ public class CreateAdverseEventAjaxFacade {
     /**
      * Deletes an element in a list property of the current session command, shifting everything
      * else around as appropriate.
-     *
+     * <p/>
      * <p>
      * Note that other than the extract command bit, this is entirely non-ae-flow-specific.
      * </p>
      *
      * @return A list of changes indicating which elements of the list were moved and where to.
-     *      This list will be empty if the requested change is invalid or if the change is a no-op.
-     *      The element to remove will be represented by a move to a negative index.
+     *         This list will be empty if the requested change is invalid or if the change is a no-op.
+     *         The element to remove will be represented by a move to a negative index.
      */
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public List<IndexChange> remove(String listProperty, int indexToDelete) {
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
@@ -498,7 +576,7 @@ public class CreateAdverseEventAjaxFacade {
     private List<IndexChange> createDeleteChangeList(int indexToDelete, int length) {
         List<IndexChange> changes = new ArrayList<IndexChange>();
         changes.add(new IndexChange(indexToDelete, null));
-        for (int i = indexToDelete + 1 ; i < length ; i++) {
+        for (int i = indexToDelete + 1; i < length; i++) {
             changes.add(new IndexChange(i, i - 1));
         }
         return changes;
@@ -537,7 +615,7 @@ public class CreateAdverseEventAjaxFacade {
         params.put(AbstractAdverseEventInputController.AJAX_SUBVIEW_PARAMETER, viewName);
 
         String url = String.format("%s?%s",
-            getCurrentPageContextRelative(webContext), createQueryString(params));
+                getCurrentPageContextRelative(webContext), createQueryString(params));
         log.debug("Attempting to return contents of " + url);
         try {
             String html = webContext.forwardToString(url);
@@ -589,7 +667,7 @@ public class CreateAdverseEventAjaxFacade {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
             sb.append(entry.getKey()).append('=').append(entry.getValue())
-                .append('&');
+                    .append('&');
         }
         return sb.toString().substring(0, sb.length() - 1);
     }
@@ -653,7 +731,7 @@ public class CreateAdverseEventAjaxFacade {
 
     @Required
     public void setPreExistingConditionDao(
-        PreExistingConditionDao preExistingConditionDao) {
+            PreExistingConditionDao preExistingConditionDao) {
         this.preExistingConditionDao = preExistingConditionDao;
     }
 
@@ -669,11 +747,13 @@ public class CreateAdverseEventAjaxFacade {
 
     @Required
     public ConfigProperty getConfigurationProperty() {
-		return configProperty;
-	}
+        return configProperty;
+    }
+
     public void setConfigurationProperty(ConfigProperty configProperty) {
-		this.configProperty = configProperty;
-	}
+        this.configProperty = configProperty;
+    }
+
     @Required
     public TreatmentAssignmentDao getTreatmentAssignmentDao() {
         return treatmentAssignmentDao;
@@ -687,58 +767,54 @@ public class CreateAdverseEventAjaxFacade {
     public void setReportService(ReportService reportService) {
         this.reportService = reportService;
     }
-    
+
     @Required
     public void setRoutineAdverseEventReportDao(RoutineAdverseEventReportDao roReportDao) {
-		this.roReportDao = roReportDao;
-	}
-    
+        this.roReportDao = roReportDao;
+    }
+
     @Required
     public void setParticipantService(ParticipantService participantService) {
-		this.participantService = participantService;
-	}
-    
+        this.participantService = participantService;
+    }
+
     @Required
-	public LabCategoryDao getLabCategoryDao() {
-		return labCategoryDao;
-	}
+    public LabCategoryDao getLabCategoryDao() {
+        return labCategoryDao;
+    }
 
-	public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
-		this.labCategoryDao = labCategoryDao;
-	}
+    public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
+        this.labCategoryDao = labCategoryDao;
+    }
 
-	@Required
-	public LabTermDao getLabTermDao() {
-		return labTermDao;
-	}
+    @Required
+    public LabTermDao getLabTermDao() {
+        return labTermDao;
+    }
 
-	public void setLabTermDao(LabTermDao labTermDao) {
-		this.labTermDao = labTermDao;
-	}
-	
-	@Required
-	public ChemoAgentDao getChemoAgentDao() {
-		return chemoAgentDao;
-	}
+    public void setLabTermDao(LabTermDao labTermDao) {
+        this.labTermDao = labTermDao;
+    }
 
-	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
-		this.chemoAgentDao = chemoAgentDao;
-	}
+    @Required
+    public ChemoAgentDao getChemoAgentDao() {
+        return chemoAgentDao;
+    }
 
-	@Required
-	public InterventionSiteDao getInterventionSiteDao() {
-		return interventionSiteDao;
-	}
+    public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+        this.chemoAgentDao = chemoAgentDao;
+    }
 
-	public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
-		this.interventionSiteDao = interventionSiteDao;
-	}
-	
-	
-	
-    
-    
-    
+    @Required
+    public InterventionSiteDao getInterventionSiteDao() {
+        return interventionSiteDao;
+    }
+
+    public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
+        this.interventionSiteDao = interventionSiteDao;
+    }
+
+
     public static class IndexChange {
         private Integer original, current;
         private String currentDisplayName;
