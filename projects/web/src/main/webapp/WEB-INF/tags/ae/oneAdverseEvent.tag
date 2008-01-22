@@ -2,7 +2,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
