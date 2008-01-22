@@ -286,6 +286,53 @@
             new AESection("ae-section-${status.index}", initialCtcTerm[${status.index}])
             </c:forEach>
         })
+
+        function showAjaxTable(an, ctc, tableId) {
+            var ctcId = ctc;
+            var parameterMap = getParameterMap('command');
+            ;
+
+            createAE.buildTermsTableByCategory(parameterMap, ctcId, tableId, showTable2);
+            function showTable2(table) {
+                //$('indicator').className = 'indicator'
+                var testDiv = document.getElementById(tableId);
+                testDiv.innerHTML = table;
+                testDiv.show();
+
+            }
+
+        }
+
+        function buildTable(form, ctcId, tableId) {
+            var parameterMap = getParameterMap(form);
+            createAE.buildTermsTableByCategory(parameterMap, ctcId, tableId, showTable2);
+
+            function showTable2(table) {
+                //$('indicator').className = 'indicator'
+                var testDiv = document.getElementById(tableId);
+                testDiv.innerHTML = table;
+                testDiv.show();
+
+
+            }
+        }
+
+        function fillCtcTerm(termId, tableId) {
+
+            var index = tableId.substring(tableId.length - 1, tableId.length)
+
+            var div = document.getElementById(tableId)
+            div.hide()
+            createAE.getTermByTermId(termId, function(values) {
+
+                var ae = AESections[index];
+                ae.selectTerm(values[0])
+                var ctcTerm = document.getElementById('aeReport.adverseEvents[' + index + '].adverseEventCtcTerm.ctcTerm-input')
+                ctcTerm.value = termValueSelector(values[0])
+
+            });
+        }
+
     </script>
 </head>
 <body>
