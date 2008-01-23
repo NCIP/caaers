@@ -561,7 +561,7 @@
             </xsl:if>
 
         </PATIENT_INFORMATION>
-        <xsl:for-each select="AdverseEventPriorTherapy">
+        <xsl:for-each select="SAEReportPriorTherapy">
             <PRIOR_THERAPY>
                 <xsl:if test="PriorTherapy/text != ''">
                     <THERAPY_NAME>
@@ -597,7 +597,7 @@
                 </xsl:for-each>
             </PRIOR_THERAPY>
         </xsl:for-each>
-        <xsl:for-each select="AdverseEventPreExistingCond">
+        <xsl:for-each select="SAEReportPreExistingCondition">
             <PRE_EXISTING_CONDITION>
                 <xsl:if test="PreExistingCondition/text != ''">
                     <CONDITION_NAME>
