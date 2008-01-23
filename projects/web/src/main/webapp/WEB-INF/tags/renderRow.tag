@@ -4,6 +4,7 @@
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
+<%@attribute name="extraParams"%>
 <%@attribute name="label" fragment="true" %>
 <%@attribute name="deleteParams" %>
 <div class="row ${cssClass}" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
@@ -14,7 +15,11 @@
         </c:choose>
     </div>
     <div class="value"><tags:renderInputs field="${field}"/>
-    <c:if test="${field.attributes.enableDelete}"><input type="button" name="delete" value="Delete" onClick="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');" /></c:if></div>
+    <c:if test="${field.attributes.enableDelete}"><input type="button" name="delete" value="Delete" onClick="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');" /></c:if>
+        <c:if test="${not empty extraParams}">
+            ${extraParams}
+        </c:if>
+    </div>
     <c:if test="${not empty field.attributes.details}">
         <div class="extra">${field.attributes.details}</div>
     </c:if>

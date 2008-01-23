@@ -4,7 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>

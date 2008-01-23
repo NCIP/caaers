@@ -33,9 +33,8 @@
               </div>
             </div>
         </div>
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"/>
-        <a href="javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}')">Show
-            All</a>
+        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"
+                        extraParams="<a href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}')\">Show All</a>" />
 
         <div id="table${index}"
              style="position: absolute; display: none;width:400px; left: 520px;  ">
