@@ -255,6 +255,7 @@ public class CreateAdverseEventAjaxFacade {
         List<CtcTerm> terms = new ArrayList<CtcTerm>();
         CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
         ctcTerm.getCategory().setTerms(null);
+        ctcTerm.getCategory().getCtc().setCategories(null);
         terms.add(ctcTerm);
 
         return terms;
