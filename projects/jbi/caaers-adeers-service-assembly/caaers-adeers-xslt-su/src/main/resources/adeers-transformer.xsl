@@ -723,16 +723,23 @@
                     </xsl:otherwise>
                 </xsl:choose>
 
-
+				<xsl:if test="AdverseEventCtcTerm/ctc-term/CtcCategory/name != ''">
                 <CATEGORY>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/CtcCategory/name"/>
                 </CATEGORY>
+                </xsl:if>
+                
+                <xsl:if test="AdverseEventCtcTerm/ctc-term/term != ''">
                 <AE_TERM>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/>
                 </AE_TERM>
+                </xsl:if>
+                
+                <xsl:if test="AdverseEventCtcTerm/ctc-term/select != ''">
                 <SELECT_AE>
                     <xsl:value-of select="AdverseEventCtcTerm/ctc-term/select"/>
                 </SELECT_AE>
+                </xsl:if>
 
                 <xsl:if test="detailsForOther != ''">
                     <OTHER_ADVERSE_EVENT>
@@ -744,17 +751,22 @@
                         <xsl:value-of select="LowLevelTerm/fullName"/>
                     </OTHER_ADVERSE_EVENT>
                 </xsl:if>
-
-                <AE_START_DATE>
+				
+				<xsl:if test="startDate">
+               	<AE_START_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date" select="startDate"/>
                     </xsl:call-template>
                 </AE_START_DATE>
+                </xsl:if>
+                
+                <xsl:if test="endDate">
                 <AE_END_DATE>
                     <xsl:call-template name="standard_date">
                         <xsl:with-param name="date" select="endDate"/>
                     </xsl:call-template>
                 </AE_END_DATE>
+                </xsl:if>
                 <HOSPITALIZATION>
                     <xsl:choose>
                         <xsl:when test="substring(hospitalization, 1, 1) = 0">No</xsl:when>
