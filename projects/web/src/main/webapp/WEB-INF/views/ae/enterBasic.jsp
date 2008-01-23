@@ -279,7 +279,8 @@
                     new AESection("ae-section-" + nextIndex);
                 },
                 reorderable: true,
-                deletable: true
+                deletable: true,
+                minimizeable: true
             }, "aeReport.adverseEvents")
             // item-index attribute is added by the list editor and it's needed to start up each AESection
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">

@@ -9,6 +9,7 @@
 <%@attribute name="deleteParams" %>
 <div class="division ${cssClass}"
     <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
+    <div class="header">
     <c:if test="${not empty title}">
         <c:if test="${enableDelete}">
         	<h3><table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>${title}</td><td align="right"><a href="javascript:fireAction(${deleteParams},'${id}','${cssClass}');"><img 
@@ -18,6 +19,7 @@
 	   		<h3>${title}</h3>
 	   	</c:if>
     </c:if>
+    </div>
     <div class="content">
         <jsp:doBody/>
     </div>

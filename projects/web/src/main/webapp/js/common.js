@@ -132,7 +132,8 @@ Object.extend(ListEditor.prototype, {
             addIndicator: "add-" + divisionClass + "-indicator",
             addParameters: [ ],
             reorderable: false,
-            deletable: false
+            deletable: false,
+            minimizeable:false
         }, options)
 
         this.options.addButton = $(this.options.addButton)
@@ -160,28 +161,46 @@ Object.extend(ListEditor.prototype, {
         }
         // wrap heading content in a span for easier access later
         heading.innerHTML = "<span class='text'>" + heading.innerHTML + "</span>"
-        controls = Builder.node("span", { 'class': "list-controls" })
+        controls = Builder.node("div", { 'class': "div-list-controls" })
         heading.insertBefore(controls, heading.childNodes[0])
-
-        if (this.options.deletable) {
-            var deleteControl = Builder.node("a", { 'class': 'list-control delete-control', 'title': 'Delete', 'href': '#' })
-            deleteControl.innerHTML = "&times;"
-            Event.observe(deleteControl, "click", this.remove.bindAsEventListener(this))
-            controls.appendChild(deleteControl)
-        }
 
         if (this.options.reorderable) {
             var upControl = Builder.node("a", { 'class': 'list-control move-up-control', 'title': 'Move up', 'href': '#' });
             upControl.innerHTML = "&#9650;" // set directly to avoid escaping
             Event.observe(upControl, "click", this.up.bindAsEventListener(this))
-
+ 				
+ 			
             var downControl = Builder.node("a", { 'class': 'list-control move-down-control', 'title': 'Move down', 'href': '#' });
             downControl.innerHTML = "&#9660;" // set directly to avoid escaping
             Event.observe(downControl, "click", this.down.bindAsEventListener(this))
-
-            controls.appendChild(upControl)
-            controls.appendChild(downControl)
+            
+            if(itemDiv.hasClassName('last-item')){
+            	controls.appendChild(downControl)
+            	controls.appendChild(upControl)	
+            }else {
+			  controls.appendChild(upControl)
+              controls.appendChild(downControl)
+            }	
+            
         }
+        if (this.options.minimizeable) {
+        	var minMaxControl = Builder.node("a", { 'class': 'list-control min-max-control', 'title': 'MinimizeMaximize', 'href': '#' });
+        	if(itemDiv.hasClassName('minimized')) {
+        		minMaxControl.innerHTML = '<img border="0" alt="expand" src="/caaers/images/b-plus.gif" />';
+        	}else{
+        		minMaxControl.innerHTML = '<img border="0" alt="expand" src="/caaers/images/b-minus.gif" />'; 
+        	}
+        	// set directly to avoid escaping
+            Event.observe(minMaxControl, "click", this.minMax.bindAsEventListener(this))
+            controls.appendChild(minMaxControl)
+        }
+        if (this.options.deletable) {
+            var deleteControl = Builder.node("a", { 'class': 'list-control delete-control', 'title': 'Delete', 'href': '#' })
+            deleteControl.innerHTML = "&times;"
+            Event.observe(deleteControl, "click", this.remove.bindAsEventListener(this))
+            controls.appendChild(deleteControl)
+       }
+        
     },
 
     add: function() {
@@ -229,6 +248,24 @@ Object.extend(ListEditor.prototype, {
     down: function(event) {
         this._reorderEventHandler(event, function(i) { return +i + 1 })
     },
+    minMax : function(event) {
+    	var eelt = Event.element(event);
+     	var pelt = Event.findElement(event, 'H3').up('div.' + this.divisionClass)
+     	var elt = pelt.down('div.content');
+     	if(pelt.hasClassName('minimized')) {
+        	//maximize
+        	pelt.removeClassName('minimized');
+        	Effect.BlindDown(elt);
+        	eelt.src = '/caaers/images/b-minus.gif';
+     	} else {
+     		//minimize
+     		pelt.addClassName('minimized')
+     		Effect.BlindUp(elt);
+     		eelt.src = '/caaers/images/b-plus.gif'; 
+     	}
+     	Event.stop(event);
+    }
+    ,
 
     _reorderEventHandler: function(evt, delta) {
         Event.stop(evt);
