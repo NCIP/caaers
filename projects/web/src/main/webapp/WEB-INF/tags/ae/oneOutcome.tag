@@ -17,7 +17,17 @@
       	manageDeathDate()
       	Event.observe("outcomes[6]1", "change", function() { manageOtherOutcome() })
       	Event.observe("outcomes[1]1", "change", function() { manageDeathDate() })
+      	
+      	new PeriodicalExecuter(checkOrUnCheckHospitalization, 3);
 	  })   
+	  
+	  function checkOrUnCheckHospitalization(){
+	  	if ($('aeReport.adverseEvents[0].hospitalization').value == 'NONE' ){
+	  		$('outcomes[3]1').checked = false;
+	  	}else{
+	  		$('outcomes[3]1').checked = true;
+	  	}
+	  }
 	  
 	  function disableCheckbox(){
       		$('outcomes[3]1').disabled="true";

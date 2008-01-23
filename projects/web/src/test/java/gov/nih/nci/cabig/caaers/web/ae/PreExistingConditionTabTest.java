@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+
+import java.util.List;
+import java.util.ArrayList;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 
 import org.springframework.validation.ObjectError;
 
@@ -15,7 +20,14 @@ public class PreExistingConditionTabTest extends AeTabTestCase {
 
     @Override
     protected PreExistingConditionsTab createTab() {
-        return new PreExistingConditionsTab();
+    	PreExistingConditionsTab pct = new PreExistingConditionsTab();
+    	pct.setPreExistingConditionDao(new PreExistingConditionDao(){
+    		@Override
+    		 public List<PreExistingCondition> getAll() {
+    		        return new ArrayList<PreExistingCondition>();
+    		    }    
+    	});
+        return pct;
     }
 
     @Override

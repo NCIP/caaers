@@ -33,51 +33,29 @@
                 var cmProperty = "aeReport.saeReportPreExistingConditions[" + index + "]";
                 this.priorTherapyProperty = cmProperty + ".preExistingCondition"
                 this.otherProperty = cmProperty + ".other"
-
-                if (preExisitingConditionName) $(this.priorTherapyProperty + "-input").value = preExisitingConditionName
-
-                $("select-priorTherapy-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
-                $("select-other-" + this.index)
-                    .observe("click", this.updatePriorTherapyOrOther.bind(this))
-
-                AE.createStandardAutocompleter(
-                    this.priorTherapyProperty, this.termPopulator.bind(this),
-                    function(preExistingCondition) { return preExistingCondition.text })
-
-                this.initializePriorTherapyOrOther()
+                
+                $(this.priorTherapyProperty).observe("change",this.updatePriorTherapyOther.bind(this))
+                
+                this.initializePriorTherapyOther()
             },
-
-            termPopulator: function(autocompleter, text) {
-                createAE.matchPreExistingConds(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
+            
+            updatePriorTherapyOther: function() {
+               var isNOS = $(this.priorTherapyProperty).options[1].selected 
+               if(isNOS){
+               		$(this.priorTherapyProperty).options[1].selected=true
+               		AE.slideAndShow(this.otherProperty + "-row")
+               }else{
+               		$(this.otherProperty).value="";
+               		AE.slideAndHide(this.otherProperty + "-row")
+               }
             },
-
-            updatePriorTherapyOrOther: function() {
-                var isPriorTherapy = $("select-priorTherapy-" + this.index).checked
-                var priorTherapyRow = $(this.priorTherapyProperty + "-row")
-                var otherRow = $(this.otherProperty + "-row")
-                if (isPriorTherapy) {
-                    priorTherapyRow.removeClassName("disabled")
-                    otherRow.addClassName("disabled")
-                    priorTherapyRow.getElementsByClassName("value")[0].enableDescendants()
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
-                } else {
-                    otherRow.removeClassName("disabled")
-                    priorTherapyRow.addClassName("disabled")
-                    otherRow.getElementsByClassName("value")[0].enableDescendants()
-                    priorTherapyRow.getElementsByClassName("value")[0].disableDescendants()
-                }
-            },
-
-            initializePriorTherapyOrOther: function() {
-                var otherValue = $(this.otherProperty).value
-                if (otherValue.length == 0) {
-                    $("select-priorTherapy-" + this.index).click()
-                } else {
-                    $("select-other-" + this.index).click()
-                }
+            
+            initializePriorTherapyOther: function() {
+               var isNOS = ( $(this.otherProperty).value.length >0 )
+               if(isNOS){
+               		$(this.priorTherapyProperty).options[1].selected=true
+               		AE.slideAndShow(this.otherProperty + "-row")
+               }
             }
         })
 
@@ -91,6 +69,7 @@
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                     new EnterPriorTherapy(index);
+
                     captureHelpControlEvents();
                 },
                 deletable: true

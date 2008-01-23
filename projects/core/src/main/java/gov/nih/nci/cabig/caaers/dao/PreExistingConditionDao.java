@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 
 import java.util.Arrays;
@@ -21,4 +22,8 @@ public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    public List<PreExistingCondition> getAll() {
+        return getHibernateTemplate().find("from PreExistingCondition");
+    }    
 }
