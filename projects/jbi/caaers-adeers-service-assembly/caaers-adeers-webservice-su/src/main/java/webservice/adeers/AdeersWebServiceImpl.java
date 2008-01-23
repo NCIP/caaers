@@ -71,6 +71,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
         
         //attach the id to the returned message
         s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+reportId+"</REPORT_ID></ns1:AEReportJobInfo>");
+        
         //System.out.println(s);
         
         return s;
@@ -97,6 +98,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
 		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+externalEPRs+"</EXTERNAL_SYSTEMS>", "");
 		aeReport = aeReport.replaceAll("<REPORT_ID>"+reportId+"</REPORT_ID>", "");
+		aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
 		return aeReport;
 	}
 	
