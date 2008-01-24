@@ -147,7 +147,7 @@ public class CreateAdverseEventAjaxFacade {
         table.setItems(anatomicSites);
 
         table.setTitle("");
-        table.setStyle("overflow:auto");
+        //table.setStyle("overflow:auto");
         table.setAutoIncludeParameters(Boolean.FALSE);
         table.setOnInvokeAction("showCodedPrimaryDiseaseSiteTable()");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
@@ -362,7 +362,7 @@ public class CreateAdverseEventAjaxFacade {
         table.setOnInvokeAction("buildTable('command',"+ctcCategoryId.intValue()+",'"+tableId+"')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(false);
-        table.setSortable(false);
+        table.setSortable(true);
         table.setShowPagination(true);
         model.addTable(table);
 

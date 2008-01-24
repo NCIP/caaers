@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -160,6 +162,31 @@
         findBSA();
     })
 
+    function showCodedPrimaryDiseaseSiteTable() {
+        var parameterMap = getParameterMap('command');
+        createAE.buildAnatomicSiteTable(parameterMap, showPopUpTable);
+        function showPopUpTable(table) {
+            var testDiv = document.getElementById('primarySiteOfDiseaseTable');
+            testDiv.innerHTML = table;
+            testDiv.show();
+
+        }
+
+    }
+
+    function fillCodedPrimaryDiseaseSite(codedPrimaryDiseaseSiteId) {
+
+
+        var div = document.getElementById('primarySiteOfDiseaseTable')
+        div.hide()
+        createAE.getAnatomicSiteById(codedPrimaryDiseaseSiteId, function(values) {
+            var ctcTerm = document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
+            ctcTerm.value = primarySiteValueSelector(values)
+            document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = codedPrimaryDiseaseSiteId
+
+        });
+    }
+
     </script>
 </head>
 <body>
@@ -209,9 +236,25 @@
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Disease information" id="diseaseInfo">
            
-            <c:forEach items="${fieldGroups['disease'].fields}" var="field">
+            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="0" end="1">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
+
+            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="2" end="2">
+                         <tags:renderRow field="${field}"
+                                         extraParams="<a href=\"javascript:showCodedPrimaryDiseaseSiteTable()\">Show All</a>"/>
+
+                <div id="primarySiteOfDiseaseTable"
+                      style="position: absolute; display: block; left: 640px; width:400px; z-index:99;" >
+                </div>
+
+            </c:forEach>
+
+            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="3" end="4">
+                         <tags:renderRow field="${field}"/>
+                     </c:forEach>
+
+
         </chrome:division>
 
         <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" varStatus="status">
