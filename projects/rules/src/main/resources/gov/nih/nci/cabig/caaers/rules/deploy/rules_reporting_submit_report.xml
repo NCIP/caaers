@@ -112,4 +112,81 @@
 			errors.addValidationError("SEC_BR4_ERR","Either Course Information and/or Surgery Intervention and/or Radiation Intervention must be provided for AGENTS + SURGERY + RADIATION pathways");
        	</rhs>
 	</rule>
+	<!-- ==========================================================================
+	RuleName : SEC_BR50_CHK
+	Rule : Surgery intervention must not be provided for non SURGERY pathways
+	Error Code : SEC_BR50_ERR
+	Error Message : Surgery intervention must not be provided since the study you selected does not involve a SURGERY
+	============================================================================= -->
+	<rule name="SEC_BR50_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
+			<eval>aeReport.getSurgeryInterventions().size() &gt; 0</eval>	
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR50_ERR","Surgery intervention must not be provided since the study you selected does not involve a SURGERY");
+       	</rhs>
+	</rule>	
+	<!-- ==========================================================================
+	RuleName : SEC_BR51_CHK
+	Rule : Radiation intervention must not be provided for non RADIATION pathways
+	Error Code : SEC_BR51_ERR
+	Error Message : Radiation intervention must not be provided must not be provided since the study you selected does not involve RADIATION therapy.
+	============================================================================= -->
+	<rule name="SEC_BR51_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION)</eval>
+			<eval>aeReport.getRadiationInterventions().size() &gt; 0</eval>	
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR51_ERR","Radiation intervention must not be provided since the study you selected does not involve a RADIATION");
+       	</rhs>
+	</rule>		
+	<!-- ==========================================================================
+	RuleName : SEC_BR52_CHK
+	Rule : Course information must not be provided for non AGENTS pathways
+	Error Code : SEC_BR52_ERR
+	Error Message : Course information must not be provided must not be provided since the study you selected does not involve AGENTS therapy.
+	============================================================================= -->
+	<rule name="SEC_BR52_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION)</eval>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") != null</eval>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") != null</eval>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.number") != null</eval>
+			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.totalCourses") != null</eval>
+
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR52_ERR","Course information must not be provided must not be provided since the study you selected does not involve AGENTS therapy");
+       	</rhs>
+	</rule>	
+	<!-- ==========================================================================
+	RuleName : SEC_BR53_CHK
+	Rule : Medical Device information must not be provided for non DEVICE pathways 
+	Error Code : SEC_BR53_ERR
+	Error Message : Medical Device information must not be provided for must not be provided since the study you selected does not involve a DEVICE. 
+	============================================================================= -->
+	<rule name="SEC_BR53_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE)</eval>
+			<eval>aeReport.getMedicalDevices().size() &gt; 0</eval>	
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("SEC_BR53_ERR","Medical Device information must not be provided for must not be provided since the study you selected does not involve a DEVICE");
+       	</rhs>
+	</rule>		
+			
 </package>	

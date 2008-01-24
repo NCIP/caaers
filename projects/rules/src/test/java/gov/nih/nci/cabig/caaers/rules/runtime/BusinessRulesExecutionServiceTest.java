@@ -213,13 +213,6 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		aeReport.setTreatmentInformation(ti);
 		
 		
-		//Medical Device Section.
-		MedicalDevice device = new MedicalDevice();
-		device.setBrandName("Brand Name");
-		device.setCommonName("Common Name");
-		device.setModelNumber("abcd");
-		aeReport.addMedicalDevice(device);
-		
 		//populate prior therapy
 		PriorTherapy p1 = new PriorTherapy();
 		p1.setId(14);

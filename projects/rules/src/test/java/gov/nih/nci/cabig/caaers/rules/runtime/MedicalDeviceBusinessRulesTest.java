@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 
 import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 public class MedicalDeviceBusinessRulesTest extends
@@ -25,6 +26,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testBrandName_Alone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setCommonName(null);
 
 		ValidationErrors errors = fireRules(aeReport);
@@ -38,6 +45,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testCommonName_Alone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setBrandName(null);
 
 		ValidationErrors errors = fireRules(aeReport);
@@ -52,6 +65,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testNoBrandName_NoCommonName() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setCommonName(null);
 		aeReport.getMedicalDevices().get(0).setBrandName(null);
 
@@ -68,6 +87,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testBoth_BrandName_CommonName() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "When there is CommonName and Brand Name");
@@ -81,6 +106,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testNo_Devices() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().clear();
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "When no devices present");
@@ -95,6 +126,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testNo_Model_Serial_Catalog_Lot_Number() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors,"SME_BR2_ERR");
@@ -109,6 +146,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testModelNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		ValidationErrors errors = fireRules(aeReport);
 		assertNoErrors(errors, "ModelNumber is present");
@@ -123,6 +166,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testSerialNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setSerialNumber("33");
 		aeReport.getMedicalDevices().get(0).setModelNumber(null);
 		ValidationErrors errors = fireRules(aeReport);
@@ -136,6 +185,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testCatalogNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setCatalogNumber("33");
 		aeReport.getMedicalDevices().get(0).setModelNumber(null);
 		ValidationErrors errors = fireRules(aeReport);
@@ -150,6 +205,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testLotNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setLotNumber("33");
 		aeReport.getMedicalDevices().get(0).setModelNumber(null);
 		ValidationErrors errors = fireRules(aeReport);
@@ -164,6 +225,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testModelAndSerialNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		aeReport.getMedicalDevices().get(0).setSerialNumber("33");
 		ValidationErrors errors = fireRules(aeReport);
@@ -179,6 +246,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testModelAndCatalogNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		aeReport.getMedicalDevices().get(0).setCatalogNumber("33");
 		ValidationErrors errors = fireRules(aeReport);
@@ -194,6 +267,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testModelAndLotNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		aeReport.getMedicalDevices().get(0).setLotNumber("33");
 		ValidationErrors errors = fireRules(aeReport);
@@ -209,6 +288,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
 	public void testModel_Serial_CatalogNumberAlone() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		aeReport.getMedicalDevices().get(0).setSerialNumber("33");
 		aeReport.getMedicalDevices().get(0).setCatalogNumber("33");
@@ -225,6 +310,12 @@ public class MedicalDeviceBusinessRulesTest extends
 	 */
    public void testModel_Serial_Catalog_LotNumber_Available() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 		aeReport.getMedicalDevices().get(0).setModelNumber("33");
 		aeReport.getMedicalDevices().get(0).setSerialNumber("33");
 		aeReport.getMedicalDevices().get(0).setLotNumber("33");
@@ -242,6 +333,12 @@ public class MedicalDeviceBusinessRulesTest extends
     */
    public void testDeviceOperatorOTHER_And_OtherOperator() throws Exception {
 	   ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 	   aeReport.getMedicalDevices().get(0).setDeviceOperator(DeviceOperator.OTHER);
 	   aeReport.getMedicalDevices().get(0).setOtherDeviceOperator("Other");
 	   ValidationErrors errors = fireRules(aeReport);
@@ -257,6 +354,12 @@ public class MedicalDeviceBusinessRulesTest extends
     */
    public void testDeviceOperatorOTHER_And_NoOtherOperator() throws Exception {
 	   ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 	   aeReport.getMedicalDevices().get(0).setDeviceOperator(DeviceOperator.OTHER);
 	   ValidationErrors errors = fireRules(aeReport);
 	   assertCorrectErrorCode(errors, "ADO_BR1_ERR");
@@ -271,6 +374,12 @@ public class MedicalDeviceBusinessRulesTest extends
     */
    public void testDeviceOperatorNotOTHER_And_NoOtherOperator() throws Exception {
 	   ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 	   aeReport.getMedicalDevices().get(0).setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
 	   ValidationErrors errors = fireRules(aeReport);
 	   assertNoErrors(errors, "Device Operator is HEALTHY PROFESSIONAL, and there is no other operator description");	   
@@ -284,6 +393,12 @@ public class MedicalDeviceBusinessRulesTest extends
     */
    public void testDeviceOperatorNotOTHER_And_OtherOperator() throws Exception {
 	   ExpeditedAdverseEventReport aeReport = createAEReport();
+		MedicalDevice device = new MedicalDevice();
+		device.setBrandName("Brand Name");
+		device.setCommonName("Common Name");
+		device.setModelNumber("abcd");
+		aeReport.addMedicalDevice(device);
+		
 	   aeReport.getMedicalDevices().get(0).setDeviceOperator(DeviceOperator.HEALTH_PROFESSIONAL);
 	   aeReport.getMedicalDevices().get(0).setOtherDeviceOperator("Other");
 	   ValidationErrors errors = fireRules(aeReport);

@@ -660,5 +660,65 @@ public class TreatmentInformationBusinessRulesTest extends
 		assertEquals("Replacements (index) should be correct", 3, errors.getErrorAt(1).getReplacementVariables()[0]);
 		assertEquals("Replacements (agentName) should be correct",  "xyz", errors.getErrorAt(1).getReplacementVariables()[1]);
 	}
+	/**
+	 * RuleName : PAG_BR2B_CHK
+	Rule : "'Unit of measure'  must be provided if 'Duration of delay' is provided.
+	Error Code : PAG_BR2B_ERR
+	Error Message : DELAY_UOM must be provided if the DELAY is provided
+
+	 * @throws Exception
+	 */
+	public void testCourseAgent_HavingNoDose() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()){
+			Dose d = new Dose();
+			d.setAmount(null);
+			d.setUnits(null);
+			ca.setDose(d);
+		}
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors);
+	}
+	
+	/**
+	 * RuleName : PAG_BR2B_CHK
+	Rule : "'Unit of measure'  must be provided if 'Duration of delay' is provided.
+	Error Code : PAG_BR2B_ERR
+	Error Message : DELAY_UOM must be provided if the DELAY is provided
+
+	 * @throws Exception
+	 */
+	public void testCourseAgent_HavingTotalDoseAndUnits() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()){
+			Dose d = new Dose();
+			d.setAmount(new BigDecimal(9));
+			d.setUnits("KK");
+			ca.setDose(d);
+		}
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors);
+	}
+	/**
+	 * 	RuleName : PAG_BR2B_CHK
+		Rule : "'Unit of measure'  must be provided if 'Duration of delay' is provided.
+		Error Code : PAG_BR2B_ERR
+		Error Message : DELAY_UOM must be provided if the DELAY is provided
+	 * @throws Exception
+	 */
+	public void testCourseAgent_NotHavingTotalDoseWithoutUOM() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		for(CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()){
+			Dose d = new Dose();
+			d.setAmount(new BigDecimal(9));
+			ca.setDose(d);
+		}
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertCorrectErrorCode(errors, "PAG_BR2B_ERR");
+		assertSameErrorCount(errors, 2, "When 2 of the course agents has no UOM for dose");
+	}
 	
 }

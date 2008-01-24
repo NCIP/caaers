@@ -214,7 +214,7 @@ public class ReportLevelBusinessRulesTest extends BusinessRulesExecutionServiceT
 		aeReport.addRadiationIntervention(radiationIntervention);
 
 		Study s = aeReport.getStudy();
-		StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.DRUG_ADMINISTRATION, StudyTherapyType.SURGERY};
+		StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.DRUG_ADMINISTRATION, StudyTherapyType.SURGERY, StudyTherapyType.RADIATION};
 		for(int i = 0; i <  therapies.length; i++ ){
 			StudyTherapy st = new StudyTherapy();
 			st.setId(i+1);
@@ -235,8 +235,6 @@ public class ReportLevelBusinessRulesTest extends BusinessRulesExecutionServiceT
 	 */
 	public void testChemo_SurgeryStudy_HavingNoSurgeryAndCourse() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		RadiationIntervention radiationIntervention = new RadiationIntervention();
-		aeReport.addRadiationIntervention(radiationIntervention);
 		aeReport.setTreatmentInformation(null);
 
 		Study s = aeReport.getStudy();
@@ -474,4 +472,60 @@ public class ReportLevelBusinessRulesTest extends BusinessRulesExecutionServiceT
 		assertCorrectErrorCode(errors, "SEC_BR4_ERR");
 		assertSameErrorCount(errors, 1, "When no course/surger/radiation is present");
 	}
+	/**
+	 * 	RuleName : SEC_BR50_CHK
+	Rule : Surgery intervention must not be provided for non SURGERY pathways
+	Error Code : SEC_BR50_ERR
+	Error Message : Surgery intervention must not be provided since the study you selected does not involve a SURGERY
+	 * @throws Exception
+	 */
+	public void testSurgeryStudyHavingSurgeryInterviention() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+
+		SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
+		aeReport.addSurgeryIntervention(surgeryIntervention);
+		
+		
+		Study s = aeReport.getStudy();
+		StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.SURGERY};
+		for(int i = 0; i <  therapies.length; i++ ){
+			StudyTherapy st = new StudyTherapy();
+			st.setId(i+1);
+			st.setStudyTherapyType(therapies[i]);
+			s.addStudyTherapy(st);	
+		}
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertNoErrors(errors, "When surgery is present on a surgery study");
+	}
+	/*
+	 * 	RuleName : SEC_BR50_CHK
+	Rule : Surgery intervention must not be provided for non SURGERY pathways
+	Error Code : SEC_BR50_ERR
+	Error Message : Surgery intervention must not be provided since the study you selected does not involve a SURGERY
+
+	 */
+	public void testNonSurgeryStudyHavingSurgeryIntervention() throws Exception {
+		ExpeditedAdverseEventReport aeReport = createAEReport();
+		RadiationIntervention radiationIntervention = new RadiationIntervention();
+		aeReport.addRadiationIntervention(radiationIntervention);
+		
+		SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
+		aeReport.addSurgeryIntervention(surgeryIntervention);
+		
+		
+		Study s = aeReport.getStudy();
+		StudyTherapyType[] therapies = new StudyTherapyType[] { StudyTherapyType.RADIATION};
+		for(int i = 0; i <  therapies.length; i++ ){
+			StudyTherapy st = new StudyTherapy();
+			st.setId(i+1);
+			st.setStudyTherapyType(therapies[i]);
+			s.addStudyTherapy(st);	
+		}
+		
+		ValidationErrors errors = fireRules(aeReport);
+		assertSameErrorCount(errors, 1, "when surgery is present on a non surgery study");
+		assertCorrectErrorCode(errors, "SEC_BR50_ERR");
+	}
+	
 }
