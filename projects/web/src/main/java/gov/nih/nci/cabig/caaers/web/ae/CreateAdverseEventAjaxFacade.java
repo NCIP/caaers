@@ -114,6 +114,63 @@ public class CreateAdverseEventAjaxFacade {
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
     }
+    public AnatomicSite getAnatomicSiteById(String anatomicSiteId) throws Exception {
+       return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
+    }
+
+    public String buildAnatomicSiteTable(final Map parameterMap, HttpServletRequest request) throws Exception {
+
+        Context context = null;
+        if (parameterMap == null) {
+			context = new HttpServletRequestContext(request);
+		}
+		else {
+			context = new HttpServletRequestContext(request, parameterMap);
+		}
+
+        TableModel model = new TableModelImpl(context);
+        List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
+        try {
+            return buildAnatomicSiteTableModel(model,anatomicSites).toString();
+        }
+        catch (Exception e) {
+            log.error("error while retriving the anatomicSites" + e.toString() + " message" + e.getMessage());
+        }
+
+        return "";
+
+    }
+
+    public Object buildAnatomicSiteTableModel(final TableModel model, final List<AnatomicSite> anatomicSites) throws Exception {
+        Table table = model.getTableInstance();
+        table.setForm("command");
+        table.setItems(anatomicSites);
+
+        table.setTitle("");
+        table.setStyle("overflow:auto");
+        table.setAutoIncludeParameters(Boolean.FALSE);
+        table.setOnInvokeAction("showCodedPrimaryDiseaseSiteTable()");
+        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setFilterable(false);
+        table.setSortable(true);
+        table.setShowPagination(true);
+        model.addTable(table);
+
+
+        Row row = model.getRowInstance();
+        row.setHighlightRow(Boolean.TRUE);
+        model.addRow(row);
+
+        Column columnTerm = model.getColumnInstance();
+        columnTerm.setProperty("name");
+        columnTerm.setTitle("Primary site of disease");
+        columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
+        model.addColumn(columnTerm);
+
+
+        return model.assemble();
+
+    }
 
     public List<PriorTherapy> matchPriorTherapies(String text) {
         return priorTherapyDao.getBySubnames(extractSubnames(text));
@@ -299,7 +356,7 @@ public class CreateAdverseEventAjaxFacade {
 
         table.setForm("command");
         table.setItems(terms);
-
+        table.setAutoIncludeParameters(Boolean.FALSE);
         table.setTitle("");
         table.setStyle("overflow:auto");
         table.setOnInvokeAction("buildTable('command',"+ctcCategoryId.intValue()+",'"+tableId+"')");
