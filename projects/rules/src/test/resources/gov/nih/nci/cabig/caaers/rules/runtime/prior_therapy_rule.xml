@@ -123,11 +123,11 @@
 				int i = 0;
 				for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 					i++;
-					if(ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
-							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
+					if(ArrayUtils.contains(new int[] {3,4,5,6,7,8,11}, 
+							NullSafeFieldExtractor.extractIntegerField(pt, "priorTherapy.id"))) {
 						if(pt.getPriorTherapyAgents().size() &lt; 1) {
 							errors.addValidationError("PTY_BR4A_ERR", "'Prior Therapy Agents' must be provided if 'Prior_Therapy' is " +
-									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Immunotherapy', 'Hormonal Therapy'", i);
+									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Chemotherapy non-cytotoxic','Immunotherapy', 'Hormonal Therapy'", i);
 						}
 					}
 					
@@ -162,11 +162,11 @@
 				int i = 0;
 				for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 					i++;
-					if(!ArrayUtils.contains(new String[] {"3","4","5","6","7","8","11"}, 
-							NullSafeFieldExtractor.extractField(pt, "priorTherapy.id").toString())) {
+					if(!ArrayUtils.contains(new int[] {3,4,5,6,7,8,11}, 
+							NullSafeFieldExtractor.extractIntegerField(pt, "priorTherapy.id"))) {
 						if(pt.getPriorTherapyAgents().size() &gt; 0) {
 							errors.addValidationError("PTY_BR4B_ERR", "'Prior Therapy Agents' must not be provided if 'Prior_Therapy' is not " +
-									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Immunotherapy', 'Hormonal Therapy'", i);
+									"'Bone Marrow Transplant', 'Chemotherapy (NOS)' ,'Chemotherapy multiple agents systemic', 'Chemotherapy single agent systemic','Chemotherapy non-cytotoxic','Immunotherapy', 'Hormonal Therapy'", i);
 						}
 					}
 				}

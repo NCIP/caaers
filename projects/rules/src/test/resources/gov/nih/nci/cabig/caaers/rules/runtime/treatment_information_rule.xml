@@ -9,6 +9,7 @@
 	<import name="gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor" />
 	<import name="gov.nih.nci.cabig.caaers.rules.common.NumberUtil" />
 	<import name="gov.nih.nci.cabig.caaers.rules.runtime.ExpeditedAdverseEventValidator" />
+	<import name="org.apache.commons.lang.StringUtils" />
 	
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
@@ -220,4 +221,35 @@
 			<!--  Error message is already populated -->
        </rhs>
 	</rule>	
+	<!-- ==========================================================================
+	RuleName : PAG_BR2B_CHK
+	Rule : "'Unit of measure'  must be provided if 'Duration of delay' is provided.
+	Error Code : PAG_BR2B_ERR
+	Error Message : DELAY_UOM must be provided if the DELAY is provided
+	============================================================================= -->
+	<rule name="PAG_BR2B_CHK">
+		<lhs>
+			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator(){
+					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+						TreatmentInformation ti = aeReport.getTreatmentInformation();
+						if(ti == null) return SUCCESS;
+						if(ti.getCourseAgents() == null) return SUCCESS;
+						int i = 0;
+						for(CourseAgent ca : ti.getCourseAgents()){
+							i++;
+							if(ca.getDose().getAmount() != null &amp;&amp; StringUtils.isEmpty(ca.getDose().getUnits()) ){
+								errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Duration of delay' is provided",i);
+  							}
+						}
+						return errors.hasErrors() ? FAIL : SUCCESS;
+					}
+				  }.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!--  Error message is already populated -->
+       </rhs>
+	</rule>	
+	
 </package>
