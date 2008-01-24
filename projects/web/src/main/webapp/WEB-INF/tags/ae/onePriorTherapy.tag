@@ -19,6 +19,6 @@
     </c:forEach>
       
     <div id="pptAgent${index}" style="display: none">
-        <tags:listEditorAddButton divisionClass="ptAgent${index}" label="Add an Agent"/>
+        <tags:listEditorAddButton divisionClass="ptAgent${index}" label="List an Agent" buttonCssClass="ae-list-editor-button"/>
     </div>
 </ae:fieldGroupDivision>

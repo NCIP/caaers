@@ -26,78 +26,22 @@
                 this.priorTherapyProperty = cmProperty + ".priorTherapy"
                 this.otherProperty = cmProperty + ".other"
 				
-                if (priorTherapyName) $(this.priorTherapyProperty + "-input").value = priorTherapyName
-
-               // $("select-priorTherapy-" + this.index)
-               //     .observe("click", this.updatePriorTherapyOrOther.bind(this))
-               // $("select-other-" + this.index)
-               //     .observe("click", this.updatePriorTherapyOrOther.bind(this))
-
-                AE.createStandardAutocompleter(
-                    this.priorTherapyProperty, this.termPopulator.bind(this),
-                    function(priorTherapy) {
-                        return priorTherapy.text
-                    }, {
-                    afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                        $(this.priorTherapyProperty).value = selectedChoice.id
-                        this.showAddAgent(selectedChoice, index)
-                    }.bind(this)
-                })
-
-                this.showAddAgent({ id: $(this.priorTherapyProperty).value }, index)
-                //this.initializePriorTherapyOrOther()
+                $(this.priorTherapyProperty).observe("change",this.updateAgentView.bind(this))
+                this.updateAgentView()
             },
-
-            termPopulator: function(autocompleter, text) {
-                createAE.matchPriorTherapies(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
-            },
-
-            updatePriorTherapyOrOther: function() {
-                var isPriorTherapy = $("select-priorTherapy-" + this.index).checked
-                var priorTherapyRow = $(this.priorTherapyProperty + "-row")
-                var otherRow = $(this.otherProperty + "-row")
-                if (isPriorTherapy) {
-                    priorTherapyRow.removeClassName("disabled")
-                    otherRow.addClassName("disabled")
-                    $(this.otherProperty).value=""
-                    priorTherapyRow.getElementsByClassName("value")[0].enableDescendants()
-                    otherRow.getElementsByClassName("value")[0].disableDescendants()
-                    
-                } else {
-                	
-                    otherRow.removeClassName("disabled")
-                    priorTherapyRow.addClassName("disabled")
-                    $(this.priorTherapyProperty).value=""
-                    otherRow.getElementsByClassName("value")[0].enableDescendants()
-                    priorTherapyRow.getElementsByClassName("value")[0].disableDescendants()
-                }
-            },
-
-            showAddAgent: function(selectedChoice, index) {
-                //console.debug(selectedChoice)
-                //console.debug(index)
-                var id = selectedChoice.id;
+            
+            updateAgentView: function() {
+                var id = $F(this.priorTherapyProperty);
                 var addAgentsTo = new Array("3", "4", "5", "7", "8", "11")
                 if (addAgentsTo.indexOf(id) != -1) {
                     // show Add agents button
-                    $('pptAgent' + index).style.display = "";
+                    $('pptAgent' + this.index).style.display = "";
                 }
                 else {
                     // hide Add agents button
-                    $('pptAgent' + index).style.display = "none";
+                    $('pptAgent' + this.index).style.display = "none";
                 }
 
-            },
-
-            initializePriorTherapyOrOther: function() {
-                var otherValue = $(this.otherProperty).value
-                if (otherValue.length == 0) {
-                    $("select-priorTherapy-" + this.index).click()
-                } else {
-                    $("select-other-" + this.index).click()
-                }
             }
         })
 
@@ -181,7 +125,7 @@
         </jsp:attribute>
         
         <jsp:attribute name="localButtons">
-        <tags:listEditorAddButton divisionClass="priorTherapy" label="Add a Therapy" buttonCssClass="ae-list-editor-button"/>
+        <tags:listEditorAddButton divisionClass="priorTherapy" label="Add a Therapy Type" buttonCssClass="ae-list-editor-button"/>
         </jsp:attribute>
     </tags:tabForm>
 </body>

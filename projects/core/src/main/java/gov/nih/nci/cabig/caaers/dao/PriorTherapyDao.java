@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 
 import java.util.Arrays;
@@ -21,4 +22,8 @@ public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
         return findBySubname(subnames,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    public List<PriorTherapy> getAll() {
+        return getHibernateTemplate().find("from PriorTherapy");
+    }    
 }
