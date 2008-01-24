@@ -111,7 +111,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 		investigatorFieldGroup.getFields().add(InputFieldFactory.createTextField("middleName", "Middle Name", false));
 		investigatorFieldGroup.getFields().add(InputFieldFactory.createTextField("lastName", "Last Name", true));
 		investigatorFieldGroup.getFields().add(
-				InputFieldFactory.createTextField("nciIdentifier", "NCI Identifier", false));
+				InputFieldFactory.createTextField("nciIdentifier", "Investigator number", false));
 
 		InputField emailAddressField = InputFieldFactory.createTextField("emailAddress", "Email address", 
 				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.EMAIL_VALIDATOR);
