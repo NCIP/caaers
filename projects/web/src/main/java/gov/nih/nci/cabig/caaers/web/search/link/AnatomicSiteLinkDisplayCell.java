@@ -21,7 +21,7 @@ public class AnatomicSiteLinkDisplayCell extends AbstractCell {
 
 
         if (anatomicSite != null) {
-            cellValue = "<a  href=\"javascript:fillCodedPrimaryDiseaseSite('" + anatomicSite.getId() + "')\">" + anatomicSite.getName() + "</a>";
+            cellValue = "<a  href=\"javascript:fillDiseaseSiteAutoCompletor('" + anatomicSite.getId() + "','" + tableId + "')\">" + anatomicSite.getName() + "</a>";
         }
         return cellValue;
     }

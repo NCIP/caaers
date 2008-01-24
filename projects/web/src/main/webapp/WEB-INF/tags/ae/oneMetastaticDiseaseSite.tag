@@ -8,7 +8,8 @@
 
 <ae:fieldGroupDivision fieldGroupFactoryName="metastatic" index="${index}" style="${style}">
     <tags:errors path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]"/>
-    <tags:renderRow field="${fieldGroup.fields[0]}">
+    <tags:renderRow field="${fieldGroup.fields[0]}"
+                    extraParams="<a id=\"showAll${index}\" href=\"javascript:showDiseaseSiteTable('metastaticDiseaseSitesTable${index}')\">Show All</a>" >
         <jsp:attribute name="label">
             <label>
                 <input id="select-codedSite-${index}" name="anatomicOrOther${index}" type="radio"/>
@@ -16,6 +17,10 @@
             </label>
         </jsp:attribute>
     </tags:renderRow>
+    <div id="metastaticDiseaseSitesTable${index}"
+         style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
+    </div>
+
     <tags:renderRow field="${fieldGroup.fields[1]}">
         <jsp:attribute name="label">
             <label>

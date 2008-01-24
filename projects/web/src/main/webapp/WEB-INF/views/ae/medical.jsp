@@ -87,6 +87,7 @@
             var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
             var otherRow = $(this.otherProperty + "-row")
             if (isAnatomicSite) {
+                $('showAll' + this.index).show()
                 anatomicSiteRow.removeClassName("disabled")
                 otherRow.addClassName("disabled")
                 anatomicSiteRow.getElementsByClassName("value")[0].enableDescendants()
@@ -94,6 +95,7 @@
             } else {
                 otherRow.removeClassName("disabled")
                 anatomicSiteRow.addClassName("disabled")
+                $('showAll' + this.index).hide()
                 otherRow.getElementsByClassName("value")[0].enableDescendants()
                 anatomicSiteRow.getElementsByClassName("value")[0].disableDescendants()
             }
@@ -162,11 +164,11 @@
         findBSA();
     })
 
-    function showCodedPrimaryDiseaseSiteTable() {
+    function showDiseaseSiteTable(tableId) {
         var parameterMap = getParameterMap('command');
-        createAE.buildAnatomicSiteTable(parameterMap, showPopUpTable);
+        createAE.buildAnatomicSiteTable(parameterMap,tableId,showPopUpTable);
         function showPopUpTable(table) {
-            var testDiv = document.getElementById('primarySiteOfDiseaseTable');
+            var testDiv = document.getElementById(tableId);
             testDiv.innerHTML = table;
             testDiv.show();
 
@@ -174,18 +176,28 @@
 
     }
 
-    function fillCodedPrimaryDiseaseSite(codedPrimaryDiseaseSiteId) {
+    function fillDiseaseSiteAutoCompletor(diseaseSiteId,tableId) {
 
 
-        var div = document.getElementById('primarySiteOfDiseaseTable')
+        var div = document.getElementById(tableId)
         div.hide()
-        createAE.getAnatomicSiteById(codedPrimaryDiseaseSiteId, function(values) {
-            var ctcTerm = document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
-            ctcTerm.value = primarySiteValueSelector(values)
-            document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = codedPrimaryDiseaseSiteId
+        createAE.getAnatomicSiteById(diseaseSiteId, function(values) {
+            if (tableId == 'primarySiteOfDiseaseTable')
+            {
+                var ctcTerm = document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
+                ctcTerm.value = primarySiteValueSelector(values)
+                document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = diseaseSiteId
+            }else{
+                var index = tableId.substring(tableId.length - 1, tableId.length)
+
+                var ctcTerm = document.getElementById('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite-input')
+                ctcTerm.value = primarySiteValueSelector(values)
+                document.getElementById('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite').value = diseaseSiteId
+            }
 
         });
     }
+
 
     </script>
 </head>
@@ -242,7 +254,7 @@
 
             <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="2" end="2">
                          <tags:renderRow field="${field}"
-                                         extraParams="<a href=\"javascript:showCodedPrimaryDiseaseSiteTable()\">Show All</a>"/>
+                                         extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable')\">Show All</a>"/>
 
                 <div id="primarySiteOfDiseaseTable"
                       style="position: absolute; display: block; left: 640px; width:400px; z-index:99;" >

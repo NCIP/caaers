@@ -118,7 +118,7 @@ public class CreateAdverseEventAjaxFacade {
        return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
     }
 
-    public String buildAnatomicSiteTable(final Map parameterMap, HttpServletRequest request) throws Exception {
+    public String buildAnatomicSiteTable(final Map parameterMap,String tableId,HttpServletRequest request) throws Exception {
 
         Context context = null;
         if (parameterMap == null) {
@@ -131,7 +131,7 @@ public class CreateAdverseEventAjaxFacade {
         TableModel model = new TableModelImpl(context);
         List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
         try {
-            return buildAnatomicSiteTableModel(model,anatomicSites).toString();
+            return buildAnatomicSiteTableModel(model,tableId,anatomicSites).toString();
         }
         catch (Exception e) {
             log.error("error while retriving the anatomicSites" + e.toString() + " message" + e.getMessage());
@@ -141,15 +141,14 @@ public class CreateAdverseEventAjaxFacade {
 
     }
 
-    public Object buildAnatomicSiteTableModel(final TableModel model, final List<AnatomicSite> anatomicSites) throws Exception {
+    public Object buildAnatomicSiteTableModel(final TableModel model,String tableId, final List<AnatomicSite> anatomicSites) throws Exception {
         Table table = model.getTableInstance();
         table.setForm("command");
         table.setItems(anatomicSites);
-
+        table.setTableId(tableId);
         table.setTitle("");
-        //table.setStyle("overflow:auto");
         table.setAutoIncludeParameters(Boolean.FALSE);
-        table.setOnInvokeAction("showCodedPrimaryDiseaseSiteTable()");
+        table.setOnInvokeAction("showDiseaseSiteTable('"+tableId+"')");
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(false);
         table.setSortable(true);
