@@ -127,6 +127,7 @@
             _selectMeddraId:          function() { return "select-meddra-" + this._index() },
             _selectOtherId:           function() { return "select-other-" + this._index() },
 
+
             resetTermText: function() {
                 if (this.initialCtcTerm) {
                     // select term first to work around a bug in showing the "other" row when the
@@ -225,7 +226,7 @@
                 }
 
                 this.updateGrades(newCtcTerm.id)
-            },
+                },
 
             updateGrades: function(ctcTermId) {
                 createAE.getTermGrades(ctcTermId, function(grades) {
@@ -257,6 +258,7 @@
                     autocompleter.setChoices(values)
                 })
             }
+
         })
 
         function postReset() {
@@ -282,10 +284,12 @@
                 deletable: true,
                 minimizeable: true
             }, "aeReport.adverseEvents")
+
             // item-index attribute is added by the list editor and it's needed to start up each AESection
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
             new AESection("ae-section-${status.index}", initialCtcTerm[${status.index}])
             </c:forEach>
+
         })
 
         function showAjaxTable(an, ctc, tableId) {
@@ -332,6 +336,24 @@
                 ctcTerm.value = termValueSelector(values[0])
 
             });
+        }
+
+        function enableDisableAjaxTable(tableIndex) {
+            var testDiv = document.getElementById('table' + tableIndex);
+            if (!testDiv== '')
+            {
+                testDiv.hide()
+            }
+
+            if ($('aeReport.adverseEvents[' + tableIndex + '].ctc-category').value == '')
+            {
+                $('showAllTerm' + tableIndex).hide()
+
+            } else {
+                $('showAllTerm' + tableIndex).show()
+
+            }
+
         }
 
     </script>
