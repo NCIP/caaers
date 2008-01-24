@@ -81,7 +81,7 @@ function buildTable(form) {
 		    </div>
 		    
 		    <div class="row">
-		    	<div class="label"> NCI Identifier&nbsp; </div>
+		    	<div class="label"> Investigator number&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="text" name="nciInstituteCode"/></div>
 		    </div>
    </chrome:box>

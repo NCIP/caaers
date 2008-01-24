@@ -60,7 +60,7 @@ function submitPage(s){
     	</div>
     	<div class="rightpanel">
     	    <div class="row">
-	            <div class="label">NCI Identifier:</div>
+	            <div class="label">Researcher ID:</div>
 	            <div class="value">${researchStaff.nciIdentifier} </div>
 	        </div>
 	        <div class="row">

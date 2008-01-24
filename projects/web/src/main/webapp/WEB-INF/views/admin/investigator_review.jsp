@@ -58,7 +58,7 @@ function submitPage(s){
 
  <div class="rightpanel">
    <div class="row">
-	<div class="label">NCI Identifier:</div>
+	<div class="label">Investigator number:</div>
 	<div class="value">${investigator.nciIdentifier} </div>
    </div>
    <div class="row">
