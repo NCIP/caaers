@@ -114,7 +114,7 @@
 <body>
 <c:if test="${not empty configuration.map.pscBaseUrl}">
 <p>
-    View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/schedule?assignment=${command.assignment.gridId}" class="sso">study calendar</a>.
+    View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso">study calendar</a>.
 </p>
 </c:if>
 

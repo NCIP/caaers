@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
@@ -57,7 +58,17 @@ public class ListAdverseEventsController extends SimpleFormController {
             =  paramNames.contains("study") 
             || paramNames.contains("nciIdentifier")
             || paramNames.contains("assignment");
-        return hasParticipant && hasStudy;
+        boolean hasStudySubjectGridId = paramNames.contains("studySubjectGridId");
+        return (hasParticipant && hasStudy) || hasStudySubjectGridId;
+    }
+    @Override
+    protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
+    	super.onBind(request, command, errors);
+    	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+    	String assignmentGridId = request.getParameter("studySubjectGridId");
+    	listAECmd.setAssignment(assignmentDao.getByGridId(assignmentGridId));
+    	listAECmd.setParticipant(listAECmd.getAssignment().getParticipant());
+    	listAECmd.setStudy(listAECmd.getAssignment().getStudySite().getStudy());
     }
     
     @Override
