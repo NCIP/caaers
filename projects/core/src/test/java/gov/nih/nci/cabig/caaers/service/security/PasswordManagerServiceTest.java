@@ -69,7 +69,7 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
     }
 
     public void testSetPassword() throws Exception {
-	expect(csmUser.getPassword()).andReturn("old_password").times(2);
+	expect(csmUser.getPassword()).andReturn("old_password").atLeastOnce();
 	csmUser.setPassword("v@l1d_Password");
 	userDao.save(user);
 	expectLastCall().times(3);
