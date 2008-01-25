@@ -23,6 +23,15 @@
 
             <div id="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent-choices" class="autocomplete" style="display: none"></div>
 
+            <a id="showAllChemoAgentparent${parentIndex}index${index}"
+               href="javascript:showChemoAgentsTable('chemoAgentTableparent${parentIndex}index${index}')">Show
+                All</a>
+
+            <div id="chemoAgentTableparent${parentIndex}index${index}"
+                 style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
+            </div>
+
+
             <form:hidden path="aeReport.saeReportPriorTherapies[${parentIndex}].priorTherapyAgents[${index}].chemoAgent"/>
 
         </div>
