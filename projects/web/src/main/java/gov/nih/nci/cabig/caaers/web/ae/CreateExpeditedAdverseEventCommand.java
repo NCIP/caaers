@@ -73,7 +73,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
             // multiple copies of the same Organization are loaded
             setStudy(studyDao.getById(getStudy().getId()));
         }
-        if (getParticipant() != null) participantDao.reassociateUsingLock(getParticipant());
+       // if (getParticipant() != null) participantDao.reassociateUsingLock(getParticipant());
     }
 
     ////// BOUND PROPERTIES
