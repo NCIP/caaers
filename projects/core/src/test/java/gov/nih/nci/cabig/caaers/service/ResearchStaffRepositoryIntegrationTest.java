@@ -122,7 +122,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		userGroupTypes.add(UserGroupType.caaers_ae_cd);
 		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
-		researchStaffRepository.save(researchStaff);
+		researchStaffRepository.save(researchStaff, "noURL");
 
 		// now validate research staff, csm_user and csm_user_group
 		// ResearchStaff newResearchStaff = researchStaffRepository.getById(researchStaff.getId());
@@ -141,13 +141,13 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		userGroupTypes.add(UserGroupType.caaers_site_cd);
 		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
-		researchStaffRepository.save(researchStaff);
+		researchStaffRepository.save(researchStaff, "noURL");
 
 		// now create new research staff with same email address and try to save it..
 
 		ResearchStaff newResearchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 		try {
-		    researchStaffRepository.save(newResearchStaff);
+		    researchStaffRepository.save(newResearchStaff, "noURL");
 		    fail("email address should be unique");
 		}
 		catch (CaaersSystemException e) {
@@ -165,7 +165,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		userGroupTypes.add(UserGroupType.caaers_site_cd);
 		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
-		researchStaffRepository.save(researchStaff);
+		researchStaffRepository.save(researchStaff, "noURL");
 		valaidateResearchStaff(researchStaff, userGroupTypes);
 
 		// now update the research staff;
@@ -175,7 +175,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		// researchStaff.addUserGroupType(UserGroupType.caaers_study_cd);
 		// researchStaff.removeUserGroupType(UserGroupType.caaers_site_cd);
 		//
-		// researchStaffRepository.save(researchStaff);
+		// researchStaffRepository.save(researchStaff, "noURL");
 		//
 		// userGroupTypes = new ArrayList<UserGroupType>();
 		// userGroupTypes.add(UserGroupType.caaers_participant_cd);

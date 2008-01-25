@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.service.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -82,7 +83,9 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 			final Object command, final BindException errors) throws Exception {
 		
 		ResearchStaff researchStaff = (ResearchStaff) command;
-		researchStaffRepository.save(researchStaff);
+		researchStaffRepository.save(researchStaff, 
+					     ResetPasswordController.getURL(request.getScheme(), request.getServerName(),
+									    request.getServerPort(), request.getContextPath()));
 		if(!errors.hasErrors()){
 			request.setAttribute("statusMessage", "Research staff saved successfully.");
 		}

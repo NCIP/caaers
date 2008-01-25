@@ -70,13 +70,17 @@ public class ResetPasswordController extends SimpleFormController {
 	this.userService = userService;
     }
 
+    public static String getURL(String scheme, String serverName, int serverPort, String contextPath) {
+	return scheme + "://" + serverName + ":" + serverPort + contextPath + UserName.CHANGE_PATH;
+    }
+    
     public class UserName {
 	private static final String CHANGE_PATH = "/public/user/changePassword?";
 	private String userName;
 	private String url;
-
+	
 	public UserName(String scheme, String serverName, int serverPort, String contextPath) {
-	    url = scheme + "://" + serverName + ":" + serverPort + contextPath + CHANGE_PATH;
+	    url = ResetPasswordController.getURL(scheme, serverName, serverPort, contextPath);
 	}
 
 	public String getUserName() {

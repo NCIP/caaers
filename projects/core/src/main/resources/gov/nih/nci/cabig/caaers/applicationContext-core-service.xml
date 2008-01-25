@@ -32,6 +32,7 @@ This applicationContext contains the definition of the concrete services
     <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
     <property name="userDao" ref="userDao"/>
+    <property name="researchStaffDao" ref="researchStaffDao"/>
   </bean>
 
 
