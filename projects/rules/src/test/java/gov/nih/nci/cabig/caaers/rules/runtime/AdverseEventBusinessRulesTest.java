@@ -266,8 +266,8 @@ public class AdverseEventBusinessRulesTest extends
 	 */
 	public void testDuplicateCTC() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getAdverseEvents().get(0).getAdverseEventCtcTerm().setId(5);
-		aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().setId(5);
+		aeReport.getAdverseEvents().get(0).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
+		aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().getCtcTerm().setId(3002);
 		aeReport.getAdverseEvents().get(1).getAdverseEventCtcTerm().getTerm().setTerm("abcxyz");
 		
 		ValidationErrors errors = fireRules(aeReport);
