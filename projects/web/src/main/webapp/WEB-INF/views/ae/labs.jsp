@@ -16,17 +16,18 @@
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 		var EnterLab = Class.create();
 		Object.extend(EnterLab.prototype, {
-		  initialize: function(index, nameValue, categoryId) {
+		  initialize: function(index, termId, categoryId) {
 		  	this.index = index;
 		  	this.baseName = 'aeReport.labs[' + index + ']'; 
 		  	this.testName = $(this.baseName + '.labTerm');
-		  	this.testNameInput = $(this.baseName + '.labTerm-input');
 		  	this.categoryInput = $(this.baseName + '.lab-category');
 		  	this.categoryId = (categoryId == null || categoryId.length) == 0 ? null : categoryId ;
-		  	this.other = $(this.baseName + '.other');;
-		  	if(nameValue){
-		  		this.testNameInput.value = nameValue;
-		  	}
+		  	this.termId = (termId == null || termId.length) == 0 ? null : termId ;
+		  	this.other = $(this.baseName + '.other');
+		  	this.otherProperty = this.baseName + '.other';
+		  	this.categoryProperty = $(this.baseName + '.lab-category');
+		  	
+		  	
 		  	if(this.categoryId){
 		  		for (i=0; i < this.categoryInput.options.length; i++){
 		  			if (this.categoryInput.options[i].value == this.categoryId){
@@ -38,108 +39,83 @@
 		  						
 		  					}else{		  						
 		  						
-		  					}
-		  				
+		  					}		
 		  				break
 		  			}	
 		  		}
 		  	}
 		  	
 		  	AE.registerCalendarPopups("lab-" + this.index)
-		  	//register autocompleter.
-		  	AE.createStandardAutocompleter(
-                this.baseName + '.labTerm', 
-                function(autocompleter, text) {
-                	cat = $('aeReport.labs[' + index + '].lab-category')
-                	catId = ""
-                	for (i=0; i < cat.length; i++){
-		  			if (cat.options[i].selected == true){
-		  				catId = cat.options[i].value
-		  			}	
-		  			}
-                	createAE.matchLabTerms(text, catId , function(values){
-                		autocompleter.setChoices(values)	
-                	});
-                },
-                function(labTerm) {
-                   	return labTerm.term 
-                },
-                {
-                  afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-                  	$('aeReport.labs[' + index + '].labTerm').value=selectedChoice.id
-                  	categoryInput = $('aeReport.labs[' + index + '].lab-category');
-                  	for (i=0; i < categoryInput.options.length; i++){
-		  				if (categoryInput.options[i].value == selectedChoice.category.id){
-		  					categoryInput.options[i].selected=true;
-		  					if (categoryInput.options[i].value == "105"){
-		  						AE.slideAndHide($('not-microbiology-'+index))
-		  						AE.slideAndShow($('microbiology-'+index))
-		  						$('aeReport.labs[' + index + '].units').options[0].selected=true
-		  						$('aeReport.labs[' + index + '].baseline.value').value=""
-		  						$('aeReport.labs[' + index + '].baseline.date').value=""
-		  						$('aeReport.labs[' + index + '].nadir.value').value=""
-		  						$('aeReport.labs[' + index + '].nadir.date').value=""
-		  						$('aeReport.labs[' + index + '].recovery.value').value=""
-		  						$('aeReport.labs[' + index + '].recovery.date').value=""
-		  					}else{
-		  						if ($('not-microbiology-'+index).style.display != ""){
-		  						$('aeReport.labs[' + index + '].site').value=""
-		  						$('aeReport.labs[' + index + '].labDate').value=""
-		  						$('aeReport.labs[' + index + '].infectiousAgent').value=""
-		  						AE.slideAndHide($('microbiology-'+index))
-		  						AE.slideAndShow($('not-microbiology-'+index))
-		  						}
-		  					}
-		  					break
-		  				}	
-		  			}
-		  			
-        		  }
-                });
-             
-             
-            //register the radio buttons.
-		  	this.categoryInput.observe("change", function(event){
-		  		this.testNameInput.value=""
-		  	}.bindAsEventListener(this)); 
-             
-		  	//register the radio buttons.
-		  	$('labname-' + this.index).observe("click", function(event){
-
-                this.categoryInput.disabled=false;
-		  		this.testNameInput.removeAttribute('readOnly')
-                this.other.setAttribute('readOnly',true);
-		  		this.other.clear();
-                enableDisableAjaxTable(this.categoryInput, 'labTermTable' + this.index, 'showAllLabs' + this.index)
-
-              }.bindAsEventListener(this));
-		  	$('labother-' + this.index).observe("click", function(event){
-
-                 this.categoryInput.options[0].selected=true;
-		  		this.categoryInput.disabled=true;
-		  		this.other.removeAttribute('readOnly')
-                this.testNameInput.setAttribute('readOnly',true);
-		  		this.testNameInput.clear();
-		  		this.testName.value=''
-                enableDisableAjaxTable(this.categoryInput, 'labTermTable' + this.index, 'showAllLabs' + this.index)
-
-                if ($('not-microbiology-'+index).style.display != ""){
-		  		AE.slideAndHide($('microbiology-'+index))
-		  		AE.slideAndShow($('not-microbiology-'+index))
-
-                  }
-		  		
-		  	}.bindAsEventListener(this));
+		  	this.initializeLabOrOther()
+		  	this.updateTermDropDown()
 		  	
-		  	this.initializeNameOrOther();
+		  	$(this.testName).observe("change",this.updateLabOther.bind(this))
+		  	$(this.categoryInput).observe("change",this.updateTermDropDown.bind(this))
+		  	
+		  
 		  },
-		  initializeNameOrOther: function() {
-              if (this.other.value.length == 0) {
-                  $("labname-" + this.index).click()
-              } else {
-                  $("labother-" + this.index).click()
-              }
-          }
+		  
+		  populateTermDropDown: function(values) {
+		  	var opt1 = new Option("Please select", " ")
+		  	var opt2 = new Option("Other, specify", "")
+		  	// nullify drop down contents by setting length to 0
+		  	this.testName.options.length = 0
+		  	this.testName.options[0] = opt1;
+		  	this.testName.options[1] = opt2;
+		  	values.each(function(value,index){
+		  		var opt = new Option(value.term,value.id)
+		  		this.testName.options[index+2] = opt
+		  		if(this.testName.options[index+2].value == this.termId ){
+		  			this.testName.options[index+2].selected=true
+		  		}
+		  	
+		  	}.bind(this))
+		  },
+		  
+		  updateTermDropDown: function() {
+		  	catId= $F(this.categoryProperty)
+		  	console.debug("updateTermDropDown" + catId) 
+		   	createAE.getLabTermsByCategory( catId ,this.populateTermDropDown.bind(this));
+		  },
+		  
+		  updateLabOther: function() {
+		  	catId= $F(this.categoryProperty)
+		   	var isNOS = $(this.testName).options[1].selected 
+		   	if(isNOS){
+					$(this.testName).options[1].selected=true
+					AE.slideAndShow(this.otherProperty + "-row")
+		   	}else{
+					$(this.otherProperty).value="";
+					AE.slideAndHide(this.otherProperty + "-row")
+		   	}
+		   	if (catId == "105"){
+				AE.slideAndHide($('not-microbiology-'+this.index))
+				AE.slideAndShow($('microbiology-'+this.index))
+				$(this.baseName + '.units').options[0].selected=true
+				$(this.baseName + '.baseline.value').value=""
+				$(this.baseName + '.baseline.date').value=""
+				$(this.baseName + '.nadir.value').value=""
+				$(this.baseName + '.nadir.date').value=""
+				$(this.baseName + '.recovery.value').value=""
+				$(this.baseName + '.recovery.date').value=""
+			}else{
+				if ($('not-microbiology-'+this.index).style.display != ""){
+				$(this.baseName + '.site').value=""
+				$(this.baseName + '.labDate').value=""
+				$(this.baseName + '.infectiousAgent').value=""
+				AE.slideAndHide($('microbiology-'+this.index))
+				AE.slideAndShow($('not-microbiology-'+this.index))
+				}
+			}
+		  },
+		  
+		  initializeLabOrOther: function() {
+               var isNOS = ( $(this.other).value.length >0 )
+               if(isNOS){
+               		$(this.testName).options[1].selected=true
+               		AE.slideAndShow(this.otherProperty + "-row")
+               }
+          }		 
 		});
 		
 		
@@ -154,57 +130,10 @@
                 reorderable: true
             }, 'aeReport.labs')
             <c:forEach items="${command.aeReport.labs}" varStatus="status" var="lab">
-            	new EnterLab(${status.index},"${lab.labTerm.term}","${lab.labTerm.category.id}");
+            	new EnterLab(${status.index},"${lab.labTerm.id}","${lab.labTerm.category.id}");
             </c:forEach>
             
         })
-
-        function showLabsTable(labCategoryId, tableId) {
-            var parameterMap = getParameterMap('command');
-            createAE.buildLabTermsTable(parameterMap, labCategoryId, tableId, showPopUpTable);
-            function showPopUpTable(table) {
-                var testDiv = document.getElementById(tableId);
-                testDiv.innerHTML = table;
-                testDiv.show();
-
-            }
-
-        }
-        function enableDisableAjaxTable(selectonId,tableIndex,showAll) {
-            var testDiv = document.getElementById(tableIndex);
-            if (!testDiv == '')
-            {
-                testDiv.hide()
-            }
-
-            if ($(selectonId).value == '')
-            {
-                $(showAll).hide()
-
-            } else {
-                $(showAll).show()
-
-            }
-
-        }
-
-        function fillLabsAutoCompletor(labTermId, tableId) {
-
-
-            var div = document.getElementById(tableId)
-            div.hide()
-            createAE.getLabTermById(labTermId, function(values) {
-                var index = tableId.substring(tableId.length - 1, tableId.length)
-
-                var labTerm = document.getElementById('aeReport.labs[' + index + '].labTerm-input')
-                labTerm.value = values.term
-                document.getElementById('aeReport.labs[' + index + '].labTerm').value = labTermId
-
-
-            });
-        }
-
-
     </script>
 </head>
 <body>

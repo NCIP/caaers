@@ -13,9 +13,8 @@
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                <select id="aeReport.labs[${index}].lab-category" class="labCategoryClass"
-                        onchange="javascript:enableDisableAjaxTable('aeReport.labs[${index}].lab-category','labTermTable${index}','showAllLabs${index}')">
-                    <option value="">Any</option>
+                <select id="aeReport.labs[${index}].lab-category">
+                    <option value="0">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
                     </c:forEach>
@@ -26,45 +25,20 @@
     </div>
 	
     <div class="row">
-
      <div class="label">
-
-      <input id="labname-${index}" name="testNameType${index}" value="name" type="radio"/>
-
       <tags:renderLabel field="${fieldGroup.fields[0]}"/>
-
      </div>
-
      <div class="value">
-
        <tags:renderInputs field="${fieldGroup.fields[0]}"/>
-         <a id="showAllLabs${index}" href="javascript:showLabsTable($F('aeReport.labs[${index}].lab-category'),'labTermTable${index}')">Show All</a>
-        
-         <div id="labTermTable${index}"
-                 style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
-         </div>
-
-     </div>
-
     </div>
-
-    <div class="row">
-
-     <div class="label">
-
-      <input id="labother-${index}" name="testNameType${index}" value="other" type="radio"/>
-
-      <tags:renderLabel field="${fieldGroup.fields[1]}"/>
-
-     </div>
-
-     <div class="value">
-
-       <tags:renderInputs field="${fieldGroup.fields[1]}"/>
-
-     </div>
-
-    </div>
+    
+    <tags:renderRow field="${fieldGroup.fields[1]}"  style="display: none">
+        <jsp:attribute name="label">
+            <label>
+                ${fieldGroup.fields[1].displayName}
+            </label>
+        </jsp:attribute>
+    </tags:renderRow>
 
 	<div id="not-microbiology-${index}">
     <tags:renderRow field="${fieldGroup.fields[2]}" />

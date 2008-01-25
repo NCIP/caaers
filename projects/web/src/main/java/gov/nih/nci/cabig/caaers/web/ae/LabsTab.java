@@ -1,7 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -9,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 
 /**
  * @author Rhett Sutphin
@@ -16,6 +21,7 @@ import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 public class LabsTab extends AeTab {
     private ConfigProperty configurationProperty;
     private LabCategoryDao labCategoryDao;
+    private LabTermDao labTermDao;
 
     public LabsTab() {
         super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION.getDisplayName(), "ae/labs");
@@ -46,7 +52,8 @@ public class LabsTab extends AeTab {
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-    	InputField labNameField = InputFieldFactory.createAutocompleterField("labTerm", "Lab test name");
+    	//InputField labNameField = InputFieldFactory.createAutocompleterField("labTerm", "Lab test name");
+    	InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name", false, createOptions());
     	InputFieldAttributes.setSize(labNameField, 60);
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 60);
@@ -83,6 +90,19 @@ public class LabsTab extends AeTab {
             }
         };
     }
+    
+    private Map<Object, Object> createOptions() {
+        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        List<LabTerm> list = labTermDao.getAll();
+        options.put(" ", "Please select");
+        options.put("", "Other, specify");
+    	if(list != null){
+    		for(LabTerm l : list ){
+    			options.put(l.getId(), l.getTerm());
+    		}
+    	}	
+        return options;
+    }
 
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
@@ -104,5 +124,12 @@ public class LabsTab extends AeTab {
 	public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
 		this.labCategoryDao = labCategoryDao;
 	}
-    
+
+	public LabTermDao getLabTermDao() {
+		return labTermDao;
+	}
+
+	public void setLabTermDao(LabTermDao labTermDao) {
+		this.labTermDao = labTermDao;
+	}    
 }
