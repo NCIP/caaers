@@ -221,7 +221,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
 
-    public ResearchStaff cogetResearchStaff(String text) {
+    public ResearchStaff getResearchStaff(String text) {
         ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
         return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
