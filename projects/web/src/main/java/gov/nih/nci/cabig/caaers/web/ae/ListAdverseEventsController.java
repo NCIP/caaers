@@ -66,9 +66,16 @@ public class ListAdverseEventsController extends SimpleFormController {
     	super.onBind(request, command, errors);
     	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
     	String assignmentGridId = request.getParameter("studySubjectGridId");
-    	listAECmd.setAssignment(assignmentDao.getByGridId(assignmentGridId));
-    	listAECmd.setParticipant(listAECmd.getAssignment().getParticipant());
-    	listAECmd.setStudy(listAECmd.getAssignment().getStudySite().getStudy());
+    	//forwarded from external system (eg : Labviewer)
+    	if(assignmentGridId != null){
+    		StudyParticipantAssignment assignment = assignmentDao.getByGridId(assignmentGridId);
+    		//able to load the assignment?
+    		if(assignment != null){
+    			listAECmd.setAssignment(assignment);
+    			listAECmd.setParticipant(listAECmd.getAssignment().getParticipant());
+    			listAECmd.setStudy(listAECmd.getAssignment().getStudySite().getStudy());
+    		}
+    	}
     }
     
     @Override
