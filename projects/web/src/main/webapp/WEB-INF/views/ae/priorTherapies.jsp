@@ -5,6 +5,8 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <html>
 <head>
     <title>${tab.longTitle}</title>
@@ -15,7 +17,7 @@
 	</style>  
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
-    <script type="text/javascript"><!--
+    <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
         var EnterPriorTherapy = Class.create()
@@ -106,10 +108,38 @@
             }, 'aeReport.saeReportPriorTherapies')
         })
         
-        
-        
-        
-    --></script>
+        function showChemoAgentsTable(tableId) {
+               var parameterMap = getParameterMap('command');
+               createAE.buildChemoAgentsTable(parameterMap,tableId,showPopUpTable);
+               function showPopUpTable(table) {
+                   var testDiv = document.getElementById(tableId);
+                   testDiv.innerHTML = table;
+                   testDiv.show();
+
+               }
+
+           }
+
+        function fillChemoAgentAutoCompletor(chemoAgentId, tableId) {
+
+
+            var div = document.getElementById(tableId)
+            div.hide()
+            createAE.getChemoAgentById(chemoAgentId, function(values) {
+
+                var parentIndex = tableId.substring(tableId.indexOf('parent') + 6, tableId.indexOf('index'))
+                var index = tableId.substring(tableId.indexOf('index') + 5, tableId.length)
+
+                var autoCompleterFileId = 'aeReport.saeReportPriorTherapies[' + parentIndex + '].priorTherapyAgents[' + index + '].chemoAgent'
+                var ctcTerm = document.getElementById(autoCompleterFileId + '-input')
+                ctcTerm.value = values.name
+                document.getElementById(autoCompleterFileId).value = chemoAgentId
+
+            });
+        }
+
+
+    </script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section8priortherapies">
