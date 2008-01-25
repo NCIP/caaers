@@ -13,7 +13,8 @@
             <div class="value">
 
               <div class="labCategoryValueDiv">
-                <select id="aeReport.labs[${index}].lab-category" class="labCategoryClass">
+                <select id="aeReport.labs[${index}].lab-category" class="labCategoryClass"
+                        onchange="javascript:enableDisableAjaxTable('aeReport.labs[${index}].lab-category','labTermTable${index}','showAllLabs${index}')">
                     <option value="">Any</option>
                     <c:forEach items="${labCategories}" var="cat">
                         <option value="${cat.id}">${cat.name}</option>
@@ -37,6 +38,11 @@
      <div class="value">
 
        <tags:renderInputs field="${fieldGroup.fields[0]}"/>
+         <a id="showAllLabs${index}" href="javascript:showLabsTable($F('aeReport.labs[${index}].lab-category'),'labTermTable${index}')">Show All</a>
+        
+         <div id="labTermTable${index}"
+                 style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
+         </div>
 
      </div>
 

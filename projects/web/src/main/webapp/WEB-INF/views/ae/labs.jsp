@@ -3,6 +3,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -103,22 +105,29 @@
              
 		  	//register the radio buttons.
 		  	$('labname-' + this.index).observe("click", function(event){
-			  	this.categoryInput.disabled=false;
+
+                this.categoryInput.disabled=false;
 		  		this.testNameInput.removeAttribute('readOnly')
                 this.other.setAttribute('readOnly',true);
 		  		this.other.clear();
-		  	}.bindAsEventListener(this));
+                enableDisableAjaxTable(this.categoryInput, 'labTermTable' + this.index, 'showAllLabs' + this.index)
+
+              }.bindAsEventListener(this));
 		  	$('labother-' + this.index).observe("click", function(event){
-		  		this.categoryInput.options[0].selected=true;
+
+                 this.categoryInput.options[0].selected=true;
 		  		this.categoryInput.disabled=true;
 		  		this.other.removeAttribute('readOnly')
                 this.testNameInput.setAttribute('readOnly',true);
 		  		this.testNameInput.clear();
 		  		this.testName.value=''
-		  		if ($('not-microbiology-'+index).style.display != ""){
+                enableDisableAjaxTable(this.categoryInput, 'labTermTable' + this.index, 'showAllLabs' + this.index)
+
+                if ($('not-microbiology-'+index).style.display != ""){
 		  		AE.slideAndHide($('microbiology-'+index))
 		  		AE.slideAndShow($('not-microbiology-'+index))
-		  		}
+
+                  }
 		  		
 		  	}.bindAsEventListener(this));
 		  	
@@ -149,6 +158,53 @@
             </c:forEach>
             
         })
+
+        function showLabsTable(labCategoryId, tableId) {
+            var parameterMap = getParameterMap('command');
+            createAE.buildLabTermsTable(parameterMap, labCategoryId, tableId, showPopUpTable);
+            function showPopUpTable(table) {
+                var testDiv = document.getElementById(tableId);
+                testDiv.innerHTML = table;
+                testDiv.show();
+
+            }
+
+        }
+        function enableDisableAjaxTable(selectonId,tableIndex,showAll) {
+            var testDiv = document.getElementById(tableIndex);
+            if (!testDiv == '')
+            {
+                testDiv.hide()
+            }
+
+            if ($(selectonId).value == '')
+            {
+                $(showAll).hide()
+
+            } else {
+                $(showAll).show()
+
+            }
+
+        }
+
+        function fillLabsAutoCompletor(labTermId, tableId) {
+
+
+            var div = document.getElementById(tableId)
+            div.hide()
+            createAE.getLabTermById(labTermId, function(values) {
+                var index = tableId.substring(tableId.length - 1, tableId.length)
+
+                var labTerm = document.getElementById('aeReport.labs[' + index + '].labTerm-input')
+                labTerm.value = values.term
+                document.getElementById('aeReport.labs[' + index + '].labTerm').value = labTermId
+
+
+            });
+        }
+
+
     </script>
 </head>
 <body>

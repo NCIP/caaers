@@ -118,20 +118,24 @@ public class CreateAdverseEventAjaxFacade {
        return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
     }
 
-    public String buildAnatomicSiteTable(final Map parameterMap,String tableId,HttpServletRequest request) throws Exception {
+    public String buildAnatomicSiteTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
 
-        Context context = null;
-        if (parameterMap == null) {
-			context = new HttpServletRequestContext(request);
-		}
-		else {
-			context = new HttpServletRequestContext(request, parameterMap);
-		}
-
-        TableModel model = new TableModelImpl(context);
-        List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
         try {
-            return buildAnatomicSiteTableModel(model,tableId,anatomicSites).toString();
+            TableModel model = getTableModel(parameterMap, request);
+            List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
+
+            String onInvokeAction = "showDiseaseSiteTable('" + tableId + "')";
+            addTableAndRowToModel(model, tableId, anatomicSites, onInvokeAction);
+
+            Column columnTerm = model.getColumnInstance();
+            columnTerm.setProperty("name");
+            columnTerm.setTitle("Primary site of disease");
+            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
+            model.addColumn(columnTerm);
+
+
+            return model.assemble().toString();
+
         }
         catch (Exception e) {
             log.error("error while retriving the anatomicSites" + e.toString() + " message" + e.getMessage());
@@ -141,35 +145,18 @@ public class CreateAdverseEventAjaxFacade {
 
     }
 
-    public Object buildAnatomicSiteTableModel(final TableModel model,String tableId, final List<AnatomicSite> anatomicSites) throws Exception {
-        Table table = model.getTableInstance();
-        table.setForm("command");
-        table.setItems(anatomicSites);
-        table.setTableId(tableId);
-        table.setTitle("");
-        table.setAutoIncludeParameters(Boolean.FALSE);
-        table.setOnInvokeAction("showDiseaseSiteTable('"+tableId+"')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
-        table.setSortable(true);
-        table.setShowPagination(true);
-        model.addTable(table);
+    private TableModel getTableModel(Map parameterMap, HttpServletRequest request) {
+        Context context = null;
+        if (parameterMap == null) {
+            context = new HttpServletRequestContext(request);
+        } else {
+            context = new HttpServletRequestContext(request, parameterMap);
+        }
 
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-
-        Column columnTerm = model.getColumnInstance();
-        columnTerm.setProperty("name");
-        columnTerm.setTitle("Primary site of disease");
-        columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
-        model.addColumn(columnTerm);
-
-
-        return model.assemble();
-
+        TableModel model = new TableModelImpl(context);
+        return model;
     }
+
 
     public List<PriorTherapy> matchPriorTherapies(String text) {
         return priorTherapyDao.getBySubnames(extractSubnames(text));
@@ -321,23 +308,24 @@ public class CreateAdverseEventAjaxFacade {
         if (ctcCategoryId == null || ctcCategoryId == 0) {
             return "";
         }
-        List<CtcTerm> terms = getTermsByCategory(ctcCategoryId);
-        Context context = null;
-        if (parameterMap == null) {
-			context = new HttpServletRequestContext(request);
-		}
-		else {
-			context = new HttpServletRequestContext(request, parameterMap);
-		}
-
-        TableModel model = new TableModelImpl(context);
-        // LimitFactory limitFactory = new TableLimitFactory(context);
-        // Limit limit = new TableLimit(limitFactory);
-        // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
-        // model.setLimit(limit);
 
         try {
-            return buildTermsTable(model, ctcCategoryId,tableId, terms).toString();
+            List<CtcTerm> terms = getTermsByCategory(ctcCategoryId);
+            TableModel model = getTableModel(parameterMap, request);
+            String onInvokeAction = "buildTable('command'," + ctcCategoryId.intValue() + ",'" + tableId + "')";
+
+            addTableAndRowToModel(model, tableId, terms, onInvokeAction);
+
+            Column columnTerm = model.getColumnInstance();
+            columnTerm.setProperty("fullName");
+            columnTerm.setTitle("CTC term");
+            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.CtcTermLinkDisplayCell");
+            model.addColumn(columnTerm);
+
+
+            return model.assemble().toString();
+
+
         }
         catch (Exception e) {
             log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
@@ -346,41 +334,6 @@ public class CreateAdverseEventAjaxFacade {
         return "";
 
     }
-
-    public Object buildTermsTable(final TableModel model, Integer ctcCategoryId,String tableId, final List<CtcTerm> terms) throws Exception {
-        Table table = model.getTableInstance();
-        table.setTableId(tableId);
-
-       // String index = tableId.substring(tableId.indexOf('[') + 1, tableId.indexOf(']'));
-
-        table.setForm("command");
-        table.setItems(terms);
-        table.setAutoIncludeParameters(Boolean.FALSE);
-        table.setTitle("");
-        table.setStyle("overflow:auto");
-        table.setOnInvokeAction("buildTable('command',"+ctcCategoryId.intValue()+",'"+tableId+"')");
-        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
-        table.setFilterable(false);
-        table.setSortable(true);
-        table.setShowPagination(true);
-        model.addTable(table);
-
-
-        Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);
-        model.addRow(row);
-
-        Column columnTerm = model.getColumnInstance();
-        columnTerm.setProperty("fullName");
-        columnTerm.setTitle("CTC term");
-        columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.CtcTermLinkDisplayCell");
-        model.addColumn(columnTerm);
-
-
-        return model.assemble();
-
-    }
-
 
     public List<CtcCategory> getCategories(int ctcVersionId) {
         List<CtcCategory> categories = ctcDao.getById(ctcVersionId).getCategories();
@@ -413,6 +366,68 @@ public class CreateAdverseEventAjaxFacade {
         }
         return terms;
     }
+
+    public LabTerm getLabTermById(String labTermId) throws Exception {
+        LabTerm labTerm = labTermDao.getById(Integer.parseInt(labTermId));
+        // cut down objects for serialization
+        labTerm.getCategory().setTerms(null);
+        labTerm.getCategory().getLabVersion().setCategories(null);
+
+        return labTerm;
+    }
+    public String buildLabTermsTable(final Map parameterMap, String labCategoryId, String tableId, HttpServletRequest request) throws Exception {
+
+        if (labCategoryId == null || labCategoryId.equalsIgnoreCase("")) {
+            return "";
+        }
+
+
+        try {
+            TableModel model = getTableModel(parameterMap, request);
+            List<LabTerm> terms = getLabTermsByCategory(Integer.parseInt(labCategoryId));
+
+            String onInvokeAction = "showLabsTable('" + labCategoryId + "','" + tableId + "')";
+
+            addTableAndRowToModel(model, tableId, terms, onInvokeAction);
+
+            Column columnTerm = model.getColumnInstance();
+            columnTerm.setProperty("term");
+            columnTerm.setTitle("Lab test name");
+            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.LabTermLinkDisplayCell");
+            model.addColumn(columnTerm);
+
+
+            return model.assemble().toString();
+
+        }
+        catch (Exception e) {
+            log.error("error while retriving the lab terms" + e.toString() + " message" + e.getMessage());
+        }
+
+        return "";
+
+    }
+
+
+    private void addTableAndRowToModel(final TableModel model, final String tableId, final Object items, final String onInvokeAction) {
+        Table table = model.getTableInstance();
+        table.setForm("command");
+        table.setTableId(tableId);
+        table.setTitle("");
+        table.setAutoIncludeParameters(Boolean.FALSE);
+        table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
+        table.setFilterable(false);
+        table.setSortable(true);
+        table.setShowPagination(true);
+        table.setItems(items);
+        table.setOnInvokeAction(onInvokeAction);
+        model.addTable(table);
+
+        Row row = model.getRowInstance();
+        row.setHighlightRow(Boolean.TRUE);
+        model.addRow(row);
+    }
+
 
     public List<LabTerm> getLabTermsByCategory(Integer labCategoryId) {
         List<LabTerm> terms;
