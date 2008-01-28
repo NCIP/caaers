@@ -372,8 +372,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "STU_ID")
 	@OrderBy
-	@UniqueIdentifierForStudy(message="Identifier already exist for a different study")
-	@UniqueObjectInCollection(message="Duplicate Identifier")
 	public List<Identifier> getIdentifiers() {
 		return lazyListHelper.getInternalList(Identifier.class);
 	}
