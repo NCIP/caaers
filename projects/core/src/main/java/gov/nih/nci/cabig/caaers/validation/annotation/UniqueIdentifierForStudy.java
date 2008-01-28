@@ -9,7 +9,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.FIELD;
 
 @Documented
-@ValidatorClass(UniqueIdentifierForParticipantValidator.class)
+@ValidatorClass(UniqueIdentifierForStudyValidator.class)
 @Target({METHOD, FIELD, ElementType.PARAMETER})
 @Retention(RUNTIME)
 

@@ -8,7 +8,9 @@ import org.apache.commons.lang.math.NumberUtils;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 
 public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdentifierForStudy>{
 	private String message;
@@ -20,13 +22,23 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
 		StudyQuery query = new StudyQuery();
 		query.filterByIdentifierValueExactMatch(id.getValue());
 		query.filterByIdentifierType(id.getType());
+		
 		List<Study> studies = studyDao.find(query);
 		for(Study study : studies){
-			for(Identifier eId : study.getIdentifiersLazy()){
-			 if(eId.getValue().equals(id.getValue()) &&  eId.getType().equals(id.getType()) && 
-					 !ObjectUtils.equals(id.getId(),eId.getId())){
-				 return false;
-			 }
+			for(Identifier otherId : study.getIdentifiersLazy()){
+				if(otherId.getValue().equals(id.getValue()) &&  otherId.getType().equals(id.getType()) && 
+					 !ObjectUtils.equals(id.getId(),otherId.getId())){
+				 
+					if(id instanceof OrganizationAssignedIdentifier && otherId instanceof OrganizationAssignedIdentifier){
+						OrganizationAssignedIdentifier orgId = (OrganizationAssignedIdentifier) id;
+					 	OrganizationAssignedIdentifier orgOtherId = (OrganizationAssignedIdentifier) otherId;
+					 	if(orgId.getId().equals(orgOtherId.getId())) return true;
+					}else if(id instanceof SystemAssignedIdentifier && otherId instanceof SystemAssignedIdentifier){
+						SystemAssignedIdentifier sId = (SystemAssignedIdentifier) id;
+						SystemAssignedIdentifier sOtherId = (SystemAssignedIdentifier) otherId;
+						if(sId.getSystemName().equals(sOtherId.getSystemName())) return true;
+					}
+				}
 			}
 		}
 		return true;

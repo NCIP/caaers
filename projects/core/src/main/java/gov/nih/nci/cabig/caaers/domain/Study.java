@@ -384,6 +384,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@Transient
+	@UniqueIdentifierForStudy(message="Identifier already exist for a different study")
+	@UniqueObjectInCollection(message="Duplicate Identifier")
 	public List<Identifier> getIdentifiersLazy() {
 		return lazyListHelper.getLazyList(Identifier.class);
 	}
@@ -407,6 +409,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@JoinColumn(name = "study_id", nullable = false)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@Where(clause = "term_type = 'ctep'")
+	@UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
 	// it is pretty lame that this is necessary
 	public List<CtepStudyDisease> getCtepStudyDiseases() {
 		return ctepStudyDiseases;
@@ -420,6 +423,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@JoinColumn(name = "study_id", nullable = false)
 	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@Where(clause = "term_type = 'meddra'")
+	@UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
 	// it is pretty lame that this is necessary
 	public List<MeddraStudyDisease> getMeddraStudyDiseases() {
 		return meddraStudyDiseases;
