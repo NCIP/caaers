@@ -84,9 +84,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         	report.getLastVersion().setReportStatus(ReportStatus.INPROCESS);        	
         }
         command.save();
-    	//ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao)getApplicationContext().getBean("expeditedAdverseEventReportDao");
-		
-	
+ 	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
     	
