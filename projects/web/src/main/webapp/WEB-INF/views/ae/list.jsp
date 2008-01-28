@@ -275,13 +275,29 @@
             						</c:if>
             						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
             							<span class="submittedOn" >
-            								<i>Submitted on </i><br> <b><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></b>
+            								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
+            									<a href="${theReport.lastVersion.submissionUrl}" target="_blank">
+            								</c:if>
+            									<i>Submitted on </i><br> <b><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></b>
+            								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
+            									</a>
+            								</c:if>
+            							</span>
+            						</c:if>
+            						<c:if test="${theReport.lastVersion.reportStatus == 'INPROCESS'}" >
+            							<span class="dueOn" >
+            								<i>Submission to AdEERS in process</i></b>
+            							</span>
+            						</c:if>
+            						<c:if test="${theReport.lastVersion.reportStatus == 'FAILED'}" >
+            							<span class="dueOn" >
+            								<i>Submission to AdEERS failed</i></b>
             							</span>
             						</c:if>
 								</td>
 								<td width="50%" id="action${theReport.id}">
 									<c:if test="${command.reportsSubmittable[theReport.id]}" >
-										<c:if test="${theReport.lastVersion.reportStatus == 'PENDING'}" >
+										<c:if test="${(theReport.lastVersion.reportStatus == 'PENDING') or (theReport.lastVersion.reportStatus == 'FAILED')}" >
 											<center>
 												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
 												<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
