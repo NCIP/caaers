@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -368,6 +371,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	@OneToMany
 	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	@JoinColumn(name = "STU_ID")
+	@OrderBy
+	@UniqueIdentifierForStudy(message="Identifier already exist for a different study")
+	@UniqueObjectInCollection(message="Duplicate Identifier")
 	public List<Identifier> getIdentifiers() {
 		return lazyListHelper.getInternalList(Identifier.class);
 	}
