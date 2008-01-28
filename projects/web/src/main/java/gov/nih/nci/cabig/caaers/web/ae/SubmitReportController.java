@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
@@ -49,19 +51,41 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
         
-        // TODO: take out
-    	command.getAeReport().getReports().get(((int)reportIndex)).setSubmittedOn(new Date());
-    	command.getAeReport().getReports().get(((int)reportIndex)).setStatus(ReportStatus.COMPLETED);
-    	
-    	// Report Version information 
-    	command.getAeReport().getReports().get(((int)reportIndex)).getLastVersion().setSubmittedOn(new Date());
-    	command.getAeReport().getReports().get(((int)reportIndex)).getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-    	
-    	//int id  = command.getAeReport().getId();
-    	command.save();
-    
+        ExpeditedAdverseEventReport aeReport = command.getAeReport();
+        Report report = aeReport.getReports().get(((int)reportIndex));
+        
+        boolean endPointUrl = false;
+        for (ReportDelivery delivery: report.getReportDeliveries()) {
+			ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
+
+			if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL)) {
+				endPointUrl=true;
+				break;
+			}
+		}
+        
+        System.out.println("END POINT URL .. " + endPointUrl);
+        
+        
+        if (!endPointUrl) {
+	        // TODO: take out
+        	report.setSubmittedOn(new Date());
+        	report.setStatus(ReportStatus.COMPLETED);
+	    	
+	    	// Report Version information 
+        	report.getLastVersion().setSubmittedOn(new Date());
+        	report.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
+        } else {
+        	report.setSubmittedOn(new Date());
+        	report.setStatus(ReportStatus.INPROCESS);
+	    	
+	    	// Report Version information 
+        	report.getLastVersion().setSubmittedOn(new Date());
+        	report.getLastVersion().setReportStatus(ReportStatus.INPROCESS);        	
+        }
+        command.save();
     	//ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = (ExpeditedAdverseEventReportDao)getApplicationContext().getBean("expeditedAdverseEventReportDao");
-		ExpeditedAdverseEventReport aeReport = command.getAeReport();
+		
 	
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
@@ -69,7 +93,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 		String xml = aeser.serialize(aeReport);
 		
-		Report report = aeReport.getReports().get(((int)reportIndex));
+		
     	aegen.generateAndNotify(aeReport.getId()+"", report , xml);
     	
     	
