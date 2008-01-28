@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
@@ -30,11 +32,18 @@ public class AdeersReportGenerator  {
 	private String xslFOXsltFile = "xslt/Caaers2Adeers-pdf-AEReport.xslt";
 	private String xslFOMedWatchXsltFile = "xslt/Caaers2Medwatch-pdf-AEReport.xslt";
 	private String xslFODCPXsltFile = "xslt/Caaers2DCP-pdf-SAEForm.xslt";
+	private String xslFOCIOMSTypeFormXsltFile = "xslt/Caaers2CIOMS-pdf-TypeForm.xslt";
+	private String xslFOCIOMSXsltFile = "xslt/Caaers2CIOMS-pdf.xslt";
 	private String pdfOutFile = "/tmp/aeReport.pdf";
 	protected Configuration configuration;
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
+	protected  ReportDao reportDao;
 	
 	
+
+
+
+
 	public AdeersReportGenerator () { };
 	
 
@@ -46,31 +55,43 @@ public class AdeersReportGenerator  {
 		return transformedToAdeers;
 	}
 
-	public void genatePdf(String  adverseEventReportXml) throws Exception{
+	public void generatePdf(String  adverseEventReportXml) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOXsltFile);
 	}
 
-	public void genatePdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+	public void generatePdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOXsltFile);
 	}
 	
-	public void genateMedwatchPdf(String  adverseEventReportXml) throws Exception{
+	public void generateMedwatchPdf(String  adverseEventReportXml) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOMedWatchXsltFile);
 	}
 	
-	public void genateDcpSaeForm(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+	public void generateDcpSaeForm(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFODCPXsltFile);
 	}
+
+	public void generateCIOMSTypeForm(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+		
+		XsltTransformer xsltTrans = new XsltTransformer();
+		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOCIOMSTypeFormXsltFile);
+	}
+
+	public void generateCIOMS(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+		
+		XsltTransformer xsltTrans = new XsltTransformer();
+		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOCIOMSXsltFile);
+	}
 	
-	public void genateMedwatchPdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
+	public void generateMedwatchPdf(String  adverseEventReportXml, String pdfOutFileName) throws Exception{
 		
 		XsltTransformer xsltTrans = new XsltTransformer();
 		xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
@@ -103,7 +124,7 @@ public class AdeersReportGenerator  {
 			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+adverseEventReportDataObject.getId()+".pdf";
 			String xml = aeser.serialize(adverseEventReportDataObject);
 			System.out.println(xml);
-			genatePdf(xml);
+			generatePdf(xml);
 			
 			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
@@ -149,7 +170,7 @@ public class AdeersReportGenerator  {
 			String tempDir = System.getProperty("java.io.tmpdir");
 			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+aeReportId+".pdf";
 
-			genatePdf(xml);
+			generatePdf(xml);
 			
 			sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
@@ -158,20 +179,13 @@ public class AdeersReportGenerator  {
 		//sb.append("<EXTERNAL_SYSTEMS>https://eapps.ctisinc.com/adeersws10gtest/services/AEReportXMLService</EXTERNAL_SYSTEMS>");
 		
 		if (eprs.size()>0) {
-		/*
-			StringBuilder sb = new StringBuilder();
-			sb.append("<EXTERNAL_SYSTEMS>");
-			for (String epr:eprs) {
-				sb.append(epr + ",");
-			}
-			//hard code for testing ... 
-			sb.append("https://eapps.ctisinc.com/adeersws10gtest/services/AEReportXMLService");
-			sb.append("</EXTERNAL_SYSTEMS>");
-			*/
-			
 			xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>"+sb.toString());
 			messageBroadcastService.initialize();
-			messageBroadcastService.broadcast(xml);				
+			messageBroadcastService.broadcast(xml);	
+			
+			
+			//report.setStatus(ReportStatus.INPROCESS);
+			//reportDao.save(report);			
 		}
 		
 		
@@ -228,6 +242,10 @@ public class AdeersReportGenerator  {
 		this.messageBroadcastService = messageBroadcastService;
 	}
 	
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String str1="";
@@ -243,7 +261,7 @@ public class AdeersReportGenerator  {
 		}
 		//System.out.println(str1);
 	
-			aeg.genateDcpSaeForm(str1,"/tmp/dcp.pdf");
+			aeg.generateCIOMS(str1,"/tmp/cioms.pdf");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
