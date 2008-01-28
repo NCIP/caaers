@@ -1,36 +1,28 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Date;
 import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
 
 
 public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 	
 	 private MessageNotificationService messageNotificationService;
 
-	private ReportDao reportDao;
-
-	public void setReportDao(ReportDao reportDao) {
-		this.reportDao = reportDao;
-	}
 	
 	private Element getJobInfo(String message) {
 		
@@ -68,8 +60,12 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		//buld error messages
 		StringBuffer sb = new StringBuffer();
 		
+		boolean success = true;
+		String ticketNumber="";
+		String url ="";
 		
 		try {
+
 			List<Element> exceptions = jobInfo.getChildren("jobExceptions");
 			//sb.append("REPORT STATUS	:	" + jobInfo.getChild("reportStatus").getValue()+"\n\n\n");
 			
@@ -86,14 +82,9 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 				sb.append("To access the report in AdEERS, simply point your browser to the following URL:\n\n");
 				
 				sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
-				//ExpeditedAdverseEventReport aer = null;
-				//List<Report> reports = aer.getReports();
 				
-				//get by reportId
-				Report r = reportDao.getById(Integer.parseInt(reportId));
-				r.setAssignedIdentifer(jobInfo.getChild("ticketNumber").getValue());
-				reportDao.save(r);
-				
+				ticketNumber=jobInfo.getChild("ticketNumber").getValue();
+				url=jobInfo.getChild("reportURL").getValue();
 				
 			}
 			
@@ -109,6 +100,8 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 				
 				sb.append("EXCEPTIONS\n");
 				sb.append("----------\n");
+				
+				success = false;
 			}
 			
 			for (Element ex:exceptions) {				
@@ -119,7 +112,8 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			if (jobInfo.getChild("comments") != null) {
 				sb.append("COMMENTS : " + jobInfo.getChild("comments").getValue()+"\n");
 			}
-			
+
+
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -127,16 +121,12 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		}
 		
 		String messages = sb.toString();
-		
-		//get caaers ID
-		
-		
-		
+
 		// Notify submitter
-		System.out.println("calling msessageNotifyService 10..");
+		//System.out.println("calling msessageNotifyService 10..");
 		
 		try {
-			messageNotificationService.sendNotificationToReporter(messages, caaersAeReportId);
+			messageNotificationService.sendNotificationToReporter(messages, caaersAeReportId,reportId,success,ticketNumber,url);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,6 +199,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 
 }
 
+
  class Validator implements ErrorHandler {
 	public void warning(SAXParseException exception) throws SAXException {
         // Bring things to a crashing halt
@@ -240,7 +231,6 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
                            "  Message: " + 
                               exception.getMessage());        
         throw new SAXException("Fatal Error encountered");
-    }
-	
-	
+    }	
 }
+ 
