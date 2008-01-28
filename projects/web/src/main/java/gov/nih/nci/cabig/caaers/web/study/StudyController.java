@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -56,7 +58,10 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 	private InvestigationalNewDrugDao investigationalNewDrugDao;
 
 	private MeddraVersionDao meddraVersionDao;
-
+	
+	//validator needs to be called in onBindAndValidate()
+	protected WebControllerValidator webControllerValidator;
+	
 	public StudyController() {
 		setCommandClass(Study.class);
 		Flow<C> flow = new Flow<C>("Create Study");
@@ -152,7 +157,14 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 	protected boolean shouldSave(final HttpServletRequest request, final C command, final Tab<C> tab) {
 		return super.shouldSave(request, command, tab) && findInRequest(request, "_isAjax") == null;
 	}
-
+	
+	@Override
+	protected void onBindAndValidate(HttpServletRequest request,
+			Object command, BindException errors, int page) throws Exception {
+		super.onBindAndValidate(request, command, errors, page);
+		webControllerValidator.validate(request, command, errors);
+	}
+	
 	// /BEAN PROPERTIES
 
 	public AgentDao getAgentDao() {
@@ -218,7 +230,11 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 	public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
 		this.investigationalNewDrugDao = investigationalNewDrugDao;
 	}
-
+	
+	@Required
+	public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
+	    this.webControllerValidator = webControllerValidator;
+	}
 
 
 }
