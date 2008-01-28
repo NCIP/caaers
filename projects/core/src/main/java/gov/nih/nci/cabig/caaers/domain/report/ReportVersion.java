@@ -50,7 +50,12 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     private String ccEmails;
     private String reportVersionId;
 	private ReportStatus reportStatus;
-	
+
+    private String assignedIdentifer;
+    // private String submissionStatus;
+     private String submissionUrl;
+     private String submissionMessage;
+     
 	private Report report; 
 	
 	//////Logic
@@ -180,12 +185,29 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
 	}
 	
 	
-	
-	
-	
-	
-	
+	public String getAssignedIdentifer() {
+		return assignedIdentifer;
+	}
 
-	
+
+	public void setAssignedIdentifer(String assignedIdentifer) {
+		this.assignedIdentifer = assignedIdentifer;
+	}
+
+	public String getSubmissionMessage() {
+		return submissionMessage;
+	}
+
+	public void setSubmissionMessage(String submissionMessage) {
+		this.submissionMessage = submissionMessage;
+	}
+
+	public String getSubmissionUrl() {
+		return submissionUrl;
+	}
+
+	public void setSubmissionUrl(String submissionUrl) {
+		this.submissionUrl = submissionUrl;
+	}
 }
 
