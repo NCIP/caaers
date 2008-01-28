@@ -59,6 +59,8 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private Submitter submitter;
     private Boolean physicianSignoff;
     private String assignedIdentifer;
+    private String submissionUrl;
+    private String submissionMessage;
 
     private ReportStatus status = ReportStatus.PENDING;
     private List<ReportVersion> reportVersions;
@@ -289,6 +291,22 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
 	public void setAssignedIdentifer(String assignedIdentifer) {
 		this.assignedIdentifer = assignedIdentifer;
+	}
+
+	public String getSubmissionMessage() {
+		return submissionMessage;
+	}
+
+	public void setSubmissionMessage(String submissionMessage) {
+		this.submissionMessage = submissionMessage;
+	}
+
+	public String getSubmissionUrl() {
+		return submissionUrl;
+	}
+
+	public void setSubmissionUrl(String submissionUrl) {
+		this.submissionUrl = submissionUrl;
 	}
 	
 }
