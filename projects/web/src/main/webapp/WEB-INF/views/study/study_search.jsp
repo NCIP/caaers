@@ -24,22 +24,10 @@
 </style>
 <script>
    
-function buildTable(form) {		
-	var r = document.getElementsByName("inputs");	
-	var type = "";
-	var text = "";
-	for(var x=0; x < r.length; x++) {
-		if(x==0)
-		{
-			type = document.getElementById("searchCriteria[" + x + "].searchType").value;
-			text = document.getElementById("searchCriteria[" + x + "].searchText").value;			
-		}
-		else 
-		{
-			type = type + "," + document.getElementById("searchCriteria[" + x + "].searchType").value;
-			text = text + "," + document.getElementById("searchCriteria[" + x + "].searchText").value;			
-		}
-	}
+function buildTable(form) {
+
+	var type = $F('searchCriteria[0].searchType')
+	var text = $F('searchCriteria[0].searchText')		
 	
 	if(text == ''){
 		$('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
@@ -54,10 +42,10 @@ function buildTable(form) {
 	}
 }
 
-function showTable(table) {
-	document.getElementById('tableDiv').innerHTML=table;
-	$('indicator').className='indicator';
-}
+	function showTable(table) {
+		$('tableDiv').innerHTML = table.strip();
+		$('indicator').className='indicator';
+	}
  
 function fireAction(action, selected){	
 	document.getElementById("_action").value=action;	
