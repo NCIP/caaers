@@ -1,11 +1,16 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -21,6 +26,15 @@ public class MessageNotificationService {
 	protected Configuration configuration;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
+
+
+	private ReportDao reportDao;
+
+
+	
+	public void setReportDao(ReportDao reportDao) {
+		this.reportDao = reportDao;
+	}
 	
 	private WebRequest preProcess(){
 		
@@ -34,12 +48,16 @@ public class MessageNotificationService {
 	}
 	
 
-	public void sendNotificationToReporter(String messages, String aeReportId) throws Exception {
+	public void sendNotificationToReporter(String messages, String aeReportId,String reportId,boolean success, String ticketNumber,String url) throws Exception {
 		//get AEreport by using this id
 
 		
 		WebRequest stubWebRequest = preProcess();
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+		
+		Report r = reportDao.getById(Integer.parseInt(reportId));
+		ReportVersion rv = r.getLastVersion();
+		
 		
 		//get submitter info
 		Reporter reporter = aeReport.getReporter();
@@ -49,19 +67,40 @@ public class MessageNotificationService {
 		//get email
 		String email = contact.get(Reporter.EMAIL).toString();
 		postProcess(stubWebRequest);
-		//String email = "akkals@gmail.com";
+
+		
+		System.out.println("SAVING REPORT DETAILS ..." + success);
+		if (success) {
+			r.setAssignedIdentifer(ticketNumber);
+			r.setSubmissionUrl(url);			
+			r.setSubmittedOn(new Date());
+			r.setStatus(ReportStatus.COMPLETED);
+			
+			rv.setAssignedIdentifer(ticketNumber);
+			rv.setSubmissionUrl(url);
+			rv.setSubmittedOn(new Date());
+			rv.setReportStatus(ReportStatus.COMPLETED);
+		} else {
+			r.setSubmittedOn(new Date());
+			r.setStatus(ReportStatus.FAILED);
+			
+			rv.setSubmittedOn(new Date());
+			rv.setReportStatus(ReportStatus.FAILED);			
+		}
+		rv.setSubmissionMessage(messages);
+		r.setSubmissionMessage(messages);
+		reportDao.save(r);
+		
+
 
 
 //		send email .
 		sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
-				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),
+				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),email,messages,success);
 		//sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
-		email,messages);
-		
-		
 	}
 
-	private void sendMail(String mailHost, String user, String pwd, String from, String to, String messages) throws Exception {
+	private void sendMail(String mailHost, String user, String pwd, String from, String to, String messages, boolean success) throws Exception {
 		try {	
 			JavaMailSenderImpl sender = new JavaMailSenderImpl();
 			//sender.setHost("smtp.comcast.net");
@@ -71,7 +110,11 @@ public class MessageNotificationService {
 			sender.setHost(mailHost);
 			MimeMessage message = sender.createMimeMessage();
 			//message.setFrom(new InternetAddress(from));
-			message.setSubject("AdEERS report submission results");
+			if (success) {
+				message.setSubject("Submission of Report to AdEERS");
+			} else {
+				message.setSubject("Problem with Submission of Report to AdEERS");
+			}
 			message.setFrom(new InternetAddress(from));
 			
 //			 use the true flag to indicate you need a multipart message
