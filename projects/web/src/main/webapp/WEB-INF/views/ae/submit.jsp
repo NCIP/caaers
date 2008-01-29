@@ -136,7 +136,11 @@
             					<i>Submission to AdEERS failed </i>
             				</span>           			
             			</c:if>
-            		
+             			<c:if test="${report.lastVersion.reportStatus == 'INPROCESS'}" >
+             				<span class="dueOn" >
+            					<i>Submission to AdEERS in process</i>
+            				</span>           			
+            			</c:if>           		
             			<%--
             			<c:if test="${ not empty report.lastVersion.submittedOn}" >
             				<center><strong>Submitted on </strong><br/><tags:formatDate value="${report.lastVersion.submittedOn}" /></center>
