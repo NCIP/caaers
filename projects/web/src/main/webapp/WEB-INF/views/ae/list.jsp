@@ -111,15 +111,15 @@
         })
         
 
-            function showTable2() {
+            function showTable2(t) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById("table0");
+                var testDiv = document.getElementById(t);
                // testDiv.innerHTML = "xyz";
                 testDiv.show();
             }
-            function hideTable2() {
+            function hideTable2(t) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById("table0");
+                var testDiv = document.getElementById(t);
                // testDiv.innerHTML = "xyz";
                 testDiv.hide();
             }
@@ -293,13 +293,32 @@
             						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
             							<span class="submittedOn" >
             								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
-            									<a href="${theReport.lastVersion.submissionUrl}" target="_blank">
+            									<a href="javascript:showTable2('table1')">
             								</c:if>
             									<i>Submitted on </i><br> <b><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></b>
             								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
             									</a>
             								</c:if>
             							</span>
+            							
+            							<div id="table1"
+             								style="position: absolute; display: none;width:400px; left: 520px;  ">
+             								
+             								<table class="tableRegion" width="100%">
+             									<tr align="right">
+             										<td><a href="javascript:hideTable2('table1')">
+             										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
+             										</a></td>
+             									</tr>
+             									
+             									<tr>
+             										<td>${fn:replace(theReport.lastVersion.submissionMessage,".","<br>")}</td>
+             									</tr>
+             									<tr>
+             										<td><a href="${theReport.lastVersion.submissionUrl}" target="_blank">${theReport.lastVersion.submissionUrl}</a></td>
+             									</tr>
+             								</table>
+       									 </div>
             						</c:if>
             						<c:if test="${theReport.lastVersion.reportStatus == 'INPROCESS'}" >
             							<span class="dueOn" >
@@ -308,14 +327,14 @@
             						</c:if>
             						<c:if test="${theReport.lastVersion.reportStatus == 'FAILED'}" >
             							<span class="dueOn" >
-            								<a href="javascript:showTable2()"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
+            								<a href="javascript:showTable2('table0')"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
             							</span>
             							<div id="table0"
              								style="position: absolute; display: none;width:400px; left: 520px;  ">
              								
              								<table class="tableRegion" width="100%">
              									<tr align="right">
-             										<td><a href="javascript:hideTable2()">
+             										<td><a href="javascript:hideTable2('table0')">
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>

@@ -131,6 +131,11 @@
             					<i>Submitted on </i><br> <b><tags:formatDate value="${report.lastVersion.submittedOn}" /></b>
             				</span>
             			</c:if>	
+            			<c:if test="${report.lastVersion.reportStatus == 'FAILED'}" >
+             				<span class="dueOn" >
+            					<i>Submission to AdEERS failed </i>
+            				</span>           			
+            			</c:if>
             		
             			<%--
             			<c:if test="${ not empty report.lastVersion.submittedOn}" >
@@ -145,7 +150,8 @@
             		</td>
             		<td>
             			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
-							<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >
+
+							<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
 								<center>
 									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
 									<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
