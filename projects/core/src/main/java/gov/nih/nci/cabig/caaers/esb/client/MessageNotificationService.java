@@ -48,7 +48,7 @@ public class MessageNotificationService {
 	}
 	
 
-	public void sendNotificationToReporter(String messages, String aeReportId,String reportId,boolean success, String ticketNumber,String url) throws Exception {
+	public void sendNotificationToReporter(String submitterEmail, String messages, String aeReportId,String reportId,boolean success, String ticketNumber,String url) throws Exception {
 		//get AEreport by using this id
 
 		
@@ -60,12 +60,16 @@ public class MessageNotificationService {
 		
 		
 		//get submitter info
+		/*
 		Reporter reporter = aeReport.getReporter();
 		Map contact = reporter.getContactMechanisms();
 		
 
 		//get email
 		String email = contact.get(Reporter.EMAIL).toString();
+		*/
+		
+		
 		postProcess(stubWebRequest);
 
 		
@@ -100,7 +104,7 @@ public class MessageNotificationService {
 
 //		send email .
 		sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
-				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),email,messages,success, aeReportId);
+				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),submitterEmail,messages,success, aeReportId);
 		//sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
 	}
 

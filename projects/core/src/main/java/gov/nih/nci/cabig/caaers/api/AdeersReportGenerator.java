@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PersonContact;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -157,6 +158,11 @@ public class AdeersReportGenerator  {
 		}
 		sb.append("</EXTERNAL_SYSTEMS>");
 		sb.append("<REPORT_ID>" + reportId +"</REPORT_ID>");
+		
+		
+		String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(PersonContact.EMAIL);
+		
+		sb.append("<SUBMITTER_EMAIL>" + submitterEmail +"</SUBMITTER_EMAIL>");
 		
 		// CCs
 		String[] emailAddresses = report.getLastVersion().getEmailAsArray();

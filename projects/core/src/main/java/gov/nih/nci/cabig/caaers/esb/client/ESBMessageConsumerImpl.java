@@ -56,6 +56,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		Element jobInfo = getJobInfo(message);
 		String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID").getValue();
 		String reportId = jobInfo.getChild("REPORT_ID").getValue();
+		String submitterEmail = jobInfo.getChild("SUBMITTER_EMAIL").getValue();
 		
 		//buld error messages
 		StringBuffer sb = new StringBuffer();
@@ -126,7 +127,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		//System.out.println("calling msessageNotifyService 10..");
 		
 		try {
-			messageNotificationService.sendNotificationToReporter(messages, caaersAeReportId,reportId,success,ticketNumber,url);
+			messageNotificationService.sendNotificationToReporter(submitterEmail, messages, caaersAeReportId,reportId,success,ticketNumber,url);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

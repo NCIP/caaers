@@ -20,6 +20,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	private String caaersAeReportId = "";
 	private String externalEPRs = "";
 	private String reportId = "";
+	private String submitterEmail = "";
 	
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -70,7 +71,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 
         
         //attach the id to the returned message
-        s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+reportId+"</REPORT_ID></ns1:AEReportJobInfo>");
+        s=s.replaceAll("</ns1:AEReportJobInfo>","<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID><REPORT_ID>"+reportId+"</REPORT_ID><SUBMITTER_EMAIL>"+submitterEmail+"</SUBMITTER_EMAIL></ns1:AEReportJobInfo>");
         
         //System.out.println(s);
         
@@ -93,11 +94,16 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		ei = aeReportWithCaaersId.indexOf("</REPORT_ID>");
 		reportId = aeReportWithCaaersId.substring(si+11, ei);
 		
+		si = aeReportWithCaaersId.indexOf("<SUBMITTER_EMAIL>");
+		ei = aeReportWithCaaersId.indexOf("</SUBMITTER_EMAIL>");
+		submitterEmail = aeReportWithCaaersId.substring(si+17, ei);
+		
 
 
 		String aeReport = aeReportWithCaaersId.replaceAll("<CAEERS_AEREPORT_ID>"+caaersAeReportId+"</CAEERS_AEREPORT_ID>", "");
 		aeReport = aeReport.replaceAll("<EXTERNAL_SYSTEMS>"+externalEPRs+"</EXTERNAL_SYSTEMS>", "");
 		aeReport = aeReport.replaceAll("<REPORT_ID>"+reportId+"</REPORT_ID>", "");
+		aeReport = aeReport.replaceAll("<SUBMITTER_EMAIL>"+submitterEmail+"</SUBMITTER_EMAIL>", "");
 		aeReport = aeReport.replaceAll("<ADDITIONAL_INFORMATION/>", "");
 		return aeReport;
 	}
