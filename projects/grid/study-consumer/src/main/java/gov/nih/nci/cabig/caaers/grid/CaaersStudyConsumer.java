@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
@@ -221,7 +220,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         for (Lov lov : identifierLovs) {
             knownIdentifierTypes.add(lov.getCode());
         }
-
+        
+        List<SystemAssignedIdentifier> sysIdentifiers = new ArrayList<SystemAssignedIdentifier>();
+        List<OrganizationAssignedIdentifier> orgIdentifiers = new ArrayList<OrganizationAssignedIdentifier>();
+        
         for (IdentifierType identifierType : identifierTypes) {
             if (identifierType instanceof SystemAssignedIdentifierType) {
                 if (!knownIdentifierTypes.contains(identifierType.getType())) {
@@ -235,7 +237,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 id.setType(sysIdType.getType());
                 id.setValue(sysIdType.getValue());
                 id.setSystemName(sysIdType.getSystemName());
-                study.addIdentifier(id);
+                sysIdentifiers.add(id);
             } else if (identifierType instanceof OrganizationAssignedIdentifierType) {
                 OrganizationAssignedIdentifierType orgIdType = (OrganizationAssignedIdentifierType) identifierType;
                 OrganizationAssignedIdentifier id = new OrganizationAssignedIdentifier();
@@ -244,11 +246,57 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 id.setType(orgIdType.getType());
                 id.setValue(orgIdType.getValue());
                 id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
-                study.addIdentifier(id);
+                orgIdentifiers.add(id);
             } else {
                 String message = "Unknown IdentifierType in grid Study " + study.getGridId();
                 throw getStudyCreationException(message);
             }
+            
+            //find coordinating center identifier
+            OrganizationAssignedIdentifier coordinatingCenterId = null;
+            //find funding sponsor identifier
+            OrganizationAssignedIdentifier fundingSponsorId = null;
+            for(OrganizationAssignedIdentifier id : orgIdentifiers) {
+            	if(id.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE) &&
+            			coordinatingCenterId != null){
+            		coordinatingCenterId = id;
+            	}
+            	if(id.getType().equlas(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE) && 
+            			fundingSponsorId != null){
+            		fundingSponsorId = id;
+            	}
+            }
+            
+            //remove them from organization identifiers list.
+            //or create them if they dont exist
+            if(coordinatingCenterId != null){
+            	orgIdentifiers.remove(coordinatingCenterId);
+            }else {
+            	coordinatingCenterId = new OrganizationAssignedIdentifier();
+            	coordinatingCenterId.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+            	coordinatingCenterId.setValue("UNKNOWN");
+            }
+            
+            if(fundingSponsorId != null){
+            	orgIdentifiers.remove(fundingSponsorId);
+            }else {
+            	fundingSponsorId = new OrganizationAssignedIdentifier();
+            	fundingSponsorId.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+            	fundingSponsorId.setValue("UNKNOWN");
+            }
+            
+            
+            //Add identifiers to the study.
+            study.addIdentifier(fundingSponsorId);
+            study.addIdentifier(coordinatingCenterId);
+            for(OrganizationAssignedIdentifier id : orgIdentifiers) {
+            	study.addIdentifier(id);
+            }
+            
+            for(SystemAssignedIdentifier id : sysIdentifiers){
+            	study.addIdentifier(id);
+            }
+            
         }
     }
 
