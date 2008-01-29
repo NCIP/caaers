@@ -6,26 +6,42 @@
 
 AE.slideAndHide = function(element, options) {
     var e = $(element);
-    if (e) new Effect.Parallel(
-        [
-            new Effect.BlindUp(e, {sync:true}),
-            new Effect.Fade(e, {sync:true})
-        ], $H(options).merge({
-            duration: 1.0
-        })
-    );
+    if (e){
+    	//Effect.Parallel, is not propery working in IE7
+    	if(Prototype.Browser.IE){
+    		new Effect.BlindUp(e);
+    	}else{
+    		 new Effect.Parallel(
+        		[
+            		new Effect.BlindUp(e, {sync:true}),
+            		new Effect.Fade(e, {sync:true})
+        		], $H(options).merge({
+            		duration: 1.0
+        		})
+    		);
+    	}
+    }
 }
 
 AE.slideAndShow = function(element, options) {
     var e = $(element);
-    if (e) new Effect.Parallel(
-        [
-            new Effect.BlindDown(e, {sync:true,  to:1.01}),
-            new Effect.Appear(e, {sync:true,  to:1.01}),
-        ], $H(options).merge({
-            duration: 1.0
-        })
-    );
+    if (e) {
+    	//The Effect.Parallel, is not properly working in IE7,  
+    	if(Prototype.Browser.IE){
+    		new Effect.BlindDown(e);
+    	}else {
+    		new Effect.Parallel(
+        		[
+            		new Effect.BlindDown(e, {sync:true,  to:1.01}),
+            		new Effect.Appear(e, {sync:true,  to:1.01}),
+        		], $H(options).merge({
+            		duration: 1.0
+        		})
+    		);
+    	}
+    
+    }
+    
 }
 
 AE.highlight = function(element, options) {
