@@ -80,6 +80,7 @@ public class MessageNotificationService {
 			rv.setSubmissionUrl(url);
 			rv.setSubmittedOn(new Date());
 			rv.setReportStatus(ReportStatus.COMPLETED);
+			
 		} else {
 			r.setSubmittedOn(new Date());
 			r.setStatus(ReportStatus.FAILED);
@@ -91,6 +92,9 @@ public class MessageNotificationService {
 		r.setSubmissionMessage(messages);
 		reportDao.save(r);
 		
+		if (success) {
+			messages = messages + url;
+		}
 
 
 

@@ -72,16 +72,16 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 			if (jobInfo.getChild("reportStatus").getValue().equals("SUCCESS")) {
 				sb.append("Report # " + caaersAeReportId +" has been successfully submitted to AdEERS. \n\n");
 				
-				sb.append("TICKET NUMBER : \n");
-				sb.append("---------------\n");
-				sb.append("Your AdEERS ticket number is " + jobInfo.getChild("ticketNumber").getValue()+"\n\n");
+				sb.append("TICKET NUMBER :. \n");
+				sb.append("---------------.\n");
+				sb.append("Your AdEERS ticket number is " + jobInfo.getChild("ticketNumber").getValue()+".\n\n");
 				
-				sb.append("VIEWING THE REPORT IN ADEERS:\n");
-				sb.append("-------------------------------\n");
+				sb.append("VIEWING THE REPORT IN ADEERS:.\n");
+				sb.append("-------------------------------.\n");
 				
-				sb.append("To access the report in AdEERS, simply point your browser to the following URL:\n\n");
+				sb.append("To access the report in AdEERS, simply point your browser to the following URL:.\n\n");
 				
-				sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
+				//sb.append(jobInfo.getChild("reportURL").getValue()+"\n");
 				
 				ticketNumber=jobInfo.getChild("ticketNumber").getValue();
 				url=jobInfo.getChild("reportURL").getValue();
