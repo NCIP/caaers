@@ -92,25 +92,25 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 				sb.append("Report # " + caaersAeReportId +" was NOT successfully submitted to AdEERS. \n\n");
 				sb.append("The following problem was encountered:. \n");
 				for (Element ex:exceptions) {	
-					sb.append(ex.getChild("description").getValue() +"\n");
+					sb.append(ex.getChild("description").getValue() +".\n");
 				}
 				sb.append("\n");
 				sb.append("Please correct the problem and submit the report again.\n\n");
-				sb.append("See below for a technical description of the error:\n\n");
+				sb.append("See below for a technical description of the error.:\n\n");
 				
-				sb.append("EXCEPTIONS\n");
-				sb.append("----------\n");
+				sb.append("EXCEPTIONS.\n");
+				sb.append("----------.\n");
 				
 				success = false;
 			}
 			
 			for (Element ex:exceptions) {				
 				sb.append(ex.getChild("code").getValue() + "  -  " + ex.getChild("description").getValue());
-				sb.append("\n");
+				sb.append(".\n");
 			}
 
 			if (jobInfo.getChild("comments") != null) {
-				sb.append("COMMENTS : " + jobInfo.getChild("comments").getValue()+"\n");
+				sb.append("COMMENTS : ." + jobInfo.getChild("comments").getValue()+"\n");
 			}
 
 
