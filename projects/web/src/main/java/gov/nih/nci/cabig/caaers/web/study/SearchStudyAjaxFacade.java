@@ -27,6 +27,7 @@ public class SearchStudyAjaxFacade {
     {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
+        table.setForm("assembler");
         table.setItems(studies);
         table.setAction(model.getContext().getContextPath() + "/assembler.run");
         table.setTitle("");
@@ -35,6 +36,7 @@ public class SearchStudyAjaxFacade {
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(false);
+        table.setAutoIncludeParameters(false);
         model.addTable(table);
         
         Row row = model.getRowInstance();
