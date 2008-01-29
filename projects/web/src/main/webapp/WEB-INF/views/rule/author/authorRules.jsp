@@ -1211,7 +1211,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 <chrome:division>
 
 	<%--<form:form cssClass="standard">--%>
-	<tags:tabForm tab="${tab}" flow="${flow}">
+	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
 		<jsp:attribute name="singleFields">
 
 			<tags:errors path="*" />

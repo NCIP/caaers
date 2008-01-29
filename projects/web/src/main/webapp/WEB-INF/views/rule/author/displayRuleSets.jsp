@@ -53,7 +53,7 @@
 
 <chrome:division>
 
-    <tags:tabForm tab="${tab}" flow="${flow}" >
+    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
 		<jsp:attribute name="singleFields">
 
 		<div class="local-buttons">

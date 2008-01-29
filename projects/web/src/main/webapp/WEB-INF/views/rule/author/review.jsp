@@ -26,7 +26,7 @@
 <body>
     
     <chrome:division>
-    <tags:tabForm tab="${tab}" flow="${flow}" >
+    <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="instructions">
     	Please review the details furnished below, then press save to persist the modifications.
     </jsp:attribute>
