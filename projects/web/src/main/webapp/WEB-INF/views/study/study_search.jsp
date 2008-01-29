@@ -23,7 +23,7 @@
         .endpanes {	clear: both; }
 </style>
 <script>
-   
+
 function buildTable(form) {
 
 	var type = $F('searchCriteria[0].searchType')
@@ -42,10 +42,7 @@ function buildTable(form) {
 	}
 }
 
-	function showTable(table) {
-		$('tableDiv').innerHTML = table.strip();
-		$('indicator').className='indicator';
-	}
+	
  
 function fireAction(action, selected){	
 	document.getElementById("_action").value=action;	
