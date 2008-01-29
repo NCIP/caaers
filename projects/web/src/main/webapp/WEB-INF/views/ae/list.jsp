@@ -109,6 +109,22 @@
                 })
             })
         })
+        
+
+            function showTable2() {
+                //$('indicator').className = 'indicator'
+                var testDiv = document.getElementById("table0");
+               // testDiv.innerHTML = "xyz";
+                testDiv.show();
+            }
+            function hideTable2() {
+                //$('indicator').className = 'indicator'
+                var testDiv = document.getElementById("table0");
+               // testDiv.innerHTML = "xyz";
+                testDiv.hide();
+            }
+        
+        
     </script>
 </head>
 <body>
@@ -123,6 +139,7 @@
 </c:if>
 </h2>
 <!-- STUDY SEARCH RESULTS START HERE -->
+<div id="test"></div>
 <div class="eXtremeTable" >
 <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
 	<c:if test="${fn:length(command.assignment.aeReports) > 0}">
@@ -291,8 +308,24 @@
             						</c:if>
             						<c:if test="${theReport.lastVersion.reportStatus == 'FAILED'}" >
             							<span class="dueOn" >
-            								<i>Submission to AdEERS failed</i></b>
+            								<a href="javascript:showTable2()"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
             							</span>
+            							<div id="table0"
+             								style="position: absolute; display: none;width:400px; left: 520px;  ">
+             								
+             								<table class="tableRegion" width="100%">
+             									<tr align="right">
+             										<td><a href="javascript:hideTable2()">
+             										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
+             										</a></td>
+             									</tr>
+             									
+             									<tr>
+             										<td><font color="red">${fn:replace(theReport.lastVersion.submissionMessage,".","<br>")}</font></td>
+             									</tr>
+
+             								</table>
+       									 </div>
             						</c:if>
 								</td>
 								<td width="50%" id="action${theReport.id}">
