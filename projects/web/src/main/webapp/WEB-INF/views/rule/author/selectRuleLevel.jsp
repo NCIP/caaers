@@ -240,7 +240,7 @@
 
 	<div title="Select Institution" id="institution-details" style="${studyVisibility}" class="pane">
 			<div class="row">
-				<div class="label"><label for="institution-input">Select Instiution</label></div>
+				<div class="label"><label for="institution-input">Select Institution</label></div>
 				<div class="value">
 					<form:hidden path="institutionName"/>
 					<input type="text" id="institution-input" value="${command.institutionName}" size="40"/>
