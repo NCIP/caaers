@@ -5,16 +5,20 @@ import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -31,11 +35,52 @@ public class DiseaseTab extends StudyTab {
     public DiseaseTab() {
         super("Study Disease", "Disease", "study/study_diseases");
     }
-
+    
+    /*
+     * If CTEP Study Disease
+     *  1. Check if the existing CTEP disease ID is mentioned in study.getDiseaseTermIds()
+     *  2. Throw error, saying that the selected disease term already exists. 
+     * 
+     * If Medra Study Disease
+     *  1. Check if the existing MEDRA disease (LowLevelTerm) is mentioned in study.getDiseaseLlt()
+     *  2. Throw error, saying that the selected disease already present.
+     */
+    @Override
+    protected void validate(Study command, BeanWrapper commandBean,
+    		Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    	
+    	HashMap<String, DiseaseTerm> ctepTermMap = new HashMap<String, DiseaseTerm>();
+    	for(CtepStudyDisease ctepDisease : command.getCtepStudyDiseases()){
+    		ctepTermMap.put(ctepDisease.getTerm().getId().toString(), ctepDisease.getDiseaseTerm());
+    	}
+    	
+    	String[] newCTEPTermIds = command.getDiseaseTermIds();
+    	if(newCTEPTermIds != null) {
+    		for(String newCTEPTermId : newCTEPTermIds){
+    			if(ctepTermMap.containsKey(newCTEPTermId)){
+    				errors.reject("DUPLICATE", "'" + ctepTermMap.get(newCTEPTermId).getFullName() + "' is already associated to this study");
+    			}
+    		}
+    	}
+    	
+    	HashMap<String, LowLevelTerm> medraTermMap = new HashMap<String, LowLevelTerm>();
+    	for(MeddraStudyDisease meddraStudyDisease : command.getMeddraStudyDiseases()){
+    		medraTermMap.put(meddraStudyDisease.getTerm().getId().toString(), meddraStudyDisease.getTerm());
+    	}
+    	if(command.getDiseaseLlt() != null){
+    		if(medraTermMap.containsKey(command.getDiseaseLlt())) {
+    			errors.reject("DUPLICATE", "'" + medraTermMap.get(command.getDiseaseLlt()).getFullName()+ "' is already associated to this study");
+    		}
+    	}
+    }
+    
     @Override
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
-        handleStudyDiseaseAction(command, request.getParameter("_action"),
-            request.getParameter("_selected"));
+    	super.postProcess(request, command, errors);
+    	if(!errors.hasErrors()){
+    		handleStudyDiseaseAction(command, request.getParameter("_action"),
+    				request.getParameter("_selected"));
+    	}
     }
     
     @Override
@@ -76,9 +121,6 @@ public class DiseaseTab extends StudyTab {
             log.debug("Study Diseases Size : " + study.getCtepStudyDiseases().size());
             for (String diseaseId : diseases) {
                 log.debug("Disease Id : " + diseaseId);
-                //StudyDisease studyDisease = new StudyDisease();
-                //studyDisease.setDiseaseTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
-                //study.addStudyDisease(studyDisease);
                 CtepStudyDisease ctepStudyDisease = new CtepStudyDisease();
                 ctepStudyDisease.setTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
                 study.addCtepStudyDisease(ctepStudyDisease);
