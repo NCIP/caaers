@@ -312,7 +312,7 @@
         </div>   
         <div class="rightpanel">
         <chrome:box title="Selected Diseases " id="diseases">
-           
+          <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">
