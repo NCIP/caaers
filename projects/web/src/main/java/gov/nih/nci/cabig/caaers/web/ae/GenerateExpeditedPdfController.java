@@ -64,7 +64,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportId+".pdf";
 	    			
 	    			AdeersReportGenerator gen = new AdeersReportGenerator();
-	    			gen.genatePdf(xml,tempDir+File.separator+pdfOutFile);
+	    			gen.generatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,reportId);
 	    			/*
@@ -90,7 +90,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			String pdfOutFile = "MedWatchReport-"+reportId+".pdf";
 	    			
 	    			AdeersReportGenerator gen = new AdeersReportGenerator();
-	    			gen.genateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
+	    			gen.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,reportId);
 	    			/*
@@ -114,7 +114,7 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			} else if (format.equals("dcp")) {
     				String pdfOutFile = "dcp-"+reportId+".pdf";
     				AdeersReportGenerator gen = new AdeersReportGenerator();
-    				gen.genateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
+    				gen.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,reportId);
     			} else {
