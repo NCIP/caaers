@@ -100,11 +100,11 @@ public class MessageNotificationService {
 
 //		send email .
 		sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
-				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),email,messages,success);
+				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),email,messages,success, aeReportId);
 		//sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
 	}
 
-	private void sendMail(String mailHost, String user, String pwd, String from, String to, String messages, boolean success) throws Exception {
+	private void sendMail(String mailHost, String user, String pwd, String from, String to, String messages, boolean success,String aeReportId) throws Exception {
 		try {	
 			JavaMailSenderImpl sender = new JavaMailSenderImpl();
 			//sender.setHost("smtp.comcast.net");
@@ -115,9 +115,9 @@ public class MessageNotificationService {
 			MimeMessage message = sender.createMimeMessage();
 			//message.setFrom(new InternetAddress(from));
 			if (success) {
-				message.setSubject("Submission of Report to AdEERS");
+				message.setSubject("Submission of Expedited Report("+aeReportId+") to AdEERS");
 			} else {
-				message.setSubject("Problem with Submission of Report to AdEERS");
+				message.setSubject("Problem with Submission of Expedited Report("+aeReportId+") to AdEERS");
 			}
 			message.setFrom(new InternetAddress(from));
 			
