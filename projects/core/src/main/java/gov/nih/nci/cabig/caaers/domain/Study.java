@@ -268,6 +268,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@Transient
+	@UniqueObjectInCollection(message="Duplicate - Same agent, already associated to this study")
 	public List<StudyAgent> getStudyAgents() {
 		return lazyListHelper.getLazyList(StudyAgent.class);
 	}

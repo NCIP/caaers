@@ -29,16 +29,7 @@ public class UniqueObjectInCollectionValidator implements Validator<UniqueObject
         return true;
     }
 
-//    public boolean validate(Object value, Object propertyNameInCollection) {
-//         if (!(value instanceof Collection)){
-//             return true;
-//         }else if (propertyNameInCollection==null) {
-//            return validate(value);
-//        }
-//
-//
-//        return true;
-//    }
+
 
     public void initialize(final UniqueObjectInCollection parameters) {
         this.message = parameters.message();

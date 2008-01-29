@@ -420,7 +420,9 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator"/>
           
     <bean id="uniqueIdentifierForStudyValidator" 
-    	class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator" />
+    	class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator" >
+    	<property name="studyDao" ref="studyDao" />
+    </bean>
 
     <!-- validator beans end here-->
 

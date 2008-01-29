@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
@@ -32,11 +33,11 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
 					if(id instanceof OrganizationAssignedIdentifier && otherId instanceof OrganizationAssignedIdentifier){
 						OrganizationAssignedIdentifier orgId = (OrganizationAssignedIdentifier) id;
 					 	OrganizationAssignedIdentifier orgOtherId = (OrganizationAssignedIdentifier) otherId;
-					 	if(orgId.getId().equals(orgOtherId.getId())) return true;
+					 	if(orgId.getId().equals(orgOtherId.getId())) return false;
 					}else if(id instanceof SystemAssignedIdentifier && otherId instanceof SystemAssignedIdentifier){
 						SystemAssignedIdentifier sId = (SystemAssignedIdentifier) id;
 						SystemAssignedIdentifier sOtherId = (SystemAssignedIdentifier) otherId;
-						if(sId.getSystemName().equals(sOtherId.getSystemName())) return true;
+						if(sId.getSystemName().equals(sOtherId.getSystemName())) return false;
 					}
 				}
 			}
@@ -51,7 +52,7 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
 	public String message() {
 		return message;
 	}
-	
+	@Required
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
 	}
