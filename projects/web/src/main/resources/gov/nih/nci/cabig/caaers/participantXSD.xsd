@@ -138,6 +138,7 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
+                    <xs:element name="type" type="studyIdentifierType"/>
                     <xs:element name="value" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
@@ -156,6 +157,18 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:simpleType name="studyIdentifierType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Site Identifier"/>
+            <xs:enumeration value="Site IRB Identifier"/>
+            <xs:enumeration value="ClinicalTrials.gov Identifier"/>
+            <xs:enumeration value="Grid Identifier"/>
+            <xs:enumeration value="C3D Identifier"/>
+            <xs:enumeration value="Protocol Authority Identifier"/>
+            <xs:enumeration value="Coordinating Center Identifier"/>
+        </xs:restriction>
+    </xs:simpleType>
     
     <xs:simpleType name="participantIdentifierType">
         <xs:annotation>

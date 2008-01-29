@@ -19,7 +19,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
     /*
      * @See ParticipantService
      */
-    public StudySite matchByStudyAndOrg(final String organizationName , final String identifierValue) {
+    public StudySite matchByStudyAndOrg(final String organizationName , final String identifierValue, final String identifierType) {
 
 		String joins = " join o.study as study join study.identifiers as identifier ";
 
@@ -28,11 +28,15 @@ public class StudySiteDao extends CaaersDao<StudySite> {
 				" o ").append(joins);
 
 		queryBuf.append(" where ");
-		queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ? ");
+		queryBuf.append("LOWER(").append("identifier.value").append(") = ? ");
 		params.add( identifierValue.toLowerCase());
+		
+		queryBuf.append(" and ");
+		queryBuf.append("LOWER(").append("identifier.type").append(") = ? ");
+		params.add( identifierType.toLowerCase());
 
 		queryBuf.append(" and ");
-		queryBuf.append("LOWER(").append("o.organization.name").append(") LIKE ? ");
+		queryBuf.append("LOWER(").append("o.organization.name").append(") = ? ");
 		params.add(organizationName.toLowerCase());
 
 		log.debug("matchStudyByParticipant : " + queryBuf.toString());

@@ -102,7 +102,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
 					theIdentifier = identifier.getValue();
 					StudySite studySite = studySiteDao.matchByStudyAndOrg(
 							studyParticipantAssignment.getStudySite().getOrganization().getName(), 
-							identifier.getValue());
+							identifier.getValue(),identifier.getType());
 					
 	
 					if (studySite != null && !studySites.contains(studySite.getId().toString())) {

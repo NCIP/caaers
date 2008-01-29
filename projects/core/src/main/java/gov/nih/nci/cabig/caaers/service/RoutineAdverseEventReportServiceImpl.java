@@ -139,7 +139,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				studySite = studySiteDao.matchByStudyAndOrg(
 						studyParticipantAssignment.getStudySite()
 								.getOrganization().getName(), identifier
-								.getValue());
+								.getValue(),identifier.getType());
 				
 				if (studySite != null) {
 					log.debug("StudySite id : " + studySite.getId());

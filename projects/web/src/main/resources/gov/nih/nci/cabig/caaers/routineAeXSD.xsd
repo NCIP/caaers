@@ -50,7 +50,7 @@
                     <xs:element name="identifiers" minOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="identifier" maxOccurs="unbounded"/>
+                                <xs:element name="identifier" type="studyIdentifierType" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
@@ -68,7 +68,7 @@
                     <xs:element name="identifiers" minOccurs="1">
                         <xs:complexType>
                             <xs:sequence>
-                                <xs:element ref="identifier" maxOccurs="unbounded"/>
+                                <xs:element name="identifier" type="identifierType" maxOccurs="unbounded"/>
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
@@ -209,16 +209,26 @@
         </xs:complexContent>
     </xs:complexType>
 
-    <xs:element name="identifier" type="identifierType"/>
-    <xs:complexType name="identifierType">
+    <xs:complexType name="studyIdentifierType">
         <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
+            <xs:extension base="identifierType">
                 <xs:sequence>
-                    <xs:element name="value" type="xs:string"/>
+                    <xs:element name="type" type="studyIdentifierTypeType"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:complexType name="identifierType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="value" type="customStringType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
 
     <xs:complexType name="DomainObject">
         <xs:attribute name="id" type="xs:positiveInteger"/>
@@ -234,6 +244,18 @@
     </xs:complexType>
 
     <!-- Types -->
+    
+    <xs:simpleType name="studyIdentifierTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Site Identifier"/>
+            <xs:enumeration value="Site IRB Identifier"/>
+            <xs:enumeration value="ClinicalTrials.gov Identifier"/>
+            <xs:enumeration value="Grid Identifier"/>
+            <xs:enumeration value="C3D Identifier"/>
+            <xs:enumeration value="Protocol Authority Identifier"/>
+            <xs:enumeration value="Coordinating Center Identifier"/>
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:simpleType name="gradeType">
         <xs:restriction base="xs:string">
@@ -270,5 +292,12 @@
             <xs:enumeration value="LEGACY"/>
         </xs:restriction>
     </xs:simpleType> 
+    
+    <xs:simpleType name="customStringType">
+        <xs:restriction base="xs:normalizedString">
+            <xs:minLength value="1"/>
+            <xs:whiteSpace value="collapse"/> 
+        </xs:restriction>
+    </xs:simpleType>
   
 </xs:schema>
