@@ -30,7 +30,8 @@
      </div>
      <div class="value">
        <tags:renderInputs field="${fieldGroup.fields[0]}"/>
-    </div>
+     </div>
+   </div>  
     
     <tags:renderRow field="${fieldGroup.fields[1]}"  style="display: none">
         <jsp:attribute name="label">

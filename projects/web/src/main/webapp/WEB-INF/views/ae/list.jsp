@@ -182,31 +182,41 @@
 					</c:if>
 			</td>
 			<td align="left">
-					<c:if test="${report.areAllReportsSubmitted == false}">
-					<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
-            		</c:if>
             			<table width="100%" class="tablecontent">
                     			<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="termStatus">
                     				<c:choose>
 									<c:when test="${termStatus.index == 0}">
 										<tr>
-										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>* ${adverseEvent.adverseEventTerm.universalTerm}<br /></td>
+										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>
+											<c:if test="${report.areAllReportsSubmitted == false}">
+												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+            								</c:if>
+											* ${adverseEvent.adverseEventTerm.universalTerm}<br />
+											<c:if test="${report.areAllReportsSubmitted == false}">	
+            									</a>
+            								</c:if>
+										</td>
 										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >* grade  ${adverseEvent.grade.code}</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
 										<tr>
-										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>${adverseEvent.adverseEventTerm.universalTerm}<br /></td>
+										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>
+											<c:if test="${report.areAllReportsSubmitted == false}">
+												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+            								</c:if>
+												${adverseEvent.adverseEventTerm.universalTerm}<br />
+											<c:if test="${report.areAllReportsSubmitted == false}">	
+            									</a>
+            								</c:if>	
+										</td>
 										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >&nbsp;&nbsp;grade  ${adverseEvent.grade.code}</td>
 										</tr>
 									</c:otherwise>
 									</c:choose>
     							</c:forEach>
-                		
+                				
                 		</table>
-                	<c:if test="${report.areAllReportsSubmitted == false}">	
-            		</a>
-            		</c:if>
 			</td>
 			
 			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
@@ -442,13 +452,16 @@
     filterable="false">
     <ec:row>
         <ec:column property="adverseEvents[0].adverseEventTerm.universalTerm" title="Term">
-            <a href="<c:url value="/pages/ae/editRoutine?aeRoutineReport=${routineReport.id}"/>">
             <c:choose>
                 <c:when test="${not empty routineReport.adverseEvents[0].adverseEventTerm}">
                 	<c:forEach items="${routineReport.adverseEvents}" var="adverseEvent">
                 		<table width="100%" class="tablecontent">
                 		<tr>
-                		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>${adverseEvent.adverseEventTerm.universalTerm}</td>
+                		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>
+                			<a style="text-decoration:none" href="<c:url value="/pages/ae/editRoutine?aeRoutineReport=${routineReport.id}"/>">
+                			${adverseEvent.adverseEventTerm.universalTerm}
+                			</a>
+                		</td>
  						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td></tr>
  						</table>	
     				</c:forEach>
@@ -459,7 +472,7 @@
                 </c:otherwise>
             </c:choose>
             <% ind++; %>
-            </a>
+            
         </ec:column>
         <ec:column property="startDate" title="Start date">
             <tags:formatDate value="${routineReport.startDate}"/>

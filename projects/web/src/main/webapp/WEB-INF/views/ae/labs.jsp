@@ -26,6 +26,7 @@
 		  	this.other = $(this.baseName + '.other');
 		  	this.otherProperty = this.baseName + '.other';
 		  	this.categoryProperty = $(this.baseName + '.lab-category');
+		  	this.isTriggerOnLoad ;
 		  	
 		  	
 		  	if(this.categoryId){
@@ -47,7 +48,7 @@
 		  	
 		  	AE.registerCalendarPopups("lab-" + this.index)
 		  	this.initializeLabOrOther()
-		  	this.updateTermDropDown()
+		  	this.updateTermDropDown(true)
 		  	
 		  	$(this.testName).observe("change",this.updateLabOther.bind(this))
 		  	$(this.categoryInput).observe("change",this.updateTermDropDown.bind(this))
@@ -65,16 +66,17 @@
 		  	values.each(function(value,index){
 		  		var opt = new Option(value.term,value.id)
 		  		this.testName.options[index+2] = opt
-		  		if(this.testName.options[index+2].value == this.termId ){
+		  		if(this.testName.options[index+2].value == this.termId && this.isTriggerOnLoad){
 		  			this.testName.options[index+2].selected=true
 		  		}
 		  	
 		  	}.bind(this))
 		  },
 		  
-		  updateTermDropDown: function() {
+		  updateTermDropDown: function(onload) {
+		    var kk = onload
+		  	this.isTriggerOnLoad = (onload == true) ? true : false;
 		  	catId= $F(this.categoryProperty)
-		  	console.debug("updateTermDropDown" + catId) 
 		   	createAE.getLabTermsByCategory( catId ,this.populateTermDropDown.bind(this));
 		  },
 		  
