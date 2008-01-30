@@ -46,12 +46,12 @@
 		  		}
 		  	}
 		  	
-		  	AE.registerCalendarPopups("lab-" + this.index)
-		  	this.initializeLabOrOther()
-		  	this.updateTermDropDown(true)
 		  	
 		  	$(this.testName).observe("change",this.updateLabOther.bind(this))
 		  	$(this.categoryInput).observe("change",this.updateTermDropDown.bind(this))
+		  	
+		  	AE.registerCalendarPopups("lab-" + this.index)
+		  	this.updateTermDropDown(true)
 		  	
 		  
 		  },
@@ -71,6 +71,8 @@
 		  		}
 		  	
 		  	}.bind(this))
+		  	this.initializeLabOrOther()
+		  	
 		  },
 		  
 		  updateTermDropDown: function(onload) {
@@ -114,7 +116,7 @@
 		  initializeLabOrOther: function() {
                var isNOS = ( $(this.other).value.length >0 )
                if(isNOS){
-               		$(this.testName).options[1].selected=true
+               		this.testName.options[1].selected=true
                		AE.slideAndShow(this.otherProperty + "-row")
                }
           }		 

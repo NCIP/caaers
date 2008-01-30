@@ -7,6 +7,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -47,8 +48,7 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 
     ////// BEAN PROPERTIES
     
-    @OneToOne
-	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @ManyToOne
 	@JoinColumn(name = "lab_term_id")
 	public LabTerm getLabTerm() {
 		return labTerm;
