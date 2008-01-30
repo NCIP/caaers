@@ -65,7 +65,7 @@
 				<%-- Check whether RuleSets exist or not --%>
 				<c:when test="${empty command.existingRuleSets}" >
 	            	<div class="row">
-    	            	Rule Sets does not exist. Please continue to create a new Rule Set.
+    	            	Rule Sets do not exist. Please continue to create a new Rule Set.
         	    	</div>
 				</c:when>
 				<%-- Display all the existing rulesets --%>
@@ -83,7 +83,7 @@
             <div class="label"><label for="newRuleSetName">RuleSet Name</label></div>
             <div class="value">
                 <select id="newRuleSetName" onchange="setRuleSetName(this)">
-                    <option value="Please select a RuleSet Name">Please select a RuleSet Name</option>
+                    
                     <!--
                     
                     <c:if test="${command.level == 'Sponsor' || command.level == 'SponsorDefinedStudy'}">
