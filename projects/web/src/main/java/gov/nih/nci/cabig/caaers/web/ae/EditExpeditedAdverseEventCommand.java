@@ -49,11 +49,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     @Override
     public void reassociate() {
-        // Don't need to reassoc aeReport in edit mode, because it is rebound fresh every time
-        // super.reassociate();
-        for (ReportDefinition definition : getOptionalReportDefinitionsMap().keySet()) {
-            reportDefinitionDao.reassociate(definition);
-        }
+        super.reassociate();
         assignmentDao.reassociate(getAssignment());
     }
 }
