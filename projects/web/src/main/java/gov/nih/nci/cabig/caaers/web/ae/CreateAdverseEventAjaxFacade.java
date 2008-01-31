@@ -661,7 +661,8 @@ public class CreateAdverseEventAjaxFacade {
      */
     @SuppressWarnings({"unchecked"})
     public List<IndexChange> remove(String listProperty, int indexToDelete) {
-        Object command = extractCommand();
+        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand)extractCommand();
+        command.reassociate(); //reassociate to session
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
