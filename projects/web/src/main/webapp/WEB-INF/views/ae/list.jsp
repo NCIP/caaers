@@ -303,7 +303,7 @@
             						<c:if test="${theReport.lastVersion.reportStatus == 'COMPLETED'}" >
             							<span class="submittedOn" >
             								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
-            									<a href="javascript:showTable2('table1')">
+            									<a href="javascript:showTable2('table${theReport.id}')">
             								</c:if>
             									<i>Submitted on </i><br> <b><tags:formatDate value="${theReport.lastVersion.submittedOn}" /></b>
             								<c:if test="${theReport.lastVersion.submissionUrl != ''}">
@@ -311,12 +311,12 @@
             								</c:if>
             							</span>
             							
-            							<div id="table1"
+            							<div id="table${theReport.id}"
              								style="position: absolute; display: none;width:400px; left: 520px;  ">
              								
              								<table class="tableRegion" width="100%">
              									<tr align="right">
-             										<td><a href="javascript:hideTable2('table1')">
+             										<td><a href="javascript:hideTable2('table${theReport.id}')">
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>
@@ -337,14 +337,14 @@
             						</c:if>
             						<c:if test="${theReport.lastVersion.reportStatus == 'FAILED'}" >
             							<span class="dueOn" >
-            								<a href="javascript:showTable2('table0')"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
+            								<a href="javascript:showTable2('table${theReport.id}')"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
             							</span>
-            							<div id="table0"
+            							<div id="table${theReport.id}"
              								style="position: absolute; display: none;width:400px; left: 520px;  ">
              								
              								<table class="tableRegion" width="100%">
              									<tr align="right">
-             										<td><a href="javascript:hideTable2('table0')">
+             										<td><a href="javascript:hideTable2('table${theReport.id}')">
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>
