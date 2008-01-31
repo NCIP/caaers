@@ -14,6 +14,7 @@
 <title>${tab.longTitle}</title>
 <style type="text/css">
        .label { width: 12em; padding: 1px;  margin-right: 0.5em; } 
+       div.row div.value  {white-space:normal;}
 	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 </style>
 </head>
@@ -24,61 +25,58 @@
         <chrome:division>
         	<div class="leftpanel">
         		<div class="row">
-                <div class="label">Primary identifier</div>
-                <div class="value">${command.primaryIdentifier.value}</div>
+                	<div class="label">Primary identifier</div>
+                	<div class="value">${command.primaryIdentifier.value} </div>
+            	</div>
+           		<div class="row">
+                	<div class="label">Short title</div>
+                	<div class="value">${command.shortTitle} </div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Long Title</div>
+                	<div class="value">${command.longTitle} </div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Precis</div>
+                	<div class="value">${command.precis} </div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Description</div>
+                	<div class="value">${command.description} </div>
+            	</div>
+            	<div class="row">
+                	<div class="label">Primary sponsor</div>
+                	<div class="value">${command.primaryFundingSponsorOrganization.name} </div>
+            	</div>
+				<div class="row">
+                	<div class="label">Coordinating center</div>
+                	<div class="value">${command.studyCoordinatingCenter.organization.name} </div>
+            	</div>
             </div>
-            <div class="row">
-                <div class="label">Short title</div>
-                <div class="value">${command.shortTitle}</div>
-            </div>
-            <div class="row">
-                <div class="label">Long Title</div>
-                <div class="value">${command.longTitle}</div>
-            </div>
-            <div class="row">
-                <div class="label">Precis</div>
-                <div class="value">${command.precis}</div>
-            </div>
-            <div class="row">
-                <div class="label">Description</div>
-                <div class="value">${command.description}</div>
-            </div>
-            <div class="row">
-                <div class="label">Primary sponsor</div>
-                <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
-            </div>
-			<div class="row">
-                <div class="label">Coordinating center</div>
-                <div class="value">${command.studyCoordinatingCenter.organization.name}</div>
-            </div>
-            
-        	</div>
         	<div class="rightpanel">
         		<div class="row">
                 	<div class="label">Phase code</div>
-                	<div class="value">${command.phaseCode}</div>
+                	<div class="value">${command.phaseCode} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Status</div>
-                	<div class="value">${command.status}</div>
+                	<div class="value">${command.status} </div>
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology</div>
-                	<div class="value">${command.aeTerminology.term}</div>
+                	<div class="value">${command.aeTerminology.term} </div>
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology Version</div>
-                	<div class="value">
-                	${command.aeTerminology.term eq 'CTC' ? command.aeTerminology.ctcVersion.name : command.aeTerminology.meddraVersion.name} 
-                	</div>
+                	<div class="value">${command.aeTerminology.term eq 'CTC' ? command.aeTerminology.ctcVersion.name : command.aeTerminology.meddraVersion.name} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Multi institutional</div>
-                	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'}</div>
+                	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
             	</div>
             	<div class="row">
                 	<div class="label">AdEERS reporting</div>
-                	<div class="value">${command.adeersReporting ? 'Yes' : 'No'}</div>
+                	<div class="value">${command.adeersReporting ? 'Yes' : 'No'} </div>
             	</div>	
             		
         	</div>
