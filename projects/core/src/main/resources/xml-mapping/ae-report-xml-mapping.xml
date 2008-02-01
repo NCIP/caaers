@@ -1101,9 +1101,11 @@
     <field name="lastName" type="string">
       <bind-xml name="lastName" node="element"/>
     </field>
+    <!--
     <field name="dateOfBirth" type="date">
       <bind-xml name="dateOfBirth" node="element"/>
     </field>
+    -->
     <field name="gender" type="string">
       <bind-xml name="gender" node="element"/>
     </field>
