@@ -26,6 +26,10 @@
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         var initialCategory ='';
+        var ctcTermIdvalues = new Array();
+        <c:forEach items="${command.ctcTermIds}" varStatus="status" var="ctcTermId">
+	        	ctcTermIdvalues[${status.index}]='${ctcTermId}'
+         </c:forEach>
 
 		
 		  var EnterMeddra = Class.create()
@@ -106,7 +110,7 @@
         })
 
 
-
+		
         Element.observe(window, "load", function() {
 	        
 	        <c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status" var="adverseEvent">
@@ -114,6 +118,7 @@
            		new EnterMeddra(${status.index}, '${adverseEvent.lowLevelTerm.fullName}')
            		</c:if>
             </c:forEach>
+	        
 	        
 	        showTerms()
 	        Event.observe("cats", "change", function() { showTerms() })
@@ -129,6 +134,17 @@
 	     terms.options.add(opt1)
 	     terms.options[0].selected=true;
 	     fireAction('addTerm','0');
+        }
+        
+        function contains(object, arrayObject){
+        	returnValue = false;
+        	arrayObject.each(function(singleObject){
+        		if(object == singleObject){
+        			returnValue = true
+        			return returnValue;
+        		}
+        	})
+        	return returnValue;
         }
         
         function showTerms() {
@@ -148,6 +164,7 @@
                    ctcTerms.each(function(ctcTerm) {
                        var opt = new Option(ctcTerm.fullName, ctcTerm.id)
                        terms.options.add(opt)
+                       opt.selected = (contains(ctcTerm.id,ctcTermIdvalues) == true) ? true : false ; 
                    })
                })
            }
