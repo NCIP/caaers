@@ -2,8 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <div id="header">
+
     <div class="background-R">
-        <img src="<chrome:imageUrl name="caAERSlogo.gif"/>" alt="caAERS" id="logo">
+
+        <a href="/caaers/pages/task">
+
+            <img src="<chrome:imageUrl name="caAERSlogo.gif" />" alt="caAERS" id="logo" >
+       </a>
+
         <img src="<chrome:imageUrl name="caAERS.gif"/>" alt="cancer Adverse Event Reporting System" id="tagline">
 
         <div id="login-action">
