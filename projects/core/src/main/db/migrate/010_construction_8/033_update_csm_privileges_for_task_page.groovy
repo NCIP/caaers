@@ -65,17 +65,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 			primaryKey: false
 		)
 
-        // Gives caaers_super_user group the
-        // gov.nih.nci.cabig.caaers.TASK.ACCESS role on
-        // gov.nih.nci.cabig.caaers.TASK protection group
-        		insert(
-        			'csm_user_group_role_pg',
-        			[
-        				user_group_role_pg_id: -47,
-        				group_id: -3, role_id: -15, protection_group_id: -12
-        			],
-        			primaryKey: false
-        		)
+
                         
           // Gives caaers_user group the
           // gov.nih.nci.cabig.caaers.TASK.ACCESS role on

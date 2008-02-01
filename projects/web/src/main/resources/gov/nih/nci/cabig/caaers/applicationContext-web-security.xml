@@ -56,32 +56,33 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========== TODO: REPORT ===========-->
 
 		<!--========== TODO: ADMIN ===========-->
-		<entry key="/pages/admin/configure"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/configure"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/createInvestigator"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/viewInvestigator"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/createResearchStaff"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/viewResearchStaff"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/import"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/admin/importMeddra"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	
-		<entry key="/pages/admin/createIND"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	<!--  TODO: need to change domain class -->
-		<entry key="/pages/admin/createOrganization"
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>	
-		<entry key="/pages/admin/searchIND" 
-			value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/><!--  TODO: need to change domain class -->
-		<entry key="/pages/admin/passwordPolicyConfigure"
-		       value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		
-		<!--========= RULES ========-->
+        <entry key="/pages/admin/configure"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/configure"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createInvestigator"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/viewInvestigator"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createResearchStaff"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/viewResearchStaff"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/import"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/importMeddra"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createIND"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/createOrganization"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/searchIND"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+        <entry key="/pages/admin/passwordPolicyConfigure"
+               value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+
+        <!--========= RULES ========-->
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/list" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		<entry key="/pages/rule/addRule" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
