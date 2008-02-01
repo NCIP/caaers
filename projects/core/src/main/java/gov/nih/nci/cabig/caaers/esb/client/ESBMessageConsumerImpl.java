@@ -10,6 +10,8 @@ import java.io.StringReader;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -22,6 +24,7 @@ import org.xml.sax.SAXParseException;
 public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 	
 	 private MessageNotificationService messageNotificationService;
+	 protected final Log log = LogFactory.getLog(getClass());
 
 	
 	private Element getJobInfo(String message) {
@@ -48,10 +51,10 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		return jobInfo;
 	}
 	public void processMessage(String message) {
-		System.out.println("GOT MESSAGE ... ");
-		System.out.println("BEGIN MESSAGE ... ");
-		System.out.println(message );
-		System.out.println("END MESSAGE ... ");
+		
+		log.debug("ESB Listner - message recieved");
+		log.debug(message );
+
 		
 		Element jobInfo = getJobInfo(message);
 		String caaersAeReportId = jobInfo.getChild("CAEERS_AEREPORT_ID").getValue();
@@ -127,6 +130,7 @@ public class ESBMessageConsumerImpl implements ESBMessageConsumer {
 		//System.out.println("calling msessageNotifyService 10..");
 		
 		try {
+			log.debug("Calling notfication service ..");
 			messageNotificationService.sendNotificationToReporter(submitterEmail, messages, caaersAeReportId,reportId,success,ticketNumber,url);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

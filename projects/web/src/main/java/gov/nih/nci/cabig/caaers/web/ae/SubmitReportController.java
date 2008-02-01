@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.api.AdeersReportGenerator;
 import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -24,7 +25,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Krikor Krumlian
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {
-    public SubmitReportController() {
+	
+	//private AdeersReportGenerator adeersReportGenerator;
+	//private ReportDao reportDao;
+
+
+	public SubmitReportController() {
         setCommandClass(SubmitExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
@@ -45,7 +51,8 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         
     }
 
-    @Override
+    @Override	
+   // @Transactional
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
     	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
@@ -53,6 +60,11 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
         Report report = aeReport.getReports().get(((int)reportIndex));
+        
+       ReportStatus status = null;
+       Date date = new Date();
+       String message = "";
+       String url = "";
         
         boolean endPointUrl = false;
         for (ReportDelivery delivery: report.getReportDeliveries()) {
@@ -66,34 +78,43 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         
         System.out.println("END POINT URL .. " + endPointUrl);
         
-        
         if (!endPointUrl) {
 	        // TODO: take out
-        	report.setSubmittedOn(new Date());
-        	report.setStatus(ReportStatus.COMPLETED);
-	    	
-	    	// Report Version information 
-        	report.getLastVersion().setSubmittedOn(new Date());
-        	report.getLastVersion().setReportStatus(ReportStatus.COMPLETED);
-        } else {
-        	report.setSubmittedOn(new Date());
-        	report.setStatus(ReportStatus.INPROCESS);
-	    	
-	    	// Report Version information 
-        	report.getLastVersion().setSubmittedOn(new Date());
-        	report.getLastVersion().setReportStatus(ReportStatus.INPROCESS);        	
+        	status = ReportStatus.COMPLETED;
+    	} else {
+        	status = ReportStatus.INPROCESS;      	
         }
-        command.save();
- 	
+        
     	//generate report and send ...
     	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
-    	
+     	//command.save();
+
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 		String xml = aeser.serialize(aeReport);
+		//expeditedAdverseEventReportDao.save(aeReport);
 		
-		
-    	aegen.generateAndNotify(aeReport.getId()+"", report , xml);
     	
+    	//String xml = "<AdverseEventReport>   <id>99</id> </AdverseEventReport>";
+		
+		try {
+			aegen.generateAndNotify(aeReport.getId()+"", report , xml);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Error broadcasting message to ESB " + e.getMessage());
+			status = ReportStatus.FAILED;
+			message = "Problem communicating with ESB "+e.getMessage();
+		}
+		report.setStatus(status);
+		report.setSubmissionUrl(url);
+		report.setSubmissionMessage(message);
+		report.setSubmittedOn(date);
+		
+		report.getLastVersion().setReportStatus(status);
+		report.getLastVersion().setSubmissionUrl(url);
+		report.getLastVersion().setSubmissionMessage(message);
+		report.getLastVersion().setSubmittedOn(date);		
+		
+		command.save();
     	
     	
     	ModelAndView modelAndView;
@@ -109,4 +130,6 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	
         return modelAndView;
     }
+
+
 }

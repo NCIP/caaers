@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -19,8 +18,11 @@ import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -128,13 +130,12 @@ public class AdverseEventReportSerializer {
 	    	aer.setTreatmentInformation(getTreatmentInformation(hibernateAdverseEventReport.getTreatmentInformation()));
 
 	    	
-	    	//aer.getRadiationIntervention().setAdministration(hibernateAdverseEventReport.getRadiationIntervention().getAdministration());
 	    
 	    	//build MedicalDevices
 	    	List<MedicalDevice> medicalDeviceList = hibernateAdverseEventReport.getMedicalDevices();
 
 	    	for (MedicalDevice medicalDevice: medicalDeviceList) {
-	    		aer.addMedicalDevice(medicalDevice);
+	    		aer.addMedicalDevice(getMedicalDevice(medicalDevice));
 	    	}
 	    	
 	    	//	build RadiationInterventions
@@ -144,21 +145,21 @@ public class AdverseEventReportSerializer {
 	    		
 	    		aer.addRadiationIntervention(getRadiationIntervention(radiationIntervention));
 	    	}
-	    	
+	   	
 	    	//	build SurgeryInterventions
 	    	List<SurgeryIntervention> surgeryInterventionList = hibernateAdverseEventReport.getSurgeryInterventions();
 
 	    	for (SurgeryIntervention surgeryIntervention: surgeryInterventionList) {
-	    		aer.addSurgeryIntervention(surgeryIntervention);
+	    		aer.addSurgeryIntervention(getSurgeryIntervention(surgeryIntervention));
 	    	}
 
-	    	aer.setAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation());
+	    	aer.setAdditionalInformation(getAdditionalInformation(hibernateAdverseEventReport.getAdditionalInformation()));
 
 	    	//build medications
 	    	List<ConcomitantMedication> conMedList = hibernateAdverseEventReport.getConcomitantMedications();
 
 	    	for (ConcomitantMedication medication: conMedList) {
-	    		aer.addConcomitantMedication(medication);
+	    		aer.addConcomitantMedication(getConcomitantMedication(medication));
 	    	}
 
 
@@ -166,7 +167,7 @@ public class AdverseEventReportSerializer {
 	    	List<Lab> labList = hibernateAdverseEventReport.getLabs();
 
 	    	for (Lab lab: labList) {
-	    		aer.addLab(lab);
+	    		aer.addLab(getLab(lab));
 	    	}
 
 	    	// build AEs
@@ -181,31 +182,153 @@ public class AdverseEventReportSerializer {
 	    	List<SAEReportPriorTherapy> thList = hibernateAdverseEventReport.getSaeReportPriorTherapies();
 
 	    	for (SAEReportPriorTherapy therapy: thList) {
-	    		aer.addSaeReportPriorTherapies(therapy);
+	    		aer.addSaeReportPriorTherapies(getSAEReportPriorTherapy(therapy));
 	    	}
 
 	    	//Build pre existing conditions
 	    	List<SAEReportPreExistingCondition> peList = hibernateAdverseEventReport.getSaeReportPreExistingConditions();
 
 	    	for (SAEReportPreExistingCondition pe: peList) {
-	    		aer.addSaeReportPreExistingCondition(pe);
+	    		aer.addSaeReportPreExistingCondition(getSAEReportPreExistingCondition(pe));
 	    	}
 
 	    	//Build other causes
 	    	List<OtherCause> ocList = hibernateAdverseEventReport.getOtherCauses();
 
 	    	for (OtherCause oc: ocList) {
-	    		aer.addOtherCause(oc);
+	    		aer.addOtherCause(getOtherCause(oc));
 	    	}
 	    	
 	    	List<Outcome> outcomes = hibernateAdverseEventReport.getOutcomes();
 	    	
 	    	for (Outcome oc: outcomes) {
-	    		aer.addOutcomes(oc);
+	    		aer.addOutcomes(getOutcome(oc));
 	    	}
 
 
 	    	return aer;
+	   }
+	   
+	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
+		   
+		   AdditionalInformation a = new AdditionalInformation();
+		   a.setId(additionalInformation.getId());
+		   a.setOtherInformation(additionalInformation.getOtherInformation());
+		   a.setAutopsyReport(additionalInformation.getAutopsyReport());
+		   a.setConsults(additionalInformation.getConsults());
+		   a.setDischargeSummary(additionalInformation.getDischargeSummary());
+		   a.setFlowCharts(additionalInformation.getFlowCharts());
+		   a.setLabReports(additionalInformation.getLabReports());
+		   a.setObaForm(additionalInformation.getObaForm());
+		   a.setOther(additionalInformation.getOther());
+		   a.setPathologyReport(additionalInformation.getPathologyReport());
+		   a.setProgressNotes(additionalInformation.getProgressNotes());
+		   a.setRadiologyReports(additionalInformation.getRadiologyReports());
+		   a.setReferralLetters(additionalInformation.getReferralLetters());
+		   a.setIrbReport(additionalInformation.getIrbReport());
+		   
+		   
+		   return a;
+	   }
+	   
+	   private Outcome getOutcome(Outcome outcome) throws Exception {
+		   Outcome o = new Outcome();
+		   o.setId(outcome.getId());
+		   o.setOther(outcome.getOther());
+		   o.setOutcomeType(outcome.getOutcomeType());
+		   o.setDate(outcome.getDate());
+		   
+		   return o;
+	   }
+	   
+	   private SAEReportPreExistingCondition getSAEReportPreExistingCondition(SAEReportPreExistingCondition saeReportPreExistingCondition) throws Exception {
+		   
+		   SAEReportPreExistingCondition s = new SAEReportPreExistingCondition();
+		   s.setId(saeReportPreExistingCondition.getId());
+		   s.setOther(saeReportPreExistingCondition.getOther());
+		   s.setPreExistingCondition(saeReportPreExistingCondition.getPreExistingCondition());
+		   
+		   return s;
+	   }
+	   
+	   private SAEReportPriorTherapy getSAEReportPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) throws Exception {
+		   
+		   SAEReportPriorTherapy s = new SAEReportPriorTherapy();
+		   s.setId(saeReportPriorTherapy.getId());
+		   s.setPriorTherapy(saeReportPriorTherapy.getPriorTherapy());
+		   s.setStartDate(saeReportPriorTherapy.getStartDate());
+		   s.setOther(saeReportPriorTherapy.getOther());
+		   
+		   List<PriorTherapyAgent> agents = saeReportPriorTherapy.getPriorTherapyAgents();
+		   
+		   for (PriorTherapyAgent agent : agents) {
+			   PriorTherapyAgent pta = new PriorTherapyAgent();
+			   pta.setId(agent.getId());
+			   pta.setChemoAgent(agent.getChemoAgent());
+			   s.addPriorTherapyAgent(pta);
+		   }
+		   
+		   return s;
+		   
+	   }
+	   private Lab getLab(Lab lab) throws Exception {
+		   Lab l = new Lab();
+		   l.setId(lab.getId());
+		   l.setLabTerm(lab.getLabTerm());
+		   l.setOther(lab.getOther());
+		   l.setUnits(lab.getUnits());
+		   l.setBaseline(lab.getBaseline());
+		   l.setNadir(lab.getNadir());
+		   l.setRecovery(lab.getRecovery());
+		   
+		   return l;
+	   }
+	   private ConcomitantMedication getConcomitantMedication (ConcomitantMedication concomitantMedication) throws Exception {
+		   ConcomitantMedication c = new ConcomitantMedication();
+		   c.setAgentName(concomitantMedication.getAgentName());
+		   return c;
+		   
+	   }
+	   
+	   private SurgeryIntervention getSurgeryIntervention(SurgeryIntervention surgeryIntervention) throws Exception{
+		   SurgeryIntervention s = new SurgeryIntervention();
+		   
+		   s.setId(surgeryIntervention.getId());
+		   s.setTreatmentArm(surgeryIntervention.getTreatmentArm());
+		   s.setDescription(surgeryIntervention.getDescription());
+		   s.setInterventionDate(surgeryIntervention.getInterventionDate());
+		   s.setInterventionSite(surgeryIntervention.getInterventionSite());
+		   
+		   return s;
+		   
+	   }
+	   
+	   private MedicalDevice getMedicalDevice(MedicalDevice medicalDevice) throws Exception {
+		   MedicalDevice m = new MedicalDevice();
+		   m.setId(medicalDevice.getId());
+		   m.setBrandName(medicalDevice.getBrandName());
+		   m.setCommonName(medicalDevice.getCommonName());
+		   m.setDeviceType(medicalDevice.getDeviceType());
+		   m.setManufacturerName(medicalDevice.getManufacturerName());
+		   m.setManufacturerCity(medicalDevice.getManufacturerCity());
+		   m.setManufacturerState(medicalDevice.getManufacturerState());
+		   m.setModelNumber(medicalDevice.getModelNumber());
+		   m.setLotNumber(medicalDevice.getLotNumber());
+		   m.setCatalogNumber(medicalDevice.getCatalogNumber());
+		   m.setExpirationDate(medicalDevice.getExpirationDate());
+		   m.setSerialNumber(medicalDevice.getSerialNumber());
+		   m.setOtherNumber(medicalDevice.getOtherNumber());
+		   m.setOtherDeviceOperator(medicalDevice.getOtherDeviceOperator());
+		   m.setImplantedDate(medicalDevice.getImplantedDate());
+		   m.setExplantedDate(medicalDevice.getExplantedDate());
+		   m.setReprocessorName(medicalDevice.getReprocessorName());
+		   m.setReprocessorAddress(medicalDevice.getReprocessorAddress());
+		   m.setReturnedDate(medicalDevice.getReturnedDate());
+		   m.setDeviceOperator(medicalDevice.getDeviceOperator());
+		   m.setDeviceReprocessed(medicalDevice.getDeviceReprocessed());
+		   m.setEvaluationAvailability(medicalDevice.getEvaluationAvailability());
+		   
+		   return m;
 	   }
 	   
 	   private RadiationIntervention getRadiationIntervention(RadiationIntervention ri) throws Exception {
@@ -356,9 +479,27 @@ public class AdverseEventReportSerializer {
 		    	studySite.setEndDate(ss.getEndDate());
 		    	
 		    	//buld identifiers , to resolve sesion error 
-		    	Study s = ss.getStudy();
-		    	List<Identifier> ids = s.getIdentifiers();
-		    	s.setIdentifiers(new ArrayList<Identifier>());
+		    	Study hibernateStudy = ss.getStudy();
+		    	
+		    	Study s = new Study();
+		    	s.setId(hibernateStudy.getId());
+		    	s.setBlindedIndicator(hibernateStudy.getBlindedIndicator());
+		    	s.setMultiInstitutionIndicator(hibernateStudy.getMultiInstitutionIndicator());
+		    	s.setRandomizedIndicator(hibernateStudy.getRandomizedIndicator());
+		    	s.setShortTitle(hibernateStudy.getShortTitle());
+		    	s.setLongTitle(hibernateStudy.getLongTitle());
+		    	s.setDescription(hibernateStudy.getDescription());
+		    	s.setPrecis(hibernateStudy.getPrecis());
+		    	s.setDiseaseCode(hibernateStudy.getDiseaseCode());
+		    	s.setMonitorCode(hibernateStudy.getMonitorCode());
+		    	s.setPhaseCode(hibernateStudy.getPhaseCode());
+		    	s.setPrimaryFundingSponsorOrganization(hibernateStudy.getPrimaryFundingSponsorOrganization());
+		    	s.setStatus(hibernateStudy.getStatus());
+		    	s.setTargetAccrualNumber(hibernateStudy.getTargetAccrualNumber());
+		    	s.setCtcVersion(hibernateStudy.getCtcVersion());
+		    	
+		    	List<Identifier> ids = hibernateStudy.getIdentifiers();
+		    	//s.setIdentifiers(new ArrayList<Identifier>());
 		    	for (Identifier id:ids) {
 		    		s.addIdentifier(getIdentifier(id));
 		    	}

@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
@@ -26,6 +28,7 @@ public class MessageNotificationService {
 	protected Configuration configuration;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
+	protected final Log log = LogFactory.getLog(getClass());
 
 
 	private ReportDao reportDao;
@@ -73,7 +76,7 @@ public class MessageNotificationService {
 		postProcess(stubWebRequest);
 
 		
-		System.out.println("SAVING REPORT DETAILS ..." + success);
+		log.debug("Saving data into report versions table");
 		if (success) {
 			r.setAssignedIdentifer(ticketNumber);
 			r.setSubmissionUrl(url);			
@@ -101,7 +104,7 @@ public class MessageNotificationService {
 		}
 
 
-
+		log.debug("send email ");
 //		send email .
 		sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
 				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),submitterEmail,messages,success, aeReportId);
