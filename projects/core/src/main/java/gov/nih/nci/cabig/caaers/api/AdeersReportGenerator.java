@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
@@ -20,6 +21,8 @@ import java.util.List;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -39,8 +42,9 @@ public class AdeersReportGenerator  {
 	protected Configuration configuration;
 	protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
 	protected  ReportDao reportDao;
+	protected  ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
-	
+	protected final Log log = LogFactory.getLog(getClass());
 
 
 
@@ -172,6 +176,14 @@ public class AdeersReportGenerator  {
 			}
 		} 
 		
+		if (eprs.size()>0) {
+			xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>"+sb.toString());
+
+				messageBroadcastService.initialize();
+				messageBroadcastService.broadcast(xml);	
+
+		}
+		
 		if (emails.size()>0 ){
 			String tempDir = System.getProperty("java.io.tmpdir");
 			pdfOutFile = tempDir+"/expeditedAdverseEventReport-"+aeReportId+".pdf";
@@ -182,21 +194,7 @@ public class AdeersReportGenerator  {
 					configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL), 
 					pdfOutFile,emails.toArray(new String[0]));
 		}	
-		//sb.append("<EXTERNAL_SYSTEMS>https://eapps.ctisinc.com/adeersws10gtest/services/AEReportXMLService</EXTERNAL_SYSTEMS>");
-		
-		if (eprs.size()>0) {
-			xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>"+sb.toString());
-			messageBroadcastService.initialize();
-			messageBroadcastService.broadcast(xml);	
-			
-			
-			//report.setStatus(ReportStatus.INPROCESS);
-			//reportDao.save(report);			
-		}
-		
-		
-		
-		//
+
 		
 	}
 	
@@ -272,6 +270,13 @@ public class AdeersReportGenerator  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+
+
+	public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}
 	
 	
