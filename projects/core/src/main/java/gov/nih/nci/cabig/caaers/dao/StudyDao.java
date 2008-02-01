@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -240,12 +241,21 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			params.add(p.toLowerCase());
 			firstClause = false;
 		}
-
+		
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
-			queryBuf.append(" p.dateOfBirth").append(" = ? ");
 			String p = (String) props.get("participantDateOfBirth");
-			params.add(stringToDate(p));
+			DateValue dob = stringToDateValue(p);
+			queryBuf.append(" p.dateOfBirth.year").append(" = ? ");
+			params.add(dob.getYear());
+			if(dob.getMonth() > 0){
+				queryBuf.append(" and p.dateOfBirth.month").append(" = ? ");
+				params.add(dob.getMonth());
+			}
+			if(dob.getDay() > 0){
+				queryBuf.append(" and p.dateOfBirth.day").append(" = ? ");
+				params.add(dob.getDay());
+			}
 			firstClause = false;
 		}
 		

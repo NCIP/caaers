@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import edu.nwu.bioinformatics.commons.StringUtils;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
@@ -269,6 +270,21 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 	public Date stringToDate(String date) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		return dateFormat.parse(date);
+	}
+	
+	public DateValue stringToDateValue(String date) throws ParseException {
+		String[] dateParts = date.split("/");
+		int size = dateParts.length;
+		if(size != 3)throw new ParseException("Unknown format, expected format is 'mm/dd/yyyy'", 0);
+		DateValue dateValue = new DateValue();
+		try{
+			dateValue.setMonth(Integer.parseInt(dateParts[0]));
+			dateValue.setDay(Integer.parseInt(dateParts[1]));
+			dateValue.setYear(Integer.parseInt(dateParts [2]));
+		}catch(NumberFormatException e){
+			throw new ParseException("Unknown format, unable to parse the date values, expected format is 'mm/dd/yyyy'", 0);
+		}
+		return dateValue;
 	}
 	
 	/*

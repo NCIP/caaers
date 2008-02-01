@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -191,9 +192,18 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 		if (props.get("participantDateOfBirth") != null) {
 			queryBuf.append(firstClause ? " where " : " and ");
-			queryBuf.append(" o.dateOfBirth").append(" = ? ");
 			String p = (String) props.get("participantDateOfBirth");
-			params.add(stringToDate(p));
+			DateValue dob = stringToDateValue(p);
+			queryBuf.append(" o.dateOfBirth.year").append(" = ? ");
+			params.add(dob.getYear());
+			if(dob.getMonth() > 0){
+				queryBuf.append(" and o.dateOfBirth.month").append(" = ? ");
+				params.add(dob.getMonth());
+			}
+			if(dob.getDay() > 0){
+				queryBuf.append(" and o.dateOfBirth.day").append(" = ? ");
+				params.add(dob.getDay());
+			}
 			firstClause = false;
 		}
 
