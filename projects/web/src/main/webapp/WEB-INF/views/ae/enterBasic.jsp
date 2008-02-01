@@ -254,7 +254,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, ctcVersion, $F(this._ctcCategoryId()), 10, function(values) {
+                createAE.matchTerms(text, ctcVersion, $F(this._ctcCategoryId()), 25, function(values) {
                     autocompleter.setChoices(values)
                 })
             }

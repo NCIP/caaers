@@ -83,7 +83,7 @@ Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
 
     setOptions: function(options) {
         this.options = Object.extend({
-            choices: 10,
+            choices: 25,
             selector: function(instance) {
                 var items = [];
                 var entry = instance.getToken();
