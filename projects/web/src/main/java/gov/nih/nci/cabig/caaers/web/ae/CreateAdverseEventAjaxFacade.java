@@ -663,6 +663,7 @@ public class CreateAdverseEventAjaxFacade {
     public List<IndexChange> remove(String listProperty, int indexToDelete) {
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand)extractCommand();
         command.reassociate(); //reassociate to session
+        command.getStudy(); //this is to fix the LazyInit execption on "Save&Continue" after a delete(GForge #11981, comments has the details) 
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
@@ -675,7 +676,7 @@ public class CreateAdverseEventAjaxFacade {
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
         list.remove(indexToDelete);
         addDisplayNames(listProperty, changes);
-        saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+        saveIfAlreadyPersistent(command);
         return changes;
     }
 
