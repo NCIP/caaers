@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.tools.editors.DateValueEditor;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -51,6 +53,7 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
+		binder.registerCustomEditor(DateValue.class, new DateValueEditor());
 		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
 	}
 

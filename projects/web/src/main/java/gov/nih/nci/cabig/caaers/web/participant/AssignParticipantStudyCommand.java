@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -32,7 +33,7 @@ public class AssignParticipantStudyCommand {
 
 	private String lastName;
 
-	private Date dateOfBirth;
+	private DateValue dateOfBirth;
 
 	private String gender;
 
@@ -179,11 +180,11 @@ public class AssignParticipantStudyCommand {
 		this.lastName = lastName;
 	}
 
-	public Date getDateOfBirth() {
+	public DateValue getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(final Date dateOfBirth) {
+	public void setDateOfBirth(final DateValue dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

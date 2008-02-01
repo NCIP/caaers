@@ -10,6 +10,8 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -80,8 +82,9 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 				InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
 		participantFieldGroup.getFields().add(
 				InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
-		participantFieldGroup.getFields().add(
-				InputFieldFactory.createDateField("participant.dateOfBirth", "Date of Birth", true));
+		InputField dobField = InputFieldFactory.createTextField("participant.dateOfBirth", "Date of Birth", true);
+		dobField.getAttributes().put(InputField.HELP,"par.par_create_participant.participant.dateOfBirth");
+		participantFieldGroup.getFields().add(dobField);
 
 		participantFieldGroup.getFields().add(
 				InputFieldFactory.createSelectField("participant.gender", "Gender", true, collectOptions(listValues
