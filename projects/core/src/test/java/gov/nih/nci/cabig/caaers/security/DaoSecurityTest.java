@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -168,7 +169,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         participant.setFirstName("Jeff");
         participant.setLastName("Someone");
         participant.setGender("Male");
-        participant.setDateOfBirth(new Date());
+        participant.setDateOfBirth(new DateValue());
         participant.setEthnicity("ethnicity");
         participant.setRace("race");
 
@@ -205,7 +206,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         participant.setFirstName("Jeff");
         participant.setLastName("Someone");
         participant.setGender("Male");
-        participant.setDateOfBirth(new Date());
+        participant.setDateOfBirth(new DateValue());
         participant.setEthnicity("ethnicity");
         participant.setRace("race");
 

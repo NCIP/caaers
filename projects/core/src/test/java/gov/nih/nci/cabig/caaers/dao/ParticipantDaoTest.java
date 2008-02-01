@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_PARTICIPANTS;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -90,7 +91,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
             participant.setFirstName("Jeff");
             participant.setLastName("Someone");
             participant.setGender("Male");
-            participant.setDateOfBirth(new Date());
+            participant.setDateOfBirth(new DateValue());
             participant.setEthnicity("ethnicity");
             participant.setRace("race");
 
@@ -117,7 +118,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao>{
             participant.setFirstName("Jeff");
             participant.setLastName("Someone");
             participant.setGender("Male");
-            participant.setDateOfBirth(new Date());
+            participant.setDateOfBirth(new DateValue());
             participant.setEthnicity("ethnicity");
             participant.setRace("race");
             participant.setLoadStatus(LoadStatus.INPROGRESS.getCode());

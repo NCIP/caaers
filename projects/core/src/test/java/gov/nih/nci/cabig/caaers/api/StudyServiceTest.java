@@ -8,6 +8,7 @@ import java.util.Date;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -46,7 +47,7 @@ public class StudyServiceTest extends CaaersDbTestCase {
                 participant.setLastName("Mouse");
                 participant.setInstitution("Some institution");
                 participant.setInstitutionalPatientNumber("Some patient number");
-                participant.setDateOfBirth(new Date());
+                participant.setDateOfBirth(new DateValue());
                 participant.setGridId("gridParticipant");
 
                 StudyService svc = (StudyService) getApplicationContext()
