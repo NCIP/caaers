@@ -32,7 +32,7 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 	}
 
     public List<AnatomicSite> getAll() {
-        return getHibernateTemplate().find("from AnatomicSite");
+        return findAll();
     }
     
 }

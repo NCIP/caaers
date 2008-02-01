@@ -180,34 +180,34 @@ public class CreateAdverseEventAjaxFacade {
            return chemoAgentDao.getById(Integer.parseInt(chemoAgentId));
        }
 
-       public String buildChemoAgentsTable(final Map parameterMap,String tableId, HttpServletRequest request) throws Exception {
+    public String buildChemoAgentsTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
 
-           try {
-               List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
-               TableModel model = getTableModel(parameterMap, request);
-               
-               String onInvokeAction = "showChemoAgentsTable('" + tableId + "')";
+        try {
+            List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
+            TableModel model = getTableModel(parameterMap, request);
 
-               addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
+            String onInvokeAction = "showChemoAgentsTable('" + tableId + "')";
 
-               Column columnTerm = model.getColumnInstance();
-               columnTerm.setProperty("name");
-               columnTerm.setTitle("Agent");
-               columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.ChemoAgentLinkDisplayCell");
-               model.addColumn(columnTerm);
+            addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
 
-
-               return model.assemble().toString();
+            Column columnTerm = model.getColumnInstance();
+            columnTerm.setProperty("name");
+            columnTerm.setTitle("Agent");
+            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.ChemoAgentLinkDisplayCell");
+            model.addColumn(columnTerm);
 
 
-           }
-           catch (Exception e) {
-               log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
-           }
+            return model.assemble().toString();
 
-           return "";
 
-       }
+        }
+        catch (Exception e) {
+            log.error("error while retriving the ctc terms" + e.toString() + " message" + e.getMessage());
+        }
+
+        return "";
+
+    }
 
     public List<InterventionSite> matchInterventionSites(String text) {
         String[] excerpts = {text};

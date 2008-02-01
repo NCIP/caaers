@@ -285,4 +285,16 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 		log.debug("Collection Count after clear() : " + session.getStatistics().getCollectionCount());
 	}
 
+
+	@SuppressWarnings("unchecked")
+    protected List<T> findAll() {
+
+        StringBuilder query = new StringBuilder(" select o from ").append(domainClass().getName()).append(
+                " o ");
+
+        log.debug("query::" + query.toString());
+        getHibernateTemplate().setMaxResults(0);
+        return getHibernateTemplate().find(query.toString());
+    }
+
 }
