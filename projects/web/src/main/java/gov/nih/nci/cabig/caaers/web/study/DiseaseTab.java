@@ -70,6 +70,7 @@ public class DiseaseTab extends StudyTab {
     	if(command.getDiseaseLlt() != null){
     		if(medraTermMap.containsKey(command.getDiseaseLlt())) {
     			errors.reject("DUPLICATE", "'" + medraTermMap.get(command.getDiseaseLlt()).getFullName()+ "' is already associated to this study");
+    			command.setDiseaseLlt(null);
     		}
     	}
     }
@@ -80,6 +81,7 @@ public class DiseaseTab extends StudyTab {
     	if(!errors.hasErrors()){
     		handleStudyDiseaseAction(command, request.getParameter("_action"),
     				request.getParameter("_selected"));
+    		command.setDiseaseLlt(null);
     	}
     }
     
