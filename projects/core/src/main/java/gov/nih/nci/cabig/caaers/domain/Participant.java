@@ -11,6 +11,9 @@ import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipant;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
@@ -44,7 +47,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
 	private String lastName;
 
-	private Date dateOfBirth;
+	private DateValue dateOfBirth;
 
 	private String gender;
 
@@ -184,12 +187,17 @@ public class Participant extends AbstractIdentifiableDomainObject {
 		this.lastName = lastName;
 	}
 
-	@Column(name = "birth_date")
-	public Date getDateOfBirth() {
+	@Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "birth_year"))
+    })
+	public DateValue getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(final Date dateOfBirth) {
+	public void setDateOfBirth(final DateValue dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
