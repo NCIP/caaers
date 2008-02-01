@@ -139,7 +139,7 @@
             <div class="row">
                 <div class="label">
                 	<input type="radio" id="description-type-default" value="default" name="treatmentDescriptionType" checked="checked"/>
-                    <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
+                    <tags:requiredIndicator/><tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
                 </div>
                 <div class="value">
                     <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[0]}" />

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.par;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 
@@ -25,7 +26,7 @@ public class NewParticipantCommandTest extends TestCase {
 		participant.setGender("Male");
 		participant.setEthnicity("ethnicity");
 		participant.setRace("race");
-		participant.setDateOfBirth(new Date());
+		participant.setDateOfBirth(new DateValue());
 
 		command.setParticipant(participant);
 		Participant newParticipant = command.getParticipant();

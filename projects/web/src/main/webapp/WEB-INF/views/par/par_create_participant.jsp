@@ -170,7 +170,12 @@ ${command.organization}
                     <tags:renderRow field="${field}"/>
                 	</c:forEach>
     				</td>
-    				<td><c:forEach begin="4" end="7" items="${fieldGroups.participant.fields}" var="field">
+    				<td>
+    				<div class="row" id="participant.dateOfBirth-row">
+    					<div class="label"><tags:renderLabel field="${fieldGroups.participant.fields[4]}"/></div>
+    					<div class="value"><tags:renderInputs field="${fieldGroups.participant.fields[4]}"/><i>(mm/dd/yyyy)</i></div>
+    				</div>
+    				<c:forEach begin="5" end="7" items="${fieldGroups.participant.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 	</c:forEach>
     				</td>

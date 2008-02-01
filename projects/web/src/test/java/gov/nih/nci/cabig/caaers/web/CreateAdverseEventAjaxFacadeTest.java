@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -97,7 +98,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchParticipants() throws Exception {
         Participant expectedMatch = setId(3, createParticipant("Foo", "B"));
-        expectedMatch.setDateOfBirth(new Date());  // set not null so we can be sure it isn't copied
+        expectedMatch.setDateOfBirth(new DateValue());  // set not null so we can be sure it isn't copied
         expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "foo" })))
             .andReturn(Arrays.asList(expectedMatch));
 

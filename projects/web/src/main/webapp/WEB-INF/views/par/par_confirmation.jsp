@@ -77,7 +77,7 @@ function submitPage(s){
 	       </td> <td>
 	         <div class="row">
 	            <div class="label">Date of birth:</div>
-	            <div class="value"><tags:formatDate	value="${command.participant.dateOfBirth}" /></div>
+	            <div class="value">${command.participant.dateOfBirth}</div>
 	        </div>
 	        
 	        <div class="row">
