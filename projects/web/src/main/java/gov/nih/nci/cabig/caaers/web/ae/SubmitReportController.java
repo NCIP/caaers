@@ -25,10 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Krikor Krumlian
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {
-	
-	//private AdeersReportGenerator adeersReportGenerator;
-	//private ReportDao reportDao;
-
 
 	public SubmitReportController() {
         setCommandClass(SubmitExpeditedAdverseEventCommand.class);
@@ -91,10 +87,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 		String xml = aeser.serialize(aeReport);
-		//expeditedAdverseEventReportDao.save(aeReport);
-		
-    	
-    	//String xml = "<AdverseEventReport>   <id>99</id> </AdverseEventReport>";
+
 		
 		try {
 			aegen.generateAndNotify(aeReport.getId()+"", report , xml);
@@ -102,7 +95,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 			e.printStackTrace();
 			log.error("Error broadcasting message to ESB " + e.getMessage());
 			status = ReportStatus.FAILED;
-			message = "Problem communicating with ESB "+e.getMessage();
+			message = "Problem communicating with ESB <br> Please try to resubmit the report <br>"+e.getMessage();
 		}
 		report.setStatus(status);
 		report.setSubmissionUrl(url);
