@@ -30,7 +30,7 @@ public class ChemoAgentDao extends CaaersDao<ChemoAgent> {
 
     @SuppressWarnings("unchecked")
     public List<ChemoAgent> getAll() {
-        return findAll();
+        return findAll("o.name");
     }
 
 }

@@ -32,7 +32,7 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 	}
 
     public List<AnatomicSite> getAll() {
-        return findAll();
+        return findAll("o.name");
     }
     
 }

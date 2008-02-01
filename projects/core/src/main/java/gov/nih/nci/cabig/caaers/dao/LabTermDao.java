@@ -45,7 +45,7 @@ public class LabTermDao extends CaaersDao<LabTerm> {
 
     @SuppressWarnings("unchecked")
     public List<LabTerm> getAll() {
-        return findAll();
+        return findAll("o.term");
     }
 
 }
