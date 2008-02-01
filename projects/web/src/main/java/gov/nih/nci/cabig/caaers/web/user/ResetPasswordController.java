@@ -57,7 +57,7 @@ public class ResetPasswordController extends SimpleFormController {
 	    + "Regards,\n"
 	    + "The caAERS Notification System.\n"
 	    + "\n"
-	    + "(Note: If you did not request that a new password, please disregard this message.)";
+	    + "(Note: If you did not request a new password, please disregard this message.)";
     }
 
     @Required
