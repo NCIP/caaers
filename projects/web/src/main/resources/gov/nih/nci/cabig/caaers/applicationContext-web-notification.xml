@@ -4,22 +4,10 @@
 
 <beans>
    
-	<bean id="ruleAuthoringService"
-		class="gov.nih.nci.cabig.caaers.rules.common.spring.CaaersXFireClientFactoryBean">
-		<property name="serviceClass" value="gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"/>
-		<property name="serviceUrl" value="http://localhost:5050/rules/services/RuleAuthoringService"/>
-	</bean>   
+	<bean id="ruleAuthoringService" class="gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringServiceImpl"/>
 
-	<bean id="ruleExecutionService"
-		class="gov.nih.nci.cabig.caaers.rules.common.spring.CaaersXFireClientFactoryBean">
-		<property name="serviceClass" value="gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService"/>
-		<property name="serviceUrl" value="http://localhost:5050/rules/services/RuleExecutionService"/>
-	</bean>
+	<bean id="ruleExecutionService"	class="gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl"/>
   
-	<bean id="ruleDeploymentService"
-		class="gov.nih.nci.cabig.caaers.rules.common.spring.CaaersXFireClientFactoryBean">
-		<property name="serviceClass" value="gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"/>
-		<property name="serviceUrl" value="http://localhost:5050/rules/services/RuleDeploymentService"/>
-	</bean>
+	<bean id="ruleDeploymentService" class="gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl"/>
 	
 </beans>
