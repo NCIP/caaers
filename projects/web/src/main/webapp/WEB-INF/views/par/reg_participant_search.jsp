@@ -75,7 +75,7 @@ Please use the form above to search for a Subject and assign it to <b>${command.
         <ec:column property="primaryIdentifier" title="Primary ID"/>
         <ec:column property="firstName" title="First Name"/>
         <ec:column property="lastName" title="Last Name" />
-        <ec:column property="dateOfBirth" title="Date of Birth" cell="date" parse="yyyy-MM-dd" format="MM/dd/yyyy" />
+        <ec:column property="dateOfBirth" title="Date of Birth"/>
         <ec:column property="gender" title="Gender" />
         <ec:column property="race" title="Race" />
         <ec:column property="ethnicity" title="Ethnicity" />

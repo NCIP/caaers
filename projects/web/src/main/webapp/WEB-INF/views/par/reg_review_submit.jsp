@@ -59,7 +59,7 @@ function submitPage(s){
       		
       		<div class="row">
       			<div class="label">Birth date</div>
-      			<div class="value"><fmt:formatDate value="${command.participants[0].dateOfBirth}" pattern="MM/dd/yyyy"/></div>
+      			<div class="value">${command.participants[0].dateOfBirth}</div>
       		</div>
       		
       		<div class="row">
