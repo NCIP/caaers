@@ -126,7 +126,13 @@ public class ExpeditedReportTree extends PropertylessNode {
                     property("presentStatus", "Present status"),
                     property("recoveryDate", "Date of recovery or death"),
                     property("retreated", "Has the particpant been re-treated?"),
-                    property("dateRemovedFromProtocol", "Date removed from protocol")
+                    property("blindBroken", "Was blind broken due to event?"),
+                    property("studyDrugInterrupted", "Was Study Drug stopped/interrupted/reduced in response to event?"),
+                    property("reducedDose", "If reduced, specify: New dose"),
+                    property("reducedDate", "Date of recovery or death"),
+                    property("daysNotGiven", "If interrupted, specify total number of days not given"),
+                    property("eventAbate", "Did event abate after study drug was stopped or dose reduced?"),
+                    property("eventReappear", "Did event reappear after study drug was reintroduced?")
                 )
             ),
             section(MEDICAL_INFO_SECTION,
